@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopCardHub — Sports Card Guides, Prices & Where to Buy</title>
+  <meta name="description" content="Sports card price guides, prospect rankings, hobby box ROI breakdowns, and grading guides. Built by collectors, for collectors. Browse our COMC inventory or follow @shopcardhub.">
+  <link rel="canonical" href="https://shopcardhub.com/">
+  <meta name='impact-site-verification' value='74b130d5-209e-4785-b837-d16afbf60555'>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ShopCardHub — Sports Card Guides, Prices & Where to Buy">
+  <meta property="og:description" content="Sports card price guides, prospect rankings, hobby box ROI breakdowns, and grading guides. Built by collectors, for collectors.">
+  <meta property="og:url" content="https://shopcardhub.com/">
+  <meta property="og:site_name" content="ShopCardHub">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@shopcardhub">
+  <meta property="og:image" content="https://www.shopcardhub.com/og/default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="628">
+  <meta name="twitter:image" content="https://www.shopcardhub.com/og/default.png">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"ShopCardHub",
+    "url":"https://shopcardhub.com",
+    "description":"Sports card price guides, prospect rankings, hobby box ROI breakdowns, and grading guides.",
+    "publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://shopcardhub.com"},
+    "potentialAction":{"@type":"SearchAction","target":"https://shopcardhub.com/search?q={search_term_string}","query-input":"required name=search_term_string"}
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#07090c; --bg2:#0c1017; --bg3:#111820; --bg4:#161f28;
+      --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
+      --accent:#00ccf5; --accent-dim:rgba(0,204,245,0.1); --accent-glow:rgba(0,204,245,0.22);
+      --green:#00e07a; --green-dim:rgba(0,224,122,0.1);
+      --orange:#ff8c00; --orange-dim:rgba(255,140,0,0.1);
+      --gold:#f5c800; --red:#ff2e55;
+      --text:#b8cdd4; --text-dim:#5a7880; --text-head:#e4f0f4;
+      --fd:'Barlow Condensed',sans-serif; --fb:'Barlow',sans-serif; --fm:'JetBrains Mono',monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background:var(--bg); color:var(--text); font-family:var(--fb); line-height:1.65; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    body::after { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.032'/%3E%3C/svg%3E"); pointer-events:none; z-index:999; opacity:0.6; }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { color:#fff; }
+    .container { max-width:1080px; margin:0 auto; padding:0 24px; }
+
+    /* NAV */
+    .nav { position:sticky; top:0; z-index:200; background:rgba(7,9,12,0.94); backdrop-filter:blur(16px) saturate(1.3); border-bottom:1px solid var(--border2); }
+    .nav-inner { max-width:1080px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:58px; }
+    .logo { font-family:var(--fd); font-size:20px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:var(--text-head); }
+    .logo span { color:var(--accent); }
+    .nav-links { display:flex; gap:4px; align-items:center; }
+    .nav-item { position:relative; }
+    .nav-item > a { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); transition:color 0.2s; padding:8px 12px; border-radius:2px; }
+    .nav-item > a:hover { color:var(--text-head); text-decoration:none; background:rgba(255,255,255,0.04); }
+    .nav-item > a .chevron { font-size:8px; opacity:0.5; transition:transform 0.2s; }
+    .nav-item:hover > a .chevron { transform:rotate(180deg); }
+    .nav-dropdown { position:absolute; top:calc(100% + 1px); left:0; background:rgba(7,9,12,0.98); backdrop-filter:blur(20px); border:1px solid var(--border2); border-top:2px solid var(--accent); min-width:220px; padding:8px 0; opacity:0; visibility:hidden; transform:translateY(-6px); transition:opacity 0.18s ease, transform 0.18s ease, visibility 0.18s; z-index:300; }
+    .nav-item:hover .nav-dropdown { opacity:1; visibility:visible; transform:translateY(0); }
+    .nav-dropdown a { display:block; padding:9px 18px; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); transition:color 0.15s, background 0.15s; }
+    .nav-dropdown a:hover { color:var(--text-head); background:rgba(0,204,245,0.06); text-decoration:none; }
+    .nav-dropdown .dd-label { padding:6px 18px 4px; font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); opacity:0.6; }
+    .nav-dropdown hr { border:none; border-top:1px solid var(--border); margin:4px 0; }
+    .nav-cta { background:var(--accent) !important; color:#000 !important; padding:8px 18px; font-size:11px !important; font-weight:700 !important; border-radius:2px; margin-left:8px; transition:background 0.2s, transform 0.1s !important; }
+    .nav-cta:hover { background:#fff !important; transform:translateY(-1px); text-decoration:none !important; }
+
+    /* HERO */
+    .hero { min-height:88vh; display:flex; align-items:center; position:relative; overflow:hidden; padding:80px 0 60px; }
+    .hero::before { content:''; position:absolute; top:0; right:0; bottom:0; width:50%; background:linear-gradient(135deg,transparent 0%,rgba(0,204,245,0.04) 50%,transparent 100%); clip-path:polygon(20% 0%,100% 0%,100% 100%,0% 100%); pointer-events:none; }
+    .hero::after { content:''; position:absolute; left:50%; top:10%; bottom:10%; width:1px; background:linear-gradient(180deg,transparent,rgba(0,204,245,0.18),transparent); pointer-events:none; }
+    .hero-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; position:relative; z-index:1; }
+    .hero-eyebrow { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:8px; margin-bottom:20px; }
+    .hero-eyebrow::before { content:''; width:28px; height:1px; background:var(--accent); box-shadow:0 0 8px var(--accent); }
+    .hero h1 { font-family:var(--fd); font-size:clamp(44px,5.5vw,80px); font-weight:900; line-height:0.95; letter-spacing:-1px; text-transform:uppercase; color:var(--text-head); margin-bottom:24px; }
+    .hero h1 .accent { color:var(--accent); display:block; }
+    .hero h1 .ghost { -webkit-text-stroke:1px rgba(228,240,244,0.18); color:transparent; display:block; }
+    .hero-body { font-size:17px; color:var(--text-dim); line-height:1.75; max-width:480px; margin-bottom:40px; }
+    .hero-body strong { color:var(--text); }
+    .hero-ctas { display:flex; gap:14px; flex-wrap:wrap; }
+    .btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#000; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; border-radius:2px; transition:all 0.15s; }
+    .btn-primary:hover { background:#fff; color:#000; text-decoration:none; transform:translateY(-2px); }
+    .btn-secondary { display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-dim); font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; border:1px solid var(--border2); border-radius:2px; transition:all 0.15s; }
+    .btn-secondary:hover { color:var(--text-head); border-color:var(--accent); text-decoration:none; }
+
+    /* Hero panel */
+    .hero-panel { background:var(--bg2); border:1px solid var(--border2); border-top:2px solid var(--accent); padding:0; animation:panel-in 0.8s ease-out 0.2s both; }
+    @keyframes panel-in { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    .panel-header { padding:14px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+    .panel-dot { width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); animation:pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .panel-title { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); }
+    .panel-updated { margin-left:auto; font-family:var(--fm); font-size:9px; color:var(--text-dim); letter-spacing:1px; }
+    .panel-rows { padding:6px 0; }
+    .panel-row { display:flex; align-items:center; padding:11px 20px; gap:14px; border-bottom:1px solid var(--border); transition:background 0.15s; }
+    .panel-row:last-child { border-bottom:none; }
+    .panel-row:hover { background:rgba(0,204,245,0.04); }
+    .panel-rank { font-family:var(--fd); font-size:18px; font-weight:900; color:var(--text-dim); min-width:28px; }
+    .panel-rank.top { color:var(--accent); }
+    .panel-name { font-family:var(--fd); font-size:15px; font-weight:700; color:var(--text-head); text-transform:uppercase; letter-spacing:0.5px; flex:1; line-height:1.1; }
+    .panel-sub { font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:0.5px; }
+    .panel-price { font-family:var(--fd); font-size:18px; font-weight:800; text-align:right; }
+    .panel-price.hot { color:var(--green); }
+    .panel-price.mid { color:var(--orange); }
+    .panel-footer { padding:12px 20px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); background:var(--bg3); }
+    .panel-footer-text { font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:1px; }
+    .panel-footer a { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--accent); }
+
+    /* TICKER */
+    .ticker { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:10px 0; overflow:hidden; }
+    .ticker-inner { display:flex; gap:48px; animation:ticker-scroll 28s linear infinite; white-space:nowrap; }
+    @keyframes ticker-scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .ticker-item { display:inline-flex; align-items:center; gap:8px; font-family:var(--fm); font-size:11px; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; }
+    .ticker-item .tick-label { color:var(--accent); }
+    .ticker-item .tick-up { color:var(--green); }
+    .ticker-item .tick-down { color:var(--red); }
+
+    /* SECTIONS */
+    section { padding:80px 0; }
+    .section-eyebrow { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+    .section-eyebrow::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(0,204,245,0.3),transparent); max-width:120px; }
+    h2 { font-family:var(--fd); font-size:clamp(28px,4vw,44px); font-weight:900; line-height:1.0; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-head); margin-bottom:16px; }
+    .section-body { font-size:16px; color:var(--text-dim); line-height:1.75; max-width:580px; margin-bottom:48px; }
+
+    /* GUIDES GRID */
+    .guides-grid { display:grid; grid-template-columns:2fr 1fr; gap:2px; background:var(--border); }
+    .guide-card { background:var(--bg2); padding:32px; position:relative; overflow:hidden; transition:background 0.2s; display:flex; flex-direction:column; }
+    .guide-card:hover { background:var(--bg3); }
+    .guide-card.featured { grid-row:span 2; }
+    .guide-tag { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .guide-tag .hot-tag { background:rgba(255,46,85,0.12); color:var(--red); border:1px solid rgba(255,46,85,0.3); padding:2px 8px; border-radius:2px; }
+    .guide-title { font-family:var(--fd); font-size:clamp(20px,2.5vw,30px); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-head); line-height:1.05; margin-bottom:12px; }
+    .guide-desc { font-size:14px; color:var(--text-dim); line-height:1.65; margin-bottom:24px; flex:1; }
+    .guide-meta { display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:20px; border-top:1px solid var(--border); }
+    .guide-stat { font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:1px; }
+    .guide-stat strong { color:var(--green); }
+    .guide-link { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:6px; transition:gap 0.2s; }
+    .guide-link:hover { gap:10px; text-decoration:none; color:#fff; }
+    .guide-card::before { content:''; position:absolute; top:0; left:0; width:0; height:2px; background:var(--accent); transition:width 0.3s ease; }
+    .guide-card:hover::before { width:100%; }
+
+    /* STATS ROW */
+    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; background:var(--border); margin:80px 0 0; }
+    .stat-block { background:var(--bg2); padding:32px 24px; border-bottom:2px solid transparent; transition:border-color 0.2s, background 0.2s; }
+    .stat-block:hover { border-color:var(--accent); background:var(--bg3); }
+    .stat-num { font-family:var(--fd); font-size:52px; font-weight:900; line-height:1; color:var(--text-head); letter-spacing:-2px; margin-bottom:8px; }
+    .stat-num span { color:var(--accent); }
+    .stat-label { font-family:var(--fm); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); }
+
+    /* CATEGORIES */
+    .categories-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .cat-card { background:var(--bg2); border:1px solid var(--border); border-top:2px solid transparent; padding:28px 24px; transition:all 0.2s; cursor:default; }
+    .cat-card:hover { border-top-color:var(--accent); background:var(--bg3); }
+    .cat-icon { font-size:28px; margin-bottom:16px; display:block; }
+    .cat-name { font-family:var(--fd); font-size:18px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--text-head); margin-bottom:8px; }
+    .cat-desc { font-size:13px; color:var(--text-dim); line-height:1.6; }
+
+    /* INVENTORY CTA */
+    .inventory-cta { background:var(--bg2); border:1px solid var(--border2); padding:64px 48px; display:grid; grid-template-columns:1fr auto; gap:48px; align-items:center; position:relative; overflow:hidden; }
+    .inventory-cta::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(0,204,245,0.04),transparent 60%); pointer-events:none; }
+    .inventory-cta h2 { font-size:clamp(24px,3vw,38px); margin-bottom:14px; }
+    .inventory-cta p { font-size:16px; color:var(--text-dim); max-width:520px; }
+    .inventory-cta-side { text-align:right; }
+    .inventory-big { font-family:var(--fd); font-size:80px; font-weight:900; line-height:1; color:var(--accent); text-shadow:0 0 60px rgba(0,204,245,0.25); letter-spacing:-2px; }
+    .inventory-sub { font-family:var(--fm); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-top:4px; }
+    .inventory-cta-ctas { display:flex; gap:12px; margin-top:28px; flex-wrap:wrap; }
+
+    /* SOCIAL */
+    .social-strip { background:#1a2733; border:1px solid rgba(29,161,242,0.2); border-left:3px solid #1da1f2; padding:28px 40px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap; }
+    .social-strip-text h3 { font-family:var(--fd); font-size:22px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--text-head); margin-bottom:6px; }
+    .social-strip-text p { font-size:14px; color:var(--text-dim); }
+    .btn-twitter { display:inline-flex; align-items:center; gap:10px; background:#1da1f2; color:#fff; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; border-radius:2px; transition:all 0.2s; white-space:nowrap; }
+    .btn-twitter:hover { background:#fff; color:#1da1f2; text-decoration:none; }
+
+    /* DISCLOSURE */
+    .disclosure { background:var(--bg3); border:1px solid var(--border); border-left:3px solid var(--text-dim); padding:16px 22px; font-size:13px; color:var(--text-dim); line-height:1.6; margin:56px 0 0; }
+
+    /* FOOTER */
+    footer { background:var(--bg2); border-top:1px solid var(--border2); padding:48px 0 32px; }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; margin-bottom:40px; }
+    .footer-logo-block .logo { font-size:18px; margin-bottom:14px; }
+    .footer-tagline { font-size:14px; color:var(--text-dim); line-height:1.65; max-width:240px; }
+    .footer-col h4 { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:16px; }
+    .footer-links { display:flex; flex-direction:column; gap:10px; }
+    .footer-links a { font-size:14px; color:var(--text-dim); transition:color 0.2s; }
+    .footer-links a:hover { color:var(--text-head); text-decoration:none; }
+    .footer-bottom { border-top:1px solid var(--border); padding-top:24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    .footer-copy { font-size:12px; color:var(--text-dim); opacity:0.6; line-height:1.6; }
+
+    /* Animations */
+    @keyframes fade-up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .fade-up { animation:fade-up 0.6s ease-out both; }
+    .fade-up-1 { animation-delay:0.1s; }
+    .fade-up-2 { animation-delay:0.2s; }
+    .fade-up-3 { animation-delay:0.35s; }
+    .fade-up-4 { animation-delay:0.5s; }
+
+    /* Responsive */
+    @media (max-width:860px) {
+      .hero-grid, .footer-grid { grid-template-columns:1fr; }
+      .hero::after { display:none; }
+      .guides-grid { grid-template-columns:1fr; }
+      .guide-card.featured { grid-row:auto; }
+      .stats-row { grid-template-columns:1fr 1fr; }
+      .categories-grid { grid-template-columns:1fr 1fr; }
+      .inventory-cta { grid-template-columns:1fr; }
+      .inventory-cta-side { text-align:left; }
+      .nav-links { display:none; }
+    }
+    @media (max-width:540px) {
+      .stats-row, .categories-grid { grid-template-columns:1fr; }
+    }
+  
+    </style>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2Q52C5EKG7');
+  </script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="logo">Shop<span>Card</span>Hub</div>
+      <div class="nav-links">
+        <div class="nav-item">
+          <a href="/best-hobby-boxes-2026">Hobby Boxes <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+            <div class="dd-label">Hobby Boxes</div>
+            <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Ranked by ROI</a>
+            <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/bowman-bangers">Prospects <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+            <div class="dd-label">Baseball Prospects</div>
+            <a href="/bowman-bangers">2026 Bowman Bangers</a>
+            <a href="/roy-watch-2026">ROY Watch 2026</a>
+            <hr>
+            <div class="dd-label">Basketball</div>
+            <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/pokemon-tcg-2026">Pokémon TCG <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+            <div class="dd-label">2026 Sets</div>
+            <a href="/pokemon-tcg-2026">2026 Pokémon TCG Guide</a>
+            <a href="/chaos-rising">Chaos Rising</a>
+            <a href="/pokemon-tcg-2026#ascended-heroes">Ascended Heroes</a>
+            <a href="/pitch-black-set-guide" style="color:#9b5de5;">⬤ Pitch Black — Jul 17</a>
+            <hr>
+            <div class="dd-label">Set Guides</div>
+            <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/psa-grading-guide">Grading</a>
+        </div>
+        <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored" class="nav-cta">Our COMC Store</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+
+        <!-- Left -->
+        <div>
+          <div class="hero-eyebrow fade-up">Sports Card Intelligence</div>
+          <h1 class="fade-up fade-up-1">
+            <span class="ghost">Find</span>
+            <span class="accent">Better Cards.</span>
+            Make Smarter Buys.
+          </h1>
+          <p class="hero-body fade-up fade-up-2">
+            Price guides, prospect rankings, and hobby box ROI breakdowns —
+            written by a collector who <strong>actually buys and sells</strong>.
+            No hype. Just data.
+          </p>
+          <div class="hero-ctas fade-up fade-up-3">
+            <a href="/best-hobby-boxes-2026" class="btn-primary">Best Hobby Boxes 2026 →</a>
+            <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored" class="btn-secondary">Browse Inventory</a>
+          </div>
+        </div>
+
+        <!-- Right — 2026 Bowman prospect panel -->
+        <div class="hero-panel fade-up fade-up-4">
+          <div class="panel-header">
+            <div class="panel-dot"></div>
+            <span class="panel-title">2026 Bowman Bangers — Released May 13</span>
+            <span class="panel-updated">Updated June 2026</span>
+          </div>
+          <div class="panel-rows">
+            <a href="/bowman-bangers" class="panel-row" style="text-decoration:none; display:flex;">
+              <div class="panel-rank top">01</div>
+              <div style="flex:1;">
+                <div class="panel-name">Ethan Holliday</div>
+                <div class="panel-sub">COL · SS · 2025 #4 Pick · BUY</div>
+              </div>
+              <div class="panel-price hot">~$100</div>
+            </a>
+            <a href="/bowman-bangers" class="panel-row" style="text-decoration:none; display:flex;">
+              <div class="panel-rank top">02</div>
+              <div style="flex:1;">
+                <div class="panel-name">Aiva Arquette</div>
+                <div class="panel-sub">MIA · SS · 2025 #7 Pick · 6'5"</div>
+              </div>
+              <div class="panel-price hot">~$70</div>
+            </a>
+            <a href="/bowman-bangers" class="panel-row" style="text-decoration:none; display:flex;">
+              <div class="panel-rank">03</div>
+              <div style="flex:1;">
+                <div class="panel-name">Wehiwa Aloy</div>
+                <div class="panel-sub">BAL · SS · SEC POY · 35 College HR</div>
+              </div>
+              <div class="panel-price mid">~$45</div>
+            </a>
+            <a href="/bowman-bangers" class="panel-row" style="text-decoration:none; display:flex;">
+              <div class="panel-rank">04</div>
+              <div style="flex:1;">
+                <div class="panel-name">Daniel Pierce</div>
+                <div class="panel-sub">TB · SS · 2025 #14 Pick · Rays System</div>
+              </div>
+              <div class="panel-price mid">~$35</div>
+            </a>
+            <a href="/bowman-bangers" class="panel-row" style="text-decoration:none; display:flex;">
+              <div class="panel-rank">05</div>
+              <div style="flex:1;">
+                <div class="panel-name">Andrew Fischer</div>
+                <div class="panel-sub">MIL · 3B · Duke HR Record · Value Buy</div>
+              </div>
+              <div class="panel-price mid">~$30</div>
+            </a>
+          </div>
+          <div class="panel-footer">
+            <span class="panel-footer-text">1st Bowman Chrome Auto · Raw · 2026 Class</span>
+            <a href="/bowman-bangers">Full Guide →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span class="ticker-item"><span class="tick-label">Holliday 2026 Bowman Chrome Auto</span> ~$100 <span class="tick-up">▲ BUY</span></span>
+      <span class="ticker-item"><span class="tick-label">Topps Series 2 Hobby</span> $140 <span class="tick-up">▲ 2.1%</span></span>
+      <span class="ticker-item" style="color:#9b5de5;"><span class="tick-label" style="color:#9b5de5;">🌑 Mega Darkrai ex SIR (Pitch Black)</span> $550–$750 PROJ <span class="tick-up">▲ PRE-ORDER</span></span>
+      <span class="ticker-item"><span class="tick-label">Aiva Arquette 2026 Bowman</span> ~$70 <span class="tick-up">▲ BUY</span></span>
+      <span class="ticker-item"><span class="tick-label">Prizm Basketball Hobby</span> $180 <span class="tick-down">▼ 1.4%</span></span>
+      <span class="ticker-item"><span class="tick-label">Wehiwa Aloy 2026 Bowman</span> ~$45 <span class="tick-up">▲ WATCH</span></span>
+      <span class="ticker-item" style="color:#9b5de5;"><span class="tick-label" style="color:#9b5de5;">🌑 Pitch Black Hobby Box</span> ~$320–$380 PROJ <span class="tick-up">▲ MSRP ONLY</span></span>
+      <span class="ticker-item"><span class="tick-label">Bowman Chrome Hobby</span> $260 <span class="tick-up">▲ 0.9%</span></span>
+      <span class="ticker-item"><span class="tick-label">Daniel Pierce 2026 Bowman</span> ~$35 <span class="tick-up">▲ WATCH</span></span>
+      <span class="ticker-item"><span class="tick-label">Select Football Hobby</span> $110 <span class="tick-up">▲ 3.7%</span></span>
+      <span class="ticker-item"><span class="tick-label">Andrew Fischer 2026 Bowman</span> ~$30 <span class="tick-up">▲ VALUE</span></span>
+      <span class="ticker-item"><span class="tick-label">Holliday 2026 Bowman Chrome Auto</span> ~$100 <span class="tick-up">▲ BUY</span></span>
+      <span class="ticker-item"><span class="tick-label">Topps Series 2 Hobby</span> $140 <span class="tick-up">▲ 2.1%</span></span>
+      <span class="ticker-item" style="color:#9b5de5;"><span class="tick-label" style="color:#9b5de5;">🌑 Mega Darkrai ex SIR (Pitch Black)</span> $550–$750 PROJ <span class="tick-up">▲ PRE-ORDER</span></span>
+      <span class="ticker-item"><span class="tick-label">Aiva Arquette 2026 Bowman</span> ~$70 <span class="tick-up">▲ BUY</span></span>
+      <span class="ticker-item"><span class="tick-label">Prizm Basketball Hobby</span> $180 <span class="tick-down">▼ 1.4%</span></span>
+      <span class="ticker-item"><span class="tick-label">Wehiwa Aloy 2026 Bowman</span> ~$45 <span class="tick-up">▲ WATCH</span></span>
+      <span class="ticker-item" style="color:#9b5de5;"><span class="tick-label" style="color:#9b5de5;">🌑 Pitch Black Hobby Box</span> ~$320–$380 PROJ <span class="tick-up">▲ MSRP ONLY</span></span>
+      <span class="ticker-item"><span class="tick-label">Bowman Chrome Hobby</span> $260 <span class="tick-up">▲ 0.9%</span></span>
+      <span class="ticker-item"><span class="tick-label">Daniel Pierce 2026 Bowman</span> ~$35 <span class="tick-up">▲ WATCH</span></span>
+      <span class="ticker-item"><span class="tick-label">Select Football Hobby</span> $110 <span class="tick-up">▲ 3.7%</span></span>
+      <span class="ticker-item"><span class="tick-label">Andrew Fischer 2026 Bowman</span> ~$30 <span class="tick-up">▲ VALUE</span></span>
+    </div>
+  </div>
+
+  <!-- FEATURED GUIDES -->
+  <section style="background:var(--bg); padding-bottom:0;">
+    <div class="container">
+      <div class="section-eyebrow">Featured Guides</div>
+      <h2>Start Here</h2>
+      <p class="section-body">Every guide is built around a specific buying decision. No filler, no fluff — just what you need to buy smarter.</p>
+
+      <div class="guides-grid">
+        <!-- Featured large -->
+        <div class="guide-card featured">
+          <div class="guide-tag">
+            Hobby Boxes
+            <span class="hot-tag">🔥 Priority Read</span>
+          </div>
+          <div class="guide-title">Best Hobby Boxes to Buy in 2026 — Ranked by ROI</div>
+          <div class="guide-desc">
+            31,400 people search this every month. We broke down the math on every major
+            2026 release — Topps Chrome, Bowman, Prizm Basketball, Select Football,
+            and Pokémon — ranked by expected ROI per box, not hype. Know what you're
+            actually paying for hits before you open anything.
+          </div>
+          <div class="guide-meta">
+            <div>
+              <div class="guide-stat">Keyword: <strong>31.4K/mo searches</strong></div>
+              <div class="guide-stat" style="margin-top:4px;">6 boxes compared · Affiliate links: Fanatics + eBay</div>
+            </div>
+            <a href="/best-hobby-boxes-2026" class="guide-link">Read Guide →</a>
+          </div>
+        </div>
+
+        <!-- Bowman Bangers — UPDATED -->
+        <div class="guide-card">
+          <div class="guide-tag">Prospects</div>
+          <div class="guide-title">2026 Bowman Bangers</div>
+          <div class="guide-desc">
+            The 2025 draft class hits wax. Top 5 prospects ranked by 1st Bowman Chrome Auto value —
+            Ethan Holliday, Aiva Arquette, Wehiwa Aloy, Daniel Pierce, and Andrew Fischer.
+            Buy signals, eBay sold comps, and the full 2026 set breakdown.
+          </div>
+          <div class="guide-meta">
+            <div class="guide-stat">10 prospects · 2025 draft class · eBay links</div>
+            <a href="/bowman-bangers" class="guide-link">Read →</a>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-tag">Grading</div>
+          <div class="guide-title">PSA Grading Guide 2026</div>
+          <div class="guide-desc">
+            Every tier, real turnaround times, hidden fees, and the ROI math.
+            Updated after the February 10, 2026 price increase.
+          </div>
+          <div class="guide-meta">
+            <div class="guide-stat">All 6 tiers covered · Feb 2026 prices</div>
+            <a href="/psa-grading-guide" class="guide-link">Read →</a>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-tag" style="color:#FFD700;">🎴 Pokémon TCG</div>
+          <div class="guide-title">Pokémon TCG 2026 — Hot Cards &amp; Sets</div>
+          <div class="guide-desc">
+            All four 2026 Mega Evolution sets on one page — Chaos Rising, Ascended Heroes, Pitch Black, and beyond. Full Pitch Black pre-release guide now live. Mega Greninja ex SIR at $470–$505.
+          </div>
+          <div class="guide-meta">
+            <div class="guide-stat">4 sets · 6 hot cards ranked · eBay + PriceCharting</div>
+            <a href="/pokemon-tcg-2026" class="guide-link" style="color:#FFD700;">Read →</a>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-tag">🏀 NBA Rookie Cards</div>
+          <div class="guide-title">Cooper Flagg Rookie Cards 2026</div>
+          <div class="guide-desc">
+            Chrome #251 PSA 10 at $2,075. Superfractor auto at $180K.
+            Every Flagg card ranked by ROI with real eBay sold comps — what to buy and what to avoid.
+          </div>
+          <div class="guide-meta">
+            <div class="guide-stat">5 cards ranked · eBay sold comps · June 2026</div>
+            <a href="/cooper-flagg-rookie-cards" class="guide-link">Read →</a>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-tag" style="color:#bb88ff;">🎴 Pokémon TCG</div>
+          <div class="guide-title">Prismatic Evolutions 2026</div>
+          <div class="guide-desc">
+            Umbreon ex SIR peaked at $1,500. Glaceon ex IR at $450.
+            All 9 Eeveelutions ranked by eBay sold price with honest sealed EV math.
+          </div>
+          <div class="guide-meta">
+            <div class="guide-stat">9 Eeveelutions ranked · sealed EV math · eBay sold</div>
+            <a href="/prismatic-evolutions-guide" class="guide-link" style="color:#bb88ff;">Read →</a>
+          </div>
+        </div>
+
+        <div class="guide-card" style="border-top:2px solid #9b5de5;">
+          <div class="guide-tag" style="color:#9b5de5;">🌑 Pokémon TCG · ME05 · Jul 17, 2026</div>
+          <div class="guide-title">Pitch Black Pre-Release Guide 2026</div>
+          <div class="guide-desc">
+            Mega Darkrai ex SIR projected $550–$750 at launch — the most anticipated Pokémon TCG chase card since Greninja. Complete hobby box EV math, 10 chase cards ranked, and the exact pre-release buying strategy. Prereleases July 4–12.
+          </div>
+          <div class="guide-meta">
+            <div class="guide-stat">10 cards ranked · hobby box EV math · releases Jul 17</div>
+            <a href="/pitch-black-set-guide" class="guide-link" style="color:#9b5de5;">Read Guide →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats-row">
+        <div class="stat-block">
+          <div class="stat-num">508<span>+</span></div>
+          <div class="stat-label">Cards in COMC Inventory</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num"><span>~$</span>100</div>
+          <div class="stat-label">Top Prospect Auto (Holliday 2026)</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">5<span>%</span></div>
+          <div class="stat-label">Max Discount Floor — ROI First</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">4<span>+</span></div>
+          <div class="stat-label">Affiliate Programs Active</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE COVER -->
+  <section>
+    <div class="container">
+      <div class="section-eyebrow">Coverage</div>
+      <h2>What We Write About</h2>
+      <p class="section-body">Every category is covered from one angle — what's worth buying and at what price.</p>
+      <div class="categories-grid">
+        <div class="cat-card">
+          <span class="cat-icon">⚾</span>
+          <div class="cat-name">Baseball Cards</div>
+          <div class="cat-desc">Bowman Chrome prospects, Topps Series, veteran HOF cards, and PSA-graded singles from our COMC inventory.</div>
+        </div>
+        <div class="cat-card">
+          <span class="cat-icon">🏈</span>
+          <div class="cat-name">Football Cards</div>
+          <div class="cat-desc">Prizm Football rookies, Select, Mosaic — ranked by value and upside. 95 football cards in our current COMC inventory.</div>
+        </div>
+        <div class="cat-card">
+          <span class="cat-icon">🏀</span>
+          <div class="cat-name">Basketball Cards</div>
+          <div class="cat-desc">Prizm Basketball hobby breakdowns, rookie rankings, and comp analysis for the 32 basketball cards we actively track.</div>
+        </div>
+        <div class="cat-card" onclick="window.location='/pokemon-tcg-2026'" style="cursor:pointer;">
+          <span class="cat-icon">🎴</span>
+          <div class="cat-name">Pokémon TCG</div>
+          <div class="cat-desc">Chaos Rising, Ascended Heroes, Pitch Black — all four 2026 Mega Evolution sets covered with pull rates and eBay sold comps.</div>
+        </div>
+        <div class="cat-card" onclick="window.location='/psa-grading-guide'" style="cursor:pointer;">
+          <span class="cat-icon">📐</span>
+          <div class="cat-name">Grading</div>
+          <div class="cat-desc">PSA, BGS, and SGC — tier-by-tier ROI math, updated for the February 2026 price hike. Know before you ship.</div>
+        </div>
+        <div class="cat-card" onclick="window.location='/bowman-bangers'" style="cursor:pointer;">
+          <span class="cat-icon">🔭</span>
+          <div class="cat-name">Prospects</div>
+          <div class="cat-desc">2026 Bowman 1st Bowman Chrome Autos — 2025 draft class ranked by upside, buy signals, and Chrome auto ROI.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL STRIP -->
+  <div class="container">
+    <div class="social-strip">
+      <div class="social-strip-text">
+        <h3>Price Alerts on Twitter</h3>
+        <p>We post card price movement, pull rate data, and buy signals in real time on @shopcardhub.</p>
+      </div>
+      <a href="https://twitter.com/shopcardhub" target="_blank" rel="noopener" class="btn-twitter">Follow @shopcardhub</a>
+    </div>
+  </div>
+
+  <div class="container" style="margin-bottom:0;">
+    <div class="disclosure">
+      <strong>Affiliate Disclosure:</strong> ShopCardHub participates in the eBay Partner Network, Fanatics Affiliate Program,
+      and COMC Referral Program. We may earn commissions when you purchase through links on this site.
+      All prices shown are estimates based on recent eBay completed/sold listings, June 2026, and may not reflect current market conditions.
+      This site does not provide financial or investment advice.
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-logo-block">
+          <div class="logo">Shop<span>Card</span>Hub</div>
+          <p class="footer-tagline">Sports card price guides, prospect rankings, and hobby box ROI breakdowns — built by a collector who actually buys and sells.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Guides</h4>
+          <div class="footer-links">
+            <a href="/best-hobby-boxes-2026">Best Hobby Boxes 2026</a>
+            <a href="/bowman-bangers">2026 Bowman Bangers</a>
+            <a href="/roy-watch-2026">ROY Watch 2026</a>
+            <a href="/psa-grading-guide">PSA Grading Guide</a>
+            <a href="/pokemon-tcg-2026">Pokémon TCG 2026</a>
+            <a href="/chaos-rising">Chaos Rising</a>
+            <a href="/pitch-black-set-guide" style="color:#9b5de5;">🌑 Pitch Black Guide</a>
+            <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Inventory</h4>
+          <div class="footer-links">
+            <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored">Browse COMC Store</a>
+            <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored">Baseball Cards</a>
+            <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored">Football Cards</a>
+            <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored">Basketball Cards</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <div class="footer-links">
+            <a href="https://twitter.com/shopcardhub" target="_blank" rel="noopener">@shopcardhub</a>
+            <a href="https://partnernetwork.ebay.com" target="_blank" rel="noopener">eBay Partner Network</a>
+            <a href="https://www.fanatics.com/affiliate" target="_blank" rel="noopener">Fanatics Affiliate</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          © 2026 ShopCardHub · shopcardhub.com · <a href="https://twitter.com/shopcardhub" target="_blank" rel="noopener" style="color:inherit;">@shopcardhub</a><br>
+          ShopCardHub participates in the eBay Partner Network and Fanatics Affiliate program.
+          Card prices are estimates based on recent eBay sold data, June 2026. Not financial advice.
+        </p>
+        <div class="logo" style="font-size:16px;">Shop<span>Card</span>Hub</div>
+      </div>
+    </div>
+  </footer>
+
+
+
+</body>
+</html>
