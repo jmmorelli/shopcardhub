@@ -197,6 +197,25 @@
     /* Cat card */
     .cat-card{transition:all 0.2s,transform 0.2s;}
     .cat-card:hover{transform:translateY(-2px);}
+  
+    /* ─── HAMBURGER & MOBILE DRAWER ─── */
+    .nav-hamburger { display:none; flex-direction:column; justify-content:center; gap:5px; width:40px; height:40px; background:none; border:none; cursor:pointer; padding:8px; z-index:210; }
+    .nav-hamburger span { display:block; width:22px; height:2px; background:var(--text-head); border-radius:2px; transition:all 0.25s ease; transform-origin:center; }
+    .nav-hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .mobile-nav { display:none; position:fixed; top:58px; left:0; right:0; bottom:0; background:rgba(7,9,12,0.99); backdrop-filter:blur(20px); z-index:199; overflow-y:auto; padding:24px; opacity:0; transform:translateY(-8px); transition:opacity 0.2s ease, transform 0.2s ease; pointer-events:none; }
+    .mobile-nav.open { opacity:1; transform:translateY(0); pointer-events:all; }
+    .mobile-nav a { display:block; font-family:var(--fd); font-size:20px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); padding:16px 0; border-bottom:1px solid var(--border); transition:color 0.15s; }
+    .mobile-nav a:hover { color:var(--text-head); text-decoration:none; }
+    .mobile-nav .m-label { font-family:var(--fm); font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--accent); opacity:0.6; padding:20px 0 6px; }
+    .mobile-nav .m-cta { background:var(--accent); color:#000 !important; text-align:center; padding:16px; margin-top:20px; border-bottom:none; font-weight:900; }
+
+    @media(max-width:768px) {
+      .nav-links { display:none !important; }
+      .nav-hamburger { display:flex !important; }
+      .mobile-nav { display:block !important; }
+    }
   </style>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
@@ -249,8 +268,26 @@
       </div>
       <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored" class="nav-cta">Our COMC Store</a>
     </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- ═══ MOBILE DRAWER ═══ -->
+<div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+  <div class="m-label">Navigation</div>
+  <a href="/">Home</a>
+  <a href="/best-hobby-boxes-2026">Hobby Boxes 2026</a>
+  <a href="/bowman-bangers">2026 Bowman Bangers</a>
+  <a href="/ethan-holliday-rookie-cards" style="color:var(--green);">⚾ Ethan Holliday Deep Dive</a>
+  <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+  <a href="/pokemon-tcg-2026">Pokémon TCG 2026</a>
+  <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
+  <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
+  <a href="/psa-grading-guide">PSA Grading Guide</a>
+  <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored" class="m-cta">Our COMC Store →</a>
+</div>
 
 <section class="hero" style="border-top:none; padding-bottom:0;">
   <div class="container">
@@ -504,7 +541,31 @@
 
 
   <script>
-  /* === Scroll-reveal + countup system === */
+  
+/* === Mobile nav toggle === */
+(function(){
+  var btn = document.getElementById('hamburger');
+  var drawer = document.getElementById('mobile-nav');
+  if(!btn || !drawer) return;
+  btn.addEventListener('click', function(){
+    var isOpen = btn.classList.toggle('open');
+    drawer.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+    drawer.setAttribute('aria-hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  drawer.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      btn.classList.remove('open');
+      drawer.classList.remove('open');
+      btn.setAttribute('aria-expanded','false');
+      drawer.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    });
+  });
+})();
+
+/* === Scroll-reveal + countup system === */
   (function(){
     'use strict';
     var SELS=[
