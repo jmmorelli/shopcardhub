@@ -249,7 +249,128 @@
       .nav-hamburger { display:flex !important; }
       .mobile-nav { display:block !important; }
     }
-  </style>
+  
+/* ═══ DUNGEON EFFECTS — The Seeker → The Curator ═══ */
+
+/* 1. Corner bracket accents on card/roi entries */
+.card-entry,.roy-entry{position:relative;}
+.card-entry::before,.card-entry::after,
+.roy-entry::before,.roy-entry::after{
+  content:'';position:absolute;width:12px;height:12px;pointer-events:none;z-index:1;
+}
+.card-entry::before,.roy-entry::before{top:-2px;left:-2px;border-top:2px solid;border-left:2px solid;}
+.card-entry::after,.roy-entry::after{bottom:-2px;right:-2px;border-bottom:2px solid;border-right:2px solid;}
+.card-entry::before,.card-entry::after{border-color:var(--orange);}
+.card-entry.gold-tier::before,.card-entry.gold-tier::after{border-color:var(--gold);}
+.card-entry.watch-tier::before,.card-entry.watch-tier::after{border-color:var(--accent);}
+.card-entry.emotional::before,.card-entry.emotional::after{border-color:var(--purple);}
+.roy-entry::before,.roy-entry::after{border-color:var(--accent);}
+.roy-entry.nl-entry::before,.roy-entry.nl-entry::after{border-color:var(--green);}
+.roy-entry.il-entry::before,.roy-entry.il-entry::after{border-color:var(--red);}
+.roy-entry.watch-entry::before,.roy-entry.watch-entry::after{border-color:var(--gold);}
+
+/* 2. Neon glow on prices and key labels */
+.price-main{text-shadow:0 0 16px rgba(0,224,122,0.45);}
+.price-main.orange{text-shadow:0 0 16px rgba(255,140,0,0.45);}
+.price-main.gold{text-shadow:0 0 16px rgba(245,200,0,0.45);}
+.price-main.purple{text-shadow:0 0 16px rgba(155,93,229,0.45);}
+.poll-pts{text-shadow:0 0 16px rgba(0,204,245,0.45);}
+.poll-pts.nl{text-shadow:0 0 16px rgba(0,224,122,0.45);}
+.stat-num span{text-shadow:0 0 20px rgba(0,204,245,0.4);}
+.panel-price.hot{text-shadow:0 0 12px rgba(0,224,122,0.5);}
+.panel-price.mid{text-shadow:0 0 12px rgba(255,140,0,0.5);}
+.hero-eyebrow{text-shadow:0 0 8px rgba(0,204,245,0.5);}
+.section-eyebrow{text-shadow:0 0 6px rgba(0,204,245,0.35);}
+.entry-tag{text-shadow:0 0 8px rgba(255,140,0,0.4);}
+.entry-tag.gold{text-shadow:0 0 8px rgba(245,200,0,0.5);}
+.entry-tag.cyan{text-shadow:0 0 8px rgba(0,204,245,0.5);}
+.entry-tag.purple{text-shadow:0 0 8px rgba(155,93,229,0.5);}
+
+/* 3. Glitch entrance on hero H1 */
+@keyframes glitch-entrance{
+  0%{transform:translate(0,0);filter:none;opacity:0}
+  8%{transform:translate(-4px,0);filter:hue-rotate(90deg) saturate(2);opacity:1}
+  16%{transform:translate(4px,0);filter:none}
+  24%{transform:translate(-2px,0);filter:hue-rotate(-30deg)}
+  32%{transform:translate(2px,0);filter:none}
+  40%,100%{transform:translate(0,0);filter:none;opacity:1}
+}
+.hero h1{animation:glitch-entrance 1.4s ease-out 0.1s both;}
+
+/* 4. Hotspot ring pulse on live status dots */
+@keyframes hotspot-ring{
+  0%{box-shadow:0 0 0 0 rgba(0,224,122,0.7),0 0 8px var(--green);}
+  100%{box-shadow:0 0 0 10px rgba(0,224,122,0),0 0 8px var(--green);}
+}
+.panel-dot{animation:hotspot-ring 2s ease-out infinite!important;}
+
+/* 5. CRT scanline overlay */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.045) 2px,rgba(0,0,0,0.045) 4px);
+  pointer-events:none;z-index:9998;
+}
+
+/* 6. Hero scan line sweep — injected by JS below */
+@keyframes hero-scan{
+  0%{top:0;opacity:0.7}90%{opacity:0.5}100%{top:100%;opacity:0}
+}
+.hero{overflow:hidden;}
+.hero-scan-line{
+  position:absolute;left:0;right:0;height:1px;top:0;
+  background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);
+  pointer-events:none;z-index:2;
+  animation:hero-scan 3.5s ease-in-out 0.8s 1 forwards;
+}
+
+/* 7. Blinking cursor — class added by JS below */
+@keyframes blink-cur{0%,100%{opacity:1}50%{opacity:0}}
+.blink-cursor::after{
+  content:'\25AE';display:inline-block;margin-left:3px;
+  font-size:0.8em;animation:blink-cur 1s step-end infinite;
+  color:var(--accent);opacity:0.7;
+}
+
+/* 8. Wire pulse on section borders */
+@keyframes wire-pulse{
+  0%,100%{border-top-color:rgba(255,255,255,0.07)}
+  50%{border-top-color:rgba(0,204,245,0.18)}
+}
+section{animation:wire-pulse 5s ease-in-out infinite;}
+
+/* 9. Log-in slide entry on card entries */
+@keyframes log-in{
+  from{opacity:0;transform:translateX(14px)}
+  to{opacity:1;transform:translateX(0)}
+}
+.card-entry,.roy-entry{animation:log-in 0.4s ease-out both;}
+.card-entry:nth-child(1),.roy-entry:nth-child(1){animation-delay:0.05s}
+.card-entry:nth-child(2),.roy-entry:nth-child(2){animation-delay:0.12s}
+.card-entry:nth-child(3),.roy-entry:nth-child(3){animation-delay:0.19s}
+.card-entry:nth-child(4),.roy-entry:nth-child(4){animation-delay:0.26s}
+.card-entry:nth-child(5),.roy-entry:nth-child(5){animation-delay:0.33s}
+.card-entry:nth-child(6),.roy-entry:nth-child(6){animation-delay:0.40s}
+
+/* 10. Marquee strip in card entries */
+@keyframes entry-marquee{
+  from{transform:translateX(0)}to{transform:translateX(-50%)}
+}
+.entry-marquee-wrap{
+  overflow:hidden;height:18px;
+  border-top:1px solid var(--border);
+  margin-top:16px;margin-bottom:-4px;
+  background:rgba(0,204,245,0.02);
+}
+.entry-marquee-text{
+  display:inline-block;white-space:nowrap;
+  font-family:var(--fm);font-size:9px;
+  color:rgba(0,204,245,0.35);
+  letter-spacing:2px;text-transform:uppercase;
+  animation:entry-marquee 18s linear infinite;
+  line-height:18px;
+}
+
+</style>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
   <script>
@@ -907,5 +1028,35 @@
     });
   })();
   </script>
+<script>
+/* DUNGEON EFFECTS — DOM injections */
+(function(){
+  // 6. Scan line sweep in hero sections
+  document.querySelectorAll('.hero').forEach(function(h){
+    if(!h.querySelector('.hero-scan-line')){
+      var sl=document.createElement('div');
+      sl.className='hero-scan-line';
+      h.insertBefore(sl,h.firstChild);
+    }
+  });
+  // 7. Blinking cursor on hero eyebrow labels
+  document.querySelectorAll('.hero-eyebrow').forEach(function(el){
+    el.classList.add('blink-cursor');
+  });
+  // 10. Marquee strip in card/roy entries
+  var M='SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC · SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC ·';
+  document.querySelectorAll('.card-entry,.roy-entry').forEach(function(e){
+    if(!e.querySelector('.entry-marquee-wrap')){
+      var w=document.createElement('div');
+      w.className='entry-marquee-wrap';
+      var s=document.createElement('span');
+      s.className='entry-marquee-text';
+      s.textContent=M;
+      w.appendChild(s);
+      e.appendChild(w);
+    }
+  });
+})();
+</script>
 </body>
 </html>
