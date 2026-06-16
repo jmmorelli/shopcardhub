@@ -462,8 +462,20 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <a href="/bowman-bangers">2026 Bowman Bangers</a>
   <a href="/shohei-ohtani-cards" style="color:var(--accent);">⚾ Shohei Ohtani Cards</a>
   <a href="/ethan-holliday-rookie-cards" style="color:var(--green);">⚾ Ethan Holliday Deep Dive</a>
+  <a href="/aiva-arquette-1st-bowman" style="color:var(--green);">⚾ Aiva Arquette 1st Bowman</a>
   <a href="/nfl-rookie-cards-2026" style="color:var(--orange);">🏈 NFL Rookie Cards 2026</a>
   <a href="/world-cup-2026-soccer-cards">⚽ World Cup 2026 Cards</a>
+  <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+  <a href="/pokemon-tcg-2026">Pokémon TCG 2026</a>
+  <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
+  <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
+  <a href="/psa-grading-guide">PSA Grading Guide</a>
+  <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored" class="m-cta">Our COMC Store →</a>
+</div>
+  <a href="/">Home</a>
+  <a href="/best-hobby-boxes-2026">Hobby Boxes 2026</a>
+  <a href="/bowman-bangers">2026 Bowman Bangers</a>
+  <a href="/ethan-holliday-rookie-cards" style="color:var(--green);">⚾ Ethan Holliday Deep Dive</a>
   <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
   <a href="/pokemon-tcg-2026">Pokémon TCG 2026</a>
   <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
@@ -569,7 +581,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       </div>
     </div>
 
-<!-- AL #2: MUNETAKA MURAKAMI -->
+    <!-- AL #2: MUNETAKA MURAKAMI -->
     <div class="roy-entry il-entry">
       <div class="poll-rank">2</div>
       <div class="roy-header">
@@ -1323,7 +1335,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <script>
 /* DUNGEON EFFECTS — DOM injections */
 (function(){
-  // 6. Scan line sweep in hero sections
   document.querySelectorAll('.hero').forEach(function(h){
     if(!h.querySelector('.hero-scan-line')){
       var sl=document.createElement('div');
@@ -1331,11 +1342,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       h.insertBefore(sl,h.firstChild);
     }
   });
-  // 7. Blinking cursor on hero eyebrow labels
   document.querySelectorAll('.hero-eyebrow').forEach(function(el){
     el.classList.add('blink-cursor');
   });
-  // 10. Marquee strip in card/roy entries
   var M='SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC · SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC ·';
   document.querySelectorAll('.card-entry,.roy-entry').forEach(function(e){
     if(!e.querySelector('.entry-marquee-wrap')){
@@ -1347,6 +1356,20 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       w.appendChild(s);
       e.appendChild(w);
     }
+  });
+})();
+</script>
+<script>
+/* ═══ MOBILE NAV TOGGLE ═══ */
+(function(){
+  var btn=document.getElementById('hamburger');
+  var drawer=document.getElementById('mobile-nav');
+  if(!btn||!drawer)return;
+  btn.addEventListener('click',function(){
+    var open=drawer.classList.toggle('open');
+    btn.classList.toggle('open',open);
+    btn.setAttribute('aria-expanded',open);
+    drawer.setAttribute('aria-hidden',!open);
   });
 })();
 </script>
