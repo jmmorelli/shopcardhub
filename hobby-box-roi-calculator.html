@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hobby Box ROI Calculator 2026 — Expected Value &amp; Break-Even Math | ShopCardHub</title>
+  <meta name="description" content="Free hobby box ROI calculator. Enter your box cost and hit odds to get expected value, net profit or loss, and break-even — the same EV math behind our box rankings. Rip or flip?">
+  <meta name="keywords" content="hobby box ROI calculator, expected value cards, is this hobby box worth it, sports card EV calculator, break even hobby box, rip or flip">
+  <link rel="canonical" href="https://shopcardhub.com/hobby-box-roi-calculator">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Hobby Box ROI Calculator 2026 — Expected Value &amp; Break-Even Math">
+  <meta property="og:description" content="Enter box cost and hit odds, get expected value, net P/L, ROI, and a rip-or-flip verdict. The same EV math behind our box rankings.">
+  <meta property="og:url" content="https://shopcardhub.com/hobby-box-roi-calculator">
+  <meta property="og:site_name" content="ShopCardHub">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@shopcardhub">
+  <meta property="og:image" content="https://www.shopcardhub.com/og/hobby-boxes.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="628">
+  <meta name="twitter:image" content="https://www.shopcardhub.com/og/hobby-boxes.png">
+  <meta name='impact-site-verification' value='74b130d5-209e-4785-b837-d16afbf60555'>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Hobby Box ROI Calculator","applicationCategory":"FinanceApplication","operatingSystem":"Web","url":"https://shopcardhub.com/hobby-box-roi-calculator","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://shopcardhub.com"}}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#07090c; --bg2:#0c1017; --bg3:#111820; --bg4:#161f28;
+      --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
+      --accent:#00ccf5; --accent-dim:rgba(0,204,245,0.1);
+      --green:#00e07a; --green-dim:rgba(0,224,122,0.1);
+      --orange:#ff8c00; --orange-dim:rgba(255,140,0,0.1);
+      --gold:#f5c800; --red:#ff2e55; --purple:#9b5de5;
+      --text:#b8cdd4; --text-dim:#5a7880; --text-head:#e4f0f4;
+      --fd:'Barlow Condensed',sans-serif; --fb:'Barlow',sans-serif; --fm:'JetBrains Mono',monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background:var(--bg); color:var(--text); font-family:var(--fb); line-height:1.65; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    body::after { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; z-index:999; }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { color:#fff; }
+    .container { max-width:1060px; margin:0 auto; padding:0 24px; }
+    .nav { position:sticky; top:0; z-index:200; background:rgba(7,9,12,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border2); }
+    .nav-inner { max-width:1060px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:58px; }
+    .logo { font-family:var(--fd); font-size:20px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:var(--text-head); }
+    .logo span { color:var(--accent); }
+    .nav-links { display:flex; gap:4px; align-items:center; }
+    .nav-item { position:relative; }
+    .nav-item > a { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); transition:color 0.2s; padding:8px 12px; border-radius:2px; }
+    .nav-item > a:hover { color:var(--text-head); text-decoration:none; background:rgba(255,255,255,0.04); }
+    .nav-item > a .chevron { font-size:8px; opacity:0.5; transition:transform 0.2s; }
+    .nav-item:hover > a .chevron { transform:rotate(180deg); }
+    .nav-dropdown { position:absolute; top:calc(100% + 1px); left:0; background:rgba(7,9,12,0.98); backdrop-filter:blur(20px); border:1px solid var(--border2); border-top:2px solid var(--accent); min-width:220px; padding:8px 0; opacity:0; visibility:hidden; transform:translateY(-6px); transition:opacity 0.18s ease, transform 0.18s ease, visibility 0.18s; z-index:300; }
+    .nav-item:hover .nav-dropdown { opacity:1; visibility:visible; transform:translateY(0); }
+    .nav-dropdown a { display:block; padding:9px 18px; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); transition:color 0.15s, background 0.15s; }
+    .nav-dropdown a:hover { color:var(--text-head); background:rgba(0,204,245,0.06); text-decoration:none; }
+    .nav-dropdown .dd-label { padding:6px 18px 4px; font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); opacity:0.6; }
+    .nav-dropdown hr { border:none; border-top:1px solid var(--border); margin:4px 0; }
+    .nav-cta { background:var(--accent) !important; color:#000 !important; padding:8px 18px; font-size:11px !important; font-weight:700 !important; border-radius:2px; margin-left:8px; }
+    .nav-cta:hover { background:#fff !important; text-decoration:none !important; }
+    .hero { padding:72px 0 56px; position:relative; overflow:hidden; }
+    .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 20% 0%, rgba(0,204,245,0.07) 0%, transparent 60%); pointer-events:none; }
+    .hero-eyebrow { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+    .hero-eyebrow::before { content:''; width:28px; height:1px; background:var(--accent); }
+    .hero h1 { font-family:var(--fd); font-size:clamp(40px,6vw,78px); font-weight:900; line-height:0.95; letter-spacing:-1px; text-transform:uppercase; color:var(--text-head); margin-bottom:24px; }
+    .hero h1 em { color:var(--accent); font-style:normal; display:block; }
+    .hero-sub { font-size:17px; color:var(--text-dim); max-width:600px; margin-bottom:16px; line-height:1.7; }
+    .hero-meta { display:flex; gap:24px; font-family:var(--fm); font-size:11px; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; flex-wrap:wrap; margin-top:20px; }
+    .disclosure { background:var(--bg3); border:1px solid var(--border); border-left:3px solid var(--text-dim); padding:14px 20px; font-size:13px; color:var(--text-dim); line-height:1.6; margin:40px 0; }
+    section { padding:64px 0; border-top:1px solid var(--border); }
+    .section-eyebrow { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:10px; display:flex; align-items:center; gap:10px; }
+    .section-eyebrow::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(0,204,245,0.3),transparent); max-width:120px; }
+    h2 { font-family:var(--fd); font-size:clamp(26px,4vw,42px); font-weight:900; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-head); margin-bottom:14px; line-height:1.05; }
+    h3 { font-family:var(--fd); font-size:22px; font-weight:800; text-transform:uppercase; color:var(--text-head); margin-bottom:10px; }
+    .section-intro { font-size:16px; color:var(--text-dim); max-width:680px; margin-bottom:44px; line-height:1.75; }
+
+    /* PRICING TABLE */
+    .roi-table-wrap { overflow-x:auto; margin:32px 0; }
+    .roi-table { width:100%; border-collapse:collapse; font-size:14px; }
+    .roi-table thead tr { background:var(--bg3); border-bottom:2px solid var(--accent); }
+    .roi-table thead th { padding:14px 16px; text-align:left; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; color:var(--accent); text-transform:uppercase; white-space:nowrap; }
+    .roi-table tbody tr { border-bottom:1px solid var(--border); transition:background 0.15s; }
+    .roi-table tbody tr:hover { background:rgba(0,204,245,0.03); }
+    .roi-table tbody td { padding:14px 16px; vertical-align:middle; }
+    .roi-name { font-family:var(--fd); font-size:17px; font-weight:800; color:var(--text-head); text-transform:uppercase; display:block; }
+    .roi-sub { font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:0.5px; }
+    .roi-price { font-family:var(--fd); font-size:18px; font-weight:800; color:var(--green); }
+    .verdict-tag { display:inline-block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1px; padding:3px 8px; border-radius:2px; text-transform:uppercase; }
+    .v-buy { background:rgba(0,224,122,0.1); color:var(--green); border:1px solid rgba(0,224,122,0.3); }
+    .v-watch { background:rgba(245,200,0,0.1); color:var(--gold); border:1px solid rgba(245,200,0,0.3); }
+    .v-pass { background:rgba(255,46,85,0.1); color:var(--red); border:1px solid rgba(255,46,85,0.3); }
+
+    /* STATS GRID */
+    .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin:32px 0; }
+    .stat-card { background:var(--bg2); border:1px solid var(--border); border-top:2px solid var(--accent); padding:24px; }
+    .stat-label { font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+    .stat-value { font-family:var(--fd); font-size:36px; font-weight:900; color:var(--text-head); line-height:1; margin-bottom:6px; }
+    .stat-value.green { color:var(--green); }
+    .stat-value.red { color:var(--red); }
+    .stat-value.gold { color:var(--gold); }
+    .stat-sub { font-size:13px; color:var(--text-dim); line-height:1.5; }
+
+    /* FORMULA BOX */
+    .formula { background:var(--bg3); border:1px solid var(--border2); border-left:3px solid var(--accent); padding:24px 28px; margin:24px 0; }
+    .formula-label { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
+    .formula-line { font-family:var(--fm); font-size:13px; color:var(--text); line-height:1.9; }
+    .formula-line.result { color:var(--green); font-weight:700; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+
+    /* VERDICT BANNER */
+    .verdict-banner { background:linear-gradient(90deg,rgba(0,204,245,0.06),rgba(0,224,122,0.04)); border:1px solid rgba(0,204,245,0.2); border-left:3px solid var(--accent); padding:20px 24px; margin-bottom:48px; }
+    .verdict-banner strong { color:var(--text-head); }
+
+    /* TWO COL */
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:32px 0; }
+    .grade-col { background:var(--bg2); border:1px solid var(--border); padding:28px; }
+    .grade-col.yes { border-top:2px solid var(--green); }
+    .grade-col.no { border-top:2px solid var(--red); }
+    .grade-col-title { font-family:var(--fd); font-size:18px; font-weight:800; text-transform:uppercase; margin-bottom:20px; }
+    .grade-col.yes .grade-col-title { color:var(--green); }
+    .grade-col.no .grade-col-title { color:var(--red); }
+    .grade-item { display:flex; gap:12px; margin-bottom:16px; font-size:14px; color:var(--text); line-height:1.6; }
+    .grade-item:last-child { margin-bottom:0; }
+    .grade-item strong { color:var(--text-head); }
+    .grade-item .icon { flex-shrink:0; font-family:var(--fm); font-size:12px; }
+
+    /* STEPS */
+    .steps { margin:32px 0; }
+    .step { display:flex; gap:20px; padding-bottom:32px; position:relative; }
+    .step::before { content:''; position:absolute; left:19px; top:40px; bottom:0; width:1px; background:var(--border2); }
+    .step:last-child::before { display:none; }
+    .step-num { font-family:var(--fd); font-size:14px; font-weight:900; color:var(--accent); background:rgba(0,204,245,0.1); border:1px solid rgba(0,204,245,0.25); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .step-body { flex:1; padding-top:8px; }
+    .step-title { font-family:var(--fd); font-size:18px; font-weight:800; text-transform:uppercase; color:var(--text-head); margin-bottom:8px; }
+    .step-desc { font-size:14px; color:var(--text-dim); line-height:1.7; }
+    .step-desc strong { color:var(--text); }
+
+    /* SOCIAL */
+    .social-strip { background:#1a2733; border:1px solid rgba(29,161,242,0.2); border-left:3px solid #1da1f2; padding:28px 40px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap; margin:56px 0; }
+    .social-strip h3 { font-family:var(--fd); font-size:22px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--text-head); margin-bottom:6px; }
+    .social-strip p { font-size:14px; color:var(--text-dim); }
+    .btn-twitter { display:inline-flex; align-items:center; gap:10px; background:#1da1f2; color:#fff; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; border-radius:2px; transition:all 0.2s; white-space:nowrap; }
+    .btn-twitter:hover { background:#fff; color:#1da1f2; text-decoration:none; }
+
+    /* BUTTONS */
+    .btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#000; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:12px 24px; border-radius:2px; transition:all 0.15s; }
+    .btn-primary:hover { background:#fff; text-decoration:none; transform:translateY(-2px); }
+    .btn-secondary { display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-dim); font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:12px 24px; border:1px solid var(--border2); border-radius:2px; transition:all 0.15s; }
+    .btn-secondary:hover { color:var(--text-head); border-color:var(--accent); text-decoration:none; }
+
+    /* RELATED */
+    .related-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:32px; }
+    .related-card { background:var(--bg2); border:1px solid var(--border); padding:24px; transition:border-color 0.2s; }
+    .related-card:hover { border-color:var(--accent); }
+    .related-tag { font-family:var(--fm); font-size:10px; color:var(--accent); letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
+    .related-title { font-family:var(--fd); font-size:17px; font-weight:700; color:var(--text-head); text-transform:uppercase; letter-spacing:0.5px; line-height:1.2; margin-bottom:10px; }
+    .related-desc { font-size:13px; color:var(--text-dim); line-height:1.55; margin-bottom:16px; }
+    .related-link { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1px; color:var(--accent); text-transform:uppercase; }
+
+    footer { background:var(--bg2); border-top:1px solid var(--border2); padding:48px 0 32px; }
+    .footer-inner { max-width:1060px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; }
+    .footer-copy { font-size:12px; color:var(--text-dim); opacity:0.6; line-height:1.6; width:100%; text-align:center; margin-top:24px; border-top:1px solid var(--border); padding-top:24px; }
+    .footer-links { display:flex; gap:24px; flex-wrap:wrap; }
+    .footer-links a { font-size:13px; color:var(--text-dim); transition:color 0.2s; }
+    .footer-links a:hover { color:var(--text-head); text-decoration:none; }
+
+    @media(max-width:700px) { .two-col { grid-template-columns:1fr; } .nav-links { display:none; } }
+  
+    /* ===== ANIMATION SYSTEM ===== */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.55s cubic-bezier(0.16,1,0.3,1),transform 0.55s cubic-bezier(0.16,1,0.3,1);}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    /* Button shimmer */
+    .btn-primary,.btn-secondary{position:relative;overflow:hidden;}
+    .btn-primary::after,.btn-secondary::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.13) 50%,transparent 60%);transform:translateX(-100%);transition:transform 0.45s ease;pointer-events:none;}
+    .btn-primary:hover::after,.btn-secondary:hover::after{transform:translateX(100%);}
+    /* Guide card lift */
+    .guide-card{transition:background 0.2s,transform 0.22s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.22s ease;}
+    .guide-card:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,204,245,0.09);}
+    /* Related card lift */
+    .related-card{transition:border-color 0.2s,transform 0.2s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.2s ease;}
+    .related-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,204,245,0.07);}
+    /* Table row left accent */
+    .roi-table tbody tr{transition:background 0.15s,box-shadow 0.15s;}
+    .roi-table tbody tr:hover{box-shadow:inset 2px 0 0 var(--accent);}
+    /* Card entry left glow */
+    .card-entry{transition:box-shadow 0.25s ease;}
+    .card-entry:hover{box-shadow:inset 3px 0 0 rgba(0,204,245,0.45),0 0 28px rgba(0,204,245,0.04);}
+    /* Stat block */
+    .stat-block{transition:border-color 0.2s,background 0.2s,transform 0.2s;}
+    .stat-block:hover{transform:translateY(-2px);}
+    /* Banner stat */
+    .banner-stat{transition:background 0.2s,transform 0.18s;}
+    .banner-stat:hover{background:var(--bg4);transform:translateY(-2px);}
+    /* Product item */
+    .product-item{transition:border-color 0.2s,transform 0.2s;}
+    .product-item:hover{transform:translateY(-2px);}
+    /* Strategy card */
+    .strategy-card{transition:border-color 0.2s,transform 0.2s,box-shadow 0.2s;}
+    .strategy-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+    /* Watch item */
+    .watch-item{transition:border-color 0.2s,transform 0.18s;}
+    .watch-item:hover{transform:translateY(-2px);}
+    /* Rarity item */
+    .rarity-item{transition:background 0.2s,transform 0.18s;}
+    .rarity-item:hover{background:var(--bg4);transform:translateY(-2px);}
+    /* Cat card */
+    .cat-card{transition:all 0.2s,transform 0.2s;}
+    .cat-card:hover{transform:translateY(-2px);}
+  
+    /* ─── HAMBURGER & MOBILE DRAWER ─── */
+    .nav-hamburger { display:none; flex-direction:column; justify-content:center; gap:5px; width:40px; height:40px; background:none; border:none; cursor:pointer; padding:8px; z-index:210; }
+    .nav-hamburger span { display:block; width:22px; height:2px; background:var(--text-head); border-radius:2px; transition:all 0.25s ease; transform-origin:center; }
+    .nav-hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .mobile-nav { display:none; position:fixed; top:58px; left:0; right:0; bottom:0; background:rgba(7,9,12,0.99); backdrop-filter:blur(20px); z-index:199; overflow-y:auto; padding:24px; opacity:0; transform:translateY(-8px); transition:opacity 0.2s ease, transform 0.2s ease; pointer-events:none; }
+    .mobile-nav.open { opacity:1; transform:translateY(0); pointer-events:all; }
+    .mobile-nav a { display:block; font-family:var(--fd); font-size:20px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); padding:16px 0; border-bottom:1px solid var(--border); transition:color 0.15s; }
+    .mobile-nav a:hover { color:var(--text-head); text-decoration:none; }
+    .mobile-nav .m-label { font-family:var(--fm); font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--accent); opacity:0.6; padding:20px 0 6px; }
+    .mobile-nav .m-cta { background:var(--accent); color:#000 !important; text-align:center; padding:16px; margin-top:20px; border-bottom:none; font-weight:900; }
+
+    @media(max-width:768px) {
+      .nav-links { display:none !important; }
+      .nav-hamburger { display:flex !important; }
+      .mobile-nav { display:block !important; }
+    }
+  
+/* ═══ DUNGEON EFFECTS — The Seeker → The Curator ═══ */
+
+/* 1. Corner bracket accents on card/roi entries */
+.card-entry,.roy-entry{position:relative;}
+.card-entry::before,.card-entry::after,
+.roy-entry::before,.roy-entry::after{
+  content:'';position:absolute;width:12px;height:12px;pointer-events:none;z-index:1;
+}
+.card-entry::before,.roy-entry::before{top:-2px;left:-2px;border-top:2px solid;border-left:2px solid;}
+.card-entry::after,.roy-entry::after{bottom:-2px;right:-2px;border-bottom:2px solid;border-right:2px solid;}
+.card-entry::before,.card-entry::after{border-color:var(--orange);}
+.card-entry.gold-tier::before,.card-entry.gold-tier::after{border-color:var(--gold);}
+.card-entry.watch-tier::before,.card-entry.watch-tier::after{border-color:var(--accent);}
+.card-entry.emotional::before,.card-entry.emotional::after{border-color:var(--purple);}
+.roy-entry::before,.roy-entry::after{border-color:var(--accent);}
+.roy-entry.nl-entry::before,.roy-entry.nl-entry::after{border-color:var(--green);}
+.roy-entry.il-entry::before,.roy-entry.il-entry::after{border-color:var(--red);}
+.roy-entry.watch-entry::before,.roy-entry.watch-entry::after{border-color:var(--gold);}
+
+/* 2. Neon glow on prices and key labels */
+.price-main{text-shadow:0 0 16px rgba(0,224,122,0.45);}
+.price-main.orange{text-shadow:0 0 16px rgba(255,140,0,0.45);}
+.price-main.gold{text-shadow:0 0 16px rgba(245,200,0,0.45);}
+.price-main.purple{text-shadow:0 0 16px rgba(155,93,229,0.45);}
+.poll-pts{text-shadow:0 0 16px rgba(0,204,245,0.45);}
+.poll-pts.nl{text-shadow:0 0 16px rgba(0,224,122,0.45);}
+.stat-num span{text-shadow:0 0 20px rgba(0,204,245,0.4);}
+.panel-price.hot{text-shadow:0 0 12px rgba(0,224,122,0.5);}
+.panel-price.mid{text-shadow:0 0 12px rgba(255,140,0,0.5);}
+.hero-eyebrow{text-shadow:0 0 8px rgba(0,204,245,0.5);}
+.section-eyebrow{text-shadow:0 0 6px rgba(0,204,245,0.35);}
+.entry-tag{text-shadow:0 0 8px rgba(255,140,0,0.4);}
+.entry-tag.gold{text-shadow:0 0 8px rgba(245,200,0,0.5);}
+.entry-tag.cyan{text-shadow:0 0 8px rgba(0,204,245,0.5);}
+.entry-tag.purple{text-shadow:0 0 8px rgba(155,93,229,0.5);}
+
+/* 3. Glitch entrance on hero H1 */
+@keyframes glitch-entrance{
+  0%{transform:translate(0,0);filter:none;opacity:0}
+  8%{transform:translate(-4px,0);filter:hue-rotate(90deg) saturate(2);opacity:1}
+  16%{transform:translate(4px,0);filter:none}
+  24%{transform:translate(-2px,0);filter:hue-rotate(-30deg)}
+  32%{transform:translate(2px,0);filter:none}
+  40%,100%{transform:translate(0,0);filter:none;opacity:1}
+}
+.hero h1{animation:glitch-entrance 1.4s ease-out 0.1s both;}
+
+/* 4. Hotspot ring pulse on live status dots */
+@keyframes hotspot-ring{
+  0%{box-shadow:0 0 0 0 rgba(0,224,122,0.7),0 0 8px var(--green);}
+  100%{box-shadow:0 0 0 10px rgba(0,224,122,0),0 0 8px var(--green);}
+}
+.panel-dot{animation:hotspot-ring 2s ease-out infinite!important;}
+
+/* 5. CRT scanline overlay */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.045) 2px,rgba(0,0,0,0.045) 4px);
+  pointer-events:none;z-index:9998;
+}
+
+/* 6. Hero scan line sweep — injected by JS below */
+@keyframes hero-scan{
+  0%{top:0;opacity:0.7}90%{opacity:0.5}100%{top:100%;opacity:0}
+}
+.hero{overflow:hidden;}
+.hero-scan-line{
+  position:absolute;left:0;right:0;height:1px;top:0;
+  background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);
+  pointer-events:none;z-index:2;
+  animation:hero-scan 3.5s ease-in-out 0.8s 1 forwards;
+}
+
+/* 7. Blinking cursor — class added by JS below */
+@keyframes blink-cur{0%,100%{opacity:1}50%{opacity:0}}
+.blink-cursor::after{
+  content:'\25AE';display:inline-block;margin-left:3px;
+  font-size:0.8em;animation:blink-cur 1s step-end infinite;
+  color:var(--accent);opacity:0.7;
+}
+
+/* 8. Wire pulse on section borders */
+@keyframes wire-pulse{
+  0%,100%{border-top-color:rgba(255,255,255,0.07)}
+  50%{border-top-color:rgba(0,204,245,0.18)}
+}
+section{animation:wire-pulse 5s ease-in-out infinite;}
+
+/* 9. Log-in slide entry on card entries */
+@keyframes log-in{
+  from{opacity:0;transform:translateX(14px)}
+  to{opacity:1;transform:translateX(0)}
+}
+.card-entry,.roy-entry{animation:log-in 0.4s ease-out both;}
+.card-entry:nth-child(1),.roy-entry:nth-child(1){animation-delay:0.05s}
+.card-entry:nth-child(2),.roy-entry:nth-child(2){animation-delay:0.12s}
+.card-entry:nth-child(3),.roy-entry:nth-child(3){animation-delay:0.19s}
+.card-entry:nth-child(4),.roy-entry:nth-child(4){animation-delay:0.26s}
+.card-entry:nth-child(5),.roy-entry:nth-child(5){animation-delay:0.33s}
+.card-entry:nth-child(6),.roy-entry:nth-child(6){animation-delay:0.40s}
+
+/* 10. Marquee strip in card entries */
+@keyframes entry-marquee{
+  from{transform:translateX(0)}to{transform:translateX(-50%)}
+}
+.entry-marquee-wrap{
+  overflow:hidden;height:18px;
+  border-top:1px solid var(--border);
+  margin-top:16px;margin-bottom:-4px;
+  background:rgba(0,204,245,0.02);
+}
+.entry-marquee-text{
+  display:inline-block;white-space:nowrap;
+  font-family:var(--fm);font-size:9px;
+  color:rgba(0,204,245,0.35);
+  letter-spacing:2px;text-transform:uppercase;
+  animation:entry-marquee 18s linear infinite;
+  line-height:18px;
+}
+
+</style>
+
+  <style>
+    /* ── Hobby Box ROI Calculator (scoped) ── */
+    .ev-block { background:var(--bg2); border:1px solid var(--border); border-top:3px solid var(--accent); padding:36px; margin:32px 0; }
+    .ev-row { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:24px; }
+    .ev-cell { flex:1; min-width:150px; }
+    .ev-label { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; }
+    .ev-value { font-family:var(--fd); font-size:28px; font-weight:900; color:var(--text-head); line-height:1; }
+    .ev-value.red { color:var(--red); }
+    .ev-value.green { color:var(--green); }
+    .ev-value.gold { color:var(--gold); }
+    .calc-panel { background:var(--bg2); border:1px solid var(--border); border-top:3px solid var(--accent); padding:30px; margin:24px 0; }
+    .calc-field { margin-bottom:22px; }
+    .calc-field label { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; }
+    .calc-input { background:var(--bg3); border:1px solid var(--border2); color:var(--text-head); font-family:var(--fm); font-size:14px; font-weight:500; padding:10px 12px; border-radius:4px; width:100%; transition:border-color .18s, box-shadow .18s; }
+    .calc-input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-dim); }
+    .calc-input::-webkit-outer-spin-button, .calc-input::-webkit-inner-spin-button { opacity:0.4; }
+    .calc-table { width:100%; border-collapse:collapse; margin-top:4px; }
+    .calc-table th { font-family:var(--fm); font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); text-align:left; padding:6px 8px; border-bottom:1px solid var(--border); }
+    .calc-table th.num { text-align:right; }
+    .calc-table td { padding:7px 8px; vertical-align:middle; }
+    .calc-table td.num { text-align:right; }
+    .calc-line-ev { font-family:var(--fm); font-size:13px; font-weight:700; color:var(--accent); white-space:nowrap; }
+    .calc-remove { cursor:pointer; color:var(--text-dim); font-family:var(--fm); font-size:16px; line-height:1; padding:4px 8px; border:1px solid var(--border); border-radius:4px; background:none; transition:color .15s, border-color .15s; }
+    .calc-remove:hover { color:var(--red); border-color:var(--red); }
+    .calc-actions { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:16px; }
+    .calc-add { cursor:pointer; }
+    .verdict-banner { display:inline-flex; align-items:center; gap:10px; font-family:var(--fd); font-size:15px; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:10px 18px; border-radius:4px; margin-top:4px; }
+    .verdict-banner.buy { background:var(--green-dim); color:var(--green); border:1px solid rgba(0,224,122,0.3); }
+    .verdict-banner.watch { background:var(--orange-dim); color:var(--orange); border:1px solid rgba(255,140,0,0.3); }
+    .verdict-banner.pass { background:rgba(255,46,85,0.08); color:var(--red); border:1px solid rgba(255,46,85,0.3); }
+    @media(max-width:640px){ .ev-cell{ min-width:120px; } .calc-table th:nth-child(1), .calc-table td:nth-child(1){ max-width:90px; } }
+  </style>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2Q52C5EKG7');
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo" style="text-decoration:none;">Shop<span>Card</span>Hub</a>
+        <div class="nav-links">
+      <div class="nav-item">
+        <a href="/best-hobby-boxes-2026">Hobby Boxes <span class="chevron">▾</span></a>
+        <div class="nav-dropdown">
+          <div class="dd-label">Hobby Boxes</div>
+          <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Ranked by ROI</a>
+          <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="/bowman-bangers">Prospects <span class="chevron">▾</span></a>
+        <div class="nav-dropdown">
+          <div class="dd-label">Baseball Prospects</div>
+          <a href="/bowman-bangers-2025">2026 Bowman Bangers</a>
+          <a href="/roy-watch-2026">ROY Watch 2026</a>
+          <a href="/ethan-holliday-rookie-cards">Ethan Holliday 1st Bowman</a>
+          <a href="/aiva-arquette-1st-bowman">Aiva Arquette 1st Bowman</a>
+          <a href="/shohei-ohtani-cards">Shohei Ohtani Cards</a>
+          <hr>
+          <div class="dd-label">Basketball</div>
+          <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="/nfl-rookie-cards-2026">Football <span class="chevron">▾</span></a>
+        <div class="nav-dropdown">
+          <div class="dd-label">NFL 2026</div>
+          <a href="/nfl-rookie-cards-2026">2026 NFL Rookie Cards Guide</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="/world-cup-2026-soccer-cards">Soccer <span class="chevron">▾</span></a>
+        <div class="nav-dropdown">
+          <div class="dd-label">World Cup 2026</div>
+          <a href="/world-cup-2026-soccer-cards">FIFA World Cup 2026 Cards</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="/pokemon-tcg-2026">Pokémon TCG <span class="chevron">▾</span></a>
+        <div class="nav-dropdown">
+          <div class="dd-label">2026 Sets</div>
+          <a href="/pokemon-tcg-2026">2026 Pokémon TCG Guide</a>
+          <a href="/chaos-rising">Chaos Rising</a>
+          <a href="/pokemon-tcg-2026#ascended-heroes">Ascended Heroes</a>
+          <a href="/pitch-black-set-guide" style="color:#9b5de5;">⬤ Pitch Black — Jul 17</a>
+          <hr>
+          <div class="dd-label">Set Guides</div>
+          <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="/psa-grading-guide">Grading</a>
+      </div>
+      <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored" class="nav-cta">Our COMC Store</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+  <div class="m-label">Navigation</div>
+  <a href="/">Home</a>
+  <a href="/best-hobby-boxes-2026">Hobby Boxes 2026</a>
+  <a href="/bowman-bangers">2026 Bowman Bangers</a>
+  <a href="/shohei-ohtani-cards" style="color:var(--accent);">⚾ Shohei Ohtani Cards</a>
+  <a href="/ethan-holliday-rookie-cards" style="color:var(--green);">⚾ Ethan Holliday Deep Dive</a>
+  <a href="/nfl-rookie-cards-2026" style="color:var(--orange);">🏈 NFL Rookie Cards 2026</a>
+  <a href="/world-cup-2026-soccer-cards">⚽ World Cup 2026 Cards</a>
+  <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+  <a href="/pokemon-tcg-2026">Pokémon TCG 2026</a>
+  <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
+  <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
+  <a href="/psa-grading-guide">PSA Grading Guide</a>
+  <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored" class="m-cta">Our COMC Store →</a>
+</div>
+
+
+<section class="hero" style="border-top:none; padding-bottom:0;">
+  <div class="container">
+    <div class="hero-eyebrow">Free Tool</div>
+    <h1>Hobby Box <em>ROI Calculator</em></h1>
+    <p class="hero-sub">
+      Stop guessing whether a box is worth ripping. Enter what you'd pay and the hits you realistically
+      expect, and this runs the same expected-value math behind every box ranking on this site —
+      total EV, net profit or loss, ROI, and a straight rip-or-flip verdict.
+    </p>
+    <div class="hero-meta">
+      <span>Updates live as you type</span>
+      <span>📦 EV · ROI · Break-even</span>
+      <span>Bring your own sold comps</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+
+  <section style="border-top:none; padding-top:0;">
+    <div class="section-eyebrow">How It Works</div>
+    <h2>Three Inputs, Honest Math</h2>
+    <p class="section-intro">
+      Expected value is the only honest way to rate a sealed box. The formula is simple:
+      for each type of hit, multiply how many you'd <em>average</em> per box by what that hit
+      actually sells for, then add it all up. Compare that total to the box cost. If EV is below cost,
+      the box is a <strong>-EV rip</strong> and you're statistically better off buying the singles you want.
+      Garbage in, garbage out — pull your odds from manufacturer odds sheets and your values from
+      <strong>eBay sold comps,</strong> not asking prices.
+    </p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">The Calculator</div>
+    <h2>Run Your Box</h2>
+    <p class="section-intro">
+      Defaults below show a typical ~$300 baseball hobby box. Edit every field — add or remove hit
+      rows to match the product you're eyeing.
+    </p>
+
+    <div class="calc-panel">
+      <div class="calc-field" style="max-width:280px;">
+        <label for="boxCost">Box Cost (All-In, What You Pay)</label>
+        <input class="calc-input" id="boxCost" type="number" min="0" step="1" value="300" inputmode="decimal">
+      </div>
+
+      <div class="ev-label" style="margin-bottom:6px;">Expected Hits Per Box</div>
+      <div style="overflow-x:auto;">
+      <table class="calc-table" id="hitTable">
+        <thead>
+          <tr>
+            <th>Hit / Card Type</th>
+            <th class="num">Avg # Per Box</th>
+            <th class="num">Avg Value ($)</th>
+            <th class="num">Line EV</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="hitBody"><!-- rows injected --></tbody>
+      </table>
+      </div>
+
+      <div class="calc-actions">
+        <span class="btn-secondary calc-add" onclick="addRow()">+ Add Hit Row</span>
+        <span class="btn-secondary calc-add" onclick="resetRows()">Reset Defaults</span>
+      </div>
+    </div>
+
+    <div class="ev-block" id="results">
+      <div class="ev-row">
+        <div class="ev-cell">
+          <div class="ev-label">Total Expected Value</div>
+          <div class="ev-value" id="rEV">$0</div>
+        </div>
+        <div class="ev-cell">
+          <div class="ev-label">Box Cost</div>
+          <div class="ev-value" id="rCost">$0</div>
+        </div>
+        <div class="ev-cell">
+          <div class="ev-label">Net Per Box (EV − Cost)</div>
+          <div class="ev-value" id="rNet">$0</div>
+        </div>
+        <div class="ev-cell">
+          <div class="ev-label">ROI</div>
+          <div class="ev-value" id="rROI">0%</div>
+        </div>
+      </div>
+      <div class="ev-row" style="margin-bottom:0; align-items:center;">
+        <div class="ev-cell">
+          <div class="ev-label">Break-Even Multiple</div>
+          <div class="ev-value" id="rBE" style="font-size:22px;">—</div>
+        </div>
+        <div class="ev-cell" style="flex:2;">
+          <div class="ev-label">Verdict</div>
+          <span class="verdict-banner pass" id="rVerdict">—</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-intro" style="font-size:14px; color:var(--text-dim);">
+      <strong>Break-even multiple</strong> = box cost ÷ expected value. Above 1.0× means you're paying a
+      premium over the math; below 1.0× means the sealed product is underpriced versus its contents.
+      These are estimates — the market moves daily and variance on a single box is brutal. EV is what
+      plays out over many boxes, not the next one you open.
+    </p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">We Did the Math</div>
+    <h2>Boxes Already Ranked by ROI</h2>
+    <p class="section-intro">
+      Don't have the odds handy? We've already run the EV on the year's biggest releases. Start here.
+    </p>
+    <div class="related-grid">
+      <a href="/best-hobby-boxes-2026" class="related-card">
+        <div class="section-eyebrow">Buyer's Guide</div>
+        <h3 style="font-family:var(--fd); color:var(--text-head);">Best Hobby Boxes 2026 — Ranked by ROI</h3>
+        <p style="color:var(--text-dim); font-size:14px;">Six boxes scored on real EV math, plus one to avoid.</p>
+      </a>
+      <a href="/bowman-bangers" class="related-card">
+        <div class="section-eyebrow">Prospects</div>
+        <h3 style="font-family:var(--fd); color:var(--text-head);">2026 Bowman Bangers</h3>
+        <p style="color:var(--text-dim); font-size:14px;">The 1st Bowman names driving box value this year.</p>
+      </a>
+      <a href="/psa-grading-guide" class="related-card">
+        <div class="section-eyebrow">Grading</div>
+        <h3 style="font-family:var(--fd); color:var(--text-head);">PSA Grading Guide 2026</h3>
+        <p style="color:var(--text-dim); font-size:14px;">Factor grading cost into your post-rip ROI.</p>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ── Hobby Box ROI Calculator ── */
+const DEFAULTS = [
+  { name: "Base / commons resale", count: 1,    value: 5   },
+  { name: "Numbered parallels",    count: 0.8,  value: 12  },
+  { name: "Autos / relics",        count: 2,    value: 45  },
+  { name: "Big-hit chase",         count: 0.05, value: 400 }
+];
+const fmtUSD = n => (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString(undefined,{maximumFractionDigits:2});
+
+function rowHTML(r){
+  return `<tr>
+    <td><input class="calc-input" type="text" value="${r.name.replace(/"/g,'&quot;')}" oninput="recalc()"></td>
+    <td class="num"><input class="calc-input" style="text-align:right;max-width:110px;" type="number" min="0" step="0.01" value="${r.count}" oninput="recalc()" data-k="count" inputmode="decimal"></td>
+    <td class="num"><input class="calc-input" style="text-align:right;max-width:110px;" type="number" min="0" step="0.01" value="${r.value}" oninput="recalc()" data-k="value" inputmode="decimal"></td>
+    <td class="num"><span class="calc-line-ev">$0</span></td>
+    <td class="num"><button class="calc-remove" onclick="this.closest('tr').remove();recalc()" aria-label="Remove row">&times;</button></td>
+  </tr>`;
+}
+function renderRows(rows){ document.getElementById('hitBody').innerHTML = rows.map(rowHTML).join(''); recalc(); }
+function addRow(){ document.getElementById('hitBody').insertAdjacentHTML('beforeend', rowHTML({name:"New hit",count:0,value:0})); recalc(); }
+function resetRows(){ document.getElementById('boxCost').value = 300; renderRows(DEFAULTS); }
+
+function recalc(){
+  let ev = 0;
+  document.querySelectorAll('#hitBody tr').forEach(tr => {
+    const count = parseFloat(tr.querySelector('[data-k="count"]').value) || 0;
+    const value = parseFloat(tr.querySelector('[data-k="value"]').value) || 0;
+    const line = count * value;
+    ev += line;
+    tr.querySelector('.calc-line-ev').textContent = fmtUSD(line);
+  });
+  const cost = parseFloat(document.getElementById('boxCost').value) || 0;
+  const net = ev - cost;
+  const roi = cost > 0 ? (net / cost) * 100 : 0;
+  const be  = ev > 0 ? cost / ev : 0;
+
+  const evEl=document.getElementById('rEV'), costEl=document.getElementById('rCost'),
+        netEl=document.getElementById('rNet'), roiEl=document.getElementById('rROI'),
+        beEl=document.getElementById('rBE'), vEl=document.getElementById('rVerdict');
+
+  evEl.textContent = fmtUSD(ev);
+  costEl.textContent = fmtUSD(cost);
+  netEl.textContent = (net>=0?"+":"") + fmtUSD(net).replace("$-","-$");
+  roiEl.textContent = (roi>=0?"+":"") + roi.toFixed(1) + "%";
+  beEl.textContent = ev>0 ? be.toFixed(2) + "×" : "—";
+
+  const cls = v => v>0 ? "green" : v<0 ? "red" : "";
+  netEl.className = "ev-value " + cls(net);
+  roiEl.className = "ev-value " + cls(net);
+  evEl.className  = "ev-value " + (ev>=cost ? "green" : "");
+
+  let label, klass;
+  if(cost<=0 || ev<=0){ label="Enter your numbers"; klass="watch"; }
+  else if(roi >= 10){ label="Rip — Positive EV"; klass="buy"; }
+  else if(roi >= -10){ label="Marginal — Near Break-Even"; klass="watch"; }
+  else { label="Flip the Sealed — Buy Singles"; klass="pass"; }
+  vEl.textContent = label;
+  vEl.className = "verdict-banner " + klass;
+}
+document.getElementById('boxCost').addEventListener('input', recalc);
+renderRows(DEFAULTS);
+</script>
+
+
+<footer>
+  <div class="footer-inner">
+    <a href="/" class="logo" style="text-decoration:none;">Shop<span>Card</span>Hub</a>
+    <nav class="footer-links">
+      <a href="/">Home</a>
+      <a href="/best-hobby-boxes-2026">Hobby Boxes</a>
+      <a href="/bowman-bangers">Prospects</a>
+      <a href="/psa-grading-guide">Grading Guide</a>
+      <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black</a>
+      <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored">Our COMC Store</a>
+      <a href="https://twitter.com/shopcardhub" target="_blank" rel="noopener">@shopcardhub</a>
+    </nav>
+    <div class="footer-copy">
+      <a href="/about" style="color:inherit;">About</a> · <a href="/affiliate-disclosure" style="color:inherit;">Affiliate Disclosure</a> · <a href="/privacy" style="color:inherit;">Privacy Policy</a><br>
+      <a href="/about" style="color:inherit;">About</a> · <a href="/affiliate-disclosure" style="color:inherit;">Affiliate Disclosure</a> · <a href="/privacy" style="color:inherit;">Privacy Policy</a><br>
+      © 2026 ShopCardHub · shopcardhub.com · <a href="https://twitter.com/shopcardhub" style="color:inherit;" target="_blank" rel="noopener">@shopcardhub</a><br>
+      PSA pricing sourced from psacard.com, updated February 10, 2026. ShopCardHub participates in the eBay Partner Network and Fanatics Affiliate Program. Not affiliated with PSA or Collectors Universe.
+    </div>
+  </div>
+</footer>
+
+
+  <script>
+  
+/* === Mobile nav toggle === */
+(function(){
+  var btn = document.getElementById('hamburger');
+  var drawer = document.getElementById('mobile-nav');
+  if(!btn || !drawer) return;
+  btn.addEventListener('click', function(){
+    var isOpen = btn.classList.toggle('open');
+    drawer.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+    drawer.setAttribute('aria-hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  drawer.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      btn.classList.remove('open');
+      drawer.classList.remove('open');
+      btn.setAttribute('aria-expanded','false');
+      drawer.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    });
+  });
+})();
+
+/* === Scroll-reveal + countup system === */
+  (function(){
+    'use strict';
+    var SELS=[
+      '.guide-card','.card-entry','.banner-stat','.rarity-item',
+      '.product-item','.strategy-card','.watch-item','.related-card',
+      '.cat-card','.stat-block','.set-banner','.ev-block','.alert-bar',
+      '.mechanic-block','.disclosure','.avoid-list','.social-strip',
+      '.section-eyebrow','.sealed-card','.box-card','.stat-card',
+      '.prospect-mini','.roy-entry','.sealed-grid'
+    ];
+    var heroEl=document.querySelector('.hero');
+    var seen=new WeakSet();
+    SELS.forEach(function(sel){
+      document.querySelectorAll(sel).forEach(function(el){
+        if(seen.has(el)) return;
+        if(heroEl&&heroEl.contains(el)) return;
+        if(el.closest('nav,.nav')) return;
+        seen.add(el);
+        el.classList.add('reveal');
+      });
+    });
+    /* Stagger siblings in grids */
+    var GRIDS=[
+      '.banner-stat-grid','.rarity-grid','.product-grid','.strategy-grid',
+      '.watch-grid','.related-grid','.guides-grid','.categories-grid',
+      '.stats-row','.set-banner-grid','.inserts-grid','.card-hunt-grid',
+      '.sealed-grid','.prospect-grid'
+    ];
+    GRIDS.forEach(function(g){
+      document.querySelectorAll(g).forEach(function(grid){
+        grid.querySelectorAll('.reveal').forEach(function(child,i){
+          if(i<8) child.style.transitionDelay=(i*0.065)+'s';
+        });
+      });
+    });
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+      });
+    },{threshold:0.08,rootMargin:'0px 0px -24px 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+    /* Countup */
+    function countUp(el){
+      var raw=el.textContent.trim();
+      if(raw.indexOf('–')!==-1||raw.indexOf('/')!==-1||raw.length>12) return;
+      var m=raw.match(/[\d.]+/);
+      if(!m) return;
+      var num=parseFloat(m[0]);
+      if(isNaN(num)||num===0||num>99999) return;
+      var pre=raw.slice(0,raw.indexOf(m[0]));
+      var suf=raw.slice(raw.indexOf(m[0])+m[0].length);
+      var dec=m[0].indexOf('.')!==-1;
+      var dur=900,t0=performance.now();
+      (function tick(now){
+        var p=Math.min((now-t0)/dur,1),ease=1-Math.pow(1-p,3),v=num*ease;
+        el.textContent=pre+(dec?v.toFixed(1):Math.round(v))+suf;
+        if(p<1) requestAnimationFrame(tick);
+      })(t0);
+    }
+    var cObs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){countUp(e.target);cObs.unobserve(e.target);}});
+    },{threshold:0.6});
+    document.querySelectorAll('.stat-num,.banner-stat-value').forEach(function(el){
+      var t=el.textContent.trim();
+      if(/\d/.test(t)&&t.indexOf('–')===-1&&t.length<12) cObs.observe(el);
+    });
+  })();
+  </script>
+<script>
+/* DUNGEON EFFECTS — DOM injections */
+(function(){
+  // 6. Scan line sweep in hero sections
+  document.querySelectorAll('.hero').forEach(function(h){
+    if(!h.querySelector('.hero-scan-line')){
+      var sl=document.createElement('div');
+      sl.className='hero-scan-line';
+      h.insertBefore(sl,h.firstChild);
+    }
+  });
+  // 7. Blinking cursor on hero eyebrow labels
+  document.querySelectorAll('.hero-eyebrow').forEach(function(el){
+    el.classList.add('blink-cursor');
+  });
+  // 10. Marquee strip in card/roy entries
+  var M='SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC · SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC ·';
+  document.querySelectorAll('.card-entry,.roy-entry').forEach(function(e){
+    if(!e.querySelector('.entry-marquee-wrap')){
+      var w=document.createElement('div');
+      w.className='entry-marquee-wrap';
+      var s=document.createElement('span');
+      s.className='entry-marquee-text';
+      s.textContent=M;
+      w.appendChild(s);
+      e.appendChild(w);
+    }
+  });
+})();
+</script>
+</body>
+</html>
