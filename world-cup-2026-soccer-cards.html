@@ -47,12 +47,12 @@
 
     /* NAV */
     .nav { position:sticky; top:0; z-index:200; background:rgba(7,9,12,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border2); }
-    .nav-inner { max-width:1060px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:58px; }
+    .nav-inner { max-width:1080px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:58px; }
     .logo { font-family:var(--fd); font-size:20px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:var(--text-head); }
     .logo span { color:var(--accent); }
     .nav-links { display:flex; gap:4px; align-items:center; }
     .nav-item { position:relative; }
-    .nav-item > a { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); transition:color 0.2s; padding:8px 12px; border-radius:2px; }
+    .nav-item > a { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); transition:color 0.2s; padding:8px 12px; border-radius:2px; white-space:nowrap; }
     .nav-item > a:hover { color:var(--text-head); text-decoration:none; background:rgba(255,255,255,0.04); }
     .nav-item > a .chevron { font-size:8px; opacity:0.5; transition:transform 0.2s; }
     .nav-item:hover > a .chevron { transform:rotate(180deg); }
