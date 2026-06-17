@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>ShopCardHub — Sports Card Guides, Prices & Where to Buy</title>
   <meta name="description" content="Sports card price guides, prospect rankings, hobby box ROI breakdowns, and grading guides. Built by collectors, for collectors. Browse our COMC inventory or follow @shopcardhub.">
   <link rel="canonical" href="https://shopcardhub.com/">
@@ -14,10 +15,10 @@
   <meta property="og:site_name" content="ShopCardHub">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@shopcardhub">
-  <meta property="og:image" content="https://www.shopcardhub.com/og/default.png">
+  <meta property="og:image" content="https://shopcardhub.com/og/default.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="628">
-  <meta name="twitter:image" content="https://www.shopcardhub.com/og/default.png">
+  <meta name="twitter:image" content="https://shopcardhub.com/og/default.png">
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -387,7 +388,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           <a href="/bowman-bangers">Prospects <span class="chevron">▾</span></a>
           <div class="nav-dropdown">
             <div class="dd-label">Baseball Prospects</div>
-            <a href="/bowman-bangers-2025">2026 Bowman Bangers</a>
+            <a href="/bowman-bangers">2026 Bowman Bangers</a>
             <a href="/roy-watch-2026">ROY Watch 2026</a>
             <a href="/ethan-holliday-rookie-cards">Ethan Holliday 1st Bowman</a>
             <a href="/aiva-arquette-1st-bowman">Aiva Arquette 1st Bowman</a>
@@ -435,6 +436,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         </div>
         <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored" class="nav-cta">Our COMC Store</a>
       </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
@@ -845,6 +849,30 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       w.appendChild(s);
       e.appendChild(w);
     }
+  });
+})();
+</script>
+<script>
+/* === Mobile nav toggle === */
+(function(){
+  var btn = document.getElementById('hamburger');
+  var drawer = document.getElementById('mobile-nav');
+  if(!btn || !drawer) return;
+  btn.addEventListener('click', function(){
+    var isOpen = btn.classList.toggle('open');
+    drawer.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+    drawer.setAttribute('aria-hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  drawer.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      btn.classList.remove('open');
+      drawer.classList.remove('open');
+      btn.setAttribute('aria-expanded','false');
+      drawer.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    });
   });
 })();
 </script>

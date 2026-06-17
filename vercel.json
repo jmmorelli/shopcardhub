@@ -6,6 +6,17 @@
       "source": "/bowman-bangers-2025",
       "destination": "/bowman-bangers",
       "permanent": true
+    },
+    {
+      "source": "/cooperflag",
+      "destination": "/cooper-flagg-rookie-cards",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.shopcardhub.com" }],
+      "destination": "https://shopcardhub.com/:path*",
+      "permanent": true
     }
   ]
 }
