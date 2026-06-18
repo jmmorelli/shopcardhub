@@ -14,7 +14,7 @@ import page_builder as pb
 
 REPO = pb.REPO
 slug = "best-card-supplies"
-AMZ = "<!-- AMAZON AFFILIATE: placeholder tag AMZN_ASSOC_TAG — swap for real Associates store ID once approved -->"
+AMZ = "<!-- AMAZON AFFILIATE: Associates tag shopcardhub-20 (approved Jun 18, 2026) -->"
 
 meta_block = f'''  <title>Best Sports Card Supplies — Sleeves, Top Loaders, Card Savers & Storage | ShopCardHub</title>
   <meta name="description" content="The card supplies that actually matter: penny sleeves, top loaders, Card Savers for PSA submission, magnetic one-touches, semi-rigid holders, and storage. What to use, when, and where to buy.">

@@ -25,9 +25,8 @@ def ebay(keywords, customid):
     return (f"https://www.ebay.com/sch/i.html?_nkw={quote_plus(keywords)}"
             f"{EBAY_BIN}&customid={customid}")
 
-# Amazon Associates — PLACEHOLDER tag. Swap AMZN_ASSOC_TAG for the real store ID
-# once the Associates application is approved. Tagged <!-- AMAZON AFFILIATE --> in markup.
-AMAZON_TAG = "AMZN_ASSOC_TAG"
+# Amazon Associates store ID (approved Jun 18, 2026).
+AMAZON_TAG = "shopcardhub-20"
 def amazon(keywords):
     return f"https://www.amazon.com/s?k={quote_plus(keywords)}&tag={AMAZON_TAG}"
 
