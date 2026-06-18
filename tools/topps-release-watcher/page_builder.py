@@ -25,6 +25,12 @@ def ebay(keywords, customid):
     return (f"https://www.ebay.com/sch/i.html?_nkw={quote_plus(keywords)}"
             f"{EBAY_BIN}&customid={customid}")
 
+# Amazon Associates — PLACEHOLDER tag. Swap AMZN_ASSOC_TAG for the real store ID
+# once the Associates application is approved. Tagged <!-- AMAZON AFFILIATE --> in markup.
+AMAZON_TAG = "AMZN_ASSOC_TAG"
+def amazon(keywords):
+    return f"https://www.amazon.com/s?k={quote_plus(keywords)}&tag={AMAZON_TAG}"
+
 # ── New release links to weave into the nav across the whole site ────────────
 # (topps slug-ish key -> (our_href, nav_label, mobile_label_with_emoji, sport))
 NEW_RELEASES = [
@@ -81,6 +87,28 @@ def inject_nav(nav):
           '\n  <a href="/topps-chrome-cactus-jack-basketball">🏀 Chrome Cactus Jack</a>', indent="  ")
     after('<a href="/best-football-cards-under-50">🏈 Best Cards Under $50</a>',
           '\n  <a href="/topps-cosmic-chrome-football">🏈 Cosmic Chrome Football</a>', indent="  ")
+
+    # ── "Grading" → "Grading & Supplies" ──────────────────────────────────────
+    # Mobile FIRST: before the desktop rename, "PSA Grading Guide" is mobile-only,
+    # so this targets the drawer link (not the desktop dropdown we add below).
+    if '<a href="/best-card-supplies">Card Supplies Guide</a>' not in nav:
+        nav = nav.replace(
+            '<a href="/psa-grading-guide">PSA Grading Guide</a>',
+            '<a href="/psa-grading-guide">PSA Grading Guide</a>'
+            '\n  <a href="/best-card-supplies">Card Supplies Guide</a>', 1)
+    # Desktop: convert the single "Grading" nav-item into a dropdown. The
+    # <div class="nav-item"> wrapper means this never touches the footer "Grading" link.
+    nav = re.sub(
+        r'<div class="nav-item">\s*<a href="/psa-grading-guide">Grading</a>\s*</div>',
+        ('<div class="nav-item">\n'
+         '        <a href="/psa-grading-guide">Grading &amp; Supplies <span class="chevron">▾</span></a>\n'
+         '        <div class="nav-dropdown">\n'
+         '          <div class="dd-label">Grading &amp; Supplies</div>\n'
+         '          <a href="/psa-grading-guide">PSA Grading Guide</a>\n'
+         '          <a href="/best-card-supplies">Best Card Supplies</a>\n'
+         '        </div>\n'
+         '      </div>'),
+        nav, count=1)
     return nav
 
 # ── Render ───────────────────────────────────────────────────────────────────
