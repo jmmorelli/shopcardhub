@@ -13,6 +13,13 @@ from page_builder import (banner_stat, rarity_item, chase_row, product_item,
 
 TOPPS = "<!-- TOPPS AFFILIATE: placeholder — swap for Impact deep-link once program approved -->"
 
+# Inline affiliate disclosure — rendered near the BOTTOM of every set guide (above footer).
+DISCLOSURE_BOTTOM = '''
+  <div class="disclosure" style="margin-bottom:48px;">
+    <strong>Affiliate Disclosure:</strong> ShopCardHub earns commissions when you buy through links on this page (eBay Partner Network 3&ndash;4%, plus other partners). Prices and availability change daily &mdash; always verify current listings and sold comps before buying. Not financial advice.
+  </div>
+'''
+
 def meta(title, desc, slug, keywords):
     url = f"https://www.shopcardhub.com/{slug}"
     return f'''  <title>{title} | ShopCardHub</title>
@@ -212,7 +219,7 @@ def inception_baseball():
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
         related_card("/best-baseball-cards-under-50", "Budget Buys", "Best Baseball Cards Under $50"),
         related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
-    ]) + '''
+    ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
     return slug, m, body
@@ -369,7 +376,7 @@ def cosmic_chrome_football():
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
         related_card("/psa-grading-guide", "Grading", "PSA Grading Guide 2026"),
         related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
-    ]) + '''
+    ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
     return slug, m, body
@@ -526,7 +533,7 @@ def cactus_jack_basketball():
         related_card("/topps-cosmic-chrome-football", "Chrome Cousin", "Cosmic Chrome Football"),
         related_card("/psa-grading-guide", "Grading", "PSA Grading Guide 2026"),
         related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
-    ]) + '''
+    ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
     return slug, m, body
@@ -678,7 +685,7 @@ def chrome_baseball():
         related_card("/roy-watch-2026", "Rookies", "ROY Watch 2026"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
         related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
-    ]) + '''
+    ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
     return slug, m, body
