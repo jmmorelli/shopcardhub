@@ -32,17 +32,17 @@ def section(eyebrow, h2, intro, items):
 PSA = section(
     "Before You Submit", "What You'll Need to Grade",
     "PSA wants cards penny-sleeved inside a semi-rigid Card Saver &mdash; not top loaders (those get bounced). Here's the exact stack, with our full supplies breakdown.",
-    [item("Step 1", "Penny Sleeves", "~$5 / 100", "Soft, acid-free first layer for every card. No PVC.", "card penny sleeves soft acid free"),
-     item("PSA-Ready", "Card Savers I", "~$10 / 50", "The semi-rigid holder PSA asks you to submit in.", "card savers 1 semi rigid psa"),
-     item("Ship Safe", "Team Bags", "~$6 / 100", "Resealable sleeves to bag the Card Saver before shipping.", "card team bags resealable 4x6")])
+    [item("Step 1", "Penny Sleeves", "~$5 / 100", "Soft, acid-free first layer for every card. No PVC.", "Ultra Pro penny sleeves trading cards 100 count"),
+     item("PSA-Ready", "Card Savers I", "~$10 / 50", "The semi-rigid holder PSA asks you to submit in.", "Cardboard Gold Card Saver 1 semi rigid PSA"),
+     item("Ship Safe", "Team Bags", "~$6 / 100", "Resealable sleeves to bag the Card Saver before shipping.", "BCW resealable team bags trading cards")])
 
 BOXES = section(
     "Before You Rip", "Gear Up Before You Open a Box",
     "Pulled a hit? Protect it the second it's out of the pack. The basics every ripper should have on hand &mdash; full guide linked below.",
-    [item("Every Card", "Penny Sleeves", "~$5 / 100", "First layer for the whole box. Buy in bulk.", "card penny sleeves soft acid free"),
-     item("Singles", "Top Loaders (3x4)", "~$8 / 25", "Rigid protection for sleeved cards. 35pt base, thicker for patches.", "card top loaders 3x4 35pt"),
-     item("Your Hits", "Magnetic One-Touch", "~$15 / 5", "Display-grade UV cases for the keepers.", "magnetic one touch card holder 35pt uv"),
-     item("Storage", "500ct Boxes", "~$12 / 3pk", "Sort and store the bulk. Cool, dry, not overstuffed.", "baseball card storage boxes 500 count")])
+    [item("Every Card", "Penny Sleeves", "~$5 / 100", "First layer for the whole box. Buy in bulk.", "Ultra Pro penny sleeves trading cards 100 count"),
+     item("Singles", "Top Loaders (3x4)", "~$8 / 25", "Rigid protection for sleeved cards. 35pt base, thicker for patches.", "Ultra Pro top loaders 3x4 35pt trading card"),
+     item("Your Hits", "Magnetic One-Touch", "~$15 / 5", "Display-grade UV cases for the keepers.", "Ultra Pro one touch magnetic card holder 35pt"),
+     item("Storage", "500ct Boxes", "~$12 / 3pk", "Sort and store the bulk. Cool, dry, not overstuffed.", "BCW trading card storage box 800 count")])
 
 TARGETS = {"psa-grading-guide.html": PSA, "best-hobby-boxes-2026.html": BOXES}
 
