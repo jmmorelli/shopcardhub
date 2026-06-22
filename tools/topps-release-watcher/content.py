@@ -81,11 +81,11 @@ def inception_baseball():
         "Set Guide &middot; Baseball &middot; Premium Autos",
         "2025 Topps Inception", "Baseball",
         "One of the Hobby's most visually distinctive premium releases &mdash; a low-count, autograph-and-patch product built around the game's newest MLB debuts. Here's the chase: Inception Signings, the brand-new MLB Bat Knob Sticker Autographs, the patch tiers, and how to think about a high-variance auto box before you buy.",
-        ["Releases Jun 19, 2026 &middot; 11am ET", "Premium autograph product", "&#9918; Built on 2025 MLB debuts", "Pre-release &middot; comps TBD June 2026"])
+        ["Released Jun 19, 2026", "Premium autograph product", "&#9918; Built on 2025 MLB debuts", "Box ~$250 &middot; comps forming"])
     body = b + '''
   <div class="container">
   <div class="alert-bar" style="margin-top:48px;">
-    &#9888;&#65039; <strong>Releases June 19, 2026 (11am ET).</strong> Inception is a premium, autograph-driven set &mdash; values live in the hits, not base. As a brand-new release there are <strong>no sold comps yet</strong>; everything below is structural/pre-release. Tap any "eBay" link to pull live listings the moment they post, and confirm box configuration on the official checklist at release.
+    &#9888;&#65039; <strong>Released June 19, 2026.</strong> Inception is a premium, autograph-driven set &mdash; values live in the hits, not base. <strong>Now out:</strong> hobby boxes opened at $239.99 presale / $249.99 release-day and have been trading roughly $210&ndash;$325 in the days after launch. Single-card sold comps are still thin this early &mdash; tap any "eBay" link for live sold listings, and confirm box configuration on the official checklist. <em>Box pricing as of Jun 22, 2026.</em>
   </div>
 
   <section style="border-top:none; padding-top:20px; padding-bottom:0;">
@@ -104,7 +104,7 @@ def inception_baseball():
         banner_stat("Top Color Chase", "Signings Gold", "gold"),
         banner_stat("Premium Hit", "Auto Jumbo Patch", "gold"),
         banner_stat("Print Style", "Serial-numbered"),
-        banner_stat("Buy Format", "Hobby (confirm config)"),
+        banner_stat("Box (Release)", "$249.99", "green"),
         banner_stat("Resale Driver", "Star-auto hits"),
         banner_stat("Box Profile", "High variance", "red"),
     ]) + '''
@@ -167,8 +167,8 @@ def inception_baseball():
         product_item("Best for Value", "Buy the Auto You Want", "Varies", "green",
             "With a hits-only menu and serial-numbered autos, sniping the exact signature and color on the secondary market beats gambling on a thin box. Pull live eBay listings before committing.",
             "Shop Singles on eBay", ebay("2025 topps inception baseball auto", cid), "best"),
-        product_item("Buy Direct &middot; Official", "Topps.com Hobby Box", "MSRP", "",
-            "Buy sealed from Topps for the rip. Premium price point &mdash; confirm exact box/pack configuration on the official product page at release. " + TOPPS,
+        product_item("Buy Direct &middot; Official", "Topps.com Hobby Box", "$249.99", "",
+            "Buy sealed from Topps for the rip &mdash; release-day MSRP $249.99 (presale $239.99). Some retailers list higher; pull live sold box comps before overpaying. " + TOPPS,
             "Topps Inception (Official)", "https://www.topps.com/pages/topps-inception-baseball", "highlight"),
         product_item("Best for PC", "Browse Our COMC Store", "Varies", "",
             "Hand-picked baseball singles, autos, and parallels in our COMC storefront &mdash; no box variance, just the cards you actually want.",
@@ -232,11 +232,11 @@ def cosmic_chrome_football():
         "Set Guide &middot; Football &middot; Chrome",
         "2025 Topps Cosmic Chrome", "Football",
         "Topps Chrome launched into orbit: a space-themed 200-card base, a buildable Planetary Pursuit set spanning the solar system, four on-card autograph sets, and ultra-rare case hits. Releasing via EQL draw &mdash; here's the full chase and how the launch works.",
-        ["Releases Jun 19, 2026 &middot; via EQL", "200-card base set", "&#127944; NFL stars + rookies", "Pre-release &middot; comps TBD June 2026"])
+        ["Released Jun 19, 2026 &middot; via EQL", "200-card base set", "&#127944; NFL stars + rookies", "Box ~$650 &middot; comps forming"])
     body = b + '''
   <div class="container">
   <div class="alert-bar orange" style="margin-top:48px;">
-    &#9888;&#65039; <strong>Releases June 19, 2026 at 12pm via the EQL draw</strong> (not a standard cart checkout &mdash; see "How the EQL Drop Works" below). Brand-new release, so there are <strong>no sold comps yet</strong>; pricing below is structural/pre-release. Tap any "eBay" link to pull live listings once cards hit the secondary market.
+    &#9888;&#65039; <strong>Released June 19, 2026 via the EQL draw</strong> (not a standard cart checkout &mdash; see "How the EQL Drop Works" below). <strong>Now out:</strong> EQL boxes priced $639.99 presale / $649.99 release-day, with secondary trading at a premium on draw-gated supply. Single-card sold comps are still forming this early &mdash; tap any "eBay" link for live listings. <em>Box pricing as of Jun 22, 2026.</em>
   </div>
 
   <section style="border-top:none; padding-top:20px; padding-bottom:0;">
@@ -324,8 +324,8 @@ def cosmic_chrome_football():
         product_item("Best for Value", "Buy the Card You Want", "Varies", "green",
             "Snipe the specific Equinox auto, case hit, or rookie refractor on the secondary market. Cleaner EV than chasing a sealed EQL box at aftermarket markup.",
             "Shop Singles on eBay", ebay("2025 topps cosmic chrome football", cid), "best"),
-        product_item("Sealed &middot; Aftermarket", "Hobby Box (Secondary)", "Market", "gold",
-            "If you want the rip and didn't win the draw, sealed trades on the open market. Expect a premium over MSRP on a limited Chrome release &mdash; pull live comps first.",
+        product_item("Sealed &middot; Aftermarket", "Hobby Box (Secondary)", "$650+", "gold",
+            "If you want the rip and didn't win the draw, sealed trades on the open market &mdash; above the $649.99 release price on draw-gated supply. Pull live sold box comps before paying up.",
             "Hobby Box on eBay", ebay("2025 topps cosmic chrome football hobby box", cid), "highlight"),
         product_item("Best for PC", "Browse Our COMC Store", "Varies", "",
             "Hand-picked football singles, rookies, and parallels in our COMC storefront &mdash; no draw, no box variance.",
@@ -389,11 +389,11 @@ def cactus_jack_basketball():
         "Set Guide &middot; Basketball &middot; Travis Scott",
         "Topps Chrome Cactus Jack", "Basketball",
         "Chrome reimagined through Travis Scott's Cactus Jack lens &mdash; a culture-driven, scarcity-built 100-card set loaded with rookies (Flagg, Harper, Knueppel) and icons (LeBron, Curry, Wemby). Releasing via EQL draw. Here's the full chase: the Cactus Jack Refractor, the inserts, the short prints, and the Cactus Ink autos.",
-        ["Releases Jun 19, 2026 &middot; 1pm ET via EQL", "100-card base set", "&#127936; Flagg / Harper / Wembanyama", "Pre-release &middot; comps TBD June 2026"])
+        ["Released Jun 19, 2026 &middot; via EQL", "100-card base set", "&#127936; Flagg / Harper / Wembanyama", "Box ~$500 &middot; comps forming"])
     body = b + '''
   <div class="container">
   <div class="alert-bar" style="margin-top:48px; border-left-color:var(--purple);">
-    &#9888;&#65039; <strong>Releases June 19, 2026 at 1pm ET via the EQL draw</strong> (a draw for the chance to buy, not a normal checkout &mdash; see "How the EQL Drop Works"). This is a hyped, culture-crossover release: expect heavy demand and a hot secondary market. No sold comps exist yet &mdash; pricing below is structural. Tap "eBay" links for live listings once cards post.
+    &#9888;&#65039; <strong>Released June 19, 2026 via the EQL draw</strong> (a draw for the chance to buy, not a normal checkout &mdash; see "How the EQL Drop Works"). <strong>Now out:</strong> EQL boxes priced $489.99 presale / $499.99 release-day, with a secondary premium on this hyped crossover. Single-card sold comps are still thin this early &mdash; tap "eBay" links for live listings. <em>Box pricing as of Jun 22, 2026.</em>
   </div>
 
   <section style="border-top:none; padding-top:20px; padding-bottom:0;">
@@ -481,8 +481,8 @@ def cactus_jack_basketball():
         product_item("Best for Value", "Buy the Card You Want", "Varies", "green",
             "Target the Flagg Cactus Ink auto, the Cactus Jack Refractor, or the short print you actually want. Sharper than gambling a hot sealed box at aftermarket markup.",
             "Shop Singles on eBay", ebay("2025-26 topps chrome cactus jack basketball", cid), "best"),
-        product_item("Sealed &middot; Aftermarket", "Hobby Box (Secondary)", "Market", "red",
-            "Didn't win the draw? Sealed trades on the open market at a hype premium. Pull live comps before paying &mdash; week-one asks on this one will be steep.",
+        product_item("Sealed &middot; Aftermarket", "Hobby Box (Secondary)", "$500+", "red",
+            "Didn't win the draw? Sealed trades on the open market above the $499.99 release price at a hype premium. Pull live sold comps before paying &mdash; week-one asks on this one are steep.",
             "Hobby Box on eBay", ebay("2025-26 topps chrome cactus jack hobby box", cid), "highlight"),
         product_item("Best for PC", "Browse Our COMC Store", "Varies", "",
             "Hand-picked basketball singles, rookies, and parallels in our COMC storefront &mdash; no draw, no box variance.",
