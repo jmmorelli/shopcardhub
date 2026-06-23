@@ -381,6 +381,17 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     .verdict-banner.buy { background:var(--green-dim); color:var(--green); border:1px solid rgba(0,224,122,0.3); }
     .verdict-banner.watch { background:var(--orange-dim); color:var(--orange); border:1px solid rgba(255,140,0,0.3); }
     .verdict-banner.pass { background:rgba(255,46,85,0.08); color:var(--red); border:1px solid rgba(255,46,85,0.3); }
+    .evbar-wrap { margin:10px 0 4px; }
+    .evbar-row { display:flex; align-items:center; gap:12px; margin:8px 0; }
+    .evbar-tag { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); width:90px; flex:none; }
+    .evbar-track { flex:1; height:14px; background:var(--bg3); border:1px solid var(--border); border-radius:7px; overflow:hidden; }
+    .evbar-fill { height:100%; width:0; transition:width .25s ease; }
+    .evbar-fill.ev { background:var(--green); }
+    .evbar-fill.cost { background:var(--text-dim); }
+    .evbar-num { font-family:var(--fm); font-size:12px; font-weight:700; color:var(--text-head); width:84px; text-align:right; flex:none; }
+    .calc-plain { font-size:14px; color:var(--text); line-height:1.6; margin:6px 0 0; }
+    .btn-fanatics { background:var(--orange); color:#000; border-color:var(--orange); }
+    .btn-fanatics:hover { background:#fff; color:#000; border-color:#fff; }
     @media(max-width:640px){ .ev-cell{ min-width:120px; } .calc-table th:nth-child(1), .calc-table td:nth-child(1){ max-width:90px; } }
   </style>
 
@@ -575,9 +586,32 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     </p>
 
     <div class="calc-panel">
-      <div class="calc-field" style="max-width:280px;">
-        <label for="boxCost">Box Cost (All-In, What You Pay)</label>
-        <input class="calc-input" id="boxCost" type="number" min="0" step="1" value="300" inputmode="decimal">
+      <div class="calc-field" style="max-width:360px;">
+        <label for="presetSel">Load a Box (auto-fills the math — then edit)</label>
+        <select class="calc-input" id="presetSel" onchange="loadPreset(this.value)">
+          <option value="custom">Custom / blank template</option>
+          <option value="series1">2026 Topps Series 1 Baseball (~$140)</option>
+          <option value="series2">2026 Topps Series 2 Baseball (~$130)</option>
+          <option value="chromebkb">2025-26 Topps Chrome Basketball (~$450)</option>
+          <option value="bowmanbb">2026 Bowman Baseball (~$390)</option>
+          <option value="bowmanbkb">2025-26 Bowman Basketball (~$600)</option>
+          <option value="prizmfb">2025-26 Panini Prizm Football (~$1,000)</option>
+        </select>
+        <div style="font-family:var(--fm); font-size:11px; color:var(--text-dim); margin-top:6px;">Presets are rough starting templates — replace with current odds-sheet numbers + eBay sold comps for the box you're eyeing.</div>
+      </div>
+      <div style="display:flex; gap:18px; flex-wrap:wrap;">
+        <div class="calc-field" style="flex:1; min-width:200px; margin-bottom:22px;">
+          <label for="boxCost">Box Cost (What You Pay)</label>
+          <input class="calc-input" id="boxCost" type="number" min="0" step="1" value="300" inputmode="decimal">
+        </div>
+        <div class="calc-field" style="flex:1; min-width:140px; margin-bottom:22px;">
+          <label for="feePct">Resale Fee % (eBay + payment)</label>
+          <input class="calc-input" id="feePct" type="number" min="0" max="100" step="0.5" value="13" inputmode="decimal">
+        </div>
+        <div class="calc-field" style="flex:1; min-width:140px; margin-bottom:22px;">
+          <label for="extraCost">Grading / Other Costs ($)</label>
+          <input class="calc-input" id="extraCost" type="number" min="0" step="1" value="0" inputmode="decimal">
+        </div>
       </div>
 
       <div class="ev-label" style="margin-bottom:6px;">Expected Hits Per Box</div>
@@ -621,7 +655,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           <div class="ev-value" id="rROI">0%</div>
         </div>
       </div>
-      <div class="ev-row" style="margin-bottom:0; align-items:center;">
+      <div class="ev-row" style="margin-bottom:18px; align-items:center;">
         <div class="ev-cell">
           <div class="ev-label">Break-Even Multiple</div>
           <div class="ev-value" id="rBE" style="font-size:22px;">—</div>
@@ -631,6 +665,12 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           <span class="verdict-banner pass" id="rVerdict">—</span>
         </div>
       </div>
+      <div class="evbar-wrap">
+        <div class="evbar-row"><span class="evbar-tag">EV after fees</span><div class="evbar-track"><div class="evbar-fill ev" id="barEV"></div></div><span class="evbar-num" id="barEVn">$0</span></div>
+        <div class="evbar-row"><span class="evbar-tag">All-in cost</span><div class="evbar-track"><div class="evbar-fill cost" id="barCost"></div></div><span class="evbar-num" id="barCostn">$0</span></div>
+      </div>
+      <p class="calc-plain" id="rPlain"></p>
+      <div class="calc-cta" id="rCTA" style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;"></div>
     </div>
 
     <p class="section-intro" style="font-size:14px; color:var(--text-dim);">
@@ -651,7 +691,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <a href="/best-hobby-boxes-2026" class="related-card">
         <div class="section-eyebrow">Buyer's Guide</div>
         <h3 style="font-family:var(--fd); color:var(--text-head);">Best Hobby Boxes 2026 — Ranked by ROI</h3>
-        <p style="color:var(--text-dim); font-size:14px;">Six boxes scored on real EV math, plus one to avoid.</p>
+        <p style="color:var(--text-dim); font-size:14px;">Seven boxes scored on real EV math, plus one to avoid.</p>
       </a>
       <a href="/bowman-bangers" class="related-card">
         <div class="section-eyebrow">Prospects</div>
@@ -676,7 +716,43 @@ const DEFAULTS = [
   { name: "Autos / relics",        count: 2,    value: 45  },
   { name: "Big-hit chase",         count: 0.05, value: 400 }
 ];
+const PRESETS = {
+  custom:   { cost:300, q:"sports card hobby box", rows: DEFAULTS },
+  series1:  { cost:140, q:"2026 topps series 1 baseball", rows:[
+    {name:"Base + inserts resale",count:1,value:10},
+    {name:"Numbered parallels",count:1.2,value:12},
+    {name:"Guaranteed auto/relic",count:1,value:30},
+    {name:"Top chase (averaged)",count:0.06,value:250}]},
+  series2:  { cost:130, q:"2026 topps series 2 baseball", rows:[
+    {name:"Base + inserts resale",count:1,value:9},
+    {name:"Numbered parallels",count:1.2,value:11},
+    {name:"Guaranteed auto/relic",count:1,value:28},
+    {name:"Top chase (averaged)",count:0.06,value:220}]},
+  chromebkb:{ cost:450, q:"2025-26 topps chrome basketball", rows:[
+    {name:"Base / refractor resale",count:1,value:20},
+    {name:"Numbered refractors",count:1,value:35},
+    {name:"Guaranteed auto",count:1,value:120},
+    {name:"Elite rookie chase (averaged)",count:0.04,value:1500}]},
+  bowmanbb: { cost:390, q:"2026 bowman baseball", rows:[
+    {name:"Chrome prospect base/inserts",count:1,value:15},
+    {name:"Numbered prospect refractors",count:1.5,value:18},
+    {name:"Guaranteed 1st Bowman auto",count:1,value:60},
+    {name:"Top-prospect chase (averaged)",count:0.08,value:500}]},
+  bowmanbkb:{ cost:600, q:"2025-26 bowman basketball", rows:[
+    {name:"Base / inserts resale",count:1,value:15},
+    {name:"Numbered refractors",count:1,value:25},
+    {name:"Two autos per box",count:2,value:45},
+    {name:"Elite chase (averaged)",count:0.05,value:900}]},
+  prizmfb:  { cost:1000, q:"2025-26 panini prizm football", rows:[
+    {name:"Base / silver resale",count:1,value:25},
+    {name:"Numbered prizms",count:1.5,value:30},
+    {name:"Two autos per box",count:2,value:50},
+    {name:"Elite RPA chase (averaged)",count:0.03,value:2500}]}
+};
+let curQ = PRESETS.custom.q;
 const fmtUSD = n => (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString(undefined,{maximumFractionDigits:2});
+const ebayURL = q => "https://www.ebay.com/sch/i.html?_nkw="+encodeURIComponent(q)+"&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=hobby-box-roi-calculator";
+const FAN = "https://fanatics.93n6tx.net/dykyyj";
 
 function rowHTML(r){
   return `<tr>
@@ -689,8 +765,13 @@ function rowHTML(r){
 }
 function renderRows(rows){ document.getElementById('hitBody').innerHTML = rows.map(rowHTML).join(''); recalc(); }
 function addRow(){ document.getElementById('hitBody').insertAdjacentHTML('beforeend', rowHTML({name:"New hit",count:0,value:0})); recalc(); }
-function resetRows(){ document.getElementById('boxCost').value = 300; renderRows(DEFAULTS); }
-
+function resetRows(){ document.getElementById('presetSel').value='custom'; loadPreset('custom'); }
+function loadPreset(key){
+  const p = PRESETS[key] || PRESETS.custom;
+  curQ = p.q;
+  document.getElementById('boxCost').value = p.cost;
+  renderRows(p.rows);
+}
 function recalc(){
   let ev = 0;
   document.querySelectorAll('#hitBody tr').forEach(tr => {
@@ -700,35 +781,55 @@ function recalc(){
     ev += line;
     tr.querySelector('.calc-line-ev').textContent = fmtUSD(line);
   });
-  const cost = parseFloat(document.getElementById('boxCost').value) || 0;
-  const net = ev - cost;
-  const roi = cost > 0 ? (net / cost) * 100 : 0;
-  const be  = ev > 0 ? cost / ev : 0;
-
-  const evEl=document.getElementById('rEV'), costEl=document.getElementById('rCost'),
-        netEl=document.getElementById('rNet'), roiEl=document.getElementById('rROI'),
-        beEl=document.getElementById('rBE'), vEl=document.getElementById('rVerdict');
-
-  evEl.textContent = fmtUSD(ev);
-  costEl.textContent = fmtUSD(cost);
-  netEl.textContent = (net>=0?"+":"") + fmtUSD(net).replace("$-","-$");
-  roiEl.textContent = (roi>=0?"+":"") + roi.toFixed(1) + "%";
-  beEl.textContent = ev>0 ? be.toFixed(2) + "×" : "—";
-
+  const boxCost = parseFloat(document.getElementById('boxCost').value) || 0;
+  const fee = Math.min(Math.max(parseFloat(document.getElementById('feePct').value)||0,0),100);
+  const extra = parseFloat(document.getElementById('extraCost').value) || 0;
+  const evNet = ev * (1 - fee/100);
+  const totalCost = boxCost + extra;
+  const net = evNet - totalCost;
+  const roi = totalCost > 0 ? (net / totalCost) * 100 : 0;
+  const be  = evNet > 0 ? totalCost / evNet : 0;
+  const $ = id => document.getElementById(id);
+  $('rEV').textContent = fmtUSD(ev);
+  $('rCost').textContent = fmtUSD(totalCost);
+  $('rNet').textContent = (net>=0?"+":"") + fmtUSD(net).replace("$-","-$");
+  $('rROI').textContent = (roi>=0?"+":"") + roi.toFixed(1) + "%";
+  $('rBE').textContent = evNet>0 ? be.toFixed(2) + "×" : "—";
   const cls = v => v>0 ? "green" : v<0 ? "red" : "";
-  netEl.className = "ev-value " + cls(net);
-  roiEl.className = "ev-value " + cls(net);
-  evEl.className  = "ev-value " + (ev>=cost ? "green" : "");
-
-  let label, klass;
-  if(cost<=0 || ev<=0){ label="Enter your numbers"; klass="watch"; }
-  else if(roi >= 10){ label="Rip — Positive EV"; klass="buy"; }
-  else if(roi >= -10){ label="Marginal — Near Break-Even"; klass="watch"; }
-  else { label="Flip the Sealed — Buy Singles"; klass="pass"; }
-  vEl.textContent = label;
-  vEl.className = "verdict-banner " + klass;
+  $('rNet').className = "ev-value " + cls(net);
+  $('rROI').className = "ev-value " + cls(net);
+  $('rEV').className  = "ev-value " + (evNet>=totalCost ? "green" : "");
+  const mx = Math.max(evNet, totalCost, 1);
+  $('barEV').style.width = (evNet/mx*100) + "%";
+  $('barCost').style.width = (totalCost/mx*100) + "%";
+  $('barEVn').textContent = fmtUSD(evNet);
+  $('barCostn').textContent = fmtUSD(totalCost);
+  let label, klass, plain, cta;
+  const boxLink = ebayURL(curQ + " hobby box");
+  const singlesLink = ebayURL(curQ);
+  if(totalCost<=0 || ev<=0){
+    label="Enter your numbers"; klass="watch";
+    plain="Add your box cost and expected hits to see the verdict.";
+    cta="";
+  } else if(roi >= 10){
+    label="Rip — Positive EV"; klass="buy";
+    plain=`After ${fee}% fees, the contents are worth about ${fmtUSD(evNet)} versus ${fmtUSD(totalCost)} all-in — the sealed box is underpriced versus its math. Ripping is +EV over many boxes (single-box variance is still brutal).`;
+    cta=`<a href="${boxLink}" target="_blank" rel="noopener sponsored" class="btn-primary">Buy this box on eBay →</a><a href="${FAN}" target="_blank" rel="noopener sponsored" class="btn-secondary btn-fanatics">Check new sealed at Fanatics</a>`;
+  } else if(roi >= -10){
+    label="Marginal — Near Break-Even"; klass="watch";
+    plain=`After ${fee}% fees, EV (${fmtUSD(evNet)}) is roughly equal to your ${fmtUSD(totalCost)} all-in cost — close to a coin flip. Only rip if you want the experience; check live prices before committing.`;
+    cta=`<a href="${boxLink}" target="_blank" rel="noopener sponsored" class="btn-primary">Check live box prices on eBay →</a>`;
+  } else {
+    label="Flip the Sealed — Buy Singles"; klass="pass";
+    plain=`After ${fee}% fees, the contents are only worth about ${fmtUSD(evNet)} versus ${fmtUSD(totalCost)} all-in — roughly a ${Math.abs(roi).toFixed(0)}% expected loss. You're statistically better off buying the exact singles you want.`;
+    cta=`<a href="${singlesLink}" target="_blank" rel="noopener sponsored" class="btn-primary">Shop the singles on eBay →</a>`;
+  }
+  $('rVerdict').textContent = label;
+  $('rVerdict').className = "verdict-banner " + klass;
+  $('rPlain').textContent = plain;
+  $('rCTA').innerHTML = cta;
 }
-document.getElementById('boxCost').addEventListener('input', recalc);
+['boxCost','feePct','extraCost'].forEach(id=>document.getElementById(id).addEventListener('input', recalc));
 renderRows(DEFAULTS);
 </script>
 
