@@ -390,6 +390,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     .evbar-fill.cost { background:var(--text-dim); }
     .evbar-num { font-family:var(--fm); font-size:12px; font-weight:700; color:var(--text-head); width:84px; text-align:right; flex:none; }
     .calc-plain { font-size:14px; color:var(--text); line-height:1.6; margin:6px 0 0; }
+    .ev-sub { font-family:var(--fm); font-size:11px; color:var(--text-dim); margin-top:5px; line-height:1.45; }
     .btn-fanatics { background:var(--orange); color:#000; border-color:var(--orange); }
     .btn-fanatics:hover { background:#fff; color:#000; border-color:#fff; }
     @media(max-width:640px){ .ev-cell{ min-width:120px; } .calc-table th:nth-child(1), .calc-table td:nth-child(1){ max-width:90px; } }
@@ -673,6 +674,35 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <div class="calc-cta" id="rCTA" style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;"></div>
     </div>
 
+    <div class="ev-block" id="reality">
+      <div class="ev-label" style="margin-bottom:16px; color:var(--text-head); font-size:13px;">Reality Check — Sealed Is a Right-Tail Bet</div>
+      <div class="ev-row" style="margin-bottom:18px;">
+        <div class="ev-cell">
+          <div class="ev-label">Break-Even Pull (after fees)</div>
+          <div class="ev-value" id="rBEpull" style="font-size:22px;">—</div>
+          <div class="ev-sub" id="rBEpullSub"></div>
+        </div>
+        <div class="ev-cell">
+          <div class="ev-label">Your Hit Must Clear</div>
+          <div class="ev-value" id="rHit" style="font-size:22px;">—</div>
+          <div class="ev-sub" id="rHitSub"></div>
+        </div>
+      </div>
+      <div class="ev-row" style="margin-bottom:0;">
+        <div class="ev-cell">
+          <div class="ev-label">Boxes for a 50% Shot at the Chase</div>
+          <div class="ev-value" id="rN50" style="font-size:22px;">—</div>
+          <div class="ev-sub" id="rN50Sub"></div>
+        </div>
+        <div class="ev-cell">
+          <div class="ev-label">Boxes for a 90% Shot</div>
+          <div class="ev-value" id="rN90" style="font-size:22px;">—</div>
+          <div class="ev-sub" id="rN90Sub"></div>
+        </div>
+      </div>
+      <p class="calc-plain" id="rSkew" style="margin-top:18px;"></p>
+    </div>
+
     <p class="section-intro" style="font-size:14px; color:var(--text-dim);">
       <strong>Break-even multiple</strong> = box cost ÷ expected value. Above 1.0× means you're paying a
       premium over the math; below 1.0× means the sealed product is underpriced versus its contents.
@@ -828,6 +858,32 @@ function recalc(){
   $('rVerdict').className = "verdict-banner " + klass;
   $('rPlain').textContent = plain;
   $('rCTA').innerHTML = cta;
+
+  // ── Reality check (skew) ──
+  let chase=null;
+  document.querySelectorAll('#hitBody tr').forEach(tr=>{
+    const c=parseFloat(tr.querySelector('[data-k="count"]').value)||0;
+    const v=parseFloat(tr.querySelector('[data-k="value"]').value)||0;
+    const nm=(tr.querySelector('input[type="text"]').value||'the chase').trim();
+    if(c>0 && v>0 && (!chase || v>chase.v)) chase={c,v,nm};
+  });
+  const feeMul = 1 - fee/100;
+  const beGross = feeMul>0 ? totalCost/feeMul : 0;
+  const baseEV = chase ? Math.max(ev - chase.c*chase.v, 0) : ev;
+  const hitNeeded = Math.max(beGross - baseEV, 0);
+  const blank = (totalCost<=0 || ev<=0);
+  $('rBEpull').textContent = blank? '—' : fmtUSD(beGross);
+  $('rBEpullSub').textContent = blank? '' : `Total sell-through to cover ${fmtUSD(totalCost)} after ${fee}% fees.`;
+  $('rHit').textContent = blank? '—' : fmtUSD(hitNeeded);
+  $('rHitSub').textContent = (blank||!chase)? '' : `One card beyond your ~${fmtUSD(baseEV)} of other contents (avg box nets ${fmtUSD(evNet)}).`;
+  let p = chase ? Math.min(chase.c, 0.999) : 0;
+  const boxesFor = t => (p>=1?1 : (p>0? Math.ceil(Math.log(1-t)/Math.log(1-p)) : Infinity));
+  const n50=boxesFor(0.5), n90=boxesFor(0.9);
+  $('rN50').textContent = (blank||!isFinite(n50))? '—' : n50;
+  $('rN90').textContent = (blank||!isFinite(n90))? '—' : n90;
+  $('rN50Sub').textContent = (blank||!chase||!isFinite(n50))? '' : `≈${fmtUSD(n50*boxCost)} for a coin-flip at the chase (~1 in ${p>0?Math.round(1/p):'—'} boxes).`;
+  $('rN90Sub').textContent = (blank||!chase||!isFinite(n90))? '' : `≈${fmtUSD(n90*boxCost)} spent to 90%-chase a ${fmtUSD(chase.v)} card.`;
+  $('rSkew').textContent = blank? '' : "More boxes don't fix a -EV box — by the law of large numbers the loss only gets more certain. Box returns are right-skewed: the median box loses money while a few big hits carry the average. You're buying a shot at the tail, not an investment.";
 }
 ['boxCost','feePct','extraCost'].forEach(id=>document.getElementById(id).addEventListener('input', recalc));
 renderRows(DEFAULTS);
