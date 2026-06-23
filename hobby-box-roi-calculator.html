@@ -719,35 +719,35 @@ const DEFAULTS = [
 const PRESETS = {
   custom:   { cost:300, q:"sports card hobby box", rows: DEFAULTS },
   series1:  { cost:140, q:"2026 topps series 1 baseball", rows:[
-    {name:"Base + inserts resale",count:1,value:10},
-    {name:"Numbered parallels",count:1.2,value:12},
-    {name:"Guaranteed auto/relic",count:1,value:30},
-    {name:"Top chase (averaged)",count:0.06,value:250}]},
+    {name:"Base + inserts resale",count:1,value:8},
+    {name:"Rainbow Foil + numbered parallels (~1.8/box)",count:1.8,value:7},
+    {name:"Guaranteed auto OR relic (1/box)",count:1,value:30},
+    {name:"Star auto / case hit (averaged)",count:0.05,value:250}]},
   series2:  { cost:130, q:"2026 topps series 2 baseball", rows:[
-    {name:"Base + inserts resale",count:1,value:9},
-    {name:"Numbered parallels",count:1.2,value:11},
-    {name:"Guaranteed auto/relic",count:1,value:28},
-    {name:"Top chase (averaged)",count:0.06,value:220}]},
+    {name:"Base + inserts + Silver pack",count:1,value:8},
+    {name:"Rainbow Foil + numbered parallels (~1.8/box)",count:1.8,value:7},
+    {name:"Guaranteed auto OR relic (1/box)",count:1,value:25},
+    {name:"Star auto / case hit (averaged)",count:0.05,value:220}]},
   chromebkb:{ cost:450, q:"2025-26 topps chrome basketball", rows:[
-    {name:"Base / refractor resale",count:1,value:20},
-    {name:"Numbered refractors",count:1,value:35},
-    {name:"Guaranteed auto",count:1,value:120},
-    {name:"Elite rookie chase (averaged)",count:0.04,value:1500}]},
+    {name:"Base refractors + inserts (~26/box)",count:1,value:25},
+    {name:"Serial-numbered refractors",count:0.5,value:30},
+    {name:"Guaranteed auto (1/box)",count:1,value:110},
+    {name:"Flagg / elite rookie chase (averaged)",count:0.04,value:1500}]},
   bowmanbb: { cost:390, q:"2026 bowman baseball", rows:[
-    {name:"Chrome prospect base/inserts",count:1,value:15},
-    {name:"Numbered prospect refractors",count:1.5,value:18},
-    {name:"Guaranteed 1st Bowman auto",count:1,value:60},
-    {name:"Top-prospect chase (averaged)",count:0.08,value:500}]},
+    {name:"Chrome prospects + inserts",count:1,value:15},
+    {name:"Numbered prospect parallels (~0.87/box)",count:0.87,value:20},
+    {name:"Guaranteed 1st Bowman auto (1/box)",count:1,value:55},
+    {name:"Top-prospect chase auto (averaged)",count:0.06,value:500}]},
   bowmanbkb:{ cost:600, q:"2025-26 bowman basketball", rows:[
-    {name:"Base / inserts resale",count:1,value:15},
-    {name:"Numbered refractors",count:1,value:25},
-    {name:"Two autos per box",count:2,value:45},
-    {name:"Elite chase (averaged)",count:0.05,value:900}]},
+    {name:"Base + inserts + parallels",count:1,value:18},
+    {name:"Serial-numbered refractors / borders",count:1,value:22},
+    {name:"Two autos per box (1 NBA + 1 NCAA)",count:2,value:45},
+    {name:"Flagg / Dybantsa chase (averaged)",count:0.05,value:900}]},
   prizmfb:  { cost:1000, q:"2025-26 panini prizm football", rows:[
-    {name:"Base / silver resale",count:1,value:25},
-    {name:"Numbered prizms",count:1.5,value:30},
+    {name:"Base + rookies + Silver resale",count:1,value:25},
+    {name:"Numbered Prizms (~10/box)",count:10,value:6},
     {name:"Two autos per box",count:2,value:50},
-    {name:"Elite RPA chase (averaged)",count:0.03,value:2500}]}
+    {name:"Maye / elite RPA chase (averaged)",count:0.03,value:2500}]}
 };
 let curQ = PRESETS.custom.q;
 const fmtUSD = n => (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString(undefined,{maximumFractionDigits:2});
