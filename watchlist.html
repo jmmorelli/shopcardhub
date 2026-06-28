@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>My Watchlist — ShopCardHub</title>
+  <meta name="description" content="Your personal card watchlist. Track any card by name — saved in your browser. Live prices arrive with the Signal Board.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --bg:#07090c; --bg2:#0c1017; --bg3:#111820; --bg4:#161f28;
+      --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
+      --accent:#00ccf5; --green:#00e07a; --orange:#ff8c00; --gold:#f5c800; --red:#ff2e55;
+      --text:#b8cdd4; --text-dim:#5a7880; --text-head:#e4f0f4;
+      --fd:'Barlow Condensed',sans-serif; --fb:'Barlow',sans-serif; --fm:'JetBrains Mono',monospace;
+    }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:var(--fb); line-height:1.65; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { color:#fff; }
+    .container { max-width:1080px; margin:0 auto; padding:0 24px; }
+
+    /* NAV (base — search + accordion styles are injected by build-nav.js) */
+    .nav { position:sticky; top:0; z-index:200; background:rgba(7,9,12,0.94); backdrop-filter:blur(16px) saturate(1.3); border-bottom:1px solid var(--border2); }
+    .nav-inner { max-width:1080px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:58px; }
+    .logo { font-family:var(--fd); font-size:20px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:var(--text-head); }
+    .logo span { color:var(--accent); }
+    .nav-links { display:flex; gap:4px; align-items:center; }
+    .nav-item { position:relative; }
+    .nav-item > a { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); transition:color 0.2s; padding:8px 12px; border-radius:2px; }
+    .nav-item > a:hover { color:var(--text-head); text-decoration:none; background:rgba(255,255,255,0.04); }
+    .nav-item > a .chevron { font-size:8px; opacity:0.5; transition:transform 0.2s; }
+    .nav-item:hover > a .chevron { transform:rotate(180deg); }
+    .nav-dropdown { position:absolute; top:calc(100% + 1px); left:0; background:rgba(7,9,12,0.98); backdrop-filter:blur(20px); border:1px solid var(--border2); border-top:2px solid var(--accent); min-width:220px; padding:8px 0; opacity:0; visibility:hidden; transform:translateY(-6px); transition:opacity 0.18s ease, transform 0.18s ease, visibility 0.18s; z-index:300; }
+    .nav-item:hover .nav-dropdown { opacity:1; visibility:visible; transform:translateY(0); }
+    .nav-dropdown a { display:block; padding:9px 18px; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); transition:color 0.15s, background 0.15s; }
+    .nav-dropdown a:hover { color:var(--text-head); background:rgba(0,204,245,0.06); text-decoration:none; }
+    .nav-dropdown .dd-label { padding:6px 18px 4px; font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); opacity:0.6; }
+    .nav-dropdown hr { border:none; border-top:1px solid var(--border); margin:4px 0; }
+    .nav-cta { background:var(--accent) !important; color:#000 !important; padding:8px 18px; font-size:11px !important; font-weight:700 !important; border-radius:2px; margin-left:8px; transition:background 0.2s, transform 0.1s !important; }
+    .nav-cta:hover { background:#fff !important; transform:translateY(-1px); text-decoration:none !important; }
+
+    /* HAMBURGER & MOBILE DRAWER (base) */
+    .nav-hamburger { display:none; flex-direction:column; justify-content:center; gap:5px; width:40px; height:40px; background:none; border:none; cursor:pointer; padding:8px; z-index:210; }
+    .nav-hamburger span { display:block; width:22px; height:2px; background:var(--text-head); border-radius:2px; transition:all 0.25s ease; transform-origin:center; }
+    .nav-hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .mobile-nav { display:none; position:fixed; top:58px; left:0; right:0; bottom:0; background:rgba(7,9,12,0.99); backdrop-filter:blur(20px); z-index:199; overflow-y:auto; padding:24px; opacity:0; transform:translateY(-8px); transition:opacity 0.2s ease, transform 0.2s ease; pointer-events:none; }
+    .mobile-nav.open { opacity:1; transform:translateY(0); pointer-events:all; }
+    .mobile-nav a { display:block; font-family:var(--fd); font-size:20px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); padding:16px 0; border-bottom:1px solid var(--border); transition:color 0.15s; }
+    .mobile-nav a:hover { color:var(--text-head); text-decoration:none; }
+    .mobile-nav .m-cta { background:var(--accent); color:#000 !important; text-align:center; padding:16px; margin-top:20px; border-bottom:none; font-weight:900; }
+    @media(max-width:768px) {
+      .nav-links { display:none !important; }
+      .nav-hamburger { display:flex !important; }
+      .mobile-nav { display:block !important; }
+    }
+
+    /* PAGE HEADER */
+    .wl-head { padding:64px 0 8px; }
+    .wl-eyebrow { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+    .wl-eyebrow::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(0,204,245,0.3),transparent); max-width:160px; }
+    h1 { font-family:var(--fd); font-size:clamp(40px,6vw,72px); font-weight:900; line-height:0.95; letter-spacing:-1px; text-transform:uppercase; color:var(--text-head); margin-bottom:18px; }
+    .wl-intro { font-size:17px; color:var(--text-dim); line-height:1.75; max-width:660px; }
+    .wl-intro strong { color:var(--text); }
+
+    /* SOON NOTE */
+    .wl-note { background:var(--bg3); border:1px solid var(--border); border-left:3px solid var(--gold); padding:14px 20px; font-size:13px; color:var(--text-dim); line-height:1.6; margin:24px 0 0; }
+    .wl-note strong { color:var(--gold); }
+
+    /* ADD FORM */
+    .wl-form { display:flex; gap:10px; flex-wrap:wrap; margin:32px 0 8px; align-items:stretch; }
+    .wl-input { background:var(--bg3); border:1px solid var(--border2); border-radius:2px; color:var(--text-head); font-family:var(--fb); font-size:15px; padding:13px 15px; outline:none; transition:border-color 0.15s; }
+    .wl-input:focus { border-color:var(--accent); }
+    .wl-input::placeholder { color:var(--text-dim); }
+    #wl-name { flex:2 1 260px; min-width:0; }
+    #wl-note-in { flex:1 1 180px; min-width:0; }
+    .wl-add { background:var(--accent); color:#000; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:13px 26px; border:none; border-radius:2px; cursor:pointer; transition:background 0.15s; white-space:nowrap; }
+    .wl-add:hover { background:#fff; }
+
+    /* LIST */
+    .wl-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:28px 0 10px; flex-wrap:wrap; }
+    .wl-count { font-family:var(--fm); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); }
+    .wl-clear { background:none; border:1px solid var(--border2); color:var(--text-dim); font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:7px 13px; border-radius:2px; cursor:pointer; transition:all 0.15s; }
+    .wl-clear:hover { color:var(--red); border-color:var(--red); }
+    .wl-list { display:flex; flex-direction:column; gap:2px; background:var(--border); border:1px solid var(--border); }
+    .wl-row { background:var(--bg2); display:flex; align-items:center; gap:16px; padding:16px 20px; transition:background 0.15s; }
+    .wl-row:hover { background:var(--bg3); }
+    .wl-row .wl-main { flex:1; min-width:0; }
+    .wl-row .wl-cname { font-family:var(--fd); font-size:18px; font-weight:700; letter-spacing:0.5px; color:var(--text-head); text-transform:uppercase; line-height:1.15; word-break:break-word; }
+    .wl-row .wl-cnote { font-family:var(--fm); font-size:11px; color:var(--text-dim); letter-spacing:0.5px; margin-top:3px; word-break:break-word; }
+    .wl-row .wl-price { font-family:var(--fm); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); border:1px solid var(--border2); border-radius:2px; padding:5px 9px; white-space:nowrap; }
+    .wl-row .wl-remove { background:none; border:none; color:var(--text-dim); font-family:var(--fm); font-size:18px; line-height:1; cursor:pointer; padding:4px 8px; transition:color 0.15s; }
+    .wl-row .wl-remove:hover { color:var(--red); }
+
+    /* EMPTY STATE */
+    .wl-empty { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--accent); padding:36px 28px; text-align:center; }
+    .wl-empty h3 { font-family:var(--fd); font-size:22px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--text-head); margin-bottom:10px; }
+    .wl-empty p { font-size:14px; color:var(--text-dim); line-height:1.7; max-width:460px; margin:0 auto 16px; }
+    .wl-empty a { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+
+    /* FOOTER */
+    footer { background:var(--bg2); border-top:1px solid var(--border2); padding:48px 0 32px; margin-top:64px; }
+    .footer-bottom { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    .footer-copy { font-size:12px; color:var(--text-dim); opacity:0.6; line-height:1.6; }
+
+    @media(max-width:768px) { .footer-grid { grid-template-columns:1fr; } }
+  </style>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2Q52C5EKG7');
+  </script>
+</head>
+<body>
+
+  <!-- NAV:START -->
+<style>
+  /* === NAV (generated by tools/build-nav.js — do not hand-edit between NAV markers) === */
+  .nav-search { position:relative; margin-left:8px; }
+  .nav-search-input { font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--text); background:rgba(255,255,255,0.04); border:1px solid var(--border2); border-radius:2px; padding:7px 10px; width:118px; transition:width .2s, border-color .2s; outline:none; }
+  .nav-search-input:focus { width:180px; border-color:var(--accent); }
+  .nav-search-input::placeholder { color:var(--text-dim); opacity:.7; }
+  .nav-search-results { position:absolute; top:calc(100% + 6px); right:0; min-width:240px; background:rgba(7,9,12,0.98); backdrop-filter:blur(20px); border:1px solid var(--border2); border-top:2px solid var(--accent); padding:6px 0; display:none; z-index:320; max-height:340px; overflow-y:auto; }
+  .nav-search-results.show { display:block; }
+  .nav-search-results a { display:block; padding:8px 16px; font-size:11px; font-weight:600; letter-spacing:.5px; color:var(--text-dim); font-family:var(--fb); text-transform:none; }
+  .nav-search-results a:hover, .nav-search-results a.sel { color:var(--text-head); background:rgba(0,204,245,0.08); text-decoration:none; }
+  .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
+  .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
+  /* mobile search + accordion */
+  .m-search { position:relative; margin-bottom:8px; }
+  .m-search .nav-search-input { width:100%; font-size:14px; padding:12px 14px; }
+  .m-search .nav-search-input:focus { width:100%; }
+  .m-search .nav-search-results { left:0; right:0; min-width:0; }
+  .m-home { padding-top:16px; }
+  .m-group { border-bottom:1px solid var(--border); }
+  .m-group-btn { display:flex; align-items:center; justify-content:space-between; width:100%; background:none; border:none; cursor:pointer; font-family:var(--fd); font-size:20px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); padding:16px 0; text-align:left; transition:color .15s; }
+  .m-group-btn:hover, .m-group-btn[aria-expanded="true"] { color:var(--text-head); }
+  .m-group-chevron { font-size:13px; opacity:.6; transition:transform .25s ease; }
+  .m-group-btn[aria-expanded="true"] .m-group-chevron { transform:rotate(180deg); }
+  .m-group-panel { max-height:0; overflow:hidden; transition:max-height .28s ease; }
+  .m-group-panel a { font-size:15px; padding:12px 0 12px 14px; border-bottom:1px solid var(--border); }
+  .m-group-panel a:last-child { border-bottom:none; }
+  .m-group-panel .m-sublabel { font-family:var(--fm); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); opacity:.55; padding:12px 0 2px 14px; }
+  </style>
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="logo">Shop<span>Card</span>Hub</div>
+      <div class="nav-links">
+        <div class="nav-item">
+          <a href="/bowman-bangers">Tools <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+          <div class="dd-label">Trackers & Tools</div>
+          <a href="/bowman-bangers">Bowman Bangers ⭐</a>
+          <a href="/hobby-box-roi-calculator">Hobby Box ROI Calculator</a>
+          <hr>
+          <div class="dd-label">Hobby Boxes</div>
+          <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Ranked by ROI</a>
+          <a href="/blog">All Guides</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/research">Research <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+          <div class="dd-label">Research Hub</div>
+          <a href="/research">All Research — Hub</a>
+          <hr>
+          <div class="dd-label">By Category</div>
+          <a href="/research#baseball">Baseball</a>
+          <a href="/research#basketball">Basketball</a>
+          <a href="/research#football">Football</a>
+          <a href="/research#soccer">Soccer</a>
+          <a href="/research#pokemon">Pokémon TCG</a>
+          <a href="/research#grading">Grading & Supplies</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/bowman-bangers">Baseball <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+          <div class="dd-label">Players</div>
+          <a href="/ethan-holliday-rookie-cards">Ethan Holliday 1st Bowman</a>
+          <a href="/aiva-arquette-1st-bowman">Aiva Arquette 1st Bowman</a>
+          <a href="/shohei-ohtani-cards">Shohei Ohtani Cards</a>
+          <a href="/munetaka-murakami-rookie-cards">Munetaka Murakami</a>
+          <hr>
+          <div class="dd-label">Set Guides</div>
+          <a href="/topps-series-1-2026">Topps Series 1</a>
+          <a href="/topps-series-2-2026">Topps Series 2</a>
+          <a href="/bowman-sapphire-2026">Bowman Sapphire</a>
+          <a href="/topps-chrome-baseball-2026">Topps Chrome Baseball</a>
+          <a href="/topps-inception-baseball">Topps Inception</a>
+          <a href="/topps-tier-one-baseball">Topps Tier One</a>
+          <hr>
+          <div class="dd-label">Guides</div>
+          <a href="/bowman-bangers">2026 Bowman Bangers</a>
+          <a href="/roy-watch-2026">ROY Watch 2026</a>
+          <a href="/best-baseball-cards-under-50">Best Cards Under $50</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/cooper-flagg-rookie-cards">Basketball <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+          <div class="dd-label">Players</div>
+          <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+          <a href="/victor-wembanyama-rookie-cards">Victor Wembanyama</a>
+          <hr>
+          <div class="dd-label">Set Guides</div>
+          <a href="/topps-chrome-basketball-2026">Topps Chrome Basketball</a>
+          <a href="/topps-chrome-cactus-jack-basketball">Chrome Cactus Jack</a>
+          <a href="/topps-inception-basketball">Topps Inception</a>
+          <hr>
+          <div class="dd-label">Guides</div>
+          <a href="/best-basketball-cards-under-50">Best Cards Under $50</a>
+          <a href="/wnba-cards-2026">WNBA Cards 2026</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/pokemon-tcg-2026">Pokémon TCG <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+          <div class="dd-label">Set Guides</div>
+          <a href="/chaos-rising">Chaos Rising</a>
+          <a href="/ascended-heroes">Ascended Heroes</a>
+          <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
+          <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
+          <hr>
+          <div class="dd-label">Guides</div>
+          <a href="/pokemon-tcg-2026">2026 Pokémon TCG Guide</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/nfl-rookie-cards-2026">More <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+          <div class="dd-label">Football</div>
+          <a href="/nfl-rookie-cards-2026">2026 NFL Rookie Cards Guide</a>
+          <a href="/topps-cosmic-chrome-football">Cosmic Chrome Football</a>
+          <a href="/best-football-cards-under-50">Best Cards Under $50</a>
+          <hr>
+          <div class="dd-label">Soccer</div>
+          <a href="/world-cup-2026-soccer-cards">FIFA World Cup 2026 Cards</a>
+          <a href="/lamine-yamal-rookie-cards">Lamine Yamal</a>
+          <hr>
+          <div class="dd-label">Grading & Supplies</div>
+          <a href="/psa-grading-guide">PSA Grading Guide</a>
+          <a href="/best-card-supplies">Best Card Supplies</a>
+          </div>
+        </div>
+        <div class="nav-search" id="nav-search-desktop">
+          <input type="text" class="nav-search-input" id="nav-search-input-d" placeholder="Search…" aria-label="Search the site" autocomplete="off">
+          <div class="nav-search-results" id="nav-search-results-d" role="listbox"></div>
+        </div>
+        <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored" class="nav-cta">Our COMC Store</a>
+      </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+<!-- ═══ MOBILE DRAWER ═══ -->
+<div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+  <div class="m-search">
+    <input type="text" class="nav-search-input" id="nav-search-input-m" placeholder="Search the site…" aria-label="Search the site" autocomplete="off">
+    <div class="nav-search-results" id="nav-search-results-m" role="listbox"></div>
+  </div>
+  <a href="/" class="m-home">Home</a>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-0">Tools<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-0">
+        <div class="m-sublabel">Trackers & Tools</div>
+        <a href="/bowman-bangers">Bowman Bangers ⭐</a>
+        <a href="/hobby-box-roi-calculator">Hobby Box ROI Calculator</a>
+        <div class="m-sublabel">Hobby Boxes</div>
+        <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Ranked by ROI</a>
+        <a href="/blog">All Guides</a>
+        </div>
+      </div>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-1">Research<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-1">
+        <div class="m-sublabel">Research Hub</div>
+        <a href="/research">All Research — Hub</a>
+        <div class="m-sublabel">By Category</div>
+        <a href="/research#baseball">Baseball</a>
+        <a href="/research#basketball">Basketball</a>
+        <a href="/research#football">Football</a>
+        <a href="/research#soccer">Soccer</a>
+        <a href="/research#pokemon">Pokémon TCG</a>
+        <a href="/research#grading">Grading & Supplies</a>
+        </div>
+      </div>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-2">Baseball<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-2">
+        <div class="m-sublabel">Players</div>
+        <a href="/ethan-holliday-rookie-cards">Ethan Holliday 1st Bowman</a>
+        <a href="/aiva-arquette-1st-bowman">Aiva Arquette 1st Bowman</a>
+        <a href="/shohei-ohtani-cards">Shohei Ohtani Cards</a>
+        <a href="/munetaka-murakami-rookie-cards">Munetaka Murakami</a>
+        <div class="m-sublabel">Set Guides</div>
+        <a href="/topps-series-1-2026">Topps Series 1</a>
+        <a href="/topps-series-2-2026">Topps Series 2</a>
+        <a href="/bowman-sapphire-2026">Bowman Sapphire</a>
+        <a href="/topps-chrome-baseball-2026">Topps Chrome Baseball</a>
+        <a href="/topps-inception-baseball">Topps Inception</a>
+        <a href="/topps-tier-one-baseball">Topps Tier One</a>
+        <div class="m-sublabel">Guides</div>
+        <a href="/bowman-bangers">2026 Bowman Bangers</a>
+        <a href="/roy-watch-2026">ROY Watch 2026</a>
+        <a href="/best-baseball-cards-under-50">Best Cards Under $50</a>
+        </div>
+      </div>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-3">Basketball<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-3">
+        <div class="m-sublabel">Players</div>
+        <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+        <a href="/victor-wembanyama-rookie-cards">Victor Wembanyama</a>
+        <div class="m-sublabel">Set Guides</div>
+        <a href="/topps-chrome-basketball-2026">Topps Chrome Basketball</a>
+        <a href="/topps-chrome-cactus-jack-basketball">Chrome Cactus Jack</a>
+        <a href="/topps-inception-basketball">Topps Inception</a>
+        <div class="m-sublabel">Guides</div>
+        <a href="/best-basketball-cards-under-50">Best Cards Under $50</a>
+        <a href="/wnba-cards-2026">WNBA Cards 2026</a>
+        </div>
+      </div>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-4">Pokémon TCG<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-4">
+        <div class="m-sublabel">Set Guides</div>
+        <a href="/chaos-rising">Chaos Rising</a>
+        <a href="/ascended-heroes">Ascended Heroes</a>
+        <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
+        <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
+        <div class="m-sublabel">Guides</div>
+        <a href="/pokemon-tcg-2026">2026 Pokémon TCG Guide</a>
+        </div>
+      </div>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-5">More<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-5">
+        <div class="m-sublabel">Football</div>
+        <a href="/nfl-rookie-cards-2026">2026 NFL Rookie Cards Guide</a>
+        <a href="/topps-cosmic-chrome-football">Cosmic Chrome Football</a>
+        <a href="/best-football-cards-under-50">Best Cards Under $50</a>
+        <div class="m-sublabel">Soccer</div>
+        <a href="/world-cup-2026-soccer-cards">FIFA World Cup 2026 Cards</a>
+        <a href="/lamine-yamal-rookie-cards">Lamine Yamal</a>
+        <div class="m-sublabel">Grading & Supplies</div>
+        <a href="/psa-grading-guide">PSA Grading Guide</a>
+        <a href="/best-card-supplies">Best Card Supplies</a>
+        </div>
+      </div>
+  <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored" class="m-cta">Our COMC Store →</a>
+</div>
+<script>
+/* === NAV controller (generated) — hamburger toggle + accordion + search + active page === */
+(function(){
+  var btn = document.getElementById('hamburger');
+  var drawer = document.getElementById('mobile-nav');
+  if (btn && drawer) {
+    function closeDrawer(){ btn.classList.remove('open'); drawer.classList.remove('open'); btn.setAttribute('aria-expanded','false'); drawer.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+    btn.addEventListener('click', function(){
+      var open = !drawer.classList.contains('open');
+      btn.classList.toggle('open', open); drawer.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open)); drawer.setAttribute('aria-hidden', String(!open));
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
+    drawer.querySelectorAll('.m-group-btn').forEach(function(b){
+      b.addEventListener('click', function(){
+        var exp = b.getAttribute('aria-expanded') === 'true';
+        b.setAttribute('aria-expanded', String(!exp));
+        var p = document.getElementById(b.getAttribute('aria-controls'));
+        if (p) p.style.maxHeight = exp ? '' : p.scrollHeight + 'px';
+      });
+    });
+  }
+  var INDEX = [{"t":"Home","u":"/","n":"home"},{"t":"Tools","u":"/bowman-bangers","n":"tools bowman bangers"},{"t":"Hobby Box ROI Calculator","u":"/hobby-box-roi-calculator","n":"hobby box roi calculator hobby box roi calculator"},{"t":"Best Boxes 2026 — Ranked by ROI","u":"/best-hobby-boxes-2026","n":"best boxes 2026 ranked by roi best hobby boxes 2026"},{"t":"All Guides","u":"/blog","n":"all guides blog"},{"t":"Research","u":"/research","n":"research research"},{"t":"Baseball","u":"/research#baseball","n":"baseball research baseball"},{"t":"Basketball","u":"/research#basketball","n":"basketball research basketball"},{"t":"Football","u":"/research#football","n":"football research football"},{"t":"Soccer","u":"/research#soccer","n":"soccer research soccer"},{"t":"Pokémon TCG","u":"/research#pokemon","n":"pok mon tcg research pokemon"},{"t":"Grading & Supplies","u":"/research#grading","n":"grading supplies research grading"},{"t":"Ethan Holliday 1st Bowman","u":"/ethan-holliday-rookie-cards","n":"ethan holliday 1st bowman ethan holliday rookie cards"},{"t":"Aiva Arquette 1st Bowman","u":"/aiva-arquette-1st-bowman","n":"aiva arquette 1st bowman aiva arquette 1st bowman"},{"t":"Shohei Ohtani Cards","u":"/shohei-ohtani-cards","n":"shohei ohtani cards shohei ohtani cards"},{"t":"Munetaka Murakami","u":"/munetaka-murakami-rookie-cards","n":"munetaka murakami munetaka murakami rookie cards"},{"t":"Topps Series 1","u":"/topps-series-1-2026","n":"topps series 1 topps series 1 2026"},{"t":"Topps Series 2","u":"/topps-series-2-2026","n":"topps series 2 topps series 2 2026"},{"t":"Bowman Sapphire","u":"/bowman-sapphire-2026","n":"bowman sapphire bowman sapphire 2026"},{"t":"Topps Chrome Baseball","u":"/topps-chrome-baseball-2026","n":"topps chrome baseball topps chrome baseball 2026"},{"t":"Topps Inception","u":"/topps-inception-baseball","n":"topps inception topps inception baseball"},{"t":"Topps Tier One","u":"/topps-tier-one-baseball","n":"topps tier one topps tier one baseball"},{"t":"ROY Watch 2026","u":"/roy-watch-2026","n":"roy watch 2026 roy watch 2026"},{"t":"Best Cards Under $50","u":"/best-baseball-cards-under-50","n":"best cards under 50 best baseball cards under 50"},{"t":"Basketball","u":"/cooper-flagg-rookie-cards","n":"basketball cooper flagg rookie cards"},{"t":"Victor Wembanyama","u":"/victor-wembanyama-rookie-cards","n":"victor wembanyama victor wembanyama rookie cards"},{"t":"Topps Chrome Basketball","u":"/topps-chrome-basketball-2026","n":"topps chrome basketball topps chrome basketball 2026"},{"t":"Chrome Cactus Jack","u":"/topps-chrome-cactus-jack-basketball","n":"chrome cactus jack topps chrome cactus jack basketball"},{"t":"Topps Inception","u":"/topps-inception-basketball","n":"topps inception topps inception basketball"},{"t":"Best Cards Under $50","u":"/best-basketball-cards-under-50","n":"best cards under 50 best basketball cards under 50"},{"t":"WNBA Cards 2026","u":"/wnba-cards-2026","n":"wnba cards 2026 wnba cards 2026"},{"t":"Pokémon TCG","u":"/pokemon-tcg-2026","n":"pok mon tcg pokemon tcg 2026"},{"t":"Chaos Rising","u":"/chaos-rising","n":"chaos rising chaos rising"},{"t":"Ascended Heroes","u":"/ascended-heroes","n":"ascended heroes ascended heroes"},{"t":"Pitch Black — Jul 17","u":"/pitch-black-set-guide","n":"pitch black jul 17 pitch black set guide"},{"t":"Prismatic Evolutions","u":"/prismatic-evolutions-guide","n":"prismatic evolutions prismatic evolutions guide"},{"t":"More","u":"/nfl-rookie-cards-2026","n":"more nfl rookie cards 2026"},{"t":"Cosmic Chrome Football","u":"/topps-cosmic-chrome-football","n":"cosmic chrome football topps cosmic chrome football"},{"t":"Best Cards Under $50","u":"/best-football-cards-under-50","n":"best cards under 50 best football cards under 50"},{"t":"FIFA World Cup 2026 Cards","u":"/world-cup-2026-soccer-cards","n":"fifa world cup 2026 cards world cup 2026 soccer cards"},{"t":"Lamine Yamal","u":"/lamine-yamal-rookie-cards","n":"lamine yamal lamine yamal rookie cards"},{"t":"PSA Grading Guide","u":"/psa-grading-guide","n":"psa grading guide psa grading guide"},{"t":"Best Card Supplies","u":"/best-card-supplies","n":"best card supplies best card supplies"},{"t":"About","u":"/about","n":"about about"},{"t":"Affiliate Disclosure","u":"/affiliate-disclosure","n":"affiliate disclosure affiliate disclosure"},{"t":"Privacy Policy","u":"/privacy","n":"privacy policy privacy"}];
+  function nk(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); }
+  function setup(input, results){
+    if (!input || !results) return;
+    var sel = -1;
+    function render(items){
+      sel = -1;
+      if (!input.value.trim()){ results.classList.remove('show'); results.innerHTML=''; return; }
+      if (!items.length){ results.innerHTML='<div class="ns-empty">No matches</div>'; results.classList.add('show'); return; }
+      results.innerHTML = items.map(function(it){ return '<a href="'+it.u+'">'+it.t+'</a>'; }).join('');
+      results.classList.add('show');
+    }
+    function find(q){ q = nk(q); if(!q) return []; return INDEX.filter(function(it){ return it.n.indexOf(q) > -1; }).slice(0,8); }
+    input.addEventListener('input', function(){ render(find(input.value)); });
+    input.addEventListener('keydown', function(e){
+      var links = results.querySelectorAll('a');
+      if (e.key === 'ArrowDown'){ e.preventDefault(); sel = Math.min(sel+1, links.length-1); }
+      else if (e.key === 'ArrowUp'){ e.preventDefault(); sel = Math.max(sel-1, 0); }
+      else if (e.key === 'Enter'){ var t = links[sel] || links[0]; if (t) location.href = t.getAttribute('href'); return; }
+      else if (e.key === 'Escape'){ input.value=''; render([]); input.blur(); return; }
+      else return;
+      links.forEach(function(l,i){ l.classList.toggle('sel', i === sel); });
+    });
+    document.addEventListener('click', function(e){ if (!results.contains(e.target) && e.target !== input) results.classList.remove('show'); });
+  }
+  setup(document.getElementById('nav-search-input-d'), document.getElementById('nav-search-results-d'));
+  setup(document.getElementById('nav-search-input-m'), document.getElementById('nav-search-results-m'));
+  // active-page highlight
+  var path = location.pathname.replace(/index\.html$/,'').replace(/\.html$/,'');
+  if (path.length > 1 && path.charAt(path.length-1) === '/') path = path.slice(0,-1);
+  document.querySelectorAll('.nav-links .nav-item > a, .mobile-nav a').forEach(function(a){
+    var h = a.getAttribute('href'); if (!h || h.charAt(0) !== '/') return;
+    var hn = h.replace(/\.html$/,''); if (hn.length > 1 && hn.charAt(hn.length-1) === '/') hn = hn.slice(0,-1);
+    if (hn === path){ a.classList.add('nav-active'); a.setAttribute('aria-current','page'); }
+  });
+})();
+</script>
+<!-- NAV:END -->
+
+  <!-- HEADER -->
+  <header class="wl-head">
+    <div class="container">
+      <div class="wl-eyebrow">Markets · Your Space</div>
+      <h1>My Watchlist</h1>
+      <p class="wl-intro">Track any card by name. It's saved <strong>in your browser</strong> — no account, no signup. This is the manual version; <strong>live prices and chart signals arrive with the Signal Board</strong> once the price engine is wired in.</p>
+      <div class="wl-note"><strong>Heads up:</strong> the watchlist is private to this device/browser. Clearing your browser data clears the list. A synced, priced version is on the roadmap.</div>
+    </div>
+  </header>
+
+  <!-- TOOL -->
+  <main>
+    <div class="container">
+      <form id="wl-form" class="wl-form" autocomplete="off">
+        <input id="wl-name" class="wl-input" type="text" placeholder="Card name — e.g. Ethan Holliday 1st Bowman Auto" aria-label="Card name" required>
+        <input id="wl-note-in" class="wl-input" type="text" placeholder="Note (optional)" aria-label="Note">
+        <button type="submit" class="wl-add">★ Add to Watchlist</button>
+      </form>
+
+      <div class="wl-bar">
+        <span class="wl-count" id="wl-count">0 cards tracked</span>
+        <button type="button" class="wl-clear" id="wl-clear">Clear all</button>
+      </div>
+
+      <div id="wl-list" class="wl-list"></div>
+
+      <div id="wl-empty" class="wl-empty" style="display:none;">
+        <h3>Nothing tracked yet</h3>
+        <p>Add a card above, or hit <strong style="color:var(--accent);">★ Track this card</strong> on any guide and it lands here. Live pricing and BUY / HOLD / SELL signals follow once the engine is online.</p>
+        <a href="/research">Browse research →</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          <a href="/" style="color:inherit;">Home</a> · <a href="/research" style="color:inherit;">Research</a> · <a href="/bowman-bangers" style="color:inherit;">Bowman Bangers</a> · <a href="/privacy" style="color:inherit;">Privacy Policy</a><br>
+          © 2026 ShopCardHub · shopcardhub.com · <a href="https://twitter.com/shopcardhub" target="_blank" rel="noopener" style="color:inherit;">@shopcardhub</a><br>
+          Watchlist data is stored locally in your browser only. Not financial advice.
+        </p>
+        <div class="logo" style="font-size:16px;">Shop<span>Card</span>Hub</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  /* === Watchlist (localStorage, manual, no live prices yet) === */
+  (function(){
+    var KEY = 'sch_watchlist';
+    var listEl = document.getElementById('wl-list');
+    var emptyEl = document.getElementById('wl-empty');
+    var countEl = document.getElementById('wl-count');
+    var form = document.getElementById('wl-form');
+    var nameIn = document.getElementById('wl-name');
+    var noteIn = document.getElementById('wl-note-in');
+
+    function load(){
+      var raw; try { raw = JSON.parse(localStorage.getItem(KEY)); } catch(e){ raw = null; }
+      return Array.isArray(raw) ? raw : [];
+    }
+    function save(items){
+      try { localStorage.setItem(KEY, JSON.stringify(items)); } catch(e){}
+    }
+    function esc(s){
+      return String(s == null ? '' : s)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+    function render(){
+      var items = load();
+      countEl.textContent = items.length + (items.length === 1 ? ' card tracked' : ' cards tracked');
+      if (!items.length){
+        listEl.innerHTML = '';
+        listEl.style.display = 'none';
+        emptyEl.style.display = 'block';
+        return;
+      }
+      emptyEl.style.display = 'none';
+      listEl.style.display = 'flex';
+      listEl.innerHTML = items.map(function(it, i){
+        var note = it && it.note ? '<div class="wl-cnote">' + esc(it.note) + '</div>' : '';
+        return '<div class="wl-row">' +
+                 '<div class="wl-main"><div class="wl-cname">' + esc(it && it.name) + '</div>' + note + '</div>' +
+                 '<span class="wl-price">Price soon</span>' +
+                 '<button type="button" class="wl-remove" data-i="' + i + '" aria-label="Remove">&times;</button>' +
+               '</div>';
+      }).join('');
+    }
+    function add(name, note){
+      name = (name || '').trim();
+      if (!name) return;
+      var items = load();
+      // de-dupe by case-insensitive name
+      var exists = items.some(function(it){ return it && String(it.name).toLowerCase() === name.toLowerCase(); });
+      if (!exists){
+        items.unshift({ name: name, note: (note || '').trim(), ts: Date.now() });
+        save(items);
+      }
+      render();
+    }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      add(nameIn.value, noteIn.value);
+      nameIn.value = ''; noteIn.value = '';
+      nameIn.focus();
+    });
+    listEl.addEventListener('click', function(e){
+      var btn = e.target.closest('.wl-remove');
+      if (!btn) return;
+      var i = parseInt(btn.getAttribute('data-i'), 10);
+      var items = load();
+      if (i >= 0 && i < items.length){ items.splice(i, 1); save(items); render(); }
+    });
+    document.getElementById('wl-clear').addEventListener('click', function(){
+      if (!load().length) return;
+      if (confirm('Clear your entire watchlist? This only affects this browser.')){
+        save([]); render();
+      }
+    });
+
+    // Prefill from ?card= (and optional &note=) — used by "★ Track this card" CTAs
+    (function(){
+      var p = new URLSearchParams(location.search);
+      var card = p.get('card');
+      if (card){
+        var note = p.get('note') || '';
+        add(card, note);
+        // clean the URL so a refresh doesn't re-add
+        if (history.replaceState) history.replaceState(null, '', location.pathname);
+      }
+    })();
+
+    render();
+  })();
+  </script>
+
+</body>
+</html>
