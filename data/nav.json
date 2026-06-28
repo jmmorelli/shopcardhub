@@ -1,5 +1,5 @@
 {
-  "_comment": "SINGLE SOURCE OF TRUTH for the site nav (desktop dropdowns + mobile accordion drawer). Edit this file, then run `node tools/build-nav.js` from the repo root to regenerate the nav region (between <!-- NAV:START --> / <!-- NAV:END -->) on every *.html page. See tools/build-nav-README.md.",
+  "_comment": "SINGLE SOURCE OF TRUTH for the site nav (desktop dropdowns + mobile accordion drawer). Edit this file, then run `node tools/build-nav.js` from the repo root to regenerate the nav region (between <!-- NAV:START --> / <!-- NAV:END -->) on every *.html page. See tools/build-nav-README.md. STAGE 1 of the Concept B rework (Jun 27 2026): job-based buckets, Tools promoted first, 7->5 top-level. Markets tools (Signal Board / Watchlist / Portfolio) are NOT listed yet because the pages don't exist — add them here when built. See SITE-STRATEGY-REWORK.md.",
   "brand": { "href": "/", "html": "Shop<span>Card</span>Hub" },
   "home": { "href": "/", "label": "Home" },
   "cta": {
@@ -11,14 +11,20 @@
   },
   "categories": [
     {
-      "label": "Hobby Boxes",
-      "href": "/best-hobby-boxes-2026",
+      "label": "Tools",
+      "href": "/bowman-bangers",
       "groups": [
         {
-          "label": "Guides",
+          "label": "Trackers & Tools",
+          "links": [
+            { "href": "/bowman-bangers", "label": "Bowman Bangers ⭐" },
+            { "href": "/hobby-box-roi-calculator", "label": "Hobby Box ROI Calculator" }
+          ]
+        },
+        {
+          "label": "Hobby Boxes",
           "links": [
             { "href": "/best-hobby-boxes-2026", "label": "Best Boxes 2026 — Ranked by ROI" },
-            { "href": "/hobby-box-roi-calculator", "label": "Hobby Box ROI Calculator" },
             { "href": "/blog", "label": "All Guides" }
           ]
         }
@@ -59,25 +65,6 @@
       ]
     },
     {
-      "label": "Football",
-      "href": "/nfl-rookie-cards-2026",
-      "groups": [
-        {
-          "label": "Set Guides",
-          "links": [
-            { "href": "/topps-cosmic-chrome-football", "label": "Cosmic Chrome Football" }
-          ]
-        },
-        {
-          "label": "Guides",
-          "links": [
-            { "href": "/nfl-rookie-cards-2026", "label": "2026 NFL Rookie Cards Guide" },
-            { "href": "/best-football-cards-under-50", "label": "Best Cards Under $50" }
-          ]
-        }
-      ]
-    },
-    {
       "label": "Basketball",
       "href": "/cooper-flagg-rookie-cards",
       "groups": [
@@ -106,24 +93,6 @@
       ]
     },
     {
-      "label": "Soccer",
-      "href": "/world-cup-2026-soccer-cards",
-      "groups": [
-        {
-          "label": "Players",
-          "links": [
-            { "href": "/lamine-yamal-rookie-cards", "label": "Lamine Yamal" }
-          ]
-        },
-        {
-          "label": "Guides",
-          "links": [
-            { "href": "/world-cup-2026-soccer-cards", "label": "FIFA World Cup 2026 Cards" }
-          ]
-        }
-      ]
-    },
-    {
       "label": "Pokémon TCG",
       "href": "/pokemon-tcg-2026",
       "groups": [
@@ -145,11 +114,26 @@
       ]
     },
     {
-      "label": "Grading &amp; Supplies",
-      "href": "/psa-grading-guide",
+      "label": "More",
+      "href": "/nfl-rookie-cards-2026",
       "groups": [
         {
-          "label": "Guides",
+          "label": "Football",
+          "links": [
+            { "href": "/nfl-rookie-cards-2026", "label": "2026 NFL Rookie Cards Guide" },
+            { "href": "/topps-cosmic-chrome-football", "label": "Cosmic Chrome Football" },
+            { "href": "/best-football-cards-under-50", "label": "Best Cards Under $50" }
+          ]
+        },
+        {
+          "label": "Soccer",
+          "links": [
+            { "href": "/world-cup-2026-soccer-cards", "label": "FIFA World Cup 2026 Cards" },
+            { "href": "/lamine-yamal-rookie-cards", "label": "Lamine Yamal" }
+          ]
+        },
+        {
+          "label": "Grading & Supplies",
           "links": [
             { "href": "/psa-grading-guide", "label": "PSA Grading Guide" },
             { "href": "/best-card-supplies", "label": "Best Card Supplies" }

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>ShopCardHub — NAV redesign mockups (planning, not live)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090c; --bg2:#0c1017; --bg3:#111820; --bg4:#161f28;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
+  --accent:#00ccf5; --green:#00e07a; --orange:#ff8c00; --gold:#f5c800; --red:#ff2e55;
+  --text:#b8cdd4; --text-dim:#5a7880; --text-head:#e4f0f4;
+  --fd:'Barlow Condensed',sans-serif; --fb:'Barlow',sans-serif; --fm:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.6;margin:0;padding:0 0 80px;}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+h1{font-family:var(--fd);font-size:34px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--text-head);margin:32px 0 4px;}
+h2{font-family:var(--fd);font-size:24px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin:48px 0 6px;}
+.sub{font-family:var(--fm);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);}
+.cap{font-size:14px;color:var(--text);margin:8px 0 14px;max-width:760px;}
+.cap b{color:var(--text-head);font-weight:600;}
+.tag{display:inline-block;font-family:var(--fm);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;margin-right:6px;}
+.t-keep{background:rgba(0,224,122,0.12);color:var(--green);}
+.t-risk{background:rgba(255,46,85,0.12);color:var(--red);}
+.t-rec{background:rgba(0,204,245,0.12);color:var(--accent);}
+.frame{border:1px solid var(--border2);border-radius:4px;background:var(--bg2);margin:10px 0 6px;overflow:hidden;}
+.frame-label{font-family:var(--fm);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);padding:8px 14px;border-bottom:1px solid var(--border);}
+
+/* faithful nav styling (from the real site) */
+.nav{background:rgba(7,9,12,0.94);border-bottom:1px solid var(--border2);}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:58px;padding:0 18px;gap:10px;}
+.logo{font-family:var(--fd);font-size:20px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--text-head);white-space:nowrap;}
+.logo span{color:var(--accent);}
+.nav-links{display:flex;gap:2px;align-items:center;flex-wrap:wrap;}
+.ni{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);padding:8px 11px;border-radius:2px;cursor:default;}
+.ni .chev{font-size:8px;opacity:.5;}
+.ni.hot{color:var(--accent);}
+.ni.active{color:var(--text-head);background:rgba(255,255,255,0.04);}
+.search{font-family:var(--fm);font-size:11px;letter-spacing:1px;color:var(--text-dim);background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:2px;padding:7px 10px;min-width:120px;}
+.cta{background:var(--accent);color:#000;padding:8px 14px;font-size:11px;font-weight:700;border-radius:2px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
+.cta.ghost{background:transparent;border:1px solid var(--accent);color:var(--accent);}
+
+/* open dropdown sample */
+.dd{background:rgba(7,9,12,0.99);border:1px solid var(--border2);border-top:2px solid var(--accent);width:240px;padding:8px 0;margin:0 0 0 18px;}
+.dd .ddl{padding:6px 18px 4px;font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);opacity:.6;}
+.dd a{display:block;padding:8px 18px;font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text-dim);text-decoration:none;}
+.dd a .pill{font-family:var(--fm);font-size:9px;color:var(--green);margin-left:6px;}
+.dd hr{border:none;border-top:1px solid var(--border);margin:4px 0;}
+
+/* hub wireframe */
+.hub{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;padding:14px;}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:12px 14px;}
+.card h3{font-family:var(--fd);font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-head);margin:0 0 8px;}
+.row{display:flex;justify-content:space-between;align-items:center;font-family:var(--fm);font-size:12px;padding:6px 0;border-bottom:1px solid var(--border);}
+.row:last-child{border-bottom:none;}
+.up{color:var(--green);} .down{color:var(--red);}
+.muted{color:var(--text-dim);}
+.full{grid-column:1/-1;}
+.legend{font-family:var(--fm);font-size:11px;color:var(--text-dim);margin:18px 0 0;}
+.note{background:var(--bg3);border-left:2px solid var(--accent);padding:10px 14px;font-size:13px;margin:14px 0;border-radius:0 4px 4px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>NAV Redesign — Mockups</h1>
+  <div class="sub">Planning only · not linked · not pushed · noindex</div>
+  <p class="cap">Three directions for re-organizing the nav from a <b>content library</b> (by sport) into a <b>job-based</b> structure that puts the return-visit tools first. Full reasoning in <b>SITE-STRATEGY-REWORK.md</b>. All built in the real site tokens/fonts so the look is honest.</p>
+
+  <!-- CONCEPT A -->
+  <h2>Concept A — Tools-first <span class="tag t-rec">Recommended now</span></h2>
+  <p class="cap">Collapse 7 sport dropdowns into <b>4 buckets by job</b>: Tools (retention), Research (SEO guides, deep on click), Shop (money), plus Search + a personal "My Portfolio". Biggest clarity gain, lowest build — it's a <b>config change</b> in nav.json.</p>
+  <div class="frame">
+    <div class="frame-label">Desktop nav — Concept A</div>
+    <div class="nav"><div class="nav-inner">
+      <div class="logo">Shop<span>Card</span>Hub</div>
+      <div class="nav-links">
+        <span class="ni hot">Tools <span class="chev">▾</span></span>
+        <span class="ni">Research <span class="chev">▾</span></span>
+        <span class="ni">Shop <span class="chev">▾</span></span>
+        <span class="ni active">My Portfolio</span>
+        <span class="search">Search…</span>
+      </div>
+      <span class="cta">Our COMC Store</span>
+    </div></div>
+    <div class="dd">
+      <div class="ddl">Tools — the floor</div>
+      <a href="#">Signal Board <span class="pill">LIVE</span></a>
+      <a href="#">My Watchlist</a>
+      <a href="#">Portfolio / Inventory Tracker</a>
+      <a href="#">Bowman Bangers — Prospect Board</a>
+      <a href="#">Hobby Box ROI Calculator</a>
+    </div>
+  </div>
+  <p class="cap"><span class="tag t-keep">why</span>Surfaces the reasons to come back (things that change + things that are "yours") before the static library. "Research" still holds every guide — one click deeper, no SEO links lost.</p>
+
+  <!-- CONCEPT B -->
+  <h2>Concept B — Dashboard hub <span class="tag t-rec">Highest ceiling</span></h2>
+  <p class="cap">Minimal nav; the <b>homepage becomes a live dashboard</b> — Signal Board snapshot, your watchlist, top movers. The site <b>is</b> the tool. Most retention upside, most to build.</p>
+  <div class="frame">
+    <div class="frame-label">Desktop nav — Concept B (lean)</div>
+    <div class="nav"><div class="nav-inner">
+      <div class="logo">Shop<span>Card</span>Hub</div>
+      <div class="nav-links">
+        <span class="ni active">Dashboard</span>
+        <span class="ni hot">Markets <span class="chev">▾</span></span>
+        <span class="ni">Research <span class="chev">▾</span></span>
+        <span class="search">Search a card…</span>
+      </div>
+      <span class="cta ghost">Sign in</span>
+      <span class="cta">COMC</span>
+    </div></div>
+    <div class="hub">
+      <div class="card">
+        <h3>Signal Board — Top Movers</h3>
+        <div class="row"><span>Ethan Holliday 1st Bowman</span><span class="up">▲ 12.4%</span></div>
+        <div class="row"><span>Cooper Flagg RC</span><span class="up">▲ 6.1%</span></div>
+        <div class="row"><span>PE Umbreon SIR #161</span><span class="down">▼ 3.8%</span></div>
+        <div class="row"><span>Wembanyama Chrome</span><span class="up">▲ 2.2%</span></div>
+      </div>
+      <div class="card">
+        <h3>My Watchlist</h3>
+        <div class="row"><span>Aiva Arquette 1st</span><span class="muted">$—  add comp</span></div>
+        <div class="row"><span>Yamal RC</span><span class="up">▲ 4.0%</span></div>
+        <div class="row muted"><span>+ track a card…</span><span>＋</span></div>
+      </div>
+      <div class="card full">
+        <h3>My Portfolio <span class="muted" style="font-size:11px;">(cost basis → live P/L)</span></h3>
+        <div class="row"><span>Holliday Auto /50  · cost $180</span><span class="up">$240 · ▲ 33%</span></div>
+        <div class="row"><span>Flagg Prizm  · cost $90</span><span class="down">$78 · ▼ 13%</span></div>
+        <div class="row"><span class="muted">Net unrealized</span><span class="up">+$48 (after fees est.)</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="cap"><span class="tag t-risk">caveat</span>Only as good as the price data — needs PriceCharting wired before the Portfolio numbers are trustworthy. Ship watchlist + manual cost-basis first, auto-pricing later.</p>
+
+  <!-- CONCEPT C -->
+  <h2>Concept C — Hybrid <span class="tag t-rec">Lowest risk</span></h2>
+  <p class="cap">Keep a <b>slimmed</b> sport taxonomy but add a persistent <b>Tools</b> mega-item and a sticky "Track" affordance. Smallest step from today.</p>
+  <div class="frame">
+    <div class="frame-label">Desktop nav — Concept C</div>
+    <div class="nav"><div class="nav-inner">
+      <div class="logo">Shop<span>Card</span>Hub</div>
+      <div class="nav-links">
+        <span class="ni hot">Tools <span class="chev">▾</span></span>
+        <span class="ni">Baseball <span class="chev">▾</span></span>
+        <span class="ni">Basketball <span class="chev">▾</span></span>
+        <span class="ni">Pokémon <span class="chev">▾</span></span>
+        <span class="ni">More <span class="chev">▾</span></span>
+        <span class="search">Search…</span>
+      </div>
+      <span class="cta">COMC</span>
+    </div></div>
+  </div>
+  <p class="cap"><span class="tag t-keep">why</span>Familiar to existing visitors, still introduces the Tools spine. "More" hides Football/Soccer/Grading/Supplies to cut top-level clutter.</p>
+
+  <!-- MOBILE -->
+  <h2>Mobile — accordion + "My" pinned</h2>
+  <p class="cap">Same job-based order in the drawer. <b>Tools and My Portfolio pinned to the top</b>, sports collapsed below. Search stays at the top of the drawer (already shipped).</p>
+  <div class="frame" style="max-width:360px;">
+    <div class="frame-label">Mobile drawer — Concept A/B</div>
+    <div style="padding:16px;">
+      <div class="search" style="display:block;margin-bottom:14px;">Search the site…</div>
+      <div style="font-family:var(--fd);font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);padding:10px 0;border-bottom:1px solid var(--border);">★ Signal Board</div>
+      <div style="font-family:var(--fd);font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);padding:10px 0;border-bottom:1px solid var(--border);">★ My Portfolio</div>
+      <div style="font-family:var(--fd);font-size:18px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);padding:10px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;">Tools <span>▾</span></div>
+      <div style="font-family:var(--fd);font-size:18px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);padding:10px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;">Research <span>▾</span></div>
+      <div style="font-family:var(--fd);font-size:18px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);padding:10px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;">Shop <span>▾</span></div>
+      <div class="cta" style="display:block;text-align:center;margin-top:16px;">Our COMC Store →</div>
+    </div>
+  </div>
+
+  <div class="note"><b>The point:</b> the nav change is cheap now (single-source nav.json). The real work is building <b>one</b> recurring tool well + email capture, then funneling every guide into it. Nav direction is the decision the mockups are here to settle — A, B, or C.</div>
+
+  <p class="legend">Recommendation: <b style="color:var(--accent);">A now → evolve to B</b>. Flagship to build first: Bowman Bangers prospect board + watchlist (shared engine). Open questions for you in SITE-STRATEGY-REWORK.md §8.</p>
+</div>
+</body>
+</html>
