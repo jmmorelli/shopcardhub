@@ -1,0 +1,166 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for the site nav (desktop dropdowns + mobile accordion drawer). Edit this file, then run `node tools/build-nav.js` from the repo root to regenerate the nav region (between <!-- NAV:START --> / <!-- NAV:END -->) on every *.html page. See tools/build-nav-README.md.",
+  "brand": { "href": "/", "html": "Shop<span>Card</span>Hub" },
+  "home": { "href": "/", "label": "Home" },
+  "cta": {
+    "href": "https://comc.com/Users/DBCooper",
+    "label": "Our COMC Store",
+    "mobileLabel": "Our COMC Store →",
+    "target": "_blank",
+    "rel": "noopener sponsored"
+  },
+  "categories": [
+    {
+      "label": "Hobby Boxes",
+      "href": "/best-hobby-boxes-2026",
+      "groups": [
+        {
+          "label": "Guides",
+          "links": [
+            { "href": "/best-hobby-boxes-2026", "label": "Best Boxes 2026 — Ranked by ROI" },
+            { "href": "/hobby-box-roi-calculator", "label": "Hobby Box ROI Calculator" },
+            { "href": "/blog", "label": "All Guides" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Baseball",
+      "href": "/bowman-bangers",
+      "groups": [
+        {
+          "label": "Players",
+          "links": [
+            { "href": "/ethan-holliday-rookie-cards", "label": "Ethan Holliday 1st Bowman" },
+            { "href": "/aiva-arquette-1st-bowman", "label": "Aiva Arquette 1st Bowman" },
+            { "href": "/shohei-ohtani-cards", "label": "Shohei Ohtani Cards" },
+            { "href": "/munetaka-murakami-rookie-cards", "label": "Munetaka Murakami" }
+          ]
+        },
+        {
+          "label": "Set Guides",
+          "links": [
+            { "href": "/topps-series-1-2026", "label": "Topps Series 1" },
+            { "href": "/topps-series-2-2026", "label": "Topps Series 2" },
+            { "href": "/bowman-sapphire-2026", "label": "Bowman Sapphire" },
+            { "href": "/topps-chrome-baseball-2026", "label": "Topps Chrome Baseball" },
+            { "href": "/topps-inception-baseball", "label": "Topps Inception" },
+            { "href": "/topps-tier-one-baseball", "label": "Topps Tier One" }
+          ]
+        },
+        {
+          "label": "Guides",
+          "links": [
+            { "href": "/bowman-bangers", "label": "2026 Bowman Bangers" },
+            { "href": "/roy-watch-2026", "label": "ROY Watch 2026" },
+            { "href": "/best-baseball-cards-under-50", "label": "Best Cards Under $50" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Football",
+      "href": "/nfl-rookie-cards-2026",
+      "groups": [
+        {
+          "label": "Set Guides",
+          "links": [
+            { "href": "/topps-cosmic-chrome-football", "label": "Cosmic Chrome Football" }
+          ]
+        },
+        {
+          "label": "Guides",
+          "links": [
+            { "href": "/nfl-rookie-cards-2026", "label": "2026 NFL Rookie Cards Guide" },
+            { "href": "/best-football-cards-under-50", "label": "Best Cards Under $50" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Basketball",
+      "href": "/cooper-flagg-rookie-cards",
+      "groups": [
+        {
+          "label": "Players",
+          "links": [
+            { "href": "/cooper-flagg-rookie-cards", "label": "Cooper Flagg Rookie Cards" },
+            { "href": "/victor-wembanyama-rookie-cards", "label": "Victor Wembanyama" }
+          ]
+        },
+        {
+          "label": "Set Guides",
+          "links": [
+            { "href": "/topps-chrome-basketball-2026", "label": "Topps Chrome Basketball" },
+            { "href": "/topps-chrome-cactus-jack-basketball", "label": "Chrome Cactus Jack" },
+            { "href": "/topps-inception-basketball", "label": "Topps Inception" }
+          ]
+        },
+        {
+          "label": "Guides",
+          "links": [
+            { "href": "/best-basketball-cards-under-50", "label": "Best Cards Under $50" },
+            { "href": "/wnba-cards-2026", "label": "WNBA Cards 2026" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Soccer",
+      "href": "/world-cup-2026-soccer-cards",
+      "groups": [
+        {
+          "label": "Players",
+          "links": [
+            { "href": "/lamine-yamal-rookie-cards", "label": "Lamine Yamal" }
+          ]
+        },
+        {
+          "label": "Guides",
+          "links": [
+            { "href": "/world-cup-2026-soccer-cards", "label": "FIFA World Cup 2026 Cards" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Pokémon TCG",
+      "href": "/pokemon-tcg-2026",
+      "groups": [
+        {
+          "label": "Set Guides",
+          "links": [
+            { "href": "/chaos-rising", "label": "Chaos Rising" },
+            { "href": "/ascended-heroes", "label": "Ascended Heroes" },
+            { "href": "/pitch-black-set-guide", "label": "Pitch Black — Jul 17", "style": "color:#9b5de5;" },
+            { "href": "/prismatic-evolutions-guide", "label": "Prismatic Evolutions" }
+          ]
+        },
+        {
+          "label": "Guides",
+          "links": [
+            { "href": "/pokemon-tcg-2026", "label": "2026 Pokémon TCG Guide" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Grading &amp; Supplies",
+      "href": "/psa-grading-guide",
+      "groups": [
+        {
+          "label": "Guides",
+          "links": [
+            { "href": "/psa-grading-guide", "label": "PSA Grading Guide" },
+            { "href": "/best-card-supplies", "label": "Best Card Supplies" }
+          ]
+        }
+      ]
+    }
+  ],
+  "searchExtra": [
+    { "href": "/about", "label": "About" },
+    { "href": "/affiliate-disclosure", "label": "Affiliate Disclosure" },
+    { "href": "/privacy", "label": "Privacy Policy" }
+  ]
+}
