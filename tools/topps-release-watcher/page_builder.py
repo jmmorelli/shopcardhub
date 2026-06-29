@@ -35,6 +35,7 @@ def amazon(keywords):
 NEW_RELEASES = [
     ("topps-chrome-baseball-2026",         "Topps Chrome Baseball",   "⚾ Topps Chrome Baseball",   "baseball"),
     ("topps-inception-baseball",           "Topps Inception",         "⚾ Topps Inception",         "baseball"),
+    ("topps-finest-baseball",              "Topps Finest Baseball",   "⚾ Topps Finest Baseball",   "baseball"),
     ("topps-cosmic-chrome-football",       "Cosmic Chrome Football",  "🏈 Cosmic Chrome Football", "football"),
     ("topps-chrome-cactus-jack-basketball","Chrome Cactus Jack",      "🏀 Chrome Cactus Jack",     "basketball"),
 ]
@@ -69,7 +70,8 @@ def inject_nav(nav):
     # Desktop — Baseball > Set Guides (after Bowman Sapphire)
     after('<a href="/bowman-sapphire-2026">Bowman Sapphire</a>',
           '\n          <a href="/topps-chrome-baseball-2026">Topps Chrome Baseball</a>',
-          '\n          <a href="/topps-inception-baseball">Topps Inception</a>')
+          '\n          <a href="/topps-inception-baseball">Topps Inception</a>',
+          '\n          <a href="/topps-finest-baseball">Topps Finest Baseball</a>')
     # Desktop — Basketball > NBA 2026 (after Topps Chrome Basketball)
     after('<a href="/topps-chrome-basketball-2026">Topps Chrome Basketball</a>',
           '\n          <a href="/topps-chrome-cactus-jack-basketball">Chrome Cactus Jack</a>')
@@ -81,7 +83,8 @@ def inject_nav(nav):
     # Mobile drawer
     after('<a href="/bowman-sapphire-2026">⚾ Bowman Sapphire</a>',
           '\n  <a href="/topps-chrome-baseball-2026">⚾ Topps Chrome Baseball</a>'
-          '\n  <a href="/topps-inception-baseball">⚾ Topps Inception</a>', indent="  ")
+          '\n  <a href="/topps-inception-baseball">⚾ Topps Inception</a>'
+          '\n  <a href="/topps-finest-baseball">⚾ Topps Finest Baseball</a>', indent="  ")
     after('<a href="/topps-chrome-basketball-2026">🏀 Topps Chrome Basketball</a>',
           '\n  <a href="/topps-chrome-cactus-jack-basketball">🏀 Chrome Cactus Jack</a>', indent="  ")
     after('<a href="/best-football-cards-under-50">🏈 Best Cards Under $50</a>',
