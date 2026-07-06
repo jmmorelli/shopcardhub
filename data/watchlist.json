@@ -1,0 +1,97 @@
+{
+  "_comment": "Cards the price engine snapshots nightly — the watchlist's source of truth, and the feed behind the on-page Prospect Signal Board. SCOPE DECISION (Jun 26 2026): for baseball prospects we track ONE canonical card per player = the 1st Bowman Chrome AUTO. Fallback: if a prospect had NO auto in their first Bowman, track the 1st Bowman Chrome BASE instead and set cardType:\"chrome-base\". NOT in scope: Sapphire, parallels, or later Bowman sets — Chrome / Chrome Auto only. One card per player keeps data clean and fits the ~50-card nightly cron cap.",
+  "_setup": "IDs below are REPLACE_ME placeholders — the cron skips any card whose id is still 'REPLACE_ME', so the board launches empty (graceful) until you fill them. To resolve a real SportsCardsPro product id for each player: SPORTSCARDSPRO_TOKEN=xxxx node tools/price-engine/resolve.mjs sportscardspro \"<player> 2026 bowman chrome auto\" — pick the row that is the 1st Bowman Chrome PROSPECT AUTO (not a parallel/Sapphire), paste its id, commit + push to main. Expand past the top-10 (add #11+ deep prospects) the same way, staying under ~50 cards.",
+  "_schema": {
+    "id": "string — product id on the source site",
+    "source": "pricecharting (Pokemon/TCG) | sportscardspro (sports)",
+    "label": "string — human name for display, e.g. 'Ethan Holliday — 1st Bowman Chrome Auto'",
+    "condition": "loose | graded | psa10 | new | cib  (which price column to track; loose=raw)",
+    "cardType": "chrome-auto (default) | chrome-base (fallback when no auto was issued)",
+    "slug": "optional — site page this card links back to",
+    "rank": "optional integer — editorial rank if it's a featured top-10 card (else omit)"
+  },
+  "cards": [
+    {
+      "id": "REPLACE_ME",
+      "source": "sportscardspro",
+      "label": "Ethan Holliday — 1st Bowman Chrome Auto",
+      "condition": "loose",
+      "cardType": "chrome-auto",
+      "slug": "ethan-holliday-rookie-cards",
+      "rank": 1
+    },
+    {
+      "id": "REPLACE_ME",
+      "source": "sportscardspro",
+      "label": "Aiva Arquette — 1st Bowman Chrome Auto",
+      "condition": "loose",
+      "cardType": "chrome-auto",
+      "slug": "aiva-arquette-1st-bowman",
+      "rank": 2
+    },
+    {
+      "id": "REPLACE_ME",
+      "source": "sportscardspro",
+      "label": "Wehiwa Aloy — 1st Bowman Chrome Auto",
+      "condition": "loose",
+      "cardType": "chrome-auto",
+      "rank": 3
+    },
+    {
+      "id": "REPLACE_ME",
+      "source": "sportscardspro",
+      "label": "Daniel Pierce — 1st Bowman Chrome Auto",
+      "condition": "loose",
+      "cardType": "chrome-auto",
+      "rank": 4
+    },
+    {
+      "id": "REPLACE_ME",
+      "source": "sportscardspro",
+      "label": "Andrew Fischer — 1st Bowman Chrome Auto",
+      "condition": "loose",
+      "cardType": "chrome-auto",
+      "rank": 5
+    },
+    {
+      "id": "REPLACE_ME",
+      "source": "sportscardspro",
+      "label": "Mark Houston — 1st Bowman Chrome Auto",
+      "condition": "loose",
+      "cardType": "chrome-auto",
+      "rank": 6
+    },
+    {
+      "id": "REPLACE_ME",
+      "source": "sportscardspro",
+      "label": "Gage Jump — 1st Bowman Chrome Auto",
+      "condition": "loose",
+      "cardType": "chrome-auto",
+      "rank": 7
+    },
+    {
+      "id": "REPLACE_ME",
+      "source": "sportscardspro",
+      "label": "Justin Gonzalez — 1st Bowman Chrome Auto",
+      "condition": "loose",
+      "cardType": "chrome-auto",
+      "rank": 8
+    },
+    {
+      "id": "REPLACE_ME",
+      "source": "sportscardspro",
+      "label": "Edward Florentino — 1st Bowman Chrome Auto",
+      "condition": "loose",
+      "cardType": "chrome-auto",
+      "rank": 9
+    },
+    {
+      "id": "REPLACE_ME",
+      "source": "sportscardspro",
+      "label": "Seong-Jun Kim — 1st Bowman Chrome Auto",
+      "condition": "loose",
+      "cardType": "chrome-auto",
+      "rank": 10
+    }
+  ]
+}
