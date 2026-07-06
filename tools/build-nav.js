@@ -59,6 +59,9 @@ function buildSearchIndex() {
   return out;
 }
 
+/* ---------- shared: optional target/rel attrs (external links) ---------- */
+const extAttrs = (o) => (o.target ? ` target="${o.target}"` : '') + (o.rel ? ` rel="${o.rel}"` : '');
+
 /* ---------- desktop nav ---------- */
 function buildDesktop() {
   let items = '';
@@ -69,7 +72,7 @@ function buildDesktop() {
       dd += `\n          <div class="dd-label">${g.label}</div>`;
       for (const l of g.links) {
         const st = l.style ? ` style="${l.style}"` : '';
-        dd += `\n          <a href="${l.href}"${st}>${l.label}</a>`;
+        dd += `\n          <a href="${l.href}"${st}${extAttrs(l)}>${l.label}</a>`;
       }
     });
     items += `
@@ -88,7 +91,7 @@ function buildDesktop() {
           <input type="text" class="nav-search-input" id="nav-search-input-d" placeholder="Search…" aria-label="Search the site" autocomplete="off">
           <div class="nav-search-results" id="nav-search-results-d" role="listbox"></div>
         </div>
-        <a href="${cta.href}" target="${cta.target}" rel="${cta.rel}" class="nav-cta">${cta.label}</a>
+        <a href="${cta.href}"${extAttrs(cta)} class="nav-cta">${cta.label}</a>
       </div>
       <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -108,7 +111,7 @@ function buildMobile() {
       if (multi) body += `\n        <div class="m-sublabel">${g.label}</div>`;
       for (const l of g.links) {
         const st = l.style ? ` style="${l.style}"` : '';
-        body += `\n        <a href="${l.href}"${st}>${l.label}</a>`;
+        body += `\n        <a href="${l.href}"${st}${extAttrs(l)}>${l.label}</a>`;
       }
     }
     groups += `
@@ -126,7 +129,7 @@ function buildMobile() {
     <div class="nav-search-results" id="nav-search-results-m" role="listbox"></div>
   </div>
   <a href="${cfg.home.href}" class="m-home">${cfg.home.label}</a>${groups}
-  <a href="${cta.href}" target="${cta.target}" rel="${cta.rel}" class="m-cta">${cta.mobileLabel || cta.label}</a>
+  <a href="${cta.href}"${extAttrs(cta)} class="m-cta">${cta.mobileLabel || cta.label}</a>
 </div>`;
 }
 
