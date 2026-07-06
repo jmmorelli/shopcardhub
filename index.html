@@ -884,17 +884,27 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     </div>
   </section>
   <script>
-    /* Dashboard watchlist preview — reads the same localStorage key as /watchlist */
+    /* Dashboard watchlist preview — prefers the Vault (sch_vault_v1), falls back to legacy sch_watchlist */
     (function(){
       var el=document.getElementById('dash-watch'); if(!el) return;
-      var items=[]; try{ items=JSON.parse(localStorage.getItem('sch_watchlist'))||[]; }catch(e){ items=[]; }
+      var items=[];
+      try{
+        var v=JSON.parse(localStorage.getItem('sch_vault_v1'));
+        if(v&&Array.isArray(v.cards)&&v.cards.length&&!v.demo){
+          items=v.cards.map(function(c){
+            var last=(c.prices&&c.prices.length)?c.prices[c.prices.length-1].p:null;
+            return {name:c.name,tag:last!=null?('$'+Number(last).toLocaleString()):(c.status==='own'?'owned':'tracked')};
+          });
+        }
+      }catch(e){ items=[]; }
+      if(!items.length){ try{ items=JSON.parse(localStorage.getItem('sch_watchlist'))||[]; }catch(e){ items=[]; } }
       if(!Array.isArray(items)||!items.length){
         el.innerHTML='<div class="wempty">No cards tracked yet. Add your first from any guide — look for <strong style="color:var(--accent);">★ Track this card</strong>.</div>';
         return;
       }
       function esc(s){ return String(s==null?'':s).replace(/[<>&]/g,''); }
       var rows=items.slice(0,3).map(function(it){
-        return '<div class="wrow"><span>'+esc(it&&it.name)+'</span><span style="color:var(--text-dim);">tracked</span></div>';
+        return '<div class="wrow"><span>'+esc(it&&it.name)+'</span><span style="color:var(--text-dim);">'+esc((it&&it.tag)||'tracked')+'</span></div>';
       }).join('');
       var more=items.length>3?'<div class="wrow"><span style="color:var(--text-dim);">+ '+(items.length-3)+' more</span><span></span></div>':'';
       el.innerHTML=rows+more;
