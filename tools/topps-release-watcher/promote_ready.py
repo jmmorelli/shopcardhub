@@ -27,6 +27,11 @@ NAV_PLACEMENT = {
     "pete-crow-armstrong-cards":      ("Baseball", "Players", "Pete Crow-Armstrong"),
     "chase-delauter-rookie-cards":    ("Baseball", "Players", "Chase DeLauter"),
     "topps-tribute-baseball":         ("Baseball", "Set Guides", "Topps Tribute — Jul 29"),
+    "erling-haaland-rookie-cards":    ("More", "Soccer", "Erling Haaland"),
+    "kylian-mbappe-rookie-cards":     ("More", "Soccer", "Kylian Mbappé"),
+    "harry-kane-cards":               ("More", "Soccer", "Harry Kane"),
+    "cristiano-ronaldo-cards":        ("More", "Soccer", "Cristiano Ronaldo"),
+    "lionel-messi-cards":             ("More", "Soccer", "Lionel Messi"),
 }
 
 def promote(slugs):
