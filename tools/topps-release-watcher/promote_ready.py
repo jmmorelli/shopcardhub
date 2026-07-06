@@ -21,6 +21,57 @@ REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 READY = os.path.join(HERE, "drafts", "ready")
 TODAY = datetime.date.today().isoformat()
 
+# slug -> (research.html section id, rh-sub group label, link label)
+# The /research hub cards are hand-maintained HTML — promoting a page must add it there too.
+RESEARCH_PLACEMENT = {
+    "jacob-misiorowski-rookie-cards": ("baseball", "Players", "Jacob Misiorowski"),
+    "pete-crow-armstrong-cards":      ("baseball", "Players", "Pete Crow-Armstrong"),
+    "chase-delauter-rookie-cards":    ("baseball", "Players", "Chase DeLauter"),
+    "topps-tribute-baseball":         ("baseball", "Set Guides", "Topps Tribute — Jul 29"),
+    "erling-haaland-rookie-cards":    ("soccer", "Players", "Erling Haaland"),
+    "kylian-mbappe-rookie-cards":     ("soccer", "Players", "Kylian Mbappé"),
+    "harry-kane-cards":               ("soccer", "Players", "Harry Kane"),
+    "cristiano-ronaldo-cards":        ("soccer", "Players", "Cristiano Ronaldo"),
+    "lionel-messi-cards":             ("soccer", "Players", "Lionel Messi"),
+}
+
+def update_research(slugs):
+    import re
+    path = os.path.join(REPO, "research.html")
+    with open(path, encoding="utf-8") as f:
+        html = f.read()
+    for slug in slugs:
+        if slug not in RESEARCH_PLACEMENT:
+            continue
+        sec_id, sub_label, label = RESEARCH_PLACEMENT[slug]
+        href = f"/{slug}"
+        if f'href="{href}"' in html:
+            continue
+        sec_start = html.find(f'id="{sec_id}"')
+        sec_end = html.find("</section>", sec_start)
+        if sec_start == -1 or sec_end == -1:
+            print(f"  !! research.html: section '{sec_id}' not found — add /{slug} manually")
+            continue
+        section = html[sec_start:sec_end]
+        sub_marker = f'<div class="rh-sub">{sub_label}</div>'
+        sub_pos = section.find(sub_marker)
+        if sub_pos == -1:
+            print(f"  !! research.html: group '{sub_label}' not in #{sec_id} — add /{slug} manually")
+            continue
+        links_open = section.find('<div class="rh-links">', sub_pos)
+        links_close = section.find("</div>", links_open)
+        new_section = (section[:links_close]
+                       + f'  <a href="{href}">{label}</a>\n          '
+                       + section[links_close:])
+        # bump the "N guides" count
+        new_section = re.sub(r'(<span class="rh-count">)(\d+)( guides</span>)',
+                             lambda m: m.group(1) + str(int(m.group(2)) + 1) + m.group(3),
+                             new_section, count=1)
+        html = html[:sec_start] + new_section + html[sec_end:]
+        print(f"  research.html + #{sec_id} > {sub_label} > {label}")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(html)
+
 # slug -> (category label, group label, nav link label)
 NAV_PLACEMENT = {
     "jacob-misiorowski-rookie-cards": ("Baseball", "Players", "Jacob Misiorowski"),
@@ -80,6 +131,9 @@ def promote(slugs):
     with open(nav_path, "w", encoding="utf-8") as f:
         json.dump(nav, f, indent=2, ensure_ascii=False)
         f.write("\n")
+
+    # 3b) research hub
+    update_research(slugs)
 
     # 4) known-releases (tribute only)
     if "topps-tribute-baseball" in slugs:
