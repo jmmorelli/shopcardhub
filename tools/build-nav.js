@@ -53,7 +53,8 @@ function buildSearchIndex() {
   add(cfg.home.label, cfg.home.href);
   for (const cat of cfg.categories) {
     add(cat.label.replace(/&amp;/g, '&'), cat.href);
-    for (const g of cat.groups) for (const l of g.links) add(l.label, l.href);
+    // skip allLink entries ("All Baseball →" etc.) — hub anchors, noise in search
+    for (const g of cat.groups) for (const l of g.links) if (!l.allLink) add(l.label, l.href);
   }
   for (const e of cfg.searchExtra || []) add(e.label, e.href);
   return out;
@@ -63,22 +64,51 @@ function buildSearchIndex() {
 const extAttrs = (o) => (o.target ? ` target="${o.target}"` : '') + (o.rel ? ` rel="${o.rel}"` : '');
 
 /* ---------- desktop nav ---------- */
+function linkAttrs(l) {
+  const cls = l.allLink ? ' class="dd-all"' : (l.money ? ' class="dd-money"' : '');
+  const st = l.style ? ` style="${l.style}"` : '';
+  return cls + st + extAttrs(l);
+}
+
+function buildFooter(cat) {
+  if (!cat.footer) return '';
+  let links = '';
+  for (const l of cat.footer.links) {
+    links += `<a href="${l.href}"${linkAttrs(l)}>${l.label}</a>`;
+  }
+  const lbl = cat.footer.label ? `<span class="dd-foot-label">${cat.footer.label}</span>` : '';
+  return `\n          <div class="dd-foot">${lbl}${links}</div>`;
+}
+
 function buildDesktop() {
   let items = '';
   for (const cat of cfg.categories) {
     let dd = '';
-    cat.groups.forEach((g, gi) => {
-      if (gi > 0) dd += `\n          <hr>`;
-      dd += `\n          <div class="dd-label">${g.label}</div>`;
-      for (const l of g.links) {
-        const st = l.style ? ` style="${l.style}"` : '';
-        dd += `\n          <a href="${l.href}"${st}${extAttrs(l)}>${l.label}</a>`;
+    if (cat.mega) {
+      // mega panel: each group renders as a column
+      dd += `\n          <div class="dd-cols">`;
+      for (const g of cat.groups) {
+        dd += `\n            <div class="dd-col">\n              <div class="dd-label">${g.label}</div>`;
+        for (const l of g.links) {
+          dd += `\n              <a href="${l.href}"${linkAttrs(l)}>${l.label}</a>`;
+        }
+        dd += `\n            </div>`;
       }
-    });
+      dd += `\n          </div>`;
+    } else {
+      cat.groups.forEach((g, gi) => {
+        if (gi > 0) dd += `\n          <hr>`;
+        dd += `\n          <div class="dd-label">${g.label}</div>`;
+        for (const l of g.links) {
+          dd += `\n          <a href="${l.href}"${linkAttrs(l)}>${l.label}</a>`;
+        }
+      });
+    }
+    dd += buildFooter(cat);
     items += `
         <div class="nav-item">
           <a href="${cat.href}">${cat.label} <span class="chevron">▾</span></a>
-          <div class="nav-dropdown">${dd}
+          <div class="nav-dropdown${cat.mega ? ' nav-mega' : ''}">${dd}
           </div>
         </div>`;
   }
@@ -110,8 +140,15 @@ function buildMobile() {
     for (const g of cat.groups) {
       if (multi) body += `\n        <div class="m-sublabel">${g.label}</div>`;
       for (const l of g.links) {
+        const cls = l.allLink ? ' class="m-all"' : '';
         const st = l.style ? ` style="${l.style}"` : '';
-        body += `\n        <a href="${l.href}"${st}${extAttrs(l)}>${l.label}</a>`;
+        body += `\n        <a href="${l.href}"${cls}${st}${extAttrs(l)}>${l.label}</a>`;
+      }
+    }
+    // category footer links (e.g. COMC inventory) go last in the mobile panel
+    if (cat.footer) {
+      for (const l of cat.footer.links) {
+        body += `\n        <a href="${l.href}" class="m-money"${l.style ? ` style="${l.style}"` : ''}${extAttrs(l)}>${l.label}</a>`;
       }
     }
     groups += `
@@ -147,6 +184,23 @@ function buildStyle() {
   .nav-search-results a:hover, .nav-search-results a.sel { color:var(--text-head); background:rgba(0,204,245,0.08); text-decoration:none; }
   .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
   .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
+  /* mega panel (Sports): groups render as columns */
+  .nav-dropdown.nav-mega { left:-140px; min-width:0; width:max-content; max-width:min(880px, calc(100vw - 48px)); padding:14px 10px 12px; }
+  .nav-mega .dd-cols { display:flex; flex-wrap:wrap; }
+  .nav-mega .dd-col { min-width:190px; padding:0 8px; }
+  .nav-mega .dd-col .dd-label { padding:4px 12px 6px; border-bottom:1px solid var(--border); margin-bottom:4px; }
+  .nav-mega .dd-col a { padding:8px 12px; }
+  /* "All X →" hub links */
+  .nav-dropdown a.dd-all { color:var(--accent); font-weight:700; }
+  .nav-dropdown a.dd-all:hover { color:var(--text-head); }
+  /* panel footer (money path) */
+  .dd-foot { display:flex; align-items:center; gap:16px; margin:10px 12px 2px; padding:10px 6px 4px; border-top:1px solid var(--border); }
+  .dd-foot-label { font-family:var(--fm); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); opacity:.7; white-space:nowrap; }
+  .nav-dropdown a.dd-money, .dd-foot a.dd-money { color:#00e07a; font-weight:700; padding:4px 6px; }
+  .nav-dropdown a.dd-money:hover { color:#4dffab; background:rgba(0,224,122,0.06); }
+  /* mobile equivalents */
+  .mobile-nav a.m-all { color:var(--accent); font-weight:700; }
+  .mobile-nav a.m-money { color:#00e07a; font-weight:700; }
   /* mobile search + accordion */
   .m-search { position:relative; margin-bottom:8px; }
   .m-search .nav-search-input { width:100%; font-size:14px; padding:12px 14px; }

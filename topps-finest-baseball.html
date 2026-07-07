@@ -475,6 +475,23 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   .nav-search-results a:hover, .nav-search-results a.sel { color:var(--text-head); background:rgba(0,204,245,0.08); text-decoration:none; }
   .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
   .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
+  /* mega panel (Sports): groups render as columns */
+  .nav-dropdown.nav-mega { left:-140px; min-width:0; width:max-content; max-width:min(880px, calc(100vw - 48px)); padding:14px 10px 12px; }
+  .nav-mega .dd-cols { display:flex; flex-wrap:wrap; }
+  .nav-mega .dd-col { min-width:190px; padding:0 8px; }
+  .nav-mega .dd-col .dd-label { padding:4px 12px 6px; border-bottom:1px solid var(--border); margin-bottom:4px; }
+  .nav-mega .dd-col a { padding:8px 12px; }
+  /* "All X →" hub links */
+  .nav-dropdown a.dd-all { color:var(--accent); font-weight:700; }
+  .nav-dropdown a.dd-all:hover { color:var(--text-head); }
+  /* panel footer (money path) */
+  .dd-foot { display:flex; align-items:center; gap:16px; margin:10px 12px 2px; padding:10px 6px 4px; border-top:1px solid var(--border); }
+  .dd-foot-label { font-family:var(--fm); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); opacity:.7; white-space:nowrap; }
+  .nav-dropdown a.dd-money, .dd-foot a.dd-money { color:#00e07a; font-weight:700; padding:4px 6px; }
+  .nav-dropdown a.dd-money:hover { color:#4dffab; background:rgba(0,224,122,0.06); }
+  /* mobile equivalents */
+  .mobile-nav a.m-all { color:var(--accent); font-weight:700; }
+  .mobile-nav a.m-money { color:#00e07a; font-weight:700; }
   /* mobile search + accordion */
   .m-search { position:relative; margin-bottom:8px; }
   .m-search .nav-search-input { width:100%; font-size:14px; padding:12px 14px; }
@@ -496,113 +513,83 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <div class="logo">Shop<span>Card</span>Hub</div>
       <div class="nav-links">
         <div class="nav-item">
-          <a href="/bowman-bangers">Tools <span class="chevron">▾</span></a>
+          <a href="/research">Tools + Research <span class="chevron">▾</span></a>
           <div class="nav-dropdown">
           <div class="dd-label">Trackers & Tools</div>
-          <a href="/watchlist">My Vault — Watchlist & Portfolio</a>
           <a href="/bowman-bangers">Bowman Bangers ⭐</a>
           <a href="/hobby-box-roi-calculator">Hobby Box ROI Calculator</a>
-          <hr>
-          <div class="dd-label">Hobby Boxes</div>
           <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Ranked by ROI</a>
-          <a href="/blog">All Guides</a>
-          </div>
-        </div>
-        <div class="nav-item">
-          <a href="/research">Research <span class="chevron">▾</span></a>
-          <div class="nav-dropdown">
-          <div class="dd-label">Research Hub</div>
-          <a href="/research">All Research — Hub</a>
+          <a href="/watchlist">My Vault — Watchlist & Portfolio</a>
           <hr>
-          <div class="dd-label">By Category</div>
-          <a href="/research#baseball">Baseball</a>
-          <a href="/research#basketball">Basketball</a>
-          <a href="/research#football">Football</a>
-          <a href="/research#soccer">Soccer</a>
-          <a href="/research#pokemon">Pokémon TCG</a>
-          <a href="/research#grading">Grading & Supplies</a>
-          </div>
-        </div>
-        <div class="nav-item">
-          <a href="/bowman-bangers">Baseball <span class="chevron">▾</span></a>
-          <div class="nav-dropdown">
-          <div class="dd-label">Players</div>
-          <a href="/ethan-holliday-rookie-cards">Ethan Holliday 1st Bowman</a>
-          <a href="/aiva-arquette-1st-bowman">Aiva Arquette 1st Bowman</a>
-          <a href="/shohei-ohtani-cards">Shohei Ohtani Cards</a>
-          <a href="/munetaka-murakami-rookie-cards">Munetaka Murakami</a>
-          <a href="/jacob-misiorowski-rookie-cards">Jacob Misiorowski</a>
-          <a href="/pete-crow-armstrong-cards">Pete Crow-Armstrong</a>
-          <a href="/chase-delauter-rookie-cards">Chase DeLauter</a>
-          <hr>
-          <div class="dd-label">Set Guides</div>
-          <a href="/topps-series-1-2026">Topps Series 1</a>
-          <a href="/topps-series-2-2026">Topps Series 2</a>
-          <a href="/bowman-sapphire-2026">Bowman Sapphire</a>
-          <a href="/topps-chrome-baseball-2026">Topps Chrome Baseball</a>
-          <a href="/topps-finest-baseball">Topps Finest Baseball</a>
-          <a href="/topps-inception-baseball">Topps Inception</a>
-          <a href="/topps-tier-one-baseball">Topps Tier One</a>
-          <a href="/topps-tribute-baseball">Topps Tribute — Jul 29</a>
-          <hr>
-          <div class="dd-label">Guides</div>
-          <a href="/bowman-bangers">2026 Bowman Bangers</a>
+          <div class="dd-label">Research</div>
+          <a href="/research">Research Hub — All Guides</a>
           <a href="/roy-watch-2026">ROY Watch 2026</a>
-          <a href="/best-baseball-cards-under-50">Best Cards Under $50</a>
+          <a href="/blog">All Posts (Blog)</a>
           </div>
         </div>
         <div class="nav-item">
-          <a href="/cooper-flagg-rookie-cards">Basketball <span class="chevron">▾</span></a>
-          <div class="nav-dropdown">
-          <div class="dd-label">Players</div>
-          <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
-          <a href="/victor-wembanyama-rookie-cards">Victor Wembanyama</a>
-          <hr>
-          <div class="dd-label">Set Guides</div>
-          <a href="/topps-chrome-basketball-2026">Topps Chrome Basketball</a>
-          <a href="/topps-chrome-updates-basketball">Chrome Updates — Jul 7</a>
-          <a href="/topps-chrome-cactus-jack-basketball">Chrome Cactus Jack</a>
-          <a href="/topps-inception-basketball">Topps Inception</a>
-          <hr>
-          <div class="dd-label">Guides</div>
-          <a href="/best-basketball-cards-under-50">Best Cards Under $50</a>
-          <a href="/wnba-cards-2026">WNBA Cards 2026</a>
+          <a href="/research">Sports <span class="chevron">▾</span></a>
+          <div class="nav-dropdown nav-mega">
+          <div class="dd-cols">
+            <div class="dd-col">
+              <div class="dd-label">⚾ Baseball</div>
+              <a href="/bowman-bangers">2026 Bowman Bangers ⭐</a>
+              <a href="/ethan-holliday-rookie-cards">Ethan Holliday 1st Bowman</a>
+              <a href="/topps-series-2-2026">Topps Series 2</a>
+              <a href="/bowman-sapphire-2026">Bowman Sapphire</a>
+              <a href="/topps-tribute-baseball">Topps Tribute — Jul 29</a>
+              <a href="/research#baseball" class="dd-all">All Baseball →</a>
+            </div>
+            <div class="dd-col">
+              <div class="dd-label">🏀 Basketball</div>
+              <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+              <a href="/victor-wembanyama-rookie-cards">Victor Wembanyama</a>
+              <a href="/topps-chrome-basketball-2026">Topps Chrome Basketball</a>
+              <a href="/topps-chrome-updates-basketball">Chrome Updates — Jul 7</a>
+              <a href="/best-basketball-cards-under-50">Best Cards Under $50</a>
+              <a href="/research#basketball" class="dd-all">All Basketball →</a>
+            </div>
+            <div class="dd-col">
+              <div class="dd-label">🏈 Football</div>
+              <a href="/nfl-rookie-cards-2026">2026 NFL Rookie Guide</a>
+              <a href="/topps-cosmic-chrome-football">Cosmic Chrome</a>
+              <a href="/topps-chrome-black-football">Chrome Black — Jul 10</a>
+              <a href="/best-football-cards-under-50">Best Cards Under $50</a>
+              <a href="/research#football" class="dd-all">All Football →</a>
+            </div>
+            <div class="dd-col">
+              <div class="dd-label">⚽ Soccer</div>
+              <a href="/world-cup-2026-soccer-cards">World Cup 2026 Cards</a>
+              <a href="/lamine-yamal-rookie-cards">Lamine Yamal</a>
+              <a href="/erling-haaland-rookie-cards">Erling Haaland</a>
+              <a href="/lionel-messi-cards">Lionel Messi</a>
+              <a href="/research#soccer" class="dd-all">All Soccer →</a>
+            </div>
+          </div>
+          <div class="dd-foot"><span class="dd-foot-label">Own the card, not just the guide</span><a href="https://comc.com/Users/DBCooper" class="dd-money" target="_blank" rel="noopener">Browse Our COMC Inventory →</a></div>
           </div>
         </div>
         <div class="nav-item">
-          <a href="/pokemon-tcg-2026">Pokémon TCG <span class="chevron">▾</span></a>
+          <a href="/pokemon-tcg-2026">Pokémon <span class="chevron">▾</span></a>
           <div class="nav-dropdown">
-          <div class="dd-label">Set Guides</div>
+          <div class="dd-label">Sets & Guides</div>
+          <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
           <a href="/chaos-rising">Chaos Rising</a>
           <a href="/ascended-heroes">Ascended Heroes</a>
-          <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
           <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
-          <hr>
-          <div class="dd-label">Guides</div>
           <a href="/pokemon-tcg-2026">2026 Pokémon TCG Guide</a>
+          <a href="/research#pokemon" class="dd-all">All Pokémon →</a>
           </div>
         </div>
         <div class="nav-item">
-          <a href="/nfl-rookie-cards-2026">More <span class="chevron">▾</span></a>
+          <a href="/psa-grading-guide">Grading + Supplies <span class="chevron">▾</span></a>
           <div class="nav-dropdown">
-          <div class="dd-label">Football</div>
-          <a href="/nfl-rookie-cards-2026">2026 NFL Rookie Cards Guide</a>
-          <a href="/topps-cosmic-chrome-football">Cosmic Chrome Football</a>
-          <a href="/topps-chrome-black-football">Chrome Black — Jul 10</a>
-          <a href="/best-football-cards-under-50">Best Cards Under $50</a>
-          <hr>
-          <div class="dd-label">Soccer</div>
-          <a href="/world-cup-2026-soccer-cards">FIFA World Cup 2026 Cards</a>
-          <a href="/lamine-yamal-rookie-cards">Lamine Yamal</a>
-          <a href="/erling-haaland-rookie-cards">Erling Haaland</a>
-          <a href="/kylian-mbappe-rookie-cards">Kylian Mbappé</a>
-          <a href="/harry-kane-cards">Harry Kane</a>
-          <a href="/cristiano-ronaldo-cards">Cristiano Ronaldo</a>
-          <a href="/lionel-messi-cards">Lionel Messi</a>
-          <hr>
-          <div class="dd-label">Grading & Supplies</div>
+          <div class="dd-label">Grading</div>
           <a href="/psa-grading-guide">PSA Grading Guide</a>
+          <hr>
+          <div class="dd-label">Supplies</div>
           <a href="/best-card-supplies">Best Card Supplies</a>
+          <a href="/research#grading" class="dd-all">All Grading & Supplies →</a>
           </div>
         </div>
         <div class="nav-search" id="nav-search-desktop">
@@ -625,104 +612,70 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   </div>
   <a href="/" class="m-home">Home</a>
       <div class="m-group">
-        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-0">Tools<span class="m-group-chevron">▾</span></button>
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-0">Tools + Research<span class="m-group-chevron">▾</span></button>
         <div class="m-group-panel" id="mg-0">
         <div class="m-sublabel">Trackers & Tools</div>
-        <a href="/watchlist">My Vault — Watchlist & Portfolio</a>
         <a href="/bowman-bangers">Bowman Bangers ⭐</a>
         <a href="/hobby-box-roi-calculator">Hobby Box ROI Calculator</a>
-        <div class="m-sublabel">Hobby Boxes</div>
         <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Ranked by ROI</a>
-        <a href="/blog">All Guides</a>
+        <a href="/watchlist">My Vault — Watchlist & Portfolio</a>
+        <div class="m-sublabel">Research</div>
+        <a href="/research">Research Hub — All Guides</a>
+        <a href="/roy-watch-2026">ROY Watch 2026</a>
+        <a href="/blog">All Posts (Blog)</a>
         </div>
       </div>
       <div class="m-group">
-        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-1">Research<span class="m-group-chevron">▾</span></button>
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-1">Sports<span class="m-group-chevron">▾</span></button>
         <div class="m-group-panel" id="mg-1">
-        <div class="m-sublabel">Research Hub</div>
-        <a href="/research">All Research — Hub</a>
-        <div class="m-sublabel">By Category</div>
-        <a href="/research#baseball">Baseball</a>
-        <a href="/research#basketball">Basketball</a>
-        <a href="/research#football">Football</a>
-        <a href="/research#soccer">Soccer</a>
-        <a href="/research#pokemon">Pokémon TCG</a>
-        <a href="/research#grading">Grading & Supplies</a>
-        </div>
-      </div>
-      <div class="m-group">
-        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-2">Baseball<span class="m-group-chevron">▾</span></button>
-        <div class="m-group-panel" id="mg-2">
-        <div class="m-sublabel">Players</div>
+        <div class="m-sublabel">⚾ Baseball</div>
+        <a href="/bowman-bangers">2026 Bowman Bangers ⭐</a>
         <a href="/ethan-holliday-rookie-cards">Ethan Holliday 1st Bowman</a>
-        <a href="/aiva-arquette-1st-bowman">Aiva Arquette 1st Bowman</a>
-        <a href="/shohei-ohtani-cards">Shohei Ohtani Cards</a>
-        <a href="/munetaka-murakami-rookie-cards">Munetaka Murakami</a>
-        <a href="/jacob-misiorowski-rookie-cards">Jacob Misiorowski</a>
-        <a href="/pete-crow-armstrong-cards">Pete Crow-Armstrong</a>
-        <a href="/chase-delauter-rookie-cards">Chase DeLauter</a>
-        <div class="m-sublabel">Set Guides</div>
-        <a href="/topps-series-1-2026">Topps Series 1</a>
         <a href="/topps-series-2-2026">Topps Series 2</a>
         <a href="/bowman-sapphire-2026">Bowman Sapphire</a>
-        <a href="/topps-chrome-baseball-2026">Topps Chrome Baseball</a>
-        <a href="/topps-finest-baseball">Topps Finest Baseball</a>
-        <a href="/topps-inception-baseball">Topps Inception</a>
-        <a href="/topps-tier-one-baseball">Topps Tier One</a>
         <a href="/topps-tribute-baseball">Topps Tribute — Jul 29</a>
-        <div class="m-sublabel">Guides</div>
-        <a href="/bowman-bangers">2026 Bowman Bangers</a>
-        <a href="/roy-watch-2026">ROY Watch 2026</a>
-        <a href="/best-baseball-cards-under-50">Best Cards Under $50</a>
-        </div>
-      </div>
-      <div class="m-group">
-        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-3">Basketball<span class="m-group-chevron">▾</span></button>
-        <div class="m-group-panel" id="mg-3">
-        <div class="m-sublabel">Players</div>
+        <a href="/research#baseball" class="m-all">All Baseball →</a>
+        <div class="m-sublabel">🏀 Basketball</div>
         <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
         <a href="/victor-wembanyama-rookie-cards">Victor Wembanyama</a>
-        <div class="m-sublabel">Set Guides</div>
         <a href="/topps-chrome-basketball-2026">Topps Chrome Basketball</a>
         <a href="/topps-chrome-updates-basketball">Chrome Updates — Jul 7</a>
-        <a href="/topps-chrome-cactus-jack-basketball">Chrome Cactus Jack</a>
-        <a href="/topps-inception-basketball">Topps Inception</a>
-        <div class="m-sublabel">Guides</div>
         <a href="/best-basketball-cards-under-50">Best Cards Under $50</a>
-        <a href="/wnba-cards-2026">WNBA Cards 2026</a>
-        </div>
-      </div>
-      <div class="m-group">
-        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-4">Pokémon TCG<span class="m-group-chevron">▾</span></button>
-        <div class="m-group-panel" id="mg-4">
-        <div class="m-sublabel">Set Guides</div>
-        <a href="/chaos-rising">Chaos Rising</a>
-        <a href="/ascended-heroes">Ascended Heroes</a>
-        <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
-        <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
-        <div class="m-sublabel">Guides</div>
-        <a href="/pokemon-tcg-2026">2026 Pokémon TCG Guide</a>
-        </div>
-      </div>
-      <div class="m-group">
-        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-5">More<span class="m-group-chevron">▾</span></button>
-        <div class="m-group-panel" id="mg-5">
-        <div class="m-sublabel">Football</div>
-        <a href="/nfl-rookie-cards-2026">2026 NFL Rookie Cards Guide</a>
-        <a href="/topps-cosmic-chrome-football">Cosmic Chrome Football</a>
+        <a href="/research#basketball" class="m-all">All Basketball →</a>
+        <div class="m-sublabel">🏈 Football</div>
+        <a href="/nfl-rookie-cards-2026">2026 NFL Rookie Guide</a>
+        <a href="/topps-cosmic-chrome-football">Cosmic Chrome</a>
         <a href="/topps-chrome-black-football">Chrome Black — Jul 10</a>
         <a href="/best-football-cards-under-50">Best Cards Under $50</a>
-        <div class="m-sublabel">Soccer</div>
-        <a href="/world-cup-2026-soccer-cards">FIFA World Cup 2026 Cards</a>
+        <a href="/research#football" class="m-all">All Football →</a>
+        <div class="m-sublabel">⚽ Soccer</div>
+        <a href="/world-cup-2026-soccer-cards">World Cup 2026 Cards</a>
         <a href="/lamine-yamal-rookie-cards">Lamine Yamal</a>
         <a href="/erling-haaland-rookie-cards">Erling Haaland</a>
-        <a href="/kylian-mbappe-rookie-cards">Kylian Mbappé</a>
-        <a href="/harry-kane-cards">Harry Kane</a>
-        <a href="/cristiano-ronaldo-cards">Cristiano Ronaldo</a>
         <a href="/lionel-messi-cards">Lionel Messi</a>
-        <div class="m-sublabel">Grading & Supplies</div>
+        <a href="/research#soccer" class="m-all">All Soccer →</a>
+        <a href="https://comc.com/Users/DBCooper" class="m-money" target="_blank" rel="noopener">Browse Our COMC Inventory →</a>
+        </div>
+      </div>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-2">Pokémon<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-2">
+        <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
+        <a href="/chaos-rising">Chaos Rising</a>
+        <a href="/ascended-heroes">Ascended Heroes</a>
+        <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
+        <a href="/pokemon-tcg-2026">2026 Pokémon TCG Guide</a>
+        <a href="/research#pokemon" class="m-all">All Pokémon →</a>
+        </div>
+      </div>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-3">Grading + Supplies<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-3">
+        <div class="m-sublabel">Grading</div>
         <a href="/psa-grading-guide">PSA Grading Guide</a>
+        <div class="m-sublabel">Supplies</div>
         <a href="/best-card-supplies">Best Card Supplies</a>
+        <a href="/research#grading" class="m-all">All Grading & Supplies →</a>
         </div>
       </div>
   <a href="/watchlist" class="m-cta">My Vault →</a>
@@ -750,7 +703,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       });
     });
   }
-  var INDEX = [{"t":"Home","u":"/","n":"home"},{"t":"Tools","u":"/bowman-bangers","n":"tools bowman bangers"},{"t":"My Vault — Watchlist & Portfolio","u":"/watchlist","n":"my vault watchlist portfolio watchlist"},{"t":"Hobby Box ROI Calculator","u":"/hobby-box-roi-calculator","n":"hobby box roi calculator hobby box roi calculator"},{"t":"Best Boxes 2026 — Ranked by ROI","u":"/best-hobby-boxes-2026","n":"best boxes 2026 ranked by roi best hobby boxes 2026"},{"t":"All Guides","u":"/blog","n":"all guides blog"},{"t":"Research","u":"/research","n":"research research"},{"t":"Baseball","u":"/research#baseball","n":"baseball research baseball"},{"t":"Basketball","u":"/research#basketball","n":"basketball research basketball"},{"t":"Football","u":"/research#football","n":"football research football"},{"t":"Soccer","u":"/research#soccer","n":"soccer research soccer"},{"t":"Pokémon TCG","u":"/research#pokemon","n":"pok mon tcg research pokemon"},{"t":"Grading & Supplies","u":"/research#grading","n":"grading supplies research grading"},{"t":"Ethan Holliday 1st Bowman","u":"/ethan-holliday-rookie-cards","n":"ethan holliday 1st bowman ethan holliday rookie cards"},{"t":"Aiva Arquette 1st Bowman","u":"/aiva-arquette-1st-bowman","n":"aiva arquette 1st bowman aiva arquette 1st bowman"},{"t":"Shohei Ohtani Cards","u":"/shohei-ohtani-cards","n":"shohei ohtani cards shohei ohtani cards"},{"t":"Munetaka Murakami","u":"/munetaka-murakami-rookie-cards","n":"munetaka murakami munetaka murakami rookie cards"},{"t":"Jacob Misiorowski","u":"/jacob-misiorowski-rookie-cards","n":"jacob misiorowski jacob misiorowski rookie cards"},{"t":"Pete Crow-Armstrong","u":"/pete-crow-armstrong-cards","n":"pete crow armstrong pete crow armstrong cards"},{"t":"Chase DeLauter","u":"/chase-delauter-rookie-cards","n":"chase delauter chase delauter rookie cards"},{"t":"Topps Series 1","u":"/topps-series-1-2026","n":"topps series 1 topps series 1 2026"},{"t":"Topps Series 2","u":"/topps-series-2-2026","n":"topps series 2 topps series 2 2026"},{"t":"Bowman Sapphire","u":"/bowman-sapphire-2026","n":"bowman sapphire bowman sapphire 2026"},{"t":"Topps Chrome Baseball","u":"/topps-chrome-baseball-2026","n":"topps chrome baseball topps chrome baseball 2026"},{"t":"Topps Finest Baseball","u":"/topps-finest-baseball","n":"topps finest baseball topps finest baseball"},{"t":"Topps Inception","u":"/topps-inception-baseball","n":"topps inception topps inception baseball"},{"t":"Topps Tier One","u":"/topps-tier-one-baseball","n":"topps tier one topps tier one baseball"},{"t":"Topps Tribute — Jul 29","u":"/topps-tribute-baseball","n":"topps tribute jul 29 topps tribute baseball"},{"t":"ROY Watch 2026","u":"/roy-watch-2026","n":"roy watch 2026 roy watch 2026"},{"t":"Best Cards Under $50","u":"/best-baseball-cards-under-50","n":"best cards under 50 best baseball cards under 50"},{"t":"Basketball","u":"/cooper-flagg-rookie-cards","n":"basketball cooper flagg rookie cards"},{"t":"Victor Wembanyama","u":"/victor-wembanyama-rookie-cards","n":"victor wembanyama victor wembanyama rookie cards"},{"t":"Topps Chrome Basketball","u":"/topps-chrome-basketball-2026","n":"topps chrome basketball topps chrome basketball 2026"},{"t":"Chrome Updates — Jul 7","u":"/topps-chrome-updates-basketball","n":"chrome updates jul 7 topps chrome updates basketball"},{"t":"Chrome Cactus Jack","u":"/topps-chrome-cactus-jack-basketball","n":"chrome cactus jack topps chrome cactus jack basketball"},{"t":"Topps Inception","u":"/topps-inception-basketball","n":"topps inception topps inception basketball"},{"t":"Best Cards Under $50","u":"/best-basketball-cards-under-50","n":"best cards under 50 best basketball cards under 50"},{"t":"WNBA Cards 2026","u":"/wnba-cards-2026","n":"wnba cards 2026 wnba cards 2026"},{"t":"Pokémon TCG","u":"/pokemon-tcg-2026","n":"pok mon tcg pokemon tcg 2026"},{"t":"Chaos Rising","u":"/chaos-rising","n":"chaos rising chaos rising"},{"t":"Ascended Heroes","u":"/ascended-heroes","n":"ascended heroes ascended heroes"},{"t":"Pitch Black — Jul 17","u":"/pitch-black-set-guide","n":"pitch black jul 17 pitch black set guide"},{"t":"Prismatic Evolutions","u":"/prismatic-evolutions-guide","n":"prismatic evolutions prismatic evolutions guide"},{"t":"More","u":"/nfl-rookie-cards-2026","n":"more nfl rookie cards 2026"},{"t":"Cosmic Chrome Football","u":"/topps-cosmic-chrome-football","n":"cosmic chrome football topps cosmic chrome football"},{"t":"Chrome Black — Jul 10","u":"/topps-chrome-black-football","n":"chrome black jul 10 topps chrome black football"},{"t":"Best Cards Under $50","u":"/best-football-cards-under-50","n":"best cards under 50 best football cards under 50"},{"t":"FIFA World Cup 2026 Cards","u":"/world-cup-2026-soccer-cards","n":"fifa world cup 2026 cards world cup 2026 soccer cards"},{"t":"Lamine Yamal","u":"/lamine-yamal-rookie-cards","n":"lamine yamal lamine yamal rookie cards"},{"t":"Erling Haaland","u":"/erling-haaland-rookie-cards","n":"erling haaland erling haaland rookie cards"},{"t":"Kylian Mbappé","u":"/kylian-mbappe-rookie-cards","n":"kylian mbapp kylian mbappe rookie cards"},{"t":"Harry Kane","u":"/harry-kane-cards","n":"harry kane harry kane cards"},{"t":"Cristiano Ronaldo","u":"/cristiano-ronaldo-cards","n":"cristiano ronaldo cristiano ronaldo cards"},{"t":"Lionel Messi","u":"/lionel-messi-cards","n":"lionel messi lionel messi cards"},{"t":"PSA Grading Guide","u":"/psa-grading-guide","n":"psa grading guide psa grading guide"},{"t":"Best Card Supplies","u":"/best-card-supplies","n":"best card supplies best card supplies"},{"t":"About","u":"/about","n":"about about"},{"t":"Affiliate Disclosure","u":"/affiliate-disclosure","n":"affiliate disclosure affiliate disclosure"},{"t":"Privacy Policy","u":"/privacy","n":"privacy policy privacy"}];
+  var INDEX = [{"t":"Home","u":"/","n":"home"},{"t":"Tools + Research","u":"/research","n":"tools research research"},{"t":"Bowman Bangers ⭐","u":"/bowman-bangers","n":"bowman bangers bowman bangers"},{"t":"Hobby Box ROI Calculator","u":"/hobby-box-roi-calculator","n":"hobby box roi calculator hobby box roi calculator"},{"t":"Best Boxes 2026 — Ranked by ROI","u":"/best-hobby-boxes-2026","n":"best boxes 2026 ranked by roi best hobby boxes 2026"},{"t":"My Vault — Watchlist & Portfolio","u":"/watchlist","n":"my vault watchlist portfolio watchlist"},{"t":"ROY Watch 2026","u":"/roy-watch-2026","n":"roy watch 2026 roy watch 2026"},{"t":"All Posts (Blog)","u":"/blog","n":"all posts blog blog"},{"t":"Ethan Holliday 1st Bowman","u":"/ethan-holliday-rookie-cards","n":"ethan holliday 1st bowman ethan holliday rookie cards"},{"t":"Topps Series 2","u":"/topps-series-2-2026","n":"topps series 2 topps series 2 2026"},{"t":"Bowman Sapphire","u":"/bowman-sapphire-2026","n":"bowman sapphire bowman sapphire 2026"},{"t":"Topps Tribute — Jul 29","u":"/topps-tribute-baseball","n":"topps tribute jul 29 topps tribute baseball"},{"t":"Cooper Flagg Rookie Cards","u":"/cooper-flagg-rookie-cards","n":"cooper flagg rookie cards cooper flagg rookie cards"},{"t":"Victor Wembanyama","u":"/victor-wembanyama-rookie-cards","n":"victor wembanyama victor wembanyama rookie cards"},{"t":"Topps Chrome Basketball","u":"/topps-chrome-basketball-2026","n":"topps chrome basketball topps chrome basketball 2026"},{"t":"Chrome Updates — Jul 7","u":"/topps-chrome-updates-basketball","n":"chrome updates jul 7 topps chrome updates basketball"},{"t":"Best Cards Under $50","u":"/best-basketball-cards-under-50","n":"best cards under 50 best basketball cards under 50"},{"t":"2026 NFL Rookie Guide","u":"/nfl-rookie-cards-2026","n":"2026 nfl rookie guide nfl rookie cards 2026"},{"t":"Cosmic Chrome","u":"/topps-cosmic-chrome-football","n":"cosmic chrome topps cosmic chrome football"},{"t":"Chrome Black — Jul 10","u":"/topps-chrome-black-football","n":"chrome black jul 10 topps chrome black football"},{"t":"Best Cards Under $50","u":"/best-football-cards-under-50","n":"best cards under 50 best football cards under 50"},{"t":"World Cup 2026 Cards","u":"/world-cup-2026-soccer-cards","n":"world cup 2026 cards world cup 2026 soccer cards"},{"t":"Lamine Yamal","u":"/lamine-yamal-rookie-cards","n":"lamine yamal lamine yamal rookie cards"},{"t":"Erling Haaland","u":"/erling-haaland-rookie-cards","n":"erling haaland erling haaland rookie cards"},{"t":"Lionel Messi","u":"/lionel-messi-cards","n":"lionel messi lionel messi cards"},{"t":"Pokémon","u":"/pokemon-tcg-2026","n":"pok mon pokemon tcg 2026"},{"t":"Pitch Black — Jul 17","u":"/pitch-black-set-guide","n":"pitch black jul 17 pitch black set guide"},{"t":"Chaos Rising","u":"/chaos-rising","n":"chaos rising chaos rising"},{"t":"Ascended Heroes","u":"/ascended-heroes","n":"ascended heroes ascended heroes"},{"t":"Prismatic Evolutions","u":"/prismatic-evolutions-guide","n":"prismatic evolutions prismatic evolutions guide"},{"t":"Grading + Supplies","u":"/psa-grading-guide","n":"grading supplies psa grading guide"},{"t":"Best Card Supplies","u":"/best-card-supplies","n":"best card supplies best card supplies"},{"t":"About","u":"/about","n":"about about"},{"t":"Affiliate Disclosure","u":"/affiliate-disclosure","n":"affiliate disclosure affiliate disclosure"},{"t":"Privacy Policy","u":"/privacy","n":"privacy policy privacy"},{"t":"Shohei Ohtani Cards","u":"/shohei-ohtani-cards","n":"shohei ohtani cards shohei ohtani cards"},{"t":"Munetaka Murakami","u":"/munetaka-murakami-rookie-cards","n":"munetaka murakami munetaka murakami rookie cards"},{"t":"Jacob Misiorowski","u":"/jacob-misiorowski-rookie-cards","n":"jacob misiorowski jacob misiorowski rookie cards"},{"t":"Pete Crow-Armstrong","u":"/pete-crow-armstrong-cards","n":"pete crow armstrong pete crow armstrong cards"},{"t":"Chase DeLauter","u":"/chase-delauter-rookie-cards","n":"chase delauter chase delauter rookie cards"},{"t":"Roman Anthony Rookie Cards","u":"/roman-anthony-rookie-cards","n":"roman anthony rookie cards roman anthony rookie cards"},{"t":"Topps Series 1","u":"/topps-series-1-2026","n":"topps series 1 topps series 1 2026"},{"t":"Topps Chrome Baseball","u":"/topps-chrome-baseball-2026","n":"topps chrome baseball topps chrome baseball 2026"},{"t":"Topps Finest Baseball","u":"/topps-finest-baseball","n":"topps finest baseball topps finest baseball"},{"t":"Topps Inception Baseball","u":"/topps-inception-baseball","n":"topps inception baseball topps inception baseball"},{"t":"Topps Tier One","u":"/topps-tier-one-baseball","n":"topps tier one topps tier one baseball"},{"t":"Best Baseball Cards Under $50","u":"/best-baseball-cards-under-50","n":"best baseball cards under 50 best baseball cards under 50"},{"t":"Chrome Cactus Jack","u":"/topps-chrome-cactus-jack-basketball","n":"chrome cactus jack topps chrome cactus jack basketball"},{"t":"Topps Inception Basketball","u":"/topps-inception-basketball","n":"topps inception basketball topps inception basketball"},{"t":"WNBA Cards 2026","u":"/wnba-cards-2026","n":"wnba cards 2026 wnba cards 2026"},{"t":"Kylian Mbappé","u":"/kylian-mbappe-rookie-cards","n":"kylian mbapp kylian mbappe rookie cards"},{"t":"Harry Kane","u":"/harry-kane-cards","n":"harry kane harry kane cards"},{"t":"Cristiano Ronaldo","u":"/cristiano-ronaldo-cards","n":"cristiano ronaldo cristiano ronaldo cards"}];
   function nk(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); }
   function setup(input, results){
     if (!input || !results) return;

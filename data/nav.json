@@ -1,5 +1,5 @@
 {
- "_comment": "SINGLE SOURCE OF TRUTH for the site nav (desktop dropdowns + mobile accordion drawer). Edit this file, then run `node tools/build-nav.js` from the repo root to regenerate the nav region (between <!-- NAV:START --> / <!-- NAV:END -->) on every *.html page. See tools/build-nav-README.md. STAGE 1 of the Concept B rework (Jun 27 2026): job-based buckets, Tools promoted first, 7->5 top-level. Markets tools (Signal Board / Watchlist / Portfolio) are NOT listed yet because the pages don't exist — add them here when built. See SITE-STRATEGY-REWORK.md.",
+ "_comment": "SINGLE SOURCE OF TRUTH for the site nav (desktop dropdowns + mobile accordion drawer). Edit this file, then run `node tools/build-nav.js` from the repo root to regenerate the nav region (between <!-- NAV:START --> / <!-- NAV:END -->) on every *.html page. See tools/build-nav-README.md. ITERATION 2 of the mega-menu rework (Jul 7 2026): 5 top-level — Tools + Research / Sports (mega, 4 columns) / Pokémon / Grading + Supplies / My Vault CTA. Panels capped at ~5 links per column; overflow routes to 'All →' hub anchors (allLink:true). Pages cut from dropdowns are listed in searchExtra so site search still finds them. Sports panel carries a COMC inventory footer link (money path).",
  "brand": {
   "href": "/",
   "html": "Shop<span>Card</span>Hub"
@@ -15,16 +15,12 @@
  },
  "categories": [
   {
-   "label": "Tools",
-   "href": "/bowman-bangers",
+   "label": "Tools + Research",
+   "href": "/research",
    "groups": [
     {
      "label": "Trackers & Tools",
      "links": [
-      {
-       "href": "/watchlist",
-       "label": "My Vault — Watchlist & Portfolio"
-      },
       {
        "href": "/bowman-bangers",
        "label": "Bowman Bangers ⭐"
@@ -32,111 +28,51 @@
       {
        "href": "/hobby-box-roi-calculator",
        "label": "Hobby Box ROI Calculator"
-      }
-     ]
-    },
-    {
-     "label": "Hobby Boxes",
-     "links": [
+      },
       {
        "href": "/best-hobby-boxes-2026",
        "label": "Best Boxes 2026 — Ranked by ROI"
       },
       {
-       "href": "/blog",
-       "label": "All Guides"
+       "href": "/watchlist",
+       "label": "My Vault — Watchlist & Portfolio"
       }
      ]
-    }
-   ]
-  },
-  {
-   "label": "Research",
-   "href": "/research",
-   "groups": [
+    },
     {
-     "label": "Research Hub",
+     "label": "Research",
      "links": [
       {
        "href": "/research",
-       "label": "All Research — Hub"
-      }
-     ]
-    },
-    {
-     "label": "By Category",
-     "links": [
-      {
-       "href": "/research#baseball",
-       "label": "Baseball"
+       "label": "Research Hub — All Guides"
       },
       {
-       "href": "/research#basketball",
-       "label": "Basketball"
+       "href": "/roy-watch-2026",
+       "label": "ROY Watch 2026"
       },
       {
-       "href": "/research#football",
-       "label": "Football"
-      },
-      {
-       "href": "/research#soccer",
-       "label": "Soccer"
-      },
-      {
-       "href": "/research#pokemon",
-       "label": "Pokémon TCG"
-      },
-      {
-       "href": "/research#grading",
-       "label": "Grading & Supplies"
+       "href": "/blog",
+       "label": "All Posts (Blog)"
       }
      ]
     }
    ]
   },
   {
-   "label": "Baseball",
-   "href": "/bowman-bangers",
+   "label": "Sports",
+   "href": "/research",
+   "mega": true,
    "groups": [
     {
-     "label": "Players",
+     "label": "⚾ Baseball",
      "links": [
+      {
+       "href": "/bowman-bangers",
+       "label": "2026 Bowman Bangers ⭐"
+      },
       {
        "href": "/ethan-holliday-rookie-cards",
        "label": "Ethan Holliday 1st Bowman"
-      },
-      {
-       "href": "/aiva-arquette-1st-bowman",
-       "label": "Aiva Arquette 1st Bowman"
-      },
-      {
-       "href": "/shohei-ohtani-cards",
-       "label": "Shohei Ohtani Cards"
-      },
-      {
-       "href": "/munetaka-murakami-rookie-cards",
-       "label": "Munetaka Murakami"
-      },
-      {
-       "href": "/jacob-misiorowski-rookie-cards",
-       "label": "Jacob Misiorowski"
-      },
-      {
-       "href": "/pete-crow-armstrong-cards",
-       "label": "Pete Crow-Armstrong"
-      },
-      {
-       "href": "/chase-delauter-rookie-cards",
-       "label": "Chase DeLauter"
-      }
-     ]
-    },
-    {
-     "label": "Set Guides",
-     "links": [
-      {
-       "href": "/topps-series-1-2026",
-       "label": "Topps Series 1"
       },
       {
        "href": "/topps-series-2-2026",
@@ -147,52 +83,18 @@
        "label": "Bowman Sapphire"
       },
       {
-       "href": "/topps-chrome-baseball-2026",
-       "label": "Topps Chrome Baseball"
-      },
-      {
-       "href": "/topps-finest-baseball",
-       "label": "Topps Finest Baseball"
-      },
-      {
-       "href": "/topps-inception-baseball",
-       "label": "Topps Inception"
-      },
-      {
-       "href": "/topps-tier-one-baseball",
-       "label": "Topps Tier One"
-      },
-      {
        "href": "/topps-tribute-baseball",
        "label": "Topps Tribute — Jul 29"
+      },
+      {
+       "href": "/research#baseball",
+       "label": "All Baseball →",
+       "allLink": true
       }
      ]
     },
     {
-     "label": "Guides",
-     "links": [
-      {
-       "href": "/bowman-bangers",
-       "label": "2026 Bowman Bangers"
-      },
-      {
-       "href": "/roy-watch-2026",
-       "label": "ROY Watch 2026"
-      },
-      {
-       "href": "/best-baseball-cards-under-50",
-       "label": "Best Cards Under $50"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "label": "Basketball",
-   "href": "/cooper-flagg-rookie-cards",
-   "groups": [
-    {
-     "label": "Players",
+     "label": "🏀 Basketball",
      "links": [
       {
        "href": "/cooper-flagg-rookie-cards",
@@ -201,12 +103,7 @@
       {
        "href": "/victor-wembanyama-rookie-cards",
        "label": "Victor Wembanyama"
-      }
-     ]
-    },
-    {
-     "label": "Set Guides",
-     "links": [
+      },
       {
        "href": "/topps-chrome-basketball-2026",
        "label": "Topps Chrome Basketball"
@@ -216,81 +113,26 @@
        "label": "Chrome Updates — Jul 7"
       },
       {
-       "href": "/topps-chrome-cactus-jack-basketball",
-       "label": "Chrome Cactus Jack"
-      },
-      {
-       "href": "/topps-inception-basketball",
-       "label": "Topps Inception"
-      }
-     ]
-    },
-    {
-     "label": "Guides",
-     "links": [
-      {
        "href": "/best-basketball-cards-under-50",
        "label": "Best Cards Under $50"
       },
       {
-       "href": "/wnba-cards-2026",
-       "label": "WNBA Cards 2026"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "label": "Pokémon TCG",
-   "href": "/pokemon-tcg-2026",
-   "groups": [
-    {
-     "label": "Set Guides",
-     "links": [
-      {
-       "href": "/chaos-rising",
-       "label": "Chaos Rising"
-      },
-      {
-       "href": "/ascended-heroes",
-       "label": "Ascended Heroes"
-      },
-      {
-       "href": "/pitch-black-set-guide",
-       "label": "Pitch Black — Jul 17",
-       "style": "color:#9b5de5;"
-      },
-      {
-       "href": "/prismatic-evolutions-guide",
-       "label": "Prismatic Evolutions"
+       "href": "/research#basketball",
+       "label": "All Basketball →",
+       "allLink": true
       }
      ]
     },
     {
-     "label": "Guides",
-     "links": [
-      {
-       "href": "/pokemon-tcg-2026",
-       "label": "2026 Pokémon TCG Guide"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "label": "More",
-   "href": "/nfl-rookie-cards-2026",
-   "groups": [
-    {
-     "label": "Football",
+     "label": "🏈 Football",
      "links": [
       {
        "href": "/nfl-rookie-cards-2026",
-       "label": "2026 NFL Rookie Cards Guide"
+       "label": "2026 NFL Rookie Guide"
       },
       {
        "href": "/topps-cosmic-chrome-football",
-       "label": "Cosmic Chrome Football"
+       "label": "Cosmic Chrome"
       },
       {
        "href": "/topps-chrome-black-football",
@@ -299,15 +141,20 @@
       {
        "href": "/best-football-cards-under-50",
        "label": "Best Cards Under $50"
+      },
+      {
+       "href": "/research#football",
+       "label": "All Football →",
+       "allLink": true
       }
      ]
     },
     {
-     "label": "Soccer",
+     "label": "⚽ Soccer",
      "links": [
       {
        "href": "/world-cup-2026-soccer-cards",
-       "label": "FIFA World Cup 2026 Cards"
+       "label": "World Cup 2026 Cards"
       },
       {
        "href": "/lamine-yamal-rookie-cards",
@@ -318,33 +165,91 @@
        "label": "Erling Haaland"
       },
       {
-       "href": "/kylian-mbappe-rookie-cards",
-       "label": "Kylian Mbappé"
-      },
-      {
-       "href": "/harry-kane-cards",
-       "label": "Harry Kane"
-      },
-      {
-       "href": "/cristiano-ronaldo-cards",
-       "label": "Cristiano Ronaldo"
-      },
-      {
        "href": "/lionel-messi-cards",
        "label": "Lionel Messi"
+      },
+      {
+       "href": "/research#soccer",
+       "label": "All Soccer →",
+       "allLink": true
       }
      ]
-    },
+    }
+   ],
+   "footer": {
+    "label": "Own the card, not just the guide",
+    "links": [
+     {
+      "href": "https://comc.com/Users/DBCooper",
+      "label": "Browse Our COMC Inventory →",
+      "target": "_blank",
+      "rel": "noopener",
+      "money": true
+     }
+    ]
+   }
+  },
+  {
+   "label": "Pokémon",
+   "href": "/pokemon-tcg-2026",
+   "groups": [
     {
-     "label": "Grading & Supplies",
+     "label": "Sets & Guides",
+     "links": [
+      {
+       "href": "/pitch-black-set-guide",
+       "label": "Pitch Black — Jul 17",
+       "style": "color:#9b5de5;"
+      },
+      {
+       "href": "/chaos-rising",
+       "label": "Chaos Rising"
+      },
+      {
+       "href": "/ascended-heroes",
+       "label": "Ascended Heroes"
+      },
+      {
+       "href": "/prismatic-evolutions-guide",
+       "label": "Prismatic Evolutions"
+      },
+      {
+       "href": "/pokemon-tcg-2026",
+       "label": "2026 Pokémon TCG Guide"
+      },
+      {
+       "href": "/research#pokemon",
+       "label": "All Pokémon →",
+       "allLink": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "label": "Grading + Supplies",
+   "href": "/psa-grading-guide",
+   "groups": [
+    {
+     "label": "Grading",
      "links": [
       {
        "href": "/psa-grading-guide",
        "label": "PSA Grading Guide"
-      },
+      }
+     ]
+    },
+    {
+     "label": "Supplies",
+     "links": [
       {
        "href": "/best-card-supplies",
        "label": "Best Card Supplies"
+      },
+      {
+       "href": "/research#grading",
+       "label": "All Grading & Supplies →",
+       "allLink": true
       }
      ]
     }
@@ -363,6 +268,78 @@
   {
    "href": "/privacy",
    "label": "Privacy Policy"
+  },
+  {
+   "href": "/shohei-ohtani-cards",
+   "label": "Shohei Ohtani Cards"
+  },
+  {
+   "href": "/munetaka-murakami-rookie-cards",
+   "label": "Munetaka Murakami"
+  },
+  {
+   "href": "/jacob-misiorowski-rookie-cards",
+   "label": "Jacob Misiorowski"
+  },
+  {
+   "href": "/pete-crow-armstrong-cards",
+   "label": "Pete Crow-Armstrong"
+  },
+  {
+   "href": "/chase-delauter-rookie-cards",
+   "label": "Chase DeLauter"
+  },
+  {
+   "href": "/roman-anthony-rookie-cards",
+   "label": "Roman Anthony Rookie Cards"
+  },
+  {
+   "href": "/topps-series-1-2026",
+   "label": "Topps Series 1"
+  },
+  {
+   "href": "/topps-chrome-baseball-2026",
+   "label": "Topps Chrome Baseball"
+  },
+  {
+   "href": "/topps-finest-baseball",
+   "label": "Topps Finest Baseball"
+  },
+  {
+   "href": "/topps-inception-baseball",
+   "label": "Topps Inception Baseball"
+  },
+  {
+   "href": "/topps-tier-one-baseball",
+   "label": "Topps Tier One"
+  },
+  {
+   "href": "/best-baseball-cards-under-50",
+   "label": "Best Baseball Cards Under $50"
+  },
+  {
+   "href": "/topps-chrome-cactus-jack-basketball",
+   "label": "Chrome Cactus Jack"
+  },
+  {
+   "href": "/topps-inception-basketball",
+   "label": "Topps Inception Basketball"
+  },
+  {
+   "href": "/wnba-cards-2026",
+   "label": "WNBA Cards 2026"
+  },
+  {
+   "href": "/kylian-mbappe-rookie-cards",
+   "label": "Kylian Mbappé"
+  },
+  {
+   "href": "/harry-kane-cards",
+   "label": "Harry Kane"
+  },
+  {
+   "href": "/cristiano-ronaldo-cards",
+   "label": "Cristiano Ronaldo"
   }
  ]
 }
