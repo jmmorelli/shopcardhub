@@ -394,6 +394,17 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     .btn-fanatics { background:var(--orange); color:#000; border-color:var(--orange); }
     .btn-fanatics:hover { background:#fff; color:#000; border-color:#fff; }
     @media(max-width:640px){ .ev-cell{ min-width:120px; } .calc-table th:nth-child(1), .calc-table td:nth-child(1){ max-width:90px; } }
+    /* ── Outcome histogram + math toggle (additive layer) ── */
+    .hist { display:flex; align-items:flex-end; gap:3px; height:128px; padding-top:18px; position:relative; }
+    .hist-bar { flex:1; min-width:4px; border-radius:2px 2px 0 0; position:relative; }
+    .hist-bar.loss { background:rgba(255,46,85,0.45); box-shadow:inset 0 1px 0 rgba(255,46,85,0.7); }
+    .hist-bar.gain { background:rgba(0,224,122,0.4); box-shadow:inset 0 1px 0 rgba(0,224,122,0.7); }
+    .hist-pct { position:absolute; top:-16px; left:50%; transform:translateX(-50%); font-family:var(--fm); font-size:9px; color:var(--text-dim); white-space:nowrap; }
+    .hist-zero-line { position:absolute; top:0; bottom:0; width:1px; background:rgba(245,200,0,0.55); z-index:2; pointer-events:none; }
+    .hist-axis { position:relative; border-top:1px solid var(--border2); padding-top:6px; display:flex; justify-content:space-between; font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; }
+    .hist-zero-lab { position:absolute; top:6px; transform:translateX(-50%); color:var(--gold); white-space:nowrap; }
+    .math-panel { display:none; }
+    .math-panel.open { display:block; }
   </style>
 
   <!-- Google Analytics -->
@@ -741,6 +752,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           <option value="bowmanbb">2026 Bowman Baseball (~$390)</option>
           <option value="bowmanbkb">2025-26 Bowman Basketball (~$600)</option>
           <option value="prizmfb">2025-26 Panini Prizm Football (~$1,000)</option>
+          <option value="pokemonbb">Pokémon SV-Era Booster Box (~$160)</option>
         </select>
         <div style="font-family:var(--fm); font-size:11px; color:var(--text-dim); margin-top:6px;">Presets are rough starting templates — replace with current odds-sheet numbers + eBay sold comps for the box you're eyeing.</div>
       </div>
@@ -818,6 +830,17 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <div class="calc-cta" id="rCTA" style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;"></div>
     </div>
 
+    <div class="ev-block" id="distBlock">
+      <div class="ev-label" style="margin-bottom:4px; color:var(--text-head); font-size:13px;">What 2,000 of These Boxes Actually Do</div>
+      <p class="calc-plain" style="margin:0 0 6px; color:var(--text-dim); font-size:13px;">Simulated from your numbers — hit counts vary box to box and sale prices vary around your averages. Each bar is a slice of outcomes after fees: red loses money, green makes money, the gold line is break-even.</p>
+      <div class="hist" id="histBars"></div>
+      <div class="hist-axis"><span id="histLo">—</span><span class="hist-zero-lab" id="histZeroLab">↑ break even</span><span id="histHi">—</span></div>
+      <p class="calc-plain" id="histSummary" style="margin-top:14px;"></p>
+    </div>
+
+    <button class="btn-secondary" id="mathToggle" onclick="toggleMath()" aria-expanded="false" style="cursor:pointer; margin-bottom:8px;">Show the math ▾</button>
+
+    <div class="math-panel" id="mathPanel">
     <div class="ev-block" id="reality">
       <div class="ev-label" style="margin-bottom:16px; color:var(--text-head); font-size:13px;">Reality Check — Sealed Is a Right-Tail Bet</div>
       <div class="ev-row" style="margin-bottom:18px;">
@@ -845,6 +868,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         </div>
       </div>
       <p class="calc-plain" id="rSkew" style="margin-top:18px;"></p>
+      <p class="calc-plain" id="rMoments" style="margin-top:10px; font-family:var(--fm); font-size:12px; color:var(--text-dim);"></p>
     </div>
 
     <p class="section-intro" style="font-size:14px; color:var(--text-dim);">
@@ -853,6 +877,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       These are estimates — the market moves daily and variance on a single box is brutal. EV is what
       plays out over many boxes, not the next one you open.
     </p>
+    </div><!-- /math-panel -->
   </section>
 
   <section>
@@ -921,7 +946,12 @@ const PRESETS = {
     {name:"Base + rookies + Silver resale",count:1,value:25},
     {name:"Numbered Prizms (~10/box)",count:10,value:6},
     {name:"Two autos per box",count:2,value:50},
-    {name:"Maye / elite RPA chase (averaged)",count:0.03,value:2500}]}
+    {name:"Maye / elite RPA chase (averaged)",count:0.03,value:2500}]},
+  pokemonbb:{ cost:160, q:"pokemon booster box 36 packs", rows:[
+    {name:"Bulk + reverse holos (whole box)",count:1,value:12},
+    {name:"Illustration Rares (~3/box)",count:3,value:6},
+    {name:"SIR / full-art ex (~0.65/box)",count:0.65,value:25},
+    {name:"Chase alt-art / hyper rare (averaged)",count:0.08,value:150}]}
 };
 let curQ = PRESETS.custom.q;
 const fmtUSD = n => (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString(undefined,{maximumFractionDigits:2});
@@ -1031,6 +1061,82 @@ function recalc(){
 }
 ['boxCost','feePct','extraCost'].forEach(id=>document.getElementById(id).addEventListener('input', recalc));
 renderRows(DEFAULTS);
+</script>
+
+<script>
+/* ── Outcome histogram + "Show the math" toggle (additive layer) ── */
+function toggleMath(){
+  var p=document.getElementById('mathPanel'), b=document.getElementById('mathToggle');
+  var open=!p.classList.contains('open');
+  p.classList.toggle('open',open);
+  b.setAttribute('aria-expanded',String(open));
+  b.textContent=open?'Hide the math ▴':'Show the math ▾';
+}
+function _hash(s){ var h=1779033703; for(var i=0;i<s.length;i++){ h=Math.imul(h^s.charCodeAt(i),3432918353); h=h<<13|h>>>19; } return h>>>0; }
+function _mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function _norm(rnd){ var u=0,v=0; while(u===0)u=rnd(); while(v===0)v=rnd(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+function updateHist(){
+  var SIG=0.75, ADJ=Math.exp(-SIG*SIG/2);
+  var rows=[];
+  document.querySelectorAll('#hitBody tr').forEach(function(tr){
+    var c=parseFloat(tr.querySelector('[data-k="count"]').value)||0;
+    var v=parseFloat(tr.querySelector('[data-k="value"]').value)||0;
+    if(c>0&&v>0) rows.push({c:c,v:v});
+  });
+  var boxCost=parseFloat(document.getElementById('boxCost').value)||0;
+  var fee=Math.min(Math.max(parseFloat(document.getElementById('feePct').value)||0,0),100);
+  var extra=parseFloat(document.getElementById('extraCost').value)||0;
+  var totalCost=boxCost+extra, feeMul=1-fee/100;
+  var block=document.getElementById('distBlock');
+  if(totalCost<=0||!rows.length){ block.style.display='none'; return; }
+  block.style.display='';
+  var rnd=_mulberry32(_hash(JSON.stringify([rows,totalCost,fee])));
+  var N=2000, sims=new Array(N);
+  for(var i=0;i<N;i++){
+    var gross=0;
+    for(var j=0;j<rows.length;j++){
+      var c=rows[j].c, n=Math.floor(c)+((rnd()<c-Math.floor(c))?1:0);
+      for(var k=0;k<n;k++) gross+=rows[j].v*ADJ*Math.exp(SIG*_norm(rnd));
+    }
+    sims[i]=gross*feeMul-totalCost;
+  }
+  sims.sort(function(a,b){return a-b;});
+  var lo=sims[0], hi=sims[Math.floor(N*0.99)-1];
+  if(hi<=lo) hi=lo+1;
+  var NB=11, w=(hi-lo)/NB, bins=new Array(NB).fill(0);
+  for(var i2=0;i2<N;i2++){ bins[Math.min(NB-1,Math.max(0,Math.floor((sims[i2]-lo)/w)))]++; }
+  var maxC=Math.max.apply(null,bins);
+  var mean=sims.reduce(function(a,x){return a+x;},0)/N;
+  var med=(sims[N/2-1]+sims[N/2])/2;
+  var m2=0,m3=0,m4=0;
+  for(var i3=0;i3<N;i3++){ var d=sims[i3]-mean; m2+=d*d; m3+=d*d*d; m4+=d*d*d*d; }
+  m2/=N; m3/=N; m4/=N;
+  var sd=Math.sqrt(m2), skew=sd>0?m3/Math.pow(sd,3):0, kurt=m2>0?m4/(m2*m2)-3:0;
+  var pLoss=0; for(var i4=0;i4<N;i4++){ if(sims[i4]<0) pLoss++; } pLoss=pLoss/N*100;
+  var html='<div class="hist-zero-line" id="histZero"></div>';
+  for(var b2=0;b2<NB;b2++){
+    var center=lo+(b2+0.5)*w;
+    var hPct=maxC>0?Math.max(bins[b2]/maxC*100,bins[b2]>0?2:0):0;
+    var pct=bins[b2]/N*100;
+    var lab=pct>=6?'<span class="hist-pct">'+pct.toFixed(0)+'%</span>':'';
+    html+='<div class="hist-bar '+(center<0?'loss':'gain')+'" style="height:'+hPct+'%;" title="'+fmtUSD(lo+b2*w)+' to '+fmtUSD(lo+(b2+1)*w)+' · '+pct.toFixed(1)+'% of boxes">'+lab+'</div>';
+  }
+  document.getElementById('histBars').innerHTML=html;
+  var zeroPct=Math.min(Math.max((0-lo)/(hi-lo)*100,0),100);
+  document.getElementById('histZero').style.left=zeroPct+'%';
+  document.getElementById('histZeroLab').style.left=zeroPct+'%';
+  document.getElementById('histLo').textContent=fmtUSD(lo);
+  document.getElementById('histHi').textContent=fmtUSD(hi)+'+';
+  document.getElementById('histSummary').textContent=pLoss.toFixed(0)+'% of these boxes lose money. The median box nets '+fmtUSD(med)+' — rare big hits are what pull the average up to '+fmtUSD(mean)+'.';
+  var mo=document.getElementById('rMoments');
+  if(mo) mo.textContent='Simulated moments (n=2,000 · lognormal price noise, σ=0.75): mean '+fmtUSD(mean)+' · median '+fmtUSD(med)+' · sd '+fmtUSD(sd)+' · skew '+(skew>=0?'+':'')+skew.toFixed(1)+' · excess kurtosis '+(kurt>=0?'+':'')+kurt.toFixed(1)+'. Positive skew with a fat right tail: the mean is a story about boxes you probably won\'t open.';
+}
+(function(){
+  var _r=window.recalc;
+  window.recalc=function(){ _r(); try{ updateHist(); }catch(e){} };
+  ['boxCost','feePct','extraCost'].forEach(function(id){ document.getElementById(id).addEventListener('input', function(){ try{ updateHist(); }catch(e){} }); });
+  recalc();
+})();
 </script>
 
 
