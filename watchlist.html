@@ -1570,8 +1570,15 @@ function compsClean(c, j, usedQ) {
   const mean = ps.reduce((a, b) => a + b, 0) / n;
   const med = n % 2 ? ps[(n - 1) / 2] : (ps[n / 2 - 1] + ps[n / 2]) / 2;
   const sd = n > 1 ? Math.sqrt(ps.reduce((a, b) => a + (b - mean) * (b - mean), 0) / n) : null;
+  let skew = null, kurt = null;
+  if (sd > 0 && n >= 4) {
+    const m3 = ps.reduce((a, b) => a + Math.pow(b - mean, 3), 0) / n;
+    const m4 = ps.reduce((a, b) => a + Math.pow(b - mean, 4), 0) / n;
+    skew = m3 / Math.pow(sd, 3);
+    kurt = m4 / Math.pow(sd, 4) - 3;   // excess kurtosis, normal = 0
+  }
   return { count: keep.length, total: j.total, listings: keep,
-           stats: { n: n, min: ps[0], median: med, max: ps[n - 1], mean: mean, stdev: sd } };
+           stats: { n: n, min: ps[0], median: med, max: ps[n - 1], mean: mean, stdev: sd, skew: skew, kurt: kurt } };
 }
 function ensureComps(c) {
   const key = compsQ(c);
@@ -1614,6 +1621,24 @@ function logCompsMedian(id) {
   toast('Live-ask median $' + fmt$(m) + ' logged — candle added');
   track('vault_log_comps_median');
 }
+// Plain-English read of the ask distribution — same job "Read the Tape" does
+// for logged history, but for the live cross-section of seller asks.
+function compsVerdict(st) {
+  if (!st) return '';
+  if (st.n < 4) return 'Thin sample — only ' + st.n + ' verified ask' + (st.n === 1 ? '' : 's') + ', read it lightly.';
+  const cv = st.mean > 0 ? st.stdev / st.mean : 0;
+  const nums = ' <span style="color:var(--text-dim)">(skew ' + (st.skew >= 0 ? '+' : '') + st.skew.toFixed(2) + ', kurtosis ' + (st.kurt >= 0 ? '+' : '') + st.kurt.toFixed(2) + ')</span>';
+  if (cv >= 0.3 && st.kurt <= -0.8)
+    return 'No seller consensus — asks spread flat and even from $' + fmt$(st.min, 0) + ' to $' + fmt$(st.max, 0) + '. The median $' + fmt$(st.median, 0) + ' is a suggestion, not a price; there\'s room to negotiate.' + nums;
+  if (st.skew >= 0.8)
+    return 'Fat right tail — a few sellers fishing well above the pack. Median $' + fmt$(st.median, 0) + ' is the honest anchor; ignore the moonshots.' + nums;
+  if (st.skew <= -0.8)
+    return 'Tail of cheap asks below the pack — either real deals or lesser copies wearing the same name. Vet the low listings first.' + nums;
+  if (cv < 0.15)
+    return 'Tight market — sellers broadly agree this is a $' + fmt$(st.median, 0) + ' card right now.' + nums;
+  return 'Normal-ish scatter around $' + fmt$(st.median, 0) + ' — no strong tails, the median is a fair read of the ask side.' + nums;
+}
+
 function compsInner(c) {
   if (!openSet.has(c.id)) return '';
   const e = compsCache[compsQ(c)];
@@ -1630,6 +1655,8 @@ function compsInner(c) {
     cell('High', '$' + fmt$(st.max, 0), 'Priciest ask in the sample') +
     cell('σ', st.stdev != null ? '$' + fmt$(st.stdev, 0) : '—', 'Std deviation of asks — big σ means a messy, mixed-variation sample') +
     '</div>';
+  const cv = compsVerdict(st);
+  if (cv) out += '<div class="verdict" style="margin-bottom:10px">' + cv + '</div>';
 
   const items = d.listings
     .filter(l => l.price > 0)
