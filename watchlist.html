@@ -1512,17 +1512,34 @@ const compsCache = {};   // query -> { loading | err | data, t }
 function compsQ(c) {
   let q = ((c.set || '') + ' ' + c.name).trim();
   if (c.grade && c.grade.toLowerCase() !== 'raw' && !q.toLowerCase().includes(c.grade.toLowerCase())) q += ' ' + c.grade;
-  return q.replace(/\s+/g, ' ').trim();
+  return q.replace(/#/g, '').replace(/\s+/g, ' ').trim();   // "#161" breaks eBay matching; "161" hits "161/131"
+}
+// eBay category by card type — searching a Pokémon card inside the sports bin returns nothing.
+function compsCat(c) {
+  if (c.cat === 'pokemon') return '183454';                       // CCG Individual Cards
+  if (['baseball','basketball','football'].includes(c.cat)) return '212';  // Sports Trading Cards
+  return '';                                                       // other: search all categories
+}
+function compsFetch(q, cat) {
+  let u = '/api/comps?q=' + encodeURIComponent(q) + '&limit=50';
+  if (cat) u += '&category_ids=' + cat;
+  return fetch(u).then(r => { if (!r.ok) throw 0; return r.json(); });
 }
 function ensureComps(c) {
-  const q = compsQ(c);
-  const e = compsCache[q];
+  const key = compsQ(c);
+  const e = compsCache[key];
   if (e && (e.loading || e.data || (Date.now() - e.t < 30000))) return;   // no hammering on errors
-  compsCache[q] = { loading: true, t: Date.now() };
-  fetch('/api/comps?q=' + encodeURIComponent(q) + '&limit=50')
-    .then(r => { if (!r.ok) throw 0; return r.json(); })
-    .then(j => { compsCache[q] = { data: j, t: Date.now() }; paintComps(); })
-    .catch(() => { compsCache[q] = { err: true, t: Date.now() }; paintComps(); });
+  compsCache[key] = { loading: true, t: Date.now() };
+  const cat = compsCat(c);
+  compsFetch(key, cat)
+    .then(j => {
+      if (j.count || !c.set) return j;
+      // full query struck out — retry on the card name alone (set names rarely match listing titles verbatim)
+      const simple = compsQ(Object.assign({}, c, { set: '' }));
+      return compsFetch(simple, cat).then(j2 => j2.count ? Object.assign(j2, { simplified: simple }) : j);
+    })
+    .then(j => { compsCache[key] = { data: j, t: Date.now() }; paintComps(); })
+    .catch(() => { compsCache[key] = { err: true, t: Date.now() }; paintComps(); });
 }
 function paintComps() {
   state.cards.forEach(c => {
@@ -1553,7 +1570,7 @@ function compsInner(c) {
   if (!e || e.loading) { ensureComps(c); return '<div class="f-hint">◧ Pulling live eBay listings…</div>'; }
   if (e.err) return '<div class="f-hint">Couldn\'t reach the live feed. <button class="btn btn-sm" onclick="retryComps(\'' + c.id + '\')">Retry</button></div>';
   const d = e.data, st = d.stats;
-  if (!st || !d.count) return '<div class="f-hint">No live listings match “' + esc(compsQ(c)) + '” — simplify the card name or set.</div>';
+  if (!st || !d.count) return '<div class="f-hint">No live listings match “' + esc(compsQ(c)) + '” (also tried the card name alone) — try editing the card to a shorter name sellers would use.</div>';
 
   const cell = (l, v, tip) => '<div class="stat-cell"><div class="sl" title="' + esc(tip) + '">' + l + ' ⓘ</div><div class="sv">' + v + '</div></div>';
   let out = '<div class="comps-stats">' +
@@ -1580,7 +1597,8 @@ function compsInner(c) {
 
   out += '<div class="comps-foot">' +
     '<button class="btn btn-sm" style="border-color:rgba(0,224,122,0.4);color:var(--green)" onclick="logCompsMedian(\'' + c.id + '\')">+ Log median $' + fmt$(st.median, 0) + '</button>' +
-    '<span class="f-hint" style="margin:0">asking prices, not solds · sample of ' + d.count + ' · refreshes ~15 min</span>' +
+    '<span class="f-hint" style="margin:0">asking prices, not solds · sample of ' + d.count + ' · refreshes ~15 min' +
+      (d.simplified ? ' · matched on “' + esc(d.simplified) + '”' : '') + '</span>' +
     '</div>';
   return out;
 }
