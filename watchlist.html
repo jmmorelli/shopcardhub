@@ -1546,6 +1546,12 @@ function compsCandidates(c) {
 // Holo Prizm", Panini Instant "Silver Prizm") — reject it.
 const PRODUCT_LEX = new Set(['topps','bowman','chrome','sapphire','finest','heritage','stadium','gallery','instant','hoops','mosaic','optic','select','prizm','donruss','contenders','immaculate','obsidian','spectra','revolution','origins','noir','crown','royale','chronicles','illusions','phoenix','absolute','certified','elite','limited','playbook','zenith','score','prestige','attax','living','fleer','leaf','sage','upper','deck']);
 
+// Accessories & non-card listings that carry the card's full name in the title
+// ("Umbreon ex SIR 161/131 ... Extended Artwork CASE" is a $12 piece of plastic).
+const ACCESSORY_LEX = new Set(['case','cases','protector','protectors','sleeve','sleeves','toploader','toploaders','holder','holders','display','stand','binder','playmat','proxy','proxies','custom','replica','replicas','reprint','reprints','digital','magnetic','magnet','acrylic','screwdown','empty','box','boxes','pack','packs','lot','lots','bundle','bulk','sticker','decal']);
+// Legit hobby phrases that would otherwise trip the accessory list.
+const ACCESSORY_SAFE = /\b(case hits?|box toppers?|pack fresh|hobby case)\b/g;
+
 function compsClean(c, j, usedQ) {
   // Every meaningful word of the query must appear in the listing title —
   // player AND variant (prizm, silver, sapphire…). Tokens under 3 chars
@@ -1557,13 +1563,23 @@ function compsClean(c, j, usedQ) {
   // words this card is allowed to mention: its own query, set, and name
   const ok = new Set((usedQ + ' ' + (c.set || '') + ' ' + c.name).split(/[^a-zA-Z]+/)
     .map(t => t.toLowerCase()).filter(Boolean));
-  const keep = (j.listings || []).filter(l => {
+  let keep = (j.listings || []).filter(l => {
     const t = (l.title || '').toLowerCase();
     if (!req.every(w => t.includes(w))) return false;
-    const words = t.split(/[^a-z]+/);
-    for (const w of words) { if (PRODUCT_LEX.has(w) && !ok.has(w)) return false; }
+    const words = t.replace(ACCESSORY_SAFE, ' ').split(/[^a-z]+/);
+    for (const w of words) {
+      if (PRODUCT_LEX.has(w) && !ok.has(w)) return false;
+      if (ACCESSORY_LEX.has(w) && !ok.has(w)) return false;
+    }
     return true;
   });
+  // Outlier trim: anything 15× away from the surviving median (either way) is
+  // not the same product — a $12 "card" or a $50,000 ask vs a $1,700 median.
+  if (keep.length >= 4) {
+    const mps = keep.map(l => l.price).filter(p => p > 0).sort((a, b) => a - b);
+    const m0 = mps.length % 2 ? mps[(mps.length - 1) / 2] : (mps[mps.length / 2 - 1] + mps[mps.length / 2]) / 2;
+    if (m0 > 0) keep = keep.filter(l => !(l.price > 0) || (l.price >= m0 / 15 && l.price <= m0 * 15));
+  }
   const ps = keep.map(l => l.price).filter(p => p > 0).sort((a, b) => a - b);
   const n = ps.length;
   if (!n) return null;
