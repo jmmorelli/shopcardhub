@@ -1541,6 +1541,11 @@ function compsCandidates(c) {
 // eBay silently relaxes thin queries to "fewer words" and returns lookalikes
 // (search a Flagg Prizm, get an Ayomanor Mosaic). Never trust the raw sample:
 // require the card's name in the title, recompute stats over survivors only.
+// Product families. A title mentioning one of these that is NOT part of this
+// card's set/name is a different product wearing your keywords (Hoops "Silver
+// Holo Prizm", Panini Instant "Silver Prizm") — reject it.
+const PRODUCT_LEX = new Set(['topps','bowman','chrome','sapphire','finest','heritage','stadium','gallery','instant','hoops','mosaic','optic','select','prizm','donruss','contenders','immaculate','obsidian','spectra','revolution','origins','noir','crown','royale','chronicles','illusions','phoenix','absolute','certified','elite','limited','playbook','zenith','score','prestige','attax','living','fleer','leaf','sage','upper','deck']);
+
 function compsClean(c, j, usedQ) {
   // Every meaningful word of the query must appear in the listing title —
   // player AND variant (prizm, silver, sapphire…). Tokens under 3 chars
@@ -1549,9 +1554,15 @@ function compsClean(c, j, usedQ) {
     .map(t => t.replace(/[^a-z]/gi, '').toLowerCase())
     .filter(t => t.length >= 3);
   if (!req.length) return null;
+  // words this card is allowed to mention: its own query, set, and name
+  const ok = new Set((usedQ + ' ' + (c.set || '') + ' ' + c.name).split(/[^a-zA-Z]+/)
+    .map(t => t.toLowerCase()).filter(Boolean));
   const keep = (j.listings || []).filter(l => {
     const t = (l.title || '').toLowerCase();
-    return req.every(w => t.includes(w));
+    if (!req.every(w => t.includes(w))) return false;
+    const words = t.split(/[^a-z]+/);
+    for (const w of words) { if (PRODUCT_LEX.has(w) && !ok.has(w)) return false; }
+    return true;
   });
   const ps = keep.map(l => l.price).filter(p => p > 0).sort((a, b) => a - b);
   const n = ps.length;
