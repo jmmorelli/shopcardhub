@@ -1538,6 +1538,29 @@ function compsCandidates(c) {
   [full, name, slim].forEach(q => { if (q && !seen.has(q)) { seen.add(q); out.push(q); } });
   return out;
 }
+// eBay silently relaxes thin queries to "fewer words" and returns lookalikes
+// (search a Flagg Prizm, get an Ayomanor Mosaic). Never trust the raw sample:
+// require the card's name in the title, recompute stats over survivors only.
+function compsClean(c, j) {
+  const req = c.name.split(' ')
+    .map(t => t.replace(/[^a-z]/gi, ''))
+    .filter(t => t.length >= 2)
+    .slice(0, 2)
+    .map(t => t.toLowerCase());
+  if (!req.length) return null;
+  const keep = (j.listings || []).filter(l => {
+    const t = (l.title || '').toLowerCase();
+    return req.every(w => t.includes(w));
+  });
+  const ps = keep.map(l => l.price).filter(p => p > 0).sort((a, b) => a - b);
+  const n = ps.length;
+  if (!n) return null;
+  const mean = ps.reduce((a, b) => a + b, 0) / n;
+  const med = n % 2 ? ps[(n - 1) / 2] : (ps[n / 2 - 1] + ps[n / 2]) / 2;
+  const sd = n > 1 ? Math.sqrt(ps.reduce((a, b) => a + (b - mean) * (b - mean), 0) / n) : null;
+  return { count: keep.length, total: j.total, listings: keep,
+           stats: { n: n, min: ps[0], median: med, max: ps[n - 1], mean: mean, stdev: sd } };
+}
 function ensureComps(c) {
   const key = compsQ(c);
   const e = compsCache[key];
@@ -1549,10 +1572,10 @@ function ensureComps(c) {
     let result = null;
     for (const q of cands) {
       const j = await compsFetch(q, cat);
-      if (j.count) { result = (q === key) ? j : Object.assign(j, { simplified: q }); break; }
-      if (!result) result = j;   // keep first empty result for the no-match message
+      const cleaned = compsClean(c, j);
+      if (cleaned) { result = (q === key) ? cleaned : Object.assign(cleaned, { simplified: q }); break; }
     }
-    compsCache[key] = { data: result, t: Date.now() };
+    compsCache[key] = { data: result || { count: 0 }, t: Date.now() };
     paintComps();
   })().catch(() => { compsCache[key] = { err: true, t: Date.now() }; paintComps(); });
 }
@@ -1589,11 +1612,11 @@ function compsInner(c) {
 
   const cell = (l, v, tip) => '<div class="stat-cell"><div class="sl" title="' + esc(tip) + '">' + l + ' ⓘ</div><div class="sv">' + v + '</div></div>';
   let out = '<div class="comps-stats">' +
-    cell('Live asks', (d.total || d.count).toLocaleString('en-US'), 'Active listings matching this card on eBay right now') +
+    cell('Live asks', d.count.toLocaleString('en-US'), 'Listings in the live sample whose title actually matches this card') +
     cell('Low', '$' + fmt$(st.min, 0), 'Cheapest ask in the sample') +
     cell('Median', '$' + fmt$(st.median, 0), 'Middle ask — the honest number when the tail is fat') +
     cell('High', '$' + fmt$(st.max, 0), 'Priciest ask in the sample') +
-    cell('σ', '$' + fmt$(st.stdev, 0), 'Std deviation of asks — big σ means a messy, mixed-variation sample') +
+    cell('σ', st.stdev != null ? '$' + fmt$(st.stdev, 0) : '—', 'Std deviation of asks — big σ means a messy, mixed-variation sample') +
     '</div>';
 
   const items = d.listings
