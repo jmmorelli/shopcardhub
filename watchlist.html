@@ -248,6 +248,20 @@
     .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
     .f-hint { font-size:11px; color:var(--text-dim); margin-top:4px; font-family:var(--fm); }
 
+    /* live asks (eBay Browse API via /api/comps) */
+    .comps-sec { margin-top:16px; padding-top:12px; border-top:1px dashed var(--border2); }
+    .comps-stats { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; margin:8px 0 10px; }
+    .comps-item { display:flex; align-items:center; gap:10px; padding:7px 8px; background:var(--bg3); border:1px solid var(--border); margin-bottom:6px; color:var(--text); transition:border-color .15s; }
+    .comps-item:hover { border-color:var(--gold); text-decoration:none; }
+    .comps-item img { width:44px; height:44px; object-fit:contain; background:#000; flex:none; border:1px solid var(--border); }
+    .comps-item .ci-noimg { width:44px; height:44px; flex:none; background:var(--bg4); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:9px; font-family:var(--fm); }
+    .comps-item .ci-t { font-size:11.5px; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .comps-item .ci-p { margin-left:auto; text-align:right; font-family:var(--fm); flex:none; }
+    .comps-item .ci-p b { color:var(--text-head); font-size:13px; }
+    .comps-item .ci-p span { display:block; font-size:9px; color:var(--text-dim); }
+    .comps-foot { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:8px; }
+    @media (max-width:560px) { .comps-stats { grid-template-columns:repeat(3,1fr); } }
+
     /* Toast */
     .toast { position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--bg3); border:1px solid var(--green); color:var(--green); font-family:var(--fm); font-size:12px; letter-spacing:1px; padding:10px 20px; border-radius:2px; z-index:600; opacity:0; pointer-events:none; transition:all 0.3s ease; box-shadow:0 0 20px rgba(0,224,122,0.2); }
     .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
@@ -1032,6 +1046,10 @@ function cardRow(c) {
           '<div class="f-hint">Log a price whenever you check comps — every log adds a candle.</div>' +
         '</div>' +
       '</div>' +
+      '<div class="comps-sec">' +
+        '<div class="detail-h">Live Asks — what sellers want right now</div>' +
+        '<div id="comps-' + c.id + '">' + compsInner(c) + '</div>' +
+      '</div>' +
       '<div class="detail-grid">' +
         '<div>' +
           '<div class="detail-h">Price Log</div>' +
@@ -1483,6 +1501,88 @@ function unlinkFeed(id) {
   const c = state.cards.find(x => x.id === id);
   delete c.feedKey;
   save(); render();
+}
+
+/* ---------- live asks (eBay Browse API via /api/comps) ----------
+   Active-listing ASKING prices — labeled as such, never as "value".
+   Fetches on card expand only; per-query session cache; the endpoint's
+   15-min CDN cache is the real quota shield. */
+const compsCache = {};   // query -> { loading | err | data, t }
+
+function compsQ(c) {
+  let q = ((c.set || '') + ' ' + c.name).trim();
+  if (c.grade && c.grade.toLowerCase() !== 'raw' && !q.toLowerCase().includes(c.grade.toLowerCase())) q += ' ' + c.grade;
+  return q.replace(/\s+/g, ' ').trim();
+}
+function ensureComps(c) {
+  const q = compsQ(c);
+  const e = compsCache[q];
+  if (e && (e.loading || e.data || (Date.now() - e.t < 30000))) return;   // no hammering on errors
+  compsCache[q] = { loading: true, t: Date.now() };
+  fetch('/api/comps?q=' + encodeURIComponent(q) + '&limit=50')
+    .then(r => { if (!r.ok) throw 0; return r.json(); })
+    .then(j => { compsCache[q] = { data: j, t: Date.now() }; paintComps(); })
+    .catch(() => { compsCache[q] = { err: true, t: Date.now() }; paintComps(); });
+}
+function paintComps() {
+  state.cards.forEach(c => {
+    const el = document.getElementById('comps-' + c.id);
+    if (el) el.innerHTML = compsInner(c);
+  });
+}
+function retryComps(id) {
+  const c = state.cards.find(x => x.id === id);
+  if (!c) return;
+  delete compsCache[compsQ(c)];
+  paintComps();   // re-render triggers ensureComps
+}
+function logCompsMedian(id) {
+  const c = state.cards.find(x => x.id === id);
+  const e = c ? compsCache[compsQ(c)] : null;
+  const m = e && e.data && e.data.stats ? e.data.stats.median : null;
+  if (!(m > 0)) return;
+  c.prices.push({ t: Date.now(), p: m, src: 'comps' });
+  c.prices.sort((a, b) => a.t - b.t);
+  save(); render();
+  toast('Live-ask median $' + fmt$(m) + ' logged — candle added');
+  track('vault_log_comps_median');
+}
+function compsInner(c) {
+  if (!openSet.has(c.id)) return '';
+  const e = compsCache[compsQ(c)];
+  if (!e || e.loading) { ensureComps(c); return '<div class="f-hint">◧ Pulling live eBay listings…</div>'; }
+  if (e.err) return '<div class="f-hint">Couldn\'t reach the live feed. <button class="btn btn-sm" onclick="retryComps(\'' + c.id + '\')">Retry</button></div>';
+  const d = e.data, st = d.stats;
+  if (!st || !d.count) return '<div class="f-hint">No live listings match “' + esc(compsQ(c)) + '” — simplify the card name or set.</div>';
+
+  const cell = (l, v, tip) => '<div class="stat-cell"><div class="sl" title="' + esc(tip) + '">' + l + ' ⓘ</div><div class="sv">' + v + '</div></div>';
+  let out = '<div class="comps-stats">' +
+    cell('Live asks', (d.total || d.count).toLocaleString('en-US'), 'Active listings matching this card on eBay right now') +
+    cell('Low', '$' + fmt$(st.min, 0), 'Cheapest ask in the sample') +
+    cell('Median', '$' + fmt$(st.median, 0), 'Middle ask — the honest number when the tail is fat') +
+    cell('High', '$' + fmt$(st.max, 0), 'Priciest ask in the sample') +
+    cell('σ', '$' + fmt$(st.stdev, 0), 'Std deviation of asks — big σ means a messy, mixed-variation sample') +
+    '</div>';
+
+  const items = d.listings
+    .filter(l => l.price > 0)
+    .map(l => Object.assign({}, l, { tot: l.price + (l.shipping || 0) }))
+    .sort((a, b) => a.tot - b.tot)
+    .slice(0, 3);
+  items.forEach(l => {
+    out += '<a class="comps-item" href="' + esc(l.url) + '" target="_blank" rel="noopener sponsored" onclick="track(\'vault_comps_click\')">' +
+      (l.image ? '<img src="' + esc(l.image) + '" alt="" loading="lazy">' : '<div class="ci-noimg">NO IMG</div>') +
+      '<div class="ci-t">' + esc(l.title) + '</div>' +
+      '<div class="ci-p"><b>$' + fmt$(l.price) + '</b><span>' +
+        (l.shipping > 0 ? '+$' + fmt$(l.shipping) + ' ship' : l.shipping === 0 ? 'free ship' : 'ship n/a') + '</span></div>' +
+    '</a>';
+  });
+
+  out += '<div class="comps-foot">' +
+    '<button class="btn btn-sm" style="border-color:rgba(0,224,122,0.4);color:var(--green)" onclick="logCompsMedian(\'' + c.id + '\')">+ Log median $' + fmt$(st.median, 0) + '</button>' +
+    '<span class="f-hint" style="margin:0">asking prices, not solds · sample of ' + d.count + ' · refreshes ~15 min</span>' +
+    '</div>';
+  return out;
 }
 
 /* ---------- boot ---------- */
