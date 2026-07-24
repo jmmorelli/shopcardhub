@@ -20,7 +20,9 @@
 import { getAppToken } from "./_lib/ebay-token.js";
 
 const BROWSE_URL = "https://api.ebay.com/buy/browse/v1/item_summary/search";
-const EPN_CAMPAIGN_ID = "9356";
+// 10-digit eBay Partner Network campaign ID (the "campid" in EPN links).
+// NOT the Impact program ID (9356) — that's a different system.
+const EPN_CAMPAIGN_ID = "5339155990";
 const TRADING_CARDS_CATEGORY = "212"; // Sports Mem, Cards & Fan Shop > Sports Trading Cards root
 
 // ---- Stats helpers (population moments) ----
@@ -73,7 +75,9 @@ function trimListing(item) {
         : null,
     condition: item.condition || null,
     buyingOption: (item.buyingOptions || [])[0] || null,
-    url: item.itemWebUrl, // EPN-tagged when ENDUSERCTX header is sent
+    // itemAffiliateWebUrl is only returned when the ENDUSERCTX affiliate header
+    // is valid — it carries the EPN campid. itemWebUrl is the untagged fallback.
+    url: item.itemAffiliateWebUrl || item.itemWebUrl,
     image: item.image ? item.image.imageUrl : null,
     seller: item.seller
       ? { username: item.seller.username, feedbackPct: item.seller.feedbackPercentage, feedbackScore: item.seller.feedbackScore }
