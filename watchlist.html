@@ -1541,12 +1541,13 @@ function compsCandidates(c) {
 // eBay silently relaxes thin queries to "fewer words" and returns lookalikes
 // (search a Flagg Prizm, get an Ayomanor Mosaic). Never trust the raw sample:
 // require the card's name in the title, recompute stats over survivors only.
-function compsClean(c, j) {
-  const req = c.name.split(' ')
-    .map(t => t.replace(/[^a-z]/gi, ''))
-    .filter(t => t.length >= 2)
-    .slice(0, 2)
-    .map(t => t.toLowerCase());
+function compsClean(c, j, usedQ) {
+  // Every meaningful word of the query must appear in the listing title —
+  // player AND variant (prizm, silver, sapphire…). Tokens under 3 chars
+  // (rc, ex) and bare numbers are exempt; they're formatting noise.
+  const req = usedQ.split(' ')
+    .map(t => t.replace(/[^a-z]/gi, '').toLowerCase())
+    .filter(t => t.length >= 3);
   if (!req.length) return null;
   const keep = (j.listings || []).filter(l => {
     const t = (l.title || '').toLowerCase();
@@ -1572,7 +1573,7 @@ function ensureComps(c) {
     let result = null;
     for (const q of cands) {
       const j = await compsFetch(q, cat);
-      const cleaned = compsClean(c, j);
+      const cleaned = compsClean(c, j, q);
       if (cleaned) { result = (q === key) ? cleaned : Object.assign(cleaned, { simplified: q }); break; }
     }
     compsCache[key] = { data: result || { count: 0 }, t: Date.now() };
