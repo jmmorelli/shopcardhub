@@ -1525,21 +1525,36 @@ function compsFetch(q, cat) {
   if (cat) u += '&category_ids=' + cat;
   return fetch(u).then(r => { if (!r.ok) throw 0; return r.json(); });
 }
+// Progressive query ladder: exact → name only → name minus card numbers.
+// Lone numbers ("8", "161") are AND-matched literally by eBay and torpedo
+// otherwise-good queries; grade numbers (PSA 10) are protected.
+function compsCandidates(c) {
+  const full = compsQ(c);
+  const name = compsQ(Object.assign({}, c, { set: '' }));
+  const GRADER = /^(psa|bgs|sgc|cgc|tag)$/i;
+  const toks = name.split(' ');
+  const slim = toks.filter((t, i) => !(/^\d{1,4}(\.\d)?$/.test(t) && !GRADER.test(toks[i-1] || ''))).join(' ').replace(/\s+/g, ' ').trim();
+  const seen = new Set(), out = [];
+  [full, name, slim].forEach(q => { if (q && !seen.has(q)) { seen.add(q); out.push(q); } });
+  return out;
+}
 function ensureComps(c) {
   const key = compsQ(c);
   const e = compsCache[key];
   if (e && (e.loading || e.data || (Date.now() - e.t < 30000))) return;   // no hammering on errors
   compsCache[key] = { loading: true, t: Date.now() };
   const cat = compsCat(c);
-  compsFetch(key, cat)
-    .then(j => {
-      if (j.count || !c.set) return j;
-      // full query struck out — retry on the card name alone (set names rarely match listing titles verbatim)
-      const simple = compsQ(Object.assign({}, c, { set: '' }));
-      return compsFetch(simple, cat).then(j2 => j2.count ? Object.assign(j2, { simplified: simple }) : j);
-    })
-    .then(j => { compsCache[key] = { data: j, t: Date.now() }; paintComps(); })
-    .catch(() => { compsCache[key] = { err: true, t: Date.now() }; paintComps(); });
+  const cands = compsCandidates(c);
+  (async () => {
+    let result = null;
+    for (const q of cands) {
+      const j = await compsFetch(q, cat);
+      if (j.count) { result = (q === key) ? j : Object.assign(j, { simplified: q }); break; }
+      if (!result) result = j;   // keep first empty result for the no-match message
+    }
+    compsCache[key] = { data: result, t: Date.now() };
+    paintComps();
+  })().catch(() => { compsCache[key] = { err: true, t: Date.now() }; paintComps(); });
 }
 function paintComps() {
   state.cards.forEach(c => {
