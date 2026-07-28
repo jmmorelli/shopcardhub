@@ -779,7 +779,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
   <div class="container">
   <div class="alert-bar" style="margin-top:48px;">
-    &#128202; <strong>How grading works.</strong> A call is <strong>OPEN</strong> until there's a reliable market read. It's <strong>TRENDING</strong> when the read is ask-side (live eBay asking prices via our eBay API feed) or thin sold data — provisional, can change. It goes <strong>FINAL</strong> when graded against sold comps roughly 4 weeks post-release, and final grades never change. <strong>HIT</strong> = market inside our projected range. <strong>MISS&nbsp;HIGH</strong> = we projected too high. <strong>MISS&nbsp;LOW</strong> = too low. Projections are never edited after publication — that would defeat the page.
+    &#128202; <strong>How grading works.</strong> A call is <strong>OPEN</strong> until there's a reliable market read. It's <strong>TRENDING</strong> when the read is ask-side (live eBay asking prices via our eBay API feed) or thin sold data — provisional, can change. It goes <strong>FINAL</strong> when graded against sold comps roughly 4 weeks post-release, and final grades never change. <strong>HIT</strong> = market inside our projected range. <strong>MISS&nbsp;HIGH</strong> = we projected too high. <strong>MISS&nbsp;LOW</strong> = too low. Projections are never edited after publication — that would defeat the page. <strong>VERDICT calls</strong> (BUY / WAIT / SELL) grade like paper trades: entry = market price at the call date, marked against the current read. <strong>RIGHT</strong> = the move agrees with the action by &ge;10%; <strong>WRONG</strong> = it disagrees by &ge;10%; inside &plusmn;10% stays ungraded. Entries and actions are as immutable as projections.
   </div>
 
   <section style="border-top:none; padding-top:20px; padding-bottom:0;">
@@ -799,7 +799,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <p class="section-intro">Newest first. The "Market Read" column is the number the grade is based on (source and date noted). The "Live Asks" column re-pulls current eBay asking prices every time you load this page — asks, not solds, and labeled that way everywhere on this site.</p>
     <div class="roi-table-wrap">
       <table class="roi-table">
-        <thead><tr><th>Card</th><th>Our Call</th><th>Projected</th><th>Market Read</th><th>Live Asks &#9889;</th><th>Status</th><th>Grade</th></tr></thead>
+        <thead><tr><th>Card</th><th>Our Call</th><th>Projected / Entry</th><th>Market Read</th><th>Live Asks &#9889;</th><th>Status</th><th>Grade</th></tr></thead>
         <tbody id="tr-rows">
           <tr><td colspan="7"><span class="roi-sub">Loading the ledger&hellip;</span></td></tr>
         </tbody>
@@ -840,46 +840,74 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <script>
 (function(){
   'use strict';
-  var GRADE = { hit:      ['HIT', 'v-buy'],
-                miss_high:['MISS HIGH', 'v-watch'],
-                miss_low: ['MISS LOW', 'v-hold'] };
+  var GRADE = { hit:['HIT','v-buy'], miss_high:['MISS HIGH','v-watch'], miss_low:['MISS LOW','v-hold'],
+                right:['RIGHT','v-buy'], wrong:['WRONG','v-watch'] };
   var STATE = { open:'OPEN', trending:'TRENDING', final:'FINAL' };
   function money(n){ return '$' + (n >= 1000 ? Math.round(n).toLocaleString('en-US') : (n >= 100 ? Math.round(n) : n)); }
+  function pct(x){ return (x > 0 ? '+' : '') + Math.round(x * 100) + '%'; }
+  function missPct(c){
+    if (c.read == null) return null;
+    if (c.read < c.projLow) return (c.read - c.projLow) / c.projLow;
+    if (c.read > c.projHigh) return (c.read - c.projHigh) / c.projHigh;
+    return 0;
+  }
   fetch('/data/calls.json').then(function(r){ return r.json(); }).then(function(d){
     var calls = d.calls.slice().sort(function(a,b){ return (b.callDate||'').localeCompare(a.callDate||''); });
-    // scoreboard
+    var ranges = calls.filter(function(c){ return c.type !== 'verdict'; });
+    var verds  = calls.filter(function(c){ return c.type === 'verdict'; });
     var n = calls.length, fin = 0, finHit = 0, tHit = 0, tMissH = 0, tMissL = 0, open = 0;
-    calls.forEach(function(c){
+    ranges.forEach(function(c){
       if (c.state === 'final') { fin++; if (c.grade === 'hit') finHit++; }
-      else if (c.state === 'trending') {
-        if (c.grade === 'hit') tHit++; else if (c.grade === 'miss_high') tMissH++; else if (c.grade === 'miss_low') tMissL++;
+      else if (c.state === 'trending' && c.grade) {
+        if (c.grade === 'hit') tHit++; else if (c.grade === 'miss_high') tMissH++; else tMissL++;
       } else open++;
     });
+    var vRight = 0, vWrong = 0, vOpen = 0;
+    verds.forEach(function(c){
+      if (c.grade === 'right') vRight++; else if (c.grade === 'wrong') vWrong++; else vOpen++;
+    });
+    var ms = ranges.map(missPct).filter(function(x){ return x != null; }).sort(function(a,b){ return a - b; });
+    var bias = null;
+    if (ms.length >= 3) bias = ms.length % 2 ? ms[(ms.length-1)/2] : (ms[ms.length/2-1] + ms[ms.length/2]) / 2;
     document.getElementById('tr-meta-count').textContent = n + ' calls on the ledger';
     document.getElementById('tr-meta-updated').textContent = 'Updated ' + (d.updated || '');
     function stat(label, val, cls){ return '<div class="banner-stat"><div class="banner-stat-label">' + label + '</div><div class="banner-stat-value' + (cls ? ' ' + cls : '') + '">' + val + '</div></div>'; }
+    var biasTxt = bias == null ? 'Need more grades' : (Math.abs(bias) < 0.05 ? 'Well calibrated' : (bias < 0 ? 'We run HIGH ~' + Math.round(-bias*100) + '%' : 'We run LOW ~' + Math.round(bias*100) + '%'));
     document.getElementById('tr-scoreboard').innerHTML =
       stat('Total Calls', n) +
       stat('Final Grades', fin ? (finHit + '/' + fin + ' hit') : 'None yet', fin ? (finHit/fin >= 0.5 ? 'green' : 'red') : '') +
-      stat('Trending: Hit', tHit, tHit ? 'green' : '') +
-      stat('Trending: Miss High', tMissH, tMissH ? 'red' : '') +
-      stat('Trending: Miss Low', tMissL, tMissL ? 'gold' : '') +
-      stat('Open', open);
-    // rows
+      stat('Ranges: Hit / High / Low', tHit + ' / ' + tMissH + ' / ' + tMissL, tMissH + tMissL > tHit ? 'red' : 'green') +
+      stat('Projection Bias (median miss)', biasTxt, bias != null && Math.abs(bias) >= 0.05 ? 'gold' : '') +
+      stat('Verdicts: Right / Wrong / Open', vRight + ' / ' + vWrong + ' / ' + vOpen, vWrong > vRight ? 'red' : (vRight ? 'green' : '')) +
+      stat('Open / Ungraded', open + vOpen);
     document.getElementById('tr-rows').innerHTML = calls.map(function(c){
+      var isV = c.type === 'verdict';
       var g = c.grade ? GRADE[c.grade] : null;
       var la = c.q ? '<span class="live-ask" data-q="' + c.q + '" data-cat="' + (c.cat || '') + '" data-req="' + (c.req || '') + '" data-deny="' + (c.deny || '') + '"></span>' : '<span class="roi-sub">—</span>';
+      var callCell, readCell;
+      if (isV) {
+        callCell = '<span class="roi-price" style="color:var(--accent);">' + c.action + '</span><span class="roi-sub" style="display:block;">@ ' + money(c.entry) + ' &middot; ' + (c.entryDate || c.callDate) + '</span><span class="roi-sub" style="display:block; max-width:200px;">' + (c.entryLabel || '') + '</span>';
+        var mv = (c.read != null && c.entry) ? (c.read - c.entry) / c.entry : null;
+        readCell = c.read != null
+          ? '<span class="roi-price">' + money(c.read) + '</span>' + (mv != null ? ' <span style="font-family:var(--fm); font-size:12px; color:' + (mv > 0.001 ? 'var(--green)' : (mv < -0.001 ? 'var(--red)' : 'var(--text-dim)')) + ';">' + pct(mv) + '</span>' : '') + '<span class="roi-sub" style="display:block;">' + (c.basis === 'sold' ? 'SOLD · ' : 'ASK · ') + (c.readLabel || '') + ' · ' + (c.readDate || '') + '</span>'
+          : '<span class="roi-sub">' + (c.readLabel || 'No reliable read yet') + '</span>';
+      } else {
+        callCell = '<span class="roi-price proj">' + money(c.projLow) + '–' + money(c.projHigh) + '</span>';
+        var mp = missPct(c);
+        readCell = c.read != null
+          ? '<span class="roi-price">' + money(c.read) + '</span>' + (mp != null && mp !== 0 ? ' <span style="font-family:var(--fm); font-size:12px; color:' + (mp < 0 ? 'var(--red)' : 'var(--gold)') + ';">' + pct(mp) + ' vs ' + (mp < 0 ? 'floor' : 'ceiling') + '</span>' : '') + '<span class="roi-sub" style="display:block;">' + (c.basis === 'sold' ? 'SOLD · ' : 'ASK · ') + (c.readLabel || '') + ' · ' + (c.readDate || '') + '</span>'
+          : '<span class="roi-sub">' + (c.readLabel || 'No reliable read yet') + '</span>';
+      }
       return '<tr>' +
-        '<td><span class="roi-name" style="font-size:15px;">' + c.card + '</span><span class="roi-sub"><a href="' + c.page + '">' + c.set + ' →</a></span></td>' +
+        '<td><span class="roi-name" style="font-size:15px;">' + c.card + '</span><span class="roi-sub"><a href="' + c.page + '">' + c.set + ' →</a>' + (isV ? ' · <span style="color:var(--accent);">VERDICT</span>' : ' · RANGE') + '</span></td>' +
         '<td><span class="roi-sub">' + c.callDate + '</span></td>' +
-        '<td><span class="roi-price proj">' + money(c.projLow) + '–' + money(c.projHigh) + '</span></td>' +
-        '<td>' + (c.read != null ? '<span class="roi-price">' + money(c.read) + '</span><span class="roi-sub">' + (c.basis === 'sold' ? 'SOLD · ' : 'ASK · ') + (c.readLabel || '') + ' · ' + (c.readDate || '') + '</span>' : '<span class="roi-sub">No reliable read yet</span>') + '</td>' +
+        '<td>' + callCell + '</td>' +
+        '<td>' + readCell + '</td>' +
         '<td>' + la + '</td>' +
-        '<td><span class="roi-sub">' + (STATE[c.state] || c.state) + (c.state === 'trending' && c.finalizeAfter ? ' · final after ' + c.finalizeAfter : '') + '</span></td>' +
+        '<td><span class="roi-sub">' + (STATE[c.state] || c.state) + (c.state !== 'final' && c.finalizeAfter ? ' · final after ' + c.finalizeAfter : '') + '</span></td>' +
         '<td>' + (g ? '<span class="verdict-tag ' + g[1] + '">' + g[0] + '</span>' : '<span class="roi-sub">—</span>') + (c.note ? '<span class="roi-sub" style="display:block; max-width:280px;">' + c.note + '</span>' : '') + '</td>' +
       '</tr>';
     }).join('');
-    // wire the live-ask widget over the freshly injected spans
     if (window.__liveAsksInit) window.__liveAsksInit();
   }).catch(function(){
     document.getElementById('tr-rows').innerHTML = '<tr><td colspan="7"><span class="roi-sub">Ledger failed to load — <a href="/data/calls.json">view raw calls.json</a></span></td></tr>';
