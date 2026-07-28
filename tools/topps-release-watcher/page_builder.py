@@ -18,7 +18,7 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 DEFAULT_TEMPLATE = os.path.join(REPO, "topps-series-1-2026.html")
 
 # ── Affiliate constants (verbatim from SESSION_NOTES) ────────────────────────
-EBAY_BIN = "&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001"
+EBAY_BIN = "&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001"
 COMC = "https://comc.com/Users/DBCooper"
 
 def ebay(keywords, customid):

@@ -22,8 +22,8 @@ Sources (Jul 6, 2026):
 """
 from content_jul2026 import meta
 
-EBAY = "&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001"
-EBAY_SOLD = "&LH_Sold=1&LH_Complete=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001"
+EBAY = "&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001"
+EBAY_SOLD = "&LH_Sold=1&LH_Complete=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001"
 
 def _ebay(kw, cid, sold=False):
     from urllib.parse import quote_plus
