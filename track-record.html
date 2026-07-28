@@ -790,6 +790,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <div class="set-banner-grid" id="tr-scoreboard">
         <div class="banner-stat"><div class="banner-stat-label">Loading&hellip;</div><div class="banner-stat-value">—</div></div>
       </div>
+      <div style="margin-top:16px;"><a href="javascript:void(0)" class="btn-secondary" onclick="window.__trShare && window.__trShare()">&#120143; Share the scoreboard</a></div>
     </div>
   </section>
 
@@ -880,6 +881,19 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       stat('Projection Bias (median miss)', biasTxt, bias != null && Math.abs(bias) >= 0.05 ? 'gold' : '') +
       stat('Verdicts: Right / Wrong / Open', vRight + ' / ' + vWrong + ' / ' + vOpen, vWrong > vRight ? 'red' : (vRight ? 'green' : '')) +
       stat('Open / Ungraded', open + vOpen);
+    window.__trShare = function(){
+      var r = tHit + tMissH + tMissL + fin;
+      var t = 'ShopCardHub grades its own price calls in public. Current tape: ' +
+        (fin ? finHit + '/' + fin + ' final, ' : '') +
+        tHit + ' hit / ' + tMissH + ' high / ' + tMissL + ' low on ' + r + ' graded range calls' +
+        (bias != null && Math.abs(bias) >= 0.05 ? ' \u00b7 bias: runs ' + (bias < 0 ? 'HIGH' : 'LOW') + ' ~' + Math.round(Math.abs(bias)*100) + '%' : '') +
+        (verds.length ? ' \u00b7 ' + vRight + '/' + (vRight + vWrong + vOpen) + ' verdicts graded' : '') +
+        '. No deleted predictions. Receipts:';
+      window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(t) +
+        '&url=' + encodeURIComponent('https://www.shopcardhub.com/track-record'),
+        '_blank', 'noopener,width=560,height=640');
+      if (typeof gtag === 'function') gtag('event', 'track_record_share');
+    };
     document.getElementById('tr-rows').innerHTML = calls.map(function(c){
       var isV = c.type === 'verdict';
       var g = c.grade ? GRADE[c.grade] : null;

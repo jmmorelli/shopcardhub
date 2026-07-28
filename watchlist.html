@@ -620,6 +620,7 @@
         </select>
       </div>
       <button class="btn btn-primary" onclick="openAdd()">+ Add Card</button>
+      <button class="btn" onclick="shareVault()" title="Share your vault on X">&#120143; Share</button>
     </div>
 
     <div id="pvWrap"></div>
@@ -787,6 +788,66 @@ function toast(msg) {
   clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2400);
 }
 function track(name, params) { if (typeof gtag === 'function') gtag('event', name, params || {}); }
+
+/* ---------- share to X (word-of-mouth loop) ----------
+   Composes a stats-first line from the user's own data and opens the X intent
+   window — the user sees and can edit the text before anything posts.
+   Demo data is never shareable (no fake performance claims). */
+function xTrunc(s, n) { return s.length > n ? s.slice(0, n - 1) + '\u2026' : s; }
+function xShare(text, url) {
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) +
+    '&url=' + encodeURIComponent(url || 'https://www.shopcardhub.com/watchlist'),
+    '_blank', 'noopener,width=560,height=640');
+}
+function shareVault() {
+  if (state.demo) { toast('That\u2019s demo data \u2014 add your own cards first'); return; }
+  const own = state.cards.filter(c => c.status === 'own');
+  const watch = state.cards.filter(c => c.status === 'watch');
+  let val = 0, cost = 0, top = null, topPl = 0;
+  own.forEach(c => {
+    const q = c.qty || 1, lp = last(c);
+    if (lp != null) val += lp * q;
+    if (c.cost != null) cost += c.cost * q;
+    if (lp != null && c.cost != null) {
+      const pl = (lp - c.cost) * q;
+      if (Math.abs(pl) > Math.abs(topPl)) { topPl = pl; top = c; }
+    }
+  });
+  let text;
+  if (own.length && cost > 0) {
+    const pl = val - cost, pp = pl / cost * 100;
+    text = 'My card vault: ' + own.length + ' card' + (own.length === 1 ? '' : 's') +
+      ' \u00b7 $' + fmt$(val, 0) + ' \u00b7 ' + (pl >= 0 ? '+' : '\u2212') + Math.abs(pp).toFixed(1) + '% on cost.';
+    if (top) text += ' Top mover: ' + xTrunc(top.name, 48) + ' ' + (topPl >= 0 ? '+$' : '\u2212$') + fmt$(Math.abs(topPl), 0) + '.';
+    text += ' Tracked free on the @shopcardhub Vault:';
+  } else if (watch.length) {
+    text = 'Hunting ' + watch.length + ' card' + (watch.length === 1 ? '' : 's') +
+      ' with buy-zone targets on the @shopcardhub Vault \u2014 free, no account:';
+  } else { toast('Add some cards first'); return; }
+  track('vault_share');
+  xShare(text);
+}
+function shareCard(id) {
+  const c = state.cards.find(x => x.id === id);
+  if (!c) return;
+  if (state.demo) { toast('That\u2019s demo data \u2014 add your own cards first'); return; }
+  const lp = last(c);
+  let text;
+  if (c.status === 'own' && c.cost != null && lp != null && c.cost > 0) {
+    const pp = (lp - c.cost) / c.cost * 100;
+    text = xTrunc(c.name, 60) + ': in at $' + fmt$(c.cost, 0) + ', last $' + fmt$(lp, 0) +
+      ' (' + (pp >= 0 ? '+' : '\u2212') + Math.abs(pp).toFixed(1) + '%). Tracking it on the @shopcardhub Vault:';
+  } else if (c.status === 'watch' && c.target != null) {
+    text = 'Hunting ' + xTrunc(c.name, 60) + ' \u2014 target $' + fmt$(c.target, 0) +
+      (lp != null ? ', last $' + fmt$(lp, 0) : '') + '. Free buy-zone alerts on the @shopcardhub Vault:';
+  } else if (lp != null) {
+    text = xTrunc(c.name, 60) + ' \u2014 last logged $' + fmt$(lp, 0) + '. On my @shopcardhub Vault:';
+  } else {
+    text = xTrunc(c.name, 60) + ' \u2014 on my @shopcardhub Vault watchlist:';
+  }
+  track('vault_share_card');
+  xShare(text);
+}
 function ebayUrl(c, sold) {
   const q = encodeURIComponent((c.set ? c.set + ' ' : '') + c.name);
   return 'https://www.ebay.com/sch/i.html?_nkw=' + q + (sold ? '&LH_Sold=1&LH_Complete=1' : '&LH_BIN=1') + '&' + EPN;
@@ -1071,6 +1132,7 @@ function cardRow(c) {
         '<a class="ebay-link" href="' + ebayUrl(c, false) + '" target="_blank" rel="noopener sponsored" onclick="track(\'vault_ebay_buy\')">Shop Live Listings →</a>' +
         moveBtn +
         '<span class="spacer"></span>' +
+        '<button class="btn btn-sm" onclick="shareCard(\'' + c.id + '\')">&#120143; Share</button>' +
         '<button class="btn btn-sm" onclick="openEdit(\'' + c.id + '\')">Edit</button>' +
         '<button class="btn btn-sm btn-ghost" onclick="delCard(\'' + c.id + '\')">Delete</button>' +
       '</div>' +
