@@ -1025,7 +1025,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   function fmt(n){ return n >= 1000 ? Math.round(n).toLocaleString('en-US') : (n >= 100 ? String(Math.round(n)) : n.toFixed(2)); }
   function render(el, ps, n, note){
     var med = ps.length % 2 ? ps[(ps.length-1)/2] : (ps[ps.length/2-1] + ps[ps.length/2]) / 2;
-    el.innerHTML = '<strong style="color:var(--green);">$' + fmt(ps[0]) + '</strong> <span style="font-size:11px;color:var(--text-dim);">low ask</span> &middot; <strong>$' + fmt(med) + '</strong> <span style="font-size:11px;color:var(--text-dim);">median &middot; ' + n + ' verified asks' + (note || '') + '</span>';
+    el.innerHTML = '<strong style="color:var(--green);">$' + fmt(ps[0]) + '</strong> <span style="font-size:11px;color:var(--text-dim);">low ask</span> &middot; <strong>$' + fmt(med) + '</strong> <span style="font-size:11px;color:var(--text-dim);">median &middot; ' + n + (n === 1 ? ' verified ask' : ' verified asks') + (note || '') + '</span>';
   }
   els.forEach(function(el){
     el.innerHTML = '<span style="color:var(--text-dim);font-size:12px;">pulling live asks&hellip;</span>';
