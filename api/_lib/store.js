@@ -22,7 +22,7 @@ const API = "https://api.github.com";
 function cfg() {
   const token = process.env.GITHUB_TOKEN;
   if (!token) throw new Error("Missing GITHUB_TOKEN env var");
-  const repo = process.env.GITHUB_REPO || "jmorelli/shopcardhub";
+  const repo = process.env.GITHUB_REPO || "jmmorelli/shopcardhub";
   const branch = process.env.DATA_BRANCH || "price-data";
   return { token, repo, branch };
 }

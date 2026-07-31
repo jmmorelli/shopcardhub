@@ -1,5 +1,27 @@
 # Price Engine — nightly snapshots + technical analysis
 
+**ACTIVE SETUP (zero-secret path, since Jul 31 2026):** the nightly snapshot
+runs as a **GitHub Action** (`.github/workflows/price-snapshot.yml`) and prices
+each watchlist card off the site's own public **`/api/comps`** endpoint (eBay
+Browse API, already deployed on Vercel with working keys). No paid subs, no
+GitHub secrets, no Vercel changes. Mark = trimmed median of the lowest
+fixed-price asks (same methodology every night — consistency is what the chart
+math needs). Feeds are committed to the `price-data` branch:
+
+- `data/prices-history.json` — full per-card series (the chart)
+- `data/prices-latest.json` — compact, signal-first feed the site reads
+
+One-time setup: none. Kick a first run at repo → Actions → price-snapshot →
+Run workflow, or wait for the nightly 08:15 UTC run. Until the first run lands,
+the signal board and homepage box show their built-in Jul 31 2026 seed prices.
+
+Signals stay `HOLD` ("BUILDING") until a card has ≥ 20 nightly points
+(`MIN_HISTORY` in `ta.js`) — honest, no fake precision on a thin series.
+
+---
+
+## Legacy paid path (kept, not active)
+
 Pulls current card values from PriceCharting / SportsCardsPro every night, builds
 its own price history (the paid API gives current values only — **no history**),
 and computes a transparent **BUY / SELL / HOLD** signal per card from the chart
@@ -43,7 +65,7 @@ Set these as **Vercel env vars** (Production). Never put them in page JavaScript
 | `PRICECHARTING_TOKEN` | 40-char API token from your PriceCharting Legendary sub (Pokémon/TCG) |
 | `SPORTSCARDSPRO_TOKEN` | 40-char API token from your SportsCardsPro Legendary sub (sports) |
 | `GITHUB_TOKEN` | fine-grained PAT with **Contents: read+write** on the repo |
-| `GITHUB_REPO` | `owner/repo` (defaults to `jmorelli/shopcardhub` — update if different) |
+| `GITHUB_REPO` | `owner/repo` (defaults to `jmmorelli/shopcardhub` — update if different) |
 | `DATA_BRANCH` | optional; defaults to `price-data` |
 | `CRON_SECRET` | Vercel sets/uses this to authenticate the cron call |
 | `PRICE_PROXY_KEY` | a long random secret for manually triggering a run |

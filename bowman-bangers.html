@@ -894,12 +894,12 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
       <div class="prospect-mini">
         <div class="prospect-mini-tag">⚾ SS · Minnesota Twins · #16 Pick</div>
-        <div class="prospect-mini-name">Mark Houston</div>
+        <div class="prospect-mini-name">Marek Houston</div>
         <div class="prospect-mini-org">Wake Forest → Twins Organization</div>
         <div class="prospect-mini-body">
           Zone control-first approach from Wake Forest — nearly as many walks as strikeouts in college. The Twins' system ranks him #8 in their farm. Long-term contact floor with room to add power as he physically develops. A solid lottery ticket at accessible prices.
         </div>
-        <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20mark%20houston%20prospect&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="prospect-mini-link" target="_blank" rel="noopener">Search on eBay →</a>
+        <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20marek%20houston%20prospect&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="prospect-mini-link" target="_blank" rel="noopener">Search on eBay →</a>
       </div>
 
       <div class="prospect-mini">
@@ -1012,6 +1012,26 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     var FEED = 'https://raw.githubusercontent.com/' + REPO + '/' + BRANCH + '/data/prices-latest.json';
     var MIN_HISTORY = 20;
 
+    /* Day-one seed — real raw-market marks read from SportsCardsPro price pages
+       on 2026-07-31. Used ONLY while the nightly feed doesn't exist yet, so the
+       board launches as a price board instead of a dead box. The nightly engine
+       (GitHub Action -> price-data branch) overwrites this automatically. */
+    var SEED = {
+      day: '2026-07-31',
+      cards: [
+        { key:'ebay:ethan-holliday',   label:'Ethan Holliday — 1st Bowman Chrome Auto',   last:128.75, points:1 },
+        { key:'ebay:andrew-fischer',   label:'Andrew Fischer — 1st Bowman Chrome Auto',   last:84.76,  points:1 },
+        { key:'ebay:aiva-arquette',    label:'Aiva Arquette — 1st Bowman Chrome Auto',    last:73.79,  points:1 },
+        { key:'ebay:wehiwa-aloy',      label:'Wehiwa Aloy — 1st Bowman Chrome Auto',      last:60.50,  points:1 },
+        { key:'ebay:daniel-pierce',    label:'Daniel Pierce — 1st Bowman Chrome Auto',    last:19.00,  points:1 },
+        { key:'ebay:marek-houston',    label:'Marek Houston — 1st Bowman Chrome Auto',    last:null,   points:0 },
+        { key:'ebay:gage-jump',        label:'Gage Jump — 1st Bowman Chrome Auto',        last:61.00,  points:1 },
+        { key:'ebay:justin-gonzalez',  label:'Justin Gonzalez — 1st Bowman Chrome Auto',  last:null,   points:0 },
+        { key:'ebay:edward-florentino',label:'Edward Florentino — 1st Bowman Chrome Auto',last:null,   points:0 },
+        { key:'ebay:seong-jun-kim',    label:'Seong-Jun Kim — 1st Bowman Chrome Auto',    last:null,   points:0 }
+      ]
+    };
+
     var input   = document.getElementById('sig-filter');
     var segs    = Array.prototype.slice.call(document.querySelectorAll('#sig-seg .seg'));
     var tbody   = document.getElementById('sig-rows');
@@ -1075,7 +1095,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
       Promise.all([pWatch, pFeed]).then(function(res){
         var feed = res[1];
-        var cards = (feed && Array.isArray(feed.cards)) ? feed.cards : [];
+        var seeded = false;
+        if (!feed || !Array.isArray(feed.cards) || !feed.cards.length) { feed = SEED; seeded = true; }
+        var cards = feed.cards;
         rows = cards.map(function(c){
           var m = wl[c.key] || {};
           var pts = c.points || 0;
@@ -1096,7 +1118,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           return a.label.localeCompare(b.label);
         });
         if (feed && feed.day && rows.length){
-          updated.textContent = 'Updated ' + feed.day + ' · ' + rows.length + ' prospect' + (rows.length === 1 ? '' : 's') + ' tracked';
+          updated.textContent = (seeded
+            ? 'Seed prices · read from sold-market comps ' + feed.day + ' · nightly engine takes over from here'
+            : 'Updated ' + feed.day) + ' · ' + rows.length + ' prospect' + (rows.length === 1 ? '' : 's') + ' tracked';
           updated.style.display = 'block';
         }
         render();

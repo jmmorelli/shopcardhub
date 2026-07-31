@@ -1,0 +1,70 @@
+# Nightly price snapshot — zero-secret path (GitHub Actions).
+# MOVE THIS FILE TO .github/workflows/price-snapshot.yml (remote tools can't
+# write there):  mkdir -p .github/workflows && git mv tools/price-engine/price-snapshot.yml .github/workflows/
+#
+# Prices every watchlist card off the site's own public /api/comps endpoint
+# (eBay Browse, already live on Vercel) and commits the two JSON feeds to the
+# isolated `price-data` branch — main is never touched, no redeploy needed.
+# The signal board on /bowman-bangers and the homepage top-5 panel read that
+# branch's raw URL and switch from seed prices to live data automatically.
+#
+# Setup required: none. No secrets, no tokens. Kick a first run from the
+# Actions tab (workflow_dispatch) or wait for the nightly schedule.
+
+name: price-snapshot
+
+on:
+  schedule:
+    - cron: "15 8 * * *" # nightly 08:15 UTC (~1:15am PT)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: price-snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      - name: Checkout price-data branch (may not exist yet)
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: price-data
+          path: price-data
+
+      - name: Prepare data dir
+        run: mkdir -p price-data/data
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run snapshot
+        run: node tools/price-engine/snapshot-free.mjs --watchlist data/watchlist.json --out price-data/data
+
+      - name: Commit + push to price-data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd price-data
+          if [ ! -d .git ]; then
+            git init -b price-data .
+            git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          fi
+          git config user.name "price-engine[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "No data changes tonight (thin markets or comps endpoint unreachable)."
+            exit 0
+          fi
+          git commit -m "price-engine: snapshot $(date -u +%F)"
+          git push origin price-data
