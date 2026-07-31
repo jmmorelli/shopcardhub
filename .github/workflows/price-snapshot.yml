@@ -4,6 +4,8 @@
 # isolated price-data branch. The signal board on /bowman-bangers and the
 # homepage top-5 panel read that branch's raw URL and switch from seed prices
 # to live data automatically. Setup required: none - no secrets, no tokens.
+# Optional: add KIT_API_KEY secret to activate flip-alert emails + the Monday
+# Tape Recap draft (tools/price-engine/newsletter.mjs).
 
 name: price-snapshot
 
@@ -43,6 +45,16 @@ jobs:
 
       - name: Run snapshot
         run: node tools/price-engine/snapshot-free.mjs --watchlist data/watchlist.json --out price-data/data
+
+      - name: Newsletter (flip alerts + Monday recap draft)
+        env:
+          KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
+        run: |
+          if [ -f tools/price-engine/newsletter.mjs ]; then
+            node tools/price-engine/newsletter.mjs --history price-data/data/prices-history.json
+          else
+            echo "newsletter.mjs not on main yet - skipping"
+          fi
 
       - name: Commit and push to price-data
         env:
