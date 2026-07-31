@@ -1,22 +1,25 @@
-// Nightly price snapshot — ZERO-SECRET path (no paid subs, no tokens anywhere).
+// Nightly price snapshot - ZERO-SECRET path (no paid subs, no tokens anywhere).
 //
 // Runs in GitHub Actions (.github/workflows/price-snapshot.yml), not Vercel.
 // Price source is the site's own public /api/comps endpoint (eBay Browse API,
-// already deployed on Vercel with working keys — see api/comps.js). This script
+// already deployed on Vercel with working keys - see api/comps.js). This script
 // therefore needs NO credentials: not eBay's, not Vercel's, not GitHub PATs.
 //
 // What it does each run:
-//   1. Reads data/watchlist.json (cards with source:"ebay" and a `query`).
-//   2. For each card, GETs /api/comps?q=<query>&sort=price&limit=50 and marks
-//      the card at a *trimmed median of the lowest fixed-price asks* (drop the
-//      2 cheapest as junk/damaged floor, median the next 10, price+shipping).
-//      Ask-side marks proxy solds; the methodology is IDENTICAL every night,
-//      and for chart-derived signals consistency matters, not absolute level.
+//   1. Reads data/watchlist.json (cards with source:"ebay" and a query).
+//   2. For each card, GETs /api/comps?q=<query>&sort=price&limit=50, keeps only
+//      VERIFIED raw base-auto listings (title must contain the player's last
+//      name and "auto"; graded slabs, refractors/parallels, numbered cards,
+//      lots and reprints are excluded by title), then marks the card at a
+//      trimmed median of the lowest fixed-price asks (drop the 2 cheapest as
+//      junk/damaged floor, median the next 10, price+shipping). Ask-side marks
+//      proxy solds; the methodology is IDENTICAL every night, and for
+//      chart-derived signals consistency matters, not absolute level.
 //   3. Appends today's point to the card's series (idempotent per day) and
 //      recomputes TA via api/_lib/ta.js (trend stack, ROC, z-score, skew,
-//      kurtosis — same math as the paid path).
+//      kurtosis - same math as the paid path).
 //   4. Writes data/prices-history.json + data/prices-latest.json into --out;
-//      the workflow commits them to the `price-data` branch. The front-end
+//      the workflow commits them to the price-data branch. The front-end
 //      (signal board + homepage panel) already reads that branch's raw URL.
 //
 // Usage: node tools/price-engine/snapshot-free.mjs --watchlist data/watchlist.json --out price-data/data
@@ -34,10 +37,15 @@ const HISTORY_PATH = path.join(OUT_DIR, "prices-history.json");
 const LATEST_PATH = path.join(OUT_DIR, "prices-latest.json");
 
 const SITE = (process.env.SITE_URL || "https://shopcardhub.com").replace(/\/$/, "");
-const LOW_N = 10;    // how many of the cheapest asks form the mark window
+const LOW_N = 10;    // how many of the cheapest verified asks form the mark window
 const TRIM = 2;      // drop this many cheapest first (junk/damaged floor)
-const MIN_COMPS = 4; // fewer usable listings than this -> no mark tonight
+const MIN_COMPS = 4; // fewer verified listings than this -> no mark tonight
 const THROTTLE_MS = 1200; // gentle on the Vercel fn + eBay quota (CDN caches repeats)
+
+// Title blocklist: graded slabs, parallels/colored refractors, serial-numbered
+// cards, Sapphire/Mega variants, lots, reprints. Keeps the mark on the RAW BASE
+// Chrome auto - the one canonical card per player the watchlist tracks.
+const TITLE_BAD = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|refractor|x-?fractor|superfractor|printing\s?plate|sapphire|mega|mojo|lava|speckle|logofractor|shimmer|atomic|mini\s?diamond|wave|prism|aqua|1st\s?edition\s?reprint|reprint|digital|custom|proxy|lot\s?of|\/\d{1,4}\b)/i;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const today = () => new Date().toISOString().slice(0, 10); // UTC
@@ -53,15 +61,30 @@ function median(xs) {
   return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
 }
 
-// Trimmed-median mark of the cheapest fixed-price asks for a query, via the
-// site's own public comps endpoint (which handles eBay auth + affiliate tags).
-async function compsMark(query) {
-  const url = `${SITE}/api/comps?q=${encodeURIComponent(query)}&sort=price&limit=50`;
+// Last name of the player from a label like "Ethan Holliday - 1st Bowman Chrome Auto"
+function lastNameOf(label) {
+  const player = String(label || "").split(/\s+[-\u2014]\s+/)[0].trim();
+  const parts = player.split(/\s+/);
+  return (parts[parts.length - 1] || "").toLowerCase();
+}
+
+// Trimmed-median mark of the cheapest VERIFIED fixed-price asks for a query,
+// via the site's own public comps endpoint (which handles eBay auth).
+async function compsMark(query, label) {
+  const url = SITE + "/api/comps?q=" + encodeURIComponent(query) + "&sort=price&limit=50";
   const r = await fetch(url, { headers: { Accept: "application/json" } });
-  if (!r.ok) throw new Error(`/api/comps "${query}" -> HTTP ${r.status}`);
+  if (!r.ok) throw new Error('/api/comps "' + query + '" -> HTTP ' + r.status);
   const j = await r.json();
+  const lname = lastNameOf(label);
   const asks = (j.listings || [])
     .filter((l) => l.buyingOption === "FIXED_PRICE")
+    .filter((l) => {
+      const t = String(l.title || "").toLowerCase();
+      if (!t.includes(lname)) return false;       // must be this player
+      if (!/auto/.test(t)) return false;           // must be the autograph card
+      if (TITLE_BAD.test(t)) return false;         // no slabs/parallels/lots
+      return true;
+    })
     .map((l) => (Number.isFinite(l.price) ? l.price + (Number.isFinite(l.shipping) ? l.shipping : 0) : null))
     .filter((x) => Number.isFinite(x) && x >= 3)
     .sort((a, b) => a - b);
@@ -73,7 +96,7 @@ async function compsMark(query) {
 async function main() {
   const wl = readJsonFile(WATCHLIST, null);
   const cards = (wl?.cards || []).filter((c) => c && c.source === "ebay" && c.id && c.query);
-  if (!cards.length) { console.log("No ebay-source cards in watchlist — nothing to do."); return; }
+  if (!cards.length) { console.log("No ebay-source cards in watchlist - nothing to do."); return; }
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const history = readJsonFile(HISTORY_PATH, {});
@@ -81,9 +104,9 @@ async function main() {
   const summary = { day, updated: 0, thin: 0, errors: [] };
 
   for (const card of cards) {
-    const key = `${card.source}:${card.id}`;
+    const key = card.source + ":" + card.id;
     try {
-      const { price, comps } = await compsMark(card.query);
+      const { price, comps } = await compsMark(card.query, card.label);
       const entry = history[key] || { key, id: card.id, source: card.source, label: card.label, slug: card.slug || null, series: [] };
       entry.label = card.label || entry.label;
       entry.slug = card.slug || entry.slug || null;
@@ -93,11 +116,13 @@ async function main() {
         summary.updated++;
       } else {
         summary.thin++;
-        console.log(`thin market (${comps} usable asks) — no mark tonight: ${card.label}`);
+        // drop any same-day point from a previous (less filtered) run today
+        entry.series = entry.series.filter((pt) => pt.d !== day);
+        console.log("thin market (" + comps + " verified asks) - no mark tonight: " + card.label);
       }
       history[key] = entry;
     } catch (e) {
-      summary.errors.push(`${key}: ${String(e.message || e)}`);
+      summary.errors.push(key + ": " + String(e.message || e));
     }
     await sleep(THROTTLE_MS);
   }
