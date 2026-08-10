@@ -1,88 +1,235 @@
 {
-  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys MUST stay dm|seeker|curator|inspector|gengar (they map to the dungeon's five sprites; append newest action LAST, keep ~12 max per agent). items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-08-10T17:30:00-04:00",
-  "generator": "phase-1 seed (weekly runs take over from here)",
-  "agents": {
-    "seeker": {
-      "label": "SEEKER",
-      "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
-      "lastRun": "2026-08-10",
-      "nextRun": "2026-08-17",
-      "actions": [
-        {"ts": "2026-08-10", "msg": "Topps calendar diffed: 2 NEW releases found (Museum Collection Baseball, Definitive Basketball) — 0 NEW remaining after build"},
-        {"ts": "2026-08-10", "msg": "Trend scan: LeBron→PHI (RC +11.4%), Rutschman→BOS (Chrome auto +12%), Bowman Chrome pre-orders open, Fanatics unsealed-mega saga"},
-        {"ts": "2026-08-10", "msg": "Gap analysis: 4 new page ideas queued for Mo (LeBron, Boozer, Rutschman, Mendoza)"}
-      ]
+ "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys MUST stay dm|seeker|curator|inspector|gengar (they map to the dungeon's five sprites; append newest action LAST, keep ~12 max per agent). items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
+ "generated": "2026-08-10T19:05:00-04:00",
+ "generator": "phase-1 seed (weekly runs take over from here)",
+ "agents": {
+  "seeker": {
+   "label": "SEEKER",
+   "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
+   "lastRun": "2026-08-10",
+   "nextRun": "2026-08-17",
+   "actions": [
+    {
+     "ts": "2026-08-10",
+     "msg": "Topps calendar diffed: 2 NEW releases found (Museum Collection Baseball, Definitive Basketball) — 0 NEW remaining after build"
     },
-    "curator": {
-      "label": "CURATOR",
-      "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-08-10",
-      "nextRun": "2026-08-11",
-      "actions": [
-        {"ts": "2026-08-10", "msg": "Built /topps-museum-collection-baseball (pre-order Aug 17) — nav + sitemap wired"},
-        {"ts": "2026-08-10", "msg": "Built /topps-definitive-basketball (first NBA Definitive ever, Aug 18) — nav + sitemap wired"},
-        {"ts": "2026-08-10", "msg": "Both pages approved by Mo and pushed live (622b33a)"}
-      ]
+    {
+     "ts": "2026-08-10",
+     "msg": "Trend scan: LeBron→PHI (RC +11.4%), Rutschman→BOS (Chrome auto +12%), Bowman Chrome pre-orders open, Fanatics unsealed-mega saga"
     },
-    "inspector": {
-      "label": "INSPECTOR",
-      "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-      "lastRun": "2026-08-10",
-      "nextRun": "2026-08-17",
-      "actions": [
-        {"ts": "2026-08-10", "msg": "Site-wide price check: 11 rows flagged, Mo approved — Pokémon re-prices applied + Chrome Updates reframed as released"},
-        {"ts": "2026-08-10", "msg": "Post-deploy sweep caught 7 spots of stale MHR>SIR copy on /pitch-black-set-guide — rewritten, pushed (f89b7bb)"},
-        {"ts": "2026-08-10", "msg": "Pending comp pulls: Tribute box-level, Misiorowski, Murakami, Roman Anthony, best-under-50 sweeps"}
-      ]
-    },
-    "dm": {
-      "label": "DM",
-      "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-08-10",
-      "nextRun": "2026-08-11",
-      "actions": [
-        {"ts": "2026-08-10", "msg": "5 calls FINALIZED: Fischer BUY right (+277%) · Greninja BUY wrong (−57%) · Pierce wrong · Arquette wrong · Holliday push"},
-        {"ts": "2026-08-10", "msg": "Greninja PSA-10 range call flipped hit→miss_high ($650 vs $800–$1,200 projection)"},
-        {"ts": "2026-08-10", "msg": "Open question for Mo: Lucario call set-attribution (#179 = Mega Evolution base, not Ascended Heroes)"}
-      ]
-    },
-    "gengar": {
-      "label": "GENGAR",
-      "role": "Pokémon watcher (set prices, chase images, API checks)",
-      "lastRun": "2026-08-10",
-      "nextRun": "2026-08-17",
-      "actions": [
-        {"ts": "2026-08-10", "msg": "Pitch Black entered the English pokemontcg.io API (me5) — checklist verified, all 8 chase images resolving in production"},
-        {"ts": "2026-08-10", "msg": "Re-priced 4 set guides vs PriceCharting solds: Darkrai $271/$196 · Greninja $210–240 · Umbreon $1,400–1,500 ▲ · Ascended Heroes ×4 rows"},
-        {"ts": "2026-08-10", "msg": "Mega-era supply glut confirmed: every 2026 chase bleeding while Prismatic Umbreon rips — printed in the guides"}
-      ]
+    {
+     "ts": "2026-08-10",
+     "msg": "Gap analysis: 4 new page ideas queued for Mo (LeBron, Boozer, Rutschman, Mendoza)"
     }
+   ]
   },
-  "items": [
-    {"slug": "topps-museum-collection-baseball", "title": "2026 Topps Museum Collection Baseball", "stage": "live", "note": "Set guide live ahead of Aug 17 pre-order", "ts": "2026-08-10"},
-    {"slug": "topps-definitive-basketball", "title": "2025-26 Topps Definitive Basketball", "stage": "live", "note": "First NBA Definitive — live ahead of Aug 18 pre-order", "ts": "2026-08-10"},
-    {"slug": "bowman-chrome-baseball-2026", "title": "2026 Bowman Chrome Baseball", "stage": "live", "note": "Live Aug 7; pre-orders opened Aug 10 — benchmark-transition watch begins ~late Sep", "ts": "2026-08-07"},
-    {"slug": "lebron-james-cards", "title": "LeBron James Cards", "stage": "proposed", "note": "Philly move: raw 2003 Topps RC +11.4% — top-ranked gap", "ts": "2026-08-10"},
-    {"slug": "cameron-boozer-rookie-cards", "title": "Cameron Boozer Rookie Cards", "stage": "proposed", "note": "NBA ROY favorite (+300) entering Topps' first NBA RC season", "ts": "2026-08-10"},
-    {"slug": "adley-rutschman-cards", "title": "Adley Rutschman Cards", "stage": "proposed", "note": "Traded to BOS — 2023 Chrome RC auto +12% overnight", "ts": "2026-08-10"},
-    {"slug": "fernando-mendoza-rookie-cards", "title": "Fernando Mendoza Rookie Cards", "stage": "proposed", "note": "No. 1 pick behind Cousins — buy-window angle", "ts": "2026-08-10"},
-    {"slug": "bowman-chrome-wide-release", "title": "Bowman Chrome wide release (~early Sep)", "stage": "discovered", "note": "Paper→Chrome benchmark transition for the Bangers top 5 (~2–3 wks after)", "ts": "2026-08-10"},
-    {"slug": "bowman-draft-2026", "title": "2026 Bowman Draft / Chrome Draft (~Dec)", "stage": "discovered", "note": "Draft-class wave enters the Bangers board", "ts": "2026-08-10"},
-    {"slug": "topps-chrome-baseball-logofractor-edition", "title": "Chrome Baseball Logofractor Edition", "stage": "skipped", "note": "Online-exclusive variant — covered by /topps-chrome-baseball-2026", "ts": "2026-08-10"},
-    {"slug": "topps-universe-wwe", "title": "2026 Topps Universe WWE", "stage": "skipped", "note": "No combat-sports vertical", "ts": "2026-08-10"},
-    {"slug": "topps-vault-marvel", "title": "2026 Topps Vault Marvel", "stage": "skipped", "note": "Entertainment/licensed — off-niche", "ts": "2026-08-10"}
-  ],
-  "proposals": [
-    {"id": "lucario-attribution", "area": "ledger", "summary": "Confirm Lucario BUY call set attribution: #179 SIR = Mega Evolution base set, not Ascended Heroes (AH Lucario is #113)", "status": "awaiting-mo"},
-    {"id": "tribute-box-comps", "area": "price-check", "summary": "Tribute box-level comps (released Jul 29; last read Waxstat ~$950 avg) — needs fresh pull + page update", "status": "awaiting-mo"},
-    {"id": "player-page-sweeps", "area": "price-check", "summary": "Refresh sweeps pending comp pulls: Misiorowski (NL Cy −425), Murakami, Roman Anthony, best-under-50 ×3", "status": "awaiting-mo"},
-    {"id": "new-pages-aug10", "area": "content", "summary": "4 proposed pages: LeBron, Boozer, Rutschman, Mendoza (see items) — pick builds", "status": "awaiting-mo"}
-  ],
-  "scoreboard": {
-    "updated": "2026-08-10",
-    "final": 5, "finalRight": 1, "finalWrong": 3, "finalPush": 1,
-    "trending": 14, "trendingHit": 2, "trendingMiss": 10, "trendingUngraded": 2,
-    "open": 0
+  "curator": {
+   "label": "CURATOR",
+   "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
+   "lastRun": "2026-08-10",
+   "nextRun": "2026-08-11",
+   "actions": [
+    {
+     "ts": "2026-08-10",
+     "msg": "Built /topps-museum-collection-baseball (pre-order Aug 17) — nav + sitemap wired"
+    },
+    {
+     "ts": "2026-08-10",
+     "msg": "Built /topps-definitive-basketball (first NBA Definitive ever, Aug 18) — nav + sitemap wired"
+    },
+    {
+     "ts": "2026-08-10",
+     "msg": "Both pages approved by Mo and pushed live (622b33a)"
+    },
+    {
+     "ts": "2026-08-10",
+     "msg": "Mo approved the 4 gap-analysis pages — built /lebron-james-cards, /adley-rutschman-cards, /cameron-boozer-rookie-cards, /fernando-mendoza-rookie-cards (comps cited, nav+sitemap wired)"
+    }
+   ]
+  },
+  "inspector": {
+   "label": "INSPECTOR",
+   "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
+   "lastRun": "2026-08-10",
+   "nextRun": "2026-08-17",
+   "actions": [
+    {
+     "ts": "2026-08-10",
+     "msg": "Site-wide price check: 11 rows flagged, Mo approved — Pokémon re-prices applied + Chrome Updates reframed as released"
+    },
+    {
+     "ts": "2026-08-10",
+     "msg": "Post-deploy sweep caught 7 spots of stale MHR>SIR copy on /pitch-black-set-guide — rewritten, pushed (f89b7bb)"
+    },
+    {
+     "ts": "2026-08-10",
+     "msg": "Pending comp pulls: Tribute box-level, Misiorowski, Murakami, Roman Anthony, best-under-50 sweeps"
+    }
+   ]
+  },
+  "dm": {
+   "label": "DM",
+   "role": "Ledger keeper + orchestration (/track-record, calls.json)",
+   "lastRun": "2026-08-10",
+   "nextRun": "2026-08-11",
+   "actions": [
+    {
+     "ts": "2026-08-10",
+     "msg": "5 calls FINALIZED: Fischer BUY right (+277%) · Greninja BUY wrong (−57%) · Pierce wrong · Arquette wrong · Holliday push"
+    },
+    {
+     "ts": "2026-08-10",
+     "msg": "Greninja PSA-10 range call flipped hit→miss_high ($650 vs $800–$1,200 projection)"
+    },
+    {
+     "ts": "2026-08-10",
+     "msg": "Open question for Mo: Lucario call set-attribution (#179 = Mega Evolution base, not Ascended Heroes)"
+    }
+   ]
+  },
+  "gengar": {
+   "label": "GENGAR",
+   "role": "Pokémon watcher (set prices, chase images, API checks)",
+   "lastRun": "2026-08-10",
+   "nextRun": "2026-08-17",
+   "actions": [
+    {
+     "ts": "2026-08-10",
+     "msg": "Pitch Black entered the English pokemontcg.io API (me5) — checklist verified, all 8 chase images resolving in production"
+    },
+    {
+     "ts": "2026-08-10",
+     "msg": "Re-priced 4 set guides vs PriceCharting solds: Darkrai $271/$196 · Greninja $210–240 · Umbreon $1,400–1,500 ▲ · Ascended Heroes ×4 rows"
+    },
+    {
+     "ts": "2026-08-10",
+     "msg": "Mega-era supply glut confirmed: every 2026 chase bleeding while Prismatic Umbreon rips — printed in the guides"
+    }
+   ]
   }
+ },
+ "items": [
+  {
+   "slug": "topps-museum-collection-baseball",
+   "title": "2026 Topps Museum Collection Baseball",
+   "stage": "live",
+   "note": "Set guide live ahead of Aug 17 pre-order",
+   "ts": "2026-08-10"
+  },
+  {
+   "slug": "topps-definitive-basketball",
+   "title": "2025-26 Topps Definitive Basketball",
+   "stage": "live",
+   "note": "First NBA Definitive — live ahead of Aug 18 pre-order",
+   "ts": "2026-08-10"
+  },
+  {
+   "slug": "bowman-chrome-baseball-2026",
+   "title": "2026 Bowman Chrome Baseball",
+   "stage": "live",
+   "note": "Live Aug 7; pre-orders opened Aug 10 — benchmark-transition watch begins ~late Sep",
+   "ts": "2026-08-07"
+  },
+  {
+   "slug": "lebron-james-cards",
+   "title": "LeBron James Cards",
+   "stage": "built",
+   "note": "Philly move: raw 2003 Topps RC +11.4% — BUILT, awaiting Mo push",
+   "ts": "2026-08-10"
+  },
+  {
+   "slug": "cameron-boozer-rookie-cards",
+   "title": "Cameron Boozer Rookie Cards",
+   "stage": "built",
+   "note": "NBA ROY favorite (+300) entering Topps' first NBA RC season — BUILT, awaiting Mo push",
+   "ts": "2026-08-10"
+  },
+  {
+   "slug": "adley-rutschman-cards",
+   "title": "Adley Rutschman Cards",
+   "stage": "built",
+   "note": "Traded to BOS — BUILT, awaiting Mo push",
+   "ts": "2026-08-10"
+  },
+  {
+   "slug": "fernando-mendoza-rookie-cards",
+   "title": "Fernando Mendoza Rookie Cards",
+   "stage": "built",
+   "note": "No. 1 pick behind Cousins — BUILT, awaiting Mo push",
+   "ts": "2026-08-10"
+  },
+  {
+   "slug": "bowman-chrome-wide-release",
+   "title": "Bowman Chrome wide release (~early Sep)",
+   "stage": "discovered",
+   "note": "Paper→Chrome benchmark transition for the Bangers top 5 (~2–3 wks after)",
+   "ts": "2026-08-10"
+  },
+  {
+   "slug": "bowman-draft-2026",
+   "title": "2026 Bowman Draft / Chrome Draft (~Dec)",
+   "stage": "discovered",
+   "note": "Draft-class wave enters the Bangers board",
+   "ts": "2026-08-10"
+  },
+  {
+   "slug": "topps-chrome-baseball-logofractor-edition",
+   "title": "Chrome Baseball Logofractor Edition",
+   "stage": "skipped",
+   "note": "Online-exclusive variant — covered by /topps-chrome-baseball-2026",
+   "ts": "2026-08-10"
+  },
+  {
+   "slug": "topps-universe-wwe",
+   "title": "2026 Topps Universe WWE",
+   "stage": "skipped",
+   "note": "No combat-sports vertical",
+   "ts": "2026-08-10"
+  },
+  {
+   "slug": "topps-vault-marvel",
+   "title": "2026 Topps Vault Marvel",
+   "stage": "skipped",
+   "note": "Entertainment/licensed — off-niche",
+   "ts": "2026-08-10"
+  }
+ ],
+ "proposals": [
+  {
+   "id": "lucario-attribution",
+   "area": "ledger",
+   "summary": "Confirm Lucario BUY call set attribution: #179 SIR = Mega Evolution base set, not Ascended Heroes (AH Lucario is #113)",
+   "status": "awaiting-mo"
+  },
+  {
+   "id": "tribute-box-comps",
+   "area": "price-check",
+   "summary": "Tribute box-level comps (released Jul 29; last read Waxstat ~$950 avg) — needs fresh pull + page update",
+   "status": "awaiting-mo"
+  },
+  {
+   "id": "player-page-sweeps",
+   "area": "price-check",
+   "summary": "Refresh sweeps pending comp pulls: Misiorowski (NL Cy −425), Murakami, Roman Anthony, best-under-50 ×3",
+   "status": "awaiting-mo"
+  },
+  {
+   "id": "new-pages-aug10",
+   "area": "content",
+   "summary": "4 proposed pages APPROVED + BUILT same day (LeBron, Rutschman, Boozer, Mendoza) — awaiting push",
+   "status": "approved"
+  }
+ ],
+ "scoreboard": {
+  "updated": "2026-08-10",
+  "final": 5,
+  "finalRight": 1,
+  "finalWrong": 3,
+  "finalPush": 1,
+  "trending": 14,
+  "trendingHit": 2,
+  "trendingMiss": 10,
+  "trendingUngraded": 2,
+  "open": 0
+ }
 }
