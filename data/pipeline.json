@@ -1,6 +1,6 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys MUST stay dm|seeker|curator|inspector|gengar (they map to the dungeon's five sprites; append newest action LAST, keep ~12 max per agent). items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-10T19:05:00-04:00",
+ "generated": "2026-08-10T19:40:00-04:00",
  "generator": "phase-1 seed (weekly runs take over from here)",
  "agents": {
   "seeker": {
@@ -44,6 +44,10 @@
     {
      "ts": "2026-08-10",
      "msg": "Mo approved the 4 gap-analysis pages — built /lebron-james-cards, /adley-rutschman-cards, /cameron-boozer-rookie-cards, /fernando-mendoza-rookie-cards (comps cited, nav+sitemap wired)"
+    },
+    {
+     "ts": "2026-08-10",
+     "msg": "All 4 player pages pushed live by Mo (7acc698) — proposal→applied, same-day idea-to-live"
     }
    ]
   },
@@ -133,29 +137,29 @@
   {
    "slug": "lebron-james-cards",
    "title": "LeBron James Cards",
-   "stage": "built",
-   "note": "Philly move: raw 2003 Topps RC +11.4% — BUILT, awaiting Mo push",
+   "stage": "live",
+   "note": "Philly move: raw 2003 Topps RC +24%/30d — LIVE",
    "ts": "2026-08-10"
   },
   {
    "slug": "cameron-boozer-rookie-cards",
    "title": "Cameron Boozer Rookie Cards",
-   "stage": "built",
-   "note": "NBA ROY favorite (+300) entering Topps' first NBA RC season — BUILT, awaiting Mo push",
+   "stage": "live",
+   "note": "NBA ROY favorite (+300), first Topps NBA RC class — LIVE",
    "ts": "2026-08-10"
   },
   {
    "slug": "adley-rutschman-cards",
    "title": "Adley Rutschman Cards",
-   "stage": "built",
-   "note": "Traded to BOS — BUILT, awaiting Mo push",
+   "stage": "live",
+   "note": "BOS trade, Chrome RC auto +12% overnight — LIVE",
    "ts": "2026-08-10"
   },
   {
    "slug": "fernando-mendoza-rookie-cards",
    "title": "Fernando Mendoza Rookie Cards",
-   "stage": "built",
-   "note": "No. 1 pick behind Cousins — BUILT, awaiting Mo push",
+   "stage": "live",
+   "note": "No. 1 pick buy-window (behind Cousins) — LIVE",
    "ts": "2026-08-10"
   },
   {
@@ -216,8 +220,8 @@
   {
    "id": "new-pages-aug10",
    "area": "content",
-   "summary": "4 proposed pages APPROVED + BUILT same day (LeBron, Rutschman, Boozer, Mendoza) — awaiting push",
-   "status": "approved"
+   "summary": "4 gap-analysis pages approved, built AND pushed live same day (LeBron, Rutschman, Boozer, Mendoza)",
+   "status": "applied"
   }
  ],
  "scoreboard": {
