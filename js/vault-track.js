@@ -102,7 +102,21 @@
       card_name: name.slice(0, 90), page: location.pathname,
       cat: card.cat, vault_status: status
     });
+    signal(card);   // anonymous demand counter -> /api/track-signal (fire-and-forget)
     return 'added';
+  }
+
+  /* ---- demand signal: counts feed the weekly auto-add loop (see
+     api/track-signal.js). Only fires on a NEW add (dedupe = ~unique browsers).
+     Fire-and-forget: failures are invisible to the user. ---- */
+  function signal(card) {
+    try {
+      var p = new URLSearchParams({
+        card: card.name, set: card.set, cat: card.cat, grade: card.grade,
+        status: card.status, page: location.pathname, feed: card.feedKey || ''
+      });
+      fetch('/api/track-signal?' + p.toString(), { method: 'GET', keepalive: true }).catch(function () {});
+    } catch (e) { /* never block the add */ }
   }
 
   function fallback(name) {
@@ -276,5 +290,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  window.SCHVault = { track: track, version: 2 };
+  window.SCHVault = { track: track, version: 3 };
 })();
