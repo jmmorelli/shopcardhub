@@ -1,6 +1,6 @@
 {
  "_comment": "CALLS LEDGER \u2014 single source for /track-record. Two call types. TYPE=RANGE (price projection): projLow/projHigh vs market read. Grading: state=open (no reliable read) \u2192 trending (ask-side or thin sold data; provisional) \u2192 final (SOLD comps ~4 wks post-release; final grades never change). grade: hit = read inside range; miss_high = we projected too high; miss_low = too low. Signed miss% is computed on-page from the nearest range bound. TYPE=VERDICT (BUY/WAIT/SELL call, graded like a paper trade): entry = market price at call date (for pre-release calls with no market, entry = first reliable read, noted); move = entry \u2192 current read. grade: right if the move agrees with the action by \u226510% (BUY wants up, WAIT/SELL wants down), wrong if it disagrees by \u226510%, ungraded inside \u00b110%; final at ~8 weeks from entry, sold-based where possible. HOLD/WATCH verdicts are not ledger material. IMMUTABILITY: never edit projLow/projHigh, action, entry, or callDate after publication. Weekly scheduled run updates read/readDate/state/grade and appends new calls.",
- "updated": "2026-08-10",
+ "updated": "2026-08-11",
  "calls": [
   {
    "id": "pb-darkrai-sir",

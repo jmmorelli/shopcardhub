@@ -1,7 +1,7 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys MUST stay dm|seeker|curator|inspector|gengar (they map to the dungeon's five sprites; append newest action LAST, keep ~12 max per agent). items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-10T19:40:00-04:00",
- "generator": "phase-1 seed (weekly runs take over from here)",
+ "generated": "2026-08-11T12:00:00-04:00",
+ "generator": "bowman-bangers-tuesday-update (2026-08-11)",
  "agents": {
   "seeker": {
    "label": "SEEKER",
@@ -26,8 +26,8 @@
   "curator": {
    "label": "CURATOR",
    "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-   "lastRun": "2026-08-10",
-   "nextRun": "2026-08-11",
+   "lastRun": "2026-08-11",
+   "nextRun": "2026-08-18",
    "actions": [
     {
      "ts": "2026-08-10",
@@ -48,13 +48,25 @@
     {
      "ts": "2026-08-10",
      "msg": "All 4 player pages pushed live by Mo (7acc698) — proposal→applied, same-day idea-to-live"
+    },
+    {
+     "ts": "2026-08-11",
+     "msg": "Bangers board re-priced (Aug 11 SCP solds): Arquette +9% bounce, Fischer +7% third green week, no rank changes"
+    },
+    {
+     "ts": "2026-08-11",
+     "msg": "Watch-tier promotion flags: Kim $131 raw (above 4 of top 5), Florentino $85, Gonzales $57, Houston $29 — promote next run if it holds"
+    },
+    {
+     "ts": "2026-08-11",
+     "msg": "STEP 0: no new 1st-Bowman product delivering yet — Chrome pre-orders open, street ~Sep 9-10, transition watch ~late Sep"
     }
    ]
   },
   "inspector": {
    "label": "INSPECTOR",
    "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-   "lastRun": "2026-08-10",
+   "lastRun": "2026-08-11",
    "nextRun": "2026-08-17",
    "actions": [
     {
@@ -68,14 +80,18 @@
     {
      "ts": "2026-08-10",
      "msg": "Pending comp pulls: Tribute box-level, Misiorowski, Murakami, Roman Anthony, best-under-50 sweeps"
+    },
+    {
+     "ts": "2026-08-11",
+     "msg": "SCP console pulled live (10 board/watch names, raw + PSA 10). No attributable base-auto comp for Gage Jump — only Gold /50 listed; reported, not invented"
     }
    ]
   },
   "dm": {
    "label": "DM",
    "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-   "lastRun": "2026-08-10",
-   "nextRun": "2026-08-11",
+   "lastRun": "2026-08-11",
+   "nextRun": "2026-08-17",
    "actions": [
     {
      "ts": "2026-08-10",
@@ -88,6 +104,14 @@
     {
      "ts": "2026-08-10",
      "msg": "Open question for Mo: Lucario call set-attribution (#179 = Mega Evolution base, not Ascended Heroes)"
+    },
+    {
+     "ts": "2026-08-10",
+     "msg": "Topps affiliate saga: funnel bug diagnosed, status confirmed In Review (2 months), escalated via email to Impact support — watch for response"
+    },
+    {
+     "ts": "2026-08-11",
+     "msg": "Ledger: all 4 Bangers verdicts FINAL, no changes; no new verdicts (promotion flags only). 7 tweet drafts written — awaiting Mo's pick"
     }
    ]
   },
@@ -200,6 +224,18 @@
  ],
  "proposals": [
   {
+   "id": "tweets-2026-08-11",
+   "area": "social",
+   "summary": "7 tweet drafts for the week (accountability #1 = Greninja −57% FINAL; 2× Bangers, LeBron, Umbreon, 2× new-page ideas) — Mo to pick and post",
+   "status": "awaiting-mo"
+  },
+  {
+   "id": "bangers-watch-promotions",
+   "area": "board",
+   "summary": "Watch-tier promotion flags (Aug 11): Kim $131 / Florentino $85 / Gonzales $57 / Houston $29 all above Pierce $19.50 — promote next Tuesday if it holds (board reshuffle + new ledger verdicts)",
+   "status": "awaiting-mo"
+  },
+  {
    "id": "lucario-attribution",
    "area": "ledger",
    "summary": "Confirm Lucario BUY call set attribution: #179 SIR = Mega Evolution base set, not Ascended Heroes (AH Lucario is #113)",
@@ -222,10 +258,16 @@
    "area": "content",
    "summary": "4 gap-analysis pages approved, built AND pushed live same day (LeBron, Rutschman, Boozer, Mendoza)",
    "status": "applied"
+  },
+  {
+   "id": "topps-application-escalation",
+   "area": "affiliate",
+   "summary": "Topps/Impact application (acct 7418994) In Review since mid-June. Aug 10: Collector Support dead end, Impact support form broken, EMAILED support@impact.com directly — awaiting response. Re-escalate if silent by ~Aug 24. Placeholder buttons on 8+ pages flip to earning links on approval.",
+   "status": "awaiting-response"
   }
  ],
  "scoreboard": {
-  "updated": "2026-08-10",
+  "updated": "2026-08-11",
   "final": 5,
   "finalRight": 1,
   "finalWrong": 3,
