@@ -1101,7 +1101,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       var wl = {};
       var pWatch = fetch('/data/watchlist.json', { cache: 'no-store' })
         .then(function(r){ return r.ok ? r.json() : null; })
-        .then(function(j){ if (j && j.cards) j.cards.forEach(function(c){ wl[c.source + ':' + c.id] = { cardType: c.cardType, rank: c.rank, slug: c.slug }; }); })
+        .then(function(j){ if (j && j.cards) j.cards.forEach(function(c){ wl[c.source + ':' + c.id] = { cardType: c.cardType, rank: c.rank, slug: c.slug, boardHide: !!c.boardHide }; }); })
         .catch(function(){});
       var pFeed = fetch(FEED + '?t=' + Date.now(), { cache: 'no-store' })
         .then(function(r){ return r.ok ? r.json() : null; })
@@ -1112,7 +1112,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         var seeded = false;
         if (!feed || !Array.isArray(feed.cards) || !feed.cards.length) { feed = SEED; seeded = true; }
         var cards = feed.cards;
-        rows = cards.map(function(c){
+        rows = cards.filter(function(c){ return !(wl[c.key] && wl[c.key].boardHide); }).map(function(c){
           var m = wl[c.key] || {};
           var pts = c.points || 0;
           return {
