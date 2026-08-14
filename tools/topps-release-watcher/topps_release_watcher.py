@@ -103,7 +103,7 @@ def scaffold_draft(rel, shell):
       {pb.avoid_item("<strong>Chase table</strong> &mdash; real subsets/inserts/autos from the official checklist + eBay search links.").replace("&#10007;","&#9633;")}
       {pb.avoid_item("<strong>Parallel rainbow</strong> &mdash; confirmed serial numbering tiers.").replace("&#10007;","&#9633;")}
       {pb.avoid_item("<strong>Box ROI</strong> &mdash; format, hit rate, ROI-calculator link.").replace("&#10007;","&#9633;")}
-      {pb.avoid_item("<strong>Where to buy</strong> &mdash; singles vs sealed; Topps Buy-Direct placeholder tagged.").replace("&#10007;","&#9633;")}
+      {pb.avoid_item("<strong>Where to buy</strong> &mdash; eBay singles (EPN) / Fanatics sealed (fanatics.93n6tx.net/AgROJo) / COMC. No topps.com buy-links.").replace("&#10007;","&#9633;")}
       {pb.avoid_item("<strong>Watch list + Avoid + Related</strong> &mdash; cross-link existing pages.").replace("&#10007;","&#9633;")}
     </div>
   </section>

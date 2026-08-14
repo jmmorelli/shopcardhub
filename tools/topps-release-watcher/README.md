@@ -42,9 +42,11 @@ Idempotent — won't duplicate nav links or sitemap entries. Edit `content.py` a
 - **Design**: shell is sliced verbatim from `topps-series-1-2026.html` → zero CSS drift.
 - **Pricing**: these are unreleased products with no sold comps — copy is pre-release/qualitative
   with live **eBay search** links (which work before release). No invented hard prices.
-- **Affiliate**: eBay = live EPN links (campaign 5339155990). Topps "Buy Direct" buttons are
-  **placeholders** tagged `<!-- TOPPS AFFILIATE -->` — swap for Impact deep-links once the Topps
-  program (account 7418994, *In Review*) is approved.
+- **Affiliate**: eBay = live EPN links (campaign 5339155990), Fanatics = Impact link
+  `fanatics.93n6tx.net/AgROJo` (sealed), Amazon = `tag=shopcardhub-20` (supplies), COMC = own store.
+  **No topps.com buy-links** — deprecated Aug 14, 2026. Topps direct is draw-gated and chronically
+  out of stock, so buy-intent clicks dead-end; Fanatics carries the same sealed product with real
+  inventory. Official Topps product pages may still be cited in prose, never as a CTA.
 - **Approval gate**: no script pushes or deploys. Human-in-the-loop, always.
 
 ## Adding a new "skip" or "built"
