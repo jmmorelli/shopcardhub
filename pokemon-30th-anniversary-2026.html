@@ -477,6 +477,68 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     gtag('js', new Date());
     gtag('config', 'G-2Q52C5EKG7');
   </script>
+
+  <!-- 30TH CELEBRATION PAGE THEME — Pikachu gold override (this page only) -->
+  <style id="anniv-gold">
+    :root {
+      --accent:#ffde00;                    /* Pikachu yellow */
+      --accent-dim:rgba(255,222,0,0.10);
+      --accent-glow:rgba(255,222,0,0.25);
+      --pb:#ffde00;                        /* retire donor purple */
+    }
+    .hero::before { background:radial-gradient(ellipse at 20% 0%, rgba(255,222,0,0.09) 0%, transparent 60%) !important; }
+    .hero h1 em { color:#ffde00; text-shadow:0 0 40px rgba(255,222,0,0.35); }
+    .btn-primary { background:#ffde00; }
+    .btn-primary:hover { background:#fff; }
+    .alert-bar { border-color:rgba(255,222,0,0.35); background:rgba(255,222,0,0.05); }
+    .set-banner { border-top-color:#ffde00; }
+    .watch-item.high { border-left-color:#ffde00; }
+    .watch-tag.high { color:#ffde00; }
+    ::selection { background:rgba(255,222,0,0.9); color:#000; }
+
+    /* ---- ambient hero sparks ---- */
+    .spark { position:absolute; font-size:14px; color:#ffde00; opacity:0;
+      pointer-events:none; filter:drop-shadow(0 0 6px rgba(255,222,0,0.8));
+      animation:spark-float 7s ease-in-out infinite; }
+    @keyframes spark-float {
+      0%,100% { opacity:0; transform:translateY(8px) scale(0.7) rotate(-8deg); }
+      15%     { opacity:0.9; }
+      50%     { opacity:0.5; transform:translateY(-26px) scale(1.05) rotate(10deg); }
+      85%     { opacity:0.9; }
+    }
+
+    /* ---- the spark sprite: hops along the bottom of the viewport ---- */
+    #spark-sprite { position:fixed; bottom:6px; left:-80px; width:34px; height:30px;
+      z-index:900; pointer-events:none; opacity:0; }
+    #spark-sprite.running { animation:sprite-run 9s linear 1; }
+    @keyframes sprite-run {
+      0%   { transform:translateX(0); opacity:0; }
+      3%   { opacity:1; }
+      97%  { opacity:1; }
+      100% { transform:translateX(calc(100vw + 160px)); opacity:0; }
+    }
+    #spark-sprite .body { position:absolute; inset:0 0 4px 0; background:radial-gradient(circle at 38% 35%, #fff6b0 0%, #ffde00 45%, #f0a800 100%);
+      border-radius:50% 50% 46% 46%; box-shadow:0 0 14px 3px rgba(255,222,0,0.55);
+      animation:sprite-hop 0.42s ease-in-out infinite; transform-origin:50% 100%; }
+    @keyframes sprite-hop {
+      0%,100% { transform:translateY(0) scale(1.06,0.9); }
+      50%     { transform:translateY(-9px) scale(0.92,1.1); }
+    }
+    #spark-sprite .cheek { position:absolute; width:7px; height:7px; border-radius:50%;
+      background:#ff5533; left:4px; top:13px; opacity:0.85; }
+    #spark-sprite .trail { position:absolute; right:100%; top:40%; width:52px; height:14px;
+      background:linear-gradient(90deg, transparent, rgba(255,222,0,0.75));
+      clip-path:polygon(0 55%, 28% 30%, 30% 55%, 55% 20%, 56% 50%, 82% 10%, 100% 45%, 100% 65%, 60% 75%, 30% 90%, 8% 70%);
+      animation:trail-crackle 0.24s steps(2) infinite; }
+    @keyframes trail-crackle { 0% { transform:scaleY(1); opacity:0.9; } 100% { transform:scaleY(-1); opacity:0.55; } }
+    #spark-sprite .zap { position:absolute; top:-11px; left:11px; font-size:11px; color:#fff6b0;
+      text-shadow:0 0 6px #ffde00; animation:zap-blink 0.9s steps(1) infinite; }
+    @keyframes zap-blink { 0%,60% { opacity:0; } 61%,100% { opacity:1; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spark, #spark-sprite { display:none !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -1164,5 +1226,44 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </script>
 
 <script src="/js/vault-track.js?v=3" defer></script>
+
+<!-- 30th Celebration — spark sprite + hero sparks (this page only) -->
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  // ambient sparks in the hero
+  var hero = document.querySelector(".hero");
+  if (hero) {
+    hero.style.overflow = "hidden";
+    var spots = [[8,22],[85,15],[70,68],[22,72],[52,10],[93,55]];
+    spots.forEach(function (pos, i) {
+      var s = document.createElement("span");
+      s.className = "spark";
+      s.textContent = "\u26A1";
+      s.style.left = pos[0] + "%";
+      s.style.top = pos[1] + "%";
+      s.style.animationDelay = (i * 1.15) + "s";
+      s.setAttribute("aria-hidden", "true");
+      hero.appendChild(s);
+    });
+  }
+
+  // the spark sprite — scampers across the bottom every so often
+  var sprite = document.createElement("div");
+  sprite.id = "spark-sprite";
+  sprite.setAttribute("aria-hidden", "true");
+  sprite.innerHTML = '<div class="trail"></div><div class="body"><div class="cheek"></div></div><div class="zap">\u26A1</div>';
+  document.body.appendChild(sprite);
+
+  function run() {
+    sprite.classList.remove("running");
+    void sprite.offsetWidth;            // restart animation
+    sprite.classList.add("running");
+  }
+  setTimeout(run, 3500);                 // first pass shortly after load
+  setInterval(run, 32000);               // then roughly every half minute
+})();
+</script>
 </body>
 </html>
