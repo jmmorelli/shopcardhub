@@ -7,9 +7,11 @@
     "label": "string — human name for display",
     "query": "string — eBay search terms for the free path",
     "condition": "loose | graded | psa10 | new | cib (paid path only)",
-    "cardType": "chrome-auto (default) | chrome-base (fallback when no auto was issued)",
+    "cardType": "chrome-auto (default) | chrome-base (no-auto fallback) | tcg-single (Pokemon etc: no auto requirement, TCG noise filter)",
     "slug": "optional — site page this card links back to",
-    "rank": "optional integer — editorial rank if it's a featured top-10 card (else omit)"
+    "rank": "optional integer — editorial rank if it's a featured top-10 card (else omit)",
+    "titleMust": "optional string[] — tokens that must ALL appear in a listing title (overrides last-name check). Use card numbers (161/131) for TCG.",
+    "categoryIds": "optional — eBay category override for /api/comps. 183454 = CCG Individual Cards (Pokemon). Default 212 = Sports Trading Cards."
   },
   "cards": [
     {
@@ -100,6 +102,76 @@
       "label": "Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1",
       "query": "2024 bowman draft chrome travis bazzana BDC-1 -auto -autograph -sapphire -lot -reprint -digital",
       "cardType": "chrome-base",
+      "boardHide": true
+    },
+    {
+      "id": "umbreon-ex-sir-pe",
+      "source": "ebay",
+      "label": "Umbreon ex SIR #161 — Prismatic Evolutions",
+      "query": "umbreon ex sir 161/131 prismatic -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "umbreon",
+        "161"
+      ],
+      "categoryIds": "183454",
+      "slug": "prismatic-evolutions-guide",
+      "boardHide": true
+    },
+    {
+      "id": "mega-darkrai-ex-sir",
+      "source": "ebay",
+      "label": "Mega Darkrai ex SIR #116/084 — Pitch Black",
+      "query": "mega darkrai ex sir 116/084 pitch black -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "darkrai",
+        "116/084"
+      ],
+      "categoryIds": "183454",
+      "slug": "pitch-black-set-guide",
+      "boardHide": true
+    },
+    {
+      "id": "mega-greninja-ex-sir",
+      "source": "ebay",
+      "label": "Mega Greninja ex SIR #116/086 — Chaos Rising",
+      "query": "mega greninja ex sir 116/086 chaos rising -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "greninja",
+        "116/086"
+      ],
+      "categoryIds": "183454",
+      "slug": "chaos-rising",
+      "boardHide": true
+    },
+    {
+      "id": "tr-mewtwo-ex-sir",
+      "source": "ebay",
+      "label": "T.R.'s Mewtwo ex SIR — Ascended Heroes",
+      "query": "mewtwo ex sir ascended heroes -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "mewtwo",
+        "sir"
+      ],
+      "categoryIds": "183454",
+      "slug": "ascended-heroes",
+      "boardHide": true
+    },
+    {
+      "id": "mega-lucario-ex-sir",
+      "source": "ebay",
+      "label": "Mega Lucario ex SIR #179/132 — Mega Evolution",
+      "query": "mega lucario ex sir 179/132 -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "lucario",
+        "179/132"
+      ],
+      "categoryIds": "183454",
+      "slug": "ascended-heroes",
       "boardHide": true
     }
   ]

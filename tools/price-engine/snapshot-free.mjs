@@ -47,6 +47,12 @@ const THROTTLE_MS = 1200; // gentle on the Vercel fn + eBay quota (CDN caches re
 // Chrome auto - the one canonical card per player the watchlist tracks.
 const TITLE_BAD = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|refractor|x-?fractor|superfractor|printing\s?plate|sapphire|mega|mojo|lava|speckle|logofractor|shimmer|atomic|mini\s?diamond|wave|prism|aqua|1st\s?edition\s?reprint|reprint|digital|custom|proxy|lot\s?of|\/\d{1,4}\b)/i;
 
+// TCG singles (Pokemon etc): different noise profile. Card numbers like 161/131
+// are REQUIRED in titles (so no serial-number exclusion), "mega"/"prism" are set
+// names not parallels. Excluded instead: grading, accessories, pick-a-card
+// storefronts, lots, customs.
+const TITLE_BAD_TCG = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|reprint|digital|custom|proxy|metal\s?card|gold\s?card|lot\s?of|bulk|pick|choose|you\s?pick|case|sleeve|playmat|binder|jumbo|oversize|sticker)/i;
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const today = () => new Date().toISOString().slice(0, 10); // UTC
 
@@ -70,19 +76,25 @@ function lastNameOf(label) {
 
 // Trimmed-median mark of the cheapest VERIFIED fixed-price asks for a query,
 // via the site's own public comps endpoint (which handles eBay auth).
-async function compsMark(query, label) {
-  const url = SITE + "/api/comps?q=" + encodeURIComponent(query) + "&sort=price&limit=50";
+async function compsMark(query, label, card = {}) {
+  const type = card.cardType || "chrome-auto";
+  const isTcg = type === "tcg-single";
+  let url = SITE + "/api/comps?q=" + encodeURIComponent(query) + "&sort=price&limit=50";
+  if (card.categoryIds) url += "&category_ids=" + encodeURIComponent(card.categoryIds);
   const r = await fetch(url, { headers: { Accept: "application/json" } });
   if (!r.ok) throw new Error('/api/comps "' + query + '" -> HTTP ' + r.status);
   const j = await r.json();
-  const lname = lastNameOf(label);
+  // required title tokens: explicit card.titleMust, else the player's last name
+  const musts = (Array.isArray(card.titleMust) && card.titleMust.length
+    ? card.titleMust : [lastNameOf(label)]).map((m) => String(m).toLowerCase());
+  const bad = isTcg ? TITLE_BAD_TCG : TITLE_BAD;
   const asks = (j.listings || [])
     .filter((l) => l.buyingOption === "FIXED_PRICE")
     .filter((l) => {
       const t = String(l.title || "").toLowerCase();
-      if (!t.includes(lname)) return false;       // must be this player
-      if (!/auto/.test(t)) return false;           // must be the autograph card
-      if (TITLE_BAD.test(t)) return false;         // no slabs/parallels/lots
+      if (!musts.every((m) => t.includes(m))) return false; // must be this card
+      if (type === "chrome-auto" && !/auto/.test(t)) return false; // autograph only for chrome-auto
+      if (bad.test(t)) return false;               // no slabs/parallels/accessories/lots
       return true;
     })
     .map((l) => (Number.isFinite(l.price) ? l.price + (Number.isFinite(l.shipping) ? l.shipping : 0) : null))
@@ -106,7 +118,7 @@ async function main() {
   for (const card of cards) {
     const key = card.source + ":" + card.id;
     try {
-      const { price, comps } = await compsMark(card.query, card.label);
+      const { price, comps } = await compsMark(card.query, card.label, card);
       const entry = history[key] || { key, id: card.id, source: card.source, label: card.label, slug: card.slug || null, series: [] };
       entry.label = card.label || entry.label;
       entry.slug = card.slug || entry.slug || null;
