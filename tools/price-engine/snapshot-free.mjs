@@ -140,11 +140,14 @@ async function main() {
   }
 
   // ---- recompute TA + build the compact latest feed (same shape the pages read) ----
+  const byKey = new Map(cards.map((c) => [c.source + ":" + c.id, c]));
   const latest = Object.values(history).map((e) => {
     const prices = e.series.map((pt) => pt.p);
     const ta = analyze(prices, null);
+    const wlCard = byKey.get(e.key) || {};
     return {
       key: e.key, label: e.label, source: e.source, slug: e.slug || null,
+      cardType: wlCard.cardType || null, boardHide: !!wlCard.boardHide,
       last: ta.last, signal: ta.signal, confidence: ta.confidence,
       roc30: ta.roc30, sma30: ta.sma30, z: ta.z,
       retSkew: ta.retSkew, retKurtosis: ta.retKurtosis,
