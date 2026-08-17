@@ -1718,6 +1718,22 @@ function compsClean(c, j, usedQ) {
   return { count: keep.length, total: j.total, listings: keep,
            stats: { n: n, min: ps[0], median: med, max: ps[n - 1], mean: mean, stdev: sd, skew: skew, kurt: kurt } };
 }
+// Trimmed low-ask mark — the price engine's exact recipe (snapshot-free.mjs):
+// verified asks sorted by price+shipping ascending, drop the TRIM cheapest
+// (junk/damaged floor), median of the next LOW_N. Marks the executable low
+// side of the book instead of the full-sample median that sellers' fishing
+// asks drag upward. A trader lives closer to the bid; so does this number.
+function lowAskMark(listings) {
+  const TRIM = 2, LOW_N = 10;
+  const tots = (listings || [])
+    .filter(l => l.price > 0)
+    .map(l => l.price + (l.shipping > 0 ? l.shipping : 0))
+    .sort((a, b) => a - b)
+    .slice(TRIM, TRIM + LOW_N);
+  const n = tots.length;
+  if (!n) return null;
+  return n % 2 ? tots[(n - 1) / 2] : (tots[n / 2 - 1] + tots[n / 2]) / 2;
+}
 function ensureComps(c) {
   const key = compsQ(c);
   const e = compsCache[key];
@@ -1733,19 +1749,21 @@ function ensureComps(c) {
       if (cleaned) { result = (q === key) ? cleaned : Object.assign(cleaned, { simplified: q }); break; }
     }
     compsCache[key] = { data: result || { count: 0 }, t: Date.now() };
-    // ASK AUTO-LOG: same deal as the nightly engine (ask-side mark, identical
-    // methodology every pull) but client-side, so cards the engine doesn't
-    // track still build candles. One point per day, >=4 verified asks, never
-    // on engine-linked cards (the engine's mark is the better series), always
-    // tagged src:'ask' so the log never passes an ask off as a sold.
+    // ASK AUTO-LOG: EXACTLY the nightly engine's methodology, client-side, so
+    // cards the engine doesn't track still build candles: sort verified asks
+    // by price+shipping, drop the 2 cheapest (junk/damaged floor), median of
+    // the next 10 — the LOW-side mark, near the bid, not the wishful median.
+    // One point per day, >=4 verified asks, never on engine-linked cards,
+    // always tagged src:'ask' so the log never passes an ask off as a sold.
     const st = result && result.stats;
-    if (st && st.n >= 4 && st.median > 0 && !c.feedKey) {
+    const mark = result ? lowAskMark(result.listings) : null;
+    if (st && st.n >= 4 && mark > 0 && !c.feedKey) {
       const today = dayOf(Date.now());
       if (!c.prices.some(p => dayOf(p.t) === today)) {
-        c.prices.push({ t: Date.now(), p: st.median, src: 'ask' });
+        c.prices.push({ t: Date.now(), p: mark, src: 'ask' });
         c.prices.sort((a, b) => a.t - b.t);
         save();
-        toast('◔ Ask median $' + fmt$(st.median, 0) + ' auto-logged (' + st.n + ' verified asks — asks, not solds)');
+        toast('◔ Low-ask mark $' + fmt$(mark, 0) + ' auto-logged (engine methodology: trim 2, median of next 10 — asks, not solds)');
         track('vault_ask_autolog');
         render();
         return;
@@ -1769,7 +1787,7 @@ function retryComps(id) {
 function logCompsMedian(id) {
   const c = state.cards.find(x => x.id === id);
   const e = c ? compsCache[compsQ(c)] : null;
-  const m = e && e.data && e.data.stats ? e.data.stats.median : null;
+  const m = e && e.data ? lowAskMark(e.data.listings) : null;
   if (!(m > 0)) return;
   const today = dayOf(Date.now());
   if (c.prices.some(p => (p.src === 'ask' || p.src === 'comps' || p.src === 'feed') && dayOf(p.t) === today)) {
@@ -1778,7 +1796,7 @@ function logCompsMedian(id) {
   c.prices.push({ t: Date.now(), p: m, src: 'comps' });
   c.prices.sort((a, b) => a.t - b.t);
   save(); render();
-  toast('Live-ask median $' + fmt$(m) + ' logged — candle added');
+  toast('Low-ask mark $' + fmt$(m) + ' logged — candle added');
   track('vault_log_comps_median');
 }
 // Plain-English read of the ask distribution — same job "Read the Tape" does
@@ -1807,11 +1825,13 @@ function compsInner(c) {
   const d = e.data, st = d.stats;
   if (!st || !d.count) return '<div class="f-hint">No live listings match “' + esc(compsQ(c)) + '” (also tried the card name alone) — try editing the card to a shorter name sellers would use.</div>';
 
-  const cell = (l, v, tip) => '<div class="stat-cell"><div class="sl" title="' + esc(tip) + '">' + l + ' ⓘ</div><div class="sv">' + v + '</div></div>';
+  const cell = (l, v, tip, hot) => '<div class="stat-cell"><div class="sl" title="' + esc(tip) + '">' + l + ' ⓘ</div><div class="sv"' + (hot ? ' style="color:var(--green)"' : '') + '>' + v + '</div></div>';
+  const mark = lowAskMark(d.listings);
   let out = '<div class="comps-stats">' +
     cell('Live asks', d.count.toLocaleString('en-US'), 'Listings in the live sample whose title actually matches this card') +
+    (mark > 0 ? cell('Mark', '$' + fmt$(mark, 0), 'Trimmed low-ask mark: drop the 2 cheapest (junk floor), median of the next 10 asks incl. shipping — the engine\'s exact methodology. The executable low side of the book; asks, not solds.', true) : '') +
     cell('Low', '$' + fmt$(st.min, 0), 'Cheapest ask in the sample') +
-    cell('Median', '$' + fmt$(st.median, 0), 'Middle ask — the honest number when the tail is fat') +
+    cell('Median', '$' + fmt$(st.median, 0), 'Middle ask of the full sample — sellers\' fishing asks drag this high; the Mark is the tradeable number') +
     cell('High', '$' + fmt$(st.max, 0), 'Priciest ask in the sample') +
     cell('σ', st.stdev != null ? '$' + fmt$(st.stdev, 0) : '—', 'Std deviation of asks — big σ means a messy, mixed-variation sample') +
     '</div>';
@@ -1833,7 +1853,7 @@ function compsInner(c) {
   });
 
   out += '<div class="comps-foot">' +
-    '<button class="btn btn-sm" style="border-color:rgba(0,224,122,0.4);color:var(--green)" onclick="logCompsMedian(\'' + c.id + '\')">+ Log median $' + fmt$(st.median, 0) + '</button>' +
+    (mark > 0 ? '<button class="btn btn-sm" style="border-color:rgba(0,224,122,0.4);color:var(--green)" onclick="logCompsMedian(\'' + c.id + '\')">+ Log mark $' + fmt$(mark, 0) + '</button>' : '') +
     '<span class="f-hint" style="margin:0">asking prices, not solds · sample of ' + d.count + ' · refreshes ~15 min' +
       (d.simplified ? ' · matched on “' + esc(d.simplified) + '”' : '') + '</span>' +
     '</div>';
