@@ -595,7 +595,7 @@
     <div class="vault-hero">
       <div class="vault-eyebrow">Free Tool · No Account · Your Data Stays On Your Device<span id="feedPill"></span></div>
       <h1>The <span class="accent">Vault</span></h1>
-      <p class="vault-sub">Track the cards you're hunting and the cards you own. Log a price whenever you check comps — the Vault builds your <strong>candle charts</strong>, flags cards that hit your <strong>buy zone</strong>, and runs the <strong>stats</strong> on every card. The chart doesn't lie: green candle means more buyers than sellers.</p>
+      <p class="vault-sub">Track the cards you're hunting and the cards you own. Prices log themselves — the nightly engine covers tracked cards, and opening any other card auto-logs the live ask median (always labeled asks, never solds). The Vault builds your <strong>candle charts</strong>, flags cards that hit your <strong>buy zone</strong>, and runs the <strong>stats</strong> on every card. The chart doesn't lie: green candle means more buyers than sellers.</p>
     </div>
 
     <div id="demoBanner" class="demo-banner" style="display:none;">
@@ -897,7 +897,8 @@ function verdict(c, s) {
 function chartSVG(c) {
   const ps = c.prices;
   if (ps.length < 2) {
-    const need = ps.length === 0 ? 'Log a price to start the chart' : 'Log one more price → candles appear';
+    const auto = c.feedKey ? 'the engine’s next nightly snapshot completes it' : 'opening this card tomorrow auto-logs the ask median and completes it';
+    const need = ps.length === 0 ? 'Log a price to start the chart' : 'One more price → first candle · ' + auto;
     return '<div class="no-data">◧ ' + need + '</div>';
   }
   const W = 340, H = 96, padT = 8, padB = 8, padL = 4, padR = 44;
@@ -1060,11 +1061,16 @@ function cardRow(c) {
     if (fe) {
       feedHtml = '<div class="feed-box linked">\u25C9 <b>' + esc(fe.label) + '</b> \u2014 engine snapshots nightly' +
         (fe.last > 0 ? ' \u00B7 last $' + fmt$(fe.last) : '') +
+        (c.feedAuto ? ' \u00B7 <span style="font-size:10px" title="Matched by player name \u2014 unlink if this isn\u2019t your exact card">auto-matched</span>' : '') +
         ' <button class="log-del" title="Unlink from feed" onclick="unlinkFeed(\'' + c.id + '\')">\u2715</button></div>';
     } else {
-      const opts = FEED.cards.map(e => '<option value="' + esc(e.key) + '">' + esc(e.label) + '</option>').join('');
-      feedHtml = '<div class="feed-box"><select id="fs-' + c.id + '"><option value="">Link to the live price engine\u2026</option>' + opts + '</select>' +
-        '<button class="btn btn-sm" onclick="linkFeed(\'' + c.id + '\')">Link</button></div>';
+      const sug = feedMatch(c);
+      const opts = FEED.cards.map(e => '<option value="' + esc(e.key) + '"' + (sug && sug.key === e.key ? ' selected' : '') + '>' + esc(e.label) + '</option>').join('');
+      const sugHtml = sug
+        ? '<span style="color:var(--green)">\u26A1 Engine tracks <b>' + esc(sug.label) + '</b>' + (sug.variant ? ' <span style="color:var(--orange)" title="Your card name mentions a parallel/grade the engine mark doesn\u2019t track \u2014 the engine follows the raw base card">(base card)</span>' : '') + '</span> '
+        : '';
+      feedHtml = '<div class="feed-box">' + sugHtml + '<select id="fs-' + c.id + '"><option value=""' + (sug ? '' : ' selected') + '>Link to the live price engine\u2026</option>' + opts + '</select>' +
+        '<button class="btn btn-sm"' + (sug ? ' style="border-color:rgba(0,224,122,0.4);color:var(--green)"' : '') + ' onclick="linkFeed(\'' + c.id + '\')">Link</button></div>';
     }
   }
 
@@ -1075,7 +1081,9 @@ function cardRow(c) {
     const idx = c.prices.length - 1 - ri;
     const pv = idx > 0 ? c.prices[idx-1].p : null;
     const d = pv != null && pv > 0 ? pt.p/pv - 1 : null;
-    logRows += '<tr><td>' + dstr(pt.t) + '</td><td>$' + fmt$(pt.p) + '</td><td class="' + (d == null ? '' : d > 0 ? 'pos' : d < 0 ? 'neg' : '') + '">' + (d == null ? '—' : pct(d)) + '</td>' +
+    const srcTag = pt.src === 'feed' ? ' <span style="color:var(--text-dim);font-size:10px" title="Nightly price engine (ask-side mark, identical methodology every night)">⚙ engine</span>'
+                 : (pt.src === 'ask' || pt.src === 'comps') ? ' <span style="color:var(--text-dim);font-size:10px" title="Median of live eBay asking prices — asks, not solds">◔ ask</span>' : '';
+    logRows += '<tr><td>' + dstr(pt.t) + srcTag + '</td><td>$' + fmt$(pt.p) + '</td><td class="' + (d == null ? '' : d > 0 ? 'pos' : d < 0 ? 'neg' : '') + '">' + (d == null ? '—' : pct(d)) + '</td>' +
       '<td style="text-align:right"><button class="log-del" title="Delete this log" onclick="delLog(\'' + c.id + '\',' + idx + ')">✕</button></td></tr>';
   });
   if (c.prices.length > 8) logRows += '<tr><td colspan="4" style="color:var(--text-dim)">… ' + (c.prices.length - 8) + ' older</td></tr>';
@@ -1507,10 +1515,57 @@ async function loadFeed() {
     FEED = { cards: cards, byKey: {} };
     cards.forEach(e => { if (e && e.key) FEED.byKey[e.key] = e; });
     if (pill) pill.innerHTML = ' · <b style="color:var(--green)">\u25CF live price engine on</b>';
+    autoLinkFeeds();
     feedSync();
     render();
   } catch (e) {
     if (pill) pill.textContent = ' · manual mode — live feed warming up';
+  }
+}
+/* ---------- fuzzy engine matching ----------
+   The old contract was "type the name exactly or nothing links" — friction.
+   Now: normalize both sides (case, punctuation, diacritics) and match on
+   player-name tokens. Unique clean match -> auto-link (announced, undoable).
+   Match with a parallel/grade word the engine doesn't track -> one-click
+   suggestion instead, flagged (base card), never a silent wrong link. */
+const VARIANT_LEX = /\b(superfractor|refractor|xfractor|x-fractor|sapphire|mojo|lava|speckle|shimmer|atomic|wave|prizm|holo|gold|orange|green|purple|blue|red|black|aqua|psa|bgs|sgc|cgc|graded|gem|slab|\/\d{1,4})\b/i;
+function normToks(s) {
+  return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().split(/[^a-z0-9]+/).filter(t => t.length >= 2);
+}
+function feedMatch(c) {
+  if (!FEED) return null;
+  const cardToks = new Set(normToks((c.name || '') + ' ' + (c.set || '')));
+  const STOP = new Set(['the','1st','bowman','chrome','auto','draft','sir','ex','mega']);
+  // label player-part tokens, minus brand noise and card numbers (#116/084 etc.)
+  const pToksOf = e => normToks((e.label || e.key).split('—')[0]).filter(t => !STOP.has(t) && !/^\d+$/.test(t));
+  let hits = FEED.cards.filter(e => e && e.key && (() => { const p = pToksOf(e); return p.length && p.every(t => cardToks.has(t)); })());
+  let partial = false;
+  if (hits.length !== 1) {
+    // fallback: a single card token that uniquely identifies one engine card
+    // ("Bazzana", "darkrai") is a good suggestion but never an auto-link
+    hits = FEED.cards.filter(e => e && e.key && pToksOf(e).some(t => cardToks.has(t)));
+    partial = true;
+  }
+  if (hits.length !== 1) return null;                        // ambiguous or none -> no suggestion
+  const variant = VARIANT_LEX.test((c.name || '') + ' ' + (c.grade && c.grade.toLowerCase() !== 'raw' ? c.grade : ''));
+  return { key: hits[0].key, label: hits[0].label, variant: variant, partial: partial };
+}
+function autoLinkFeeds() {
+  const linked = [];
+  state.cards.forEach(c => {
+    if (c.feedKey || c.feedOptOut) return;
+    const m = feedMatch(c);
+    if (m && !m.variant && !m.partial) {                     // clean full-name match -> link it
+      c.feedKey = m.key; c.feedAuto = 1;
+      linked.push(c);
+    }
+  });
+  if (linked.length) {
+    save();
+    toast('⚡ ' + linked.length + ' card' + (linked.length === 1 ? '' : 's') + ' auto-linked to the live engine — history importing');
+    track('vault_feed_autolink', { n: linked.length });
+    linked.forEach(c => importFeedHistory(c.id));
   }
 }
 function feedSync() {
@@ -1565,7 +1620,8 @@ function linkFeed(id) {
 }
 function unlinkFeed(id) {
   const c = state.cards.find(x => x.id === id);
-  delete c.feedKey;
+  delete c.feedKey; delete c.feedAuto;
+  c.feedOptOut = 1;             // user said no — never auto-relink this card
   save(); render();
 }
 
@@ -1677,6 +1733,24 @@ function ensureComps(c) {
       if (cleaned) { result = (q === key) ? cleaned : Object.assign(cleaned, { simplified: q }); break; }
     }
     compsCache[key] = { data: result || { count: 0 }, t: Date.now() };
+    // ASK AUTO-LOG: same deal as the nightly engine (ask-side mark, identical
+    // methodology every pull) but client-side, so cards the engine doesn't
+    // track still build candles. One point per day, >=4 verified asks, never
+    // on engine-linked cards (the engine's mark is the better series), always
+    // tagged src:'ask' so the log never passes an ask off as a sold.
+    const st = result && result.stats;
+    if (st && st.n >= 4 && st.median > 0 && !c.feedKey) {
+      const today = dayOf(Date.now());
+      if (!c.prices.some(p => dayOf(p.t) === today)) {
+        c.prices.push({ t: Date.now(), p: st.median, src: 'ask' });
+        c.prices.sort((a, b) => a.t - b.t);
+        save();
+        toast('◔ Ask median $' + fmt$(st.median, 0) + ' auto-logged (' + st.n + ' verified asks — asks, not solds)');
+        track('vault_ask_autolog');
+        render();
+        return;
+      }
+    }
     paintComps();
   })().catch(() => { compsCache[key] = { err: true, t: Date.now() }; paintComps(); });
 }
@@ -1697,6 +1771,10 @@ function logCompsMedian(id) {
   const e = c ? compsCache[compsQ(c)] : null;
   const m = e && e.data && e.data.stats ? e.data.stats.median : null;
   if (!(m > 0)) return;
+  const today = dayOf(Date.now());
+  if (c.prices.some(p => (p.src === 'ask' || p.src === 'comps' || p.src === 'feed') && dayOf(p.t) === today)) {
+    toast('Already auto-logged today — one price point per day keeps the candles honest'); return;
+  }
   c.prices.push({ t: Date.now(), p: m, src: 'comps' });
   c.prices.sort((a, b) => a.t - b.t);
   save(); render();
