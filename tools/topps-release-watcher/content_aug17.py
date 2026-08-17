@@ -16,7 +16,7 @@ Facts sourced 2026-08-17:
   1 auto + 3 parallels per box. Topps direct box prices: 2025 $479.99,
   2024 $349.99. 2026 Chrome rookie class headliners: Konnor Griffin,
   Jac Caglianone, Roman Anthony.
-  Topps product page for Pristine Basketball (live, detailed): NBA debut of the
+  Topps product page for Pristine Basketball (live, detailed): NBA return of the
   Pristine brand. Named insert/auto sets: Pristine Autographs (on-card),
   Pristine Pair Dual Autographs (e.g. Curry/Edwards), Pristine Personal
   Endorsements Autographs (player-written inscriptions), Forever, Precisionaries
@@ -198,30 +198,30 @@ def pristine_basketball():
     slug = "topps-pristine-basketball"; cid = slug
     m = meta(
         "2025-26 Topps Pristine Basketball — Set Guide, Encased RPAs, Dual Autos & Box Math",
-        "2025-26 Topps Pristine Basketball guide: Aug 25 pre-order, the NBA debut of Topps' white-chrome Pristine brand. Encased Pristine Pieces rookie patch autos, Pristine Pair dual autographs, inscription autos, the Cooper Flagg class, and how to play a brand debut before comps exist. Pre-release, August 2026.",
+        "2025-26 Topps Pristine Basketball guide: Aug 25 pre-order, Topps' white-chrome Pristine brand returning to the NBA after a two-decade break (last issued 2005-06). Encased Pristine Pieces rookie patch autos, Pristine Pair dual autographs, inscription autos, the Cooper Flagg class, and how to play a brand revival before comps exist. Pre-release, August 2026.",
         slug,
         "2025-26 Topps Pristine Basketball, Pristine Basketball checklist, Pristine Pieces rookie patch auto, Pristine Pair dual autograph, Cooper Flagg Pristine, Topps NBA premium")
     b = hero(
         "Set Guide &middot; Basketball &middot; Premium Autos",
         "2025-26 Topps Pristine", "Basketball",
-        "Pristine's NBA debut: white-chrome finish, on-card Pristine Autographs, encased rookie patch autos, and dual-auto pairings like Curry/Edwards &mdash; landing on the Cooper Flagg rookie class. Pre-orders open August 25. Config and checklist are TBA, but Topps has already shown more of this product than most: here's what's confirmed, what's precedent, and how to play it.",
-        ["Pre-order Aug 25, 2026", "&#127936; NBA debut of the Pristine brand", "Encased RPAs &middot; dual autos shown", "Config &amp; checklist TBA &middot; no comps"])
+        "Pristine returns to the NBA after a two-decade break: white-chrome finish, on-card Pristine Autographs, encased rookie patch autos, and dual-auto pairings like Curry/Edwards &mdash; landing on the Cooper Flagg rookie class. Pre-orders open August 25. Config and checklist are TBA, but Topps has already shown more of this product than most: here's what's confirmed, what's precedent, and how to play it.",
+        ["Pre-order Aug 25, 2026", "&#127936; NBA return &mdash; last issued 2005-06", "Encased RPAs &middot; dual autos shown", "Config &amp; checklist TBA &middot; no comps"])
     body = b + '''
   <div class="container">
   <div class="alert-bar" style="margin-top:48px;">
-    &#9888;&#65039; <strong>Pre-release &mdash; brand debut.</strong> Topps opens pre-orders Tuesday, Aug 25. Unlike most debuts, the product page is already detailed: named auto sets (Pristine Autographs, Pristine Pair Dual Autographs, Personal Endorsements inscriptions, Pristine Pieces encased rookie patch autos), named inserts (Forever, Precisionaries), and preview names from LeBron and Wembanyama to Flagg, Knueppel, Harper, and Bailey. What's NOT posted: configuration, box price, or the checklist. The 2026 <a href="/topps-pristine-baseball">Pristine Baseball</a> precedent is three autos per hobby box (Checklist Insider). No sold comps exist: every eBay link is a live SEARCH, not a price claim. <em>Framing as of Aug 17, 2026.</em>
+    &#9888;&#65039; <strong>Pre-release &mdash; brand revival.</strong> Pristine Basketball returns after a two-decade break &mdash; last issued 2005-06 (Checklist Insider). Topps opens pre-orders Tuesday, Aug 25. Unlike most relaunches, the product page is already detailed: named auto sets (Pristine Autographs, Pristine Pair Dual Autographs, Personal Endorsements inscriptions, Pristine Pieces encased rookie patch autos), named inserts (Forever, Precisionaries), and preview names from LeBron and Wembanyama to Flagg, Knueppel, Harper, and Bailey. What's NOT posted: configuration, box price, or the checklist. The 2026 <a href="/topps-pristine-baseball">Pristine Baseball</a> precedent is three autos per hobby box (Checklist Insider). No sold comps exist: every eBay link is a live SEARCH, not a price claim. <em>Framing as of Aug 17, 2026.</em>
   </div>
 
   <section style="border-top:none; padding-top:20px; padding-bottom:0;">
     <div class="set-banner">
-      <div class="entry-tag cyan" style="margin-bottom:8px;">&#127936; Pristine &middot; Premium Auto Tier &middot; NBA Debut</div>
+      <div class="entry-tag cyan" style="margin-bottom:8px;">&#127936; Pristine &middot; Premium Auto Tier &middot; NBA Return</div>
       <h2 style="margin-bottom:4px;">2025-26 Topps Pristine Basketball — At a Glance</h2>
       <p style="font-size:15px; color:var(--text-dim); margin-bottom:0;">Pristine slots into the premium-auto tier &mdash; above <a href="/topps-inception-basketball">Inception</a>, below <a href="/topps-definitive-basketball">Definitive</a>. The brand's signature is the white-chrome finish and encased rookie patch autos; the NBA edition inherits both, plus a legends bench (Bird, Iverson, Yao) Panini-era products never had.</p>
       <div class="set-banner-grid">
         ''' + "".join([
         banner_stat("Pre-Order", "Aug 25, 2026", "green"),
         banner_stat("Brand Tier", "Premium autos", "gold"),
-        banner_stat("NBA Edition", "Brand debut", "gold"),
+        banner_stat("NBA Edition", "Return &mdash; last 2005-06", "gold"),
         banner_stat("Core Auto", "Pristine Autographs (on-card)"),
         banner_stat("RPA Chase", "Pristine Pieces &middot; encased", "gold"),
         banner_stat("Dual Autos", "Pristine Pair"),
@@ -287,8 +287,8 @@ def pristine_basketball():
 
   <section>
     <div class="section-eyebrow cyan">The Math</div>
-    <h2>How to Play a Brand Debut</h2>
-    <p class="section-intro">Pristine Baseball's 2026 debut is the tell: a known auto count still doesn't make a box buyable until the checklist shows who's actually signing. In a premium-auto product, three autos of the wrong names is a worse outcome than one auto of the right one. With config and price TBA, there is nothing to price this week &mdash; and the rookie class already has liquid markets (Flagg's Chrome and Chrome Updates runs) that tell you relative demand for free.</p>
+    <h2>How to Play a Brand Revival</h2>
+    <p class="section-intro">This year's Pristine Baseball is the tell: a known auto count still doesn't make a box buyable until the checklist shows who's actually signing. In a premium-auto product, three autos of the wrong names is a worse outcome than one auto of the right one. With config and price TBA, there is nothing to price this week &mdash; and the rookie class already has liquid markets (Flagg's Chrome and Chrome Updates runs) that tell you relative demand for free.</p>
     <div style="display:flex; gap:12px; flex-wrap:wrap; margin:8px 0 24px;">
       <a href="/hobby-box-roi-calculator" class="btn-primary cyan">Run the ROI Calculator &rarr;</a>
       <a href="/cooper-flagg-rookie-cards" class="btn-secondary">Cooper Flagg Rookie Card Guide</a>
@@ -302,7 +302,7 @@ def pristine_basketball():
     <div class="product-grid">
       ''' + "".join([
         product_item("Best for Value", "Buy the Player, Not the Debut", "Varies", "green",
-            "Debut premiums bleed. When Pristine singles post, target the exact rookie and format you believe in &mdash; encased RPAs of top names, not box lotteries.",
+            "Relaunch premiums bleed. When Pristine singles post, target the exact rookie and format you believe in &mdash; encased RPAs of top names, not box lotteries.",
             "Shop Singles on eBay", ebay("2025-26 topps pristine basketball", cid), "best"),
         product_item("Buy Direct &middot; Official", "Topps.com Pre-Order (Aug 25)", "TBA", "",
             "Direct from Topps when pre-orders open Aug 25. Config, checklist, and pricing are TBA &mdash; confirm all three before committing. " + TOPPS,
@@ -322,7 +322,7 @@ def pristine_basketball():
         watch_item("high", "&#11035; HIGH IMPACT", "Config &amp; Price Reveal",
             "Three autos at Inception money and three autos at Definitive money are different products. The reveal decides which wallet this box competes for. <strong>No config, no math, no buy.</strong>"),
         watch_item("high", "&#11035; HIGH IMPACT", "Rookie RPA Checklist Depth",
-            "If Pristine Pieces runs deep on Flagg, Harper, Knueppel, and Bailey on-card, this debut anchors the class's premium tier. Redemption-heavy or sticker ink cuts the other way. <strong>Encased and on-card is the whole pitch.</strong>"),
+            "If Pristine Pieces runs deep on Flagg, Harper, Knueppel, and Bailey on-card, this revival anchors the class's premium tier. Redemption-heavy or sticker ink cuts the other way. <strong>Encased and on-card is the whole pitch.</strong>"),
         watch_item("med", "&#9711; MEDIUM", "Premium Basketball Congestion",
             "Definitive pre-orders Aug 18, Motif drops Aug 20, Chrome Black lands Aug 27 &mdash; and Pristine pre-orders Aug 25 into the middle of it. Four premium NBA products in ten days is a wallet-share fight. <strong>Congestion softens somebody's release week &mdash; watch which one.</strong>"),
     ]) + '''
@@ -334,7 +334,7 @@ def pristine_basketball():
     <h2>What to Skip</h2>
     <div class="avoid-list">
       ''' + "".join([
-        avoid_item("<strong>Paying debut hype for a mid-tier slot</strong> &mdash; Pristine is premium, not ultra-high-end. If sealed prices open at Definitive-adjacent money, the tier math is broken from day one."),
+        avoid_item("<strong>Paying relaunch hype for a mid-tier slot</strong> &mdash; Pristine is premium, not ultra-high-end. If sealed prices open at Definitive-adjacent money, the tier math is broken from day one."),
         avoid_item("<strong>Non-auto inserts at auto prices</strong> &mdash; Forever and Precisionaries are confirmed sets, not confirmed value. Insert markets need serial scarcity to hold; wait for the parallel structure."),
         avoid_item("<strong>Forced dual-auto pairings</strong> &mdash; the Curry/Edwards preview is the best-case pairing. Checklist-filler duals of unrelated names historically price below the sum of their parts."),
         avoid_item("<strong>Assuming baseball's 3-auto config carries over</strong> &mdash; same brand, different sport, different economics. Price nothing until the basketball configuration posts."),
