@@ -131,9 +131,16 @@ export const MIN_HISTORY = 20;
 // Returns an object with every metric plus { signal, confidence, reasons[] }.
 // The decision is intentionally transparent: each reason is a short string the
 // front-end can show so a visitor sees *why*, not just a verdict.
+// Minimum return observations before skew/kurtosis are emitted. Below this the
+// sample moments are outlier-driven noise (SE of excess kurtosis ~ sqrt(24/n):
+// at n=19 that's +/-1.1, and one weird print dominates the whole estimate).
+// We keep collecting history and let the stats earn their sample size.
+export const MIN_MOMENT_N = 60;
+
 export function analyze(series, volume) {
   const prices = (series || []).filter(Number.isFinite);
   const last = prices.length ? prices[prices.length - 1] : null;
+  const rets = returns(prices);
 
   const out = {
     last,
@@ -147,8 +154,8 @@ export function analyze(series, volume) {
     roc30: roc(prices, 30),
     roc90: roc(prices, 90),
     z: zScore(prices, 90),
-    retSkew: skewness(returns(prices)),
-    retKurtosis: kurtosis(returns(prices)),
+    retSkew: rets.length >= MIN_MOMENT_N ? skewness(rets) : null,
+    retKurtosis: rets.length >= MIN_MOMENT_N ? kurtosis(rets) : null,
     maxDrawdown: maxDrawdown(prices),
     volume: Number.isFinite(volume) ? volume : null,
     signal: "HOLD",

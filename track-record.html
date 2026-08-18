@@ -782,7 +782,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
   <div class="container">
   <div class="alert-bar" style="margin-top:48px;">
-    &#128202; <strong>How grading works.</strong> A call is <strong>OPEN</strong> until there's a reliable market read. It's <strong>TRENDING</strong> when the read is ask-side (live eBay asking prices via our eBay API feed) or thin sold data — provisional, can change. It goes <strong>FINAL</strong> when graded against sold comps roughly 4 weeks post-release, and final grades never change. <strong>HIT</strong> = market inside our projected range. <strong>MISS&nbsp;HIGH</strong> = we projected too high. <strong>MISS&nbsp;LOW</strong> = too low. Projections are never edited after publication — that would defeat the page. <strong>VERDICT calls</strong> (BUY / WAIT / SELL) grade like paper trades: entry = market price at the call date, marked against the current read. <strong>RIGHT</strong> = the move agrees with the action by &ge;10%; <strong>WRONG</strong> = it disagrees by &ge;10%; inside &plusmn;10% stays ungraded. Entries and actions are as immutable as projections. <strong>Retired markets:</strong> as of Aug 2026 we no longer issue new Pok&eacute;mon calls &mdash; the finals showed a one-directional bias, which means no edge, not bad luck. Open Pok&eacute;mon calls still grade to FINAL on their original schedule, and nothing is ever deleted.
+    &#128202; <strong>How grading works.</strong> A call is <strong>OPEN</strong> until there's a reliable market read. It's <strong>TRENDING</strong> when the read is ask-side (live eBay asking prices via our eBay API feed) or thin sold data — provisional, can change. It goes <strong>FINAL</strong> when graded against sold comps roughly 4 weeks post-release, and final grades never change. <strong>HIT</strong> = market inside our projected range. <strong>MISS&nbsp;HIGH</strong> = we projected too high. <strong>MISS&nbsp;LOW</strong> = too low. Projections are never edited after publication — that would defeat the page. <strong>VERDICT calls</strong> (BUY / WAIT / SELL) grade like paper trades: entry = market price at the call date, marked against the current read. <strong>RIGHT</strong> = the move agrees with the action by &ge;10%; <strong>WRONG</strong> = it disagrees by &ge;10%; inside &plusmn;10% stays ungraded. Entries and actions are as immutable as projections. <strong>Retired markets:</strong> as of Aug 2026 we no longer issue new Pok&eacute;mon calls &mdash; the finals showed a one-directional bias, which means no edge, not bad luck. Open Pok&eacute;mon calls still grade to FINAL on their original schedule, and nothing is ever deleted. <strong>Two clocks (Aug 2026):</strong> a verdict’s FINAL grade is an <strong>8-week trade grade</strong> — it judges the entry, not the player. Prospect verdicts also carry <strong>thesis checks</strong> at +6 and +12 months, graded the same ±10% way against the original entry and printed beside the trade grade — a call can be wrong at 8 weeks and right at 12 months, and both stay on the page. When the tape confirms a thesis after a wrong trade grade, we don’t edit the old call — we log a <strong>re-entry</strong> as a brand-new call at the new price and grade that one too.
   </div>
 
   <section style="border-top:none; padding-top:20px; padding-bottom:0;">
@@ -928,6 +928,18 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           ? '<span class="roi-price">' + money(c.read) + '</span>' + (mp != null && mp !== 0 ? ' <span style="font-family:var(--fm); font-size:12px; color:' + (mp < 0 ? 'var(--red)' : 'var(--gold)') + ';">' + pct(mp) + ' vs ' + (mp < 0 ? 'floor' : 'ceiling') + '</span>' : '') + '<span class="roi-sub" style="display:block;">' + (c.basis === 'sold' ? 'SOLD \u00b7 ' : 'ASK \u00b7 ') + (c.readLabel || '') + ' \u00b7 ' + (c.readDate || '') + '</span>'
           : '<span class="roi-sub">' + (c.readLabel || 'No reliable read yet') + '</span>';
       }
+      var gradeCell;
+      if (isV) {
+        var lbl = c.grade ? GRADE[c.grade][0] : (c.state === 'final' ? 'PUSH' : null);
+        var gcls = c.grade ? GRADE[c.grade][1] : 'v-hold';
+        if (lbl && c.state === 'final') lbl += ' (8-WK)';
+        gradeCell = lbl ? '<span class="verdict-tag ' + gcls + '">' + lbl + '</span>' : '<span class="roi-sub">\u2014</span>';
+        (c.thesis || []).forEach(function(t){
+          gradeCell += '<span class="roi-sub" style="display:block;">Thesis ' + t.horizon + ': ' + (t.grade ? ((GRADE[t.grade] ? GRADE[t.grade][0] : t.grade) + (t.read != null ? ' \u00b7 ' + money(t.read) : '')) : 'check due ' + t.due) + '</span>';
+        });
+      } else {
+        gradeCell = g ? '<span class="verdict-tag ' + g[1] + '">' + g[0] + '</span>' : '<span class="roi-sub">\u2014</span>';
+      }
       return '<tr>' +
         '<td><span class="roi-name" style="font-size:15px;">' + c.card + '</span><span class="roi-sub"><a href="' + c.page + '">' + c.set + ' \u2192</a>' + (isV ? ' \u00b7 <span style="color:var(--accent);">VERDICT</span>' : ' \u00b7 RANGE') + '</span></td>' +
         '<td><span class="roi-sub">' + c.callDate + '</span></td>' +
@@ -935,7 +947,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         '<td>' + readCell + '</td>' +
         '<td>' + la + '</td>' +
         '<td><span class="roi-sub">' + (STATE[c.state] || c.state) + (c.state !== 'final' && c.finalizeAfter ? ' \u00b7 final after ' + c.finalizeAfter : '') + '</span></td>' +
-        '<td>' + (g ? '<span class="verdict-tag ' + g[1] + '">' + g[0] + '</span>' : '<span class="roi-sub">\u2014</span>') + (c.note ? '<span class="roi-sub" style="display:block; max-width:280px;">' + c.note + '</span>' : '') + '</td>' +
+        '<td>' + gradeCell + (c.note ? '<span class="roi-sub" style="display:block; max-width:280px;">' + c.note + '</span>' : '') + '</td>' +
       '</tr>';
     }
     document.getElementById('tr-rows').innerHTML = sports.length ? sports.map(row).join('') : '<tr><td colspan="7"><span class="roi-sub">No sports calls yet.</span></td></tr>';

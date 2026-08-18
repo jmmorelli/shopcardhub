@@ -1,5 +1,5 @@
 {
- "_comment": "CALLS LEDGER — single source for /track-record. Two call types. TYPE=RANGE (price projection): projLow/projHigh vs market read. Grading: state=open (no reliable read) → trending (ask-side or thin sold data; provisional) → final (SOLD comps ~4 wks post-release; final grades never change). grade: hit = read inside range; miss_high = we projected too high; miss_low = too low. Signed miss% is computed on-page from the nearest range bound. TYPE=VERDICT (BUY/WAIT/SELL call, graded like a paper trade): entry = market price at call date (for pre-release calls with no market, entry = first reliable read, noted); move = entry → current read. grade: right if the move agrees with the action by ≥10% (BUY wants up, WAIT/SELL wants down), wrong if it disagrees by ≥10%, ungraded inside ±10%; final at ~8 weeks from entry, sold-based where possible. HOLD/WATCH verdicts are not ledger material. IMMUTABILITY: never edit projLow/projHigh, action, entry, or callDate after publication. Weekly scheduled run updates read/readDate/state/grade and appends new calls. POKEMON RETIREMENT (2026-08-18, Mo's decision): do NOT issue NEW Pokemon calls (cat 183454) -- the finals showed a one-directional miss_high bias = no edge in a single-driver (supply-only) market. Existing Pokemon calls still grade to FINAL on their original schedule and are NEVER deleted; /track-record renders them in a separate 'Retired' section. Sports calls (cat 212) are the active book.",
+ "_comment": "CALLS LEDGER — single source for /track-record. Two call types. TYPE=RANGE (price projection): projLow/projHigh vs market read. Grading: state=open (no reliable read) → trending (ask-side or thin sold data; provisional) → final (SOLD comps ~4 wks post-release; final grades never change). grade: hit = read inside range; miss_high = we projected too high; miss_low = too low. Signed miss% is computed on-page from the nearest range bound. TYPE=VERDICT (BUY/WAIT/SELL call, graded like a paper trade): entry = market price at call date (for pre-release calls with no market, entry = first reliable read, noted); move = entry → current read. grade: right if the move agrees with the action by ≥10% (BUY wants up, WAIT/SELL wants down), wrong if it disagrees by ≥10%, ungraded inside ±10%; final at ~8 weeks from entry, sold-based where possible. HOLD/WATCH verdicts are not ledger material. IMMUTABILITY: never edit projLow/projHigh, action, entry, or callDate after publication. Weekly scheduled run updates read/readDate/state/grade and appends new calls. POKEMON RETIREMENT (2026-08-18, Mo's decision): do NOT issue NEW Pokemon calls (cat 183454) -- the finals showed a one-directional miss_high bias = no edge in a single-driver (supply-only) market. Existing Pokemon calls still grade to FINAL on their original schedule and are NEVER deleted; /track-record renders them in a separate 'Retired' section. Sports calls (cat 212) are the active book. TWO CLOCKS (2026-08-18): a verdict's FINAL grade is an 8-WEEK TRADE grade (immutable) -- it judges the entry, not the player. Sports/prospect verdicts also carry thesis[] checks at +6 and +12 months from callDate: when a due date passes, the weekly run sets read (sold basis) + grade (same +/-10% vs the ORIGINAL entry, per the action); thesis grades print beside the trade grade and are immutable once set. A call can be wrong at 8 weeks and right at 12 months -- both stay. RE-ENTRY: to say 'buy the dip' after a wrong trade grade, never edit the old call -- append a NEW call (id '<orig>-2') at the current price once the tape confirms (e.g. second consecutive green week). SKEW/KURT: engine emits retSkew/retKurtosis only at n>=60 return observations (below that, sample moments are outlier noise).",
  "updated": "2026-08-18",
  "calls": [
   {
@@ -366,7 +366,21 @@
    "q": "andrew fischer 1st bowman chrome auto cpa-af 2026 bowman chrome",
    "cat": "212",
    "req": "fischer",
-   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese"
+   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese",
+   "thesis": [
+    {
+     "horizon": "6-mo",
+     "due": "2026-12-12",
+     "read": null,
+     "grade": null
+    },
+    {
+     "horizon": "12-mo",
+     "due": "2027-06-12",
+     "read": null,
+     "grade": null
+    }
+   ]
   },
   {
    "id": "v-bb-pierce-buy",
@@ -390,7 +404,21 @@
    "q": "daniel pierce 1st bowman chrome auto cpa-dp 2026 bowman chrome",
    "cat": "212",
    "req": "pierce",
-   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese"
+   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese",
+   "thesis": [
+    {
+     "horizon": "6-mo",
+     "due": "2026-12-12",
+     "read": null,
+     "grade": null
+    },
+    {
+     "horizon": "12-mo",
+     "due": "2027-06-12",
+     "read": null,
+     "grade": null
+    }
+   ]
   },
   {
    "id": "v-bb-holliday-buy",
@@ -414,7 +442,21 @@
    "q": "ethan holliday 1st bowman chrome auto cpa-eh 2026 bowman chrome",
    "cat": "212",
    "req": "holliday",
-   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese"
+   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese",
+   "thesis": [
+    {
+     "horizon": "6-mo",
+     "due": "2026-12-12",
+     "read": null,
+     "grade": null
+    },
+    {
+     "horizon": "12-mo",
+     "due": "2027-06-12",
+     "read": null,
+     "grade": null
+    }
+   ]
   },
   {
    "id": "v-bb-arquette-buy",
@@ -438,7 +480,21 @@
    "q": "aiva arquette 1st bowman chrome auto cpa-aa 2026 bowman chrome",
    "cat": "212",
    "req": "arquette",
-   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese"
+   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese",
+   "thesis": [
+    {
+     "horizon": "6-mo",
+     "due": "2026-12-12",
+     "read": null,
+     "grade": null
+    },
+    {
+     "horizon": "12-mo",
+     "due": "2027-06-12",
+     "read": null,
+     "grade": null
+    }
+   ]
   },
   {
    "id": "v-bb-kim-wait",
@@ -462,7 +518,21 @@
    "q": "seong-jun kim 1st bowman chrome auto cpa-sk 2026 bowman chrome",
    "cat": "212",
    "req": "kim",
-   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese"
+   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese",
+   "thesis": [
+    {
+     "horizon": "6-mo",
+     "due": "2027-02-18",
+     "read": null,
+     "grade": null
+    },
+    {
+     "horizon": "12-mo",
+     "due": "2027-08-18",
+     "read": null,
+     "grade": null
+    }
+   ]
   },
   {
    "id": "v-bb-florentino-buy",
@@ -486,7 +556,21 @@
    "q": "edward florentino 1st bowman chrome auto cpa-ef 2026 bowman chrome",
    "cat": "212",
    "req": "florentino",
-   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese"
+   "deny": "psa,bgs,sgc,cgc,lot,box,pack,japanese",
+   "thesis": [
+    {
+     "horizon": "6-mo",
+     "due": "2027-02-18",
+     "read": null,
+     "grade": null
+    },
+    {
+     "horizon": "12-mo",
+     "due": "2027-08-18",
+     "read": null,
+     "grade": null
+    }
+   ]
   }
  ]
 }
