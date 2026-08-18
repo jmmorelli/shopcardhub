@@ -775,13 +775,14 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <span>Graded FINAL vs solds ~4 wks post-release</span>
       <span>Ask-side reads = provisional</span>
       <span id="tr-meta-updated">Updated —</span>
+      <span style="color:var(--purple);">Pok&eacute;mon calls retired Aug 2026 &mdash; history stays</span>
       </div>
   </div>
 </section>
 
   <div class="container">
   <div class="alert-bar" style="margin-top:48px;">
-    &#128202; <strong>How grading works.</strong> A call is <strong>OPEN</strong> until there's a reliable market read. It's <strong>TRENDING</strong> when the read is ask-side (live eBay asking prices via our eBay API feed) or thin sold data — provisional, can change. It goes <strong>FINAL</strong> when graded against sold comps roughly 4 weeks post-release, and final grades never change. <strong>HIT</strong> = market inside our projected range. <strong>MISS&nbsp;HIGH</strong> = we projected too high. <strong>MISS&nbsp;LOW</strong> = too low. Projections are never edited after publication — that would defeat the page. <strong>VERDICT calls</strong> (BUY / WAIT / SELL) grade like paper trades: entry = market price at the call date, marked against the current read. <strong>RIGHT</strong> = the move agrees with the action by &ge;10%; <strong>WRONG</strong> = it disagrees by &ge;10%; inside &plusmn;10% stays ungraded. Entries and actions are as immutable as projections.
+    &#128202; <strong>How grading works.</strong> A call is <strong>OPEN</strong> until there's a reliable market read. It's <strong>TRENDING</strong> when the read is ask-side (live eBay asking prices via our eBay API feed) or thin sold data — provisional, can change. It goes <strong>FINAL</strong> when graded against sold comps roughly 4 weeks post-release, and final grades never change. <strong>HIT</strong> = market inside our projected range. <strong>MISS&nbsp;HIGH</strong> = we projected too high. <strong>MISS&nbsp;LOW</strong> = too low. Projections are never edited after publication — that would defeat the page. <strong>VERDICT calls</strong> (BUY / WAIT / SELL) grade like paper trades: entry = market price at the call date, marked against the current read. <strong>RIGHT</strong> = the move agrees with the action by &ge;10%; <strong>WRONG</strong> = it disagrees by &ge;10%; inside &plusmn;10% stays ungraded. Entries and actions are as immutable as projections. <strong>Retired markets:</strong> as of Aug 2026 we no longer issue new Pok&eacute;mon calls &mdash; the finals showed a one-directional bias, which means no edge, not bad luck. Open Pok&eacute;mon calls still grade to FINAL on their original schedule, and nothing is ever deleted.
   </div>
 
   <section style="border-top:none; padding-top:20px; padding-bottom:0;">
@@ -797,13 +798,29 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   </section>
 
   <section>
-    <div class="section-eyebrow">The Ledger</div>
-    <h2>Every Call, Graded</h2>
-    <p class="section-intro">Newest first. The "Market Read" column is the number the grade is based on (source and date noted). The "Live Asks" column re-pulls current eBay asking prices every time you load this page — asks, not solds, and labeled that way everywhere on this site.</p>
+    <div class="section-eyebrow">The Ledger &mdash; Sports</div>
+    <h2>Sports Calls, Graded</h2>
+    <p class="section-intro">Newest first. Sports is the active book &mdash; debuts, trades, awards, stat lines and draft slots give these calls real catalysts, and the weekly runs grade them on schedule.</p>
     <div class="roi-table-wrap">
       <table class="roi-table">
         <thead><tr><th>Card</th><th>Our Call</th><th>Projected / Entry</th><th>Market Read</th><th>Live Asks &#9889;</th><th>Status</th><th>Grade</th></tr></thead>
         <tbody id="tr-rows">
+          <tr><td colspan="7"><span class="roi-sub">Loading the ledger&hellip;</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-eyebrow" style="color:var(--purple);">The Ledger &mdash; Pok&eacute;mon &middot; Retired Aug 2026</div>
+    <h2>Pok&eacute;mon Calls &mdash; Retired, Not Deleted</h2>
+    <div class="alert-bar" style="margin:0 0 24px;">
+      &#128683; <strong>We stopped issuing Pok&eacute;mon price calls in August 2026.</strong> The finals told us why: our misses ran one-directional &mdash; we projected HIGH on nearly every card. A one-directional error pattern isn&rsquo;t bad luck, it&rsquo;s structure: a Pok&eacute;mon single has one value driver (supply against the print run), and it isn&rsquo;t knowable at call time. Sports cards print catalysts on a schedule; Pok&eacute;mon prints rarity and nothing else. The open calls below still grade to FINAL on their original dates, and every graded row stays on this page permanently &mdash; deleting the misses would defeat the point of keeping score.
+    </div>
+    <div class="roi-table-wrap">
+      <table class="roi-table">
+        <thead><tr><th>Card</th><th>Our Call</th><th>Projected / Entry</th><th>Market Read</th><th>Live Asks &#9889;</th><th>Status</th><th>Grade</th></tr></thead>
+        <tbody id="tr-rows-poke">
           <tr><td colspan="7"><span class="roi-sub">Loading the ledger&hellip;</span></td></tr>
         </tbody>
       </table>
@@ -856,77 +873,79 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   }
   fetch('/data/calls.json').then(function(r){ return r.json(); }).then(function(d){
     var calls = d.calls.slice().sort(function(a,b){ return (b.callDate||'').localeCompare(a.callDate||''); });
-    var ranges = calls.filter(function(c){ return c.type !== 'verdict'; });
-    var verds  = calls.filter(function(c){ return c.type === 'verdict'; });
-    var n = calls.length, fin = 0, finHit = 0, tHit = 0, tMissH = 0, tMissL = 0, open = 0;
-    ranges.forEach(function(c){
-      if (c.state === 'final') { fin++; if (c.grade === 'hit') finHit++; }
-      else if (c.state === 'trending' && c.grade) {
-        if (c.grade === 'hit') tHit++; else if (c.grade === 'miss_high') tMissH++; else tMissL++;
-      } else open++;
-    });
-    var vRight = 0, vWrong = 0, vOpen = 0;
-    verds.forEach(function(c){
-      if (c.grade === 'right') vRight++; else if (c.grade === 'wrong') vWrong++; else vOpen++;
-    });
-    var ms = ranges.map(missPct).filter(function(x){ return x != null; }).sort(function(a,b){ return a - b; });
+    var isPoke = function(c){ return c.cat === '183454'; };
+    var sports = calls.filter(function(c){ return !isPoke(c); });
+    var poke   = calls.filter(isPoke);
+    function verdictStats(list){
+      var r=0,w=0,p=0,pend=0;
+      list.forEach(function(c){
+        if (c.type !== 'verdict') return;
+        if (c.grade === 'right') r++; else if (c.grade === 'wrong') w++;
+        else if (c.state === 'final') p++; else pend++;
+      });
+      return { r:r, w:w, p:p, pend:pend };
+    }
+    var sv = verdictStats(sports), pv = verdictStats(poke);
+    var pRanges = poke.filter(function(c){ return c.type !== 'verdict'; });
+    var pFin = 0, pFinHit = 0;
+    pRanges.forEach(function(c){ if (c.state === 'final'){ pFin++; if (c.grade === 'hit') pFinHit++; } });
+    var ms = pRanges.map(missPct).filter(function(x){ return x != null; }).sort(function(a,b){ return a - b; });
     var bias = null;
     if (ms.length >= 3) bias = ms.length % 2 ? ms[(ms.length-1)/2] : (ms[ms.length/2-1] + ms[ms.length/2]) / 2;
-    document.getElementById('tr-meta-count').textContent = n + ' calls on the ledger';
+    var biasTxt = bias == null ? 'Need more grades' : (Math.abs(bias) < 0.05 ? 'Well calibrated' : (bias < 0 ? 'Ran HIGH ~' + Math.round(-bias*100) + '%' : 'Ran LOW ~' + Math.round(bias*100) + '%'));
+    document.getElementById('tr-meta-count').textContent = calls.length + ' calls on the ledger';
     document.getElementById('tr-meta-updated').textContent = 'Updated ' + (d.updated || '');
     function stat(label, val, cls){ return '<div class="banner-stat"><div class="banner-stat-label">' + label + '</div><div class="banner-stat-value' + (cls ? ' ' + cls : '') + '">' + val + '</div></div>'; }
-    var biasTxt = bias == null ? 'Need more grades' : (Math.abs(bias) < 0.05 ? 'Well calibrated' : (bias < 0 ? 'We run HIGH ~' + Math.round(-bias*100) + '%' : 'We run LOW ~' + Math.round(bias*100) + '%'));
     document.getElementById('tr-scoreboard').innerHTML =
-      stat('Total Calls', n) +
-      stat('Final Grades', fin ? (finHit + '/' + fin + ' hit') : 'None yet', fin ? (finHit/fin >= 0.5 ? 'green' : 'red') : '') +
-      stat('Ranges: Hit / High / Low', tHit + ' / ' + tMissH + ' / ' + tMissL, tMissH + tMissL > tHit ? 'red' : 'green') +
-      stat('Projection Bias (median miss)', biasTxt, bias != null && Math.abs(bias) >= 0.05 ? 'gold' : '') +
-      stat('Verdicts: Right / Wrong / Open', vRight + ' / ' + vWrong + ' / ' + vOpen, vWrong > vRight ? 'red' : (vRight ? 'green' : '')) +
-      stat('Open / Ungraded', open + vOpen);
+      stat('Total Calls', calls.length) +
+      stat('Sports Verdicts: Right / Wrong / Push', sv.r + ' / ' + sv.w + ' / ' + sv.p, sv.w > sv.r ? 'red' : (sv.r ? 'green' : '')) +
+      stat('Sports Pending (ungraded)', sv.pend) +
+      stat('Pok\u00e9mon Ranges (retired)', pFin ? (pFinHit + '/' + pFin + ' hit FINAL') : 'None final', pFin && pFinHit/pFin < 0.5 ? 'red' : 'green') +
+      stat('Pok\u00e9mon Projection Bias', biasTxt, bias != null && Math.abs(bias) >= 0.05 ? 'gold' : '') +
+      stat('Deleted Calls \u2014 Ever', '0', 'green');
     window.__trShare = function(){
-      var r = tHit + tMissH + tMissL + fin;
-      var t = 'ShopCardHub grades its own price calls in public. Current tape: ' +
-        (fin ? finHit + '/' + fin + ' final, ' : '') +
-        tHit + ' hit / ' + tMissH + ' high / ' + tMissL + ' low on ' + r + ' graded range calls' +
-        (bias != null && Math.abs(bias) >= 0.05 ? ' \u00b7 bias: runs ' + (bias < 0 ? 'HIGH' : 'LOW') + ' ~' + Math.round(Math.abs(bias)*100) + '%' : '') +
-        (verds.length ? ' \u00b7 ' + vRight + '/' + (vRight + vWrong + vOpen) + ' verdicts graded' : '') +
-        '. No deleted predictions. Receipts:';
+      var t = 'ShopCardHub grades its own price calls in public. Sports verdicts: ' + sv.r + ' right / ' + sv.w + ' wrong / ' + sv.p + ' push. Pok\u00e9mon calls: retired Aug 2026 when the finals printed ' + pFinHit + '/' + pFin + ' \u2014 one-directional misses mean no edge, not bad luck. History stays up. Receipts:';
       window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(t) +
         '&url=' + encodeURIComponent('https://www.shopcardhub.com/track-record'),
         '_blank', 'noopener,width=560,height=640');
       if (typeof gtag === 'function') gtag('event', 'track_record_share');
     };
-    document.getElementById('tr-rows').innerHTML = calls.map(function(c){
+    function row(c){
       var isV = c.type === 'verdict';
       var g = c.grade ? GRADE[c.grade] : null;
-      var la = c.q ? '<span class="live-ask" data-q="' + c.q + '" data-cat="' + (c.cat || '') + '" data-req="' + (c.req || '') + '" data-deny="' + (c.deny || '') + '"></span>' : '<span class="roi-sub">—</span>';
+      var la = c.q ? '<span class="live-ask" data-q="' + c.q + '" data-cat="' + (c.cat || '') + '" data-req="' + (c.req || '') + '" data-deny="' + (c.deny || '') + '"></span>' : '<span class="roi-sub">\u2014</span>';
       var callCell, readCell;
       if (isV) {
         callCell = '<span class="roi-price" style="color:var(--accent);">' + c.action + '</span><span class="roi-sub" style="display:block;">@ ' + money(c.entry) + ' &middot; ' + (c.entryDate || c.callDate) + '</span><span class="roi-sub" style="display:block; max-width:200px;">' + (c.entryLabel || '') + '</span>';
         var mv = (c.read != null && c.entry) ? (c.read - c.entry) / c.entry : null;
         readCell = c.read != null
-          ? '<span class="roi-price">' + money(c.read) + '</span>' + (mv != null ? ' <span style="font-family:var(--fm); font-size:12px; color:' + (mv > 0.001 ? 'var(--green)' : (mv < -0.001 ? 'var(--red)' : 'var(--text-dim)')) + ';">' + pct(mv) + '</span>' : '') + '<span class="roi-sub" style="display:block;">' + (c.basis === 'sold' ? 'SOLD · ' : 'ASK · ') + (c.readLabel || '') + ' · ' + (c.readDate || '') + '</span>'
+          ? '<span class="roi-price">' + money(c.read) + '</span>' + (mv != null ? ' <span style="font-family:var(--fm); font-size:12px; color:' + (mv > 0.001 ? 'var(--green)' : (mv < -0.001 ? 'var(--red)' : 'var(--text-dim)')) + ';">' + pct(mv) + '</span>' : '') + '<span class="roi-sub" style="display:block;">' + (c.basis === 'sold' ? 'SOLD \u00b7 ' : 'ASK \u00b7 ') + (c.readLabel || '') + ' \u00b7 ' + (c.readDate || '') + '</span>'
           : '<span class="roi-sub">' + (c.readLabel || 'No reliable read yet') + '</span>';
       } else {
-        callCell = '<span class="roi-price proj">' + money(c.projLow) + '–' + money(c.projHigh) + '</span>';
+        callCell = '<span class="roi-price proj">' + money(c.projLow) + '\u2013' + money(c.projHigh) + '</span>';
         var mp = missPct(c);
         readCell = c.read != null
-          ? '<span class="roi-price">' + money(c.read) + '</span>' + (mp != null && mp !== 0 ? ' <span style="font-family:var(--fm); font-size:12px; color:' + (mp < 0 ? 'var(--red)' : 'var(--gold)') + ';">' + pct(mp) + ' vs ' + (mp < 0 ? 'floor' : 'ceiling') + '</span>' : '') + '<span class="roi-sub" style="display:block;">' + (c.basis === 'sold' ? 'SOLD · ' : 'ASK · ') + (c.readLabel || '') + ' · ' + (c.readDate || '') + '</span>'
+          ? '<span class="roi-price">' + money(c.read) + '</span>' + (mp != null && mp !== 0 ? ' <span style="font-family:var(--fm); font-size:12px; color:' + (mp < 0 ? 'var(--red)' : 'var(--gold)') + ';">' + pct(mp) + ' vs ' + (mp < 0 ? 'floor' : 'ceiling') + '</span>' : '') + '<span class="roi-sub" style="display:block;">' + (c.basis === 'sold' ? 'SOLD \u00b7 ' : 'ASK \u00b7 ') + (c.readLabel || '') + ' \u00b7 ' + (c.readDate || '') + '</span>'
           : '<span class="roi-sub">' + (c.readLabel || 'No reliable read yet') + '</span>';
       }
       return '<tr>' +
-        '<td><span class="roi-name" style="font-size:15px;">' + c.card + '</span><span class="roi-sub"><a href="' + c.page + '">' + c.set + ' →</a>' + (isV ? ' · <span style="color:var(--accent);">VERDICT</span>' : ' · RANGE') + '</span></td>' +
+        '<td><span class="roi-name" style="font-size:15px;">' + c.card + '</span><span class="roi-sub"><a href="' + c.page + '">' + c.set + ' \u2192</a>' + (isV ? ' \u00b7 <span style="color:var(--accent);">VERDICT</span>' : ' \u00b7 RANGE') + '</span></td>' +
         '<td><span class="roi-sub">' + c.callDate + '</span></td>' +
         '<td>' + callCell + '</td>' +
         '<td>' + readCell + '</td>' +
         '<td>' + la + '</td>' +
-        '<td><span class="roi-sub">' + (STATE[c.state] || c.state) + (c.state !== 'final' && c.finalizeAfter ? ' · final after ' + c.finalizeAfter : '') + '</span></td>' +
-        '<td>' + (g ? '<span class="verdict-tag ' + g[1] + '">' + g[0] + '</span>' : '<span class="roi-sub">—</span>') + (c.note ? '<span class="roi-sub" style="display:block; max-width:280px;">' + c.note + '</span>' : '') + '</td>' +
+        '<td><span class="roi-sub">' + (STATE[c.state] || c.state) + (c.state !== 'final' && c.finalizeAfter ? ' \u00b7 final after ' + c.finalizeAfter : '') + '</span></td>' +
+        '<td>' + (g ? '<span class="verdict-tag ' + g[1] + '">' + g[0] + '</span>' : '<span class="roi-sub">\u2014</span>') + (c.note ? '<span class="roi-sub" style="display:block; max-width:280px;">' + c.note + '</span>' : '') + '</td>' +
       '</tr>';
-    }).join('');
+    }
+    document.getElementById('tr-rows').innerHTML = sports.length ? sports.map(row).join('') : '<tr><td colspan="7"><span class="roi-sub">No sports calls yet.</span></td></tr>';
+    document.getElementById('tr-rows-poke').innerHTML = poke.length ? poke.map(row).join('') : '<tr><td colspan="7"><span class="roi-sub">No Pok\u00e9mon calls.</span></td></tr>';
     if (window.__liveAsksInit) window.__liveAsksInit();
   }).catch(function(){
-    document.getElementById('tr-rows').innerHTML = '<tr><td colspan="7"><span class="roi-sub">Ledger failed to load — <a href="/data/calls.json">view raw calls.json</a></span></td></tr>';
+    ['tr-rows','tr-rows-poke'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.innerHTML = '<tr><td colspan="7"><span class="roi-sub">Ledger failed to load \u2014 <a href="/data/calls.json">view raw calls.json</a></span></td></tr>';
+    });
   });
 })();
 </script>

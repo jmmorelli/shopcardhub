@@ -1,13 +1,13 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys MUST stay dm|seeker|curator|inspector|gengar (they map to the dungeon's five sprites; append newest action LAST, keep ~12 max per agent). items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-11T12:00:00-04:00",
- "generator": "bowman-bangers-tuesday-update (2026-08-11)",
+ "generated": "2026-08-18T12:00:00-04:00",
+ "generator": "bowman-bangers-tuesday-update (2026-08-18)",
  "agents": {
   "seeker": {
    "label": "SEEKER",
    "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
-   "lastRun": "2026-08-10",
-   "nextRun": "2026-08-17",
+   "lastRun": "2026-08-17",
+   "nextRun": "2026-08-24",
    "actions": [
     {
      "ts": "2026-08-10",
@@ -20,14 +20,18 @@
     {
      "ts": "2026-08-10",
      "msg": "Gap analysis: 4 new page ideas queued for Mo (LeBron, Boozer, Rutschman, Mendoza)"
+    },
+    {
+     "ts": "2026-08-18",
+     "msg": "STEP 0.75 signal harvest: 1 new signal (PCA 2020 BCD 1st Auto, count 1 < 5 threshold; page exists) -- no auto-adds; test entries excluded permanently"
     }
    ]
   },
   "curator": {
    "label": "CURATOR",
    "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-   "lastRun": "2026-08-11",
-   "nextRun": "2026-08-18",
+   "lastRun": "2026-08-18",
+   "nextRun": "2026-08-25",
    "actions": [
     {
      "ts": "2026-08-10",
@@ -64,13 +68,25 @@
     {
      "ts": "2026-08-11",
      "msg": "Vault v2 (Mo request): Track buttons now offer Hunting / I Own It (+cost), seed page prices, auto-link the price engine; 32 new buttons wired on 7 player pages (LeBron, Rutschman, Boozer, Mendoza, Misiorowski, PCA, DeLauter)"
+    },
+    {
+     "ts": "2026-08-18",
+     "msg": "BOARD RESHUFFLE (Aug 11 flags held): Kim promoted #2 ($131 raw, top of class), Florentino #4 ($79); Pierce (-11%, $17.30 lows) + Aloy demoted to watch tier; Arquette to #5"
+    },
+    {
+     "ts": "2026-08-18",
+     "msg": "Re-priced top 5 w/ SCP+engine subs; Holliday PSA 10 ripped $498->$720 (+45%), holds #1; Fischer first red week (-6%); hero stamp Aug 18; audit FAIL 0"
+    },
+    {
+     "ts": "2026-08-18",
+     "msg": "STEP 0: no new 1st-Bowman product delivering; Chrome street ~Sep 9-10 -- Friday release-window task stays DISABLED until street date"
     }
    ]
   },
   "inspector": {
    "label": "INSPECTOR",
    "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-   "lastRun": "2026-08-11",
+   "lastRun": "2026-08-18",
    "nextRun": "2026-08-17",
    "actions": [
     {
@@ -89,24 +105,30 @@
      "ts": "2026-08-11",
      "msg": "SCP console pulled live (10 board/watch names, raw + PSA 10). No attributable base-auto comp for Gage Jump — only Gold /50 listed; reported, not invented"
     },
-    "2026-08-17: Applied approved price edits (4 pages); audit FAIL 0",
-    "2026-08-17: SITE AUDITOR commissioned — charter + deterministic sweep built, scheduled MWF 7am; first sweep: FAIL 0 / 1 WARN (Greninja verdict finalized on ask basis)"
+    {
+     "ts": "2026-08-17",
+     "msg": "Applied approved price edits (4 pages); audit FAIL 0"
+    },
+    {
+     "ts": "2026-08-17",
+     "msg": "SITE AUDITOR commissioned — charter + deterministic sweep built, scheduled MWF 7am; first sweep: FAIL 0 / 1 WARN (Greninja verdict finalized on ask basis)"
+    },
+    {
+     "ts": "2026-08-18",
+     "msg": "SCP console + search pulled live: all 10 board/watch names raw+PSA 10. Gage Jump base auto now attributable ($50.24 raw / $279 PSA 10 -- was Gold /50 only)"
+    },
+    {
+     "ts": "2026-08-18",
+     "msg": "DISCREPANCY: Monday Aug 17 scan reported 10 ledger finalizations but calls.json (local AND origin/main) still shows them trending past finalizeAfter 2026-08-14 -- needs Mo/Monday-run follow-up"
+    }
    ]
   },
   "dm": {
    "label": "DM",
    "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-   "lastRun": "2026-08-11",
-   "nextRun": "2026-08-17",
+   "lastRun": "2026-08-18",
+   "nextRun": "2026-08-24",
    "actions": [
-    {
-     "ts": "2026-08-10",
-     "msg": "5 calls FINALIZED: Fischer BUY right (+277%) · Greninja BUY wrong (−57%) · Pierce wrong · Arquette wrong · Holliday push"
-    },
-    {
-     "ts": "2026-08-10",
-     "msg": "Greninja PSA-10 range call flipped hit→miss_high ($650 vs $800–$1,200 projection)"
-    },
     {
      "ts": "2026-08-10",
      "msg": "Open question for Mo: Lucario call set-attribution (#179 = Mega Evolution base, not Ascended Heroes)"
@@ -123,10 +145,38 @@
      "ts": "2026-08-11",
      "msg": "Self-growing feed loop built (Mo picked option 2): /api/track-signal demand counters + Tuesday STEP 0.75 auto-add (count≥5) — engine now grows from visitor demand"
     },
-    "2026-08-17: Mo approved #1-#3; pages+prices+ledger pushed; new-page builds HELD (vault focus first)",
-    "2026-08-17: Vault v3 — fuzzy engine auto-link + ask-median auto-log (Mo's exact-name gripe)",
-    "2026-08-17: eBay Marketplace Insights access request submitted (support contact activated same day)",
-    "2026-08-17: COCKPIT LOOP built — dungeon approve/decline buttons -> /api/decisions -> price-data branch; auditor reconciles at run start"
+    {
+     "ts": "2026-08-17",
+     "msg": "Mo approved #1-#3; pages+prices+ledger pushed; new-page builds HELD (vault focus first)"
+    },
+    {
+     "ts": "2026-08-17",
+     "msg": "Vault v3 — fuzzy engine auto-link + ask-median auto-log (Mo's exact-name gripe)"
+    },
+    {
+     "ts": "2026-08-17",
+     "msg": "eBay Marketplace Insights access request submitted (support contact activated same day)"
+    },
+    {
+     "ts": "2026-08-17",
+     "msg": "COCKPIT LOOP built — dungeon approve/decline buttons -> /api/decisions -> price-data branch; auditor reconciles at run start"
+    },
+    {
+     "ts": "2026-08-18",
+     "msg": "2 new ledger verdicts at promotion: Kim WAIT @ $131.25, Florentino BUY @ $79.32 (finalize ~Oct 13); 4 Bangers finals untouched"
+    },
+    {
+     "ts": "2026-08-18",
+     "msg": "7 tweet drafts written (#1 accountability = Pierce -46% wrong + reshuffle demotion) -- awaiting Mo pick"
+    },
+    {
+     "ts": "2026-08-18",
+     "msg": "Ledger gap closed: 10 finalizations + 4 trending updates reconstructed from Monday scan (Mo approved same-day); scoreboard 15 final / 6 trending"
+    },
+    {
+     "ts": "2026-08-18",
+     "msg": "POKEMON CALLS RETIRED (Mo's decision): no new Pokemon calls; /track-record split into Sports (active) + Pokemon (retired, history stays) with per-segment scoreboard; policy written into calls.json _comment"
+    }
    ]
   },
   "gengar": {
@@ -241,13 +291,13 @@
    "id": "tweets-2026-08-11",
    "area": "social",
    "summary": "7 tweet drafts for the week (accountability #1 = Greninja −57% FINAL; 2× Bangers, LeBron, Umbreon, 2× new-page ideas) — Mo to pick and post",
-   "status": "awaiting-mo"
+   "status": "applied"
   },
   {
    "id": "bangers-watch-promotions",
    "area": "board",
-   "summary": "Watch-tier promotion flags (Aug 11): Kim $131 / Florentino $85 / Gonzales $57 / Houston $29 all above Pierce $19.50 — promote next Tuesday if it holds (board reshuffle + new ledger verdicts)",
-   "status": "awaiting-mo"
+   "summary": "Watch-tier promotion flags (Aug 11): Kim $131 / Florentino $85 / Gonzales $57 / Houston $29 all above Pierce $19.50 — promote next Tuesday if it holds (board reshuffle + new ledger verdicts) -- APPLIED Aug 18 (Kim #2, Florentino #4; Pierce+Aloy to watch)",
+   "status": "applied"
   },
   {
    "id": "lucario-attribution",
@@ -298,18 +348,36 @@
    "id": "cockpit-loop-build",
    "status": "awaiting-mo",
    "title": "Push api/decisions.js + set Vercel env DUNGEON_KEY (and GITHUB_TOKEN if not already set for track-signal) — then dungeon approve/decline goes live. card-dungeon.html changes are local-only (gitignored), already active."
+  },
+  {
+   "id": "tweets-2026-08-18",
+   "area": "social",
+   "summary": "7 tweet drafts for the week (accountability #1 = Pierce BUY wrong -46% + board demotion; reshuffle thread, Holliday PSA10 +45%, Kim WAIT, 3 new-page ideas from Monday gap analysis) -- Mo to pick and post",
+   "status": "awaiting-mo"
+  },
+  {
+   "id": "ledger-finalization-gap",
+   "area": "ledger",
+   "summary": "RESOLVED Aug 18: the 10 missing Monday finalizations reconstructed from the Aug 17 scan reads and applied (8 Pitch Black + Mewtwo push + Lucario wrong) + 4 trending updates; scoreboard now 15 final (2 right / 11 wrong / 2 push)",
+   "status": "applied"
+  },
+  {
+   "id": "pokemon-ledger-retirement",
+   "area": "ledger",
+   "summary": "Pokemon calls retired Aug 18 (one-directional miss_high bias = no edge; rarity is the only driver vs sports' catalyst stream). History stays graded -- retire, don't delete. Applied to /track-record + calls.json policy note.",
+   "status": "applied"
   }
  ],
  "scoreboard": {
-  "updated": "2026-08-11",
-  "final": 5,
-  "finalRight": 1,
-  "finalWrong": 3,
-  "finalPush": 1,
-  "trending": 14,
-  "trendingHit": 2,
-  "trendingMiss": 10,
-  "trendingUngraded": 2,
+  "updated": "2026-08-18",
+  "final": 15,
+  "finalRight": 2,
+  "finalWrong": 11,
+  "finalPush": 2,
+  "trending": 6,
+  "trendingHit": 1,
+  "trendingMiss": 2,
+  "trendingUngraded": 3,
   "open": 0
  }
 }
