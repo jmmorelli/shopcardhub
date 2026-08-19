@@ -1,5 +1,5 @@
 {
- "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys MUST stay dm|seeker|curator|inspector|gengar (they map to the dungeon's five sprites; append newest action LAST, keep ~12 max per agent). items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
+ "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
  "generated": "2026-08-19T07:00:00-04:00",
  "generator": "site-auditor (2026-08-19)",
  "agents": {
@@ -192,6 +192,26 @@
     {
      "ts": "2026-08-18",
      "msg": "POKEMON CALLS RETIRED (Mo's decision): no new Pokemon calls; /track-record split into Sports (active) + Pokemon (retired, history stays) with per-segment scoreboard; policy written into calls.json _comment"
+    }
+   ]
+  },
+  "trader": {
+   "label": "TRADER",
+   "role": "COMC trading analyst (Thursday runs) — recommend-only, Mo executes; book stays local",
+   "lastRun": "2026-08-19",
+   "nextRun": "2026-08-20",
+   "actions": [
+    {
+     "ts": "2026-08-19",
+     "msg": "COMMISSIONED — charter, fee/friction model (5% sale fee; 10% cash-out avoided via credit flips), graded rec ledger + RETRO self-improvement loop; weekly Thursday runs"
+    },
+    {
+     "ts": "2026-08-19",
+     "msg": "Scan #1 (manual dry run): 9 recs filed, 6 executed same-day — 2 new listings live, 1 reprice, 3 corner positions taken (one at 100% COMC float); 2 buy candidates PASSED on tape math, 0 forced trades"
+    },
+    {
+     "ts": "2026-08-19",
+     "msg": "Process: 8 of 9 reprice recs declined by Mo -> floor-position/corner rule written into charter same day; demand-gate moved to pre-filing after one gate closed post-execution (passed, but logged as process hole)"
     }
    ]
   },
@@ -402,6 +422,11 @@
    "id": "audit-2026-08-19-4",
    "status": "approved",
    "title": "LOW: psa-grading-guide.html has 6 price cells but no sold-comps disclaimer or as-of stamp (price sweep WARN). Fix: add the standard one-line comps disclaimer + dated stamp. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push"
+  },
+  {
+   "id": "trader-2026-08-19",
+   "status": "awaiting-mo",
+   "title": "TRADER: first scan filed 5 recs (2 SELL, 1 REPRICE x10 items, 1 GRADE pilot, 1 HOLD-NOTE on the two accumulation plays) — details in local comc-trader/scan-2026-08-19.md; agent scheduled Thursdays 8am"
   },
   {
    "id": "audit-2026-08-19-5",
