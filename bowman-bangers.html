@@ -290,6 +290,23 @@
 .entry-break{font-family:var(--fm);font-size:11px;line-height:1.6;color:var(--text-dim);border-left:2px solid var(--red,#ff5555);padding-left:10px;margin-top:12px;}
 .entry-break b{color:#ff8888;font-weight:700;letter-spacing:1px;}
 
+/* Off the Board — names that left, kept visible on purpose. Deliberately plain:
+   this section is not a victory lap, and it must not look like one. */
+.offboard{background:var(--bg2);border:1px solid var(--border);padding:20px 22px;margin:0 0 8px;}
+.offboard h3{font-family:var(--fm);font-size:12px;font-weight:700;letter-spacing:2px;color:var(--text-head);margin:0 0 6px;text-transform:uppercase;}
+.offboard .ob-intro{font-size:13px;line-height:1.65;color:var(--text-dim);margin:0 0 16px;}
+.ob-table{width:100%;border-collapse:collapse;font-family:var(--fm);font-size:12px;}
+.ob-table th{text-align:left;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);font-weight:400;padding:0 10px 8px 0;border-bottom:1px solid var(--border);white-space:nowrap;}
+.ob-table td{padding:11px 10px 11px 0;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--text-dim);vertical-align:top;}
+.ob-table .ob-name{color:var(--text-head);font-weight:700;}
+.ob-grade{font-size:10px;letter-spacing:1px;padding:2px 7px;border:1px solid;white-space:nowrap;}
+.ob-grade.wrong{color:#ff8888;border-color:rgba(255,120,120,0.45);}
+.ob-grade.right{color:var(--green);border-color:rgba(0,224,122,0.45);}
+.ob-grade.none{color:var(--text-dim);border-color:var(--border);}
+.ob-why{font-size:11px;line-height:1.6;color:var(--text-dim);padding-top:2px;}
+.offboard .ob-foot{font-size:11px;line-height:1.6;color:var(--text-dim);margin:16px 0 0;padding-top:12px;border-top:1px solid var(--border);}
+@media(max-width:720px){.ob-table,.ob-table tbody,.ob-table tr,.ob-table td{display:block;width:100%;}.ob-table thead{display:none;}.ob-table tr{border-bottom:1px solid var(--border);padding:10px 0;}.ob-table td{border:0;padding:3px 0;}}
+
 .price-main{text-shadow:0 0 16px rgba(0,224,122,0.45);}
 .price-main.orange{text-shadow:0 0 16px rgba(255,140,0,0.45);}
 .price-main.gold{text-shadow:0 0 16px rgba(245,200,0,0.45);}
@@ -943,7 +960,38 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     </div>
 
     <!-- Aloy + Pierce demoted to watch tier Aug 18 (crossover rule) -->
-    
+
+    <!-- OFF THE BOARD (alumni). Maintained from data/board-history.json -> departures[]
+         by the Tuesday run. A name that leaves this board NEVER just disappears. -->
+    <div class="offboard">
+      <h3>Off the Board</h3>
+      <p class="ob-intro">Names that used to rank here, kept in plain sight with the call we made and how it finished. Quietly deleting a recommendation that went wrong is how track records get laundered, so we don't. A name can leave four ways: <strong>demoted</strong> (out-priced by someone below it), <strong>graduated</strong> (he debuted in the majors and a true rookie card now exists — that's the <em>good</em> ending), <strong>aged out</strong> (the 1st Bowman is ~18 months old), or <strong>priced out</strong> (no longer a banger entry point).</p>
+      <table class="ob-table">
+        <thead>
+          <tr><th>Player</th><th>On the board</th><th>Rank at exit</th><th>Our call</th><th>Finished at</th><th>Grade</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ob-name">Daniel Pierce<div class="ob-why">Demoted — Kim ($131) and Florentino ($79) both out-printed him two straight weeks while he made new lows.</div></td>
+            <td>Jun 12 – Aug 18, 2026<div class="ob-why">9 weeks · now watch tier</div></td>
+            <td>#5</td>
+            <td>BUY @ $35<div class="ob-why">Jun 12, 2026</div></td>
+            <td>$19<div class="ob-why">−46% · read Aug 4</div></td>
+            <td><span class="ob-grade wrong">WRONG</span></td>
+          </tr>
+          <tr>
+            <td class="ob-name">Wehiwa Aloy<div class="ob-why">Demoted on ladder position, not on his own tape — $56 flat, but two watch-tier names priced above him.</div></td>
+            <td>Jun 12 – Aug 18, 2026<div class="ob-why">9 weeks · now watch tier</div></td>
+            <td>#4</td>
+            <td>— <div class="ob-why">never carried a published verdict</div></td>
+            <td>$56<div class="ob-why">flat · read Aug 18</div></td>
+            <td><span class="ob-grade none">NOT GRADED</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="ob-foot">Pierce cost anyone who followed that call 46%. It stays on this page and it stays on <a href="/track-record">the Track Record</a>, where every published call is graded on a fixed date and never edited afterward. Demotion is a ranking decision, not a sell order — both names are still tracked in the watch tier below.</p>
+    </div>
+
   </section>
 
   <!-- SECTION 2: REST OF THE FIELD -->
