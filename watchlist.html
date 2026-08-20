@@ -226,6 +226,16 @@
     .alloc-legend { display:flex; gap:16px; flex-wrap:wrap; margin-top:8px; font-family:var(--fm); font-size:10px; color:var(--text-dim); }
     .alloc-legend i { display:inline-block; width:8px; height:8px; border-radius:1px; margin-right:5px; }
 
+    /* Style box — Morningstar-style 3×3 grid (price tier × established/speculative) */
+    .sb-grid { display:grid; grid-template-columns:auto repeat(3, 1fr); gap:3px; margin-top:10px; max-width:460px; }
+    .sb-head { font-family:var(--fm); font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); text-align:center; padding-bottom:2px; }
+    .sb-side { font-family:var(--fm); font-size:9px; letter-spacing:1px; color:var(--text-dim); display:flex; align-items:center; justify-content:flex-end; padding-right:8px; white-space:nowrap; }
+    .sb-corner { }
+    .sb-cell { aspect-ratio:1.9/1; border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+               font-family:var(--fm); font-size:11px; font-weight:700; color:var(--text-head); transition:background 0.5s ease; }
+    .sb-read { font-family:var(--fm); font-size:11px; color:var(--text); margin-top:10px; line-height:1.5; }
+    @media(max-width:520px){ .sb-grid { max-width:100%; } .sb-side { font-size:8px; padding-right:5px; } }
+
     /* Data safety footer */
     .data-bar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:14px 16px; background:var(--bg2); border:1px solid var(--border); margin-bottom:60px; font-size:12px; color:var(--text-dim); }
     .data-bar .spacer { flex:1; }
@@ -627,6 +637,8 @@
 
     <div id="pvWrap"></div>
     <div id="allocWrap"></div>
+    <div id="styleBoxWrap"></div>
+    <div id="riskWrap"></div>
     <div class="vlist" id="vlist"></div>
 
     <div class="data-bar">
@@ -995,6 +1007,137 @@ function renderAlloc(own) {
   wrap.innerHTML = '<div class="alloc-wrap"><div class="kpi-label">Allocation by Category (current value)</div><div class="alloc-bar">' + segs + '</div><div class="alloc-legend">' + leg + '</div></div>';
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   PORTFOLIO ANALYTICS (Aug 20 2026) — a Morningstar-style read on a
+   card collection. Two panels: the STYLE BOX and the RISK REPORT.
+
+   WHY THE AXES ARE WHAT THEY ARE: a style box only means something if
+   BOTH axes are ordered and both explain return variance. Equities use
+   size × value/growth. Cards map cleanly:
+     • Y = price tier (the "size" axis — under $10 / $10–100 / $100+)
+     • X = ESTABLISHED → SPECULATIVE (the "value/growth" axis)
+   A graded vintage HOF card is a value stock: priced on what it IS,
+   low variance, no development risk. A 1st Bowman prospect auto is a
+   growth stock: priced entirely on what the player MIGHT become.
+   Card TYPE (auto/chrome/RC) is deliberately NOT an axis — it's a
+   category, not an ordering, so it would make the grid meaningless.
+
+   HONESTY: every value here is ASK-BASIS (the engine reads eBay asks,
+   not solds) and labeled as such. True liquidity needs sold-velocity
+   data — that lands when the eBay Marketplace Insights request clears,
+   and until then this panel reports COVERAGE (how much of the book we
+   can even price) rather than pretending to know exit speed. -------- */
+
+/* Classify a card on the established→speculative axis. Transparent,
+   keyword-based, and deliberately conservative: anything we can't read
+   confidently lands in "blend" rather than guessing an extreme. */
+function specAxis(c) {
+  const hay = ((c.name || '') + ' ' + (c.set || '')).toLowerCase();
+  const yr = (String(c.set || '').match(/\b(19|20)\d{2}\b/) || [])[0];
+  const age = yr ? (new Date().getFullYear() - parseInt(yr, 10)) : null;
+  const graded = /(psa|bgs|sgc|cgc|csg)\s*\d/.test(String(c.grade || '').toLowerCase());
+
+  // Speculative: the card is priced on a future that hasn't happened yet.
+  const prospect = /(1st bowman|first bowman|prospect|chrome prospect|bowman draft|draft pick|\bcpa[- ]|\bbcp[- ]|\bbdc[- ]|pre-?rookie|pre-?release)/.test(hay);
+  if (prospect) return 'spec';
+
+  // Established: the card is priced on what it already is.
+  //  - genuinely old (15+ yrs) OR graded-and-old, OR a retired/vintage marker
+  const vintageWords = /(vintage|hall of fame|\bhof\b|legend|topps living|heritage)/.test(hay);
+  if (age != null && age >= 15) return 'est';
+  if (graded && age != null && age >= 8) return 'est';
+  if (vintageWords && age != null && age >= 8) return 'est';
+
+  // Everything in between: modern rookies, current stars, recent Pokémon chases.
+  return 'blend';
+}
+
+function priceTier(v) { return v == null ? null : (v >= 100 ? 'hi' : v >= 10 ? 'mid' : 'lo'); }
+
+function renderStyleBox(own) {
+  const wrap = document.getElementById('styleBoxWrap');
+  if (tab !== 'own' || own.length < 3) { wrap.innerHTML = ''; return; }
+
+  const cells = {}; let total = 0, unpriced = 0;
+  own.forEach(c => {
+    const lp = last(c), q = c.qty || 1;
+    if (lp == null) { unpriced++; return; }
+    const v = lp * q, t = priceTier(lp), s = specAxis(c);
+    cells[t + '|' + s] = (cells[t + '|' + s] || 0) + v;
+    total += v;
+  });
+  if (total <= 0) { wrap.innerHTML = ''; return; }
+
+  const rows = [['hi', '$100+'], ['mid', '$10–100'], ['lo', 'Under $10']];
+  const cols = [['est', 'Established'], ['blend', 'Blend'], ['spec', 'Speculative']];
+  let grid = '<div class="sb-corner"></div>' + cols.map(c => '<div class="sb-head">' + c[1] + '</div>').join('');
+  rows.forEach(r => {
+    grid += '<div class="sb-side">' + r[1] + '</div>';
+    cols.forEach(c => {
+      const v = cells[r[0] + '|' + c[0]] || 0;
+      const p = total > 0 ? (v / total * 100) : 0;
+      // opacity carries the weight — same visual grammar as a Morningstar box
+      const op = p === 0 ? 0.06 : Math.min(0.16 + (p / 100) * 1.5, 0.95);
+      grid += '<div class="sb-cell" style="background:rgba(0,204,245,' + op.toFixed(2) + ')" title="$' + fmt$(v, 0) + '">'
+            + (p >= 0.5 ? p.toFixed(0) + '%' : '') + '</div>';
+    });
+  });
+
+  // Where is the book's weight? Name it in words, because a grid alone doesn't teach.
+  let specPct = 0, estPct = 0;
+  Object.entries(cells).forEach(([k, v]) => {
+    if (k.endsWith('|spec')) specPct += v / total * 100;
+    if (k.endsWith('|est')) estPct += v / total * 100;
+  });
+  let read;
+  if (specPct >= 60) read = 'Growth-heavy book — ' + specPct.toFixed(0) + '% sits in cards priced on futures that haven\'t happened yet. High variance by construction.';
+  else if (estPct >= 60) read = 'Value-heavy book — ' + estPct.toFixed(0) + '% is in cards priced on what they already are. Lower variance, slower upside.';
+  else read = 'Balanced book — ' + estPct.toFixed(0) + '% established vs ' + specPct.toFixed(0) + '% speculative.';
+
+  wrap.innerHTML =
+    '<div class="alloc-wrap"><div class="kpi-label">Style Box — price tier × established/speculative</div>' +
+    '<div class="sb-grid">' + grid + '</div>' +
+    '<div class="sb-read">' + read + '</div>' +
+    '<div class="f-hint">Ask-basis. Speculative = priced on what a player might become (1st Bowman, prospects, pre-release). Established = priced on what the card already is (vintage, graded older cards).' +
+    (unpriced ? ' ' + unpriced + ' card' + (unpriced === 1 ? '' : 's') + ' excluded — no market read yet.' : '') + '</div></div>';
+}
+
+function renderRisk(own) {
+  const wrap = document.getElementById('riskWrap');
+  if (tab !== 'own' || own.length < 3) { wrap.innerHTML = ''; return; }
+
+  const pos = [];
+  let total = 0, priced = 0;
+  own.forEach(c => {
+    const lp = last(c), q = c.qty || 1;
+    if (lp == null) return;
+    const v = lp * q;
+    pos.push({ name: c.name, v: v });
+    total += v; priced++;
+  });
+  if (total <= 0) { wrap.innerHTML = ''; return; }
+  pos.sort((a, b) => b.v - a.v);
+
+  const top1 = pos[0].v / total * 100;
+  const top3 = pos.slice(0, 3).reduce((s, p) => s + p.v, 0) / total * 100;
+  const coverage = own.length ? (priced / own.length * 100) : 0;
+
+  // Concentration flag — the thing a portfolio view exists to surface.
+  const concCls = top1 >= 40 ? 'neg' : top1 >= 25 ? '' : 'pos';
+  const concNote = top1 >= 40 ? 'one card carries the book' : top1 >= 25 ? 'watch this' : 'reasonably spread';
+  const covCls = coverage >= 80 ? 'pos' : coverage >= 50 ? '' : 'neg';
+
+  wrap.innerHTML =
+    '<div class="alloc-wrap"><div class="kpi-label">Risk Report</div>' +
+    '<div class="kpi-strip" style="margin:8px 0 0;">' +
+      '<div class="kpi"><div class="kpi-label">Top Holding</div><div class="kpi-value ' + concCls + '">' + top1.toFixed(0) + '%</div><div class="kpi-note">' + concNote + '</div></div>' +
+      '<div class="kpi"><div class="kpi-label">Top 3</div><div class="kpi-value">' + top3.toFixed(0) + '%</div><div class="kpi-note">of book value</div></div>' +
+      '<div class="kpi"><div class="kpi-label">Positions</div><div class="kpi-value">' + own.length + '</div><div class="kpi-note">' + priced + ' with a live read</div></div>' +
+      '<div class="kpi"><div class="kpi-label">Price Coverage</div><div class="kpi-value ' + covCls + '">' + coverage.toFixed(0) + '%</div><div class="kpi-note">' + (coverage < 100 ? 'the rest is unpriced' : 'fully priced') + '</div></div>' +
+    '</div>' +
+    '<div class="f-hint">Concentration is the risk a collection hides best — one hot card can be most of your book without it feeling that way. Coverage is honesty: an unpriced card isn\'t worth $0, it\'s worth <em>unknown</em>. True liquidity (how fast a card actually clears) needs sold-velocity data and lands when our sold-data feed does.</div></div>';
+}
+
 /* ---------- card row ---------- */
 function cardRow(c) {
   const lp = last(c);
@@ -1247,6 +1390,8 @@ function render() {
   document.getElementById('cntOwn').textContent = own.length;
   renderPV(own);
   renderAlloc(own);
+  renderStyleBox(own);
+  renderRisk(own);
 
   let list = tab === 'watch' ? watch : own;
   const q = document.getElementById('searchBox').value.trim().toLowerCase();
