@@ -1084,15 +1084,21 @@ function renderStyleBox(own) {
   });
 
   // Where is the book's weight? Name it in words, because a grid alone doesn't teach.
-  let specPct = 0, estPct = 0;
+  // All three buckets are always reported — quoting only two makes the percentages
+  // look broken (they wouldn't sum to 100) and hides where the money actually sits.
+  let specPct = 0, estPct = 0, blendPct = 0;
   Object.entries(cells).forEach(([k, v]) => {
-    if (k.endsWith('|spec')) specPct += v / total * 100;
-    if (k.endsWith('|est')) estPct += v / total * 100;
+    const p = v / total * 100;
+    if (k.endsWith('|spec')) specPct += p;
+    else if (k.endsWith('|est')) estPct += p;
+    else blendPct += p;
   });
+  const mix = estPct.toFixed(0) + '% established · ' + blendPct.toFixed(0) + '% blend · ' + specPct.toFixed(0) + '% speculative';
   let read;
-  if (specPct >= 60) read = 'Growth-heavy book — ' + specPct.toFixed(0) + '% sits in cards priced on futures that haven\'t happened yet. High variance by construction.';
-  else if (estPct >= 60) read = 'Value-heavy book — ' + estPct.toFixed(0) + '% is in cards priced on what they already are. Lower variance, slower upside.';
-  else read = 'Balanced book — ' + estPct.toFixed(0) + '% established vs ' + specPct.toFixed(0) + '% speculative.';
+  if (specPct >= 60) read = 'Growth-heavy book — ' + specPct.toFixed(0) + '% sits in cards priced on futures that haven\'t happened yet. High variance by construction. (' + mix + ')';
+  else if (estPct >= 60) read = 'Value-heavy book — ' + estPct.toFixed(0) + '% is in cards priced on what they already are. Lower variance, slower upside. (' + mix + ')';
+  else if (blendPct >= 60) read = 'Middle-of-the-book — ' + blendPct.toFixed(0) + '% is modern cards of established names: neither deep value nor pure speculation. (' + mix + ')';
+  else read = 'Mixed book — ' + mix + '.';
 
   wrap.innerHTML =
     '<div class="alloc-wrap"><div class="kpi-label">Style Box — price tier × established/speculative</div>' +
