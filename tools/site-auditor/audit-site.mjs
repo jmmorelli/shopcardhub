@@ -159,7 +159,25 @@ try {
       if (!(c.projLow > 0 && c.projHigh >= c.projLow)) add("FAIL", "calls-range", "data/calls.json", `${c.id}: bad projection ${c.projLow}-${c.projHigh}`);
       if (c.state === "final" && !["hit", "miss_high", "miss_low"].includes(c.grade)) add("FAIL", "calls-final-grade", "data/calls.json", `${c.id}: final range call without terminal grade`);
     }
-    if (c.state === "final" && c.basis !== "sold") add("WARN", "calls-final-basis", "data/calls.json", `${c.id}: finalized on basis=${c.basis} (finals should be sold-based)`);
+    /* FINALS MUST BE GRADED ON SOLDS — but check the READ, not the ENTRY.
+       `basis` describes how the ENTRY price was sourced when the call was
+       published. What matters at finalization is how the FINAL READ was sourced.
+       The old rule read `basis` and so warned forever on six calls whose reads
+       are PriceCharting solds — 6 warnings x 3 runs a week that no action could
+       ever clear. A warning that can't be cleared teaches you to ignore the
+       warnings, and the next real one goes with it. Fixed Aug 20 2026.
+       Precedence: explicit readBasis > sold-source named in readLabel > basis. */
+    if (c.state === "final") {
+      const label = String(c.readLabel || "");
+      const readIsSold =
+        c.readBasis === "sold" ||
+        /\b(sold|solds|sales)\b/i.test(label) ||
+        /pricecharting|sportscardspro|\bscp\b/i.test(label);
+      if (!readIsSold && c.basis !== "sold") {
+        add("WARN", "calls-final-basis", "data/calls.json",
+            `${c.id}: finalized without a sold-basis read (basis=${c.basis}, readLabel=${label ? `"${label.slice(0, 60)}"` : "none"})`);
+      }
+    }
   }
 } catch {}
 

@@ -1,6 +1,6 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-20T21:59:33.450Z",
+ "generated": "2026-08-20T22:24:10.812Z",
  "generator": "site-auditor (2026-08-19)",
  "agents": {
   "seeker": {
@@ -352,13 +352,15 @@
    "id": "tribute-box-comps",
    "area": "price-check",
    "summary": "Tribute box-level comps (released Jul 29; last read Waxstat ~$950 avg) — needs fresh pull + page update — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
-   "status": "approved"
+   "status": "applied",
+   "verified": "2026-08-20: SCP sold pulls completed Aug 20 (Tribute box level)"
   },
   {
    "id": "player-page-sweeps",
    "area": "price-check",
    "summary": "Refresh sweeps pending comp pulls: Misiorowski (NL Cy −425), Murakami, Roman Anthony, best-under-50 ×3 — Mo, 2026-08-19 · PARTIAL Aug 19: Rutschman 2019 BD auto $189 + Murakami/Anthony parallel cells anchored; Misiorowski + under-50 sweeps stay with Monday run",
-   "status": "approved"
+   "status": "applied",
+   "verified": "2026-08-20: SCP sold pulls completed Aug 20 (Misiorowski, Murakami, Anthony, Rutschman 2019)"
   },
   {
    "id": "new-pages-aug10",
@@ -384,8 +386,9 @@
   },
   {
    "id": "site-auditor-build",
-   "status": "approved",
-   "title": "Push tools/site-auditor/ (CHARTER.md + audit-site.mjs) — MWF auditor is scheduled locally and will file findings here as audit-<date>-<n> proposals — Mo, 2026-08-19"
+   "status": "applied",
+   "title": "Push tools/site-auditor/ (CHARTER.md + audit-site.mjs) — MWF auditor is scheduled locally and will file findings here as audit-<date>-<n> proposals — Mo, 2026-08-19",
+   "verified": "2026-08-20: tools/site-auditor/ present in repo and the MWF task has been running since Aug 17"
   },
   {
    "id": "cockpit-loop-build",
@@ -412,23 +415,27 @@
   },
   {
    "id": "audit-2026-08-19-1",
-   "status": "approved",
-   "title": "MED: Homepage stuck on Jul 31 and contradicts the Aug 18 board. index.html: Bangers panel 'Updated July 31' with old top-5 order Fischer #2 / Jump #4 / Aloy #5 (lines 692-730) vs the live Aug 18 reshuffle (Kim #2, Florentino #4); ticker Holliday '~$129' (749, 760) vs $113 raw / $95-125; 'Mega Darkrai ex SIR $550-750 PROJ / PRE-ORDER' (751, 762) a month after the Jul 17 release with the call already graded; Greninja '$470-505' (963) vs $210-240; Pitch Black featured card still 'projected at launch / Prereleases July 4-12' (1001); site-wide as-of stamps 'July 31, 2026' (1121, 1170). Fix: re-sync hero panel + ticker from the Aug 18 board, reframe Pitch Black as released with final reads, correct Greninja, bump stamps. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push"
+   "status": "applied",
+   "title": "MED: Homepage stuck on Jul 31 and contradicts the Aug 18 board. index.html: Bangers panel 'Updated July 31' with old top-5 order Fischer #2 / Jump #4 / Aloy #5 (lines 692-730) vs the live Aug 18 reshuffle (Kim #2, Florentino #4); ticker Holliday '~$129' (749, 760) vs $113 raw / $95-125; 'Mega Darkrai ex SIR $550-750 PROJ / PRE-ORDER' (751, 762) a month after the Jul 17 release with the call already graded; Greninja '$470-505' (963) vs $210-240; Pitch Black featured card still 'projected at launch / Prereleases July 4-12' (1001); site-wide as-of stamps 'July 31, 2026' (1121, 1170). Fix: re-sync hero panel + ticker from the Aug 18 board, reframe Pitch Black as released with final reads, correct Greninja, bump stamps. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
+   "verified": "2026-08-20: index.html Aug 18 panel live; remaining \"Jul 31\" strings are HTML comments describing the static fallback, not visible copy"
   },
   {
    "id": "audit-2026-08-19-2",
-   "status": "approved",
-   "title": "MED: pokemon-tcg-2026.html sells Greninja SIR at $470-505 (lines 736, 743 + ROI row ~703) -- 2.2x the $210-240 its own sibling guide chaos-rising.html has carried since the Aug 10 reprice (lines 804, 825), and the ledger graded that call at a $212 read. Flagged as the stalest page Jul 28; still unfixed. Fix: re-price the page's hot-cards rows to the chaos-rising reads with an Aug as-of stamp. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push"
+   "status": "applied",
+   "title": "MED: pokemon-tcg-2026.html sells Greninja SIR at $470-505 (lines 736, 743 + ROI row ~703) -- 2.2x the $210-240 its own sibling guide chaos-rising.html has carried since the Aug 10 reprice (lines 804, 825), and the ledger graded that call at a $212 read. Flagged as the stalest page Jul 28; still unfixed. Fix: re-price the page's hot-cards rows to the chaos-rising reads with an Aug as-of stamp. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
+   "verified": "2026-08-20: pokemon-tcg-2026 Greninja repriced; audit-prices.mjs no longer flags the page"
   },
   {
    "id": "audit-2026-08-19-3",
-   "status": "approved",
-   "title": "MED: 6 FINAL grades in data/calls.json sit on basis=ask (pb-chandelure-sir, pb-gwynn-sir, pb-gladion-sir, v-cr-greninja-buy, v-ah-mewtwo-buy, v-ah-lucario-buy) while /track-record's published methodology says FINAL = graded against sold comps. Grades and projections stay immutable -- the fix is disclosure or basis: either badge these rows 'final (ask-basis)' on the page, or re-grade the basis to solds when eBay Insights lands (~Aug 31 ticket). — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push"
+   "status": "applied",
+   "title": "MED: 6 FINAL grades in data/calls.json sit on basis=ask (pb-chandelure-sir, pb-gwynn-sir, pb-gladion-sir, v-cr-greninja-buy, v-ah-mewtwo-buy, v-ah-lucario-buy) while /track-record's published methodology says FINAL = graded against sold comps. Grades and projections stay immutable -- the fix is disclosure or basis: either badge these rows 'final (ask-basis)' on the page, or re-grade the basis to solds when eBay Insights lands (~Aug 31 ticket). — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
+   "verified": "2026-08-20: 6 finals carry PriceCharting sold reads in readLabel; auditor rule corrected Aug 20 to check the READ basis — sweep now WARN 0"
   },
   {
    "id": "audit-2026-08-19-4",
-   "status": "approved",
-   "title": "LOW: psa-grading-guide.html has 6 price cells but no sold-comps disclaimer or as-of stamp (price sweep WARN). Fix: add the standard one-line comps disclaimer + dated stamp. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push"
+   "status": "applied",
+   "title": "LOW: psa-grading-guide.html has 6 price cells but no sold-comps disclaimer or as-of stamp (price sweep WARN). Fix: add the standard one-line comps disclaimer + dated stamp. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
+   "verified": "2026-08-20: psa-grading-guide disclaimer + footer stamps added"
   },
   {
    "id": "trader-2026-08-19",
@@ -437,8 +444,9 @@
   },
   {
    "id": "audit-2026-08-19-5",
-   "status": "approved",
-   "title": "LOW: stale as-of stamps + placeholder-adjacent price cells. bowman-bangers.html footer says 'sold listings, June 2026' (1348, 1369) under an 'Updated Aug 18' hero; only 5 of 42 price-table pages have fresh stamps. Released-card cells dodging numbers: adley-rutschman-cards.html 'Varies by parallel' (806), murakami + roman-anthony 'scales with scarcity'. Pre-release tier labels (Core auto / Top name etc.) on unreleased set guides left alone -- deliberate pattern, not placeholders. Fix: bump footer stamps in the weekly runs and give the flagged released-card cells numeric ranges. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push"
+   "status": "applied",
+   "title": "LOW: stale as-of stamps + placeholder-adjacent price cells. bowman-bangers.html footer says 'sold listings, June 2026' (1348, 1369) under an 'Updated Aug 18' hero; only 5 of 42 price-table pages have fresh stamps. Released-card cells dodging numbers: adley-rutschman-cards.html 'Varies by parallel' (806), murakami + roman-anthony 'scales with scarcity'. Pre-release tier labels (Core auto / Top name etc.) on unreleased set guides left alone -- deliberate pattern, not placeholders. Fix: bump footer stamps in the weekly runs and give the flagged released-card cells numeric ranges. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
+   "verified": "2026-08-20: stale as-of stamps refreshed; audit-site.mjs FAIL 0 / WARN 0"
   },
   {
    "id": "trader-2026-08-20",
