@@ -272,6 +272,24 @@
 .roy-entry.watch-entry::before,.roy-entry.watch-entry::after{border-color:var(--gold);}
 
 /* 2. Neon glow on prices and key labels */
+/* Dry Powder (rank 00) — cash as the top-ranked position */
+.dry-powder{display:flex;gap:18px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--text-dim);padding:18px 22px;margin:0 0 20px;}
+.dry-powder .dp-rank{font-family:var(--fd);font-size:44px;font-weight:900;color:rgba(255,255,255,0.10);line-height:1;flex-shrink:0;}
+.dry-powder .dp-title{font-family:var(--fm);font-size:12px;font-weight:700;letter-spacing:2px;color:var(--text-head);margin-bottom:6px;}
+.dry-powder .dp-sizing{font-weight:400;letter-spacing:1px;color:var(--text-dim);text-transform:none;}
+.dry-powder .dp-text{font-size:14px;line-height:1.6;color:var(--text-dim);}
+@media(max-width:640px){.dry-powder{gap:12px;padding:14px 16px;} .dry-powder .dp-rank{font-size:32px;}}
+
+/* Board legend + rank-history strip */
+.board-legend{font-family:var(--fm);font-size:11px;color:var(--text-dim);line-height:1.7;background:var(--bg2);border:1px solid var(--border);padding:12px 16px;margin:0 0 24px;}
+.board-legend b{color:var(--text-head);font-weight:700;}
+.rank-hist{display:inline-flex;gap:5px;align-items:center;font-family:var(--fm);font-size:10px;color:var(--text-dim);margin-top:6px;letter-spacing:0.5px;}
+.rank-hist .rh-cell{background:var(--bg3);border:1px solid var(--border);padding:1px 6px;color:var(--text);}
+.rank-hist .rh-lab{opacity:0.6;}
+.entry-since{font-family:var(--fm);font-size:10px;letter-spacing:1px;color:var(--text-dim);margin-top:4px;}
+.entry-break{font-family:var(--fm);font-size:11px;line-height:1.6;color:var(--text-dim);border-left:2px solid var(--red,#ff5555);padding-left:10px;margin-top:12px;}
+.entry-break b{color:#ff8888;font-weight:700;letter-spacing:1px;}
+
 .price-main{text-shadow:0 0 16px rgba(0,224,122,0.45);}
 .price-main.orange{text-shadow:0 0 16px rgba(255,140,0,0.45);}
 .price-main.gold{text-shadow:0 0 16px rgba(245,200,0,0.45);}
@@ -694,9 +712,37 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <h2>Top 5 Prospects to Chase in 2026 Bowman</h2>
     <p class="section-intro">The 1st Bowman card is the first officially licensed Bowman card for a prospect — issued before they earn a major-league RC designation. These are the names driving the most activity in the 2026 class. On a budget? See our <a href="/best-baseball-cards-under-50">best baseball cards under $50</a>.</p>
 
+    <!-- ══════════ RANK 00 · DRY POWDER ══════════
+         Borrowed from institutional ranked-list research, where CASH sits
+         permanently at the top of the list sized 0–100%. The point is that
+         NOT BUYING is a ranked, legitimate position — not a failure to act.
+         No card site has ever said this out loud, and it's the visual form of
+         the capital-preservation rule the trader charter already runs on. -->
+    <!-- Legend: define every convention used on this board, in the document.
+         Costs nothing, removes all ambiguity, and signals the numbers were
+         built deliberately rather than eyeballed. -->
+    <div class="board-legend">
+      <b>How to read this board.</b>
+      Rank is by current raw sold price on each player's benchmark card (his 1st Bowman Chrome Auto).
+      <b>SCP raw</b> = SportsCardsPro raw sold value — an actual completed sale.
+      <b>engine</b> = our nightly eBay ask median — the optimistic side of the market, never a sold.
+      <b>PSA 10</b> = graded sold value.
+      <b>Since</b> = the date that name first appeared on this board.
+      <b>▲▼</b> = rank change versus the prior week; <b>0</b> = unchanged; <b>—</b> = not ranked in that period.
+      Every price carries the date it was read. When a card has no attributable sold comp, we say so rather than estimating.
+    </div>
+
+    <div class="dry-powder">
+      <div class="dp-rank">00</div>
+      <div class="dp-body">
+        <div class="dp-title">DRY POWDER <span class="dp-sizing">suggested 0%–100% of your card budget</span></div>
+        <div class="dp-text">Cash is a position, and on this board it outranks every card. If nothing below clears your entry price, <strong>the correct move is to buy nothing</strong> — a month with no purchases and no losses beats a month with five purchases and one bad one. Every name on this list is competing against simply keeping your money.</div>
+      </div>
+    </div>
+
     <!-- 01 ETHAN HOLLIDAY -->
     <div class="alert-bar" style="margin:0 0 28px;">
-  &#9889; <strong>Aug 18 market check</strong> (SportsCardsPro raw solds): <strong>BOARD RESHUFFLE &mdash; the Aug 11 promotion flags held, so the ladder gets enforced.</strong> Seong-Jun Kim ($131 raw &mdash; the highest price in the entire 2026 class) and Edward Florentino ($79) are PROMOTED to the board; Daniel Pierce ($19.50 &rarr; $17.30, &minus;11%, new lows) and Wehiwa Aloy ($56, flat &mdash; demoted on ladder position, not his own tape) drop to the watch tier. Biggest mover: <strong>Holliday's PSA 10 ripped $498 &rarr; $720 (+45%)</strong> with raw up $103 &rarr; $113 (+9%) &mdash; #1 is not in question. Arquette's bounce failed ($66 &rarr; $58, &minus;11%; the second green week never printed) and Fischer put in his first red candle in a month ($121 &rarr; $114, &minus;6%). Bowman Chrome street date is ~Sep 9&ndash;10 &mdash; the paper&rarr;Chrome benchmark transition clock starts once Chrome autos have real sold volume (~late Sep). New verdicts logged: Kim WAIT at $131, Florentino BUY at $79 &mdash; graded in public with everything else on <a href="/track-record">the Track Record</a>.
+  &#9889; <strong>Aug 18 board: Holliday's PSA 10 +45% ($498 &rarr; $720) &mdash; Arquette &minus;11%, Pierce &minus;11%, both demoted.</strong> (SportsCardsPro raw solds.) The Aug 11 promotion flags held, so the ladder gets enforced. Seong-Jun Kim ($131 raw &mdash; the highest price in the entire 2026 class) and Edward Florentino ($79) are PROMOTED to the board; Daniel Pierce ($19.50 &rarr; $17.30, &minus;11%, new lows) and Wehiwa Aloy ($56, flat &mdash; demoted on ladder position, not his own tape) drop to the watch tier. Biggest mover: <strong>Holliday's PSA 10 ripped $498 &rarr; $720 (+45%)</strong> with raw up $103 &rarr; $113 (+9%) &mdash; #1 is not in question. Arquette's bounce failed ($66 &rarr; $58, &minus;11%; the second green week never printed) and Fischer put in his first red candle in a month ($121 &rarr; $114, &minus;6%). Bowman Chrome street date is ~Sep 9&ndash;10 &mdash; the paper&rarr;Chrome benchmark transition clock starts once Chrome autos have real sold volume (~late Sep). New verdicts logged: Kim WAIT at $131, Florentino BUY at $79 &mdash; graded in public with everything else on <a href="/track-record">the Track Record</a>.
 </div>
 <div class="card-entry">
       <div class="entry-rank">01</div>
@@ -709,6 +755,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           <div class="price-label">Chrome Auto (eBay sold)</div>
           <div class="price-main">~$95–$125</div>
           <div class="price-sub">SCP raw $113 · engine $177 · PSA 10 $720 · graded +45% on the week · Aug 18</div>
+          <div class="entry-since">ON THE BOARD SINCE JUN 12, 2026 · SUGGESTED SIZING 2%–6%</div>
+          <div class="rank-hist"><span class="rh-lab">RANK</span><span class="rh-cell">now 1</span><span class="rh-cell">1wk 1</span><span class="rh-cell">1mo 1</span><span class="rh-cell">3mo —</span></div>
         </div>
       </div>
       <div class="entry-stats">
@@ -729,6 +777,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <cite>— MLB.com</cite>
       </div>
       <div class="entry-verdict"><strong>Verdict: Buy.</strong> The tape finally agrees with the pedigree: raw +9% to $113 and the PSA 10 ripped $498 &rarr; $720 (+45%) &mdash; the graded ladder is where demand shows first, and it's pointing up. Most liquid 1st Bowman in 2026. Always check current eBay sold comps before purchasing.</div>
+      <div class="entry-break"><b>WHAT BREAKS THIS:</b> Bowman Chrome street date is ~Sep 9–10. If his Chrome 1st auto arrives with real sold volume and prints <em>below</em> the paper card, the benchmark transition goes against him and this rank is wrong. Check again ~late Sep, once Chrome has ~2–3 weeks of solds.</div>
       <div class="entry-ctas">
         <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20ethan%20holliday%20chrome%20auto%20prospect&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="btn-primary" target="_blank" rel="noopener">Buy on eBay →</a>
         <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20ethan%20holliday%20prospect&LH_Sold=1&LH_Complete=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="btn-secondary" target="_blank" rel="noopener">eBay Sold Comps →</a>
@@ -748,6 +797,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           <div class="price-label">Chrome Auto (eBay sold)</div>
           <div class="price-main">~$110–$150</div>
           <div class="price-sub">SCP raw $131 · engine $181 · PSA 10 $635 · flat week at the highs · Aug 18</div>
+          <div class="entry-since">ON THE BOARD SINCE AUG 18, 2026 · SUGGESTED SIZING 1%–4%</div>
+          <div class="rank-hist"><span class="rh-lab">RANK</span><span class="rh-cell">now 2</span><span class="rh-cell">1wk —</span><span class="rh-cell">1mo —</span><span class="rh-cell">3mo —</span></div>
         </div>
       </div>
       <div class="entry-stats">
@@ -764,6 +815,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         Early Bowman cards of Korean two-way prospects are historically scarce, and the market has priced that scarcity fast: two straight weeks printing $131 raw &mdash; above every name that was on this board in July.
       </div>
       <div class="entry-verdict watch"><strong>Verdict: Wait.</strong> The market found this card before we put it on the board &mdash; that's on us, and it's why we don't chase. $131 &rarr; $131 on the week: a flat candle at the highs after a vertical run. Sideways is not an entry signal; wait for a pullback or a fresh breakout on real volume. The WAIT is logged at $131 on <a href="/track-record">the ledger</a> and we'll wear the grade either way.</div>
+      <div class="entry-break"><b>WHAT BREAKS THIS:</b> the WAIT is wrong in both directions and we'll say which by <strong>Sep 15</strong>. Wrong-and-expensive if he breaks above $150 on rising volume before any pullback — then patience cost us the entry. Wrong-and-early if raw closes two straight weeks under $100, because a flat candle at the highs was really distribution and "wait" understated the risk.</div>
       <div class="entry-ctas">
         <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20seong%20jun%20kim%20chrome%20auto%20prospect&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="btn-primary" target="_blank" rel="noopener">Buy on eBay →</a>
         <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20seong%20jun%20kim%20prospect&LH_Sold=1&LH_Complete=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="btn-secondary" target="_blank" rel="noopener">eBay Sold Comps →</a>
@@ -782,6 +834,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           <div class="price-label">Chrome Auto (eBay sold)</div>
           <div class="price-main">~$100–$130</div>
           <div class="price-sub">SCP raw $114 · engine $140 · PSA 10 $421 · −6%, first red week in a month · Aug 18</div>
+          <div class="entry-since">ON THE BOARD SINCE JUN 12, 2026 · SUGGESTED SIZING 1%–4%</div>
+          <div class="rank-hist"><span class="rh-lab">RANK</span><span class="rh-cell">now 3</span><span class="rh-cell">1wk 2</span><span class="rh-cell">1mo 2</span><span class="rh-cell">3mo —</span></div>
         </div>
       </div>
       <div class="entry-stats">
@@ -802,6 +856,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <cite>— MLB.com</cite>
       </div>
       <div class="entry-verdict"><strong>Verdict: Hold / buy the dip.</strong> We called this a value buy at $20&ndash;$40 in June; the market printed $102, $113, $121 &mdash; and this week the first red candle in a month, $121 &rarr; $114 (&minus;6%). This is the consolidation we said to wait for, but one red week isn't a base. Let it build one. The June BUY is FINAL at +277% on <a href="/track-record">the ledger</a>.</div>
+      <div class="entry-break"><b>WHAT BREAKS THIS:</b> one red week is a pause; three is a top. If raw closes under <strong>$95</strong> — below the Jul 28 print of $102 — the "consolidation" read was wrong and this is distribution off a +277% run, not a dip to buy. Verdict gets rewritten <strong>Sep 8</strong> either way.</div>
       <div class="entry-ctas">
         <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20andrew%20fischer%20chrome%20auto%20prospect&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="btn-primary" target="_blank" rel="noopener">Buy on eBay →</a>
         <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20andrew%20fischer%20prospect&LH_Sold=1&LH_Complete=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="btn-secondary" target="_blank" rel="noopener">eBay Sold Comps →</a>
@@ -820,6 +875,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           <div class="price-label">Chrome Auto (eBay sold)</div>
           <div class="price-main">~$65–$90</div>
           <div class="price-sub">SCP raw $79 · engine $105 · PSA 10 $399 · −7% pullback in an uptrend · Aug 18</div>
+          <div class="entry-since">ON THE BOARD SINCE AUG 18, 2026 · SUGGESTED SIZING 1%–4%</div>
+          <div class="rank-hist"><span class="rh-lab">RANK</span><span class="rh-cell">now 4</span><span class="rh-cell">1wk —</span><span class="rh-cell">1mo —</span><span class="rh-cell">3mo —</span></div>
         </div>
       </div>
       <div class="entry-stats">
@@ -836,6 +893,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         The tape backs the profile: $79 raw is more than four of the five names that sat on this board in July, and he's held that level two straight weeks while the class around him faded.
       </div>
       <div class="entry-verdict"><strong>Verdict: Buy.</strong> A &minus;7% pullback ($85 &rarr; $79) inside an uptrend that cleared most of the old board &mdash; that's an entry, not a warning. Speed-first profiles are volatile, so size accordingly. The BUY is logged at $79 on <a href="/track-record">the ledger</a>, graded in public like every call we make.</div>
+      <div class="entry-break"><b>WHAT BREAKS THIS:</b> "pullback in an uptrend" requires the uptrend. A close under <strong>$65</strong> — his late-July level — means the buyer who took him from the watch tier to #4 is done, and the promotion was late rather than early. Reassessed <strong>Sep 15</strong>. Separately, speed-first profiles break on the field: a hamstring or a move off the outfield reprices this card faster than any comp.</div>
       <div class="entry-ctas">
         <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20edward%20florentino%20chrome%20auto%20prospect&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="btn-primary" target="_blank" rel="noopener">Buy on eBay →</a>
         <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20edward%20florentino%20prospect&LH_Sold=1&LH_Complete=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="btn-secondary" target="_blank" rel="noopener">eBay Sold Comps →</a>
@@ -854,6 +912,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           <div class="price-label">Chrome Auto (eBay sold)</div>
           <div class="price-main">~$50–$70</div>
           <div class="price-sub">SCP raw $58 · engine $113 · PSA 10 $318 · −11%, the bounce failed · Aug 18</div>
+          <div class="entry-since">ON THE BOARD SINCE JUN 12, 2026 · SUGGESTED SIZING 1%–4%</div>
+          <div class="rank-hist"><span class="rh-lab">RANK</span><span class="rh-cell">now 5</span><span class="rh-cell">1wk 3</span><span class="rh-cell">1mo 3</span><span class="rh-cell">3mo —</span></div>
         </div>
       </div>
       <div class="entry-stats">
@@ -874,6 +934,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <cite>— MLB.com</cite>
       </div>
       <div class="entry-verdict watch"><strong>Verdict: Watch &mdash; the bounce failed.</strong> Last week's +9% green candle gave it all back: $66 &rarr; $58 (&minus;11%), and the PSA 10 slipped to $318. We said accumulate only on a second green week &mdash; it never printed, so no add. The freak-tools thesis is unchanged; the tape just doesn't believe it yet. Our June BUY graded wrong on <a href="/track-record">the ledger</a> and stays graded.</div>
+      <div class="entry-break"><b>WHAT BREAKS THIS — AND WHAT GETS HIM OFF THE BOARD:</b> he is the #5 name at $58 while Marek Houston and Wehiwa Aloy sit in the watch tier. If a watch-tier name out-prints him two straight weeks, the crossover rule demotes him and the freak-tools thesis goes to the bench. Confirmed or cleared by <strong>Sep 1</strong>. The thesis turns back on only with two consecutive green weeks and a PSA 10 back over $400.</div>
       <div class="entry-ctas">
         <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20aiva%20arquette%20chrome%20auto%20prospect&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="btn-primary" target="_blank" rel="noopener">Buy on eBay →</a>
         <a href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20aiva%20arquette%20prospect&LH_Sold=1&LH_Complete=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-bangers" class="btn-secondary" target="_blank" rel="noopener">eBay Sold Comps →</a>

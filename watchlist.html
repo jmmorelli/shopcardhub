@@ -307,6 +307,9 @@
     .feed-box select { background:var(--bg); border:1px solid var(--border2); color:var(--text); font-family:var(--fm); font-size:11px; padding:6px 8px; border-radius:2px; max-width:280px; }
     .feed-box.linked { color:var(--text-dim); border-left:2px solid var(--green); padding-left:10px; }
     .feed-box.linked b { color:var(--green); font-weight:600; }
+    /* Supply = a count of live listings. Styled neutrally on purpose — no green/red,
+       because it is an observation, not a recommendation. */
+    .supply-read { font-family:var(--fm); font-size:11px; color:var(--text-dim); border-bottom:1px dotted var(--border2); cursor:help; }
   </style>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
@@ -606,6 +609,7 @@
       <div class="vault-eyebrow">Free Tool · No Account · Your Data Stays On Your Device<span id="feedPill"></span></div>
       <h1>The <span class="accent">Vault</span></h1>
       <p class="vault-sub">Track the cards you're hunting and the cards you own. Prices log themselves — the nightly engine covers tracked cards, and opening any other card auto-logs the live ask median (always labeled asks, never solds). The Vault builds your <strong>candle charts</strong>, flags cards that hit your <strong>buy zone</strong>, and runs the <strong>stats</strong> on every card. The chart doesn't lie: green candle means more buyers than sellers.</p>
+    <p class="vault-sub" style="font-size:12px;"><strong>New:</strong> engine-linked cards now show <strong>supply</strong> — how many verified listings the engine counted last night, and how that count has moved over 30 days. Almost every card site shows you a price and never tells you how many are for sale. This is a count of what's listed, nothing more: <em>not</em> a price, <em>not</em> a sold figure, and <em>not</em> a buy signal. We're publishing the number because it's real and hard to get; we'll tell you what it predicts when we've measured it and graded it on <a href="/track-record">the Track Record</a>, not before.</p>
     </div>
 
     <div id="demoBanner" class="demo-banner" style="display:none;">
@@ -1237,10 +1241,21 @@ function cardRow(c) {
 
   // live feed link UI
   let feedHtml = '';
+  /* SUPPLY readout — how many verified asks the engine counted for this card
+     last night, and which way that count has moved over 30 days.
+
+     This is reported as a FACT and deliberately carries no signal claim. The
+     nightly mark is a trimmed median of the CHEAPEST asks, so when someone buys
+     the floor listing the count falls and the mark rises MECHANICALLY — the two
+     series are not independent, and any "supply down, price up" story built from
+     them alone is partly arithmetic. We show the number because no card site
+     shows it and it is useful on its own; we do not tell anyone what it means
+     until there is a real sample, graded in public like every other call. */
   if (FEED) {
     if (fe) {
       feedHtml = '<div class="feed-box linked">\u25C9 <b>' + esc(fe.label) + '</b> \u2014 engine snapshots nightly' +
         (fe.last > 0 ? ' \u00B7 last $' + fmt$(fe.last) : '') +
+        supplyHtml(fe) +
         (c.feedAuto ? ' \u00B7 <span style="font-size:10px" title="Matched by player name \u2014 unlink if this isn\u2019t your exact card">auto-matched</span>' : '') +
         ' <button class="log-del" title="Unlink from feed" onclick="unlinkFeed(\'' + c.id + '\')">\u2715</button></div>';
     } else {
@@ -1814,6 +1829,27 @@ function handleDeepLink() {
   if (pr > 0) document.getElementById('fFirstPrice').value = pr;
   setSeg('watch');
   track('vault_deeplink', { card: name });
+}
+
+/* Renders the supply fragment for a feed-linked card. Returns '' when the
+   engine has no ask count for it (older history points predate this field, and
+   thin markets never get a mark at all) — the row must render fine without it. */
+function supplyHtml(fe) {
+  if (!fe || !Number.isFinite(fe.supply)) return '';
+  const n = fe.supply;
+  const ch = fe.supplyChange30;
+  let trend = '';
+  if (Number.isFinite(ch) && Number.isFinite(fe.supply30)) {
+    const arrow = ch > 0 ? '▲' : ch < 0 ? '▼' : '◆';
+    const col = 'var(--text-dim)';   // deliberately NOT green/red: this is not a signal
+    trend = ' <span style="color:' + col + '">' + arrow + ' ' + (ch > 0 ? '+' : '') + ch + '% / 30d</span>';
+  }
+  const tip = n + ' verified fixed-price listings matched this card in last night’s engine run'
+    + (Number.isFinite(fe.supply30) ? ', versus ' + fe.supply30 + ' about 30 days ago' : '')
+    + '. This is a count of what is FOR SALE — it is not a price, not a sold figure, and not a buy or sell signal. '
+    + 'The nightly mark is a median of the cheapest asks, so the count and the price partly move together by construction. '
+    + 'We publish the number because it is real and nobody else shows it; we are not yet claiming it predicts anything.';
+  return ' · <span class="supply-read" title="' + esc(tip) + '">' + n + ' asks listed' + trend + '</span>';
 }
 
 /* ---------- live price feed (nightly price engine, price-data branch) ---------- */

@@ -67,6 +67,64 @@ function median(xs) {
   return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
 }
 
+// Quantile of an ALREADY-SORTED array, linear interpolation.
+function quantile(sorted, p) {
+  if (!sorted.length) return null;
+  const idx = (sorted.length - 1) * p;
+  const lo = Math.floor(idx), hi = Math.ceil(idx);
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+}
+
+const r2 = (x) => (x == null || !Number.isFinite(x) ? null : Math.round(x * 100) / 100);
+
+// Shape of the verified ask distribution for one card on one night.
+//
+// WHY THIS EXISTS (Aug 20 2026): the nightly mark `p` is a trimmed median of the
+// CHEAPEST asks. So when someone buys the floor listing, `p` rises and `n` falls
+// MECHANICALLY - the two series are not independent measurements, and any
+// "supply fell, price rose" correlation computed from them alone is partly pure
+// arithmetic. Storing the full distribution lets a later analysis separate:
+//   floor bought out  -> q1 up, q3 flat   (artifact, ignore)
+//   market re-rated   -> every quantile up (real)
+// It also gives us a data-quality tripwire: see dispersionFlag().
+function askShape(sortedAsks) {
+  const n = sortedAsks.length;
+  if (!n) return null;
+  const mean = sortedAsks.reduce((s, x) => s + x, 0) / n;
+  const m2 = sortedAsks.reduce((s, x) => s + (x - mean) ** 2, 0) / n;
+  const sd = Math.sqrt(m2);
+  let skew = null;
+  if (sd > 0 && n > 2) {
+    skew = sortedAsks.reduce((s, x) => s + (x - mean) ** 3, 0) / n / sd ** 3;
+  }
+  return {
+    q1: r2(quantile(sortedAsks, 0.25)),
+    med: r2(quantile(sortedAsks, 0.5)),
+    q3: r2(quantile(sortedAsks, 0.75)),
+    sd: r2(sd),
+    sk: r2(skew),
+    lo: r2(sortedAsks[0]),
+    hi: r2(sortedAsks[n - 1]),
+  };
+}
+
+// Data-quality tripwire, NOT a market signal.
+//
+// A clean single-card query produces asks clustered around one level. When the
+// spread blows out or the distribution splits into two clumps, the query is
+// almost always matching two different cards (base + auto, raw + graded, single
+// + lot). That is the failure mode that ran silently for 20 nights on the Justin
+// Gonzalez query - it produced numbers the whole time, they were just numbers
+// about the wrong cards. Nobody can eyeball this; the engine has to say it.
+function dispersionFlag(shape, n) {
+  if (!shape || n < 6 || !shape.med) return null;
+  const cv = shape.sd / shape.med;                    // coefficient of variation
+  const spread = shape.q1 ? shape.q3 / shape.q1 : null; // interquartile ratio
+  if (spread != null && spread >= 4) return `IQR ratio ${spread.toFixed(1)}x (q1 $${shape.q1} -> q3 $${shape.q3}) - query is probably matching two different cards`;
+  if (cv >= 1.5) return `CV ${cv.toFixed(2)} on ${n} asks ($${shape.lo}-$${shape.hi}) - implausibly dispersed for one card`;
+  return null;
+}
+
 // Last name of the player from a label like "Ethan Holliday - 1st Bowman Chrome Auto"
 function lastNameOf(label) {
   const player = String(label || "").split(/\s+[-\u2014]\s+/)[0].trim();
@@ -100,9 +158,10 @@ async function compsMark(query, label, card = {}) {
     .map((l) => (Number.isFinite(l.price) ? l.price + (Number.isFinite(l.shipping) ? l.shipping : 0) : null))
     .filter((x) => Number.isFinite(x) && x >= 3)
     .sort((a, b) => a - b);
-  if (asks.length < MIN_COMPS) return { price: null, comps: asks.length };
+  if (asks.length < MIN_COMPS) return { price: null, comps: asks.length, shape: null };
   const window = asks.slice(TRIM, TRIM + LOW_N);
-  return { price: Number(median(window).toFixed(2)), comps: asks.length };
+  // `asks` is already sorted ascending - askShape relies on that.
+  return { price: Number(median(window).toFixed(2)), comps: asks.length, shape: askShape(asks) };
 }
 
 async function main() {
@@ -113,19 +172,27 @@ async function main() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const history = readJsonFile(HISTORY_PATH, {});
   const day = today();
-  const summary = { day, updated: 0, thin: 0, errors: [] };
+  const summary = { day, updated: 0, thin: 0, errors: [], dispersion: [] };
 
   for (const card of cards) {
     const key = card.source + ":" + card.id;
     try {
-      const { price, comps } = await compsMark(card.query, card.label, card);
+      const { price, comps, shape } = await compsMark(card.query, card.label, card);
       const entry = history[key] || { key, id: card.id, source: card.source, label: card.label, slug: card.slug || null, series: [] };
       entry.label = card.label || entry.label;
       entry.slug = card.slug || entry.slug || null;
       if (price != null) {
         entry.series = entry.series.filter((pt) => pt.d !== day); // idempotent per day
-        entry.series.push({ d: day, p: price, n: comps });
+        // p = trimmed low-end mark (unchanged, back-compatible). n = verified ask
+        // count. shape = the rest of the distribution, added Aug 20 2026; older
+        // points simply lack these fields and readers must tolerate that.
+        entry.series.push({ d: day, p: price, n: comps, ...(shape || {}) });
         summary.updated++;
+        const flag = dispersionFlag(shape, comps);
+        if (flag) {
+          summary.dispersion.push(card.label + ": " + flag);
+          console.log("DISPERSION FLAG - " + card.label + ": " + flag);
+        }
       } else {
         summary.thin++;
         // drop any same-day point from a previous (less filtered) run today
@@ -145,6 +212,27 @@ async function main() {
     const prices = e.series.map((pt) => pt.p);
     const ta = analyze(prices, null);
     const wlCard = byKey.get(e.key) || {};
+
+    // ---- SUPPLY: how many verified asks exist, and which way that is moving.
+    // Published as a FACT, not a signal. We do NOT claim falling supply predicts
+    // price - the mark is a low-end median, so `p` and `n` move together partly
+    // by construction. Until there is a real sample (n of cards, over months,
+    // graded on /track-record like every other call), this is reported and not
+    // interpreted.
+    const withN = e.series.filter((pt) => Number.isFinite(pt.n));
+    const lastPt = withN.length ? withN[withN.length - 1] : null;
+    const supply = lastPt ? lastPt.n : null;
+    let supply30 = null, supplyChange30 = null;
+    if (lastPt && withN.length > 1) {
+      const cutoff = new Date(new Date(lastPt.d).getTime() - 30 * 864e5).toISOString().slice(0, 10);
+      // oldest point still inside the 30-day window, else the oldest we have
+      const base = withN.find((pt) => pt.d >= cutoff) || withN[0];
+      if (base && base !== lastPt && base.n > 0) {
+        supply30 = base.n;
+        supplyChange30 = Math.round(((lastPt.n - base.n) / base.n) * 1000) / 10;
+      }
+    }
+
     return {
       key: e.key, label: e.label, source: e.source, slug: e.slug || null,
       cardType: wlCard.cardType || null, boardHide: !!wlCard.boardHide,
@@ -152,6 +240,10 @@ async function main() {
       roc30: ta.roc30, sma30: ta.sma30, z: ta.z,
       retSkew: ta.retSkew, retKurtosis: ta.retKurtosis,
       retailBuy: null, retailSell: null,
+      supply, supply30, supplyChange30,
+      supplyDays: withN.length,
+      askQ1: lastPt ? (lastPt.q1 ?? null) : null,
+      askQ3: lastPt ? (lastPt.q3 ?? null) : null,
       points: ta.points, reasons: ta.reasons,
     };
   }).sort((a, b) => a.label.localeCompare(b.label));
