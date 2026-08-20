@@ -632,6 +632,7 @@
         </select>
       </div>
       <button class="btn btn-primary" onclick="openAdd()">+ Add Card</button>
+      <button class="btn" onclick="openBulk()" title="Paste a whole list at once">⇪ Paste a List</button>
       <button class="btn" onclick="shareVault()" title="Share your vault on X">&#120143; Share</button>
     </div>
 
@@ -648,6 +649,36 @@
       <button class="btn btn-sm" onclick="document.getElementById('importFile').click()">Import</button>
       <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
       <button class="btn btn-sm btn-ghost" onclick="wipeAll()">Wipe Vault</button>
+    </div>
+  </div>
+
+  <!-- Bulk paste modal — the low-friction on-ramp. One card at a time through a
+       9-field form is fine for card #1 and miserable for card #20, which is why
+       most vaults never fill up. Paste a list, we parse what we can, you fix the
+       rest inline later. -->
+  <div class="modal-veil" id="bulkVeil" onclick="if(event.target===this)closeBulk()">
+    <div class="modal">
+      <h3>Paste a List</h3>
+      <div class="f-row">
+        <label>One card per line</label>
+        <textarea id="bulkText" rows="9" spellcheck="false"
+          style="width:100%; background:var(--bg3); border:1px solid var(--border2); color:var(--text-head); font-family:var(--fm); font-size:13px; padding:10px; border-radius:2px; outline:none; resize:vertical;"
+          oninput="previewBulk()"
+          placeholder="2026 Bowman Chrome Ethan Holliday 1st Auto&#10;2003 Topps Chrome LeBron James #111 PSA 9&#10;Prismatic Evolutions Umbreon ex SIR&#10;2024 Bowman Draft Travis Bazzana x12"></textarea>
+        <div class="f-hint">We'll read the year, set, grade and quantity where we can — everything else you can edit after. Add <b>x3</b> anywhere on a line for quantity, and <b>$12.50</b> for what you paid.</div>
+      </div>
+      <div class="f-row">
+        <label>Add these as</label>
+        <div class="seg" id="bulkSeg">
+          <button class="seg-btn active" data-s="watch" onclick="setBulkSeg('watch')">Hunting</button>
+          <button class="seg-btn" data-s="own" onclick="setBulkSeg('own')">I Own It</button>
+        </div>
+      </div>
+      <div id="bulkPreview" class="f-hint" style="margin-bottom:10px;"></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeBulk()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveBulk()">Add All</button>
+      </div>
     </div>
   </div>
 
@@ -1559,6 +1590,142 @@ function saveCard() {
     track('vault_add_card', { cat: data.cat, status: data.status });
   }
   save(); closeModal(); render();
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BULK PASTE-ADD (Aug 20 2026)
+   The single-card modal is nine fields deep; that's tolerable once and
+   punishing twenty times, which is why most vaults stall at three cards.
+   This parses a pasted list. Deliberately forgiving: anything it can't
+   read confidently stays in the card NAME rather than being guessed at
+   or dropped, so a bad parse costs the user an edit, never data. ----- */
+
+var bulkSeg = 'watch';
+function setBulkSeg(s) {
+  bulkSeg = s;
+  document.querySelectorAll('#bulkSeg .seg-btn').forEach(b => b.classList.toggle('active', b.dataset.s === s));
+  previewBulk();
+}
+function openBulk() {
+  bulkSeg = (typeof tab !== 'undefined' && tab === 'own') ? 'own' : 'watch';
+  setBulkSeg(bulkSeg);
+  document.getElementById('bulkText').value = '';
+  document.getElementById('bulkPreview').textContent = '';
+  document.getElementById('bulkVeil').classList.add('open');
+  setTimeout(function () { document.getElementById('bulkText').focus(); }, 60);
+}
+function closeBulk() { document.getElementById('bulkVeil').classList.remove('open'); }
+
+/* Category guess from well-known names/sets. Falls back to 'other' — a wrong
+   sport is a one-click fix, an invented one is a lie in the allocation chart. */
+function guessCat(s) {
+  const t = s.toLowerCase();
+  // Explicit sport markers win first — brands like Topps and Prizm print every
+  // sport, so matching the brand alone would file LeBron under baseball.
+  if (/(pokemon|pokémon|charizard|umbreon|eevee|pikachu|\bex sir\b|prismatic|scarlet ?& ?violet|sword ?& ?shield|\bvmax\b|\bvstar\b)/.test(t)) return 'pokemon';
+  if (/(basketball|\bnba\b|hoops|court kings)/.test(t)) return 'basketball';
+  if (/(football|\bnfl\b|gridiron)/.test(t)) return 'football';
+  if (/(baseball|\bmlb\b|stadium club|allen ?& ?ginter|topps 206|living set|heritage|tribute|inception|museum collection)/.test(t)) return 'baseball';
+  // Bowman (except the multi-sport University line) is overwhelmingly baseball.
+  if (/\bbowman\b/.test(t) && !/university/.test(t)) return 'baseball';
+  // Anything left (bare "Topps Chrome", bare "Panini Prizm") is genuinely
+  // ambiguous. 'other' is a one-click fix; a wrong sport quietly corrupts the
+  // allocation chart, so we decline to guess.
+  return 'other';
+}
+
+function parseBulkLine(raw) {
+  let s = String(raw).replace(/\s+/g, ' ').trim();
+  if (!s) return null;
+  // strip common list decoration: bullets, "1." numbering, trailing commas
+  s = s.replace(/^[-•*•]\s*/, '').replace(/^\d+[.)]\s+/, '').replace(/,\s*$/, '');
+  if (!s) return null;
+
+  let qty = 1, cost = null, grade = '', set = '';
+
+  // quantity: "x12" / "12x" / "(x3)" — must be adjacent to a number, not part of a card #
+  const q = s.match(/(?:^|\s)\(?x\s?(\d{1,3})\)?(?=\s|$)/i) || s.match(/(?:^|\s)(\d{1,3})\s?x(?=\s|$)/i);
+  if (q) { qty = Math.max(1, parseInt(q[1], 10)); s = s.replace(q[0], ' '); }
+
+  // money: "$12.50" anywhere
+  const m = s.match(/\$\s?([\d,]+(?:\.\d{1,2})?)/);
+  if (m) { cost = parseFloat(m[1].replace(/,/g, '')); s = s.replace(m[0], ' '); }
+
+  // grade: "PSA 10", "BGS 9.5", "SGC 9", "CGC 10", or explicit Raw
+  const g = s.match(/\b(psa|bgs|sgc|cgc|csg|tag)\s?(10|\d(?:\.5)?)\b/i);
+  if (g) { grade = g[1].toUpperCase() + ' ' + g[2]; s = s.replace(g[0], ' '); }
+  else if (/\braw\b/i.test(s)) { grade = 'Raw'; s = s.replace(/\braw\b/i, ' '); }
+
+  // year → everything from the year up to the player-ish remainder is the set.
+  // Conservative: only treat it as a set when the year LEADS the line, which is
+  // how nearly every collector writes it ("2026 Bowman Chrome Ethan Holliday").
+  const y = s.match(/^((?:19|20)\d{2}(?:-\d{2})?)\s+(.+)$/);
+  if (y) {
+    const rest = y[2];
+    // set = year + the next 1–3 brand-ish words; the rest stays as the card name
+    const brand = rest.match(/^((?:topps|bowman|panini|upper deck|leaf|fleer|donruss|score|select|mosaic|prizm|chrome|sapphire|heritage|stadium club|finest|museum|tribute|pristine|inception|definitive|obsidian|immaculate|national treasures)(?:\s+(?:chrome|draft|update|series \d|sapphire|edition|set|prizm|optic|black|university|now|living|heritage|finest|museum|collection|club|stadium|tribute|inception|pristine|206|ginter|gypsy|queen|fire|\d))*)/i);
+    if (brand) {
+      set = (y[1] + ' ' + brand[1]).replace(/\s+/g, ' ').trim();
+      s = rest.slice(brand[1].length).trim();
+    } else {
+      set = y[1];
+      s = rest;
+    }
+  }
+
+  // Classify from the ORIGINAL line (sport words are signal), then drop a
+  // leading sport word from the name — it's been consumed by the category.
+  const cat = guessCat(raw);
+  const name = s.replace(/^(baseball|basketball|football|hockey|soccer)\s+/i, '').replace(/\s+/g, ' ').trim();
+  if (!name) return null;
+  return { name: name, set: set, grade: grade, qty: qty, cost: cost, cat: cat };
+}
+
+function parseBulkAll() {
+  const txt = document.getElementById('bulkText').value || '';
+  const seen = {};
+  return txt.split('\n').map(parseBulkLine).filter(function (c) {
+    if (!c) return false;
+    const k = (c.name + '|' + c.set + '|' + c.grade).toLowerCase();
+    if (seen[k]) return false;           // ignore duplicate lines in one paste
+    seen[k] = 1; return true;
+  });
+}
+
+function previewBulk() {
+  const el = document.getElementById('bulkPreview');
+  if (!el) return;
+  const rows = parseBulkAll();
+  if (!rows.length) { el.textContent = ''; return; }
+  const sample = rows.slice(0, 3).map(function (c) {
+    return '· <b>' + esc(c.name) + '</b>' + (c.set ? ' — ' + esc(c.set) : '') +
+      (c.grade ? ' · ' + esc(c.grade) : '') + (c.qty > 1 ? ' ×' + c.qty : '') +
+      (c.cost != null ? ' · $' + c.cost : '');
+  }).join('<br>');
+  el.innerHTML = '<b>' + rows.length + ' card' + (rows.length === 1 ? '' : 's') + ' ready</b><br>' + sample +
+    (rows.length > 3 ? '<br>· …and ' + (rows.length - 3) + ' more' : '');
+}
+
+function saveBulk() {
+  const rows = parseBulkAll();
+  if (!rows.length) { document.getElementById('bulkText').focus(); return; }
+  if (state.demo) { state.cards = []; state.demo = false; }
+  rows.forEach(function (r) {
+    state.cards.push({
+      id: uid(), prices: [],
+      name: r.name, set: r.set, grade: r.grade, cat: r.cat,
+      status: bulkSeg,
+      target: null,
+      cost: bulkSeg === 'own' ? r.cost : null,
+      qty: bulkSeg === 'own' ? r.qty : null,
+      buyDate: null
+    });
+  });
+  save();
+  if (bulkSeg !== tab) setTab(bulkSeg);
+  closeBulk(); render();
+  toast('Added ' + rows.length + ' card' + (rows.length === 1 ? '' : 's') + ' to the Vault');
+  track('vault_bulk_add', { count: rows.length, status: bulkSeg });
 }
 
 /* ---------- export / import / wipe ---------- */
