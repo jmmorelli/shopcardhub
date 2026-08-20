@@ -851,6 +851,67 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     </div>
   </section>
 
+  <!-- TUESDAY TAPE — email capture where trust is highest: right after the public grades.
+       Same MailerLite form/account as the homepage; double opt-in ON. -->
+  <div style="background:var(--bg2); border:1px solid var(--border2); border-top:3px solid var(--accent); padding:36px 28px; margin:8px 0 40px; text-align:center;">
+    <div style="font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:12px;">Free &middot; Every Tuesday</div>
+    <h2 style="font-family:var(--fd); font-size:clamp(22px,3vw,30px); font-weight:900; text-transform:uppercase; color:var(--text-head); margin-bottom:10px; line-height:1.1;">Watch Me Grade The Next Ones</h2>
+    <p style="font-size:15px; color:var(--text-dim); max-width:540px; margin:0 auto 22px; line-height:1.6;">This ledger updates every week. Get the new grades emailed each Tuesday &mdash; the hits, the misses, and the board moves behind them. Nobody else in the hobby publishes their misses; that's the whole point.</p>
+    <form id="tr-signup" action="https://assets.mailerlite.com/jsonp/2456008/forms/190645772985829345/subscribe" data-code="dUWPT2" method="post" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-width:480px; margin:0 auto;">
+      <input type="email" name="fields[email]" required placeholder="you@email.com" autocomplete="email" style="flex:1; min-width:210px; background:var(--bg3); border:1px solid var(--border2); color:var(--text-head); font-family:var(--fb); font-size:15px; padding:13px 15px; border-radius:2px; outline:none;">
+      <input type="hidden" name="ml-submit" value="1">
+      <input type="hidden" name="anticsrf" value="true">
+      <button type="submit" style="background:var(--accent); color:#000; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:13px 26px; border:none; border-radius:2px; cursor:pointer; white-space:nowrap;">Send Me The Grades &rarr;</button>
+    </form>
+    <p id="tr-signup-success" style="display:none; max-width:520px; margin:0 auto; color:var(--green); font-family:var(--fm); font-size:13px; line-height:1.6;">&#10003; Almost there &mdash; <strong>check your inbox and click the confirmation link</strong> (check spam/promotions too). You're not subscribed until you confirm.</p>
+    <p id="tr-signup-error" style="display:none; max-width:520px; margin:0 auto; color:#ff5555; font-family:var(--fm); font-size:13px; line-height:1.6;">Something went wrong on our end &mdash; try again, or email <a href="mailto:shopcardhub@gmail.com" style="color:inherit;">shopcardhub@gmail.com</a> and I'll add you manually.</p>
+    <p style="font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:1px; margin-top:14px;">No spam. Unsubscribe anytime. <a href="/privacy" style="color:var(--text-dim); text-decoration:underline;">Privacy</a></p>
+  </div>
+  <script>
+    /* Posts to our own /api/subscribe (MailerLite API path — double opt-in OFF there).
+       Falls back to the legacy form endpoint if the key isn't configured yet. */
+    (function(){
+      var f=document.getElementById('tr-signup');
+      if(!f) return;
+      var LEGACY=f.action;
+      f.addEventListener('submit',function(e){
+        e.preventDefault();
+        var btn=f.querySelector('button[type="submit"]');
+        var ok=document.getElementById('tr-signup-success');
+        var er=document.getElementById('tr-signup-error');
+        var email=(f.querySelector('input[type=email]')||{}).value||'';
+        if(er) er.style.display='none';
+        if(btn){ btn.disabled=true; btn.textContent='Sending…'; }
+        function done(needsConfirm){
+          f.style.display='none';
+          if(ok){
+            ok.innerHTML = needsConfirm
+              ? '&#10003; Almost there — <strong>check your inbox and click the confirmation link</strong> (check spam/promotions too). You\'re not subscribed until you confirm.'
+              : '&#10003; You\'re in. Next Tuesday: the new grades, the hits and the misses, straight to your inbox.';
+            ok.style.display='block';
+          }
+          if(window.gtag) gtag('event','newsletter_signup',{method:'mailerlite',location:'track-record'});
+        }
+        function fail(){
+          if(er) er.style.display='block';
+          if(btn){ btn.disabled=false; btn.textContent='Send Me The Grades →'; }
+        }
+        fetch('/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:email,source:'track-record'})})
+          .then(function(r){
+            if(r.ok) return done(false);
+            if(r.status===400) return fail();
+            throw new Error('fallback');
+          })
+          .catch(function(){
+            fetch(LEGACY,{method:'POST',body:new FormData(f)})
+              .then(function(r){ return r.json().catch(function(){ return {success:r.ok}; }); })
+              .then(function(j){ if(!j||j.success!==true) throw new Error('rejected'); done(true); })
+              .catch(fail);
+          });
+      });
+    })();
+  </script>
+
   <div class="disclosure" style="margin-bottom:48px;">
     <strong>Affiliate Disclosure:</strong> ShopCardHub earns commissions when you buy through links on this page (eBay Partner Network 3&ndash;4%, plus other partners). "Live asks" are current eBay asking prices via the eBay Browse API &mdash; not sold values. Market reads sourced as noted per row. Not financial advice &mdash; this page exists precisely because nobody's projections are.
   </div>

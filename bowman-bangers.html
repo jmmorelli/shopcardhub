@@ -1305,6 +1305,72 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     </div>
   </section>
 
+  <!-- TUESDAY TAPE — email capture at the point of highest intent (right after the board).
+       Same MailerLite form/account as the homepage (2456008 / 190645772985829345); double
+       opt-in is ON, so the confirmation click is what actually subscribes. -->
+  <section style="border-top:none; padding-top:0;">
+    <div style="background:var(--bg2); border:1px solid var(--border2); border-top:3px solid var(--accent); padding:36px 28px; margin:8px 0 40px; text-align:center;">
+      <div style="font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:12px;">Free &middot; Every Tuesday</div>
+      <h2 style="font-family:var(--fd); font-size:clamp(22px,3vw,30px); font-weight:900; text-transform:uppercase; color:var(--text-head); margin-bottom:10px; line-height:1.1;">Get This Board In Your Inbox</h2>
+      <p style="font-size:15px; color:var(--text-dim); max-width:540px; margin:0 auto 22px; line-height:1.6;">Every Tuesday I re-price this board against fresh sold comps and email what moved &mdash; plus <strong style="color:var(--text-head);">every call I made, graded</strong>, including the ones that went wrong.</p>
+      <form id="bb-signup" action="https://assets.mailerlite.com/jsonp/2456008/forms/190645772985829345/subscribe" data-code="dUWPT2" method="post" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-width:480px; margin:0 auto;">
+        <input type="email" name="fields[email]" required placeholder="you@email.com" autocomplete="email" style="flex:1; min-width:210px; background:var(--bg3); border:1px solid var(--border2); color:var(--text-head); font-family:var(--fb); font-size:15px; padding:13px 15px; border-radius:2px; outline:none;">
+        <input type="hidden" name="ml-submit" value="1">
+        <input type="hidden" name="anticsrf" value="true">
+        <button type="submit" style="background:var(--accent); color:#000; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:13px 26px; border:none; border-radius:2px; cursor:pointer; white-space:nowrap;">Send Me The Tape &rarr;</button>
+      </form>
+      <p id="bb-signup-success" style="display:none; max-width:520px; margin:0 auto; color:var(--green); font-family:var(--fm); font-size:13px; line-height:1.6;">&#10003; Almost there &mdash; <strong>check your inbox and click the confirmation link</strong> (check spam/promotions too). You're not subscribed until you confirm.</p>
+      <p id="bb-signup-error" style="display:none; max-width:520px; margin:0 auto; color:#ff5555; font-family:var(--fm); font-size:13px; line-height:1.6;">Something went wrong on our end &mdash; try again, or email <a href="mailto:shopcardhub@gmail.com" style="color:inherit;">shopcardhub@gmail.com</a> and I'll add you manually.</p>
+      <p style="font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:1px; margin-top:14px;">No spam. Unsubscribe anytime. <a href="/privacy" style="color:var(--text-dim); text-decoration:underline;">Privacy</a></p>
+    </div>
+  </section>
+  <script>
+    /* Posts to our own /api/subscribe (MailerLite API path — double opt-in OFF there,
+       so subscribers land ACTIVE). Falls back to the legacy form endpoint if the API
+       key isn't configured, in which case the confirm-your-email message is shown
+       because that path really does require confirmation. See api/subscribe.js. */
+    (function(){
+      var f=document.getElementById('bb-signup');
+      if(!f) return;
+      var LEGACY=f.action;
+      f.addEventListener('submit',function(e){
+        e.preventDefault();
+        var btn=f.querySelector('button[type="submit"]');
+        var ok=document.getElementById('bb-signup-success');
+        var er=document.getElementById('bb-signup-error');
+        var email=(f.querySelector('input[type=email]')||{}).value||'';
+        if(er) er.style.display='none';
+        if(btn){ btn.disabled=true; btn.textContent='Sending…'; }
+        function done(needsConfirm){
+          f.style.display='none';
+          if(ok){
+            ok.innerHTML = needsConfirm
+              ? '&#10003; Almost there — <strong>check your inbox and click the confirmation link</strong> (check spam/promotions too). You\'re not subscribed until you confirm.'
+              : '&#10003; You\'re in. Next Tuesday you\'ll get this board\'s reshuffle, the movers, and the graded calls.';
+            ok.style.display='block';
+          }
+          if(window.gtag) gtag('event','newsletter_signup',{method:'mailerlite',location:'bowman-bangers'});
+        }
+        function fail(){
+          if(er) er.style.display='block';
+          if(btn){ btn.disabled=false; btn.textContent='Send Me The Tape →'; }
+        }
+        fetch('/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:email,source:'bowman-bangers'})})
+          .then(function(r){
+            if(r.ok) return done(false);
+            if(r.status===400) return fail();
+            throw new Error('fallback');
+          })
+          .catch(function(){
+            fetch(LEGACY,{method:'POST',body:new FormData(f)})
+              .then(function(r){ return r.json().catch(function(){ return {success:r.ok}; }); })
+              .then(function(j){ if(!j||j.success!==true) throw new Error('rejected'); done(true); })
+              .catch(fail);
+          });
+      });
+    })();
+  </script>
+
   <div class="social-strip">
     <div>
       <h3>2026 Bowman Price Alerts</h3>

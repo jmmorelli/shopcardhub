@@ -1086,27 +1086,68 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
        MailerLite success page on submit (double opt-in is ON, so subscribers get a confirm email). -->
   <div class="container">
     <div id="newsletter" style="background:var(--bg2); border:1px solid var(--border2); border-top:3px solid var(--accent); padding:48px 40px; margin:56px 0; text-align:center; scroll-margin-top:80px;">
-      <div style="font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">Free Newsletter</div>
-      <h2 style="font-family:var(--fd); font-size:clamp(26px,4vw,40px); font-weight:900; text-transform:uppercase; color:var(--text-head); margin-bottom:12px; line-height:1.05;">Get the Hobby Edge</h2>
-      <p style="font-size:16px; color:var(--text-dim); max-width:520px; margin:0 auto 28px; line-height:1.6;">New set drops, rookie watch, hobby box ROI calls, and supply deals — straight to your inbox. No spam, unsubscribe anytime.</p>
+      <div style="font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">Free · Every Tuesday</div>
+      <h2 style="font-family:var(--fd); font-size:clamp(26px,4vw,40px); font-weight:900; text-transform:uppercase; color:var(--text-head); margin-bottom:12px; line-height:1.05;">The Tuesday Tape</h2>
+      <p style="font-size:16px; color:var(--text-dim); max-width:520px; margin:0 auto 28px; line-height:1.6;">Every Tuesday: the 1st Bowman board reshuffle, the week's biggest movers with real sold comps, and <strong style="color:var(--text-head);">my own calls graded in public</strong> — including the wrong ones. No hype, no spam, unsubscribe anytime.</p>
       <form id="sch-signup" action="https://assets.mailerlite.com/jsonp/2456008/forms/190645772985829345/subscribe" data-code="dUWPT2" method="post" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-width:520px; margin:0 auto;">
         <input type="email" name="fields[email]" required placeholder="you@email.com" autocomplete="email" style="flex:1; min-width:220px; background:var(--bg3); border:1px solid var(--border2); color:var(--text-head); font-family:var(--fb); font-size:15px; padding:14px 16px; border-radius:2px; outline:none;">
         <input type="hidden" name="ml-submit" value="1">
         <input type="hidden" name="anticsrf" value="true">
         <button type="submit" style="background:var(--accent); color:#000; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; border:none; border-radius:2px; cursor:pointer; white-space:nowrap;">Get Card Alerts &rarr;</button>
       </form>
-      <p id="sch-signup-success" style="display:none; max-width:520px; margin:0 auto; color:var(--green); font-family:var(--fm); font-size:14px; letter-spacing:0.5px;">&#10003; You're on the list — check your email to confirm your subscription.</p>
+      <p id="sch-signup-success" style="display:none; max-width:520px; margin:0 auto; color:var(--green); font-family:var(--fm); font-size:14px; letter-spacing:0.5px; line-height:1.6;">&#10003; Almost there — <strong>check your inbox and click the confirmation link</strong> (it's a one-time step; look in spam/promotions if you don't see it). You're not subscribed until you confirm.</p>
+      <p id="sch-signup-error" style="display:none; max-width:520px; margin:0 auto; color:var(--red,#ff5555); font-family:var(--fm); font-size:13px; letter-spacing:0.5px; line-height:1.6;">Something went wrong on our end — please try again, or email <a href="mailto:shopcardhub@gmail.com" style="color:inherit;">shopcardhub@gmail.com</a> and I'll add you manually.</p>
       <script>
+        /* Signup (rebuilt Aug 20 2026). Two bugs were fixed here:
+           1. The old handler used mode:'no-cors' + .finally(), so it claimed success
+              even when the request failed — it could not read the response at all.
+           2. Posting to MailerLite's public form endpoint dropped every signup into
+              DOUBLE OPT-IN limbo (zero confirmed subscribers from ~2 months of real
+              signups). Per-form double opt-in can't be disabled on the free plan.
+           Now posts to our own /api/subscribe, which uses the MailerLite API where
+           double opt-in is OFF → subscribers land ACTIVE immediately. If that endpoint
+           isn't configured yet (503), we fall back to the legacy form endpoint so the
+           form is never dead — and the message then says "confirm your email", which
+           is the truth on that path. Honesty rule: never claim someone is subscribed
+           unless we know they are. */
         (function(){
           var f=document.getElementById('sch-signup');
           if(!f) return;
+          var LEGACY=f.action;
           f.addEventListener('submit',function(e){
             e.preventDefault();
-            fetch(f.action,{method:'POST',body:new FormData(f),mode:'no-cors'}).finally(function(){
+            var btn=f.querySelector('button[type="submit"]');
+            var ok=document.getElementById('sch-signup-success');
+            var er=document.getElementById('sch-signup-error');
+            var email=(f.querySelector('input[type=email]')||{}).value||'';
+            if(er) er.style.display='none';
+            if(btn){ btn.disabled=true; btn.textContent='Sending…'; }
+            function done(needsConfirm){
               f.style.display='none';
-              var s=document.getElementById('sch-signup-success');
-              if(s) s.style.display='block';
-            });
+              if(ok){
+                ok.innerHTML = needsConfirm
+                  ? '&#10003; Almost there — <strong>check your inbox and click the confirmation link</strong> (check spam/promotions too). You\'re not subscribed until you confirm.'
+                  : '&#10003; You\'re in. First Tuesday Tape lands next Tuesday — watch for it from shopcardhub@gmail.com.';
+                ok.style.display='block';
+              }
+              if(window.gtag) gtag('event','newsletter_signup',{method:'mailerlite',location:'home'});
+            }
+            function fail(){
+              if(er) er.style.display='block';
+              if(btn){ btn.disabled=false; btn.textContent='Get Card Alerts →'; }
+            }
+            fetch('/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:email,source:'home'})})
+              .then(function(r){
+                if(r.ok) return done(false);
+                if(r.status===400) return fail();          // bad address — let them retype
+                throw new Error('fallback');               // 503/502 → legacy path
+              })
+              .catch(function(){
+                fetch(LEGACY,{method:'POST',body:new FormData(f)})
+                  .then(function(r){ return r.json().catch(function(){ return {success:r.ok}; }); })
+                  .then(function(j){ if(!j||j.success!==true) throw new Error('rejected'); done(true); })
+                  .catch(fail);
+              });
           });
         })();
       </script>
