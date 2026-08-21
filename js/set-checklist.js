@@ -21,7 +21,7 @@
     '.schk td{padding:0 10px;height:36px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text)}' +
     '.schk td.n{color:var(--accent);font-weight:700;width:90px}.schk td.p{font-family:var(--fb);font-weight:600;color:var(--text-head);font-size:13.5px}' +
     '.schk td.t{color:var(--text-dim)}.schk td.a{text-align:right;width:110px}' +
-    '.schk tr.board td.p::after{content:"BANGERS";font-family:var(--fm);font-size:9px;letter-spacing:1.5px;color:var(--gold,#f5c800);border:1px solid rgba(245,200,0,.4);padding:1px 5px;margin-left:8px;vertical-align:middle}' +
+    '.schk tr.board td.p::after{content:"BANGERS · 1ST";font-family:var(--fm);font-size:9px;letter-spacing:1.5px;color:var(--gold,#f5c800);border:1px solid rgba(245,200,0,.4);padding:1px 5px;margin-left:8px;vertical-align:middle}' +
     '.schk .first{font-size:9px;letter-spacing:1.5px;color:var(--green,#00e07a);border:1px solid rgba(0,224,122,.4);padding:1px 5px;margin-left:8px;vertical-align:middle}' +
     '.schk tbody tr:hover{background:rgba(0,204,245,.05)}' +
     '.schk .sch-track-card{font-family:var(--fm);font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:none;border:1px solid var(--border2);color:var(--text);padding:5px 10px;border-radius:2px;cursor:pointer}' +
@@ -44,7 +44,7 @@
       : '<div class="schk-tabs">' + groups.map(function (g, i) { return '<button data-i="' + i + '"' + (i === 0 ? ' class="on"' : '') + '>' + esc(g.title) + ' · ' + (g.cards || []).length + '</button>'; }).join('') + '</div>';
     host.innerHTML =
       '<div class="schk-bar"><input type="search" placeholder="Search player or team' + (many ? ' (searches every section)' : '') + '…" aria-label="Search the checklist">' + chooser + '</div>' +
-      '<div class="schk-meta">' + (data.note ? esc(data.note) + ' ' : '') + 'Checklist as published ' + esc(data.asof) + ' · ' + esc(data.source) + '. Tap <b>★ Track</b> to put a card in your free Vault — it lands as Hunting with the set name filled in.</div>' +
+      '<div class="schk-meta">' + (data.note ? esc(data.note) + ' ' : '') + 'Checklist as published ' + esc(data.asof) + ' · ' + esc(data.source) + '.' + (data.firstNote ? ' <b>1st Bowman:</b> ' + esc(data.firstNote) : '') + ' Tap <b>★ Track</b> to put a card in your free Vault — it lands as Hunting with the set name filled in.</div>' +
       '<div class="schk-wrap"><table><thead><tr><th>#</th><th>Player</th><th>Team</th><th></th></tr></thead><tbody></tbody></table></div>' +
       '<div class="schk-foot"></div>';
     var input = host.querySelector('input'), tbody = host.querySelector('tbody'), foot = host.querySelector('.schk-foot');
@@ -60,9 +60,9 @@
       tbody.innerHTML = cards.map(function (c) {
         var gg = c._g || g;
         var name = c.player + ' ' + data.set.replace(/ (Baseball|Basketball|Football|Soccer)$/, '') + ' ' + (gg.kind || '') + ' #' + c.n;
-        return '<tr' + (c.board ? ' class="board"' : '') + '>' +
+        return '<tr' + (c.board && c.first ? ' class="board"' : '') + '>' +
           '<td class="n">' + esc(c.n) + '</td>' +
-          '<td class="p">' + esc(c.player) + (c.first ? '<span class="first">1ST BOWMAN</span>' : '') + (c.rc ? '<span class="rc">RC</span>' : '') + (c._g ? '<span class="rc" style="color:var(--text-dim);border-color:var(--border2)">' + esc(c._g.title) + '</span>' : '') + '</td>' +
+          '<td class="p">' + esc(c.player) + (c.first ? '<span class="first">1ST BOWMAN</span>' : '') + (c.board && !c.first ? '<span class="rc" style="color:var(--text-dim);border-color:var(--border2)" title="On our Bowman Bangers board — but his 1st Bowman was an earlier product">NOT HIS 1ST</span>' : '') + (c.rc ? '<span class="rc">RC</span>' : '') + (c._g ? '<span class="rc" style="color:var(--text-dim);border-color:var(--border2)">' + esc(c._g.title) + '</span>' : '') + '</td>' +
           '<td class="t">' + esc(c.team) + '</td>' +
           '<td class="a"><button class="sch-track-card" data-name="' + esc(name) + '" data-set="' + esc(data.set) + '" data-cat="' + esc(data.cat || 'baseball') + '" data-grade="Raw">&#9733; Track</button></td></tr>';
       }).join('') || '<tr><td colspan="4" style="color:var(--text-dim)">No matches.</td></tr>';
