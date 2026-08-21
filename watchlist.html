@@ -723,8 +723,8 @@
       <span>◈ Your Vault lives in this browser only — nothing is uploaded anywhere. Back it up:</span>
       <span class="spacer"></span>
       <button class="btn btn-sm" onclick="exportData()">Export JSON</button>
-      <button class="btn btn-sm" onclick="document.getElementById('importFile').click()">Import</button>
-      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+      <button class="btn btn-sm" onclick="document.getElementById('importFile').click()" title="Vault JSON backup or a COMC inventory CSV">Import (JSON / COMC CSV)</button>
+      <input type="file" id="importFile" accept=".json,.csv,application/json,text/csv" style="display:none" onchange="importData(event)">
       <button class="btn btn-sm btn-ghost" onclick="wipeAll()">Wipe Vault</button>
     </div>
   </div>
