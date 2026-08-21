@@ -241,6 +241,48 @@
     .data-bar .spacer { flex:1; }
 
     /* Modal */
+    /* ---- TABLE VIEW (Aug 21, 2026 — the default; dense like a stock watchlist) ---- */
+    .vgrid-wrap { overflow-x:auto; border:1px solid var(--border2); background:var(--bg2); -webkit-overflow-scrolling:touch; }
+    .vgrid { width:100%; border-collapse:collapse; font-family:var(--fm); font-size:12.5px; white-space:nowrap; }
+    .vgrid th { position:sticky; top:0; z-index:2; background:var(--bg3); color:var(--text-dim); font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; text-align:right; padding:9px 7px; border-bottom:1px solid var(--border2); cursor:pointer; -webkit-user-select:none; user-select:none; }
+    .vgrid th.l { text-align:left; } .vgrid th:hover { color:var(--text-head); }
+    .vgrid th.sorted { color:var(--accent); } .vgrid th.sorted::after { content:' ▾'; } .vgrid th.sorted.asc::after { content:' ▴'; }
+    .vgrid td { padding:0 7px; height:34px; border-bottom:1px solid var(--border); text-align:right; color:var(--text); vertical-align:middle; }
+    .vgrid td.l { text-align:left; }
+    .vgrid tbody tr { cursor:pointer; transition:background .12s; }
+    .vgrid tbody tr:hover { background:rgba(0,204,245,0.05); }
+    .vgrid tbody tr.in-zone td:first-child { box-shadow:inset 3px 0 0 var(--green); }
+    .vgrid .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--gold); }
+    .vgrid tr.own .dot { background:var(--green); }
+    .vgrid tr.in-zone .dot { box-shadow:0 0 0 3px rgba(0,224,122,0.25); animation:zone-pulse 1.6s ease-in-out infinite; }
+    @keyframes zone-pulse { 50% { box-shadow:0 0 0 6px rgba(0,224,122,0.08); } }
+    .vgrid .nm { font-family:var(--fb); font-weight:600; color:var(--text-head); font-size:13px; max-width:250px; overflow:hidden; text-overflow:ellipsis; }
+    .vgrid .st { font-size:10.5px; color:var(--text-dim); max-width:250px; overflow:hidden; text-overflow:ellipsis; }
+    .vgrid .pos { color:var(--green); } .vgrid .neg { color:var(--red); } .vgrid .dim { color:var(--text-dim); }
+    .vgrid .last { color:var(--text-head); font-weight:700; font-size:13.5px; }
+    .vgrid .spk svg { width:56px; height:22px; display:block; margin-left:auto; }
+    .vgrid .gr { font-size:10px; color:var(--accent); border:1px solid rgba(0,204,245,0.3); padding:1px 6px; border-radius:2px; }
+    .vgrid .act { opacity:0; transition:opacity .12s; }
+    .vgrid tbody tr:hover .act { opacity:1; }
+    .vgrid .act button { background:none; border:1px solid var(--border2); color:var(--text-dim); font-family:var(--fm); font-size:10px; padding:3px 7px; cursor:pointer; border-radius:2px; }
+    .vgrid .act button:hover { color:var(--text-head); border-color:var(--accent); }
+    .vgrid-foot { font-family:var(--fm); font-size:11px; color:var(--text-dim); padding:8px 2px; display:flex; gap:18px; flex-wrap:wrap; }
+    .vview { display:inline-flex; border:1px solid var(--border2); border-radius:2px; overflow:hidden; }
+    .vview button { background:none; border:none; color:var(--text-dim); font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:8px 12px; cursor:pointer; }
+    .vview button.active { background:var(--accent); color:#000; }
+    .an-toggle { display:flex; align-items:center; gap:10px; font-family:var(--fm); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); cursor:pointer; padding:10px 0; border-top:1px solid var(--border); margin-top:18px; -webkit-user-select:none; user-select:none; }
+    .an-toggle:hover { color:var(--text-head); } .an-toggle .car { transition:transform .2s; display:inline-block; }
+    #analytics.collapsed > div { display:none; } #analytics.collapsed .an-toggle .car { transform:rotate(-90deg); }
+    /* card popup: the old expanded card, in a modal */
+    #cardVeil .modal { max-width:960px; padding:0; border-top-color:var(--accent); }
+    #cardVeil .vcard { border:none; animation:none; }
+    #cardVeil .vcard-main { cursor:default; pointer-events:none; }
+    #cardVeil .vc-caret { display:none; }
+    #cardVeil .vc-detail { display:block !important; }
+    #cardVeil .cp-close { position:absolute; top:10px; right:12px; background:none; border:none; color:var(--text-dim); font-size:20px; cursor:pointer; z-index:3; }
+    #cardVeil .cp-close:hover { color:var(--text-head); }
+    #cardVeil .modal { position:relative; }
+    @media (max-width:720px) { .vgrid { font-size:12px; } .vgrid td { height:38px; } .vgrid .nm { max-width:180px; } .vgrid .st { max-width:180px; } .vgrid .act { opacity:1; } }
     .modal-veil { position:fixed; inset:0; background:rgba(4,6,8,0.8); backdrop-filter:blur(6px); z-index:500; display:none; align-items:flex-start; justify-content:center; padding:60px 20px; overflow-y:auto; }
     .modal-veil.show { display:flex; }
     .modal { background:var(--bg2); border:1px solid var(--border2); border-top:2px solid var(--accent); width:100%; max-width:520px; padding:26px 26px 22px; animation:vcard-in 0.25s ease both; }
@@ -635,16 +677,23 @@
           <option value="name">A → Z</option>
         </select>
       </div>
+      <div class="vview" title="Table = dense rows, click a row for detail · Cards = the expanded view">
+        <button id="viewTable" class="active" onclick="setView('table')">Table</button><button id="viewCards" onclick="setView('cards')">Cards</button>
+      </div>
       <button class="btn btn-primary" onclick="openAdd()">+ Add Card</button>
       <button class="btn" onclick="openBulk()" title="Paste a whole list at once">⇪ Paste a List</button>
       <button class="btn" onclick="shareVaultImg()" title="Make a shareable image of your vault">&#120143; Share</button>
     </div>
 
-    <div id="pvWrap"></div>
-    <div id="allocWrap"></div>
-    <div id="styleBoxWrap"></div>
-    <div id="riskWrap"></div>
     <div class="vlist" id="vlist"></div>
+
+    <div id="analytics" class="collapsed">
+      <div class="an-toggle" onclick="toggleAnalytics()" style="display:flex;"><span class="car">▾</span> Portfolio analytics — value curve, allocation, style, risk</div>
+      <div id="pvWrap"></div>
+      <div id="allocWrap"></div>
+      <div id="styleBoxWrap"></div>
+      <div id="riskWrap"></div>
+    </div>
 
     <div class="data-bar">
       <span>◈ Your Vault lives in this browser only — nothing is uploaded anywhere. Back it up:</span>
@@ -654,6 +703,11 @@
       <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
       <button class="btn btn-sm btn-ghost" onclick="wipeAll()">Wipe Vault</button>
     </div>
+  </div>
+
+  <!-- Card popup — table rows open here (the expanded card, in a modal) -->
+  <div class="modal-veil" id="cardVeil" onclick="if(event.target===this)closeCard()">
+    <div class="modal"><button class="cp-close" onclick="closeCard()" title="Close">✕</button><div id="cardPop"></div></div>
   </div>
 
   <!-- Bulk paste modal — the low-friction on-ramp. One card at a time through a
@@ -783,6 +837,10 @@ let editId = null;
 let segStatus = 'watch';
 const openSet = new Set();   // expanded card ids
 const mathSet = new Set();   // "show the math" toggled ids
+let view = 'table';          // 'table' (default) | 'cards'
+let popupId = null;          // card open in the popup
+let tsort = { key:'updated', dir:-1 };  // table sort
+try { view = localStorage.getItem('sch_vault_view') || 'table'; } catch (e) {}
 
 /* ---------- persistence ---------- */
 function load() {
@@ -1477,8 +1535,96 @@ function render() {
     el.innerHTML = '<div class="empty-state"><div class="big">' + msg.big + '</div><p>' + msg.p + '</p><button class="btn btn-primary" onclick="openAdd()">+ Add Your First Card</button></div>';
     return;
   }
-  el.innerHTML = list.map(cardRow).join('');
+  if (view === 'table') {
+    el.innerHTML = tableView(list);
+  } else {
+    el.innerHTML = list.map(cardRow).join('');
+  }
+  if (popupId) {
+    const pc = state.cards.find(x => x.id === popupId);
+    if (pc) { document.getElementById('cardPop').innerHTML = cardRow(pc); }
+    else closeCard();
+  }
 }
+
+/* ---------- TABLE VIEW (Aug 21, 2026) ---------- */
+function priceAgo(c, days) {
+  const cutoff = Date.now() - days * 864e5;
+  let v = null;
+  for (const p of c.prices) { if (p.t <= cutoff) v = p.p; else break; }
+  return v;
+}
+function cell(v, cls) { return '<td class="' + (cls || '') + '">' + v + '</td>'; }
+function dcell(d) { if (d == null) return cell('—', 'dim'); return cell(pct(d), d > 0.0005 ? 'pos' : d < -0.0005 ? 'neg' : 'dim'); }
+function tsortBy(key) { if (tsort.key === key) tsort.dir = -tsort.dir; else tsort = { key:key, dir:(key === 'name' ? 1 : -1) }; track('vault_table_sort', { key:key }); render(); }
+function tableView(list) {
+  const isOwn = tab === 'own';
+  const rows = list.map(c => {
+    const lp = last(c), q = c.qty || 1, n = c.prices.length;
+    const prev = n > 1 ? c.prices[n-2].p : null;
+    const d1 = (lp != null && prev > 0) ? lp / prev - 1 : null;
+    const p7 = priceAgo(c, 7), p30 = priceAgo(c, 30), p0 = n ? c.prices[0].p : null;
+    const d7 = (lp != null && p7 > 0 && n > 1) ? lp / p7 - 1 : null;
+    const d30 = (lp != null && p30 > 0 && n > 1) ? lp / p30 - 1 : null;
+    const dAll = (lp != null && p0 > 0 && n > 1) ? lp / p0 - 1 : null;
+    const pl = (isOwn && c.cost != null && lp != null) ? (lp - c.cost) * q : null;
+    const plp = (isOwn && c.cost > 0 && lp != null) ? (lp - c.cost) / c.cost : null;
+    const dist = (!isOwn && c.target > 0 && lp != null) ? (lp - c.target) / c.target : null;
+    const inZone = !isOwn && dist != null && dist <= 0;
+    const since = isOwn ? (c.buyDate || '') : (c.added ? dstr(c.added) : (n ? dstr(c.prices[0].t) : ''));
+    return { c, lp, q, d1, d7, d30, dAll, pl, plp, dist, inZone, since, n };
+  });
+  const key = tsort.key, dir = tsort.dir;
+  const val = r => ({ name:r.c.name.toLowerCase(), last:r.lp, d1:r.d1, d7:r.d7, d30:r.d30, all:r.dAll, cost:r.c.cost, target:r.c.target, pl:r.pl, plp:r.plp, dist:r.dist == null ? null : -r.dist, qty:r.q, value:(r.lp != null ? r.lp * r.q : null), logs:r.n, updated:lastT(r.c), since:r.since })[key];
+  rows.sort((a, b) => { const x = val(a), y = val(b); if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1; return (x < y ? -1 : x > y ? 1 : 0) * dir; });
+  const th = (k, label, left) => '<th class="' + (left ? 'l ' : '') + (key === k ? 'sorted' + (dir > 0 ? ' asc' : '') : '') + '" onclick="tsortBy(\'' + k + '\')">' + label + '</th>';
+  let head = '<th style="width:28px"></th>' + th('name', 'Card', true) + '<th class="l">Grade</th>' + th('last', 'Last') + th('d1', 'Δ') + th('d7', '7D') + th('d30', '30D') + (isOwn ? '' : th('all', 'All'));
+  head += isOwn ? th('cost', 'Cost') + th('pl', 'P/L $') + th('plp', 'P/L %') + th('qty', 'Qty') + th('value', 'Value') + th('since', 'Since')
+                : th('target', 'Target') + th('dist', 'To Zone') + th('logs', 'Logs') + th('since', 'Added');
+  head += '<th>Trend</th><th></th>';
+  let totV = 0, totC = 0, totPl = 0;
+  const body = rows.map(r => {
+    const c = r.c;
+    if (isOwn) { if (r.lp != null) totV += r.lp * r.q; if (c.cost != null) totC += c.cost * r.q; if (r.pl != null) totPl += r.pl; }
+    let tds = '<td><span class="dot"></span></td>' +
+      '<td class="l"><div class="nm" title="' + esc(c.name) + '">' + esc(c.name) + '</div><div class="st">' + esc(c.set || '') + '</div></td>' +
+      '<td class="l">' + (c.grade ? '<span class="gr">' + esc(c.grade) + '</span>' : '') + '</td>' +
+      cell(r.lp != null ? '$' + fmt$(r.lp) : '—', r.lp != null ? 'last' : 'dim') + dcell(r.d1) + dcell(r.d7) + dcell(r.d30) + (isOwn ? '' : dcell(r.dAll));
+    if (isOwn) {
+      tds += cell(c.cost != null ? '$' + fmt$(c.cost, 0) : '—', c.cost != null ? '' : 'dim') +
+        cell(r.pl != null ? (r.pl >= 0 ? '+$' : '−$') + fmt$(Math.abs(r.pl), 0) : '—', r.pl == null ? 'dim' : r.pl >= 0 ? 'pos' : 'neg') +
+        dcell(r.plp) + cell(String(r.q)) + cell(r.lp != null ? '$' + fmt$(r.lp * r.q, 0) : '—', r.lp != null ? '' : 'dim') + cell(r.since ? r.since.slice(2).replace(/-/g,'/') : '—', 'dim');
+    } else {
+      tds += cell(c.target != null ? '$' + fmt$(c.target, 0) : '—', c.target != null ? '' : 'dim') +
+        (r.dist == null ? cell('—', 'dim') : cell(r.dist <= 0 ? 'GO · ' + pct(-r.dist, 0) + ' under' : '+$' + fmt$(r.lp - c.target, 0) + ' away', r.dist <= 0 ? 'pos' : '')) +
+        cell(String(r.n)) + cell(r.since || '—', 'dim');
+    }
+    tds += '<td class="spk">' + miniSpark(c) + '</td>' +
+      '<td class="act"><button onclick="event.stopPropagation();shareCardImg(\'' + c.id + '\')" title="Share image">&#120143;</button> <button onclick="event.stopPropagation();openEdit(\'' + c.id + '\')" title="Edit">✎</button></td>';
+    return '<tr class="' + (isOwn ? 'own' : 'watch') + (r.inZone ? ' in-zone' : '') + '" onclick="openCard(\'' + c.id + '\')">' + tds + '</tr>';
+  }).join('');
+  let foot = '<span>' + rows.length + ' card' + (rows.length === 1 ? '' : 's') + ' · click a row for the chart, comps and price log</span>';
+  if (isOwn && totC > 0) foot += '<span>Cost $' + fmt$(totC, 0) + '</span><span>Value $' + fmt$(totV, 0) + '</span><span class="' + (totPl >= 0 ? 'pos' : 'neg') + '">' + (totPl >= 0 ? '+$' : '−$') + fmt$(Math.abs(totPl), 0) + ' (' + pct(totPl / totC) + ')</span>';
+  const zones = rows.filter(r => r.inZone).length; if (!isOwn && zones) foot += '<span class="pos">● ' + zones + ' in the buy zone</span>';
+  return '<div class="vgrid-wrap"><table class="vgrid"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div><div class="vgrid-foot">' + foot + '</div>';
+}
+function setView(v) {
+  view = v; try { localStorage.setItem('sch_vault_view', v); } catch (e) {}
+  document.getElementById('viewTable').classList.toggle('active', v === 'table');
+  document.getElementById('viewCards').classList.toggle('active', v === 'cards');
+  track('vault_view', { view:v }); render();
+}
+function openCard(id) { popupId = id; openSet.add(id); document.getElementById('cardVeil').classList.add('show'); track('vault_open_card'); render(); }
+function closeCard() { if (popupId) openSet.delete(popupId); popupId = null; document.getElementById('cardVeil').classList.remove('show'); if (view === 'cards') render(); }
+function toggleAnalytics() {
+  const a = document.getElementById('analytics'); a.classList.toggle('collapsed');
+  try { localStorage.setItem('sch_vault_analytics', a.classList.contains('collapsed') ? '0' : '1'); } catch (e) {}
+}
+(function () {
+  try { if (localStorage.getItem('sch_vault_analytics') === '1') document.getElementById('analytics').classList.remove('collapsed'); } catch (e) {}
+  if (view !== 'table') { document.getElementById('viewTable').classList.remove('active'); document.getElementById('viewCards').classList.add('active'); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && popupId) closeCard(); });
+})();
 
 /* ---------- interactions ---------- */
 function setTab(t) {
