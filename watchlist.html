@@ -692,6 +692,7 @@
       <div class="vsort" id="groupWrap">
         <select id="groupSel" onchange="setGroup(this.value)" title="Group rows">
           <option value="">No grouping</option>
+          <option value="player">Group: Player</option>
           <option value="cat">Group: Sport</option>
           <option value="set">Group: Set</option>
           <option value="grade">Group: Grade</option>
@@ -1710,7 +1711,18 @@ const COLS = [
 ];
 function activeCols(isOwn) { return COLS.filter(col => !(col.own && !isOwn) && !(col.watch && isOwn) && !hiddenCols.has(col.key)); }
 function tsortBy(key) { if (tsort.key === key) tsort.dir = -tsort.dir; else tsort = { key:key, dir:(key === 'name' ? 1 : -1) }; track('vault_table_sort', { key:key }); renderList(); }
-function groupLabel(c) { const v = groupKey === 'cat' ? c.cat : groupKey === 'set' ? c.set : groupKey === 'grade' ? c.grade : ''; return (v || 'Other').toString(); }
+// Player name out of a card title: drop the leading card number, trailing print-run / bracket / paren noise,
+// grading and parallel words — then keep up to three capitalised words. Good enough to fold parallels together.
+function playerOf(c) {
+  if (c.player) return c.player;
+  let n = String(c.name || '');
+  n = n.replace(/^\s*#\S+\s*/, '').replace(/#\/[\d,]+.*$/, '').replace(/\[[^\]]*\]/g, '').replace(/\([^)]*\)/g, '');
+  n = n.replace(/\b(PSA|SGC|BGS|CGC|TAG)\s*\d+(\.\d)?\b/gi, '').replace(/\b(ultra|secret|illustration|special|double|hyper|rare|holo|reverse|cosmos|near mint|mint|lightly played|played|ex-mt|ex‑mt|team rocket's|team|box exclusive|exclusive)\b/gi, '').replace(/\b(refractor|sapphire|prizm|silver|gold|orange|blue|green|red|purple|black|pink|shimmer|mojo|wave|holo|auto(graph)?|rc|rookie|1st|chrome|base|parallel|insert|sp|ssp|\/\d+)\b/gi, '');
+  n = n.replace(/[-–—·|:]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const words = n.split(' ').filter(w => /^[A-Z][\w.'’-]*$/.test(w) || /^(Jr\.?|Sr\.?|II|III|IV)$/.test(w));
+  return words.slice(0, 3).join(' ') || n.split(' ').slice(0, 2).join(' ') || 'Unknown';
+}
+function groupLabel(c) { const v = groupKey === 'cat' ? c.cat : groupKey === 'set' ? c.set : groupKey === 'grade' ? c.grade : groupKey === 'player' ? playerOf(c) : ''; return (v || 'Other').toString(); }
 function tableView(list) {
   const isOwn = tab === 'own';
   const cols = activeCols(isOwn);
@@ -1728,6 +1740,7 @@ function tableView(list) {
   if (groupKey) {
     groups = new Map();
     rows.forEach(r => { const g = groupLabel(r.c); if (!groups.has(g)) groups.set(g, []); groups.get(g).push(r); });
+    if (groupKey === 'player' || groupKey === 'set') groups = new Map([...groups.entries()].sort((a, b) => a[0].localeCompare(b[0])));
     ordered = []; groups.forEach(arr => ordered.push(...arr));
   }
   // chunked body
@@ -1736,8 +1749,8 @@ function tableView(list) {
   if (groups) {
     groups.forEach((arr, g) => {
       const closed = closedGroups.has(g);
-      let gv = 0, gpl = 0, gz = 0; arr.forEach(r => { if (r.value != null) gv += r.value; if (r.pl != null) gpl += r.pl; if (r.inZone) gz++; });
-      const sub = isOwn ? (gv ? '$' + fmt$(gv, 0) + ' · <span class="' + (gpl >= 0 ? 'pos' : 'neg') + '">' + (gpl >= 0 ? '+$' : '−$') + fmt$(Math.abs(gpl), 0) + '</span>' : '') : (gz ? '<span class="pos">' + gz + ' in zone</span>' : '');
+      let gv = 0, gpl = 0, gz = 0, gq = 0; arr.forEach(r => { if (r.value != null) gv += r.value; if (r.pl != null) gpl += r.pl; if (r.inZone) gz++; gq += r.q; });
+      const sub = isOwn ? ((gq > arr.length ? gq + ' copies · ' : '') + (gv ? '$' + fmt$(gv, 0) + ' · <span class="' + (gpl >= 0 ? 'pos' : 'neg') + '">' + (gpl >= 0 ? '+$' : '−$') + fmt$(Math.abs(gpl), 0) + '</span>' : '')) : (gz ? '<span class="pos">' + gz + ' in zone</span>' : '');
       body += '<tr class="grp' + (closed ? ' closed' : '') + '" onclick="toggleGroup(\'' + esc(g).replace(/'/g, "\\'") + '\')"><td colspan="' + cols.length + '"><span class="gcar">▾</span>' + esc(g) + '<span class="gsub">' + arr.length + ' card' + (arr.length === 1 ? '' : 's') + (sub ? ' · ' + sub : '') + '</span></td></tr>';
       if (!closed) arr.forEach(emit); else count += arr.length;
     });
