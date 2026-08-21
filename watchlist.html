@@ -256,6 +256,7 @@
     .vgrid tr.own .dot { background:var(--green); }
     .vgrid tr.in-zone .dot { box-shadow:0 0 0 3px rgba(0,224,122,0.25); animation:zone-pulse 1.6s ease-in-out infinite; }
     @keyframes zone-pulse { 50% { box-shadow:0 0 0 6px rgba(0,224,122,0.08); } }
+    .vgrid .lock { font-size:9px; margin-left:3px; opacity:.7; }
     .vgrid .nm { font-family:var(--fb); font-weight:600; color:var(--text-head); font-size:13px; max-width:250px; overflow:hidden; text-overflow:ellipsis; }
     .vgrid .st { font-size:10.5px; color:var(--text-dim); max-width:250px; overflow:hidden; text-overflow:ellipsis; }
     .vgrid .pos { color:var(--green); } .vgrid .neg { color:var(--red); } .vgrid .dim { color:var(--text-dim); }
@@ -816,6 +817,10 @@
           <div class="f-row">
             <label>Qty</label>
             <input type="number" id="fQty" min="1" step="1" value="1">
+          </div>
+          <div class="f-row">
+            <label>Private</label>
+            <label style="display:flex; align-items:center; gap:8px; font-family:var(--fm); font-size:11px; color:var(--text-dim); text-transform:none; letter-spacing:0; cursor:pointer; padding-top:8px;"><input type="checkbox" id="fPrivate"> never in share images</label>
           </div>
           <div class="f-row">
             <label>Bought On</label>
@@ -1421,7 +1426,8 @@ function cardRow(c) {
     const pv = idx > 0 ? c.prices[idx-1].p : null;
     const d = pv != null && pv > 0 ? pt.p/pv - 1 : null;
     const srcTag = pt.src === 'feed' ? ' <span style="color:var(--text-dim);font-size:10px" title="Nightly price engine (ask-side mark, identical methodology every night)">⚙ engine</span>'
-                 : (pt.src === 'ask' || pt.src === 'comps') ? ' <span style="color:var(--text-dim);font-size:10px" title="Median of live eBay asking prices — asks, not solds">◔ ask</span>' : '';
+                 : (pt.src === 'ask' || pt.src === 'comps') ? ' <span style="color:var(--text-dim);font-size:10px" title="Median of live eBay asking prices — asks, not solds">◔ ask</span>'
+                 : pt.src === 'comc' ? ' <span style="color:var(--text-dim);font-size:10px" title="Lowest asking price on COMC at snapshot — an ask, not a sold">◔ COMC floor</span>' : '';
     logRows += '<tr><td>' + dstr(pt.t) + srcTag + '</td><td>$' + fmt$(pt.p) + '</td><td class="' + (d == null ? '' : d > 0 ? 'pos' : d < 0 ? 'neg' : '') + '">' + (d == null ? '—' : pct(d)) + '</td>' +
       '<td style="text-align:right"><button class="log-del" title="Delete this log" onclick="delLog(\'' + c.id + '\',' + idx + ')">✕</button></td></tr>';
   });
@@ -1680,7 +1686,7 @@ function rowModel(c, isOwn) {
 }
 // Column spec — order matters; `own`/`watch` flags pick the tab; hidden set comes from the chooser.
 const COLS = [
-  { key:'dot',   label:'', fixed:true, cls:'', cell:r => '<span class="dot"></span>' },
+  { key:'dot',   label:'', fixed:true, cls:'', cell:r => '<span class="dot"></span>' + (r.c.private ? '<span class="lock" title="Private — never in share images">🔒</span>' : '') },
   { key:'name',  label:'Card', left:true, fixed:true, sortv:r => r.c.name.toLowerCase(),
     cell:r => '<div class="nm" title="' + esc(r.c.name) + '">' + esc(r.c.name) + '</div><div class="st">' + esc(r.c.set || '') + '</div>' },
   { key:'grade', label:'Grade', left:true, cell:r => r.c.grade ? '<span class="gr">' + esc(r.c.grade) + '</span>' : '' },
@@ -1852,6 +1858,7 @@ function openAdd() {
   ['fName','fSet','fGrade','fTarget','fCost','fFirstPrice'].forEach(i => document.getElementById(i).value = '');
   document.getElementById('fQty').value = 1;
   document.getElementById('fBuyDate').value = new Date().toISOString().slice(0,10);
+  document.getElementById('fPrivate').checked = false;
   document.getElementById('fCat').value = 'baseball';
   setSeg(tab);
   document.getElementById('fFirstPrice').parentElement.style.display = '';
@@ -1871,6 +1878,7 @@ function openEdit(id) {
   document.getElementById('fCost').value = c.cost != null ? c.cost : '';
   document.getElementById('fQty').value = c.qty || 1;
   document.getElementById('fBuyDate').value = c.buyDate || '';
+  document.getElementById('fPrivate').checked = !!c.private;
   setSeg(c.status);
   document.getElementById('fFirstPrice').parentElement.style.display = 'none';
   document.getElementById('modalVeil').classList.add('show');
@@ -1888,7 +1896,8 @@ function saveCard() {
     target: segStatus === 'watch' ? (parseFloat(document.getElementById('fTarget').value) || null) : null,
     cost: segStatus === 'own' ? (parseFloat(document.getElementById('fCost').value) || null) : null,
     qty: segStatus === 'own' ? (parseInt(document.getElementById('fQty').value) || 1) : null,
-    buyDate: segStatus === 'own' ? document.getElementById('fBuyDate').value : null
+    buyDate: segStatus === 'own' ? document.getElementById('fBuyDate').value : null,
+    private: !!document.getElementById('fPrivate').checked
   };
   if (editId) {
     const c = state.cards.find(x => x.id === editId);
@@ -2059,17 +2068,100 @@ function importData(ev) {
   if (!f) return;
   const r = new FileReader();
   r.onload = () => {
+    const txt = String(r.result || '');
+    if (/^\s*item_id\s*,\s*status\s*,/i.test(txt) || /\.csv$/i.test(f.name)) { comcImport(txt, f.name); return; }
     try {
-      const d = JSON.parse(r.result);
+      const d = JSON.parse(txt);
       if (!d || !Array.isArray(d.cards)) throw 0;
       state = { demo: false, cards: d.cards.filter(c => c && c.name && Array.isArray(c.prices)) };
       save(); render();
       toast(state.cards.length + ' cards imported');
       track('vault_import');
-    } catch (e) { toast('That file doesn\'t look like a Vault export'); }
+    } catch (e) { toast('That file doesn\'t look like a Vault export or a COMC inventory CSV'); }
   };
   r.readAsText(f);
   ev.target.value = '';
+}
+
+/* ---------- COMC Inventory Manager CSV import (Aug 21, 2026) ----------
+   Columns: item_id,status,acquired,cost,my_ask,mkt_count,mkt_low,mkt_high,card[,mine_listed,float,monopoly]
+   One Vault row per distinct card: qty = copies, cost = average recorded cost, buyDate = earliest acquired.
+   The COMC market LOW is logged as a price point (src:'comc' — it's the cheapest ASK on COMC, not a sold).
+   NOT_FOR_SALE items (strategic holds) are marked private: they never appear in share images. Everything
+   stays in this browser — the import is local like the rest of the Vault. */
+function parseCSV(txt) {
+  const rows = [], re = /("([^"]|"")*"|[^,\r\n]*)(,|\r?\n|$)/g;
+  let row = [], m;
+  txt = txt.replace(/^\uFEFF/, '');
+  while ((m = re.exec(txt)) !== null) {
+    let v = m[1]; if (v.startsWith('"')) v = v.slice(1, -1).replace(/""/g, '"');
+    row.push(v);
+    if (m[3] !== ',') { if (row.length > 1 || row[0] !== '') rows.push(row); row = []; }
+    if (m[0] === '') { re.lastIndex++; if (re.lastIndex > txt.length) break; }
+  }
+  return rows;
+}
+function comcCat(card) {
+  const t = card.toLowerCase();
+  if (/pok[eé]mon|pokemon|charizard|pikachu|\bsir\b|\btg\d+|scarlet|violet|sword|shield/.test(t)) return 'pokemon';
+  if (/football|nfl|bowman u\b|bowman university|chrome u\b|chrome university|\bqb\b|panini prizm football|mosaic football|donruss football|select football|score\b|absolute|contenders/.test(t)) return 'football';
+  if (/basketball|nba|hoops|prizm(?! football)|mosaic(?! football)|donruss(?! football)|select(?! football)|wnba|court kings|revolution|crown royale/.test(t)) return 'basketball';
+  if (/soccer|futbol|premier league|mls|world cup|topps chrome uefa|merlin/.test(t)) return 'other';
+  if (/baseball|bowman|topps|stadium club|heritage|allen|ginter|finest|tier one|tribute|pro debut|living set|archives/.test(t)) return 'baseball';
+  return 'other';
+}
+function comcGrade(card) { const m = card.match(/\b(PSA|SGC|BGS|CGC|TAG)\s*(10|9\.5|9|8\.5|8|7|6|5)\b/i); return m ? (m[1].toUpperCase() + ' ' + m[2]) : 'Raw'; }
+function comcSet(card) { const i = card.search(/\s[\[#]/); return (i > 0 ? card.slice(0, i) : card).replace(/\s*-\s*$/, '').trim(); }
+function comcName(card) { const i = card.search(/\s[\[#]/); let n = i > 0 ? card.slice(i) : card; n = n.replace(/^\s*\[[^\]]*\]\s*/, '').trim(); return n || card; }
+function comcImport(txt, fname) {
+  const rows = parseCSV(txt);
+  if (!rows.length) { toast('Empty file'); return; }
+  const head = rows[0].map(h => h.trim().toLowerCase()), ix = k => head.indexOf(k);
+  const I = { id: ix('item_id'), st: ix('status'), acq: ix('acquired'), cost: ix('cost'), ask: ix('my_ask'), n: ix('mkt_count'), lo: ix('mkt_low'), hi: ix('mkt_high'), card: ix('card') };
+  if (I.card < 0 || I.st < 0) { toast('That CSV is missing the card / status columns'); return; }
+  const snap = (fname && fname.match(/(\d{4}-\d{2}-\d{2})/)) ? new Date(fname.match(/(\d{4}-\d{2}-\d{2})/)[1] + 'T12:00:00').getTime() : Date.now();
+  const groups = new Map();
+  let items = 0, ship = 0;
+  rows.slice(1).forEach(r => {
+    const card = (r[I.card] || '').trim(); if (!card) return;
+    const st = (r[I.st] || '').trim().toUpperCase();
+    if (st === 'READY_TO_SHIP') { ship++; return; }           // personal collection — not inventory, per Mo
+    items++;
+    const key = card.toLowerCase();
+    if (!groups.has(key)) groups.set(key, { card, ids: [], costs: [], dates: [], nfs: 0, fs: 0, lo: null, hi: null, n: null, ask: null });
+    const g = groups.get(key);
+    g.ids.push(r[I.id]);
+    const c = parseFloat(r[I.cost]); if (c > 0) g.costs.push(c);
+    const d = Date.parse(r[I.acq]); if (d) g.dates.push(d);
+    st === 'NOT_FOR_SALE' ? g.nfs++ : g.fs++;
+    const lo = parseFloat(r[I.lo]), hi = parseFloat(r[I.hi]), n = parseInt(r[I.n], 10), ask = parseFloat(r[I.ask]);
+    if (lo > 0) g.lo = lo; if (hi > 0) g.hi = hi; if (n >= 0) g.n = n; if (ask > 0) g.ask = ask;
+  });
+  if (!items) { toast('No inventory rows found'); return; }
+  if (state.demo) state = { demo: false, cards: [] };
+  const byComc = new Map(); state.cards.forEach(c => { if (c.comc && c.comc.key) byComc.set(c.comc.key, c); });
+  const byName = new Map(); state.cards.forEach(c => byName.set((c.name || '').toLowerCase(), c));
+  let added = 0, updated = 0;
+  groups.forEach((g, key) => {
+    const qty = g.ids.length, avg = g.costs.length ? g.costs.reduce((a, b) => a + b, 0) / g.costs.length : null;
+    const existing = byComc.get(key) || byName.get(key);
+    const pricePt = g.lo != null ? { t: snap, p: g.lo, src: 'comc' } : null;
+    if (existing) {
+      existing.qty = qty; if (avg != null) existing.cost = Math.round(avg * 100) / 100;
+      existing.private = g.nfs > 0; existing.comc = { key, ids: g.ids, nfs: g.nfs, fs: g.fs, ask: g.ask, lo: g.lo, hi: g.hi, n: g.n, snap };
+      if (pricePt && !existing.prices.some(p => Math.abs(p.t - snap) < 36e5 && p.src === 'comc')) { existing.prices.push(pricePt); existing.prices.sort((a, b) => a.t - b.t); }
+      updated++;
+    } else {
+      state.cards.push({ id: uid(), status: 'own', cat: comcCat(g.card), name: comcName(g.card), set: comcSet(g.card), grade: comcGrade(g.card),
+        cost: avg != null ? Math.round(avg * 100) / 100 : null, qty, buyDate: g.dates.length ? new Date(Math.min.apply(null, g.dates)).toISOString().slice(0, 10) : null,
+        added: Date.now(), private: g.nfs > 0, comc: { key, ids: g.ids, nfs: g.nfs, fs: g.fs, ask: g.ask, lo: g.lo, hi: g.hi, n: g.n, snap },
+        prices: pricePt ? [pricePt] : [] });
+      added++;
+    }
+  });
+  save(); setTab('own'); render();
+  toast('COMC import: ' + items + ' items → ' + added + ' new card' + (added === 1 ? '' : 's') + (updated ? ', ' + updated + ' updated' : '') + (ship ? ' · ' + ship + ' ready-to-ship skipped' : ''));
+  track('vault_import_comc', { items, added, updated });
 }
 function wipeAll() {
   if (idbOK) idbSet('state', null).catch(() => {});
@@ -2671,7 +2763,8 @@ load().then(() => {
 
   function drawVault() {
     var cv = document.createElement('canvas'); cv.width = W; cv.height = H; var ctx = cv.getContext('2d');
-    var own = state.cards.filter(function (c) { return c.status === 'own'; }), watch = state.cards.filter(function (c) { return c.status === 'watch'; });
+    var hidden = state.cards.filter(function (c) { return c.private; }).length;
+    var own = state.cards.filter(function (c) { return c.status === 'own' && !c.private; }), watch = state.cards.filter(function (c) { return c.status === 'watch' && !c.private; });
     var val = 0, cost = 0, rows = [];
     own.forEach(function (c) { var q = c.qty || 1, lp = last(c); if (lp != null) val += lp * q; if (c.cost != null) cost += c.cost * q; if (lp != null && c.cost != null && c.cost > 0) rows.push({ c:c, pl:(lp - c.cost) * q, pp:(lp - c.cost) / c.cost * 100 }); });
     rows.sort(function (a, b) { return Math.abs(b.pl) - Math.abs(a.pl); });
@@ -2679,6 +2772,7 @@ load().then(() => {
     var x = 56;
     chip(ctx, x, 118, own.length + ' OWNED', C.green); chip(ctx, x + 130, 118, watch.length + ' HUNTING', C.gold);
     ctx.font = '900 58px ' + FD; ctx.fillStyle = C.head; ctx.fillText('MY CARD VAULT', x, 220);
+    if (hidden) { ctx.font = '400 12px ' + FM; ctx.fillStyle = C.dim; ctx.textAlign = 'right'; ctx.fillText(hidden + ' private position' + (hidden === 1 ? '' : 's') + ' not shown', W - 56, H - 52); ctx.textAlign = 'left'; }
     var pl = val - cost, pp = cost > 0 ? pl / cost * 100 : 0, color = pl >= 0 ? C.green : C.red;
     if (own.length && cost > 0) {
       ctx.font = '900 72px ' + FD; ctx.fillStyle = color; ctx.fillText(signed(pl, false) + '  ·  ' + signed(pp, true), x, 310, 600);
@@ -2721,6 +2815,7 @@ load().then(() => {
   window.shareCardImg = function (id) {
     var c = state.cards.find(function (x) { return x.id === id; }); if (!c) return;
     if (state.demo) { toast('That’s demo data — add your own cards first'); return; }
+    if (c.private) { toast('This card is marked private — edit it to allow sharing'); return; }
     track('vault_share_card_img');
     fontsReady().then(function () {
       var lp = last(c), text;
@@ -2735,7 +2830,7 @@ load().then(() => {
     if (!state.cards.length) { toast('Add some cards first'); return; }
     track('vault_share_img');
     fontsReady().then(function () {
-      var own = state.cards.filter(function (c) { return c.status === 'own'; }), val = 0, cost = 0;
+      var own = state.cards.filter(function (c) { return c.status === 'own' && !c.private; }), val = 0, cost = 0;
       own.forEach(function (c) { var q = c.qty || 1, lp = last(c); if (lp != null) val += lp * q; if (c.cost != null) cost += c.cost * q; });
       var text = own.length && cost > 0 ? 'My card vault this week: ' + own.length + ' card' + (own.length === 1 ? '' : 's') + ' · ' + money(val, 0) + ' · ' + signed((val - cost) / cost * 100, true) + ' on cost. Long holds, no flipping.' : 'What I’m hunting right now, with the prices I’ll actually pay.';
       show(drawVault(), 'Share your vault', text, 'my-vault-' + new Date().toISOString().slice(0, 10) + '.png');
