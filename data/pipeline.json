@@ -1,7 +1,7 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-20T22:24:10.812Z",
- "generator": "site-auditor (2026-08-19)",
+ "generated": "2026-08-21T16:13:24.000Z",
+ "generator": "site-auditor (2026-08-21)",
  "agents": {
   "seeker": {
    "label": "SEEKER",
@@ -86,25 +86,9 @@
   "inspector": {
    "label": "INSPECTOR",
    "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-   "lastRun": "2026-08-19",
-   "nextRun": "2026-08-21",
+   "lastRun": "2026-08-21",
+   "nextRun": "2026-08-24",
    "actions": [
-    {
-     "ts": "2026-08-10",
-     "msg": "Site-wide price check: 11 rows flagged, Mo approved — Pokémon re-prices applied + Chrome Updates reframed as released"
-    },
-    {
-     "ts": "2026-08-10",
-     "msg": "Post-deploy sweep caught 7 spots of stale MHR>SIR copy on /pitch-black-set-guide — rewritten, pushed (f89b7bb)"
-    },
-    {
-     "ts": "2026-08-10",
-     "msg": "Pending comp pulls: Tribute box-level, Misiorowski, Murakami, Roman Anthony, best-under-50 sweeps"
-    },
-    {
-     "ts": "2026-08-11",
-     "msg": "SCP console pulled live (10 board/watch names, raw + PSA 10). No attributable base-auto comp for Gage Jump — only Gold /50 listed; reported, not invented"
-    },
     {
      "ts": "2026-08-17",
      "msg": "Applied approved price edits (4 pages); audit FAIL 0"
@@ -136,6 +120,22 @@
     {
      "ts": "2026-08-19",
      "msg": "Mo approved all 11 open proposals; fixer pass applied audit-1..5 + Tribute ($860 SCP box, reframed released) + Rutschman/Murakami/Anthony cells; re-sweep FAIL 0, WARN 29->26; awaiting Mo push"
+    },
+    {
+     "ts": "2026-08-21",
+     "msg": "MWF audit: sweeps clean (69 pages, FAIL 0, EPN params intact, JSON valid); live deploy matches repo (index, bangers, psa, roman-anthony); 10/10 remote images resolve"
+    },
+    {
+     "ts": "2026-08-21",
+     "msg": "Verified all 4 Aug 19 audit fixes landed: homepage re-synced to Aug 18 board, Greninja $210-240 site-wide, ASK-BASIS badges on track-record, psa-guide stamped"
+    },
+    {
+     "ts": "2026-08-21",
+     "msg": "3 MED filed: released products still in pre-release framing — Flagship Football (releases TODAY, checklist is public), Chrome Baseball ('still unreleased'), Chrome Black Football (6 wks stale)"
+    },
+    {
+     "ts": "2026-08-21",
+     "msg": "dungeon-decisions.json still 404 on price-data — cockpit approve/decline loop stays dark until cockpit-loop-build (approved Aug 17) is pushed"
     }
    ]
   },
@@ -198,7 +198,7 @@
   "trader": {
    "label": "TRADER",
    "role": "COMC trading analyst (Thursday runs) — recommend-only, Mo executes; book stays local",
-   "lastRun": "2026-08-20",
+   "lastRun": "2026-08-21",
    "nextRun": "2026-08-27",
    "actions": [
     {
@@ -216,7 +216,10 @@
     "2026-08-20: scan run 2 — 7 recs filed (5 actionable, 2 hold-notes). Read-only on COMC throughout.",
     "2026-08-20: audited every position where the full listed float is owned — most price correctly, a handful of older ones drifted well above their sold tape and cannot convert. Reprice-down recs filed; no capital required.",
     "2026-08-20: 2 buy-lane recs cleared all gates pre-filing (demand + velocity + float + tape). Prior week's 6 executed recs all verified live at target; none closed yet, so realized P/L stays $0.00.",
-    "2026-08-20: one prior rec re-gated after its catalyst turned out to have already passed — new charter check proposed so every catalyst must be dated and confirmed still ahead."
+    "2026-08-20: one prior rec re-gated after its catalyst turned out to have already passed — new charter check proposed so every catalyst must be dated and confirmed still ahead.",
+    "2026-08-21: scan run 3 (first scheduled Thursday run). Extraction pipeline fixed — snapshot now reconciles against COMC's own dashboard to the cent; prior run's silent data hole is closed.",
+    "2026-08-21: float check clean — every monopoly and accumulation position unchanged, zero corner-break alerts. Verified all prior executed recs still live at target; 1 new rec filed (a pass on the week's rotation set — no forced trades).",
+    "2026-08-21: grading update — a batch rec graded 'declined' last week turned out to be a menu: several of its items were executed at the exact revised targets a day later. Weekly diffs now check executed prices against ALL prior rec targets."
    ]
   },
   "gengar": {
@@ -452,6 +455,26 @@
    "id": "trader-2026-08-20",
    "status": "awaiting-mo",
    "title": "TRADER: 7 recs this week — details in local scan report"
+  },
+  {
+   "id": "trader-2026-08-21",
+   "status": "awaiting-mo",
+   "title": "TRADER: 1 new rec this week (plus 7 prior recs still open) — details in local scan report"
+  },
+  {
+   "id": "audit-2026-08-21-1",
+   "status": "awaiting-mo",
+   "title": "MED: /topps-flagship-football releases TODAY (Aug 21) but the page is frozen at Jul 13 pre-order framing — banner says 'no checklist, box configuration, or MSRP yet' (line 784) and the stat grid shows 'Checklist: Not yet published' (line 793), while the full 400-card checklist has been public on Beckett/Topps for weeks. Release-day traffic on the license-return flagship is landing on factually wrong copy. Fix: reframe as released, cite the published checklist/config, refresh the as-of stamp."
+  },
+  {
+   "id": "audit-2026-08-21-2",
+   "status": "awaiting-mo",
+   "title": "MED: /topps-chrome-baseball-2026 still says 'Still unreleased, so no sold comps exist yet' (line 788, 'updated Jul 28') and hero reads 'Pre-release' (line 781) — the product streeted in late Jul/early Aug and has weeks of sold comps. Meta description also says 'Pre-release, August 2026' (line 8). Fix: reframe as released with real solds, per the Chrome Updates precedent (Aug 10)."
+  },
+  {
+   "id": "audit-2026-08-21-3",
+   "status": "awaiting-mo",
+   "title": "MED: /topps-chrome-black-football released Jul 10 — six weeks ago — but the banner still says 'As a just-releasing product there are no single-card sold comps yet… as of Jul 6, 2026' (line 784) and meta says 'Pre-release, July 2026' (line 8). Sold comps have existed for over a month. Fix: post-release reframe + comp refresh."
   }
  ],
  "scoreboard": {

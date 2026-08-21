@@ -637,7 +637,7 @@
       </div>
       <button class="btn btn-primary" onclick="openAdd()">+ Add Card</button>
       <button class="btn" onclick="openBulk()" title="Paste a whole list at once">⇪ Paste a List</button>
-      <button class="btn" onclick="shareVault()" title="Share your vault on X">&#120143; Share</button>
+      <button class="btn" onclick="shareVaultImg()" title="Make a shareable image of your vault">&#120143; Share</button>
     </div>
 
     <div id="pvWrap"></div>
@@ -844,8 +844,9 @@ function track(name, params) { if (typeof gtag === 'function') gtag('event', nam
    Demo data is never shareable (no fake performance claims). */
 function xTrunc(s, n) { return s.length > n ? s.slice(0, n - 1) + '\u2026' : s; }
 function xShare(text, url) {
+  // url === null → no link in the tweet body (link-in-first-reply rule)
   window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) +
-    '&url=' + encodeURIComponent(url || 'https://www.shopcardhub.com/watchlist'),
+    (url === null ? '' : '&url=' + encodeURIComponent(url || 'https://www.shopcardhub.com/watchlist')),
     '_blank', 'noopener,width=560,height=640');
 }
 function shareVault() {
@@ -1337,7 +1338,7 @@ function cardRow(c) {
         '<a class="ebay-link" href="' + ebayUrl(c, false) + '" target="_blank" rel="noopener sponsored" onclick="track(\'vault_ebay_buy\')">Shop Live Listings →</a>' +
         moveBtn +
         '<span class="spacer"></span>' +
-        '<button class="btn btn-sm" onclick="shareCard(\'' + c.id + '\')">&#120143; Share</button>' +
+        '<button class="btn btn-sm" onclick="shareCardImg(\'' + c.id + '\')">&#120143; Share card</button>' +
         '<button class="btn btn-sm" onclick="openEdit(\'' + c.id + '\')">Edit</button>' +
         '<button class="btn btn-sm btn-ghost" onclick="delCard(\'' + c.id + '\')">Delete</button>' +
       '</div>' +
@@ -2221,6 +2222,235 @@ migrateOld();
 render();
 handleDeepLink();
 loadFeed();
+</script>
+<!-- VAULT SHARE CARDS (Aug 21, 2026) — renders a position or the whole vault to a 1200×675 PNG for X.
+     Pure canvas, no libraries. Entry points: shareCardImg(id), shareVaultImg(). Text-only fallbacks remain shareCard()/shareVault(). -->
+<style id="vault-share-css">
+  #imgVeil .modal { max-width:720px; }
+  #imgVeil .shot { width:100%; border:1px solid var(--border2); border-radius:4px; display:block; background:#07090c; }
+  #imgVeil .img-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:14px; }
+  #imgVeil .img-hint { font-family:var(--fm); font-size:11px; color:var(--text-dim); line-height:1.6; margin-top:10px; }
+  #imgVeil .img-hint b { color:var(--text); }
+  @media (max-width:640px){ #imgVeil .img-actions .btn { flex:1 1 45%; text-align:center; } }
+</style>
+<div class="modal-veil" id="imgVeil" onclick="if(event.target===this)closeImg()">
+  <div class="modal">
+    <h3 id="imgTitle">Share card</h3>
+    <img id="imgShot" class="shot" alt="Vault share card preview">
+    <div class="img-actions">
+      <button class="btn btn-primary" onclick="imgDownload()">&#8595; Save PNG</button>
+      <button class="btn" id="imgCopyBtn" onclick="imgCopy()">Copy image</button>
+      <button class="btn" onclick="imgPostX()">&#120143; Post on X</button>
+      <span class="spacer"></span>
+      <button class="btn btn-ghost" onclick="closeImg()">Close</button>
+    </div>
+    <div class="img-hint"><b>How to post:</b> Copy image (or Save PNG) &rarr; Post on X opens a pre-written tweet &rarr; paste the image into it. The link goes in your first reply, not the tweet.</div>
+  </div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var W = 1200, H = 675;
+  var C = { bg:'#07090c', bg2:'#0c1017', line:'rgba(255,255,255,0.07)', cyan:'#00ccf5', green:'#00e07a', red:'#ff2e55', gold:'#f5c800',
+            text:'#b8cdd4', dim:'#5a7880', head:'#e4f0f4' };
+  var FD = '"Barlow Condensed", "Arial Narrow", sans-serif', FB = '"Barlow", Arial, sans-serif', FM = '"JetBrains Mono", Menlo, monospace';
+  var current = { blob:null, text:'', name:'vault-card.png' };
+
+  function fontsReady() {
+    if (!document.fonts || !document.fonts.load) return Promise.resolve();
+    return Promise.all([
+      document.fonts.load('900 64px "Barlow Condensed"'), document.fonts.load('700 20px "Barlow Condensed"'),
+      document.fonts.load('500 16px "Barlow"'), document.fonts.load('700 14px "JetBrains Mono"'), document.fonts.load('400 14px "JetBrains Mono"')
+    ]).catch(function(){});
+  }
+  function money(n, dp) { n = Number(n) || 0; var s = n >= 1000 ? Math.round(n).toLocaleString('en-US') : (dp === 0 ? String(Math.round(n)) : (n >= 100 ? String(Math.round(n)) : n.toFixed(2))); return '$' + s; }
+  function signed(n, isPct) { var a = Math.abs(n); return (n >= 0 ? '+' : '−') + (isPct ? a.toFixed(1) + '%' : money(a, 0)); }
+  function wrap(ctx, text, maxW, maxLines) {
+    var words = String(text).split(/\s+/), lines = [], cur = '';
+    words.forEach(function (w) {
+      var t = cur ? cur + ' ' + w : w;
+      if (ctx.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t;
+    });
+    if (cur) lines.push(cur);
+    if (lines.length > maxLines) { lines = lines.slice(0, maxLines); var l = lines[maxLines-1]; while (ctx.measureText(l + '…').width > maxW && l.length) l = l.slice(0, -1); lines[maxLines-1] = l + '…'; }
+    return lines;
+  }
+  function chip(ctx, x, y, label, color) {
+    ctx.font = '700 14px ' + FM; var w = ctx.measureText(label).width + 28;
+    ctx.fillStyle = hexA(color, 0.12); ctx.fillRect(x, y, w, 30);
+    ctx.strokeStyle = hexA(color, 0.5); ctx.lineWidth = 1; ctx.strokeRect(x + .5, y + .5, w - 1, 29);
+    ctx.fillStyle = color; ctx.textBaseline = 'middle'; ctx.fillText(label, x + 14, y + 16); ctx.textBaseline = 'alphabetic';
+    return w;
+  }
+  function hexA(hex, a) { var h = hex.replace('#', ''); var r = parseInt(h.slice(0,2),16), g = parseInt(h.slice(2,4),16), b = parseInt(h.slice(4,6),16); return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')'; }
+
+  function frame(ctx, title) {
+    ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+    // faint grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.035)'; ctx.lineWidth = 1;
+    for (var x = 0; x <= W; x += 60) { ctx.beginPath(); ctx.moveTo(x + .5, 0); ctx.lineTo(x + .5, H); ctx.stroke(); }
+    for (var y = 0; y <= H; y += 60) { ctx.beginPath(); ctx.moveTo(0, y + .5); ctx.lineTo(W, y + .5); ctx.stroke(); }
+    // glow
+    var g = ctx.createRadialGradient(180, 0, 0, 180, 0, 700); g.addColorStop(0, 'rgba(0,204,245,0.10)'); g.addColorStop(1, 'rgba(0,204,245,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // wordmark
+    ctx.textBaseline = 'alphabetic'; ctx.font = '900 30px ' + FD;
+    var x0 = 56, y0 = 66;
+    ctx.fillStyle = C.head; ctx.fillText('SHOP', x0, y0); x0 += ctx.measureText('SHOP').width + 2;
+    ctx.fillStyle = C.cyan; ctx.fillText('CARD', x0, y0); x0 += ctx.measureText('CARD').width + 2;
+    ctx.fillStyle = C.head; ctx.fillText('HUB', x0, y0);
+    // section title right
+    ctx.font = '700 13px ' + FM; ctx.fillStyle = C.cyan; ctx.textAlign = 'right';
+    ctx.fillText(title.toUpperCase(), W - 56, 62); ctx.textAlign = 'left';
+    // rule
+    ctx.fillStyle = C.line; ctx.fillRect(56, 86, W - 112, 1);
+    // footer
+    ctx.fillStyle = C.cyan; ctx.fillRect(0, H - 6, W, 6);
+    ctx.font = '400 13px ' + FM; ctx.fillStyle = C.dim;
+    ctx.fillText('Tracked free · no account · shopcardhub.com/watchlist', 56, H - 30);
+    ctx.textAlign = 'right'; ctx.fillText(new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }), W - 56, H - 30); ctx.textAlign = 'left';
+  }
+
+  function spark(ctx, pts, x, y, w, h, color) {
+    if (!pts || pts.length < 2) {
+      ctx.font = '400 13px ' + FM; ctx.fillStyle = C.dim; ctx.fillText('no price history yet', x, y + h / 2); return;
+    }
+    var ps = pts.map(function (p) { return p.p; }), min = Math.min.apply(null, ps), max = Math.max.apply(null, ps); if (max === min) { max += 1; min -= 1; }
+    var X = function (i) { return x + (i / (pts.length - 1)) * w; }, Y = function (v) { return y + h - ((v - min) / (max - min)) * h; };
+    ctx.beginPath(); ctx.moveTo(X(0), y + h); pts.forEach(function (p, i) { ctx.lineTo(X(i), Y(p.p)); }); ctx.lineTo(X(pts.length - 1), y + h); ctx.closePath();
+    var g = ctx.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, hexA(color, 0.28)); g.addColorStop(1, hexA(color, 0)); ctx.fillStyle = g; ctx.fill();
+    ctx.beginPath(); pts.forEach(function (p, i) { i ? ctx.lineTo(X(i), Y(p.p)) : ctx.moveTo(X(i), Y(p.p)); }); ctx.strokeStyle = color; ctx.lineWidth = 3; ctx.lineJoin = 'round'; ctx.stroke();
+    var lx = X(pts.length - 1), ly = Y(ps[ps.length - 1]);
+    ctx.beginPath(); ctx.arc(lx, ly, 6, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill();
+    ctx.beginPath(); ctx.arc(lx, ly, 11, 0, Math.PI * 2); ctx.fillStyle = hexA(color, 0.25); ctx.fill();
+    ctx.font = '400 12px ' + FM; ctx.fillStyle = C.dim;
+    ctx.fillText(money(min, 0), x, y + h + 18); ctx.textAlign = 'right'; ctx.fillText(money(max, 0), x + w, y - 8); ctx.textAlign = 'left';
+    var d0 = new Date(pts[0].t), d1 = new Date(pts[pts.length - 1].t);
+    ctx.textAlign = 'right'; ctx.fillText(d0.toLocaleDateString('en-US', { month:'short', day:'numeric' }) + ' → ' + d1.toLocaleDateString('en-US', { month:'short', day:'numeric' }), x + w, y + h + 18); ctx.textAlign = 'left';
+  }
+
+  function stat(ctx, x, y, label, value, color) {
+    ctx.font = '700 12px ' + FM; ctx.fillStyle = C.dim; ctx.fillText(label.toUpperCase(), x, y);
+    ctx.font = '800 30px ' + FD; ctx.fillStyle = color || C.head; ctx.fillText(value, x, y + 36);
+  }
+
+  function drawCard(c) {
+    var cv = document.createElement('canvas'); cv.width = W; cv.height = H; var ctx = cv.getContext('2d');
+    var lp = last(c), q = c.qty || 1, own = c.status === 'own';
+    frame(ctx, own ? 'My Vault · Position' : 'My Vault · Hunting');
+    var x = 56, y = 140;
+    var cw = chip(ctx, x, y - 22, own ? 'I OWN IT' : 'HUNTING', own ? C.green : C.gold);
+    if (c.grade) chip(ctx, x + cw + 10, y - 22, c.grade, C.cyan);
+    ctx.font = '900 58px ' + FD; ctx.fillStyle = C.head;
+    var lines = wrap(ctx, c.name, 660, 2); lines.forEach(function (l, i) { ctx.fillText(l.toUpperCase(), x, y + 70 + i * 60, 660); });
+    var ny = y + 70 + lines.length * 60;
+    ctx.font = '500 18px ' + FB; ctx.fillStyle = C.dim; ctx.fillText((c.set || '') + (c.cat ? ' · ' + c.cat.charAt(0).toUpperCase() + c.cat.slice(1) : ''), x, ny + 6, 660);
+    // headline number
+    var hy = 420, color = C.head, big = '', sub = '';
+    if (own && c.cost != null && lp != null && c.cost > 0) {
+      var plEach = lp - c.cost, plTot = plEach * q, plPct = plEach / c.cost * 100;
+      color = plTot >= 0 ? C.green : C.red; big = signed(plTot, false) + '  ·  ' + signed(plPct, true); sub = 'since ' + (c.buyDate || 'purchase') + (q > 1 ? ' · ' + q + ' copies' : '');
+    } else if (!own && c.target != null) {
+      if (lp != null) { var dist = (lp - c.target) / c.target * 100; color = dist <= 0 ? C.green : C.gold; big = dist <= 0 ? 'IN THE BUY ZONE' : money(lp - c.target, 0) + ' ABOVE TARGET'; sub = 'last ' + money(lp, 0) + ' · target ' + money(c.target, 0); }
+      else { color = C.gold; big = 'TARGET ' + money(c.target, 0); sub = 'waiting for the first price'; }
+    } else if (lp != null) { big = money(lp, 0); sub = 'last logged price'; }
+    else { big = 'JUST ADDED'; sub = 'no prices logged yet'; }
+    ctx.font = '900 64px ' + FD; ctx.fillStyle = color; ctx.fillText(big, x, hy, 660);
+    ctx.font = '400 14px ' + FM; ctx.fillStyle = C.dim; ctx.fillText(sub, x, hy + 28);
+    // stat row
+    var sy = 530, sx = x;
+    if (own) { stat(ctx, sx, sy, 'In at', c.cost != null ? money(c.cost, 0) : '—'); stat(ctx, sx + 170, sy, 'Now', lp != null ? money(lp, 0) : '—', C.cyan); stat(ctx, sx + 340, sy, 'Value', lp != null ? money(lp * q, 0) : '—'); }
+    else { stat(ctx, sx, sy, 'Target', c.target != null ? money(c.target, 0) : '—', C.gold); stat(ctx, sx + 170, sy, 'Last', lp != null ? money(lp, 0) : '—', C.cyan); stat(ctx, sx + 340, sy, 'Logs', String(c.prices.length)); }
+    // chart right
+    ctx.fillStyle = C.bg2; ctx.fillRect(760, 120, 384, 470); ctx.strokeStyle = C.line; ctx.strokeRect(760.5, 120.5, 383, 469);
+    ctx.font = '700 12px ' + FM; ctx.fillStyle = C.dim; ctx.fillText('PRICE LOG · ' + c.prices.length + ' POINT' + (c.prices.length === 1 ? '' : 'S'), 784, 150);
+    spark(ctx, c.prices.slice(-60), 784, 200, 336, 300, color === C.head ? C.cyan : color);
+    return cv;
+  }
+
+  function drawVault() {
+    var cv = document.createElement('canvas'); cv.width = W; cv.height = H; var ctx = cv.getContext('2d');
+    var own = state.cards.filter(function (c) { return c.status === 'own'; }), watch = state.cards.filter(function (c) { return c.status === 'watch'; });
+    var val = 0, cost = 0, rows = [];
+    own.forEach(function (c) { var q = c.qty || 1, lp = last(c); if (lp != null) val += lp * q; if (c.cost != null) cost += c.cost * q; if (lp != null && c.cost != null && c.cost > 0) rows.push({ c:c, pl:(lp - c.cost) * q, pp:(lp - c.cost) / c.cost * 100 }); });
+    rows.sort(function (a, b) { return Math.abs(b.pl) - Math.abs(a.pl); });
+    frame(ctx, 'My Vault');
+    var x = 56;
+    chip(ctx, x, 118, own.length + ' OWNED', C.green); chip(ctx, x + 130, 118, watch.length + ' HUNTING', C.gold);
+    ctx.font = '900 58px ' + FD; ctx.fillStyle = C.head; ctx.fillText('MY CARD VAULT', x, 220);
+    var pl = val - cost, pp = cost > 0 ? pl / cost * 100 : 0, color = pl >= 0 ? C.green : C.red;
+    if (own.length && cost > 0) {
+      ctx.font = '900 72px ' + FD; ctx.fillStyle = color; ctx.fillText(signed(pl, false) + '  ·  ' + signed(pp, true), x, 310, 600);
+      ctx.font = '400 14px ' + FM; ctx.fillStyle = C.dim; ctx.fillText('on cost · ' + own.length + ' card' + (own.length === 1 ? '' : 's'), x, 338);
+      stat(ctx, x, 420, 'Paid', money(cost, 0)); stat(ctx, x + 200, 420, 'Worth now', money(val, 0), C.cyan); var best = rows.length ? rows.reduce(function (a, b) { return b.pl > a.pl ? b : a; }) : null; stat(ctx, x + 400, 420, 'Best', best ? signed(best.pl, false) : '—', best && best.pl >= 0 ? C.green : C.red);
+    } else {
+      ctx.font = '900 56px ' + FD; ctx.fillStyle = C.gold; ctx.fillText('HUNTING ' + watch.length + ' CARD' + (watch.length === 1 ? '' : 'S'), x, 310);
+      ctx.font = '400 14px ' + FM; ctx.fillStyle = C.dim; ctx.fillText('buy-zone targets set · free alerts', x, 338);
+    }
+    // movers panel
+    ctx.fillStyle = C.bg2; ctx.fillRect(700, 120, 444, 470); ctx.strokeStyle = C.line; ctx.strokeRect(700.5, 120.5, 443, 469);
+    ctx.font = '700 12px ' + FM; ctx.fillStyle = C.dim; ctx.fillText(rows.length ? 'BIGGEST MOVERS' : 'ON THE HUNT', 724, 150);
+    var list = rows.length ? rows.slice(0, 5) : watch.slice(0, 5).map(function (c) { return { c:c }; });
+    list.forEach(function (r, i) {
+      var yy = 195 + i * 78;
+      ctx.font = '700 22px ' + FD; ctx.fillStyle = C.head; ctx.fillText(wrap(ctx, r.c.name, 270, 1)[0].toUpperCase(), 724, yy, 270);
+      ctx.font = '400 12px ' + FM; ctx.fillStyle = C.dim; ctx.fillText(wrap(ctx, r.c.set || '', 270, 1)[0] || '', 724, yy + 20, 270);
+      ctx.textAlign = 'right';
+      if (r.pl != null) { ctx.font = '800 24px ' + FD; ctx.fillStyle = r.pl >= 0 ? C.green : C.red; ctx.fillText(signed(r.pp, true), 1120, yy); ctx.font = '400 12px ' + FM; ctx.fillStyle = C.dim; ctx.fillText(signed(r.pl, false), 1120, yy + 20); }
+      else if (r.c.target != null) { ctx.font = '800 22px ' + FD; ctx.fillStyle = C.gold; ctx.fillText('target ' + money(r.c.target, 0), 1120, yy); }
+      ctx.textAlign = 'left';
+      if (i < list.length - 1) { ctx.fillStyle = C.line; ctx.fillRect(724, yy + 36, 396, 1); }
+    });
+    if (!list.length) { ctx.font = '400 14px ' + FM; ctx.fillStyle = C.dim; ctx.fillText('add a card to get started', 724, 200); }
+    return cv;
+  }
+
+  function show(cv, title, text, name) {
+    cv.toBlob(function (blob) {
+      current.blob = blob; current.text = text; current.name = name;
+      var img = document.getElementById('imgShot'); if (img.src && img.src.indexOf('blob:') === 0) URL.revokeObjectURL(img.src);
+      img.src = URL.createObjectURL(blob);
+      document.getElementById('imgTitle').textContent = title;
+      document.getElementById('imgCopyBtn').style.display = (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) ? '' : 'none';
+      document.getElementById('imgVeil').classList.add('show');
+    }, 'image/png');
+  }
+  function slug(s) { return String(s || 'card').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 48); }
+
+  window.shareCardImg = function (id) {
+    var c = state.cards.find(function (x) { return x.id === id; }); if (!c) return;
+    if (state.demo) { toast('That’s demo data — add your own cards first'); return; }
+    track('vault_share_card_img');
+    fontsReady().then(function () {
+      var lp = last(c), text;
+      if (c.status === 'own' && c.cost != null && lp != null && c.cost > 0) { var pp = (lp - c.cost) / c.cost * 100; text = xTrunc(c.name, 70) + ': in at ' + money(c.cost, 0) + ', now ' + money(lp, 0) + ' (' + signed(pp, true) + '). Holding. Tracked on my @shopcardhub Vault.'; }
+      else if (c.status === 'watch' && c.target != null) { text = 'Chasing ' + xTrunc(c.name, 70) + ' — my number is ' + money(c.target, 0) + (lp != null ? ', last ' + money(lp, 0) : '') + '. Not chasing above it.'; }
+      else text = xTrunc(c.name, 70) + ' — on my @shopcardhub Vault.';
+      show(drawCard(c), 'Share this card', text, 'vault-' + slug(c.name) + '.png');
+    });
+  };
+  window.shareVaultImg = function () {
+    if (state.demo) { toast('That’s demo data — add your own cards first'); return; }
+    if (!state.cards.length) { toast('Add some cards first'); return; }
+    track('vault_share_img');
+    fontsReady().then(function () {
+      var own = state.cards.filter(function (c) { return c.status === 'own'; }), val = 0, cost = 0;
+      own.forEach(function (c) { var q = c.qty || 1, lp = last(c); if (lp != null) val += lp * q; if (c.cost != null) cost += c.cost * q; });
+      var text = own.length && cost > 0 ? 'My card vault this week: ' + own.length + ' card' + (own.length === 1 ? '' : 's') + ' · ' + money(val, 0) + ' · ' + signed((val - cost) / cost * 100, true) + ' on cost. Long holds, no flipping.' : 'What I’m hunting right now, with the prices I’ll actually pay.';
+      show(drawVault(), 'Share your vault', text, 'my-vault-' + new Date().toISOString().slice(0, 10) + '.png');
+    });
+  };
+  window.closeImg = function () { document.getElementById('imgVeil').classList.remove('show'); };
+  window.imgDownload = function () {
+    if (!current.blob) return; var a = document.createElement('a'); a.href = URL.createObjectURL(current.blob); a.download = current.name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000); track('vault_share_img_download');
+  };
+  window.imgCopy = function () {
+    if (!current.blob) return;
+    try { navigator.clipboard.write([new ClipboardItem({ 'image/png': current.blob })]).then(function () { toast('Image copied — paste it into your post'); track('vault_share_img_copy'); }, function () { toast('Copy blocked — use Save PNG'); }); }
+    catch (e) { toast('Copy not supported here — use Save PNG'); }
+  };
+  window.imgPostX = function () { track('vault_share_img_post'); xShare(current.text, null); };
+})();
 </script>
 </body>
 </html>
