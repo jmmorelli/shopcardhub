@@ -796,7 +796,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <div class="dest-strip">
   <a class="dest-tile" href="/watchlist" onclick="if(typeof gtag==='function')gtag('event','dest_strip',{dest:'vault',page:location.pathname})">
     <span class="dt-ico">&#9733;</span>
-    <span><span class="dt-k">Your Vault</span><span class="dt-t" style="display:block;">Open your Vault</span><span class="dt-s" style="display:block;">Your free watchlist + portfolio with live prices and P/L. No account, nothing leaves your browser.</span></span>
+    <span><span class="dt-k">Your Vault</span><span class="dt-t" style="display:block;">Track any card on this page</span><span class="dt-s" style="display:block;">Tap &#9733; Track next to a card &mdash; it lands in your free Vault with live prices and P/L. No account.</span></span>
     <span class="dt-arrow">&rarr;</span>
   </a>
   <a class="dest-tile bangers" href="/bowman-bangers" onclick="if(typeof gtag==='function')gtag('event','dest_strip',{dest:'bangers',page:location.pathname})">
@@ -806,6 +806,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   </a>
 </div>
 <!-- DEST:END -->
+
 
 
   <div class="container">
@@ -819,9 +820,16 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <h2 style="margin-bottom:4px;">2026 Topps Pristine Baseball — At a Glance</h2>
       <p style="font-size:15px; color:var(--text-dim); margin-bottom:0;">Pristine's identity: every autograph encased and on-card, a clean white-border design, and a tri-pack rip built around guaranteed hits. The 2025 edition ran a 300-card base with two on-card autos plus an auto relic per hobby box &mdash; expect the 2026 edition to iterate on that skeleton, not reinvent it.</p>
       <div class="set-banner-grid">
-        <div class="banner-stat"><div class="banner-stat-label">Released</div><div class="banner-stat-value green">Aug 12, 2026</div></div><div class="banner-stat"><div class="banner-stat-label">Hobby Direct</div><div class="banner-stat-value">$539.99 ($549.99 rel. day)</div></div><div class="banner-stat"><div class="banner-stat-label">Secondary Box</div><div class="banner-stat-value orange">~$800 pre-sales &middot; $999+ asks</div></div><div class="banner-stat"><div class="banner-stat-label">Hits (2026)</div><div class="banner-stat-value gold">3 autographs / box</div></div><div class="banner-stat"><div class="banner-stat-label">Box Format</div><div class="banner-stat-value">Tri-pack rip</div></div><div class="banner-stat"><div class="banner-stat-label">Signature Look</div><div class="banner-stat-value gold">Encased on-card ink</div></div><div class="banner-stat"><div class="banner-stat-label">Chase Relics</div><div class="banner-stat-value red">Pristine Pieces / Jumbos</div></div><div class="banner-stat"><div class="banner-stat-label">Parallels</div><div class="banner-stat-value">Aqua / Primaries / Super 1/1</div></div><div class="banner-stat"><div class="banner-stat-label">2026 Checklist</div><div class="banner-stat-value green">Published</div></div><div class="banner-stat"><div class="banner-stat-label">Per-Card Comps</div><div class="banner-stat-value orange">Thin — week one</div></div>
+        <div class="banner-stat"><div class="banner-stat-label">Released</div><div class="banner-stat-value green">Aug 12, 2026</div></div><div class="banner-stat"><div class="banner-stat-label">Hobby Direct</div><div class="banner-stat-value">$539.99 ($549.99 rel. day)</div></div><div class="banner-stat"><div class="banner-stat-label">Secondary Box</div><div class="banner-stat-value orange">~$800 pre-sales &middot; $999+ asks</div></div><div class="banner-stat"><div class="banner-stat-label">Hits (2026)</div><div class="banner-stat-value gold">3 autographs / box</div></div><div class="banner-stat"><div class="banner-stat-label">Box Format</div><div class="banner-stat-value">Tri-pack rip</div></div><div class="banner-stat"><div class="banner-stat-label">Signature Look</div><div class="banner-stat-value gold">Encased on-card ink</div></div><div class="banner-stat"><div class="banner-stat-label">Chase Relics</div><div class="banner-stat-value red">Pristine Pieces / Jumbos</div></div><div class="banner-stat"><div class="banner-stat-label">Parallels</div><div class="banner-stat-value">Aqua / Primaries / Super 1/1</div></div><div class="banner-stat"><div class="banner-stat-label">2026 Checklist</div><div class="banner-stat-value green"><a href="#checklist" style="color:inherit;">Published &darr;</a></div></div><div class="banner-stat"><div class="banner-stat-label">Per-Card Comps</div><div class="banner-stat-value orange">Thin — week one</div></div>
       </div>
     </div>
+  </section>
+
+  <section id="checklist">
+    <div class="section-eyebrow cyan">The Checklist</div>
+    <h2>2026 Topps Pristine Baseball Checklist &mdash; Track Any Card</h2>
+    <p class="section-intro">Every base card and every published autograph in 2026 Topps Pristine Baseball &mdash; 505 cards, searchable. <strong>RC</strong> marks rookies. Tap <strong>&#9733; Track</strong> on any card and it lands in your free <a href="/watchlist">Vault</a> as a Hunting card with the set filled in &mdash; set your number and the Vault tells you when a comp hits it.</p>
+    <div data-checklist="/data/sets/topps-pristine-baseball.json"></div>
   </section>
 
   <section>
@@ -1028,5 +1036,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 (function(){var el=document.getElementById('sch-track-cta');if(!el)return;var t=(document.title||'').split(/[\u2014\u2013\|\u00b7:]/)[0].trim();if(t)el.href='/watchlist?card='+encodeURIComponent(t);})();
 </script>
 
+<script src="/js/vault-track.js?v=4" defer></script>
+<script src="/js/set-checklist.js?v=2" defer></script>
 </body>
 </html>

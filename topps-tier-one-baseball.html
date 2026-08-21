@@ -800,7 +800,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <div class="dest-strip">
   <a class="dest-tile" href="/watchlist" onclick="if(typeof gtag==='function')gtag('event','dest_strip',{dest:'vault',page:location.pathname})">
     <span class="dt-ico">&#9733;</span>
-    <span><span class="dt-k">Your Vault</span><span class="dt-t" style="display:block;">Open your Vault</span><span class="dt-s" style="display:block;">Your free watchlist + portfolio with live prices and P/L. No account, nothing leaves your browser.</span></span>
+    <span><span class="dt-k">Your Vault</span><span class="dt-t" style="display:block;">Track any card on this page</span><span class="dt-s" style="display:block;">Tap &#9733; Track next to a card &mdash; it lands in your free Vault with live prices and P/L. No account.</span></span>
     <span class="dt-arrow">&rarr;</span>
   </a>
   <a class="dest-tile bangers" href="/bowman-bangers" onclick="if(typeof gtag==='function')gtag('event','dest_strip',{dest:'bangers',page:location.pathname})">
@@ -810,6 +810,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   </a>
 </div>
 <!-- DEST:END -->
+
 
 
   <div class="container">
@@ -826,6 +827,13 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <div class="banner-stat"><div class="banner-stat-label">Release Date</div><div class="banner-stat-value green">Jun 24, 2026</div></div><div class="banner-stat"><div class="banner-stat-label">Brand Tier</div><div class="banner-stat-value">Ultra-Premium</div></div><div class="banner-stat"><div class="banner-stat-label">Base Set</div><div class="banner-stat-value">100 cards</div></div><div class="banner-stat"><div class="banner-stat-label">Box Config</div><div class="banner-stat-value">4 cards &middot; 1 pack</div></div><div class="banner-stat"><div class="banner-stat-label">Per Box</div><div class="banner-stat-value gold">2 autos + 1 relic</div></div><div class="banner-stat"><div class="banner-stat-label">Boxes / Case</div><div class="banner-stat-value">12</div></div><div class="banner-stat"><div class="banner-stat-label">Signature Set</div><div class="banner-stat-value gold">Tier One Autographs</div></div><div class="banner-stat"><div class="banner-stat-label">Returning Design</div><div class="banner-stat-value">Retro 2011 Autos</div></div><div class="banner-stat"><div class="banner-stat-label">Acetate Auto</div><div class="banner-stat-value">Clearly Perfect</div></div><div class="banner-stat"><div class="banner-stat-label">Top Relic</div><div class="banner-stat-value gold">Limited Lumber (10th yr)</div></div><div class="banner-stat"><div class="banner-stat-label">Resale Driver</div><div class="banner-stat-value">Star + rookie autos</div></div><div class="banner-stat"><div class="banner-stat-label">Box Profile</div><div class="banner-stat-value red">High variance</div></div>
       </div>
     </div>
+  </section>
+
+  <section id="checklist">
+    <div class="section-eyebrow cyan">The Checklist</div>
+    <h2>2026 Topps Tier One Baseball Checklist &mdash; Track Any Card</h2>
+    <p class="section-intro">Every base card and every published autograph in 2026 Topps Tier One Baseball &mdash; 1,702 cards, searchable. <strong>RC</strong> marks rookies. Tap <strong>&#9733; Track</strong> on any card and it lands in your free <a href="/watchlist">Vault</a> as a Hunting card with the set filled in &mdash; set your number and the Vault tells you when a comp hits it.</p>
+    <div data-checklist="/data/sets/topps-tier-one-baseball.json"></div>
   </section>
 
   <section>
@@ -1044,5 +1052,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 (function(){var el=document.getElementById('sch-track-cta');if(!el)return;var t=(document.title||'').split(/[\u2014\u2013\|\u00b7:]/)[0].trim();if(t)el.href='/watchlist?card='+encodeURIComponent(t);})();
 </script>
 
+<script src="/js/vault-track.js?v=4" defer></script>
+<script src="/js/set-checklist.js?v=2" defer></script>
 </body>
 </html>

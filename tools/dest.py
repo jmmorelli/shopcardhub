@@ -49,7 +49,7 @@ for f in sorted(glob.glob('*.html')):
     if j < 0: print('no hero end:', f); skipped += 1; continue
     j += len('</section>')
     strip = STRIP
-    if 'sch-track-card' not in s:  # page has no Track buttons — don't tell people to tap one
+    if 'sch-track-card' not in s and 'data-checklist' not in s:  # no Track buttons (static or checklist) — don't tell people to tap one
         strip = strip.replace(NOTRACK, NOTRACK_ALT).replace('Track any card on this page', 'Open your Vault')
     s = s[:j] + strip + s[j:]
     if not DRY: io.open(f, 'w', encoding='utf-8').write(s)

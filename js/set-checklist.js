@@ -11,6 +11,9 @@
     '.schk-tabs{display:inline-flex;border:1px solid var(--border2);border-radius:2px;overflow:hidden}' +
     '.schk-tabs button{background:none;border:none;color:var(--text-dim);font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px 12px;cursor:pointer}' +
     '.schk-tabs button.on{background:var(--accent);color:#000}' +
+    '.schk-sel{background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-family:var(--fm);font-size:12px;padding:9px 12px;border-radius:2px;max-width:100%}' +
+    '.schk .rc{font-size:9px;letter-spacing:1.5px;color:var(--accent);border:1px solid rgba(0,204,245,.4);padding:1px 5px;margin-left:8px;vertical-align:middle}' +
+    '.schk-tba{background:var(--bg2);border:1px solid var(--border2);border-left:3px solid var(--gold,#f5c800);padding:16px 20px;font-size:14px;color:var(--text);line-height:1.6}' +
     '.schk-meta{font-family:var(--fm);font-size:11px;color:var(--text-dim);line-height:1.6;margin:0 0 10px}' +
     '.schk-wrap{overflow-x:auto;border:1px solid var(--border2);background:var(--bg2);max-height:640px;overflow-y:auto}' +
     '.schk table{width:100%;border-collapse:collapse;font-family:var(--fm);font-size:12.5px;white-space:nowrap}' +
@@ -30,25 +33,40 @@
   function nk(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
 
   function render(host, data) {
-    var groups = data.groups || [], gi = 0, q = '';
+    var groups = (data.groups || []).filter(function (g) { return (g.cards || []).length; }), gi = 0, q = '';
+    if (data.status === 'tba' || !groups.length) {
+      host.innerHTML = '<div class="schk-tba"><strong>Checklist not published yet.</strong> ' + esc(data.note || '') + '<div class="schk-meta" style="margin:10px 0 0">Checked ' + esc(data.asof) + ' · ' + esc(data.source) + '. This section fills in automatically the week the checklist drops.</div></div>';
+      return;
+    }
+    var many = groups.length > 6;
+    var chooser = many
+      ? '<select class="schk-sel" aria-label="Checklist section">' + groups.map(function (g, i) { return '<option value="' + i + '">' + esc(g.title) + ' · ' + (g.cards || []).length + '</option>'; }).join('') + '</select>'
+      : '<div class="schk-tabs">' + groups.map(function (g, i) { return '<button data-i="' + i + '"' + (i === 0 ? ' class="on"' : '') + '>' + esc(g.title) + ' · ' + (g.cards || []).length + '</button>'; }).join('') + '</div>';
     host.innerHTML =
-      '<div class="schk-bar"><input type="search" placeholder="Search player or team…" aria-label="Search the checklist">' +
-      '<div class="schk-tabs">' + groups.map(function (g, i) { return '<button data-i="' + i + '"' + (i === 0 ? ' class="on"' : '') + '>' + esc(g.title) + ' · ' + (g.cards || []).length + '</button>'; }).join('') + '</div></div>' +
+      '<div class="schk-bar"><input type="search" placeholder="Search player or team' + (many ? ' (searches every section)' : '') + '…" aria-label="Search the checklist">' + chooser + '</div>' +
       '<div class="schk-meta">' + (data.note ? esc(data.note) + ' ' : '') + 'Checklist as published ' + esc(data.asof) + ' · ' + esc(data.source) + '. Tap <b>★ Track</b> to put a card in your free Vault — it lands as Hunting with the set name filled in.</div>' +
       '<div class="schk-wrap"><table><thead><tr><th>#</th><th>Player</th><th>Team</th><th></th></tr></thead><tbody></tbody></table></div>' +
       '<div class="schk-foot"></div>';
     var input = host.querySelector('input'), tbody = host.querySelector('tbody'), foot = host.querySelector('.schk-foot');
     function draw() {
-      var g = groups[gi], cards = (g.cards || []).filter(function (c) { return !q || nk(c.player + ' ' + c.team + ' ' + c.n).indexOf(q) > -1; });
+      var g = groups[gi], cards;
+      if (q && many) {                                       // search spans every section of a big set
+        cards = [];
+        groups.forEach(function (gg) { (gg.cards || []).forEach(function (c) { if (nk(c.player + ' ' + c.team + ' ' + c.n).indexOf(q) > -1) cards.push(Object.assign({ _g: gg }, c)); }); });
+        if (cards.length > 400) cards = cards.slice(0, 400);
+      } else {
+        cards = (g.cards || []).filter(function (c) { return !q || nk(c.player + ' ' + c.team + ' ' + c.n).indexOf(q) > -1; });
+      }
       tbody.innerHTML = cards.map(function (c) {
-        var name = c.player + ' ' + data.set.replace(/ Baseball$/, '') + ' ' + (g.kind || '') + ' #' + c.n;
+        var gg = c._g || g;
+        var name = c.player + ' ' + data.set.replace(/ (Baseball|Basketball|Football|Soccer)$/, '') + ' ' + (gg.kind || '') + ' #' + c.n;
         return '<tr' + (c.board ? ' class="board"' : '') + '>' +
           '<td class="n">' + esc(c.n) + '</td>' +
-          '<td class="p">' + esc(c.player) + (c.first ? '<span class="first">1ST BOWMAN</span>' : '') + '</td>' +
+          '<td class="p">' + esc(c.player) + (c.first ? '<span class="first">1ST BOWMAN</span>' : '') + (c.rc ? '<span class="rc">RC</span>' : '') + (c._g ? '<span class="rc" style="color:var(--text-dim);border-color:var(--border2)">' + esc(c._g.title) + '</span>' : '') + '</td>' +
           '<td class="t">' + esc(c.team) + '</td>' +
           '<td class="a"><button class="sch-track-card" data-name="' + esc(name) + '" data-set="' + esc(data.set) + '" data-cat="' + esc(data.cat || 'baseball') + '" data-grade="Raw">&#9733; Track</button></td></tr>';
       }).join('') || '<tr><td colspan="4" style="color:var(--text-dim)">No matches.</td></tr>';
-      foot.textContent = cards.length + ' of ' + (g.cards || []).length + ' · ' + g.title + (g.prefix ? ' (' + g.prefix + '-)' : '');
+      foot.textContent = (q && many) ? cards.length + ' match' + (cards.length === 1 ? '' : 'es') + ' across ' + groups.length + ' sections' + (cards.length === 400 ? ' (first 400)' : '') : cards.length + ' of ' + (g.cards || []).length + ' · ' + g.title + (g.prefix ? ' (' + g.prefix + '-)' : '');
       // cards the reader already tracks get the ✓ state from vault-track.js
       if (window.SCHVault && window.SCHVault.mark) window.SCHVault.mark(host);
     }
@@ -56,6 +74,8 @@
     host.querySelectorAll('.schk-tabs button').forEach(function (b) {
       b.addEventListener('click', function () { gi = +b.dataset.i; host.querySelectorAll('.schk-tabs button').forEach(function (x) { x.classList.toggle('on', x === b); }); draw(); if (typeof gtag === 'function') gtag('event', 'checklist_tab', { set: data.slug, tab: groups[gi].key }); });
     });
+    var sel = host.querySelector('.schk-sel');
+    if (sel) sel.addEventListener('change', function () { gi = +sel.value; draw(); if (typeof gtag === 'function') gtag('event', 'checklist_tab', { set: data.slug, tab: groups[gi].key }); });
     draw();
   }
 
