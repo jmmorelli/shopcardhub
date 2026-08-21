@@ -401,9 +401,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 }
 
 </style>
-  <!-- Bowman Bangers — ballpark motion (this page only; outside NAV markers so build-nav can't touch it) -->
+  <!-- Bowman Bangers — ballpark motion v2 (this page only; outside NAV markers so build-nav can't touch it) -->
   <style id="bangers-diamond">
-    /* ---- refractor sweep on the word BANGERS: a Chrome-refractor light pass every ~9s ---- */
+    /* ---- refractor sweep on the word BANGERS ---- */
     .hero h1 em {
       background:linear-gradient(110deg, var(--accent) 0 38%, #eaf9ff 45%, #ffd166 50%, #ff6b9d 55%, #8be9ff 60%, var(--accent) 67% 100%);
       background-size:320% 100%; background-position:100% 0;
@@ -411,6 +411,35 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       animation:bb-refract 9s ease-in-out infinite;
     }
     @keyframes bb-refract { 0%,72% { background-position:100% 0; } 88%,100% { background-position:0% 0; } }
+    .hero .container { position:relative; z-index:1; }
+
+    /* ---- night game: sky haze + stadium light towers ---- */
+    #bb-sky { position:absolute; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 110%, rgba(0,204,245,0.08) 0%, rgba(0,204,245,0) 60%),
+        linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 35%); }
+    #bb-lights { position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+    .bb-tower { position:absolute; top:4px; width:2px; height:0; }
+    .bb-tower .beam { position:absolute; top:0; left:50%; width:520px; height:520px; margin-left:-260px; transform-origin:50% 0;
+      background:radial-gradient(ellipse 50% 100% at 50% 0%, rgba(230,240,255,0.16) 0%, rgba(200,225,255,0.07) 35%, rgba(200,225,255,0) 70%);
+      clip-path:polygon(44% 0, 56% 0, 100% 100%, 0 100%); mix-blend-mode:screen; animation:bb-beam 7s ease-in-out infinite; }
+    .bb-tower .lamp { position:absolute; top:-4px; left:50%; width:54px; height:10px; margin-left:-27px; border-radius:6px;
+      background:linear-gradient(180deg, #fff 0%, #dfe9ff 60%, #9fb4d8 100%);
+      box-shadow:0 0 18px 6px rgba(255,255,255,0.55), 0 0 60px 18px rgba(190,220,255,0.35), 0 0 120px 40px rgba(120,180,255,0.18); }
+    .bb-tower .lamp::before { content:''; position:absolute; inset:2px 6px; border-radius:4px;
+      background:repeating-linear-gradient(90deg, rgba(0,0,0,0.25) 0 2px, transparent 2px 9px); }
+    .bb-tower .flare { position:absolute; top:1px; left:50%; width:360px; height:2px; margin-left:-180px; border-radius:2px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.55) 35%, #fff 50%, rgba(255,255,255,0.55) 65%, transparent); opacity:.7; }
+    .bb-tower.t1 { left:9%;  } .bb-tower.t1 .beam { transform:rotate(9deg);  animation-delay:-1.2s; }
+    .bb-tower.t2 { left:50%; } .bb-tower.t2 .beam { width:620px; height:620px; margin-left:-310px; animation-delay:-3.1s; }
+    .bb-tower.t3 { left:91%; } .bb-tower.t3 .beam { transform:rotate(-9deg); animation-delay:-5s; }
+    @keyframes bb-beam { 0%,100% { opacity:.85; } 50% { opacity:1; } }
+    #bb-lights.hit .bb-tower .lamp { animation:bb-lamp-hit .5s steps(2) 1; }
+    @keyframes bb-lamp-hit { 0% { box-shadow:0 0 28px 12px #fff, 0 0 90px 30px rgba(190,220,255,0.6), 0 0 160px 60px rgba(120,180,255,0.3); } 100% { box-shadow:0 0 18px 6px rgba(255,255,255,0.55), 0 0 60px 18px rgba(190,220,255,0.35), 0 0 120px 40px rgba(120,180,255,0.18); } }
+    /* outfield horizon: a thin lit edge along the bottom of the hero */
+    #bb-field { position:absolute; left:0; right:0; bottom:0; height:46px; z-index:0; pointer-events:none;
+      background:linear-gradient(180deg, rgba(0,224,122,0) 0%, rgba(0,224,122,0.06) 70%, rgba(0,224,122,0.12) 100%); }
+    #bb-field::after { content:''; position:absolute; left:0; right:0; bottom:0; height:1px; background:linear-gradient(90deg, transparent, rgba(190,255,220,0.45) 30%, rgba(190,255,220,0.45) 70%, transparent); }
 
     /* ---- faint infield diamond behind the hero copy ---- */
     #bb-diamond { position:absolute; right:-120px; top:50%; width:420px; height:420px; transform:translateY(-50%) rotate(45deg);
@@ -422,55 +451,57 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     #bb-diamond i:nth-child(2) { top:-5px; right:-5px; }
     #bb-diamond i:nth-child(3) { bottom:-5px; right:-5px; }
     #bb-diamond i:nth-child(4) { bottom:-5px; left:-5px; background:var(--accent); box-shadow:0 0 10px var(--accent); }
-    .hero .container { position:relative; z-index:1; }
 
-    /* ---- the swing: a CSS bat pivoting at its knob, bottom-left of the hero ---- */
+    /* ---- the swing: an SVG bat pivoting at its knob, bottom-right of the hero, swinging left ---- */
     #bb-swing { position:absolute; right:9%; bottom:10px; width:0; height:0; z-index:2; pointer-events:none; transform:scaleX(-1); }
-    #bb-swing .bat { position:absolute; left:0; top:-8px; width:230px; height:18px; transform-origin:6px 50%;
-      background:linear-gradient(180deg, #f1c98a 0%, #c98c48 45%, #8a5524 100%);
-      clip-path:polygon(0 30%, 9% 26%, 24% 38%, 60% 22%, 86% 10%, 96% 14%, 100% 50%, 96% 86%, 86% 90%, 60% 78%, 24% 62%, 9% 74%, 0 70%);
-      opacity:0; transform:rotate(-118deg); filter:drop-shadow(0 2px 4px rgba(0,0,0,0.6)); }
-    #bb-swing .bat::after { content:''; position:absolute; left:0; top:0; width:100%; height:100%;
-      background:repeating-linear-gradient(180deg, transparent 0 3px, rgba(0,0,0,0.07) 3px 4px); }
+    #bb-swing .bat { position:absolute; left:0; top:-12px; width:240px; height:24px; transform-origin:7px 50%;
+      opacity:0; transform:rotate(-104deg); filter:drop-shadow(0 3px 5px rgba(0,0,0,0.7)); }
+    #bb-swing .bat svg { display:block; width:100%; height:100%; overflow:visible; }
     #bb-swing.go .bat { animation:bb-bat 1.35s cubic-bezier(.2,.7,.2,1) forwards; }
     @keyframes bb-bat {
-      0%   { opacity:0; transform:rotate(-104deg); }
+      0%   { opacity:0; transform:rotate(-104deg); filter:drop-shadow(0 3px 5px rgba(0,0,0,0.7)) blur(0); }
       12%  { opacity:1; }
-      52%  { transform:rotate(-112deg); }          /* the load */
-      67%  { transform:rotate(-25deg); }           /* CONTACT */
-      82%  { transform:rotate(34deg); }            /* follow-through */
+      52%  { transform:rotate(-112deg); filter:drop-shadow(0 3px 5px rgba(0,0,0,0.7)) blur(0); }   /* the load */
+      60%  { filter:drop-shadow(0 3px 5px rgba(0,0,0,0.7)) blur(1.6px); }                           /* motion blur through the zone */
+      67%  { transform:rotate(-25deg); filter:drop-shadow(0 3px 5px rgba(0,0,0,0.7)) blur(.4px); } /* CONTACT */
+      76%  { filter:drop-shadow(0 3px 5px rgba(0,0,0,0.7)) blur(1.2px); }
+      82%  { transform:rotate(34deg); filter:drop-shadow(0 3px 5px rgba(0,0,0,0.7)) blur(0); }     /* follow-through */
       88%  { opacity:1; }
       100% { opacity:0; transform:rotate(36deg); }
     }
-    /* impact star at the point of contact */
-    #bb-crack { position:absolute; width:120px; height:120px; margin:-60px 0 0 -60px; border-radius:50%; z-index:3; pointer-events:none; opacity:0;
+    /* ghost trail of the barrel through the zone */
+    #bb-swing .ghost { position:absolute; left:0; top:-12px; width:240px; height:24px; transform-origin:7px 50%; opacity:0; }
+    #bb-swing .ghost svg { display:block; width:100%; height:100%; }
+    #bb-swing.go .ghost { animation:bb-ghost 1.35s linear forwards; }
+    @keyframes bb-ghost { 0%,58% { opacity:0; transform:rotate(-90deg); } 62% { opacity:.35; transform:rotate(-70deg); } 67% { opacity:.22; transform:rotate(-45deg); } 74% { opacity:0; transform:rotate(-25deg); } 100% { opacity:0; } }
+    /* impact */
+    #bb-crack { position:absolute; width:140px; height:140px; margin:-70px 0 0 -70px; border-radius:50%; z-index:3; pointer-events:none; opacity:0;
       background:
-        conic-gradient(from 0deg, #fff 0 2deg, transparent 2deg 43deg, #fff 43deg 45deg, transparent 45deg 88deg, #fff 88deg 90deg, transparent 90deg 133deg, #fff 133deg 135deg, transparent 135deg 178deg, #fff 178deg 180deg, transparent 180deg 223deg, #fff 223deg 225deg, transparent 225deg 268deg, #fff 268deg 270deg, transparent 270deg 313deg, #fff 313deg 315deg, transparent 315deg 360deg),
-        radial-gradient(circle, #fff 0 14%, rgba(255,255,255,0.5) 22%, transparent 40%);
+        conic-gradient(from 0deg, #fff 0 1.5deg, transparent 1.5deg 43deg, #fff 43deg 45deg, transparent 45deg 88deg, #fff 88deg 90deg, transparent 90deg 133deg, #fff 133deg 135deg, transparent 135deg 178deg, #fff 178deg 180deg, transparent 180deg 223deg, #fff 223deg 225deg, transparent 225deg 268deg, #fff 268deg 270deg, transparent 270deg 313deg, #fff 313deg 315deg, transparent 315deg 360deg),
+        radial-gradient(circle, #fff 0 10%, rgba(255,240,200,0.7) 18%, rgba(255,220,150,0.25) 30%, transparent 45%);
       transform:scale(.2); }
-    #bb-crack.go { animation:bb-crack .5s ease-out forwards; }
-    @keyframes bb-crack { 0% { opacity:1; transform:scale(.2) rotate(0); } 100% { opacity:0; transform:scale(1.4) rotate(25deg); } }
-    #bb-flash { position:absolute; inset:0; pointer-events:none; z-index:1; opacity:0; background:radial-gradient(circle at var(--bb-x,20%) var(--bb-y,70%), rgba(255,255,255,0.28) 0%, rgba(0,204,245,0.10) 25%, transparent 60%); }
+    #bb-crack.go { animation:bb-crack .55s ease-out forwards; }
+    @keyframes bb-crack { 0% { opacity:1; transform:scale(.2) rotate(0); } 100% { opacity:0; transform:scale(1.5) rotate(25deg); } }
+    #bb-flash { position:absolute; inset:0; pointer-events:none; z-index:1; opacity:0; background:radial-gradient(circle at var(--bb-x,20%) var(--bb-y,70%), rgba(255,255,255,0.30) 0%, rgba(0,204,245,0.10) 25%, transparent 60%); }
     #bb-flash.go { animation:bb-flash .55s steps(3) forwards; }
     @keyframes bb-flash { 0% { opacity:1; } 40% { opacity:.35; } 100% { opacity:0; } }
 
-    /* the ball — a CSS baseball with two seams, launched along a path computed at swing time */
-    .bb-ball { position:absolute; width:22px; height:22px; border-radius:50%; pointer-events:none; z-index:3;
-      background:radial-gradient(circle at 35% 32%, #fff 0%, #e9ecef 55%, #b9c0c6 100%); box-shadow:inset -2px -2px 4px rgba(0,0,0,.25); }
-    .bb-ball::before, .bb-ball::after { content:''; position:absolute; top:-2px; width:14px; height:26px; border-radius:50%;
-      border:2px dotted #d61f3c; border-left-color:transparent; border-top-color:transparent; border-bottom-color:transparent; }
-    .bb-ball::before { left:-9px; }
-    .bb-ball::after  { right:-9px; transform:scaleX(-1); }
-    #bb-ball { left:0; top:0; opacity:0; margin:-11px 0 0 -11px; offset-rotate:auto; }
-    #bb-ball .trail { position:absolute; right:100%; top:50%; width:90px; height:3px; margin-top:-1.5px; border-radius:2px;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.75)); }
+    /* ---- the ball: SVG baseball with real seams, spinning in flight ---- */
+    .bb-ball { position:absolute; width:26px; height:26px; pointer-events:none; z-index:3; filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6)); }
+    .bb-ball svg { display:block; width:100%; height:100%; }
+    #bb-ball { left:0; top:0; opacity:0; margin:-13px 0 0 -13px; offset-rotate:auto; }
+    #bb-ball .core { width:100%; height:100%; }
+    #bb-ball.go .core { animation:bb-spin-fly 1.15s linear 1; }
+    @keyframes bb-spin-fly { to { transform:rotate(-1440deg); } }
+    #bb-ball .trail { position:absolute; right:85%; top:50%; width:120px; height:4px; margin-top:-2px; border-radius:3px; z-index:-1;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.15) 40%, rgba(255,255,255,0.85)); filter:blur(.6px); }
     #bb-ball.go { animation:bb-fly 1.15s cubic-bezier(.15,.6,.4,1) forwards; }
-    @keyframes bb-fly { 0% { opacity:1; offset-distance:0%; transform:scale(1); } 80% { opacity:1; } 100% { opacity:0; offset-distance:100%; transform:scale(.45); } }
+    @keyframes bb-fly { 0% { opacity:1; offset-distance:0%; transform:scale(1); } 80% { opacity:1; } 100% { opacity:0; offset-distance:100%; transform:scale(.4); } }
 
-    /* ---- the roller: a ball that bounces along the bottom of the viewport every so often ---- */
-    #bb-roller { position:fixed; bottom:4px; left:-60px; width:26px; height:26px; z-index:200; pointer-events:none; opacity:0; }
-    #bb-roller .bb-ball { position:absolute; inset:0; width:26px; height:26px; }
-    #bb-roller .shadow { position:absolute; left:2px; right:2px; bottom:-3px; height:5px; border-radius:50%; background:rgba(0,0,0,.55); filter:blur(2px); }
+    /* ---- the roller ---- */
+    #bb-roller { position:fixed; bottom:4px; left:-60px; width:28px; height:28px; z-index:200; pointer-events:none; opacity:0; }
+    #bb-roller .bb-ball { position:absolute; inset:0; width:28px; height:28px; }
+    #bb-roller .shadow { position:absolute; left:2px; right:2px; bottom:-4px; height:6px; border-radius:50%; background:rgba(0,0,0,.6); filter:blur(2.5px); }
     #bb-roller.running { animation:bb-roll-x 7.5s linear 1 forwards; }
     #bb-roller.running .bb-ball { animation:bb-spin 7.5s linear 1, bb-bounce 7.5s cubic-bezier(.3,0,.7,1) 1; }
     @keyframes bb-roll-x { 0% { left:-60px; opacity:1; } 96% { opacity:1; } 100% { left:calc(100vw + 60px); opacity:0; } }
@@ -481,14 +512,15 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       28% { margin-top:-10px; } 32% { margin-top:0; }
       35% { margin-top:-4px; } 38%,100% { margin-top:0; } }
 
-    /* ---- rank numbers get "stamped" as each entry scrolls into view ---- */
+    /* ---- rank numbers stamp in ---- */
     .entry-rank.bb-stamp { animation:bb-stamp .7s cubic-bezier(.2,1.4,.4,1) 1; }
     @keyframes bb-stamp { 0% { color:rgba(214,31,60,0.55); transform:scale(1.7) rotate(-8deg); } 60% { color:rgba(255,255,255,0.18); } 100% { color:rgba(255,255,255,0.04); transform:none; } }
 
-    @media (max-width:640px) { #bb-swing { right:4%; } #bb-swing .bat { width:150px; height:14px; } #bb-diamond { width:280px; height:280px; right:-110px; } #bb-diamond::before { inset:44px; } #bb-diamond::after { inset:120px; } }
+    @media (max-width:640px) { #bb-swing { right:4%; } #bb-swing .bat, #bb-swing .ghost { width:160px; height:16px; top:-8px; } #bb-diamond { width:280px; height:280px; right:-110px; } #bb-diamond::before { inset:44px; } #bb-diamond::after { inset:120px; } .bb-tower .beam { width:360px; height:360px; margin-left:-180px; } .bb-tower.t2 .beam { width:420px; height:420px; margin-left:-210px; } }
     @media (prefers-reduced-motion: reduce) {
       .hero h1 em { animation:none; }
       #bb-swing, #bb-crack, #bb-flash, #bb-ball, #bb-roller { display:none !important; }
+      .bb-tower .beam, .bb-tower .lamp { animation:none !important; }
       .entry-rank.bb-stamp { animation:none; }
     }
   </style>
@@ -1763,10 +1795,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       .catch(function () {});
   })();
   </script>
-<!-- Bowman Bangers — the swing, the ball, the roller (this page only) -->
+<!-- Bowman Bangers — the swing, the ball, the roller, the lights (this page only) -->
 <script>
 (function () {
-  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var hero = document.querySelector(".hero");
   if (!hero) return;
   var RESTRIKE = 40000;                    // tuning knob: ms between swings / roller passes
@@ -1780,42 +1812,84 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     return e;
   }
 
-  // infield diamond, bat, impact star, flash overlay, ball — all inside the hero
+  /* ---- SVG assets (inline so there are no image requests) ---- */
+  var BAT = '<svg viewBox="0 0 240 24" xmlns="http://www.w3.org/2000/svg">' +
+    '<defs>' +
+      '<linearGradient id="bbw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3dcb0"/><stop offset=".18" stop-color="#dcae6a"/><stop offset=".55" stop-color="#b27a3c"/><stop offset=".85" stop-color="#7d4a1c"/><stop offset="1" stop-color="#4e2c0e"/></linearGradient>' +
+      '<linearGradient id="bbk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5a2a"/><stop offset="1" stop-color="#3b2009"/></linearGradient>' +
+      '<linearGradient id="bbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3a3a"/><stop offset=".5" stop-color="#111"/><stop offset="1" stop-color="#000"/></linearGradient>' +
+      '<pattern id="bbgrain" width="240" height="24" patternUnits="userSpaceOnUse"><path d="M0 5 Q60 3 120 6 T240 5 M0 10 Q70 12 140 9 T240 11 M0 15 Q50 13 110 16 T240 14 M0 19 Q80 21 150 18 T240 20" fill="none" stroke="#5a3312" stroke-width=".5" opacity=".35"/></pattern>' +
+      '<pattern id="bbtape" width="6" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(25)"><rect width="3" height="24" fill="rgba(255,255,255,.08)"/></pattern>' +
+    '</defs>' +
+    // body: knob → handle → taper → barrel → cupped end
+    '<path d="M3 12 C3 7 6 5.5 9 5.5 L12 5.5 C22 8 40 8.6 80 8.6 C120 8.6 150 4.5 190 3.2 C215 2.5 232 2.5 236 5 C239 7 239 17 236 19 C232 21.5 215 21.5 190 20.8 C150 19.5 120 15.4 80 15.4 C40 15.4 22 16 12 18.5 L9 18.5 C6 18.5 3 17 3 12 Z" fill="url(#bbw)"/>' +
+    '<path d="M12 5.5 C22 8 40 8.6 80 8.6 C120 8.6 150 4.5 190 3.2 C215 2.5 232 2.5 236 5 C239 7 239 17 236 19 C232 21.5 215 21.5 190 20.8 C150 19.5 120 15.4 80 15.4 C40 15.4 22 16 12 18.5 Z" fill="url(#bbgrain)"/>' +
+    // knob
+    '<ellipse cx="8" cy="12" rx="5.5" ry="7" fill="url(#bbk)"/><ellipse cx="7" cy="10" rx="2.2" ry="3" fill="rgba(255,255,255,.18)"/>' +
+    // grip tape on the handle
+    '<path d="M14 6.3 C24 8.4 36 8.7 62 8.7 L62 15.3 C36 15.3 24 15.6 14 17.7 Z" fill="url(#bbg)"/><path d="M14 6.3 C24 8.4 36 8.7 62 8.7 L62 15.3 C36 15.3 24 15.6 14 17.7 Z" fill="url(#bbtape)"/>' +
+    // brand stamp on the barrel
+    '<ellipse cx="196" cy="12" rx="17" ry="5.2" fill="none" stroke="#3a1f08" stroke-width=".9" opacity=".75"/><ellipse cx="196" cy="12" rx="11" ry="2.6" fill="none" stroke="#3a1f08" stroke-width=".8" opacity=".7"/><circle cx="196" cy="12" r="1.6" fill="#3a1f08" opacity=".8"/>' +
+    // cupped end
+    '<ellipse cx="236" cy="12" rx="2.6" ry="6.5" fill="#3b2009"/><ellipse cx="236.4" cy="12" rx="1.6" ry="5" fill="#2a1606"/>' +
+    // specular highlight
+    '<path d="M70 9.2 C120 9.4 160 6 228 4.6" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.1" stroke-linecap="round"/>' +
+    '</svg>';
+  var GHOST = '<svg viewBox="0 0 240 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5.5 C22 8 40 8.6 80 8.6 C120 8.6 150 4.5 190 3.2 C215 2.5 232 2.5 236 5 C239 7 239 17 236 19 C232 21.5 215 21.5 190 20.8 C150 19.5 120 15.4 80 15.4 C40 15.4 22 16 12 18.5 Z" fill="rgba(255,235,200,.9)"/></svg>';
+  var BALL = '<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">' +
+    '<defs><radialGradient id="bbl" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#eef0f2"/><stop offset=".85" stop-color="#c3c9cf"/><stop offset="1" stop-color="#9aa3ab"/></radialGradient>' +
+    '<clipPath id="bbc"><circle cx="20" cy="20" r="19"/></clipPath></defs>' +
+    '<circle cx="20" cy="20" r="19" fill="url(#bbl)"/>' +
+    '<g clip-path="url(#bbc)">' +
+      // two seams (horseshoes) with stitch ticks
+      '<path d="M9 1 C2 12 2 28 9 39" fill="none" stroke="#b8102c" stroke-width="1.6"/>' +
+      '<path d="M31 1 C38 12 38 28 31 39" fill="none" stroke="#b8102c" stroke-width="1.6"/>' +
+      '<path d="M9 1 C2 12 2 28 9 39" fill="none" stroke="#d9213f" stroke-width="4.5" stroke-dasharray="1.3 2.4" opacity=".85"/>' +
+      '<path d="M31 1 C38 12 38 28 31 39" fill="none" stroke="#d9213f" stroke-width="4.5" stroke-dasharray="1.3 2.4" opacity=".85"/>' +
+    '</g>' +
+    '<circle cx="20" cy="20" r="19" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="1"/>' +
+    '</svg>';
+
+  // night sky, light towers, field edge, diamond
+  hero.appendChild(el("div", "bb-sky"));
+  var lights = hero.appendChild(el("div", "bb-lights", null,
+    '<div class="bb-tower t1"><div class="beam"></div><div class="flare"></div><div class="lamp"></div></div>' +
+    '<div class="bb-tower t2"><div class="beam"></div><div class="flare"></div><div class="lamp"></div></div>' +
+    '<div class="bb-tower t3"><div class="beam"></div><div class="flare"></div><div class="lamp"></div></div>'));
+  hero.appendChild(el("div", "bb-field"));
   hero.appendChild(el("div", "bb-diamond", null, "<i></i><i></i><i></i><i></i>"));
+  if (reduced) return;                     // ambience only — no motion
+
   var flash = hero.appendChild(el("div", "bb-flash"));
-  var swing = hero.appendChild(el("div", "bb-swing", null, '<div class="bat"></div>'));
+  var swing = hero.appendChild(el("div", "bb-swing", null, '<div class="ghost">' + GHOST + '</div><div class="bat">' + BAT + '</div>'));
   var crack = hero.appendChild(el("div", "bb-crack"));
-  var ball  = hero.appendChild(el("div", "bb-ball", "bb-ball", '<div class="trail"></div>'));
+  var ball  = hero.appendChild(el("div", "bb-ball", "bb-ball", '<div class="trail"></div><div class="core">' + BALL + '</div>'));
 
   function restart(node, cls) { node.classList.remove(cls); void node.offsetWidth; node.classList.add(cls); }
 
   function takeSwing() {
     var hw = hero.clientWidth, hh = hero.clientHeight;
     var batLen = swing.querySelector(".bat").offsetWidth;
-    // pivot = bottom-left anchor; contact = end of the barrel at -25deg
     var px = swing.offsetLeft, py = swing.offsetTop;       // batter stands on the right, swings left
     var cx = px - batLen * Math.cos(25 * Math.PI / 180);
     var cy = py - batLen * Math.sin(25 * Math.PI / 180);
     crack.style.left = cx + "px"; crack.style.top = cy + "px";
     flash.style.setProperty("--bb-x", (cx / hw * 100) + "%");
     flash.style.setProperty("--bb-y", (cy / hh * 100) + "%");
-    // ball flight: rising arc from contact to past the top-right corner
     var ex = hw * 0.42, ey = -60;
     var qx = cx - (cx - ex) * 0.45, qy = -hh * 0.25;
     ball.style.offsetPath = "path('M" + cx + " " + cy + " Q" + qx + " " + qy + " " + ex + " " + ey + "')";
     restart(swing, "go");
-    setTimeout(function () { restart(crack, "go"); restart(flash, "go"); restart(ball, "go"); }, 900); // = 67% of the 1.35s swing
+    setTimeout(function () { restart(crack, "go"); restart(flash, "go"); restart(ball, "go"); restart(lights, "hit"); }, 900); // = 67% of the 1.35s swing
   }
 
-  // roller along the bottom of the viewport
-  var roller = document.body.appendChild(el("div", "bb-roller", null, '<div class="shadow"></div><div class="bb-ball"></div>'));
+  var roller = document.body.appendChild(el("div", "bb-roller", null, '<div class="shadow"></div><div class="bb-ball">' + BALL + '</div>'));
   function roll() { restart(roller, "running"); }
 
-  setTimeout(takeSwing, 1100);             // the opening swing
-  setTimeout(roll, 4200);                  // first roller pass
+  setTimeout(takeSwing, 1100);
+  setTimeout(roll, 4200);
   setInterval(function () { takeSwing(); setTimeout(roll, 2600); }, RESTRIKE);
 
-  // rank numbers stamp in as the board scrolls into view
   if ("IntersectionObserver" in window) {
     var seen = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
