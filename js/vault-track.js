@@ -287,8 +287,16 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePop(); });
   }
 
+  // public: re-mark buttons rendered after load (set checklists, dynamic lists)
+  window.SCHVault = window.SCHVault || {};
+  window.SCHVault.mark = function (root) {
+    var have = trackedNames();
+    (root || document).querySelectorAll('.sch-track-card').forEach(function (b) {
+      if (!b.classList.contains('sch-tracked') && have[(b.dataset.name || '').toLowerCase()]) markButton(b, 'watch');
+    });
+  };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  window.SCHVault = { track: track, version: 3 };
+  window.SCHVault.track = track; window.SCHVault.version = 4;
 })();
