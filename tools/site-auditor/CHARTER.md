@@ -37,7 +37,15 @@ auditor itself. This separation *is* the audit trail: proposals in
      nav single-source drift, sitemap coverage both directions, vault
      track-button contract (feed-linked ≠ seeded), data/*.json validity,
      calls.json invariants (immutable projections, terminal grades, sold-basis
-     finals).
+     finals), **set-checklist integrity (added Aug 21, 2026 — Mo's trust
+     rule): 1st Bowman + Bangers flags in data/sets/*.json** — every Bangers
+     board name in a Bowman-family set is board+first; no stray BANGERS tags;
+     a player flagged 1st in one set of a Bowman year is flagged in every set
+     of that year; no 1st flag on a player who appears in an earlier-year
+     file; no page copy that denies a 1st ("not his 1st"). Any of these is a
+     HIGH finding — saying a card is not a 1st when it is (or vice versa) is a
+     site-trust breakdown. The 1st logo is on EVERY Bowman card of a player's
+     debut year (paper, Chrome, Sapphire, Sept Chrome, parallels).
    - `node tools/audit-prices.mjs` — pricing integrity: no placeholder prices,
      stamp freshness, price-table structure.
 2. **Live-site spot check** (network): fetch 3–5 pages on www.shopcardhub.com
