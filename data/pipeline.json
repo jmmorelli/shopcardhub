@@ -1,6 +1,6 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-24T19:49:45.000Z",
+ "generated": "2026-08-24T19:53:16.000Z",
  "generator": "chief-of-staff (2026-08-23)",
  "agents": {
   "seeker": {
@@ -509,18 +509,18 @@
   },
   {
    "id": "audit-2026-08-21-1",
-   "status": "awaiting-mo",
-   "title": "MED: /topps-flagship-football releases TODAY (Aug 21) but the page is frozen at Jul 13 pre-order framing — banner says 'no checklist, box configuration, or MSRP yet' (line 784) and the stat grid shows 'Checklist: Not yet published' (line 793), while the full 400-card checklist has been public on Beckett/Topps for weeks. Release-day traffic on the license-return flagship is landing on factually wrong copy. Fix: reframe as released, cite the published checklist/config, refresh the as-of stamp."
+   "status": "approved",
+   "title": "MED: /topps-flagship-football releases TODAY (Aug 21) but the page is frozen at Jul 13 pre-order framing — banner says 'no checklist, box configuration, or MSRP yet' (line 784) and the stat grid shows 'Checklist: Not yet published' (line 793), while the full 400-card checklist has been public on Beckett/Topps for weeks. Release-day traffic on the license-return flagship is landing on factually wrong copy. Fix: reframe as released, cite the published checklist/config, refresh the as-of stamp. — APPROVED by Mo Aug 24; next run applies the fix"
   },
   {
    "id": "audit-2026-08-21-2",
-   "status": "awaiting-mo",
-   "title": "MED: /topps-chrome-baseball-2026 still says 'Still unreleased, so no sold comps exist yet' (line 788, 'updated Jul 28') and hero reads 'Pre-release' (line 781) — the product streeted in late Jul/early Aug and has weeks of sold comps. Meta description also says 'Pre-release, August 2026' (line 8). Fix: reframe as released with real solds, per the Chrome Updates precedent (Aug 10)."
+   "status": "approved",
+   "title": "MED: /topps-chrome-baseball-2026 still says 'Still unreleased, so no sold comps exist yet' (line 788, 'updated Jul 28') and hero reads 'Pre-release' (line 781) — the product streeted in late Jul/early Aug and has weeks of sold comps. Meta description also says 'Pre-release, August 2026' (line 8). Fix: reframe as released with real solds, per the Chrome Updates precedent (Aug 10). — APPROVED by Mo Aug 24; next run applies the fix"
   },
   {
    "id": "audit-2026-08-21-3",
-   "status": "awaiting-mo",
-   "title": "MED: /topps-chrome-black-football released Jul 10 — six weeks ago — but the banner still says 'As a just-releasing product there are no single-card sold comps yet… as of Jul 6, 2026' (line 784) and meta says 'Pre-release, July 2026' (line 8). Sold comps have existed for over a month. Fix: post-release reframe + comp refresh."
+   "status": "approved",
+   "title": "MED: /topps-chrome-black-football released Jul 10 — six weeks ago — but the banner still says 'As a just-releasing product there are no single-card sold comps yet… as of Jul 6, 2026' (line 784) and meta says 'Pre-release, July 2026' (line 8). Sold comps have existed for over a month. Fix: post-release reframe + comp refresh. — APPROVED by Mo Aug 24; next run applies the fix"
   },
   {
    "id": "epn-button-flip-aug23",
@@ -539,6 +539,12 @@
    "area": "content",
    "summary": "NEW PAGE built and wired (nav+sitemap): /topps-chrome-updates-basketball-sapphire-edition (drops Sep 3; qualitative pre-release framing, no invented prices). Awaiting Mo review + push.",
    "status": "awaiting-mo"
+  },
+  {
+   "id": "fanatics-pokemon-flip-aug24",
+   "area": "monetization",
+   "status": "approved",
+   "summary": "Flip the 8 remaining Fanatics (dykyyj) links on Pokemon + hobby-box pages to eBay EPN, incl. the ROI-calculator JS const; retire the Fanatics footer disclosure once zero links remain. Approved by Mo Aug 24 — Monday run executes; same dead-lane logic as the Topps flip."
   }
  ],
  "scoreboard": {
