@@ -341,17 +341,7 @@ body::before{
   pointer-events:none;z-index:9998;
 }
 
-/* 6. Hero scan line sweep — injected by JS below */
-@keyframes hero-scan{
-  0%{top:0;opacity:0.7}90%{opacity:0.5}100%{top:100%;opacity:0}
-}
 .hero{overflow:hidden;}
-.hero-scan-line{
-  position:absolute;left:0;right:0;height:1px;top:0;
-  background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);
-  pointer-events:none;z-index:2;
-  animation:hero-scan 3.5s ease-in-out 0.8s 1 forwards;
-}
 
 /* 7. Blinking cursor — class added by JS below */
 @keyframes blink-cur{0%,100%{opacity:1}50%{opacity:0}}
@@ -434,6 +424,17 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     .bb-tower.t2 { left:50%; } .bb-tower.t2 .beam { width:620px; height:620px; margin-left:-310px; animation-delay:-3.1s; }
     .bb-tower.t3 { left:91%; } .bb-tower.t3 .beam { transform:rotate(-9deg); animation-delay:-5s; }
     @keyframes bb-beam { 0%,100% { opacity:.85; } 50% { opacity:1; } }
+    /* lights-up opening (Aug 24): towers flicker on one by one before the first swing */
+    @keyframes bb-lamp-on { 0% { opacity:0; } 30% { opacity:.9; } 42% { opacity:.12; } 58% { opacity:1; } 72% { opacity:.45; } 100% { opacity:1; } }
+    .bb-tower .lamp { animation:bb-lamp-on 1s steps(4,end) both; }
+    .bb-tower.t1 .lamp { animation-delay:.15s; } .bb-tower.t2 .lamp { animation-delay:.42s; } .bb-tower.t3 .lamp { animation-delay:.68s; }
+    @keyframes bb-beam-in { 0% { opacity:0; } 100% { opacity:.85; } }
+    .bb-tower .beam { opacity:0; animation:bb-beam-in 1.3s ease-out both, bb-beam 7s ease-in-out infinite; }
+    .bb-tower.t1 .beam { animation-delay:.55s, 1.9s; } .bb-tower.t2 .beam { animation-delay:.85s, 2.2s; } .bb-tower.t3 .beam { animation-delay:1.1s, 2.5s; }
+    /* crowd camera flashes: pop in the dark stands after bat-on-ball contact */
+    .bb-pap { position:absolute; width:3px; height:3px; border-radius:50%; background:#fff; opacity:0; box-shadow:0 0 6px 2px rgba(255,255,255,.8), 0 0 14px 5px rgba(170,200,255,.35); }
+    #bb-lights.hit .bb-pap { animation:bb-pap .85s ease-out var(--d,0s) 1 both; }
+    @keyframes bb-pap { 0% { opacity:0; transform:scale(.4); } 12% { opacity:1; transform:scale(1.2); } 30% { opacity:.25; } 46% { opacity:.75; } 100% { opacity:0; transform:scale(.6); } }
     #bb-lights.hit .bb-tower .lamp { animation:bb-lamp-hit .5s steps(2) 1; }
     @keyframes bb-lamp-hit { 0% { box-shadow:0 0 28px 12px #fff, 0 0 90px 30px rgba(190,220,255,0.6), 0 0 160px 60px rgba(120,180,255,0.3); } 100% { box-shadow:0 0 18px 6px rgba(255,255,255,0.55), 0 0 60px 18px rgba(190,220,255,0.35), 0 0 120px 40px rgba(120,180,255,0.18); } }
     /* outfield horizon: a thin lit edge along the bottom of the hero */
@@ -1737,13 +1738,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <script>
 /* DUNGEON EFFECTS — DOM injections */
 (function(){
-  document.querySelectorAll('.hero').forEach(function(h){
-    if(!h.querySelector('.hero-scan-line')){
-      var sl=document.createElement('div');
-      sl.className='hero-scan-line';
-      h.insertBefore(sl,h.firstChild);
-    }
-  });
   document.querySelectorAll('.hero-eyebrow').forEach(function(el){
     el.classList.add('blink-cursor');
   });
@@ -1868,6 +1862,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     '<div class="bb-tower t1"><div class="beam"></div><div class="flare"></div><div class="lamp"></div></div>' +
     '<div class="bb-tower t2"><div class="beam"></div><div class="flare"></div><div class="lamp"></div></div>' +
     '<div class="bb-tower t3"><div class="beam"></div><div class="flare"></div><div class="lamp"></div></div>'));
+  for (var pi = 0; pi < 10; pi++) { var pap = el("i", "bb-pap"); pap.style.left = (6 + Math.random() * 88) + "%"; pap.style.top = (5 + Math.random() * 40) + "%"; pap.style.setProperty("--d", (Math.random() * 0.65).toFixed(2) + "s"); lights.appendChild(pap); }
   hero.appendChild(el("div", "bb-field"));
   hero.appendChild(el("div", "bb-diamond", null, "<i></i><i></i><i></i><i></i>"));
   if (reduced) return;                     // ambience only — no motion
