@@ -5,7 +5,9 @@
 :root { --bg:#07090c; --p1:#0c1017; --p2:#111820; --bd:rgba(255,255,255,0.07); --bd2:rgba(255,255,255,0.12); --tx:#b8cdd4; --th:#e4f0f4; --dim:#5a7880; --ac:#00ccf5; --gn:#00e07a; --gd:#f5c800; --rd:#ff2e55; --iac:#f5c800; --iac2:#c9a400;
 --text:#b8cdd4; --text-head:#e4f0f4; --text-dim:#5a7880; --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12); --accent-dim:rgba(0,204,245,0.1); --accent-glow:rgba(0,204,245,0.22); --gold:#f5c800; --green:#00e07a; --red:#ff2e55; --fb:'Barlow',-apple-system,sans-serif; --fd:'Barlow Condensed',Impact,sans-serif; --fm:'JetBrains Mono',Menlo,monospace; }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:var(--bg); color:var(--tx); font-family:var(--fb); font-size:13px; line-height:1.5; padding-bottom:60px; }
+body { background:var(--bg); color:var(--tx); font-family:var(--fb); font-size:13px; line-height:1.5; padding-bottom:60px; -webkit-font-smoothing:antialiased; }
+a { color:var(--ac); text-decoration:none; }
+a:hover { color:#fff; }
 .wrap { max-width:1060px; margin:0 auto; padding:0 24px; }
 .livebar { background:color-mix(in srgb, var(--iac) 8%, transparent); border-bottom:1px solid color-mix(in srgb, var(--iac) 40%, transparent); padding:7px 0; text-align:center; font-family:var(--fm); font-size:10px; letter-spacing:1.5px; color:var(--iac); text-transform:uppercase; }
 .crumb { font-family:var(--fm); font-size:10px; letter-spacing:2px; color:var(--dim); text-transform:uppercase; }
