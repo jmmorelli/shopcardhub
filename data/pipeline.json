@@ -1,6 +1,6 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-24T19:53:16.000Z",
+ "generated": "2026-08-24T20:34:40.000Z",
  "generator": "chief-of-staff (2026-08-23)",
  "agents": {
   "seeker": {
@@ -545,6 +545,12 @@
    "area": "monetization",
    "status": "approved",
    "summary": "Flip the 8 remaining Fanatics (dykyyj) links on Pokemon + hobby-box pages to eBay EPN, incl. the ROI-calculator JS const; retire the Fanatics footer disclosure once zero links remain. Approved by Mo Aug 24 — Monday run executes; same dead-lane logic as the Topps flip."
+  },
+  {
+   "id": "vault-indices-box",
+   "area": "product",
+   "status": "approved",
+   "summary": "VAULT INDICES BOX (Mo approved Aug 24, dedicated build session): separate box on /watchlist — indices are trackable but not ownable (brokerage pattern: SPX in the strip, never in positions). v1: 'Track index' on index pages + ticker rows (level, WoW, since-inception, sparkline) reading data/indices.json. v2: BENCHMARK view — user's set-matched positions vs the set index ('are you beating your set'), using data-set on tracked cards. v3: 'replicate the basket' EPN affordance. Prereq (DONE Aug 24): data/indices.json seeded, Monday STEP 3.6 re-mark wired."
   }
  ],
  "scoreboard": {

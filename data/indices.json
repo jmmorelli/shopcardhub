@@ -1,0 +1,277 @@
+{
+ "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call.",
+ "PB26": {
+  "name": "Pitch Black Chase Index",
+  "page": "/pitch-black-index",
+  "setApi": "me5",
+  "base": 100.0,
+  "inception": "2026-08-24",
+  "divisor": 7.12,
+  "divisorLog": [
+   {
+    "date": "2026-08-24",
+    "before": null,
+    "after": 7.12,
+    "why": "inception: basket $712.00 / base 100.00"
+   }
+  ],
+  "universe": [
+   {
+    "num": "85",
+    "name": "Fomantis",
+    "rarity": "IR"
+   },
+   {
+    "num": "86",
+    "name": "Armarouge",
+    "rarity": "IR"
+   },
+   {
+    "num": "87",
+    "name": "Goldeen",
+    "rarity": "IR"
+   },
+   {
+    "num": "88",
+    "name": "Primarina",
+    "rarity": "IR"
+   },
+   {
+    "num": "89",
+    "name": "Manectric",
+    "rarity": "IR"
+   },
+   {
+    "num": "90",
+    "name": "Slowbro",
+    "rarity": "IR"
+   },
+   {
+    "num": "91",
+    "name": "Dhelmise",
+    "rarity": "IR"
+   },
+   {
+    "num": "92",
+    "name": "Thievul",
+    "rarity": "IR"
+   },
+   {
+    "num": "93",
+    "name": "Bastiodon",
+    "rarity": "IR"
+   },
+   {
+    "num": "94",
+    "name": "Toucannon",
+    "rarity": "IR"
+   },
+   {
+    "num": "95",
+    "name": "Silvally",
+    "rarity": "IR"
+   },
+   {
+    "num": "96",
+    "name": "Lurantis ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "97",
+    "name": "Wailord ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "98",
+    "name": "Mega Zeraora ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "99",
+    "name": "Mega Chandelure ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "100",
+    "name": "Rampardos ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "101",
+    "name": "Mega Darkrai ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "102",
+    "name": "Morpeko ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "103",
+    "name": "Mega Excadrill ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "104",
+    "name": "Brave Bangle",
+    "rarity": "UR"
+   },
+   {
+    "num": "105",
+    "name": "Crushing Hammer",
+    "rarity": "UR"
+   },
+   {
+    "num": "106",
+    "name": "Dark Bell",
+    "rarity": "UR"
+   },
+   {
+    "num": "107",
+    "name": "Energy Switch",
+    "rarity": "UR"
+   },
+   {
+    "num": "108",
+    "name": "Gladion's Final Battle",
+    "rarity": "UR"
+   },
+   {
+    "num": "109",
+    "name": "Gwynn",
+    "rarity": "UR"
+   },
+   {
+    "num": "110",
+    "name": "Iron Defender",
+    "rarity": "UR"
+   },
+   {
+    "num": "111",
+    "name": "Misty's Vitality",
+    "rarity": "UR"
+   },
+   {
+    "num": "112",
+    "name": "Rust Syndicate Grunt",
+    "rarity": "UR"
+   },
+   {
+    "num": "113",
+    "name": "Tremendous Bomb",
+    "rarity": "UR"
+   },
+   {
+    "num": "114",
+    "name": "Mega Zeraora ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "115",
+    "name": "Mega Chandelure ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "116",
+    "name": "Mega Darkrai ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "117",
+    "name": "Morpeko ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "118",
+    "name": "Gladion's Final Battle",
+    "rarity": "SIR"
+   },
+   {
+    "num": "119",
+    "name": "Gwynn",
+    "rarity": "SIR"
+   },
+   {
+    "num": "120",
+    "name": "Mega Darkrai ex",
+    "rarity": "MHR"
+   }
+  ],
+  "basket": [
+   {
+    "num": "116",
+    "name": "Mega Darkrai ex",
+    "rarity": "SIR",
+    "price": 249.0,
+    "basis": "PriceCharting ungraded solds",
+    "asOf": "2026-08-17"
+   },
+   {
+    "num": "120",
+    "name": "Mega Darkrai ex",
+    "rarity": "MHR",
+    "price": 185.0,
+    "basis": "PriceCharting ungraded solds",
+    "asOf": "2026-08-17"
+   },
+   {
+    "num": "117",
+    "name": "Morpeko ex",
+    "rarity": "SIR",
+    "price": 95.0,
+    "basis": "PriceCharting ungraded solds",
+    "asOf": "2026-08-17"
+   },
+   {
+    "num": "114",
+    "name": "Mega Zeraora ex",
+    "rarity": "SIR",
+    "price": 58.0,
+    "basis": "PriceCharting ungraded solds",
+    "asOf": "2026-08-17"
+   },
+   {
+    "num": "115",
+    "name": "Mega Chandelure ex",
+    "rarity": "SIR",
+    "price": 45.0,
+    "basis": "PriceCharting ungraded solds",
+    "asOf": "2026-08-17"
+   },
+   {
+    "num": "119",
+    "name": "Gwynn",
+    "rarity": "SIR",
+    "price": 37.0,
+    "basis": "PriceCharting ungraded solds",
+    "asOf": "2026-08-17"
+   },
+   {
+    "num": "118",
+    "name": "Gladion's Final Battle",
+    "rarity": "SIR",
+    "price": 30.0,
+    "basis": "PriceCharting ungraded solds",
+    "asOf": "2026-08-17"
+   },
+   {
+    "num": "101",
+    "name": "Mega Darkrai ex",
+    "rarity": "UR",
+    "price": 13.0,
+    "basis": "PriceCharting ungraded solds",
+    "asOf": "2026-08-17"
+   }
+  ],
+  "history": [
+   {
+    "date": "2026-08-24",
+    "level": 100.0,
+    "basketValue": 712.0,
+    "divisor": 7.12,
+    "priced": 8,
+    "note": "inception"
+   }
+  ]
+ }
+}
