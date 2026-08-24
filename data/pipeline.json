@@ -1,13 +1,13 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-24T19:14:55.000Z",
+ "generated": "2026-08-24T19:27:01.000Z",
  "generator": "chief-of-staff (2026-08-23)",
  "agents": {
   "seeker": {
    "label": "SEEKER",
    "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
-   "lastRun": "2026-08-17",
-   "nextRun": "2026-08-24",
+   "lastRun": "2026-08-24",
+   "nextRun": "2026-08-31",
    "actions": [
     {
      "ts": "2026-08-10",
@@ -24,23 +24,27 @@
     {
      "ts": "2026-08-18",
      "msg": "STEP 0.75 signal harvest: 1 new signal (PCA 2020 BCD 1st Auto, count 1 < 5 threshold; page exists) -- no auto-adds; test entries excluded permanently"
+    },
+    {
+     "ts": "2026-08-24",
+     "msg": "Calendar watch: 1 NEW release (Chrome Updates BKB Sapphire, Sep 3); Star Wars/Samurai Japan/Tennis/Vault Marvel already on skip list"
+    },
+    {
+     "ts": "2026-08-24",
+     "msg": "Trends: Celebrini record YG sale; Adley +12% on Red Sox trade; Murakami S1 base $8->$22; Phantasmal Flames Charizard X SIR ~$719 and NO page exists"
+    },
+    {
+     "ts": "2026-08-24",
+     "msg": "Gap analysis: proposed /phantasmal-flames-set-guide (top gap), /macklin-celebrini-rookie-cards, /paige-bueckers-rookie-cards"
     }
    ]
   },
   "curator": {
    "label": "CURATOR",
    "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-   "lastRun": "2026-08-18",
+   "lastRun": "2026-08-24",
    "nextRun": "2026-08-25",
    "actions": [
-    {
-     "ts": "2026-08-10",
-     "msg": "Built /topps-museum-collection-baseball (pre-order Aug 17) — nav + sitemap wired"
-    },
-    {
-     "ts": "2026-08-10",
-     "msg": "Built /topps-definitive-basketball (first NBA Definitive ever, Aug 18) — nav + sitemap wired"
-    },
     {
      "ts": "2026-08-10",
      "msg": "Both pages approved by Mo and pushed live (622b33a)"
@@ -80,27 +84,23 @@
     {
      "ts": "2026-08-18",
      "msg": "STEP 0: no new 1st-Bowman product delivering; Chrome street ~Sep 9-10 -- Friday release-window task stays DISABLED until street date"
+    },
+    {
+     "ts": "2026-08-24",
+     "msg": "BUILT /topps-chrome-updates-basketball-sapphire-edition (nav + sitemap wired, audits clean) — awaiting Mo review + push"
+    },
+    {
+     "ts": "2026-08-24",
+     "msg": "EPN BUTTON FLIP applied per epn-button-flip-aug23: 24 Fanatics/Impact buttons -> eBay EPN search links across 21 Topps/Bowman pages; narrative copy patched"
     }
    ]
   },
   "inspector": {
    "label": "INSPECTOR",
    "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-   "lastRun": "2026-08-21",
-   "nextRun": "2026-08-24",
+   "lastRun": "2026-08-24",
+   "nextRun": "2026-08-26",
    "actions": [
-    {
-     "ts": "2026-08-17",
-     "msg": "Applied approved price edits (4 pages); audit FAIL 0"
-    },
-    {
-     "ts": "2026-08-17",
-     "msg": "SITE AUDITOR commissioned — charter + deterministic sweep built, scheduled MWF 7am; first sweep: FAIL 0 / 1 WARN (Greninja verdict finalized on ask basis)"
-    },
-    {
-     "ts": "2026-08-18",
-     "msg": "SCP console + search pulled live: all 10 board/watch names raw+PSA 10. Gage Jump base auto now attributable ($50.24 raw / $279 PSA 10 -- was Gold /50 only)"
-    },
     {
      "ts": "2026-08-18",
      "msg": "DISCREPANCY: Monday Aug 17 scan reported 10 ledger finalizations but calls.json (local AND origin/main) still shows them trending past finalizeAfter 2026-08-14 -- needs Mo/Monday-run follow-up"
@@ -136,27 +136,27 @@
     {
      "ts": "2026-08-21",
      "msg": "dungeon-decisions.json still 404 on price-data — cockpit approve/decline loop stays dark until cockpit-loop-build (approved Aug 17) is pushed"
+    },
+    {
+     "ts": "2026-08-24",
+     "msg": "Verification: audit-prices FAIL 0 / site-auditor FAIL 0 after EPN flip + new page build"
+    },
+    {
+     "ts": "2026-08-24",
+     "msg": "Price check: 6 flags filed (Murakami S1 spike, Roman Anthony move needs comp ID, flagship FB box comps forming, 2 stale banners re-flagged)"
+    },
+    {
+     "ts": "2026-08-24",
+     "msg": "Pokemon images: all wired, nothing new this run"
     }
    ]
   },
   "dm": {
    "label": "DM",
    "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-   "lastRun": "2026-08-18",
-   "nextRun": "2026-08-24",
+   "lastRun": "2026-08-24",
+   "nextRun": "2026-08-25",
    "actions": [
-    {
-     "ts": "2026-08-10",
-     "msg": "Open question for Mo: Lucario call set-attribution (#179 = Mega Evolution base, not Ascended Heroes)"
-    },
-    {
-     "ts": "2026-08-10",
-     "msg": "Topps affiliate saga: funnel bug diagnosed, status confirmed In Review (2 months), escalated via email to Impact support — watch for response"
-    },
-    {
-     "ts": "2026-08-11",
-     "msg": "Ledger: all 4 Bangers verdicts FINAL, no changes; no new verdicts (promotion flags only). 7 tweet drafts written — awaiting Mo's pick"
-    },
     {
      "ts": "2026-08-11",
      "msg": "Self-growing feed loop built (Mo picked option 2): /api/track-signal demand counters + Tuesday STEP 0.75 auto-add (count≥5) — engine now grows from visitor demand"
@@ -192,6 +192,18 @@
     {
      "ts": "2026-08-18",
      "msg": "POKEMON CALLS RETIRED (Mo's decision): no new Pokemon calls; /track-record split into Sports (active) + Pokemon (retired, history stays) with per-segment scoreboard; policy written into calls.json _comment"
+    },
+    {
+     "ts": "2026-08-24",
+     "msg": "Ledger: 6 trending calls re-read Aug 24 (Greninja PSA10 550, Darkrai 257, Zeraora 59, Gladion 31, Kim 131 flat, Florentino 80 flat); none past finalizeAfter"
+    },
+    {
+     "ts": "2026-08-24",
+     "msg": "Lucario set attribution corrected to Mega Evolution per Mo (proposal lucario-attribution applied)"
+    },
+    {
+     "ts": "2026-08-24",
+     "msg": "Backlog reconcile: tweets-2026-08-18 stale (6 days, week passed) — needs Mo decision to retire"
     }
    ]
   },
@@ -274,6 +286,12 @@
    "stage": "scaffolded",
    "note": "Mockup approved + preview staged Aug 23 (base 100.00, popups, Vault track); real-data build is next",
    "ts": "2026-08-23"
+  },
+  {
+   "stage": "built",
+   "title": "2025-26 Topps Chrome Updates BKB Sapphire Edition",
+   "note": "Built Aug 24 from calendar watch; awaiting review/push",
+   "slug": "/topps-chrome-updates-basketball-sapphire-edition"
   },
   {
    "slug": "topps-museum-collection-baseball",
@@ -376,8 +394,8 @@
   {
    "id": "lucario-attribution",
    "area": "ledger",
-   "summary": "Confirm Lucario BUY call set attribution: #179 SIR = Mega Evolution base set, not Ascended Heroes (AH Lucario is #113) — Mo, 2026-08-19",
-   "status": "approved"
+   "summary": "Confirm Lucario BUY call set attribution: #179 SIR = Mega Evolution base set, not Ascended Heroes (AH Lucario is #113) — Mo, 2026-08-19 APPLIED Aug 24: calls.json v-ah-lucario-buy set -> Mega Evolution with dated note; no page carries the old attribution (ascended-heroes.html has no Lucario row).",
+   "status": "applied"
   },
   {
    "id": "tribute-box-comps",
@@ -507,18 +525,24 @@
   {
    "id": "epn-button-flip-aug23",
    "area": "monetization",
-   "summary": "Flip the 8+ placeholder Topps affiliate buttons to EPN search links (eBay = only lane with always-available inventory — Mo's decision, Aug 23). Also stands down the Fanatics Collect retry permanently. For the Monday run / curator to execute; EPN mandatory-param set applies.",
-   "status": "approved"
+   "summary": "Flip the 8+ placeholder Topps affiliate buttons to EPN search links (eBay = only lane with always-available inventory — Mo's decision, Aug 23). Also stands down the Fanatics Collect retry permanently. For the Monday run / curator to execute; EPN mandatory-param set applies. APPLIED Aug 24 by Monday run: 24 links on 21 pages flipped to EPN search (mandatory params + customid=slug), Fanatics narrative copy patched, audit-prices + site-auditor FAIL 0. Pokemon/hobby-box pages still carry 8 Fanatics (dykyyj) links — proposal text said Topps buttons only; say the word and next run flips those too.",
+   "status": "applied"
   },
   {
    "id": "set-index-etf-build",
    "area": "product",
-   "summary": "SET INDICES (Mo, Aug 23 — TOP PRIORITY, mockup APPROVED): ETF-style free-float cap-weighted index per set, sports + Pokemon. SPEC LOCKED: top-100 base cards; weight = sold price x listed supply; BASE LEVEL 100.00 (level = cumulative return) with divisor continuity; 90/110 entry-exit buffer; Tuesday reconstitution; parallels = phase-2 sub-tab; row popups on all listed holdings with rank history + basis-stamped price; star-Track wired to the Vault contract on every holding. Preview live at /set-index-preview (mockup-labeled, modeled floats flagged). NEXT: index calculator on real engine data, then BOW26 goes real and the Tuesday run owns reconstitution.",
+   "summary": "SET INDICES (Mo, Aug 23 — TOP PRIORITY, mockup APPROVED): ETF-style free-float cap-weighted index per set, sports + Pokemon. SPEC LOCKED: top-100 base cards; PRICE-WEIGHTED (rev. Aug 24: = cap-weighted under equal base print runs; float shown as depth stat only, never in the weight; parallels tab = true print-run cap); BASE LEVEL 100.00 (level = cumulative return) with divisor continuity; 90/110 entry-exit buffer; Tuesday reconstitution; parallels = phase-2 sub-tab; row popups on all listed holdings with rank history + basis-stamped price; star-Track wired to the Vault contract on every holding. Preview live at /set-index-preview (mockup-labeled, modeled floats flagged). NEXT: index calculator on real engine data, then BOW26 goes real and the Tuesday run owns reconstitution.",
    "status": "approved"
+  },
+  {
+   "id": "sapphire-updates-bkb-page-aug24",
+   "area": "content",
+   "summary": "NEW PAGE built and wired (nav+sitemap): /topps-chrome-updates-basketball-sapphire-edition (drops Sep 3; qualitative pre-release framing, no invented prices). Awaiting Mo review + push.",
+   "status": "awaiting-mo"
   }
  ],
  "scoreboard": {
-  "updated": "2026-08-18",
+  "updated": "2026-08-24",
   "final": 15,
   "finalRight": 2,
   "finalWrong": 11,
