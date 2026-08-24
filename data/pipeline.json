@@ -1,7 +1,7 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-21T16:13:24.000Z",
- "generator": "site-auditor (2026-08-21)",
+ "generated": "2026-08-24T01:31:27.000Z",
+ "generator": "chief-of-staff (2026-08-23)",
  "agents": {
   "seeker": {
    "label": "SEEKER",
@@ -213,13 +213,34 @@
      "ts": "2026-08-19",
      "msg": "Process: 8 of 9 reprice recs declined by Mo -> floor-position/corner rule written into charter same day; demand-gate moved to pre-filing after one gate closed post-execution (passed, but logged as process hole)"
     },
-    "2026-08-20: scan run 2 — 7 recs filed (5 actionable, 2 hold-notes). Read-only on COMC throughout.",
-    "2026-08-20: audited every position where the full listed float is owned — most price correctly, a handful of older ones drifted well above their sold tape and cannot convert. Reprice-down recs filed; no capital required.",
-    "2026-08-20: 2 buy-lane recs cleared all gates pre-filing (demand + velocity + float + tape). Prior week's 6 executed recs all verified live at target; none closed yet, so realized P/L stays $0.00.",
-    "2026-08-20: one prior rec re-gated after its catalyst turned out to have already passed — new charter check proposed so every catalyst must be dated and confirmed still ahead.",
-    "2026-08-21: scan run 3 (first scheduled Thursday run). Extraction pipeline fixed — snapshot now reconciles against COMC's own dashboard to the cent; prior run's silent data hole is closed.",
-    "2026-08-21: float check clean — every monopoly and accumulation position unchanged, zero corner-break alerts. Verified all prior executed recs still live at target; 1 new rec filed (a pass on the week's rotation set — no forced trades).",
-    "2026-08-21: grading update — a batch rec graded 'declined' last week turned out to be a menu: several of its items were executed at the exact revised targets a day later. Weekly diffs now check executed prices against ALL prior rec targets."
+    {
+     "ts": "2026-08-20",
+     "msg": "scan run 2 — 7 recs filed (5 actionable, 2 hold-notes). Read-only on COMC throughout."
+    },
+    {
+     "ts": "2026-08-20",
+     "msg": "audited every position where the full listed float is owned — most price correctly, a handful of older ones drifted well above their sold tape and cannot convert. Reprice-down recs filed; no capital required."
+    },
+    {
+     "ts": "2026-08-20",
+     "msg": "2 buy-lane recs cleared all gates pre-filing (demand + velocity + float + tape). Prior week's 6 executed recs all verified live at target; none closed yet, so realized P/L stays $0.00."
+    },
+    {
+     "ts": "2026-08-20",
+     "msg": "one prior rec re-gated after its catalyst turned out to have already passed — new charter check proposed so every catalyst must be dated and confirmed still ahead."
+    },
+    {
+     "ts": "2026-08-21",
+     "msg": "scan run 3 (first scheduled Thursday run). Extraction pipeline fixed — snapshot now reconciles against COMC's own dashboard to the cent; prior run's silent data hole is closed."
+    },
+    {
+     "ts": "2026-08-21",
+     "msg": "float check clean — every monopoly and accumulation position unchanged, zero corner-break alerts. Verified all prior executed recs still live at target; 1 new rec filed (a pass on the week's rotation set — no forced trades)."
+    },
+    {
+     "ts": "2026-08-21",
+     "msg": "grading update — a batch rec graded 'declined' last week turned out to be a menu: several of its items were executed at the exact revised targets a day later. Weekly diffs now check executed prices against ALL prior rec targets."
+    }
    ]
   },
   "gengar": {
@@ -374,8 +395,8 @@
   {
    "id": "topps-application-escalation",
    "area": "affiliate",
-   "summary": "Topps/Impact application (acct 7418994) In Review since mid-June. Aug 10: Collector Support dead end, Impact support form broken, EMAILED support@impact.com directly — awaiting response. Re-escalate if silent by ~Aug 24. Placeholder buttons on 8+ pages flip to earning links on approval.",
-   "status": "awaiting-response"
+   "summary": "Topps/Impact application (acct 7418994) In Review since mid-June. Aug 10: Collector Support dead end, Impact support form broken, EMAILED support@impact.com directly — awaiting response. Re-escalate if silent by ~Aug 24. Placeholder buttons on 8+ pages flip to earning links on approval. — RETIRED Aug 23 (Mo's decision): product sells out in minutes even on drops, so affiliate clicks can never convert; no more chasing. Application left sitting; buttons repoint to EPN.",
+   "status": "retired"
   },
   {
    "id": "vault-v3-aug17",
@@ -395,8 +416,8 @@
   },
   {
    "id": "cockpit-loop-build",
-   "status": "approved",
-   "title": "Push api/decisions.js + set Vercel env DUNGEON_KEY (and GITHUB_TOKEN if not already set for track-signal) — then dungeon approve/decline goes live. card-dungeon.html changes are local-only (gitignored), already active. — Mo, 2026-08-19"
+   "status": "applied",
+   "title": "Push api/decisions.js + set Vercel env DUNGEON_KEY (and GITHUB_TOKEN if not already set for track-signal) — then dungeon approve/decline goes live. card-dungeon.html changes are local-only (gitignored), already active. — Mo, 2026-08-19 — VERIFIED deployed Aug 23 (endpoint live, 401-not-503 proves GITHUB_TOKEN set); remaining: DUNGEON_KEY env + first-click test"
   },
   {
    "id": "tweets-2026-08-18",
@@ -475,6 +496,12 @@
    "id": "audit-2026-08-21-3",
    "status": "awaiting-mo",
    "title": "MED: /topps-chrome-black-football released Jul 10 — six weeks ago — but the banner still says 'As a just-releasing product there are no single-card sold comps yet… as of Jul 6, 2026' (line 784) and meta says 'Pre-release, July 2026' (line 8). Sold comps have existed for over a month. Fix: post-release reframe + comp refresh."
+  },
+  {
+   "id": "epn-button-flip-aug23",
+   "area": "monetization",
+   "summary": "Flip the 8+ placeholder Topps affiliate buttons to EPN search links (eBay = only lane with always-available inventory — Mo's decision, Aug 23). Also stands down the Fanatics Collect retry permanently. For the Monday run / curator to execute; EPN mandatory-param set applies.",
+   "status": "approved"
   }
  ],
  "scoreboard": {
@@ -491,67 +518,89 @@
  },
  "chiefOfStaff": {
   "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
-  "generated": "2026-08-20",
+  "generated": "2026-08-23 (three stale items caught and corrected same day)",
   "weekOf": "2026-08-24",
-  "seededBy": "manual (first brief) — Sunday task takes over 2026-08-23",
-  "headline": "2 trader proposals waiting on you; 1 ghost agent retired; supply instrumentation goes live tonight and needs a morning check.",
-  "doNothing": "Skipping the whole queue this week costs you nothing that compounds. The only time-sensitive item is #1, and only because it is a one-minute look.",
+  "headline": "Mo's call Sun evening: Topps/Fanatics affiliate lanes retired — inventory sells out before pages ship, so those clicks can never convert; eBay (always-stocked aftermarket) becomes the only monetization lane. Queue is 5 items, ~35 min.",
+  "doNothing": "With capture live and the affiliate chase retired, nothing left in the queue compounds weekly. The only daily cost is the trader's undercut item; everything else waits a week free.",
   "queue": [
    {
     "rank": 1,
-    "id": "cos-verify-supply",
-    "title": "Confirm supply data appeared on the Vault",
-    "why": "Engine change shipped Aug 20 goes live on the 08:15 UTC run. If it silently failed you cannot see it, and the fix is cheap today and expensive in a month.",
-    "effort": "1 min",
-    "ref": "/watchlist"
+    "id": "trader-open-recs",
+    "title": "Trader: 8 open recs across the Aug 19-21 scans; one undercut is time-sensitive",
+    "why": "Money decisions decaying with the tape. The undercut item pays floor-position cost every day it stands; the two corner buys were still available at last check.",
+    "effort": "15 min",
+    "ref": "local trader scan Aug 21, section 8"
    },
    {
     "rank": 2,
-    "id": "trader-2026-08-20",
-    "title": "Trader: 7 recs from the Aug 20 scan",
-    "why": "Buy/sell decisions with a live budget. Oldest unactioned proposal in the system.",
-    "effort": "15 min",
-    "ref": "local scan report"
+    "id": "audit-meds-approve",
+    "title": "Approve 3 audit MEDs: released products still framed as pre-release",
+    "why": "Release-week traffic is landing on factually wrong copy, including a product that streeted Friday. Your approval is the only blocker to the Monday fixer pass.",
+    "effort": "5 min",
+    "ref": "audit-2026-08-21-1..3"
    },
    {
     "rank": 3,
-    "id": "trader-2026-08-19",
-    "title": "Trader: first-scan recs still open",
-    "why": "Filed Aug 19, still awaiting-mo. Either action it or decline it so the hit-rate math is not polluted by stale opens.",
-    "effort": "10 min",
-    "ref": "local scan report"
+    "id": "newsletter-recover-stranded",
+    "title": "Newsletter: recover the stranded unconfirmed signups (last remaining step)",
+    "why": "Capture itself is DONE and verified live end-to-end. What remains is one-time: the backlog of people who signed up under the old double opt-in. The pool is frozen now, so this no longer compounds.",
+    "effort": "5 min",
+    "ref": "provider dashboard, unconfirmed filter"
    },
    {
     "rank": 4,
-    "id": "cos-watchtier-untrackable",
-    "title": "Decide whether an untrackable watch-tier name stays on the board",
-    "why": "The engine can never mark it (verified asks below threshold), so its Signal Board points read 0 forever and the board looks broken when it is not.",
-    "effort": "2 min",
-    "ref": "/bowman-bangers"
+    "id": "tweet-week-one",
+    "title": "Pick Monday's tweet — first week of the Mon/Wed/Fri rhythm starts tomorrow",
+    "why": "Drafts are written and priced from the latest board. The rhythm only becomes a rhythm if week one actually happens.",
+    "effort": "5 min",
+    "ref": "local tweet drafts (week of Aug 24)"
+   },
+   {
+    "rank": 5,
+    "id": "cockpit-key-test",
+    "title": "Cockpit: set the key env var + click one decision button to test (endpoint is already live)",
+    "why": "Third already-done item caught this week: the endpoint was pushed and deployed, and its store token is verifiably set. All that remains is confirming the key env var exists, then clicking any approve/decline in the dungeon and entering that key once when prompted.",
+    "effort": "3 min",
+    "ref": "cockpit-loop-build"
    }
   ],
   "watchdog": [
    {
     "severity": "fixed",
-    "what": "GENGAR agent retired",
-    "detail": "No owning scheduled task since creation; last run Aug 10, next-run date already in the past. Was rendering as a live agent."
+    "what": "Trader feed schema drift repaired",
+    "detail": "7 recent trader actions were bare strings; the schema requires ts+msg objects. Normalized in place, content untouched."
    },
    {
     "severity": "fixed",
-    "what": "Inspector state repaired",
-    "detail": "nextRun predated lastRun — an impossible state on a panel labelled REAL DATA."
+    "what": "Card Hub root indexed",
+    "detail": "29 loose files/folders at the root now carry an INDEX.md. Files deliberately left in place so the weekly runs' newest-file lookups don't break; archival proposed for a later run if Mo wants it."
    },
    {
     "severity": "watch",
-    "what": "Report filing has drifted",
-    "detail": "weekly-report-* became weekly-scan-* mid-stream with no reconciliation; 24 loose files at the Card Hub root with no index."
+    "what": "Mon/Tue scheduler timestamps don't match outputs",
+    "detail": "Both tasks report a Thursday lastRun at the identical second, with no outputs produced at that moment. Looks like wake-time bookkeeping, not real runs — the agents' own state is consistent with their true Mon/Tue runs. Escalates to broken if Monday's scan produces no report."
+   },
+   {
+    "severity": "watch",
+    "what": "Proposal statuses lag reality in the trader lane",
+    "detail": "A rec batch formally graded declined was partially executed at the exact targets days later. Status reconciliation belongs to the Thursday run once the cockpit loop is live; not touched here because grades are content."
+   },
+   {
+    "severity": "watch",
+    "what": "Dungeon-keeper task naming drift",
+    "detail": "Task id says Saturday, description says Friday 9am, cron runs Friday 11am. Cosmetic; renaming a task is a proposal, not a janitorial fix."
+   },
+   {
+    "severity": "fixed",
+    "what": "Chief of Staff mis-ranked an already-completed item; corrected same day",
+    "detail": "Sunday's queue #1 was built from a 3-day-old report's open-items list without verifying live state; Mo had completed it within hours of that report. Verified against the deployed endpoint and repo, queue re-ranked. Second proof this week that acted-on-off-book reads as ignored until the cockpit loop closes."
    }
   ],
   "analyst": {
    "ranAsExpected": 5,
    "agentsTotal": 6,
-   "note": "6 agent personas, 5 with owning scheduled tasks after the GENGAR retirement. No agent-value grading exists yet — the first real read lands after 4 weeks of tracking which outputs get actioned versus ignored.",
-   "kill": "If Mo is not opening this panel first for 4 consecutive weeks, the Chief of Staff gets retired the same way GENGAR just did."
+   "note": "All 5 active personas ran on cadence this week (1 retired). First week of actioning data: the trader is the most-actioned agent in the system — most week-1 recs executed, several AFTER a formal decline, which caught a blind spot in the measurement itself. Auditor proposals historically clear within 48h; 3 MEDs currently open. What cannot be measured: whether tweets/digests actually get posted, and anything Mo executes off-book — the cockpit push (queue rank 6) is what closes that hole. CORRECTION: the off-book blind spot bit the Chief of Staff itself this week — Sunday's #1 queue item was already done and had to be verified and re-ranked after Mo flagged it.",
+   "kill": "No agent proposed for retirement this week. Chief of Staff's own kill-criterion clock: week 1 of 4, first review ~Sep 20."
   }
  }
 }
