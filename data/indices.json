@@ -1,18 +1,18 @@
 {
- "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ACTIVATION RULE: a pre-activation index (status=pre-activation, divisor null) activates when the weekly re-mark sources its first point sold reads — set divisor = basketValue/100 on that date, set inception, write history row level 100.00, flip status to live. DR25 also needs its universe enumerated (sv10 was down at build). ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark.",
+ "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ACTIVATION RULE: a pre-activation index (status=pre-activation, divisor null) activates when the weekly re-mark sources its first point sold reads — set divisor = basketValue/100 on that date, set inception, write history row level 100.00, flip status to live. DR25 also needs its universe enumerated (sv10 was down at build). ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark.",
  "PB26": {
   "name": "Pitch Black Chase Index",
   "page": "/pitch-black-index",
   "base": 100.0,
   "status": "live",
   "inception": "2026-08-24",
-  "divisor": 7.22,
+  "divisor": 8.7603,
   "divisorLog": [
    {
     "date": "2026-08-24",
     "before": null,
-    "after": 7.22,
-    "why": "inception: basket $722.00 / base 100.00 (PB26 restated same-day with Aug 24 marks from the Monday scan before any level was consumed)"
+    "after": 8.7603,
+    "why": "inception: basket $876.03 / base 100.00 (PB26 restated same-day with Aug 24 marks from the Monday scan before any level was consumed)"
    }
   ],
   "universeComplete": true,
@@ -211,23 +211,23 @@
     "num": "120",
     "name": "Mega Darkrai ex",
     "rarity": "MHR",
-    "price": 185.0,
+    "price": 191.73,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
-    "asOf": "2026-08-17"
+    "asOf": "2026-08-24"
    },
    {
     "num": "117",
     "name": "Morpeko ex",
     "rarity": "SIR",
-    "price": 95.0,
+    "price": 92.59,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
-    "asOf": "2026-08-17"
+    "asOf": "2026-08-24"
    },
    {
     "num": "114",
     "name": "Mega Zeraora ex",
     "rarity": "SIR",
-    "price": 59.0,
+    "price": 56.05,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
     "asOf": "2026-08-24"
    },
@@ -235,23 +235,39 @@
     "num": "115",
     "name": "Mega Chandelure ex",
     "rarity": "SIR",
-    "price": 45.0,
+    "price": 39.87,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
-    "asOf": "2026-08-17"
+    "asOf": "2026-08-24"
    },
    {
     "num": "119",
     "name": "Gwynn",
     "rarity": "SIR",
-    "price": 37.0,
+    "price": 32.0,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
-    "asOf": "2026-08-17"
+    "asOf": "2026-08-24"
    },
    {
     "num": "118",
     "name": "Gladion's Final Battle",
     "rarity": "SIR",
-    "price": 31.0,
+    "price": 27.55,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "111",
+    "name": "Misty's Vitality",
+    "rarity": "UR",
+    "price": 20.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "90",
+    "name": "Slowbro",
+    "rarity": "IR",
+    "price": 16.99,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
     "asOf": "2026-08-24"
    },
@@ -259,18 +275,226 @@
     "num": "101",
     "name": "Mega Darkrai ex",
     "rarity": "UR",
-    "price": 13.0,
+    "price": 13.1,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
-    "asOf": "2026-08-17"
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "87",
+    "name": "Goldeen",
+    "rarity": "IR",
+    "price": 10.5,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "99",
+    "name": "Mega Chandelure ex",
+    "rarity": "UR",
+    "price": 9.46,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "109",
+    "name": "Gwynn",
+    "rarity": "UR",
+    "price": 9.05,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "103",
+    "name": "Mega Excadrill ex",
+    "rarity": "UR",
+    "price": 8.47,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "98",
+    "name": "Mega Zeraora ex",
+    "rarity": "UR",
+    "price": 7.88,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "102",
+    "name": "Morpeko ex",
+    "rarity": "UR",
+    "price": 7.14,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "91",
+    "name": "Dhelmise",
+    "rarity": "IR",
+    "price": 6.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "88",
+    "name": "Primarina",
+    "rarity": "IR",
+    "price": 5.5,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "97",
+    "name": "Wailord ex",
+    "rarity": "UR",
+    "price": 4.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "86",
+    "name": "Armarouge",
+    "rarity": "IR",
+    "price": 4.87,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "105",
+    "name": "Crushing Hammer",
+    "rarity": "UR",
+    "price": 4.64,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "108",
+    "name": "Gladion's Final Battle",
+    "rarity": "UR",
+    "price": 4.52,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "95",
+    "name": "Silvally",
+    "rarity": "IR",
+    "price": 4.26,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "104",
+    "name": "Brave Bangle",
+    "rarity": "UR",
+    "price": 4.25,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "94",
+    "name": "Toucannon",
+    "rarity": "IR",
+    "price": 4.14,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "100",
+    "name": "Rampardos ex",
+    "rarity": "UR",
+    "price": 3.9,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "96",
+    "name": "Lurantis ex",
+    "rarity": "UR",
+    "price": 3.54,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "112",
+    "name": "Rust Syndicate Grunt",
+    "rarity": "UR",
+    "price": 3.5,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "93",
+    "name": "Bastiodon",
+    "rarity": "IR",
+    "price": 3.5,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "85",
+    "name": "Fomantis",
+    "rarity": "IR",
+    "price": 3.29,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "106",
+    "name": "Dark Bell",
+    "rarity": "UR",
+    "price": 3.28,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "89",
+    "name": "Manectric",
+    "rarity": "IR",
+    "price": 2.96,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "110",
+    "name": "Iron Defender",
+    "rarity": "UR",
+    "price": 2.65,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "107",
+    "name": "Energy Switch",
+    "rarity": "UR",
+    "price": 2.45,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "92",
+    "name": "Thievul",
+    "rarity": "IR",
+    "price": 2.37,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "113",
+    "name": "Tremendous Bomb",
+    "rarity": "UR",
+    "price": 2.04,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
    }
   ],
   "history": [
    {
     "date": "2026-08-24",
     "level": 100.0,
-    "basketValue": 722.0,
-    "divisor": 7.22,
-    "priced": 8,
+    "basketValue": 876.03,
+    "divisor": 8.7603,
+    "priced": 36,
     "note": "inception"
    }
   ]
@@ -281,20 +505,160 @@
   "base": 100.0,
   "status": "live",
   "inception": "2026-08-24",
-  "divisor": 2.1159,
+  "divisor": 6.7812,
   "divisorLog": [
    {
     "date": "2026-08-24",
     "before": null,
-    "after": 2.1159,
-    "why": "inception: basket $211.59 / base 100.00"
+    "after": 6.7812,
+    "why": "inception: basket $678.12 / base 100.00"
    }
   ],
-  "universeComplete": false,
+  "universeComplete": true,
   "universe": [
+   {
+    "num": "87",
+    "name": "Chespin",
+    "rarity": "IR"
+   },
+   {
+    "num": "88",
+    "name": "Froakie",
+    "rarity": "IR"
+   },
+   {
+    "num": "89",
+    "name": "Frogadier",
+    "rarity": "IR"
+   },
+   {
+    "num": "90",
+    "name": "Ampharos",
+    "rarity": "IR"
+   },
+   {
+    "num": "91",
+    "name": "Xerneas",
+    "rarity": "IR"
+   },
+   {
+    "num": "92",
+    "name": "Claydol",
+    "rarity": "IR"
+   },
+   {
+    "num": "93",
+    "name": "Crobat",
+    "rarity": "IR"
+   },
+   {
+    "num": "94",
+    "name": "Metang",
+    "rarity": "IR"
+   },
+   {
+    "num": "95",
+    "name": "Sliggoo",
+    "rarity": "IR"
+   },
+   {
+    "num": "96",
+    "name": "Tauros",
+    "rarity": "IR"
+   },
+   {
+    "num": "97",
+    "name": "Watchog",
+    "rarity": "IR"
+   },
+   {
+    "num": "98",
+    "name": "Beedrill ex",
+    "rarity": "UR"
+   },
    {
     "num": "99",
     "name": "Mega Pyroar ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "100",
+    "name": "Mega Greninja ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "101",
+    "name": "Mega Floette ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "102",
+    "name": "Gourgeist ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "103",
+    "name": "Cobalion ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "104",
+    "name": "Mega Dragalge ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "105",
+    "name": "Cinccino ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "106",
+    "name": "AZ's Tranquility",
+    "rarity": "UR"
+   },
+   {
+    "num": "107",
+    "name": "Emma",
+    "rarity": "UR"
+   },
+   {
+    "num": "108",
+    "name": "Energy Retrieval",
+    "rarity": "UR"
+   },
+   {
+    "num": "109",
+    "name": "Jumbo Ice Cream",
+    "rarity": "UR"
+   },
+   {
+    "num": "110",
+    "name": "Philippe",
+    "rarity": "UR"
+   },
+   {
+    "num": "111",
+    "name": "Prism Tower",
+    "rarity": "UR"
+   },
+   {
+    "num": "112",
+    "name": "Roxie's Performance",
+    "rarity": "UR"
+   },
+   {
+    "num": "113",
+    "name": "Special Red Card",
+    "rarity": "UR"
+   },
+   {
+    "num": "114",
+    "name": "Surfing Beach",
+    "rarity": "UR"
+   },
+   {
+    "num": "115",
+    "name": "Tool Scrapper",
     "rarity": "UR"
    },
    {
@@ -311,6 +675,26 @@
     "num": "118",
     "name": "Mega Dragalge ex",
     "rarity": "SIR"
+   },
+   {
+    "num": "119",
+    "name": "Cinccino ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "120",
+    "name": "AZ's Tranquility",
+    "rarity": "SIR"
+   },
+   {
+    "num": "121",
+    "name": "Roxie's Performance",
+    "rarity": "SIR"
+   },
+   {
+    "num": "122",
+    "name": "Mega Greninja ex",
+    "rarity": "MHR"
    }
   ],
   "basket": [
@@ -318,18 +702,298 @@
     "num": "116",
     "name": "Mega Greninja ex",
     "rarity": "SIR",
-    "price": 211.59,
+    "price": 200.15,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
-    "asOf": "2026-08-10"
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "122",
+    "name": "Mega Greninja ex",
+    "rarity": "MHR",
+    "price": 180.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "119",
+    "name": "Cinccino ex",
+    "rarity": "SIR",
+    "price": 57.06,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "118",
+    "name": "Mega Dragalge ex",
+    "rarity": "SIR",
+    "price": 38.56,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "117",
+    "name": "Mega Floette ex",
+    "rarity": "SIR",
+    "price": 30.74,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "120",
+    "name": "AZ's Tranquility",
+    "rarity": "SIR",
+    "price": 25.5,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "121",
+    "name": "Roxie's Performance",
+    "rarity": "SIR",
+    "price": 21.69,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "100",
+    "name": "Mega Greninja ex",
+    "rarity": "UR",
+    "price": 12.33,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "88",
+    "name": "Froakie",
+    "rarity": "IR",
+    "price": 9.38,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "91",
+    "name": "Xerneas",
+    "rarity": "IR",
+    "price": 9.07,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "90",
+    "name": "Ampharos",
+    "rarity": "IR",
+    "price": 7.64,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "89",
+    "name": "Frogadier",
+    "rarity": "IR",
+    "price": 7.53,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "105",
+    "name": "Cinccino ex",
+    "rarity": "UR",
+    "price": 5.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "87",
+    "name": "Chespin",
+    "rarity": "IR",
+    "price": 4.37,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "96",
+    "name": "Tauros",
+    "rarity": "IR",
+    "price": 4.25,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "114",
+    "name": "Surfing Beach",
+    "rarity": "UR",
+    "price": 4.25,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "113",
+    "name": "Special Red Card",
+    "rarity": "UR",
+    "price": 4.06,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "101",
+    "name": "Mega Floette ex",
+    "rarity": "UR",
+    "price": 3.94,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "111",
+    "name": "Prism Tower",
+    "rarity": "UR",
+    "price": 3.94,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "104",
+    "name": "Mega Dragalge ex",
+    "rarity": "UR",
+    "price": 3.78,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "99",
+    "name": "Mega Pyroar ex",
+    "rarity": "UR",
+    "price": 3.58,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "109",
+    "name": "Jumbo Ice Cream",
+    "rarity": "UR",
+    "price": 3.57,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "112",
+    "name": "Roxie's Performance",
+    "rarity": "UR",
+    "price": 3.52,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "98",
+    "name": "Beedrill ex",
+    "rarity": "UR",
+    "price": 3.49,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "94",
+    "name": "Metang",
+    "rarity": "IR",
+    "price": 3.25,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "93",
+    "name": "Crobat",
+    "rarity": "IR",
+    "price": 3.03,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "106",
+    "name": "AZ's Tranquility",
+    "rarity": "UR",
+    "price": 2.88,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "107",
+    "name": "Emma",
+    "rarity": "UR",
+    "price": 2.85,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "95",
+    "name": "Sliggoo",
+    "rarity": "IR",
+    "price": 2.79,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "92",
+    "name": "Claydol",
+    "rarity": "IR",
+    "price": 2.65,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "110",
+    "name": "Philippe",
+    "rarity": "UR",
+    "price": 2.5,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "103",
+    "name": "Cobalion ex",
+    "rarity": "UR",
+    "price": 2.42,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "97",
+    "name": "Watchog",
+    "rarity": "IR",
+    "price": 2.25,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "108",
+    "name": "Energy Retrieval",
+    "rarity": "UR",
+    "price": 2.16,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "102",
+    "name": "Gourgeist ex",
+    "rarity": "UR",
+    "price": 2.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "115",
+    "name": "Tool Scrapper",
+    "rarity": "UR",
+    "price": 1.94,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
    }
   ],
   "history": [
    {
     "date": "2026-08-24",
     "level": 100.0,
-    "basketValue": 211.59,
-    "divisor": 2.1159,
-    "priced": 1,
+    "basketValue": 678.12,
+    "divisor": 6.7812,
+    "priced": 36,
     "note": "inception"
    }
   ]
@@ -340,17 +1004,182 @@
   "base": 100.0,
   "status": "live",
   "inception": "2026-08-24",
-  "divisor": 27.69,
+  "divisor": 28.4249,
   "divisorLog": [
    {
     "date": "2026-08-24",
     "before": null,
-    "after": 27.69,
-    "why": "inception: basket $2,769.00 / base 100.00"
+    "after": 28.4249,
+    "why": "inception: basket $2,842.49 / base 100.00"
    }
   ],
   "universeComplete": false,
   "universe": [
+   {
+    "num": "218",
+    "name": "Erika's Tangela",
+    "rarity": "IR"
+   },
+   {
+    "num": "219",
+    "name": "Beautifly",
+    "rarity": "IR"
+   },
+   {
+    "num": "220",
+    "name": "Dustox",
+    "rarity": "IR"
+   },
+   {
+    "num": "221",
+    "name": "Budew",
+    "rarity": "IR"
+   },
+   {
+    "num": "222",
+    "name": "Ethan's Magcargo",
+    "rarity": "IR"
+   },
+   {
+    "num": "223",
+    "name": "Numel",
+    "rarity": "IR"
+   },
+   {
+    "num": "224",
+    "name": "Salazzle",
+    "rarity": "IR"
+   },
+   {
+    "num": "225",
+    "name": "Scorbunny",
+    "rarity": "IR"
+   },
+   {
+    "num": "226",
+    "name": "Psyduck",
+    "rarity": "IR"
+   },
+   {
+    "num": "227",
+    "name": "Snorunt",
+    "rarity": "IR"
+   },
+   {
+    "num": "228",
+    "name": "Weavile",
+    "rarity": "IR"
+   },
+   {
+    "num": "229",
+    "name": "Heliolisk",
+    "rarity": "IR"
+   },
+   {
+    "num": "230",
+    "name": "Vikavolt",
+    "rarity": "IR"
+   },
+   {
+    "num": "231",
+    "name": "Iono's Wattrel",
+    "rarity": "IR"
+   },
+   {
+    "num": "232",
+    "name": "Marill",
+    "rarity": "IR"
+   },
+   {
+    "num": "233",
+    "name": "Misdreavus",
+    "rarity": "IR"
+   },
+   {
+    "num": "234",
+    "name": "Banette",
+    "rarity": "IR"
+   },
+   {
+    "num": "235",
+    "name": "Togekiss",
+    "rarity": "IR"
+   },
+   {
+    "num": "236",
+    "name": "Slurpuff",
+    "rarity": "IR"
+   },
+   {
+    "num": "237",
+    "name": "Hop's Trevenant",
+    "rarity": "IR"
+   },
+   {
+    "num": "238",
+    "name": "Team Rocket's Mimikyu",
+    "rarity": "IR"
+   },
+   {
+    "num": "239",
+    "name": "Team Rocket's Dugtrio",
+    "rarity": "IR"
+   },
+   {
+    "num": "240",
+    "name": "Hitmontop",
+    "rarity": "IR"
+   },
+   {
+    "num": "241",
+    "name": "Medicham",
+    "rarity": "IR"
+   },
+   {
+    "num": "242",
+    "name": "Carbink",
+    "rarity": "IR"
+   },
+   {
+    "num": "243",
+    "name": "Mightyena",
+    "rarity": "IR"
+   },
+   {
+    "num": "244",
+    "name": "Cynthia's Spiritomb",
+    "rarity": "IR"
+   },
+   {
+    "num": "245",
+    "name": "Galarian Obstagoon",
+    "rarity": "IR"
+   },
+   {
+    "num": "246",
+    "name": "Mawile",
+    "rarity": "IR"
+   },
+   {
+    "num": "247",
+    "name": "Dreepy",
+    "rarity": "IR"
+   },
+   {
+    "num": "248",
+    "name": "Drakloak",
+    "rarity": "IR"
+   },
+   {
+    "num": "249",
+    "name": "Larry's Staraptor",
+    "rarity": "IR"
+   },
+   {
+    "num": "250",
+    "name": "Fan Rotom",
+    "rarity": "IR"
+   },
    {
     "num": "281",
     "name": "Team Rocket's Mewtwo ex",
@@ -382,50 +1211,314 @@
     "num": "284",
     "name": "Mega Gengar ex",
     "rarity": "SIR",
-    "price": 1060.0,
+    "price": 974.65,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
-    "asOf": "2026-08-10"
+    "asOf": "2026-08-24"
    },
    {
     "num": "290",
     "name": "Mega Dragonite ex",
     "rarity": "SIR",
-    "price": 700.0,
+    "price": 641.08,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
-    "asOf": "2026-08-10"
+    "asOf": "2026-08-24"
    },
    {
     "num": "294",
     "name": "Mega Charizard Y ex",
     "rarity": "MHR",
-    "price": 410.0,
+    "price": 366.09,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
-    "asOf": "2026-08-10"
+    "asOf": "2026-08-24"
    },
    {
     "num": "281",
     "name": "Team Rocket's Mewtwo ex",
     "rarity": "SIR",
-    "price": 354.0,
+    "price": 333.75,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
-    "asOf": "2026-08-17"
+    "asOf": "2026-08-24"
    },
    {
     "num": "295",
     "name": "Mega Dragonite ex",
     "rarity": "MHR",
-    "price": 245.0,
+    "price": 229.24,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
-    "asOf": "2026-08-10"
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "226",
+    "name": "Psyduck",
+    "rarity": "IR",
+    "price": 68.69,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "238",
+    "name": "Team Rocket's Mimikyu",
+    "rarity": "IR",
+    "price": 22.89,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "218",
+    "name": "Erika's Tangela",
+    "rarity": "IR",
+    "price": 17.26,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "232",
+    "name": "Marill",
+    "rarity": "IR",
+    "price": 12.47,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "244",
+    "name": "Cynthia's Spiritomb",
+    "rarity": "IR",
+    "price": 10.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "231",
+    "name": "Iono's Wattrel",
+    "rarity": "IR",
+    "price": 10.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "239",
+    "name": "Team Rocket's Dugtrio",
+    "rarity": "IR",
+    "price": 9.97,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "234",
+    "name": "Banette",
+    "rarity": "IR",
+    "price": 9.5,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "225",
+    "name": "Scorbunny",
+    "rarity": "IR",
+    "price": 8.68,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "243",
+    "name": "Mightyena",
+    "rarity": "IR",
+    "price": 8.24,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "219",
+    "name": "Beautifly",
+    "rarity": "IR",
+    "price": 7.37,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "236",
+    "name": "Slurpuff",
+    "rarity": "IR",
+    "price": 7.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "240",
+    "name": "Hitmontop",
+    "rarity": "IR",
+    "price": 6.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "247",
+    "name": "Dreepy",
+    "rarity": "IR",
+    "price": 6.9,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "222",
+    "name": "Ethan's Magcargo",
+    "rarity": "IR",
+    "price": 6.53,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "221",
+    "name": "Budew",
+    "rarity": "IR",
+    "price": 6.29,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "246",
+    "name": "Mawile",
+    "rarity": "IR",
+    "price": 6.03,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "235",
+    "name": "Togekiss",
+    "rarity": "IR",
+    "price": 5.95,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "248",
+    "name": "Drakloak",
+    "rarity": "IR",
+    "price": 5.95,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "228",
+    "name": "Weavile",
+    "rarity": "IR",
+    "price": 5.75,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "242",
+    "name": "Carbink",
+    "rarity": "IR",
+    "price": 5.74,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "233",
+    "name": "Misdreavus",
+    "rarity": "IR",
+    "price": 5.54,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "241",
+    "name": "Medicham",
+    "rarity": "IR",
+    "price": 5.3,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "227",
+    "name": "Snorunt",
+    "rarity": "IR",
+    "price": 5.06,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "223",
+    "name": "Numel",
+    "rarity": "IR",
+    "price": 5.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "237",
+    "name": "Hop's Trevenant",
+    "rarity": "IR",
+    "price": 4.25,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "249",
+    "name": "Larry's Staraptor",
+    "rarity": "IR",
+    "price": 4.09,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "250",
+    "name": "Fan Rotom",
+    "rarity": "IR",
+    "price": 3.94,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "220",
+    "name": "Dustox",
+    "rarity": "IR",
+    "price": 3.64,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "245",
+    "name": "Galarian Obstagoon",
+    "rarity": "IR",
+    "price": 3.41,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "224",
+    "name": "Salazzle",
+    "rarity": "IR",
+    "price": 3.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "230",
+    "name": "Vikavolt",
+    "rarity": "IR",
+    "price": 3.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "229",
+    "name": "Heliolisk",
+    "rarity": "IR",
+    "price": 2.26,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
    }
   ],
   "history": [
    {
     "date": "2026-08-24",
     "level": 100.0,
-    "basketValue": 2769.0,
-    "divisor": 27.69,
-    "priced": 5,
+    "basketValue": 2842.49,
+    "divisor": 28.4249,
+    "priced": 38,
     "note": "inception"
    }
   ]
@@ -436,13 +1529,13 @@
   "base": 100.0,
   "status": "live",
   "inception": "2026-08-24",
-  "divisor": 33.0398,
+  "divisor": 44.7686,
   "divisorLog": [
    {
     "date": "2026-08-24",
     "before": null,
-    "after": 33.0398,
-    "why": "inception: basket $3,303.98 / base 100.00"
+    "after": 44.7686,
+    "why": "inception: basket $4,476.86 / base 100.00"
    }
   ],
   "universeComplete": true,
@@ -759,10 +1852,170 @@
     "asOf": "2026-08-24"
    },
    {
+    "num": "162",
+    "name": "Roaring Moon ex",
+    "rarity": "SIR",
+    "price": 167.73,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "167",
+    "name": "Eevee ex",
+    "rarity": "SIR",
+    "price": 154.5,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "165",
+    "name": "Dragapult ex",
+    "rarity": "SIR",
+    "price": 100.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "147",
+    "name": "Ceruledge ex",
+    "rarity": "SIR",
+    "price": 89.93,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "166",
+    "name": "Raging Bolt ex",
+    "rarity": "SIR",
+    "price": 66.32,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "168",
+    "name": "Bloodmoon Ursaluna ex",
+    "rarity": "SIR",
+    "price": 62.97,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "179",
+    "name": "Pikachu ex",
+    "rarity": "HR",
+    "price": 55.77,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "164",
+    "name": "Gholdengo ex",
+    "rarity": "SIR",
+    "price": 48.25,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "157",
+    "name": "Iron Valiant ex",
+    "rarity": "SIR",
+    "price": 45.24,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "151",
+    "name": "Palafin ex",
+    "rarity": "SIR",
+    "price": 40.1,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "158",
+    "name": "Iron Crown ex",
+    "rarity": "SIR",
+    "price": 31.15,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "154",
+    "name": "Iron Hands ex",
+    "rarity": "SIR",
+    "price": 30.92,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "163",
+    "name": "Pecharunt ex",
+    "rarity": "SIR",
+    "price": 29.82,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "171",
+    "name": "Crispin",
+    "rarity": "SIR",
+    "price": 29.8,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "169",
+    "name": "Terapagos ex",
+    "rarity": "SIR",
+    "price": 27.24,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "159",
+    "name": "Sandy Shocks ex",
+    "rarity": "SIR",
+    "price": 25.91,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "173",
+    "name": "Janine's Secret Art",
+    "rarity": "SIR",
+    "price": 24.54,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "175",
+    "name": "Lacey",
+    "rarity": "SIR",
+    "price": 21.05,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
     "num": "145",
     "name": "Teal Mask Ogerpon ex",
     "rarity": "SIR",
     "price": 18.79,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "174",
+    "name": "Kieran",
+    "rarity": "SIR",
+    "price": 17.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "148",
+    "name": "Hearthflame Mask Ogerpon ex",
+    "rarity": "SIR",
+    "price": 17.18,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
     "asOf": "2026-08-24"
    },
@@ -773,15 +2026,167 @@
     "price": 17.0,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
     "asOf": "2026-08-24"
+   },
+   {
+    "num": "172",
+    "name": "Drayton",
+    "rarity": "SIR",
+    "price": 16.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "160",
+    "name": "Cornerstone Mask Ogerpon ex",
+    "rarity": "SIR",
+    "price": 13.58,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "170",
+    "name": "Amarys",
+    "rarity": "SIR",
+    "price": 12.68,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "180",
+    "name": "Terapagos ex",
+    "rarity": "HR",
+    "price": 10.39,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "177",
+    "name": "Teal Mask Ogerpon ex",
+    "rarity": "HR",
+    "price": 8.01,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "178",
+    "name": "Walking Wake ex",
+    "rarity": "HR",
+    "price": 6.78,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "176",
+    "name": "Iron Leaves ex",
+    "rarity": "HR",
+    "price": 5.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "136",
+    "name": "Eri",
+    "rarity": "UR",
+    "price": 1.48,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "139",
+    "name": "Larry's Skill",
+    "rarity": "UR",
+    "price": 1.25,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "137",
+    "name": "Friends in Paldea",
+    "rarity": "UR",
+    "price": 1.24,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "143",
+    "name": "Tyme",
+    "rarity": "UR",
+    "price": 1.06,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "142",
+    "name": "Raifort",
+    "rarity": "UR",
+    "price": 1.04,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "133",
+    "name": "Atticus",
+    "rarity": "UR",
+    "price": 1.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "135",
+    "name": "Brassius",
+    "rarity": "UR",
+    "price": 1.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "138",
+    "name": "Giacomo",
+    "rarity": "UR",
+    "price": 1.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "140",
+    "name": "Mela",
+    "rarity": "UR",
+    "price": 1.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "132",
+    "name": "Amarys",
+    "rarity": "UR",
+    "price": 0.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "134",
+    "name": "Atticus",
+    "rarity": "UR",
+    "price": 0.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "141",
+    "name": "Ortega",
+    "rarity": "UR",
+    "price": 0.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
    }
   ],
   "history": [
    {
     "date": "2026-08-24",
     "level": 100.0,
-    "basketValue": 3303.98,
-    "divisor": 33.0398,
-    "priced": 10,
+    "basketValue": 4476.86,
+    "divisor": 44.7686,
+    "priced": 49,
     "note": "inception"
    }
   ]
@@ -792,13 +2197,13 @@
   "base": 100.0,
   "status": "live",
   "inception": "2026-08-24",
-  "divisor": 11.6293,
+  "divisor": 16.5126,
   "divisorLog": [
    {
     "date": "2026-08-24",
     "before": null,
-    "after": 11.6293,
-    "why": "inception: basket $1,162.93 / base 100.00"
+    "after": 16.5126,
+    "why": "inception: basket $1,651.26 / base 100.00"
    }
   ],
   "universeComplete": true,
@@ -1156,10 +2561,34 @@
     "asOf": "2026-08-24"
    },
    {
+    "num": "240",
+    "name": "Team Rocket's Mewtwo ex",
+    "rarity": "HR",
+    "price": 60.76,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "193",
+    "name": "Misty's Psyduck",
+    "rarity": "IR",
+    "price": 60.37,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
     "num": "236",
     "name": "Ethan's Adventure",
     "rarity": "SIR",
     "price": 40.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "194",
+    "name": "Misty's Lapras",
+    "rarity": "IR",
+    "price": 31.16,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
     "asOf": "2026-08-24"
    },
@@ -1180,6 +2609,30 @@
     "asOf": "2026-08-24"
    },
    {
+    "num": "203",
+    "name": "Team Rocket's Meowth",
+    "rarity": "IR",
+    "price": 26.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "239",
+    "name": "Ethan's Ho-Oh ex",
+    "rarity": "HR",
+    "price": 25.66,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "190",
+    "name": "Ethan's Typhlosion",
+    "rarity": "IR",
+    "price": 25.26,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
     "num": "237",
     "name": "Team Rocket's Ariana",
     "rarity": "SIR",
@@ -1194,15 +2647,359 @@
     "price": 20.04,
     "basis": "sold (PriceCharting / guide reprice vs solds)",
     "asOf": "2026-08-24"
+   },
+   {
+    "num": "213",
+    "name": "Team Rocket's Mewtwo ex",
+    "rarity": "UR",
+    "price": 19.89,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "242",
+    "name": "Team Rocket's Crobat ex",
+    "rarity": "HR",
+    "price": 16.23,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "191",
+    "name": "Team Rocket's Houndoom",
+    "rarity": "IR",
+    "price": 14.46,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "184",
+    "name": "Cynthia's Roserade",
+    "rarity": "IR",
+    "price": 12.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "204",
+    "name": "Kangaskhan",
+    "rarity": "IR",
+    "price": 11.53,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "185",
+    "name": "Shaymin",
+    "rarity": "IR",
+    "price": 11.28,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "192",
+    "name": "Blaziken",
+    "rarity": "IR",
+    "price": 10.5,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "200",
+    "name": "Team Rocket's Murkrow",
+    "rarity": "IR",
+    "price": 9.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "226",
+    "name": "Team Rocket's Petrel",
+    "rarity": "UR",
+    "price": 8.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "199",
+    "name": "Team Rocket's Weezing",
+    "rarity": "IR",
+    "price": 8.67,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "189",
+    "name": "Rapidash",
+    "rarity": "IR",
+    "price": 8.5,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "243",
+    "name": "Jamming Tower",
+    "rarity": "HR",
+    "price": 8.43,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "244",
+    "name": "Levincia",
+    "rarity": "HR",
+    "price": 7.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "225",
+    "name": "Team Rocket's Giovanni",
+    "rarity": "UR",
+    "price": 6.53,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "202",
+    "name": "Team Rocket's Raticate",
+    "rarity": "IR",
+    "price": 6.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "209",
+    "name": "Ethan's Ho-Oh ex",
+    "rarity": "UR",
+    "price": 5.81,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "187",
+    "name": "Team Rocket's Spidops",
+    "rarity": "IR",
+    "price": 5.45,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "215",
+    "name": "Cynthia's Garchomp ex",
+    "rarity": "UR",
+    "price": 5.41,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "195",
+    "name": "Clamperl",
+    "rarity": "IR",
+    "price": 4.93,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "188",
+    "name": "Hydrapple",
+    "rarity": "IR",
+    "price": 4.84,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "201",
+    "name": "Zamazenta",
+    "rarity": "IR",
+    "price": 4.84,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "219",
+    "name": "Team Rocket's Persian ex",
+    "rarity": "UR",
+    "price": 4.51,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "224",
+    "name": "Team Rocket's Ariana",
+    "rarity": "UR",
+    "price": 4.46,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "198",
+    "name": "Team Rocket's Orbeetle",
+    "rarity": "IR",
+    "price": 4.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "216",
+    "name": "Team Rocket's Nidoking ex",
+    "rarity": "UR",
+    "price": 4.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "205",
+    "name": "Arven's Greedent",
+    "rarity": "IR",
+    "price": 3.97,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "196",
+    "name": "Electrike",
+    "rarity": "IR",
+    "price": 3.94,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "221",
+    "name": "Ethan's Adventure",
+    "rarity": "UR",
+    "price": 3.79,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "197",
+    "name": "Rotom",
+    "rarity": "IR",
+    "price": 3.62,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "183",
+    "name": "Yanma",
+    "rarity": "IR",
+    "price": 3.48,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "227",
+    "name": "Team Rocket's Proton",
+    "rarity": "UR",
+    "price": 3.42,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "223",
+    "name": "Team Rocket's Archer",
+    "rarity": "UR",
+    "price": 3.12,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "186",
+    "name": "Crustle",
+    "rarity": "IR",
+    "price": 3.1,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "217",
+    "name": "Team Rocket's Crobat ex",
+    "rarity": "UR",
+    "price": 2.94,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "222",
+    "name": "Judge",
+    "rarity": "UR",
+    "price": 2.77,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "220",
+    "name": "Emcee's Hype",
+    "rarity": "UR",
+    "price": 2.46,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "207",
+    "name": "Arboliva ex",
+    "rarity": "UR",
+    "price": 2.17,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "212",
+    "name": "Electivire ex",
+    "rarity": "UR",
+    "price": 2.05,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "210",
+    "name": "Cetitan ex",
+    "rarity": "UR",
+    "price": 1.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "218",
+    "name": "Arven's Mabosstiff ex",
+    "rarity": "UR",
+    "price": 1.99,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "206",
+    "name": "Yanmega ex",
+    "rarity": "UR",
+    "price": 1.8,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "214",
+    "name": "Regirock ex",
+    "rarity": "UR",
+    "price": 1.65,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
+   },
+   {
+    "num": "211",
+    "name": "Dondozo ex",
+    "rarity": "UR",
+    "price": 1.62,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
    }
   ],
   "history": [
    {
     "date": "2026-08-24",
     "level": 100.0,
-    "basketValue": 1162.93,
-    "divisor": 11.6293,
-    "priced": 10,
+    "basketValue": 1651.26,
+    "divisor": 16.5126,
+    "priced": 59,
     "note": "inception"
    }
   ]
