@@ -3,12 +3,12 @@
 # Idempotent (DEST:START/END markers). Run from the repo root: python3 dest.py [--dry]
 import io, os, re, sys, glob
 DRY = '--dry' in sys.argv
-SKIP = {'index.html','watchlist.html','bowman-bangers.html','track-record.html','about.html','privacy.html','affiliate-disclosure.html',
+SKIP = {'index.html','watchlist.html','bowman-bangers.html','pitch-black-index.html','chaos-rising-index.html','ascended-heroes-index.html','set-index-preview.html','track-record.html','about.html','privacy.html','affiliate-disclosure.html',
         'card-dungeon.html','research.html','blog.html'}
 STRIP = u'''
 <!-- DEST:START — destination strip (Aug 21, 2026). Vault + Bowman Bangers are the destinations; this page is the on-ramp. Managed by tools/dest.py -->
 <style>
-  .dest-strip { display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:1200px; margin:28px auto 0; padding:0 24px; }
+  .dest-strip { display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:1060px; margin:28px auto 0; padding:0 24px; }
   .dest-tile { display:flex; align-items:center; gap:14px; background:var(--bg2); border:1px solid var(--border2); border-left:3px solid var(--accent); padding:14px 18px; text-decoration:none !important; color:var(--text); transition:border-color .15s, background .15s; }
   .dest-tile:hover { background:var(--bg3); border-color:var(--accent); }
   .dest-tile .dt-ico { font-size:22px; line-height:1; flex-shrink:0; }
@@ -37,6 +37,22 @@ STRIP = u'''
 '''
 NOTRACK = u'Tap &#9733; Track next to a card &mdash; it lands in your free Vault with live prices and P/L. No account.'
 NOTRACK_ALT = u'Your free watchlist + portfolio with live prices and P/L. No account, nothing leaves your browser.'
+
+# Pokémon pages: the second destination is the SET INDEX, not Bowman Bangers (Mo, Aug 24 2026 —
+# Bangers is a baseball-niche destination; Pokémon pages route to their own set's live index).
+POKE_INDEX = {
+  'pitch-black-set-guide.html':  ('/pitch-black-index',    'PB26 &middot; Pitch Black Index',    '#a78bfa'),
+  'chaos-rising.html':           ('/chaos-rising-index',   'CR26 &middot; Chaos Rising Index',   '#00e0c0'),
+  'ascended-heroes.html':        ('/ascended-heroes-index','AH26 &middot; Ascended Heroes Index','#f5c800'),
+}
+POKE_PAGES = set(POKE_INDEX) | {'pokemon-tcg-2026.html','pokemon-30th-anniversary-2026.html','prismatic-evolutions-guide.html'}
+def poke_tile(f):
+    href, label, col = POKE_INDEX.get(f, ('/pitch-black-index', 'Set Indices &middot; PB26 / CR26 / AH26', '#00ccf5'))
+    return (u'<a class="dest-tile" style="border-left-color:%s;" href="%s" onclick="if(typeof gtag===\'function\')gtag(\'event\',\'dest_strip\',{dest:\'index\',page:location.pathname})">\n'
+            u'    <span class="dt-ico">&#128200;</span>\n'
+            u'    <span><span class="dt-k" style="color:%s;">Live Set Index</span><span class="dt-t" style="display:block;">%s</span><span class="dt-s" style="display:block;">The set as a ticker &mdash; price-weighted from real solds, re-marked weekly from a 100.00 base. No picks, just the tape.</span></span>\n'
+            u'    <span class="dt-arrow" style="color:%s;">&rarr;</span>\n  </a>') % (col, href, col, label, col)
+
 done = skipped = 0
 for f in sorted(glob.glob('*.html')):
     if f in SKIP: skipped += 1; continue
@@ -49,6 +65,8 @@ for f in sorted(glob.glob('*.html')):
     if j < 0: print('no hero end:', f); skipped += 1; continue
     j += len('</section>')
     strip = STRIP
+    if f in POKE_PAGES:
+        strip = re.sub(r'<a class="dest-tile bangers".*?</a>', poke_tile(f), strip, flags=re.S)
     if 'sch-track-card' not in s and 'data-checklist' not in s:  # no Track buttons (static or checklist) — don't tell people to tap one
         strip = strip.replace(NOTRACK, NOTRACK_ALT).replace('Track any card on this page', 'Open your Vault')
     s = s[:j] + strip + s[j:]
