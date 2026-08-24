@@ -1,9 +1,10 @@
 {
- "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark.",
+ "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ACTIVATION RULE: a pre-activation index (status=pre-activation, divisor null) activates when the weekly re-mark sources its first point sold reads — set divisor = basketValue/100 on that date, set inception, write history row level 100.00, flip status to live. DR25 also needs its universe enumerated (sv10 was down at build).",
  "PB26": {
   "name": "Pitch Black Chase Index",
   "page": "/pitch-black-index",
   "base": 100.0,
+  "status": "live",
   "inception": "2026-08-24",
   "divisor": 7.22,
   "divisorLog": [
@@ -278,6 +279,7 @@
   "name": "Chaos Rising Chase Index",
   "page": "/chaos-rising-index",
   "base": 100.0,
+  "status": "live",
   "inception": "2026-08-24",
   "divisor": 2.1159,
   "divisorLog": [
@@ -336,6 +338,7 @@
   "name": "Ascended Heroes Chase Index",
   "page": "/ascended-heroes-index",
   "base": 100.0,
+  "status": "live",
   "inception": "2026-08-24",
   "divisor": 27.69,
   "divisorLog": [
@@ -426,5 +429,277 @@
     "note": "inception"
    }
   ]
+ },
+ "PRIS25": {
+  "name": "Prismatic Evolutions Chase Index",
+  "page": "/prismatic-evolutions-index",
+  "base": 100.0,
+  "status": "pre-activation",
+  "inception": null,
+  "divisor": null,
+  "divisorLog": [],
+  "universeComplete": true,
+  "universe": [
+   {
+    "num": "132",
+    "name": "Amarys",
+    "rarity": "UR"
+   },
+   {
+    "num": "133",
+    "name": "Atticus",
+    "rarity": "UR"
+   },
+   {
+    "num": "134",
+    "name": "Atticus",
+    "rarity": "UR"
+   },
+   {
+    "num": "135",
+    "name": "Brassius",
+    "rarity": "UR"
+   },
+   {
+    "num": "136",
+    "name": "Eri",
+    "rarity": "UR"
+   },
+   {
+    "num": "137",
+    "name": "Friends in Paldea",
+    "rarity": "UR"
+   },
+   {
+    "num": "138",
+    "name": "Giacomo",
+    "rarity": "UR"
+   },
+   {
+    "num": "139",
+    "name": "Larry's Skill",
+    "rarity": "UR"
+   },
+   {
+    "num": "140",
+    "name": "Mela",
+    "rarity": "UR"
+   },
+   {
+    "num": "141",
+    "name": "Ortega",
+    "rarity": "UR"
+   },
+   {
+    "num": "142",
+    "name": "Raifort",
+    "rarity": "UR"
+   },
+   {
+    "num": "143",
+    "name": "Tyme",
+    "rarity": "UR"
+   },
+   {
+    "num": "144",
+    "name": "Leafeon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "145",
+    "name": "Teal Mask Ogerpon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "146",
+    "name": "Flareon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "147",
+    "name": "Ceruledge ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "148",
+    "name": "Hearthflame Mask Ogerpon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "149",
+    "name": "Vaporeon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "150",
+    "name": "Glaceon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "151",
+    "name": "Palafin ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "152",
+    "name": "Wellspring Mask Ogerpon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "153",
+    "name": "Jolteon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "154",
+    "name": "Iron Hands ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "155",
+    "name": "Espeon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "156",
+    "name": "Sylveon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "157",
+    "name": "Iron Valiant ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "158",
+    "name": "Iron Crown ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "159",
+    "name": "Sandy Shocks ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "160",
+    "name": "Cornerstone Mask Ogerpon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "161",
+    "name": "Umbreon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "162",
+    "name": "Roaring Moon ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "163",
+    "name": "Pecharunt ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "164",
+    "name": "Gholdengo ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "165",
+    "name": "Dragapult ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "166",
+    "name": "Raging Bolt ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "167",
+    "name": "Eevee ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "168",
+    "name": "Bloodmoon Ursaluna ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "169",
+    "name": "Terapagos ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "170",
+    "name": "Amarys",
+    "rarity": "SIR"
+   },
+   {
+    "num": "171",
+    "name": "Crispin",
+    "rarity": "SIR"
+   },
+   {
+    "num": "172",
+    "name": "Drayton",
+    "rarity": "SIR"
+   },
+   {
+    "num": "173",
+    "name": "Janine's Secret Art",
+    "rarity": "SIR"
+   },
+   {
+    "num": "174",
+    "name": "Kieran",
+    "rarity": "SIR"
+   },
+   {
+    "num": "175",
+    "name": "Lacey",
+    "rarity": "SIR"
+   },
+   {
+    "num": "176",
+    "name": "Iron Leaves ex",
+    "rarity": "HR"
+   },
+   {
+    "num": "177",
+    "name": "Teal Mask Ogerpon ex",
+    "rarity": "HR"
+   },
+   {
+    "num": "178",
+    "name": "Walking Wake ex",
+    "rarity": "HR"
+   },
+   {
+    "num": "179",
+    "name": "Pikachu ex",
+    "rarity": "HR"
+   },
+   {
+    "num": "180",
+    "name": "Terapagos ex",
+    "rarity": "HR"
+   }
+  ],
+  "basket": [],
+  "history": []
+ },
+ "DR25": {
+  "name": "Destined Rivals Chase Index",
+  "page": "/destined-rivals-index",
+  "base": 100.0,
+  "status": "pre-activation",
+  "inception": null,
+  "divisor": null,
+  "divisorLog": [],
+  "universeComplete": false,
+  "universe": [],
+  "basket": [],
+  "history": []
  }
 }

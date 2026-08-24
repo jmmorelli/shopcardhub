@@ -3,7 +3,7 @@
 # Idempotent (DEST:START/END markers). Run from the repo root: python3 dest.py [--dry]
 import io, os, re, sys, glob
 DRY = '--dry' in sys.argv
-SKIP = {'index.html','watchlist.html','bowman-bangers.html','pitch-black-index.html','chaos-rising-index.html','ascended-heroes-index.html','set-index-preview.html','track-record.html','about.html','privacy.html','affiliate-disclosure.html',
+SKIP = {'index.html','watchlist.html','bowman-bangers.html','pitch-black-index.html','chaos-rising-index.html','ascended-heroes-index.html','set-index-preview.html','prismatic-evolutions-index.html','destined-rivals-index.html','track-record.html','about.html','privacy.html','affiliate-disclosure.html',
         'card-dungeon.html','research.html','blog.html'}
 STRIP = u'''
 <!-- DEST:START — destination strip (Aug 21, 2026). Vault + Bowman Bangers are the destinations; this page is the on-ramp. Managed by tools/dest.py -->
@@ -44,6 +44,7 @@ POKE_INDEX = {
   'pitch-black-set-guide.html':  ('/pitch-black-index',    'PB26 &middot; Pitch Black Index',    '#a78bfa'),
   'chaos-rising.html':           ('/chaos-rising-index',   'CR26 &middot; Chaos Rising Index',   '#00e0c0'),
   'ascended-heroes.html':        ('/ascended-heroes-index','AH26 &middot; Ascended Heroes Index','#f5c800'),
+  'prismatic-evolutions-guide.html': ('/prismatic-evolutions-index','PRIS25 &middot; Prismatic Evolutions Index','#e879f9'),
 }
 POKE_PAGES = set(POKE_INDEX) | {'pokemon-tcg-2026.html','pokemon-30th-anniversary-2026.html','prismatic-evolutions-guide.html'}
 def poke_tile(f):
