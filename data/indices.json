@@ -1,20 +1,20 @@
 {
- "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call.",
+ "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark.",
  "PB26": {
   "name": "Pitch Black Chase Index",
   "page": "/pitch-black-index",
-  "setApi": "me5",
   "base": 100.0,
   "inception": "2026-08-24",
-  "divisor": 7.12,
+  "divisor": 7.22,
   "divisorLog": [
    {
     "date": "2026-08-24",
     "before": null,
-    "after": 7.12,
-    "why": "inception: basket $712.00 / base 100.00"
+    "after": 7.22,
+    "why": "inception: basket $722.00 / base 100.00 (PB26 restated same-day with Aug 24 marks from the Monday scan before any level was consumed)"
    }
   ],
+  "universeComplete": true,
   "universe": [
    {
     "num": "85",
@@ -202,16 +202,16 @@
     "num": "116",
     "name": "Mega Darkrai ex",
     "rarity": "SIR",
-    "price": 249.0,
-    "basis": "PriceCharting ungraded solds",
-    "asOf": "2026-08-17"
+    "price": 257.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
    },
    {
     "num": "120",
     "name": "Mega Darkrai ex",
     "rarity": "MHR",
     "price": 185.0,
-    "basis": "PriceCharting ungraded solds",
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
     "asOf": "2026-08-17"
    },
    {
@@ -219,23 +219,23 @@
     "name": "Morpeko ex",
     "rarity": "SIR",
     "price": 95.0,
-    "basis": "PriceCharting ungraded solds",
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
     "asOf": "2026-08-17"
    },
    {
     "num": "114",
     "name": "Mega Zeraora ex",
     "rarity": "SIR",
-    "price": 58.0,
-    "basis": "PriceCharting ungraded solds",
-    "asOf": "2026-08-17"
+    "price": 59.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
    },
    {
     "num": "115",
     "name": "Mega Chandelure ex",
     "rarity": "SIR",
     "price": 45.0,
-    "basis": "PriceCharting ungraded solds",
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
     "asOf": "2026-08-17"
    },
    {
@@ -243,23 +243,23 @@
     "name": "Gwynn",
     "rarity": "SIR",
     "price": 37.0,
-    "basis": "PriceCharting ungraded solds",
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
     "asOf": "2026-08-17"
    },
    {
     "num": "118",
     "name": "Gladion's Final Battle",
     "rarity": "SIR",
-    "price": 30.0,
-    "basis": "PriceCharting ungraded solds",
-    "asOf": "2026-08-17"
+    "price": 31.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-24"
    },
    {
     "num": "101",
     "name": "Mega Darkrai ex",
     "rarity": "UR",
     "price": 13.0,
-    "basis": "PriceCharting ungraded solds",
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
     "asOf": "2026-08-17"
    }
   ],
@@ -267,9 +267,162 @@
    {
     "date": "2026-08-24",
     "level": 100.0,
-    "basketValue": 712.0,
-    "divisor": 7.12,
+    "basketValue": 722.0,
+    "divisor": 7.22,
     "priced": 8,
+    "note": "inception"
+   }
+  ]
+ },
+ "CR26": {
+  "name": "Chaos Rising Chase Index",
+  "page": "/chaos-rising-index",
+  "base": 100.0,
+  "inception": "2026-08-24",
+  "divisor": 2.1159,
+  "divisorLog": [
+   {
+    "date": "2026-08-24",
+    "before": null,
+    "after": 2.1159,
+    "why": "inception: basket $211.59 / base 100.00"
+   }
+  ],
+  "universeComplete": false,
+  "universe": [
+   {
+    "num": "99",
+    "name": "Mega Pyroar ex",
+    "rarity": "UR"
+   },
+   {
+    "num": "116",
+    "name": "Mega Greninja ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "117",
+    "name": "Mega Floette ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "118",
+    "name": "Mega Dragalge ex",
+    "rarity": "SIR"
+   }
+  ],
+  "basket": [
+   {
+    "num": "116",
+    "name": "Mega Greninja ex",
+    "rarity": "SIR",
+    "price": 211.59,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-10"
+   }
+  ],
+  "history": [
+   {
+    "date": "2026-08-24",
+    "level": 100.0,
+    "basketValue": 211.59,
+    "divisor": 2.1159,
+    "priced": 1,
+    "note": "inception"
+   }
+  ]
+ },
+ "AH26": {
+  "name": "Ascended Heroes Chase Index",
+  "page": "/ascended-heroes-index",
+  "base": 100.0,
+  "inception": "2026-08-24",
+  "divisor": 27.69,
+  "divisorLog": [
+   {
+    "date": "2026-08-24",
+    "before": null,
+    "after": 27.69,
+    "why": "inception: basket $2,769.00 / base 100.00"
+   }
+  ],
+  "universeComplete": false,
+  "universe": [
+   {
+    "num": "281",
+    "name": "Team Rocket's Mewtwo ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "284",
+    "name": "Mega Gengar ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "290",
+    "name": "Mega Dragonite ex",
+    "rarity": "SIR"
+   },
+   {
+    "num": "294",
+    "name": "Mega Charizard Y ex",
+    "rarity": "MHR"
+   },
+   {
+    "num": "295",
+    "name": "Mega Dragonite ex",
+    "rarity": "MHR"
+   }
+  ],
+  "basket": [
+   {
+    "num": "284",
+    "name": "Mega Gengar ex",
+    "rarity": "SIR",
+    "price": 1060.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-10"
+   },
+   {
+    "num": "290",
+    "name": "Mega Dragonite ex",
+    "rarity": "SIR",
+    "price": 700.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-10"
+   },
+   {
+    "num": "294",
+    "name": "Mega Charizard Y ex",
+    "rarity": "MHR",
+    "price": 410.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-10"
+   },
+   {
+    "num": "281",
+    "name": "Team Rocket's Mewtwo ex",
+    "rarity": "SIR",
+    "price": 354.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-17"
+   },
+   {
+    "num": "295",
+    "name": "Mega Dragonite ex",
+    "rarity": "MHR",
+    "price": 245.0,
+    "basis": "sold (PriceCharting / guide reprice vs solds)",
+    "asOf": "2026-08-10"
+   }
+  ],
+  "history": [
+   {
+    "date": "2026-08-24",
+    "level": 100.0,
+    "basketValue": 2769.0,
+    "divisor": 27.69,
+    "priced": 5,
     "note": "inception"
    }
   ]
