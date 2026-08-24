@@ -1,6 +1,6 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-24T21:59:55.000Z",
+ "generated": "2026-08-24T22:34:38.000Z",
  "generator": "chief-of-staff (2026-08-23)",
  "agents": {
   "seeker": {
@@ -557,6 +557,12 @@
    "area": "qa",
    "status": "approved",
    "summary": "Add site-auditor rule: any page containing NAV:START markers must also define the nav base styles (.nav-links flex at top level, .nav-hamburger hidden on desktop, >=3 media blocks). Caught twice on Aug 24 — injected nav HTML with missing page CSS renders as raw links; the existing nav-drift check only compares the HTML block. Mechanical rule, MWF auditor to implement."
+  },
+  {
+   "id": "strategy-indices-first-aug24",
+   "area": "strategy",
+   "status": "applied",
+   "summary": "SITE STRATEGY (Mo decision, Aug 24): indices are THE website priority. Canonical lifecycle: pre-release page at announcement -> converts to a live set index at release (trackable cards via the Vault contract, eBay EPN links site-wide). Random one-off SEO pages retired as the default build motion (exceptional cases only, max 1 proposed/week). Main-releases-only rule unchanged for WHICH sets. Encoded into the Monday run (STEP 2 rewritten index-first) and memory."
   }
  ],
  "scoreboard": {
