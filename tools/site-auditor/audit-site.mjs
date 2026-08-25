@@ -18,7 +18,9 @@ const JSON_OUT = process.argv.includes("--json");
 const SKIP_FILES = new Set(["card-dungeon.html", "welcome-email.html"]);
 // Pages allowed to be missing from sitemap.xml (utility/legal are IN the sitemap
 // on this site; only truly private pages belong here)
-const SITEMAP_EXEMPT = new Set(["card-dungeon", "welcome-email", "index"]); // index = served at /
+// index = served at /; set-index-preview = the BOW26 mockup (title starts "MOCKUP —"),
+// deliberately unlisted and noindexed rather than added to the sitemap (Aug 25, 2026).
+const SITEMAP_EXEMPT = new Set(["card-dungeon", "welcome-email", "index", "set-index-preview"]);
 
 // THE mandatory EPN param set (see memory: Jul 28 2026 mkevt=1 incident —
 // every param below missing = untracked clicks = lost income)

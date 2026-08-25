@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-08-25T16:30:00.000Z",
+  "generated": "2026-08-25T22:15:42.000Z",
   "generator": "bowman-bangers-tuesday-update (2026-08-25)",
   "agents": {
     "seeker": {
@@ -106,30 +106,6 @@
       "nextRun": "2026-08-26",
       "actions": [
         {
-          "ts": "2026-08-19",
-          "msg": "Dungeon decisions reconcile: price-data/data/dungeon-decisions.json is 404 -- nothing to reconcile (cockpit api/decisions.js push still awaiting Mo)"
-        },
-        {
-          "ts": "2026-08-19",
-          "msg": "Mo approved all 11 open proposals; fixer pass applied audit-1..5 + Tribute ($860 SCP box, reframed released) + Rutschman/Murakami/Anthony cells; re-sweep FAIL 0, WARN 29->26; awaiting Mo push"
-        },
-        {
-          "ts": "2026-08-21",
-          "msg": "MWF audit: sweeps clean (69 pages, FAIL 0, EPN params intact, JSON valid); live deploy matches repo (index, bangers, psa, roman-anthony); 10/10 remote images resolve"
-        },
-        {
-          "ts": "2026-08-21",
-          "msg": "Verified all 4 Aug 19 audit fixes landed: homepage re-synced to Aug 18 board, Greninja $210-240 site-wide, ASK-BASIS badges on track-record, psa-guide stamped"
-        },
-        {
-          "ts": "2026-08-21",
-          "msg": "3 MED filed: released products still in pre-release framing — Flagship Football (releases TODAY, checklist is public), Chrome Baseball ('still unreleased'), Chrome Black Football (6 wks stale)"
-        },
-        {
-          "ts": "2026-08-21",
-          "msg": "dungeon-decisions.json still 404 on price-data — cockpit approve/decline loop stays dark until cockpit-loop-build (approved Aug 17) is pushed"
-        },
-        {
           "ts": "2026-08-24",
           "msg": "Verification: audit-prices FAIL 0 / site-auditor FAIL 0 after EPN flip + new page build"
         },
@@ -156,6 +132,26 @@
         {
           "ts": "2026-08-25",
           "msg": "Tuesday comp pull: SCP product pages fetched for all 10 tracked names (Houston slug found at cpa-mho, $33 raw first read; Gonzalez has NO SCP product page — untrackable stands); engine marks fresh (gen 08:59Z), no dispersion flags"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "FIXER pass (Mo approved in chat): applied all 5 audit fixes — bowman-chrome checklist contradiction resolved (3 spots), world-cup rewritten post-final (Spain 1-0 Argentina Jul 19, Ronaldo out R16 Jul 6, Yamal Golden Ball) + Yamal callout, flagship-football reframed as released w/ real config (400 base, 20x12, $119.99->$129.99), chrome-baseball and chrome-black-football release framing corrected"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "Refused to publish a Messi/Ronaldo ask mark: /api/comps population is lots and sealed boxes, Ronaldo core range $750-$20,000 on n=6 — replaced the 'TBD' placeholder with an explicit thin-comp label instead of a fabricated number"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "New check: audit-prices.mjs stale-prose-stamp (drift >= 7d vs page's freshest date, scoped to dated price-claim sentences). Regression-tested both ways. Two earlier drafts scrapped at 93 and 5 false positives"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "set-index-preview.html: noindex,nofollow + SITEMAP_EXEMPT rather than sitemap listing (it is a MOCKUP). Both sweeps end clean: site FAIL 0/WARN 0, prices FAIL 0/WARN 28 (26 label cells + 1 true stale stamp on pitch-black + 1 new page)"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "Instrumentation audit: found all 6 set-index pages + /indices hub missing the GA4 tag since launch — indices traffic was never being measured. Tagged all 6. EPN verified clean: 748 links, full param set, zero real misses"
         }
       ]
     },
@@ -521,18 +517,18 @@
     },
     {
       "id": "audit-2026-08-21-1",
-      "status": "approved",
-      "title": "MED: /topps-flagship-football releases TODAY (Aug 21) but the page is frozen at Jul 13 pre-order framing — banner says 'no checklist, box configuration, or MSRP yet' (line 784) and the stat grid shows 'Checklist: Not yet published' (line 793), while the full 400-card checklist has been public on Beckett/Topps for weeks. Release-day traffic on the license-return flagship is landing on factually wrong copy. Fix: reframe as released, cite the published checklist/config, refresh the as-of stamp. — APPROVED by Mo Aug 24; next run applies the fix"
+      "status": "applied",
+      "title": "MED: /topps-flagship-football releases TODAY (Aug 21) but the page is frozen at Jul 13 pre-order framing — banner says 'no checklist, box configuration, or MSRP yet' (line 784) and the stat grid shows 'Checklist: Not yet published' (line 793), while the full 400-card checklist has been public on Beckett/Topps for weeks. Release-day traffic on the license-return flagship is landing on factually wrong copy. Fix: reframe as released, cite the published checklist/config, refresh the as-of stamp. — APPROVED by Mo Aug 24; next run applies the fix — APPLIED Aug 25, 2026 (local; awaiting Mo push)"
     },
     {
       "id": "audit-2026-08-21-2",
-      "status": "approved",
-      "title": "MED: /topps-chrome-baseball-2026 still says 'Still unreleased, so no sold comps exist yet' (line 788, 'updated Jul 28') and hero reads 'Pre-release' (line 781) — the product streeted in late Jul/early Aug and has weeks of sold comps. Meta description also says 'Pre-release, August 2026' (line 8). Fix: reframe as released with real solds, per the Chrome Updates precedent (Aug 10). — APPROVED by Mo Aug 24; next run applies the fix"
+      "status": "applied",
+      "title": "MED: /topps-chrome-baseball-2026 still says 'Still unreleased, so no sold comps exist yet' (line 788, 'updated Jul 28') and hero reads 'Pre-release' (line 781) — the product streeted in late Jul/early Aug and has weeks of sold comps. Meta description also says 'Pre-release, August 2026' (line 8). Fix: reframe as released with real solds, per the Chrome Updates precedent (Aug 10). — APPROVED by Mo Aug 24; next run applies the fix — APPLIED Aug 25, 2026 (local; awaiting Mo push)"
     },
     {
       "id": "audit-2026-08-21-3",
-      "status": "approved",
-      "title": "MED: /topps-chrome-black-football released Jul 10 — six weeks ago — but the banner still says 'As a just-releasing product there are no single-card sold comps yet… as of Jul 6, 2026' (line 784) and meta says 'Pre-release, July 2026' (line 8). Sold comps have existed for over a month. Fix: post-release reframe + comp refresh. — APPROVED by Mo Aug 24; next run applies the fix"
+      "status": "applied",
+      "title": "MED: /topps-chrome-black-football released Jul 10 — six weeks ago — but the banner still says 'As a just-releasing product there are no single-card sold comps yet… as of Jul 6, 2026' (line 784) and meta says 'Pre-release, July 2026' (line 8). Sold comps have existed for over a month. Fix: post-release reframe + comp refresh. — APPROVED by Mo Aug 24; next run applies the fix — APPLIED Aug 25, 2026 (local; awaiting Mo push)"
     },
     {
       "id": "epn-button-flip-aug23",
@@ -578,8 +574,8 @@
     },
     {
       "id": "audit-2026-08-25-1",
-      "status": "approved",
-      "title": "MED: /bowman-chrome-baseball-2026 contradicts itself on the checklist — hero says 'Checklist published · see it below' (line 777) while the warning box says 'The 2026 checklist, formats, and pricing are not yet announced' (line 813, 'Framing as of Aug 3') and the Watch List still says 'The checklist is TBA — read the checklist the day it drops' (line 880). Same page, both claims. This is the ⭐ flagship page for the Sep 9 street date; 'pre-orders open Monday, Aug 10' is also two weeks past. Fix: refresh the warning box + Watch List item to post-checklist framing (checklist published Aug 21); the no-sold-comps caveat is still true and should stay. — Mo, 2026-08-25"
+      "status": "applied",
+      "title": "MED: /bowman-chrome-baseball-2026 contradicts itself on the checklist — hero says 'Checklist published · see it below' (line 777) while the warning box says 'The 2026 checklist, formats, and pricing are not yet announced' (line 813, 'Framing as of Aug 3') and the Watch List still says 'The checklist is TBA — read the checklist the day it drops' (line 880). Same page, both claims. This is the ⭐ flagship page for the Sep 9 street date; 'pre-orders open Monday, Aug 10' is also two weeks past. Fix: refresh the warning box + Watch List item to post-checklist framing (checklist published Aug 21); the no-sold-comps caveat is still true and should stay. — Mo, 2026-08-25 — APPLIED Aug 25, 2026 (local; awaiting Mo push)"
     },
     {
       "id": "tweets-2026-08-25",
@@ -589,8 +585,33 @@
     },
     {
       "id": "audit-2026-08-25-2",
-      "status": "approved",
-      "title": "MED: /world-cup-2026-soccer-cards is frozen pre-tournament — the World Cup ended Jul 19 but the page still says Messi and Ronaldo 'are both confirmed in their respective 2026 squads' (line 674) and 'Both are playing their final major tournament' (line 703), banner 'UPDATED JUNE 2026' (live). The tournament outcome is now the primary price driver for every card on the page and none of it is reflected — 2+ months stale on the sport's biggest event. Fix: post-tournament rewrite (result, GOAT farewell reality, re-check comps) + dated as-of stamp. — Mo, 2026-08-25"
+      "status": "applied",
+      "title": "MED: /world-cup-2026-soccer-cards is frozen pre-tournament — the World Cup ended Jul 19 but the page still says Messi and Ronaldo 'are both confirmed in their respective 2026 squads' (line 674) and 'Both are playing their final major tournament' (line 703), banner 'UPDATED JUNE 2026' (live). The tournament outcome is now the primary price driver for every card on the page and none of it is reflected — 2+ months stale on the sport's biggest event. Fix: post-tournament rewrite (result, GOAT farewell reality, re-check comps) + dated as-of stamp. — Mo, 2026-08-25 — APPLIED Aug 25, 2026 (local; awaiting Mo push)"
+    },
+    {
+      "id": "audit-2026-08-25-3",
+      "status": "applied",
+      "title": "LOW: bowman-bangers footer disclosure stamps sat on 'August 18, 2026' while the hero and every price row read Aug 25 — the Tuesday re-mark rewrites price rows but not prose stamps. FIXED Aug 25: both footer stamps refreshed, and audit-prices.mjs gained a stale-prose-stamp check (PROSE_DRIFT_DAYS=7, >=) scoped to dated price-claim sentences, with the page's freshest date as baseline. Regression-tested: re-introducing the Aug 18 stamp reproduces the WARN; current tree is silent. Two earlier drafts of the check produced 93 then 5 false positives (release dates) and were discarded."
+    },
+    {
+      "id": "audit-2026-08-25-4",
+      "status": "applied",
+      "title": "LOW: set-index-preview.html (title 'MOCKUP — BOW26') was flagged as missing from sitemap.xml. Judgment: a mockup should not be indexed at all — added noindex,nofollow to the page and added the slug to SITEMAP_EXEMPT in audit-site.mjs rather than listing it. Sweep back to WARN 0."
+    },
+    {
+      "id": "audit-2026-08-25-5",
+      "status": "awaiting-mo",
+      "title": "MED: three pages now correctly say 'released' but their pricing is still the pre-release structural read and is explicitly labelled as not-yet-re-scored: /topps-flagship-football (Aug 21), /topps-chrome-baseball-2026 (Aug 5), /topps-chrome-black-football (Jul 10), plus /world-cup-2026-soccer-cards (final Jul 19). Honest now, but the real fix is a post-release price pass against sold comps. Suggest queueing one re-price run per page. Also unverified: flagship hero lists the RC class as 'Mendoza / Love / Tate' while Beckett/Checklist Insider name Mendoza, Jeremiyah Love and Ty Simpson — worth a check before it ships as fact."
+    },
+    {
+      "id": "audit-2026-08-25-6",
+      "status": "applied",
+      "title": "HIGH (income/measurement): all six set-index pages plus the /indices hub shipped with NO GA4 tag — pitch-black-index, chaos-rising-index, ascended-heroes-index, prismatic-evolutions-index, destined-rivals-index, indices.html. Every visit to the indices, the surface Mo is actively prioritising, was invisible in GA4 since launch (Aug 24). FIXED Aug 25: standard G-2Q52C5EKG7 snippet added to all six. card-dungeon.html (gitignored, offline) and set-index-preview.html (MOCKUP, noindex) intentionally remain untagged. NOTE: baseline starts Aug 25 — index traffic before that date is unrecoverable."
+    },
+    {
+      "id": "audit-2026-08-25-7",
+      "status": "awaiting-mo",
+      "title": "LOW: EPN verified clean sitewide — 748 hand-built eBay links, 100% carrying mkevt=1/mkcid=1/mkrid/siteid/campid=5339155990/toolid/customid. The only two grep 'misses' (hobby-box-roi-calculator.html:984, watchlist.html:1070) are JS template builders that append the full param set at runtime and are compliant. No action needed; logged so the next audit does not re-flag them."
     }
   ],
   "scoreboard": {
