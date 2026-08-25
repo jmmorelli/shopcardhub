@@ -2421,7 +2421,7 @@ function compsCat(c) {
   return '';                                                       // other: search all categories
 }
 function compsFetch(q, cat) {
-  let u = '/api/comps?q=' + encodeURIComponent(q) + '&limit=50';
+  let u = '/api/comps?q=' + encodeURIComponent(q) + '&limit=50&customid=vault';
   if (cat) u += '&category_ids=' + cat;
   return fetch(u).then(r => { if (!r.ok) throw 0; return r.json(); });
 }

@@ -137,7 +137,7 @@ function lastNameOf(label) {
 async function compsMark(query, label, card = {}) {
   const type = card.cardType || "chrome-auto";
   const isTcg = type === "tcg-single";
-  let url = SITE + "/api/comps?q=" + encodeURIComponent(query) + "&sort=price&limit=50";
+  let url = SITE + "/api/comps?q=" + encodeURIComponent(query) + "&sort=price&limit=50&customid=price-engine";
   if (card.categoryIds) url += "&category_ids=" + encodeURIComponent(card.categoryIds);
   const r = await fetch(url, { headers: { Accept: "application/json" } });
   if (!r.ok) throw new Error('/api/comps "' + query + '" -> HTTP ' + r.status);

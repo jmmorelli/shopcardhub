@@ -1095,7 +1095,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     var cat = el.dataset.cat || '';
     (function tryQ(i){
       if (i >= qs.length) { el.innerHTML = '<span style="color:var(--text-dim);font-size:12px;">No verified live listings yet.</span>'; return; }
-      fetch('/api/comps?q=' + encodeURIComponent(qs[i]) + '&limit=50' + (cat ? '&category_ids=' + cat : ''))
+      fetch('/api/comps?q=' + encodeURIComponent(qs[i]) + '&limit=50&customid=topps-chrome-baseball-2026' + (cat ? '&category_ids=' + cat : ''))
         .then(function(r){ if (!r.ok) throw 0; return r.json(); })
         .then(function(j){
           var keep = (j.listings || []).filter(function(l){

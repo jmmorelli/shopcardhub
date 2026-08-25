@@ -86,6 +86,21 @@ function trimListing(item) {
   };
 }
 
+// EPN custom IDs must be short and URL-safe. Anything else is dropped rather than
+// guessed at — an unattributed click is recoverable, a wrongly attributed one is not.
+function sanitizeCustomId(raw) {
+  const s = String(raw || "").trim().toLowerCase();
+  if (!s) return null;
+  // Note: stripping everything outside [a-z0-9._-] also removes "," and CR/LF,
+  // which is what keeps this safe to interpolate into the ENDUSERCTX header.
+  const clean = s
+    .replace(/[^a-z0-9._-]/g, "-")
+    .replace(/-{2,}/g, "-")
+    .replace(/\.{2,}/g, ".")
+    .replace(/^[-.]+|[-.]+$/g, "");
+  return clean ? clean.slice(0, 64) : null;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
@@ -100,6 +115,17 @@ export default async function handler(req, res) {
   // Clamp inputs so callers can't burn quota with giant pages.
   const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 50, 1), 100);
   const sortParam = req.query.sort === "price" ? "price" : req.query.sort === "-price" ? "-price" : null;
+
+  // EPN custom ID (added Aug 25, 2026). Until now these links went out with a
+  // campaign ID but no custom ID, so every sale they drove landed in EPN's
+  // "No Custom ID" bucket — which was 96% of all earnings ($6.06 of $6.31 in the
+  // Jul 26–Aug 25 read) with no way to tell which page earned it.
+  //
+  // It is a QUERY PARAM on purpose, not a Referer sniff: this response is CDN-cached
+  // (s-maxage below), and a header-derived value would not be part of the cache key,
+  // so one page's cached response could hand its custom ID to another page's visitors.
+  // As a query param it varies the cache key and stays correctly attributed.
+  const customId = sanitizeCustomId(req.query.customid);
 
   try {
     const token = await getAppToken();
@@ -117,7 +143,10 @@ export default async function handler(req, res) {
         Authorization: `Bearer ${token}`,
         "X-EBAY-C-MARKETPLACE-ID": "EBAY_US",
         // Affiliate context: tags every itemWebUrl in the response with EPN tracking.
-        "X-EBAY-C-ENDUSERCTX": `affiliateCampaignId=${EPN_CAMPAIGN_ID}`,
+        // affiliateReferenceId is what surfaces as "Custom ID" in EPN reporting.
+        "X-EBAY-C-ENDUSERCTX": customId
+          ? `affiliateCampaignId=${EPN_CAMPAIGN_ID},affiliateReferenceId=${customId}`
+          : `affiliateCampaignId=${EPN_CAMPAIGN_ID}`,
         Accept: "application/json",
       },
     });
@@ -139,6 +168,10 @@ export default async function handler(req, res) {
 
     const payload = {
       query: q,
+      // Echoed so a caller (or an audit) can confirm the click will be attributed.
+      // null here means the sale will land in EPN's "No Custom ID" bucket.
+      customId,
+      affiliateTagged: listings.some((l) => l.url && l.url.includes("mkevt=")),
       total: data.total || 0,
       count: listings.length,
       stats: computeStats(prices),

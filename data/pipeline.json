@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-08-25T22:28:58.000Z",
+  "generated": "2026-08-25T22:56:42.000Z",
   "generator": "bowman-bangers-tuesday-update (2026-08-25)",
   "agents": {
     "seeker": {
@@ -107,10 +107,6 @@
       "actions": [
         {
           "ts": "2026-08-24",
-          "msg": "Price check: 6 flags filed (Murakami S1 spike, Roman Anthony move needs comp ID, flagship FB box comps forming, 2 stale banners re-flagged)"
-        },
-        {
-          "ts": "2026-08-24",
           "msg": "Pokemon images: all wired, nothing new this run"
         },
         {
@@ -152,6 +148,10 @@
         {
           "ts": "2026-08-25",
           "msg": "Reprice pass on 4 pages: 18 tier labels replaced with card-pinned ask marks (11 hard numbers, 4 ranges, 3 honest no-market). Gate applied throughout — published a mark only where the trimmed core had n>=6 and <=4x spread; refused marks on Gold Logoman (n=5), Helix (n=3), Old Glory /10 (n=0), PREM1ERE (n=0)"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "EPN custom-ID tagging shipped on /api/comps + all 9 callers. Root cause of the untracked earnings: affiliate header carried campaignId only. Query-param design chosen over Referer sniff because the endpoint is CDN-cached and a header value would not vary the cache key"
         }
       ]
     },
@@ -622,6 +622,16 @@
       "id": "reprice-2026-08-25-followup",
       "status": "awaiting-mo",
       "title": "MED: the reprice is ask-basis because no sold feed is wired up — /api/comps is the eBay Browse API (asks only) and the PriceCharting/SportsCardsPro sold path is the dormant 'legacy paid' route. House rule prefers solds. Next step if you want sold-basis marks: reconnect a sold source, then re-run this same pinned-card list. Also parked: rows pinned to the most-listed name (Tong, Judkins, Kent) are data-driven picks, not editorial ones — worth a human sanity check that they are the names the guide should lead with. RESOLVED separately: 'Mendoza / Love / Tate' in the flagship hero is correct, Carnell Tate has flagship RC #318; my earlier Ty Simpson flag was wrong."
+    },
+    {
+      "id": "epn-customid-api-aug25",
+      "status": "applied",
+      "title": "HIGH (income attribution): /api/comps sent EPN links with a campaign ID but NO custom ID, so every sale they drove landed in EPN's 'No Custom ID' bucket — 96% of all earnings ($6.06 of $6.31, 34 clicks -> 30 transactions, 88% CR, EPC $0.18) with no way to know which page earned it. Meanwhile all 28 tagged page buckets earned $0.00, including the most-clicked (topps-chrome-updates-basketball, 21 clicks). FIXED Aug 25: api/comps.js accepts ?customid=, sanitizes it to [a-z0-9._-] max 64 (which also strips ',' and CRLF, making it safe to interpolate into X-EBAY-C-ENDUSERCTX), and appends affiliateReferenceId=<id> to the affiliate header. Deliberately a QUERY PARAM not a Referer sniff: the response is CDN-cached (s-maxage=900) and a header-derived value would not vary the cache key, so one page's cached response could hand its custom ID to another page's visitors. All 9 callers tagged: 7 guide pages by slug, watchlist -> 'vault', price-engine snapshot -> 'price-engine'. Response now echoes customId + affiliateTagged for auditing. Sanitizer unit-tested 13/13 incl. path-traversal and CRLF-injection inputs."
+    },
+    {
+      "id": "epn-customid-verify-sep",
+      "status": "awaiting-mo",
+      "title": "MED (follow-up, ~Sep 25): re-read EPN Performance by Custom Id over a full 30 days post-tagging. Expected: the 'No Custom ID' bucket collapses and its earnings reappear against real page slugs (hypothesis: the Live-Asks/comps widgets are the earner). If 'No Custom ID' STAYS at ~96% of earnings, the money is NOT coming from /api/comps and the next suspects are Mo's own clicks or another untagged surface — do not conclude until that read. Note also: EPN attributes on a 24h cookie window, so tagging only affects clicks from Aug 25 forward; the Jul 26-Aug 25 baseline stays untagged."
     }
   ],
   "scoreboard": {
