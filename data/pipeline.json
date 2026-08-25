@@ -1,667 +1,695 @@
 {
- "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-24T22:34:38.000Z",
- "generator": "chief-of-staff (2026-08-23)",
- "agents": {
-  "seeker": {
-   "label": "SEEKER",
-   "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
-   "lastRun": "2026-08-24",
-   "nextRun": "2026-08-31",
-   "actions": [
-    {
-     "ts": "2026-08-10",
-     "msg": "Topps calendar diffed: 2 NEW releases found (Museum Collection Baseball, Definitive Basketball) — 0 NEW remaining after build"
+  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
+  "generated": "2026-08-25T16:30:00.000Z",
+  "generator": "bowman-bangers-tuesday-update (2026-08-25)",
+  "agents": {
+    "seeker": {
+      "label": "SEEKER",
+      "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
+      "lastRun": "2026-08-24",
+      "nextRun": "2026-08-31",
+      "actions": [
+        {
+          "ts": "2026-08-10",
+          "msg": "Topps calendar diffed: 2 NEW releases found (Museum Collection Baseball, Definitive Basketball) — 0 NEW remaining after build"
+        },
+        {
+          "ts": "2026-08-10",
+          "msg": "Trend scan: LeBron→PHI (RC +11.4%), Rutschman→BOS (Chrome auto +12%), Bowman Chrome pre-orders open, Fanatics unsealed-mega saga"
+        },
+        {
+          "ts": "2026-08-10",
+          "msg": "Gap analysis: 4 new page ideas queued for Mo (LeBron, Boozer, Rutschman, Mendoza)"
+        },
+        {
+          "ts": "2026-08-18",
+          "msg": "STEP 0.75 signal harvest: 1 new signal (PCA 2020 BCD 1st Auto, count 1 < 5 threshold; page exists) -- no auto-adds; test entries excluded permanently"
+        },
+        {
+          "ts": "2026-08-24",
+          "msg": "Calendar watch: 1 NEW release (Chrome Updates BKB Sapphire, Sep 3); Star Wars/Samurai Japan/Tennis/Vault Marvel already on skip list"
+        },
+        {
+          "ts": "2026-08-24",
+          "msg": "Trends: Celebrini record YG sale; Adley +12% on Red Sox trade; Murakami S1 base $8->$22; Phantasmal Flames Charizard X SIR ~$719 and NO page exists"
+        },
+        {
+          "ts": "2026-08-24",
+          "msg": "Gap analysis: proposed /phantasmal-flames-set-guide (top gap), /macklin-celebrini-rookie-cards, /paige-bueckers-rookie-cards"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "STEP 0.75 signal harvest: 3 signals in file, none at count>=5 threshold — no auto-adds; test entries permanently excluded"
+        }
+      ]
     },
-    {
-     "ts": "2026-08-10",
-     "msg": "Trend scan: LeBron→PHI (RC +11.4%), Rutschman→BOS (Chrome auto +12%), Bowman Chrome pre-orders open, Fanatics unsealed-mega saga"
+    "curator": {
+      "label": "CURATOR",
+      "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
+      "lastRun": "2026-08-25",
+      "nextRun": "2026-08-31",
+      "actions": [
+        {
+          "ts": "2026-08-11",
+          "msg": "Bangers board re-priced (Aug 11 SCP solds): Arquette +9% bounce, Fischer +7% third green week, no rank changes"
+        },
+        {
+          "ts": "2026-08-11",
+          "msg": "Watch-tier promotion flags: Kim $131 raw (above 4 of top 5), Florentino $85, Gonzales $57, Houston $29 — promote next run if it holds"
+        },
+        {
+          "ts": "2026-08-11",
+          "msg": "STEP 0: no new 1st-Bowman product delivering yet — Chrome pre-orders open, street ~Sep 9-10, transition watch ~late Sep"
+        },
+        {
+          "ts": "2026-08-11",
+          "msg": "Vault v2 (Mo request): Track buttons now offer Hunting / I Own It (+cost), seed page prices, auto-link the price engine; 32 new buttons wired on 7 player pages (LeBron, Rutschman, Boozer, Mendoza, Misiorowski, PCA, DeLauter)"
+        },
+        {
+          "ts": "2026-08-18",
+          "msg": "BOARD RESHUFFLE (Aug 11 flags held): Kim promoted #2 ($131 raw, top of class), Florentino #4 ($79); Pierce (-11%, $17.30 lows) + Aloy demoted to watch tier; Arquette to #5"
+        },
+        {
+          "ts": "2026-08-18",
+          "msg": "Re-priced top 5 w/ SCP+engine subs; Holliday PSA 10 ripped $498->$720 (+45%), holds #1; Fischer first red week (-6%); hero stamp Aug 18; audit FAIL 0"
+        },
+        {
+          "ts": "2026-08-18",
+          "msg": "STEP 0: no new 1st-Bowman product delivering; Chrome street ~Sep 9-10 -- Friday release-window task stays DISABLED until street date"
+        },
+        {
+          "ts": "2026-08-24",
+          "msg": "BUILT /topps-chrome-updates-basketball-sapphire-edition (nav + sitemap wired, audits clean) — awaiting Mo review + push"
+        },
+        {
+          "ts": "2026-08-24",
+          "msg": "EPN BUTTON FLIP applied per epn-button-flip-aug23: 24 Fanatics/Impact buttons -> eBay EPN search links across 21 Topps/Bowman pages; narrative copy patched"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "Board re-priced (Aug 25 SCP solds): Arquette -13% biggest fade, Fischer 2nd red week (-8%), Kim flat $131.25 x3, Florentino PSA10 $492 (+23%) w/ raw holding; NO reorders"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "CROSSOVER WATCH flagged on-page: Aloy $62 out-sold Arquette $50 (week 1 of 2) — swap next Tuesday if it holds"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "STEP 0: no new 1st-Bowman product delivering; Chrome street ~Sep 9-10 — Friday release-window task stays DISABLED until street date (enable next run if street confirmed)"
+        }
+      ]
     },
-    {
-     "ts": "2026-08-10",
-     "msg": "Gap analysis: 4 new page ideas queued for Mo (LeBron, Boozer, Rutschman, Mendoza)"
+    "inspector": {
+      "label": "INSPECTOR",
+      "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
+      "lastRun": "2026-08-25",
+      "nextRun": "2026-08-26",
+      "actions": [
+        {
+          "ts": "2026-08-19",
+          "msg": "Dungeon decisions reconcile: price-data/data/dungeon-decisions.json is 404 -- nothing to reconcile (cockpit api/decisions.js push still awaiting Mo)"
+        },
+        {
+          "ts": "2026-08-19",
+          "msg": "Mo approved all 11 open proposals; fixer pass applied audit-1..5 + Tribute ($860 SCP box, reframed released) + Rutschman/Murakami/Anthony cells; re-sweep FAIL 0, WARN 29->26; awaiting Mo push"
+        },
+        {
+          "ts": "2026-08-21",
+          "msg": "MWF audit: sweeps clean (69 pages, FAIL 0, EPN params intact, JSON valid); live deploy matches repo (index, bangers, psa, roman-anthony); 10/10 remote images resolve"
+        },
+        {
+          "ts": "2026-08-21",
+          "msg": "Verified all 4 Aug 19 audit fixes landed: homepage re-synced to Aug 18 board, Greninja $210-240 site-wide, ASK-BASIS badges on track-record, psa-guide stamped"
+        },
+        {
+          "ts": "2026-08-21",
+          "msg": "3 MED filed: released products still in pre-release framing — Flagship Football (releases TODAY, checklist is public), Chrome Baseball ('still unreleased'), Chrome Black Football (6 wks stale)"
+        },
+        {
+          "ts": "2026-08-21",
+          "msg": "dungeon-decisions.json still 404 on price-data — cockpit approve/decline loop stays dark until cockpit-loop-build (approved Aug 17) is pushed"
+        },
+        {
+          "ts": "2026-08-24",
+          "msg": "Verification: audit-prices FAIL 0 / site-auditor FAIL 0 after EPN flip + new page build"
+        },
+        {
+          "ts": "2026-08-24",
+          "msg": "Price check: 6 flags filed (Murakami S1 spike, Roman Anthony move needs comp ID, flagship FB box comps forming, 2 stale banners re-flagged)"
+        },
+        {
+          "ts": "2026-08-24",
+          "msg": "Pokemon images: all wired, nothing new this run"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "MWF audit: both sweeps clean (69 pages FAIL 0 WARN 0; prices FAIL 0, 26 known label-cell WARNs); local main == origin/main (41cd01d); live deploy matches repo (home, bowman-chrome, wnba, world-cup, pokemon-tcg-2026); 10/10 remote images resolve; EPN mkevt=1 intact on spot-checked pages"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "2 MED filed: bowman-chrome page says checklist published AND 'not yet announced'/'TBA' on the same page (lines 777/813/880); world-cup page still pre-tournament 5 weeks after the final (lines 674/703)"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "dungeon-decisions.json still 404 on price-data — no decisions to reconcile; the 3 Aug 21 stale-framing MEDs remain awaiting-mo (2nd run)"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "Tuesday comp pull: SCP product pages fetched for all 10 tracked names (Houston slug found at cpa-mho, $33 raw first read; Gonzalez has NO SCP product page — untrackable stands); engine marks fresh (gen 08:59Z), no dispersion flags"
+        }
+      ]
     },
-    {
-     "ts": "2026-08-18",
-     "msg": "STEP 0.75 signal harvest: 1 new signal (PCA 2020 BCD 1st Auto, count 1 < 5 threshold; page exists) -- no auto-adds; test entries excluded permanently"
+    "dm": {
+      "label": "DM",
+      "role": "Ledger keeper + orchestration (/track-record, calls.json)",
+      "lastRun": "2026-08-25",
+      "nextRun": "2026-08-31",
+      "actions": [
+        {
+          "ts": "2026-08-17",
+          "msg": "Mo approved #1-#3; pages+prices+ledger pushed; new-page builds HELD (vault focus first)"
+        },
+        {
+          "ts": "2026-08-17",
+          "msg": "Vault v3 — fuzzy engine auto-link + ask-median auto-log (Mo's exact-name gripe)"
+        },
+        {
+          "ts": "2026-08-17",
+          "msg": "eBay Marketplace Insights access request submitted (support contact activated same day)"
+        },
+        {
+          "ts": "2026-08-17",
+          "msg": "COCKPIT LOOP built — dungeon approve/decline buttons -> /api/decisions -> price-data branch; auditor reconciles at run start"
+        },
+        {
+          "ts": "2026-08-18",
+          "msg": "2 new ledger verdicts at promotion: Kim WAIT @ $131.25, Florentino BUY @ $79.32 (finalize ~Oct 13); 4 Bangers finals untouched"
+        },
+        {
+          "ts": "2026-08-18",
+          "msg": "7 tweet drafts written (#1 accountability = Pierce -46% wrong + reshuffle demotion) -- awaiting Mo pick"
+        },
+        {
+          "ts": "2026-08-18",
+          "msg": "Ledger gap closed: 10 finalizations + 4 trending updates reconstructed from Monday scan (Mo approved same-day); scoreboard 15 final / 6 trending"
+        },
+        {
+          "ts": "2026-08-18",
+          "msg": "POKEMON CALLS RETIRED (Mo's decision): no new Pokemon calls; /track-record split into Sports (active) + Pokemon (retired, history stays) with per-segment scoreboard; policy written into calls.json _comment"
+        },
+        {
+          "ts": "2026-08-24",
+          "msg": "Ledger: 6 trending calls re-read Aug 24 (Greninja PSA10 550, Darkrai 257, Zeraora 59, Gladion 31, Kim 131 flat, Florentino 80 flat); none past finalizeAfter"
+        },
+        {
+          "ts": "2026-08-24",
+          "msg": "Lucario set attribution corrected to Mega Evolution per Mo (proposal lucario-attribution applied)"
+        },
+        {
+          "ts": "2026-08-24",
+          "msg": "Backlog reconcile: tweets-2026-08-18 stale (6 days, week passed) — needs Mo decision to retire"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "Ledger: Kim + Florentino re-read Aug 25 (131.25 flat x3 wks; 79.77 flat w/ PSA10 $492); 4 June Bangers reads untouched, all EARLY until Dec 12; no grades flipped"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "3 tweet drafts (Mon/Wed/Fri long-hold rhythm, #1 accountability = Arquette -28%) + email digest digest-2026-08-25.md — awaiting Mo pick/send"
+        }
+      ]
     },
-    {
-     "ts": "2026-08-24",
-     "msg": "Calendar watch: 1 NEW release (Chrome Updates BKB Sapphire, Sep 3); Star Wars/Samurai Japan/Tennis/Vault Marvel already on skip list"
+    "trader": {
+      "label": "TRADER",
+      "role": "COMC trading analyst (Thursday runs) — recommend-only, Mo executes; book stays local",
+      "lastRun": "2026-08-21",
+      "nextRun": "2026-08-27",
+      "actions": [
+        {
+          "ts": "2026-08-19",
+          "msg": "COMMISSIONED — charter, fee/friction model (5% sale fee; 10% cash-out avoided via credit flips), graded rec ledger + RETRO self-improvement loop; weekly Thursday runs"
+        },
+        {
+          "ts": "2026-08-19",
+          "msg": "Scan #1 (manual dry run): 9 recs filed, 6 executed same-day — 2 new listings live, 1 reprice, 3 corner positions taken (one at 100% COMC float); 2 buy candidates PASSED on tape math, 0 forced trades"
+        },
+        {
+          "ts": "2026-08-19",
+          "msg": "Process: 8 of 9 reprice recs declined by Mo -> floor-position/corner rule written into charter same day; demand-gate moved to pre-filing after one gate closed post-execution (passed, but logged as process hole)"
+        },
+        {
+          "ts": "2026-08-20",
+          "msg": "scan run 2 — 7 recs filed (5 actionable, 2 hold-notes). Read-only on COMC throughout."
+        },
+        {
+          "ts": "2026-08-20",
+          "msg": "audited every position where the full listed float is owned — most price correctly, a handful of older ones drifted well above their sold tape and cannot convert. Reprice-down recs filed; no capital required."
+        },
+        {
+          "ts": "2026-08-20",
+          "msg": "2 buy-lane recs cleared all gates pre-filing (demand + velocity + float + tape). Prior week's 6 executed recs all verified live at target; none closed yet, so realized P/L stays $0.00."
+        },
+        {
+          "ts": "2026-08-20",
+          "msg": "one prior rec re-gated after its catalyst turned out to have already passed — new charter check proposed so every catalyst must be dated and confirmed still ahead."
+        },
+        {
+          "ts": "2026-08-21",
+          "msg": "scan run 3 (first scheduled Thursday run). Extraction pipeline fixed — snapshot now reconciles against COMC's own dashboard to the cent; prior run's silent data hole is closed."
+        },
+        {
+          "ts": "2026-08-21",
+          "msg": "float check clean — every monopoly and accumulation position unchanged, zero corner-break alerts. Verified all prior executed recs still live at target; 1 new rec filed (a pass on the week's rotation set — no forced trades)."
+        },
+        {
+          "ts": "2026-08-21",
+          "msg": "grading update — a batch rec graded 'declined' last week turned out to be a menu: several of its items were executed at the exact revised targets a day later. Weekly diffs now check executed prices against ALL prior rec targets."
+        }
+      ]
     },
-    {
-     "ts": "2026-08-24",
-     "msg": "Trends: Celebrini record YG sale; Adley +12% on Red Sox trade; Murakami S1 base $8->$22; Phantasmal Flames Charizard X SIR ~$719 and NO page exists"
-    },
-    {
-     "ts": "2026-08-24",
-     "msg": "Gap analysis: proposed /phantasmal-flames-set-guide (top gap), /macklin-celebrini-rookie-cards, /paige-bueckers-rookie-cards"
+    "gengar": {
+      "label": "GENGAR",
+      "role": "Pokémon watcher (set prices, chase images, API checks)",
+      "lastRun": "2026-08-10",
+      "nextRun": null,
+      "actions": [
+        {
+          "ts": "2026-08-10",
+          "msg": "Pitch Black entered the English pokemontcg.io API (me5) — checklist verified, all 8 chase images resolving in production"
+        },
+        {
+          "ts": "2026-08-10",
+          "msg": "Re-priced 4 set guides vs PriceCharting solds: Darkrai $271/$196 · Greninja $210–240 · Umbreon $1,400–1,500 ▲ · Ascended Heroes ×4 rows"
+        },
+        {
+          "ts": "2026-08-10",
+          "msg": "Mega-era supply glut confirmed: every 2026 chase bleeding while Prismatic Umbreon rips — printed in the guides"
+        }
+      ],
+      "status": "retired",
+      "retiredOn": "2026-08-20",
+      "retiredWhy": "No owning scheduled task — could never run again. Pokemon CALLS retired from the ledger Aug 18 (policy: no new Pokemon calls ever); remaining duty (set-guide repricing, chase-image checks) is covered by the Monday scan + MWF auditor."
     }
-   ]
   },
-  "curator": {
-   "label": "CURATOR",
-   "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-   "lastRun": "2026-08-24",
-   "nextRun": "2026-08-25",
-   "actions": [
+  "items": [
     {
-     "ts": "2026-08-10",
-     "msg": "Both pages approved by Mo and pushed live (622b33a)"
+      "slug": "set-indices",
+      "title": "Set Indices (ETF-style, per set)",
+      "stage": "built",
+      "note": "PB26 LIVE-READY Aug 24: first REAL index (Pitch Black chase tier, 8 holdings, sold reads, real Vault-track contract, EPN rows, noindex until linked) at /pitch-black-index; BOW26 stays mockup preview",
+      "ts": "2026-08-24"
     },
     {
-     "ts": "2026-08-10",
-     "msg": "Mo approved the 4 gap-analysis pages — built /lebron-james-cards, /adley-rutschman-cards, /cameron-boozer-rookie-cards, /fernando-mendoza-rookie-cards (comps cited, nav+sitemap wired)"
+      "stage": "built",
+      "title": "2025-26 Topps Chrome Updates BKB Sapphire Edition",
+      "note": "Built Aug 24 from calendar watch; awaiting review/push",
+      "slug": "/topps-chrome-updates-basketball-sapphire-edition"
     },
     {
-     "ts": "2026-08-10",
-     "msg": "All 4 player pages pushed live by Mo (7acc698) — proposal→applied, same-day idea-to-live"
+      "slug": "topps-museum-collection-baseball",
+      "title": "2026 Topps Museum Collection Baseball",
+      "stage": "live",
+      "note": "Set guide live ahead of Aug 17 pre-order",
+      "ts": "2026-08-10"
     },
     {
-     "ts": "2026-08-11",
-     "msg": "Bangers board re-priced (Aug 11 SCP solds): Arquette +9% bounce, Fischer +7% third green week, no rank changes"
+      "slug": "topps-definitive-basketball",
+      "title": "2025-26 Topps Definitive Basketball",
+      "stage": "live",
+      "note": "First NBA Definitive — live ahead of Aug 18 pre-order",
+      "ts": "2026-08-10"
     },
     {
-     "ts": "2026-08-11",
-     "msg": "Watch-tier promotion flags: Kim $131 raw (above 4 of top 5), Florentino $85, Gonzales $57, Houston $29 — promote next run if it holds"
+      "slug": "bowman-chrome-baseball-2026",
+      "title": "2026 Bowman Chrome Baseball",
+      "stage": "live",
+      "note": "Live Aug 7; pre-orders opened Aug 10 — benchmark-transition watch begins ~late Sep",
+      "ts": "2026-08-07"
     },
     {
-     "ts": "2026-08-11",
-     "msg": "STEP 0: no new 1st-Bowman product delivering yet — Chrome pre-orders open, street ~Sep 9-10, transition watch ~late Sep"
+      "slug": "lebron-james-cards",
+      "title": "LeBron James Cards",
+      "stage": "live",
+      "note": "Philly move: raw 2003 Topps RC +24%/30d — LIVE",
+      "ts": "2026-08-10"
     },
     {
-     "ts": "2026-08-11",
-     "msg": "Vault v2 (Mo request): Track buttons now offer Hunting / I Own It (+cost), seed page prices, auto-link the price engine; 32 new buttons wired on 7 player pages (LeBron, Rutschman, Boozer, Mendoza, Misiorowski, PCA, DeLauter)"
+      "slug": "cameron-boozer-rookie-cards",
+      "title": "Cameron Boozer Rookie Cards",
+      "stage": "live",
+      "note": "NBA ROY favorite (+300), first Topps NBA RC class — LIVE",
+      "ts": "2026-08-10"
     },
     {
-     "ts": "2026-08-18",
-     "msg": "BOARD RESHUFFLE (Aug 11 flags held): Kim promoted #2 ($131 raw, top of class), Florentino #4 ($79); Pierce (-11%, $17.30 lows) + Aloy demoted to watch tier; Arquette to #5"
+      "slug": "adley-rutschman-cards",
+      "title": "Adley Rutschman Cards",
+      "stage": "live",
+      "note": "BOS trade, Chrome RC auto +12% overnight — LIVE",
+      "ts": "2026-08-10"
     },
     {
-     "ts": "2026-08-18",
-     "msg": "Re-priced top 5 w/ SCP+engine subs; Holliday PSA 10 ripped $498->$720 (+45%), holds #1; Fischer first red week (-6%); hero stamp Aug 18; audit FAIL 0"
+      "slug": "fernando-mendoza-rookie-cards",
+      "title": "Fernando Mendoza Rookie Cards",
+      "stage": "live",
+      "note": "No. 1 pick buy-window (behind Cousins) — LIVE",
+      "ts": "2026-08-10"
     },
     {
-     "ts": "2026-08-18",
-     "msg": "STEP 0: no new 1st-Bowman product delivering; Chrome street ~Sep 9-10 -- Friday release-window task stays DISABLED until street date"
+      "slug": "bowman-chrome-wide-release",
+      "title": "Bowman Chrome wide release (~early Sep)",
+      "stage": "discovered",
+      "note": "Paper→Chrome benchmark transition for the Bangers top 5 (~2–3 wks after)",
+      "ts": "2026-08-10"
     },
     {
-     "ts": "2026-08-24",
-     "msg": "BUILT /topps-chrome-updates-basketball-sapphire-edition (nav + sitemap wired, audits clean) — awaiting Mo review + push"
+      "slug": "bowman-draft-2026",
+      "title": "2026 Bowman Draft / Chrome Draft (~Dec)",
+      "stage": "discovered",
+      "note": "Draft-class wave enters the Bangers board",
+      "ts": "2026-08-10"
     },
     {
-     "ts": "2026-08-24",
-     "msg": "EPN BUTTON FLIP applied per epn-button-flip-aug23: 24 Fanatics/Impact buttons -> eBay EPN search links across 21 Topps/Bowman pages; narrative copy patched"
+      "slug": "topps-chrome-baseball-logofractor-edition",
+      "title": "Chrome Baseball Logofractor Edition",
+      "stage": "skipped",
+      "note": "Online-exclusive variant — covered by /topps-chrome-baseball-2026",
+      "ts": "2026-08-10"
+    },
+    {
+      "slug": "topps-universe-wwe",
+      "title": "2026 Topps Universe WWE",
+      "stage": "skipped",
+      "note": "No combat-sports vertical",
+      "ts": "2026-08-10"
+    },
+    {
+      "slug": "topps-vault-marvel",
+      "title": "2026 Topps Vault Marvel",
+      "stage": "skipped",
+      "note": "Entertainment/licensed — off-niche",
+      "ts": "2026-08-10"
     }
-   ]
-  },
-  "inspector": {
-   "label": "INSPECTOR",
-   "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-   "lastRun": "2026-08-24",
-   "nextRun": "2026-08-26",
-   "actions": [
-    {
-     "ts": "2026-08-18",
-     "msg": "DISCREPANCY: Monday Aug 17 scan reported 10 ledger finalizations but calls.json (local AND origin/main) still shows them trending past finalizeAfter 2026-08-14 -- needs Mo/Monday-run follow-up"
-    },
-    {
-     "ts": "2026-08-19",
-     "msg": "MWF audit: sweeps FAIL 0 (69 pages EPN-clean, JSON valid); deploy verified current in-browser (Aug 18 board live -- stale-fetch false alarm ruled out); 10/10 sampled remote card images resolve"
-    },
-    {
-     "ts": "2026-08-19",
-     "msg": "Filed audit-2026-08-19-1..5: homepage stuck on Jul 31 (old top-5, Darkrai still PRE-ORDER), pokemon-tcg-2026 Greninja $470-505 vs $210-240 sibling guide, 6 ask-basis FINALs vs track-record's stated sold-basis methodology, PSA guide missing price disclaimer, stale footer stamps"
-    },
-    {
-     "ts": "2026-08-19",
-     "msg": "Dungeon decisions reconcile: price-data/data/dungeon-decisions.json is 404 -- nothing to reconcile (cockpit api/decisions.js push still awaiting Mo)"
-    },
-    {
-     "ts": "2026-08-19",
-     "msg": "Mo approved all 11 open proposals; fixer pass applied audit-1..5 + Tribute ($860 SCP box, reframed released) + Rutschman/Murakami/Anthony cells; re-sweep FAIL 0, WARN 29->26; awaiting Mo push"
-    },
-    {
-     "ts": "2026-08-21",
-     "msg": "MWF audit: sweeps clean (69 pages, FAIL 0, EPN params intact, JSON valid); live deploy matches repo (index, bangers, psa, roman-anthony); 10/10 remote images resolve"
-    },
-    {
-     "ts": "2026-08-21",
-     "msg": "Verified all 4 Aug 19 audit fixes landed: homepage re-synced to Aug 18 board, Greninja $210-240 site-wide, ASK-BASIS badges on track-record, psa-guide stamped"
-    },
-    {
-     "ts": "2026-08-21",
-     "msg": "3 MED filed: released products still in pre-release framing — Flagship Football (releases TODAY, checklist is public), Chrome Baseball ('still unreleased'), Chrome Black Football (6 wks stale)"
-    },
-    {
-     "ts": "2026-08-21",
-     "msg": "dungeon-decisions.json still 404 on price-data — cockpit approve/decline loop stays dark until cockpit-loop-build (approved Aug 17) is pushed"
-    },
-    {
-     "ts": "2026-08-24",
-     "msg": "Verification: audit-prices FAIL 0 / site-auditor FAIL 0 after EPN flip + new page build"
-    },
-    {
-     "ts": "2026-08-24",
-     "msg": "Price check: 6 flags filed (Murakami S1 spike, Roman Anthony move needs comp ID, flagship FB box comps forming, 2 stale banners re-flagged)"
-    },
-    {
-     "ts": "2026-08-24",
-     "msg": "Pokemon images: all wired, nothing new this run"
-    }
-   ]
-  },
-  "dm": {
-   "label": "DM",
-   "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-   "lastRun": "2026-08-24",
-   "nextRun": "2026-08-25",
-   "actions": [
-    {
-     "ts": "2026-08-11",
-     "msg": "Self-growing feed loop built (Mo picked option 2): /api/track-signal demand counters + Tuesday STEP 0.75 auto-add (count≥5) — engine now grows from visitor demand"
-    },
-    {
-     "ts": "2026-08-17",
-     "msg": "Mo approved #1-#3; pages+prices+ledger pushed; new-page builds HELD (vault focus first)"
-    },
-    {
-     "ts": "2026-08-17",
-     "msg": "Vault v3 — fuzzy engine auto-link + ask-median auto-log (Mo's exact-name gripe)"
-    },
-    {
-     "ts": "2026-08-17",
-     "msg": "eBay Marketplace Insights access request submitted (support contact activated same day)"
-    },
-    {
-     "ts": "2026-08-17",
-     "msg": "COCKPIT LOOP built — dungeon approve/decline buttons -> /api/decisions -> price-data branch; auditor reconciles at run start"
-    },
-    {
-     "ts": "2026-08-18",
-     "msg": "2 new ledger verdicts at promotion: Kim WAIT @ $131.25, Florentino BUY @ $79.32 (finalize ~Oct 13); 4 Bangers finals untouched"
-    },
-    {
-     "ts": "2026-08-18",
-     "msg": "7 tweet drafts written (#1 accountability = Pierce -46% wrong + reshuffle demotion) -- awaiting Mo pick"
-    },
-    {
-     "ts": "2026-08-18",
-     "msg": "Ledger gap closed: 10 finalizations + 4 trending updates reconstructed from Monday scan (Mo approved same-day); scoreboard 15 final / 6 trending"
-    },
-    {
-     "ts": "2026-08-18",
-     "msg": "POKEMON CALLS RETIRED (Mo's decision): no new Pokemon calls; /track-record split into Sports (active) + Pokemon (retired, history stays) with per-segment scoreboard; policy written into calls.json _comment"
-    },
-    {
-     "ts": "2026-08-24",
-     "msg": "Ledger: 6 trending calls re-read Aug 24 (Greninja PSA10 550, Darkrai 257, Zeraora 59, Gladion 31, Kim 131 flat, Florentino 80 flat); none past finalizeAfter"
-    },
-    {
-     "ts": "2026-08-24",
-     "msg": "Lucario set attribution corrected to Mega Evolution per Mo (proposal lucario-attribution applied)"
-    },
-    {
-     "ts": "2026-08-24",
-     "msg": "Backlog reconcile: tweets-2026-08-18 stale (6 days, week passed) — needs Mo decision to retire"
-    }
-   ]
-  },
-  "trader": {
-   "label": "TRADER",
-   "role": "COMC trading analyst (Thursday runs) — recommend-only, Mo executes; book stays local",
-   "lastRun": "2026-08-21",
-   "nextRun": "2026-08-27",
-   "actions": [
-    {
-     "ts": "2026-08-19",
-     "msg": "COMMISSIONED — charter, fee/friction model (5% sale fee; 10% cash-out avoided via credit flips), graded rec ledger + RETRO self-improvement loop; weekly Thursday runs"
-    },
-    {
-     "ts": "2026-08-19",
-     "msg": "Scan #1 (manual dry run): 9 recs filed, 6 executed same-day — 2 new listings live, 1 reprice, 3 corner positions taken (one at 100% COMC float); 2 buy candidates PASSED on tape math, 0 forced trades"
-    },
-    {
-     "ts": "2026-08-19",
-     "msg": "Process: 8 of 9 reprice recs declined by Mo -> floor-position/corner rule written into charter same day; demand-gate moved to pre-filing after one gate closed post-execution (passed, but logged as process hole)"
-    },
-    {
-     "ts": "2026-08-20",
-     "msg": "scan run 2 — 7 recs filed (5 actionable, 2 hold-notes). Read-only on COMC throughout."
-    },
-    {
-     "ts": "2026-08-20",
-     "msg": "audited every position where the full listed float is owned — most price correctly, a handful of older ones drifted well above their sold tape and cannot convert. Reprice-down recs filed; no capital required."
-    },
-    {
-     "ts": "2026-08-20",
-     "msg": "2 buy-lane recs cleared all gates pre-filing (demand + velocity + float + tape). Prior week's 6 executed recs all verified live at target; none closed yet, so realized P/L stays $0.00."
-    },
-    {
-     "ts": "2026-08-20",
-     "msg": "one prior rec re-gated after its catalyst turned out to have already passed — new charter check proposed so every catalyst must be dated and confirmed still ahead."
-    },
-    {
-     "ts": "2026-08-21",
-     "msg": "scan run 3 (first scheduled Thursday run). Extraction pipeline fixed — snapshot now reconciles against COMC's own dashboard to the cent; prior run's silent data hole is closed."
-    },
-    {
-     "ts": "2026-08-21",
-     "msg": "float check clean — every monopoly and accumulation position unchanged, zero corner-break alerts. Verified all prior executed recs still live at target; 1 new rec filed (a pass on the week's rotation set — no forced trades)."
-    },
-    {
-     "ts": "2026-08-21",
-     "msg": "grading update — a batch rec graded 'declined' last week turned out to be a menu: several of its items were executed at the exact revised targets a day later. Weekly diffs now check executed prices against ALL prior rec targets."
-    }
-   ]
-  },
-  "gengar": {
-   "label": "GENGAR",
-   "role": "Pokémon watcher (set prices, chase images, API checks)",
-   "lastRun": "2026-08-10",
-   "nextRun": null,
-   "actions": [
-    {
-     "ts": "2026-08-10",
-     "msg": "Pitch Black entered the English pokemontcg.io API (me5) — checklist verified, all 8 chase images resolving in production"
-    },
-    {
-     "ts": "2026-08-10",
-     "msg": "Re-priced 4 set guides vs PriceCharting solds: Darkrai $271/$196 · Greninja $210–240 · Umbreon $1,400–1,500 ▲ · Ascended Heroes ×4 rows"
-    },
-    {
-     "ts": "2026-08-10",
-     "msg": "Mega-era supply glut confirmed: every 2026 chase bleeding while Prismatic Umbreon rips — printed in the guides"
-    }
-   ],
-   "status": "retired",
-   "retiredOn": "2026-08-20",
-   "retiredWhy": "No owning scheduled task — could never run again. Pokemon CALLS retired from the ledger Aug 18 (policy: no new Pokemon calls ever); remaining duty (set-guide repricing, chase-image checks) is covered by the Monday scan + MWF auditor."
-  }
- },
- "items": [
-  {
-   "slug": "set-indices",
-   "title": "Set Indices (ETF-style, per set)",
-   "stage": "built",
-   "note": "PB26 LIVE-READY Aug 24: first REAL index (Pitch Black chase tier, 8 holdings, sold reads, real Vault-track contract, EPN rows, noindex until linked) at /pitch-black-index; BOW26 stays mockup preview",
-   "ts": "2026-08-24"
-  },
-  {
-   "stage": "built",
-   "title": "2025-26 Topps Chrome Updates BKB Sapphire Edition",
-   "note": "Built Aug 24 from calendar watch; awaiting review/push",
-   "slug": "/topps-chrome-updates-basketball-sapphire-edition"
-  },
-  {
-   "slug": "topps-museum-collection-baseball",
-   "title": "2026 Topps Museum Collection Baseball",
-   "stage": "live",
-   "note": "Set guide live ahead of Aug 17 pre-order",
-   "ts": "2026-08-10"
-  },
-  {
-   "slug": "topps-definitive-basketball",
-   "title": "2025-26 Topps Definitive Basketball",
-   "stage": "live",
-   "note": "First NBA Definitive — live ahead of Aug 18 pre-order",
-   "ts": "2026-08-10"
-  },
-  {
-   "slug": "bowman-chrome-baseball-2026",
-   "title": "2026 Bowman Chrome Baseball",
-   "stage": "live",
-   "note": "Live Aug 7; pre-orders opened Aug 10 — benchmark-transition watch begins ~late Sep",
-   "ts": "2026-08-07"
-  },
-  {
-   "slug": "lebron-james-cards",
-   "title": "LeBron James Cards",
-   "stage": "live",
-   "note": "Philly move: raw 2003 Topps RC +24%/30d — LIVE",
-   "ts": "2026-08-10"
-  },
-  {
-   "slug": "cameron-boozer-rookie-cards",
-   "title": "Cameron Boozer Rookie Cards",
-   "stage": "live",
-   "note": "NBA ROY favorite (+300), first Topps NBA RC class — LIVE",
-   "ts": "2026-08-10"
-  },
-  {
-   "slug": "adley-rutschman-cards",
-   "title": "Adley Rutschman Cards",
-   "stage": "live",
-   "note": "BOS trade, Chrome RC auto +12% overnight — LIVE",
-   "ts": "2026-08-10"
-  },
-  {
-   "slug": "fernando-mendoza-rookie-cards",
-   "title": "Fernando Mendoza Rookie Cards",
-   "stage": "live",
-   "note": "No. 1 pick buy-window (behind Cousins) — LIVE",
-   "ts": "2026-08-10"
-  },
-  {
-   "slug": "bowman-chrome-wide-release",
-   "title": "Bowman Chrome wide release (~early Sep)",
-   "stage": "discovered",
-   "note": "Paper→Chrome benchmark transition for the Bangers top 5 (~2–3 wks after)",
-   "ts": "2026-08-10"
-  },
-  {
-   "slug": "bowman-draft-2026",
-   "title": "2026 Bowman Draft / Chrome Draft (~Dec)",
-   "stage": "discovered",
-   "note": "Draft-class wave enters the Bangers board",
-   "ts": "2026-08-10"
-  },
-  {
-   "slug": "topps-chrome-baseball-logofractor-edition",
-   "title": "Chrome Baseball Logofractor Edition",
-   "stage": "skipped",
-   "note": "Online-exclusive variant — covered by /topps-chrome-baseball-2026",
-   "ts": "2026-08-10"
-  },
-  {
-   "slug": "topps-universe-wwe",
-   "title": "2026 Topps Universe WWE",
-   "stage": "skipped",
-   "note": "No combat-sports vertical",
-   "ts": "2026-08-10"
-  },
-  {
-   "slug": "topps-vault-marvel",
-   "title": "2026 Topps Vault Marvel",
-   "stage": "skipped",
-   "note": "Entertainment/licensed — off-niche",
-   "ts": "2026-08-10"
-  }
- ],
- "proposals": [
-  {
-   "id": "tweets-2026-08-11",
-   "area": "social",
-   "summary": "7 tweet drafts for the week (accountability #1 = Greninja −57% FINAL; 2× Bangers, LeBron, Umbreon, 2× new-page ideas) — Mo to pick and post",
-   "status": "applied"
-  },
-  {
-   "id": "bangers-watch-promotions",
-   "area": "board",
-   "summary": "Watch-tier promotion flags (Aug 11): Kim $131 / Florentino $85 / Gonzales $57 / Houston $29 all above Pierce $19.50 — promote next Tuesday if it holds (board reshuffle + new ledger verdicts) -- APPLIED Aug 18 (Kim #2, Florentino #4; Pierce+Aloy to watch)",
-   "status": "applied"
-  },
-  {
-   "id": "lucario-attribution",
-   "area": "ledger",
-   "summary": "Confirm Lucario BUY call set attribution: #179 SIR = Mega Evolution base set, not Ascended Heroes (AH Lucario is #113) — Mo, 2026-08-19 APPLIED Aug 24: calls.json v-ah-lucario-buy set -> Mega Evolution with dated note; no page carries the old attribution (ascended-heroes.html has no Lucario row).",
-   "status": "applied"
-  },
-  {
-   "id": "tribute-box-comps",
-   "area": "price-check",
-   "summary": "Tribute box-level comps (released Jul 29; last read Waxstat ~$950 avg) — needs fresh pull + page update — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
-   "status": "applied",
-   "verified": "2026-08-20: SCP sold pulls completed Aug 20 (Tribute box level)"
-  },
-  {
-   "id": "player-page-sweeps",
-   "area": "price-check",
-   "summary": "Refresh sweeps pending comp pulls: Misiorowski (NL Cy −425), Murakami, Roman Anthony, best-under-50 ×3 — Mo, 2026-08-19 · PARTIAL Aug 19: Rutschman 2019 BD auto $189 + Murakami/Anthony parallel cells anchored; Misiorowski + under-50 sweeps stay with Monday run",
-   "status": "applied",
-   "verified": "2026-08-20: SCP sold pulls completed Aug 20 (Misiorowski, Murakami, Anthony, Rutschman 2019)"
-  },
-  {
-   "id": "new-pages-aug10",
-   "area": "content",
-   "summary": "4 gap-analysis pages approved, built AND pushed live same day (LeBron, Rutschman, Boozer, Mendoza)",
-   "status": "applied"
-  },
-  {
-   "id": "topps-application-escalation",
-   "area": "affiliate",
-   "summary": "Topps/Impact application (acct 7418994) In Review since mid-June. Aug 10: Collector Support dead end, Impact support form broken, EMAILED support@impact.com directly — awaiting response. Re-escalate if silent by ~Aug 24. Placeholder buttons on 8+ pages flip to earning links on approval. — RETIRED Aug 23 (Mo's decision): product sells out in minutes even on drops, so affiliate clicks can never convert; no more chasing. Application left sitting; buttons repoint to EPN.",
-   "status": "retired"
-  },
-  {
-   "id": "vault-v3-aug17",
-   "status": "applied",
-   "title": "Vault v3 (watchlist.html): fuzzy auto-link to price engine, daily ask-median auto-log (src-tagged, never solds), log-source tags — review + push — pushed by Mo Aug 17 (incl. low-ask mark revision)"
-  },
-  {
-   "id": "ebay-insights-application",
-   "status": "awaiting-response",
-   "title": "eBay Marketplace Insights API access request SUBMITTED Aug 17 (Application Growth Check ticket) — check My Tickets ~Aug 31; if granted, build /api/solds and flip vault+engine to sold-basis"
-  },
-  {
-   "id": "site-auditor-build",
-   "status": "applied",
-   "title": "Push tools/site-auditor/ (CHARTER.md + audit-site.mjs) — MWF auditor is scheduled locally and will file findings here as audit-<date>-<n> proposals — Mo, 2026-08-19",
-   "verified": "2026-08-20: tools/site-auditor/ present in repo and the MWF task has been running since Aug 17"
-  },
-  {
-   "id": "cockpit-loop-build",
-   "status": "applied",
-   "title": "Push api/decisions.js + set Vercel env DUNGEON_KEY (and GITHUB_TOKEN if not already set for track-signal) — then dungeon approve/decline goes live. card-dungeon.html changes are local-only (gitignored), already active. — Mo, 2026-08-19 — VERIFIED deployed Aug 23 (endpoint live, 401-not-503 proves GITHUB_TOKEN set); remaining: DUNGEON_KEY env + first-click test"
-  },
-  {
-   "id": "tweets-2026-08-18",
-   "area": "social",
-   "summary": "7 tweet drafts for the week (accountability #1 = Pierce BUY wrong -46% + board demotion; reshuffle thread, Holliday PSA10 +45%, Kim WAIT, 3 new-page ideas from Monday gap analysis) -- Mo to pick and post — Mo, 2026-08-19",
-   "status": "approved"
-  },
-  {
-   "id": "ledger-finalization-gap",
-   "area": "ledger",
-   "summary": "RESOLVED Aug 18: the 10 missing Monday finalizations reconstructed from the Aug 17 scan reads and applied (8 Pitch Black + Mewtwo push + Lucario wrong) + 4 trending updates; scoreboard now 15 final (2 right / 11 wrong / 2 push)",
-   "status": "applied"
-  },
-  {
-   "id": "pokemon-ledger-retirement",
-   "area": "ledger",
-   "summary": "Pokemon calls retired Aug 18 (one-directional miss_high bias = no edge; rarity is the only driver vs sports' catalyst stream). History stays graded -- retire, don't delete. Applied to /track-record + calls.json policy note.",
-   "status": "applied"
-  },
-  {
-   "id": "audit-2026-08-19-1",
-   "status": "applied",
-   "title": "MED: Homepage stuck on Jul 31 and contradicts the Aug 18 board. index.html: Bangers panel 'Updated July 31' with old top-5 order Fischer #2 / Jump #4 / Aloy #5 (lines 692-730) vs the live Aug 18 reshuffle (Kim #2, Florentino #4); ticker Holliday '~$129' (749, 760) vs $113 raw / $95-125; 'Mega Darkrai ex SIR $550-750 PROJ / PRE-ORDER' (751, 762) a month after the Jul 17 release with the call already graded; Greninja '$470-505' (963) vs $210-240; Pitch Black featured card still 'projected at launch / Prereleases July 4-12' (1001); site-wide as-of stamps 'July 31, 2026' (1121, 1170). Fix: re-sync hero panel + ticker from the Aug 18 board, reframe Pitch Black as released with final reads, correct Greninja, bump stamps. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
-   "verified": "2026-08-20: index.html Aug 18 panel live; remaining \"Jul 31\" strings are HTML comments describing the static fallback, not visible copy"
-  },
-  {
-   "id": "audit-2026-08-19-2",
-   "status": "applied",
-   "title": "MED: pokemon-tcg-2026.html sells Greninja SIR at $470-505 (lines 736, 743 + ROI row ~703) -- 2.2x the $210-240 its own sibling guide chaos-rising.html has carried since the Aug 10 reprice (lines 804, 825), and the ledger graded that call at a $212 read. Flagged as the stalest page Jul 28; still unfixed. Fix: re-price the page's hot-cards rows to the chaos-rising reads with an Aug as-of stamp. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
-   "verified": "2026-08-20: pokemon-tcg-2026 Greninja repriced; audit-prices.mjs no longer flags the page"
-  },
-  {
-   "id": "audit-2026-08-19-3",
-   "status": "applied",
-   "title": "MED: 6 FINAL grades in data/calls.json sit on basis=ask (pb-chandelure-sir, pb-gwynn-sir, pb-gladion-sir, v-cr-greninja-buy, v-ah-mewtwo-buy, v-ah-lucario-buy) while /track-record's published methodology says FINAL = graded against sold comps. Grades and projections stay immutable -- the fix is disclosure or basis: either badge these rows 'final (ask-basis)' on the page, or re-grade the basis to solds when eBay Insights lands (~Aug 31 ticket). — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
-   "verified": "2026-08-20: 6 finals carry PriceCharting sold reads in readLabel; auditor rule corrected Aug 20 to check the READ basis — sweep now WARN 0"
-  },
-  {
-   "id": "audit-2026-08-19-4",
-   "status": "applied",
-   "title": "LOW: psa-grading-guide.html has 6 price cells but no sold-comps disclaimer or as-of stamp (price sweep WARN). Fix: add the standard one-line comps disclaimer + dated stamp. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
-   "verified": "2026-08-20: psa-grading-guide disclaimer + footer stamps added"
-  },
-  {
-   "id": "trader-2026-08-19",
-   "status": "awaiting-mo",
-   "title": "TRADER: first scan filed 5 recs (2 SELL, 1 REPRICE x10 items, 1 GRADE pilot, 1 HOLD-NOTE on the two accumulation plays) — details in local comc-trader/scan-2026-08-19.md; agent scheduled Thursdays 8am"
-  },
-  {
-   "id": "audit-2026-08-19-5",
-   "status": "applied",
-   "title": "LOW: stale as-of stamps + placeholder-adjacent price cells. bowman-bangers.html footer says 'sold listings, June 2026' (1348, 1369) under an 'Updated Aug 18' hero; only 5 of 42 price-table pages have fresh stamps. Released-card cells dodging numbers: adley-rutschman-cards.html 'Varies by parallel' (806), murakami + roman-anthony 'scales with scarcity'. Pre-release tier labels (Core auto / Top name etc.) on unreleased set guides left alone -- deliberate pattern, not placeholders. Fix: bump footer stamps in the weekly runs and give the flagged released-card cells numeric ranges. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
-   "verified": "2026-08-20: stale as-of stamps refreshed; audit-site.mjs FAIL 0 / WARN 0"
-  },
-  {
-   "id": "trader-2026-08-20",
-   "status": "awaiting-mo",
-   "title": "TRADER: 7 recs this week — details in local scan report"
-  },
-  {
-   "id": "trader-2026-08-21",
-   "status": "awaiting-mo",
-   "title": "TRADER: 1 new rec this week (plus 7 prior recs still open) — details in local scan report"
-  },
-  {
-   "id": "audit-2026-08-21-1",
-   "status": "approved",
-   "title": "MED: /topps-flagship-football releases TODAY (Aug 21) but the page is frozen at Jul 13 pre-order framing — banner says 'no checklist, box configuration, or MSRP yet' (line 784) and the stat grid shows 'Checklist: Not yet published' (line 793), while the full 400-card checklist has been public on Beckett/Topps for weeks. Release-day traffic on the license-return flagship is landing on factually wrong copy. Fix: reframe as released, cite the published checklist/config, refresh the as-of stamp. — APPROVED by Mo Aug 24; next run applies the fix"
-  },
-  {
-   "id": "audit-2026-08-21-2",
-   "status": "approved",
-   "title": "MED: /topps-chrome-baseball-2026 still says 'Still unreleased, so no sold comps exist yet' (line 788, 'updated Jul 28') and hero reads 'Pre-release' (line 781) — the product streeted in late Jul/early Aug and has weeks of sold comps. Meta description also says 'Pre-release, August 2026' (line 8). Fix: reframe as released with real solds, per the Chrome Updates precedent (Aug 10). — APPROVED by Mo Aug 24; next run applies the fix"
-  },
-  {
-   "id": "audit-2026-08-21-3",
-   "status": "approved",
-   "title": "MED: /topps-chrome-black-football released Jul 10 — six weeks ago — but the banner still says 'As a just-releasing product there are no single-card sold comps yet… as of Jul 6, 2026' (line 784) and meta says 'Pre-release, July 2026' (line 8). Sold comps have existed for over a month. Fix: post-release reframe + comp refresh. — APPROVED by Mo Aug 24; next run applies the fix"
-  },
-  {
-   "id": "epn-button-flip-aug23",
-   "area": "monetization",
-   "summary": "Flip the 8+ placeholder Topps affiliate buttons to EPN search links (eBay = only lane with always-available inventory — Mo's decision, Aug 23). Also stands down the Fanatics Collect retry permanently. For the Monday run / curator to execute; EPN mandatory-param set applies. APPLIED Aug 24 by Monday run: 24 links on 21 pages flipped to EPN search (mandatory params + customid=slug), Fanatics narrative copy patched, audit-prices + site-auditor FAIL 0. Pokemon/hobby-box pages still carry 8 Fanatics (dykyyj) links — proposal text said Topps buttons only; say the word and next run flips those too.",
-   "status": "applied"
-  },
-  {
-   "id": "set-index-etf-build",
-   "area": "product",
-   "summary": "SET INDICES (Mo, Aug 23 — TOP PRIORITY, mockup APPROVED): ETF-style free-float cap-weighted index per set, sports + Pokemon. SPEC LOCKED: top-100 base cards; PRICE-WEIGHTED (rev. Aug 24: = cap-weighted under equal base print runs; float shown as depth stat only, never in the weight; parallels tab = true print-run cap); BASE LEVEL 100.00 (level = cumulative return) with divisor continuity; 90/110 entry-exit buffer; Tuesday reconstitution; parallels = phase-2 sub-tab; row popups on all listed holdings with rank history + basis-stamped price; star-Track wired to the Vault contract on every holding. Preview live at /set-index-preview (mockup-labeled, modeled floats flagged). NEXT: index calculator on real engine data, then BOW26 goes real and the Tuesday run owns reconstitution. REV Aug 24 (Mo): XLV-style layout — top-10 + total row + holdings count, 11-100 collapsed/expandable (all trackable), separate price-ROC panel. FIRST REAL CONVERSION: the Pitch Black guide flips from buy-recs to set index (an index is a measurement, not a call — consistent with the Pokemon calls retirement). STRUCTURE LOCKED Aug 24 eve (Mo): Bowman set pages = BASE | AUTOS | PARALLELS tabs — AUTOS index = chase tier (1st Chrome autos, base version, 15% single-card cap at reconstitution, capped-index method); parallels display-only (no tape). Bangers board benchmarked vs the auto index on /track-record. Rollout: Bowman family + Pokemon first, other baseball next, football later. Sapphire = own ticker (distinct instruments); Sapphire-vs-Chrome spread = publishable stat. NEXT BUILDS: BOW26 autos tab + scorecard benchmark line.",
-   "status": "approved"
-  },
-  {
-   "id": "sapphire-updates-bkb-page-aug24",
-   "area": "content",
-   "summary": "NEW PAGE built and wired (nav+sitemap): /topps-chrome-updates-basketball-sapphire-edition (drops Sep 3; qualitative pre-release framing, no invented prices). Awaiting Mo review + push.",
-   "status": "awaiting-mo"
-  },
-  {
-   "id": "fanatics-pokemon-flip-aug24",
-   "area": "monetization",
-   "status": "approved",
-   "summary": "Flip the 8 remaining Fanatics (dykyyj) links on Pokemon + hobby-box pages to eBay EPN, incl. the ROI-calculator JS const; retire the Fanatics footer disclosure once zero links remain. Approved by Mo Aug 24 — Monday run executes; same dead-lane logic as the Topps flip."
-  },
-  {
-   "id": "vault-indices-box",
-   "area": "product",
-   "status": "approved",
-   "summary": "VAULT INDICES BOX (Mo approved Aug 24, dedicated build session): separate box on /watchlist — indices are trackable but not ownable (brokerage pattern: SPX in the strip, never in positions). v1: 'Track index' on index pages + ticker rows (level, WoW, since-inception, sparkline) reading data/indices.json. v2: BENCHMARK view — user's set-matched positions vs the set index ('are you beating your set'), using data-set on tracked cards. v3: 'replicate the basket' EPN affordance. Prereq (DONE Aug 24): data/indices.json seeded, Monday STEP 3.6 re-mark wired."
-  },
-  {
-   "id": "auditor-nav-css-rule",
-   "area": "qa",
-   "status": "approved",
-   "summary": "Add site-auditor rule: any page containing NAV:START markers must also define the nav base styles (.nav-links flex at top level, .nav-hamburger hidden on desktop, >=3 media blocks). Caught twice on Aug 24 — injected nav HTML with missing page CSS renders as raw links; the existing nav-drift check only compares the HTML block. Mechanical rule, MWF auditor to implement."
-  },
-  {
-   "id": "strategy-indices-first-aug24",
-   "area": "strategy",
-   "status": "applied",
-   "summary": "SITE STRATEGY (Mo decision, Aug 24): indices are THE website priority. Canonical lifecycle: pre-release page at announcement -> converts to a live set index at release (trackable cards via the Vault contract, eBay EPN links site-wide). Random one-off SEO pages retired as the default build motion (exceptional cases only, max 1 proposed/week). Main-releases-only rule unchanged for WHICH sets. Encoded into the Monday run (STEP 2 rewritten index-first) and memory."
-  }
- ],
- "scoreboard": {
-  "updated": "2026-08-24",
-  "final": 15,
-  "finalRight": 2,
-  "finalWrong": 11,
-  "finalPush": 2,
-  "trending": 6,
-  "trendingHit": 1,
-  "trendingMiss": 2,
-  "trendingUngraded": 3,
-  "open": 0
- },
- "chiefOfStaff": {
-  "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
-  "generated": "2026-08-23 (three stale items caught and corrected same day)",
-  "weekOf": "2026-08-24",
-  "headline": "Mo's call Sun evening: Topps/Fanatics affiliate lanes retired — inventory sells out before pages ship, so those clicks can never convert; eBay (always-stocked aftermarket) becomes the only monetization lane. Queue is 5 items, ~35 min.",
-  "doNothing": "With capture live and the affiliate chase retired, nothing left in the queue compounds weekly. The only daily cost is the trader's undercut item; everything else waits a week free.",
-  "queue": [
-   {
-    "rank": 1,
-    "id": "trader-open-recs",
-    "title": "Trader: 8 open recs across the Aug 19-21 scans; one undercut is time-sensitive",
-    "why": "Money decisions decaying with the tape. The undercut item pays floor-position cost every day it stands; the two corner buys were still available at last check.",
-    "effort": "15 min",
-    "ref": "local trader scan Aug 21, section 8"
-   },
-   {
-    "rank": 2,
-    "id": "audit-meds-approve",
-    "title": "Approve 3 audit MEDs: released products still framed as pre-release",
-    "why": "Release-week traffic is landing on factually wrong copy, including a product that streeted Friday. Your approval is the only blocker to the Monday fixer pass.",
-    "effort": "5 min",
-    "ref": "audit-2026-08-21-1..3"
-   },
-   {
-    "rank": 3,
-    "id": "newsletter-recover-stranded",
-    "title": "Newsletter: recover the stranded unconfirmed signups (last remaining step)",
-    "why": "Capture itself is DONE and verified live end-to-end. What remains is one-time: the backlog of people who signed up under the old double opt-in. The pool is frozen now, so this no longer compounds.",
-    "effort": "5 min",
-    "ref": "provider dashboard, unconfirmed filter"
-   },
-   {
-    "rank": 4,
-    "id": "tweet-week-one",
-    "title": "Pick Monday's tweet — first week of the Mon/Wed/Fri rhythm starts tomorrow",
-    "why": "Drafts are written and priced from the latest board. The rhythm only becomes a rhythm if week one actually happens.",
-    "effort": "5 min",
-    "ref": "local tweet drafts (week of Aug 24)"
-   },
-   {
-    "rank": 5,
-    "id": "cockpit-key-test",
-    "title": "Cockpit: set the key env var + click one decision button to test (endpoint is already live)",
-    "why": "Third already-done item caught this week: the endpoint was pushed and deployed, and its store token is verifiably set. All that remains is confirming the key env var exists, then clicking any approve/decline in the dungeon and entering that key once when prompted.",
-    "effort": "3 min",
-    "ref": "cockpit-loop-build"
-   }
   ],
-  "watchdog": [
-   {
-    "severity": "fixed",
-    "what": "Trader feed schema drift repaired",
-    "detail": "7 recent trader actions were bare strings; the schema requires ts+msg objects. Normalized in place, content untouched."
-   },
-   {
-    "severity": "fixed",
-    "what": "Card Hub root indexed",
-    "detail": "29 loose files/folders at the root now carry an INDEX.md. Files deliberately left in place so the weekly runs' newest-file lookups don't break; archival proposed for a later run if Mo wants it."
-   },
-   {
-    "severity": "watch",
-    "what": "Mon/Tue scheduler timestamps don't match outputs",
-    "detail": "Both tasks report a Thursday lastRun at the identical second, with no outputs produced at that moment. Looks like wake-time bookkeeping, not real runs — the agents' own state is consistent with their true Mon/Tue runs. Escalates to broken if Monday's scan produces no report."
-   },
-   {
-    "severity": "watch",
-    "what": "Proposal statuses lag reality in the trader lane",
-    "detail": "A rec batch formally graded declined was partially executed at the exact targets days later. Status reconciliation belongs to the Thursday run once the cockpit loop is live; not touched here because grades are content."
-   },
-   {
-    "severity": "watch",
-    "what": "Dungeon-keeper task naming drift",
-    "detail": "Task id says Saturday, description says Friday 9am, cron runs Friday 11am. Cosmetic; renaming a task is a proposal, not a janitorial fix."
-   },
-   {
-    "severity": "fixed",
-    "what": "Chief of Staff mis-ranked an already-completed item; corrected same day",
-    "detail": "Sunday's queue #1 was built from a 3-day-old report's open-items list without verifying live state; Mo had completed it within hours of that report. Verified against the deployed endpoint and repo, queue re-ranked. Second proof this week that acted-on-off-book reads as ignored until the cockpit loop closes."
-   }
+  "proposals": [
+    {
+      "id": "tweets-2026-08-11",
+      "area": "social",
+      "summary": "7 tweet drafts for the week (accountability #1 = Greninja −57% FINAL; 2× Bangers, LeBron, Umbreon, 2× new-page ideas) — Mo to pick and post",
+      "status": "applied"
+    },
+    {
+      "id": "bangers-watch-promotions",
+      "area": "board",
+      "summary": "Watch-tier promotion flags (Aug 11): Kim $131 / Florentino $85 / Gonzales $57 / Houston $29 all above Pierce $19.50 — promote next Tuesday if it holds (board reshuffle + new ledger verdicts) -- APPLIED Aug 18 (Kim #2, Florentino #4; Pierce+Aloy to watch)",
+      "status": "applied"
+    },
+    {
+      "id": "lucario-attribution",
+      "area": "ledger",
+      "summary": "Confirm Lucario BUY call set attribution: #179 SIR = Mega Evolution base set, not Ascended Heroes (AH Lucario is #113) — Mo, 2026-08-19 APPLIED Aug 24: calls.json v-ah-lucario-buy set -> Mega Evolution with dated note; no page carries the old attribution (ascended-heroes.html has no Lucario row).",
+      "status": "applied"
+    },
+    {
+      "id": "tribute-box-comps",
+      "area": "price-check",
+      "summary": "Tribute box-level comps (released Jul 29; last read Waxstat ~$950 avg) — needs fresh pull + page update — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
+      "status": "applied",
+      "verified": "2026-08-20: SCP sold pulls completed Aug 20 (Tribute box level)"
+    },
+    {
+      "id": "player-page-sweeps",
+      "area": "price-check",
+      "summary": "Refresh sweeps pending comp pulls: Misiorowski (NL Cy −425), Murakami, Roman Anthony, best-under-50 ×3 — Mo, 2026-08-19 · PARTIAL Aug 19: Rutschman 2019 BD auto $189 + Murakami/Anthony parallel cells anchored; Misiorowski + under-50 sweeps stay with Monday run",
+      "status": "applied",
+      "verified": "2026-08-20: SCP sold pulls completed Aug 20 (Misiorowski, Murakami, Anthony, Rutschman 2019)"
+    },
+    {
+      "id": "new-pages-aug10",
+      "area": "content",
+      "summary": "4 gap-analysis pages approved, built AND pushed live same day (LeBron, Rutschman, Boozer, Mendoza)",
+      "status": "applied"
+    },
+    {
+      "id": "topps-application-escalation",
+      "area": "affiliate",
+      "summary": "Topps/Impact application (acct 7418994) In Review since mid-June. Aug 10: Collector Support dead end, Impact support form broken, EMAILED support@impact.com directly — awaiting response. Re-escalate if silent by ~Aug 24. Placeholder buttons on 8+ pages flip to earning links on approval. — RETIRED Aug 23 (Mo's decision): product sells out in minutes even on drops, so affiliate clicks can never convert; no more chasing. Application left sitting; buttons repoint to EPN.",
+      "status": "retired"
+    },
+    {
+      "id": "vault-v3-aug17",
+      "status": "applied",
+      "title": "Vault v3 (watchlist.html): fuzzy auto-link to price engine, daily ask-median auto-log (src-tagged, never solds), log-source tags — review + push — pushed by Mo Aug 17 (incl. low-ask mark revision)"
+    },
+    {
+      "id": "ebay-insights-application",
+      "status": "awaiting-response",
+      "title": "eBay Marketplace Insights API access request SUBMITTED Aug 17 (Application Growth Check ticket) — check My Tickets ~Aug 31; if granted, build /api/solds and flip vault+engine to sold-basis"
+    },
+    {
+      "id": "site-auditor-build",
+      "status": "applied",
+      "title": "Push tools/site-auditor/ (CHARTER.md + audit-site.mjs) — MWF auditor is scheduled locally and will file findings here as audit-<date>-<n> proposals — Mo, 2026-08-19",
+      "verified": "2026-08-20: tools/site-auditor/ present in repo and the MWF task has been running since Aug 17"
+    },
+    {
+      "id": "cockpit-loop-build",
+      "status": "applied",
+      "title": "Push api/decisions.js + set Vercel env DUNGEON_KEY (and GITHUB_TOKEN if not already set for track-signal) — then dungeon approve/decline goes live. card-dungeon.html changes are local-only (gitignored), already active. — Mo, 2026-08-19 — VERIFIED deployed Aug 23 (endpoint live, 401-not-503 proves GITHUB_TOKEN set); remaining: DUNGEON_KEY env + first-click test"
+    },
+    {
+      "id": "tweets-2026-08-18",
+      "area": "social",
+      "summary": "7 tweet drafts for the week (accountability #1 = Pierce BUY wrong -46% + board demotion; reshuffle thread, Holliday PSA10 +45%, Kim WAIT, 3 new-page ideas from Monday gap analysis) -- Mo to pick and post — Mo, 2026-08-19",
+      "status": "approved"
+    },
+    {
+      "id": "ledger-finalization-gap",
+      "area": "ledger",
+      "summary": "RESOLVED Aug 18: the 10 missing Monday finalizations reconstructed from the Aug 17 scan reads and applied (8 Pitch Black + Mewtwo push + Lucario wrong) + 4 trending updates; scoreboard now 15 final (2 right / 11 wrong / 2 push)",
+      "status": "applied"
+    },
+    {
+      "id": "pokemon-ledger-retirement",
+      "area": "ledger",
+      "summary": "Pokemon calls retired Aug 18 (one-directional miss_high bias = no edge; rarity is the only driver vs sports' catalyst stream). History stays graded -- retire, don't delete. Applied to /track-record + calls.json policy note.",
+      "status": "applied"
+    },
+    {
+      "id": "audit-2026-08-19-1",
+      "status": "applied",
+      "title": "MED: Homepage stuck on Jul 31 and contradicts the Aug 18 board. index.html: Bangers panel 'Updated July 31' with old top-5 order Fischer #2 / Jump #4 / Aloy #5 (lines 692-730) vs the live Aug 18 reshuffle (Kim #2, Florentino #4); ticker Holliday '~$129' (749, 760) vs $113 raw / $95-125; 'Mega Darkrai ex SIR $550-750 PROJ / PRE-ORDER' (751, 762) a month after the Jul 17 release with the call already graded; Greninja '$470-505' (963) vs $210-240; Pitch Black featured card still 'projected at launch / Prereleases July 4-12' (1001); site-wide as-of stamps 'July 31, 2026' (1121, 1170). Fix: re-sync hero panel + ticker from the Aug 18 board, reframe Pitch Black as released with final reads, correct Greninja, bump stamps. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
+      "verified": "2026-08-20: index.html Aug 18 panel live; remaining \"Jul 31\" strings are HTML comments describing the static fallback, not visible copy"
+    },
+    {
+      "id": "audit-2026-08-19-2",
+      "status": "applied",
+      "title": "MED: pokemon-tcg-2026.html sells Greninja SIR at $470-505 (lines 736, 743 + ROI row ~703) -- 2.2x the $210-240 its own sibling guide chaos-rising.html has carried since the Aug 10 reprice (lines 804, 825), and the ledger graded that call at a $212 read. Flagged as the stalest page Jul 28; still unfixed. Fix: re-price the page's hot-cards rows to the chaos-rising reads with an Aug as-of stamp. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
+      "verified": "2026-08-20: pokemon-tcg-2026 Greninja repriced; audit-prices.mjs no longer flags the page"
+    },
+    {
+      "id": "audit-2026-08-19-3",
+      "status": "applied",
+      "title": "MED: 6 FINAL grades in data/calls.json sit on basis=ask (pb-chandelure-sir, pb-gwynn-sir, pb-gladion-sir, v-cr-greninja-buy, v-ah-mewtwo-buy, v-ah-lucario-buy) while /track-record's published methodology says FINAL = graded against sold comps. Grades and projections stay immutable -- the fix is disclosure or basis: either badge these rows 'final (ask-basis)' on the page, or re-grade the basis to solds when eBay Insights lands (~Aug 31 ticket). — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
+      "verified": "2026-08-20: 6 finals carry PriceCharting sold reads in readLabel; auditor rule corrected Aug 20 to check the READ basis — sweep now WARN 0"
+    },
+    {
+      "id": "audit-2026-08-19-4",
+      "status": "applied",
+      "title": "LOW: psa-grading-guide.html has 6 price cells but no sold-comps disclaimer or as-of stamp (price sweep WARN). Fix: add the standard one-line comps disclaimer + dated stamp. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
+      "verified": "2026-08-20: psa-grading-guide disclaimer + footer stamps added"
+    },
+    {
+      "id": "trader-2026-08-19",
+      "status": "awaiting-mo",
+      "title": "TRADER: first scan filed 5 recs (2 SELL, 1 REPRICE x10 items, 1 GRADE pilot, 1 HOLD-NOTE on the two accumulation plays) — details in local comc-trader/scan-2026-08-19.md; agent scheduled Thursdays 8am"
+    },
+    {
+      "id": "audit-2026-08-19-5",
+      "status": "applied",
+      "title": "LOW: stale as-of stamps + placeholder-adjacent price cells. bowman-bangers.html footer says 'sold listings, June 2026' (1348, 1369) under an 'Updated Aug 18' hero; only 5 of 42 price-table pages have fresh stamps. Released-card cells dodging numbers: adley-rutschman-cards.html 'Varies by parallel' (806), murakami + roman-anthony 'scales with scarcity'. Pre-release tier labels (Core auto / Top name etc.) on unreleased set guides left alone -- deliberate pattern, not placeholders. Fix: bump footer stamps in the weekly runs and give the flagged released-card cells numeric ranges. — Mo, 2026-08-19 · fix staged locally Aug 19, awaiting push",
+      "verified": "2026-08-20: stale as-of stamps refreshed; audit-site.mjs FAIL 0 / WARN 0"
+    },
+    {
+      "id": "trader-2026-08-20",
+      "status": "awaiting-mo",
+      "title": "TRADER: 7 recs this week — details in local scan report"
+    },
+    {
+      "id": "trader-2026-08-21",
+      "status": "awaiting-mo",
+      "title": "TRADER: 1 new rec this week (plus 7 prior recs still open) — details in local scan report"
+    },
+    {
+      "id": "audit-2026-08-21-1",
+      "status": "approved",
+      "title": "MED: /topps-flagship-football releases TODAY (Aug 21) but the page is frozen at Jul 13 pre-order framing — banner says 'no checklist, box configuration, or MSRP yet' (line 784) and the stat grid shows 'Checklist: Not yet published' (line 793), while the full 400-card checklist has been public on Beckett/Topps for weeks. Release-day traffic on the license-return flagship is landing on factually wrong copy. Fix: reframe as released, cite the published checklist/config, refresh the as-of stamp. — APPROVED by Mo Aug 24; next run applies the fix"
+    },
+    {
+      "id": "audit-2026-08-21-2",
+      "status": "approved",
+      "title": "MED: /topps-chrome-baseball-2026 still says 'Still unreleased, so no sold comps exist yet' (line 788, 'updated Jul 28') and hero reads 'Pre-release' (line 781) — the product streeted in late Jul/early Aug and has weeks of sold comps. Meta description also says 'Pre-release, August 2026' (line 8). Fix: reframe as released with real solds, per the Chrome Updates precedent (Aug 10). — APPROVED by Mo Aug 24; next run applies the fix"
+    },
+    {
+      "id": "audit-2026-08-21-3",
+      "status": "approved",
+      "title": "MED: /topps-chrome-black-football released Jul 10 — six weeks ago — but the banner still says 'As a just-releasing product there are no single-card sold comps yet… as of Jul 6, 2026' (line 784) and meta says 'Pre-release, July 2026' (line 8). Sold comps have existed for over a month. Fix: post-release reframe + comp refresh. — APPROVED by Mo Aug 24; next run applies the fix"
+    },
+    {
+      "id": "epn-button-flip-aug23",
+      "area": "monetization",
+      "summary": "Flip the 8+ placeholder Topps affiliate buttons to EPN search links (eBay = only lane with always-available inventory — Mo's decision, Aug 23). Also stands down the Fanatics Collect retry permanently. For the Monday run / curator to execute; EPN mandatory-param set applies. APPLIED Aug 24 by Monday run: 24 links on 21 pages flipped to EPN search (mandatory params + customid=slug), Fanatics narrative copy patched, audit-prices + site-auditor FAIL 0. Pokemon/hobby-box pages still carry 8 Fanatics (dykyyj) links — proposal text said Topps buttons only; say the word and next run flips those too.",
+      "status": "applied"
+    },
+    {
+      "id": "set-index-etf-build",
+      "area": "product",
+      "summary": "SET INDICES (Mo, Aug 23 — TOP PRIORITY, mockup APPROVED): ETF-style free-float cap-weighted index per set, sports + Pokemon. SPEC LOCKED: top-100 base cards; PRICE-WEIGHTED (rev. Aug 24: = cap-weighted under equal base print runs; float shown as depth stat only, never in the weight; parallels tab = true print-run cap); BASE LEVEL 100.00 (level = cumulative return) with divisor continuity; 90/110 entry-exit buffer; Tuesday reconstitution; parallels = phase-2 sub-tab; row popups on all listed holdings with rank history + basis-stamped price; star-Track wired to the Vault contract on every holding. Preview live at /set-index-preview (mockup-labeled, modeled floats flagged). NEXT: index calculator on real engine data, then BOW26 goes real and the Tuesday run owns reconstitution. REV Aug 24 (Mo): XLV-style layout — top-10 + total row + holdings count, 11-100 collapsed/expandable (all trackable), separate price-ROC panel. FIRST REAL CONVERSION: the Pitch Black guide flips from buy-recs to set index (an index is a measurement, not a call — consistent with the Pokemon calls retirement). STRUCTURE LOCKED Aug 24 eve (Mo): Bowman set pages = BASE | AUTOS | PARALLELS tabs — AUTOS index = chase tier (1st Chrome autos, base version, 15% single-card cap at reconstitution, capped-index method); parallels display-only (no tape). Bangers board benchmarked vs the auto index on /track-record. Rollout: Bowman family + Pokemon first, other baseball next, football later. Sapphire = own ticker (distinct instruments); Sapphire-vs-Chrome spread = publishable stat. NEXT BUILDS: BOW26 autos tab + scorecard benchmark line.",
+      "status": "approved"
+    },
+    {
+      "id": "sapphire-updates-bkb-page-aug24",
+      "area": "content",
+      "summary": "NEW PAGE built and wired (nav+sitemap): /topps-chrome-updates-basketball-sapphire-edition (drops Sep 3; qualitative pre-release framing, no invented prices). Awaiting Mo review + push.",
+      "status": "awaiting-mo"
+    },
+    {
+      "id": "fanatics-pokemon-flip-aug24",
+      "area": "monetization",
+      "status": "approved",
+      "summary": "Flip the 8 remaining Fanatics (dykyyj) links on Pokemon + hobby-box pages to eBay EPN, incl. the ROI-calculator JS const; retire the Fanatics footer disclosure once zero links remain. Approved by Mo Aug 24 — Monday run executes; same dead-lane logic as the Topps flip."
+    },
+    {
+      "id": "vault-indices-box",
+      "area": "product",
+      "status": "approved",
+      "summary": "VAULT INDICES BOX (Mo approved Aug 24, dedicated build session): separate box on /watchlist — indices are trackable but not ownable (brokerage pattern: SPX in the strip, never in positions). v1: 'Track index' on index pages + ticker rows (level, WoW, since-inception, sparkline) reading data/indices.json. v2: BENCHMARK view — user's set-matched positions vs the set index ('are you beating your set'), using data-set on tracked cards. v3: 'replicate the basket' EPN affordance. Prereq (DONE Aug 24): data/indices.json seeded, Monday STEP 3.6 re-mark wired."
+    },
+    {
+      "id": "auditor-nav-css-rule",
+      "area": "qa",
+      "status": "approved",
+      "summary": "Add site-auditor rule: any page containing NAV:START markers must also define the nav base styles (.nav-links flex at top level, .nav-hamburger hidden on desktop, >=3 media blocks). Caught twice on Aug 24 — injected nav HTML with missing page CSS renders as raw links; the existing nav-drift check only compares the HTML block. Mechanical rule, MWF auditor to implement."
+    },
+    {
+      "id": "strategy-indices-first-aug24",
+      "area": "strategy",
+      "status": "applied",
+      "summary": "SITE STRATEGY (Mo decision, Aug 24): indices are THE website priority. Canonical lifecycle: pre-release page at announcement -> converts to a live set index at release (trackable cards via the Vault contract, eBay EPN links site-wide). Random one-off SEO pages retired as the default build motion (exceptional cases only, max 1 proposed/week). Main-releases-only rule unchanged for WHICH sets. Encoded into the Monday run (STEP 2 rewritten index-first) and memory."
+    },
+    {
+      "id": "audit-2026-08-25-1",
+      "status": "approved",
+      "title": "MED: /bowman-chrome-baseball-2026 contradicts itself on the checklist — hero says 'Checklist published · see it below' (line 777) while the warning box says 'The 2026 checklist, formats, and pricing are not yet announced' (line 813, 'Framing as of Aug 3') and the Watch List still says 'The checklist is TBA — read the checklist the day it drops' (line 880). Same page, both claims. This is the ⭐ flagship page for the Sep 9 street date; 'pre-orders open Monday, Aug 10' is also two weeks past. Fix: refresh the warning box + Watch List item to post-checklist framing (checklist published Aug 21); the no-sold-comps caveat is still true and should stay. — Mo, 2026-08-25"
+    },
+    {
+      "id": "tweets-2026-08-25",
+      "area": "social",
+      "summary": "3 tweet drafts for the week (Mon/Wed/Fri long-hold rhythm; Mon = accountability tape incl. Arquette -28%, Wed = Chasing Florentino w/ my number, Fri = Vault share image) + email digest at Card Hub/digests/digest-2026-08-25.md — Mo to pick, post, and send",
+      "status": "awaiting-mo"
+    },
+    {
+      "id": "audit-2026-08-25-2",
+      "status": "approved",
+      "title": "MED: /world-cup-2026-soccer-cards is frozen pre-tournament — the World Cup ended Jul 19 but the page still says Messi and Ronaldo 'are both confirmed in their respective 2026 squads' (line 674) and 'Both are playing their final major tournament' (line 703), banner 'UPDATED JUNE 2026' (live). The tournament outcome is now the primary price driver for every card on the page and none of it is reflected — 2+ months stale on the sport's biggest event. Fix: post-tournament rewrite (result, GOAT farewell reality, re-check comps) + dated as-of stamp. — Mo, 2026-08-25"
+    }
   ],
-  "analyst": {
-   "ranAsExpected": 5,
-   "agentsTotal": 6,
-   "note": "All 5 active personas ran on cadence this week (1 retired). First week of actioning data: the trader is the most-actioned agent in the system — most week-1 recs executed, several AFTER a formal decline, which caught a blind spot in the measurement itself. Auditor proposals historically clear within 48h; 3 MEDs currently open. What cannot be measured: whether tweets/digests actually get posted, and anything Mo executes off-book — the cockpit push (queue rank 6) is what closes that hole. CORRECTION: the off-book blind spot bit the Chief of Staff itself this week — Sunday's #1 queue item was already done and had to be verified and re-ranked after Mo flagged it.",
-   "kill": "No agent proposed for retirement this week. Chief of Staff's own kill-criterion clock: week 1 of 4, first review ~Sep 20."
+  "scoreboard": {
+    "updated": "2026-08-25",
+    "final": 15,
+    "finalRight": 2,
+    "finalWrong": 11,
+    "finalPush": 2,
+    "trending": 6,
+    "trendingHit": 1,
+    "trendingMiss": 2,
+    "trendingUngraded": 3,
+    "open": 0
+  },
+  "chiefOfStaff": {
+    "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
+    "generated": "2026-08-23 (three stale items caught and corrected same day)",
+    "weekOf": "2026-08-24",
+    "headline": "Mo's call Sun evening: Topps/Fanatics affiliate lanes retired — inventory sells out before pages ship, so those clicks can never convert; eBay (always-stocked aftermarket) becomes the only monetization lane. Queue is 5 items, ~35 min.",
+    "doNothing": "With capture live and the affiliate chase retired, nothing left in the queue compounds weekly. The only daily cost is the trader's undercut item; everything else waits a week free.",
+    "queue": [
+      {
+        "rank": 1,
+        "id": "trader-open-recs",
+        "title": "Trader: 8 open recs across the Aug 19-21 scans; one undercut is time-sensitive",
+        "why": "Money decisions decaying with the tape. The undercut item pays floor-position cost every day it stands; the two corner buys were still available at last check.",
+        "effort": "15 min",
+        "ref": "local trader scan Aug 21, section 8"
+      },
+      {
+        "rank": 2,
+        "id": "audit-meds-approve",
+        "title": "Approve 3 audit MEDs: released products still framed as pre-release",
+        "why": "Release-week traffic is landing on factually wrong copy, including a product that streeted Friday. Your approval is the only blocker to the Monday fixer pass.",
+        "effort": "5 min",
+        "ref": "audit-2026-08-21-1..3"
+      },
+      {
+        "rank": 3,
+        "id": "newsletter-recover-stranded",
+        "title": "Newsletter: recover the stranded unconfirmed signups (last remaining step)",
+        "why": "Capture itself is DONE and verified live end-to-end. What remains is one-time: the backlog of people who signed up under the old double opt-in. The pool is frozen now, so this no longer compounds.",
+        "effort": "5 min",
+        "ref": "provider dashboard, unconfirmed filter"
+      },
+      {
+        "rank": 4,
+        "id": "tweet-week-one",
+        "title": "Pick Monday's tweet — first week of the Mon/Wed/Fri rhythm starts tomorrow",
+        "why": "Drafts are written and priced from the latest board. The rhythm only becomes a rhythm if week one actually happens.",
+        "effort": "5 min",
+        "ref": "local tweet drafts (week of Aug 24)"
+      },
+      {
+        "rank": 5,
+        "id": "cockpit-key-test",
+        "title": "Cockpit: set the key env var + click one decision button to test (endpoint is already live)",
+        "why": "Third already-done item caught this week: the endpoint was pushed and deployed, and its store token is verifiably set. All that remains is confirming the key env var exists, then clicking any approve/decline in the dungeon and entering that key once when prompted.",
+        "effort": "3 min",
+        "ref": "cockpit-loop-build"
+      }
+    ],
+    "watchdog": [
+      {
+        "severity": "fixed",
+        "what": "Trader feed schema drift repaired",
+        "detail": "7 recent trader actions were bare strings; the schema requires ts+msg objects. Normalized in place, content untouched."
+      },
+      {
+        "severity": "fixed",
+        "what": "Card Hub root indexed",
+        "detail": "29 loose files/folders at the root now carry an INDEX.md. Files deliberately left in place so the weekly runs' newest-file lookups don't break; archival proposed for a later run if Mo wants it."
+      },
+      {
+        "severity": "watch",
+        "what": "Mon/Tue scheduler timestamps don't match outputs",
+        "detail": "Both tasks report a Thursday lastRun at the identical second, with no outputs produced at that moment. Looks like wake-time bookkeeping, not real runs — the agents' own state is consistent with their true Mon/Tue runs. Escalates to broken if Monday's scan produces no report."
+      },
+      {
+        "severity": "watch",
+        "what": "Proposal statuses lag reality in the trader lane",
+        "detail": "A rec batch formally graded declined was partially executed at the exact targets days later. Status reconciliation belongs to the Thursday run once the cockpit loop is live; not touched here because grades are content."
+      },
+      {
+        "severity": "watch",
+        "what": "Dungeon-keeper task naming drift",
+        "detail": "Task id says Saturday, description says Friday 9am, cron runs Friday 11am. Cosmetic; renaming a task is a proposal, not a janitorial fix."
+      },
+      {
+        "severity": "fixed",
+        "what": "Chief of Staff mis-ranked an already-completed item; corrected same day",
+        "detail": "Sunday's queue #1 was built from a 3-day-old report's open-items list without verifying live state; Mo had completed it within hours of that report. Verified against the deployed endpoint and repo, queue re-ranked. Second proof this week that acted-on-off-book reads as ignored until the cockpit loop closes."
+      }
+    ],
+    "analyst": {
+      "ranAsExpected": 5,
+      "agentsTotal": 6,
+      "note": "All 5 active personas ran on cadence this week (1 retired). First week of actioning data: the trader is the most-actioned agent in the system — most week-1 recs executed, several AFTER a formal decline, which caught a blind spot in the measurement itself. Auditor proposals historically clear within 48h; 3 MEDs currently open. What cannot be measured: whether tweets/digests actually get posted, and anything Mo executes off-book — the cockpit push (queue rank 6) is what closes that hole. CORRECTION: the off-book blind spot bit the Chief of Staff itself this week — Sunday's #1 queue item was already done and had to be verified and re-ranked after Mo flagged it.",
+      "kill": "No agent proposed for retirement this week. Chief of Staff's own kill-criterion clock: week 1 of 4, first review ~Sep 20."
+    }
   }
- }
 }
