@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-08-25T22:15:42.000Z",
+  "generated": "2026-08-25T22:28:58.000Z",
   "generator": "bowman-bangers-tuesday-update (2026-08-25)",
   "agents": {
     "seeker": {
@@ -107,10 +107,6 @@
       "actions": [
         {
           "ts": "2026-08-24",
-          "msg": "Verification: audit-prices FAIL 0 / site-auditor FAIL 0 after EPN flip + new page build"
-        },
-        {
-          "ts": "2026-08-24",
           "msg": "Price check: 6 flags filed (Murakami S1 spike, Roman Anthony move needs comp ID, flagship FB box comps forming, 2 stale banners re-flagged)"
         },
         {
@@ -152,6 +148,10 @@
         {
           "ts": "2026-08-25",
           "msg": "Instrumentation audit: found all 6 set-index pages + /indices hub missing the GA4 tag since launch — indices traffic was never being measured. Tagged all 6. EPN verified clean: 748 links, full param set, zero real misses"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "Reprice pass on 4 pages: 18 tier labels replaced with card-pinned ask marks (11 hard numbers, 4 ranges, 3 honest no-market). Gate applied throughout — published a mark only where the trimmed core had n>=6 and <=4x spread; refused marks on Gold Logoman (n=5), Helix (n=3), Old Glory /10 (n=0), PREM1ERE (n=0)"
         }
       ]
     },
@@ -600,8 +600,8 @@
     },
     {
       "id": "audit-2026-08-25-5",
-      "status": "awaiting-mo",
-      "title": "MED: three pages now correctly say 'released' but their pricing is still the pre-release structural read and is explicitly labelled as not-yet-re-scored: /topps-flagship-football (Aug 21), /topps-chrome-baseball-2026 (Aug 5), /topps-chrome-black-football (Jul 10), plus /world-cup-2026-soccer-cards (final Jul 19). Honest now, but the real fix is a post-release price pass against sold comps. Suggest queueing one re-price run per page. Also unverified: flagship hero lists the RC class as 'Mendoza / Love / Tate' while Beckett/Checklist Insider name Mendoza, Jeremiyah Love and Ty Simpson — worth a check before it ships as fact."
+      "status": "applied",
+      "title": "MED: three pages now correctly say 'released' but their pricing is still the pre-release structural read and is explicitly labelled as not-yet-re-scored: /topps-flagship-football (Aug 21), /topps-chrome-baseball-2026 (Aug 5), /topps-chrome-black-football (Jul 10), plus /world-cup-2026-soccer-cards (final Jul 19). Honest now, but the real fix is a post-release price pass against sold comps. Suggest queueing one re-price run per page. Also unverified: flagship hero lists the RC class as 'Mendoza / Love / Tate' while Beckett/Checklist Insider name Mendoza, Jeremiyah Love and Ty Simpson — worth a check before it ships as fact. — APPLIED Aug 25: all 4 pages re-priced with ask-basis marks pinned to specific cards (Mo approved ask-basis + canonical-card granularity in chat)."
     },
     {
       "id": "audit-2026-08-25-6",
@@ -612,6 +612,16 @@
       "id": "audit-2026-08-25-7",
       "status": "awaiting-mo",
       "title": "LOW: EPN verified clean sitewide — 748 hand-built eBay links, 100% carrying mkevt=1/mkcid=1/mkrid/siteid/campid=5339155990/toolid/customid. The only two grep 'misses' (hobby-box-roi-calculator.html:984, watchlist.html:1070) are JS template builders that append the full param set at runtime and are compliant. No action needed; logged so the next audit does not re-flag them."
+    },
+    {
+      "id": "reprice-2026-08-25",
+      "status": "applied",
+      "title": "REPRICE (Mo approved): 4 pages moved off tier labels onto card-pinned live ask marks, method = drop 2 cheapest, median of next 10, price+shipping, all labelled asks with Aug 25 stamp. FLAGSHIP FOOTBALL: Mendoza base RC #301 $4.98 (n=97, spread 1.1x), Love #309 $1.75, Tate #318 $1.50, Bailey #343 $1.49, Mendoza First Signatures FFS-FM auto $1,500 (n=23, core $1,345-$1,650; the two sub-$10 'READ DESCRIPTION' listings are exactly what the trim removes), PREM1ERE Patch = zero listings, stated as such. CHROME BASEBALL: Tong RA $6, Jeff Kent Cooperstown Calls $120, Ohtani WS-at-Night $600-$3,000 range, Gold Logoman 5 listings $16K-$335K, Helix 3 listings = too thin, Static Noise $7-$55. CHROME BLACK: Judkins RA $99.99 (n=14), Ivory 3 listings/$280 single, Super Futures $63-$285, Dual $300-$3,000, Base autos 50x spread = 'varies by name', Red/Superfractor zero listings. WORLD CUP: Haaland base $3.49 (was $15-$40 pre-tournament), Haaland numbered $90 (n=53 after excluding 2025 Club World Cup contamination), Old Glory /10 = zero listings (was '$200-$500+'), Color Blast $5-$90. Non-numeric price cells on these 3 pages fell 18 -> 4, and the 4 remaining are honest no-market/too-thin labels."
+    },
+    {
+      "id": "reprice-2026-08-25-followup",
+      "status": "awaiting-mo",
+      "title": "MED: the reprice is ask-basis because no sold feed is wired up — /api/comps is the eBay Browse API (asks only) and the PriceCharting/SportsCardsPro sold path is the dormant 'legacy paid' route. House rule prefers solds. Next step if you want sold-basis marks: reconnect a sold source, then re-run this same pinned-card list. Also parked: rows pinned to the most-listed name (Tong, Judkins, Kent) are data-driven picks, not editorial ones — worth a human sanity check that they are the names the guide should lead with. RESOLVED separately: 'Mendoza / Love / Tate' in the flagship hero is correct, Carnell Tate has flagship RC #318; my earlier Ty Simpson flag was wrong."
     }
   ],
   "scoreboard": {
