@@ -1,7 +1,7 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-08-25T22:56:42.000Z",
-  "generator": "bowman-bangers-tuesday-update (2026-08-25)",
+  "generated": "2026-08-28T16:13:02.000Z",
+  "generator": "comc-trader (2026-08-27)",
   "agents": {
     "seeker": {
       "label": "SEEKER",
@@ -106,26 +106,6 @@
       "nextRun": "2026-08-26",
       "actions": [
         {
-          "ts": "2026-08-24",
-          "msg": "Pokemon images: all wired, nothing new this run"
-        },
-        {
-          "ts": "2026-08-25",
-          "msg": "MWF audit: both sweeps clean (69 pages FAIL 0 WARN 0; prices FAIL 0, 26 known label-cell WARNs); local main == origin/main (41cd01d); live deploy matches repo (home, bowman-chrome, wnba, world-cup, pokemon-tcg-2026); 10/10 remote images resolve; EPN mkevt=1 intact on spot-checked pages"
-        },
-        {
-          "ts": "2026-08-25",
-          "msg": "2 MED filed: bowman-chrome page says checklist published AND 'not yet announced'/'TBA' on the same page (lines 777/813/880); world-cup page still pre-tournament 5 weeks after the final (lines 674/703)"
-        },
-        {
-          "ts": "2026-08-25",
-          "msg": "dungeon-decisions.json still 404 on price-data — no decisions to reconcile; the 3 Aug 21 stale-framing MEDs remain awaiting-mo (2nd run)"
-        },
-        {
-          "ts": "2026-08-25",
-          "msg": "Tuesday comp pull: SCP product pages fetched for all 10 tracked names (Houston slug found at cpa-mho, $33 raw first read; Gonzalez has NO SCP product page — untrackable stands); engine marks fresh (gen 08:59Z), no dispersion flags"
-        },
-        {
           "ts": "2026-08-25",
           "msg": "FIXER pass (Mo approved in chat): applied all 5 audit fixes — bowman-chrome checklist contradiction resolved (3 spots), world-cup rewritten post-final (Spain 1-0 Argentina Jul 19, Ronaldo out R16 Jul 6, Yamal Golden Ball) + Yamal callout, flagship-football reframed as released w/ real config (400 base, 20x12, $119.99->$129.99), chrome-baseball and chrome-black-football release framing corrected"
         },
@@ -152,6 +132,26 @@
         {
           "ts": "2026-08-25",
           "msg": "EPN custom-ID tagging shipped on /api/comps + all 9 callers. Root cause of the untracked earnings: affiliate header carried campaignId only. Query-param design chosen over Referer sniff because the endpoint is CDN-cached and a header value would not vary the cache key"
+        },
+        {
+          "ts": "2026-08-25",
+          "msg": "Mo set top priorities for next session: P1 reprice /topps-chrome-updates-basketball (#1 page by traffic AND conversions, still on tier labels), P2 re-read EPN custom-ID attribution ~Sep 25"
+        },
+        {
+          "ts": "2026-08-28",
+          "msg": "MWF audit: site sweep clean (77 pages, FAIL 0/WARN 0); prices FAIL 0/WARN 28 (26 known label cells + pitch-black stale stamp + mendoza); live deploy matches repo (home, pitch-black guide, /indices, PB26 index); 10/10 remote images resolve; GA4 confirmed live on index pages"
+        },
+        {
+          "ts": "2026-08-28",
+          "msg": "HIGH filed: 0-byte .git/index.lock stranded at 09:05 today blocks all commits until removed — one-command fix in the proposal"
+        },
+        {
+          "ts": "2026-08-28",
+          "msg": "2 MED filed: pitch-black guide shows 3 different SIR marks ($455/$271/entry zone $375-425) after a partial re-mark; global nav says Flagship Football 'Jul 20' while the page says 'Released Aug 21'"
+        },
+        {
+          "ts": "2026-08-28",
+          "msg": "dungeon-decisions.json still 404 on price-data (3rd consecutive run) — no decisions to reconcile"
         }
       ]
     },
@@ -218,25 +218,9 @@
     "trader": {
       "label": "TRADER",
       "role": "COMC trading analyst (Thursday runs) — recommend-only, Mo executes; book stays local",
-      "lastRun": "2026-08-21",
-      "nextRun": "2026-08-27",
+      "lastRun": "2026-08-27",
+      "nextRun": "2026-09-03",
       "actions": [
-        {
-          "ts": "2026-08-19",
-          "msg": "COMMISSIONED — charter, fee/friction model (5% sale fee; 10% cash-out avoided via credit flips), graded rec ledger + RETRO self-improvement loop; weekly Thursday runs"
-        },
-        {
-          "ts": "2026-08-19",
-          "msg": "Scan #1 (manual dry run): 9 recs filed, 6 executed same-day — 2 new listings live, 1 reprice, 3 corner positions taken (one at 100% COMC float); 2 buy candidates PASSED on tape math, 0 forced trades"
-        },
-        {
-          "ts": "2026-08-19",
-          "msg": "Process: 8 of 9 reprice recs declined by Mo -> floor-position/corner rule written into charter same day; demand-gate moved to pre-filing after one gate closed post-execution (passed, but logged as process hole)"
-        },
-        {
-          "ts": "2026-08-20",
-          "msg": "scan run 2 — 7 recs filed (5 actionable, 2 hold-notes). Read-only on COMC throughout."
-        },
         {
           "ts": "2026-08-20",
           "msg": "audited every position where the full listed float is owned — most price correctly, a handful of older ones drifted well above their sold tape and cannot convert. Reprice-down recs filed; no capital required."
@@ -260,7 +244,13 @@
         {
           "ts": "2026-08-21",
           "msg": "grading update — a batch rec graded 'declined' last week turned out to be a menu: several of its items were executed at the exact revised targets a day later. Weekly diffs now check executed prices against ALL prior rec targets."
-        }
+        },
+        "2026-08-27: sales week — a batch of long-held listings cleared, all of them pre-agent positions with no rec attached, so trader realized P/L stays at zero by design. Inventory also shrank via a shipment request; both exit paths reconciled separately.",
+        "2026-08-27: new metric — realization rate (what listings actually clear at, versus what they ask). First read came in well under ask on a multi-item basket; question raised with Mo before any pricing rule is changed.",
+        "2026-08-27: float check clear again — every monopoly position intact, no float growth; a few tracked positions left inventory by shipment rather than by breaking. 2 recs filed (1 relist, 1 observation).",
+        "2026-08-27: process — snapshot now checksums the item-ID set, not just counts and totals; that caught a mis-attributed exit that reconciled perfectly on every dollar figure.",
+        "2026-08-27: Mo confirmed the mechanism behind the week's below-ask clears — and the arithmetic inverts several of the agent's own open recommendations, which have been re-gated rather than executed. A pricing-policy decision now sits with Mo, plus a proposed charter rule.",
+        "2026-08-27: Mo approved the new pricing policy — charter updated to add a pricing lane plus a rule on inventory that leaves the book for personal reasons. Approving the policy also restored the batch of recs it had just frozen: they were never wrong on the math, only unprotected."
       ]
     },
     "gengar": {
@@ -580,8 +570,8 @@
     {
       "id": "tweets-2026-08-25",
       "area": "social",
-      "summary": "3 tweet drafts for the week (Mon/Wed/Fri long-hold rhythm; Mon = accountability tape incl. Arquette -28%, Wed = Chasing Florentino w/ my number, Fri = Vault share image) + email digest at Card Hub/digests/digest-2026-08-25.md — Mo to pick, post, and send",
-      "status": "awaiting-mo"
+      "summary": "3 tweet drafts for the week (Mon/Wed/Fri long-hold rhythm; Mon = accountability tape incl. Arquette -28%, Wed = Chasing Florentino w/ my number, Fri = Vault share image) + email digest at Card Hub/digests/digest-2026-08-25.md — APPROVED by Mo Aug 28; posting the tweets + sending the digest stays manual (his)",
+      "status": "approved"
     },
     {
       "id": "audit-2026-08-25-2",
@@ -631,7 +621,42 @@
     {
       "id": "epn-customid-verify-sep",
       "status": "awaiting-mo",
-      "title": "MED (follow-up, ~Sep 25): re-read EPN Performance by Custom Id over a full 30 days post-tagging. Expected: the 'No Custom ID' bucket collapses and its earnings reappear against real page slugs (hypothesis: the Live-Asks/comps widgets are the earner). If 'No Custom ID' STAYS at ~96% of earnings, the money is NOT coming from /api/comps and the next suspects are Mo's own clicks or another untagged surface — do not conclude until that read. Note also: EPN attributes on a 24h cookie window, so tagging only affects clicks from Aug 25 forward; the Jul 26-Aug 25 baseline stays untagged."
+      "title": "P2 / MED (follow-up, ~Sep 25): re-read EPN Performance by Custom Id over a full 30 days post-tagging. Expected: the 'No Custom ID' bucket collapses and its earnings reappear against real page slugs (hypothesis: the Live-Asks/comps widgets are the earner). If 'No Custom ID' STAYS at ~96% of earnings, the money is NOT coming from /api/comps and the next suspects are Mo's own clicks or another untagged surface — do not conclude until that read. Note also: EPN attributes on a 24h cookie window, so tagging only affects clicks from Aug 25 forward; the Jul 26-Aug 25 baseline stays untagged."
+    },
+    {
+      "id": "reprice-chrome-updates-basketball-P1",
+      "status": "awaiting-mo",
+      "title": "P1 / HIGH (income): /topps-chrome-updates-basketball is the #1 landing page by BOTH traffic (168 sessions, 17.25% of site total) and key events (30, 25.42% of all conversions) — and still shows tier labels (Grail | Case hit | Top auto | Auto | SSP) instead of prices. It was not in the Aug 25 reprice set. Supporting evidence that prices convert: /jacob-misiorowski-rookie-cards is the site's best key-event rate at 18.75%, /bowman-sapphire-2026 (tier labels, 17s dwell) converts 0%. Fix: same proven method as the Aug 25 pass — pin a canonical card per row, live ask marks via /api/comps, drop-2/median-of-next-10 on price+shipping, gate at n>=6 and <=4x spread, label as asks with a dated stamp, honest 'no market' where the population is thin. TOP PRIORITY per Mo, Aug 25."
+    },
+    {
+      "id": "trader-2026-08-27",
+      "status": "approved",
+      "title": "TRADER: pricing-policy decision APPROVED and written into the charter; frozen recs restored with guardrails — details in local scan report"
+    },
+    {
+      "id": "audit-2026-08-28-1",
+      "status": "awaiting-mo",
+      "title": "HIGH: stranded git lock blocks every commit — ~/Projects/shopcardhub/.git/index.lock (0 bytes, created Aug 28 09:05, still present at 09:15; the known sandbox lock bug). Until it's removed, nothing can be committed or deployed. Fix (one command, safe when no git process is running): rm ~/Projects/shopcardhub/.git/index.lock"
+    },
+    {
+      "id": "audit-2026-08-28-2",
+      "status": "awaiting-mo",
+      "title": "MED: pitch-black-set-guide.html carries THREE different Darkrai SIR marks after a partial Aug 10 re-mark — hero/table say ~$271 (lines 795, 899) but At-a-Glance says '~$455 · falling' (865), deep-dive #1 headline says $455 (1014-1020), deep-dive #2 headline still says MHR '$996 ▲ trading ABOVE the SIR' (1050-1056), and the Strategy section tells buyers 'entry zone $375-$425' off solds 'printing $390-$430' (1313) — 40%+ over the page's own live mark. Also 'The set is 3 days old' (876, released Jul 17), table header 'Live Market (Jul 20)' (887) vs footnote 'as of Aug 10', and the footer stamp is Jul 28 (sweep stale-prose-stamp WARN, 2nd run). Fix: one full re-mark pass on this page — single mark, single as-of date"
+    },
+    {
+      "id": "audit-2026-08-28-3",
+      "status": "awaiting-mo",
+      "title": "MED: global nav release date wrong for Flagship Football — data/nav.json line 156 says 'Flagship Football — Jul 20' but the page itself says 'Released Aug 21' (topps-flagship-football.html lines 8, 792, 834). Nav renders on every page. Fix: correct the label in data/nav.json and rerun tools/build-nav.js (single-source rule)"
+    },
+    {
+      "id": "audit-2026-08-28-4",
+      "status": "awaiting-mo",
+      "title": "LOW: homepage stamps stuck at Aug 18 while the board re-marked Aug 25 — index.html 'Updated Aug 18, 2026' (line 710) + footer disclosures 'August 18, 2026' (1189, 1238) vs bowman-bangers.html 'Updated Aug 25, 2026'. Top-5 order and prices match the Aug 25 board, so it's stamp-only drift — same class as audit-2026-08-25-3. Fix: bump the three date strings (or have the Tuesday re-mark own them)"
+    },
+    {
+      "id": "audit-2026-08-28-5",
+      "status": "awaiting-mo",
+      "title": "LOW: fernando-mendoza-rookie-cards.html line 856 price cell still reads 'Releases Aug 21' — future tense a week after release, no numeric mark on his true flagship RC row. Fix: re-mark the row from post-release solds (or an honest thin-comp label) with an as-of stamp"
     }
   ],
   "scoreboard": {
