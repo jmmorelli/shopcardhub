@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-08-28T16:13:02.000Z",
+  "generated": "2026-08-28T21:58:54Z",
   "generator": "comc-trader (2026-08-27)",
   "agents": {
     "seeker": {
@@ -657,6 +657,11 @@
       "id": "audit-2026-08-28-5",
       "status": "awaiting-mo",
       "title": "LOW: fernando-mendoza-rookie-cards.html line 856 price cell still reads 'Releases Aug 21' — future tense a week after release, no numeric mark on his true flagship RC row. Fix: re-mark the row from post-release solds (or an honest thin-comp label) with an as-of stamp"
+    },
+    {
+      "id": "gsc-google-visibility-aug28",
+      "status": "awaiting-mo",
+      "title": "HIGH (growth, Mo-flagged Aug 28): Google organic is near-invisible while Bing-family thrives — 7d organic sessions: Bing 75 / DDG 36 / Yahoo 32 / Google 12. Same content ranks elsewhere, so suspect indexing/Search Console (sitemap status, coverage, canonical issues), not quality. INVESTIGATE in GSC (shopcardhub@gmail.com account) → fix findings → then recurring hygiene lands in the MWF auditor (coverage check) + Monday run (sitemap resubmit + request-indexing for new/updated pages). If Google merely matched Bing, organic ~doubles. Effort: 1 focused session."
     }
   ],
   "scoreboard": {
