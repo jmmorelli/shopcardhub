@@ -1,7 +1,7 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-08-28T21:58:54Z",
-  "generator": "comc-trader (2026-08-27)",
+  "generated": "2026-08-31T00:15:00Z",
+  "generator": "chief-of-staff (2026-08-30)",
   "agents": {
     "seeker": {
       "label": "SEEKER",
@@ -245,19 +245,37 @@
           "ts": "2026-08-21",
           "msg": "grading update — a batch rec graded 'declined' last week turned out to be a menu: several of its items were executed at the exact revised targets a day later. Weekly diffs now check executed prices against ALL prior rec targets."
         },
-        "2026-08-27: sales week — a batch of long-held listings cleared, all of them pre-agent positions with no rec attached, so trader realized P/L stays at zero by design. Inventory also shrank via a shipment request; both exit paths reconciled separately.",
-        "2026-08-27: new metric — realization rate (what listings actually clear at, versus what they ask). First read came in well under ask on a multi-item basket; question raised with Mo before any pricing rule is changed.",
-        "2026-08-27: float check clear again — every monopoly position intact, no float growth; a few tracked positions left inventory by shipment rather than by breaking. 2 recs filed (1 relist, 1 observation).",
-        "2026-08-27: process — snapshot now checksums the item-ID set, not just counts and totals; that caught a mis-attributed exit that reconciled perfectly on every dollar figure.",
-        "2026-08-27: Mo confirmed the mechanism behind the week's below-ask clears — and the arithmetic inverts several of the agent's own open recommendations, which have been re-gated rather than executed. A pricing-policy decision now sits with Mo, plus a proposed charter rule.",
-        "2026-08-27: Mo approved the new pricing policy — charter updated to add a pricing lane plus a rule on inventory that leaves the book for personal reasons. Approving the policy also restored the batch of recs it had just frozen: they were never wrong on the math, only unprotected."
+        {
+          "ts": "2026-08-27",
+          "msg": "sales week — a batch of long-held listings cleared, all of them pre-agent positions with no rec attached, so trader realized P/L stays at zero by design. Inventory also shrank via a shipment request; both exit paths reconciled separately."
+        },
+        {
+          "ts": "2026-08-27",
+          "msg": "new metric — realization rate (what listings actually clear at, versus what they ask). First read came in well under ask on a multi-item basket; question raised with Mo before any pricing rule is changed."
+        },
+        {
+          "ts": "2026-08-27",
+          "msg": "float check clear again — every monopoly position intact, no float growth; a few tracked positions left inventory by shipment rather than by breaking. 2 recs filed (1 relist, 1 observation)."
+        },
+        {
+          "ts": "2026-08-27",
+          "msg": "process — snapshot now checksums the item-ID set, not just counts and totals; that caught a mis-attributed exit that reconciled perfectly on every dollar figure."
+        },
+        {
+          "ts": "2026-08-27",
+          "msg": "Mo confirmed the mechanism behind the week's below-ask clears — and the arithmetic inverts several of the agent's own open recommendations, which have been re-gated rather than executed. A pricing-policy decision now sits with Mo, plus a proposed charter rule."
+        },
+        {
+          "ts": "2026-08-27",
+          "msg": "Mo approved the new pricing policy — charter updated to add a pricing lane plus a rule on inventory that leaves the book for personal reasons. Approving the policy also restored the batch of recs it had just frozen: they were never wrong on the math, only unprotected."
+        }
       ]
     },
     "gengar": {
       "label": "GENGAR",
-      "role": "Pokémon watcher (set prices, chase images, API checks)",
+      "role": "Pokémon Index Specialist — owned by the Monday trend-scan (STEP 3.6 index re-marks, STEP 3.65 X intel, chase-image checks). No-new-Pokémon-calls mandate stays retired forever.",
       "lastRun": "2026-08-10",
-      "nextRun": null,
+      "nextRun": "2026-08-31",
       "actions": [
         {
           "ts": "2026-08-10",
@@ -272,9 +290,11 @@
           "msg": "Mega-era supply glut confirmed: every 2026 chase bleeding while Prismatic Umbreon rips — printed in the guides"
         }
       ],
-      "status": "retired",
+      "status": "active",
       "retiredOn": "2026-08-20",
-      "retiredWhy": "No owning scheduled task — could never run again. Pokemon CALLS retired from the ledger Aug 18 (policy: no new Pokemon calls ever); remaining duty (set-guide repricing, chase-image checks) is covered by the Monday scan + MWF auditor."
+      "retiredWhy": "No owning scheduled task — could never run again. Pokemon CALLS retired from the ledger Aug 18 (policy: no new Pokemon calls ever); remaining duty (set-guide repricing, chase-image checks) is covered by the Monday scan + MWF auditor.",
+      "revivedOn": "2026-08-28",
+      "revivedWhy": "Mo's decision: revived WITH an owning task (Monday trend-scan) as the Pokémon index desk. Pipeline state caught up by CoS 2026-08-30 — the revival had not been reflected here."
     }
   },
   "items": [
@@ -286,10 +306,11 @@
       "ts": "2026-08-24"
     },
     {
-      "stage": "built",
+      "stage": "live",
       "title": "2025-26 Topps Chrome Updates BKB Sapphire Edition",
-      "note": "Built Aug 24 from calendar watch; awaiting review/push",
-      "slug": "/topps-chrome-updates-basketball-sapphire-edition"
+      "note": "Approved by Mo via dungeon Aug 28; verified in origin/main and deployed (CoS live-check 2026-08-30) — live ahead of the Sep 3 street date",
+      "slug": "/topps-chrome-updates-basketball-sapphire-edition",
+      "ts": "2026-08-30"
     },
     {
       "slug": "topps-museum-collection-baseball",
@@ -445,8 +466,8 @@
     {
       "id": "tweets-2026-08-18",
       "area": "social",
-      "summary": "7 tweet drafts for the week (accountability #1 = Pierce BUY wrong -46% + board demotion; reshuffle thread, Holliday PSA10 +45%, Kim WAIT, 3 new-page ideas from Monday gap analysis) -- Mo to pick and post — Mo, 2026-08-19",
-      "status": "approved"
+      "summary": "7 tweet drafts for the week (accountability #1 = Pierce BUY wrong -46% + board demotion; reshuffle thread, Holliday PSA10 +45%, Kim WAIT, 3 new-page ideas from Monday gap analysis) -- Mo to pick and post — Mo, 2026-08-19 — RETIRED by CoS 2026-08-30 (4.2, stale state): the week passed unposted 12 days ago; superseded by tweets-2026-08-25. Content untouched.",
+      "status": "retired"
     },
     {
       "id": "ledger-finalization-gap",
@@ -535,8 +556,8 @@
     {
       "id": "sapphire-updates-bkb-page-aug24",
       "area": "content",
-      "summary": "NEW PAGE built and wired (nav+sitemap): /topps-chrome-updates-basketball-sapphire-edition (drops Sep 3; qualitative pre-release framing, no invented prices). Awaiting Mo review + push.",
-      "status": "awaiting-mo"
+      "summary": "NEW PAGE built and wired (nav+sitemap): /topps-chrome-updates-basketball-sapphire-edition (drops Sep 3; qualitative pre-release framing, no invented prices). APPROVED by Mo via dungeon Aug 28; VERIFIED LIVE by CoS 2026-08-30 (in origin/main, deployed).",
+      "status": "applied"
     },
     {
       "id": "fanatics-pokemon-flip-aug24",
@@ -625,7 +646,8 @@
     },
     {
       "id": "reprice-chrome-updates-basketball-P1",
-      "status": "awaiting-mo",
+      "status": "approved",
+      "approvedBy": "Mo, 2026-08-30 (chat, approve-all) — explicit approval granted; next Monday run or build session applies the proven Aug 25 method (canonical-card pinning, drop-2/median-of-10, n>=6 + <=4x gate, ask-labeled with dated stamp)",
       "title": "P1 / HIGH (income): /topps-chrome-updates-basketball is the #1 landing page by BOTH traffic (168 sessions, 17.25% of site total) and key events (30, 25.42% of all conversions) — and still shows tier labels (Grail | Case hit | Top auto | Auto | SSP) instead of prices. It was not in the Aug 25 reprice set. Supporting evidence that prices convert: /jacob-misiorowski-rookie-cards is the site's best key-event rate at 18.75%, /bowman-sapphire-2026 (tier labels, 17s dwell) converts 0%. Fix: same proven method as the Aug 25 pass — pin a canonical card per row, live ask marks via /api/comps, drop-2/median-of-next-10 on price+shipping, gate at n>=6 and <=4x spread, label as asks with a dated stamp, honest 'no market' where the population is thin. TOP PRIORITY per Mo, Aug 25."
     },
     {
@@ -635,28 +657,36 @@
     },
     {
       "id": "audit-2026-08-28-1",
-      "status": "awaiting-mo",
-      "title": "HIGH: stranded git lock blocks every commit — ~/Projects/shopcardhub/.git/index.lock (0 bytes, created Aug 28 09:05, still present at 09:15; the known sandbox lock bug). Until it's removed, nothing can be committed or deployed. Fix (one command, safe when no git process is running): rm ~/Projects/shopcardhub/.git/index.lock"
+      "status": "applied",
+      "title": "HIGH: stranded git lock blocks every commit — ~/Projects/shopcardhub/.git/index.lock (0 bytes, created Aug 28 09:05, still present at 09:15; the known sandbox lock bug). Until it's removed, nothing can be committed or deployed. Fix (one command, safe when no git process is running): rm ~/Projects/shopcardhub/.git/index.lock — RESOLVED before approval was needed: CoS verified 2026-08-30 the lock is gone and commits have flowed since Fri evening. Marked applied on live verification.",
+      "verified": "2026-08-30 CoS: no index.lock present; commits e84c55e/33887cd landed and pushed after this filing"
     },
     {
       "id": "audit-2026-08-28-2",
-      "status": "awaiting-mo",
+      "status": "approved",
+      "approvedBy": "Mo, 2026-08-30 (chat, approve-all) — Monday fixer applies the full re-mark incl. the Strategy entry-zone rewrite",
       "title": "MED: pitch-black-set-guide.html carries THREE different Darkrai SIR marks after a partial Aug 10 re-mark — hero/table say ~$271 (lines 795, 899) but At-a-Glance says '~$455 · falling' (865), deep-dive #1 headline says $455 (1014-1020), deep-dive #2 headline still says MHR '$996 ▲ trading ABOVE the SIR' (1050-1056), and the Strategy section tells buyers 'entry zone $375-$425' off solds 'printing $390-$430' (1313) — 40%+ over the page's own live mark. Also 'The set is 3 days old' (876, released Jul 17), table header 'Live Market (Jul 20)' (887) vs footnote 'as of Aug 10', and the footer stamp is Jul 28 (sweep stale-prose-stamp WARN, 2nd run). Fix: one full re-mark pass on this page — single mark, single as-of date"
     },
     {
       "id": "audit-2026-08-28-3",
-      "status": "awaiting-mo",
-      "title": "MED: global nav release date wrong for Flagship Football — data/nav.json line 156 says 'Flagship Football — Jul 20' but the page itself says 'Released Aug 21' (topps-flagship-football.html lines 8, 792, 834). Nav renders on every page. Fix: correct the label in data/nav.json and rerun tools/build-nav.js (single-source rule)"
+      "status": "approved",
+      "title": "MED: global nav release date wrong for Flagship Football — CoS, 2026-08-30 (4.7) — data/nav.json line 156 says 'Flagship Football — Jul 20' but the page itself says 'Released Aug 21' (topps-flagship-football.html lines 8, 792, 834). Nav renders on every page. Fix: correct the label in data/nav.json and rerun tools/build-nav.js (single-source rule)"
     },
     {
       "id": "audit-2026-08-28-4",
-      "status": "awaiting-mo",
-      "title": "LOW: homepage stamps stuck at Aug 18 while the board re-marked Aug 25 — index.html 'Updated Aug 18, 2026' (line 710) + footer disclosures 'August 18, 2026' (1189, 1238) vs bowman-bangers.html 'Updated Aug 25, 2026'. Top-5 order and prices match the Aug 25 board, so it's stamp-only drift — same class as audit-2026-08-25-3. Fix: bump the three date strings (or have the Tuesday re-mark own them)"
+      "status": "approved",
+      "title": "LOW: homepage stamps stuck at Aug 18 — CoS, 2026-08-30 (4.7) while the board re-marked Aug 25 — index.html 'Updated Aug 18, 2026' (line 710) + footer disclosures 'August 18, 2026' (1189, 1238) vs bowman-bangers.html 'Updated Aug 25, 2026'. Top-5 order and prices match the Aug 25 board, so it's stamp-only drift — same class as audit-2026-08-25-3. Fix: bump the three date strings (or have the Tuesday re-mark own them)"
     },
     {
       "id": "audit-2026-08-28-5",
-      "status": "awaiting-mo",
-      "title": "LOW: fernando-mendoza-rookie-cards.html line 856 price cell still reads 'Releases Aug 21' — future tense a week after release, no numeric mark on his true flagship RC row. Fix: re-mark the row from post-release solds (or an honest thin-comp label) with an as-of stamp"
+      "status": "approved",
+      "title": "LOW: fernando-mendoza-rookie-cards.html line 856 price cell still reads 'Releases Aug 21' — CoS, 2026-08-30 (4.7) — future tense a week after release, no numeric mark on his true flagship RC row. Fix: re-mark the row from post-release solds (or an honest thin-comp label) with an as-of stamp"
+    },
+    {
+      "id": "auditor-zindex-rule",
+      "area": "qa",
+      "status": "approved",
+      "summary": "Add site-auditor rule (z-index/layering contract): flag any page that both loads vault-track.js (or any injected widget) and defines an overlay/modal with z-index >= the widget's chooser — generalized as page z-index max vs injected-widget z-index. From the Aug 30 Vault-Track bug (chooser z 410 dead behind .ovl z 500 on all 5 index pages). Same mechanical class as auditor-nav-css-rule. APPROVED by Mo 2026-08-30 (chat, approve-all); MWF auditor implements."
     },
     {
       "id": "gsc-google-visibility-aug28",
@@ -678,89 +708,126 @@
   },
   "chiefOfStaff": {
     "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
-    "generated": "2026-08-23 (three stale items caught and corrected same day)",
-    "weekOf": "2026-08-24",
-    "headline": "Mo's call Sun evening: Topps/Fanatics affiliate lanes retired — inventory sells out before pages ship, so those clicks can never convert; eBay (always-stocked aftermarket) becomes the only monetization lane. Queue is 5 items, ~35 min.",
-    "doNothing": "With capture live and the affiliate chase retired, nothing left in the queue compounds weekly. The only daily cost is the trader's undercut item; everything else waits a week free.",
+    "generated": "2026-08-30",
+    "weekOf": "2026-08-31",
+    "headline": "The cockpit came alive — first 4 real dungeon decisions Fri, loop verified end-to-end. First 4.7 week: 3 items self-approved, 1 held. UPDATED Sun eve: Mo cleared every approval item same-day (re-mark, #1-page reprice, keeper/auditor bundle) — queue is down to 3 execution items only.",
+    "doNothing": "All approvals are cleared; what remains needs Mo's hands, not his sign-off. Only the trader floors carry a daily cost — until they're written down, one accepted offer repeats this week's below-ask basket clear. The other two wait free.",
     "queue": [
       {
         "rank": 1,
-        "id": "trader-open-recs",
-        "title": "Trader: 8 open recs across the Aug 19-21 scans; one undercut is time-sensitive",
-        "why": "Money decisions decaying with the tape. The undercut item pays floor-position cost every day it stands; the two corner buys were still available at last check.",
+        "id": "trader-floors-execution",
+        "title": "Trader: write the decline-floors, then execute the approved reprice/relist/buy list",
+        "why": "The pricing policy you approved Thursday only protects the book once the floors are written down — until then, one accepted offer repeats this week's below-ask basket clear. Execute reprices AND floors together; one without the other is the exact trap the policy exists to prevent.",
         "effort": "15 min",
-        "ref": "local trader scan Aug 21, section 8"
+        "ref": "local trader scan Aug 27, section 8"
       },
       {
         "rank": 2,
-        "id": "audit-meds-approve",
-        "title": "Approve 3 audit MEDs: released products still framed as pre-release",
-        "why": "Release-week traffic is landing on factually wrong copy, including a product that streeted Friday. Your approval is the only blocker to the Monday fixer pass.",
-        "effort": "5 min",
-        "ref": "audit-2026-08-21-1..3"
+        "id": "gsc-google-visibility-aug28",
+        "title": "Run the Search Console diagnosis session (HIGH — you flagged it Friday)",
+        "why": "One search engine delivers a fraction of what its Bing-stack peers do on identical content. If it's an indexing fault, fixing it is the largest single traffic lever on the board; the recurring hygiene is already wired into the Monday + MWF runs and activates once you've diagnosed.",
+        "effort": "1 focused session",
+        "ref": "gsc-google-visibility-aug28"
       },
       {
         "rank": 3,
-        "id": "newsletter-recover-stranded",
-        "title": "Newsletter: recover the stranded unconfirmed signups (last remaining step)",
-        "why": "Capture itself is DONE and verified live end-to-end. What remains is one-time: the backlog of people who signed up under the old double opt-in. The pool is frozen now, so this no longer compounds.",
+        "id": "ebay-insights-ticket",
+        "title": "Check the eBay Insights ticket — due date is now",
+        "why": "The application said check back ~Aug 31. If granted, sold-basis pricing unlocks and the open ask-basis disclosure item resolves itself.",
         "effort": "5 min",
-        "ref": "provider dashboard, unconfirmed filter"
-      },
-      {
-        "rank": 4,
-        "id": "tweet-week-one",
-        "title": "Pick Monday's tweet — first week of the Mon/Wed/Fri rhythm starts tomorrow",
-        "why": "Drafts are written and priced from the latest board. The rhythm only becomes a rhythm if week one actually happens.",
-        "effort": "5 min",
-        "ref": "local tweet drafts (week of Aug 24)"
-      },
-      {
-        "rank": 5,
-        "id": "cockpit-key-test",
-        "title": "Cockpit: set the key env var + click one decision button to test (endpoint is already live)",
-        "why": "Third already-done item caught this week: the endpoint was pushed and deployed, and its store token is verifiably set. All that remains is confirming the key env var exists, then clicking any approve/decline in the dungeon and entering that key once when prompted.",
-        "effort": "3 min",
-        "ref": "cockpit-loop-build"
+        "ref": "ebay-insights-application"
       }
     ],
+    "approvedSunEve": "Mo, Sun evening (chat): audit-2026-08-28-2 re-mark, the #1-page reprice, all 3 Keeper proposals, and the new auditor layering rule — all approved. Monday fixer + Friday Keeper + MWF auditor execute; nothing awaits approval.",
     "watchdog": [
       {
         "severity": "fixed",
-        "what": "Trader feed schema drift repaired",
-        "detail": "7 recent trader actions were bare strings; the schema requires ts+msg objects. Normalized in place, content untouched."
+        "what": "Decision loop verified live — the hole the last two briefs flagged is closed",
+        "detail": "Your first 4 real cockpit decisions landed as commits Fri evening. The loop (click -> endpoint -> store -> agent reconciliation) is verified end-to-end for the first time. The Monday/Thursday runs reconcile the statuses; not touched here (their lanes)."
       },
       {
         "severity": "fixed",
-        "what": "Card Hub root indexed",
-        "detail": "29 loose files/folders at the root now carry an INDEX.md. Files deliberately left in place so the weekly runs' newest-file lookups don't break; archival proposed for a later run if Mo wants it."
+        "what": "Pipeline state caught up to the Gengar revival",
+        "detail": "The agent was revived Fri with an owning task, but this file still showed it retired with no next run — the inverse of the original ghost bug. Set active, role updated to the index desk, next run tomorrow."
+      },
+      {
+        "severity": "fixed",
+        "what": "Stale HIGH cleared by live verification",
+        "detail": "The commit-blocking lock filed Friday morning was already gone — commits flowed Friday evening. Marked applied after checking the repo directly rather than re-ranking a dead blocker."
+      },
+      {
+        "severity": "fixed",
+        "what": "Fresh stranded lock — self-cleared with a workaround worth keeping",
+        "detail": "This run's own read-only git call stranded a new lock (the known sandbox bug; the standing no-git-in-the-mount rule was violated before being recalled — owned in the brief). Recovered per the documented procedure: lock renamed into the _to_delete folder, .git verified clean of all lock debris, commits unblocked. Reminder filed that tomorrow's auto-push lock cleanup must rename, never delete."
+      },
+      {
+        "severity": "fixed",
+        "what": "Trader feed schema drift, second consecutive week",
+        "detail": "6 actions appended as bare strings again; normalized to ts+msg objects, content untouched. Coach note filed; a third week escalates to a prompt re-scope proposal."
+      },
+      {
+        "severity": "fixed",
+        "what": "Stale social proposal retired; already-live page caught before ranking",
+        "detail": "A tweet batch 12 days past its week retired as stale state. Separately, the new-page push item turned out to be already deployed — verified against the repo and dropped from the queue. Fourth already-done catch in three weeks; live-state verification stays standard."
       },
       {
         "severity": "watch",
-        "what": "Mon/Tue scheduler timestamps don't match outputs",
-        "detail": "Both tasks report a Thursday lastRun at the identical second, with no outputs produced at that moment. Looks like wake-time bookkeeping, not real runs — the agents' own state is consistent with their true Mon/Tue runs. Escalates to broken if Monday's scan produces no report."
+        "what": "Auditor filed one report for three scheduled slots",
+        "detail": "Only Friday's audit report exists this week; no Monday or Wednesday reports. A clean sweep still files a one-line verdict — silence is indistinguishable from a failed run. Coach note written; escalates if next week repeats."
       },
       {
         "severity": "watch",
-        "what": "Proposal statuses lag reality in the trader lane",
-        "detail": "A rec batch formally graded declined was partially executed at the exact targets days later. Status reconciliation belongs to the Thursday run once the cockpit loop is live; not touched here because grades are content."
+        "what": "First autonomous price-lane push is tomorrow — watch the lock bug",
+        "detail": "No automated commits exist yet, so lane integrity is clean by construction; first real audit is next Sunday. One risk: if the push's lock-cleanup step relies on delete, it will fail in the sandbox — the rename workaround is in the brief. A failed push tomorrow most likely means this."
       },
       {
         "severity": "watch",
-        "what": "Dungeon-keeper task naming drift",
+        "what": "Dungeon-keeper task naming drift (carried)",
         "detail": "Task id says Saturday, description says Friday 9am, cron runs Friday 11am. Cosmetic; renaming a task is a proposal, not a janitorial fix."
-      },
-      {
-        "severity": "fixed",
-        "what": "Chief of Staff mis-ranked an already-completed item; corrected same day",
-        "detail": "Sunday's queue #1 was built from a 3-day-old report's open-items list without verifying live state; Mo had completed it within hours of that report. Verified against the deployed endpoint and repo, queue re-ranked. Second proof this week that acted-on-off-book reads as ignored until the cockpit loop closes."
       }
     ],
     "analyst": {
       "ranAsExpected": 5,
       "agentsTotal": 6,
-      "note": "All 5 active personas ran on cadence this week (1 retired). First week of actioning data: the trader is the most-actioned agent in the system — most week-1 recs executed, several AFTER a formal decline, which caught a blind spot in the measurement itself. Auditor proposals historically clear within 48h; 3 MEDs currently open. What cannot be measured: whether tweets/digests actually get posted, and anything Mo executes off-book — the cockpit push (queue rank 6) is what closes that hole. CORRECTION: the off-book blind spot bit the Chief of Staff itself this week — Sunday's #1 queue item was already done and had to be verified and re-ranked after Mo flagged it.",
-      "kill": "No agent proposed for retirement this week. Chief of Staff's own kill-criterion clock: week 1 of 4, first review ~Sep 20."
+      "note": "5 of 5 personas due this week ran on cadence (the revived sixth's first owned run is tomorrow). Engagement was the story: Mo answered both trader questions same-day and approved a charter policy, made his first 4 cockpit decisions, approved the week's social batch, and personally flagged the search-visibility finding that now leads the strategic queue. Aging on his desk: the #1-page reprice (5 days) and the ask-basis disclosure item. Still unmeasurable: whether approved social content actually posts (only one post confirmed this week) and the digest send — the cockpit loop now closes this hole for proposals, not for posting.",
+      "kill": "No agent proposed for retirement. CoS kill-criterion clock: week 2 of 4, and the panel WAS used Fri (4 decisions) — clock healthy. First review ~Sep 20."
+    },
+    "approvals": [
+      {
+        "id": "audit-2026-08-28-3",
+        "decision": "approve"
+      },
+      {
+        "id": "audit-2026-08-28-4",
+        "decision": "approve"
+      },
+      {
+        "id": "audit-2026-08-28-5",
+        "decision": "approve"
+      }
+    ]
+  },
+  "coachNotes": {
+    "_comment": "Written Sundays by the Chief of Staff (charter 4.5). Each weekly task reads its note at run start and must meet it. Standards, never pep talks; grounded strictly in that week's observed output. PUBLIC FILE — behaviors, counts, lanes only.",
+    "monday-scan": {
+      "weekOf": "2026-08-31",
+      "keep": "Scope honesty on the button flip — executed exactly what the proposal named, and filed the leftover links as a question for Mo instead of overreaching.",
+      "fix": "The week's one decision-grade finding (the search-engine mix) sat at bullet 4 of the retention section — lead with findings of that grade. And the first STEP 3.98 auto-push must print its audit-gate results in D2 explicitly, pass or fail."
+    },
+    "tuesday-bangers": {
+      "weekOf": "2026-08-31",
+      "keep": "Crossover discipline — the swap candidate was flagged on-page with an explicit two-week rule instead of a reactionary reorder.",
+      "fix": "Stamps lagged the re-mark again (homepage stamps a week behind the board — second finding of this class in two audit cycles). The Tuesday pass owns every stamp on pages it re-marks."
+    },
+    "thursday-trader": {
+      "weekOf": "2026-08-31",
+      "keep": "Attribution walked item-by-item instead of assumed, and the new ID-checksum reconcile caught a mis-filed exit the dollar totals had hidden.",
+      "fix": "pipeline.json actions went in as bare strings again — the schema is ts+msg objects. CoS has normalized this two weeks running; a third week escalates to a re-scope proposal."
+    },
+    "site-auditor": {
+      "weekOf": "2026-08-31",
+      "keep": "Every finding verified against the live deploy before filing — zero false alarms, and the blocker diagnosis shipped with its own safe one-command fix.",
+      "fix": "One report exists for the week's three scheduled slots. A clean sweep still files a one-line verdict — silence is indistinguishable from a failed run."
     }
   }
 }
