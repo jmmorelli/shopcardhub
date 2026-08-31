@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-08-31T00:15:00Z",
+  "generated": "2026-08-31T15:00:00Z",
   "generator": "chief-of-staff (2026-08-30)",
   "agents": {
     "seeker": {
@@ -107,22 +107,6 @@
       "actions": [
         {
           "ts": "2026-08-25",
-          "msg": "FIXER pass (Mo approved in chat): applied all 5 audit fixes — bowman-chrome checklist contradiction resolved (3 spots), world-cup rewritten post-final (Spain 1-0 Argentina Jul 19, Ronaldo out R16 Jul 6, Yamal Golden Ball) + Yamal callout, flagship-football reframed as released w/ real config (400 base, 20x12, $119.99->$129.99), chrome-baseball and chrome-black-football release framing corrected"
-        },
-        {
-          "ts": "2026-08-25",
-          "msg": "Refused to publish a Messi/Ronaldo ask mark: /api/comps population is lots and sealed boxes, Ronaldo core range $750-$20,000 on n=6 — replaced the 'TBD' placeholder with an explicit thin-comp label instead of a fabricated number"
-        },
-        {
-          "ts": "2026-08-25",
-          "msg": "New check: audit-prices.mjs stale-prose-stamp (drift >= 7d vs page's freshest date, scoped to dated price-claim sentences). Regression-tested both ways. Two earlier drafts scrapped at 93 and 5 false positives"
-        },
-        {
-          "ts": "2026-08-25",
-          "msg": "set-index-preview.html: noindex,nofollow + SITEMAP_EXEMPT rather than sitemap listing (it is a MOCKUP). Both sweeps end clean: site FAIL 0/WARN 0, prices FAIL 0/WARN 28 (26 label cells + 1 true stale stamp on pitch-black + 1 new page)"
-        },
-        {
-          "ts": "2026-08-25",
           "msg": "Instrumentation audit: found all 6 set-index pages + /indices hub missing the GA4 tag since launch — indices traffic was never being measured. Tagged all 6. EPN verified clean: 748 links, full param set, zero real misses"
         },
         {
@@ -152,7 +136,11 @@
         {
           "ts": "2026-08-28",
           "msg": "dungeon-decisions.json still 404 on price-data (3rd consecutive run) — no decisions to reconcile"
-        }
+        },
+        "2026-08-31: Mon audit — sweeps CLEAN (77 pages, audit-site 0/0; audit-prices 0 FAIL/28 WARN, 26 known label cells). Deploy matches main (538df72); Sat z-index patch confirmed live (vault-track.js?v=5 byte-identical). 15/15 remote images resolve.",
+        "2026-08-31: GSC baseline captured — 3 indexed / 58 not (19 crawled-not-indexed w/ FAILED validation, 39 discovered-not-indexed); sitemap Success Aug 30, 76 discovered; manual actions + security clean.",
+        "2026-08-31: Reconciled 4 dungeon approvals (trader-2026-08-19, trader-2026-08-20, audit-2026-08-25-7, epn-customid-verify-sep); filed audit-2026-08-31-1 (LOW stale June marks WNBA/Wemby, verified live) + polish-2026-08-31.",
+        "2026-08-31: Mo approved all open items in chat — trader-2026-08-21, reprice-2026-08-25-followup, audit-2026-08-31-1, polish-2026-08-31 → approved; queue to fixer."
       ]
     },
     "dm": {
@@ -509,8 +497,8 @@
     },
     {
       "id": "trader-2026-08-19",
-      "status": "awaiting-mo",
-      "title": "TRADER: first scan filed 5 recs (2 SELL, 1 REPRICE x10 items, 1 GRADE pilot, 1 HOLD-NOTE on the two accumulation plays) — details in local comc-trader/scan-2026-08-19.md; agent scheduled Thursdays 8am"
+      "status": "approved",
+      "title": "TRADER: first scan filed 5 recs (2 SELL, 1 REPRICE x10 items, 1 GRADE pilot, 1 HOLD-NOTE on the two accumulation plays) — details in local comc-trader/scan-2026-08-19.md; agent scheduled Thursdays 8am — Mo, 2026-08-28"
     },
     {
       "id": "audit-2026-08-19-5",
@@ -520,13 +508,13 @@
     },
     {
       "id": "trader-2026-08-20",
-      "status": "awaiting-mo",
-      "title": "TRADER: 7 recs this week — details in local scan report"
+      "status": "approved",
+      "title": "TRADER: 7 recs this week — details in local scan report — Mo, 2026-08-28"
     },
     {
       "id": "trader-2026-08-21",
-      "status": "awaiting-mo",
-      "title": "TRADER: 1 new rec this week (plus 7 prior recs still open) — details in local scan report"
+      "status": "approved",
+      "title": "TRADER: 1 new rec this week (plus 7 prior recs still open) — details in local scan report — Mo, 2026-08-31 (in chat)"
     },
     {
       "id": "audit-2026-08-21-1",
@@ -623,8 +611,8 @@
     },
     {
       "id": "audit-2026-08-25-7",
-      "status": "awaiting-mo",
-      "title": "LOW: EPN verified clean sitewide — 748 hand-built eBay links, 100% carrying mkevt=1/mkcid=1/mkrid/siteid/campid=5339155990/toolid/customid. The only two grep 'misses' (hobby-box-roi-calculator.html:984, watchlist.html:1070) are JS template builders that append the full param set at runtime and are compliant. No action needed; logged so the next audit does not re-flag them."
+      "status": "approved",
+      "title": "LOW: EPN verified clean sitewide — 748 hand-built eBay links, 100% carrying mkevt=1/mkcid=1/mkrid/siteid/campid=5339155990/toolid/customid. The only two grep 'misses' (hobby-box-roi-calculator.html:984, watchlist.html:1070) are JS template builders that append the full param set at runtime and are compliant. No action needed; logged so the next audit does not re-flag them. — Mo, 2026-08-28"
     },
     {
       "id": "reprice-2026-08-25",
@@ -633,8 +621,8 @@
     },
     {
       "id": "reprice-2026-08-25-followup",
-      "status": "awaiting-mo",
-      "title": "MED: the reprice is ask-basis because no sold feed is wired up — /api/comps is the eBay Browse API (asks only) and the PriceCharting/SportsCardsPro sold path is the dormant 'legacy paid' route. House rule prefers solds. Next step if you want sold-basis marks: reconnect a sold source, then re-run this same pinned-card list. Also parked: rows pinned to the most-listed name (Tong, Judkins, Kent) are data-driven picks, not editorial ones — worth a human sanity check that they are the names the guide should lead with. RESOLVED separately: 'Mendoza / Love / Tate' in the flagship hero is correct, Carnell Tate has flagship RC #318; my earlier Ty Simpson flag was wrong."
+      "status": "approved",
+      "title": "MED: the reprice is ask-basis because no sold feed is wired up — /api/comps is the eBay Browse API (asks only) and the PriceCharting/SportsCardsPro sold path is the dormant 'legacy paid' route. House rule prefers solds. Next step if you want sold-basis marks: reconnect a sold source, then re-run this same pinned-card list. Also parked: rows pinned to the most-listed name (Tong, Judkins, Kent) are data-driven picks, not editorial ones — worth a human sanity check that they are the names the guide should lead with. RESOLVED separately: 'Mendoza / Love / Tate' in the flagship hero is correct, Carnell Tate has flagship RC #318; my earlier Ty Simpson flag was wrong. — Mo, 2026-08-31 (in chat)"
     },
     {
       "id": "epn-customid-api-aug25",
@@ -643,8 +631,8 @@
     },
     {
       "id": "epn-customid-verify-sep",
-      "status": "awaiting-mo",
-      "title": "P2 / MED (follow-up, ~Sep 25): re-read EPN Performance by Custom Id over a full 30 days post-tagging. Expected: the 'No Custom ID' bucket collapses and its earnings reappear against real page slugs (hypothesis: the Live-Asks/comps widgets are the earner). If 'No Custom ID' STAYS at ~96% of earnings, the money is NOT coming from /api/comps and the next suspects are Mo's own clicks or another untagged surface — do not conclude until that read. Note also: EPN attributes on a 24h cookie window, so tagging only affects clicks from Aug 25 forward; the Jul 26-Aug 25 baseline stays untagged."
+      "status": "approved",
+      "title": "P2 / MED (follow-up, ~Sep 25): re-read EPN Performance by Custom Id over a full 30 days post-tagging. Expected: the 'No Custom ID' bucket collapses and its earnings reappear against real page slugs (hypothesis: the Live-Asks/comps widgets are the earner). If 'No Custom ID' STAYS at ~96% of earnings, the money is NOT coming from /api/comps and the next suspects are Mo's own clicks or another untagged surface — do not conclude until that read. Note also: EPN attributes on a 24h cookie window, so tagging only affects clicks from Aug 25 forward; the Jul 26-Aug 25 baseline stays untagged. — Mo, 2026-08-31"
     },
     {
       "id": "reprice-chrome-updates-basketball-P1",
@@ -685,6 +673,13 @@
       "title": "LOW: fernando-mendoza-rookie-cards.html line 856 price cell still reads 'Releases Aug 21' — CoS, 2026-08-30 (4.7) — future tense a week after release, no numeric mark on his true flagship RC row. Fix: re-mark the row from post-release solds (or an honest thin-comp label) with an as-of stamp"
     },
     {
+      "id": "newsletter-visibility-aug30",
+      "area": "growth",
+      "status": "awaiting-design",
+      "summary": "MO'S IDEA (chat, Aug 30): newsletter signup needs real prominence — candidate moves: nav-level entry (via data/nav.json + build-nav, never hand-edit), above-the-fold placement on the board/indices pages where the value prop is obvious ('Tuesday's board moves in your inbox'), homepage hero. Signups sit at zero since capture went live Aug 20; visibility is suspect #1 but the pitch line matters as much as placement. NEXT: Monday run's content well proposes the specific design + copy + placements; Mo approves (new-surface/content = Tier 3); fixer applies. CoS tracks in the email-trigger line (charter 5.5).",
+      "title": "Newsletter signup prominence — design proposal wanted from Monday content well"
+    },
+    {
       "id": "sitemap-host-fix-aug30",
       "area": "qa",
       "status": "approved",
@@ -702,6 +697,16 @@
       "status": "applied",
       "verified": "2026-08-30 diagnosis session (Mo + Claude, live in Search Console): 3 indexed / 58 not (39 discovered-not-crawled, 19 crawled-not-indexed); NO manual action, NO security issues, sitemap healthy. Verdict: new-site authority gate, not a technical fault. Actions: sitemap resubmitted (re-read same minute, discovery 60->76 pages incl. the index pages) + Request Indexing on 5 priority URLs. Recurring hygiene (auditor STEP 3.5 coverage watch, Monday STEP 0.6 sitemap+request-indexing) now active. Long lever: external links to pages (X, newsletter). Found in passing: pokemon-30th sitemap entry missing www — host mismatch, filed as sitemap-host-fix-aug30.",
       "title": "HIGH (growth, Mo-flagged Aug 28): Google organic is near-invisible while Bing-family thrives — 7d organic sessions: Bing 75 / DDG 36 / Yahoo 32 / Google 12. Same content ranks elsewhere, so suspect indexing/Search Console (sitemap status, coverage, canonical issues), not quality. INVESTIGATE in GSC (shopcardhub@gmail.com account) → fix findings → then recurring hygiene lands in the MWF auditor (coverage check) + Monday run (sitemap resubmit + request-indexing for new/updated pages). If Google merely matched Bing, organic ~doubles. Effort: 1 focused session."
+    },
+    {
+      "id": "audit-2026-08-31-1",
+      "status": "approved",
+      "title": "LOW: two pages sit on ~90-day-old June 2026 marks — wnba-cards-2026.html line 834 ('as of June 2026' on every figure) and victor-wembanyama-rookie-cards.html line 794 ('Prices Updated June 2026'). Both verified on the live deploy Aug 31. Fast-moving categories with honest but stale stamps; neither was in the Aug 25 live-ask reprice. Suggested fix: fold both into the next reprice pass (drop-2-cheapest/median-of-10 ask marks + fresh as-of), or re-stamp after a manual comp check. — Mo, 2026-08-31 (in chat)"
+    },
+    {
+      "id": "polish-2026-08-31",
+      "status": "approved",
+      "title": "POLISH: homepage — stats band (508+ cards / ~$113 / 5% / 4+) — animate each number counting up when it scrolls into view, same easing as the index tickers — the band is the site's skin-in-the-game proof and currently reads as static text under a live-moving tape; a count-up makes the proof feel as alive as the data above it. — Mo, 2026-08-31 (in chat)"
     }
   ],
   "scoreboard": {
