@@ -449,7 +449,9 @@
     },
     {
       "id": "ebay-insights-application",
-      "status": "awaiting-response",
+      "status": "retired",
+      "retiredOn": "2026-08-30",
+      "retiredWhy": "DENIED by eBay (ticket 260817-000060, closed Aug 17 — response landed 2h after filing; read Aug 30). Access is 'highly limited, reserved for approved partners'; ticket cannot be reopened. LANE CLOSED — never re-apply or re-queue (same standing-down logic as Topps/Fanatics). Consequences: /api/comps stays ask-side with honest labeling permanently; sold-basis remains PriceCharting/SCP reads (already powers indices + re-marks); the ask-basis disclosure item (reprice-2026-08-25-followup) is now permanent hygiene, not a bridge.",
       "title": "eBay Marketplace Insights API access request SUBMITTED Aug 17 (Application Growth Check ticket) — check My Tickets ~Aug 31; if granted, build /api/solds and flip vault+engine to sold-basis"
     },
     {
@@ -683,6 +685,13 @@
       "title": "LOW: fernando-mendoza-rookie-cards.html line 856 price cell still reads 'Releases Aug 21' — CoS, 2026-08-30 (4.7) — future tense a week after release, no numeric mark on his true flagship RC row. Fix: re-mark the row from post-release solds (or an honest thin-comp label) with an as-of stamp"
     },
     {
+      "id": "sitemap-host-fix-aug30",
+      "area": "qa",
+      "status": "approved",
+      "summary": "sitemap.xml: the pokemon-30th-anniversary-2026 entry uses https://shopcardhub.com (no www) while all 75 other entries use www — host mismatch on the site's #1 traffic page, found during the Aug 30 GSC session. Fix: add www (and give the entry the standard changefreq/priority fields it's also missing). Mechanical, single-line — CoS, 2026-08-30 (4.7). Monday fixer applies.",
+      "title": "LOW: sitemap host mismatch on pokemon-30th entry — CoS, 2026-08-30 (4.7)"
+    },
+    {
       "id": "auditor-zindex-rule",
       "area": "qa",
       "status": "approved",
@@ -690,7 +699,8 @@
     },
     {
       "id": "gsc-google-visibility-aug28",
-      "status": "awaiting-mo",
+      "status": "applied",
+      "verified": "2026-08-30 diagnosis session (Mo + Claude, live in Search Console): 3 indexed / 58 not (39 discovered-not-crawled, 19 crawled-not-indexed); NO manual action, NO security issues, sitemap healthy. Verdict: new-site authority gate, not a technical fault. Actions: sitemap resubmitted (re-read same minute, discovery 60->76 pages incl. the index pages) + Request Indexing on 5 priority URLs. Recurring hygiene (auditor STEP 3.5 coverage watch, Monday STEP 0.6 sitemap+request-indexing) now active. Long lever: external links to pages (X, newsletter). Found in passing: pokemon-30th sitemap entry missing www — host mismatch, filed as sitemap-host-fix-aug30.",
       "title": "HIGH (growth, Mo-flagged Aug 28): Google organic is near-invisible while Bing-family thrives — 7d organic sessions: Bing 75 / DDG 36 / Yahoo 32 / Google 12. Same content ranks elsewhere, so suspect indexing/Search Console (sitemap status, coverage, canonical issues), not quality. INVESTIGATE in GSC (shopcardhub@gmail.com account) → fix findings → then recurring hygiene lands in the MWF auditor (coverage check) + Monday run (sitemap resubmit + request-indexing for new/updated pages). If Google merely matched Bing, organic ~doubles. Effort: 1 focused session."
     }
   ],
@@ -710,8 +720,8 @@
     "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
     "generated": "2026-08-30",
     "weekOf": "2026-08-31",
-    "headline": "The cockpit came alive — first 4 real dungeon decisions Fri, loop verified end-to-end. First 4.7 week: 3 items self-approved, 1 held. UPDATED Sun eve: Mo cleared every approval item same-day (re-mark, #1-page reprice, keeper/auditor bundle) — queue is down to 3 execution items only.",
-    "doNothing": "All approvals are cleared; what remains needs Mo's hands, not his sign-off. Only the trader floors carry a daily cost — until they're written down, one accepted offer repeats this week's below-ask basket clear. The other two wait free.",
+    "headline": "The cockpit came alive — first 4 real dungeon decisions Fri, loop verified end-to-end. First 4.7 week: 3 items self-approved, 1 held. UPDATED Sun eve: Mo cleared every approval same-day, then two queue items were executed live (search-visibility diagnosis + actions; partner-API ticket read: denied, lane retired) — queue is down to 1.",
+    "doNothing": "One item left and it's the one that can't wait: until the trader floors are written down, one accepted offer repeats this week's below-ask basket clear. Everything else is done or executes on schedule.",
     "queue": [
       {
         "rank": 1,
@@ -720,25 +730,9 @@
         "why": "The pricing policy you approved Thursday only protects the book once the floors are written down — until then, one accepted offer repeats this week's below-ask basket clear. Execute reprices AND floors together; one without the other is the exact trap the policy exists to prevent.",
         "effort": "15 min",
         "ref": "local trader scan Aug 27, section 8"
-      },
-      {
-        "rank": 2,
-        "id": "gsc-google-visibility-aug28",
-        "title": "Run the Search Console diagnosis session (HIGH — you flagged it Friday)",
-        "why": "One search engine delivers a fraction of what its Bing-stack peers do on identical content. If it's an indexing fault, fixing it is the largest single traffic lever on the board; the recurring hygiene is already wired into the Monday + MWF runs and activates once you've diagnosed.",
-        "effort": "1 focused session",
-        "ref": "gsc-google-visibility-aug28"
-      },
-      {
-        "rank": 3,
-        "id": "ebay-insights-ticket",
-        "title": "Check the eBay Insights ticket — due date is now",
-        "why": "The application said check back ~Aug 31. If granted, sold-basis pricing unlocks and the open ask-basis disclosure item resolves itself.",
-        "effort": "5 min",
-        "ref": "ebay-insights-application"
       }
     ],
-    "approvedSunEve": "Mo, Sun evening (chat): audit-2026-08-28-2 re-mark, the #1-page reprice, all 3 Keeper proposals, and the new auditor layering rule — all approved. Monday fixer + Friday Keeper + MWF auditor execute; nothing awaits approval.",
+    "approvedSunEve": "Mo, Sun evening (chat): audit-2026-08-28-2 re-mark, the #1-page reprice, all 3 Keeper proposals, and the new auditor layering rule — all approved. Then queue items 2 and 3 were EXECUTED live same evening: Search Console diagnosed + sitemap/indexing actions taken (see gsc-google-visibility-aug28), and the eBay Insights ticket read — DENIED Aug 17, lane retired, never re-queue. Queue is down to item 1 (trader execution, Mo's hands).",
     "watchdog": [
       {
         "severity": "fixed",
