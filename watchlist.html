@@ -1425,8 +1425,10 @@ function cardRow(c) {
      until there is a real sample, graded in public like every other call. */
   if (FEED) {
     if (fe) {
+      const proxyMism = lineMismatch((c.name || '') + ' ' + (c.set || ''), fe.label || '');
       feedHtml = '<div class="feed-box linked">\u25C9 <b>' + esc(fe.label) + '</b> \u2014 engine snapshots nightly' +
         (fe.last > 0 ? ' \u00B7 last $' + fmt$(fe.last) : '') +
+        (proxyMism.length ? ' \u00B7 <span style="color:var(--orange);font-size:10px;font-weight:700" title="This feed follows a related card, not this exact one (line difference: ' + esc(proxyMism.join(', ')) + '). Prices shown from it are the proxy card\u2019s market.">PROXY \u2014 ' + esc(proxyMism.join('/')) + ' differs</span>' : '') +
         supplyHtml(fe) +
         (c.feedAuto ? ' \u00B7 <span style="font-size:10px" title="Matched by player name \u2014 unlink if this isn\u2019t your exact card">auto-matched</span>' : '') +
         ' <button class="log-del" title="Unlink from feed" onclick="unlinkFeed(\'' + c.id + '\')">\u2715</button></div>';
@@ -1434,10 +1436,12 @@ function cardRow(c) {
       const sug = feedMatch(c);
       const opts = FEED.cards.map(e => '<option value="' + esc(e.key) + '"' + (sug && sug.key === e.key ? ' selected' : '') + '>' + esc(e.label) + '</option>').join('');
       const sugHtml = sug
-        ? '<span style="color:var(--green)">\u26A1 Engine tracks <b>' + esc(sug.label) + '</b>' + (sug.variant ? ' <span style="color:var(--orange)" title="Your card name mentions a parallel/grade the engine mark doesn\u2019t track \u2014 the engine follows the raw base card">(base card)</span>' : '') + '</span> '
+        ? (sug.variant
+          ? '<span style="color:var(--orange)" title="No live feed exists for this exact card yet \u2014 linking follows a RELATED card\u2019s price, clearly labeled as a proxy, never presented as your card\u2019s own mark">\u26A0 No feed for this exact card. Closest: <b>' + esc(sug.label) + '</b> \u2014 links as a labeled proxy</span> '
+          : '<span style="color:var(--green)">\u26A1 Engine tracks <b>' + esc(sug.label) + '</b></span> ')
         : '';
       feedHtml = '<div class="feed-box">' + sugHtml + '<select id="fs-' + c.id + '"><option value=""' + (sug ? '' : ' selected') + '>Link to the live price engine\u2026</option>' + opts + '</select>' +
-        '<button class="btn btn-sm"' + (sug ? ' style="border-color:rgba(0,224,122,0.4);color:var(--green)"' : '') + ' onclick="linkFeed(\'' + c.id + '\')">Link</button></div>';
+        '<button class="btn btn-sm"' + (sug ? (sug.variant ? ' style="border-color:rgba(255,140,0,0.5);color:var(--orange)"' : ' style="border-color:rgba(0,224,122,0.4);color:var(--green)"') : '') + ' onclick="linkFeed(\'' + c.id + '\')">' + (sug && sug.variant ? 'Link as proxy' : 'Link') + '</button></div>';
     }
   }
 
@@ -2315,14 +2319,31 @@ function normToks(s) {
   return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .toLowerCase().split(/[^a-z0-9]+/).filter(t => t.length >= 2);
 }
+/* product-line tokens: a card and a feed must agree on these or the link is a
+   labeled PROXY, never a silent match. Added Aug 31 2026 after Mo caught his
+   Sapphire cards charting Chrome-feed prices. */
+const LINE_TOKS = ['sapphire','chrome','auto','autograph','draft','paper','prizm','refractor','1st'];
+function lineMismatch(cardText, feedLabel) {
+  const c = new Set(normToks(cardText)), f = new Set(normToks(feedLabel));
+  if (c.has('autograph')) c.add('auto'); if (f.has('autograph')) f.add('auto');
+  return LINE_TOKS.filter(t => t !== 'autograph' && c.has(t) !== f.has(t));
+}
 function feedMatch(c) {
   if (!FEED) return null;
-  const cardToks = new Set(normToks((c.name || '') + ' ' + (c.set || '')));
+  const cardText = (c.name || '') + ' ' + (c.set || '');
+  const cardToks = new Set(normToks(cardText));
   const STOP = new Set(['the','1st','bowman','chrome','auto','draft','sir','ex','mega']);
   // label player-part tokens, minus brand noise and card numbers (#116/084 etc.)
   const pToksOf = e => normToks((e.label || e.key).split('—')[0]).filter(t => !STOP.has(t) && !/^\d+$/.test(t));
   let hits = FEED.cards.filter(e => e && e.key && (() => { const p = pToksOf(e); return p.length && p.every(t => cardToks.has(t)); })());
   let partial = false;
+  if (hits.length > 1) {
+    // same player, multiple feeds (e.g. Chrome auto + Sapphire): the feed whose
+    // LINE tokens agree with the card wins — unique best scorer only.
+    const scored = hits.map(e => ({ e: e, s: -lineMismatch(cardText, e.label || e.key).length }));
+    scored.sort((a, b) => b.s - a.s);
+    if (scored.length > 1 && scored[0].s > scored[1].s) hits = [scored[0].e];
+  }
   if (hits.length !== 1) {
     // fallback: a single card token that uniquely identifies one engine card
     // ("Bazzana", "darkrai") is a good suggestion but never an auto-link
@@ -2330,8 +2351,13 @@ function feedMatch(c) {
     partial = true;
   }
   if (hits.length !== 1) return null;                        // ambiguous or none -> no suggestion
-  const variant = VARIANT_LEX.test((c.name || '') + ' ' + (c.grade && c.grade.toLowerCase() !== 'raw' ? c.grade : ''));
-  return { key: hits[0].key, label: hits[0].label, variant: variant, partial: partial };
+  // variant/proxy: any parallel-or-grade word, or line disagreement, vs the MATCHED feed
+  const mism = lineMismatch(cardText + ' ' + (c.grade && c.grade.toLowerCase() !== 'raw' ? c.grade : ''), hits[0].label || hits[0].key);
+  const gradeWord = /\b(psa|bgs|sgc|cgc|graded|gem|slab)\b/i.test((c.name || '') + ' ' + (c.grade && c.grade.toLowerCase() !== 'raw' ? c.grade : ''));
+  const vm = (c.name || '').match(VARIANT_LEX);
+  const parallelWord = !!(vm && (hits[0].label || '').toLowerCase().indexOf(vm[0].toLowerCase()) < 0);
+  const variant = mism.length > 0 || gradeWord || parallelWord;
+  return { key: hits[0].key, label: hits[0].label, variant: variant, partial: partial, mismatch: mism };
 }
 function autoLinkFeeds() {
   const linked = [];
