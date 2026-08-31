@@ -795,10 +795,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   </div>
 
   <!-- ============================================================
-       DASHBOARD SHELL — Concept B, Stage 2 (no-data shell).
-       Placeholders only. NO live price data until the price engine
-       (PriceCharting) is wired. Signal Board + Portfolio are clearly
-       labeled "Coming soon"; the Watchlist card is live (localStorage).
+       DASHBOARD — Concept B, Stage 3 (LIVE, Aug 31 2026).
+       Signal Board card pulls the nightly engine feed (price-data branch);
+       Watchlist + Portfolio cards read the local Vault (sch_vault_v1).
+       No placeholders remain — every card links to a live surface.
        ============================================================ -->
   <style>
     .dash{padding:56px 0 8px;}
@@ -832,39 +832,36 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="container">
       <div class="section-eyebrow">Your Market, Today</div>
       <h2>The Floor</h2>
-      <p class="section-body">Prices move. Your watchlist moves. The aim is a page you <em>check</em> — not a brochure you read once. The watchlist works today; signals and portfolio P/L light up as the price engine comes online.</p>
+      <p class="section-body">Prices move. Your watchlist moves. The aim is a page you <em>check</em> — not a brochure you read once. The price engine marks the board nightly, the Vault tracks your positions, and five set indices re-mark every Monday. All of it live.</p>
 
       <div class="dash-grid">
-        <!-- Signal Board — placeholder, no live data yet -->
-        <div class="dash-card soon">
-          <h3>Signal Board <span class="dash-badge">Coming soon</span></h3>
-          <p class="dash-cap">Daily top movers and honest BUY / HOLD / SELL calls across baseball, basketball, and Pokémon — chart-derived, no fundamentals. Turns on once the price engine is wired.</p>
-          <div class="dash-ph-rows" aria-hidden="true">
-            <div class="dash-ph-row"><span class="dash-ph l"></span><span class="dash-ph r"></span></div>
-            <div class="dash-ph-row"><span class="dash-ph l"></span><span class="dash-ph r"></span></div>
-            <div class="dash-ph-row"><span class="dash-ph l"></span><span class="dash-ph r"></span></div>
-          </div>
-          <span class="dash-link muted">Live once pricing is connected →</span>
+        <!-- Signal Board — LIVE, fed nightly by the price engine (price-data branch) -->
+        <div class="dash-card">
+          <h3>Signal Board <span class="dash-badge live">Live nightly</span></h3>
+          <p class="dash-cap">Every 1st Bowman Chrome auto, marked nightly by the price engine — chart-derived, no fundamentals. Points accrue on real crossovers, not vibes.</p>
+          <div class="dash-watch" id="dash-signal"><div class="wempty">Loading tonight's marks…</div></div>
+          <a href="/bowman-bangers" class="dash-link">Open the Signal Board →</a>
         </div>
 
         <!-- My Watchlist — functional (localStorage) -->
         <div class="dash-card">
           <h3>My Watchlist <span class="dash-badge live">Live now</span></h3>
-          <p class="dash-cap">Track any card by name — saved in your browser. Live prices arrive with the Signal Board.</p>
+          <p class="dash-cap">Track any card by name — saved in your browser, with live asks and your own logged marks in the Vault.</p>
           <div class="dash-watch" id="dash-watch"></div>
           <a href="/watchlist" class="dash-link">Open watchlist →</a>
         </div>
       </div>
 
-      <!-- My Portfolio — placeholder -->
-      <div class="dash-card soon" style="margin-top:16px;">
-        <h3>My Portfolio <span class="dash-badge">Coming soon</span></h3>
-        <p class="dash-cap">Log your cost basis, then track unrealized P/L net of fees once live pricing lands. Doubles as your COMC inventory book.</p>
-        <div class="dash-stats" aria-hidden="true">
-          <div class="dash-stat"><div class="k">Market Value</div><div class="v">—</div></div>
-          <div class="dash-stat"><div class="k">Unrealized</div><div class="v">—</div></div>
-          <div class="dash-stat"><div class="k">7-Day</div><div class="v">—</div></div>
+      <!-- My Portfolio — LIVE in the Vault (reads local sch_vault_v1) -->
+      <div class="dash-card" style="margin-top:16px;">
+        <h3>My Portfolio <span class="dash-badge live">Live in the Vault</span></h3>
+        <p class="dash-cap">Cost basis, logged marks, and position tracking — all in the Vault, saved in your browser. Imports your COMC inventory CSV as your book.</p>
+        <div class="dash-stats" id="dash-port">
+          <div class="dash-stat"><div class="k">Tracked Value</div><div class="v" id="dp-val">—</div></div>
+          <div class="dash-stat"><div class="k">Owned</div><div class="v" id="dp-own">—</div></div>
+          <div class="dash-stat"><div class="k">Hunting</div><div class="v" id="dp-hunt">—</div></div>
         </div>
+        <a href="/watchlist" class="dash-link" style="margin-top:16px;">Open the Vault →</a>
       </div>
 
       <!-- Digest CTA → existing newsletter form lower on the page -->
@@ -902,6 +899,43 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       }).join('');
       var more=items.length>3?'<div class="wrow"><span style="color:var(--text-dim);">+ '+(items.length-3)+' more</span><span></span></div>':'';
       el.innerHTML=rows+more;
+    })();
+
+    /* Signal Board mini-feed — top 3 from the nightly engine (price-data branch) */
+    (function(){
+      var el=document.getElementById('dash-signal'); if(!el) return;
+      function esc(s){ return String(s==null?'':s).replace(/[<>&]/g,''); }
+      fetch('https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json')
+        .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+        .then(function(d){
+          var cards=(d&&d.cards)||[];
+          if(!cards.length) throw 0;
+          cards=cards.slice().sort(function(a,b){ return (b.points||0)-(a.points||0) || (b.last||0)-(a.last||0); }).slice(0,3);
+          el.innerHTML=cards.map(function(c){
+            var px=(typeof c.last==='number')?('$'+c.last.toLocaleString(undefined,{maximumFractionDigits:2})):'—';
+            return '<div class="wrow"><span>'+esc(c.label)+'</span><span style="color:var(--green);">'+px+'</span></div>';
+          }).join('')+(d.day?'<div class="wrow"><span style="color:var(--text-dim);">engine mark · '+esc(d.day)+' · asks</span><span></span></div>':'');
+        })
+        .catch(function(){
+          el.innerHTML='<div class="wempty">Board marks load on <a href="/bowman-bangers" style="color:var(--accent);">the Signal Board</a> — every 1st Bowman Chrome auto, nightly.</div>';
+        });
+    })();
+
+    /* Portfolio snapshot from the local Vault */
+    (function(){
+      var v=null;
+      try{ v=JSON.parse(localStorage.getItem('sch_vault_v1')); }catch(e){}
+      if(!v||!Array.isArray(v.cards)||!v.cards.length||v.demo) return;
+      var val=0,own=0,hunt=0;
+      v.cards.forEach(function(c){
+        if(c.status==='own') own++; else hunt++;
+        var last=(c.prices&&c.prices.length)?c.prices[c.prices.length-1].p:null;
+        if(typeof last==='number') val+=last;
+      });
+      var f=function(id,txt,color){ var e=document.getElementById(id); if(e){ e.textContent=txt; if(color)e.style.color=color; } };
+      f('dp-val', '$'+Math.round(val).toLocaleString(), 'var(--text-head)');
+      f('dp-own', String(own), 'var(--text-head)');
+      f('dp-hunt', String(hunt), 'var(--text-head)');
     })();
   </script>
 
