@@ -155,7 +155,8 @@
     "2026-08-31: fixer applied 7 approved items (pitch-black re-mark, nav date, homepage stamps, Mendoza row, sitemap host, count-up polish, Fanatics flip\u00d713 + disclosure retirement\u00d763 pages); backlog reconciled (3 more marked applied on verification)",
     "2026-08-31: GSC \u2014 sitemap OK (submitted Aug 30, Success, 76 URLs); CRITICAL READ: 3 indexed / 58 not; pokemon-30th was \"unknown to Google\" (sitemap host mismatch = likely cause, now fixed locally); indexing requested: /indices, /pokemon-30th-anniversary-2026, /topps-chrome-updates-basketball",
     "2026-08-31: audit gates pre-publish \u2014 audit-site FAIL 0/WARN 0 (78 pages); audit-prices FAIL 0/WARN 27 (known label-cell class); index invariants verified",
-    "2026-08-31 PM: Mo approve-all session \u2014 4 exceptions applied (DeLauter $260 story failed sold verification: $87.29 SCP), P1 reprice done (TCU BKB + wnba + wemby off labels), Fanatics copy fixes; full batch push authorized by Mo"
+    "2026-08-31 PM: Mo approve-all session \u2014 4 exceptions applied (DeLauter $260 story failed sold verification: $87.29 SCP), P1 reprice done (TCU BKB + wnba + wemby off labels), Fanatics copy fixes; full batch push authorized by Mo",
+    "2026-08-31 eve: placeholder purge (Mo's catch) \u2014 homepage Floor live-wired to engine feed + Vault, 19 soccer cells marked/labeled, 4 stale release stamps fixed; pushed baecd0c+ceaaa7c, live-verified"
    ]
   },
   "dm": {
@@ -778,6 +779,12 @@
    "status": "applied",
    "title": "PRICE EXCEPTIONS (4, gates in parens): (1) adley-rutschman-cards \u2014 NARRATIVE: page reads \"+12% on the trade\" as of Aug 10; Hobby Wire now reads post-trade fade (gem-mint base refractor <$20) \u2014 whole page needs a re-read + reframe. (2) munetaka-murakami \u2014 STATISTICAL: Series 1 base $8\u2192$22 (+175%, Athlon/Yahoo attributed) + page-wide June 2026 stamps; full re-mark is a rewrite. (3) chase-delauter \u2014 STATISTICAL: 2024 Bowman Chrome Auto $185\u2192$260 (+40.5%, Athlon) trips the thin-history >40% gate; second source wanted. (4) fernando-mendoza NOW row \u2014 NARRATIVE: $11 \"trading at issue\" now $7.26 (SCP), below issue price, framing flips. Plus audit-2026-08-31-1 (wnba + wemby June marks) left approved \u2014 recommend folding both into the P1 chrome-updates-basketball reprice method when approved.",
    "appliedNote": "2026-08-31: Mo approved all 4 in chat (Aug 31 PM); applied same session. NOTE what the solds actually said: DeLauter base CDA-CD = $87.29 SCP (the hobby-press $260 did NOT verify \u2014 page reframed to the retrace); Murakami re-marked from SCP (base ~$1.54, CRA-MM auto ~$487 vs old $750\u2013$1,050 band; Athlon's Series 1 +175% claim also did not verify); Rutschman RA-AR $60.56 \u2014 trade pop round-tripped, page reframed; Mendoza NOW $7.26, below-issue framing fixed."
+  },
+  {
+   "id": "auditor-placeholder-rule",
+   "area": "qa",
+   "status": "awaiting-mo",
+   "title": "Add site-auditor rule: stale placeholder copy vs live-feature registry \u2014 flag any \"Coming soon\"/\"once X is connected\"/\"comps TBD\"/\"See live comps\"/pre-release hero stamp on a page whose feature or product is live (registry: engine=live Aug, indices=live Aug 24, Vault=live, releases from known-releases.json). Found Aug 31 by MO HIMSELF on the homepage \u2014 three whole classes (Concept B shell, 19 soccer cells, 4 released-product stamps) sat invisible to the MWF auditor. Same mechanical class as auditor-nav-css-rule."
   }
  ],
  "scoreboard": {
