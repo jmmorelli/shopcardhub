@@ -1,6 +1,6 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} \u2014 keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures \u2014 counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] \u2014 stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] \u2014 status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-08-31T18:30:00Z",
+ "generated": "2026-08-31T21:30:00Z",
  "generator": "chief-of-staff (2026-08-30)",
  "agents": {
   "seeker": {
@@ -104,7 +104,8 @@
    ],
    "log": [
     "2026-08-31: built /bowman-football pre-release guide (200+200 structure, chase table, EPN-only buy lanes) + nav + sitemap \u2014 NOT pushed, awaiting Mo",
-    "2026-08-31: newsletter prominence design proposed (Tuesday Tape capture bar on index pages + nav CTA + hero button) \u2014 Tier 3, awaiting Mo"
+    "2026-08-31: newsletter prominence design proposed (Tuesday Tape capture bar on index pages + nav CTA + hero button) \u2014 Tier 3, awaiting Mo",
+    "2026-08-31 PM: newsletter capture SHIPPED (6 above-fold bars + nav CTA + hero button); /indices Week's-Tape movers strip; track-record contrast line"
    ]
   },
   "inspector": {
@@ -153,7 +154,8 @@
    "log": [
     "2026-08-31: fixer applied 7 approved items (pitch-black re-mark, nav date, homepage stamps, Mendoza row, sitemap host, count-up polish, Fanatics flip\u00d713 + disclosure retirement\u00d763 pages); backlog reconciled (3 more marked applied on verification)",
     "2026-08-31: GSC \u2014 sitemap OK (submitted Aug 30, Success, 76 URLs); CRITICAL READ: 3 indexed / 58 not; pokemon-30th was \"unknown to Google\" (sitemap host mismatch = likely cause, now fixed locally); indexing requested: /indices, /pokemon-30th-anniversary-2026, /topps-chrome-updates-basketball",
-    "2026-08-31: audit gates pre-publish \u2014 audit-site FAIL 0/WARN 0 (78 pages); audit-prices FAIL 0/WARN 27 (known label-cell class); index invariants verified"
+    "2026-08-31: audit gates pre-publish \u2014 audit-site FAIL 0/WARN 0 (78 pages); audit-prices FAIL 0/WARN 27 (known label-cell class); index invariants verified",
+    "2026-08-31 PM: Mo approve-all session \u2014 4 exceptions applied (DeLauter $260 story failed sold verification: $87.29 SCP), P1 reprice done (TCU BKB + wnba + wemby off labels), Fanatics copy fixes; full batch push authorized by Mo"
    ]
   },
   "dm": {
@@ -217,7 +219,8 @@
    ],
    "log": [
     "2026-08-31: calls re-graded (6 trending: darkrai-wait RIGHT \u221251%, zeraora-buy WRONG \u221222%, greninja-psa10 miss_high $493 \u2014 FINALIZES NEXT RUN; kim/florentino/gladion inside \u00b110%); no new calls (bowman-football is pre-release, no projections)",
-    "2026-08-31: retention row logged \u2014 returning_users_7d 8 (was 13/13), newsletter_signup 0 BUT endpoint verified healthy \u2192 visibility problem, design proposal filed"
+    "2026-08-31: retention row logged \u2014 returning_users_7d 8 (was 13/13), newsletter_signup 0 BUT endpoint verified healthy \u2192 visibility problem, design proposal filed",
+    "2026-08-31 PM: pipeline reconciled post-approval; prevPrice roll-forward added to STEP 3.6 duties (movers schema)"
    ]
   },
   "trader": {
@@ -681,9 +684,10 @@
   },
   {
    "id": "reprice-chrome-updates-basketball-P1",
-   "status": "approved",
+   "status": "applied",
    "approvedBy": "Mo, 2026-08-30 (chat, approve-all) \u2014 explicit approval granted; next Monday run or build session applies the proven Aug 25 method (canonical-card pinning, drop-2/median-of-10, n>=6 + <=4x gate, ask-labeled with dated stamp)",
-   "title": "P1 / HIGH (income): /topps-chrome-updates-basketball is the #1 landing page by BOTH traffic (168 sessions, 17.25% of site total) and key events (30, 25.42% of all conversions) \u2014 and still shows tier labels (Grail | Case hit | Top auto | Auto | SSP) instead of prices. It was not in the Aug 25 reprice set. Supporting evidence that prices convert: /jacob-misiorowski-rookie-cards is the site's best key-event rate at 18.75%, /bowman-sapphire-2026 (tier labels, 17s dwell) converts 0%. Fix: same proven method as the Aug 25 pass \u2014 pin a canonical card per row, live ask marks via /api/comps, drop-2/median-of-next-10 on price+shipping, gate at n>=6 and <=4x spread, label as asks with a dated stamp, honest 'no market' where the population is thin. TOP PRIORITY per Mo, Aug 25."
+   "title": "P1 / HIGH (income): /topps-chrome-updates-basketball is the #1 landing page by BOTH traffic (168 sessions, 17.25% of site total) and key events (30, 25.42% of all conversions) \u2014 and still shows tier labels (Grail | Case hit | Top auto | Auto | SSP) instead of prices. It was not in the Aug 25 reprice set. Supporting evidence that prices convert: /jacob-misiorowski-rookie-cards is the site's best key-event rate at 18.75%, /bowman-sapphire-2026 (tier labels, 17s dwell) converts 0%. Fix: same proven method as the Aug 25 pass \u2014 pin a canonical card per row, live ask marks via /api/comps, drop-2/median-of-next-10 on price+shipping, gate at n>=6 and <=4x spread, label as asks with a dated stamp, honest 'no market' where the population is thin. TOP PRIORITY per Mo, Aug 25.",
+   "appliedNote": "2026-08-31: Mo approved in chat Aug 31; #1 landing page off tier labels onto ask marks/by-name ranges (gates: n\u22656, \u22644x; failed gates shown honestly \u2014 Debut Patch \"3 listings\"). Standouts cited on-page: Curry Alter Egos SF $94K ask, SGA Minionfractor Red /5 $55K, Wemby Denim Tears /10 $20K."
   },
   {
    "id": "trader-2026-08-27",
@@ -724,10 +728,11 @@
   {
    "id": "newsletter-visibility-aug30",
    "area": "growth",
-   "status": "awaiting-mo",
+   "status": "applied",
    "summary": "MO'S IDEA (chat, Aug 30): newsletter signup needs real prominence \u2014 candidate moves: nav-level entry (via data/nav.json + build-nav, never hand-edit), above-the-fold placement on the board/indices pages where the value prop is obvious ('Tuesday's board moves in your inbox'), homepage hero. Signups sit at zero since capture went live Aug 20; visibility is suspect #1 but the pitch line matters as much as placement. NEXT: Monday run's content well proposes the specific design + copy + placements; Mo approves (new-surface/content = Tier 3); fixer applies. CoS tracks in the email-trigger line (charter 5.5).",
    "title": "Newsletter signup prominence \u2014 design proposal wanted from Monday content well",
-   "design": "MONDAY DESIGN PROPOSAL (2026-08-31): endpoint verified healthy (405 GET / 400 invalid-email \u2014 plumbing works; zero signups = visibility). (1) INDEX PAGES + BOWMAN BANGERS, above the fold: slim capture bar under the livebar \u2014 pitch \"The Tuesday Tape \u2014 the board's weekly moves in your inbox. Sold comps only, one email, Tuesdays.\" (2) NAV: right-side CTA \"\ud83d\udcec Tuesday Tape\" via data/nav.json + build-nav. (3) HOMEPAGE hero: secondary button \"Get the Tuesday Tape\". Rollout order 1\u21923; measure via newsletter_signup event which is already wired. Tier 3 \u2014 Mo approves before any of it is built."
+   "design": "MONDAY DESIGN PROPOSAL (2026-08-31): endpoint verified healthy (405 GET / 400 invalid-email \u2014 plumbing works; zero signups = visibility). (1) INDEX PAGES + BOWMAN BANGERS, above the fold: slim capture bar under the livebar \u2014 pitch \"The Tuesday Tape \u2014 the board's weekly moves in your inbox. Sold comps only, one email, Tuesdays.\" (2) NAV: right-side CTA \"\ud83d\udcec Tuesday Tape\" via data/nav.json + build-nav. (3) HOMEPAGE hero: secondary button \"Get the Tuesday Tape\". Rollout order 1\u21923; measure via newsletter_signup event which is already wired. Tier 3 \u2014 Mo approves before any of it is built.",
+   "appliedNote": "2026-08-31: Mo approved in chat Aug 31; BUILT same session: Tuesday Tape capture bar above the fold on all 5 index pages + bowman-bangers (posts /api/subscribe, fires newsletter_signup with per-page location), nav cta2 \"\ud83d\udcec Tuesday Tape\" via build-nav (78 pages), homepage hero secondary button. Measure via newsletter_signup event."
   },
   {
    "id": "sitemap-host-fix-aug30",
@@ -751,8 +756,9 @@
   },
   {
    "id": "audit-2026-08-31-1",
-   "status": "approved",
-   "title": "LOW: two pages sit on ~90-day-old June 2026 marks \u2014 wnba-cards-2026.html line 834 ('as of June 2026' on every figure) and victor-wembanyama-rookie-cards.html line 794 ('Prices Updated June 2026'). Both verified on the live deploy Aug 31. Fast-moving categories with honest but stale stamps; neither was in the Aug 25 live-ask reprice. Suggested fix: fold both into the next reprice pass (drop-2-cheapest/median-of-10 ask marks + fresh as-of), or re-stamp after a manual comp check. \u2014 Mo, 2026-08-31 (in chat)"
+   "status": "applied",
+   "title": "LOW: two pages sit on ~90-day-old June 2026 marks \u2014 wnba-cards-2026.html line 834 ('as of June 2026' on every figure) and victor-wembanyama-rookie-cards.html line 794 ('Prices Updated June 2026'). Both verified on the live deploy Aug 31. Fast-moving categories with honest but stale stamps; neither was in the Aug 25 live-ask reprice. Suggested fix: fold both into the next reprice pass (drop-2-cheapest/median-of-10 ask marks + fresh as-of), or re-stamp after a manual comp check. \u2014 Mo, 2026-08-31 (in chat)",
+   "appliedNote": "2026-08-31: Mo approved in chat Aug 31; wnba + wemby re-marked via the pinned-card live-ask method (asks labeled, house trim, (Jun) tags on unre-read graded/auto figures); wemby \"See live comps\" placeholders eliminated."
   },
   {
    "id": "polish-2026-08-31",
@@ -762,13 +768,15 @@
   },
   {
    "id": "comp-2026-08-31",
-   "status": "awaiting-mo",
-   "title": "COMP: TCGIndex shipped a Track Record page + Premium tier + Morning Brief \u2014 recommended posture: STEAL their set-screener presentation (rank sets by 7d/30d/90d on /indices) and CONTRAST track records (theirs = model-signal winrate on ask aggregates; ours = graded immutable calls on solds \u2014 say so on /track-record). Their Pok\u00e9mon index math is marketplace-aggregate, not sold-basis. New entrants added to watchlist: Hobby Card Index, TrackaLacker, and Slabfolio (launched May 8 2026, indie, collection-value focus) \u2014 Slabfolio flagged as CANDIDATE for the half-remembered vault site."
+   "status": "applied",
+   "title": "COMP: TCGIndex shipped a Track Record page + Premium tier + Morning Brief \u2014 recommended posture: STEAL their set-screener presentation (rank sets by 7d/30d/90d on /indices) and CONTRAST track records (theirs = model-signal winrate on ask aggregates; ours = graded immutable calls on solds \u2014 say so on /track-record). Their Pok\u00e9mon index math is marketplace-aggregate, not sold-basis. New entrants added to watchlist: Hobby Card Index, TrackaLacker, and Slabfolio (launched May 8 2026, indie, collection-value focus) \u2014 Slabfolio flagged as CANDIDATE for the half-remembered vault site.",
+   "appliedNote": "2026-08-31: Mo approved posture in chat Aug 31: STEAL executed \u2014 /indices now renders \"The Week's Tape\" (ticker leader/laggard + top-5 card movers w/w; basket schema gained prevPrice/prevAsOf, roll-forward is now part of STEP 3.6); /track-record gained the methodology-contrast line. Slabfolio = TENTATIVE ID for the half-remembered vault site (\"roll with it for now\")."
   },
   {
    "id": "price-exceptions-2026-08-31",
-   "status": "awaiting-mo",
-   "title": "PRICE EXCEPTIONS (4, gates in parens): (1) adley-rutschman-cards \u2014 NARRATIVE: page reads \"+12% on the trade\" as of Aug 10; Hobby Wire now reads post-trade fade (gem-mint base refractor <$20) \u2014 whole page needs a re-read + reframe. (2) munetaka-murakami \u2014 STATISTICAL: Series 1 base $8\u2192$22 (+175%, Athlon/Yahoo attributed) + page-wide June 2026 stamps; full re-mark is a rewrite. (3) chase-delauter \u2014 STATISTICAL: 2024 Bowman Chrome Auto $185\u2192$260 (+40.5%, Athlon) trips the thin-history >40% gate; second source wanted. (4) fernando-mendoza NOW row \u2014 NARRATIVE: $11 \"trading at issue\" now $7.26 (SCP), below issue price, framing flips. Plus audit-2026-08-31-1 (wnba + wemby June marks) left approved \u2014 recommend folding both into the P1 chrome-updates-basketball reprice method when approved."
+   "status": "applied",
+   "title": "PRICE EXCEPTIONS (4, gates in parens): (1) adley-rutschman-cards \u2014 NARRATIVE: page reads \"+12% on the trade\" as of Aug 10; Hobby Wire now reads post-trade fade (gem-mint base refractor <$20) \u2014 whole page needs a re-read + reframe. (2) munetaka-murakami \u2014 STATISTICAL: Series 1 base $8\u2192$22 (+175%, Athlon/Yahoo attributed) + page-wide June 2026 stamps; full re-mark is a rewrite. (3) chase-delauter \u2014 STATISTICAL: 2024 Bowman Chrome Auto $185\u2192$260 (+40.5%, Athlon) trips the thin-history >40% gate; second source wanted. (4) fernando-mendoza NOW row \u2014 NARRATIVE: $11 \"trading at issue\" now $7.26 (SCP), below issue price, framing flips. Plus audit-2026-08-31-1 (wnba + wemby June marks) left approved \u2014 recommend folding both into the P1 chrome-updates-basketball reprice method when approved.",
+   "appliedNote": "2026-08-31: Mo approved all 4 in chat (Aug 31 PM); applied same session. NOTE what the solds actually said: DeLauter base CDA-CD = $87.29 SCP (the hobby-press $260 did NOT verify \u2014 page reframed to the retrace); Murakami re-marked from SCP (base ~$1.54, CRA-MM auto ~$487 vs old $750\u2013$1,050 band; Athlon's Series 1 +175% claim also did not verify); Rutschman RA-AR $60.56 \u2014 trade pop round-tripped, page reframed; Mendoza NOW $7.26, below-issue framing fixed."
   }
  ],
  "scoreboard": {
@@ -913,5 +921,12 @@
    "index-invariants": "level continuity held on AH26 (+32) and DR25 (+3) inclusions; divisor changes logged"
   },
   "note": "commit hash in weekly-scan-2026-08-31.md report"
- }
+ },
+ "decisions": [
+  {
+   "date": "2026-08-31",
+   "by": "Mo (chat)",
+   "decision": "APPROVE ALL from weekly-scan-2026-08-31: batch push authorized, 4 price exceptions, newsletter design, comp posture (Slabfolio tentative), P1+wnba+wemby reprice, Fanatics copy one-liners. Executed same session."
+  }
+ ]
 }

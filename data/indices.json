@@ -1,5 +1,5 @@
 {
- "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ACTIVATION RULE: a pre-activation index (status=pre-activation, divisor null) activates when the weekly re-mark sources its first point sold reads \u2014 set divisor = basketValue/100 on that date, set inception, write history row level 100.00, flip status to live. DR25 also needs its universe enumerated (sv10 was down at build). ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark.",
+ "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ACTIVATION RULE: a pre-activation index (status=pre-activation, divisor null) activates when the weekly re-mark sources its first point sold reads \u2014 set divisor = basketValue/100 on that date, set inception, write history row level 100.00, flip status to live. DR25 also needs its universe enumerated (sv10 was down at build). ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. MOVERS ADDENDUM (Aug 31 2026): basket entries carry prevPrice/prevAsOf = the prior weekly mark, so /indices renders card-level movers client-side; STEP 3.6 must roll these forward each re-mark (prevPrice <- old price) before writing new marks. New inclusions have no prevPrice until their second mark.",
  "PB26": {
   "name": "Pitch Black Chase Index",
   "page": "/pitch-black-index",
@@ -205,7 +205,9 @@
     "rarity": "SIR",
     "price": 225.18,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 257.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "120",
@@ -213,7 +215,9 @@
     "rarity": "MHR",
     "price": 183.13,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 191.73,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "117",
@@ -221,7 +225,9 @@
     "rarity": "SIR",
     "price": 91.0,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 92.59,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "114",
@@ -229,7 +235,9 @@
     "rarity": "SIR",
     "price": 54.28,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 56.05,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "115",
@@ -237,7 +245,9 @@
     "rarity": "SIR",
     "price": 40.49,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 39.87,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "119",
@@ -245,7 +255,9 @@
     "rarity": "SIR",
     "price": 31.32,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 32.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "118",
@@ -253,7 +265,9 @@
     "rarity": "SIR",
     "price": 29.35,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 27.55,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "111",
@@ -261,7 +275,9 @@
     "rarity": "UR",
     "price": 16.92,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 20.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "90",
@@ -269,7 +285,9 @@
     "rarity": "IR",
     "price": 13.5,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 16.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "101",
@@ -277,7 +295,9 @@
     "rarity": "UR",
     "price": 12.34,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 13.1,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "87",
@@ -285,7 +305,9 @@
     "rarity": "IR",
     "price": 8.43,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 10.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "99",
@@ -293,7 +315,9 @@
     "rarity": "UR",
     "price": 8.22,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 9.46,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "109",
@@ -301,7 +325,9 @@
     "rarity": "UR",
     "price": 8.8,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 9.05,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "103",
@@ -309,7 +335,9 @@
     "rarity": "UR",
     "price": 8.5,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 8.47,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "98",
@@ -317,7 +345,9 @@
     "rarity": "UR",
     "price": 7.25,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 7.88,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "102",
@@ -325,7 +355,9 @@
     "rarity": "UR",
     "price": 6.77,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 7.14,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "91",
@@ -333,7 +365,9 @@
     "rarity": "IR",
     "price": 4.02,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 6.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "88",
@@ -341,7 +375,9 @@
     "rarity": "IR",
     "price": 5.02,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "97",
@@ -349,7 +385,9 @@
     "rarity": "UR",
     "price": 4.94,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "86",
@@ -357,7 +395,9 @@
     "rarity": "IR",
     "price": 5.05,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.87,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "105",
@@ -365,7 +405,9 @@
     "rarity": "UR",
     "price": 4.32,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.64,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "108",
@@ -373,7 +415,9 @@
     "rarity": "UR",
     "price": 4.24,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.52,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "95",
@@ -381,7 +425,9 @@
     "rarity": "IR",
     "price": 3.25,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.26,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "104",
@@ -389,7 +435,9 @@
     "rarity": "UR",
     "price": 4.23,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.25,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "94",
@@ -397,7 +445,9 @@
     "rarity": "IR",
     "price": 4.31,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.14,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "100",
@@ -405,7 +455,9 @@
     "rarity": "UR",
     "price": 3.76,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.9,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "96",
@@ -413,7 +465,9 @@
     "rarity": "UR",
     "price": 3.42,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.54,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "112",
@@ -421,7 +475,9 @@
     "rarity": "UR",
     "price": 3.59,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "93",
@@ -429,7 +485,9 @@
     "rarity": "IR",
     "price": 2.64,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "85",
@@ -437,7 +495,9 @@
     "rarity": "IR",
     "price": 2.95,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.29,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "106",
@@ -445,7 +505,9 @@
     "rarity": "UR",
     "price": 3.22,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.28,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "89",
@@ -453,7 +515,9 @@
     "rarity": "IR",
     "price": 3.39,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.96,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "110",
@@ -461,7 +525,9 @@
     "rarity": "UR",
     "price": 1.97,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.65,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "107",
@@ -469,7 +535,9 @@
     "rarity": "UR",
     "price": 2.43,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.45,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "92",
@@ -477,7 +545,9 @@
     "rarity": "IR",
     "price": 2.4,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.37,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "113",
@@ -485,7 +555,9 @@
     "rarity": "UR",
     "price": 1.77,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.04,
+    "prevAsOf": "2026-08-24"
    }
   ],
   "history": [
@@ -712,7 +784,9 @@
     "rarity": "SIR",
     "price": 192.62,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 200.15,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "122",
@@ -720,7 +794,9 @@
     "rarity": "MHR",
     "price": 171.43,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 180.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "119",
@@ -728,7 +804,9 @@
     "rarity": "SIR",
     "price": 53.34,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 57.06,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "118",
@@ -736,7 +814,9 @@
     "rarity": "SIR",
     "price": 34.57,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 38.56,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "117",
@@ -744,7 +824,9 @@
     "rarity": "SIR",
     "price": 26.87,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 30.74,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "120",
@@ -752,7 +834,9 @@
     "rarity": "SIR",
     "price": 26.55,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 25.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "121",
@@ -760,7 +844,9 @@
     "rarity": "SIR",
     "price": 23,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 21.69,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "100",
@@ -768,7 +854,9 @@
     "rarity": "UR",
     "price": 10,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 12.33,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "88",
@@ -776,7 +864,9 @@
     "rarity": "IR",
     "price": 9.11,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 9.38,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "91",
@@ -784,7 +874,9 @@
     "rarity": "IR",
     "price": 8.13,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 9.07,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "90",
@@ -792,7 +884,9 @@
     "rarity": "IR",
     "price": 6.43,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 7.64,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "89",
@@ -800,7 +894,9 @@
     "rarity": "IR",
     "price": 7.05,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 7.53,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "105",
@@ -808,7 +904,9 @@
     "rarity": "UR",
     "price": 4.5,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "87",
@@ -816,7 +914,9 @@
     "rarity": "IR",
     "price": 4.59,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.37,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "96",
@@ -824,7 +924,9 @@
     "rarity": "IR",
     "price": 3.98,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.25,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "114",
@@ -832,7 +934,9 @@
     "rarity": "UR",
     "price": 4.38,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.25,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "113",
@@ -840,7 +944,9 @@
     "rarity": "UR",
     "price": 4.24,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.06,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "101",
@@ -848,7 +954,9 @@
     "rarity": "UR",
     "price": 3.27,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.94,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "111",
@@ -856,7 +964,9 @@
     "rarity": "UR",
     "price": 3,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.94,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "104",
@@ -864,7 +974,9 @@
     "rarity": "UR",
     "price": 3.75,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.78,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "99",
@@ -872,7 +984,9 @@
     "rarity": "UR",
     "price": 3.19,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.58,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "109",
@@ -880,7 +994,9 @@
     "rarity": "UR",
     "price": 4.35,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.57,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "112",
@@ -888,7 +1004,9 @@
     "rarity": "UR",
     "price": 2.99,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.52,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "98",
@@ -896,7 +1014,9 @@
     "rarity": "UR",
     "price": 3.39,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.49,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "94",
@@ -904,7 +1024,9 @@
     "rarity": "IR",
     "price": 3.25,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.25,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "93",
@@ -912,7 +1034,9 @@
     "rarity": "IR",
     "price": 3.35,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.03,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "106",
@@ -920,7 +1044,9 @@
     "rarity": "UR",
     "price": 2.99,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.88,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "107",
@@ -928,7 +1054,9 @@
     "rarity": "UR",
     "price": 2.75,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.85,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "95",
@@ -936,7 +1064,9 @@
     "rarity": "IR",
     "price": 2.79,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.79,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "92",
@@ -944,7 +1074,9 @@
     "rarity": "IR",
     "price": 2.81,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.65,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "110",
@@ -952,7 +1084,9 @@
     "rarity": "UR",
     "price": 2.24,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "103",
@@ -960,7 +1094,9 @@
     "rarity": "UR",
     "price": 2.6,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.42,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "97",
@@ -968,7 +1104,9 @@
     "rarity": "IR",
     "price": 2.25,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.25,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "108",
@@ -976,7 +1114,9 @@
     "rarity": "UR",
     "price": 2.81,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.16,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "102",
@@ -984,7 +1124,9 @@
     "rarity": "UR",
     "price": 2,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "115",
@@ -992,7 +1134,9 @@
     "rarity": "UR",
     "price": 2,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.94,
+    "prevAsOf": "2026-08-24"
    }
   ],
   "history": [
@@ -1395,7 +1539,9 @@
     "rarity": "SIR",
     "price": 977.27,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 974.65,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "290",
@@ -1403,7 +1549,9 @@
     "rarity": "SIR",
     "price": 659.3,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 641.08,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "294",
@@ -1411,7 +1559,9 @@
     "rarity": "MHR",
     "price": 385,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 366.09,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "281",
@@ -1419,7 +1569,9 @@
     "rarity": "SIR",
     "price": 310.14,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 333.75,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "295",
@@ -1427,7 +1579,9 @@
     "rarity": "MHR",
     "price": 227.12,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 229.24,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "226",
@@ -1435,7 +1589,9 @@
     "rarity": "IR",
     "price": 66.63,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 68.69,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "238",
@@ -1443,7 +1599,9 @@
     "rarity": "IR",
     "price": 20.81,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 22.89,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "218",
@@ -1451,7 +1609,9 @@
     "rarity": "IR",
     "price": 17.15,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 17.26,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "232",
@@ -1459,7 +1619,9 @@
     "rarity": "IR",
     "price": 13.61,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 12.47,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "244",
@@ -1467,7 +1629,9 @@
     "rarity": "IR",
     "price": 9.99,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 10.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "231",
@@ -1475,7 +1639,9 @@
     "rarity": "IR",
     "price": 8.27,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 10.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "239",
@@ -1483,7 +1649,9 @@
     "rarity": "IR",
     "price": 9.75,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 9.97,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "234",
@@ -1491,7 +1659,9 @@
     "rarity": "IR",
     "price": 11,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 9.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "225",
@@ -1499,7 +1669,9 @@
     "rarity": "IR",
     "price": 8.54,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 8.68,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "243",
@@ -1507,7 +1679,9 @@
     "rarity": "IR",
     "price": 6.71,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 8.24,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "219",
@@ -1515,7 +1689,9 @@
     "rarity": "IR",
     "price": 7.25,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 7.37,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "236",
@@ -1523,7 +1699,9 @@
     "rarity": "IR",
     "price": 8,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 7.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "240",
@@ -1531,7 +1709,9 @@
     "rarity": "IR",
     "price": 6.79,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 6.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "247",
@@ -1539,7 +1719,9 @@
     "rarity": "IR",
     "price": 6.86,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 6.9,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "222",
@@ -1547,7 +1729,9 @@
     "rarity": "IR",
     "price": 5.76,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 6.53,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "221",
@@ -1555,7 +1739,9 @@
     "rarity": "IR",
     "price": 7,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 6.29,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "246",
@@ -1563,7 +1749,9 @@
     "rarity": "IR",
     "price": 6.4,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 6.03,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "235",
@@ -1571,7 +1759,9 @@
     "rarity": "IR",
     "price": 6.18,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.95,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "248",
@@ -1579,7 +1769,9 @@
     "rarity": "IR",
     "price": 5.95,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.95,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "228",
@@ -1587,7 +1779,9 @@
     "rarity": "IR",
     "price": 5.92,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.75,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "242",
@@ -1595,7 +1789,9 @@
     "rarity": "IR",
     "price": 5.64,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.74,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "233",
@@ -1603,7 +1799,9 @@
     "rarity": "IR",
     "price": 5.88,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.54,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "241",
@@ -1611,7 +1809,9 @@
     "rarity": "IR",
     "price": 5.21,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.3,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "227",
@@ -1619,7 +1819,9 @@
     "rarity": "IR",
     "price": 4.63,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.06,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "223",
@@ -1627,7 +1829,9 @@
     "rarity": "IR",
     "price": 5.63,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "237",
@@ -1635,7 +1839,9 @@
     "rarity": "IR",
     "price": 4.34,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.25,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "249",
@@ -1643,7 +1849,9 @@
     "rarity": "IR",
     "price": 4.8,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.09,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "250",
@@ -1651,7 +1859,9 @@
     "rarity": "IR",
     "price": 3.45,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.94,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "220",
@@ -1659,7 +1869,9 @@
     "rarity": "IR",
     "price": 2.93,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.64,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "245",
@@ -1667,7 +1879,9 @@
     "rarity": "IR",
     "price": 3.2,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.41,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "224",
@@ -1675,7 +1889,9 @@
     "rarity": "IR",
     "price": 2.25,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "230",
@@ -1683,7 +1899,9 @@
     "rarity": "IR",
     "price": 3,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "229",
@@ -1691,7 +1909,9 @@
     "rarity": "IR",
     "price": 2.9,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.26,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "251",
@@ -2239,7 +2459,9 @@
     "rarity": "SIR",
     "price": 1413.71,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1361.85,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "156",
@@ -2247,7 +2469,9 @@
     "rarity": "SIR",
     "price": 471,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 440.7,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "144",
@@ -2255,7 +2479,9 @@
     "rarity": "SIR",
     "price": 290.08,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 311.76,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "155",
@@ -2263,7 +2489,9 @@
     "rarity": "SIR",
     "price": 290,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 300.81,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "149",
@@ -2271,7 +2499,9 @@
     "rarity": "SIR",
     "price": 267.4,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 247.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "150",
@@ -2279,7 +2509,9 @@
     "rarity": "SIR",
     "price": 260.8,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 224.45,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "146",
@@ -2287,7 +2519,9 @@
     "rarity": "SIR",
     "price": 179.96,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 192.12,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "153",
@@ -2295,7 +2529,9 @@
     "rarity": "SIR",
     "price": 175.6,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 189.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "162",
@@ -2303,7 +2539,9 @@
     "rarity": "SIR",
     "price": 159.99,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 167.73,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "167",
@@ -2311,7 +2549,9 @@
     "rarity": "SIR",
     "price": 151.76,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 154.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "165",
@@ -2319,7 +2559,9 @@
     "rarity": "SIR",
     "price": 105,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 100.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "147",
@@ -2327,7 +2569,9 @@
     "rarity": "SIR",
     "price": 96.96,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 89.93,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "166",
@@ -2335,7 +2579,9 @@
     "rarity": "SIR",
     "price": 65.45,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 66.32,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "168",
@@ -2343,7 +2589,9 @@
     "rarity": "SIR",
     "price": 60.47,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 62.97,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "179",
@@ -2351,7 +2599,9 @@
     "rarity": "HR",
     "price": 56.49,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 55.77,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "164",
@@ -2359,7 +2609,9 @@
     "rarity": "SIR",
     "price": 49.11,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 48.25,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "157",
@@ -2367,7 +2619,9 @@
     "rarity": "SIR",
     "price": 46.5,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 45.24,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "151",
@@ -2375,7 +2629,9 @@
     "rarity": "SIR",
     "price": 41.03,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 40.1,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "158",
@@ -2383,7 +2639,9 @@
     "rarity": "SIR",
     "price": 29.27,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 31.15,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "154",
@@ -2391,7 +2649,9 @@
     "rarity": "SIR",
     "price": 29.79,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 30.92,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "163",
@@ -2399,7 +2659,9 @@
     "rarity": "SIR",
     "price": 29.43,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 29.82,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "171",
@@ -2407,7 +2669,9 @@
     "rarity": "SIR",
     "price": 28.81,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 29.8,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "169",
@@ -2415,7 +2679,9 @@
     "rarity": "SIR",
     "price": 28.13,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 27.24,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "159",
@@ -2423,7 +2689,9 @@
     "rarity": "SIR",
     "price": 25.91,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 25.91,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "173",
@@ -2431,7 +2699,9 @@
     "rarity": "SIR",
     "price": 21.72,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 24.54,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "175",
@@ -2439,7 +2709,9 @@
     "rarity": "SIR",
     "price": 23.34,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 21.05,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "145",
@@ -2447,7 +2719,9 @@
     "rarity": "SIR",
     "price": 18.75,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 18.79,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "174",
@@ -2455,7 +2729,9 @@
     "rarity": "SIR",
     "price": 18.84,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 17.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "148",
@@ -2463,7 +2739,9 @@
     "rarity": "SIR",
     "price": 18.02,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 17.18,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "152",
@@ -2471,7 +2749,9 @@
     "rarity": "SIR",
     "price": 17,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 17.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "172",
@@ -2479,7 +2759,9 @@
     "rarity": "SIR",
     "price": 15.78,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 16.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "160",
@@ -2487,7 +2769,9 @@
     "rarity": "SIR",
     "price": 13.16,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 13.58,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "170",
@@ -2495,7 +2779,9 @@
     "rarity": "SIR",
     "price": 12.48,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 12.68,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "180",
@@ -2503,7 +2789,9 @@
     "rarity": "HR",
     "price": 9.83,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 10.39,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "177",
@@ -2511,7 +2799,9 @@
     "rarity": "HR",
     "price": 8.86,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 8.01,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "178",
@@ -2519,7 +2809,9 @@
     "rarity": "HR",
     "price": 6.78,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 6.78,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "176",
@@ -2527,7 +2819,9 @@
     "rarity": "HR",
     "price": 5.72,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "136",
@@ -2535,7 +2829,9 @@
     "rarity": "UR",
     "price": 1.4,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.48,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "139",
@@ -2543,7 +2839,9 @@
     "rarity": "UR",
     "price": 1,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.25,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "137",
@@ -2551,7 +2849,9 @@
     "rarity": "UR",
     "price": 1.44,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.24,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "143",
@@ -2559,7 +2859,9 @@
     "rarity": "UR",
     "price": 0.81,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.06,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "142",
@@ -2567,7 +2869,9 @@
     "rarity": "UR",
     "price": 1,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.04,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "133",
@@ -2575,7 +2879,9 @@
     "rarity": "UR",
     "price": 1.03,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "135",
@@ -2583,7 +2889,9 @@
     "rarity": "UR",
     "price": 1,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "138",
@@ -2591,7 +2899,9 @@
     "rarity": "UR",
     "price": 0.99,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "140",
@@ -2599,7 +2909,9 @@
     "rarity": "UR",
     "price": 1,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "132",
@@ -2607,7 +2919,9 @@
     "rarity": "UR",
     "price": 0.97,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 0.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "134",
@@ -2615,7 +2929,9 @@
     "rarity": "UR",
     "price": 0.99,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 0.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "141",
@@ -2623,7 +2939,9 @@
     "rarity": "UR",
     "price": 0.89,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 0.99,
+    "prevAsOf": "2026-08-24"
    }
   ],
   "history": [
@@ -2986,7 +3304,9 @@
     "rarity": "SIR",
     "price": 497.68,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 491.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "232",
@@ -2994,7 +3314,9 @@
     "rarity": "SIR",
     "price": 201.33,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 225.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "230",
@@ -3002,7 +3324,9 @@
     "rarity": "SIR",
     "price": 151.12,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 145.91,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "233",
@@ -3010,7 +3334,9 @@
     "rarity": "SIR",
     "price": 95.85,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 101.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "234",
@@ -3018,7 +3344,9 @@
     "rarity": "SIR",
     "price": 60.43,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 60.85,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "240",
@@ -3026,7 +3354,9 @@
     "rarity": "HR",
     "price": 59.99,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 60.76,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "193",
@@ -3034,7 +3364,9 @@
     "rarity": "IR",
     "price": 61.75,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 60.37,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "236",
@@ -3042,7 +3374,9 @@
     "rarity": "SIR",
     "price": 35.07,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 40.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "194",
@@ -3050,7 +3384,9 @@
     "rarity": "IR",
     "price": 30,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 31.16,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "235",
@@ -3058,7 +3394,9 @@
     "rarity": "SIR",
     "price": 28.07,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 29.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "238",
@@ -3066,7 +3404,9 @@
     "rarity": "SIR",
     "price": 23.6,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 27.24,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "203",
@@ -3074,7 +3414,9 @@
     "rarity": "IR",
     "price": 26.28,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 26.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "239",
@@ -3082,7 +3424,9 @@
     "rarity": "HR",
     "price": 22.87,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 25.66,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "190",
@@ -3090,7 +3434,9 @@
     "rarity": "IR",
     "price": 24.03,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 25.26,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "237",
@@ -3098,7 +3444,9 @@
     "rarity": "SIR",
     "price": 20.19,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 20.9,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "228",
@@ -3106,7 +3454,9 @@
     "rarity": "SIR",
     "price": 19.67,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 20.04,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "213",
@@ -3114,7 +3464,9 @@
     "rarity": "UR",
     "price": 18.86,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 19.89,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "242",
@@ -3122,7 +3474,9 @@
     "rarity": "HR",
     "price": 15.62,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 16.23,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "191",
@@ -3130,7 +3484,9 @@
     "rarity": "IR",
     "price": 14.85,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 14.46,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "184",
@@ -3138,7 +3494,9 @@
     "rarity": "IR",
     "price": 10.03,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 12.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "204",
@@ -3146,7 +3504,9 @@
     "rarity": "IR",
     "price": 10.04,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 11.53,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "185",
@@ -3154,7 +3514,9 @@
     "rarity": "IR",
     "price": 11.5,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 11.28,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "192",
@@ -3162,7 +3524,9 @@
     "rarity": "IR",
     "price": 9.99,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 10.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "200",
@@ -3170,7 +3534,9 @@
     "rarity": "IR",
     "price": 8,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 9.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "226",
@@ -3178,7 +3544,9 @@
     "rarity": "UR",
     "price": 9.13,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 8.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "199",
@@ -3186,7 +3554,9 @@
     "rarity": "IR",
     "price": 9.2,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 8.67,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "189",
@@ -3194,7 +3564,9 @@
     "rarity": "IR",
     "price": 9.04,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 8.5,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "243",
@@ -3202,7 +3574,9 @@
     "rarity": "HR",
     "price": 8.22,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 8.43,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "244",
@@ -3210,7 +3584,9 @@
     "rarity": "HR",
     "price": 7.81,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 7.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "225",
@@ -3218,7 +3594,9 @@
     "rarity": "UR",
     "price": 6.68,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 6.53,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "202",
@@ -3226,7 +3604,9 @@
     "rarity": "IR",
     "price": 5.54,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 6.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "209",
@@ -3234,7 +3614,9 @@
     "rarity": "UR",
     "price": 5.56,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.81,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "187",
@@ -3242,7 +3624,9 @@
     "rarity": "IR",
     "price": 5.95,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.45,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "215",
@@ -3250,7 +3634,9 @@
     "rarity": "UR",
     "price": 5.01,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 5.41,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "195",
@@ -3258,7 +3644,9 @@
     "rarity": "IR",
     "price": 5.24,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.93,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "188",
@@ -3266,7 +3654,9 @@
     "rarity": "IR",
     "price": 4.31,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.84,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "201",
@@ -3274,7 +3664,9 @@
     "rarity": "IR",
     "price": 5.19,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.84,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "219",
@@ -3282,7 +3674,9 @@
     "rarity": "UR",
     "price": 4.82,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.51,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "224",
@@ -3290,7 +3684,9 @@
     "rarity": "UR",
     "price": 4.58,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.46,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "198",
@@ -3298,7 +3694,9 @@
     "rarity": "IR",
     "price": 4,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "216",
@@ -3306,7 +3704,9 @@
     "rarity": "UR",
     "price": 3.89,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 4.0,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "205",
@@ -3314,7 +3714,9 @@
     "rarity": "IR",
     "price": 3.9,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.97,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "196",
@@ -3322,7 +3724,9 @@
     "rarity": "IR",
     "price": 3.9,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.94,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "221",
@@ -3330,7 +3734,9 @@
     "rarity": "UR",
     "price": 3.69,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.79,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "197",
@@ -3338,7 +3744,9 @@
     "rarity": "IR",
     "price": 4.01,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.62,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "183",
@@ -3346,7 +3754,9 @@
     "rarity": "IR",
     "price": 4.25,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.48,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "227",
@@ -3354,7 +3764,9 @@
     "rarity": "UR",
     "price": 3.6,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.42,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "223",
@@ -3362,7 +3774,9 @@
     "rarity": "UR",
     "price": 3.39,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.12,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "186",
@@ -3370,7 +3784,9 @@
     "rarity": "IR",
     "price": 2.97,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 3.1,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "217",
@@ -3378,7 +3794,9 @@
     "rarity": "UR",
     "price": 3.26,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.94,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "222",
@@ -3386,7 +3804,9 @@
     "rarity": "UR",
     "price": 2.68,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.77,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "220",
@@ -3394,7 +3814,9 @@
     "rarity": "UR",
     "price": 2.46,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.46,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "207",
@@ -3402,7 +3824,9 @@
     "rarity": "UR",
     "price": 2.12,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.17,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "212",
@@ -3410,7 +3834,9 @@
     "rarity": "UR",
     "price": 1.65,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 2.05,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "210",
@@ -3418,7 +3844,9 @@
     "rarity": "UR",
     "price": 1.79,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "218",
@@ -3426,7 +3854,9 @@
     "rarity": "UR",
     "price": 1.96,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.99,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "206",
@@ -3434,7 +3864,9 @@
     "rarity": "UR",
     "price": 1.86,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.8,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "214",
@@ -3442,7 +3874,9 @@
     "rarity": "UR",
     "price": 1.53,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.65,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "211",
@@ -3450,7 +3884,9 @@
     "rarity": "UR",
     "price": 1.41,
     "basis": "sold (PriceCharting ungraded)",
-    "asOf": "2026-08-31"
+    "asOf": "2026-08-31",
+    "prevPrice": 1.62,
+    "prevAsOf": "2026-08-24"
    },
    {
     "num": "208",

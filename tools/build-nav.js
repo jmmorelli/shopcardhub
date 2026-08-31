@@ -121,7 +121,7 @@ function buildDesktop() {
           <input type="text" class="nav-search-input" id="nav-search-input-d" placeholder="Search…" aria-label="Search the site" autocomplete="off">
           <div class="nav-search-results" id="nav-search-results-d" role="listbox"></div>
         </div>
-        <a href="${cta.href}"${extAttrs(cta)} class="nav-cta">${cta.label}</a>
+${cfg.cta2 ? `        <a href="${cfg.cta2.href}"${extAttrs(cfg.cta2)} class="nav-cta nav-cta2" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent);">${cfg.cta2.label}</a>\n` : ""}        <a href="${cta.href}"${extAttrs(cta)} class="nav-cta">${cta.label}</a>
       </div>
       <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -166,7 +166,7 @@ function buildMobile() {
     <div class="nav-search-results" id="nav-search-results-m" role="listbox"></div>
   </div>
   <a href="${cfg.home.href}" class="m-home">${cfg.home.label}</a>${groups}
-  <a href="${cta.href}"${extAttrs(cta)} class="m-cta">${cta.mobileLabel || cta.label}</a>
+${cfg.cta2 ? `  <a href="${cfg.cta2.href}"${extAttrs(cfg.cta2)} class="m-cta" style="background:transparent; color:var(--accent); border:1px solid var(--accent); margin-bottom:8px;">${cfg.cta2.mobileLabel || cfg.cta2.label}</a>\n` : ""}  <a href="${cta.href}"${extAttrs(cta)} class="m-cta">${cta.mobileLabel || cta.label}</a>
 </div>`;
 }
 
