@@ -18,7 +18,9 @@
 //   3. Appends today's point to the card's series (idempotent per day) and
 //      recomputes TA via api/_lib/ta.js (trend stack, ROC, z-score, skew,
 //      kurtosis - same math as the paid path).
-//   4. Writes data/prices-history.json + data/prices-latest.json into --out;
+//   4. Keeps the photo of one verified listing per card (see pickImage) so the
+//      pages can show the card the price describes.
+//   5. Writes data/prices-history.json + data/prices-latest.json into --out;
 //      the workflow commits them to the price-data branch. The front-end
 //      (signal board + homepage panel) already reads that branch's raw URL.
 //
@@ -134,7 +136,7 @@ function lastNameOf(label) {
 
 // Trimmed-median mark of the cheapest VERIFIED fixed-price asks for a query,
 // via the site's own public comps endpoint (which handles eBay auth).
-async function compsMark(query, label, card = {}) {
+export async function compsMark(query, label, card = {}) {
   const type = card.cardType || "chrome-auto";
   const isTcg = type === "tcg-single";
   let url = SITE + "/api/comps?q=" + encodeURIComponent(query) + "&sort=price&limit=50&customid=price-engine";
@@ -146,7 +148,7 @@ async function compsMark(query, label, card = {}) {
   const musts = (Array.isArray(card.titleMust) && card.titleMust.length
     ? card.titleMust : [lastNameOf(label)]).map((m) => String(m).toLowerCase());
   const bad = isTcg ? TITLE_BAD_TCG : TITLE_BAD;
-  const asks = (j.listings || [])
+  const verified = (j.listings || [])
     .filter((l) => l.buyingOption === "FIXED_PRICE")
     .filter((l) => {
       const t = String(l.title || "").toLowerCase();
@@ -155,13 +157,36 @@ async function compsMark(query, label, card = {}) {
       if (bad.test(t)) return false;               // no slabs/parallels/accessories/lots
       return true;
     })
-    .map((l) => (Number.isFinite(l.price) ? l.price + (Number.isFinite(l.shipping) ? l.shipping : 0) : null))
-    .filter((x) => Number.isFinite(x) && x >= 3)
-    .sort((a, b) => a - b);
-  if (asks.length < MIN_COMPS) return { price: null, comps: asks.length, shape: null };
+    .map((l) => ({ ...l, total: Number.isFinite(l.price) ? l.price + (Number.isFinite(l.shipping) ? l.shipping : 0) : null }))
+    .filter((l) => Number.isFinite(l.total) && l.total >= 3)
+    .sort((a, b) => a.total - b.total);
+  const asks = verified.map((l) => l.total);
+  // IMAGE (added Sep 1 2026): the photo of a verified listing inside the mark
+  // window - the same listing population the mark comes from, so the picture
+  // is the card the price describes. Middle of the window, first with a photo.
+  const image = pickImage(verified.slice(TRIM, TRIM + LOW_N).length ? verified.slice(TRIM, TRIM + LOW_N) : verified);
+  if (asks.length < MIN_COMPS) return { price: null, comps: asks.length, shape: null, image };
   const window = asks.slice(TRIM, TRIM + LOW_N);
   // `asks` is already sorted ascending - askShape relies on that.
-  return { price: Number(median(window).toFixed(2)), comps: asks.length, shape: askShape(asks) };
+  return { price: Number(median(window).toFixed(2)), comps: asks.length, shape: askShape(asks), image };
+}
+
+// eBay listing photos come back as .../s-l225.jpg thumbnails; the same path at
+// s-l500 is the 500px render. Hot-linked from eBay's CDN (never copied), and
+// always shown wrapped in the EPN listing link - that keeps it inside the API
+// and Partner Network terms and turns the picture into an affiliate click.
+export function pickImage(listings) {
+  if (!listings || !listings.length) return null;
+  const order = [];
+  const mid = Math.floor(listings.length / 2);
+  for (let d = 0; d < listings.length; d++) { if (mid + d < listings.length) order.push(mid + d); if (d && mid - d >= 0) order.push(mid - d); }
+  for (const i of order) {
+    const l = listings[i];
+    if (l && l.image && /^https:\/\/i\.ebayimg\.com\//.test(l.image)) {
+      return { url: l.image.replace(/s-l\d+\./, "s-l500."), item: l.url || null, title: l.title || null, price: l.total ?? l.price ?? null };
+    }
+  }
+  return null;
 }
 
 async function main() {
@@ -177,10 +202,11 @@ async function main() {
   for (const card of cards) {
     const key = card.source + ":" + card.id;
     try {
-      const { price, comps, shape } = await compsMark(card.query, card.label, card);
+      const { price, comps, shape, image } = await compsMark(card.query, card.label, card);
       const entry = history[key] || { key, id: card.id, source: card.source, label: card.label, slug: card.slug || null, series: [] };
       entry.label = card.label || entry.label;
       entry.slug = card.slug || entry.slug || null;
+      if (image) entry.image = { ...image, d: day }; // keep last known photo if tonight had none
       if (price != null) {
         entry.series = entry.series.filter((pt) => pt.d !== day); // idempotent per day
         // p = trimmed low-end mark (unchanged, back-compatible). n = verified ask
@@ -236,6 +262,7 @@ async function main() {
     return {
       key: e.key, label: e.label, source: e.source, slug: e.slug || null,
       cardType: wlCard.cardType || null, boardHide: !!wlCard.boardHide,
+      image: e.image || null,
       last: ta.last, signal: ta.signal, confidence: ta.confidence,
       roc30: ta.roc30, sma30: ta.sma30, z: ta.z,
       retSkew: ta.retSkew, retKurtosis: ta.retKurtosis,
@@ -254,4 +281,7 @@ async function main() {
   if (summary.errors.length) { console.error("errors:", summary.errors.join(" | ")); process.exitCode = summary.updated ? 0 : 1; }
 }
 
-main().catch((e) => { console.error("fatal:", e); process.exit(1); });
+// Run only when invoked directly (resolve-images.mjs imports compsMark/pickImage).
+if (process.argv[1] && /snapshot-free\.mjs$/.test(process.argv[1])) {
+  main().catch((e) => { console.error("fatal:", e); process.exit(1); });
+}

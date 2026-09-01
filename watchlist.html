@@ -141,7 +141,12 @@
     .pv-chips { display:flex; gap:6px; margin-bottom:5px; flex-wrap:wrap; }
     .pv-panel svg { display:block; width:100%; height:132px; margin-top:12px; }
 
-    .vc-id { min-width:0; }
+    .vc-id { min-width:0; display:flex; gap:14px; align-items:flex-start; }
+    .vc-id-txt { min-width:0; flex:1; }
+    .vgrid .nm-wrap { display:flex; align-items:center; gap:10px; min-width:0; }
+    .vgrid .nm-wrap > div { min-width:0; }
+    #cardVeil .vcard-main { pointer-events:none; }
+    #cardVeil .vcard-main .sch-cimg-link { pointer-events:auto; }
     .vc-chips { display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-bottom:5px; }
     .chip { font-family:var(--fm); font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:2px 8px; border-radius:2px; }
     .chip-cat { background:var(--accent-dim); color:var(--accent); border:1px solid rgba(0,204,245,0.25); }
@@ -341,7 +346,14 @@
       .stat-grid { grid-template-columns:repeat(3,1fr); }
     }
     @media (max-width:640px) {
-      .vcard-main { grid-template-columns:minmax(0,1fr) minmax(120px,auto) 20px; }
+      /* Sep 1 2026: price block used to be minmax(120px,auto) and its long target line squeezed the
+         name into a one-word-per-line column. Name row first, price row below, caret pinned top-right. */
+      .vcard-main { grid-template-columns:minmax(0,1fr) 20px; row-gap:10px; }
+      .vc-id { grid-column:1; }
+      .vc-caret { grid-column:2; grid-row:1; }
+      .vc-price { grid-column:1 / -1; text-align:left; display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 14px; }
+      .vc-price .vc-sub { flex-basis:100%; }
+      .vc-id .sch-cimg-card { width:84px !important; height:118px !important; }
       .vc-spark { display:none; }
     }
     @media (max-width:540px) {
@@ -1469,9 +1481,12 @@ function cardRow(c) {
   return '<div class="vcard' + (inZone ? ' in-zone' : '') + (isOpen ? ' open' : '') + '" id="vc-' + c.id + '">' +
     '<div class="vcard-main" onclick="toggleOpen(\'' + c.id + '\')">' +
       '<div class="vc-id">' +
+        '<span data-card-img="' + esc(c.feedKey || ('name:' + c.name)) + '" data-card-name="' + esc(c.name) + '" data-card-sub="' + esc(c.cat || '') + '" data-card-size="card" data-card-surface="vault-card"></span>' +
+        '<div class="vc-id-txt">' +
         '<div class="vc-chips">' + chips + '</div>' +
         '<div class="vc-name" title="' + esc(c.name) + '">' + esc(c.name) + '</div>' +
         '<div class="vc-set">' + esc(c.set || '') + '</div>' +
+        '</div>' +
       '</div>' +
       '<div class="vc-spark">' + miniSpark(c) + '</div>' +
       '<div class="vc-price">' +
@@ -1717,7 +1732,7 @@ function rowModel(c, isOwn) {
 const COLS = [
   { key:'dot',   label:'', fixed:true, cls:'', cell:r => '<span class="dot"></span>' + (r.c.private ? '<span class="lock" title="Private — never in share images">🔒</span>' : '') },
   { key:'name',  label:'Card', left:true, fixed:true, sortv:r => r.c.name.toLowerCase(),
-    cell:r => '<div class="nm" title="' + esc(r.c.name) + '">' + esc(r.c.name) + '</div><div class="st">' + esc(r.c.set || '') + '</div>' },
+    cell:r => '<div class="nm-wrap"><span data-card-img="' + esc(r.c.feedKey || ('name:' + r.c.name)) + '" data-card-name="' + esc(r.c.name) + '" data-card-sub="' + esc(r.c.cat || '') + '" data-card-size="row" data-card-surface="vault-row" data-card-link="off"></span><div><div class="nm" title="' + esc(r.c.name) + '">' + esc(r.c.name) + '</div><div class="st">' + esc(r.c.set || '') + '</div></div></div>' },
   { key:'grade', label:'Grade', left:true, cell:r => r.c.grade ? '<span class="gr">' + esc(r.c.grade) + '</span>' : '' },
   { key:'last',  label:'Last', sortv:r => r.lp, cls:r => r.lp != null ? 'last' : 'dim', cell:r => r.lp != null ? '$' + fmt$(r.lp) : '—' },
   { key:'d1',    label:'Δ', sortv:r => r.d1, delta:r => r.d1 },
@@ -2911,5 +2926,6 @@ load().then(() => {
   window.imgPostX = function () { track('vault_share_img_post'); xShare(current.text, null); };
 })();
 </script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body>
 </html>

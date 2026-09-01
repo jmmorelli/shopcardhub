@@ -93,6 +93,17 @@
     .card-entry.avoid { border-top-color:var(--red); }
     .entry-rank { position:absolute; top:20px; right:24px; font-family:var(--fd); font-size:52px; font-weight:900; color:rgba(255,255,255,0.04); line-height:1; }
     .entry-header { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin-bottom:28px; flex-wrap:wrap; }
+    .entry-header .entry-photo { flex-shrink:0; }
+    .entry-head-txt { flex:1 1 220px; min-width:0; }
+    .entry-header .entry-price-block { flex:0 1 380px; min-width:0; }
+    .entry-header .price-sub, .entry-header .entry-since { white-space:normal; }
+    .entry-header .entry-photo .sch-cimg-link:hover img { transform:scale(1.03); }
+    .prospect-mini-row { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .prospect-mini-row .prospect-mini-name { margin-bottom:0; }
+    .tbl-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:24px; }
+    .tbl-scroll > table { margin-top:0; min-width:560px; }
+    .entry-rank { z-index:0; }
+    .entry-price-block { position:relative; z-index:1; }
     .entry-sport-tag { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
     .entry-sport-tag.gold { color:var(--gold); }
     .entry-sport-tag.orange { color:var(--orange); }
@@ -186,8 +197,17 @@
     .footer-links a:hover { color:var(--text-head); text-decoration:none; }
 
     @media(max-width:700px) {
-      .entry-header { flex-direction:column; }
-      .entry-price-block { text-align:left; }
+      .entry-header { display:grid; grid-template-columns:auto minmax(0,1fr); gap:14px 16px; align-items:start; }
+      .entry-header .entry-photo { grid-row:1; width:96px !important; height:134px !important; }
+      .entry-head-txt { grid-column:2; }
+      .entry-price-block { grid-column:1 / -1; text-align:left; }
+      .entry-price-block .price-main { font-size:30px; }
+      .entry-rank { font-size:40px; top:12px; right:14px; }
+      .entry-stats { grid-template-columns:repeat(3,1fr); gap:8px; }
+      .entry-stat { padding:10px 10px; }
+      .entry-stat-label { font-size:9px; }
+      .entry-stat-value { font-size:15px; }
+      .rank-hist { flex-wrap:wrap; }
       .nav-links { display:none; }
       .social-strip { flex-direction:column; }
     }
@@ -931,7 +951,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <div class="card-entry">
       <div class="entry-rank">01</div>
       <div class="entry-header">
-        <div>
+        <span class="entry-photo" data-card-img="ebay:ethan-holliday" data-card-name="Ethan Holliday" data-card-size="card" data-card-surface="bowman-entry"></span>
+        <div class="entry-head-txt">
           <div class="entry-sport-tag">⚾ SS · Colorado Rockies · #4 Overall Pick 2025</div>
           <div class="entry-title">Ethan Holliday<br>1st Bowman Chrome Auto</div><button class="sch-track-card" data-name="Ethan Holliday 1st Bowman Chrome Auto CPA-EH" data-set="2026 Bowman" data-cat="baseball" data-grade="Raw" data-feed="ebay:ethan-holliday">&#9733; Track</button>
         </div>
@@ -973,7 +994,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="card-entry">
       <div class="entry-rank">02</div>
       <div class="entry-header">
-        <div>
+        <span class="entry-photo" data-card-img="ebay:seong-jun-kim" data-card-name="Seong-Jun Kim" data-card-size="card" data-card-surface="bowman-entry"></span>
+        <div class="entry-head-txt">
           <div class="entry-sport-tag">⚾ SS/RHP · Texas Rangers · IFA 2025 · Two-Way</div>
           <div class="entry-title">Seong-Jun Kim<br>1st Bowman Chrome Auto</div><button class="sch-track-card" data-name="Seong-Jun Kim 1st Bowman Chrome Auto CPA-SK" data-set="2026 Bowman" data-cat="baseball" data-grade="Raw" data-feed="ebay:seong-jun-kim">&#9733; Track</button>
         </div>
@@ -1010,7 +1032,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="card-entry gold-tier">
       <div class="entry-rank">03</div>
       <div class="entry-header">
-        <div>
+        <span class="entry-photo" data-card-img="ebay:andrew-fischer" data-card-name="Andrew Fischer" data-card-size="card" data-card-surface="bowman-entry"></span>
+        <div class="entry-head-txt">
           <div class="entry-sport-tag gold">⚾ 3B · Milwaukee Brewers · #20 Overall Pick 2025</div>
           <div class="entry-title">Andrew Fischer<br>1st Bowman Chrome Auto</div><button class="sch-track-card" data-name="Andrew Fischer 1st Bowman Chrome Auto CPA-AF" data-set="2026 Bowman" data-cat="baseball" data-grade="Raw" data-feed="ebay:andrew-fischer">&#9733; Track</button>
         </div>
@@ -1051,7 +1074,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="card-entry">
       <div class="entry-rank">04</div>
       <div class="entry-header">
-        <div>
+        <span class="entry-photo" data-card-img="ebay:edward-florentino" data-card-name="Edward Florentino" data-card-size="card" data-card-surface="bowman-entry"></span>
+        <div class="entry-head-txt">
           <div class="entry-sport-tag">⚾ OF · Pittsburgh Pirates · IFA 2024 · #44 MLB.com</div>
           <div class="entry-title">Edward Florentino<br>1st Bowman Chrome Auto</div><button class="sch-track-card" data-name="Edward Florentino 1st Bowman Chrome Auto CPA-EF" data-set="2026 Bowman" data-cat="baseball" data-grade="Raw" data-feed="ebay:edward-florentino">&#9733; Track</button>
         </div>
@@ -1088,7 +1112,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="card-entry">
       <div class="entry-rank">05</div>
       <div class="entry-header">
-        <div>
+        <span class="entry-photo" data-card-img="ebay:aiva-arquette" data-card-name="Aiva Arquette" data-card-size="card" data-card-surface="bowman-entry"></span>
+        <div class="entry-head-txt">
           <div class="entry-sport-tag">⚾ SS · Miami Marlins · #7 Overall Pick 2025</div>
           <div class="entry-title">Aiva Arquette<br>1st Bowman Chrome Auto</div><button class="sch-track-card" data-name="Aiva Arquette 1st Bowman Chrome Auto CPA-AA" data-set="2026 Bowman" data-cat="baseball" data-grade="Raw" data-feed="ebay:aiva-arquette">&#9733; Track</button>
         </div>
@@ -1133,6 +1158,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="offboard">
       <h3>Off the Board</h3>
       <p class="ob-intro">Names that used to rank here, kept in plain sight with the call we made and where it stands. Quietly deleting a recommendation that went wrong is how track records get laundered, so we don't. A name can leave four ways: <strong>demoted</strong> (out-priced by someone below it), <strong>graduated</strong> (he debuted in the majors and a true rookie card now exists — that's the <em>good</em> ending), <strong>aged out</strong> (the 1st Bowman is ~18 months old), or <strong>priced out</strong> (no longer a banger entry point).</p>
+      <div class="tbl-scroll">
       <table class="ob-table">
         <thead>
           <tr><th>Player</th><th>On the board</th><th>Rank at exit</th><th>Our call</th><th>Finished at</th><th>8-Week Read</th></tr>
@@ -1156,6 +1182,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           </tr>
         </tbody>
       </table>
+      </div>
       <p class="ob-foot">Pierce is down 46% from where we called him, and we're not hiding that. But a 1st Bowman doesn't get judged in nine weeks &mdash; his first real grade comes in December on <a href="/track-record">the Scorecard</a>, and if you bought him in June the only thing that has changed is the price, not the reason. Demotion is a ranking decision, not a sell &mdash; both names are still tracked in the watch tier below.</p>
     </div>
 
@@ -1171,7 +1198,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
       <div class="prospect-mini">
         <div class="prospect-mini-tag">⚾ SS · Minnesota Twins · #16 Pick</div>
-        <div class="prospect-mini-name">Marek Houston</div>
+        <div class="prospect-mini-row"><span data-card-img="ebay:marek-houston" data-card-name="Marek Houston" data-card-size="row" data-card-surface="bowman-watch"></span><div class="prospect-mini-name">Marek Houston</div></div>
         <div class="prospect-mini-org">Wake Forest → Twins Organization</div>
         <div class="prospect-mini-body">
           Zone control-first approach from Wake Forest — nearly as many walks as strikeouts in college. The Twins' system ranks him #8 in their farm. Long-term contact floor with room to add power as he physically develops. A solid lottery ticket at accessible prices.
@@ -1181,7 +1208,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
       <div class="prospect-mini">
         <div class="prospect-mini-tag">⚾ RHP · Athletics · #73 Pick 2024</div>
-        <div class="prospect-mini-name">Gage Jump</div>
+        <div class="prospect-mini-row"><span data-card-img="ebay:gage-jump" data-card-name="Gage Jump" data-card-size="row" data-card-surface="bowman-watch"></span><div class="prospect-mini-name">Gage Jump</div></div>
         <div class="prospect-mini-org">LSU → A's Organization · #49 MLB.com</div>
         <div class="prospect-mini-body">
           A low arm slot that creates deception, and velocity that has taken a real step forward — now averaging 94.6 mph and touching triple digits. The #49 MLB.com ranking is the highest of any pitcher in this set. Pitchers carry more risk but Jump's profile is legitimate. Highest-ranked arm in the 2026 Bowman class.
@@ -1191,7 +1218,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
       <div class="prospect-mini">
         <div class="prospect-mini-tag">⚾ OF · Boston Red Sox · IFA</div>
-        <div class="prospect-mini-name">Justin Gonzalez</div>
+        <div class="prospect-mini-row"><span data-card-img="ebay:justin-gonzalez" data-card-name="Justin Gonzalez" data-card-size="row" data-card-surface="bowman-watch"></span><div class="prospect-mini-name">Justin Gonzalez</div></div>
         <div class="prospect-mini-org">Red Sox International · 2024 Latin Program POY</div>
         <div class="prospect-mini-body">
           Signed at 17, immediately named the Red Sox Latin program player of the year in 2024. Scouts rave about bat-to-ball skills and power upside — exit velocities that are genuinely massive for his age. IFA prospects at this ceiling are rare finds. The early-access narrative drives collector interest on 1st Bowman IFA cards.
@@ -1201,7 +1228,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
       <div class="prospect-mini">
         <div class="prospect-mini-tag">⚾ SS · Baltimore Orioles · #31 Pick</div>
-        <div class="prospect-mini-name">Wehiwa Aloy</div>
+        <div class="prospect-mini-row"><span data-card-img="ebay:wehiwa-aloy" data-card-name="Wehiwa Aloy" data-card-size="row" data-card-surface="bowman-watch"></span><div class="prospect-mini-name">Wehiwa Aloy</div></div>
         <div class="prospect-mini-org">Arkansas → Orioles Organization · 2025 SEC POY</div>
         <div class="prospect-mini-body">
           Demoted from the board Aug 18 on ladder position, not his own tape — his chart is flat-to-up while promoted names simply out-price him. The power tool is real: 35 homers in two SEC seasons plus 8 more in 21 Cape Cod games, from a shortstop. First promotion candidate if the board fades.
@@ -1211,7 +1238,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
       <div class="prospect-mini">
         <div class="prospect-mini-tag">⚾ SS · Tampa Bay Rays · #14 Pick</div>
-        <div class="prospect-mini-name">Daniel Pierce</div>
+        <div class="prospect-mini-row"><span data-card-img="ebay:daniel-pierce" data-card-name="Daniel Pierce" data-card-size="row" data-card-surface="bowman-watch"></span><div class="prospect-mini-name">Daniel Pierce</div></div>
         <div class="prospect-mini-org">Georgia Prep → Rays Organization</div>
         <div class="prospect-mini-body">
           Off the board Aug 18: the tape has printed lower for a month and sits at class lows. The Rays-pipeline thesis hasn't shown up yet, and our June BUY is down 46% after eight weeks — early, not graded, and we're not hiding it. Mature approach and elite org development keep him worth tracking; if you own him, nothing about the reason has changed, only the price.
@@ -1430,6 +1457,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <h2>2026 Bowman Baseball — The Full Breakdown</h2>
     <p class="section-intro">Released May 13, 2026. 100-card base set + 150-card Bowman Prospects insert. Here's every box format, price, and what to expect per rip.</p>
 
+    <div class="tbl-scroll">
     <table class="spec-table">
       <thead>
         <tr>
@@ -1485,6 +1513,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         </tr>
       </tbody>
     </table>
+    </div>
   </section>
 
   <!-- SECTION 4: INSERTS AND PARALLELS -->
@@ -1810,6 +1839,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 /* ═══ MOBILE NAV TOGGLE ═══ */
 </script>
 <script src="/js/vault-track.js?v=5" defer></script>
+<script src="/js/card-img.js?v=1" defer></script>
 
   <script>
   /* Signal Alerts signup — activates when data/newsletter.json contains a Kit

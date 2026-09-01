@@ -166,7 +166,7 @@ function buildMobile() {
     <div class="nav-search-results" id="nav-search-results-m" role="listbox"></div>
   </div>
   <a href="${cfg.home.href}" class="m-home">${cfg.home.label}</a>${groups}
-${cfg.cta2 ? `  <a href="${cfg.cta2.href}"${extAttrs(cfg.cta2)} class="m-cta" style="background:transparent; color:var(--accent); border:1px solid var(--accent); margin-bottom:8px;">${cfg.cta2.mobileLabel || cfg.cta2.label}</a>\n` : ""}  <a href="${cta.href}"${extAttrs(cta)} class="m-cta">${cta.mobileLabel || cta.label}</a>
+${cfg.cta2 ? `  <a href="${cfg.cta2.href}"${extAttrs(cfg.cta2)} class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">${cfg.cta2.mobileLabel || cfg.cta2.label}</a>\n` : ""}  <a href="${cta.href}"${extAttrs(cta)} class="m-cta">${cta.mobileLabel || cta.label}</a>
 </div>`;
 }
 
