@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>ShopCardHub — Sports Card Guides, Prices & Where to Buy</title>
   <meta name="description" content="Sports card price guides, prospect rankings, hobby box ROI breakdowns, and grading guides. Built by collectors, for collectors. Browse our COMC inventory or follow @shopcardhub.">
@@ -31,8 +32,9 @@
     "potentialAction":{"@type":"SearchAction","target":"https://www.shopcardhub.com/search?q={search_term_string}","query-input":"required name=search_term_string"}
   }
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/fonts.css">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -378,14 +380,30 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 }
 
 </style>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
-  <script>
+  <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
+  <script data-gtag-deferred="G-2Q52C5EKG7">
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-2Q52C5EKG7');
+    (function(){
+      var done = false;
+      function load(){
+        if (done) return; done = true;
+        var s = document.createElement('script'); s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7';
+        document.head.appendChild(s);
+      }
+      var evs = ['pointerdown','keydown','scroll','touchstart'];
+      function onEv(){ load(); evs.forEach(function(e){ window.removeEventListener(e, onEv); }); }
+      evs.forEach(function(e){ window.addEventListener(e, onEv, { passive:true }); });
+      // idle path is armed only once the page has finished loading, so gtag.js never
+      // competes with first paint / the load event; interaction still fires it at once
+      function idle(){ if ('requestIdleCallback' in window) window.requestIdleCallback(load, { timeout:4000 }); else window.setTimeout(load, 4000); }
+      if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle);
+    })();
   </script>
+  <link rel="stylesheet" href="/css/site-fixes.css">
 </head>
 <body>
 
@@ -403,6 +421,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   .nav-search-results a:hover, .nav-search-results a.sel { color:var(--text-head); background:rgba(0,204,245,0.08); text-decoration:none; }
   .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
   .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
+  /* dropdown + search panels: solid ground (page --bg2, fallback) so hero text never bleeds through */
+  .nav-dropdown, .nav-search-results { background:var(--bg2, #0c1017); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
   /* mega panel (Sports): groups render as columns */
   .nav-dropdown.nav-mega { left:-140px; min-width:0; width:max-content; max-width:min(880px, calc(100vw - 48px)); padding:14px 10px 12px; }
   .nav-mega .dd-cols { display:flex; flex-wrap:wrap; }
@@ -637,7 +657,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <a href="/research#grading" class="m-all">All Grading & Supplies →</a>
         </div>
       </div>
-  <a href="/#newsletter" class="m-cta" style="background:transparent; color:var(--accent); border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
+  <a href="/#newsletter" class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
   <a href="/watchlist" class="m-cta">My Vault →</a>
 </div>
 <script>
@@ -853,6 +873,21 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     .dash-watch .wrow{display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:var(--fm);font-size:13px;color:var(--text);padding:7px 0;border-bottom:1px solid var(--border);}
     .dash-watch .wrow:last-child{border-bottom:none;}
     .dash-watch .wempty{font-size:13px;color:var(--text-dim);line-height:1.6;}
+    /* Sep 1 2026 — sample state for new visitors + "moved since your last visit" flashes */
+    .dash-watch .wrow.sample a{color:var(--text);}
+    .dash-watch .wrow.sample a:hover{color:var(--accent);}
+    .dash-watch .wtag,.dash-stat .v small{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);border:1px solid var(--border2);border-radius:2px;padding:1px 6px;margin-left:8px;vertical-align:middle;}
+    .dash-watch .wnote{font-family:var(--fm);font-size:11px;color:var(--text-dim);padding:8px 0 0;line-height:1.6;}
+    .dash-watch .wnote b{color:var(--accent);}
+    .dash-watch .tick-up{color:var(--green);} .dash-watch .tick-down{color:var(--red);}
+    .dash-stat .v.sample{color:var(--text);}
+    @keyframes wrow-up{from{background:rgba(0,224,122,0.3);}to{background:transparent;}}
+    @keyframes wrow-down{from{background:rgba(255,46,85,0.28);}to{background:transparent;}}
+    .dash-watch .wrow{transition:background .16s;}
+    .dash-watch .wrow.flash-up{animation:wrow-up .4s ease-out .35s 1 backwards;}
+    .dash-watch .wrow.flash-down{animation:wrow-down .4s ease-out .35s 1 backwards;}
+    .dash-card .dash-link:active,.dash-digest .btn-primary:active{transform:translateY(2px);}
+    @media(prefers-reduced-motion:reduce){.dash-watch .wrow.flash-up,.dash-watch .wrow.flash-down{animation:none;}}
     .dash-digest{background:linear-gradient(180deg,var(--bg3),var(--bg2));border:1px solid var(--border2);padding:24px 28px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
     .dash-digest-h{font-family:var(--fd);font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-head);line-height:1.05;}
     @media(max-width:860px){.dash-grid{grid-template-columns:1fr;}}
@@ -861,7 +896,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="container">
       <div class="section-eyebrow">Your Market, Today</div>
       <h2>The Floor</h2>
-      <p class="section-body">Prices move. Your watchlist moves. The aim is a page you <em>check</em> — not a brochure you read once. The price engine marks the board nightly, the Vault tracks your positions, and five set indices re-mark every Monday. All of it live. New here? <a href="/how-prices-work">How our prices work</a> — the two-minute read.</p>
+      <p class="section-body">The price engine marks the board nightly and the Vault tracks your positions — a page you <em>check</em>, not a brochure you read once. <a href="/how-prices-work">How our prices work →</a></p>
 
       <div class="dash-grid">
         <!-- Signal Board — LIVE, fed nightly by the price engine (price-data branch) -->
@@ -918,11 +953,20 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         }
       }catch(e){ items=[]; }
       if(!items.length){ try{ items=JSON.parse(localStorage.getItem('sch_watchlist'))||[]; }catch(e){ items=[]; } }
+      function esc(s){ return String(s==null?'':s).replace(/[<>&]/g,''); }
       if(!Array.isArray(items)||!items.length){
-        el.innerHTML='<div class="wempty">No cards tracked yet. Add your first from any guide — look for <strong style="color:var(--accent);">★ Track this card</strong>.</div>';
+        /* Sep 1 2026: new visitors see a SAMPLE state (three rows tagged "sample", linked to /watchlist)
+           instead of "No cards tracked yet". Real vaults render real rows below. */
+        var SAMPLE=[
+          {name:'Ethan Holliday 1st Bowman Chrome Auto',px:'$788',cls:'tick-up',d:'+6.3%'},
+          {name:'Cooper Flagg Prizm Silver RC',px:'$351',cls:'tick-down',d:'−3.0%'},
+          {name:'Umbreon ex SIR #161',px:'$1,344',cls:'tick-down',d:'−2.0%'}
+        ];
+        el.innerHTML=SAMPLE.map(function(r){
+          return '<div class="wrow sample"><span><a href="/watchlist">'+esc(r.name)+'</a><span class="wtag">sample</span></span><span style="color:var(--text-dim);white-space:nowrap;">'+r.px+' <span class="'+r.cls+'" style="font-size:11px;">'+r.d+'</span></span></div>';
+        }).join('')+'<div class="wnote">Your rows go here — <b>★ Track</b> on any guide, or <a href="/watchlist" style="color:var(--accent);">open the Vault</a>.</div>';
         return;
       }
-      function esc(s){ return String(s==null?'':s).replace(/[<>&]/g,''); }
       var rows=items.slice(0,3).map(function(it){
         return '<div class="wrow"><span>'+esc(it&&it.name)+'</span><span style="color:var(--text-dim);">'+esc((it&&it.tag)||'tracked')+'</span></div>';
       }).join('');
@@ -934,34 +978,48 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     (function(){
       var el=document.getElementById('dash-signal'); if(!el) return;
       function esc(s){ return String(s==null?'':s).replace(/[<>&]/g,''); }
+      /* Sep 1 2026: remember each key's last mark (sch_signal_seen_v1). A row whose mark differs from
+         the previous visit flashes green/red once; a "since your last visit: N moved" line follows. */
+      var SEEN='sch_signal_seen_v1', prev=null;
+      try{ prev=JSON.parse(localStorage.getItem(SEEN)||'null'); if(!prev||typeof prev!=='object') prev=null; }catch(e){ prev=null; }
       fetch('https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json')
         .then(function(r){ if(!r.ok) throw 0; return r.json(); })
         .then(function(d){
-          var cards=(d&&d.cards)||[];
-          if(!cards.length) throw 0;
-          cards=cards.slice().sort(function(a,b){ return (b.points||0)-(a.points||0) || (b.last||0)-(a.last||0); }).slice(0,3);
+          var all=(d&&d.cards)||[];
+          if(!all.length) throw 0;
+          var cards=all.slice().sort(function(a,b){ return (b.points||0)-(a.points||0) || (b.last||0)-(a.last||0); }).slice(0,3);
+          var dir=function(c){ if(!prev||typeof c.last!=='number'||typeof prev[c.key]!=='number'||prev[c.key]===c.last) return 0; return c.last>prev[c.key]?1:-1; };
+          var moved=0,up=0,down=0; all.forEach(function(c){ var m=dir(c); if(m>0){up++;moved++;} else if(m<0){down++;moved++;} });
           el.innerHTML=cards.map(function(c){
             var px=(typeof c.last==='number')?('$'+c.last.toLocaleString(undefined,{maximumFractionDigits:2})):'—';
-            return '<div class="wrow"><span>'+esc(c.label)+'</span><span style="color:var(--green);">'+px+'</span></div>';
-          }).join('')+(d.day?'<div class="wrow"><span style="color:var(--text-dim);">engine mark · '+esc(d.day)+' · asks</span><span></span></div>':'');
+            var m=dir(c), arrow=m>0?' <span class="tick-up" style="font-size:11px;">▲</span>':m<0?' <span class="tick-down" style="font-size:11px;">▼</span>':'';
+            return '<div class="wrow'+(m>0?' flash-up':m<0?' flash-down':'')+'"><span>'+esc(c.label)+'</span><span style="color:var(--green);white-space:nowrap;">'+px+arrow+'</span></div>';
+          }).join('')+(d.day?'<div class="wrow"><span style="color:var(--text-dim);">engine mark · '+esc(d.day)+' · asks</span><span></span></div>':'')
+            +(prev?'<div class="wnote">since your last visit: <b>'+moved+'</b> moved'+(moved?' · <span class="tick-up">'+up+' ▲</span> <span class="tick-down">'+down+' ▼</span>':'')+'</div>':'');
+          var seen={}; all.forEach(function(c){ if(c&&c.key&&typeof c.last==='number') seen[c.key]=c.last; });
+          try{ localStorage.setItem(SEEN, JSON.stringify(seen)); }catch(e){}
         })
         .catch(function(){
           el.innerHTML='<div class="wempty">Board marks load on <a href="/bowman-bangers" style="color:var(--accent);">the Signal Board</a> — every 1st Bowman Chrome auto, nightly.</div>';
         });
     })();
 
-    /* Portfolio snapshot from the local Vault */
+    /* Portfolio snapshot from the local Vault — a labelled SAMPLE value for new visitors (Sep 1 2026), real numbers once a vault exists */
     (function(){
       var v=null;
       try{ v=JSON.parse(localStorage.getItem('sch_vault_v1')); }catch(e){}
-      if(!v||!Array.isArray(v.cards)||!v.cards.length||v.demo) return;
+      var f=function(id,txt,color,sample){ var e=document.getElementById(id); if(!e) return; e.textContent=txt; if(sample){ var s=document.createElement('small'); s.textContent='sample'; e.appendChild(s); } e.classList.toggle('sample',!!sample); if(color)e.style.color=color; };
+      if(!v||!Array.isArray(v.cards)||!v.cards.length||v.demo){
+        f('dp-val','$452','',true); f('dp-own','2','',true); f('dp-hunt','3','',true);
+        var l=document.querySelector('#dash-port + .dash-link'); if(l) l.textContent='Start your Vault — it takes one card →';
+        return;
+      }
       var val=0,own=0,hunt=0;
       v.cards.forEach(function(c){
         if(c.status==='own') own++; else hunt++;
         var last=(c.prices&&c.prices.length)?c.prices[c.prices.length-1].p:null;
-        if(typeof last==='number') val+=last;
+        if(typeof last==='number') val+=last*(c.status==='own'?(c.qty||1):1);
       });
-      var f=function(id,txt,color){ var e=document.getElementById(id); if(e){ e.textContent=txt; if(color)e.style.color=color; } };
       f('dp-val', '$'+Math.round(val).toLocaleString(), 'var(--text-head)');
       f('dp-own', String(own), 'var(--text-head)');
       f('dp-hunt', String(hunt), 'var(--text-head)');
@@ -1327,18 +1385,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     el.classList.add('blink-cursor');
   });
   // 10. Marquee strip in card/roy entries
-  var M='SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC · SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC ·';
-  document.querySelectorAll('.card-entry,.roy-entry').forEach(function(e){
-    if(!e.querySelector('.entry-marquee-wrap')){
-      var w=document.createElement('div');
-      w.className='entry-marquee-wrap';
-      var s=document.createElement('span');
-      s.className='entry-marquee-text';
-      s.textContent=M;
-      w.appendChild(s);
-      e.appendChild(w);
-    }
-  });
+  // Sep 1 2026: looping ghost marquee under entries removed (audit: read as a rendering glitch).
 })();
 </script>
   <script>

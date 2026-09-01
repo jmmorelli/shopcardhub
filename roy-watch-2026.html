@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>2026 MLB Rookie of the Year Watch — Cards to Hunt for Every ROY Contender | ShopCardHub</title>
   <meta name="description" content="2026 MLB ROY race tracker. Kevin McGonigle and JJ Wetherholt lead the latest MLB.com poll. Chrome auto prices, buy signals, and eBay sold comps for every contender's key cards.">
@@ -24,8 +25,9 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Article","headline":"2026 MLB ROY Watch — Cards to Hunt for Every Contender","url":"https://www.shopcardhub.com/roy-watch-2026","publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://www.shopcardhub.com"},"datePublished":"2026-06-11","dateModified":"2026-06-11"}
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/fonts.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -380,15 +382,56 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   line-height:18px;
 }
 
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container { display:block; }
+      .hero .container > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
+    @media(max-width:700px) { .roy-header .entry-lead { flex:0 0 auto; } }  /* header stacks to a column here */
 </style>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
-  <script>
+  <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
+  <script data-gtag-deferred="G-2Q52C5EKG7">
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-2Q52C5EKG7');
+    (function(){
+      var done = false;
+      function load(){
+        if (done) return; done = true;
+        var s = document.createElement('script'); s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7';
+        document.head.appendChild(s);
+      }
+      var evs = ['pointerdown','keydown','scroll','touchstart'];
+      function onEv(){ load(); evs.forEach(function(e){ window.removeEventListener(e, onEv); }); }
+      evs.forEach(function(e){ window.addEventListener(e, onEv, { passive:true }); });
+      // idle path is armed only once the page has finished loading, so gtag.js never
+      // competes with first paint / the load event; interaction still fires it at once
+      function idle(){ if ('requestIdleCallback' in window) window.requestIdleCallback(load, { timeout:4000 }); else window.setTimeout(load, 4000); }
+      if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle);
+    })();
   </script>
+  <link rel="stylesheet" href="/css/site-fixes.css">
 </head>
 <body>
 
@@ -405,6 +448,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   .nav-search-results a:hover, .nav-search-results a.sel { color:var(--text-head); background:rgba(0,204,245,0.08); text-decoration:none; }
   .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
   .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
+  /* dropdown + search panels: solid ground (page --bg2, fallback) so hero text never bleeds through */
+  .nav-dropdown, .nav-search-results { background:var(--bg2, #0c1017); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
   /* mega panel (Sports): groups render as columns */
   .nav-dropdown.nav-mega { left:-140px; min-width:0; width:max-content; max-width:min(880px, calc(100vw - 48px)); padding:14px 10px 12px; }
   .nav-mega .dd-cols { display:flex; flex-wrap:wrap; }
@@ -639,7 +684,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <a href="/research#grading" class="m-all">All Grading & Supplies →</a>
         </div>
       </div>
-  <a href="/#newsletter" class="m-cta" style="background:transparent; color:var(--accent); border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
+  <a href="/#newsletter" class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
   <a href="/watchlist" class="m-cta">My Vault →</a>
 </div>
 <script>
@@ -707,6 +752,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <section class="hero" style="border-top:none; padding-bottom:0;">
   <div class="container">
     <div class="hero-eyebrow">⚾ MLB ROY Race · Poll #2 · June 9, 2026</div>
+    <figure class="hero-card-photo">
+      <span data-card-img="name:Kevin McGonigle Bowman Chrome Auto CPA-KM 2025 -lot -reprint" data-card-name="Kevin McGonigle 2025 Bowman Chrome Auto #CPA-KM" data-card-sub="baseball" data-card-size="hero" data-card-surface="list-hero"></span>
+      <figcaption class="hero-card-cap">Kevin McGonigle <b>2025 Bowman Chrome Auto #CPA-KM</b> &middot; live eBay listing</figcaption>
+    </figure>
     <h1>Rookie of<br><em>The Year Watch</em></h1>
     <p class="hero-sub">McGonigle leads the AL. Wetherholt leads the NL. The MLB.com expert panel has spoken — and the card market is reacting. Here's every ROY contender's key card to hunt, with analytics from our Bowman Bangers MiLB tracker showing which price moves got flagged before the poll dropped.</p>
     <div class="hero-meta">
@@ -772,11 +821,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="roy-entry">
       <div class="poll-rank">1</div>
       <div class="roy-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="name:Kevin McGonigle Bowman Chrome Auto CPA-KM 2025 -lot -reprint" data-card-name="Kevin McGonigle 2025 Bowman Chrome Auto #CPA-KM" data-card-sub="baseball" data-card-size="row" data-card-surface="list-row"></span><div>
           <div class="player-tag">⚾ AL ROY #1 · Detroit Tigers · 2B/SS</div>
           <div class="player-name">Kevin McGonigle</div>
           <div class="player-org">Detroit Tigers · 120 poll points · 14 first-place votes</div>
-        </div>
+        </div></div>
         <div class="poll-block">
           <div class="poll-label">MLB.com Poll Points</div>
           <div class="poll-pts">120</div>
@@ -837,11 +886,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="roy-entry il-entry">
       <div class="poll-rank">2</div>
       <div class="roy-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="name:Munetaka Murakami Bowman Rookie #9 2026 -auto -lot -chrome -sapphire" data-card-name="Munetaka Murakami 2026 Bowman RC #9" data-card-sub="baseball" data-card-size="row" data-card-surface="list-row"></span><div>
           <div class="player-tag il">🚨 AL ROY #2 · Chicago White Sox · OF · Currently on IL</div>
           <div class="player-name">Munetaka Murakami</div>
           <div class="player-org">Chicago White Sox · 119 poll points · 11 first-place votes</div>
-        </div>
+        </div></div>
         <div class="poll-block">
           <div class="poll-label">MLB.com Poll Points</div>
           <div class="poll-pts" style="color:var(--red);">119</div>
@@ -896,11 +945,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="roy-entry watch-entry">
       <div class="poll-rank">3</div>
       <div class="roy-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="name:Parker Messick Bowman Draft Chrome 1st BDC-71 2022 -auto -lot" data-card-name="Parker Messick 2022 Bowman Draft Chrome 1st #BDC-71" data-card-sub="baseball" data-card-size="row" data-card-surface="list-row"></span><div>
           <div class="player-tag">⚾ AL ROY #3 · Cleveland Guardians · LHP</div>
           <div class="player-name">Parker Messick</div>
           <div class="player-org">Cleveland Guardians · 66 poll points · 6 first-place votes · Jumped from #5</div>
-        </div>
+        </div></div>
         <div class="poll-block">
           <div class="poll-label">MLB.com Poll Points</div>
           <div class="poll-pts" style="color:var(--gold);">66</div>
@@ -954,11 +1003,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="roy-entry watch-entry">
       <div class="poll-rank">4</div>
       <div class="roy-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="ebay:travis-bazzana" data-card-name="Travis Bazzana 2024 Bowman Draft Chrome 1st #BDC-1" data-card-sub="baseball" data-card-size="row" data-card-surface="list-row"></span><div>
           <div class="player-tag">⚾ AL ROY #4 · Cleveland Guardians · 2B · #1 Overall Pick 2023</div>
           <div class="player-name">Travis Bazzana</div>
           <div class="player-org">Cleveland Guardians · 62 poll points · 1 first-place vote · First poll appearance</div>
-        </div>
+        </div></div>
         <div class="poll-block">
           <div class="poll-label">MLB.com Poll Points</div>
           <div class="poll-pts" style="color:var(--gold);">62</div>
@@ -1010,11 +1059,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="roy-entry watch-entry">
       <div class="poll-rank">5</div>
       <div class="roy-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="name:Payton Tolle Bowman Draft Chrome Auto CPA-PT 2024 -lot" data-card-name="Payton Tolle 2024 Bowman Draft Chrome 1st Auto #CPA-PT" data-card-sub="baseball" data-card-size="row" data-card-surface="list-row"></span><div>
           <div class="player-tag">⚾ AL ROY #5 · Boston Red Sox · LHP</div>
           <div class="player-name">Payton Tolle</div>
           <div class="player-org">Boston Red Sox · 37 poll points · New entry</div>
-        </div>
+        </div></div>
         <div class="poll-block">
           <div class="poll-label">MLB.com Poll Points</div>
           <div class="poll-pts" style="color:var(--gold);">37</div>
@@ -1070,11 +1119,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="roy-entry nl-entry">
       <div class="poll-rank">1</div>
       <div class="roy-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="name:JJ Wetherholt Bowman Chrome Auto CPA-JW 2025 -lot" data-card-name="JJ Wetherholt 2025 Bowman Chrome Auto #CPA-JW" data-card-sub="baseball" data-card-size="row" data-card-surface="list-row"></span><div>
           <div class="player-tag nl">⚾ NL ROY #1 · St. Louis Cardinals · IF/OF</div>
           <div class="player-name">JJ Wetherholt</div>
           <div class="player-org">St. Louis Cardinals · 120 poll points · 13 first-place votes</div>
-        </div>
+        </div></div>
         <div class="poll-block">
           <div class="poll-label">MLB.com Poll Points</div>
           <div class="poll-pts nl">120</div>
@@ -1140,11 +1189,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="roy-entry nl-entry">
       <div class="poll-rank">2</div>
       <div class="roy-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="name:Sal Stewart Bowman Draft Chrome 1st Auto 2022 -lot -coa -signed" data-card-name="Sal Stewart 2022 Bowman Draft Chrome 1st Auto" data-card-sub="baseball" data-card-size="row" data-card-surface="list-row"></span><div>
           <div class="player-tag nl">⚾ NL ROY #2 · Cincinnati Reds · 3B · #8 Overall Pick 2023</div>
           <div class="player-name">Sal Stewart</div>
           <div class="player-org">Cincinnati Reds · 112 poll points · 8 first-place votes · Same spot, more votes</div>
-        </div>
+        </div></div>
         <div class="poll-block">
           <div class="poll-label">MLB.com Poll Points</div>
           <div class="poll-pts nl">112</div>
@@ -1198,11 +1247,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="roy-entry watch-entry">
       <div class="poll-rank">3</div>
       <div class="roy-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="name:Nolan McLean Bowman Draft Chrome 2023 -auto -lot" data-card-name="Nolan McLean 2023 Bowman Draft Chrome 1st #BDC-96" data-card-sub="baseball" data-card-size="row" data-card-surface="list-row"></span><div>
           <div class="player-tag">⚾ NL ROY #3 · New York Mets · RHP · Dropped from #1</div>
           <div class="player-name">Nolan McLean</div>
           <div class="player-org">New York Mets · 94 poll points · 6 first-place votes · Was #1 last poll</div>
-        </div>
+        </div></div>
         <div class="poll-block">
           <div class="poll-label">MLB.com Poll Points</div>
           <div class="poll-pts" style="color:var(--gold);">94</div>
@@ -1254,11 +1303,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="roy-entry il-entry">
       <div class="poll-rank">4</div>
       <div class="roy-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="name:Konnor Griffin Bowman Chrome 1st Auto 2024 -lot -reprint -ip -signed -coa" data-card-name="Konnor Griffin 2024 Bowman Chrome 1st Auto" data-card-sub="baseball" data-card-size="row" data-card-surface="list-row"></span><div>
           <div class="player-tag il">🚨 NL ROY #4 · Pittsburgh Pirates · SS · Currently on IL · #5 Pick 2023</div>
           <div class="player-name">Konnor Griffin</div>
           <div class="player-org">Pittsburgh Pirates · 70 poll points · 3 first-place votes · On IL — forearm strain</div>
-        </div>
+        </div></div>
         <div class="poll-block">
           <div class="poll-label">MLB.com Poll Points</div>
           <div class="poll-pts" style="color:var(--red);">70</div>
@@ -1311,11 +1360,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="roy-entry watch-entry">
       <div class="poll-rank">5</div>
       <div class="roy-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="name:Carson Benge Bowman Chrome Prospects #111 2026 -auto -lot" data-card-name="Carson Benge 2026 Bowman Chrome Prospects #BCP-111" data-card-sub="baseball" data-card-size="row" data-card-surface="list-row"></span><div>
           <div class="player-tag">⚾ NL ROY #5 · New York Mets · OF · New Entry</div>
           <div class="player-name">Carson Benge</div>
           <div class="player-org">New York Mets · 42 poll points · 1 first-place vote · First poll appearance</div>
-        </div>
+        </div></div>
         <div class="poll-block">
           <div class="poll-label">MLB.com Poll Points</div>
           <div class="poll-pts" style="color:var(--gold);">42</div>
@@ -1591,18 +1640,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   document.querySelectorAll('.hero-eyebrow').forEach(function(el){
     el.classList.add('blink-cursor');
   });
-  var M='SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC · SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC ·';
-  document.querySelectorAll('.card-entry,.roy-entry').forEach(function(e){
-    if(!e.querySelector('.entry-marquee-wrap')){
-      var w=document.createElement('div');
-      w.className='entry-marquee-wrap';
-      var s=document.createElement('span');
-      s.className='entry-marquee-text';
-      s.textContent=M;
-      w.appendChild(s);
-      e.appendChild(w);
-    }
-  });
+  // Sep 1 2026: looping ghost marquee under entries removed (audit: read as a rendering glitch).
 })();
 </script>
 <script>
@@ -1662,5 +1700,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       .catch(function () {});
   })();
   </script>
+<script src="/js/vault-track.js?v=5" defer></script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body>
 </html>

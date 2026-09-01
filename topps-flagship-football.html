@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>2026 Topps Flagship Football — First Topps NFL Flagship Since the License Return | ShopCardHub</title>
   <meta name="description" content="2026 Topps Flagship Football guide: released Aug 21, the first paper flagship NFL set of the new Topps license era. 400-card base, hobby box math at $119.99, Fernando Mendoza and the 2026 rookie class, PREM1ERE Patch context, and how to play it.">
@@ -24,8 +25,9 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Article","headline":"2026 Topps Flagship Football — First Topps NFL Flagship Since the License Return","url":"https://www.shopcardhub.com/topps-flagship-football","publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://www.shopcardhub.com"},"datePublished":"2026-07-13","dateModified":"2026-07-13"}
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/fonts.css">
 <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -465,15 +467,55 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   line-height:18px;
 }
 
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container { display:block; }
+      .hero .container > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
 </style>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
-  <script>
+  <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
+  <script data-gtag-deferred="G-2Q52C5EKG7">
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-2Q52C5EKG7');
+    (function(){
+      var done = false;
+      function load(){
+        if (done) return; done = true;
+        var s = document.createElement('script'); s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7';
+        document.head.appendChild(s);
+      }
+      var evs = ['pointerdown','keydown','scroll','touchstart'];
+      function onEv(){ load(); evs.forEach(function(e){ window.removeEventListener(e, onEv); }); }
+      evs.forEach(function(e){ window.addEventListener(e, onEv, { passive:true }); });
+      // idle path is armed only once the page has finished loading, so gtag.js never
+      // competes with first paint / the load event; interaction still fires it at once
+      function idle(){ if ('requestIdleCallback' in window) window.requestIdleCallback(load, { timeout:4000 }); else window.setTimeout(load, 4000); }
+      if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle);
+    })();
   </script>
+  <link rel="stylesheet" href="/css/site-fixes.css">
 </head>
 </head>
 <body>
@@ -491,6 +533,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   .nav-search-results a:hover, .nav-search-results a.sel { color:var(--text-head); background:rgba(0,204,245,0.08); text-decoration:none; }
   .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
   .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
+  /* dropdown + search panels: solid ground (page --bg2, fallback) so hero text never bleeds through */
+  .nav-dropdown, .nav-search-results { background:var(--bg2, #0c1017); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
   /* mega panel (Sports): groups render as columns */
   .nav-dropdown.nav-mega { left:-140px; min-width:0; width:max-content; max-width:min(880px, calc(100vw - 48px)); padding:14px 10px 12px; }
   .nav-mega .dd-cols { display:flex; flex-wrap:wrap; }
@@ -725,7 +769,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <a href="/research#grading" class="m-all">All Grading & Supplies →</a>
         </div>
       </div>
-  <a href="/#newsletter" class="m-cta" style="background:transparent; color:var(--accent); border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
+  <a href="/#newsletter" class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
   <a href="/watchlist" class="m-cta">My Vault →</a>
 </div>
 <script>
@@ -792,6 +836,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <section class="hero" style="border-top:none; padding-bottom:0;">
   <div class="container">
     <div class="hero-eyebrow">Set Guide &middot; Football &middot; Flagship</div>
+    <figure class="hero-card-photo">
+      <span data-card-img="name:Sealed Hobby Box Topps Football 2026 -chrome -cosmic -black -inception -bowman -finest -nscc -case -pack -packs -jumbo -blaster -lot" data-card-name="2026 Topps Flagship Football Hobby Box" data-card-sub="HOBBY BOX" data-card-size="hero" data-card-surface="set-hero"></span>
+      <figcaption class="hero-card-cap">2026 Topps Flagship Football <b>Hobby Box</b> &middot; live eBay listing</figcaption>
+    </figure>
     <h1>2026 Topps Flagship<br><em>Football</em></h1>
     <p class="hero-sub">The first <strong>paper flagship NFL set</strong> of the new Topps license era. Topps got the NFL back in 2026 after more than a decade &mdash; Chrome led the debut wave in April, and this is the classic flagship treatment: full rookie class, veteran base, and premium hits. It's out now &mdash; here's the checklist, the box math, and how to play it.</p>
     <div class="hero-meta">
@@ -1030,18 +1078,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     el.classList.add('blink-cursor');
   });
   // 10. Marquee strip in card/roy entries
-  var M='SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC · SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC ·';
-  document.querySelectorAll('.card-entry,.roy-entry').forEach(function(e){
-    if(!e.querySelector('.entry-marquee-wrap')){
-      var w=document.createElement('div');
-      w.className='entry-marquee-wrap';
-      var s=document.createElement('span');
-      s.className='entry-marquee-text';
-      s.textContent=M;
-      w.appendChild(s);
-      e.appendChild(w);
-    }
-  });
+  // Sep 1 2026: looping ghost marquee under entries removed (audit: read as a rendering glitch).
 })();
 </script>
 
@@ -1056,5 +1093,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 (function(){var el=document.getElementById('sch-track-cta');if(!el)return;var t=(document.title||'').split(/[\u2014\u2013\|\u00b7:]/)[0].trim();if(t)el.href='/watchlist?card='+encodeURIComponent(t);})();
 </script>
 
+<script src="/js/vault-track.js?v=5" defer></script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body>
 </html>

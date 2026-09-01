@@ -1,0 +1,178 @@
+/* ==========================================================================
+   ShopCardHub — site-wide override sheet.
+   Loaded LAST in <head> of every page (injected by tools/apply-site-fixes.mjs).
+   Purpose: fix UX-audit findings without touching ~80 pages of inline CSS.
+   Keep this file small and generic — nothing page-specific belongs here.
+   ========================================================================== */
+
+/* 1. Muted-text contrast.
+   Every page defines --text-dim (and the set-index pages also --dim) as #5a7880,
+   which is ~4.2:1 on #07090C — under WCAG AA for small text.
+   #7a969e is ~6.3:1 on the same ground and keeps the same hue. */
+:root { --text-dim:#7a969e; --dim:#7a969e; }
+
+/* 2. Reduced motion — one global block for the whole site. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:0.001ms !important;
+    animation-iteration-count:1 !important;
+    animation-delay:0ms !important;
+    transition-duration:0.001ms !important;
+    transition-delay:0ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+
+/* 3. Horizontal-scroll wrapper for <table>s that had no scroll container.
+   tools/apply-site-fixes.mjs wraps such tables in <div class="tbl-scroll">.
+   When the page's own CSS put a vertical margin on the table, the script moves
+   it to the wrapper (inline style + .tbl-scroll--mg) so margin collapsing with
+   neighbours behaves as before. */
+.tbl-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; }
+.tbl-scroll--mg > table { margin-top:0; margin-bottom:0; }
+
+/* 4. Minimum legible text size on phones.
+   The list below is every selector on the site whose inline CSS sets a
+   font-size under 11px (tickers, chips, eyebrows, table headers, stat labels…).
+   Each selector is prefixed with `body` (+1 type specificity) so it beats the
+   original rule even when that rule lives in a <style> injected later in <body>
+   (the generated nav block). No !important needed.
+   Purely decorative glyph selectors (.chevron, .tl-dot, .vc-caret) are left out. */
+@media (max-width:540px) {
+  body .alloc-legend,
+  body .asof,
+  body .banner-stat-label,
+  body .banner-stat-sub,
+  body .bio-stat-label,
+  body .box-label,
+  body .box-sport-tag,
+  body .box-stat-label,
+  body .calc-field label,
+  body .calc-table th,
+  body .card-hunt-label,
+  body .chip,
+  body .col-menu .cm-h,
+  body .comps-item .ci-noimg,
+  body .comps-item .ci-p span,
+  body .conclbl,
+  body .crumb,
+  body .dash-badge,
+  body .dash-stat .k,
+  body .dd-foot-label,
+  body .delta,
+  body .dest-tile .dt-k,
+  body .detail-h,
+  body .ebay-link,
+  body .entry-marquee-text,
+  body .entry-since,
+  body .entry-sport-tag,
+  body .entry-stat-label,
+  body .entry-tag,
+  body .ev-label,
+  body .evbar-tag,
+  body .eyebrow,
+  body .f-row label,
+  body .feature-kicker,
+  body .foot,
+  body .footer-col h4,
+  body .formula-label,
+  body .fringe-org,
+  body .fringe-tag,
+  body .guide-stat,
+  body .guide-tag,
+  body .hero-eyebrow,
+  body .hist,
+  body .hunt-card-trend,
+  body .insert-label,
+  body .insert-num,
+  body .kpi-label,
+  body .legend,
+  body .livebar,
+  body .log-table th,
+  body .m-group-panel .m-sublabel,
+  body .math-toggle,
+  body .meter-label,
+  body .mobile-nav .m-label,
+  body .mockbar,
+  body .mv .lbl,
+  body .nav-dropdown .dd-label,
+  body .ob-grade,
+  body .ob-table th,
+  body .panel-footer a,
+  body .panel-footer-text,
+  body .panel-sub,
+  body .panel-title,
+  body .panel-updated,
+  body .parallel-print,
+  body .parallel-table thead th,
+  body .pg .k,
+  body .player-tag,
+  body .poll-label,
+  body .pop-foot,
+  body .pop-price .basis,
+  body .pop-sub,
+  body .price-label,
+  body .product-tag,
+  body .prospect-mini-tag,
+  body .prospect-quote cite,
+  body .psa-table th,
+  body .quick-log button,
+  body .rank-hist,
+  body .rar,
+  body .rarity-label,
+  body .related-tag,
+  body .rh .cell .k,
+  body .rh-card .rh-count,
+  body .rh-eyebrow,
+  body .rh-sub,
+  body .rng,
+  body .roi-sub,
+  body .roi-table thead th,
+  body .sb-head,
+  body .sb-side,
+  body .sch-track-cta,
+  body .section-eyebrow,
+  body .set-stat-label,
+  body .set-tag,
+  body .sig-note,
+  body .sig-updated,
+  body .signal-tag,
+  body .sparklbl,
+  body .spec-table th,
+  body .stat .k,
+  body .stat .v i,
+  body .stat-cell .sl,
+  body .stat-label,
+  body .statnote,
+  body .strategy-sub,
+  body .tab .p2,
+  body .tl-date,
+  body .tl-status,
+  body .vault-eyebrow,
+  body .vc-chart .no-data,
+  body .vc-sub,
+  body .verdict-label,
+  body .verdict-tag,
+  body .vgrid .act button,
+  body .vgrid .gr,
+  body .vgrid .lock,
+  body .vgrid .st,
+  body .vgrid th,
+  body .vgrid tr.grp td .gsub,
+  body .vtab .cnt,
+  body .watch-tag,
+  body td .est,
+  body td.card .cn,
+  body td.nm .desc,
+  body thead th
+  { font-size:11px; }
+  /* rules injected at runtime by js/vault-track.js and js/set-checklist.js
+     (their <style> lands after this sheet, so match their specificity + body) */
+  body .sch-track-card, body .schk .sch-track-card, body .schk .rc, body .schk th, body .schk .first,
+  body #sch-track-pop .sch-pop-name, body #sch-track-pop button, body #sch-track-pop .sch-pop-cost label
+  { font-size:11px; }
+  /* inline style="font-size:9px|10px" (28 + 27 uses site-wide) — attribute match, needs !important */
+  body [style*="font-size:9px"], body [style*="font-size: 9px"],
+  body [style*="font-size:10px"], body [style*="font-size: 10px"]
+  { font-size:11px !important; }
+}

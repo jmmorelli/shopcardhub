@@ -144,7 +144,7 @@
     '#sch-track-pop{position:absolute;z-index:10500;background:#0c1017;border:1px solid rgba(0,204,245,0.4);' +
     'border-radius:2px;padding:12px;min-width:230px;box-shadow:0 10px 34px rgba(0,0,0,0.6);' +
     'font-family:"JetBrains Mono",monospace;}' +
-    '#sch-track-pop .sch-pop-name{font-size:10px;color:#5a7880;letter-spacing:0.5px;margin-bottom:10px;' +
+    '#sch-track-pop .sch-pop-name{font-size:10px;color:#7a969e;letter-spacing:0.5px;margin-bottom:10px;' +
     'max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}' +
     '#sch-track-pop .sch-pop-row{display:flex;gap:8px;}' +
     '#sch-track-pop button{flex:1;background:transparent;border:1px solid rgba(0,204,245,0.4);color:#00ccf5;' +
@@ -154,7 +154,7 @@
     '#sch-track-pop button.sch-own-btn{border-color:rgba(245,200,0,0.5);color:#f5c800;}' +
     '#sch-track-pop button.sch-own-btn:hover{background:#f5c800;color:#000;}' +
     '#sch-track-pop .sch-pop-cost{margin-top:10px;}' +
-    '#sch-track-pop .sch-pop-cost label{display:block;font-size:9px;color:#5a7880;letter-spacing:1px;' +
+    '#sch-track-pop .sch-pop-cost label{display:block;font-size:9px;color:#7a969e;letter-spacing:1px;' +
     'text-transform:uppercase;margin-bottom:6px;}' +
     '#sch-track-pop input{width:100%;box-sizing:border-box;background:#111820;border:1px solid rgba(255,255,255,0.12);' +
     'border-radius:2px;color:#e4f0f4;font-family:inherit;font-size:12px;padding:8px 10px;margin-bottom:8px;}' +
@@ -212,6 +212,7 @@
     closePop();
     if (res === 'added') {
       markButton(btn, status);
+      syncCta();
       snack(status === 'own'
         ? '&#9733; Added to My Cards <a href="' + VAULT_URL + '">Open Vault &rarr;</a>'
         : '&#127919; Added to your Hunting list <a href="' + VAULT_URL + '">Open Vault &rarr;</a>');
@@ -263,6 +264,58 @@
     });
   }
 
+  /* ---- floating "★ Track this card" pill (#sch-track-cta, inlined per page) ----
+     Sep 1 2026: it used to float on every page, including ones with no card at all
+     (grading guide, ROI calculator), deep-linking the page TITLE into the Vault as a
+     card. Now: hidden unless the page has .sch-track-card buttons or an element
+     carrying data-sch-card (a card-specific page marker); with exactly one button
+     it names the card ("★ Track Holliday 1st Bowman") and opens that button's chooser
+     in place instead of leaving the page. Re-evaluated from SCHVault.mark() so
+     checklists that render their buttons later (js/set-checklist.js) count too. */
+  function shortName(n) {
+    n = String(n || '').replace(/\s*[—–|·:].*$/, '').replace(/\s+/g, ' ').trim();  // drop " — Gem Candidate"
+    var w = n.split(' ');
+    if (w.length > 4) n = w.slice(0, 4).join(' ');
+    return n.length > 26 ? n.slice(0, 25).replace(/\s+\S*$/, '') + '…' : n;
+  }
+  var ctaBound = false;
+  function syncCta() {
+    var el = document.getElementById('sch-track-cta');
+    if (!el) return;
+    var btns = document.querySelectorAll('.sch-track-card');
+    var marker = document.querySelector('[data-sch-card]');
+    if (!btns.length && !marker) { el.hidden = true; el.style.display = 'none'; return; }
+    el.hidden = false; el.style.display = '';
+    if (!ctaBound) {
+      ctaBound = true;
+      el.addEventListener('click', function (e) {
+        var all = document.querySelectorAll('.sch-track-card');
+        if (!all.length) return;                                  // marker-only page: plain deep link
+        e.preventDefault();
+        var target = all[0];
+        if (all.length === 1 && target.classList.contains('sch-tracked')) { location.href = VAULT_URL; return; }
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (all.length === 1) setTimeout(function () { openPop(target); }, 380);
+      });
+    }
+    if (btns.length > 1) {
+      el.innerHTML = '&#9733; Track a card';
+      el.setAttribute('aria-label', 'Track a card from this page in your Vault');
+      return;
+    }
+    if (btns.length === 1) {
+      var b = btns[0], nm = shortName(b.dataset.name);
+      if (b.classList.contains('sch-tracked')) {
+        el.innerHTML = '&#10003; In your Vault &rarr;';
+        el.setAttribute('aria-label', 'This card is in your Vault — open it');
+      } else {
+        el.innerHTML = '&#9733; Track ' + nm.replace(/</g, '&lt;');
+        el.setAttribute('aria-label', 'Track ' + nm + ' in your Vault');
+      }
+    }
+    // marker-only (no buttons): the page's own href/label stand
+  }
+
   function init() {
     var style = document.createElement('style');
     style.textContent = css;
@@ -273,6 +326,7 @@
     btns.forEach(function (b) {
       if (have[(b.dataset.name || '').toLowerCase()]) markButton(b, 'watch');
     });
+    syncCta();
 
     document.addEventListener('click', function (e) {
       var btn = e.target.closest && e.target.closest('.sch-track-card');
@@ -294,9 +348,10 @@
     (root || document).querySelectorAll('.sch-track-card').forEach(function (b) {
       if (!b.classList.contains('sch-tracked') && have[(b.dataset.name || '').toLowerCase()]) markButton(b, 'watch');
     });
+    syncCta();
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  window.SCHVault.track = track; window.SCHVault.version = 4;
+  window.SCHVault.track = track; window.SCHVault.version = 5;
 })();

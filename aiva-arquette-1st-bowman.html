@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>Aiva Arquette 1st Bowman Card 2026 — Chrome Auto #CPA-AA Prices, Parallels & Buy Guide | ShopCardHub</title>
   <meta name="description" content="Aiva Arquette 1st Bowman Chrome Auto #CPA-AA guide. Orange /25 at $1,500. Base auto ~$55–$85. Every Arquette card ranked with eBay sold comps, parallel rainbow, and honest buy verdicts. #7 pick 2025 draft, Marlins SS.">
@@ -20,8 +21,9 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Article","headline":"Aiva Arquette 1st Bowman Card 2026 — Chrome Auto Prices & Buy Guide","url":"https://www.shopcardhub.com/aiva-arquette-1st-bowman","publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://www.shopcardhub.com"},"datePublished":"2026-06-12","dateModified":"2026-06-12"}
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/fonts.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -331,15 +333,55 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   line-height:18px;
 }
 
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container { display:block; }
+      .hero .container > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
 </style>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
-  <script>
+  <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
+  <script data-gtag-deferred="G-2Q52C5EKG7">
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-2Q52C5EKG7');
+    (function(){
+      var done = false;
+      function load(){
+        if (done) return; done = true;
+        var s = document.createElement('script'); s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7';
+        document.head.appendChild(s);
+      }
+      var evs = ['pointerdown','keydown','scroll','touchstart'];
+      function onEv(){ load(); evs.forEach(function(e){ window.removeEventListener(e, onEv); }); }
+      evs.forEach(function(e){ window.addEventListener(e, onEv, { passive:true }); });
+      // idle path is armed only once the page has finished loading, so gtag.js never
+      // competes with first paint / the load event; interaction still fires it at once
+      function idle(){ if ('requestIdleCallback' in window) window.requestIdleCallback(load, { timeout:4000 }); else window.setTimeout(load, 4000); }
+      if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle);
+    })();
   </script>
+  <link rel="stylesheet" href="/css/site-fixes.css">
 </head>
 <body>
 
@@ -356,6 +398,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   .nav-search-results a:hover, .nav-search-results a.sel { color:var(--text-head); background:rgba(0,204,245,0.08); text-decoration:none; }
   .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
   .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
+  /* dropdown + search panels: solid ground (page --bg2, fallback) so hero text never bleeds through */
+  .nav-dropdown, .nav-search-results { background:var(--bg2, #0c1017); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
   /* mega panel (Sports): groups render as columns */
   .nav-dropdown.nav-mega { left:-140px; min-width:0; width:max-content; max-width:min(880px, calc(100vw - 48px)); padding:14px 10px 12px; }
   .nav-mega .dd-cols { display:flex; flex-wrap:wrap; }
@@ -590,7 +634,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <a href="/research#grading" class="m-all">All Grading & Supplies →</a>
         </div>
       </div>
-  <a href="/#newsletter" class="m-cta" style="background:transparent; color:var(--accent); border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
+  <a href="/#newsletter" class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
   <a href="/watchlist" class="m-cta">My Vault →</a>
 </div>
 <script>
@@ -659,6 +703,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <section class="hero" style="border-top:none; padding-bottom:0;">
   <div class="container">
     <div class="hero-eyebrow">⚾ 2026 Bowman · Miami Marlins · #7 Overall Pick 2025</div>
+    <figure class="hero-card-photo" data-sch-player-photos>
+      <span data-card-img="ebay:aiva-arquette" data-card-name="Aiva Arquette 2026 Bowman Chrome 1st Auto #CPA-AA" data-card-sub="baseball" data-card-size="hero" data-card-surface="player-hero"></span>
+      <figcaption class="hero-card-cap">2026 Bowman Chrome 1st Auto <b>#CPA-AA</b> &middot; live eBay listing</figcaption>
+    </figure>
     <h1>Aiva Arquette<br><em>1st Bowman Guide</em></h1>
     <p class="hero-sub">The #7 overall pick in the 2025 draft and one of the most physically imposing shortstop prospects in years. His 1st Bowman Chrome Auto (#CPA-AA) is a redemption card with Orange /25 already trading at $1,500. Here's every card ranked, every parallel priced, and the honest buy verdict on each.</p>
     <div class="hero-meta">
@@ -811,10 +859,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="card-entry">
       <div class="entry-rank">01</div>
       <div class="entry-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="ebay:aiva-arquette" data-card-name="Aiva Arquette 2026 Bowman Chrome 1st Auto #CPA-AA" data-card-sub="baseball" data-card-size="row" data-card-surface="player-list"></span><div>
           <div class="entry-sport-tag">⚾ 2026 Bowman · Chrome Prospect Auto · 1st Bowman · REDEMPTION</div>
           <div class="entry-title">1st Bowman Chrome Auto<br>#CPA-AA — The Primary Chase</div><button class="sch-track-card" data-name="Aiva Arquette 1st Bowman Chrome Auto #CPA-AA — The Primary Chase" data-set="2026 Bowman" data-cat="baseball" data-grade="Raw" data-feed="ebay:aiva-arquette">&#9733; Track</button>
-        </div>
+        </div></div>
         <div class="entry-price-block">
           <div class="price-label">eBay (June 2026)</div>
           <div class="price-main">~$55–$85</div>
@@ -913,10 +961,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="card-entry watch-tier">
       <div class="entry-rank">04</div>
       <div class="entry-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="name:Aiva Arquette Bowman Chrome Auto Variation Refractor 2026" data-card-name="Aiva Arquette Chrome Auto Variation Refractor #CPA-AA — Alternate Art" data-card-sub="baseball" data-card-size="row" data-card-surface="player-list"></span><div>
           <div class="entry-sport-tag orange">⚾ 2026 Bowman Chrome Auto · Variation Refractor · REDEMPTION</div>
           <div class="entry-title">Chrome Auto Variation Refractor<br>#CPA-AA — Alternate Art</div><button class="sch-track-card" data-name="Aiva Arquette Chrome Auto Variation Refractor #CPA-AA — Alternate Art" data-set="2026 Bowman" data-cat="baseball" data-grade="Raw">&#9733; Track</button>
-        </div>
+        </div></div>
         <div class="entry-price-block">
           <div class="price-label">Active BIN (June 2026)</div>
           <div class="price-main orange">$200</div>
@@ -944,10 +992,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="card-entry">
       <div class="entry-rank">05</div>
       <div class="entry-header">
-        <div>
+        <div class="entry-lead"><span data-card-img="name:Aiva Arquette Bowman Chrome Prospect 2026 BCP-40" data-card-name="Aiva Arquette Chrome Prospect Base #BCP-40 — Budget Entry" data-card-sub="baseball" data-card-size="row" data-card-surface="player-list"></span><div>
           <div class="entry-sport-tag">⚾ 2026 Bowman Chrome Prospects · Base Card · No Auto</div>
           <div class="entry-title">Chrome Prospect Base<br>#BCP-40 — Budget Entry</div><button class="sch-track-card" data-name="Aiva Arquette Chrome Prospect Base #BCP-40 — Budget Entry" data-set="2026 Bowman" data-cat="baseball" data-price="12" data-grade="Raw">&#9733; Track</button>
-        </div>
+        </div></div>
         <div class="entry-price-block">
           <div class="price-label">eBay (June 2026)</div>
           <div class="price-main">~$8–$15</div>
@@ -1153,18 +1201,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     el.classList.add('blink-cursor');
   });
   // 10. Marquee strip in card/roy entries
-  var M='SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC · SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC ·';
-  document.querySelectorAll('.card-entry,.roy-entry').forEach(function(e){
-    if(!e.querySelector('.entry-marquee-wrap')){
-      var w=document.createElement('div');
-      w.className='entry-marquee-wrap';
-      var s=document.createElement('span');
-      s.className='entry-marquee-text';
-      s.textContent=M;
-      w.appendChild(s);
-      e.appendChild(w);
-    }
-  });
+  // Sep 1 2026: looping ghost marquee under entries removed (audit: read as a rendering glitch).
 })();
 </script>
 
@@ -1180,5 +1217,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </script>
 
 <script src="/js/vault-track.js?v=5" defer></script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body>
 </html>

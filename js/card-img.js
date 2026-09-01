@@ -66,7 +66,7 @@
   function lsSet(m) { try { localStorage.setItem(LS, JSON.stringify(m)); } catch (e) {} }
   var inflight = {};
   function byName(name) {
-    var q = String(name || '').replace(/[—–].*$/, '').replace(/\s+/g, ' ').trim();
+    var q = String(name || '').replace(/[—–].*$/, '').replace(/#\S*/g, '').replace(/\s+/g, ' ').trim(); // '#8' style card numbers kill eBay search
     if (q.length < 4) return Promise.resolve(null);
     var m = lsGet(), hit = m[q];
     if (hit && hit.t && Date.now() - hit.t < 7 * 864e5) return Promise.resolve(hit.v);

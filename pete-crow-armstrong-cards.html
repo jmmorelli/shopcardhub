@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>Pete Crow-Armstrong Cards — Best Rookies, 1st Bowman & the Volume Signal | ShopCardHub</title>
   <meta name="description" content="Pete Crow-Armstrong card guide: .381 with 11 HR in June, trading volume up 160% vs prices up 8.9% — the divergence explained. 2020 Bowman Draft 1st cards, Sapphire (+121%/30d), 2024 RCs, and what to buy. July 2026.">
@@ -24,8 +25,9 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Article","headline":"Pete Crow-Armstrong Cards — Best Rookies, 1st Bowman & the Volume Signal","url":"https://www.shopcardhub.com/pete-crow-armstrong-cards","publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://www.shopcardhub.com"},"datePublished":"2026-07-06","dateModified":"2026-07-06"}
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/fonts.css">
 <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -465,15 +467,55 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   line-height:18px;
 }
 
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container { display:block; }
+      .hero .container > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
 </style>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
-  <script>
+  <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
+  <script data-gtag-deferred="G-2Q52C5EKG7">
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-2Q52C5EKG7');
+    (function(){
+      var done = false;
+      function load(){
+        if (done) return; done = true;
+        var s = document.createElement('script'); s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7';
+        document.head.appendChild(s);
+      }
+      var evs = ['pointerdown','keydown','scroll','touchstart'];
+      function onEv(){ load(); evs.forEach(function(e){ window.removeEventListener(e, onEv); }); }
+      evs.forEach(function(e){ window.addEventListener(e, onEv, { passive:true }); });
+      // idle path is armed only once the page has finished loading, so gtag.js never
+      // competes with first paint / the load event; interaction still fires it at once
+      function idle(){ if ('requestIdleCallback' in window) window.requestIdleCallback(load, { timeout:4000 }); else window.setTimeout(load, 4000); }
+      if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle);
+    })();
   </script>
+  <link rel="stylesheet" href="/css/site-fixes.css">
 </head>
 </head>
 <body>
@@ -491,6 +533,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   .nav-search-results a:hover, .nav-search-results a.sel { color:var(--text-head); background:rgba(0,204,245,0.08); text-decoration:none; }
   .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
   .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
+  /* dropdown + search panels: solid ground (page --bg2, fallback) so hero text never bleeds through */
+  .nav-dropdown, .nav-search-results { background:var(--bg2, #0c1017); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
   /* mega panel (Sports): groups render as columns */
   .nav-dropdown.nav-mega { left:-140px; min-width:0; width:max-content; max-width:min(880px, calc(100vw - 48px)); padding:14px 10px 12px; }
   .nav-mega .dd-cols { display:flex; flex-wrap:wrap; }
@@ -725,7 +769,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <a href="/research#grading" class="m-all">All Grading & Supplies →</a>
         </div>
       </div>
-  <a href="/#newsletter" class="m-cta" style="background:transparent; color:var(--accent); border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
+  <a href="/#newsletter" class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
   <a href="/watchlist" class="m-cta">My Vault →</a>
 </div>
 <script>
@@ -792,6 +836,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <section class="hero" style="border-top:none; padding-bottom:0;">
   <div class="container">
     <div class="hero-eyebrow">Player Guide &middot; Baseball &middot; Chicago Cubs</div>
+    <figure class="hero-card-photo" data-sch-player-photos>
+      <span data-card-img="name:Pete Crow-Armstrong Bowman Chrome Draft Auto 2020 CDA-PC" data-card-name="Pete Crow-Armstrong 2020 Bowman Chrome Draft 1st Auto" data-card-sub="baseball" data-card-size="hero" data-card-surface="player-hero"></span>
+      <figcaption class="hero-card-cap">2020 Bowman Draft Chrome <b>1st Auto #CDA-PC</b> &middot; live eBay listing</figcaption>
+    </figure>
     <h1>Pete Crow-Armstrong<br><em>Card Guide</em></h1>
     <p class="hero-sub">The most interesting chart in baseball cards. PCA hit .381 with 11 home runs in June &mdash; his sale prices rose just 8.9%, but <strong>trading volume exploded +160%</strong>. Volume leads price. Here's the full card map: the 2020 Bowman Draft 1st cards, the Sapphire runner, the 2024 RCs, and how to trade the divergence.</p>
     <div class="hero-meta">
@@ -859,7 +907,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <table class="roi-table">
         <thead><tr><th>Card</th><th>Tier</th><th>Why It Matters</th><th>Verdict</th><th>Find</th></tr></thead>
         <tbody>
-        <tr><td><span class="roi-name">2020 Bowman Chrome Draft 1st Auto</span><span class="roi-sub">The grail tier</span><button class="sch-track-card" data-name="Pete Crow-Armstrong 2020 Bowman Chrome Draft 1st Auto" data-set="" data-cat="baseball" data-grade="Raw">&#9733; Track</button></td><td><span class="roi-price">Top card</span></td><td><span class="roi-sub">His true 1st autos. The /5 sold for $50K+ in June 2025 and a Red /5 (BGS 9.5) went $35,400 — the trophy tier is already established. Lower colors scale down from there.</span></td><td><span class="verdict-tag v-buy">Chase</span></td><td><a href="https://www.ebay.com/sch/i.html?_nkw=2020+bowman+chrome+draft+pete+crow-armstrong+auto&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=pete-crow-armstrong-cards" target="_blank" rel="noopener sponsored" class="roi-sub" style="color:var(--accent);white-space:nowrap;">eBay &rarr;</a></td></tr><tr><td><span class="roi-name">2020 Bowman Draft Sapphire 1st</span><span class="roi-sub">The momentum card</span><button class="sch-track-card" data-name="Pete Crow-Armstrong 2020 Bowman Draft Sapphire 1st" data-set="" data-cat="baseball" data-grade="Raw">&#9733; Track</button></td><td><span class="roi-price">Runner</span></td><td><span class="roi-sub">+121% in 30 days — the single hottest PCA chart. Sapphire's blue-chrome look plus 1st Bowman status makes it the card the volume wave is chasing. Graded 10s lead.</span></td><td><span class="verdict-tag v-buy">Chase</span></td><td><a href="https://www.ebay.com/sch/i.html?_nkw=2020+bowman+draft+sapphire+pete+crow-armstrong&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=pete-crow-armstrong-cards" target="_blank" rel="noopener sponsored" class="roi-sub" style="color:var(--accent);white-space:nowrap;">eBay &rarr;</a></td></tr><tr><td><span class="roi-name">2020 Bowman Draft 1st (paper/chrome)</span><span class="roi-sub">Accessible 1st</span><button class="sch-track-card" data-name="Pete Crow-Armstrong 2020 Bowman Draft 1st (paper/chrome)" data-set="" data-cat="baseball" data-grade="Raw">&#9733; Track</button></td><td><span class="roi-price">Core</span></td><td><span class="roi-sub">The affordable 1st Bowman tier. When Sapphire runs +121%, the base 1sts historically close part of the gap — the catch-up trade.</span></td><td><span class="verdict-tag v-buy">Chase</span></td><td><a href="https://www.ebay.com/sch/i.html?_nkw=2020+bowman+draft+pete+crow-armstrong+1st&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=pete-crow-armstrong-cards" target="_blank" rel="noopener sponsored" class="roi-sub" style="color:var(--accent);white-space:nowrap;">eBay &rarr;</a></td></tr><tr><td><span class="roi-name">2024 Topps Flagship / Chrome RC</span><span class="roi-sub">Rookie year</span><button class="sch-track-card" data-name="Pete Crow-Armstrong 2024 Topps Flagship / Chrome RC" data-set="" data-cat="baseball" data-grade="Raw">&#9733; Track</button></td><td><span class="roi-price">RC</span></td><td><span class="roi-sub">His official RCs — cheap, deep, and the most liquid PCA lane. The play for volume traders; graded 10s only if you're holding.</span></td><td><span class="verdict-tag v-watch">Watch</span></td><td><a href="https://www.ebay.com/sch/i.html?_nkw=2024+topps+pete+crow-armstrong+rookie&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=pete-crow-armstrong-cards" target="_blank" rel="noopener sponsored" class="roi-sub" style="color:var(--accent);white-space:nowrap;">eBay &rarr;</a></td></tr><tr><td><span class="roi-name">2024 Bowman Spotlights + parallels</span><span class="roi-sub">Insert tier</span><button class="sch-track-card" data-name="Pete Crow-Armstrong 2024 Bowman Spotlights + parallels" data-set="" data-cat="baseball" data-grade="Raw">&#9733; Track</button></td><td><span class="roi-price">Budget</span></td><td><span class="roi-sub">Orange /25 in PSA 9 traded ~$180 in May; base Spotlights ~$30. Collector candy with occasional pop — not the ROI lane.</span></td><td><span class="verdict-tag v-hold">Hold</span></td><td><a href="https://www.ebay.com/sch/i.html?_nkw=2024+bowman+spotlights+pete+crow-armstrong&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=pete-crow-armstrong-cards" target="_blank" rel="noopener sponsored" class="roi-sub" style="color:var(--accent);white-space:nowrap;">eBay &rarr;</a></td></tr>
+        <tr><td><div class="roi-cell"><span data-card-img="name:Pete Crow-Armstrong Bowman Chrome Draft Auto 2020 CDA-PC" data-card-name="Pete Crow-Armstrong 2020 Bowman Chrome Draft 1st Auto" data-card-sub="baseball" data-card-size="row" data-card-surface="player-list"></span><div><span class="roi-name">2020 Bowman Chrome Draft 1st Auto</span><span class="roi-sub">The grail tier</span><button class="sch-track-card" data-name="Pete Crow-Armstrong 2020 Bowman Chrome Draft 1st Auto" data-set="" data-cat="baseball" data-grade="Raw">&#9733; Track</button></div></div></td><td><span class="roi-price">Top card</span></td><td><span class="roi-sub">His true 1st autos. The /5 sold for $50K+ in June 2025 and a Red /5 (BGS 9.5) went $35,400 — the trophy tier is already established. Lower colors scale down from there.</span></td><td><span class="verdict-tag v-buy">Chase</span></td><td><a href="https://www.ebay.com/sch/i.html?_nkw=2020+bowman+chrome+draft+pete+crow-armstrong+auto&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=pete-crow-armstrong-cards" target="_blank" rel="noopener sponsored" class="roi-sub" style="color:var(--accent);white-space:nowrap;">eBay &rarr;</a></td></tr><tr><td><div class="roi-cell"><span data-card-img="name:Pete Crow-Armstrong Bowman Draft Sapphire 2020 1st" data-card-name="Pete Crow-Armstrong 2020 Bowman Draft Sapphire 1st" data-card-sub="baseball" data-card-size="row" data-card-surface="player-list"></span><div><span class="roi-name">2020 Bowman Draft Sapphire 1st</span><span class="roi-sub">The momentum card</span><button class="sch-track-card" data-name="Pete Crow-Armstrong 2020 Bowman Draft Sapphire 1st" data-set="" data-cat="baseball" data-grade="Raw">&#9733; Track</button></div></div></td><td><span class="roi-price">Runner</span></td><td><span class="roi-sub">+121% in 30 days — the single hottest PCA chart. Sapphire's blue-chrome look plus 1st Bowman status makes it the card the volume wave is chasing. Graded 10s lead.</span></td><td><span class="verdict-tag v-buy">Chase</span></td><td><a href="https://www.ebay.com/sch/i.html?_nkw=2020+bowman+draft+sapphire+pete+crow-armstrong&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=pete-crow-armstrong-cards" target="_blank" rel="noopener sponsored" class="roi-sub" style="color:var(--accent);white-space:nowrap;">eBay &rarr;</a></td></tr><tr><td><div class="roi-cell"><span data-card-img="name:Pete Crow-Armstrong Bowman Draft 1st 2020 Prospect" data-card-name="Pete Crow-Armstrong 2020 Bowman Draft 1st (paper/chrome)" data-card-sub="baseball" data-card-size="row" data-card-surface="player-list"></span><div><span class="roi-name">2020 Bowman Draft 1st (paper/chrome)</span><span class="roi-sub">Accessible 1st</span><button class="sch-track-card" data-name="Pete Crow-Armstrong 2020 Bowman Draft 1st (paper/chrome)" data-set="" data-cat="baseball" data-grade="Raw">&#9733; Track</button></div></div></td><td><span class="roi-price">Core</span></td><td><span class="roi-sub">The affordable 1st Bowman tier. When Sapphire runs +121%, the base 1sts historically close part of the gap — the catch-up trade.</span></td><td><span class="verdict-tag v-buy">Chase</span></td><td><a href="https://www.ebay.com/sch/i.html?_nkw=2020+bowman+draft+pete+crow-armstrong+1st&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=pete-crow-armstrong-cards" target="_blank" rel="noopener sponsored" class="roi-sub" style="color:var(--accent);white-space:nowrap;">eBay &rarr;</a></td></tr><tr><td><div class="roi-cell"><span data-card-img="name:Pete Crow-Armstrong Topps Chrome 2024 RC Cubs" data-card-name="Pete Crow-Armstrong 2024 Topps Flagship / Chrome RC" data-card-sub="baseball" data-card-size="row" data-card-surface="player-list"></span><div><span class="roi-name">2024 Topps Flagship / Chrome RC</span><span class="roi-sub">Rookie year</span><button class="sch-track-card" data-name="Pete Crow-Armstrong 2024 Topps Flagship / Chrome RC" data-set="" data-cat="baseball" data-grade="Raw">&#9733; Track</button></div></div></td><td><span class="roi-price">RC</span></td><td><span class="roi-sub">His official RCs — cheap, deep, and the most liquid PCA lane. The play for volume traders; graded 10s only if you're holding.</span></td><td><span class="verdict-tag v-watch">Watch</span></td><td><a href="https://www.ebay.com/sch/i.html?_nkw=2024+topps+pete+crow-armstrong+rookie&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=pete-crow-armstrong-cards" target="_blank" rel="noopener sponsored" class="roi-sub" style="color:var(--accent);white-space:nowrap;">eBay &rarr;</a></td></tr><tr><td><div class="roi-cell"><span data-card-img="name:Pete Crow-Armstrong Bowman Spotlights 2024" data-card-name="Pete Crow-Armstrong 2024 Bowman Spotlights + parallels" data-card-sub="baseball" data-card-size="row" data-card-surface="player-list"></span><div><span class="roi-name">2024 Bowman Spotlights + parallels</span><span class="roi-sub">Insert tier</span><button class="sch-track-card" data-name="Pete Crow-Armstrong 2024 Bowman Spotlights + parallels" data-set="" data-cat="baseball" data-grade="Raw">&#9733; Track</button></div></div></td><td><span class="roi-price">Budget</span></td><td><span class="roi-sub">Orange /25 in PSA 9 traded ~$180 in May; base Spotlights ~$30. Collector candy with occasional pop — not the ROI lane.</span></td><td><span class="verdict-tag v-hold">Hold</span></td><td><a href="https://www.ebay.com/sch/i.html?_nkw=2024+bowman+spotlights+pete+crow-armstrong&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=pete-crow-armstrong-cards" target="_blank" rel="noopener sponsored" class="roi-sub" style="color:var(--accent);white-space:nowrap;">eBay &rarr;</a></td></tr>
         </tbody>
       </table>
     </div>
@@ -1013,18 +1061,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     el.classList.add('blink-cursor');
   });
   // 10. Marquee strip in card/roy entries
-  var M='SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC · SPORTS CARDS · COLLECTOR GRADE · COMC LISTED · SHOPCARDHUB · RARE PULLS · HOBBY BOX ROI · PSA · BGS · SGC ·';
-  document.querySelectorAll('.card-entry,.roy-entry').forEach(function(e){
-    if(!e.querySelector('.entry-marquee-wrap')){
-      var w=document.createElement('div');
-      w.className='entry-marquee-wrap';
-      var s=document.createElement('span');
-      s.className='entry-marquee-text';
-      s.textContent=M;
-      w.appendChild(s);
-      e.appendChild(w);
-    }
-  });
+  // Sep 1 2026: looping ghost marquee under entries removed (audit: read as a rendering glitch).
 })();
 </script>
 
@@ -1040,5 +1077,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </script>
 
 <script src="/js/vault-track.js?v=5" defer></script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body>
 </html>

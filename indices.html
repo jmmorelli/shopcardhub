@@ -1,7 +1,23 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="view-transition" content="same-origin">
 <title>Set Indices — every set as a ticker | ShopCardHub</title>
 <meta name="description" content="Live set indices for sports cards and Pokémon: price-weighted, sold-basis, re-marked weekly from a 100.00 base. PB26, CR26, AH26, PRIS25, DR25 and more. No calls — just the tape.">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@600;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://www.shopcardhub.com/indices">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Set Indices — every set as a ticker | ShopCardHub">
+<meta property="og:description" content="Live set indices for sports cards and Pokémon: price-weighted, sold-basis, re-marked weekly from a 100.00 base. No calls — just the tape.">
+<meta property="og:url" content="https://www.shopcardhub.com/indices">
+<meta property="og:site_name" content="ShopCardHub">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@shopcardhub">
+<meta property="og:image" content="https://www.shopcardhub.com/og/indices.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://www.shopcardhub.com/og/indices.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Set Indices — every set as a ticker","url":"https://www.shopcardhub.com/indices","description":"Live set indices for sports cards and Pokémon: price-weighted, sold-basis, re-marked weekly from a 100.00 base. PB26, CR26, AH26, PRIS25, DR25 and more.","image":"https://www.shopcardhub.com/og/indices.png","isPartOf":{"@type":"WebSite","name":"ShopCardHub","url":"https://www.shopcardhub.com"},"publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://www.shopcardhub.com"}}
+</script>
+<link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/css/fonts.css"><style>
 :root { --bg:#07090c; --p1:#0c1017; --p2:#111820; --bd:rgba(255,255,255,0.07); --bd2:rgba(255,255,255,0.12); --tx:#b8cdd4; --th:#e4f0f4; --dim:#5a7880; --ac:#00ccf5; --gn:#00e07a; --gd:#f5c800; --rd:#ff2e55;
 --text:#b8cdd4; --text-head:#e4f0f4; --text-dim:#5a7880; --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12); --accent:#00ccf5; --accent-dim:rgba(0,204,245,0.1); --accent-glow:rgba(0,204,245,0.22); --gold:#f5c800; --green:#00e07a; --red:#ff2e55;
 --fb:'Barlow',-apple-system,sans-serif; --fd:'Barlow Condensed',Impact,sans-serif; --fm:'JetBrains Mono',Menlo,monospace; }
@@ -73,13 +89,30 @@ tr.soon td { opacity:0.55; }
 @media (max-width:800px) { .hidem { display:none; } td.nm .desc { max-width:170px; } h1 { font-size:28px; } }
 </style>  <!-- GA4 — added Aug 25, 2026: the set-index pages shipped without the tag, so every
        visit to the indices (the current priority surface) was going unmeasured. -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7"></script>
-  <script>
+  <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
+  <script data-gtag-deferred="G-2Q52C5EKG7">
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-2Q52C5EKG7');
+    (function(){
+      var done = false;
+      function load(){
+        if (done) return; done = true;
+        var s = document.createElement('script'); s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7';
+        document.head.appendChild(s);
+      }
+      var evs = ['pointerdown','keydown','scroll','touchstart'];
+      function onEv(){ load(); evs.forEach(function(e){ window.removeEventListener(e, onEv); }); }
+      evs.forEach(function(e){ window.addEventListener(e, onEv, { passive:true }); });
+      // idle path is armed only once the page has finished loading, so gtag.js never
+      // competes with first paint / the load event; interaction still fires it at once
+      function idle(){ if ('requestIdleCallback' in window) window.requestIdleCallback(load, { timeout:4000 }); else window.setTimeout(load, 4000); }
+      if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle);
+    })();
   </script>
+  <link rel="stylesheet" href="/css/site-fixes.css">
 </head><body>
 <!-- NAV:START -->
 <style>
@@ -94,6 +127,8 @@ tr.soon td { opacity:0.55; }
   .nav-search-results a:hover, .nav-search-results a.sel { color:var(--text-head); background:rgba(0,204,245,0.08); text-decoration:none; }
   .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
   .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
+  /* dropdown + search panels: solid ground (page --bg2, fallback) so hero text never bleeds through */
+  .nav-dropdown, .nav-search-results { background:var(--bg2, #0c1017); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
   /* mega panel (Sports): groups render as columns */
   .nav-dropdown.nav-mega { left:-140px; min-width:0; width:max-content; max-width:min(880px, calc(100vw - 48px)); padding:14px 10px 12px; }
   .nav-mega .dd-cols { display:flex; flex-wrap:wrap; }
@@ -328,7 +363,7 @@ tr.soon td { opacity:0.55; }
         <a href="/research#grading" class="m-all">All Grading & Supplies →</a>
         </div>
       </div>
-  <a href="/#newsletter" class="m-cta" style="background:transparent; color:var(--accent); border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
+  <a href="/#newsletter" class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
   <a href="/watchlist" class="m-cta">My Vault →</a>
 </div>
 <script>
@@ -472,7 +507,7 @@ fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(
   var head = '<thead><tr><th>Ticker</th><th class="hidem">Priced / Universe</th><th>Level</th><th>1 Wk</th><th class="hidem">1 Mo</th><th>Since Inception</th><th class="hidem">Range</th></tr></thead>';
   var out = '';
   ['pokemon','baseball'].forEach(function(sec) {
-    out += '<div class="panel"><h2>' + META[sec].label + '</h2><table>' + head + '<tbody>' + rowsBySec[sec].join('') + '</tbody></table></div>';
+    out += '<div class="panel"><h2>' + META[sec].label + '</h2><div class="tbl-scroll"><table>' + head + '<tbody>' + rowsBySec[sec].join('') + '</tbody></table></div></div>';
   });
   /* The Week's Tape — ticker + card movers (added Aug 31, comp-2026-08-31 steal) */
   try {
