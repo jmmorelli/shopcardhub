@@ -67,30 +67,36 @@
   function lsGet() { try { return JSON.parse(localStorage.getItem(LS) || '{}'); } catch (e) { return {}; } }
   function lsSet(m) { try { localStorage.setItem(LS, JSON.stringify(m)); } catch (e) {} }
   var inflight = {};
-  function byName(name) {
-    var q = String(name || '').replace(/[—–].*$/, '').replace(/#\S*/g, '').replace(/\s+/g, ' ').trim(); // '#8' style card numbers kill eBay search
+  // cat: eBay category to search — 212 = sports trading cards (the endpoint default), 183454 = CCG/TCG singles (Pokémon).
+  function byName(name, cat) {
+    var q = String(name || '').replace(/[—–].*$/, '').replace(/#/g, '').replace(/\b(IR|SIR|UR|HR|AR|SAR|DR|ACE|RR|SR)\b/g, '').replace(/\s+/g, ' ').trim(); // '#231/182' -> '231/182'; rarity codes and a bare '#' kill eBay search
+    var normNum = function (x) { return x.replace(/\b0*(\d+)\/0*(\d+)\b/g, '$1/$2'); };
     if (q.length < 4) return Promise.resolve(null);
-    var m = lsGet(), hit = m[q];
+    var ck = (cat ? cat + ':' : '') + q;
+    var m = lsGet(), hit = m[ck];
     if (hit && hit.t && Date.now() - hit.t < 7 * 864e5) return Promise.resolve(hit.v);
-    if (inflight[q]) return inflight[q];
-    var toks = q.toLowerCase().split(' ').filter(function (t) { return t.length > 2 && !/[#\d]/.test(t); }).slice(0, 4);
-    inflight[q] = fetch('/api/comps?q=' + encodeURIComponent(q) + '&sort=price&limit=20&customid=img-vault').then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+    if (inflight[ck]) return inflight[ck];
+    var num = (normNum(q).match(/\b\d{1,3}\/\d{1,3}\b/) || [])[0]; // TCG number like 231/182 — the strongest identifier
+    var toks = q.toLowerCase().split(' ').filter(function (t) { return t.length > 2 && !/[#\d]/.test(t); }).slice(0, num ? 2 : 4);
+    var url = '/api/comps?q=' + encodeURIComponent(q) + '&sort=price&limit=20&customid=img-' + (cat === '183454' ? 'tcg' : 'vault') + (cat ? '&category_ids=' + cat : '');
+    inflight[ck] = fetch(url).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
       var ls = (j && j.listings) || [];
       var best = null;
       for (var i = 0; i < ls.length; i++) {
-        var l = ls[i], t = String(l.title || '').toLowerCase();
+        var l = ls[i], t = normNum(String(l.title || '').toLowerCase());
         if (!l.image || !/^https:\/\/i\.ebayimg\.com\//.test(l.image)) continue;
+        if (num && t.indexOf(num) < 0) continue;
         var ok = toks.every(function (k) { return t.indexOf(k) > -1; });
         if (!ok) continue;
-        if (/(lot of|reprint|digital|custom|proxy)/.test(t)) continue;
+        if (/(lot of|reprint|digital|custom|proxy|you pick|choose)/.test(t)) continue;
         best = { url: l.image.replace(/s-l\d+\./, 's-l500.'), item: l.url || null, title: l.title || null };
         if (l.buyingOption === 'FIXED_PRICE') break;
       }
-      var mm = lsGet(); mm[q] = { t: Date.now(), v: best }; lsSet(mm);
-      delete inflight[q];
+      var mm = lsGet(); mm[ck] = { t: Date.now(), v: best }; lsSet(mm);
+      delete inflight[ck];
       return best;
-    }).catch(function () { delete inflight[q]; return null; });
-    return inflight[q];
+    }).catch(function () { delete inflight[ck]; return null; });
+    return inflight[ck];
   }
 
   function tagLink(item, surface) {
@@ -117,7 +123,10 @@
       if (hit && hit.url) return hit;
       // engine-keyed cards without a verified photo stay on the placeholder (a name search
       // could return the wrong variant); visitor-added cards are looked up by their full name.
-      if (key && key.indexOf('name:') === 0) return byName(key.slice(5));
+      var cat = el.getAttribute('data-card-catid') || (/pok[eé]mon|tcg/i.test(el.getAttribute('data-card-sub') || '') ? '183454' : null);
+      if (key && key.indexOf('name:') === 0) return byName(key.slice(5), cat);
+      // ph: keys are page-list placeholders that still carry the card's full name — try it before settling for the tile.
+      if (key && key.indexOf('ph:') === 0 && name && name !== key) return byName(name, cat);
       return null;
     }).then(function (hit) {
       if (!hit || !hit.url) return;
