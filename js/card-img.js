@@ -130,9 +130,13 @@
       return null;
     }).then(function (hit) {
       if (!hit || !hit.url) return;
+      // eBay serves the same photo at several widths; fetch only what the slot needs
+      // (a 32px thumb at s-l500 was ~80KB × 60 rows on a set index).
+      var want = { thumb: 140, row: 225, card: 300, hero: 500 }[o.size || 'thumb'] || 300;
+      var src = String(hit.url).replace(/s-l\d+\./, 's-l' + want + '.');
       var real = new Image();
       real.onload = function () {
-        imgEl.src = hit.url; imgEl.classList.add('is-photo');
+        imgEl.src = src; imgEl.classList.add('is-photo');
         if (o.link !== false && hit.item) {
           var a = document.createElement('a');
           a.href = tagLink(hit.item, o.surface || el.getAttribute('data-card-surface'));
@@ -141,7 +145,8 @@
           el.appendChild(a); a.appendChild(imgEl);
         }
       };
-      real.src = hit.url;
+      real.onerror = function () { if (src !== hit.url) { src = hit.url; real.src = hit.url; } };
+      real.src = src;
     });
     return el;
   }

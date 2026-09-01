@@ -176,3 +176,34 @@
   body [style*="font-size:10px"], body [style*="font-size: 10px"]
   { font-size:11px !important; }
 }
+
+/* ===== Sep 1 re-audit additions ===== */
+/* Ambient loops: the section "wire-pulse" glow ran on every section of every page (6–8 infinite
+   animations per page), plus the eyebrow blink cursor, the Bowman stadium beams and the refractor
+   sweep. Motion is reserved for state changes (row flash, count-ups, board shuffle) and two ambient
+   signals on the homepage (ticker, live dot). */
+body section, body section.hero { animation: none !important; }
+body .blink-cursor::after { animation: none !important; opacity: 1; }
+body .bb-tower .beam, body .hero h1 em { animation: none !important; }
+
+@media (max-width:540px) {
+  /* text that was still under 11px on phones (movers module, board chips, vault notes) */
+  body small, body .wtag, body .mv-col-h, body .mv-sub, body .mv-chip, body .bb-board-note,
+  body .bb-board th, body .bb-table th, body .bb-chip, body .kpi-note, body .ob-title, body .ob-link, body .sr-only
+  { font-size: 11px !important; }
+  /* tap targets: footer nav, the homepage feature link, board filter chips, guide "Read" buttons */
+  body .footer-links a { display: inline-block; padding: 10px 0; }
+  body .feature-link, body .hero-textlink, body .panel-foot a, body .panel-footer a { display: inline-flex; align-items: center; min-height: 40px; }
+  body .btn-secondary.seg, body .btn-sm, body .btn.btn-sm, body .guide-card .btn-secondary, body .bb-table a, body .vtools .btn, body .tb-add, body .vtoolbar .btn { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+  /* Vault onboarding steps + "new" pill are rendered by script with 9px inline labels */
+  body #ob1 span, body #ob2 span, body #ob3 span, body #newPill b, body #newPill a { font-size: 11px !important; }
+  /* The Floor: stat tiles and the movers grid overflowed by 5px once labels hit 11px */
+  body .dash-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+  body .dash-stats > * { min-width: 0; }
+  body .mv-grid { grid-template-columns: 1fr; }
+  body .mv-grid > *, body .mv-row, body .mv-name { min-width: 0; }
+  body .mv-sub { white-space: normal; }
+  body .dash-card { min-width: 0; overflow: hidden; }
+  /* ticker items scroll inside an overflow:hidden strip; make sure the strip clips on phones */
+  body .ticker, body .ticker-wrap, body .ticker-inner { overflow: hidden; max-width: 100vw; }
+}
