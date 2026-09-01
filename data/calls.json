@@ -1,6 +1,6 @@
 {
  "_comment": "CALLS LEDGER \u2014 single source for /track-record. Two call types. TYPE=RANGE (price projection): projLow/projHigh vs market read. Grading: state=open (no reliable read) \u2192 trending (ask-side or thin sold data; provisional) \u2192 final (SOLD comps ~4 wks post-release; final grades never change). grade: hit = read inside range; miss_high = we projected too high; miss_low = too low. Signed miss% is computed on-page from the nearest range bound. TYPE=VERDICT (BUY/PASS/SELL call; legacy rows say WAIT): entry = market price at call date (for pre-release calls with no market, entry = first reliable read, noted); move = entry \u2192 read. The 8-week read is recorded at state=final (sold-based where possible) but is NOT a public grade -- see GRADING CLOCK v3 below; the public grade is the thesis[] check at 6/12 months: right if the move agrees with the action by \u226510% (BUY wants up, PASS/SELL wants down), wrong if it disagrees by \u226510%, flat inside \u00b110%. HOLD/WATCH verdicts are not ledger material. IMMUTABILITY: never edit projLow/projHigh, action, entry, or callDate after publication. Weekly scheduled run updates read/readDate/state/grade and appends new calls. POKEMON RETIREMENT (2026-08-18, Mo's decision): do NOT issue NEW Pokemon calls (cat 183454) -- the finals showed a one-directional miss_high bias = no edge in a single-driver (supply-only) market. Existing Pokemon calls still grade to FINAL on their original schedule and are NEVER deleted; /track-record renders them in a separate 'Retired' section. Sports calls (cat 212) are the active book. GRADING CLOCK v3 (2026-08-21, Mo's decision -- cards are illiquid, long-hold assets; 8 weeks is a trading clock and cards don't trade well on one): a verdict's ONLY public grade is its thesis[] check at +6 and +12 months from callDate, sold basis, +/-10% vs the ORIGINAL entry per the action (right / wrong / flat), immutable once set. The 8-week read (read/readDate/basis/state=final) is STILL recorded by the weekly run so the early tape is visible, and the legacy 8-week `grade` field may still be set for continuity -- but /track-record does NOT display it as a grade, and it must never be tweeted, quoted, or described as RIGHT/WRONG. Until a thesis check is graded, a call's public state is EARLY. VOCABULARY: new verdict calls use action BUY / PASS / SELL (PASS replaces WAIT -- 'pass at this price', not 'time the market'); existing WAIT actions are immutable in data and display as PASS. Public copy says 'scorecard' and 'call', never 'ledger', 'paper trade', 'entry', or 'trade grade'. RE-ENTRY: to say 'buy the dip' after a wrong trade grade, never edit the old call -- append a NEW call (id '<orig>-2') at the current price once the tape confirms (e.g. second consecutive green week). SKEW/KURT: engine emits retSkew/retKurtosis only at n>=60 return observations (below that, sample moments are outlier noise).",
- "updated": "2026-08-31",
+ "updated": "2026-09-01",
  "calls": [
   {
    "id": "pb-darkrai-sir",
@@ -509,8 +509,8 @@
    "entryDate": "2026-08-18",
    "basis": "sold",
    "read": 131.25,
-   "readLabel": "SportsCardsPro raw sold $131.25 \u2014 fourth straight week at exactly this print",
-   "readDate": "2026-08-31",
+   "readLabel": "SportsCardsPro raw sold $131.25 \u2014 flat at exactly this print every week since the call",
+   "readDate": "2026-09-01",
    "state": "trending",
    "grade": null,
    "finalizeAfter": "2026-10-13",
@@ -546,9 +546,9 @@
    "entryLabel": "SportsCardsPro raw sold at promotion date",
    "entryDate": "2026-08-18",
    "basis": "sold",
-   "read": 73.5,
-   "readLabel": "SportsCardsPro ungraded $73.50 (entry 79.32 -> 73.50, -7.3%, inside +/-10%)",
-   "readDate": "2026-08-31",
+   "read": 76.0,
+   "readLabel": "SportsCardsPro ungraded $76.00 (entry 79.32 -> 76.00, -4.2%, inside +/-10%)",
+   "readDate": "2026-09-01",
    "state": "trending",
    "grade": null,
    "finalizeAfter": "2026-10-13",

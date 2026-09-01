@@ -49,6 +49,12 @@ const THROTTLE_MS = 1200; // gentle on the Vercel fn + eBay quota (CDN caches re
 // Chrome auto - the one canonical card per player the watchlist tracks.
 const TITLE_BAD = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|refractor|x-?fractor|superfractor|printing\s?plate|sapphire|mega|mojo|lava|speckle|logofractor|shimmer|atomic|mini\s?diamond|wave|prism|aqua|1st\s?edition\s?reprint|reprint|digital|custom|proxy|lot\s?of|\/\d{1,4}\b)/i;
 
+// Sapphire-base feeds (added Aug 31 2026): every matching title necessarily
+// contains "sapphire", so that token must NOT be in the blocklist for this
+// cardType — otherwise the feed verifies 0 asks forever (the Sep 1 bug).
+// Everything else (slabs, parallels, serials, lots) still applies.
+const TITLE_BAD_SAPPHIRE = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|refractor|x-?fractor|superfractor|printing\s?plate|mega|mojo|lava|speckle|logofractor|shimmer|atomic|mini\s?diamond|wave|prism|aqua|1st\s?edition\s?reprint|reprint|digital|custom|proxy|lot\s?of|\/\d{1,4}\b)/i;
+
 // TCG singles (Pokemon etc): different noise profile. Card numbers like 161/131
 // are REQUIRED in titles (so no serial-number exclusion), "mega"/"prism" are set
 // names not parallels. Excluded instead: grading, accessories, pick-a-card
@@ -147,7 +153,7 @@ export async function compsMark(query, label, card = {}) {
   // required title tokens: explicit card.titleMust, else the player's last name
   const musts = (Array.isArray(card.titleMust) && card.titleMust.length
     ? card.titleMust : [lastNameOf(label)]).map((m) => String(m).toLowerCase());
-  const bad = isTcg ? TITLE_BAD_TCG : TITLE_BAD;
+  const bad = isTcg ? TITLE_BAD_TCG : (type === "sapphire-base" ? TITLE_BAD_SAPPHIRE : TITLE_BAD);
   const verified = (j.listings || [])
     .filter((l) => l.buyingOption === "FIXED_PRICE")
     .filter((l) => {
