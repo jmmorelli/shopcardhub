@@ -807,6 +807,18 @@
    "area": "infrastructure",
    "summary": "MED (was HIGH, downgraded after false alarm): the engine feed itself is healthy — but the 4 sapphire feeds added Aug 31 eve (griffin/holliday/anthony/mcgonigle) mark NULL every night and always will: snapshot-free.mjs TITLE_BAD regex rejects any listing title containing 'sapphire', which is every listing these feeds can match. Fix: exempt cardType sapphire-base from the 'sapphire' token in TITLE_BAD (keep it for chrome feeds — that's the Aug 31 cross-line guard). One-line conditional; needs Mo's push. — FIX APPLIED LOCALLY Sep 1 (TITLE_BAD_SAPPHIRE variant + one-line cardType switch, node --check clean); goes live with Mo's next push; sapphire marks start the night after.",
    "status": "awaiting-mo"
+  },
+  {
+   "id": "sandbox-git-lock-sweep-sep01",
+   "area": "infrastructure",
+   "summary": "LOW (recurring, 3rd occurrence): git commits made from Claude's sandbox succeed but cannot delete their own .git/*.lock files on the Mac filesystem (Operation not permitted on unlink), stranding 0-byte index.lock/HEAD.lock that block the NEXT git operation until removed host-side. Sep 1: blocked Mo's follow-up commit twice; cleared with find .git -name '*.lock' -delete. Fix options: (a) weekly runs stop committing and only stage, Mo commits+pushes; (b) Mo runs the lock sweep after any session that commits; (c) auditor MWF adds a stale-lock check+report. Recommend (c) minimum.",
+   "status": "awaiting-mo"
+  },
+  {
+   "id": "email-ownership-to-cos-sep01",
+   "area": "org",
+   "summary": "DIRECTIVE FOR SUNDAY CoS (from Mo, in chat, Sep 1 2026): Mo does not want to own marketing emails — 'I was hoping you or an agent would fold the mailerlite send/check on your own... The Chief of Staff needs to decide this. It is his project/business to run the operations for.' This AMENDS the Tier 3 boundary: the weekly Tuesday Tape digest send is DELEGATED to the system (Mo's veto stays absolute+retroactive; his unsubscribe/complaint read is the kill switch). CoS to decide the structure: (a) fold send+deliverability-check into Tuesday STEP 4.5 (draft->verify->send, with a content gate mirroring the board-tweet safety valve), (b) a dedicated marketing/email agent owning digest + capture-bar copy + signup analytics, or (c) CoS owns it directly. Also define the check half: post-send verify, bounce/complaint watch, weekly signup count in the retention row. First autonomous send executed Sep 1 (campaign 197429896712029250, 1 active subscriber) on Mo's live authorization.",
+   "status": "awaiting-cos"
   }
  ],
  "scoreboard": {

@@ -1170,14 +1170,15 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   }
   lsSet(now);
 
-  // 4. Watch-tier rows have no on-page price: fill "last sold" from the nightly engine feed (same feed the Signal Board reads).
+  // 4. Watch-tier rows have no on-page price: fill from the nightly engine feed (same feed the Signal Board reads).
+  //    LABEL FIX Sep 1 2026 (Mo's catch): the feed is ASK-side medians, never solds — the cell must say "asking", not "last sold".
   if (tbody.querySelector('[data-live]')) {
     fetch(FEED + '?t=' + Math.floor(Date.now() / 36e5), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
       if (!j || !Array.isArray(j.cards)) return;
       j.cards.forEach(function (c) {
         var r = byKey[c.key]; if (!r || !r.watch || c.last == null || !isFinite(c.last)) return;
         var cell = r.el.querySelector('[data-live]'); if (!cell) return;
-        cell.className = 'bb-pr'; cell.innerHTML = '$' + Number(c.last).toLocaleString(undefined, { maximumFractionDigits: 0 }) + '<small>last sold' + (j.day ? ' &middot; ' + esc(j.day) : '') + '</small>';
+        cell.className = 'bb-pr'; cell.innerHTML = '$' + Number(c.last).toLocaleString(undefined, { maximumFractionDigits: 0 }) + '<small>asking &middot; engine' + (j.day ? ' &middot; ' + esc(j.day) : '') + '</small>';
         r.el.querySelector('.bb-name').setAttribute('data-price', c.last);
       });
     }).catch(function () {});
@@ -1545,7 +1546,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <section>
     <div class="section-eyebrow">⚾ Live Signals · Updated Daily</div>
     <h2>Every 1st Bowman Chrome Auto — Signal Board</h2>
-    <p class="section-intro">Chart-derived <strong>BUY / HOLD / SELL</strong> across the full prospect list — not just our top 10. One canonical card per player (the 1st Bowman Chrome auto), priced nightly from sold-market data. No fundamentals, just the tape.</p>
+    <p class="section-intro">Chart-derived <strong>BUY / HOLD / SELL</strong> across the full prospect list — not just our top 10. One canonical card per player (the 1st Bowman Chrome auto), marked nightly from the cheapest verified eBay <strong>asks</strong> — always higher than what cards actually sell for, so read these as the seller side of the market. Ranked prices above are solds. <a href="/how-prices-work">How our prices work →</a></p>
 
     <div class="sig-controls">
       <input id="sig-filter" class="sig-filter" type="text" placeholder="Filter prospects…" autocomplete="off" aria-label="Filter prospects">
@@ -1560,7 +1561,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="sig-wrap" id="sig-table-wrap" style="display:none;">
       <table class="roi-table spec-table">
         <thead>
-          <tr><th>Prospect</th><th>Card</th><th>Last</th><th>30d</th><th>Signal</th></tr>
+          <tr><th>Prospect</th><th>Card</th><th>Asking</th><th>30d</th><th>Signal</th></tr>
         </thead>
         <tbody id="sig-rows"></tbody>
       </table>
