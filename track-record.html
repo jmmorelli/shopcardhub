@@ -467,6 +467,32 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   line-height:18px;
 }
 
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > *, .hero.hero-grid > *, .rh-head .container > *, .mast.hero-grid > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim, var(--dim)); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent, var(--iac)); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:block; }
+      .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub, .section-intro, .rh-intro { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
+    .roi-cell { min-width:250px; }
+    @media(max-width:700px) { .roi-cell { min-width:200px; } }
 </style>
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
   <script data-gtag-deferred="G-2Q52C5EKG7">
@@ -812,6 +838,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <section class="hero" style="border-top:none; padding-bottom:0;">
   <div class="container">
     <div class="hero-eyebrow">The Scorecard &middot; Updated Weekly</div>
+    <figure class="hero-card-photo">
+      <span data-card-img="ebay:andrew-fischer" data-card-name="Andrew Fischer 1st Bowman Chrome Auto CPA-AF" data-card-sub="1st Bowman" data-card-size="hero" data-card-surface="track-record-hero"></span>
+      <figcaption class="hero-card-cap">Best call on the board &middot; <b>Andrew Fischer</b> BUY @ $30 &rarr; $113 read &middot; live eBay listing</figcaption>
+    </figure>
     <h1>Track<br><em>Record</em></h1>
     <p class="hero-sub">Every card we tell you to buy lands on this page and gets one question asked of it: <strong>was this a good card to own?</strong> We answer it at 6 months and again at 12, against real sold prices, in public. Most sites quietly delete the calls that didn't work. We keep score instead. If this page ever reads 100%, assume we started lying. And a note on the phrase "track record": some analytics sites use it for a model's signal winrate computed on marketplace asking-price aggregates. This page is the other thing &mdash; named calls with immutable projections, graded against sold prices, misses kept.</p>
     <div class="hero-meta">
@@ -991,6 +1021,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   fetch('/data/calls.json').then(function(r){ return r.json(); }).then(function(d){
     var calls = d.calls.slice().sort(function(a,b){ return (b.callDate||'').localeCompare(a.callDate||''); });
     var isPoke = function(c){ return c.cat === '183454'; };
+    var IMG = {"pb-darkrai-sir": "ebay:mega-darkrai-ex-sir", "v-pb-darkrai-wait": "ebay:mega-darkrai-ex-sir", "pb-darkrai-mhr": "name:Mega Darkrai ex 120/084 Pitch Black -case -display -lot -proxy -bundle", "pb-zeraora-sir": "name:Mega Zeraora ex 114/084 Pitch Black -case -display -lot -proxy -bundle", "v-pb-zeraora-buy": "name:Mega Zeraora ex 114/084 Pitch Black -case -display -lot -proxy -bundle", "pb-chandelure-sir": "name:Mega Chandelure ex 115/084 Pitch Black -case -display -lot -proxy -bundle", "pb-morpeko-sir": "name:Morpeko ex 117/084 Pitch Black", "cr-greninja-psa10": "ebay:mega-greninja-ex-sir", "v-cr-greninja-buy": "ebay:mega-greninja-ex-sir", "v-ah-mewtwo-buy": "ebay:tr-mewtwo-ex-sir", "v-ah-lucario-buy": "ebay:mega-lucario-ex-sir", "v-bb-fischer-buy": "ebay:andrew-fischer", "v-bb-pierce-buy": "ebay:daniel-pierce", "v-bb-holliday-buy": "ebay:ethan-holliday", "v-bb-arquette-buy": "ebay:aiva-arquette", "v-bb-kim-wait": "ebay:seong-jun-kim", "v-bb-florentino-buy": "ebay:edward-florentino"};
+    function thumb(c){ var k = IMG[c.id] || ('ph:' + c.id); var sub = isPoke(c) ? 'POKEMON' : '1ST BOWMAN'; return '<span data-card-img="' + k.replace(/"/g, '&quot;') + '" data-card-name="' + String(c.card || '').replace(/"/g, '&quot;') + '" data-card-sub="' + sub + '" data-card-size="row" data-card-surface="track-record-list"></span>'; }
     var sports = calls.filter(function(c){ return !isPoke(c); });
     var poke   = calls.filter(isPoke);
     function verdictStats(list){
@@ -1064,7 +1096,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         gradeCell = g ? '<span class="verdict-tag ' + g[1] + '">' + g[0] + '</span>' : '<span class="roi-sub">\u2014</span>';
       }
       return '<tr>' +
-        '<td><span class="roi-name" style="font-size:15px;">' + c.card + '</span><span class="roi-sub"><a href="' + c.page + '">' + c.set + ' \u2192</a>' + (isV ? ' \u00b7 <span style="color:var(--accent);">CALL</span>' : ' \u00b7 RANGE') + '</span></td>' +
+        '<td><div class="roi-cell">' + thumb(c) + '<div><span class="roi-name" style="font-size:15px;">' + c.card + '</span><span class="roi-sub"><a href="' + c.page + '">' + c.set + ' \u2192</a>' + (isV ? ' \u00b7 <span style="color:var(--accent);">CALL</span>' : ' \u00b7 RANGE') + '</span></div></div></td>' +
         '<td><span class="roi-sub">' + c.callDate + '</span></td>' +
         '<td>' + callCell + '</td>' +
         '<td>' + readCell + '</td>' +
@@ -1263,5 +1295,6 @@ window.__liveAsksInit();
 </script>
 
 <script src="/js/vault-track.js?v=5" defer></script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body>
 </html>

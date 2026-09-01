@@ -351,6 +351,30 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   line-height:18px;
 }
 
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > *, .hero.hero-grid > *, .rh-head .container > *, .mast.hero-grid > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim, var(--dim)); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent, var(--iac)); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:block; }
+      .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub, .section-intro, .rh-intro { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
 </style>
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
   <script data-gtag-deferred="G-2Q52C5EKG7">
@@ -696,8 +720,12 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <div class="container">
 
 <!-- PAGE HERO -->
-  <section class="hero" style="padding-bottom:24px;">
+  <section class="hero hero-grid" style="padding-bottom:24px;">
     <div class="section-eyebrow">PSA Grading · 2026</div>
+    <figure class="hero-card-photo">
+      <span data-card-img="name:PSA 10 Ethan Holliday 2026 Bowman Chrome auto -lot -reprint" data-card-name="Ethan Holliday 2026 Bowman Chrome Auto PSA 10" data-card-sub="PSA 10" data-card-size="hero" data-card-surface="psa-hero"></span>
+      <figcaption class="hero-card-cap">What a 10 looks like &middot; <b>Ethan Holliday 2026 Bowman Chrome Auto PSA 10</b> &middot; live eBay listing</figcaption>
+    </figure>
     <h1>PSA Grading Guide<br><em>Every Tier, Real Costs &amp; ROI</em></h1>
     <p class="section-intro">All six PSA tiers with real turnaround times, hidden fees, and the ROI math — updated after the February 10, 2026 price increase.</p>
   </section>
@@ -1010,5 +1038,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </script>
 
 <script src="/js/vault-track.js?v=5" defer></script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body>
 </html>

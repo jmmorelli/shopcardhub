@@ -116,6 +116,42 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
       .nav-hamburger { display:flex !important; } 
       .mobile-nav { display:block !important; } }
 @media (max-width:800px) { .stats { grid-template-columns:repeat(4,1fr); } h1 { font-size:26px; } .level { font-size:30px; } }
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > *, .hero.hero-grid > *, .rh-head .container > *, .mast.hero-grid > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim, var(--dim)); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent, var(--iac)); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:block; }
+      .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub, .section-intro, .rh-intro { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
+    .mast.hero-grid { column-gap:40px; align-items:end; grid-template-columns:minmax(0,1fr) auto 200px; padding-bottom:10px; }
+    .mast.hero-grid > * { grid-column:auto; }
+    .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1; align-self:end; justify-self:center; }
+    .mast.hero-grid > .levelbox { grid-column:3; grid-row:1; align-self:end; }
+    .mast.hero-grid .hero-card-photo .sch-cimg { width:150px !important; height:210px !important; }
+    .mast.hero-grid .hero-card-cap { max-width:170px; margin:10px auto 0; }
+    @media(max-width:800px) { .mast.hero-grid { grid-template-columns:minmax(0,1fr) 160px; } .mast.hero-grid > .levelbox { grid-column:1 / span 2; grid-row:2; text-align:left; } }
+    @media(max-width:700px) { .mast.hero-grid { display:block; position:relative; padding-right:104px; } .mast.hero-grid > .hero-card-photo { float:none; position:absolute; right:0; top:26px; width:90px; margin:0; } .mast.hero-grid .hero-card-photo .sch-cimg { width:90px !important; height:126px !important; } .mast.hero-grid > .levelbox { text-align:left; margin-top:12px; } }
+    td.card { white-space:normal; }
+    td.card .roi-cell { min-width:150px; gap:10px; }
+    td.card .roi-cell > div { white-space:nowrap; }
+    td.card .roi-cell > .sch-cimg { margin-top:0; }
 </style>  <!-- GA4 — added Aug 25, 2026: the set-index pages shipped without the tag, so every
        visit to the indices (the current priority surface) was going unmeasured. -->
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
@@ -494,12 +530,16 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
 
 <div class="strip"><a class="chip" href="/pitch-black-index" style="text-decoration:none;"><b>PB26</b> <span style="color:var(--tx)">93.19</span> <span class="soon">−6.8% w/w</span></a><a class="chip" href="/chaos-rising-index" style="text-decoration:none;"><b>CR26</b> <span style="color:var(--tx)">95.35</span> <span class="soon">−4.7% w/w</span></a><a class="chip" href="/ascended-heroes-index" style="text-decoration:none;"><b>AH26</b> <span style="color:var(--tx)">100.31</span> <span class="soon">+0.3% w/w</span></a><a class="chip" href="/prismatic-evolutions-index" style="text-decoration:none;"><b>PRIS25</b> <span style="color:var(--tx)">101.76</span> <span class="soon">+1.8% w/w</span></a><a class="chip on" href="/destined-rivals-index" style="text-decoration:none;"><b>DR25</b> <span style="color:var(--tx)">97.59</span> <span class="soon">−2.4% w/w</span></a><div class="chip"><b>BOW26</b> <span class="soon">preview</span></div><div class="chip"><b>MEGA26</b> <span class="soon">Mega Evolution base · planned</span></div><div class="chip"><b>BCB26</b> <span class="soon">Bowman Chrome · Sep 9</span></div></div>
 
-<div class="mast">
+<div class="mast hero-grid">
 <div>
 <div class="eyebrow">▮ Set Index · Price-Weighted · Chase Tier</div>
 <h1>DR25 <span class="tick">·</span> Destined Rivals Chase Index</h1>
 <div class="subline">Pokémon Scarlet & Violet: Destined Rivals — released May 30, 2025. Price-weighted over every secret-tier card with a sourced sold read (currently 59). This page tracks the set; it does not recommend cards. <span style="color:var(--dim);">This is the set&#39;s home page on ShopCardHub — index-first.</span></div>
 </div>
+<figure class="hero-card-photo">
+      <span data-card-img="name:Misty&#x27;s Psyduck 193/182 Pokemon" data-card-name="Misty&#x27;s Psyduck IR #193/182 Destined Rivals" data-card-sub="pokemon" data-card-size="hero" data-card-surface="dr25-hero"></span>
+      <figcaption class="hero-card-cap">Top constituent with a verified photo &middot; <b>Misty's Psyduck IR #193</b> (#6) &middot; live eBay listing</figcaption>
+    </figure>
 <div class="levelbox">
 <div class="level">97.59</div>
 <div class="levelchg">base 100.00 · inception 08/24/26 · re-marked 08/31/26 · ▼ −2.4% w/w</div>
@@ -525,373 +565,373 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
 <thead><tr><th>RK</th><th>Card</th><th>Rarity</th><th>Price</th><th>Weight</th><th>Since Launch</th><th>As Of</th><th>★</th></tr></thead>
 <tbody>
 <tr class="hrow" data-i="0" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">1</td>
-<td class="card"><b>Team Rocket's Mewtwo ex</b> <span class="cn">#231/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-0" data-card-name="Team Rocket&#x27;s Mewtwo ex SIR #231/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Mewtwo ex</b> <span class="cn">#231/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$497.68</td><td class="num wt">28.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(0)">★</button></td></tr>
 <tr class="hrow" data-i="1" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">2</td>
-<td class="card"><b>Cynthia's Garchomp ex</b> <span class="cn">#232/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-1" data-card-name="Cynthia&#x27;s Garchomp ex SIR #232/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Cynthia's Garchomp ex</b> <span class="cn">#232/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$201.33</td><td class="num wt">11.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(1)">★</button></td></tr>
 <tr class="hrow" data-i="2" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">3</td>
-<td class="card"><b>Ethan's Ho-Oh ex</b> <span class="cn">#230/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-2" data-card-name="Ethan&#x27;s Ho-Oh ex SIR #230/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Ethan's Ho-Oh ex</b> <span class="cn">#230/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$151.12</td><td class="num wt">8.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(2)">★</button></td></tr>
 <tr class="hrow" data-i="3" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">4</td>
-<td class="card"><b>Team Rocket's Nidoking ex</b> <span class="cn">#233/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-3" data-card-name="Team Rocket&#x27;s Nidoking ex SIR #233/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Nidoking ex</b> <span class="cn">#233/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$95.85</td><td class="num wt">5.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(3)">★</button></td></tr>
 <tr class="hrow" data-i="4" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">5</td>
-<td class="card"><b>Team Rocket's Moltres ex</b> <span class="cn">#229/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-4" data-card-name="Team Rocket&#x27;s Moltres ex SIR #229/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Moltres ex</b> <span class="cn">#229/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$90.90</td><td class="num wt">5.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(4)">★</button></td></tr>
 <tr class="hrow" data-i="5" style="border-left:2px solid transparent;"><td class="rk">6</td>
-<td class="card"><b>Misty's Psyduck</b> <span class="cn">#193/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Misty&#x27;s Psyduck 193/182 Pokemon" data-card-name="Misty&#x27;s Psyduck IR #193/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Misty's Psyduck</b> <span class="cn">#193/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$61.75</td><td class="num wt">3.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(5)">★</button></td></tr>
 <tr class="hrow" data-i="6" style="border-left:2px solid transparent;"><td class="rk">7</td>
-<td class="card"><b>Team Rocket's Crobat ex</b> <span class="cn">#234/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-6" data-card-name="Team Rocket&#x27;s Crobat ex SIR #234/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Crobat ex</b> <span class="cn">#234/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$60.43</td><td class="num wt">3.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(6)">★</button></td></tr>
 <tr class="hrow" data-i="7" style="border-left:2px solid transparent;"><td class="rk">8</td>
-<td class="card"><b>Team Rocket's Mewtwo ex</b> <span class="cn">#240/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-7" data-card-name="Team Rocket&#x27;s Mewtwo ex HR #240/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Mewtwo ex</b> <span class="cn">#240/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">HR</span></td>
 <td class="num">$59.99</td><td class="num wt">3.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(7)">★</button></td></tr>
 <tr class="hrow" data-i="8" style="border-left:2px solid transparent;"><td class="rk">9</td>
-<td class="card"><b>Ethan's Adventure</b> <span class="cn">#236/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-8" data-card-name="Ethan&#x27;s Adventure SIR #236/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Ethan's Adventure</b> <span class="cn">#236/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$35.07</td><td class="num wt">2.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(8)">★</button></td></tr>
 <tr class="hrow" data-i="9" style="border-left:2px solid transparent;"><td class="rk">10</td>
-<td class="card"><b>Misty's Lapras</b> <span class="cn">#194/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Misty&#x27;s Lapras 194/182 Destined Rivals -case -display -lot -proxy -bundle" data-card-name="Misty&#x27;s Lapras IR #194/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Misty's Lapras</b> <span class="cn">#194/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$30.00</td><td class="num wt">1.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(9)">★</button></td></tr>
 <tr class="hrow" data-i="10" style="border-left:2px solid transparent;"><td class="rk">11</td>
-<td class="card"><b>Arven's Mabosstiff ex</b> <span class="cn">#235/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-10" data-card-name="Arven&#x27;s Mabosstiff ex SIR #235/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Arven's Mabosstiff ex</b> <span class="cn">#235/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$28.07</td><td class="num wt">1.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(10)">★</button></td></tr>
 <tr class="hrow" data-i="11" style="border-left:2px solid transparent;"><td class="rk">12</td>
-<td class="card"><b>Cynthia's Garchomp ex</b> <span class="cn">#241/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-11" data-card-name="Cynthia&#x27;s Garchomp ex HR #241/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Cynthia's Garchomp ex</b> <span class="cn">#241/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">HR</span></td>
 <td class="num">$27.47</td><td class="num wt">1.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(11)">★</button></td></tr>
 <tr class="hrow" data-i="12" style="border-left:2px solid transparent;"><td class="rk">13</td>
-<td class="card"><b>Team Rocket's Meowth</b> <span class="cn">#203/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-12" data-card-name="Team Rocket&#x27;s Meowth IR #203/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Meowth</b> <span class="cn">#203/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$26.28</td><td class="num wt">1.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(12)">★</button></td></tr>
 <tr class="hrow" data-i="13" style="border-left:2px solid transparent;"><td class="rk">14</td>
-<td class="card"><b>Ethan's Typhlosion</b> <span class="cn">#190/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-13" data-card-name="Ethan&#x27;s Typhlosion IR #190/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Ethan's Typhlosion</b> <span class="cn">#190/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$24.03</td><td class="num wt">1.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(13)">★</button></td></tr>
 <tr class="hrow" data-i="14" style="border-left:2px solid transparent;"><td class="rk">15</td>
-<td class="card"><b>Team Rocket's Giovanni</b> <span class="cn">#238/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-14" data-card-name="Team Rocket&#x27;s Giovanni SIR #238/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Giovanni</b> <span class="cn">#238/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$23.60</td><td class="num wt">1.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(14)">★</button></td></tr>
 <tr class="hrow" data-i="15" style="border-left:2px solid transparent;"><td class="rk">16</td>
-<td class="card"><b>Ethan's Ho-Oh ex</b> <span class="cn">#239/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-15" data-card-name="Ethan&#x27;s Ho-Oh ex HR #239/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Ethan's Ho-Oh ex</b> <span class="cn">#239/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">HR</span></td>
 <td class="num">$22.87</td><td class="num wt">1.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(15)">★</button></td></tr>
 <tr class="hrow" data-i="16" style="border-left:2px solid transparent;"><td class="rk">17</td>
-<td class="card"><b>Team Rocket's Ariana</b> <span class="cn">#237/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-16" data-card-name="Team Rocket&#x27;s Ariana SIR #237/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Ariana</b> <span class="cn">#237/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$20.19</td><td class="num wt">1.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(16)">★</button></td></tr>
 <tr class="hrow" data-i="17" style="border-left:2px solid transparent;"><td class="rk">18</td>
-<td class="card"><b>Yanmega ex</b> <span class="cn">#228/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-17" data-card-name="Yanmega ex SIR #228/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Yanmega ex</b> <span class="cn">#228/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$19.67</td><td class="num wt">1.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(17)">★</button></td></tr>
 <tr class="hrow" data-i="18" style="border-left:2px solid transparent;"><td class="rk">19</td>
-<td class="card"><b>Team Rocket's Mewtwo ex</b> <span class="cn">#213/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-18" data-card-name="Team Rocket&#x27;s Mewtwo ex UR #213/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Mewtwo ex</b> <span class="cn">#213/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$18.86</td><td class="num wt">1.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(18)">★</button></td></tr>
 <tr class="hrow" data-i="19" style="border-left:2px solid transparent;"><td class="rk">20</td>
-<td class="card"><b>Team Rocket's Crobat ex</b> <span class="cn">#242/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Team Rocket&#x27;s Crobat ex 242/182 Destined Rivals -case -display -lot -proxy -bundle" data-card-name="Team Rocket&#x27;s Crobat ex HR #242/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Crobat ex</b> <span class="cn">#242/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">HR</span></td>
 <td class="num">$15.62</td><td class="num wt">0.9%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(19)">★</button></td></tr>
 <tr class="hrow" data-i="20" style="border-left:2px solid transparent;"><td class="rk">21</td>
-<td class="card"><b>Team Rocket's Houndoom</b> <span class="cn">#191/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-20" data-card-name="Team Rocket&#x27;s Houndoom IR #191/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Houndoom</b> <span class="cn">#191/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$14.85</td><td class="num wt">0.9%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(20)">★</button></td></tr>
 <tr class="hrow" data-i="21" style="border-left:2px solid transparent;"><td class="rk">22</td>
-<td class="card"><b>Shaymin</b> <span class="cn">#185/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Shaymin 185/182 Destined Rivals" data-card-name="Shaymin IR #185/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Shaymin</b> <span class="cn">#185/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$11.50</td><td class="num wt">0.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(21)">★</button></td></tr>
 <tr class="hrow" data-i="22" style="border-left:2px solid transparent;"><td class="rk">23</td>
-<td class="card"><b>Kangaskhan</b> <span class="cn">#204/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Kangaskhan 204/182 Destined Rivals" data-card-name="Kangaskhan IR #204/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Kangaskhan</b> <span class="cn">#204/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$10.04</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(22)">★</button></td></tr>
 <tr class="hrow" data-i="23" style="border-left:2px solid transparent;"><td class="rk">24</td>
-<td class="card"><b>Cynthia's Roserade</b> <span class="cn">#184/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-23" data-card-name="Cynthia&#x27;s Roserade IR #184/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Cynthia's Roserade</b> <span class="cn">#184/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$10.03</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(23)">★</button></td></tr>
 <tr class="hrow" data-i="24" style="border-left:2px solid transparent;"><td class="rk">25</td>
-<td class="card"><b>Blaziken</b> <span class="cn">#192/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-24" data-card-name="Blaziken IR #192/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Blaziken</b> <span class="cn">#192/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$9.99</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(24)">★</button></td></tr>
 <tr class="hrow" data-i="25" style="border-left:2px solid transparent;"><td class="rk">26</td>
-<td class="card"><b>Team Rocket's Weezing</b> <span class="cn">#199/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Team Rocket&#x27;s Weezing 199/182 Destined Rivals -case -display -lot -proxy -bundle" data-card-name="Team Rocket&#x27;s Weezing IR #199/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Weezing</b> <span class="cn">#199/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$9.20</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(25)">★</button></td></tr>
 <tr class="hrow" data-i="26" style="border-left:2px solid transparent;"><td class="rk">27</td>
-<td class="card"><b>Team Rocket's Petrel</b> <span class="cn">#226/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Team Rocket&#x27;s Petrel 226/182 Destined Rivals -case -display -lot -proxy -bundle" data-card-name="Team Rocket&#x27;s Petrel UR #226/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Petrel</b> <span class="cn">#226/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$9.13</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(26)">★</button></td></tr>
 <tr class="hrow" data-i="27" style="border-left:2px solid transparent;"><td class="rk">28</td>
-<td class="card"><b>Rapidash</b> <span class="cn">#189/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Rapidash 189/182 Destined Rivals" data-card-name="Rapidash IR #189/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Rapidash</b> <span class="cn">#189/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$9.04</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(27)">★</button></td></tr>
 <tr class="hrow" data-i="28" style="border-left:2px solid transparent;"><td class="rk">29</td>
-<td class="card"><b>Jamming Tower</b> <span class="cn">#243/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-28" data-card-name="Jamming Tower HR #243/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Jamming Tower</b> <span class="cn">#243/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">HR</span></td>
 <td class="num">$8.22</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(28)">★</button></td></tr>
 <tr class="hrow" data-i="29" style="border-left:2px solid transparent;"><td class="rk">30</td>
-<td class="card"><b>Team Rocket's Murkrow</b> <span class="cn">#200/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Team Rocket&#x27;s Murkrow 200/182 Destined Rivals -case -display -lot -proxy -bundle" data-card-name="Team Rocket&#x27;s Murkrow IR #200/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Murkrow</b> <span class="cn">#200/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$8.00</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(29)">★</button></td></tr>
 <tr class="hrow" data-i="30" style="border-left:2px solid transparent;"><td class="rk">31</td>
-<td class="card"><b>Levincia</b> <span class="cn">#244/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-30" data-card-name="Levincia HR #244/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Levincia</b> <span class="cn">#244/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">HR</span></td>
 <td class="num">$7.81</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(30)">★</button></td></tr>
 <tr class="hrow" data-i="31" style="border-left:2px solid transparent;"><td class="rk">32</td>
-<td class="card"><b>Team Rocket's Giovanni</b> <span class="cn">#225/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Team Rocket&#x27;s Giovanni 225/182 Destined Rivals -case -display -lot -proxy -bundle" data-card-name="Team Rocket&#x27;s Giovanni UR #225/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Giovanni</b> <span class="cn">#225/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$6.68</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(31)">★</button></td></tr>
 <tr class="hrow" data-i="32" style="border-left:2px solid transparent;"><td class="rk">33</td>
-<td class="card"><b>Team Rocket's Moltres ex</b> <span class="cn">#208/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-32" data-card-name="Team Rocket&#x27;s Moltres ex UR #208/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Moltres ex</b> <span class="cn">#208/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$6.13</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(32)">★</button></td></tr>
 <tr class="hrow" data-i="33" style="border-left:2px solid transparent;"><td class="rk">34</td>
-<td class="card"><b>Team Rocket's Spidops</b> <span class="cn">#187/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Team Rocket&#x27;s Spidops 187/182 Destined Rivals -case -display -lot -proxy -bundle" data-card-name="Team Rocket&#x27;s Spidops IR #187/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Spidops</b> <span class="cn">#187/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$5.95</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(33)">★</button></td></tr>
 <tr class="hrow" data-i="34" style="border-left:2px solid transparent;"><td class="rk">35</td>
-<td class="card"><b>Ethan's Ho-Oh ex</b> <span class="cn">#209/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Ethan&#x27;s Ho-Oh ex 209/182 Destined Rivals -case -display -lot -proxy -bundle" data-card-name="Ethan&#x27;s Ho-Oh ex UR #209/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Ethan's Ho-Oh ex</b> <span class="cn">#209/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$5.56</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(34)">★</button></td></tr>
 <tr class="hrow" data-i="35" style="border-left:2px solid transparent;"><td class="rk">36</td>
-<td class="card"><b>Team Rocket's Raticate</b> <span class="cn">#202/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Team Rocket&#x27;s Raticate 202/182 Destined Rivals -case -display -lot -proxy -bundle" data-card-name="Team Rocket&#x27;s Raticate IR #202/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Raticate</b> <span class="cn">#202/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$5.54</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(35)">★</button></td></tr>
 <tr class="hrow" data-i="36" style="border-left:2px solid transparent;"><td class="rk">37</td>
-<td class="card"><b>Clamperl</b> <span class="cn">#195/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Clamperl 195/182 Destined Rivals" data-card-name="Clamperl IR #195/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Clamperl</b> <span class="cn">#195/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$5.24</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(36)">★</button></td></tr>
 <tr class="hrow" data-i="37" style="border-left:2px solid transparent;"><td class="rk">38</td>
-<td class="card"><b>Zamazenta</b> <span class="cn">#201/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Zamazenta 201/182 Destined Rivals" data-card-name="Zamazenta IR #201/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Zamazenta</b> <span class="cn">#201/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$5.19</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(37)">★</button></td></tr>
 <tr class="hrow" data-i="38" style="border-left:2px solid transparent;"><td class="rk">39</td>
-<td class="card"><b>Cynthia's Garchomp ex</b> <span class="cn">#215/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-38" data-card-name="Cynthia&#x27;s Garchomp ex UR #215/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Cynthia's Garchomp ex</b> <span class="cn">#215/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$5.01</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(38)">★</button></td></tr>
 <tr class="hrow" data-i="39" style="border-left:2px solid transparent;"><td class="rk">40</td>
-<td class="card"><b>Team Rocket's Persian ex</b> <span class="cn">#219/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-39" data-card-name="Team Rocket&#x27;s Persian ex UR #219/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Persian ex</b> <span class="cn">#219/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$4.82</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(39)">★</button></td></tr>
 <tr class="hrow" data-i="40" style="border-left:2px solid transparent;"><td class="rk">41</td>
-<td class="card"><b>Team Rocket's Ariana</b> <span class="cn">#224/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-40" data-card-name="Team Rocket&#x27;s Ariana UR #224/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Ariana</b> <span class="cn">#224/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$4.58</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(40)">★</button></td></tr>
 <tr class="hrow" data-i="41" style="border-left:2px solid transparent;"><td class="rk">42</td>
-<td class="card"><b>Hydrapple</b> <span class="cn">#188/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-41" data-card-name="Hydrapple IR #188/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Hydrapple</b> <span class="cn">#188/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$4.31</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(41)">★</button></td></tr>
 <tr class="hrow" data-i="42" style="border-left:2px solid transparent;"><td class="rk">43</td>
-<td class="card"><b>Yanma</b> <span class="cn">#183/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Yanma 183/182 Destined Rivals" data-card-name="Yanma IR #183/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Yanma</b> <span class="cn">#183/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$4.25</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(42)">★</button></td></tr>
 <tr class="hrow" data-i="43" style="border-left:2px solid transparent;"><td class="rk">44</td>
-<td class="card"><b>Rotom</b> <span class="cn">#197/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-43" data-card-name="Rotom IR #197/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Rotom</b> <span class="cn">#197/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$4.01</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(43)">★</button></td></tr>
 <tr class="hrow" data-i="44" style="border-left:2px solid transparent;"><td class="rk">45</td>
-<td class="card"><b>Team Rocket's Orbeetle</b> <span class="cn">#198/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Team Rocket&#x27;s Orbeetle 198/182 Destined Rivals -case -display -lot -proxy -bundle" data-card-name="Team Rocket&#x27;s Orbeetle IR #198/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Orbeetle</b> <span class="cn">#198/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$4.00</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(44)">★</button></td></tr>
 <tr class="hrow" data-i="45" style="border-left:2px solid transparent;"><td class="rk">46</td>
-<td class="card"><b>Arven's Greedent</b> <span class="cn">#205/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Arven&#x27;s Greedent 205/182 Destined Rivals -case -display -lot -proxy -bundle" data-card-name="Arven&#x27;s Greedent IR #205/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Arven's Greedent</b> <span class="cn">#205/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$3.90</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(45)">★</button></td></tr>
 <tr class="hrow" data-i="46" style="border-left:2px solid transparent;"><td class="rk">47</td>
-<td class="card"><b>Electrike</b> <span class="cn">#196/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Electrike 196/182 Destined Rivals" data-card-name="Electrike IR #196/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Electrike</b> <span class="cn">#196/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$3.90</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(46)">★</button></td></tr>
 <tr class="hrow" data-i="47" style="border-left:2px solid transparent;"><td class="rk">48</td>
-<td class="card"><b>Team Rocket's Nidoking ex</b> <span class="cn">#216/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-47" data-card-name="Team Rocket&#x27;s Nidoking ex UR #216/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Nidoking ex</b> <span class="cn">#216/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$3.89</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(47)">★</button></td></tr>
 <tr class="hrow" data-i="48" style="border-left:2px solid transparent;"><td class="rk">49</td>
-<td class="card"><b>Ethan's Adventure</b> <span class="cn">#221/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-48" data-card-name="Ethan&#x27;s Adventure UR #221/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Ethan's Adventure</b> <span class="cn">#221/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$3.69</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(48)">★</button></td></tr>
 <tr class="hrow" data-i="49" style="border-left:2px solid transparent;"><td class="rk">50</td>
-<td class="card"><b>Team Rocket's Proton</b> <span class="cn">#227/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-49" data-card-name="Team Rocket&#x27;s Proton UR #227/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Proton</b> <span class="cn">#227/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$3.60</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(49)">★</button></td></tr>
 <tr class="hrow" data-i="50" style="border-left:2px solid transparent;"><td class="rk">51</td>
-<td class="card"><b>Team Rocket's Archer</b> <span class="cn">#223/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-50" data-card-name="Team Rocket&#x27;s Archer UR #223/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Archer</b> <span class="cn">#223/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$3.39</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(50)">★</button></td></tr>
 <tr class="hrow" data-i="51" style="border-left:2px solid transparent;"><td class="rk">52</td>
-<td class="card"><b>Team Rocket's Crobat ex</b> <span class="cn">#217/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-51" data-card-name="Team Rocket&#x27;s Crobat ex UR #217/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Team Rocket's Crobat ex</b> <span class="cn">#217/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$3.26</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(51)">★</button></td></tr>
 <tr class="hrow" data-i="52" style="border-left:2px solid transparent;"><td class="rk">53</td>
-<td class="card"><b>Crustle</b> <span class="cn">#186/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Crustle 186/182 Destined Rivals" data-card-name="Crustle IR #186/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Crustle</b> <span class="cn">#186/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$2.97</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(52)">★</button></td></tr>
 <tr class="hrow" data-i="53" style="border-left:2px solid transparent;"><td class="rk">54</td>
-<td class="card"><b>Judge</b> <span class="cn">#222/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-53" data-card-name="Judge UR #222/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Judge</b> <span class="cn">#222/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.68</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(53)">★</button></td></tr>
 <tr class="hrow" data-i="54" style="border-left:2px solid transparent;"><td class="rk">55</td>
-<td class="card"><b>Emcee's Hype</b> <span class="cn">#220/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-54" data-card-name="Emcee&#x27;s Hype UR #220/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Emcee's Hype</b> <span class="cn">#220/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.46</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(54)">★</button></td></tr>
 <tr class="hrow" data-i="55" style="border-left:2px solid transparent;"><td class="rk">56</td>
-<td class="card"><b>Arboliva ex</b> <span class="cn">#207/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Arboliva ex 207/182 Destined Rivals" data-card-name="Arboliva ex UR #207/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Arboliva ex</b> <span class="cn">#207/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.12</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(55)">★</button></td></tr>
 <tr class="hrow" data-i="56" style="border-left:2px solid transparent;"><td class="rk">57</td>
-<td class="card"><b>Arven's Mabosstiff ex</b> <span class="cn">#218/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-56" data-card-name="Arven&#x27;s Mabosstiff ex UR #218/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Arven's Mabosstiff ex</b> <span class="cn">#218/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.96</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(56)">★</button></td></tr>
 <tr class="hrow" data-i="57" style="border-left:2px solid transparent;"><td class="rk">58</td>
-<td class="card"><b>Yanmega ex</b> <span class="cn">#206/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Yanmega ex 206/182 Destined Rivals" data-card-name="Yanmega ex UR #206/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Yanmega ex</b> <span class="cn">#206/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.86</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(57)">★</button></td></tr>
 <tr class="hrow" data-i="58" style="border-left:2px solid transparent;"><td class="rk">59</td>
-<td class="card"><b>Cetitan ex</b> <span class="cn">#210/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:dr25-58" data-card-name="Cetitan ex UR #210/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Cetitan ex</b> <span class="cn">#210/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.79</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(58)">★</button></td></tr>
 <tr class="hrow" data-i="59" style="border-left:2px solid transparent;"><td class="rk">60</td>
-<td class="card"><b>Electivire ex</b> <span class="cn">#212/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Electivire ex 212/182 Destined Rivals" data-card-name="Electivire ex UR #212/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Electivire ex</b> <span class="cn">#212/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.65</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(59)">★</button></td></tr>
 <tr class="hrow" data-i="60" style="border-left:2px solid transparent;"><td class="rk">61</td>
-<td class="card"><b>Regirock ex</b> <span class="cn">#214/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Regirock ex 214/182 Destined Rivals" data-card-name="Regirock ex UR #214/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Regirock ex</b> <span class="cn">#214/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.53</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(60)">★</button></td></tr>
 <tr class="hrow" data-i="61" style="border-left:2px solid transparent;"><td class="rk">62</td>
-<td class="card"><b>Dondozo ex</b> <span class="cn">#211/182</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Dondozo ex 211/182 Destined Rivals" data-card-name="Dondozo ex UR #211/182 Destined Rivals" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="dr25-list"></span><div><b>Dondozo ex</b> <span class="cn">#211/182</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.41</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
@@ -965,7 +1005,8 @@ function openPop(i) {
   document.getElementById('ovl').className = 'ovl open';
 }
 function closePop() { document.getElementById('ovl').className = 'ovl'; }
-document.querySelectorAll('tr.hrow').forEach(function(tr) { tr.addEventListener('click', function() { openPop(parseInt(tr.dataset.i)); }); });
+document.querySelectorAll('tr.hrow').forEach(function(tr) { tr.addEventListener('click', function(e) { if (e.target && e.target.closest && e.target.closest('.sch-cimg-link')) return; openPop(parseInt(tr.dataset.i)); }); });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePop(); });
 </script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body></html>

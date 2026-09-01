@@ -92,6 +92,12 @@
     .btn-primary:hover { background:#fff; color:#000; text-decoration:none; transform:translateY(-2px); }
     .btn-secondary { display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-dim); font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; border:1px solid var(--border2); border-radius:2px; transition:all 0.15s; }
     .btn-secondary:hover { color:var(--text-head); border-color:var(--accent); text-decoration:none; }
+    /* quiet third CTA — a text link, not a third button */
+    .hero-textlink { display:inline-flex; align-items:center; gap:6px; align-self:center; font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); padding:14px 4px; border-bottom:1px solid transparent; transition:color 0.15s, border-color 0.15s; }
+    .hero-textlink:hover { color:var(--accent); border-bottom-color:var(--accent); text-decoration:none; }
+    .hero-textlink .arr::before { content:'\2193'; }                       /* tablet: board sits below the copy */
+    @media (min-width:861px) { .hero-textlink .arr::before { content:'\2192'; } }   /* desktop: board sits beside it */
+    .hero-panel { scroll-margin-top:72px; }
 
     /* Hero panel */
     .hero-panel { background:var(--bg2); border:1px solid var(--border2); border-top:2px solid var(--accent); padding:0; animation:panel-in 0.8s ease-out 0.2s both; }
@@ -230,8 +236,10 @@
       .hero h1 .ghost { display:none; }
       .hero-body { font-size:15px; margin-bottom:20px; line-height:1.55; }
       .hero-ctas { gap:10px; }
-      .hero-ctas .btn-primary, .hero-ctas .btn-secondary { width:100%; text-align:center; padding:14px 16px; }
-      .hero-ctas a[href="#newsletter"] { display:none; }
+      .hero-ctas .btn-primary, .hero-ctas .btn-secondary { width:100%; justify-content:center; text-align:center; padding:14px 16px; }
+      /* the board sits ABOVE the headline on phones (order:-1 below), so the text link points up */
+      .hero-textlink { width:100%; justify-content:center; padding:8px 4px; }
+      .hero-textlink .arr::before { content:'\2191'; }
       /* X traffic lands here on a phone: the card comes first, the headline second. */
       .hero-panel { order:-1; }
       .panel-feature { padding:12px 14px; gap:12px; }
@@ -306,12 +314,8 @@
 }
 .hero h1{animation:glitch-entrance 1.4s ease-out 0.1s both;}
 
-/* 4. Hotspot ring pulse on live status dots */
-@keyframes hotspot-ring{
-  0%{box-shadow:0 0 0 0 rgba(0,224,122,0.7),0 0 8px var(--green);}
-  100%{box-shadow:0 0 0 10px rgba(0,224,122,0),0 0 8px var(--green);}
-}
-.panel-dot{animation:hotspot-ring 2s ease-out infinite!important;}
+/* 4. (Sep 1 2026) hotspot-ring loop on the panel dot removed — the dot keeps its single
+   status-dot opacity pulse (.panel-dot → @keyframes pulse), the one loop the page keeps besides the ticker. */
 
 /* 5. CRT scanline overlay */
 body::before{
@@ -332,20 +336,16 @@ body::before{
   animation:hero-scan 3.5s ease-in-out 0.8s 1 forwards;
 }
 
-/* 7. Blinking cursor — class added by JS below */
+/* 7. Cursor on the hero eyebrow — class added by JS below. Sep 1 2026: blinks three times on
+   arrival, then holds steady (was an infinite loop). */
 @keyframes blink-cur{0%,100%{opacity:1}50%{opacity:0}}
 .blink-cursor::after{
   content:'\25AE';display:inline-block;margin-left:3px;
-  font-size:0.8em;animation:blink-cur 1s step-end infinite;
+  font-size:0.8em;animation:blink-cur 1s step-end 3;
   color:var(--accent);opacity:0.7;
 }
 
-/* 8. Wire pulse on section borders */
-@keyframes wire-pulse{
-  0%,100%{border-top-color:rgba(255,255,255,0.07)}
-  50%{border-top-color:rgba(0,204,245,0.18)}
-}
-section{animation:wire-pulse 5s ease-in-out infinite;}
+/* 8. (Sep 1 2026) wire-pulse — the 5 s border-color loop on every <section> — removed. */
 
 /* 9. Log-in slide entry on card entries */
 @keyframes log-in{
@@ -360,24 +360,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 .card-entry:nth-child(5),.roy-entry:nth-child(5){animation-delay:0.33s}
 .card-entry:nth-child(6),.roy-entry:nth-child(6){animation-delay:0.40s}
 
-/* 10. Marquee strip in card entries */
-@keyframes entry-marquee{
-  from{transform:translateX(0)}to{transform:translateX(-50%)}
-}
-.entry-marquee-wrap{
-  overflow:hidden;height:18px;
-  border-top:1px solid var(--border);
-  margin-top:16px;margin-bottom:-4px;
-  background:rgba(0,204,245,0.02);
-}
-.entry-marquee-text{
-  display:inline-block;white-space:nowrap;
-  font-family:var(--fm);font-size:9px;
-  color:rgba(0,204,245,0.35);
-  letter-spacing:2px;text-transform:uppercase;
-  animation:entry-marquee 18s linear infinite;
-  line-height:18px;
-}
+/* 10. (Sep 1 2026) entry-marquee — the looping ghost strip under entries — removed with its CSS;
+   the JS injection was already gone. */
 
 </style>
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
@@ -740,22 +724,25 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
             written by a collector who <strong>actually buys and sells</strong>.
             No hype. Just data.
           </p>
+          <!-- Sep 1 2026 CTA hierarchy: one primary (the Vault), one secondary outline (Best Boxes), one quiet
+               text link to the Bowman board. "Browse Inventory" lives in the Sports mega-menu footer; the
+               Tuesday Tape CTA lives only in the newsletter block at the bottom. -->
           <div class="hero-ctas fade-up fade-up-3">
-            <a href="/best-hobby-boxes-2026" class="btn-primary">Best Hobby Boxes 2026 →</a>
-            <a href="https://comc.com/Users/DBCooper" target="_blank" rel="noopener sponsored" class="btn-secondary">Browse Inventory</a>
-            <a href="#newsletter" class="btn-secondary" style="border-color:var(--gold); color:var(--gold);">&#128236; Get the Tuesday Tape</a>
+            <a href="/watchlist" class="btn-primary">Open the Vault →</a>
+            <a href="/best-hobby-boxes-2026" class="btn-secondary">Best Hobby Boxes 2026</a>
+            <a href="#bowman-board" class="hero-textlink">See the Bowman board <span class="arr" aria-hidden="true"></span></a>
           </div>
         </div>
 
         <!-- Right — 2026 Bowman prospect panel (live: fed nightly by the price engine; static values below are the Jul 31 2026 fallback) -->
-        <div class="hero-panel fade-up fade-up-4">
+        <div class="hero-panel fade-up fade-up-4" id="bowman-board">
           <div class="panel-header">
             <div class="panel-dot"></div>
             <span class="panel-title">2026 Bowman Bangers — Top 5 by Auto Value</span>
             <span class="panel-updated" id="bb-panel-updated">Updated Aug 25, 2026</span>
           </div>
           <div class="panel-feature" id="bb-panel-feature">
-            <span data-card-img="ebay:ethan-holliday" data-card-name="Ethan Holliday" data-card-size="card" data-card-surface="home-feature"></span>
+            <span data-card-img="ebay:ethan-holliday" data-card-name="Ethan Holliday" data-card-size="card" data-card-surface="home-feature" data-card-tilt="1"></span>
             <div class="feature-txt"><div class="feature-kicker">#1 on the board</div><div class="feature-name">Ethan Holliday</div><div class="feature-sub">1st Bowman Chrome Auto · the most-chased card of 2026</div><a href="/bowman-bangers" class="feature-link">Full board →</a></div>
           </div>
           <div class="panel-rows" id="bb-panel-rows">
@@ -891,6 +878,31 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     .dash-digest{background:linear-gradient(180deg,var(--bg3),var(--bg2));border:1px solid var(--border2);padding:24px 28px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
     .dash-digest-h{font-family:var(--fd);font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-head);line-height:1.05;}
     @media(max-width:860px){.dash-grid{grid-template-columns:1fr;}}
+    /* Movers (Sep 1 2026) — top 3 up / top 3 down by 30-day rate of change, from the nightly feed. Hidden until the feed lands. */
+    .dash-movers{margin-top:16px;}
+    .dash-movers[hidden]{display:none;}
+    .mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;}
+    .mv-col-h{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);padding:2px 0 6px;border-bottom:1px solid var(--border);}
+    .mv-col-h.up{color:var(--green);} .mv-col-h.down{color:var(--red);}
+    .mv-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);color:var(--text);text-decoration:none;transition:background .15s;}
+    .mv-row:last-child{border-bottom:none;}
+    .mv-row:hover{background:rgba(0,204,245,0.04);color:var(--text);}
+    .mv-row .sch-cimg,.mv-row .sch-cimg-row{flex:none;}
+    .mv-txt{flex:1;min-width:0;}
+    .mv-name{display:block;font-family:var(--fd);font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-head);line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .mv-sub{display:block;font-family:var(--fm);font-size:9.5px;color:var(--text-dim);letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+    .mv-px{font-family:var(--fd);font-size:17px;font-weight:800;color:var(--text-head);font-variant-numeric:tabular-nums;white-space:nowrap;}
+    .mv-chip{font-family:var(--fm);font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;min-width:58px;text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap;}
+    .mv-chip.up{color:var(--green);background:var(--green-dim);border:1px solid rgba(0,224,122,0.3);}
+    .mv-chip.down{color:var(--red);background:rgba(255,46,85,0.1);border:1px solid rgba(255,46,85,0.3);}
+    .mv-chip.flat{color:var(--text-dim);background:rgba(255,255,255,0.04);border:1px solid var(--border2);}
+    .mv-empty{font-family:var(--fm);font-size:11px;color:var(--text-dim);padding:10px 0;}
+    .dash-movers .dash-badge{color:var(--text);}
+    @media(max-width:640px){
+      .mv-grid{grid-template-columns:1fr;}
+      .mv-col-h{margin-top:10px;} .mv-col-h:first-child{margin-top:0;}
+      .mv-name{font-size:14px;} .mv-px{font-size:15px;}
+    }
   </style>
   <section class="dash">
     <div class="container">
@@ -926,6 +938,15 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           <div class="dash-stat"><div class="k">Hunting</div><div class="v" id="dp-hunt">—</div></div>
         </div>
         <a href="/watchlist" class="dash-link" style="margin-top:16px;">Open the Vault →</a>
+      </div>
+
+      <!-- Movers — LIVE, top 3 up / top 3 down by 30-day rate of change from the nightly feed (Sep 1 2026).
+           Stays hidden if the feed fails; rendered by the dashboard script below. -->
+      <div class="dash-card dash-movers" id="dash-movers" hidden>
+        <h3>Movers <span class="dash-badge live" id="mv-marked">Marked —</span></h3>
+        <p class="dash-cap">The biggest 30-day moves on the board, from last night's marks — asks, not solds. Tap a row to track it in the Vault.</p>
+        <div class="mv-grid" id="mv-grid"></div>
+        <a href="/watchlist" class="dash-link" style="margin-top:16px;">Track these in the Vault →</a>
       </div>
 
       <!-- Digest CTA → existing newsletter form lower on the page -->
@@ -982,8 +1003,13 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
          the previous visit flashes green/red once; a "since your last visit: N moved" line follows. */
       var SEEN='sch_signal_seen_v1', prev=null;
       try{ prev=JSON.parse(localStorage.getItem(SEEN)||'null'); if(!prev||typeof prev!=='object') prev=null; }catch(e){ prev=null; }
-      fetch('https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json')
-        .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      /* Sep 1 2026: ONE fetch of the nightly feed per page view, shared by the Signal Board, the Movers
+         panel and the hero Top-5 (window.SCH_FEED_P resolves to the parsed JSON or null — never rejects). */
+      window.SCH_FEED_P = window.SCH_FEED_P || fetch('https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json?t='+Date.now(), { cache:'no-store' })
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .catch(function(){ return null; });
+      window.SCH_FEED_P
+        .then(function(d){ if(!d) throw 0; return d; })
         .then(function(d){
           var all=(d&&d.cards)||[];
           if(!all.length) throw 0;
@@ -1002,6 +1028,41 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         .catch(function(){
           el.innerHTML='<div class="wempty">Board marks load on <a href="/bowman-bangers" style="color:var(--accent);">the Signal Board</a> — every 1st Bowman Chrome auto, nightly.</div>';
         });
+    })();
+
+    /* Movers (Sep 1 2026) — top 3 up / top 3 down by roc30 (30-day rate of change, %) among feed cards with a
+       numeric last AND a numeric roc30. The feed carries no per-card series, so roc30 is the delta. Panel
+       stays hidden unless there is at least one row; photos come from js/card-img.js via data-card-img. */
+    (function(){
+      var panel=document.getElementById('dash-movers'), grid=document.getElementById('mv-grid'), mark=document.getElementById('mv-marked');
+      if(!panel||!grid||!window.SCH_FEED_P) return;
+      function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+      function num(v){ return typeof v==='number'&&isFinite(v); }
+      window.SCH_FEED_P.then(function(d){
+        var all=(d&&Array.isArray(d.cards))?d.cards.filter(function(c){ return c&&c.key&&num(c.last)&&num(c.roc30); }):[];
+        if(!all.length) return;
+        var byRoc=all.slice().sort(function(a,b){ return b.roc30-a.roc30; });
+        var ups=byRoc.filter(function(c){ return c.roc30>0; }), downs=byRoc.filter(function(c){ return c.roc30<0; }).reverse();
+        var up=ups.slice(0,3), down=downs.slice(0,3);
+        if(!up.length&&!down.length) return;
+        var breadth=' <div class="mv-empty">'+ups.length+' of '+all.length+' marked cards up over 30 days · '+downs.length+' down.</div>';
+        function row(c){
+          var parts=String(c.label||c.key).split(' — '), name=parts[0], sub=parts.slice(1).join(' — ')||'engine mark';
+          var r=c.roc30, cls=r>0.05?'up':r<-0.05?'down':'flat';
+          var chip=(r>0?'+':'')+r.toFixed(1)+'%';
+          var px='$'+c.last.toLocaleString(undefined,{maximumFractionDigits:c.last>=100?0:2});
+          return '<a href="/watchlist" class="mv-row" title="Track '+esc(name)+' in the Vault">'+
+            '<span data-card-img="'+esc(c.key)+'" data-card-name="'+esc(name)+'" data-card-size="row" data-card-surface="home-movers" data-card-link="off"></span>'+
+            '<span class="mv-txt"><span class="mv-name">'+esc(name)+'</span><span class="mv-sub">'+esc(sub)+'</span></span>'+
+            '<span class="mv-px">'+px+'</span><span class="mv-chip '+cls+'">'+chip+'</span></a>';
+        }
+        grid.innerHTML=
+          '<div><div class="mv-col-h up">▲ Gaining · 30D</div>'+(up.length?up.map(row).join(''):'<div class="mv-empty">Nothing up over 30 days.</div>')+(up.length<3?breadth:'')+'</div>'+
+          '<div><div class="mv-col-h down">▼ Fading · 30D</div>'+(down.length?down.map(row).join(''):'<div class="mv-empty">Nothing down over 30 days.</div>')+(down.length<3&&up.length>=3?breadth:'')+'</div>';
+        if(mark) mark.textContent='Marked '+(d.day||'tonight');
+        panel.hidden=false;
+        if(window.SCH_IMG) SCH_IMG.enhance(grid);
+      }).catch(function(){ /* feed failed → panel stays hidden */ });
     })();
 
     /* Portfolio snapshot from the local Vault — a labelled SAMPLE value for new visitors (Sep 1 2026), real numbers once a vault exists */
@@ -1431,7 +1492,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         }
       })
       .catch(function(){ /* wl stays null -> label fallback */ });
-    var pFeed = fetch(FEED + '?t=' + Date.now(), { cache: 'no-store' })
+    // Sep 1 2026: reuse the page-wide feed promise (set by the dashboard script) — one fetch per view.
+    var pFeed = window.SCH_FEED_P || fetch(FEED + '?t=' + Date.now(), { cache: 'no-store' })
       .then(function(r){ return r.ok ? r.json() : null; })
       .catch(function(){ return null; });
     Promise.all([pWatch, pFeed])
@@ -1464,7 +1526,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         var featEl = document.getElementById('bb-panel-feature');
         if (featEl && top[0]) {
           var f = top[0], fname = esc((f.label || f.key).split(' — ')[0]);
-          featEl.innerHTML = '<span data-card-img="' + esc(f.key) + '" data-card-name="' + fname + '" data-card-size="card" data-card-surface="home-feature"></span>' +
+          featEl.innerHTML = '<span data-card-img="' + esc(f.key) + '" data-card-name="' + fname + '" data-card-size="card" data-card-surface="home-feature" data-card-tilt="1"></span>' +
             '<div class="feature-txt"><div class="feature-kicker">#1 on the board tonight</div><div class="feature-name">' + fname + '</div><div class="feature-sub">1st Bowman Chrome Auto · engine mark ~$' + Math.round(f.last) + '</div><a href="/bowman-bangers" class="feature-link">Full board →</a></div>';
           if (window.SCH_IMG) SCH_IMG.enhance(featEl);
         }

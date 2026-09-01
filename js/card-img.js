@@ -14,6 +14,8 @@
  *   Or from JS:  SCH_IMG.render(el, key, {name, sub, size, surface, link})
  *                SCH_IMG.get(key) → Promise<{url,item}|null>
  *                SCH_IMG.placeholder({name, sub, hue}) → data URI
+ *   Holographic tilt (pointer / gyro driven, never idle) is automatic for size="hero"
+ *   and for any element with data-card-tilt="1". Strength lives in SCH_IMG.TILT.
  */
 (function () {
   var FEED = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json';
@@ -108,6 +110,8 @@
     var img = '<img src="' + ph + '" width="' + w + '" height="' + h + '" alt="' + esc(name) + '" loading="' + (o.eager ? 'eager' : 'lazy') + '" decoding="async">';
     el.innerHTML = img;
     var imgEl = el.querySelector('img');
+    // Holographic tilt: on for hero photos and anything that opts in — works on the placeholder too.
+    if (o.tilt || o.size === 'hero' || el.getAttribute('data-card-tilt') === '1') tilt(el);
     load().then(function (map) {
       var hit = map[key];
       if (hit && hit.url) return hit;
@@ -137,20 +141,162 @@
     (root || document).querySelectorAll('[data-card-img]').forEach(function (el) {
       if (el.getAttribute('data-card-img-done')) return;
       el.setAttribute('data-card-img-done', '1');
-      render(el, el.getAttribute('data-card-img'), { size: el.getAttribute('data-card-size') || 'thumb', surface: el.getAttribute('data-card-surface'), link: el.getAttribute('data-card-link') !== 'off' });
+      render(el, el.getAttribute('data-card-img'), { size: el.getAttribute('data-card-size') || 'thumb', surface: el.getAttribute('data-card-surface'), link: el.getAttribute('data-card-link') !== 'off', tilt: el.getAttribute('data-card-tilt') === '1' });
     });
   }
 
-  var css = '.sch-cimg{display:inline-block;flex-shrink:0;border-radius:4px;overflow:hidden;background:#0b1116;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 4px 12px -6px rgba(0,0,0,.8);vertical-align:middle;position:relative}' +
+  /* ---- Holographic tilt ------------------------------------------------------
+   * The card follows the pointer (perspective + rotateX/rotateY) with a foil sheen
+   * and a rainbow refractor band that slide with the tilt — the way a real Chrome
+   * refractor catches the light when you rock it. Motion only ever answers the
+   * user: pointer on desktop, device orientation on phones, and where neither is
+   * available a single 2 s reveal sweep the first time the card scrolls into view.
+   * Tune here:  TILT.max (deg, pointer) · TILT.mobile (deg, gyro) · TILT.near
+   * (px of "gravity" around the card) · TILT.sheen / TILT.rain (layer opacity).
+   */
+  var TILT = { max: 12, mobile: 8, near: 120, sheen: 0.35, rain: 0.24 };
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var tilts = [];            // registered elements
+  var tiltRaf = 0, lastPt = null, tiltMode = null; // 'pointer' | 'gyro'
+  var clamp = function (v, m) { return v > m ? m : v < -m ? -m : v; };
+
+  // Write one pose to a card. rx/ry in degrees, mx/my in 0..1 (sheen focus), k = strength 0..1.
+  function pose(el, rx, ry, mx, my, k) {
+    var s = el.style;
+    if (!k) {
+      s.transform = ''; s.setProperty('--so', '0'); s.setProperty('--ro', '0');
+      el.classList.remove('is-live');
+      return;
+    }
+    el.classList.add('is-live');
+    s.transform = 'perspective(900px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)' + (k >= 1 ? ' scale3d(1.03,1.03,1.03)' : '');
+    s.setProperty('--mx', (mx * 100).toFixed(1) + '%');
+    s.setProperty('--my', (my * 100).toFixed(1) + '%');
+    s.setProperty('--so', (TILT.sheen * k).toFixed(3));
+    s.setProperty('--ro', (TILT.rain * k).toFixed(3));
+    // rainbow band drifts opposite to the tilt so it reads as refraction, not a sticker
+    s.setProperty('--rtx', (-ry / TILT.max * 22).toFixed(1) + '%');
+    s.setProperty('--rty', (rx / TILT.max * 22).toFixed(1) + '%');
+  }
+
+  function pointerFrame() {
+    tiltRaf = 0;
+    if (!lastPt) return;
+    var px = lastPt[0], py = lastPt[1];
+    for (var i = 0; i < tilts.length; i++) {
+      var el = tilts[i];
+      if (!el.isConnected) continue;
+      var r = el.getBoundingClientRect();
+      if (!r.width) continue;
+      var dx = px < r.left ? r.left - px : px > r.right ? px - r.right : 0;
+      var dy = py < r.top ? r.top - py : py > r.bottom ? py - r.bottom : 0;
+      var d = Math.sqrt(dx * dx + dy * dy);
+      if (d > TILT.near) { if (el.classList.contains('is-live')) pose(el, 0, 0, 0.5, 0.5, 0); continue; }
+      var nx = clamp((px - (r.left + r.width / 2)) / (r.width / 2), 1.6);   // -1..1 across the card (a bit past the edge)
+      var ny = clamp((py - (r.top + r.height / 2)) / (r.height / 2), 1.6);
+      var k = d === 0 ? 1 : 0.35 * (1 - d / TILT.near);                    // inside: full; nearby: gentle gravity
+      pose(el, clamp(-ny * TILT.max * k, TILT.max), clamp(nx * TILT.max * k, TILT.max), clamp(nx, 1) * 0.5 + 0.5, clamp(ny, 1) * 0.5 + 0.5, k);
+    }
+  }
+  function onPointer(e) {
+    lastPt = [e.clientX, e.clientY];
+    if (!tiltRaf) tiltRaf = requestAnimationFrame(pointerFrame);
+  }
+  function flattenAll() { lastPt = null; tilts.forEach(function (el) { pose(el, 0, 0, 0.5, 0.5, 0); }); }
+
+  // Phones: the card answers how you hold the device. First reading = neutral pose.
+  var gyro = { on: false, b0: null, g0: null, raf: 0, ev: null };
+  function gyroFrame() {
+    gyro.raf = 0;
+    var e = gyro.ev; if (!e) return;
+    var rx = clamp((gyro.b0 - e.beta) * 0.45, TILT.mobile), ry = clamp((e.gamma - gyro.g0) * 0.45, TILT.mobile);
+    for (var i = 0; i < tilts.length; i++) {
+      var el = tilts[i]; if (!el.isConnected || !el.__schSeen) continue;
+      pose(el, rx, ry, 0.5 + ry / TILT.mobile * 0.45, 0.5 - rx / TILT.mobile * 0.45, 0.85);
+    }
+  }
+  function onOrient(e) {
+    if (e.beta == null || e.gamma == null) return;
+    if (gyro.b0 == null) { gyro.b0 = e.beta; gyro.g0 = e.gamma; gyro.on = true; }
+    gyro.ev = e;
+    if (!gyro.raf) gyro.raf = requestAnimationFrame(gyroFrame);
+  }
+  function armGyro(el) {
+    if (!('DeviceOrientationEvent' in window)) return;
+    var DOE = window.DeviceOrientationEvent;
+    if (typeof DOE.requestPermission === 'function') {
+      // iOS 13+: only allowed from a user gesture — one tap on the card asks, once.
+      var ask = function () {
+        el.removeEventListener('touchend', ask);
+        DOE.requestPermission().then(function (st) { if (st === 'granted') window.addEventListener('deviceorientation', onOrient, { passive: true }); }).catch(function () {});
+      };
+      el.addEventListener('touchend', ask, { passive: true });
+    } else if (!gyro.bound) {
+      gyro.bound = true;
+      window.addEventListener('deviceorientation', onOrient, { passive: true });
+    }
+  }
+
+  var seenIO = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      var el = en.target; el.__schSeen = true; seenIO.unobserve(el);
+      // No gyro data half a second after the card is on screen → one slow reveal sweep, never a loop.
+      setTimeout(function () { if (!gyro.on && !el.classList.contains('is-live')) { el.classList.add('is-reveal'); el.addEventListener('animationend', function () { el.classList.remove('is-reveal'); }, { once: true }); } }, 500);
+    });
+  }, { threshold: 0.5 }) : null;
+
+  function tilt(el) {
+    if (reduce) return el;
+    if (!el.querySelector('.sch-tilt-fx')) { // render() wipes innerHTML, so a re-rendered card gets its layers back
+      var fx = document.createElement('span'); fx.className = 'sch-tilt-fx'; fx.setAttribute('aria-hidden', 'true');
+      fx.innerHTML = '<span class="sch-tilt-rain"></span><span class="sch-tilt-sheen"></span>';
+      el.appendChild(fx);
+    }
+    if (el.__schTilt) return el;
+    el.__schTilt = true;
+    el.classList.add('sch-tilt');
+    tilts.push(el);
+    if (finePointer) {
+      if (tiltMode !== 'pointer') { tiltMode = 'pointer'; document.addEventListener('pointermove', onPointer, { passive: true }); document.documentElement.addEventListener('mouseleave', flattenAll); window.addEventListener('blur', flattenAll); }
+    } else {
+      tiltMode = 'gyro';
+      armGyro(el);
+      if (seenIO) seenIO.observe(el); else el.__schSeen = true;
+    }
+    return el;
+  }
+
+  var css ='.sch-cimg{display:inline-block;flex-shrink:0;border-radius:4px;overflow:hidden;background:#0b1116;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 4px 12px -6px rgba(0,0,0,.8);vertical-align:middle;position:relative}' +
     '.sch-cimg img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .35s ease,transform .25s ease}' +
     '.sch-cimg img.is-photo{animation:sch-cimg-in .4s ease both}' +
     '.sch-cimg-link{display:block;width:100%;height:100%}.sch-cimg-link:hover img{transform:scale(1.04)}' +
     '.sch-cimg-card,.sch-cimg-hero{border-radius:8px;box-shadow:0 0 0 1px rgba(0,204,245,.25),0 18px 40px -20px rgba(0,204,245,.35)}' +
     '@keyframes sch-cimg-in{from{opacity:0}to{opacity:1}}' +
-    '@media (prefers-reduced-motion:reduce){.sch-cimg img,.sch-cimg img.is-photo{animation:none;transition:none}}';
+    // tilt: transform lives on the card itself so the eBay <a> inside keeps working; layers are transform/opacity only
+    '.sch-tilt{transition:transform .3s ease;transform-origin:50% 50%;backface-visibility:hidden}' +
+    '.sch-tilt.is-live{transition:transform .07s linear;will-change:transform}' +
+    '.sch-tilt .sch-cimg-link:hover img{transform:none}' +
+    '.sch-tilt-fx{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden;border-radius:inherit}' +
+    // sheen = a tight overlay hotspot under the pointer (overlay, not color-dodge: eBay photos sit on white and dodge blows them out)
+    '.sch-tilt-sheen{position:absolute;inset:0;opacity:var(--so,0);mix-blend-mode:overlay;transition:opacity .3s ease;' +
+      'background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.95) 0,rgba(255,255,255,.3) 16%,rgba(255,255,255,0) 42%)}' +
+    // refractor band = a narrow diagonal rainbow that slides against the tilt
+    '.sch-tilt-rain{position:absolute;inset:-45%;opacity:var(--ro,0);mix-blend-mode:overlay;transition:opacity .3s ease;transform:translate3d(var(--rtx,0),var(--rty,0),0);' +
+      'background:linear-gradient(115deg,transparent 41%,rgba(255,64,160,.9) 45%,rgba(255,220,0,.9) 48.5%,rgba(0,255,170,.9) 52%,rgba(0,170,255,.9) 55.5%,rgba(170,80,255,.9) 59%,transparent 63%)}' +
+    '.sch-tilt.is-live .sch-tilt-rain{transition:opacity .3s ease,transform .07s linear}' +
+    // no pointer, no gyro: one slow 2 s reveal the first time the card is on screen (class removed on animationend)
+    '.sch-tilt.is-reveal{animation:sch-tilt-reveal 2s ease-in-out 1}' +
+    '.sch-tilt.is-reveal .sch-tilt-rain{animation:sch-rain-sweep 2s ease-in-out 1}' +
+    '.sch-tilt.is-reveal .sch-tilt-sheen{animation:sch-sheen-sweep 2s ease-in-out 1;--mx:50%;--my:45%}' +
+    '@keyframes sch-tilt-reveal{0%{transform:perspective(900px) rotateY(-7deg) rotateX(2deg)}50%{transform:perspective(900px) rotateY(7deg) rotateX(-2deg)}100%{transform:none}}' +
+    '@keyframes sch-rain-sweep{0%{opacity:0;transform:translate3d(-34%,-12%,0)}25%{opacity:.4}75%{opacity:.4}100%{opacity:0;transform:translate3d(34%,12%,0)}}' +
+    '@keyframes sch-sheen-sweep{0%{opacity:0;transform:translateX(-45%)}40%{opacity:.4}100%{opacity:0;transform:translateX(45%)}}' +
+    '@media (prefers-reduced-motion:reduce){.sch-cimg img,.sch-cimg img.is-photo{animation:none;transition:none}.sch-tilt{transform:none!important;animation:none!important}.sch-tilt-fx{display:none}}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
-  window.SCH_IMG = { get: function (k) { return load().then(function (m) { return m[k] || null; }); }, render: render, placeholder: placeholder, enhance: enhance, SIZES: SIZES };
+  window.SCH_IMG = { get: function (k) { return load().then(function (m) { return m[k] || null; }); }, render: render, placeholder: placeholder, enhance: enhance, SIZES: SIZES, tilt: tilt, TILT: TILT };
   function start() {
     enhance();
     // Pages that re-render (the Vault table, the homepage Top 5) get their photos without calling us.

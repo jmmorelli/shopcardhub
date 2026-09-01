@@ -359,6 +359,30 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   line-height:18px;
 }
 
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > *, .hero.hero-grid > *, .rh-head .container > *, .mast.hero-grid > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim, var(--dim)); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent, var(--iac)); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:block; }
+      .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub, .section-intro, .rh-intro { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
 </style>
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
   <script data-gtag-deferred="G-2Q52C5EKG7">
@@ -704,8 +728,12 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <div class="container">
 
 <!-- PAGE HERO -->
-  <section class="hero" style="padding-bottom:24px;">
+  <section class="hero hero-grid" style="padding-bottom:24px;">
     <div class="section-eyebrow">TAG Grading · 2026</div>
+    <figure class="hero-card-photo">
+      <span data-card-img="name:TAG Graded Cooper Flagg Topps Chrome -psa -lot" data-card-name="Cooper Flagg 2025 Topps Chrome TAG Graded" data-card-sub="TAG slab" data-card-size="hero" data-card-surface="tag-hero"></span>
+      <figcaption class="hero-card-cap">A TAG slab in the wild &middot; <b>Cooper Flagg Topps Chrome, TAG graded</b> &middot; live eBay listing</figcaption>
+    </figure>
     <h1>TAG Grading Guide<br><em>AI Slabs, 1000-Point Scores &amp; ROI</em></h1>
     <p class="section-intro">Computer vision grades the card. The DIG report shows you every defect it found. The 1000-point score tells you how strong the 10 actually is. Every tier priced, plus the honest TAG vs PSA math — updated July 2026.</p>
   </section>
@@ -1063,5 +1091,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </script>
 
 <script src="/js/vault-track.js?v=5" defer></script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body>
 </html>

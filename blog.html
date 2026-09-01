@@ -351,6 +351,46 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   line-height:18px;
 }
 
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > *, .hero.hero-grid > *, .rh-head .container > *, .mast.hero-grid > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim, var(--dim)); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent, var(--iac)); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:block; }
+      .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub, .section-intro, .rh-intro { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
+    /* guide grid — image-first cards (the grid had no styles of its own) */
+    .guides-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; margin-top:24px; }
+    .guide-card { display:flex; align-items:flex-start; gap:18px; background:var(--bg2); border:1px solid var(--border); padding:20px; color:inherit; text-decoration:none !important; min-width:0; }
+    .guide-card:hover { border-color:var(--accent); }
+    .guide-card > .sch-cimg { flex:0 0 auto; }
+    .guide-card > .guide-body { min-width:0; flex:1 1 auto; display:flex; flex-direction:column; align-items:flex-start; }
+    .guide-card .section-eyebrow { margin-bottom:4px; }
+    .guide-card h3 { font-size:19px; line-height:1.15; }
+    .guide-card p { flex:1 1 auto; }
+    .guide-card .btn-secondary { padding:9px 16px; font-size:11px; }
+    @media(max-width:700px) {
+      .guides-grid { grid-template-columns:1fr; }
+      .guide-card { gap:14px; padding:16px; }
+      .guide-card > .sch-cimg { width:64px !important; height:90px !important; border-radius:5px; }
+      .guide-card h3 { font-size:17px; }
+    }
 </style>
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
   <script data-gtag-deferred="G-2Q52C5EKG7">
@@ -696,6 +736,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <section class="hero" style="border-top:none; padding-bottom:0;">
   <div class="container">
     <div class="hero-eyebrow">The Hub</div>
+    <figure class="hero-card-photo">
+      <span data-card-img="ebay:ethan-holliday" data-card-name="Ethan Holliday 1st Bowman Chrome Auto CPA-EH" data-card-sub="1st Bowman" data-card-size="hero" data-card-surface="blog-hero"></span>
+      <figcaption class="hero-card-cap"><b>Ethan Holliday 1st Bowman Chrome Auto</b> &middot; the card behind the most-linked guide &middot; live eBay listing</figcaption>
+    </figure>
     <h1>Every Guide,<br><em>One Place</em></h1>
     <p class="hero-sub">
       Box ROI rankings, set breakdowns, prospect deep dives, best-cards-under-$50 picks, grading math, and the
@@ -717,22 +761,31 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <p class="section-intro">New here? These are the highest-leverage pages on the site — start with the calculator, then the box rankings.</p>
     <div class="guides-grid">
       <a href="/hobby-box-roi-calculator" class="guide-card">
+        <span data-card-img="name:2026 Bowman Baseball Hobby Box sealed -case -pack -chrome -sapphire -draft -jumbo -blaster -lot" data-card-name="2026 Bowman Baseball Hobby Box" data-card-sub="sealed box" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Free Tool</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Hobby Box ROI Calculator</h3>
         <p style="color:var(--text-dim); font-size:14px;">Enter box cost and hit odds, get expected value, ROI, and a rip-or-flip verdict — live.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/best-hobby-boxes-2026" class="guide-card">
+        <span data-card-img="name:Sealed Hobby Box Topps Chrome Basketball 2025-26 -black -updates -update -cactus -cosmic -sapphire -pristine -case -pack -packs -jumbo -blaster -lot" data-card-name="2025-26 Topps Chrome Basketball Hobby Box" data-card-sub="sealed box" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Buyer's Guide</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Best Hobby Boxes 2026 — Ranked by ROI</h3>
         <p style="color:var(--text-dim); font-size:14px;">Six boxes scored on real EV math, plus one to avoid. The flagship guide.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/psa-grading-guide" class="guide-card">
+        <span data-card-img="name:PSA 10 Ethan Holliday 2026 Bowman Chrome auto -lot -reprint" data-card-name="Ethan Holliday 2026 Bowman Chrome Auto PSA 10" data-card-sub="PSA 10" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Grading</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">PSA Grading Guide 2026</h3>
         <p style="color:var(--text-dim); font-size:14px;">Every tier, real turnaround times, hidden fees, and the ROI math on grading.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
     </div>
   </section>
@@ -742,46 +795,67 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <p class="section-intro">Deep dives on the year's biggest releases — config, the rookie/card class, parallels, and box math.</p>
     <div class="guides-grid">
       <a href="/topps-series-1-2026" class="guide-card">
+        <span data-card-img="name:Sealed Hobby Box Topps Series 1 Baseball 2026 -&quot;series 2&quot; -chrome -heritage -mega -complete -japan -case -pack -packs -jumbo -blaster -lot" data-card-name="2026 Topps Series 1 Baseball Hobby Box" data-card-sub="sealed box" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Baseball</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">2026 Topps Series 1 Baseball</h3>
         <p style="color:var(--text-dim); font-size:14px;">The 75th-anniversary flagship: base set, rookie class, the parallel rainbow, and box ROI.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/topps-chrome-basketball-2026" class="guide-card">
+        <span data-card-img="name:Cooper Flagg Topps Chrome Silver Refractor 2025-26 #251" data-card-name="Cooper Flagg 2025-26 Topps Chrome #251 Silver Refractor" data-card-sub="basketball" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Basketball</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">2025-26 Topps Chrome Basketball</h3>
         <p style="color:var(--text-dim); font-size:14px;">Topps' first licensed NBA product since 2010-11 — Cooper Flagg RC and the refractor rainbow.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/pitch-black-set-guide" class="guide-card">
+        <span data-card-img="ebay:mega-darkrai-ex-sir" data-card-name="Mega Darkrai ex SIR #116/084 Pitch Black" data-card-sub="pokemon" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Pokémon</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Pitch Black Set Guide</h3>
         <p style="color:var(--text-dim); font-size:14px;">Mega Darkrai era: chase cards, rarity grid, and EV math for the July release.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/prismatic-evolutions-guide" class="guide-card">
+        <span data-card-img="ebay:umbreon-ex-sir-pe" data-card-name="Umbreon ex SIR #161/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Pokémon</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Prismatic Evolutions Guide</h3>
         <p style="color:var(--text-dim); font-size:14px;">The set that reset the Pokémon market — what to chase and what to skip.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/ascended-heroes" class="guide-card">
+        <span data-card-img="ebay:tr-mewtwo-ex-sir" data-card-name="Team Rocket&#x27;s Mewtwo ex SIR #281/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Pokémon</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Mega Evolution: Ascended Heroes</h3>
         <p style="color:var(--text-dim); font-size:14px;">Mega Attack Rares and the chase cards — Gengar, Charizard Y, Dragonite ex.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/chaos-rising" class="guide-card">
+        <span data-card-img="ebay:mega-greninja-ex-sir" data-card-name="Mega Greninja ex SIR #116/086 Chaos Rising" data-card-sub="pokemon" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Pokémon</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Chaos Rising</h3>
         <p style="color:var(--text-dim); font-size:14px;">Mega Greninja ex, the Chaos Holo SIRs, pull rates and box ROI.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/pokemon-tcg-2026" class="guide-card">
+        <span data-card-img="ebay:mega-lucario-ex-sir" data-card-name="Mega Lucario ex SIR #179/132 Mega Evolution" data-card-sub="pokemon" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Pokémon</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">2026 Pokémon TCG Guide</h3>
         <p style="color:var(--text-dim); font-size:14px;">The full year of Pokémon sets, hot cards, and release calendar.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
     </div>
   </section>
@@ -791,22 +865,31 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <p class="section-intro">Sport-by-sport picks with real upside, ranked on upside-to-price with live eBay links.</p>
     <div class="guides-grid">
       <a href="/best-baseball-cards-under-50" class="guide-card">
+        <span data-card-img="name:Roman Anthony Bowman Chrome Auto 2024 -lot -reprint -digital -ip -signed -coa" data-card-name="Roman Anthony 2024 Bowman Chrome Auto" data-card-sub="baseball" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Baseball</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Best Baseball Cards Under $50</h3>
         <p style="color:var(--text-dim); font-size:14px;">Roman Anthony, Jackson Holliday, Langford and more — scarcity over hype.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/best-basketball-cards-under-50" class="guide-card">
+        <span data-card-img="name:Ausar Thompson Prizm Silver #178 PSA 9 2023-24 -monopoly -emergent -instant -sensational -select -draft -auto" data-card-name="Ausar Thompson 2023-24 Prizm Silver #178 PSA 9" data-card-sub="basketball" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Basketball</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Best Basketball Cards Under $50</h3>
         <p style="color:var(--text-dim); font-size:14px;">Rising sophomores and the deeper Cooper Flagg draft class on a budget.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/best-football-cards-under-50" class="guide-card">
+        <span data-card-img="name:Carnell Tate Prizm Draft Picks Silver 2025 -auto -lot" data-card-name="Carnell Tate 2025 Prizm Draft Picks Silver" data-card-sub="football" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Football</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Best Football Cards Under $50</h3>
         <p style="color:var(--text-dim); font-size:14px;">Mendoza, Tate, and the 2026 rookie-class parallels worth buying.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
     </div>
   </section>
@@ -816,34 +899,49 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <p class="section-intro">1st Bowman prospects, ROY races, and the veteran names that anchor the baseball market.</p>
     <div class="guides-grid">
       <a href="/bowman-bangers" class="guide-card">
+        <span data-card-img="ebay:ethan-holliday" data-card-name="Ethan Holliday 1st Bowman Chrome Auto CPA-EH" data-card-sub="1st Bowman" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Prospects</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">2026 Bowman Bangers</h3>
         <p style="color:var(--text-dim); font-size:14px;">The 1st Bowman names driving the most activity in the 2026 class.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/roy-watch-2026" class="guide-card">
+        <span data-card-img="name:Kevin McGonigle Bowman Chrome Auto CPA-KM 2025 -lot -reprint" data-card-name="Kevin McGonigle 2025 Bowman Chrome Auto CPA-KM" data-card-sub="ROY watch" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Prospects</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">ROY Watch 2026</h3>
         <p style="color:var(--text-dim); font-size:14px;">The Rookie-of-the-Year races and the cards that move with them.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/ethan-holliday-rookie-cards" class="guide-card">
+        <span data-card-img="ebay:ethan-holliday" data-card-name="Ethan Holliday 1st Bowman Chrome Auto CPA-EH" data-card-sub="1st Bowman" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Prospects</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Ethan Holliday 1st Bowman</h3>
         <p style="color:var(--text-dim); font-size:14px;">Deep dive on the next Holliday and his first Bowman cards.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/aiva-arquette-1st-bowman" class="guide-card">
+        <span data-card-img="ebay:aiva-arquette" data-card-name="Aiva Arquette 1st Bowman Chrome Auto CPA-AA" data-card-sub="1st Bowman" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Prospects</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Aiva Arquette 1st Bowman</h3>
         <p style="color:var(--text-dim); font-size:14px;">First Bowman breakdown for one of the class's risers.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/shohei-ohtani-cards" class="guide-card">
+        <span data-card-img="name:Shohei Ohtani Topps Update Rookie Debut 2018 #US285 PSA 10" data-card-name="Shohei Ohtani 2018 Topps Update #US285 PSA 10" data-card-sub="baseball" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Veterans</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Shohei Ohtani Cards</h3>
         <p style="color:var(--text-dim); font-size:14px;">The most liquid name in the hobby — which Ohtani cards to own.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
     </div>
   </section>
@@ -853,16 +951,22 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <p class="section-intro">Rookie-card guides for the NBA and NFL classes shaping the 2026 market.</p>
     <div class="guides-grid">
       <a href="/cooper-flagg-rookie-cards" class="guide-card">
+        <span data-card-img="name:Cooper Flagg Topps Chrome Silver Refractor 2025-26 #251" data-card-name="Cooper Flagg 2025-26 Topps Chrome #251 Silver Refractor" data-card-sub="basketball" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Basketball</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">Cooper Flagg Rookie Cards</h3>
         <p style="color:var(--text-dim); font-size:14px;">What to buy, what to avoid, and current prices on the headline rookie.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
       <a href="/nfl-rookie-cards-2026" class="guide-card">
+        <span data-card-img="name:Fernando Mendoza Topps Chrome Rookie Auto 2026 -lot -reprint -digital" data-card-name="Fernando Mendoza 2026 Topps Chrome Rookie Auto" data-card-sub="football" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Football</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">2026 NFL Rookie Cards Guide</h3>
         <p style="color:var(--text-dim); font-size:14px;">Topps' return to the NFL and the rookie cards worth chasing.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
     </div>
   </section>
@@ -872,10 +976,13 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <p class="section-intro">2026 is a World Cup year — the soccer market's biggest window in four years.</p>
     <div class="guides-grid">
       <a href="/world-cup-2026-soccer-cards" class="guide-card">
+        <span data-card-img="name:Lamine Yamal Topps Chrome UEFA 2024-25 -lot -reprint -digital" data-card-name="Lamine Yamal 2024-25 Topps Chrome UEFA" data-card-sub="soccer" data-card-size="card" data-card-surface="blog-grid" data-card-link="off"></span>
+        <div class="guide-body">
         <div class="section-eyebrow">Soccer</div>
         <h3 style="font-family:var(--fd); color:var(--text-head); margin:6px 0;">FIFA World Cup 2026 Cards</h3>
         <p style="color:var(--text-dim); font-size:14px;">The players, sets, and cards to watch ahead of the tournament.</p>
         <span class="btn-secondary" style="margin-top:10px;">Read →</span>
+        </div>
       </a>
     </div>
   </section>
@@ -995,5 +1102,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   // Sep 1 2026: looping ghost marquee under entries removed (audit: read as a rendering glitch).
 })();
 </script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body>
 </html>

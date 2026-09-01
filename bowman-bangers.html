@@ -968,6 +968,254 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="alert-bar" style="margin:0 0 28px;">
   &#9889; <strong>Aug 25 board: Arquette &minus;13% ($58 &rarr; $50), Fischer's second red week ($114 &rarr; $105, &minus;8%) &mdash; and watch-tier Aloy +11% ($56 &rarr; $62) now out-prices the #5 seat.</strong> (SportsCardsPro raw solds.) Top movers both directions: <strong>Aloy +11%</strong> is the only green candle anywhere near the board; <strong>Arquette &minus;13%</strong> is the biggest fade, with his PSA 10 down to $282. Fischer's pullback is now two red weeks &mdash; still above the $95 line where we'd stop calling it a dip. Florentino's PSA 10 printed $492 (from the $399 we last showed) while raw held $80 &mdash; the graded ladder likes him. Kim: third straight week at exactly $131.25 raw; the PASS stands. Holliday eased $113 &rarr; $111 with the PSA 10 holding $720 &mdash; #1 stands on both ladders. <strong>Crossover watch:</strong> per the rule on Arquette's card, Aloy out-sold him this week (week one of two) &mdash; if it holds next Tuesday, they swap. No reorders today. Bowman Chrome street date ~Sep 9&ndash;10; the paper&rarr;Chrome transition clock starts once Chrome autos have real sold volume (~late Sep). Every call graded at 6 and 12 months on <a href="/track-record">the Scorecard</a>.
 </div>
+
+<!-- THE BOARD — compact ranked table, built at runtime from the entries below (nothing here is typed twice).
+     Rank moves since the reader's last visit animate (FLIP) and wear a "was #n" badge. -->
+<style>
+  .bb-board { margin:0 0 32px; background:var(--bg2); border:1px solid var(--border2); border-top:2px solid var(--accent); }
+  .bb-board-head { display:flex; justify-content:space-between; align-items:baseline; gap:8px 18px; flex-wrap:wrap; padding:16px 18px 0; }
+  .bb-board-title { font-family:var(--fd); font-size:24px; font-weight:900; text-transform:uppercase; letter-spacing:.5px; color:var(--text-head); line-height:1; }
+  .bb-board-title em { color:var(--accent); font-style:normal; }
+  .bb-board-note { font-family:var(--fm); font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); }
+  .bb-board .tbl-scroll { margin-top:10px; }
+  .bb-table { width:100%; border-collapse:collapse; }
+  .bb-table th { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); padding:10px 12px; text-align:left; border-bottom:1px solid var(--border2); white-space:nowrap; }
+  .bb-table th.sortable { cursor:pointer; user-select:none; transition:color .15s; }
+  .bb-table th.sortable::after { content:'\2195'; margin-left:6px; opacity:.35; }
+  .bb-table th.sortable:hover { color:var(--accent); }
+  .bb-table th.sortable.asc::after { content:'\2191'; opacity:1; color:var(--accent); }
+  .bb-table th.sortable.desc::after { content:'\2193'; opacity:1; color:var(--accent); }
+  .bb-table td { padding:8px 12px; border-bottom:1px solid var(--border); vertical-align:middle; background:var(--bg2); }
+  .bb-table tr:last-child td { border-bottom:none; }
+  .bb-table tr { transition:background .15s; }
+  .bb-table tr.bb-moving { position:relative; z-index:2; }
+  .bb-table tr.bb-moving td { background:var(--bg3); box-shadow:0 8px 24px -12px rgba(0,204,245,.5); }
+  .bb-rk { width:1%; white-space:nowrap; }
+  .bb-num { font-family:var(--fd); font-size:24px; font-weight:900; color:var(--text-head); line-height:1; vertical-align:middle; }
+  .bb-was { display:inline-block; margin-left:8px; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1px; padding:2px 6px; border-radius:2px; vertical-align:middle; white-space:nowrap; transition:opacity 1s ease; }
+  .bb-was.up { color:var(--green); background:var(--green-dim); }
+  .bb-was.down { color:var(--red); background:rgba(255,46,85,.1); }
+  .bb-was.new { color:var(--accent); background:var(--accent-dim); }
+  .bb-was.bb-fade { opacity:0; }
+  .bb-ph { width:1%; }
+  .bb-name { display:block; font-family:var(--fd); font-size:19px; font-weight:800; text-transform:uppercase; letter-spacing:.3px; color:var(--text-head); line-height:1.1; }
+  .bb-name:hover { color:var(--accent); }
+  .bb-sub { display:block; font-family:var(--fm); font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:340px; }
+  .bb-pr { font-family:var(--fd); font-size:20px; font-weight:900; color:var(--green); white-space:nowrap; }
+  .bb-pr.dim { color:var(--text-dim); font-size:16px; font-weight:700; }
+  .bb-pr small { display:block; font-family:var(--fm); font-size:9px; letter-spacing:1px; color:var(--text-dim); font-weight:400; }
+  .bb-chip { display:inline-block; font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:4px 10px; border-radius:2px; border-left:3px solid; white-space:nowrap; }
+  .bb-chip.buy { color:var(--green); background:var(--green-dim); border-color:var(--green); }
+  .bb-chip.hold { color:var(--gold); background:rgba(245,200,0,.1); border-color:var(--gold); }
+  .bb-chip.pass, .bb-chip.watch { color:var(--orange); background:var(--orange-dim); border-color:var(--orange); }
+  .bb-chip.sell { color:var(--red); background:rgba(255,46,85,.1); border-color:var(--red); }
+  .bb-dd { text-align:right; }
+  .bb-dd a { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
+  .card-entry, .prospect-mini { scroll-margin-top:72px; }
+  .bb-target { animation:bb-target 1.2s ease-out 1; }
+  @keyframes bb-target { 0% { box-shadow:0 0 0 2px var(--accent), 0 0 48px rgba(0,204,245,.35); } 100% { box-shadow:0 0 0 0 rgba(0,204,245,0); } }
+  @media (max-width:700px) {
+    .bb-board .tbl-scroll > table { min-width:0; }
+    .bb-sub, .bb-dd { display:none; }
+    .bb-table th, .bb-table td { padding:8px 6px; }
+    .bb-table th { letter-spacing:1px; }
+    .bb-num { font-size:19px; }
+    .bb-name { font-size:15px; white-space:normal; }
+    .bb-pr { font-size:16px; }
+    .bb-pr small { white-space:normal; max-width:72px; }
+    .bb-chip { font-size:10px; padding:3px 7px; letter-spacing:1px; }
+    .bb-was { display:block; margin:3px 0 0; }
+  }
+  @media (prefers-reduced-motion:reduce) { .bb-target { animation:none; } .bb-table tr { transition:none !important; } }
+</style>
+<div class="bb-board" id="bb-board">
+  <div class="bb-board-head">
+    <div class="bb-board-title">The <em>Board</em></div>
+    <div class="bb-board-note" id="bb-board-note">Ranked by what sells &middot; &#9650;&#9660; = moved since your last visit</div>
+  </div>
+  <div class="tbl-scroll">
+    <table class="bb-table" aria-describedby="bb-board-note">
+      <thead><tr>
+        <th class="sortable bb-rk" data-sort="rank" title="Board order">#</th>
+        <th class="bb-ph"><span class="sr-only" style="position:absolute;left:-9999px;">Card</span></th>
+        <th class="sortable" data-sort="name">Prospect</th>
+        <th class="sortable" data-sort="price">Price</th>
+        <th>Signal</th>
+        <th class="bb-dd"></th>
+      </tr></thead>
+      <tbody id="bb-rows"></tbody>
+    </table>
+  </div>
+</div>
+<script>
+(function () {
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); return; } init();
+  function init() {
+  var SEEN = 'sch_bb_rank_seen_v1';
+  var FEED = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json';
+  var board = document.getElementById('bb-board'), tbody = document.getElementById('bb-rows');
+  if (!board || !tbody) return;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var html = document.documentElement;
+
+  function txt(el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function slug(k) { return String(k).replace(/^[a-z]+:/, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase(); }
+  function lsGet() { try { return JSON.parse(localStorage.getItem(SEEN) || 'null'); } catch (e) { return null; } }
+  function lsSet(m) { try { localStorage.setItem(SEEN, JSON.stringify(m)); } catch (e) {} }
+  function priceNum(s) { // "~$95–$125" → midpoint 110; "$58" → 58
+    var m = String(s).match(/\$\s?([\d,]+(?:\.\d+)?)/g); if (!m) return null;
+    var n = m.map(function (x) { return parseFloat(x.replace(/[^\d.]/g, '')); });
+    return n.length > 1 ? (n[0] + n[1]) / 2 : n[0];
+  }
+
+  // 1. Read the board straight off the entries — the five ranked cards, then the watch tier.
+  function readRows() {
+    var rows = [], rank = 0;
+    document.querySelectorAll('.card-entry').forEach(function (en) {
+      var rk = en.querySelector('.entry-rank'); if (!rk) return;
+      var btn = en.querySelector('.sch-track-card'), ph = en.querySelector('[data-card-img]');
+      var key = (btn && btn.getAttribute('data-feed')) || (ph && ph.getAttribute('data-card-img')); if (!key) return;
+      var t = document.createElement('div'), title = en.querySelector('.entry-title');
+      t.innerHTML = title ? title.innerHTML.split(/<br\s*\/?>/i)[0] : '';
+      var name = txt(t) || (ph && ph.getAttribute('data-card-name')) || key;
+      var sig = '';
+      en.querySelectorAll('.entry-stat-label').forEach(function (l) { if (/^signal$/i.test(txt(l)) && l.nextElementSibling) sig = txt(l.nextElementSibling); });
+      if (!sig) { var v = txt(en.querySelector('.entry-verdict strong')).match(/verdict:\s*([a-z]+)/i); sig = v ? v[1] : ''; }
+      if (!en.id) en.id = 'bb-' + slug(key);
+      rank++;
+      rows.push({ key: key, rank: parseInt(txt(rk), 10) || rank, name: name, sub: txt(en.querySelector('.entry-sport-tag')), price: txt(en.querySelector('.price-main')), sig: sig.toUpperCase(), id: en.id, el: null });
+    });
+    rows.sort(function (a, b) { return a.rank - b.rank; });
+    rank = rows.length;
+    document.querySelectorAll('.prospect-mini').forEach(function (m) {
+      var ph = m.querySelector('[data-card-img]'); if (!ph) return;
+      var key = ph.getAttribute('data-card-img');
+      if (!m.id) m.id = 'bb-' + slug(key);
+      rows.push({ key: key, rank: ++rank, name: txt(m.querySelector('.prospect-mini-name')) || ph.getAttribute('data-card-name') || key, sub: txt(m.querySelector('.prospect-mini-tag')), price: '', sig: 'WATCH', id: m.id, watch: true, el: null });
+    });
+    return rows;
+  }
+
+  function rowHtml(r) {
+    var sig = r.sig || 'HOLD', cls = sig.toLowerCase().replace(/[^a-z]/g, '');
+    var pr = r.price ? '<span class="bb-pr">' + esc(r.price) + '</span>' : '<span class="bb-pr dim" data-live="1">&mdash;<small>watch tier</small></span>';
+    return '<td class="bb-rk"><span class="bb-num">' + (r.rank < 10 ? '0' : '') + r.rank + '</span></td>' +
+      '<td class="bb-ph"><span data-card-img="' + esc(r.key) + '" data-card-name="' + esc(r.name) + '" data-card-size="row" data-card-surface="bowman-board"></span></td>' +
+      '<td><a class="bb-name" href="#' + esc(r.id) + '">' + esc(r.name) + '</a>' + (r.sub ? '<span class="bb-sub">' + esc(r.sub) + '</span>' : '') + '</td>' +
+      '<td>' + pr + '</td>' +
+      '<td><span class="bb-chip ' + cls + '">' + esc(sig) + '</span></td>' +
+      '<td class="bb-dd"><a href="#' + esc(r.id) + '">Deep dive &darr;</a></td>';
+  }
+
+  var rows = readRows();
+  if (!rows.length) { board.style.display = 'none'; return; }
+  rows.forEach(function (r) {
+    var tr = document.createElement('tr'); tr.setAttribute('data-key', r.key); tr.innerHTML = rowHtml(r); r.el = tr;
+    tr.querySelector('.bb-name').setAttribute('data-price', r.price ? priceNum(r.price) : '');
+  });
+  var byKey = {}; rows.forEach(function (r) { byKey[r.key] = r; });
+
+  // "Updated …" from the hero meta, so the board never carries a date of its own.
+  var upd = txt(document.querySelector('.hero-meta span'));
+  if (upd) document.getElementById('bb-board-note').innerHTML = esc(upd.replace(/^[^A-Za-z]+/, '')) + ' &middot; ranked by what sells &middot; &#9650;&#9660; = moved since your last visit';
+
+  // 2. FLIP: measure → reorder → invert → play. `reorder` mutates the DOM into the new order.
+  var flipping = 0;
+  function flip(reorder, dur, done) {
+    var trs = Array.prototype.slice.call(tbody.children), first = {};
+    if (reduce || !trs.length) { reorder(); if (done) done(); return; }
+    trs.forEach(function (tr) { first[tr.getAttribute('data-key')] = tr.getBoundingClientRect().top; });
+    reorder();
+    var moved = [];
+    trs.forEach(function (tr) {
+      var d = first[tr.getAttribute('data-key')] - tr.getBoundingClientRect().top;
+      if (Math.abs(d) < 1) return;
+      tr.style.transition = 'none'; tr.style.transform = 'translate3d(0,' + d + 'px,0)'; tr.classList.add('bb-moving'); moved.push(tr);
+    });
+    if (!moved.length) { if (done) done(); return; }
+    flipping++; html.classList.add('bb-flipping');
+    tbody.getBoundingClientRect(); // commit the inverted positions before playing
+    requestAnimationFrame(function () { requestAnimationFrame(function () {
+      moved.forEach(function (tr) { tr.style.transition = 'transform ' + dur + 'ms cubic-bezier(.2,.8,.2,1)'; tr.style.transform = ''; });
+      setTimeout(function () {
+        moved.forEach(function (tr) { tr.style.transition = ''; tr.style.transform = ''; tr.classList.remove('bb-moving'); });
+        if (!--flipping) { html.classList.remove('bb-flipping'); document.dispatchEvent(new CustomEvent('bb-flip-done')); }
+        if (done) done();
+      }, dur + 40);
+    }); });
+  }
+  function place(order) { order.forEach(function (r) { tbody.appendChild(r.el); }); }
+
+  // 3. First paint: if the reader has seen a different order, show that order, then shuffle to today's.
+  var seen = lsGet(), now = {};
+  rows.forEach(function (r) { now[r.key] = r.rank; });
+  var moves = [];
+  if (seen && typeof seen === 'object') rows.forEach(function (r) { if (seen[r.key] !== r.rank) moves.push(r); });
+  var byRank = rows.slice();
+  if (moves.length) {
+    var old = rows.slice().sort(function (a, b) { var A = seen[a.key] || 100 + a.rank, B = seen[b.key] || 100 + b.rank; return A - B; });
+    place(old);
+    // the badges carry the information; the shuffle just makes it felt
+    moves.forEach(function (r) {
+      var was = seen[r.key], b = document.createElement('span');
+      b.className = 'bb-was ' + (was == null ? 'new' : was > r.rank ? 'up' : 'down');
+      b.innerHTML = was == null ? 'NEW' : (was > r.rank ? '&#9650;' : '&#9660;') + ' was #' + was;
+      r.el.querySelector('.bb-rk').appendChild(b);
+      setTimeout(function () { b.classList.add('bb-fade'); setTimeout(function () { b.remove(); }, 1100); }, 4000 + (reduce ? 0 : 900));
+    });
+    setTimeout(function () { flip(function () { place(byRank); }, 500); }, reduce ? 0 : 450);
+  } else {
+    place(byRank);
+  }
+  lsSet(now);
+
+  // 4. Watch-tier rows have no on-page price: fill "last sold" from the nightly engine feed (same feed the Signal Board reads).
+  if (tbody.querySelector('[data-live]')) {
+    fetch(FEED + '?t=' + Math.floor(Date.now() / 36e5), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (!j || !Array.isArray(j.cards)) return;
+      j.cards.forEach(function (c) {
+        var r = byKey[c.key]; if (!r || !r.watch || c.last == null || !isFinite(c.last)) return;
+        var cell = r.el.querySelector('[data-live]'); if (!cell) return;
+        cell.className = 'bb-pr'; cell.innerHTML = '$' + Number(c.last).toLocaleString(undefined, { maximumFractionDigits: 0 }) + '<small>last sold' + (j.day ? ' &middot; ' + esc(j.day) : '') + '</small>';
+        r.el.querySelector('.bb-name').setAttribute('data-price', c.last);
+      });
+    }).catch(function () {});
+  }
+
+  // 5. Sorting — a click on #/Prospect/Price re-sorts, and the rows glide (same FLIP) instead of snapping.
+  var sortKey = 'rank', sortDir = 1;
+  board.querySelectorAll('th.sortable').forEach(function (th) {
+    th.addEventListener('click', function () {
+      var k = th.getAttribute('data-sort');
+      sortDir = (sortKey === k) ? -sortDir : (k === 'price' ? -1 : 1);
+      sortKey = k;
+      board.querySelectorAll('th.sortable').forEach(function (h) { h.classList.remove('asc', 'desc'); h.removeAttribute('aria-sort'); });
+      th.classList.add(sortDir > 0 ? 'asc' : 'desc'); th.setAttribute('aria-sort', sortDir > 0 ? 'ascending' : 'descending');
+      var order = rows.slice().sort(function (a, b) {
+        if (k === 'name') return a.name.localeCompare(b.name) * sortDir;
+        if (k === 'price') { var A = parseFloat(a.el.querySelector('.bb-name').getAttribute('data-price')), B = parseFloat(b.el.querySelector('.bb-name').getAttribute('data-price')); if (isNaN(A)) A = -1; if (isNaN(B)) B = -1; return (A - B) * sortDir || a.rank - b.rank; }
+        return (a.rank - b.rank) * sortDir;
+      });
+      flip(function () { place(order); }, 380);
+    });
+  });
+
+  // 6. Deep dive: smooth-scroll to the entry and light it up once so the eye lands on the right block.
+  tbody.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#"]'); if (!a) return;
+    var t = document.getElementById(a.getAttribute('href').slice(1)); if (!t) return;
+    e.preventDefault();
+    if (t.classList.contains('reveal')) t.classList.add('visible'); // don't land on a block the scroll-reveal hasn't drawn yet
+    t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    t.classList.remove('bb-target'); void t.offsetWidth; t.classList.add('bb-target');
+    t.addEventListener('animationend', function () { t.classList.remove('bb-target'); }, { once: true });
+    if (history.replaceState) history.replaceState(null, '', '#' + t.id);
+  });
+  }
+})();
+</script>
+
 <div class="card-entry">
       <div class="entry-rank">01</div>
       <div class="entry-header">
@@ -2006,9 +2254,14 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   setInterval(function () { takeSwing(); setTimeout(roll, 2600); }, RESTRIKE);
 
   if ("IntersectionObserver" in window) {
+    // The stamp waits while the board table above is mid-shuffle (html.bb-flipping), so the two
+    // motions never play at once; queued stamps fire the moment the shuffle lands.
+    var stampQ = [];
+    function stamp(t) { if (document.documentElement.classList.contains("bb-flipping")) { if (stampQ.indexOf(t) < 0) stampQ.push(t); return; } t.classList.add("bb-stamp"); }
+    document.addEventListener("bb-flip-done", function () { stampQ.splice(0).forEach(function (t) { t.classList.add("bb-stamp"); }); });
     var seen = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add("bb-stamp"); seen.unobserve(en.target); }
+        if (en.isIntersecting) { stamp(en.target); seen.unobserve(en.target); }
       });
     }, { threshold: 0.6 });
     document.querySelectorAll(".entry-rank").forEach(function (r) { seen.observe(r); });

@@ -116,6 +116,42 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
       .nav-hamburger { display:flex !important; } 
       .mobile-nav { display:block !important; } }
 @media (max-width:800px) { .stats { grid-template-columns:repeat(4,1fr); } h1 { font-size:26px; } .level { font-size:30px; } }
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > *, .hero.hero-grid > *, .rh-head .container > *, .mast.hero-grid > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim, var(--dim)); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent, var(--iac)); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:block; }
+      .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub, .section-intro, .rh-intro { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
+    .mast.hero-grid { column-gap:40px; align-items:end; grid-template-columns:minmax(0,1fr) auto 200px; padding-bottom:10px; }
+    .mast.hero-grid > * { grid-column:auto; }
+    .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1; align-self:end; justify-self:center; }
+    .mast.hero-grid > .levelbox { grid-column:3; grid-row:1; align-self:end; }
+    .mast.hero-grid .hero-card-photo .sch-cimg { width:150px !important; height:210px !important; }
+    .mast.hero-grid .hero-card-cap { max-width:170px; margin:10px auto 0; }
+    @media(max-width:800px) { .mast.hero-grid { grid-template-columns:minmax(0,1fr) 160px; } .mast.hero-grid > .levelbox { grid-column:1 / span 2; grid-row:2; text-align:left; } }
+    @media(max-width:700px) { .mast.hero-grid { display:block; position:relative; padding-right:104px; } .mast.hero-grid > .hero-card-photo { float:none; position:absolute; right:0; top:26px; width:90px; margin:0; } .mast.hero-grid .hero-card-photo .sch-cimg { width:90px !important; height:126px !important; } .mast.hero-grid > .levelbox { text-align:left; margin-top:12px; } }
+    td.card { white-space:normal; }
+    td.card .roi-cell { min-width:150px; gap:10px; }
+    td.card .roi-cell > div { white-space:nowrap; }
+    td.card .roi-cell > .sch-cimg { margin-top:0; }
 </style>  <!-- GA4 — added Aug 25, 2026: the set-index pages shipped without the tag, so every
        visit to the indices (the current priority surface) was going unmeasured. -->
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
@@ -494,12 +530,16 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
 
 <div class="strip"><a class="chip" href="/pitch-black-index" style="text-decoration:none;"><b>PB26</b> <span style="color:var(--tx)">93.19</span> <span class="soon">−6.8% w/w</span></a><a class="chip on" href="/chaos-rising-index" style="text-decoration:none;"><b>CR26</b> <span style="color:var(--tx)">95.35</span> <span class="soon">−4.7% w/w</span></a><a class="chip" href="/ascended-heroes-index" style="text-decoration:none;"><b>AH26</b> <span style="color:var(--tx)">100.31</span> <span class="soon">+0.3% w/w</span></a><a class="chip" href="/prismatic-evolutions-index" style="text-decoration:none;"><b>PRIS25</b> <span style="color:var(--tx)">101.76</span> <span class="soon">+1.8% w/w</span></a><a class="chip" href="/destined-rivals-index" style="text-decoration:none;"><b>DR25</b> <span style="color:var(--tx)">97.59</span> <span class="soon">−2.4% w/w</span></a><div class="chip"><b>BOW26</b> <span class="soon">preview</span></div><div class="chip"><b>MEGA26</b> <span class="soon">Mega Evolution base · planned</span></div><div class="chip"><b>BCB26</b> <span class="soon">Bowman Chrome · Sep 9</span></div></div>
 
-<div class="mast">
+<div class="mast hero-grid">
 <div>
 <div class="eyebrow">▮ Set Index · Price-Weighted · Chase Tier</div>
 <h1>CR26 <span class="tick">·</span> Chaos Rising Chase Index</h1>
 <div class="subline">Pokémon Mega Evolution: Chaos Rising — released May 22, 2026. Price-weighted over every secret-tier card with a sourced sold read (currently 36). This page tracks the set; it does not recommend cards. <a href="/chaos-rising" style="color:var(--iac);">Set guide →</a></div>
 </div>
+<figure class="hero-card-photo">
+      <span data-card-img="ebay:mega-greninja-ex-sir" data-card-name="Mega Greninja ex SIR #116/086 Chaos Rising" data-card-sub="pokemon" data-card-size="hero" data-card-surface="cr26-hero"></span>
+      <figcaption class="hero-card-cap">#1 constituent &middot; <b>Mega Greninja ex SIR #116</b> &middot; live eBay listing</figcaption>
+    </figure>
 <div class="levelbox">
 <div class="level">95.35</div>
 <div class="levelchg">base 100.00 · inception 08/24/26 · re-marked 08/31/26 · ▼ −4.7% w/w</div>
@@ -525,217 +565,217 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
 <thead><tr><th>RK</th><th>Card</th><th>Rarity</th><th>Price</th><th>Weight</th><th>Since Launch</th><th>As Of</th><th>★</th></tr></thead>
 <tbody>
 <tr class="hrow" data-i="0" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">1</td>
-<td class="card"><b>Mega Greninja ex</b> <span class="cn">#116/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ebay:mega-greninja-ex-sir" data-card-name="Mega Greninja ex SIR #116/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Mega Greninja ex</b> <span class="cn">#116/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$192.62</td><td class="num wt">29.8%</td><td class="num"><span style="color:var(--rd)">▼ 60.4%</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(0)">★</button></td></tr>
 <tr class="hrow" data-i="1" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">2</td>
-<td class="card"><b>Mega Greninja ex</b> <span class="cn">#122/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Greninja ex 122/086 Chaos Rising -case -display -lot -proxy -bundle" data-card-name="Mega Greninja ex MHR #122/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Mega Greninja ex</b> <span class="cn">#122/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">MHR</span></td>
 <td class="num">$171.43</td><td class="num wt">26.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(1)">★</button></td></tr>
 <tr class="hrow" data-i="2" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">3</td>
-<td class="card"><b>Cinccino ex</b> <span class="cn">#119/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-2" data-card-name="Cinccino ex SIR #119/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Cinccino ex</b> <span class="cn">#119/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$53.34</td><td class="num wt">8.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(2)">★</button></td></tr>
 <tr class="hrow" data-i="3" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">4</td>
-<td class="card"><b>Mega Dragalge ex</b> <span class="cn">#118/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-3" data-card-name="Mega Dragalge ex SIR #118/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Mega Dragalge ex</b> <span class="cn">#118/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$34.57</td><td class="num wt">5.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(3)">★</button></td></tr>
 <tr class="hrow" data-i="4" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">5</td>
-<td class="card"><b>Mega Floette ex</b> <span class="cn">#117/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Floette ex 117/086 Chaos Rising -case -display -lot -proxy -bundle" data-card-name="Mega Floette ex SIR #117/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Mega Floette ex</b> <span class="cn">#117/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$26.87</td><td class="num wt">4.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(4)">★</button></td></tr>
 <tr class="hrow" data-i="5" style="border-left:2px solid transparent;"><td class="rk">6</td>
-<td class="card"><b>AZ's Tranquility</b> <span class="cn">#120/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-5" data-card-name="AZ&#x27;s Tranquility SIR #120/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>AZ's Tranquility</b> <span class="cn">#120/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$26.55</td><td class="num wt">4.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(5)">★</button></td></tr>
 <tr class="hrow" data-i="6" style="border-left:2px solid transparent;"><td class="rk">7</td>
-<td class="card"><b>Roxie's Performance</b> <span class="cn">#121/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-6" data-card-name="Roxie&#x27;s Performance SIR #121/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Roxie's Performance</b> <span class="cn">#121/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$23.00</td><td class="num wt">3.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(6)">★</button></td></tr>
 <tr class="hrow" data-i="7" style="border-left:2px solid transparent;"><td class="rk">8</td>
-<td class="card"><b>Mega Greninja ex</b> <span class="cn">#100/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Greninja ex 100/086 Chaos Rising -case -display -lot -proxy -bundle" data-card-name="Mega Greninja ex UR #100/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Mega Greninja ex</b> <span class="cn">#100/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$10.00</td><td class="num wt">1.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(7)">★</button></td></tr>
 <tr class="hrow" data-i="8" style="border-left:2px solid transparent;"><td class="rk">9</td>
-<td class="card"><b>Froakie</b> <span class="cn">#88/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-8" data-card-name="Froakie IR #88/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Froakie</b> <span class="cn">#88/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$9.11</td><td class="num wt">1.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(8)">★</button></td></tr>
 <tr class="hrow" data-i="9" style="border-left:2px solid transparent;"><td class="rk">10</td>
-<td class="card"><b>Xerneas</b> <span class="cn">#91/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-9" data-card-name="Xerneas IR #91/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Xerneas</b> <span class="cn">#91/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$8.13</td><td class="num wt">1.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(9)">★</button></td></tr>
 <tr class="hrow" data-i="10" style="border-left:2px solid transparent;"><td class="rk">11</td>
-<td class="card"><b>Frogadier</b> <span class="cn">#89/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-10" data-card-name="Frogadier IR #89/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Frogadier</b> <span class="cn">#89/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$7.05</td><td class="num wt">1.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(10)">★</button></td></tr>
 <tr class="hrow" data-i="11" style="border-left:2px solid transparent;"><td class="rk">12</td>
-<td class="card"><b>Ampharos</b> <span class="cn">#90/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-11" data-card-name="Ampharos IR #90/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Ampharos</b> <span class="cn">#90/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$6.43</td><td class="num wt">1.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(11)">★</button></td></tr>
 <tr class="hrow" data-i="12" style="border-left:2px solid transparent;"><td class="rk">13</td>
-<td class="card"><b>Chespin</b> <span class="cn">#87/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-12" data-card-name="Chespin IR #87/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Chespin</b> <span class="cn">#87/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$4.59</td><td class="num wt">0.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(12)">★</button></td></tr>
 <tr class="hrow" data-i="13" style="border-left:2px solid transparent;"><td class="rk">14</td>
-<td class="card"><b>Cinccino ex</b> <span class="cn">#105/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-13" data-card-name="Cinccino ex UR #105/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Cinccino ex</b> <span class="cn">#105/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$4.50</td><td class="num wt">0.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(13)">★</button></td></tr>
 <tr class="hrow" data-i="14" style="border-left:2px solid transparent;"><td class="rk">15</td>
-<td class="card"><b>Surfing Beach</b> <span class="cn">#114/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-14" data-card-name="Surfing Beach UR #114/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Surfing Beach</b> <span class="cn">#114/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$4.38</td><td class="num wt">0.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(14)">★</button></td></tr>
 <tr class="hrow" data-i="15" style="border-left:2px solid transparent;"><td class="rk">16</td>
-<td class="card"><b>Jumbo Ice Cream</b> <span class="cn">#109/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Jumbo Ice Cream 109/086 Chaos Rising -case -display -lot -proxy -bundle" data-card-name="Jumbo Ice Cream UR #109/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Jumbo Ice Cream</b> <span class="cn">#109/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$4.35</td><td class="num wt">0.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(15)">★</button></td></tr>
 <tr class="hrow" data-i="16" style="border-left:2px solid transparent;"><td class="rk">17</td>
-<td class="card"><b>Special Red Card</b> <span class="cn">#113/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Special Red Card 113/086 Chaos Rising -case -display -lot -proxy -bundle" data-card-name="Special Red Card UR #113/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Special Red Card</b> <span class="cn">#113/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$4.24</td><td class="num wt">0.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(16)">★</button></td></tr>
 <tr class="hrow" data-i="17" style="border-left:2px solid transparent;"><td class="rk">18</td>
-<td class="card"><b>Tauros</b> <span class="cn">#96/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-17" data-card-name="Tauros IR #96/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Tauros</b> <span class="cn">#96/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$3.98</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(17)">★</button></td></tr>
 <tr class="hrow" data-i="18" style="border-left:2px solid transparent;"><td class="rk">19</td>
-<td class="card"><b>Mega Dragalge ex</b> <span class="cn">#104/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Dragalge ex 104/086 Chaos Rising -case -display -lot -proxy -bundle" data-card-name="Mega Dragalge ex UR #104/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Mega Dragalge ex</b> <span class="cn">#104/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$3.75</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(18)">★</button></td></tr>
 <tr class="hrow" data-i="19" style="border-left:2px solid transparent;"><td class="rk">20</td>
-<td class="card"><b>Beedrill ex</b> <span class="cn">#98/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-19" data-card-name="Beedrill ex UR #98/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Beedrill ex</b> <span class="cn">#98/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$3.39</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(19)">★</button></td></tr>
 <tr class="hrow" data-i="20" style="border-left:2px solid transparent;"><td class="rk">21</td>
-<td class="card"><b>Crobat</b> <span class="cn">#93/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-20" data-card-name="Crobat IR #93/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Crobat</b> <span class="cn">#93/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$3.35</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(20)">★</button></td></tr>
 <tr class="hrow" data-i="21" style="border-left:2px solid transparent;"><td class="rk">22</td>
-<td class="card"><b>Mega Floette ex</b> <span class="cn">#101/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Floette ex 101/086 Chaos Rising -case -display -lot -proxy -bundle" data-card-name="Mega Floette ex UR #101/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Mega Floette ex</b> <span class="cn">#101/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$3.27</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(21)">★</button></td></tr>
 <tr class="hrow" data-i="22" style="border-left:2px solid transparent;"><td class="rk">23</td>
-<td class="card"><b>Metang</b> <span class="cn">#94/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-22" data-card-name="Metang IR #94/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Metang</b> <span class="cn">#94/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$3.25</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(22)">★</button></td></tr>
 <tr class="hrow" data-i="23" style="border-left:2px solid transparent;"><td class="rk">24</td>
-<td class="card"><b>Mega Pyroar ex</b> <span class="cn">#99/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-23" data-card-name="Mega Pyroar ex UR #99/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Mega Pyroar ex</b> <span class="cn">#99/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$3.19</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(23)">★</button></td></tr>
 <tr class="hrow" data-i="24" style="border-left:2px solid transparent;"><td class="rk">25</td>
-<td class="card"><b>Prism Tower</b> <span class="cn">#111/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Prism Tower 111/086 Chaos Rising -case -display -lot -proxy -bundle" data-card-name="Prism Tower UR #111/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Prism Tower</b> <span class="cn">#111/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$3.00</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(24)">★</button></td></tr>
 <tr class="hrow" data-i="25" style="border-left:2px solid transparent;"><td class="rk">26</td>
-<td class="card"><b>Roxie's Performance</b> <span class="cn">#112/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-25" data-card-name="Roxie&#x27;s Performance UR #112/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Roxie's Performance</b> <span class="cn">#112/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.99</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(25)">★</button></td></tr>
 <tr class="hrow" data-i="26" style="border-left:2px solid transparent;"><td class="rk">27</td>
-<td class="card"><b>AZ's Tranquility</b> <span class="cn">#106/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:AZ&#x27;s Tranquility 106/086 Chaos Rising -case -display -lot -proxy -bundle" data-card-name="AZ&#x27;s Tranquility UR #106/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>AZ's Tranquility</b> <span class="cn">#106/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.99</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(26)">★</button></td></tr>
 <tr class="hrow" data-i="27" style="border-left:2px solid transparent;"><td class="rk">28</td>
-<td class="card"><b>Claydol</b> <span class="cn">#92/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-27" data-card-name="Claydol IR #92/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Claydol</b> <span class="cn">#92/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$2.81</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(27)">★</button></td></tr>
 <tr class="hrow" data-i="28" style="border-left:2px solid transparent;"><td class="rk">29</td>
-<td class="card"><b>Energy Retrieval</b> <span class="cn">#108/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Energy Retrieval 108/086 Chaos Rising -case -display -lot -proxy -bundle" data-card-name="Energy Retrieval UR #108/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Energy Retrieval</b> <span class="cn">#108/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.81</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(28)">★</button></td></tr>
 <tr class="hrow" data-i="29" style="border-left:2px solid transparent;"><td class="rk">30</td>
-<td class="card"><b>Sliggoo</b> <span class="cn">#95/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-29" data-card-name="Sliggoo IR #95/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Sliggoo</b> <span class="cn">#95/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$2.79</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(29)">★</button></td></tr>
 <tr class="hrow" data-i="30" style="border-left:2px solid transparent;"><td class="rk">31</td>
-<td class="card"><b>Emma</b> <span class="cn">#107/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-30" data-card-name="Emma UR #107/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Emma</b> <span class="cn">#107/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.75</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(30)">★</button></td></tr>
 <tr class="hrow" data-i="31" style="border-left:2px solid transparent;"><td class="rk">32</td>
-<td class="card"><b>Cobalion ex</b> <span class="cn">#103/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Cobalion ex 103/086 Chaos Rising" data-card-name="Cobalion ex UR #103/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Cobalion ex</b> <span class="cn">#103/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.60</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(31)">★</button></td></tr>
 <tr class="hrow" data-i="32" style="border-left:2px solid transparent;"><td class="rk">33</td>
-<td class="card"><b>Watchog</b> <span class="cn">#97/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-32" data-card-name="Watchog IR #97/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Watchog</b> <span class="cn">#97/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$2.25</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(32)">★</button></td></tr>
 <tr class="hrow" data-i="33" style="border-left:2px solid transparent;"><td class="rk">34</td>
-<td class="card"><b>Philippe</b> <span class="cn">#110/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Philippe 110/086 Chaos Rising" data-card-name="Philippe UR #110/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Philippe</b> <span class="cn">#110/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.24</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(33)">★</button></td></tr>
 <tr class="hrow" data-i="34" style="border-left:2px solid transparent;"><td class="rk">35</td>
-<td class="card"><b>Gourgeist ex</b> <span class="cn">#102/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Gourgeist ex 102/086 Chaos Rising" data-card-name="Gourgeist ex UR #102/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Gourgeist ex</b> <span class="cn">#102/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.00</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(34)">★</button></td></tr>
 <tr class="hrow" data-i="35" style="border-left:2px solid transparent;"><td class="rk">36</td>
-<td class="card"><b>Tool Scrapper</b> <span class="cn">#115/086</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:cr26-35" data-card-name="Tool Scrapper UR #115/086 Chaos Rising" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="cr26-list"></span><div><b>Tool Scrapper</b> <span class="cn">#115/086</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.00</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
@@ -810,7 +850,8 @@ function openPop(i) {
   document.getElementById('ovl').className = 'ovl open';
 }
 function closePop() { document.getElementById('ovl').className = 'ovl'; }
-document.querySelectorAll('tr.hrow').forEach(function(tr) { tr.addEventListener('click', function() { openPop(parseInt(tr.dataset.i)); }); });
+document.querySelectorAll('tr.hrow').forEach(function(tr) { tr.addEventListener('click', function(e) { if (e.target && e.target.closest && e.target.closest('.sch-cimg-link')) return; openPop(parseInt(tr.dataset.i)); }); });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePop(); });
 </script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body></html>

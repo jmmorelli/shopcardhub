@@ -116,6 +116,42 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
       .nav-hamburger { display:flex !important; } 
       .mobile-nav { display:block !important; } }
 @media (max-width:800px) { .stats { grid-template-columns:repeat(4,1fr); } h1 { font-size:26px; } .level { font-size:30px; } }
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > *, .hero.hero-grid > *, .rh-head .container > *, .mast.hero-grid > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim, var(--dim)); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent, var(--iac)); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:block; }
+      .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub, .section-intro, .rh-intro { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
+    .mast.hero-grid { column-gap:40px; align-items:end; grid-template-columns:minmax(0,1fr) auto 200px; padding-bottom:10px; }
+    .mast.hero-grid > * { grid-column:auto; }
+    .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1; align-self:end; justify-self:center; }
+    .mast.hero-grid > .levelbox { grid-column:3; grid-row:1; align-self:end; }
+    .mast.hero-grid .hero-card-photo .sch-cimg { width:150px !important; height:210px !important; }
+    .mast.hero-grid .hero-card-cap { max-width:170px; margin:10px auto 0; }
+    @media(max-width:800px) { .mast.hero-grid { grid-template-columns:minmax(0,1fr) 160px; } .mast.hero-grid > .levelbox { grid-column:1 / span 2; grid-row:2; text-align:left; } }
+    @media(max-width:700px) { .mast.hero-grid { display:block; position:relative; padding-right:104px; } .mast.hero-grid > .hero-card-photo { float:none; position:absolute; right:0; top:26px; width:90px; margin:0; } .mast.hero-grid .hero-card-photo .sch-cimg { width:90px !important; height:126px !important; } .mast.hero-grid > .levelbox { text-align:left; margin-top:12px; } }
+    td.card { white-space:normal; }
+    td.card .roi-cell { min-width:150px; gap:10px; }
+    td.card .roi-cell > div { white-space:nowrap; }
+    td.card .roi-cell > .sch-cimg { margin-top:0; }
 </style>  <!-- GA4 — added Aug 25, 2026: the set-index pages shipped without the tag, so every
        visit to the indices (the current priority surface) was going unmeasured. -->
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
@@ -494,12 +530,16 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
 
 <div class="strip"><a class="chip" href="/pitch-black-index" style="text-decoration:none;"><b>PB26</b> <span style="color:var(--tx)">93.19</span> <span class="soon">−6.8% w/w</span></a><a class="chip" href="/chaos-rising-index" style="text-decoration:none;"><b>CR26</b> <span style="color:var(--tx)">95.35</span> <span class="soon">−4.7% w/w</span></a><a class="chip" href="/ascended-heroes-index" style="text-decoration:none;"><b>AH26</b> <span style="color:var(--tx)">100.31</span> <span class="soon">+0.3% w/w</span></a><a class="chip on" href="/prismatic-evolutions-index" style="text-decoration:none;"><b>PRIS25</b> <span style="color:var(--tx)">101.76</span> <span class="soon">+1.8% w/w</span></a><a class="chip" href="/destined-rivals-index" style="text-decoration:none;"><b>DR25</b> <span style="color:var(--tx)">97.59</span> <span class="soon">−2.4% w/w</span></a><div class="chip"><b>BOW26</b> <span class="soon">preview</span></div><div class="chip"><b>MEGA26</b> <span class="soon">Mega Evolution base · planned</span></div><div class="chip"><b>BCB26</b> <span class="soon">Bowman Chrome · Sep 9</span></div></div>
 
-<div class="mast">
+<div class="mast hero-grid">
 <div>
 <div class="eyebrow">▮ Set Index · Price-Weighted · Chase Tier</div>
 <h1>PRIS25 <span class="tick">·</span> Prismatic Evolutions Chase Index</h1>
 <div class="subline">Pokémon Scarlet & Violet: Prismatic Evolutions (sv8pt5) — released Jan 17, 2025. Price-weighted over every secret-tier card with a sourced sold read (currently 49). This page tracks the set; it does not recommend cards. <a href="/prismatic-evolutions-guide" style="color:var(--iac);">Set guide →</a></div>
 </div>
+<figure class="hero-card-photo">
+      <span data-card-img="ebay:umbreon-ex-sir-pe" data-card-name="Umbreon ex SIR #161/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="hero" data-card-surface="pris25-hero"></span>
+      <figcaption class="hero-card-cap">#1 constituent &middot; <b>Umbreon ex SIR #161</b> &middot; live eBay listing</figcaption>
+    </figure>
 <div class="levelbox">
 <div class="level">101.76</div>
 <div class="levelchg">base 100.00 · inception 08/24/26 · re-marked 08/31/26 · ▲ +1.8% w/w</div>
@@ -525,295 +565,295 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
 <thead><tr><th>RK</th><th>Card</th><th>Rarity</th><th>Price</th><th>Weight</th><th>Since Launch</th><th>As Of</th><th>★</th></tr></thead>
 <tbody>
 <tr class="hrow" data-i="0" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">1</td>
-<td class="card"><b>Umbreon ex</b> <span class="cn">#161/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ebay:umbreon-ex-sir-pe" data-card-name="Umbreon ex SIR #161/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Umbreon ex</b> <span class="cn">#161/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$1,413.71</td><td class="num wt">31.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(0)">★</button></td></tr>
 <tr class="hrow" data-i="1" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">2</td>
-<td class="card"><b>Sylveon ex</b> <span class="cn">#156/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-1" data-card-name="Sylveon ex SIR #156/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Sylveon ex</b> <span class="cn">#156/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$471.00</td><td class="num wt">10.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(1)">★</button></td></tr>
 <tr class="hrow" data-i="2" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">3</td>
-<td class="card"><b>Leafeon ex</b> <span class="cn">#144/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-2" data-card-name="Leafeon ex SIR #144/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Leafeon ex</b> <span class="cn">#144/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$290.08</td><td class="num wt">6.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(2)">★</button></td></tr>
 <tr class="hrow" data-i="3" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">4</td>
-<td class="card"><b>Espeon ex</b> <span class="cn">#155/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-3" data-card-name="Espeon ex SIR #155/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Espeon ex</b> <span class="cn">#155/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$290.00</td><td class="num wt">6.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(3)">★</button></td></tr>
 <tr class="hrow" data-i="4" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">5</td>
-<td class="card"><b>Vaporeon ex</b> <span class="cn">#149/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-4" data-card-name="Vaporeon ex SIR #149/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Vaporeon ex</b> <span class="cn">#149/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$267.40</td><td class="num wt">5.9%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(4)">★</button></td></tr>
 <tr class="hrow" data-i="5" style="border-left:2px solid transparent;"><td class="rk">6</td>
-<td class="card"><b>Glaceon ex</b> <span class="cn">#150/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-5" data-card-name="Glaceon ex SIR #150/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Glaceon ex</b> <span class="cn">#150/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$260.80</td><td class="num wt">5.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(5)">★</button></td></tr>
 <tr class="hrow" data-i="6" style="border-left:2px solid transparent;"><td class="rk">7</td>
-<td class="card"><b>Flareon ex</b> <span class="cn">#146/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-6" data-card-name="Flareon ex SIR #146/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Flareon ex</b> <span class="cn">#146/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$179.96</td><td class="num wt">4.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(6)">★</button></td></tr>
 <tr class="hrow" data-i="7" style="border-left:2px solid transparent;"><td class="rk">8</td>
-<td class="card"><b>Jolteon ex</b> <span class="cn">#153/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Jolteon ex 153/131 Prismatic Evolutions" data-card-name="Jolteon ex SIR #153/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Jolteon ex</b> <span class="cn">#153/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$175.60</td><td class="num wt">3.9%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(7)">★</button></td></tr>
 <tr class="hrow" data-i="8" style="border-left:2px solid transparent;"><td class="rk">9</td>
-<td class="card"><b>Roaring Moon ex</b> <span class="cn">#162/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Roaring Moon ex 162/131 Pokemon" data-card-name="Roaring Moon ex SIR #162/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Roaring Moon ex</b> <span class="cn">#162/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$159.99</td><td class="num wt">3.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(8)">★</button></td></tr>
 <tr class="hrow" data-i="9" style="border-left:2px solid transparent;"><td class="rk">10</td>
-<td class="card"><b>Eevee ex</b> <span class="cn">#167/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-9" data-card-name="Eevee ex SIR #167/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Eevee ex</b> <span class="cn">#167/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$151.76</td><td class="num wt">3.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(9)">★</button></td></tr>
 <tr class="hrow" data-i="10" style="border-left:2px solid transparent;"><td class="rk">11</td>
-<td class="card"><b>Dragapult ex</b> <span class="cn">#165/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-10" data-card-name="Dragapult ex SIR #165/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Dragapult ex</b> <span class="cn">#165/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$105.00</td><td class="num wt">2.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(10)">★</button></td></tr>
 <tr class="hrow" data-i="11" style="border-left:2px solid transparent;"><td class="rk">12</td>
-<td class="card"><b>Ceruledge ex</b> <span class="cn">#147/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-11" data-card-name="Ceruledge ex SIR #147/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Ceruledge ex</b> <span class="cn">#147/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$96.96</td><td class="num wt">2.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(11)">★</button></td></tr>
 <tr class="hrow" data-i="12" style="border-left:2px solid transparent;"><td class="rk">13</td>
-<td class="card"><b>Raging Bolt ex</b> <span class="cn">#166/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-12" data-card-name="Raging Bolt ex SIR #166/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Raging Bolt ex</b> <span class="cn">#166/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$65.45</td><td class="num wt">1.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(12)">★</button></td></tr>
 <tr class="hrow" data-i="13" style="border-left:2px solid transparent;"><td class="rk">14</td>
-<td class="card"><b>Bloodmoon Ursaluna ex</b> <span class="cn">#168/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Bloodmoon Ursaluna ex 168/131 Prismatic Evolutions -case -display -lot -proxy -bundle" data-card-name="Bloodmoon Ursaluna ex SIR #168/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Bloodmoon Ursaluna ex</b> <span class="cn">#168/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$60.47</td><td class="num wt">1.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(13)">★</button></td></tr>
 <tr class="hrow" data-i="14" style="border-left:2px solid transparent;"><td class="rk">15</td>
-<td class="card"><b>Pikachu ex</b> <span class="cn">#179/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-14" data-card-name="Pikachu ex HR #179/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Pikachu ex</b> <span class="cn">#179/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">HR</span></td>
 <td class="num">$56.49</td><td class="num wt">1.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(14)">★</button></td></tr>
 <tr class="hrow" data-i="15" style="border-left:2px solid transparent;"><td class="rk">16</td>
-<td class="card"><b>Gholdengo ex</b> <span class="cn">#164/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-15" data-card-name="Gholdengo ex SIR #164/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Gholdengo ex</b> <span class="cn">#164/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$49.11</td><td class="num wt">1.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(15)">★</button></td></tr>
 <tr class="hrow" data-i="16" style="border-left:2px solid transparent;"><td class="rk">17</td>
-<td class="card"><b>Iron Valiant ex</b> <span class="cn">#157/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-16" data-card-name="Iron Valiant ex SIR #157/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Iron Valiant ex</b> <span class="cn">#157/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$46.50</td><td class="num wt">1.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(16)">★</button></td></tr>
 <tr class="hrow" data-i="17" style="border-left:2px solid transparent;"><td class="rk">18</td>
-<td class="card"><b>Palafin ex</b> <span class="cn">#151/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-17" data-card-name="Palafin ex SIR #151/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Palafin ex</b> <span class="cn">#151/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$41.03</td><td class="num wt">0.9%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(17)">★</button></td></tr>
 <tr class="hrow" data-i="18" style="border-left:2px solid transparent;"><td class="rk">19</td>
-<td class="card"><b>Iron Hands ex</b> <span class="cn">#154/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-18" data-card-name="Iron Hands ex SIR #154/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Iron Hands ex</b> <span class="cn">#154/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$29.79</td><td class="num wt">0.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(18)">★</button></td></tr>
 <tr class="hrow" data-i="19" style="border-left:2px solid transparent;"><td class="rk">20</td>
-<td class="card"><b>Pecharunt ex</b> <span class="cn">#163/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-19" data-card-name="Pecharunt ex SIR #163/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Pecharunt ex</b> <span class="cn">#163/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$29.43</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(19)">★</button></td></tr>
 <tr class="hrow" data-i="20" style="border-left:2px solid transparent;"><td class="rk">21</td>
-<td class="card"><b>Iron Crown ex</b> <span class="cn">#158/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-20" data-card-name="Iron Crown ex SIR #158/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Iron Crown ex</b> <span class="cn">#158/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$29.27</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(20)">★</button></td></tr>
 <tr class="hrow" data-i="21" style="border-left:2px solid transparent;"><td class="rk">22</td>
-<td class="card"><b>Crispin</b> <span class="cn">#171/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-21" data-card-name="Crispin SIR #171/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Crispin</b> <span class="cn">#171/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$28.81</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(21)">★</button></td></tr>
 <tr class="hrow" data-i="22" style="border-left:2px solid transparent;"><td class="rk">23</td>
-<td class="card"><b>Terapagos ex</b> <span class="cn">#169/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-22" data-card-name="Terapagos ex SIR #169/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Terapagos ex</b> <span class="cn">#169/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$28.13</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(22)">★</button></td></tr>
 <tr class="hrow" data-i="23" style="border-left:2px solid transparent;"><td class="rk">24</td>
-<td class="card"><b>Sandy Shocks ex</b> <span class="cn">#159/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Sandy Shocks ex 159/131 Pokemon" data-card-name="Sandy Shocks ex SIR #159/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Sandy Shocks ex</b> <span class="cn">#159/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$25.91</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(23)">★</button></td></tr>
 <tr class="hrow" data-i="24" style="border-left:2px solid transparent;"><td class="rk">25</td>
-<td class="card"><b>Lacey</b> <span class="cn">#175/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-24" data-card-name="Lacey SIR #175/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Lacey</b> <span class="cn">#175/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$23.34</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(24)">★</button></td></tr>
 <tr class="hrow" data-i="25" style="border-left:2px solid transparent;"><td class="rk">26</td>
-<td class="card"><b>Janine's Secret Art</b> <span class="cn">#173/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-25" data-card-name="Janine&#x27;s Secret Art SIR #173/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Janine's Secret Art</b> <span class="cn">#173/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$21.72</td><td class="num wt">0.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(25)">★</button></td></tr>
 <tr class="hrow" data-i="26" style="border-left:2px solid transparent;"><td class="rk">27</td>
-<td class="card"><b>Kieran</b> <span class="cn">#174/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-26" data-card-name="Kieran SIR #174/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Kieran</b> <span class="cn">#174/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$18.84</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(26)">★</button></td></tr>
 <tr class="hrow" data-i="27" style="border-left:2px solid transparent;"><td class="rk">28</td>
-<td class="card"><b>Teal Mask Ogerpon ex</b> <span class="cn">#145/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-27" data-card-name="Teal Mask Ogerpon ex SIR #145/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Teal Mask Ogerpon ex</b> <span class="cn">#145/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$18.75</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(27)">★</button></td></tr>
 <tr class="hrow" data-i="28" style="border-left:2px solid transparent;"><td class="rk">29</td>
-<td class="card"><b>Hearthflame Mask Ogerpon ex</b> <span class="cn">#148/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-28" data-card-name="Hearthflame Mask Ogerpon ex SIR #148/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Hearthflame Mask Ogerpon ex</b> <span class="cn">#148/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$18.02</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(28)">★</button></td></tr>
 <tr class="hrow" data-i="29" style="border-left:2px solid transparent;"><td class="rk">30</td>
-<td class="card"><b>Wellspring Mask Ogerpon ex</b> <span class="cn">#152/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-29" data-card-name="Wellspring Mask Ogerpon ex SIR #152/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Wellspring Mask Ogerpon ex</b> <span class="cn">#152/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$17.00</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(29)">★</button></td></tr>
 <tr class="hrow" data-i="30" style="border-left:2px solid transparent;"><td class="rk">31</td>
-<td class="card"><b>Drayton</b> <span class="cn">#172/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Drayton 172/131 Prismatic Evolutions" data-card-name="Drayton SIR #172/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Drayton</b> <span class="cn">#172/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$15.78</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(30)">★</button></td></tr>
 <tr class="hrow" data-i="31" style="border-left:2px solid transparent;"><td class="rk">32</td>
-<td class="card"><b>Cornerstone Mask Ogerpon ex</b> <span class="cn">#160/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-31" data-card-name="Cornerstone Mask Ogerpon ex SIR #160/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Cornerstone Mask Ogerpon ex</b> <span class="cn">#160/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$13.16</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(31)">★</button></td></tr>
 <tr class="hrow" data-i="32" style="border-left:2px solid transparent;"><td class="rk">33</td>
-<td class="card"><b>Amarys</b> <span class="cn">#170/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-32" data-card-name="Amarys SIR #170/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Amarys</b> <span class="cn">#170/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$12.48</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(32)">★</button></td></tr>
 <tr class="hrow" data-i="33" style="border-left:2px solid transparent;"><td class="rk">34</td>
-<td class="card"><b>Terapagos ex</b> <span class="cn">#180/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-33" data-card-name="Terapagos ex HR #180/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Terapagos ex</b> <span class="cn">#180/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">HR</span></td>
 <td class="num">$9.83</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(33)">★</button></td></tr>
 <tr class="hrow" data-i="34" style="border-left:2px solid transparent;"><td class="rk">35</td>
-<td class="card"><b>Teal Mask Ogerpon ex</b> <span class="cn">#177/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-34" data-card-name="Teal Mask Ogerpon ex HR #177/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Teal Mask Ogerpon ex</b> <span class="cn">#177/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">HR</span></td>
 <td class="num">$8.86</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(34)">★</button></td></tr>
 <tr class="hrow" data-i="35" style="border-left:2px solid transparent;"><td class="rk">36</td>
-<td class="card"><b>Walking Wake ex</b> <span class="cn">#178/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-35" data-card-name="Walking Wake ex HR #178/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Walking Wake ex</b> <span class="cn">#178/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">HR</span></td>
 <td class="num">$6.78</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(35)">★</button></td></tr>
 <tr class="hrow" data-i="36" style="border-left:2px solid transparent;"><td class="rk">37</td>
-<td class="card"><b>Iron Leaves ex</b> <span class="cn">#176/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:pris25-36" data-card-name="Iron Leaves ex HR #176/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Iron Leaves ex</b> <span class="cn">#176/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">HR</span></td>
 <td class="num">$5.72</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(36)">★</button></td></tr>
 <tr class="hrow" data-i="37" style="border-left:2px solid transparent;"><td class="rk">38</td>
-<td class="card"><b>Friends in Paldea</b> <span class="cn">#137/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Friends in Paldea 137/131 Prismatic Evolutions -case -display -lot -proxy -bundle" data-card-name="Friends in Paldea UR #137/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Friends in Paldea</b> <span class="cn">#137/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.44</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(37)">★</button></td></tr>
 <tr class="hrow" data-i="38" style="border-left:2px solid transparent;"><td class="rk">39</td>
-<td class="card"><b>Eri</b> <span class="cn">#136/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Eri 136/131 Prismatic Evolutions" data-card-name="Eri UR #136/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Eri</b> <span class="cn">#136/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.40</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(38)">★</button></td></tr>
 <tr class="hrow" data-i="39" style="border-left:2px solid transparent;"><td class="rk">40</td>
-<td class="card"><b>Atticus</b> <span class="cn">#133/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Atticus 133/131 Prismatic Evolutions" data-card-name="Atticus UR #133/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Atticus</b> <span class="cn">#133/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.03</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(39)">★</button></td></tr>
 <tr class="hrow" data-i="40" style="border-left:2px solid transparent;"><td class="rk">41</td>
-<td class="card"><b>Larry's Skill</b> <span class="cn">#139/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Larry&#x27;s Skill 139/131 Prismatic Evolutions -case -display -lot -proxy -bundle" data-card-name="Larry&#x27;s Skill UR #139/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Larry's Skill</b> <span class="cn">#139/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.00</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(40)">★</button></td></tr>
 <tr class="hrow" data-i="41" style="border-left:2px solid transparent;"><td class="rk">42</td>
-<td class="card"><b>Raifort</b> <span class="cn">#142/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Raifort 142/131 Prismatic Evolutions" data-card-name="Raifort UR #142/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Raifort</b> <span class="cn">#142/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.00</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(41)">★</button></td></tr>
 <tr class="hrow" data-i="42" style="border-left:2px solid transparent;"><td class="rk">43</td>
-<td class="card"><b>Brassius</b> <span class="cn">#135/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Brassius 135/131 Prismatic Evolutions" data-card-name="Brassius UR #135/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Brassius</b> <span class="cn">#135/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.00</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(42)">★</button></td></tr>
 <tr class="hrow" data-i="43" style="border-left:2px solid transparent;"><td class="rk">44</td>
-<td class="card"><b>Mela</b> <span class="cn">#140/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mela 140/131 Prismatic Evolutions" data-card-name="Mela UR #140/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Mela</b> <span class="cn">#140/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$1.00</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(43)">★</button></td></tr>
 <tr class="hrow" data-i="44" style="border-left:2px solid transparent;"><td class="rk">45</td>
-<td class="card"><b>Giacomo</b> <span class="cn">#138/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Giacomo 138/131 Prismatic Evolutions" data-card-name="Giacomo UR #138/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Giacomo</b> <span class="cn">#138/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$0.99</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(44)">★</button></td></tr>
 <tr class="hrow" data-i="45" style="border-left:2px solid transparent;"><td class="rk">46</td>
-<td class="card"><b>Atticus</b> <span class="cn">#134/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Atticus 134/131 Prismatic Evolutions" data-card-name="Atticus UR #134/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Atticus</b> <span class="cn">#134/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$0.99</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(45)">★</button></td></tr>
 <tr class="hrow" data-i="46" style="border-left:2px solid transparent;"><td class="rk">47</td>
-<td class="card"><b>Amarys</b> <span class="cn">#132/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Amarys 132/131 Prismatic Evolutions" data-card-name="Amarys UR #132/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Amarys</b> <span class="cn">#132/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$0.97</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(46)">★</button></td></tr>
 <tr class="hrow" data-i="47" style="border-left:2px solid transparent;"><td class="rk">48</td>
-<td class="card"><b>Ortega</b> <span class="cn">#141/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Ortega 141/131 Prismatic Evolutions" data-card-name="Ortega UR #141/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Ortega</b> <span class="cn">#141/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$0.89</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(47)">★</button></td></tr>
 <tr class="hrow" data-i="48" style="border-left:2px solid transparent;"><td class="rk">49</td>
-<td class="card"><b>Tyme</b> <span class="cn">#143/131</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Tyme 143/131 Prismatic Evolutions" data-card-name="Tyme UR #143/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="pris25-list"></span><div><b>Tyme</b> <span class="cn">#143/131</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$0.81</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
@@ -888,7 +928,8 @@ function openPop(i) {
   document.getElementById('ovl').className = 'ovl open';
 }
 function closePop() { document.getElementById('ovl').className = 'ovl'; }
-document.querySelectorAll('tr.hrow').forEach(function(tr) { tr.addEventListener('click', function() { openPop(parseInt(tr.dataset.i)); }); });
+document.querySelectorAll('tr.hrow').forEach(function(tr) { tr.addEventListener('click', function(e) { if (e.target && e.target.closest && e.target.closest('.sch-cimg-link')) return; openPop(parseInt(tr.dataset.i)); }); });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePop(); });
 </script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body></html>

@@ -116,6 +116,42 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
       .nav-hamburger { display:flex !important; } 
       .mobile-nav { display:block !important; } }
 @media (max-width:800px) { .stats { grid-template-columns:repeat(4,1fr); } h1 { font-size:26px; } .level { font-size:30px; } }
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > *, .hero.hero-grid > *, .rh-head .container > *, .mast.hero-grid > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim, var(--dim)); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent, var(--iac)); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:block; }
+      .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub, .section-intro, .rh-intro { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
+    .mast.hero-grid { column-gap:40px; align-items:end; grid-template-columns:minmax(0,1fr) auto 200px; padding-bottom:10px; }
+    .mast.hero-grid > * { grid-column:auto; }
+    .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1; align-self:end; justify-self:center; }
+    .mast.hero-grid > .levelbox { grid-column:3; grid-row:1; align-self:end; }
+    .mast.hero-grid .hero-card-photo .sch-cimg { width:150px !important; height:210px !important; }
+    .mast.hero-grid .hero-card-cap { max-width:170px; margin:10px auto 0; }
+    @media(max-width:800px) { .mast.hero-grid { grid-template-columns:minmax(0,1fr) 160px; } .mast.hero-grid > .levelbox { grid-column:1 / span 2; grid-row:2; text-align:left; } }
+    @media(max-width:700px) { .mast.hero-grid { display:block; position:relative; padding-right:104px; } .mast.hero-grid > .hero-card-photo { float:none; position:absolute; right:0; top:26px; width:90px; margin:0; } .mast.hero-grid .hero-card-photo .sch-cimg { width:90px !important; height:126px !important; } .mast.hero-grid > .levelbox { text-align:left; margin-top:12px; } }
+    td.card { white-space:normal; }
+    td.card .roi-cell { min-width:150px; gap:10px; }
+    td.card .roi-cell > div { white-space:nowrap; }
+    td.card .roi-cell > .sch-cimg { margin-top:0; }
 </style>  <!-- GA4 — added Aug 25, 2026: the set-index pages shipped without the tag, so every
        visit to the indices (the current priority surface) was going unmeasured. -->
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
@@ -494,12 +530,16 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
 
 <div class="strip"><a class="chip" href="/pitch-black-index" style="text-decoration:none;"><b>PB26</b> <span style="color:var(--tx)">93.19</span> <span class="soon">−6.8% w/w</span></a><a class="chip" href="/chaos-rising-index" style="text-decoration:none;"><b>CR26</b> <span style="color:var(--tx)">95.35</span> <span class="soon">−4.7% w/w</span></a><a class="chip on" href="/ascended-heroes-index" style="text-decoration:none;"><b>AH26</b> <span style="color:var(--tx)">100.31</span> <span class="soon">+0.3% w/w</span></a><a class="chip" href="/prismatic-evolutions-index" style="text-decoration:none;"><b>PRIS25</b> <span style="color:var(--tx)">101.76</span> <span class="soon">+1.8% w/w</span></a><a class="chip" href="/destined-rivals-index" style="text-decoration:none;"><b>DR25</b> <span style="color:var(--tx)">97.59</span> <span class="soon">−2.4% w/w</span></a><div class="chip"><b>BOW26</b> <span class="soon">preview</span></div><div class="chip"><b>MEGA26</b> <span class="soon">Mega Evolution base · planned</span></div><div class="chip"><b>BCB26</b> <span class="soon">Bowman Chrome · Sep 9</span></div></div>
 
-<div class="mast">
+<div class="mast hero-grid">
 <div>
 <div class="eyebrow">▮ Set Index · Price-Weighted · Chase Tier</div>
 <h1>AH26 <span class="tick">·</span> Ascended Heroes Chase Index</h1>
 <div class="subline">Pokémon Mega Evolution: Ascended Heroes — released Jun 2026. Price-weighted over every secret-tier card with a sourced sold read (currently 70 — universe completed 08/31/26). This page tracks the set; it does not recommend cards. <a href="/ascended-heroes" style="color:var(--iac);">Set guide →</a></div>
 </div>
+<figure class="hero-card-photo">
+      <span data-card-img="ebay:tr-mewtwo-ex-sir" data-card-name="Team Rocket&#x27;s Mewtwo ex SIR #281/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="hero" data-card-surface="ah26-hero"></span>
+      <figcaption class="hero-card-cap">Top constituent with a verified photo &middot; <b>Team Rocket's Mewtwo ex SIR #281</b> (#6) &middot; live eBay listing</figcaption>
+    </figure>
 <div class="levelbox">
 <div class="level">100.31</div>
 <div class="levelchg">base 100.00 · inception 08/24/26 · re-marked 08/31/26 · ▲ +0.3% w/w</div>
@@ -525,421 +565,421 @@ tr.hrow { cursor:pointer; } tr.hrow:hover td { background:color-mix(in srgb, var
 <thead><tr><th>RK</th><th>Card</th><th>Rarity</th><th>Price</th><th>Weight</th><th>Since Launch</th><th>As Of</th><th>★</th></tr></thead>
 <tbody>
 <tr class="hrow" data-i="0" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">1</td>
-<td class="card"><b>Mega Gengar ex</b> <span class="cn">#284/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-0" data-card-name="Mega Gengar ex SIR #284/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Gengar ex</b> <span class="cn">#284/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$977.27</td><td class="num wt">18.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(0)">★</button></td></tr>
 <tr class="hrow" data-i="1" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">2</td>
-<td class="card"><b>Pikachu ex</b> <span class="cn">#276/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-1" data-card-name="Pikachu ex SIR #276/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Pikachu ex</b> <span class="cn">#276/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$899.75</td><td class="num wt">16.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(1)">★</button></td></tr>
 <tr class="hrow" data-i="2" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">3</td>
-<td class="card"><b>Mega Dragonite ex</b> <span class="cn">#290/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-2" data-card-name="Mega Dragonite ex SIR #290/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Dragonite ex</b> <span class="cn">#290/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$659.30</td><td class="num wt">12.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(2)">★</button></td></tr>
 <tr class="hrow" data-i="3" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">4</td>
-<td class="card"><b>Mega Charizard Y ex</b> <span class="cn">#294/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Charizard Y ex 294/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Mega Charizard Y ex MHR #294/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Charizard Y ex</b> <span class="cn">#294/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">MHR</span></td>
 <td class="num">$385.00</td><td class="num wt">7.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(3)">★</button></td></tr>
 <tr class="hrow" data-i="4" style="background:var(--p2);border-left:2px solid var(--iac);"><td class="rk">5</td>
-<td class="card"><b>Pikachu ex</b> <span class="cn">#277/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-4" data-card-name="Pikachu ex SIR #277/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Pikachu ex</b> <span class="cn">#277/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$347.50</td><td class="num wt">6.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(4)">★</button></td></tr>
 <tr class="hrow" data-i="5" style="border-left:2px solid transparent;"><td class="rk">6</td>
-<td class="card"><b>Team Rocket's Mewtwo ex</b> <span class="cn">#281/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ebay:tr-mewtwo-ex-sir" data-card-name="Team Rocket&#x27;s Mewtwo ex SIR #281/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Team Rocket's Mewtwo ex</b> <span class="cn">#281/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$310.14</td><td class="num wt">5.7%</td><td class="num"><span style="color:var(--rd)">▼ 6.1%</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(5)">★</button></td></tr>
 <tr class="hrow" data-i="6" style="border-left:2px solid transparent;"><td class="rk">7</td>
-<td class="card"><b>Mega Dragonite ex</b> <span class="cn">#295/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Dragonite ex 295/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Mega Dragonite ex MHR #295/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Dragonite ex</b> <span class="cn">#295/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">MHR</span></td>
 <td class="num">$227.12</td><td class="num wt">4.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(6)">★</button></td></tr>
 <tr class="hrow" data-i="7" style="border-left:2px solid transparent;"><td class="rk">8</td>
-<td class="card"><b>Lillie's Clefairy ex</b> <span class="cn">#280/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-7" data-card-name="Lillie&#x27;s Clefairy ex SIR #280/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Lillie's Clefairy ex</b> <span class="cn">#280/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$162.55</td><td class="num wt">3.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(7)">★</button></td></tr>
 <tr class="hrow" data-i="8" style="border-left:2px solid transparent;"><td class="rk">9</td>
-<td class="card"><b>N's Zoroark ex</b> <span class="cn">#286/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-8" data-card-name="N&#x27;s Zoroark ex SIR #286/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>N's Zoroark ex</b> <span class="cn">#286/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$151.12</td><td class="num wt">2.8%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(8)">★</button></td></tr>
 <tr class="hrow" data-i="9" style="border-left:2px solid transparent;"><td class="rk">10</td>
-<td class="card"><b>Mega Feraligatr ex</b> <span class="cn">#274/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-9" data-card-name="Mega Feraligatr ex SIR #274/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Feraligatr ex</b> <span class="cn">#274/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$131.05</td><td class="num wt">2.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(9)">★</button></td></tr>
 <tr class="hrow" data-i="10" style="border-left:2px solid transparent;"><td class="rk">11</td>
-<td class="card"><b>Steven's Metagross ex</b> <span class="cn">#289/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-10" data-card-name="Steven&#x27;s Metagross ex SIR #289/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Steven's Metagross ex</b> <span class="cn">#289/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$87.82</td><td class="num wt">1.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(10)">★</button></td></tr>
 <tr class="hrow" data-i="11" style="border-left:2px solid transparent;"><td class="rk">12</td>
-<td class="card"><b>Mega Meganium ex</b> <span class="cn">#272/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-11" data-card-name="Mega Meganium ex SIR #272/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Meganium ex</b> <span class="cn">#272/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$79.77</td><td class="num wt">1.5%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(11)">★</button></td></tr>
 <tr class="hrow" data-i="12" style="border-left:2px solid transparent;"><td class="rk">13</td>
-<td class="card"><b>Psyduck</b> <span class="cn">#226/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-12" data-card-name="Psyduck IR #226/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Psyduck</b> <span class="cn">#226/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$66.63</td><td class="num wt">1.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(12)">★</button></td></tr>
 <tr class="hrow" data-i="13" style="border-left:2px solid transparent;"><td class="rk">14</td>
-<td class="card"><b>Mega Froslass ex</b> <span class="cn">#275/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-13" data-card-name="Mega Froslass ex SIR #275/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Froslass ex</b> <span class="cn">#275/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$65.07</td><td class="num wt">1.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(13)">★</button></td></tr>
 <tr class="hrow" data-i="14" style="border-left:2px solid transparent;"><td class="rk">15</td>
-<td class="card"><b>Marnie's Grimmsnarl ex</b> <span class="cn">#287/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-14" data-card-name="Marnie&#x27;s Grimmsnarl ex SIR #287/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Marnie's Grimmsnarl ex</b> <span class="cn">#287/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$62.85</td><td class="num wt">1.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(14)">★</button></td></tr>
 <tr class="hrow" data-i="15" style="border-left:2px solid transparent;"><td class="rk">16</td>
-<td class="card"><b>Iono's Bellibolt ex</b> <span class="cn">#279/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-15" data-card-name="Iono&#x27;s Bellibolt ex SIR #279/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Iono's Bellibolt ex</b> <span class="cn">#279/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$60.00</td><td class="num wt">1.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(15)">★</button></td></tr>
 <tr class="hrow" data-i="16" style="border-left:2px solid transparent;"><td class="rk">17</td>
-<td class="card"><b>Mega Gengar ex</b> <span class="cn">#269/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Gengar ex 269/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Mega Gengar ex SIR #269/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Gengar ex</b> <span class="cn">#269/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$57.83</td><td class="num wt">1.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(16)">★</button></td></tr>
 <tr class="hrow" data-i="17" style="border-left:2px solid transparent;"><td class="rk">18</td>
-<td class="card"><b>Mega Scrafty ex</b> <span class="cn">#285/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-17" data-card-name="Mega Scrafty ex SIR #285/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Scrafty ex</b> <span class="cn">#285/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$55.74</td><td class="num wt">1.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(17)">★</button></td></tr>
 <tr class="hrow" data-i="18" style="border-left:2px solid transparent;"><td class="rk">19</td>
-<td class="card"><b>Fezandipiti ex</b> <span class="cn">#288/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Fezandipiti ex 288/217 Ascended Heroes" data-card-name="Fezandipiti ex SIR #288/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Fezandipiti ex</b> <span class="cn">#288/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$53.00</td><td class="num wt">1.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(18)">★</button></td></tr>
 <tr class="hrow" data-i="19" style="border-left:2px solid transparent;"><td class="rk">20</td>
-<td class="card"><b>Mega Diancie ex</b> <span class="cn">#282/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Diancie ex 282/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Mega Diancie ex SIR #282/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Diancie ex</b> <span class="cn">#282/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$52.78</td><td class="num wt">1.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(19)">★</button></td></tr>
 <tr class="hrow" data-i="20" style="border-left:2px solid transparent;"><td class="rk">21</td>
-<td class="card"><b>Mega Hawlucha ex</b> <span class="cn">#283/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Hawlucha ex 283/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Mega Hawlucha ex SIR #283/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Hawlucha ex</b> <span class="cn">#283/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$48.67</td><td class="num wt">0.9%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(20)">★</button></td></tr>
 <tr class="hrow" data-i="21" style="border-left:2px solid transparent;"><td class="rk">22</td>
-<td class="card"><b>Mega Emboar ex</b> <span class="cn">#273/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-21" data-card-name="Mega Emboar ex SIR #273/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Emboar ex</b> <span class="cn">#273/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$44.00</td><td class="num wt">0.8%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(21)">★</button></td></tr>
 <tr class="hrow" data-i="22" style="border-left:2px solid transparent;"><td class="rk">23</td>
-<td class="card"><b>Mega Dragonite ex</b> <span class="cn">#271/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Dragonite ex 271/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Mega Dragonite ex SIR #271/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Dragonite ex</b> <span class="cn">#271/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$39.58</td><td class="num wt">0.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(22)">★</button></td></tr>
 <tr class="hrow" data-i="23" style="border-left:2px solid transparent;"><td class="rk">24</td>
-<td class="card"><b>Mega Eelektross ex</b> <span class="cn">#278/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-23" data-card-name="Mega Eelektross ex SIR #278/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Eelektross ex</b> <span class="cn">#278/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$37.00</td><td class="num wt">0.7%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(23)">★</button></td></tr>
 <tr class="hrow" data-i="24" style="border-left:2px solid transparent;"><td class="rk">25</td>
-<td class="card"><b>Iris's Fighting Spirit</b> <span class="cn">#292/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-24" data-card-name="Iris&#x27;s Fighting Spirit SIR #292/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Iris's Fighting Spirit</b> <span class="cn">#292/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$32.78</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(24)">★</button></td></tr>
 <tr class="hrow" data-i="25" style="border-left:2px solid transparent;"><td class="rk">26</td>
-<td class="card"><b>Canari</b> <span class="cn">#291/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-25" data-card-name="Canari SIR #291/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Canari</b> <span class="cn">#291/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$32.28</td><td class="num wt">0.6%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(25)">★</button></td></tr>
 <tr class="hrow" data-i="26" style="border-left:2px solid transparent;"><td class="rk">27</td>
-<td class="card"><b>Surfer</b> <span class="cn">#293/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-26" data-card-name="Surfer SIR #293/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Surfer</b> <span class="cn">#293/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$21.23</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(26)">★</button></td></tr>
 <tr class="hrow" data-i="27" style="border-left:2px solid transparent;"><td class="rk">28</td>
-<td class="card"><b>Team Rocket's Mimikyu</b> <span class="cn">#238/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Team Rocket&#x27;s Mimikyu 238/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Team Rocket&#x27;s Mimikyu IR #238/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Team Rocket's Mimikyu</b> <span class="cn">#238/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$20.81</td><td class="num wt">0.4%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(27)">★</button></td></tr>
 <tr class="hrow" data-i="28" style="border-left:2px solid transparent;"><td class="rk">29</td>
-<td class="card"><b>Erika's Tangela</b> <span class="cn">#218/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Erika&#x27;s Tangela 218/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Erika&#x27;s Tangela IR #218/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Erika's Tangela</b> <span class="cn">#218/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$17.15</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(28)">★</button></td></tr>
 <tr class="hrow" data-i="29" style="border-left:2px solid transparent;"><td class="rk">30</td>
-<td class="card"><b>Marill</b> <span class="cn">#232/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Marill 232/217 Ascended Heroes" data-card-name="Marill IR #232/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Marill</b> <span class="cn">#232/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$13.61</td><td class="num wt">0.3%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(29)">★</button></td></tr>
 <tr class="hrow" data-i="30" style="border-left:2px solid transparent;"><td class="rk">31</td>
-<td class="card"><b>Banette</b> <span class="cn">#234/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Banette 234/217 Ascended Heroes" data-card-name="Banette IR #234/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Banette</b> <span class="cn">#234/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$11.00</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(30)">★</button></td></tr>
 <tr class="hrow" data-i="31" style="border-left:2px solid transparent;"><td class="rk">32</td>
-<td class="card"><b>Cynthia's Spiritomb</b> <span class="cn">#244/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-31" data-card-name="Cynthia&#x27;s Spiritomb IR #244/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Cynthia's Spiritomb</b> <span class="cn">#244/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$9.99</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(31)">★</button></td></tr>
 <tr class="hrow" data-i="32" style="border-left:2px solid transparent;"><td class="rk">33</td>
-<td class="card"><b>Team Rocket's Dugtrio</b> <span class="cn">#239/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-32" data-card-name="Team Rocket&#x27;s Dugtrio IR #239/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Team Rocket's Dugtrio</b> <span class="cn">#239/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$9.75</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(32)">★</button></td></tr>
 <tr class="hrow" data-i="33" style="border-left:2px solid transparent;"><td class="rk">34</td>
-<td class="card"><b>Scorbunny</b> <span class="cn">#225/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Scorbunny 225/217 Ascended Heroes" data-card-name="Scorbunny IR #225/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Scorbunny</b> <span class="cn">#225/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$8.54</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(33)">★</button></td></tr>
 <tr class="hrow" data-i="34" style="border-left:2px solid transparent;"><td class="rk">35</td>
-<td class="card"><b>Mega Froslass ex</b> <span class="cn">#265/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Froslass ex 265/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Mega Froslass ex UR #265/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Froslass ex</b> <span class="cn">#265/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$8.48</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(34)">★</button></td></tr>
 <tr class="hrow" data-i="35" style="border-left:2px solid transparent;"><td class="rk">36</td>
-<td class="card"><b>Iono's Wattrel</b> <span class="cn">#231/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-35" data-card-name="Iono&#x27;s Wattrel IR #231/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Iono's Wattrel</b> <span class="cn">#231/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$8.27</td><td class="num wt">0.2%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(35)">★</button></td></tr>
 <tr class="hrow" data-i="36" style="border-left:2px solid transparent;"><td class="rk">37</td>
-<td class="card"><b>Slurpuff</b> <span class="cn">#236/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Slurpuff 236/217 Ascended Heroes" data-card-name="Slurpuff IR #236/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Slurpuff</b> <span class="cn">#236/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$8.00</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(36)">★</button></td></tr>
 <tr class="hrow" data-i="37" style="border-left:2px solid transparent;"><td class="rk">38</td>
-<td class="card"><b>Mega Diancie ex</b> <span class="cn">#267/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-37" data-card-name="Mega Diancie ex UR #267/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Diancie ex</b> <span class="cn">#267/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$7.50</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(37)">★</button></td></tr>
 <tr class="hrow" data-i="38" style="border-left:2px solid transparent;"><td class="rk">39</td>
-<td class="card"><b>Beautifly</b> <span class="cn">#219/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Beautifly 219/217 Ascended Heroes" data-card-name="Beautifly IR #219/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Beautifly</b> <span class="cn">#219/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$7.25</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(38)">★</button></td></tr>
 <tr class="hrow" data-i="39" style="border-left:2px solid transparent;"><td class="rk">40</td>
-<td class="card"><b>Budew</b> <span class="cn">#221/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Budew 221/217 Ascended Heroes" data-card-name="Budew IR #221/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Budew</b> <span class="cn">#221/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$7.00</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(39)">★</button></td></tr>
 <tr class="hrow" data-i="40" style="border-left:2px solid transparent;"><td class="rk">41</td>
-<td class="card"><b>Dreepy</b> <span class="cn">#247/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Dreepy 247/217 Ascended Heroes" data-card-name="Dreepy IR #247/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Dreepy</b> <span class="cn">#247/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$6.86</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(40)">★</button></td></tr>
 <tr class="hrow" data-i="41" style="border-left:2px solid transparent;"><td class="rk">42</td>
-<td class="card"><b>Hitmontop</b> <span class="cn">#240/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-41" data-card-name="Hitmontop IR #240/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Hitmontop</b> <span class="cn">#240/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$6.79</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(41)">★</button></td></tr>
 <tr class="hrow" data-i="42" style="border-left:2px solid transparent;"><td class="rk">43</td>
-<td class="card"><b>Mightyena</b> <span class="cn">#243/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-42" data-card-name="Mightyena IR #243/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mightyena</b> <span class="cn">#243/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$6.71</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(42)">★</button></td></tr>
 <tr class="hrow" data-i="43" style="border-left:2px solid transparent;"><td class="rk">44</td>
-<td class="card"><b>Mawile</b> <span class="cn">#246/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mawile 246/217 Ascended Heroes" data-card-name="Mawile IR #246/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mawile</b> <span class="cn">#246/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$6.40</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(43)">★</button></td></tr>
 <tr class="hrow" data-i="44" style="border-left:2px solid transparent;"><td class="rk">45</td>
-<td class="card"><b>Togekiss</b> <span class="cn">#235/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-44" data-card-name="Togekiss IR #235/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Togekiss</b> <span class="cn">#235/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$6.18</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(44)">★</button></td></tr>
 <tr class="hrow" data-i="45" style="border-left:2px solid transparent;"><td class="rk">46</td>
-<td class="card"><b>Mega Hawlucha ex</b> <span class="cn">#268/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Hawlucha ex 268/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Mega Hawlucha ex UR #268/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Hawlucha ex</b> <span class="cn">#268/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$6.17</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(45)">★</button></td></tr>
 <tr class="hrow" data-i="46" style="border-left:2px solid transparent;"><td class="rk">47</td>
-<td class="card"><b>Boss's Orders: Corbeau</b> <span class="cn">#256/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-46" data-card-name="Boss&#x27;s Orders: Corbeau UR #256/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Boss's Orders: Corbeau</b> <span class="cn">#256/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$6.00</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(46)">★</button></td></tr>
 <tr class="hrow" data-i="47" style="border-left:2px solid transparent;"><td class="rk">48</td>
-<td class="card"><b>Drakloak</b> <span class="cn">#248/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Drakloak 248/217 Ascended Heroes" data-card-name="Drakloak IR #248/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Drakloak</b> <span class="cn">#248/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$5.95</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(47)">★</button></td></tr>
 <tr class="hrow" data-i="48" style="border-left:2px solid transparent;"><td class="rk">49</td>
-<td class="card"><b>Weavile</b> <span class="cn">#228/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-48" data-card-name="Weavile IR #228/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Weavile</b> <span class="cn">#228/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$5.92</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(48)">★</button></td></tr>
 <tr class="hrow" data-i="49" style="border-left:2px solid transparent;"><td class="rk">50</td>
-<td class="card"><b>Misdreavus</b> <span class="cn">#233/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Misdreavus 233/217 Ascended Heroes" data-card-name="Misdreavus IR #233/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Misdreavus</b> <span class="cn">#233/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$5.88</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(49)">★</button></td></tr>
 <tr class="hrow" data-i="50" style="border-left:2px solid transparent;"><td class="rk">51</td>
-<td class="card"><b>Ethan's Magcargo</b> <span class="cn">#222/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-50" data-card-name="Ethan&#x27;s Magcargo IR #222/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Ethan's Magcargo</b> <span class="cn">#222/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$5.76</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(50)">★</button></td></tr>
 <tr class="hrow" data-i="51" style="border-left:2px solid transparent;"><td class="rk">52</td>
-<td class="card"><b>Ultra Ball</b> <span class="cn">#264/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-51" data-card-name="Ultra Ball UR #264/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Ultra Ball</b> <span class="cn">#264/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$5.74</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(51)">★</button></td></tr>
 <tr class="hrow" data-i="52" style="border-left:2px solid transparent;"><td class="rk">53</td>
-<td class="card"><b>Carbink</b> <span class="cn">#242/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Carbink 242/217 Ascended Heroes" data-card-name="Carbink IR #242/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Carbink</b> <span class="cn">#242/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$5.64</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(52)">★</button></td></tr>
 <tr class="hrow" data-i="53" style="border-left:2px solid transparent;"><td class="rk">54</td>
-<td class="card"><b>Numel</b> <span class="cn">#223/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Numel 223/217 Ascended Heroes" data-card-name="Numel IR #223/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Numel</b> <span class="cn">#223/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$5.63</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(53)">★</button></td></tr>
 <tr class="hrow" data-i="54" style="border-left:2px solid transparent;"><td class="rk">55</td>
-<td class="card"><b>Medicham</b> <span class="cn">#241/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Medicham 241/217 Ascended Heroes" data-card-name="Medicham IR #241/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Medicham</b> <span class="cn">#241/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$5.21</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(54)">★</button></td></tr>
 <tr class="hrow" data-i="55" style="border-left:2px solid transparent;"><td class="rk">56</td>
-<td class="card"><b>Mega Scrafty ex</b> <span class="cn">#270/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Scrafty ex 270/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Mega Scrafty ex SIR #270/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Scrafty ex</b> <span class="cn">#270/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">SIR</span></td>
 <td class="num">$4.89</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(55)">★</button></td></tr>
 <tr class="hrow" data-i="56" style="border-left:2px solid transparent;"><td class="rk">57</td>
-<td class="card"><b>Larry's Staraptor</b> <span class="cn">#249/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Larry&#x27;s Staraptor 249/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Larry&#x27;s Staraptor IR #249/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Larry's Staraptor</b> <span class="cn">#249/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$4.80</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(56)">★</button></td></tr>
 <tr class="hrow" data-i="57" style="border-left:2px solid transparent;"><td class="rk">58</td>
-<td class="card"><b>Snorunt</b> <span class="cn">#227/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-57" data-card-name="Snorunt IR #227/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Snorunt</b> <span class="cn">#227/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$4.63</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(57)">★</button></td></tr>
 <tr class="hrow" data-i="58" style="border-left:2px solid transparent;"><td class="rk">59</td>
-<td class="card"><b>Hop's Trevenant</b> <span class="cn">#237/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Hop&#x27;s Trevenant 237/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Hop&#x27;s Trevenant IR #237/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Hop's Trevenant</b> <span class="cn">#237/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$4.34</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(58)">★</button></td></tr>
 <tr class="hrow" data-i="59" style="border-left:2px solid transparent;"><td class="rk">60</td>
-<td class="card"><b>Mega Eelektross ex</b> <span class="cn">#266/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-59" data-card-name="Mega Eelektross ex UR #266/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Eelektross ex</b> <span class="cn">#266/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$4.04</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(59)">★</button></td></tr>
 <tr class="hrow" data-i="60" style="border-left:2px solid transparent;"><td class="rk">61</td>
-<td class="card"><b>Fan Rotom</b> <span class="cn">#250/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-60" data-card-name="Fan Rotom IR #250/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Fan Rotom</b> <span class="cn">#250/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$3.45</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(60)">★</button></td></tr>
 <tr class="hrow" data-i="61" style="border-left:2px solid transparent;"><td class="rk">62</td>
-<td class="card"><b>Canari</b> <span class="cn">#257/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Canari 257/217 Ascended Heroes" data-card-name="Canari UR #257/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Canari</b> <span class="cn">#257/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$3.42</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(61)">★</button></td></tr>
 <tr class="hrow" data-i="62" style="border-left:2px solid transparent;"><td class="rk">63</td>
-<td class="card"><b>Galarian Obstagoon</b> <span class="cn">#245/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Galarian Obstagoon 245/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Galarian Obstagoon IR #245/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Galarian Obstagoon</b> <span class="cn">#245/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$3.20</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(62)">★</button></td></tr>
 <tr class="hrow" data-i="63" style="border-left:2px solid transparent;"><td class="rk">64</td>
-<td class="card"><b>Vikavolt</b> <span class="cn">#230/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Vikavolt 230/217 Ascended Heroes" data-card-name="Vikavolt IR #230/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Vikavolt</b> <span class="cn">#230/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$3.00</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(63)">★</button></td></tr>
 <tr class="hrow" data-i="64" style="border-left:2px solid transparent;"><td class="rk">65</td>
-<td class="card"><b>Sprigatito ex</b> <span class="cn">#251/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-64" data-card-name="Sprigatito ex UR #251/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Sprigatito ex</b> <span class="cn">#251/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.94</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(64)">★</button></td></tr>
 <tr class="hrow" data-i="65" style="border-left:2px solid transparent;"><td class="rk">66</td>
-<td class="card"><b>Dustox</b> <span class="cn">#220/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-65" data-card-name="Dustox IR #220/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Dustox</b> <span class="cn">#220/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$2.93</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(65)">★</button></td></tr>
 <tr class="hrow" data-i="66" style="border-left:2px solid transparent;"><td class="rk">67</td>
-<td class="card"><b>Heliolisk</b> <span class="cn">#229/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Heliolisk 229/217 Ascended Heroes" data-card-name="Heliolisk IR #229/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Heliolisk</b> <span class="cn">#229/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$2.90</td><td class="num wt">0.1%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(66)">★</button></td></tr>
 <tr class="hrow" data-i="67" style="border-left:2px solid transparent;"><td class="rk">68</td>
-<td class="card"><b>N's PP Up</b> <span class="cn">#262/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-67" data-card-name="N&#x27;s PP Up UR #262/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>N's PP Up</b> <span class="cn">#262/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.48</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(67)">★</button></td></tr>
 <tr class="hrow" data-i="68" style="border-left:2px solid transparent;"><td class="rk">69</td>
-<td class="card"><b>Mega Audino ex</b> <span class="cn">#253/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="name:Mega Audino ex 253/217 Ascended Heroes -case -display -lot -proxy -bundle" data-card-name="Mega Audino ex UR #253/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Mega Audino ex</b> <span class="cn">#253/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">UR</span></td>
 <td class="num">$2.42</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
 <td class="trk"><button class="star" onclick="event.stopPropagation();openPop(68)">★</button></td></tr>
 <tr class="hrow" data-i="69" style="border-left:2px solid transparent;"><td class="rk">70</td>
-<td class="card"><b>Salazzle</b> <span class="cn">#224/217</span></td>
+<td class="card"><div class="roi-cell"><span data-card-img="ph:ah26-69" data-card-name="Salazzle IR #224/217 Ascended Heroes" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="ah26-list"></span><div><b>Salazzle</b> <span class="cn">#224/217</span></div></div></td>
 <td class="num" style="text-align:left;"><span class="rar">IR</span></td>
 <td class="num">$2.25</td><td class="num wt">0.0%</td><td class="num"><span style="color:var(--dim)">—</span></td>
 <td class="num dim2">08-31</td>
@@ -1013,7 +1053,8 @@ function openPop(i) {
   document.getElementById('ovl').className = 'ovl open';
 }
 function closePop() { document.getElementById('ovl').className = 'ovl'; }
-document.querySelectorAll('tr.hrow').forEach(function(tr) { tr.addEventListener('click', function() { openPop(parseInt(tr.dataset.i)); }); });
+document.querySelectorAll('tr.hrow').forEach(function(tr) { tr.addEventListener('click', function(e) { if (e.target && e.target.closest && e.target.closest('.sch-cimg-link')) return; openPop(parseInt(tr.dataset.i)); }); });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePop(); });
 </script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body></html>

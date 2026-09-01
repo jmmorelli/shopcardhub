@@ -87,6 +87,36 @@ tr.soon td { opacity:0.55; }
       .nav-hamburger { display:flex !important; } 
       .mobile-nav { display:block !important; } }
 @media (max-width:800px) { .hidem { display:none; } td.nm .desc { max-width:170px; } h1 { font-size:28px; } }
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > *, .hero.hero-grid > *, .rh-head .container > *, .mast.hero-grid > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim, var(--dim)); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent, var(--iac)); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:block; }
+      .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub, .section-intro, .rh-intro { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
+    .mast.hero-grid { column-gap:48px; align-items:center; }
+    .mast.hero-grid > .hero-card-photo { grid-row:1; }
+    td.nm .roi-cell { min-width:0; }
+    td.nm .roi-cell > .sch-cimg { margin-top:0; }
+    @media(max-width:700px) { .mast.hero-grid > .hero-card-photo { width:96px; margin:0 0 8px 14px; } .mast.hero-grid .hero-card-photo .sch-cimg { width:96px !important; height:134px !important; } }
+    @media(max-width:800px) { td.nm .roi-cell { gap:8px; } td.nm .roi-cell > .sch-cimg { width:32px !important; height:45px !important; } td.nm .desc { min-width:118px; } }
 </style>  <!-- GA4 — added Aug 25, 2026: the set-index pages shipped without the tag, so every
        visit to the indices (the current priority surface) was going unmeasured. -->
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
@@ -428,17 +458,25 @@ tr.soon td { opacity:0.55; }
 </script>
 <!-- NAV:END -->
 <div class="wrap">
-<div class="mast">
+<div class="mast hero-grid">
+<figure class="hero-card-photo">
+      <span data-card-img="ebay:umbreon-ex-sir-pe" data-card-name="Umbreon ex SIR #161/131 Prismatic Evolutions" data-card-sub="pokemon" data-card-size="hero" data-card-surface="indices-hero"></span>
+      <figcaption class="hero-card-cap">Biggest card on the tape &middot; <b>Umbreon ex SIR #161</b> PRIS25 &middot; live eBay listing</figcaption>
+    </figure>
+<div class="mast-text">
 <div class="eyebrow">▮ Set Indices · Price-Weighted · Sold-Basis · Base 100.00</div>
 <h1>Every Set. One Ticker.</h1>
 <div class="subline">Each index tracks a set's chase tier from real sold comps, re-marked weekly, launched at 100.00 — so the level IS the cumulative return. Divisor-continuous, dated per mark, never estimated. An index is a measurement, not a recommendation: no picks live on these pages, just the tape. Click any row.</div>
 <div class="asof" id="asof">loading marks…</div>
+</div>
 </div>
 <div id="tape" style="display:none; background:var(--p2,rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.08); padding:14px 18px; margin-bottom:18px;"></div>
 <div id="sections"></div>
 <div class="foot">Methodology on every index page: price-weighted over sourced sold reads (PriceCharting for Pokémon, SportsCardsPro/eBay solds for sports) · unpriced universe cards carry zero weight and enter via logged divisor adjustments · base 100.00 at inception · weekly re-mark, Mondays. Affiliate disclosure: listing links on index pages are EPN-tracked; prices and index math are independent of them.</div>
 </div>
 <script>
+var FACE = {"PB26": ["ebay:mega-darkrai-ex-sir", "Mega Darkrai ex SIR #116/084"], "CR26": ["ebay:mega-greninja-ex-sir", "Mega Greninja ex SIR #116/086"], "AH26": ["ebay:tr-mewtwo-ex-sir", "Team Rocket's Mewtwo ex SIR #281/217"], "PRIS25": ["ebay:umbreon-ex-sir-pe", "Umbreon ex SIR #161/131"], "DR25": ["name:Misty's Psyduck 193/182 Pokemon", "Misty's Psyduck IR #193/182"], "BOW26": ["ebay:ethan-holliday", "Ethan Holliday 1st Bowman Chrome Auto"]};
+function faceThumb(t){ var fc = FACE[t]; if (!fc) return ''; return '<span data-card-img="' + fc[0].replace(/"/g, '&quot;') + '" data-card-name="' + fc[1].replace(/"/g, '&quot;') + '" data-card-sub="' + (t === 'BOW26' ? '1ST BOWMAN' : 'POKEMON') + '" data-card-size="row" data-card-surface="indices-list"></span>'; }
 var META = {
   "pokemon": { label: "POKÉMON", tickers: {
     "PB26":   { d: "Mega Evolution: Pitch Black — the secret-tier chase index. Darkrai's set." },
@@ -476,7 +514,7 @@ fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(
   var latest = null;
   var rowsBySec = { pokemon: [], baseball: [] };
   Object.keys(D).forEach(function(t) {
-    if (t === '_comment') return;
+    if (t === '_comment' || !D[t] || typeof D[t] !== 'object') return; // skip metadata keys (updated, _comment)
     var x = D[t], hist = x.history || [];
     var last = hist.length ? hist[hist.length - 1] : null;
     if (last && (!latest || last.date > latest)) latest = last.date;
@@ -490,8 +528,8 @@ fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(
       ? '<span class="rng">' + lo.toFixed(0) + '<span class="rngbar"><i style="left:' + (((last.level - lo) / (hi - lo)) * 76) + 'px"></i></span>' + hi.toFixed(0) + '</span>'
       : '<span class="fl">—</span>';
     var meta = (META[sec].tickers[t] || { d: x.name });
-    rowsBySec[sec].push('<tr class="idx" onclick="location.href=\'' + x.page + '\'">' +
-      '<td class="nm"><a href="' + x.page + '">' + t + '</a><span class="desc">' + meta.d + '</span></td>' +
+    rowsBySec[sec].push('<tr class="idx" onclick="if(!event.target.closest(\'.sch-cimg-link\'))location.href=\'' + x.page + '\'">' +
+      '<td class="nm"><div class="roi-cell">' + faceThumb(t) + '<div><a href="' + x.page + '">' + t + '</a><span class="desc">' + meta.d + '</span></div></div></td>' +
       '<td class="hidem fl">' + (x.basket ? x.basket.length : 0) + ' / ' + (x.universe ? x.universe.length : '?') + (x.universeComplete === false ? '+' : '') + '</td>' +
       '<td class="lv">' + lvl + '</td>' +
       '<td>' + pctCell(wow) + '</td>' +
@@ -501,7 +539,7 @@ fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(
   });
   COMING.forEach(function(c) {
     var link = c.href ? '<a href="' + c.href + '">' + c.t + '</a>' : '<span style="color:var(--th);font-weight:700;letter-spacing:1px;">' + c.t + '</span>';
-    rowsBySec[c.s].push('<tr class="soon"><td class="nm">' + link + '<span class="desc">' + c.d + '</span></td>' +
+    rowsBySec[c.s].push('<tr class="soon"><td class="nm">' + (FACE[c.t] ? '<div class="roi-cell">' + faceThumb(c.t) + '<div>' + link + '<span class="desc">' + c.d + '</span></div></div>' : link + '<span class="desc">' + c.d + '</span>') + '</td>' +
       '<td class="hidem fl">—</td><td class="lv fl">' + c.note + '</td><td class="fl">—</td><td class="hidem fl">—</td><td class="fl">—</td><td class="hidem fl">—</td></tr>');
   });
   var head = '<thead><tr><th>Ticker</th><th class="hidem">Priced / Universe</th><th>Level</th><th>1 Wk</th><th class="hidem">1 Mo</th><th>Since Inception</th><th class="hidem">Range</th></tr></thead>';
@@ -513,7 +551,7 @@ fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(
   try {
     var tk = [], cards = [];
     Object.keys(D).forEach(function(t){
-      if (t === '_comment') return;
+      if (t === '_comment' || !D[t] || typeof D[t] !== 'object') return;
       var x = D[t], hist = x.history || [];
       if (hist.length >= 2) {
         var w = (hist[hist.length-1].level / hist[hist.length-2].level - 1) * 100;
@@ -547,4 +585,5 @@ fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(
   document.getElementById('asof').textContent = 'index data unavailable right now — try a refresh';
 });
 </script>
+<script src="/js/card-img.js?v=1" defer></script>
 </body></html>

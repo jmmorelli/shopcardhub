@@ -159,7 +159,7 @@
     .chip-cat.pokemon { background:rgba(245,200,0,0.08); color:var(--gold); border-color:rgba(245,200,0,0.3); }
     .chip-cat.basketball { background:var(--orange-dim); color:var(--orange); border-color:rgba(255,140,0,0.3); }
     .chip-cat.football { background:rgba(170,110,255,0.08); color:#b48aff; border-color:rgba(170,110,255,0.3); }
-    .chip-zone { background:var(--green-dim); color:var(--green); border:1px solid rgba(0,224,122,0.4); animation:zone-pulse 2s ease-in-out infinite; }
+    .chip-zone { background:var(--green-dim); color:var(--green); border:1px solid rgba(0,224,122,0.4); animation:zone-pulse 2s ease-in-out 1; }   /* Sep 1 2026: one pulse on paint, not a loop */
     @keyframes zone-pulse { 0%,100%{ box-shadow:0 0 0 0 rgba(0,224,122,0.3);} 50%{ box-shadow:0 0 10px 1px rgba(0,224,122,0.35);} }
     .chip-grade { background:rgba(255,255,255,0.05); color:var(--text); border:1px solid var(--border2); }
     .vc-name { font-family:var(--fd); font-size:20px; font-weight:800; letter-spacing:0.3px; color:var(--text-head); line-height:1.15; text-transform:uppercase; overflow:hidden; text-overflow:ellipsis; }
@@ -265,7 +265,7 @@
     .vgrid tbody tr.in-zone td:first-child { box-shadow:inset 3px 0 0 var(--green); }
     .vgrid .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--gold); }
     .vgrid tr.own .dot { background:var(--green); }
-    .vgrid tr.in-zone .dot { box-shadow:0 0 0 3px rgba(0,224,122,0.25); animation:zone-pulse 1.6s ease-in-out infinite; }
+    .vgrid tr.in-zone .dot { box-shadow:0 0 0 3px rgba(0,224,122,0.25); animation:zone-pulse 1.6s ease-in-out 1; }   /* Sep 1 2026: one pulse on paint; the static ring stays */
     @keyframes zone-pulse { 50% { box-shadow:0 0 0 6px rgba(0,224,122,0.08); } }
     .vgrid .lock { font-size:9px; margin-left:3px; opacity:.7; }
     .vgrid .nm { font-family:var(--fb); font-weight:600; color:var(--text-head); font-size:13px; max-width:250px; overflow:hidden; text-overflow:ellipsis; }
@@ -425,7 +425,7 @@
     .ob-step small { display:block; font-family:var(--fm); font-size:10px; color:var(--text-dim); margin-top:2px; }
     /* live-asks loading skeleton */
     .comps-skel { display:flex; align-items:center; gap:10px; padding:7px 8px; background:var(--bg3); border:1px solid var(--border); margin-bottom:6px; }
-    .comps-skel i { display:block; height:10px; border-radius:2px; background:linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.05) 75%); background-size:200% 100%; animation:skel 1.1s linear infinite; }
+    .comps-skel i { display:block; height:10px; border-radius:2px; background:linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.05) 75%); background-size:200% 100%; animation:skel 1.1s linear 6; }   /* 6 sweeps ≈ the 6 s comps timeout, then still */
     .comps-skel .sk-img { width:44px; height:44px; flex:none; }
     .comps-skel .sk-t { flex:1; }
     .comps-skel .sk-p { width:56px; }
@@ -493,8 +493,35 @@
       .vgrid .last { font-size:12.5px; }
       .vgrid .spk svg { width:44px; height:20px; }
     }
+    /* ===== Sep 1 2026 — chart draw-in (card detail) =====
+       The close-connector line draws left→right (pathLength="1" so dasharray/offset are unit-free),
+       candles fade in staggered (--i), and the last close pops with an expanding ring. Every rule is
+       `backwards`-filled: when the animation is off (reduced motion) the underlying values show. */
+    .vc-chart .cl-line { stroke-dasharray:1; stroke-dashoffset:0; animation:cl-draw .5s ease-out backwards; }
+    @keyframes cl-draw { from { stroke-dashoffset:1; } to { stroke-dashoffset:0; } }
+    .vc-chart .cl-c { transform-box:fill-box; transform-origin:center; animation:cl-candle .3s ease-out backwards; animation-delay:calc(60ms + var(--i, 0) * 45ms); }
+    @keyframes cl-candle { from { opacity:0; transform:scaleY(.6); } }
+    @keyframes cl-fade { from { opacity:0; } }
+    .vc-chart .cl-last { transform-box:fill-box; transform-origin:center; animation:cl-pop .35s cubic-bezier(.2,1.4,.4,1) .45s backwards; }
+    @keyframes cl-pop { from { transform:scale(0); } }
+    .vc-chart .cl-ring { transform-box:fill-box; transform-origin:center; opacity:0; animation:cl-ring .7s ease-out .5s forwards; }
+    @keyframes cl-ring { 0% { transform:scale(1); opacity:.85; } 100% { transform:scale(4); opacity:0; } }
+    .vc-chart .cl-lbl { animation:cl-fade .3s ease-out .5s backwards; }
+    /* buy-zone browser alerts — opt-in control under the stat tiles */
+    .notify-row { display:flex; justify-content:flex-end; margin:-8px 0 12px; }
+    .notify-row[hidden] { display:none; }
+    .notify-btn { display:inline-flex; align-items:center; gap:7px; background:transparent; border:1px solid var(--border2); color:var(--text-dim); font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:6px 12px; border-radius:2px; cursor:pointer; transition:all .15s; }
+    .notify-btn:hover { color:var(--gold); border-color:rgba(245,200,0,0.5); }
+    .notify-btn.on { color:var(--green); border-color:rgba(0,224,122,0.4); background:var(--green-dim); cursor:default; }
+    .notify-btn.on:hover { color:var(--green); }
+    .notify-off { background:none; border:none; color:var(--text-dim); font-family:var(--fm); font-size:10px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; padding:6px 8px; }
+    .notify-off:hover { color:var(--text-head); }
+    @media (max-width:640px) { .notify-row { margin:-4px 0 8px; } .notify-btn { font-size:9px; padding:6px 10px; letter-spacing:1px; } }
     @media (prefers-reduced-motion: reduce) {
       .vgrid tbody tr.flash-up, .vgrid tbody tr.flash-down, .comps-skel i, .onboard.show, .sheet { animation:none; transition:none; }
+      .vc-chart .cl-line, .vc-chart .cl-c, .vc-chart .cl-last, .vc-chart .cl-ring, .vc-chart .cl-lbl { animation:none; }
+      .vc-chart .cl-ring { display:none; }
+      .chip-zone, .vgrid tr.in-zone .dot { animation:none; }
     }
   </style>
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
@@ -847,6 +874,13 @@
     </div>
 
     <div class="kpi-strip" id="kpiStrip"></div>
+
+    <!-- Buy-zone browser alerts (Sep 1 2026) — opt-in only; shown when the browser supports Notification and
+         permission isn't denied. Never prompts without a click. State: sch_vault_notify_v1 = "1". -->
+    <div class="notify-row" id="notifyRow" hidden>
+      <button class="notify-btn" id="notifyBtn" type="button" onclick="enableZoneAlerts()">🔔 Alert me when a card hits my target</button>
+      <button class="notify-off" id="notifyOff" type="button" onclick="disableZoneAlerts()" hidden title="Stop browser alerts">off</button>
+    </div>
 
     <div class="vault-toolbar" id="vaultToolbar">
       <div class="vtabs">
@@ -1297,7 +1331,12 @@ function verdict(c, s) {
 }
 
 /* ---------- candle chart (SVG) ---------- */
-function chartSVG(c) {
+/* Draw-in (Sep 1 2026): the chart animates the FIRST time a card's detail is painted (open / popup) and
+   renders still on every re-render after that (toggling the math, logging a price, feed refresh), so the
+   line never replays under the reader's eyes. chartDrawn is cleared when the card closes. */
+const chartDrawn = new Set();
+function chartSVG(c, animate) {
+  const anim = !!animate && !REDUCED;
   const ps = c.prices;
   if (ps.length < 2) {
     const auto = c.feedKey ? 'the engine’s next nightly snapshot completes it' : 'opening this card tomorrow auto-logs the ask median and completes it';
@@ -1351,7 +1390,7 @@ function chartSVG(c) {
   ps.forEach((pt, i) => {
     pathD += (i === 0 ? 'M' : 'L') + (padL + plotW * (i / (ps.length - 1))).toFixed(1) + ' ' + y(pt.p).toFixed(1) + ' ';
   });
-  out += '<path d="' + pathD + '" fill="none" stroke="rgba(184,205,212,0.18)" stroke-width="1"/>';
+  out += '<path' + (anim ? ' class="cl-line" pathLength="1"' : '') + ' d="' + pathD + '" fill="none" stroke="rgba(184,205,212,0.3)" stroke-width="1"/>';
   // candles: open = prev logged price, close = this logged price
   for (let i = 1; i < ps.length; i++) {
     const open = ps[i-1].p, close = ps[i].p;
@@ -1360,14 +1399,15 @@ function chartSVG(c) {
     const cx = padL + step * (i - 1) + step / 2;
     const yO = y(open), yC = y(close);
     const top = Math.min(yO, yC), h = Math.max(1.5, Math.abs(yC - yO));
-    out += '<rect class="candle-body" x="' + (cx - bw/2).toFixed(1) + '" y="' + top.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" fill="' + col + '" rx="1"' +
+    out += '<rect class="candle-body' + (anim ? ' cl-c' : '') + '"' + (anim ? ' style="--i:' + (i - 1) + '"' : '') + ' x="' + (cx - bw/2).toFixed(1) + '" y="' + top.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" fill="' + col + '" rx="1"' +
            (up ? ' opacity="0.9"' : ' opacity="0.85"') + '>' +
            '<title>' + dstr(ps[i].t) + ' — $' + fmt$(close) + ' (' + pct(open > 0 ? close/open - 1 : 0) + ' vs prior log)</title></rect>';
   }
-  // last price marker
+  // last price marker (+ a one-shot ring on draw-in)
   const lp = ps[ps.length-1].p, yL = y(lp);
-  out += '<circle cx="' + (padL + plotW) + '" cy="' + yL.toFixed(1) + '" r="2.5" fill="#e4f0f4"/>';
-  out += '<text x="' + (W - 2) + '" y="' + (yL + 3) + '" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" font-weight="700" fill="#e4f0f4">' + fmt$(lp, 0) + '</text>';
+  if (anim) out += '<circle class="cl-ring" cx="' + (padL + plotW) + '" cy="' + yL.toFixed(1) + '" r="2.5" fill="none" stroke="#e4f0f4" stroke-width="1"/>';
+  out += '<circle' + (anim ? ' class="cl-last"' : '') + ' cx="' + (padL + plotW) + '" cy="' + yL.toFixed(1) + '" r="2.5" fill="#e4f0f4"/>';
+  out += '<text' + (anim ? ' class="cl-lbl"' : '') + ' x="' + (W - 2) + '" y="' + (yL + 3) + '" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" font-weight="700" fill="#e4f0f4">' + fmt$(lp, 0) + '</text>';
   out += '</svg>';
   return out;
 }
@@ -1595,6 +1635,8 @@ function cardRow(c) {
   const inZone = c.status === 'watch' && c.target != null && lp != null && lp <= c.target;
   const isOpen = openSet.has(c.id);
   const showMath = mathSet.has(c.id);
+  const drawIn = isOpen && !chartDrawn.has(c.id);          // first paint of this card's detail → animate the chart
+  if (isOpen) chartDrawn.add(c.id);
 
   // deltas
   let deltas = '';
@@ -1719,7 +1761,7 @@ function cardRow(c) {
     '</div>' +
     '<div class="vc-detail">' +
       '<div class="detail-chart">' +
-        '<div class="vc-chart">' + chartSVG(c) + '</div>' +
+        '<div class="vc-chart">' + chartSVG(c, drawIn) + '</div>' +
         '<div class="dc-side">' +
           meter +
           '<div class="quick-log">' +
@@ -1853,6 +1895,8 @@ function searchChanged() { clearTimeout(searchTimer); searchTimer = setTimeout((
 function render() {           // full: KPIs + analytics + list (call after data changes)
   renderKPIs();
   renderOnboard();
+  renderNotifyCtl();
+  checkZoneAlerts();
   const watch = state.cards.filter(c => c.status === 'watch');
   const own = state.cards.filter(c => c.status === 'own');
   document.getElementById('cntWatch').textContent = watch.length;
@@ -2017,6 +2061,75 @@ function writeSeen() {
   try { localStorage.setItem(SEEN_KEY, JSON.stringify(m)); } catch (e) {}
 }
 window.addEventListener('pagehide', writeSeen);
+
+/* ---------- buy-zone browser alerts (Sep 1 2026) ----------
+   Opt-in only: sch_vault_notify_v1 = "1", and the permission prompt is raised by the button click, never on
+   load. sch_vault_zone_v1 = { in:{id:1}, notified:{id:'YYYY-MM-DD'} } — `in` is the in-zone set as of the
+   previous visit (snapshotted once at boot, rewritten after every render), `notified` throttles to one alert
+   per card per day. A card fires when it is in the zone now and was NOT in the boot snapshot. Enabling the
+   alerts baselines the snapshot to what's in the zone right now — those rows are already on screen. */
+const NOTIFY_KEY = 'sch_vault_notify_v1', ZONE_KEY = 'sch_vault_zone_v1';
+const NOTIFY_OK = 'Notification' in window;
+let zoneMem = { in:{}, notified:{} };
+try { const z = JSON.parse(localStorage.getItem(ZONE_KEY) || 'null'); if (z && typeof z === 'object') zoneMem = { in: z.in || {}, notified: z.notified || {} }; } catch (e) {}
+let zonePrevIn = Object.assign({}, zoneMem.in);
+function notifyOn() { try { return NOTIFY_OK && Notification.permission === 'granted' && localStorage.getItem(NOTIFY_KEY) === '1'; } catch (e) { return false; } }
+function inZoneIds() { const m = {}; state.cards.forEach(c => { const lp = last(c); if (c.status === 'watch' && c.target != null && lp != null && lp <= c.target) m[c.id] = 1; }); return m; }
+function renderNotifyCtl() {
+  const row = document.getElementById('notifyRow'), btn = document.getElementById('notifyBtn'), off = document.getElementById('notifyOff');
+  if (!row || !btn) return;
+  if (!NOTIFY_OK || Notification.permission === 'denied') { row.hidden = true; return; }
+  const on = notifyOn();
+  row.hidden = false;
+  btn.classList.toggle('on', on);
+  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  btn.textContent = on ? '🔔 Buy-zone alerts on' : '🔔 Alert me when a card hits my target';
+  if (off) off.hidden = !on;
+}
+function enableZoneAlerts() {
+  if (!NOTIFY_OK) return;
+  if (notifyOn()) { toast('Alerts are on — you\'ll hear when a card hits its target'); return; }
+  let handled = false;
+  const done = p => {
+    if (handled) return; handled = true;
+    if (p === 'granted') {
+      try { localStorage.setItem(NOTIFY_KEY, '1'); } catch (e) {}
+      zonePrevIn = inZoneIds();                                  // baseline: what's in the zone now is already on screen
+      zoneMem.in = Object.assign({}, zonePrevIn);
+      try { localStorage.setItem(ZONE_KEY, JSON.stringify(zoneMem)); } catch (e) {}
+      toast('🔔 Alerts on — one ping per card, the day it hits your target');
+      track('vault_notify_on');
+    } else if (p === 'denied') { toast('Notifications are blocked for this site in your browser'); track('vault_notify_denied'); }
+    renderNotifyCtl();
+  };
+  try {
+    const r = Notification.requestPermission(done);            // legacy Safari takes a callback…
+    if (r && typeof r.then === 'function') r.then(done);       // …everything else returns a promise
+  } catch (e) { done(Notification.permission); }
+}
+function disableZoneAlerts() { try { localStorage.setItem(NOTIFY_KEY, '0'); } catch (e) {} renderNotifyCtl(); toast('Browser alerts off'); track('vault_notify_off'); }
+function checkZoneAlerts() {
+  if (state.demo) return;                                      // demo prices never move — nothing to alert on, nothing to remember
+  const now = inZoneIds();
+  if (notifyOn()) {
+    const today = new Date().toISOString().slice(0, 10);
+    state.cards.forEach(c => {
+      if (!now[c.id] || zonePrevIn[c.id] || zoneMem.notified[c.id] === today) return;
+      const lp = last(c);
+      try {
+        const n = new Notification(xTrunc(c.name, 60) + ' hit your $' + fmt$(c.target, 0) + ' target', {
+          body: '$' + fmt$(lp, 0) + ' now' + (c.set ? ' · ' + xTrunc(c.set, 40) : '') + ' — tap to open it in the Vault',
+          tag: 'sch-zone-' + c.id, icon: '/favicon.svg'
+        });
+        n.onclick = () => { try { window.focus(); } catch (e) {} openCard(c.id); try { n.close(); } catch (e) {} };
+        zoneMem.notified[c.id] = today;
+        track('vault_notify_fire');
+      } catch (e) { /* e.g. Android Chrome: page-context Notification is an illegal constructor — fail quietly */ }
+    });
+  }
+  zoneMem.in = now;
+  try { localStorage.setItem(ZONE_KEY, JSON.stringify(zoneMem)); } catch (e) {}
+}
 /* "New: supply" note — a small pill at the table foot, dismissible (sch_vault_pill_supply) */
 function newPillHtml() {
   try { if (localStorage.getItem('sch_vault_pill_supply') === '1') return ''; } catch (e) {}
@@ -2147,7 +2260,7 @@ function setView(v) {
   track('vault_view', { view:v }); render();
 }
 function openCard(id) { popupId = id; openSet.add(id); document.getElementById('cardVeil').classList.add('show'); track('vault_open_card'); render(); }
-function closeCard() { if (popupId) openSet.delete(popupId); popupId = null; document.getElementById('cardVeil').classList.remove('show'); if (view === 'cards') render(); }
+function closeCard() { if (popupId) { openSet.delete(popupId); chartDrawn.delete(popupId); } popupId = null; document.getElementById('cardVeil').classList.remove('show'); if (view === 'cards') render(); }
 function toggleAnalytics() {
   const a = document.getElementById('analytics'); a.classList.toggle('collapsed');
   try { localStorage.setItem('sch_vault_analytics', a.classList.contains('collapsed') ? '0' : '1'); } catch (e) {}
@@ -2167,7 +2280,7 @@ function setTab(t) {
   track('vault_tab', { tab: t });
   render();
 }
-function toggleOpen(id) { openSet.has(id) ? openSet.delete(id) : openSet.add(id); render(); }
+function toggleOpen(id) { if (openSet.has(id)) { openSet.delete(id); chartDrawn.delete(id); } else openSet.add(id); render(); }
 function toggleMath(id) { mathSet.has(id) ? mathSet.delete(id) : mathSet.add(id); render(); }
 
 function quickLog(id) {

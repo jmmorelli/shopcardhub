@@ -120,7 +120,35 @@
 
     @media(max-width:860px) { .rh-grid, .footer-grid { grid-template-columns:1fr; } }
     @media(max-width:600px) { .rh-grid { grid-template-columns:1fr; } }
-  </style>
+  
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > *, .hero.hero-grid > *, .rh-head .container > *, .mast.hero-grid > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim, var(--dim)); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent, var(--iac)); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:block; }
+      .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub, .section-intro { clear:both; }
+      .entry-header .entry-lead { flex:0 0 auto; }
+    }
+    .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
+    .entry-lead > div { min-width:0; }
+    .entry-lead > .sch-cimg { margin-top:3px; }
+    .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
+    .roi-cell > div { min-width:0; }
+    .roi-cell > .sch-cimg { margin-top:1px; }
+    .rh-head .container { align-items:center; }
+    .rh-card h2 { align-items:center; }
+    .rh-card h2 > .sch-cimg { margin-right:2px; }
+    @media(max-width:700px) { .rh-head .container > .hero-card-photo { margin-top:4px; } .rh-jump { clear:both; } }
+</style>
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
   <script data-gtag-deferred="G-2Q52C5EKG7">
     window.dataLayer = window.dataLayer || [];
@@ -466,6 +494,10 @@
   <header class="rh-head">
     <div class="container">
       <div class="rh-eyebrow">Research · Acquisition Layer</div>
+      <figure class="hero-card-photo">
+      <span data-card-img="ebay:ethan-holliday" data-card-name="Ethan Holliday 1st Bowman Chrome Auto CPA-EH" data-card-sub="1st Bowman" data-card-size="hero" data-card-surface="research-hero"></span>
+      <figcaption class="hero-card-cap">Top of the funnel &middot; <b>Ethan Holliday 1st Bowman</b> &middot; live eBay listing</figcaption>
+    </figure>
       <h1>Research</h1>
       <p class="rh-intro">Every guide, set guide, and player page in one index — the <strong>top of the funnel</strong>. Same URLs as always, just gathered here and pointed at the tools. Start with what you're buying; the watchlist and (soon) the Signal Board do the rest.</p>
 
@@ -488,7 +520,7 @@
 
         <!-- BASEBALL -->
         <section class="rh-card" id="baseball">
-          <h2><span class="ico">⚾</span> Baseball</h2>
+          <h2><span data-card-img="ebay:andrew-fischer" data-card-name="Andrew Fischer 1st Bowman Chrome Auto CPA-AF" data-card-sub="1st Bowman" data-card-size="row" data-card-surface="research-cats"></span><span class="ico">⚾</span> Baseball</h2>
           <span class="rh-count">17 guides</span>
           <div class="rh-sub">Players</div>
           <div class="rh-links">
@@ -522,7 +554,7 @@
 
         <!-- BASKETBALL -->
         <section class="rh-card" id="basketball">
-          <h2><span class="ico">🏀</span> Basketball</h2>
+          <h2><span data-card-img="name:Cooper Flagg Topps Chrome Silver Refractor 2025-26 #251" data-card-name="Cooper Flagg 2025-26 Topps Chrome #251 Silver Refractor" data-card-sub="basketball" data-card-size="row" data-card-surface="research-cats"></span><span class="ico">🏀</span> Basketball</h2>
           <span class="rh-count">8 guides</span>
           <div class="rh-sub">Players</div>
           <div class="rh-links">
@@ -545,7 +577,7 @@
 
         <!-- FOOTBALL -->
         <section class="rh-card" id="football">
-          <h2><span class="ico">🏈</span> Football</h2>
+          <h2><span data-card-img="name:Fernando Mendoza Topps Chrome Rookie Auto 2026 -lot -reprint -digital" data-card-name="Fernando Mendoza 2026 Topps Chrome Rookie Auto" data-card-sub="football" data-card-size="row" data-card-surface="research-cats"></span><span class="ico">🏈</span> Football</h2>
           <span class="rh-count">4 guides</span>
           <div class="rh-sub">Guides &amp; Set Guides</div>
           <div class="rh-links">
@@ -558,7 +590,7 @@
 
         <!-- SOCCER -->
         <section class="rh-card" id="soccer">
-          <h2><span class="ico">⚽</span> Soccer</h2>
+          <h2><span data-card-img="name:Lamine Yamal Topps Chrome UEFA 2024-25 -lot -reprint -digital" data-card-name="Lamine Yamal 2024-25 Topps Chrome UEFA" data-card-sub="soccer" data-card-size="row" data-card-surface="research-cats"></span><span class="ico">⚽</span> Soccer</h2>
           <span class="rh-count">7 guides</span>
           <div class="rh-sub">Guides</div>
           <div class="rh-links">
@@ -577,7 +609,7 @@
 
         <!-- POKEMON -->
         <section class="rh-card" id="pokemon">
-          <h2><span class="ico">🎴</span> Pokémon TCG</h2>
+          <h2><span data-card-img="ebay:mega-greninja-ex-sir" data-card-name="Mega Greninja ex SIR #116/086 Chaos Rising" data-card-sub="pokemon" data-card-size="row" data-card-surface="research-cats"></span><span class="ico">🎴</span> Pokémon TCG</h2>
           <span class="rh-count">5 guides</span>
           <div class="rh-sub">Set Guides</div>
           <div class="rh-links">
@@ -594,7 +626,7 @@
 
         <!-- GRADING & SUPPLIES -->
         <section class="rh-card" id="grading">
-          <h2><span class="ico">📐</span> Grading &amp; Supplies</h2>
+          <h2><span data-card-img="name:PSA 10 Ethan Holliday 2026 Bowman Chrome auto -lot -reprint" data-card-name="Ethan Holliday 2026 Bowman Chrome Auto PSA 10" data-card-sub="PSA 10" data-card-size="row" data-card-surface="research-cats"></span><span class="ico">📐</span> Grading &amp; Supplies</h2>
           <span class="rh-count">3 guides</span>
           <div class="rh-sub">Guides</div>
           <div class="rh-links">
@@ -606,7 +638,7 @@
 
         <!-- BOXES & TOOLS -->
         <section class="rh-card" id="boxes">
-          <h2><span class="ico">📦</span> Boxes &amp; Tools</h2>
+          <h2><span data-card-img="name:2026 Bowman Baseball Hobby Box sealed -case -pack -chrome -sapphire -draft -jumbo -blaster -lot" data-card-name="2026 Bowman Baseball Hobby Box" data-card-sub="sealed box" data-card-size="row" data-card-surface="research-cats"></span><span class="ico">📦</span> Boxes &amp; Tools</h2>
           <span class="rh-count">3 resources</span>
           <div class="rh-sub">Hobby Boxes &amp; Tools</div>
           <div class="rh-links">
@@ -670,5 +702,6 @@
     </div>
   </footer>
 
+<script src="/js/card-img.js?v=1" defer></script>
 </body>
 </html>
