@@ -142,7 +142,12 @@
           a.href = tagLink(hit.item, o.surface || el.getAttribute('data-card-surface'));
           a.target = '_blank'; a.rel = 'noopener sponsored'; a.title = 'This listing on eBay';
           a.className = 'sch-cimg-link';
+          a.setAttribute('aria-label', 'View this listing on eBay');
           el.appendChild(a); a.appendChild(imgEl);
+          // EPN compliance: visible "eBay" label on every affiliate link
+          var tag = document.createElement('span');
+          tag.className = 'sch-ebay-tag'; tag.setAttribute('aria-hidden', 'true'); tag.textContent = 'eBay';
+          a.appendChild(tag);
         }
       };
       real.onerror = function () { if (src !== hit.url) { src = hit.url; real.src = hit.url; } };

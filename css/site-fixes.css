@@ -207,3 +207,14 @@ body .bb-tower .beam, body .hero h1 em { animation: none !important; }
   /* ticker items scroll inside an overflow:hidden strip; make sure the strip clips on phones */
   body .ticker, body .ticker-wrap, body .ticker-inner { overflow: hidden; max-width: 100vw; }
 }
+
+/* EPN compliance (Sep 2026): every eBay affiliate link carries a visible "eBay" label.
+   .sch-ebay-tag = corner badge for image-only links (static + card-img.js). */
+.sch-ebay-tag {
+  position: absolute; right: 3px; bottom: 3px; z-index: 2;
+  font: 700 9px/1.3 "JetBrains Mono", monospace; letter-spacing: .04em;
+  color: #fff; background: rgba(11, 17, 22, .78); border: 1px solid rgba(255, 255, 255, .18);
+  padding: 1px 4px; border-radius: 3px; pointer-events: none; text-transform: none;
+}
+.sch-cimg-thumb .sch-ebay-tag { font-size: 7px; padding: 0 2px; right: 1px; bottom: 1px; }
+a[href*="ebay.com"] { position: relative; }
