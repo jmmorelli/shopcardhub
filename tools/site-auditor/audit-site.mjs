@@ -37,6 +37,15 @@ const read = f => fs.readFileSync(path.join(REPO, f), "utf8");
 // Markup-only view: JS builds links at runtime (watchlist engine, ROI calc) —
 // those carry params dynamically and are covered by their own runtime checks.
 const markup = f => read(f).replace(/<script[\s\S]*?<\/script>/g, "");
+// Structural view for tag counting: no <script>, no <style>, no HTML comments.
+// A "<section>" inside a CSS comment (index.html, Sep 1 2026) counted as an open tag
+// and produced a false 6-vs-5 imbalance — tags only exist in markup, so count only markup.
+const structural = f => read(f)
+  .replace(/<script[\s\S]*?<\/script>/g, "")
+  .replace(/<style[\s\S]*?<\/style>/g, "")
+  .replace(/<!--[\s\S]*?-->/g, "");
+// Self-hosted assets (fonts/CSS moved on-site Sep 1 2026) live under these roots
+const ASSET_PREFIXES = ["/api/", "/js/", "/css/", "/fonts/", "/data/"];
 
 /* ---------- 1. EPN link compliance ---------- */
 for (const f of pages) {
@@ -67,7 +76,7 @@ for (const f of pages) {
   const html = markup(f);
   const hrefs = [...html.matchAll(/href="(\/[^"#?]*)/g)].map(m => m[1]).filter(h => !/[\s')]/.test(h));
   for (let h of hrefs) {
-    if (h.startsWith("/api/") || h.startsWith("/js/") || h.startsWith("/data/") || h === "/favicon.svg" || h === "/sitemap.xml") {
+    if (ASSET_PREFIXES.some(p => h.startsWith(p)) || h === "/favicon.svg" || h === "/sitemap.xml") {
       const p = path.join(REPO, h);
       if (!fs.existsSync(p)) add("FAIL", "asset-missing", f, `asset href ${h} not on disk`);
       continue;
@@ -94,7 +103,7 @@ for (const f of pages) {
 
 /* ---------- 5. HTML integrity (tag balance) ---------- */
 for (const f of pages) {
-  const html = read(f);
+  const html = structural(f); // markup only — style/script/comments stripped (Sep 2 2026)
   for (const tag of ["div", "section", "table", "a"]) {
     const open = (html.match(new RegExp(`<${tag}[\\s>]`, "g")) || []).length;
     const close = (html.match(new RegExp(`</${tag}>`, "g")) || []).length;
@@ -248,6 +257,101 @@ try {
   for (const f of pages) { const m = markup(f).match(deny); if (m) add("FAIL", "first-bowman-copy", f, `copy denies a 1st Bowman: "${m[0]}" — a 1st logo is on every debut-year Bowman card; verify before publishing any such claim`); }
   if (!setFiles.length) add("WARN", "sets-missing", "data/sets", "no checklist files found");
 } catch (e) { add("WARN", "first-bowman-check-error", "tools/site-auditor", e.message); }
+
+/* ---------- 11. Placeholder copy vs live features (auditor-placeholder-rule, applied Sep 2 2026) ----------
+   Mo found three whole classes of stale placeholder copy on the homepage Aug 31 that the sweep never saw.
+   Every feature these phrases wait on is LIVE (engine since Aug, indices Aug 24, Vault, /api/comps), so
+   any feature-placeholder is a FAIL. "Coming soon" is a WARN only: it can be honest on a pre-release
+   product page, and the per-product release registry the proposal named does not exist yet — the
+   released-product half of this rule waits for that file rather than guessing from copy. */
+const PLACEHOLDER_FAIL = [
+  [/see live comps/i, "'See live comps' — /api/comps has been live since Jul 28; wire the ask or mark the cell"],
+  [/\bcomps?\s+TBD\b/i, "'comps TBD' — sold comps are pullable (SCP/PriceCharting); mark it or label it"],
+  [/\bonce [^.<]{0,60}?\bis connected\b/i, "'once … is connected' — the engine/Vault/indices are all connected"],
+  [/\bwhen the (?:price )?engine (?:goes|is) live\b/i, "engine-pending copy — the engine has been live since August"],
+];
+const PLACEHOLDER_WARN = [[/\bcoming soon\b/i, "'Coming soon' — verify the product/feature is still unreleased"]];
+for (const f of pages) {
+  const text = markup(f).replace(/<!--[\s\S]*?-->/g, "");
+  for (const [re, why] of PLACEHOLDER_FAIL) { const m = text.match(re); if (m) add("FAIL", "placeholder-copy", f, `${why}: "${m[0].slice(0, 80)}"`); }
+  for (const [re, why] of PLACEHOLDER_WARN) { const m = text.match(re); if (m) add("WARN", "placeholder-copy", f, `${why}: "${m[0].slice(0, 80)}"`); }
+}
+
+/* ---------- 12. Feed / line integrity (auditor-feed-line-rule, applied Sep 2 2026) ----------
+   From the Aug 31 Sapphire bug: 10 of 16 chrome queries lacked -sapphire and the Vault could chart Chrome
+   prices on Sapphire cards. LINE tokens checked: sapphire, auto. Three deterministic checks:
+     feed-line-unguarded   a chrome-line feed (cardType chrome-* or "bowman … chrome" query) whose label is not
+                           sapphire must exclude sapphire in its query (-sapphire)
+     feed-line-label       a feed's label and the POSITIVE tokens of its query must agree on sapphire/auto
+     track-feed-line       a page Track button's data-name and its data-feed's label must agree on sapphire/auto
+   Pokémon (tcg-single) feeds carry neither token and pass trivially. */
+const lineTokens = s => { s = String(s || "").toLowerCase(); return { sapphire: /\bsapphire\b/.test(s), auto: /\bautos?\b|\bautographs?\b/.test(s) }; };
+const posQueryTokens = q => String(q || "").split(/\s+/).filter(t => t && !t.startsWith("-")).join(" ");
+const feedMap = new Map();
+try {
+  const wl = JSON.parse(read("data/watchlist.json"));
+  for (const c of wl.cards || []) {
+    feedMap.set(c.id, c);
+    const label = lineTokens(c.label), pos = lineTokens(posQueryTokens(c.query));
+    const chromeLine = /^chrome/.test(String(c.cardType || "chrome-auto")) || /\bbowman\b.*\bchrome\b/i.test(c.query || "");
+    if (chromeLine && !label.sapphire && !/(^|\s)-sapphire\b/i.test(c.query || ""))
+      add("FAIL", "feed-line-unguarded", "data/watchlist.json", `${c.id}: chrome-line query has no -sapphire exclusion — Sapphire listings can price this feed`);
+    for (const t of ["sapphire", "auto"])
+      if (label[t] !== pos[t]) add("FAIL", "feed-line-label", "data/watchlist.json", `${c.id}: label ${label[t] ? "has" : "lacks"} '${t}' but query ${pos[t] ? "has" : "lacks"} it (label="${c.label}")`);
+  }
+} catch (e) { add("FAIL", "feed-line-check-error", "data/watchlist.json", e.message); }
+for (const f of pages) {
+  for (const m of read(f).matchAll(/<button[^>]*sch-track-card[^>]*>/g)) {
+    const b = m[0];
+    const feedId = (b.match(/data-feed="(?:ebay:)?([^"]+)"/) || [])[1];
+    if (!feedId) continue;
+    const name = (b.match(/data-name="([^"]*)"/) || [])[1] || "";
+    const feed = feedMap.get(feedId);
+    if (!feed) { add("FAIL", "track-feed-missing", f, `data-feed ${feedId} is not in data/watchlist.json (name="${name}")`); continue; }
+    const a = lineTokens(name), c = lineTokens(feed.label);
+    for (const t of ["sapphire", "auto"])
+      if (a[t] !== c[t]) add("FAIL", "track-feed-line", f, `button "${name}" ${a[t] ? "is" : "is not"} '${t}' but feed ${feedId} ${c[t] ? "is" : "is not"} — the Vault would chart the wrong line`);
+  }
+}
+
+/* ---------- 13. z-index layering contract (auditor-zindex-rule, applied Sep 2 2026) ----------
+   Aug 30: the Vault chooser (z 410) sat dead behind every index page's .ovl (z 500). Contract: on any page
+   that loads an injected overlay widget, the page's highest z-index must stay BELOW the widget's lowest.
+   Widget z values are read from the script itself, so a widget change re-derives the bar automatically. */
+const OVERLAY_WIDGETS = ["js/vault-track.js"];
+const zValues = s => [...String(s).matchAll(/z-index\s*:\s*(-?\d+)/g)].map(m => parseInt(m[1], 10));
+for (const w of OVERLAY_WIDGETS) {
+  let wz; try { wz = zValues(read(w)); } catch { add("WARN", "zindex-widget-missing", w, "widget script not on disk"); continue; }
+  if (!wz.length) continue;
+  const floor = Math.min(...wz);
+  const inc = new RegExp("/" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(\\?|\"|')");
+  for (const f of pages) {
+    const html = read(f);
+    if (!inc.test(html)) continue;
+    const pz = zValues(html.replace(/<script[\s\S]*?<\/script>/g, "")); // page CSS + inline styles; JS strings excluded
+    const top = pz.length ? Math.max(...pz) : 0;
+    if (top >= floor) add("FAIL", "zindex-contract", f, `page z-index ${top} >= ${w} floor ${floor} — an overlay would cover the widget (Aug 30 bug class)`);
+  }
+}
+
+/* ---------- 14. Nav CSS contract (auditor-nav-css-rule, applied Sep 2 2026) ----------
+   Aug 24 (twice): injected nav HTML landed on pages missing the nav CSS and rendered as raw links; the
+   nav-drift check compares only the HTML block. Any page with NAV markers must define, in its own <style>:
+   .nav-links display:flex at top level, .nav-hamburger display:none at top level, and one @media block
+   that flips them (.nav-links none / .nav-hamburger flex). The proposal's ">= 3 media blocks" count is not
+   enforced: about/privacy/affiliate-disclosure carry two and render correctly, so the count is not a contract. */
+for (const f of pages) {
+  const html = read(f);
+  if (!html.includes("<!-- NAV:START -->")) continue;
+  const css = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map(m => m[1]).join("\n");
+  const missing = [];
+  if (!/\.nav-links\s*\{[^}]*display\s*:\s*flex/.test(css)) missing.push(".nav-links{display:flex}");
+  if (!/\.nav-hamburger\s*\{[^}]*display\s*:\s*none/.test(css)) missing.push(".nav-hamburger{display:none}");
+  const medias = [...css.matchAll(/@media[^{]*\{([\s\S]*?)\}\s*\}/g)].map(m => m[1]);
+  if (!medias.some(b => /\.nav-links\s*\{[^}]*display\s*:\s*none/.test(b) && /\.nav-hamburger\s*\{[^}]*display\s*:\s*flex/.test(b)))
+    missing.push("@media mobile flip (.nav-links none / .nav-hamburger flex)");
+  if (missing.length) add("FAIL", "nav-css-missing", f, `NAV block present but page CSS lacks ${missing.join(", ")} — nav renders as raw links`);
+}
 
 /* ---------- report ---------- */
 const fails = findings.filter(x => x.level === "FAIL");

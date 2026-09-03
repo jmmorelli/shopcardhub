@@ -1,7 +1,7 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-01T19:55:00-07:00",
-  "generator": "bowman-bangers-tuesday-update (2026-09-01)",
+  "generated": "2026-09-02T10:40:00-07:00",
+  "generator": "chief-of-staff (2026-09-02, Mo-delegated Wed audit apply)",
   "agents": {
     "seeker": {
       "label": "SEEKER",
@@ -121,18 +121,6 @@
       "nextRun": "2026-09-08",
       "actions": [
         {
-          "ts": "2026-08-25",
-          "msg": "Reprice pass on 4 pages: 18 tier labels replaced with card-pinned ask marks (11 hard numbers, 4 ranges, 3 honest no-market). Gate applied throughout — published a mark only where the trimmed core had n>=6 and <=4x spread; refused marks on Gold Logoman (n=5), Helix (n=3), Old Glory /10 (n=0), PREM1ERE (n=0)"
-        },
-        {
-          "ts": "2026-08-25",
-          "msg": "EPN custom-ID tagging shipped on /api/comps + all 9 callers. Root cause of the untracked earnings: affiliate header carried campaignId only. Query-param design chosen over Referer sniff because the endpoint is CDN-cached and a header value would not vary the cache key"
-        },
-        {
-          "ts": "2026-08-25",
-          "msg": "Mo set top priorities for next session: P1 reprice /topps-chrome-updates-basketball (#1 page by traffic AND conversions, still on tier labels), P2 re-read EPN custom-ID attribution ~Sep 25"
-        },
-        {
           "ts": "2026-08-28",
           "msg": "MWF audit: site sweep clean (77 pages, FAIL 0/WARN 0); prices FAIL 0/WARN 28 (26 known label cells + pitch-black stale stamp + mendoza); live deploy matches repo (home, pitch-black guide, /indices, PB26 index); 10/10 remote images resolve; GA4 confirmed live on index pages"
         },
@@ -155,6 +143,22 @@
         {
           "ts": "2026-09-01",
           "msg": "Comp pull off the SCP console (server-rendered fetch — no browser needed). CORRECTION from the morning run: the 'empty engine feed' was a sandbox fetch-tool false alarm — Action #36 ran green 6:29am, feed is 14KB and current; engine reads restored to the board with Mo present. REAL bug confirmed instead: all 4 sapphire feeds mark null because the engine's TITLE_BAD filter blocks the word 'sapphire' — they can never price. Proposal amended."
+        },
+        {
+          "ts": "2026-09-02",
+          "msg": "Wed audit — audit-prices FAIL 0/WARN 25 (all known label cells; pitch-black stale-stamp WARN cleared). audit-site reported 310 FAIL but all are script false positives from the Sep 1 self-hosted-fonts/site-fixes pass (asset whitelist lacks /css/ /fonts/; tag-balance counts a <section> in a CSS comment) — filed audit-2026-09-02-3."
+        },
+        {
+          "ts": "2026-09-02",
+          "msg": "Deploy matches main a668b71 (8 pages byte-identical incl. homepage, indices, bowman-bangers); 12/12 sampled scrydex/pokemontcg images 200; GSC unchanged at 3 indexed / 58 not (19 crawled-not-indexed FAILED, 39 discovered), sitemap Success 76 URLs, manual actions + security clean."
+        },
+        {
+          "ts": "2026-09-02",
+          "msg": "Reconciled 4 dungeon approvals (Sep 1 9:08pm PT): auditor-placeholder-rule, auditor-feed-line-rule, sapphire-feeds-never-mark-sep01, sandbox-git-lock-sweep-sep01 → approved. Filed 2 MED (flagship-football pre-checklist copy under a 'checklist now public' banner; ROY Watch frozen at June 11 with 'Return ETA Late June'), both confirmed live."
+        },
+        {
+          "ts": "2026-09-02",
+          "msg": "Wed findings APPLIED by the Chief of Staff on Mo's chat delegation: audit-site.mjs unblinded (310 false FAILs → 0/0 on 79 pages) and the four approved auditor rules landed as checks 11–14 (placeholder copy, feed/line integrity, z-index contract, nav CSS contract — each verified to fire on an injected fault); flagship-football pre-checklist copy rewritten from on-page facts only; ROY Watch carries a dated June-snapshot notice, full refresh queued to Monday's reprice lane."
         }
       ],
       "log": [
@@ -615,8 +619,9 @@
     {
       "id": "auditor-nav-css-rule",
       "area": "qa",
-      "status": "approved",
-      "summary": "Add site-auditor rule: any page containing NAV:START markers must also define the nav base styles (.nav-links flex at top level, .nav-hamburger hidden on desktop, >=3 media blocks). Caught twice on Aug 24 — injected nav HTML with missing page CSS renders as raw links; the existing nav-drift check only compares the HTML block. Mechanical rule, MWF auditor to implement."
+      "status": "applied",
+      "summary": "Add site-auditor rule: any page containing NAV:START markers must also define the nav base styles (.nav-links flex at top level, .nav-hamburger hidden on desktop, >=3 media blocks). Caught twice on Aug 24 — injected nav HTML with missing page CSS renders as raw links; the existing nav-drift check only compares the HTML block. Mechanical rule, MWF auditor to implement.",
+      "appliedNote": "2026-09-02: CoS (4.7, Mo delegated in chat) — check 14 nav-css-missing in audit-site.mjs: .nav-links{display:flex} + .nav-hamburger{display:none} at top level + one @media block flipping both. The '>=3 media blocks' count is NOT enforced — three legal pages carry two and render correctly. 79/79 pages pass; fires on an injected fault."
     },
     {
       "id": "strategy-indices-first-aug24",
@@ -750,8 +755,9 @@
     {
       "id": "auditor-zindex-rule",
       "area": "qa",
-      "status": "approved",
-      "summary": "Add site-auditor rule (z-index/layering contract): flag any page that both loads vault-track.js (or any injected widget) and defines an overlay/modal with z-index >= the widget's chooser — generalized as page z-index max vs injected-widget z-index. From the Aug 30 Vault-Track bug (chooser z 410 dead behind .ovl z 500 on all 5 index pages). Same mechanical class as auditor-nav-css-rule. APPROVED by Mo 2026-08-30 (chat, approve-all); MWF auditor implements."
+      "status": "applied",
+      "summary": "Add site-auditor rule (z-index/layering contract): flag any page that both loads vault-track.js (or any injected widget) and defines an overlay/modal with z-index >= the widget's chooser — generalized as page z-index max vs injected-widget z-index. From the Aug 30 Vault-Track bug (chooser z 410 dead behind .ovl z 500 on all 5 index pages). Same mechanical class as auditor-nav-css-rule. APPROVED by Mo 2026-08-30 (chat, approve-all); MWF auditor implements.",
+      "appliedNote": "2026-09-02: CoS (4.7, Mo delegated in chat) — check 13 zindex-contract in audit-site.mjs: widget floor read from js/vault-track.js itself (currently 10400), page max z-index (CSS + inline, scripts excluded) must stay below it. 37 pages load the widget; highest page value today is 9998. Fires on an injected fault."
     },
     {
       "id": "gsc-google-visibility-aug28",
@@ -786,14 +792,16 @@
     {
       "id": "auditor-placeholder-rule",
       "area": "qa",
-      "status": "awaiting-mo",
-      "title": "Add site-auditor rule: stale placeholder copy vs live-feature registry — flag any \"Coming soon\"/\"once X is connected\"/\"comps TBD\"/\"See live comps\"/pre-release hero stamp on a page whose feature or product is live (registry: engine=live Aug, indices=live Aug 24, Vault=live, releases from known-releases.json). Found Aug 31 by MO HIMSELF on the homepage — three whole classes (Concept B shell, 19 soccer cells, 4 released-product stamps) sat invisible to the MWF auditor. Same mechanical class as auditor-nav-css-rule."
+      "status": "applied",
+      "appliedNote": "2026-09-02: CoS (4.7, Mo delegated in chat) — PARTIAL, the deterministic half: check 11 placeholder-copy in audit-site.mjs FAILs 'See live comps' / 'comps TBD' / 'once … is connected' / engine-pending phrasing (every feature they wait on is live) and WARNs 'Coming soon'. The released-product half (pre-release hero stamps vs a release registry) is NOT built: no known-releases.json exists and inferring release state from copy would be guesswork — re-file when the registry exists. 0 hits sitewide today.",
+      "title": "Add site-auditor rule: stale placeholder copy vs live-feature registry — flag any \"Coming soon\"/\"once X is connected\"/\"comps TBD\"/\"See live comps\"/pre-release hero stamp on a page whose feature or product is live (registry: engine=live Aug, indices=live Aug 24, Vault=live, releases from known-releases.json). Found Aug 31 by MO HIMSELF on the homepage — three whole classes (Concept B shell, 19 soccer cells, 4 released-product stamps) sat invisible to the MWF auditor. Same mechanical class as auditor-nav-css-rule. — Mo, 2026-09-01"
     },
     {
       "id": "auditor-feed-line-rule",
       "area": "qa",
-      "status": "awaiting-mo",
-      "title": "Add site-auditor rule (feed/line integrity): flag (a) any watchlist.json bowman-chrome query missing -sapphire (or future line exclusions), (b) any page Track button whose data-feed points at a feed whose LINE tokens (sapphire/chrome/auto/draft) disagree with its data-name, (c) any feed label/query line disagreement. From the Aug 31 Sapphire bug Mo caught — 10 of 16 chrome queries were unguarded and the Vault could silently chart Chrome prices on Sapphire cards. Same mechanical class as auditor-nav-css-rule / auditor-zindex-rule."
+      "status": "applied",
+      "appliedNote": "2026-09-02: CoS (4.7, Mo delegated in chat) — check 12 in audit-site.mjs, all three parts: feed-line-unguarded (chrome-line query without -sapphire), feed-line-label (label vs positive query tokens on sapphire/auto), track-feed-line (page button data-name vs its data-feed's label on sapphire/auto) + track-feed-missing (data-feed id not in watchlist.json). 20 feeds and every data-feed button pass today; each fires on an injected fault.",
+      "title": "Add site-auditor rule (feed/line integrity): flag (a) any watchlist.json bowman-chrome query missing -sapphire (or future line exclusions), (b) any page Track button whose data-feed points at a feed whose LINE tokens (sapphire/chrome/auto/draft) disagree with its data-name, (c) any feed label/query line disagreement. From the Aug 31 Sapphire bug Mo caught — 10 of 16 chrome queries were unguarded and the Vault could silently chart Chrome prices on Sapphire cards. Same mechanical class as auditor-nav-css-rule / auditor-zindex-rule. — Mo, 2026-09-01"
     },
     {
       "id": "methodology-page-aug31",
@@ -805,20 +813,38 @@
     {
       "id": "sapphire-feeds-never-mark-sep01",
       "area": "infrastructure",
-      "summary": "MED (was HIGH, downgraded after false alarm): the engine feed itself is healthy — but the 4 sapphire feeds added Aug 31 eve (griffin/holliday/anthony/mcgonigle) mark NULL every night and always will: snapshot-free.mjs TITLE_BAD regex rejects any listing title containing 'sapphire', which is every listing these feeds can match. Fix: exempt cardType sapphire-base from the 'sapphire' token in TITLE_BAD (keep it for chrome feeds — that's the Aug 31 cross-line guard). One-line conditional; needs Mo's push. — FIX APPLIED LOCALLY Sep 1 (TITLE_BAD_SAPPHIRE variant + one-line cardType switch, node --check clean); goes live with Mo's next push; sapphire marks start the night after.",
-      "status": "awaiting-mo"
+      "summary": "MED (was HIGH, downgraded after false alarm): the engine feed itself is healthy — but the 4 sapphire feeds added Aug 31 eve (griffin/holliday/anthony/mcgonigle) mark NULL every night and always will: snapshot-free.mjs TITLE_BAD regex rejects any listing title containing 'sapphire', which is every listing these feeds can match. Fix: exempt cardType sapphire-base from the 'sapphire' token in TITLE_BAD (keep it for chrome feeds — that's the Aug 31 cross-line guard). One-line conditional; needs Mo's push. — FIX APPLIED LOCALLY Sep 1 (TITLE_BAD_SAPPHIRE variant + one-line cardType switch, node --check clean); goes live with Mo's next push; sapphire marks start the night after. — Mo, 2026-09-01",
+      "status": "approved"
     },
     {
       "id": "sandbox-git-lock-sweep-sep01",
       "area": "infrastructure",
-      "summary": "LOW (recurring, 3rd occurrence): git commits made from Claude's sandbox succeed but cannot delete their own .git/*.lock files on the Mac filesystem (Operation not permitted on unlink), stranding 0-byte index.lock/HEAD.lock that block the NEXT git operation until removed host-side. Sep 1: blocked Mo's follow-up commit twice; cleared with find .git -name '*.lock' -delete. Fix options: (a) weekly runs stop committing and only stage, Mo commits+pushes; (b) Mo runs the lock sweep after any session that commits; (c) auditor MWF adds a stale-lock check+report. Recommend (c) minimum.",
-      "status": "awaiting-mo"
+      "summary": "LOW (recurring, 3rd occurrence): git commits made from Claude's sandbox succeed but cannot delete their own .git/*.lock files on the Mac filesystem (Operation not permitted on unlink), stranding 0-byte index.lock/HEAD.lock that block the NEXT git operation until removed host-side. Sep 1: blocked Mo's follow-up commit twice; cleared with find .git -name '*.lock' -delete. Fix options: (a) weekly runs stop committing and only stage, Mo commits+pushes; (b) Mo runs the lock sweep after any session that commits; (c) auditor MWF adds a stale-lock check+report. Recommend (c) minimum. — Mo, 2026-09-01",
+      "status": "approved"
     },
     {
       "id": "email-ownership-to-cos-sep01",
       "area": "org",
       "summary": "DIRECTIVE FOR SUNDAY CoS (from Mo, in chat, Sep 1 2026): Mo does not want to own marketing emails — 'I was hoping you or an agent would fold the mailerlite send/check on your own... The Chief of Staff needs to decide this. It is his project/business to run the operations for.' This AMENDS the Tier 3 boundary: the weekly Tuesday Tape digest send is DELEGATED to the system (Mo's veto stays absolute+retroactive; his unsubscribe/complaint read is the kill switch). CoS to decide the structure: (a) fold send+deliverability-check into Tuesday STEP 4.5 (draft->verify->send, with a content gate mirroring the board-tweet safety valve), (b) a dedicated marketing/email agent owning digest + capture-bar copy + signup analytics, or (c) CoS owns it directly. Also define the check half: post-send verify, bounce/complaint watch, weekly signup count in the retention row. First autonomous send executed Sep 1 (campaign 197429896712029250, 1 active subscriber) on Mo's live authorization.",
       "status": "awaiting-cos"
+    },
+    {
+      "id": "audit-2026-09-02-1",
+      "status": "applied",
+      "appliedNote": "2026-09-02: CoS (4.7, Mo delegated in chat: 'CoS can handle it. This is his realm.') — Confirmed-vs-Expected grid rebuilt from facts already on the page (release date, 400 base, 20×12 box with one hit, $119.99→$129.99, First Signatures autos; PREM1ERE-in-flagship stays TBD), Checklist Drop catalyst retired in favor of 'Paper's Own Sold Comps' (asks-are-a-ceiling, no new numbers), pre-checklist rule and the sealed avoid-line reframed post-release, two 'pre-order window' / 'checklist-unknown' phrases in the buy grid aligned. No prices or claims added. RESIDUAL for Friday's auditor: chase-table intro (line ~905 'not a published checklist'), the rookie-auto row's 'unconfirmed until the checklist drops' and the social strip's 'checklist-drop analysis' blurb are the same class but sit in the price table / marketing strip — left for the price lane to word with the next re-mark.",
+      "title": "MED: /topps-flagship-football contradicts itself — banner (line 888) says 'Released Aug 21, 2026. The checklist and configuration are now public: 400-card base set…' while the same page still runs pre-checklist copy below it: line 922 'TBD Base size / box config / MSRP — Checklist not published' + 'Rookie auto tier — Unconfirmed until checklist', line 929 'Pre-checklist rule: don't pay a premium for a product nobody has opened', line 939 'The Checklist Drop … Nothing is investable until this is public — expect it near the Jul 20 pre-order window', line 947 'Aftermarket sealed before the checklist is public'. All five strings confirmed on the live deploy Sep 2. audit-2026-08-21-1 fixed the hero/banner only. Fix: rewrite the Confirmed-vs-Expected grid to post-checklist facts, retire the Checklist Drop catalyst (Mendoza's September starts is already the next item), reframe the pre-checklist rule and the avoid-list line to post-release language."
+    },
+    {
+      "id": "audit-2026-09-02-2",
+      "status": "approved",
+      "appliedNote": "2026-09-02: CoS (4.7, Mo delegated in chat) — HONEST FALLBACK applied: a dated 'June 2026 race snapshot — as of June 11, 2026' notice sits under the hero meta (orange-rule box, points readers to the Vault's live asks at /watchlist); no numbers touched. The FULL REFRESH (fresh SCP solds for all 10 players, current standings/poll, re-date all six stamps at lines ~754/762/818/906/1530/1552, then remove the notice) stays APPROVED for the Monday reprice lane — it needs sold pulls that cannot be done deterministically in this sitting.",
+      "title": "MED: /roy-watch-2026 is frozen at June 11 in September — hero stamp 'Updated June 11, 2026' (line 762), 'MLB ROY Race · Poll #2 · June 9, 2026' (754), 'Stats through June 8, 2026' (818), Murakami 'Return ETA — Late June' (906), footer 'sold listings, June 2026' (1530, 1552). 12 weeks stale on a race that is decided this month; the page was edited today (EPN label commit) without a content refresh. Fix: fold into the next reprice pass with fresh SCP solds + current ROY standings (or the latest MLB.com poll) and re-date all six stamps; if nobody will refresh it, add a dated 'June 2026 race snapshot' banner so readers know. — CoS, 2026-09-02 (4.7, Mo delegated in chat): snapshot banner applied, full refresh approved for the Monday reprice lane"
+    },
+    {
+      "id": "audit-2026-09-02-3",
+      "status": "applied",
+      "appliedNote": "2026-09-02: CoS (4.7, Mo delegated in chat) — ASSET_PREFIXES now covers /css/ and /fonts/; tag-balance counts a structural view (script, style and HTML comments stripped). Bundled with the four approved auditor rule additions (checks 11–14). Sweep after: 79 pages, FAIL 0 / WARN 0 — from 310 false FAILs to zero with no real finding hidden underneath.",
+      "title": "LOW (tooling — blinds the auditor's spine): tools/site-auditor/audit-site.mjs emits 310 false FAILs since the Sep 1 site-fixes pass — (a) line 70's asset-prefix list knows /api/ /js/ /data/ but not /css/ or /fonts/, so the new /css/fonts.css, /css/site-fixes.css and /fonts/*.woff2 preloads on every page are reported as 'dead-internal-link' (309 hits; all files exist on disk and return 200 live); (b) the tag-balance count (lines 97–101) matches '<section>' inside a CSS comment in index.html line 348 ('wire-pulse … loop on every <section> — removed'), yielding '6 open vs 5 close' (real count 5/5). Cost: real dead links and tag imbalances are buried in 310 lines of noise until fixed. Fix: add '/css/' and '/fonts/' to the asset-prefix branch, and strip <style>/<script> blocks and comments before counting tags. Script change belongs to the fixer, not the auditor."
     }
   ],
   "scoreboard": {
