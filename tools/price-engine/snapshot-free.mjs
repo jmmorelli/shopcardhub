@@ -37,6 +37,8 @@ const WATCHLIST = args.watchlist || "data/watchlist.json";
 const OUT_DIR = args.out || "price-data/data";
 const HISTORY_PATH = path.join(OUT_DIR, "prices-history.json");
 const LATEST_PATH = path.join(OUT_DIR, "prices-latest.json");
+const LISTINGS_PATH = path.join(OUT_DIR, "listings-history.json");
+const MARKET_PATH = path.join(OUT_DIR, "market-latest.json");
 
 const SITE = (process.env.SITE_URL || "https://shopcardhub.com").replace(/\/$/, "");
 const LOW_N = 10;    // how many of the cheapest verified asks form the mark window
@@ -91,7 +93,8 @@ function yearOf(query) { const m = String(query || "").match(/\b(20\d{2})\b/); r
 // Explainable verification: returns the verified listings AND every rejection
 // with its reason, so audit-comps.mjs can show a human exactly what the mark is
 // made of. compsMark() below uses the same function - one filter, two callers.
-export function verifyListings(listings, card, label) {
+export function verifyListings(listings, card, label, opts = {}) {
+  const mode = opts.mode === "AUCTION" ? "AUCTION" : "FIXED_PRICE";
   const type = (card && card.cardType) || "chrome-auto";
   const isTcg = type === "tcg-single";
   const query = (card && card.query) || "";
@@ -104,7 +107,7 @@ export function verifyListings(listings, card, label) {
   for (const l of listings || []) {
     const t = String(l.title || "").toLowerCase();
     const reject = (why) => rejected.push({ title: l.title, price: l.price, why });
-    if (l.buyingOption !== "FIXED_PRICE") { reject("not fixed-price"); continue; }
+    if (l.buyingOption !== mode) { reject("not " + (mode === "AUCTION" ? "an auction" : "fixed-price")); continue; }
     if (!musts.every((m) => t.includes(m))) { reject("missing required token " + musts.join("+")); continue; }
     if (type === "chrome-auto" && !/auto/.test(t)) { reject("no 'auto' in title"); continue; }
     if (bad.test(t)) { reject("blocklist: " + bad.exec(t)[0]); continue; }
@@ -120,7 +123,9 @@ export function verifyListings(listings, card, label) {
       const m2 = TITLE_BAD_2.exec(t2);
       if (m2) { reject("blocklist-2: " + m2[0]); continue; }
     }
-    const total = Number.isFinite(l.price) ? l.price + (Number.isFinite(l.shipping) ? l.shipping : 0) : null;
+    // An auction's live number is the bid, not `price` (which eBay leaves null).
+    const base = mode === "AUCTION" ? l.bid : l.price;
+    const total = Number.isFinite(base) ? base + (Number.isFinite(l.shipping) ? l.shipping : 0) : null;
     if (!Number.isFinite(total) || total < 3) { reject("no usable price"); continue; }
     // one seller relisting the same card at the same price many times is
     // supply, not price discovery - cap it at two data points per seller/price
@@ -233,16 +238,19 @@ export async function compsMark(query, label, card = {}) {
   if (!r.ok) throw new Error('/api/comps "' + query + '" -> HTTP ' + r.status);
   const j = await r.json();
   const { verified } = verifyListings(j.listings || [], { ...card, query }, label);
+  // Same title filter, auction side. These never touch the mark - they are logged
+  // as the transaction record (see trackListings).
+  const auctions = verifyListings(j.listings || [], { ...card, query }, label, { mode: "AUCTION" }).verified;
   const asks = verified.map((l) => l.total);
   const trim = trimFor(asks.length);
   // IMAGE (added Sep 1 2026): the photo of a verified listing inside the mark
   // window - the same listing population the mark comes from, so the picture
   // is the card the price describes. Middle of the window, first with a photo.
   const image = pickImage(verified.slice(trim, trim + LOW_N).length ? verified.slice(trim, trim + LOW_N) : verified);
-  if (asks.length < MIN_COMPS) return { price: null, comps: asks.length, shape: null, image };
+  if (asks.length < MIN_COMPS) return { price: null, comps: asks.length, shape: null, image, verified, auctions };
   const window = asks.slice(trim, trim + LOW_N);
   // `asks` is already sorted ascending - askShape relies on that.
-  return { price: Number(median(window).toFixed(2)), comps: asks.length, shape: askShape(asks), image };
+  return { price: Number(median(window).toFixed(2)), comps: asks.length, shape: askShape(asks), image, verified, auctions };
 }
 
 // eBay listing photos come back as .../s-l225.jpg thumbnails; the same path at
@@ -263,6 +271,111 @@ export function pickImage(listings) {
   return null;
 }
 
+// ---------------------------------------------------------------------------
+// LISTING TRACKER (Sep 3 2026) - the free path to SOLD prices.
+//
+// WHY: every number the site quotes comes from the ASK side, because the eBay
+// Browse API only returns active listings. eBay Marketplace Insights (real sold
+// data) was applied for and denied. But two things in the data we already pull
+// are transactions, not opinions:
+//
+//   1. AUCTIONS. A bid is a buyer paying an amount. Watch an auction across
+//      nights and the last bid before `endDate` is the hammer price, give or
+//      take the sniping that lands after our final look. That is a real sold
+//      series, built from a feed we already have.
+//   2. DISAPPEARANCE. A fixed-price listing that stops coming back mostly sold.
+//      Not always - sellers delist and relist - so this is weaker evidence than
+//      a hammer, and it is stored as an observation, never published as a sale.
+//
+// This function only RECORDS. It never moves the published mark. Two or three
+// weeks of it and there is enough to measure the ask->hammer discount per card,
+// which is the number that would let /track-record grade on our own solds
+// instead of hand-read third-party values.
+//
+// Shape of listings-history.json:
+//   { "<itemId>": { key, kind, title, seller, price|bid, bids, endDate,
+//                   first, last, obs: [{t, p, b}], gone, hammer, hammerLagMin } }
+// Pruned to PRUNE_DAYS after a listing was last seen.
+const PRUNE_DAYS = 120;
+const MAX_OBS = 60; // keep the trajectory bounded; oldest points drop first
+
+export function trackListings(store, key, verifiedFixed, verifiedAuctions, nowMs) {
+  const nowISO = new Date(nowMs).toISOString();
+  const seen = new Set();
+
+  const touch = (l, kind) => {
+    const id = l.itemId;
+    if (!id) return;
+    seen.add(id);
+    const e = store[id] || {
+      key, kind, title: l.title || null,
+      seller: (l.seller && (l.seller.username || l.seller)) || null,
+      endDate: l.endDate || null, first: nowISO, obs: [],
+    };
+    e.key = key; e.kind = kind;
+    if (l.endDate) e.endDate = l.endDate;
+    e.last = nowISO;
+    e.gone = false;
+    e.obs.push({ t: nowISO, p: l.total, ...(kind === "auction" ? { b: l.bidCount ?? null } : {}) });
+    if (e.obs.length > MAX_OBS) e.obs = e.obs.slice(-MAX_OBS);
+    store[id] = e;
+  };
+
+  for (const l of verifiedFixed || []) touch(l, "fixed");
+  for (const l of verifiedAuctions || []) touch(l, "auction");
+
+  // Anything for THIS card we did not see tonight has left the market. For an
+  // auction past its end date that is a close, and the last bid we observed is
+  // the hammer - recorded with how long before the close we last looked, so a
+  // later analysis can correct for the bids that land after our final sample.
+  for (const [id, e] of Object.entries(store)) {
+    if (e.key !== key || seen.has(id) || e.gone) continue;
+    e.gone = true;
+    e.goneAt = nowISO;
+    const last = e.obs[e.obs.length - 1];
+    if (e.kind === "auction" && last) {
+      const ended = e.endDate ? new Date(e.endDate).getTime() : null;
+      // Only call it a hammer if it actually reached its end date with a bid on
+      // it. An auction that vanishes early was cancelled, not sold.
+      if (ended && ended <= nowMs && Number.isFinite(last.p) && (last.b || 0) > 0) {
+        e.hammer = last.p;
+        e.hammerBids = last.b;
+        e.hammerLagMin = Math.round((ended - new Date(last.t).getTime()) / 60000);
+      }
+    }
+  }
+
+  // Prune anything long gone so the file cannot grow without bound.
+  const cutoff = nowMs - PRUNE_DAYS * 864e5;
+  for (const [id, e] of Object.entries(store)) {
+    if (e.gone && new Date(e.last).getTime() < cutoff) delete store[id];
+  }
+  return store;
+}
+
+// Per-card roll-up of what the tracker has learned so far. Written next to the
+// price feed so any agent can read it without parsing the whole history.
+export function summarizeListings(store, days = 30) {
+  const cutoff = Date.now() - days * 864e5;
+  const byKey = {};
+  for (const e of Object.values(store)) {
+    const b = (byKey[e.key] = byKey[e.key] || { key: e.key, hammers: [], closes: 0, watching: 0, vanishedFixed: [] });
+    if (e.kind === "auction" && !e.gone) b.watching++;
+    if (Number.isFinite(e.hammer) && new Date(e.goneAt || e.last).getTime() >= cutoff) { b.hammers.push(e.hammer); b.closes++; }
+    if (e.kind === "fixed" && e.gone && new Date(e.goneAt || e.last).getTime() >= cutoff) {
+      const last = e.obs[e.obs.length - 1];
+      if (last && Number.isFinite(last.p)) b.vanishedFixed.push(last.p);
+    }
+  }
+  for (const b of Object.values(byKey)) {
+    b.hammerMedian = median(b.hammers);
+    b.vanishedMedian = median(b.vanishedFixed);
+    b.hammers = b.hammers.sort((x, y) => x - y);
+    delete b.vanishedFixed;
+  }
+  return byKey;
+}
+
 async function main() {
   const wl = readJsonFile(WATCHLIST, null);
   const cards = (wl?.cards || []).filter((c) => c && c.source === "ebay" && c.id && c.query);
@@ -270,13 +383,19 @@ async function main() {
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const history = readJsonFile(HISTORY_PATH, {});
+  const listings = readJsonFile(LISTINGS_PATH, {});
+  const nowMs = Date.now();
   const day = today();
   const summary = { day, updated: 0, thin: 0, errors: [], dispersion: [] };
 
   for (const card of cards) {
     const key = card.source + ":" + card.id;
     try {
-      const { price, comps, shape, image } = await compsMark(card.query, card.label, card);
+      const { price, comps, shape, image, verified, auctions } = await compsMark(card.query, card.label, card);
+      // Record the market before marking it. Wrapped so a tracker bug can never
+      // take the nightly pricing run down with it.
+      try { trackListings(listings, key, verified, auctions, nowMs); }
+      catch (e) { console.log("listing tracker skipped for " + key + ": " + (e.message || e)); }
       const entry = history[key] || { key, id: card.id, source: card.source, label: card.label, slug: card.slug || null, series: [] };
       entry.label = card.label || entry.label;
       entry.slug = card.slug || entry.slug || null;
@@ -365,6 +484,14 @@ async function main() {
   }).sort((a, b) => a.label.localeCompare(b.label));
 
   fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2));
+  try {
+    fs.writeFileSync(LISTINGS_PATH, JSON.stringify(listings, null, 1));
+    const market = summarizeListings(listings, 30);
+    fs.writeFileSync(MARKET_PATH, JSON.stringify({ generated: new Date().toISOString(), day, note: "OBSERVATION ONLY - hammer prices from tracked auction closes and last-seen prices of fixed listings that left the market. Not published on the site; not yet a mark.", cards: market }, null, 2));
+    const closes = Object.values(market).reduce((n, b) => n + b.closes, 0);
+    const watching = Object.values(market).reduce((n, b) => n + b.watching, 0);
+    console.log("listing tracker: " + Object.keys(listings).length + " tracked, " + watching + " live auctions, " + closes + " hammers in the last 30d");
+  } catch (e) { console.error("listing tracker write failed:", e.message || e); }
   fs.writeFileSync(LATEST_PATH, JSON.stringify({ generated: new Date().toISOString(), day, cards: latest }, null, 2));
   console.log(JSON.stringify({ ok: true, ...summary, cards: latest.length }));
   if (summary.errors.length) { console.error("errors:", summary.errors.join(" | ")); process.exitCode = summary.updated ? 0 : 1; }

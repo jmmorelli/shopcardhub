@@ -75,6 +75,13 @@ function trimListing(item) {
         : null,
     condition: item.condition || null,
     buyingOption: (item.buyingOptions || [])[0] || null,
+    // AUCTION fields (added Sep 3 2026). An auction has no `price` — the live
+    // number is `currentBidPrice`, and a bid is the one thing on this endpoint
+    // that is an actual buyer paying an actual amount. `endDate` lets the price
+    // engine tell "still climbing" from "this is the hammer".
+    bid: item.currentBidPrice ? Number(item.currentBidPrice.value) : null,
+    bidCount: Number.isFinite(item.bidCount) ? item.bidCount : null,
+    endDate: item.itemEndDate || null,
     // itemAffiliateWebUrl is only returned when the ENDUSERCTX affiliate header
     // is valid — it carries the EPN campid. itemWebUrl is the untagged fallback.
     url: item.itemAffiliateWebUrl || item.itemWebUrl,
