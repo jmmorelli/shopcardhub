@@ -137,6 +137,9 @@
       var real = new Image();
       real.onload = function () {
         imgEl.src = src; imgEl.classList.add('is-photo');
+        // A landscape listing photo (e.g. a front+back composite) in a portrait slot
+        // gets center-cropped to a sliver by object-fit:cover - letterbox it instead.
+        if (real.naturalWidth > real.naturalHeight * 1.05) imgEl.classList.add('is-wide');
         if (o.link !== false && hit.item) {
           var a = document.createElement('a');
           a.href = tagLink(hit.item, o.surface || el.getAttribute('data-card-surface'));
@@ -290,6 +293,7 @@
   var css ='.sch-cimg{display:inline-block;flex-shrink:0;border-radius:4px;overflow:hidden;background:#0b1116;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 4px 12px -6px rgba(0,0,0,.8);vertical-align:middle;position:relative}' +
     '.sch-cimg img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .35s ease,transform .25s ease}' +
     '.sch-cimg img.is-photo{animation:sch-cimg-in .4s ease both}' +
+    '.sch-cimg img.is-wide{object-fit:contain}' +
     '.sch-cimg-link{display:block;width:100%;height:100%}.sch-cimg-link:hover img{transform:scale(1.04)}' +
     '.sch-cimg-card,.sch-cimg-hero{border-radius:8px;box-shadow:0 0 0 1px rgba(0,204,245,.25),0 18px 40px -20px rgba(0,204,245,.35)}' +
     '@keyframes sch-cimg-in{from{opacity:0}to{opacity:1}}' +
