@@ -1483,18 +1483,18 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   </section>
 
   
-  <!-- SIGNAL ALERTS — email capture (renders only when data/newsletter.json has a kitFormId) -->
+  <!-- SIGNAL ALERTS — email capture (renders only when data/newsletter.json lists this page — MailerLite via /api/subscribe) -->
   <div class="sig-alerts" data-schsub="roy-watch" style="display:none; background:var(--bg2); border:1px solid var(--border2); border-left:3px solid var(--accent); padding:26px 30px; margin:40px 0;">
     <div style="font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">&#9993; Signal Alerts</div>
-    <div style="font-family:var(--fd); font-size:24px; font-weight:900; text-transform:uppercase; color:var(--text-head); letter-spacing:0.5px; margin-bottom:6px;">Get the Flip Before the Crowd</div>
-    <p style="font-size:14px; color:var(--text-dim); line-height:1.6; max-width:560px; margin-bottom:16px;">Our price engine tracks every 1st Bowman Chrome auto nightly and calls BUY / HOLD / SELL from the chart alone. Weekly Tape Recap + instant flip alerts, free.</p>
+    <div style="font-family:var(--fd); font-size:24px; font-weight:900; text-transform:uppercase; color:var(--text-head); letter-spacing:0.5px; margin-bottom:6px;">The Tape, In Your Inbox</div>
+    <p style="font-size:14px; color:var(--text-dim); line-height:1.6; max-width:560px; margin-bottom:16px;">Our price engine re-prices every tracked rookie and 1st Bowman card nightly. Get the weekly Tape Recap &mdash; the biggest movers, every call change, and the calls graded in public. Free, from the tape, no hype.</p>
     <form class="schsub-form" style="display:flex; gap:10px; flex-wrap:wrap; max-width:560px;">
       <input type="email" name="email_address" required placeholder="you@example.com" aria-label="Email address"
         style="flex:1 1 240px; min-width:0; background:var(--bg3); border:1px solid var(--border2); border-radius:2px; color:var(--text); font-family:var(--fm); font-size:13px; padding:12px 14px;">
-      <button type="submit" class="btn-primary" style="border:none; cursor:pointer;">Get the Alerts &#8594;</button>
+      <button type="submit" class="btn-primary" style="border:none; cursor:pointer;">Get the Recap &#8594;</button>
     </form>
     <div class="schsub-msg" style="display:none; font-family:var(--fm); font-size:12px; color:var(--green); margin-top:12px;"></div>
-    <div style="font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:0.5px; margin-top:12px; opacity:0.7;">Weekly Tape Recap + instant BUY/SELL flip alerts. No spam, unsubscribe anytime.</div>
+    <div style="font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:0.5px; margin-top:12px; opacity:0.7;">Weekly recap only. No spam, unsubscribe anytime.</div>
   </div>
 
   <div class="social-strip">
@@ -1664,37 +1664,41 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
 
   <script>
-  /* Signal Alerts signup — activates when data/newsletter.json contains a Kit
-     form id ({"kitFormId":"1234567"}). Until then the blocks stay hidden, so
-     this ships dark and lights up with a one-line config change. */
+  /* Signal Alerts signup — activates when data/newsletter.json lists this page
+     ({"provider":"mailerlite","pages":["roy-watch"]}; page key = data-schsub).
+     Posts to our own /api/subscribe (MailerLite API, subscriber lands active —
+     no confirmation click). Pages not listed stay hidden, so this ships dark
+     and lights up per page with a one-line config change. */
   (function () {
     var blocks = Array.prototype.slice.call(document.querySelectorAll('.sig-alerts'));
     if (!blocks.length) return;
     fetch('/data/newsletter.json', { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (cfg) {
-        var id = cfg && cfg.kitFormId;
-        if (!id) return;
+        if (!cfg || cfg.provider !== 'mailerlite' || !Array.isArray(cfg.pages)) return;
         blocks.forEach(function (b) {
+          var key = b.getAttribute('data-schsub') || 'site';
+          if (cfg.pages.indexOf(key) === -1) return;
           b.style.display = 'block';
           var form = b.querySelector('.schsub-form');
           var msg = b.querySelector('.schsub-msg');
+          var btn = form.querySelector('button[type="submit"]');
           form.addEventListener('submit', function (ev) {
             ev.preventDefault();
             var email = form.querySelector('input[name="email_address"]').value.trim();
             if (!email) return;
-            var fd = new FormData();
-            fd.append('email_address', email);
-            fd.append('fields[source]', 'shopcardhub-' + (b.getAttribute('data-schsub') || 'site'));
-            fetch('https://app.kit.com/forms/' + encodeURIComponent(id) + '/subscriptions', { method: 'POST', body: fd, headers: { Accept: 'application/json' } })
+            if (btn) btn.disabled = true;
+            fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: email, source: 'signal-' + key }) })
               .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
               .then(function () {
                 form.style.display = 'none';
-                msg.textContent = '\u2713 Check your inbox to confirm \u2014 first Tape Recap lands Monday.';
+                msg.textContent = '\u2713 You\u2019re on the list \u2014 the next Tape Recap lands in your inbox.';
                 msg.style.display = 'block';
+                if (window.gtag) gtag('event', 'newsletter_signup', { method: 'mailerlite', location: 'signal-' + key });
               })
-              .catch(function () {
-                msg.textContent = 'Hmm \u2014 that did not go through. Try again, or DM @shopcardhub.';
+              .catch(function (status) {
+                if (btn) btn.disabled = false;
+                msg.textContent = status === 400 ? 'That address doesn\u2019t look right \u2014 check it and try again.' : 'Hmm \u2014 that did not go through. Try again, or DM @shopcardhub.';
                 msg.style.color = 'var(--orange)';
                 msg.style.display = 'block';
               });
