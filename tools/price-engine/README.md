@@ -116,3 +116,84 @@ curl -H "x-proxy-key: $PRICE_PROXY_KEY" https://shopcardhub.com/api/cron-snapsho
   stack (SMA7 vs SMA30), 30-day momentum, EMA12/26 cross, and a z-score
   over/under-extension guard, with skew/kurtosis as a fat-tail regime flag and a
   thin-volume confidence penalty. All chart-derived; no fundamentals.
+
+---
+
+## Pricing integrity — the mark must be THIS card (Sep 3 2026)
+
+Mo's standing rule: every number the site quotes has to be the card it names.
+Before this, wrong cards were entering the mark — hand-signed BASE cards (`#BCP-45`,
+COA/IP) priced as pack autos, Mega Box autos (`BMA-`), redemption cards, unnumbered
+colour parallels ("Green Grass", "True Blue", "Black Gold Ink"), even fan-art
+placeholders in a Pokémon floor. The numbers looked fine; they were about the
+wrong cards.
+
+**One filter, two callers.** `verifyListings(listings, card, label)` in
+`snapshot-free.mjs` is the single place a listing is accepted or rejected, and it
+returns *why* for each rejection. The nightly engine and the audit tool both call
+it, so what the audit shows is exactly what the engine used.
+
+A listing must, for sports cards:
+
+- contain the required token(s) (`titleMust`, else the player's last name)
+- contain `auto` (for `cardType: chrome-auto`)
+- contain the **card code from the query** (`CPA-EH`, `BDC-1`, …) — normalised for
+  `#`, spaces and unicode dashes — and contain **no other** Bowman-family code
+  (`BCP-`, `BMA-`, `BCA-`, …). This is the single most effective check: the code is
+  what separates the pack auto from a signed base card of the same player.
+- contain the **year** from the query
+- survive `TITLE_BAD` (slabs, refractors/parallels, serials, sapphire, redemption,
+  TAG-graded, lots, reprints) and then, after team names are stripped so "Red Sox"
+  is not a red parallel, `TITLE_BAD_2` (colour words, variations, Hangul, HTA,
+  Mega Box, aftermarket signature markers: COA/JSA/IP/hand-signed)
+- be `FIXED_PRICE`, land ≥ $3, and not be the third-plus identical ask from the
+  same seller (one seller relisting is supply, not price discovery)
+
+TCG singles use `TITLE_BAD_TCG` instead (no code/year requirement — card numbers
+like `161/131` are the identity, and "mega"/"prism" are set names, not parallels).
+
+**Sample-size honesty.** `trimFor(n)` drops 2/1/0 junk-floor asks depending on how
+many verified asks exist, so a thin card is not marked off two listings. Below
+`MIN_COMPS` (4) there is no mark at all.
+
+**Signal gating.** `analyze()` still computes the chart verdict, but the feed parks
+it at `HOLD` when the sample cannot support a call:
+
+| gate | condition |
+|---|---|
+| thin | latest point has `< THIN_N` (8) verified asks |
+| dispersion | `dispersionFlag()` tripped tonight (q3/q1 ≥ 4x, or CV ≥ 1.5) |
+| stale | no fresh mark for `STALE_DAYS` (4) |
+
+Nothing is hidden: the feed carries `signalRaw` (the ungated chart verdict) and
+`gated` (the reasons, also prepended to `reasons[]`). Pages read `signal`.
+
+### Audit it
+
+```
+node tools/price-engine/audit-comps.mjs              # all cards, full listing detail
+node tools/price-engine/audit-comps.mjs --quiet      # flags and leaks only
+node tools/price-engine/audit-comps.mjs --only ethan-holliday,andrew-fischer
+node tools/price-engine/audit-comps.mjs --json       # machine-readable
+```
+
+Read-only — it never writes to the `price-data` branch. It prints, per card, the
+verified set with landed prices, the rejections grouped by reason, the mark
+window, and flags: suspected leaks (a parallel/graded/aftermarket word survived),
+high-ask outliers above the window, thin samples, dispersion, and a missing card
+code in the query. **Exit 1** when any card has a leak or a dispersion flag, so a
+scheduled run notices without a human reading the output.
+
+The Pricing Integrity agent runs it daily (CoS charter §2). A leak is fixed the
+same day — blocklist, card code, or query wording — but the query must still name
+the *same* card; adding or removing a tracked card, or changing what a mark
+*means*, stays Mo's call.
+
+### The gap this does not close
+
+Marks are **ask floors** — the eBay Browse API only returns active listings.
+`/track-record` grades against **sold** prices read by hand from SportsCardsPro.
+Same card, two numbers, and the ask floor sits above the sold read. The filter
+makes the ask number honest; it cannot make it a sold number. eBay Marketplace
+Insights (sold data) was applied for and **denied**, Sep 3 2026. Open options are
+tracked in `claude/cos/NEEDS-MO.md`.
