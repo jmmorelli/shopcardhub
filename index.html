@@ -1512,7 +1512,8 @@ body::before{
           var name = esc((c.label || c.key).split(' — ')[0]);
           var meta = META[c.key] || {};
           var sig = (c.signal && c.points >= 20) ? c.signal : null;
-          var sub = esc(meta.sub || '1st Bowman Chrome Auto') + (sig ? ' · ' + esc(sig) : '');
+          // Mo, Sep 3 2026: the tag is the ENGINE's chart signal, labelled as such ("data beats narratives").
+          var sub = esc(meta.sub || '1st Bowman Chrome Auto') + (sig ? ' · engine ' + esc(sig) : '');
           var rankCls = i < 2 ? 'panel-rank top' : 'panel-rank';
           var priceCls = i < 2 ? 'panel-price hot' : 'panel-price mid';
           return '<a href="/bowman-bangers" class="panel-row" style="text-decoration:none; display:flex;">' +

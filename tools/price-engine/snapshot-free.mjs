@@ -40,26 +40,110 @@ const LATEST_PATH = path.join(OUT_DIR, "prices-latest.json");
 
 const SITE = (process.env.SITE_URL || "https://shopcardhub.com").replace(/\/$/, "");
 const LOW_N = 10;    // how many of the cheapest verified asks form the mark window
-const TRIM = 2;      // drop this many cheapest first (junk/damaged floor)
-const MIN_COMPS = 4; // fewer verified listings than this -> no mark tonight
+const TRIM = 2;      // drop this many cheapest first (junk/damaged floor) - adaptive, see trimFor()
+const MIN_COMPS = 4; // fewer verified listings than this -> no mark tonight. A 4-7 ask mark is
+                     // published but flagged thin (untrimmed median of what exists) and cannot
+                     // drive a BUY/SELL - see THIN_N and the signal gating in main().
+const THIN_N = 8;    // a mark from fewer verified asks than this is published but flagged thin,
+                     // and never drives a BUY/SELL on its own (see signal gating in main)
+const STALE_DAYS = 4; // no fresh point for this many days -> signal parked at HOLD
+// Trim the junk floor only when there is enough sample to spare.
+function trimFor(n) { return n >= 12 ? TRIM : n >= 8 ? 1 : 0; }
 const THROTTLE_MS = 1200; // gentle on the Vercel fn + eBay quota (CDN caches repeats)
 
 // Title blocklist: graded slabs, parallels/colored refractors, serial-numbered
 // cards, Sapphire/Mega variants, lots, reprints. Keeps the mark on the RAW BASE
 // Chrome auto - the one canonical card per player the watchlist tracks.
-const TITLE_BAD = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|refractor|x-?fractor|superfractor|printing\s?plate|sapphire|mega|mojo|lava|speckle|logofractor|shimmer|atomic|mini\s?diamond|wave|prism|aqua|1st\s?edition\s?reprint|reprint|digital|custom|proxy|lot\s?of|\/\d{1,4}\b)/i;
+const TITLE_BAD = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|refractor|x-?fractor|superfractor|printing\s?plate|sapphire|mega|mojo|lava|speckle|logofractor|shimmer|atomic|mini\s?diamond|wave|prism|aqua|1st\s?edition\s?reprint|reprint|digital|custom|proxy|lot\s?of|redemption|redeemed|\bvar\b|\btag\s?(mint\s?)?\d|\/\d{1,4}\b)/i;
+
+// Sep 3 2026 (Mo: "different cards are coming through the filter"): a second
+// pass that catches what the regex above misses. Applied to every sports card
+// type after team names are stripped (so "Red Sox" is not a red parallel).
+//   - aftermarket signatures: IP / COA / JSA / hand-signed base cards were
+//     pricing as "autos" (Kim, Houston) - a $20 signed base card is not a CPA auto
+//   - colour parallels named without "refractor" or a serial (Gold, Purple,
+//     Green Grass, True Blue, Black Gold Ink ...)
+//   - variations and premium slots (Hangul, image variation, dual/triple, HTA,
+//     Mega Box BMA-, mini, jumbo, snack pack / bubble gum, sealed)
+const TEAM_WORDS = /\b(red sox|white sox|blue jays|cincinnati reds|reds|orange county|black knights|golden knights|brown)\b/gi;
+const TITLE_BAD_2 = /(\bcoa\b|\bjsa\b|beckett|\bip\b|in.?person|hand.?signed|witnessed|autographed signed|signed .*autographed|reptil+ian|hangul|variation|\bink\b|snack|bubble|\bdual\b|triple|\bquad\b|jumbo|\bmini\b|\bhta\b|mega.?box|\bbma-|\bssp\b|\bsp\b|lazer|laser|\bgrass\b|true blue|foil|sealed|\b(gold|orange|green|blue|purple|red|yellow|pink|black|white|silver|fuchsia|magenta|sepia|neon|platinum|bronze|camo|zebra|tie.?dye|pulsar|padparadscha)\b)/i;
+
+// Card code from the watchlist query (e.g. CPA-EH, BDC-1). When a query carries
+// one, every verified title must carry it too - the code is the one token that
+// separates the pack auto (CPA-SK) from a signed base card (BCP-45) or the Mega
+// Box auto (BMA-SK) of the same player. Sellers write it with '#', spaces,
+// unicode dashes or none at all, so both sides are normalised first.
+export function cardCode(card) {
+  if (card && card.code) return String(card.code).toUpperCase();
+  const m = String((card && card.query) || "").match(/\b([A-Z]{2,4}-[A-Z]{1,3}\d{0,3}|[A-Z]{2,4}-\d{1,3})\b/);
+  return m ? m[1].toUpperCase() : null;
+}
+export function normTitle(t) {
+  return String(t || "").toUpperCase().replace(/[\u2010\u2011\u2012\u2013\u2014\u2015]/g, "-").replace(/#/g, " ").replace(/\s*-\s*/g, "-").replace(/\s+/g, " ");
+}
+// Any OTHER Bowman-family card code in the title = a different card.
+const FOREIGN_CODE = /\b(CPA|BCP|BMA|BCA|BDC|CDA|BPA|BSPA|BP|BD|BTP|BSA)-?[A-Z0-9]{1,4}\b/g;
+
+// Year token from the query ("2026 bowman ..."), required in the title for
+// sports cards so a 2025 Bowman Draft auto never prices a 2026 1st Bowman.
+function yearOf(query) { const m = String(query || "").match(/\b(20\d{2})\b/); return m ? m[1] : null; }
+
+// Explainable verification: returns the verified listings AND every rejection
+// with its reason, so audit-comps.mjs can show a human exactly what the mark is
+// made of. compsMark() below uses the same function - one filter, two callers.
+export function verifyListings(listings, card, label) {
+  const type = (card && card.cardType) || "chrome-auto";
+  const isTcg = type === "tcg-single";
+  const query = (card && card.query) || "";
+  const musts = (Array.isArray(card?.titleMust) && card.titleMust.length
+    ? card.titleMust : [lastNameOf(label)]).map((m) => String(m).toLowerCase());
+  const bad = isTcg ? TITLE_BAD_TCG : (type === "sapphire-base" ? TITLE_BAD_SAPPHIRE : TITLE_BAD);
+  const code = isTcg ? null : cardCode(card);
+  const year = isTcg ? null : yearOf(query);
+  const verified = [], rejected = [], seen = new Map();
+  for (const l of listings || []) {
+    const t = String(l.title || "").toLowerCase();
+    const reject = (why) => rejected.push({ title: l.title, price: l.price, why });
+    if (l.buyingOption !== "FIXED_PRICE") { reject("not fixed-price"); continue; }
+    if (!musts.every((m) => t.includes(m))) { reject("missing required token " + musts.join("+")); continue; }
+    if (type === "chrome-auto" && !/auto/.test(t)) { reject("no 'auto' in title"); continue; }
+    if (bad.test(t)) { reject("blocklist: " + bad.exec(t)[0]); continue; }
+    if (!isTcg) {
+      const nt = normTitle(l.title);
+      if (year && !nt.includes(year)) { reject("missing year " + year); continue; }
+      if (code) {
+        if (!new RegExp("\\b" + code.replace("-", "-?") + "\\b").test(nt)) { reject("missing card code " + code); continue; }
+        const others = (nt.match(FOREIGN_CODE) || []).map((c) => c.replace(/^([A-Z]+)-?/, "$1-")).filter((c) => c !== code);
+        if (others.length) { reject("foreign card code " + others[0]); continue; }
+      } else if (type === "chrome-auto" && !/chrome/.test(t)) { reject("no 'chrome' in title"); continue; }
+      const t2 = t.replace(TEAM_WORDS, " ");
+      const m2 = TITLE_BAD_2.exec(t2);
+      if (m2) { reject("blocklist-2: " + m2[0]); continue; }
+    }
+    const total = Number.isFinite(l.price) ? l.price + (Number.isFinite(l.shipping) ? l.shipping : 0) : null;
+    if (!Number.isFinite(total) || total < 3) { reject("no usable price"); continue; }
+    // one seller relisting the same card at the same price many times is
+    // supply, not price discovery - cap it at two data points per seller/price
+    const dupKey = (l.seller || "") + "|" + Math.round(total);
+    const dups = (seen.get(dupKey) || 0) + 1; seen.set(dupKey, dups);
+    if (dups > 2) { reject("duplicate seller/price"); continue; }
+    verified.push({ ...l, total });
+  }
+  verified.sort((a, b) => a.total - b.total);
+  return { verified, rejected, code, year, musts };
+}
 
 // Sapphire-base feeds (added Aug 31 2026): every matching title necessarily
 // contains "sapphire", so that token must NOT be in the blocklist for this
 // cardType — otherwise the feed verifies 0 asks forever (the Sep 1 bug).
 // Everything else (slabs, parallels, serials, lots) still applies.
-const TITLE_BAD_SAPPHIRE = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|refractor|x-?fractor|superfractor|printing\s?plate|mega|mojo|lava|speckle|logofractor|shimmer|atomic|mini\s?diamond|wave|prism|aqua|1st\s?edition\s?reprint|reprint|digital|custom|proxy|lot\s?of|\/\d{1,4}\b)/i;
+const TITLE_BAD_SAPPHIRE = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|refractor|x-?fractor|superfractor|printing\s?plate|mega|mojo|lava|speckle|logofractor|shimmer|atomic|mini\s?diamond|wave|prism|aqua|1st\s?edition\s?reprint|reprint|digital|custom|proxy|lot\s?of|redemption|redeemed|padparadscha|\btag\s?(mint\s?)?\d|\/\d{1,4}\b)/i;
 
 // TCG singles (Pokemon etc): different noise profile. Card numbers like 161/131
 // are REQUIRED in titles (so no serial-number exclusion), "mega"/"prism" are set
 // names not parallels. Excluded instead: grading, accessories, pick-a-card
 // storefronts, lots, customs.
-const TITLE_BAD_TCG = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|reprint|digital|custom|proxy|metal\s?card|gold\s?card|lot\s?of|bulk|pick|choose|you\s?pick|case|sleeve|playmat|binder|jumbo|oversize|sticker)/i;
+const TITLE_BAD_TCG = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|reprint|digital|custom|proxy|metal\s?card|gold\s?card|lot\s?of|bulk|pick|choose|you\s?pick|case|sleeve|playmat|binder|jumbo|oversize|sticker|fan\s?art|\bdiy\b|placeholder|damage|\btag\s?(mint\s?)?\d|contender|\bace\s?\d|\bcga\b|\bpgi\b)/i;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const today = () => new Date().toISOString().slice(0, 10); // UTC
@@ -143,36 +227,20 @@ function lastNameOf(label) {
 // Trimmed-median mark of the cheapest VERIFIED fixed-price asks for a query,
 // via the site's own public comps endpoint (which handles eBay auth).
 export async function compsMark(query, label, card = {}) {
-  const type = card.cardType || "chrome-auto";
-  const isTcg = type === "tcg-single";
   let url = SITE + "/api/comps?q=" + encodeURIComponent(query) + "&sort=price&limit=50&customid=price-engine";
   if (card.categoryIds) url += "&category_ids=" + encodeURIComponent(card.categoryIds);
   const r = await fetch(url, { headers: { Accept: "application/json" } });
   if (!r.ok) throw new Error('/api/comps "' + query + '" -> HTTP ' + r.status);
   const j = await r.json();
-  // required title tokens: explicit card.titleMust, else the player's last name
-  const musts = (Array.isArray(card.titleMust) && card.titleMust.length
-    ? card.titleMust : [lastNameOf(label)]).map((m) => String(m).toLowerCase());
-  const bad = isTcg ? TITLE_BAD_TCG : (type === "sapphire-base" ? TITLE_BAD_SAPPHIRE : TITLE_BAD);
-  const verified = (j.listings || [])
-    .filter((l) => l.buyingOption === "FIXED_PRICE")
-    .filter((l) => {
-      const t = String(l.title || "").toLowerCase();
-      if (!musts.every((m) => t.includes(m))) return false; // must be this card
-      if (type === "chrome-auto" && !/auto/.test(t)) return false; // autograph only for chrome-auto
-      if (bad.test(t)) return false;               // no slabs/parallels/accessories/lots
-      return true;
-    })
-    .map((l) => ({ ...l, total: Number.isFinite(l.price) ? l.price + (Number.isFinite(l.shipping) ? l.shipping : 0) : null }))
-    .filter((l) => Number.isFinite(l.total) && l.total >= 3)
-    .sort((a, b) => a.total - b.total);
+  const { verified } = verifyListings(j.listings || [], { ...card, query }, label);
   const asks = verified.map((l) => l.total);
+  const trim = trimFor(asks.length);
   // IMAGE (added Sep 1 2026): the photo of a verified listing inside the mark
   // window - the same listing population the mark comes from, so the picture
   // is the card the price describes. Middle of the window, first with a photo.
-  const image = pickImage(verified.slice(TRIM, TRIM + LOW_N).length ? verified.slice(TRIM, TRIM + LOW_N) : verified);
+  const image = pickImage(verified.slice(trim, trim + LOW_N).length ? verified.slice(trim, trim + LOW_N) : verified);
   if (asks.length < MIN_COMPS) return { price: null, comps: asks.length, shape: null, image };
-  const window = asks.slice(TRIM, TRIM + LOW_N);
+  const window = asks.slice(trim, trim + LOW_N);
   // `asks` is already sorted ascending - askShape relies on that.
   return { price: Number(median(window).toFixed(2)), comps: asks.length, shape: askShape(asks), image };
 }
@@ -265,11 +333,26 @@ async function main() {
       }
     }
 
+    // ---- SIGNAL GATING (Sep 3 2026): a BUY/SELL must rest on a real sample.
+    // Parked at HOLD (signalRaw keeps the chart's verdict) when the latest mark
+    // is thin (< THIN_N verified asks), when tonight's ask distribution tripped
+    // the dispersion flag (query probably matching two cards), or when the
+    // series has gone stale (no fresh point for STALE_DAYS). Nothing on the
+    // site should read BUY off two asks.
+    const lastAny = e.series.length ? e.series[e.series.length - 1] : null;
+    const gates = [];
+    if (lastPt && Number.isFinite(lastPt.n) && lastPt.n < THIN_N) gates.push(`thin market - ${lastPt.n} verified asks (need ${THIN_N} for a call)`);
+    if (lastAny && dispersionFlag({ q1: lastAny.q1, q3: lastAny.q3, med: lastAny.med, sd: lastAny.sd, lo: lastAny.lo, hi: lastAny.hi }, lastAny.n)) gates.push("ask spread implausible for one card - see dispersion flag");
+    if (lastAny && (new Date(day) - new Date(lastAny.d)) / 864e5 >= STALE_DAYS) gates.push(`stale - last mark ${lastAny.d}`);
+    const signalRaw = ta.signal;
+    if (gates.length && ta.signal !== "HOLD") { ta.signal = "HOLD"; ta.reasons = [...gates, ...ta.reasons]; }
+    else if (gates.length) { ta.reasons = [...gates, ...ta.reasons]; }
+
     return {
       key: e.key, label: e.label, source: e.source, slug: e.slug || null,
       cardType: wlCard.cardType || null, boardHide: !!wlCard.boardHide,
       image: e.image || null,
-      last: ta.last, signal: ta.signal, confidence: ta.confidence,
+      last: ta.last, signal: ta.signal, signalRaw, gated: gates.length ? gates : null, confidence: ta.confidence,
       roc30: ta.roc30, sma30: ta.sma30, z: ta.z,
       retSkew: ta.retSkew, retKurtosis: ta.retKurtosis,
       retailBuy: null, retailSell: null,

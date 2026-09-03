@@ -1,5 +1,5 @@
 {
- "_comment": "Cards the price engine snapshots nightly \u2014 the watchlist's source of truth, and the feed behind the on-page Prospect Signal Board. SCOPE DECISION (Jun 26 2026): for baseball prospects we track ONE canonical card per player = the 1st Bowman Chrome AUTO. Fallback: if a prospect had NO auto in their first Bowman, track the 1st Bowman Chrome BASE instead and set cardType:\"chrome-base\". BOARD scope stays Chrome / Chrome Auto only. SAPPHIRE ADDENDUM (Aug 31 2026, Mo): Sapphire cards the SITE invites people to track (bowman-sapphire-2026 page) get their own boardHide feeds so the Vault links them to SAPPHIRE prices, never Chrome proxies; all chrome queries carry -sapphire so the board medians stay pure. VAULT-DRIVEN ADDITIONS (Aug 11 2026): cards Mo owns/hunts may be added so the Vault can link them to live pricing, even outside the 2026 CPA class \u2014 set boardHide:true so they stay OFF the /bowman-bangers Signal Board (board stays 2026-class only). Exact card the vault holds, not a proxy.",
+ "_comment": "Cards the price engine snapshots nightly \u2014 the watchlist's source of truth, and the feed behind the on-page Prospect Signal Board. SCOPE DECISION (Jun 26 2026): for baseball prospects we track ONE canonical card per player = the 1st Bowman Chrome AUTO. Fallback: if a prospect had NO auto in their first Bowman, track the 1st Bowman Chrome BASE instead and set cardType:\"chrome-base\". BOARD scope stays Chrome / Chrome Auto only. SAPPHIRE ADDENDUM (Aug 31 2026, Mo): Sapphire cards the SITE invites people to track (bowman-sapphire-2026 page) get their own boardHide feeds so the Vault links them to SAPPHIRE prices, never Chrome proxies; all chrome queries carry -sapphire so the board medians stay pure. VAULT-DRIVEN ADDITIONS (Aug 11 2026): cards Mo owns/hunts may be added so the Vault can link them to live pricing, even outside the 2026 CPA class \u2014 set boardHide:true so they stay OFF the /bowman-bangers Signal Board (board stays 2026-class only). Exact card the vault holds, not a proxy. CARD CODES (Sep 3 2026, Mo: the price must be THIS card): every chrome-auto query carries its card code (CPA-XX) and the engine requires that code in the listing title, so a signed base card (BCP-45), a Mega Box auto (BMA-SK) or a 2025 Draft auto can never price a 1st Bowman Chrome Auto.",
  "_engine": "ZERO-SECRET PATH (Jul 31 2026): the nightly snapshot runs as a GitHub Action (.github/workflows/price-snapshot.yml) and prices each card off the site's own public /api/comps endpoint (eBay Browse, already live on Vercel) \u2014 no tokens anywhere. Each card's `query` is the eBay search used to mark it nightly (trimmed median of the lowest fixed-price asks). `id` is a stable slug; feed rows are keyed source:id, e.g. ebay:ethan-holliday. Ranks mirror the Jul 28 editorial re-rank on /bowman-bangers.",
  "_schema": {
   "id": "string \u2014 stable slug (free path) or product id (paid path)",
@@ -44,7 +44,7 @@
    "id": "wehiwa-aloy",
    "source": "ebay",
    "label": "Wehiwa Aloy \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto wehiwa aloy -lot -reprint -digital -sapphire",
+   "query": "2026 bowman chrome auto wehiwa aloy CPA-WA -lot -reprint -digital -sapphire",
    "cardType": "chrome-auto",
    "rank": 4
   },
@@ -60,7 +60,7 @@
    "id": "marek-houston",
    "source": "ebay",
    "label": "Marek Houston \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto marek houston -lot -reprint -digital -sapphire",
+   "query": "2026 bowman chrome auto marek houston CPA-MHO -lot -reprint -digital -sapphire",
    "cardType": "chrome-auto",
    "rank": 6
   },
@@ -76,7 +76,7 @@
    "id": "justin-gonzalez",
    "source": "ebay",
    "label": "Justin Gonzalez \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome 1st auto justin gonzalez -lot -reprint -digital -sapphire",
+   "query": "2026 bowman chrome 1st auto justin gonzalez CPA-JG -lot -reprint -digital -sapphire",
    "cardType": "chrome-auto",
    "rank": 8
   },
@@ -92,7 +92,7 @@
    "id": "seong-jun-kim",
    "source": "ebay",
    "label": "Seong-Jun Kim \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto seong-jun kim -lot -reprint -digital -sapphire",
+   "query": "2026 bowman chrome auto seong-jun kim CPA-SK -lot -reprint -digital -sapphire",
    "cardType": "chrome-auto",
    "rank": 10
   },
