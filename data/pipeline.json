@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-02T10:40:00-07:00",
+  "generated": "2026-09-02T11:15:00-07:00",
   "generator": "chief-of-staff (2026-09-02, Mo-delegated Wed audit apply)",
   "agents": {
     "seeker": {
@@ -122,14 +122,6 @@
       "actions": [
         {
           "ts": "2026-08-28",
-          "msg": "MWF audit: site sweep clean (77 pages, FAIL 0/WARN 0); prices FAIL 0/WARN 28 (26 known label cells + pitch-black stale stamp + mendoza); live deploy matches repo (home, pitch-black guide, /indices, PB26 index); 10/10 remote images resolve; GA4 confirmed live on index pages"
-        },
-        {
-          "ts": "2026-08-28",
-          "msg": "HIGH filed: 0-byte .git/index.lock stranded at 09:05 today blocks all commits until removed — one-command fix in the proposal"
-        },
-        {
-          "ts": "2026-08-28",
           "msg": "2 MED filed: pitch-black guide shows 3 different SIR marks ($455/$271/entry zone $375-425) after a partial re-mark; global nav says Flagship Football 'Jul 20' while the page says 'Released Aug 21'"
         },
         {
@@ -159,6 +151,10 @@
         {
           "ts": "2026-09-02",
           "msg": "Wed findings APPLIED by the Chief of Staff on Mo's chat delegation: audit-site.mjs unblinded (310 false FAILs → 0/0 on 79 pages) and the four approved auditor rules landed as checks 11–14 (placeholder copy, feed/line integrity, z-index contract, nav CSS contract — each verified to fire on an injected fault); flagship-football pre-checklist copy rewritten from on-page facts only; ROY Watch carries a dated June-snapshot notice, full refresh queued to Monday's reprice lane."
+        },
+        {
+          "ts": "2026-09-02",
+          "msg": "Mo (chat): Chief of Staff now runs the entire project incl. pushes; Mo = silent partner with suggestions. Charter §4.8 written, directive cos-full-authority-sep02 filed for the Chief. Auditor pushed the Wednesday apply (a74727a) on Mo's order — first CoS-owned push, live-verified."
         }
       ],
       "log": [
@@ -845,6 +841,12 @@
       "status": "applied",
       "appliedNote": "2026-09-02: CoS (4.7, Mo delegated in chat) — ASSET_PREFIXES now covers /css/ and /fonts/; tag-balance counts a structural view (script, style and HTML comments stripped). Bundled with the four approved auditor rule additions (checks 11–14). Sweep after: 79 pages, FAIL 0 / WARN 0 — from 310 false FAILs to zero with no real finding hidden underneath.",
       "title": "LOW (tooling — blinds the auditor's spine): tools/site-auditor/audit-site.mjs emits 310 false FAILs since the Sep 1 site-fixes pass — (a) line 70's asset-prefix list knows /api/ /js/ /data/ but not /css/ or /fonts/, so the new /css/fonts.css, /css/site-fixes.css and /fonts/*.woff2 preloads on every page are reported as 'dead-internal-link' (309 hits; all files exist on disk and return 200 live); (b) the tag-balance count (lines 97–101) matches '<section>' inside a CSS comment in index.html line 348 ('wire-pulse … loop on every <section> — removed'), yielding '6 open vs 5 close' (real count 5/5). Cost: real dead links and tag imbalances are buried in 310 lines of noise until fixed. Fix: add '/css/' and '/fonts/' to the asset-prefix branch, and strip <style>/<script> blocks and comments before counting tags. Script change belongs to the fixer, not the auditor."
+    },
+    {
+      "id": "cos-full-authority-sep02",
+      "area": "org",
+      "status": "awaiting-cos",
+      "summary": "DIRECTIVE FOR THE CHIEF OF STAFF (from Mo, in chat, Sep 2 2026, after 'push live — CoS can handle it. This is his realm'): \"I want the CoS to be in charge of the entire project/pushing things in general. Consider me a 'silent partner' with suggestions… And the CoS and his team of agents does it all. We talked about autonomy already.\" Written into the Chief's charter as §4.8 (Card Hub/chief-of-staff/CHARTER.md): the Chief owns findings, fixes, content, pages, nav, scheduling, agent scoping and pushing to main; Mo's suggestions are top-priority input, not a gate; every run may push after both gates pass (audit-prices FAIL 0 + audit-site FAIL 0) via the deploy key with scoped adds and lock cleanup. Unchanged: money never moves by agent hand, no credentials, calls.json projections immutable, pricing integrity, Mo's veto absolute + retroactive, Mo alone can remove the Chief. Chief's follow-ups: rewrite each scheduled task's 'Mo pushes / awaiting-mo' language to the 4.8 model (one task per run); queue the task-key commit-trailer proposal; decide email-ownership-to-cos-sep01 under the same authority."
     }
   ],
   "scoreboard": {
