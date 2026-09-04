@@ -8,6 +8,13 @@
 //   GET /api/comps?q=...&limit=25&sort=price          (cheapest first)
 //   GET /api/comps?q=...&sort=-price                  (highest first)
 //   GET /api/comps?q=...&raw=1                        (include full eBay payload)
+//   GET /api/comps?card=ethan-holliday&customid=card-ethan-holliday
+//        (Sep 4 2026, card chart pages) — looks the card up in /data/watchlist.json,
+//        runs ITS query, and returns the engine's verified view of the book:
+//        `verified` (fixed-price listings that pass tools/price-engine verifyListings —
+//        the same filter that makes the nightly mark), `auctions` (verified live
+//        auctions with bid/bidCount/endDate) and `rejected` (count + reasons) so the
+//        page can say exactly why a listing is not this card.
 //
 // Response: { query, count, stats: {min,q1,median,q3,max,mean,stdev,skew,kurtosis},
 //             listings: [{title, price, shipping, condition, url, image, seller}] }
@@ -23,7 +30,10 @@ const BROWSE_URL = "https://api.ebay.com/buy/browse/v1/item_summary/search";
 // 10-digit eBay Partner Network campaign ID (the "campid" in EPN links).
 // NOT the Impact program ID (9356) — that's a different system.
 const EPN_CAMPAIGN_ID = "5339155990";
-const TRADING_CARDS_CATEGORY = "212"; // Sports Mem, Cards & Fan Shop > Sports Trading Cards root
+const TRADING_CARDS_CATEGORY = "212";
+// Where /data/watchlist.json is read from in card mode (the public static file —
+// no fs access needed, and the card page and the engine read the same document).
+const SITE_ORIGIN = (process.env.SITE_URL || "https://www.shopcardhub.com").replace(/\/$/, ""); // Sports Mem, Cards & Fan Shop > Sports Trading Cards root
 
 // ---- Stats helpers (population moments) ----
 function quantile(sorted, p) {
@@ -114,13 +124,25 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed." });
   }
 
-  const q = String(req.query.q || "").trim().slice(0, 200);
+  // Card mode (Sep 4 2026): resolve ?card=<id> to the watchlist entry so the
+  // query is the engine's query, never a caller-supplied approximation.
+  let card = null;
+  const cardId = String(req.query.card || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 80);
+  if (cardId) {
+    try {
+      const wl = await fetch(`${SITE_ORIGIN}/data/watchlist.json`, { headers: { Accept: "application/json" } }).then((r) => (r.ok ? r.json() : null));
+      card = ((wl && wl.cards) || []).find((c) => c && c.id === cardId && c.source === "ebay" && c.query) || null;
+    } catch { card = null; }
+    if (!card) return res.status(404).json({ error: `Unknown card id "${cardId}".` });
+  }
+
+  const q = String((card ? card.query : req.query.q) || "").trim().slice(0, 200);
   if (!q) {
     return res.status(400).json({ error: "Missing ?q= search query." });
   }
 
   // Clamp inputs so callers can't burn quota with giant pages.
-  const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 50, 1), 100);
+  const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || (card ? 100 : 50), 1), 100);
   const sortParam = req.query.sort === "price" ? "price" : req.query.sort === "-price" ? "-price" : null;
 
   // EPN custom ID (added Aug 25, 2026). Until now these links went out with a
@@ -184,6 +206,26 @@ export default async function handler(req, res) {
       stats: computeStats(prices),
       listings,
     };
+    if (card) {
+      payload.card = { id: card.id, label: card.label, cardType: card.cardType || "chrome-auto", slug: card.slug || null };
+      // The engine's own filter, imported lazily so a tracing problem can only
+      // ever break card mode, never the plain endpoint the whole site depends on.
+      try {
+        const eng = await import("../tools/price-engine/snapshot-free.mjs");
+        const fixed = eng.verifyListings(listings, { ...card, query: q }, card.label);
+        const auct = eng.verifyListings(listings, { ...card, query: q }, card.label, { mode: "AUCTION" });
+        const reasons = {};
+        for (const rj of fixed.rejected) { const k = String(rj.why).split(/[: ]/)[0]; reasons[k] = (reasons[k] || 0) + 1; }
+        payload.card.code = fixed.code || null;
+        payload.card.year = fixed.year || null;
+        payload.verified = fixed.verified;
+        payload.auctions = auct.verified;
+        payload.rejected = { count: fixed.rejected.length, reasons };
+        payload.verifiedStats = computeStats(fixed.verified.map((l) => l.total));
+      } catch (e) {
+        payload.verifyError = String(e && e.message || e).slice(0, 200);
+      }
+    }
     if (req.query.raw === "1") payload.raw = data;
 
     return res.status(200).json(payload);

@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-02T11:15:00-07:00",
+  "generated": "2026-09-03T18:56:19-07:00",
   "generator": "chief-of-staff (2026-09-02, Mo-delegated Wed audit apply)",
   "agents": {
     "seeker": {
@@ -231,21 +231,9 @@
     "trader": {
       "label": "TRADER",
       "role": "COMC trading analyst (Thursday runs) — recommend-only, Mo executes; book stays local",
-      "lastRun": "2026-08-27",
-      "nextRun": "2026-09-03",
+      "lastRun": "2026-09-03",
+      "nextRun": "2026-09-10",
       "actions": [
-        {
-          "ts": "2026-08-20",
-          "msg": "audited every position where the full listed float is owned — most price correctly, a handful of older ones drifted well above their sold tape and cannot convert. Reprice-down recs filed; no capital required."
-        },
-        {
-          "ts": "2026-08-20",
-          "msg": "2 buy-lane recs cleared all gates pre-filing (demand + velocity + float + tape). Prior week's 6 executed recs all verified live at target; none closed yet, so realized P/L stays $0.00."
-        },
-        {
-          "ts": "2026-08-20",
-          "msg": "one prior rec re-gated after its catalyst turned out to have already passed — new charter check proposed so every catalyst must be dated and confirmed still ahead."
-        },
         {
           "ts": "2026-08-21",
           "msg": "scan run 3 (first scheduled Thursday run). Extraction pipeline fixed — snapshot now reconciles against COMC's own dashboard to the cent; prior run's silent data hole is closed."
@@ -281,6 +269,18 @@
         {
           "ts": "2026-08-27",
           "msg": "Mo approved the new pricing policy — charter updated to add a pricing lane plus a rule on inventory that leaves the book for personal reasons. Approving the policy also restored the batch of recs it had just frozen: they were never wrong on the math, only unprotected."
+        },
+        {
+          "ts": "2026-09-03",
+          "msg": "degraded run — the selling venue was logged out at run start, so no fresh inventory snapshot was taken (no login requested, by rule). Ran from the last reconciled snapshot plus a newer membership-only file, and said so on every number. Zero capital recs filed; one conditional trigger, one classification question, one pass-log."
+        },
+        {
+          "ts": "2026-09-03",
+          "msg": "execution check — all 8 items from the owner's weekend session verified live at target (5 reprices, 2 completed corners, 1 vintage relist). 13 recs executed lifetime, 0 closed, trader realized P/L still $0.00 by design; the week's 4 sales were all legacy, walked item by item."
+        },
+        {
+          "ts": "2026-09-03",
+          "msg": "float check partial — one legacy single-copy monopoly closed by sale (not a break); one accumulation position saw its outside floor undercut by a new seller; the other monopolies are carried forward unverified until the next logged-in run. Lesson filed: fall back to snapshots by schema, not by date."
         }
       ]
     },
@@ -847,6 +847,11 @@
       "area": "org",
       "status": "awaiting-cos",
       "summary": "DIRECTIVE FOR THE CHIEF OF STAFF (from Mo, in chat, Sep 2 2026, after 'push live — CoS can handle it. This is his realm'): \"I want the CoS to be in charge of the entire project/pushing things in general. Consider me a 'silent partner' with suggestions… And the CoS and his team of agents does it all. We talked about autonomy already.\" Written into the Chief's charter as §4.8 (Card Hub/chief-of-staff/CHARTER.md): the Chief owns findings, fixes, content, pages, nav, scheduling, agent scoping and pushing to main; Mo's suggestions are top-priority input, not a gate; every run may push after both gates pass (audit-prices FAIL 0 + audit-site FAIL 0) via the deploy key with scoped adds and lock cleanup. Unchanged: money never moves by agent hand, no credentials, calls.json projections immutable, pricing integrity, Mo's veto absolute + retroactive, Mo alone can remove the Chief. Chief's follow-ups: rewrite each scheduled task's 'Mo pushes / awaiting-mo' language to the 4.8 model (one task per run); queue the task-key commit-trailer proposal; decide email-ownership-to-cos-sep01 under the same authority."
+    },
+    {
+      "id": "trader-2026-09-03",
+      "status": "awaiting-mo",
+      "title": "TRADER: 3 recs this week (1 trigger, 1 question, 1 pass-log; 0 capital) — details in local scan report"
     }
   ],
   "scoreboard": {
@@ -865,7 +870,7 @@
   },
   "chiefOfStaff": {
     "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
-    "generated": "2026-09-01T19:55:00-07:00",
+    "generated": "2026-09-03T18:56:19-07:00",
     "weekOf": "2026-08-31",
     "headline": "The cockpit came alive — first 4 real dungeon decisions Fri, loop verified end-to-end. First 4.7 week: 3 items self-approved, 1 held. UPDATED Sun eve: Mo cleared every approval same-day, then two queue items were executed live (search-visibility diagnosis + actions; partner-API ticket read: denied, lane retired) — queue is down to 1.",
     "doNothing": "One item left and it's the one that can't wait: until the trader floors are written down, one accepted offer repeats this week's below-ask basket clear. Everything else is done or executes on schedule.",
@@ -881,6 +886,36 @@
     ],
     "approvedSunEve": "Mo, Sun evening (chat): audit-2026-08-28-2 re-mark, the #1-page reprice, all 3 Keeper proposals, and the new auditor layering rule — all approved. Then queue items 2 and 3 were EXECUTED live same evening: Search Console diagnosed + sitemap/indexing actions taken (see gsc-google-visibility-aug28), and the eBay Insights ticket read — DENIED Aug 17, lane retired, never re-queue. Queue is down to item 1 (trader execution, Mo's hands).",
     "watchdog": [
+      {
+        "severity": "broken",
+        "what": "[Thu Sep 3 checkpoint] Unattended browser writes: 0 for 3 this week — every social write needed Mo present",
+        "detail": "Tue board tweet queued at 1:47pm with Mo in the room. Wed reply-paster fired into a logged-out X (safety valve held, Mo logged in ~5h later, reply posted attended). Thu reply-paster: two navigations hung past 180s (safety valve held, Mo said go, reply posted attended). All three landed, but none unattended, so the Tuesday auto-queue authorization is not yet autonomous in practice. Fri–Sun are the next three trials, now with an image-upload step added. Action for Mo before Fri 10:10am: Chrome open and logged into X. If Friday also fails unattended, Sunday re-scopes the board tweet to 'queued in the live sitting' — an honest label beats a broken one."
+      },
+      {
+        "severity": "watch",
+        "what": "[Thu Sep 3 checkpoint] 6 pushes landed today outside the Monday lane — all verified, none logged",
+        "detail": "Six CoS-authored commits (ab47124 … 049180a: X image generator, card-photo hotfix, Signal Alerts capture on 3 pages, pricing-integrity same-card filter + audit-comps, engine docs, transaction-side logging) were Mo-directed in chat and are live (Signal Alerts + the ROY snapshot notice confirmed on the deployed /roy-watch-2026). Gates re-run read-only on the pushed tree tonight: audit-site FAIL 0 / WARN 0 (79 pages), audit-prices FAIL 0 / WARN 30 (same as the Wednesday push report: label cells + 5 stale stamps). Gap: 4.8 says every push is readable in this file, and the publish block only records the Monday lane — a pushLog was added under chiefOfStaff as janitorial state; Sunday decides whether pushing runs write it themselves."
+      },
+      {
+        "severity": "watch",
+        "what": "[Thu Sep 3 checkpoint] Thursday trader ran DEGRADED — selling venue logged out at 10am, no snapshot, 0 capital recs",
+        "detail": "Correct behavior (no login requested, by rule; fell back to the last reconciled snapshot by schema, said so on every number). Cost: the corner-break alarm (depth line) was not read this week — 107 float positions carried forward unverified. Same root cause as the X failures: browser sessions expire between Mo's sittings. Its one proposal is Tier 3 (money) and stays for Mo."
+      },
+      {
+        "severity": "watch",
+        "what": "[Thu Sep 3 checkpoint] Stale git-lock advice is already moot — Mo does not need to run the rm command",
+        "detail": "The Sep 3 session told Mo to remove .git/index.lock + HEAD.lock. Checked tonight: no active lock files exist; local main equals origin/main; commits flowed after that message. Only renamed stale-* debris remains, which blocks nothing. No action."
+      },
+      {
+        "severity": "watch",
+        "what": "[Thu Sep 3 checkpoint] 4.7 pass: 0 approvals — nothing in the self-approvable categories is waiting",
+        "detail": "Open items: one trader proposal (Tier 3, money) and two org directives addressed to the Chief (email ownership; full-authority follow-ups) that are Sunday full-run decisions by the light-run rules. Two Aug-31 coaching fixes improved: trader actions now land as ts+msg objects (verified), and the Tuesday run printed its board-tweet timing explicitly."
+      },
+      {
+        "severity": "watch",
+        "what": "[Thu Sep 3 checkpoint] Five price stamps sit past the 21-day line — Monday lane owns them",
+        "detail": "audit-prices WARN 30 tonight = 25 known label cells + 5 stamps that rolled past 21 days on Sep 2 (the Wednesday auditor already flagged all five and routed them to the Monday reprice lane). Unchanged since Wed; filed so the WARN count is explained, not re-ranked."
+      },
       {
         "severity": "watch",
         "what": "[Tue Sep 1 checkpoint] Autonomous writes verified: 4 of 4 landed clean",
@@ -968,10 +1003,40 @@
       }
     ],
     "lastCheckpoint": {
-      "date": "2026-09-01",
+      "date": "2026-09-03",
       "mode": "light",
-      "verdict": "all clean, nothing needs Mo",
+      "verdict": "one thing needs Mo: keep Chrome logged into X (and COMC on Thursdays) — unattended browser writes are 0 for 3",
       "approvals": 0
+    },
+    "pushLog": {
+      "_comment": "Added by CoS light checkpoint 2026-09-03 (janitorial state, charter 4.8 visible-delegation). Pushes outside the Monday STEP 3.98 lane; gates = read-only re-run on the pushed tree by the checkpoint unless the pushing run reported them.",
+      "entries": [
+        {
+          "date": "2026-09-02",
+          "commits": [
+            "a668b71",
+            "a74727a",
+            "965bb4d"
+          ],
+          "by": "Wed audit apply + org directive (CoS, Mo-delegated in chat)",
+          "gates": "reported in site-audit-2026-09-02 post-report: audit-site 0/0, audit-prices FAIL 0 / WARN 30",
+          "liveVerified": "2026-09-02 (auditor)"
+        },
+        {
+          "date": "2026-09-03",
+          "commits": [
+            "ab47124",
+            "9f7ac6e",
+            "1d82ec2",
+            "7f1d51c",
+            "7478f51",
+            "049180a"
+          ],
+          "by": "Mo-directed live sessions, CoS-authored commits",
+          "gates": "re-run 2026-09-03 eve by CoS checkpoint: audit-site FAIL 0/WARN 0 (79 pages), audit-prices FAIL 0/WARN 30",
+          "liveVerified": "2026-09-03 eve (CoS checkpoint: /roy-watch-2026 Signal Alerts + snapshot notice live)"
+        }
+      ]
     }
   },
   "coachNotes": {
