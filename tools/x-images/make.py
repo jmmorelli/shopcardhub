@@ -13,6 +13,7 @@ Usage:
   python3 tools/x-images/make.py levels                   # all five tickers, level vs 100
   python3 tools/x-images/make.py movers AH26              # top/bottom movers vs prevPrice
   python3 tools/x-images/make.py vault                    # Vault pitch card (public data only)
+  python3 tools/x-images/make.py og --out og              # og/indices.png link preview (1200x630), re-run each Monday
   python3 tools/x-images/make.py all AH26
 
 Output: --out DIR (default: ../Card Hub/x-images/<YYYY-MM-DD>/). Prints paths.
@@ -194,6 +195,46 @@ def card_vault(out):
     footer(d, asof, "· shopcardhub.com/watchlist")
     p = out / "vault.png"; im.save(p); return p
 
+def card_og(idx, out):
+    """og/indices.png (1200x630) — the link-preview image for /indices and every index page.
+    Replaces the Sep 1 static mock (fabricated 118.42 composite, wrong arrows). Every number
+    here is a real level from data/indices.json; no composite because none is published.
+    Re-run after each Monday re-mark: python3 tools/x-images/make.py og --out og"""
+    keys = [k for k in ("PB26", "CR26", "AH26", "PRIS25", "DR25") if k in idx]
+    asof = max(idx[k]["history"][-1]["date"] for k in keys)
+    OH = 630
+    im = Image.new("RGB", (W, OH), BG); d = ImageDraw.Draw(im)
+    for x in range(0, W, 60): d.line([(x, 0), (x, OH)], fill="#0a1218")
+    for y in range(0, OH, 60): d.line([(0, y), (W, y)], fill="#0a1218")
+    d.text((48, 34), "SHOPCARD", font=COND9(26), fill=TXT)
+    d.text((48 + d.textlength("SHOPCARD", font=COND9(26)), 34), "HUB", font=COND9(26), fill=CYAN)
+    d.text((240, 42), "//  SPORTS CARD INTELLIGENCE", font=MONO(12), fill=DIM)
+    d.line([(48, 76), (W - 48, 76)], fill="#0e3a45", width=1)
+    d.line([(48, 106), (80, 106)], fill=CYAN, width=2)
+    d.text((94, 96), "LIVE TAPE · RE-MARKED WEEKLY · 100.00 BASE", font=MONO(13), fill=CYAN)
+    d.text((48, 118), "SET", font=COND9(120), fill=TXT)
+    d.text((48, 222), "INDICES", font=COND9(120), fill=CYAN)
+    d.text((48, 352), "Every set as a ticker. Price-weighted,", font=BAR4(22), fill=DIM)
+    d.text((48, 382), "sold-basis. No calls, just the tape.", font=BAR4(22), fill=DIM)
+    # ticker panel — real levels, since-inception change, w/w direction
+    px, py, pw = 640, 118, W - 48 - 640
+    d.rounded_rectangle([px, py, px + pw, py + 66 * len(keys) + 20], 8, fill=PANEL, outline="#16303a")
+    for j, k in enumerate(keys):
+        h = idx[k]["history"]; lv = h[-1]["level"]; pv = h[-2]["level"] if len(h) > 1 else 100.0
+        chg = lv - 100.0; col = GREEN if chg > 0 else RED if chg < 0 else DIM
+        wk = GREEN if lv > pv else RED if lv < pv else DIM
+        yy = py + 14 + j * 66
+        d.polygon([(px + 20, yy + 30), (px + 32, yy + 30), (px + 26, yy + 20 if lv >= pv else yy + 40)], fill=wk)
+        d.text((px + 46, yy + 6), k, font=COND9(34), fill=CYAN)
+        nm = idx[k]["name"].replace(" Chase Index", "")
+        d.text((px + 160, yy + 16), nm, font=BAR6(17), fill=TXT)
+        s = f"{lv:.2f}"; d.text((px + pw - 110 - d.textlength(s, font=COND7(34)), yy + 6), s, font=COND7(34), fill=TXT)
+        d.text((px + pw - 98, yy + 16), f"{chg:+.1f}%", font=MONO(16), fill=col)
+    d.text((px + 20, py + 66 * len(keys) + 30), "since inception 2026-08-24 · arrow = week over week", font=MONO(12), fill=DIM)
+    d.line([(48, OH - 52), (W - 48, OH - 52)], fill="#0e3a45", width=1)
+    d.text((48, OH - 40), f"marks as of {asof} · shopcardhub.com/indices", font=MONO(13), fill=DIM)
+    p = out / "indices.png"; im.save(p); return p
+
 # ---------- main ----------
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("kind"); ap.add_argument("ticker", nargs="?"); ap.add_argument("--out")
@@ -207,4 +248,5 @@ if __name__ == "__main__":
     if a.kind in ("levels", "all"): done.append(card_levels(idx, out))
     if a.kind in ("movers", "all"): done.append(card_movers(ix, k, out))
     if a.kind in ("vault", "all"): done.append(card_vault(out))
+    if a.kind == "og": done.append(card_og(idx, out))
     for p in done: print(p)
