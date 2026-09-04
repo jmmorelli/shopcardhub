@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-03T18:56:19-07:00",
+  "generated": "2026-09-04T12:13:20-07:00",
   "generator": "chief-of-staff (2026-09-02, Mo-delegated Wed audit apply)",
   "agents": {
     "seeker": {
@@ -120,16 +120,6 @@
       "lastRun": "2026-09-01",
       "nextRun": "2026-09-08",
       "actions": [
-        {
-          "ts": "2026-08-28",
-          "msg": "2 MED filed: pitch-black guide shows 3 different SIR marks ($455/$271/entry zone $375-425) after a partial re-mark; global nav says Flagship Football 'Jul 20' while the page says 'Released Aug 21'"
-        },
-        {
-          "ts": "2026-08-28",
-          "msg": "dungeon-decisions.json still 404 on price-data (3rd consecutive run) — no decisions to reconcile"
-        },
-        "2026-08-31: Mon audit — sweeps CLEAN (77 pages, audit-site 0/0; audit-prices 0 FAIL/28 WARN, 26 known label cells). Deploy matches main (538df72); Sat z-index patch confirmed live (vault-track.js?v=5 byte-identical). 15/15 remote images resolve.",
-        "2026-08-31: GSC baseline captured — 3 indexed / 58 not (19 crawled-not-indexed w/ FAILED validation, 39 discovered-not-indexed); sitemap Success Aug 30, 76 discovered; manual actions + security clean.",
         "2026-08-31: Reconciled 4 dungeon approvals (trader-2026-08-19, trader-2026-08-20, audit-2026-08-25-7, epn-customid-verify-sep); filed audit-2026-08-31-1 (LOW stale June marks WNBA/Wemby, verified live) + polish-2026-08-31.",
         "2026-08-31: Mo approved all open items in chat — trader-2026-08-21, reprice-2026-08-25-followup, audit-2026-08-31-1, polish-2026-08-31 → approved; queue to fixer.",
         {
@@ -155,6 +145,22 @@
         {
           "ts": "2026-09-02",
           "msg": "Mo (chat): Chief of Staff now runs the entire project incl. pushes; Mo = silent partner with suggestions. Charter §4.8 written, directive cos-full-authority-sep02 filed for the Chief. Auditor pushed the Wednesday apply (a74727a) on Mo's order — first CoS-owned push, live-verified."
+        },
+        {
+          "ts": "2026-09-04",
+          "msg": "Fri audit — sweeps CLEAN: audit-site FAIL 0/WARN 0 on 100 pages (21 new card-chart pages + /cards hub absorbed with zero EPN/nav/sitemap faults); audit-prices FAIL 0/WARN 30 (25 known label cells + 5 stale Aug 12 stamps → filed audit-2026-09-04-1 LOW, confirmed live)."
+        },
+        {
+          "ts": "2026-09-04",
+          "msg": "Deploy matches main 96077dd — 6/6 pages byte-identical (home, /cards, /indices, /bowman-bangers, card-ethan-holliday-sapphire, card-umbreon-ex-sir-pe); no .git locks; 13/13 sampled scrydex/pokemontcg/ebayimg images 200; /api/comps?card= verified-mode healthy (7 base listings kept, 15 parallels/lots rejected, customid card-<id> flows into every listing URL)."
+        },
+        {
+          "ts": "2026-09-04",
+          "msg": "GSC unchanged: 3 indexed / 58 not (19 crawled-not-indexed FAILED, 39 discovered); sitemap last read Aug 30 = 76 URLs while sitemap.xml now lists 100 — Google has not seen the 24 new URLs yet (Monday STEP 0.6 owns resubmit); manual actions + security clean. Dungeon store: 11 decisions, all already reconciled — no new decisions since Sep 1."
+        },
+        {
+          "ts": "2026-09-04",
+          "msg": "Mo (chat, 10:30am): 'I think you got this — talk to the CoS and auditor if need be.' Under §4.8: trader-2026-09-03 → approved (Mo ran the trader himself); audit-2026-09-04-1 mechanical half applied by the CoS (wnba/murakami stamps → Aug 31) and pushed after both gates; series-2/sapphire/roman-anthony re-marks held for Monday's lane (need comp pulls + 2σ gates, 3 days away)."
         }
       ],
       "log": [
@@ -850,8 +856,15 @@
     },
     {
       "id": "trader-2026-09-03",
-      "status": "awaiting-mo",
-      "title": "TRADER: 3 recs this week (1 trigger, 1 question, 1 pass-log; 0 capital) — details in local scan report"
+      "status": "approved",
+      "title": "TRADER: 3 recs this week (1 trigger, 1 question, 1 pass-log; 0 capital) — details in local scan report — Mo, 2026-09-04 (chat: 'I had the comc trader do what he needs to'; trader proposes, Mo executes — Thursday run reconciles the recs)"
+    },
+    {
+      "id": "audit-2026-09-04-1",
+      "status": "applied",
+      "title": "LOW: five pages carry a 23-day-old machine stamp data-prices-updated=\"2026-08-12\" (sweep WARN, limit 21) — and two of them were actually repriced Aug 31 without the footer rolling: wnba-cards-2026.html body line 888 'as of Aug 31, 2026' vs footer line 931 'Prices updated Aug 12'; munetaka-murakami-rookie-cards.html lines 849/888 'Aug 31, 2026' vs footer 931 'Aug 12'. topps-series-2-2026.html is worse: alert-bar line 890 still says 'as of June 2026' (3-month-old marks on a released flagship) while footer 940 says Aug 12 — two stamps, neither current. bowman-sapphire-2026.html (940) and roman-anthony-rookie-cards.html (931) are true Aug 12 marks. All 5 confirmed live on www (deploy = main 96077dd). Same class as audit-2026-08-25-3 (re-mark rewrites body, not the footer). Fix: in the Monday reprice lane, roll the price-asof footer + data-prices-updated to the re-mark date on wnba/murakami (mechanical), re-mark series-2/bowman-sapphire/roman-anthony with dated asks, and make STEP 3.6 update data-prices-updated whenever it rewrites a body stamp so the sweep stops crying wolf. — CoS §4.8 on Mo's chat delegation, 2026-09-04: mechanical half APPLIED (wnba + murakami footer/hero stamps rolled to Aug 31, asks relabeled as asks); the 3 true re-marks (series-2, bowman-sapphire, roman-anthony) + the STEP 3.6 'roll data-prices-updated with the body stamp' rule are queued to Monday Sep 7's reprice lane — Sunday CoS to carry them into the Monday coach's note",
+      "filed": "2026-09-04",
+      "by": "site-auditor"
     }
   ],
   "scoreboard": {
