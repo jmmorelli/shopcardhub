@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-04T12:13:20-07:00",
+  "generated": "2026-09-04T12:20:09-07:00",
   "generator": "chief-of-staff (2026-09-02, Mo-delegated Wed audit apply)",
   "agents": {
     "seeker": {
@@ -1048,6 +1048,16 @@
           "by": "Mo-directed live sessions, CoS-authored commits",
           "gates": "re-run 2026-09-03 eve by CoS checkpoint: audit-site FAIL 0/WARN 0 (79 pages), audit-prices FAIL 0/WARN 30",
           "liveVerified": "2026-09-03 eve (CoS checkpoint: /roy-watch-2026 Signal Alerts + snapshot notice live)"
+        },
+        {
+          "date": "2026-09-04",
+          "commits": [
+            "8118aab"
+          ],
+          "by": "Fri audit apply (CoS §4.8 on Mo's chat delegation: 'you got this')",
+          "gates": "audit-site FAIL 0/WARN 0 (100 pages); audit-prices FAIL 0/WARN 28",
+          "liveVerified": "2026-09-04 12:18 PT (auditor, byte-identical)",
+          "note": "index.lock/HEAD.lock stranded at 12:12 by the concurrent 27d4f2f session were deleted before commit; locks swept after push"
         }
       ]
     }
