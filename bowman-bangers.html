@@ -1102,10 +1102,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     var pr = r.price ? '<span class="bb-pr">' + esc(r.price) + '</span>' : '<span class="bb-pr dim" data-live="1">&mdash;<small>watch tier</small></span>';
     return '<td class="bb-rk"><span class="bb-num">' + (r.rank < 10 ? '0' : '') + r.rank + '</span></td>' +
       '<td class="bb-ph"><span data-card-img="' + esc(r.key) + '" data-card-name="' + esc(r.name) + '" data-card-size="row" data-card-surface="bowman-board"></span></td>' +
-      '<td><a class="bb-name" href="#' + esc(r.id) + '">' + esc(r.name) + '</a>' + (r.sub ? '<span class="bb-sub">' + esc(r.sub) + '</span>' : '') + '</td>' +
+      '<td><a class="bb-name" href="/card-' + esc(String(r.key).replace(/^ebay:/, '')) + '" title="Open the price chart">' + esc(r.name) + '</a>' + (r.sub ? '<span class="bb-sub">' + esc(r.sub) + '</span>' : '') + '</td>' +
       '<td>' + pr + '</td>' +
       '<td><span class="bb-chip ' + cls + '">' + esc(sig) + '</span></td>' +
-      '<td class="bb-dd"><a href="#' + esc(r.id) + '">Deep dive &darr;</a></td>';
+      '<td class="bb-dd"><a href="/card-' + esc(String(r.key).replace(/^ebay:/, '')) + '" title="Nightly price line, hammers and verified live listings">Chart &rarr;</a> <a href="#' + esc(r.id) + '">Deep dive &darr;</a></td>';
   }
 
   var rows = readRows();
