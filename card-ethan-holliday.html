@@ -373,6 +373,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </style>
   <style>
 .cp-wrap { max-width:760px; margin:0 auto; padding:28px 20px 60px; }
+.cp-wrap section, .cp-wrap .cp-sec { padding:0; border-top:0; animation:none; }
+.cp-wrap .cp-sec { margin:34px 0 0; padding-top:26px; border-top:1px solid var(--border); }
 .cp-crumbs { font-family:var(--fm); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
 .cp-crumbs a { color:var(--text-dim); } .cp-crumbs a:hover { color:var(--accent); }
 .cp-head { display:grid; grid-template-columns:120px 1fr; gap:18px; align-items:start; margin-bottom:22px; }
@@ -792,7 +794,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <div class="cp-head">
     <a class="cp-photo" id="cp-photo" href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20chrome%20auto%20ethan%20holliday%20CPA-EH&amp;LH_BIN=1&amp;mkcid=1&amp;mkrid=711-53200-19255-0&amp;siteid=0&amp;mkevt=1&amp;campid=5339155990&amp;toolid=10001&amp;customid=card-ethan-holliday" target="_blank" rel="noopener sponsored" aria-label="Ethan Holliday — 1st Bowman Chrome Auto on eBay"><img id="cp-img" src="https://i.ebayimg.com/images/g/wR4AAeSwxcJqTsOb/s-l500.jpg" alt="Ethan Holliday — 1st Bowman Chrome Auto" loading="eager"><span class="sch-ebay-tag" aria-hidden="true">eBay</span></a>
     <div>
-      <div class="cp-eyebrow">Card chart · 2026 Bowman Sapphire · engine-tracked</div>
+      <div class="cp-eyebrow">Card chart · 2026 Bowman Chrome · engine-tracked</div>
       <h1 class="cp-title">Ethan Holliday</h1>
       <div class="cp-lane"><b>1st Bowman Chrome Auto · raw</b> · <b>CPA-EH</b> · re-priced nightly from verified eBay asks</div>
     </div>
@@ -805,7 +807,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="cp-cell"><div class="l">Supply</div><div class="v" id="cp-sup">—</div><div class="s" id="cp-sup-s">live listings of this card</div></div>
   </div>
   <div class="cp-actions">
-    <button class="sch-track-card" data-name="Ethan Holliday — 1st Bowman Chrome Auto" data-set="2026 Bowman Sapphire" data-cat="baseball" data-grade="Raw" data-feed="ebay:ethan-holliday">&#9733; Track this card</button>
+    <button class="sch-track-card" data-name="Ethan Holliday — 1st Bowman Chrome Auto" data-set="2026 Bowman Chrome" data-cat="baseball" data-grade="Raw" data-feed="ebay:ethan-holliday">&#9733; Track this card</button>
     <span class="cp-sig hold" id="cp-sig"><span>engine · —</span></span>
     <a class="cp-jump" href="#live">Live listings &#8595;</a>
   </div>
@@ -973,7 +975,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     list.innerHTML = html;
     var rej = j.rejected; var f = $('cp-list-foot');
     if (f) {
-      var parts = []; if (rej) { for (var k in rej.reasons) parts.push(rej.reasons[k] + ' ' + k.replace(/-/g,' ')); }
+      var NICE = { not:'auctions / other formats', blocklist:'graded, parallels, lots, reprints', 'blocklist-2':'signed base cards, variations', duplicate:'repeat seller listings', missing:'wrong code or year', foreign:'other card codes', no:'no usable price' };
+      var parts = []; if (rej) { for (var k in rej.reasons) parts.push(rej.reasons[k] + ' ' + (NICE[k] || k.replace(/-/g,' '))); }
       f.textContent = (fixed.length + ' verified fixed-price' + (auct.length ? ' \u00b7 ' + auct.length + ' live auction' + (auct.length===1?'':'s') : '')) + (rej ? ' \u00b7 ' + rej.count + ' excluded (' + parts.slice(0,4).join(', ') + ')' : '') + ' \u00b7 asks, not solds \u00b7 refreshes ~15 min';
     }
   }).catch(function(){ list.innerHTML = '<div class="cp-empty">Live listings are unavailable right now.</div>'; });
