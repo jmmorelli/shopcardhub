@@ -161,12 +161,6 @@
     .guide-card:hover::before { width:100%; }
 
     /* STATS ROW */
-    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; background:var(--border); margin:80px 0 0; }
-    .stat-block { background:var(--bg2); padding:32px 24px; border-bottom:2px solid transparent; transition:border-color 0.2s, background 0.2s; }
-    .stat-block:hover { border-color:var(--accent); background:var(--bg3); }
-    .stat-num { font-family:var(--fd); font-size:52px; font-weight:900; line-height:1; color:var(--text-head); letter-spacing:-2px; margin-bottom:8px; }
-    .stat-num span { color:var(--accent); }
-    .stat-label { font-family:var(--fm); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); }
 
     /* CATEGORIES */
     .categories-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
@@ -222,14 +216,13 @@
       .hero::after { display:none; }
       .guides-grid { grid-template-columns:1fr; }
       .guide-card.featured { grid-row:auto; }
-      .stats-row { grid-template-columns:1fr 1fr; }
-      .categories-grid { grid-template-columns:1fr 1fr; }
+        .categories-grid { grid-template-columns:1fr 1fr; }
       .inventory-cta { grid-template-columns:1fr; }
       .inventory-cta-side { text-align:left; }
       .nav-links { display:none; }
     }
     @media (max-width:540px) {
-      .stats-row, .categories-grid { grid-template-columns:1fr; }
+      .categories-grid { grid-template-columns:1fr; }
       .hero { min-height:0; padding:36px 0 28px; }
       .hero-grid { gap:28px; }
       .hero h1 { font-size:clamp(38px,11vw,50px); margin-bottom:14px; }
@@ -293,7 +286,6 @@
 .price-main.purple{text-shadow:0 0 16px rgba(155,93,229,0.45);}
 .poll-pts{text-shadow:0 0 16px rgba(0,204,245,0.45);}
 .poll-pts.nl{text-shadow:0 0 16px rgba(0,224,122,0.45);}
-.stat-num span{text-shadow:0 0 20px rgba(0,204,245,0.4);}
 .panel-price.hot{text-shadow:0 0 12px rgba(0,224,122,0.5);}
 .panel-price.mid{text-shadow:0 0 12px rgba(255,140,0,0.5);}
 .hero-eyebrow{text-shadow:0 0 8px rgba(0,204,245,0.5);}
@@ -1223,26 +1215,6 @@ body::before{
           </div>
         </div>
       </div>
-
-      <!-- Stats row -->
-      <div class="stats-row">
-        <div class="stat-block">
-          <div class="stat-num">508<span>+</span></div>
-          <div class="stat-label">Cards in COMC Inventory</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-num"><span>~$</span>113</div>
-          <div class="stat-label">Top Prospect Auto (Holliday 2026)</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-num">5<span>%</span></div>
-          <div class="stat-label">Max Discount Floor — ROI First</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-num">4<span>+</span></div>
-          <div class="stat-label">Affiliate Programs Active</div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1584,37 +1556,6 @@ body::before{
         });
       })
       .catch(function () {});
-  })();
-  </script>
-  <script>
-  /* Stats-band count-up (polish-2026-08-31): numbers count up on scroll into view, ease-out cubic */
-  (function(){
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var nums = document.querySelectorAll('.stats-row .stat-num');
-    if (!nums.length || !('IntersectionObserver' in window)) return;
-    function animate(el){
-      var tn = null;
-      el.childNodes.forEach(function(n){ if (n.nodeType===3 && /\d/.test(n.textContent)) tn = n; });
-      if (!tn) return;
-      var target = parseInt(tn.textContent.replace(/\D/g,''),10);
-      if (isNaN(target)) return;
-      var dur = 1200, t0 = null;
-      function step(ts){
-        if (!t0) t0 = ts;
-        var p = Math.min((ts-t0)/dur,1), e = 1-Math.pow(1-p,3);
-        tn.textContent = String(Math.round(target*e));
-        if (p<1) requestAnimationFrame(step);
-      }
-      tn.textContent = '0';
-      requestAnimationFrame(step);
-    }
-    var seen = false;
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if (en.isIntersecting && !seen){ seen = true; nums.forEach(animate); io.disconnect(); }
-      });
-    },{threshold:0.4});
-    io.observe(document.querySelector('.stats-row'));
   })();
   </script>
 <script src="/js/card-img.js?v=2" defer></script>
