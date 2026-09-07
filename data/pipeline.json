@@ -1,13 +1,13 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-04T12:20:09-07:00",
-  "generator": "chief-of-staff (2026-09-02, Mo-delegated Wed audit apply)",
+  "generated": "2026-09-06T18:40:00-07:00",
+  "generator": "chief-of-staff (2026-09-06 Sunday full run)",
   "agents": {
     "seeker": {
       "label": "SEEKER",
       "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
       "lastRun": "2026-09-01",
-      "nextRun": "2026-09-08",
+      "nextRun": "2026-09-07",
       "actions": [
         {
           "ts": "2026-08-10",
@@ -56,7 +56,7 @@
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
       "lastRun": "2026-09-01",
-      "nextRun": "2026-09-08",
+      "nextRun": "2026-09-07",
       "actions": [
         {
           "ts": "2026-08-11",
@@ -118,7 +118,7 @@
       "label": "INSPECTOR",
       "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
       "lastRun": "2026-09-01",
-      "nextRun": "2026-09-08",
+      "nextRun": "2026-09-07",
       "actions": [
         "2026-08-31: Reconciled 4 dungeon approvals (trader-2026-08-19, trader-2026-08-20, audit-2026-08-25-7, epn-customid-verify-sep); filed audit-2026-08-31-1 (LOW stale June marks WNBA/Wemby, verified live) + polish-2026-08-31.",
         "2026-08-31: Mo approved all open items in chat — trader-2026-08-21, reprice-2026-08-25-followup, audit-2026-08-31-1, polish-2026-08-31 → approved; queue to fixer.",
@@ -176,7 +176,7 @@
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
       "lastRun": "2026-09-01",
-      "nextRun": "2026-09-08",
+      "nextRun": "2026-09-07",
       "actions": [
         {
           "ts": "2026-08-17",
@@ -828,7 +828,9 @@
       "id": "email-ownership-to-cos-sep01",
       "area": "org",
       "summary": "DIRECTIVE FOR SUNDAY CoS (from Mo, in chat, Sep 1 2026): Mo does not want to own marketing emails — 'I was hoping you or an agent would fold the mailerlite send/check on your own... The Chief of Staff needs to decide this. It is his project/business to run the operations for.' This AMENDS the Tier 3 boundary: the weekly Tuesday Tape digest send is DELEGATED to the system (Mo's veto stays absolute+retroactive; his unsubscribe/complaint read is the kill switch). CoS to decide the structure: (a) fold send+deliverability-check into Tuesday STEP 4.5 (draft->verify->send, with a content gate mirroring the board-tweet safety valve), (b) a dedicated marketing/email agent owning digest + capture-bar copy + signup analytics, or (c) CoS owns it directly. Also define the check half: post-send verify, bounce/complaint watch, weekly signup count in the retention row. First autonomous send executed Sep 1 (campaign 197429896712029250, 1 active subscriber) on Mo's live authorization.",
-      "status": "awaiting-cos"
+      "status": "applied",
+      "decidedBy": "chief-of-staff 2026-09-06 (charter 4.8 + 5.5)",
+      "decision": "OPTION (a): the Tuesday run owns the digest end to end — draft -> content gate (numbers must match the board re-marked the same run; a failed re-mark = no send, same valve as the board tweet) -> send -> post-send verify (status sent, delivered %, bounces, complaints) logged in the digest file and the dm log. Tue/Thu CoS checkpoints re-verify the send; the Monday retention row carries the weekly signup count; the Sunday brief carries 'email trigger N/100'. KILL SWITCH: any unsubscribe or complaint from a non-owner address pauses sends until Mo says resume. OPTION (b) (dedicated email agent) is NOT commissioned — list is 4 active (3 owner-controlled) and 2 unconfirmed; a cold agent at that size is pure run cost. Re-trigger: ~100 real subscribers or a non-digest campaign need (welcome sequence / win-back). OPTION (c) rejected by the one rule. Implementation = Tuesday task prompt/description wording; held behind the CoS-prompt authority item (queue #1)."
     },
     {
       "id": "audit-2026-09-02-1",
@@ -851,8 +853,10 @@
     {
       "id": "cos-full-authority-sep02",
       "area": "org",
-      "status": "awaiting-cos",
-      "summary": "DIRECTIVE FOR THE CHIEF OF STAFF (from Mo, in chat, Sep 2 2026, after 'push live — CoS can handle it. This is his realm'): \"I want the CoS to be in charge of the entire project/pushing things in general. Consider me a 'silent partner' with suggestions… And the CoS and his team of agents does it all. We talked about autonomy already.\" Written into the Chief's charter as §4.8 (Card Hub/chief-of-staff/CHARTER.md): the Chief owns findings, fixes, content, pages, nav, scheduling, agent scoping and pushing to main; Mo's suggestions are top-priority input, not a gate; every run may push after both gates pass (audit-prices FAIL 0 + audit-site FAIL 0) via the deploy key with scoped adds and lock cleanup. Unchanged: money never moves by agent hand, no credentials, calls.json projections immutable, pricing integrity, Mo's veto absolute + retroactive, Mo alone can remove the Chief. Chief's follow-ups: rewrite each scheduled task's 'Mo pushes / awaiting-mo' language to the 4.8 model (one task per run); queue the task-key commit-trailer proposal; decide email-ownership-to-cos-sep01 under the same authority."
+      "status": "applied",
+      "summary": "DIRECTIVE FOR THE CHIEF OF STAFF (from Mo, in chat, Sep 2 2026, after 'push live — CoS can handle it. This is his realm'): \"I want the CoS to be in charge of the entire project/pushing things in general. Consider me a 'silent partner' with suggestions… And the CoS and his team of agents does it all. We talked about autonomy already.\" Written into the Chief's charter as §4.8 (Card Hub/chief-of-staff/CHARTER.md): the Chief owns findings, fixes, content, pages, nav, scheduling, agent scoping and pushing to main; Mo's suggestions are top-priority input, not a gate; every run may push after both gates pass (audit-prices FAIL 0 + audit-site FAIL 0) via the deploy key with scoped adds and lock cleanup. Unchanged: money never moves by agent hand, no credentials, calls.json projections immutable, pricing integrity, Mo's veto absolute + retroactive, Mo alone can remove the Chief. Chief's follow-ups: rewrite each scheduled task's 'Mo pushes / awaiting-mo' language to the 4.8 model (one task per run); queue the task-key commit-trailer proposal; decide email-ownership-to-cos-sep01 under the same authority.",
+      "decidedBy": "chief-of-staff 2026-09-06",
+      "decision": "ACKNOWLEDGED and operating: 10 CoS-owned pushes Sep 2-4, all gated + live-verified. Follow-ups: (1) task-prompt rewrites to the 4.8 model are BLOCKED by the Chief's own Sep 1 run instructions, which still forbid editing another task's prompt — Mo resolves with one word (queue #1); (2) commit-trailer rule DECIDED: every scheduled-task commit carries a 'Task-key: <taskId>' trailer plus the authority line, and every pushing run appends its own chiefOfStaff.pushLog entry (checkpoints only backfill) — ships with the prompt rewrites; (3) email ownership decided (see email-ownership-to-cos-sep01)."
     },
     {
       "id": "trader-2026-09-03",
@@ -883,143 +887,106 @@
   },
   "chiefOfStaff": {
     "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
-    "generated": "2026-09-03T18:56:19-07:00",
-    "weekOf": "2026-08-31",
-    "headline": "The cockpit came alive — first 4 real dungeon decisions Fri, loop verified end-to-end. First 4.7 week: 3 items self-approved, 1 held. UPDATED Sun eve: Mo cleared every approval same-day, then two queue items were executed live (search-visibility diagnosis + actions; partner-API ticket read: denied, lane retired) — queue is down to 1.",
-    "doNothing": "One item left and it's the one that can't wait: until the trader floors are written down, one accepted offer repeats this week's below-ask basket clear. Everything else is done or executes on schedule.",
+    "generated": "2026-09-06T18:40:00-07:00",
+    "weekOf": "2026-09-07",
+    "headline": "First full-authority week: 10 pushes in 3 days, all gated and live-verified. Sunday evening Mo said 'I approve whatever you want to do' — the Chief took the prompts: Monday scan and Tuesday board rewritten to the 4.8 model, BCB26 (first per-set Bowman index) prebuild scheduled for 7am, retention re-measured on the surfaces that matter. Queue is 1 item.",
+    "doNothing": "Nothing here compounds if you skip it. The one item is a Tuesday-sitting courtesy: one reply to close, one login. Everything else runs on its own this week and reports back Tuesday 5pm.",
     "queue": [
       {
         "rank": 1,
-        "id": "trader-floors-execution",
-        "title": "Trader: write the decline-floors, then execute the approved reprice/relist/buy list",
-        "why": "The pricing policy you approved Thursday only protects the book once the floors are written down — until then, one accepted offer repeats this week's below-ask basket clear. Execute reprices AND floors together; one without the other is the exact trap the policy exists to prevent.",
-        "effort": "15 min",
-        "ref": "local trader scan Aug 27, section 8"
+        "id": "tuesday-sitting-two-things",
+        "title": "Tuesday sitting: say 'post it' for the owed Sep 5 reply, and log into X + COMC once while present",
+        "why": "The stat-hook tweet is live without its link reply (Saturday's paster never fired — the machine was asleep); reply + image are ready. The weekly login is what makes Thursday's depth read and the paster lane work unattended.",
+        "effort": "2 min, Tuesday sitting",
+        "ref": "paster Sep 6 report; x-images/2026-09-03"
       }
     ],
-    "approvedSunEve": "Mo, Sun evening (chat): audit-2026-08-28-2 re-mark, the #1-page reprice, all 3 Keeper proposals, and the new auditor layering rule — all approved. Then queue items 2 and 3 were EXECUTED live same evening: Search Console diagnosed + sitemap/indexing actions taken (see gsc-google-visibility-aug28), and the eBay Insights ticket read — DENIED Aug 17, lane retired, never re-queue. Queue is down to item 1 (trader execution, Mo's hands).",
     "watchdog": [
       {
-        "severity": "broken",
-        "what": "[Thu Sep 3 checkpoint] Unattended browser writes: 0 for 3 this week — every social write needed Mo present",
-        "detail": "Tue board tweet queued at 1:47pm with Mo in the room. Wed reply-paster fired into a logged-out X (safety valve held, Mo logged in ~5h later, reply posted attended). Thu reply-paster: two navigations hung past 180s (safety valve held, Mo said go, reply posted attended). All three landed, but none unattended, so the Tuesday auto-queue authorization is not yet autonomous in practice. Fri–Sun are the next three trials, now with an image-upload step added. Action for Mo before Fri 10:10am: Chrome open and logged into X. If Friday also fails unattended, Sunday re-scopes the board tweet to 'queued in the live sitting' — an honest label beats a broken one."
+        "severity": "fixed",
+        "what": "Sunday evening (Mo present): task prompts aligned to charter 4.8 — Monday scan + Tuesday board rewritten; BCB26 prebuild task created",
+        "detail": "Mo in chat: 'I approve whatever you want to do' — resolves the prompt-authority block. Monday: awaiting-cos routing, Bowman per-set index rule (never a cross-set 1st-Bowman index), ask-basis rule, stamp rule, retention split on the retention surfaces, commit trailers + self-written pushLog, concurrency/lock rules. Tuesday: pushes its own lane after gates, digest draft→gate→SEND→verify with kill switch (CoS decision, option a), board tweet labeled 'auto-queue attempted, falls back to the sitting' + session check, tweet redaction rule, BCB26 release-window re-marks, Friday task flip on Sep 8. One-time task bcb26-index-prebuild fires Mon 7:00am. Pre-edit prompts backed up under chief-of-staff/prompt-backups/ — reversible in one call each."
       },
       {
         "severity": "watch",
-        "what": "[Thu Sep 3 checkpoint] 6 pushes landed today outside the Monday lane — all verified, none logged",
-        "detail": "Six CoS-authored commits (ab47124 … 049180a: X image generator, card-photo hotfix, Signal Alerts capture on 3 pages, pricing-integrity same-card filter + audit-comps, engine docs, transaction-side logging) were Mo-directed in chat and are live (Signal Alerts + the ROY snapshot notice confirmed on the deployed /roy-watch-2026). Gates re-run read-only on the pushed tree tonight: audit-site FAIL 0 / WARN 0 (79 pages), audit-prices FAIL 0 / WARN 30 (same as the Wednesday push report: label cells + 5 stale stamps). Gap: 4.8 says every push is readable in this file, and the publish block only records the Monday lane — a pushLog was added under chiefOfStaff as janitorial state; Sunday decides whether pushing runs write it themselves."
+        "what": "Retention: Mo asked 'am I wrong?' — he isn't; the number is real but the measurement was blended",
+        "detail": "6.2% returning (Aug 6–Sep 2) is dominated by one-shot search landings on player pages. From Monday the headline is the returning share on the retention surfaces (indices, index pages, board, chart pages, Vault) vs the rest; target ≥20% on the surfaces by Oct 31, with the Bowman Chrome release window (Sep 9 + 21d) as the first real test. Two structural gaps the Chief named: nothing moves between Mondays (fixed for BCB26 by release-window re-marks on every board-touching run), and nobody is called back (the digest is the only callback and has 4 active subscribers, 3 owner-controlled — the split metric will say whether the surfaces retain before we build more)."
       },
       {
         "severity": "watch",
-        "what": "[Thu Sep 3 checkpoint] Thursday trader ran DEGRADED — selling venue logged out at 10am, no snapshot, 0 capital recs",
-        "detail": "Correct behavior (no login requested, by rule; fell back to the last reconciled snapshot by schema, said so on every number). Cost: the corner-break alarm (depth line) was not read this week — 107 float positions carried forward unverified. Same root cause as the X failures: browser sessions expire between Mo's sittings. Its one proposal is Tier 3 (money) and stays for Mo."
+        "what": "Unattended browser lane: 1 of 5 this week — decided: honest label + weekly session check",
+        "detail": "Tue board tweet queued attended; Wed and Thu replies posted attended after the valve held; Fri = the one clean unattended write (with image); Sat the paster never fired (no session — the machine was asleep; Sunday's fire landed 6h45m late for the same reason); Sun the tweet was vetoed by Mo before it fired, valve held, nothing posted. Decision: the Tuesday board tweet is labeled 'auto-queue attempted, falls back to the live sitting' until the lane runs 4 straight unattended; the Tuesday sitting gains a one-line session check (X + selling venue). Both wordings ride on queue #1. Keep/kill checkpoint stays ~Oct 27."
       },
       {
         "severity": "watch",
-        "what": "[Thu Sep 3 checkpoint] Stale git-lock advice is already moot — Mo does not need to run the rm command",
-        "detail": "The Sep 3 session told Mo to remove .git/index.lock + HEAD.lock. Checked tonight: no active lock files exist; local main equals origin/main; commits flowed after that message. Only renamed stale-* debris remains, which blocks nothing. No action."
+        "what": "Keeper ran Friday per the scheduler and produced nothing",
+        "detail": "Task lastRun Fri 11:04, but no CHANGELOG entry, no backup, no edit to the cockpit file, and no session record. The 3 proposals approved Aug 30 are still unexecuted and the silo-review verdict (4.6d) did not land — that well is dry, week 1. Not Mo's: next Friday's run owns it; a second empty run becomes a re-scope proposal."
       },
       {
         "severity": "watch",
-        "what": "[Thu Sep 3 checkpoint] 4.7 pass: 0 approvals — nothing in the self-approvable categories is waiting",
-        "detail": "Open items: one trader proposal (Tier 3, money) and two org directives addressed to the Chief (email ownership; full-authority follow-ups) that are Sunday full-run decisions by the light-run rules. Two Aug-31 coaching fixes improved: trader actions now land as ts+msg objects (verified), and the Tuesday run printed its board-tweet timing explicitly."
-      },
-      {
-        "severity": "watch",
-        "what": "[Thu Sep 3 checkpoint] Five price stamps sit past the 21-day line — Monday lane owns them",
-        "detail": "audit-prices WARN 30 tonight = 25 known label cells + 5 stamps that rolled past 21 days on Sep 2 (the Wednesday auditor already flagged all five and routed them to the Monday reprice lane). Unchanged since Wed; filed so the WARN count is explained, not re-ranked."
-      },
-      {
-        "severity": "watch",
-        "what": "[Tue Sep 1 checkpoint] Autonomous writes verified: 4 of 4 landed clean",
-        "detail": "Monday price-lane push: gates reported FAIL 0 (site + prices), index invariants held. Tuesday board tweet: live on the profile with the link reply under it. Digest: MailerLite status sent, 100% delivery, 0 bounces, 0 complaints. Reply-paster: Sep 1 fire was its own out-of-window read-only browser check, as its rules require; first real paste is Wed 10:10am."
-      },
-      {
-        "severity": "watch",
-        "what": "[Tue Sep 1 checkpoint] Board tweet needed Mo's browser; unattended auto-queue still unproven",
-        "detail": "The morning run could not reach X unattended, so the tweet was queued at 1:47pm with Mo present (veto window shrank to ~13 min). Streak held, but the standing authorization assumes an unattended queue. Wednesday's reply-paster is the first unattended browser write; Thursday checkpoint verifies it. If it fails, the Tuesday auto-queue is not autonomous yet."
-      },
-      {
-        "severity": "watch",
-        "what": "[Tue Sep 1 checkpoint] Tuesday task description lags the Sep 1 digest delegation",
-        "detail": "Task metadata still says the digest is left for Mo to send; the run now sends it. Cosmetic, prompt/description edits are not janitorial. Fold into the email-ownership decision on Sunday."
-      },
-      {
-        "severity": "watch",
-        "what": "[Tue Sep 1 checkpoint] 4.7 pass: 0 approvals, 4 items awaiting Mo are all Tier 3",
-        "detail": "Two are auditor rule additions (agent re-scope), one is the sapphire feed fix (already applied locally, goes live with Mo's next push, no decision needed), one is the recurring git-lock issue whose recommended fix is also an auditor rule. Nothing self-approvable; nothing time-sensitive before Sunday."
+        "what": "Autonomous-lane integrity: 10 pushes in 3 days, all gated and live-verified; the Monday lane pushes again tomorrow",
+        "detail": "Sep 2 (3), Sep 3 (6), Sep 4 (1 + the pushLog commit) — every entry carries gate results and a live check; nothing outside its lane swept in. Repo: local main = origin = hosted head. Decided: pushing runs write their own pushLog entry from now on (checkpoints only backfill) — wording rides on queue #1."
       },
       {
         "severity": "fixed",
-        "what": "Decision loop verified live — the hole the last two briefs flagged is closed",
-        "detail": "Your first 4 real cockpit decisions landed as commits Fri evening. The loop (click -> endpoint -> store -> agent reconciliation) is verified end-to-end for the first time. The Monday/Thursday runs reconcile the statuses; not touched here (their lanes)."
+        "what": "Two stranded git locks from Friday 12:31/12:34 renamed to stale-*",
+        "detail": "Left by the concurrent Friday sessions (the known sandbox cannot-unlink bug); 2 days old, nothing in flight. Renamed per the documented procedure, never deleted. 18 stale-* debris entries now sit in .git — harmless; a host-side sweep is Mo's whenever convenient, not urgent."
       },
       {
         "severity": "fixed",
-        "what": "Pipeline state caught up to the Gengar revival",
-        "detail": "The agent was revived Fri with an owning task, but this file still showed it retired with no next run — the inverse of the original ghost bug. Set active, role updated to the index desk, next run tomorrow."
+        "what": "Four Monday personas carried nextRun Sep 8; set to Sep 7",
+        "detail": "The Tuesday run stamped its own next date onto personas the Monday scan owns first. State only; no content touched."
       },
       {
         "severity": "fixed",
-        "what": "Stale HIGH cleared by live verification",
-        "detail": "The commit-blocking lock filed Friday morning was already gone — commits flowed Friday evening. Marked applied after checking the repo directly rather than re-ranking a dead blocker."
+        "what": "Filing: root INDEX caught up (8 files + 4 folders since Aug 30)",
+        "detail": "Audit reports, the Sep 1 tweet/digest/tape files, the schedule visual, and the x-images/competitors/deploy folders were unindexed. Naming conventions held (site-audit-*, weekly-scan-*, tweets-*)."
       },
       {
         "severity": "fixed",
-        "what": "Fresh stranded lock — self-cleared with a workaround worth keeping",
-        "detail": "This run's own read-only git call stranded a new lock (the known sandbox bug; the standing no-git-in-the-mount rule was violated before being recalled — owned in the brief). Recovered per the documented procedure: lock renamed into the _to_delete folder, .git verified clean of all lock debris, commits unblocked. Reminder filed that tomorrow's auto-push lock cleanup must rename, never delete."
-      },
-      {
-        "severity": "fixed",
-        "what": "Trader feed schema drift, second consecutive week",
-        "detail": "6 actions appended as bare strings again; normalized to ts+msg objects, content untouched. Coach note filed; a third week escalates to a prompt re-scope proposal."
-      },
-      {
-        "severity": "fixed",
-        "what": "Stale social proposal retired; already-live page caught before ranking",
-        "detail": "A tweet batch 12 days past its week retired as stale state. Separately, the new-page push item turned out to be already deployed — verified against the repo and dropped from the queue. Fourth already-done catch in three weeks; live-state verification stays standard."
+        "what": "Two org directives addressed to the Chief closed by decision",
+        "detail": "Email ownership: option (a), the Tuesday run owns draft-gate-send-verify with a kill switch on any non-owner unsubscribe/complaint; no dedicated email agent at 4 active subscribers (3 owner-controlled). Full authority: acknowledged and operating; commit-trailer rule decided. Full text in the brief and on the proposals."
       },
       {
         "severity": "watch",
-        "what": "Auditor filed one report for three scheduled slots",
-        "detail": "Only Friday's audit report exists this week; no Monday or Wednesday reports. A clean sweep still files a one-line verdict — silence is indistinguishable from a failed run. Coach note written; escalates if next week repeats."
+        "what": "Release-window Friday task is OFF with a major street date Wednesday",
+        "detail": "The Tuesday run owns the flip around street dates; Thursday's checkpoint verifies it happened. Nothing for Mo."
       },
       {
         "severity": "watch",
-        "what": "First autonomous price-lane push is tomorrow — watch the lock bug",
-        "detail": "No automated commits exist yet, so lane integrity is clean by construction; first real audit is next Sunday. One risk: if the push's lock-cleanup step relies on delete, it will fail in the sandbox — the rename workaround is in the brief. A failed push tomorrow most likely means this."
+        "what": "Decision loop healthy; nothing awaiting Mo outside this queue",
+        "detail": "11 decisions in the store, last Sep 1; every item put in front of Mo this week was answered within a day, one tweet vetoed, trader recs executed by his own hand. awaiting-mo count: 0."
       },
       {
         "severity": "watch",
-        "what": "Dungeon-keeper task naming drift (carried)",
-        "detail": "Task id says Saturday, description says Friday 9am, cron runs Friday 11am. Cosmetic; renaming a task is a proposal, not a janitorial fix."
+        "what": "Task-description drift ×2 (carried) resolves with queue #1",
+        "detail": "Tuesday task still says the digest is left for Mo to send; Keeper task id says Saturday, runs Friday. Cosmetic; both are prompt/description edits."
       }
     ],
     "analyst": {
       "ranAsExpected": 5,
       "agentsTotal": 6,
-      "note": "5 of 5 personas due this week ran on cadence (the revived sixth's first owned run is tomorrow). Engagement was the story: Mo answered both trader questions same-day and approved a charter policy, made his first 4 cockpit decisions, approved the week's social batch, and personally flagged the search-visibility finding that now leads the strategic queue. Aging on his desk: the #1-page reprice (5 days) and the ask-basis disclosure item. Still unmeasurable: whether approved social content actually posts (only one post confirmed this week) and the digest send — the cockpit loop now closes this hole for proposals, not for posting.",
-      "kill": "No agent proposed for retirement. CoS kill-criterion clock: week 2 of 4, and the panel WAS used Fri (4 decisions) — clock healthy. First review ~Sep 20."
+      "note": "5 of 6 personas produced on cadence (Mon/Tue quartet, Gengar's first owned re-mark, trader — degraded but honest); the Keeper task ran and produced nothing. Auditor 3 for 3 slots (last week's fix cleared). Mo actioned everything he was shown within a day and vetoed one social draft. What I could not measure: the Saturday paster outcome (no log at all — silence, not failure, is the defect), and digest engagement — 4 active subscribers of whom 3 are owner-controlled, so open/click rates are noise until real subscribers exist. Light checkpoints: 2 of 2 found real items (not 'all clean') — keep.",
+      "kill": "No agent proposed for retirement. Keeper on notice after one empty run; two consecutive triggers a re-scope proposal. CoS clock: week 3 of 4, panel used Sep 1 — healthy; self-review ~Sep 20."
     },
     "approvals": [
       {
-        "id": "audit-2026-08-28-3",
-        "decision": "approve"
+        "id": "email-ownership-to-cos-sep01",
+        "decision": "approve",
+        "basis": "4.8 — option (a) decided; see proposal"
       },
       {
-        "id": "audit-2026-08-28-4",
-        "decision": "approve"
-      },
-      {
-        "id": "audit-2026-08-28-5",
-        "decision": "approve"
+        "id": "cos-full-authority-sep02",
+        "decision": "approve",
+        "basis": "4.8 — acknowledged; follow-ups queued"
       }
     ],
+    "approvalsNote": "4.7 pass: nothing in the three self-approvable categories was waiting — the week's only audit item was already applied under 4.8 on Friday, no polish or comp item is open (Monday files the next ones).",
     "lastCheckpoint": {
-      "date": "2026-09-03",
-      "mode": "light",
-      "verdict": "one thing needs Mo: keep Chrome logged into X (and COMC on Thursdays) — unattended browser writes are 0 for 3",
-      "approvals": 0
+      "date": "2026-09-06",
+      "mode": "full+evening",
+      "verdict": "prompts aligned to 4.8; BCB26 prebuild 7am Mon; retention split from Monday; 1 queue item",
+      "approvals": 2
     },
     "pushLog": {
       "_comment": "Added by CoS light checkpoint 2026-09-03 (janitorial state, charter 4.8 visible-delegation). Pushes outside the Monday STEP 3.98 lane; gates = read-only re-run on the pushed tree by the checkpoint unless the pushing run reported them.",
@@ -1060,29 +1027,34 @@
           "note": "index.lock/HEAD.lock stranded at 12:12 by the concurrent 27d4f2f session were deleted before commit; locks swept after push"
         }
       ]
+    },
+    "previousWeek": {
+      "weekOf": "2026-08-31",
+      "headline": "The cockpit came alive — first 4 real dungeon decisions Fri, loop verified end-to-end. First 4.7 week: 3 items self-approved, 1 held. UPDATED Sun eve: Mo cleared every approval same-day, then two queue items were executed live (search-visibility diagnosis + actions; partner-API ticket read: denied, lane retired) — queue is down to 1.",
+      "watchdogArchived": 19
     }
   },
   "coachNotes": {
     "_comment": "Written Sundays by the Chief of Staff (charter 4.5). Each weekly task reads its note at run start and must meet it. Standards, never pep talks; grounded strictly in that week's observed output. PUBLIC FILE — behaviors, counts, lanes only.",
     "monday-scan": {
-      "weekOf": "2026-08-31",
-      "keep": "Scope honesty on the button flip — executed exactly what the proposal named, and filed the leftover links as a question for Mo instead of overreaching.",
-      "fix": "The week's one decision-grade finding (the search-engine mix) sat at bullet 4 of the retention section — lead with findings of that grade. And the first STEP 3.98 auto-push must print its audit-gate results in D2 explicitly, pass or fail."
+      "weekOf": "2026-09-07",
+      "keep": "The decision-grade finding led the report and D2 printed both gate results before the first autonomous lane push — that is the standard; the push was live-verified the same run.",
+      "fix": "Two re-marked pages shipped a fresh body stamp with a stale footer/machine stamp (Friday audit caught it — same class as the Aug 25 finding). STEP 3.6 owns every stamp on a page it touches; 3 held pages, the ROY full refresh, and the sitemap resubmit (100 URLs listed vs 76 read) are in tomorrow's lane."
     },
     "tuesday-bangers": {
-      "weekOf": "2026-08-31",
-      "keep": "Crossover discipline — the swap candidate was flagged on-page with an explicit two-week rule instead of a reactionary reorder.",
-      "fix": "Stamps lagged the re-mark again (homepage stamps a week behind the board — second finding of this class in two audit cycles). The Tuesday pass owns every stamp on pages it re-marks."
+      "weekOf": "2026-09-07",
+      "keep": "Slot honesty — 3 drafts, not 6, with the claimed-slot map printed instead of padding; the board tweet's queue time and the digest's send/deliverability read were both stated plainly.",
+      "fix": "One of the three drafts was built around the owner's own holdings and was vetoed before it fired. The redaction line applies to tweets: no draft leans on private position, inventory, or cost data — the site's numbers only. Stamp discipline held on the board pages this week; keep it."
     },
     "thursday-trader": {
-      "weekOf": "2026-08-31",
-      "keep": "Attribution walked item-by-item instead of assumed, and the new ID-checksum reconcile caught a mis-filed exit the dollar totals had hidden.",
-      "fix": "pipeline.json actions went in as bare strings again — the schema is ts+msg objects. CoS has normalized this two weeks running; a third week escalates to a re-scope proposal."
+      "weekOf": "2026-09-07",
+      "keep": "Ran degraded without requesting a login, fell back by snapshot schema, and stated the basis on every number; actions landed as ts+msg objects — the two-week schema fix is cleared.",
+      "fix": "The depth read was skipped outright when the venue was logged out, though the public listing pages read fine logged-out in small batches. A logged-out run still takes the depth read from the public side and labels which basis it used."
     },
     "site-auditor": {
-      "weekOf": "2026-08-31",
-      "keep": "Every finding verified against the live deploy before filing — zero false alarms, and the blocker diagnosis shipped with its own safe one-command fix.",
-      "fix": "One report exists for the week's three scheduled slots. A clean sweep still files a one-line verdict — silence is indistinguishable from a failed run."
+      "weekOf": "2026-09-07",
+      "keep": "Three reports for three slots, every finding re-fetched from production before filing, and Friday applied only the mechanical half under 4.8 while holding the judgment half for the lane.",
+      "fix": "A page frozen twelve weeks passed six audits before being filed Wednesday because its machine stamp looked fresh. A human-readable stamp older than 60 days is a finding on its own, regardless of the machine stamp."
     }
   },
   "publish": {
