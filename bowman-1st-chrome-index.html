@@ -521,7 +521,7 @@ td.trk { width:70px; text-align:center; }
 <a class="chip" href="/ascended-heroes-index"><b>AH26</b> <span class="soon">Ascended Heroes</span></a>
 <a class="chip" href="/prismatic-evolutions-index"><b>PRIS25</b> <span class="soon">Prismatic Evolutions</span></a>
 <a class="chip" href="/destined-rivals-index"><b>DR25</b> <span class="soon">Destined Rivals</span></a>
-<div class="chip"><b>BCB26</b> <span class="soon">Bowman Chrome · Sep 9</span></div>
+<a class="chip" href="/bowman-chrome-2026-index"><b>BCB26</b> <span class="soon">pre · streets 09/09</span></a>
 <div class="chip"><b>SAPH26</b> <span class="soon">coming</span></div>
 </div>
 
@@ -574,9 +574,9 @@ td.trk { width:70px; text-align:center; }
 
 <div class="tbl-scroll">
 <table>
-<thead><tr><th>RK</th><th>Card</th><th>CPA</th><th>Mark</th><th>Weight</th><th>Units</th><th>7D</th><th>Signal</th><th>★</th></tr></thead>
+<thead><tr><th>RK</th><th>Card</th><th>CPA</th><th>Mark</th><th>Weight</th><th>Units</th><th>7D</th><th>★</th></tr></thead>
 <tbody id="autos-rows">
-<tr><td colspan="9" style="text-align:center;color:var(--dim);font-family:var(--fm);font-size:11px;padding:18px;">Loading the basket…</td></tr>
+<tr><td colspan="8" style="text-align:center;color:var(--dim);font-family:var(--fm);font-size:11px;padding:18px;">Loading the basket…</td></tr>
 </tbody>
 </table>
 </div>
@@ -816,16 +816,7 @@ td.trk { width:70px; text-align:center; }
           sevTxt = '<span style="color:' + (pc > 0.05 ? 'var(--gn)' : pc < -0.05 ? 'var(--rd)' : 'var(--dim)') + '">' + (pc >= 0 ? '+' : '') + pc.toFixed(1) + '%</span>';
         }
       }
-      /* engine signal — homepage board rule: show only when points >= 20; gated = HOLD · thin */
-      var sigTxt = '<span class="dim2">—</span>';
-      var c = latestByKey[b.key];
-      if (c) {
-        if (c.gated) sigTxt = '<span class="sig thin">HOLD · thin</span>';
-        else if (c.signal && c.points >= 20) {
-          var s = String(c.signal).toUpperCase();
-          sigTxt = '<span class="sig ' + (s === 'BUY' ? 'buy' : s === 'SELL' ? 'sell' : 'hold') + '">' + esc(s) + '</span>';
-        }
-      }
+      /* no Signal column: an index is a measurement, not a call (audit-2026-09-07-2) — engine signals live on the board */
       return '<tr' + (i < 3 ? ' style="background:var(--p2);border-left:2px solid var(--iac);"' : ' style="border-left:2px solid transparent;"') + '>' +
         '<td class="rk">' + (i + 1) + '</td>' +
         '<td class="card"><div class="roi-cell"><span data-card-img="' + esc(b.key) + '" data-card-name="' + esc(fullName) + '" data-card-sub="1ST BOWMAN" data-card-size="thumb" data-card-surface="bow26-list"></span><div><b><a href="/card-' + esc(id) + '" style="color:inherit;text-decoration:none;border-bottom:1px dotted var(--iac);" title="Nightly chart, verified listings">' + esc(b.name) + '</a></b><a class="cn" href="/card-' + esc(id) + '" style="color:var(--iac);margin-left:6px;">chart →</a></div></div></td>' +
@@ -834,10 +825,9 @@ td.trk { width:70px; text-align:center; }
         '<td class="num wt">' + (r.w * 100).toFixed(1) + '%</td>' +
         '<td class="num dim2">' + b.units.toFixed(4) + '</td>' +
         '<td class="num">' + sevTxt + '</td>' +
-        '<td class="num">' + sigTxt + '</td>' +
         '<td class="trk" data-trk-i="' + i + '"></td></tr>';
     }).join('');
-    html += '<tr class="sumrow"><td></td><td class="card" style="color:var(--th);font-weight:700;">TOTAL — 10 AUTOS</td><td></td><td class="num">$' + Math.round(bv).toLocaleString('en-US') + '</td><td class="num wt" style="color:var(--iac);">100.0%</td><td></td><td></td><td></td><td></td></tr>';
+    html += '<tr class="sumrow"><td></td><td class="card" style="color:var(--th);font-weight:700;">TOTAL — 10 AUTOS</td><td></td><td class="num">$' + Math.round(bv).toLocaleString('en-US') + '</td><td class="num wt" style="color:var(--iac);">100.0%</td><td></td><td></td><td></td></tr>';
     var tb = $('autos-rows');
     tb.innerHTML = html;
     /* ★ Track buttons built via DOM (vault-track contract: feed-linked buttons
@@ -855,7 +845,7 @@ td.trk { width:70px; text-align:center; }
       btn.textContent = '★ Track';
       cell.appendChild(btn);
     });
-    $('autos-note').textContent = 'Marks as of ' + dstr(today) + ' — the engine’s nightly verified ask-floor medians for the exact card, dated and sourced, never hand-typed. Units fixed at constitution ' + dshort(inception) + '; only prices move the level. Signals shown only at 20+ nightly points, per the board rule.';
+    $('autos-note').textContent = 'Marks as of ' + dstr(today) + ' — the engine’s nightly verified ask-floor medians for the exact card, dated and sourced, never hand-typed. Units fixed at constitution ' + dshort(inception) + '; only prices move the level.';
     if (window.SCHVault && window.SCHVault.mark) window.SCHVault.mark(tb);
     if (window.SCH_IMG) window.SCH_IMG.enhance(tb);
 
