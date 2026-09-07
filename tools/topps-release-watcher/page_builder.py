@@ -49,8 +49,10 @@ def _slice(text, start_marker, end_marker, include_end=False):
 def load_shell(template_path=DEFAULT_TEMPLATE):
     with open(template_path, encoding="utf-8") as f:
         t = f.read()
-    head_common = _slice(t, '<link rel="preconnect" href="https://fonts.googleapis.com">',
-                         '</head>', include_end=True)
+    # Sep 7 2026: fonts are self-hosted since the Sep 1 site-fixes pass — the Google preconnect marker is gone.
+    start = '<link rel="preload" href="/fonts/barlow-condensed-800.woff2"' if '/fonts/barlow-condensed-800.woff2' in t \
+        else '<link rel="preconnect" href="https://fonts.googleapis.com">'
+    head_common = _slice(t, start, '</head>', include_end=True)
     nav_block = _slice(t, '<nav class="nav">', '<section class="hero"')
     footer_block = _slice(t, '<footer>', '</html>', include_end=True)
     return {"head_common": head_common,

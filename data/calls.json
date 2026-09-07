@@ -1,6 +1,6 @@
 {
  "_comment": "CALLS LEDGER \u2014 single source for /track-record. Two call types. TYPE=RANGE (price projection): projLow/projHigh vs market read. Grading: state=open (no reliable read) \u2192 trending (ask-side or thin sold data; provisional) \u2192 final (SOLD comps ~4 wks post-release; final grades never change). grade: hit = read inside range; miss_high = we projected too high; miss_low = too low. Signed miss% is computed on-page from the nearest range bound. TYPE=VERDICT (BUY/PASS/SELL call; legacy rows say WAIT): entry = market price at call date (for pre-release calls with no market, entry = first reliable read, noted); move = entry \u2192 read. The 8-week read is recorded at state=final (sold-based where possible) but is NOT a public grade -- see GRADING CLOCK v3 below; the public grade is the thesis[] check at 6/12 months: right if the move agrees with the action by \u226510% (BUY wants up, PASS/SELL wants down), wrong if it disagrees by \u226510%, flat inside \u00b110%. HOLD/WATCH verdicts are not ledger material. IMMUTABILITY: never edit projLow/projHigh, action, entry, or callDate after publication. Weekly scheduled run updates read/readDate/state/grade and appends new calls. POKEMON RETIREMENT (2026-08-18, Mo's decision): do NOT issue NEW Pokemon calls (cat 183454) -- the finals showed a one-directional miss_high bias = no edge in a single-driver (supply-only) market. Existing Pokemon calls still grade to FINAL on their original schedule and are NEVER deleted; /track-record renders them in a separate 'Retired' section. Sports calls (cat 212) are the active book. GRADING CLOCK v3 (2026-08-21, Mo's decision -- cards are illiquid, long-hold assets; 8 weeks is a trading clock and cards don't trade well on one): a verdict's ONLY public grade is its thesis[] check at +6 and +12 months from callDate, sold basis, +/-10% vs the ORIGINAL entry per the action (right / wrong / flat), immutable once set. The 8-week read (read/readDate/basis/state=final) is STILL recorded by the weekly run so the early tape is visible, and the legacy 8-week `grade` field may still be set for continuity -- but /track-record does NOT display it as a grade, and it must never be tweeted, quoted, or described as RIGHT/WRONG. Until a thesis check is graded, a call's public state is EARLY. VOCABULARY: new verdict calls use action BUY / PASS / SELL (PASS replaces WAIT -- 'pass at this price', not 'time the market'); existing WAIT actions are immutable in data and display as PASS. Public copy says 'scorecard' and 'call', never 'ledger', 'paper trade', 'entry', or 'trade grade'. RE-ENTRY: to say 'buy the dip' after a wrong trade grade, never edit the old call -- append a NEW call (id '<orig>-2') at the current price once the tape confirms (e.g. second consecutive green week). SKEW/KURT: engine emits retSkew/retKurtosis only at n>=60 return observations (below that, sample moments are outlier noise).",
- "updated": "2026-09-01",
+ "updated": "2026-09-07",
  "calls": [
   {
    "id": "pb-darkrai-sir",
@@ -188,17 +188,19 @@
    "projLow": 800,
    "projHigh": 1200,
    "basis": "sold",
-   "read": 493.07,
-   "readLabel": "PriceCharting PSA 10 $493 sold (Aug 31)",
-   "readDate": "2026-08-31",
-   "state": "trending",
+   "read": 495,
+   "readLabel": "PriceCharting PSA 10 $495.00 sold (Sep 7; ~5 sales/day) \u2014 FINAL: projected $800\u2013$1,200, read $495",
+   "readDate": "2026-09-07",
+   "state": "final",
    "grade": "miss_high",
    "finalizeAfter": "2026-09-01",
    "note": "Still miss_high and sliding: PSA 10 $625 (Aug 17) -> $550 (Aug 24) -> $493 (Aug 31), well below the $800 floor. finalizeAfter Sep 1 passes tomorrow \u2014 FINALIZE NEXT RUN on solds.",
    "q": "mega greninja ex sir chaos rising psa 10",
    "cat": "183454",
    "req": "greninja,psa,10",
-   "deny": "japanese,jpn,korean,sealed,box,etb,bundle,pack,122,gold,bgs,cgc,9"
+   "deny": "japanese,jpn,korean,sealed,box,etb,bundle,pack,122,gold,bgs,cgc,9",
+   "readBasis": "sold",
+   "finalizedOn": "2026-09-07"
   },
   {
    "id": "v-cr-greninja-buy",
@@ -284,9 +286,9 @@
    "entryLabel": "PriceCharting raw sold at call date",
    "entryDate": "2026-07-20",
    "basis": "sold",
-   "read": 225.18,
-   "readLabel": "PriceCharting ungraded solds $225 (entry 455 -> 225, -51%)",
-   "readDate": "2026-08-31",
+   "read": 230.82,
+   "readLabel": "PriceCharting ungraded solds $230.82 (entry 455 -> 230.82, -49.3%)",
+   "readDate": "2026-09-07",
    "state": "trending",
    "grade": "right",
    "finalizeAfter": "2026-09-14",
@@ -294,7 +296,8 @@
    "q": "mega darkrai ex sir pitch black 116",
    "cat": "183454",
    "req": "darkrai,pitch",
-   "deny": "japanese,jpn,korean,psa,bgs,cgc,sealed,box,etb,bundle,pack,120,gold,101"
+   "deny": "japanese,jpn,korean,psa,bgs,cgc,sealed,box,etb,bundle,pack,120,gold,101",
+   "readBasis": "sold"
   },
   {
    "id": "v-pb-zeraora-buy",
@@ -308,9 +311,9 @@
    "entryLabel": "pre-release call had no market; entry = first reliable read (ask median, Jul 28)",
    "entryDate": "2026-07-28",
    "basis": "ask",
-   "read": 54.28,
-   "readLabel": "PriceCharting ungraded solds $54.28 (entry 70 -> 54, -22%)",
-   "readDate": "2026-08-31",
+   "read": 60,
+   "readLabel": "PriceCharting ungraded solds $60.00 (entry 70 -> 60.00, -14.3%)",
+   "readDate": "2026-09-07",
    "state": "trending",
    "grade": "wrong",
    "finalizeAfter": "2026-09-22",
@@ -318,7 +321,8 @@
    "q": "mega zeraora ex pitch black 114",
    "cat": "183454",
    "req": "zeraora,pitch",
-   "deny": "japanese,jpn,korean,psa,bgs,cgc,sealed,box,etb,bundle,pack"
+   "deny": "japanese,jpn,korean,psa,bgs,cgc,sealed,box,etb,bundle,pack",
+   "readBasis": "sold"
   },
   {
    "id": "v-pb-gladion-buy",
@@ -332,9 +336,9 @@
    "entryLabel": "pre-release call had no market; entry = first reliable read (ask median, Jul 28)",
    "entryDate": "2026-07-28",
    "basis": "sold",
-   "read": 29.35,
-   "readLabel": "PriceCharting ungraded solds $29.35 (entry 30 -> 29, flat, inside +/-10%)",
-   "readDate": "2026-08-31",
+   "read": 29.48,
+   "readLabel": "PriceCharting ungraded solds $29.48 (entry 30 -> 29.48, -1.7%, inside +/-10%)",
+   "readDate": "2026-09-07",
    "state": "trending",
    "grade": null,
    "finalizeAfter": "2026-09-22",
@@ -342,7 +346,8 @@
    "q": "gladion final battle pitch black 118",
    "cat": "183454",
    "req": "gladion,pitch",
-   "deny": "japanese,jpn,korean,psa,bgs,cgc,sealed,box,etb,bundle,pack"
+   "deny": "japanese,jpn,korean,psa,bgs,cgc,sealed,box,etb,bundle,pack",
+   "readBasis": "sold"
   },
   {
    "id": "v-bb-fischer-buy",
@@ -509,8 +514,8 @@
    "entryDate": "2026-08-18",
    "basis": "sold",
    "read": 131.25,
-   "readLabel": "SportsCardsPro raw sold $131.25 \u2014 flat at exactly this print every week since the call",
-   "readDate": "2026-09-01",
+   "readLabel": "SportsCardsPro raw sold $131.25 \u2014 unchanged 5th straight week (no new sale printed; carried)",
+   "readDate": "2026-09-07",
    "state": "trending",
    "grade": null,
    "finalizeAfter": "2026-10-13",
@@ -532,7 +537,8 @@
      "read": null,
      "grade": null
     }
-   ]
+   ],
+   "readBasis": "sold"
   },
   {
    "id": "v-bb-florentino-buy",
@@ -546,11 +552,11 @@
    "entryLabel": "SportsCardsPro raw sold at promotion date",
    "entryDate": "2026-08-18",
    "basis": "sold",
-   "read": 76.0,
-   "readLabel": "SportsCardsPro ungraded $76.00 (entry 79.32 -> 76.00, -4.2%, inside +/-10%)",
-   "readDate": "2026-09-01",
+   "read": 71.25,
+   "readLabel": "SportsCardsPro ungraded $71.25 (entry 79.32 -> 71.25, -10.2%, just outside -10%)",
+   "readDate": "2026-09-07",
    "state": "trending",
-   "grade": null,
+   "grade": "wrong",
    "finalizeAfter": "2026-10-13",
    "note": "Promoted to board #4 on the crossover rule -- $79 raw cleared four of the old top five two straight weeks. BUY the pullback inside the uptrend.",
    "q": "edward florentino 1st bowman chrome auto cpa-ef 2026 bowman chrome",
@@ -570,7 +576,8 @@
      "read": null,
      "grade": null
     }
-   ]
+   ],
+   "readBasis": "sold"
   }
  ]
 }
