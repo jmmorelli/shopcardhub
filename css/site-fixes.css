@@ -212,9 +212,12 @@ body .bb-tower .beam, body .hero h1 em { animation: none !important; }
    .sch-ebay-tag = corner badge for image-only links (static + card-img.js). */
 .sch-ebay-tag {
   position: absolute; right: 3px; bottom: 3px; z-index: 2;
-  font: 700 9px/1.3 "JetBrains Mono", monospace; letter-spacing: .04em;
+  font: 700 11px/1.3 "JetBrains Mono", monospace; letter-spacing: .04em;
   color: #fff; background: rgba(11, 17, 22, .78); border: 1px solid rgba(255, 255, 255, .18);
   padding: 1px 4px; border-radius: 3px; pointer-events: none; text-transform: none;
 }
-.sch-cimg-thumb .sch-ebay-tag { font-size: 7px; padding: 0 2px; right: 1px; bottom: 1px; }
+/* Sep 7 2026: text-floor pass — badge raised 9px→11px above; small-thumb variant 7px→9px
+   (kept below 11px deliberately: an 11px badge would cover half of a 32px set-index thumb;
+   the EPN label stays legible without defacing the card). */
+.sch-cimg-thumb .sch-ebay-tag { font-size: 9px; padding: 0 2px; right: 1px; bottom: 1px; }
 a[href*="ebay.com"] { position: relative; }

@@ -246,7 +246,7 @@ export async function compsMark(query, label, card = {}) {
   // IMAGE (added Sep 1 2026): the photo of a verified listing inside the mark
   // window - the same listing population the mark comes from, so the picture
   // is the card the price describes. Middle of the window, first with a photo.
-  const image = pickImage(verified.slice(trim, trim + LOW_N).length ? verified.slice(trim, trim + LOW_N) : verified);
+  const image = await pickImage(verified.slice(trim, trim + LOW_N).length ? verified.slice(trim, trim + LOW_N) : verified);
   if (asks.length < MIN_COMPS) return { price: null, comps: asks.length, shape: null, image, verified, auctions };
   const window = asks.slice(trim, trim + LOW_N);
   // `asks` is already sorted ascending - askShape relies on that.
@@ -257,18 +257,45 @@ export async function compsMark(query, label, card = {}) {
 // s-l500 is the 500px render. Hot-linked from eBay's CDN (never copied), and
 // always shown wrapped in the EPN listing link - that keeps it inside the API
 // and Partner Network terms and turns the picture into an affiliate click.
-export function pickImage(listings) {
+export async function pickImage(listings) {
   if (!listings || !listings.length) return null;
   const order = [];
   const mid = Math.floor(listings.length / 2);
   for (let d = 0; d < listings.length; d++) { if (mid + d < listings.length) order.push(mid + d); if (d && mid - d >= 0) order.push(mid - d); }
+  const cands = [];
   for (const i of order) {
     const l = listings[i];
-    if (l && l.image && /^https:\/\/i\.ebayimg\.com\//.test(l.image)) {
-      return { url: l.image.replace(/s-l\d+\./, "s-l500."), item: l.url || null, title: l.title || null, price: l.total ?? l.price ?? null };
-    }
+    if (l && l.image && /^https:\/\/i\.ebayimg\.com\//.test(l.image)) cands.push(l);
   }
-  return null;
+  if (!cands.length) return null;
+  // PORTRAIT PREFERENCE (Sep 7 2026): a landscape listing photo is usually a
+  // front+back composite or a lot shot; a portrait one is the card. Runtime
+  // aspect check: fetch the ~1-2KB s-l64 thumb (same CDN path) and read the
+  // JPEG header - capped at 5 thumbs per card, and any fetch/parse trouble
+  // falls back to the previous behavior (first candidate in window order).
+  // Image choice only: `verified` (the mark) is untouched.
+  for (const l of cands.slice(0, 5)) {
+    if (await thumbIsPortrait(l.image).catch(() => false)) return asImage(l);
+  }
+  return asImage(cands[0]);
+}
+function asImage(l) {
+  return { url: l.image.replace(/s-l\d+\./, "s-l500."), item: l.url || null, title: l.title || null, price: l.total ?? l.price ?? null };
+}
+// height > width of the s-l64 render, read from the JPEG SOF marker. null/false = unknown.
+async function thumbIsPortrait(imageUrl) {
+  const r = await fetch(imageUrl.replace(/s-l\d+\./, "s-l64."));
+  if (!r.ok) return false;
+  const b = Buffer.from(await r.arrayBuffer());
+  let i = 2;
+  while (i + 9 < b.length) {
+    if (b[i] !== 0xff) { i++; continue; }
+    const m = b[i + 1];
+    if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) return b.readUInt16BE(i + 5) > b.readUInt16BE(i + 7);
+    if (m === 0xd8 || m === 0x01 || (m >= 0xd0 && m <= 0xd7)) { i += 2; continue; }
+    i += 2 + b.readUInt16BE(i + 2);
+  }
+  return false;
 }
 
 // ---------------------------------------------------------------------------

@@ -1,9 +1,9 @@
 {
- "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ACTIVATION RULE: a pre-activation index (status=pre-activation, divisor null) activates when the weekly re-mark sources its first point sold reads \u2014 set divisor = basketValue/100 on that date, set inception, write history row level 100.00, flip status to live. DR25 also needs its universe enumerated (sv10 was down at build). ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) \u2014 STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. MOVERS ADDENDUM (Aug 31 2026): basket entries carry prevPrice/prevAsOf = the prior weekly mark, so /indices renders card-level movers client-side; STEP 3.6 must roll these forward each re-mark (prevPrice <- old price) before writing new marks. New inclusions have no prevPrice until their second mark.",
+ "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ACTIVATION RULE: a pre-activation index (status=pre-activation, divisor null) activates when the weekly re-mark sources its first point sold reads — set divisor = basketValue/100 on that date, set inception, write history row level 100.00, flip status to live. DR25 also needs its universe enumerated (sv10 was down at build). ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. MOVERS ADDENDUM (Aug 31 2026): basket entries carry prevPrice/prevAsOf = the prior weekly mark, so /indices renders card-level movers client-side; STEP 3.6 must roll these forward each re-mark (prevPrice <- old price) before writing new marks. New inclusions have no prevPrice until their second mark.",
  "PB26": {
   "name": "Pitch Black Chase Index",
   "page": "/pitch-black-index",
-  "base": 100.0,
+  "base": 100,
   "status": "live",
   "inception": "2026-08-24",
   "divisor": 8.7603,
@@ -206,7 +206,7 @@
     "price": 225.18,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 257.0,
+    "prevPrice": 257,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -223,7 +223,7 @@
     "num": "117",
     "name": "Morpeko ex",
     "rarity": "SIR",
-    "price": 91.0,
+    "price": 91,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
     "prevPrice": 92.59,
@@ -256,7 +256,7 @@
     "price": 31.32,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 32.0,
+    "prevPrice": 32,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -276,7 +276,7 @@
     "price": 16.92,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 20.0,
+    "prevPrice": 20,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -366,7 +366,7 @@
     "price": 4.02,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 6.0,
+    "prevPrice": 6,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -563,7 +563,7 @@
   "history": [
    {
     "date": "2026-08-24",
-    "level": 100.0,
+    "level": 100,
     "basketValue": 876.03,
     "divisor": 8.7603,
     "priced": 36,
@@ -582,7 +582,7 @@
  "CR26": {
   "name": "Chaos Rising Chase Index",
   "page": "/chaos-rising-index",
-  "base": 100.0,
+  "base": 100,
   "status": "live",
   "inception": "2026-08-24",
   "divisor": 6.7812,
@@ -795,7 +795,7 @@
     "price": 171.43,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 180.0,
+    "prevPrice": 180,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -905,7 +905,7 @@
     "price": 4.5,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 5.0,
+    "prevPrice": 5,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -1125,7 +1125,7 @@
     "price": 2,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 2.0,
+    "prevPrice": 2,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -1142,7 +1142,7 @@
   "history": [
    {
     "date": "2026-08-24",
-    "level": 100.0,
+    "level": 100,
     "basketValue": 678.12,
     "divisor": 6.7812,
     "priced": 36,
@@ -1161,7 +1161,7 @@
  "AH26": {
   "name": "Ascended Heroes Chase Index",
   "page": "/ascended-heroes-index",
-  "base": 100.0,
+  "base": 100,
   "status": "live",
   "inception": "2026-08-24",
   "divisor": 54.1102,
@@ -1640,7 +1640,7 @@
     "price": 8.27,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 10.0,
+    "prevPrice": 10,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -1700,7 +1700,7 @@
     "price": 8,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 7.0,
+    "prevPrice": 7,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -1830,7 +1830,7 @@
     "price": 5.63,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 5.0,
+    "prevPrice": 5,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -1890,7 +1890,7 @@
     "price": 2.25,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 3.0,
+    "prevPrice": 3,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -1900,7 +1900,7 @@
     "price": 3,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 3.0,
+    "prevPrice": 3,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -2173,7 +2173,7 @@
   "history": [
    {
     "date": "2026-08-24",
-    "level": 100.0,
+    "level": 100,
     "basketValue": 2842.49,
     "divisor": 28.4249,
     "priced": 38,
@@ -2192,7 +2192,7 @@
  "PRIS25": {
   "name": "Prismatic Evolutions Chase Index",
   "page": "/prismatic-evolutions-index",
-  "base": 100.0,
+  "base": 100,
   "status": "live",
   "inception": "2026-08-24",
   "divisor": 44.7686,
@@ -2530,7 +2530,7 @@
     "price": 175.6,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 189.0,
+    "prevPrice": 189,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -2560,7 +2560,7 @@
     "price": 105,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 100.0,
+    "prevPrice": 100,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -2750,7 +2750,7 @@
     "price": 17,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 17.0,
+    "prevPrice": 17,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -2760,7 +2760,7 @@
     "price": 15.78,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 16.0,
+    "prevPrice": 16,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -2880,7 +2880,7 @@
     "price": 1.03,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 1.0,
+    "prevPrice": 1,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -2890,7 +2890,7 @@
     "price": 1,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 1.0,
+    "prevPrice": 1,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -2900,7 +2900,7 @@
     "price": 0.99,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 1.0,
+    "prevPrice": 1,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -2910,7 +2910,7 @@
     "price": 1,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 1.0,
+    "prevPrice": 1,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -2947,7 +2947,7 @@
   "history": [
    {
     "date": "2026-08-24",
-    "level": 100.0,
+    "level": 100,
     "basketValue": 4476.86,
     "divisor": 44.7686,
     "priced": 49,
@@ -2966,7 +2966,7 @@
  "DR25": {
   "name": "Destined Rivals Chase Index",
   "page": "/destined-rivals-index",
-  "base": 100.0,
+  "base": 100,
   "status": "live",
   "inception": "2026-08-24",
   "divisor": 17.7884,
@@ -3315,7 +3315,7 @@
     "price": 201.33,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 225.0,
+    "prevPrice": 225,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -3375,7 +3375,7 @@
     "price": 35.07,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 40.0,
+    "prevPrice": 40,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -3495,7 +3495,7 @@
     "price": 10.03,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 12.0,
+    "prevPrice": 12,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -3535,7 +3535,7 @@
     "price": 8,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 9.0,
+    "prevPrice": 9,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -3605,7 +3605,7 @@
     "price": 5.54,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 6.0,
+    "prevPrice": 6,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -3695,7 +3695,7 @@
     "price": 4,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 4.0,
+    "prevPrice": 4,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -3705,7 +3705,7 @@
     "price": 3.89,
     "basis": "sold (PriceCharting ungraded)",
     "asOf": "2026-08-31",
-    "prevPrice": 4.0,
+    "prevPrice": 4,
     "prevAsOf": "2026-08-24"
    },
    {
@@ -3916,7 +3916,7 @@
   "history": [
    {
     "date": "2026-08-24",
-    "level": 100.0,
+    "level": 100,
     "basketValue": 1651.26,
     "divisor": 16.5126,
     "priced": 59,
@@ -3932,5 +3932,793 @@
    }
   ]
  },
- "updated": "2026-08-31"
+ "updated": "2026-08-31",
+ "BOW26": {
+  "name": "2026 Bowman 1st Chrome Index",
+  "page": "/bowman-1st-chrome-index",
+  "base": 100,
+  "status": "live",
+  "basis": "ask",
+  "_basisNote": "ASK-BASIS ACTIVATION (Mo, Sep 4 2026 directive — supersedes the sold-only rule above for Bowman indices): constituent marks are the price engine's nightly verified ask-floor medians for the exact card (verifyListings, 7f1d51c). Labeled 'ask basis' on the page. When hammer coverage reaches ~60% of basket value (market-latest.json, inside 30 days), restate the divisor to hammer basis — the level never moves on a basis change; log it in divisorLog. Level moves nightly, computed client-side from prices-history.json with the fixed units + divisor here.",
+  "inception": "2026-09-06",
+  "divisor": 11.06,
+  "divisorLog": [
+   {
+    "date": "2026-09-06",
+    "before": null,
+    "after": 11.06,
+    "why": "inception: basket $1106 / base 100.00 — 10 1st Chrome autos, price-weighted on nightly ask-floor marks, 15% single-card cap (capped: CPA-AF, CPA-SK, CPA-EH)"
+   }
+  ],
+  "universeComplete": true,
+  "universe": [
+   {
+    "num": "CPA-EH",
+    "name": "Ethan Holliday",
+    "rarity": "AUTO"
+   },
+   {
+    "num": "CPA-AF",
+    "name": "Andrew Fischer",
+    "rarity": "AUTO"
+   },
+   {
+    "num": "CPA-AA",
+    "name": "Aiva Arquette",
+    "rarity": "AUTO"
+   },
+   {
+    "num": "CPA-WA",
+    "name": "Wehiwa Aloy",
+    "rarity": "AUTO"
+   },
+   {
+    "num": "CPA-DP",
+    "name": "Daniel Pierce",
+    "rarity": "AUTO"
+   },
+   {
+    "num": "CPA-MHO",
+    "name": "Marek Houston",
+    "rarity": "AUTO"
+   },
+   {
+    "num": "CPA-GJ",
+    "name": "Gage Jump",
+    "rarity": "AUTO"
+   },
+   {
+    "num": "CPA-JG",
+    "name": "Justin Gonzalez",
+    "rarity": "AUTO"
+   },
+   {
+    "num": "CPA-EF",
+    "name": "Edward Florentino",
+    "rarity": "AUTO"
+   },
+   {
+    "num": "CPA-SK",
+    "name": "Seong-Jun Kim",
+    "rarity": "AUTO"
+   }
+  ],
+  "basket": [
+   {
+    "num": "CPA-EH",
+    "name": "Ethan Holliday",
+    "rarity": "AUTO",
+    "key": "ebay:ethan-holliday",
+    "units": 0.961739,
+    "price": 172.5,
+    "basis": "ask",
+    "asOf": "2026-09-06"
+   },
+   {
+    "num": "CPA-AF",
+    "name": "Andrew Fischer",
+    "rarity": "AUTO",
+    "key": "ebay:andrew-fischer",
+    "units": 0.847466,
+    "price": 195.76,
+    "basis": "ask",
+    "asOf": "2026-09-06"
+   },
+   {
+    "num": "CPA-AA",
+    "name": "Aiva Arquette",
+    "rarity": "AUTO",
+    "key": "ebay:aiva-arquette",
+    "units": 1,
+    "price": 109,
+    "basis": "ask",
+    "asOf": "2026-09-06"
+   },
+   {
+    "num": "CPA-WA",
+    "name": "Wehiwa Aloy",
+    "rarity": "AUTO",
+    "key": "ebay:wehiwa-aloy",
+    "units": 1,
+    "price": 80.28,
+    "basis": "ask",
+    "asOf": "2026-09-06"
+   },
+   {
+    "num": "CPA-DP",
+    "name": "Daniel Pierce",
+    "rarity": "AUTO",
+    "key": "ebay:daniel-pierce",
+    "units": 1,
+    "price": 32.49,
+    "basis": "ask",
+    "asOf": "2026-09-06"
+   },
+   {
+    "num": "CPA-MHO",
+    "name": "Marek Houston",
+    "rarity": "AUTO",
+    "key": "ebay:marek-houston",
+    "units": 1,
+    "price": 47.95,
+    "basis": "ask",
+    "asOf": "2026-09-06"
+   },
+   {
+    "num": "CPA-GJ",
+    "name": "Gage Jump",
+    "rarity": "AUTO",
+    "key": "ebay:gage-jump",
+    "units": 1,
+    "price": 78.58,
+    "basis": "ask",
+    "asOf": "2026-09-06"
+   },
+   {
+    "num": "CPA-JG",
+    "name": "Justin Gonzalez",
+    "rarity": "AUTO",
+    "key": "ebay:justin-gonzalez",
+    "units": 1,
+    "price": 150,
+    "basis": "ask",
+    "asOf": "2026-09-06"
+   },
+   {
+    "num": "CPA-EF",
+    "name": "Edward Florentino",
+    "rarity": "AUTO",
+    "key": "ebay:edward-florentino",
+    "units": 1,
+    "price": 110,
+    "basis": "ask",
+    "asOf": "2026-09-06"
+   },
+   {
+    "num": "CPA-SK",
+    "name": "Seong-Jun Kim",
+    "rarity": "AUTO",
+    "key": "ebay:seong-jun-kim",
+    "units": 0.826442,
+    "price": 200.74,
+    "basis": "ask",
+    "asOf": "2026-09-06"
+   }
+  ],
+  "history": [
+   {
+    "date": "2026-09-06",
+    "level": 100,
+    "basketValue": 1106,
+    "divisor": 11.06,
+    "note": "inception — ask-basis activation on nightly engine marks; 15% cap applied at constitution"
+   }
+  ],
+  "baseTab": {
+   "status": "pre-activation",
+   "note": "Top-100 base Chrome (BCP-151-250). Activates when >= 60 of 100 carry a sourced mark (PriceCharting ungraded solds; paper marks until Chrome streets Sep 9-10, Chrome solds ~3 weeks after). Unpriced cards carry zero weight and enter by divisor adjustment.",
+   "universe": [
+    {
+     "num": "BCP-151",
+     "name": "Slater de Brun",
+     "team": "Tampa Bay Rays",
+     "first": false
+    },
+    {
+     "num": "BCP-152",
+     "name": "Wandy Asigen",
+     "team": "New York Mets",
+     "first": true
+    },
+    {
+     "num": "BCP-153",
+     "name": "Alex Lodise",
+     "team": "Atlanta Braves",
+     "first": false
+    },
+    {
+     "num": "BCP-154",
+     "name": "Colt Emerson",
+     "team": "Seattle Mariners",
+     "first": false
+    },
+    {
+     "num": "BCP-155",
+     "name": "John Gil",
+     "team": "Atlanta Braves",
+     "first": false
+    },
+    {
+     "num": "BCP-156",
+     "name": "Isaias Castillo",
+     "team": "New York Yankees",
+     "first": false
+    },
+    {
+     "num": "BCP-157",
+     "name": "Rubel Arias",
+     "team": "Los Angeles Dodgers",
+     "first": false
+    },
+    {
+     "num": "BCP-158",
+     "name": "Fabricio Blanco",
+     "team": "Tampa Bay Rays",
+     "first": false
+    },
+    {
+     "num": "BCP-159",
+     "name": "Christian Zazueta",
+     "team": "Los Angeles Dodgers",
+     "first": false
+    },
+    {
+     "num": "BCP-160",
+     "name": "Johenssy Colome",
+     "team": "Athletics",
+     "first": false
+    },
+    {
+     "num": "BCP-161",
+     "name": "Diego Frontado",
+     "team": "Milwaukee Brewers",
+     "first": false
+    },
+    {
+     "num": "BCP-162",
+     "name": "Talon Haley",
+     "team": "Los Angeles Angels",
+     "first": false
+    },
+    {
+     "num": "BCP-163",
+     "name": "Francisco Renteria",
+     "team": "Philadelphia Phillies",
+     "first": true
+    },
+    {
+     "num": "BCP-164",
+     "name": "JoJo Parker",
+     "team": "Toronto Blue Jays",
+     "first": false
+    },
+    {
+     "num": "BCP-165",
+     "name": "Darell Morel",
+     "team": "Pittsburgh Pirates",
+     "first": false
+    },
+    {
+     "num": "BCP-166",
+     "name": "Hagen Smith",
+     "team": "Chicago White Sox",
+     "first": false
+    },
+    {
+     "num": "BCP-167",
+     "name": "Ezequiel Melbourne",
+     "team": "Los Angeles Dodgers",
+     "first": false
+    },
+    {
+     "num": "BCP-168",
+     "name": "Joseph Sullivan",
+     "team": "Houston Astros",
+     "first": false
+    },
+    {
+     "num": "BCP-169",
+     "name": "Sebastian Blanco",
+     "team": "Colorado Rockies",
+     "first": false
+    },
+    {
+     "num": "BCP-170",
+     "name": "Leo De Vries",
+     "team": "Athletics",
+     "first": false
+    },
+    {
+     "num": "BCP-171",
+     "name": "Brandon Clarke",
+     "team": "St. Louis Cardinals",
+     "first": false
+    },
+    {
+     "num": "BCP-172",
+     "name": "Leonardo Reynoso",
+     "team": "Seattle Mariners",
+     "first": false
+    },
+    {
+     "num": "BCP-173",
+     "name": "Luis De La Torre",
+     "team": "San Francisco Giants",
+     "first": false
+    },
+    {
+     "num": "BCP-174",
+     "name": "Aiva Arquette",
+     "team": "Miami Marlins",
+     "first": true
+    },
+    {
+     "num": "BCP-175",
+     "name": "Randy Santana",
+     "team": "Detroit Tigers",
+     "first": false
+    },
+    {
+     "num": "BCP-176",
+     "name": "Gregory Pio",
+     "team": "Seattle Mariners",
+     "first": false
+    },
+    {
+     "num": "BCP-177",
+     "name": "Juan Rujano",
+     "team": "St. Louis Cardinals",
+     "first": false
+    },
+    {
+     "num": "BCP-178",
+     "name": "Wilton Guerrero Jr.",
+     "team": "Pittsburgh Pirates",
+     "first": false
+    },
+    {
+     "num": "BCP-179",
+     "name": "Samil Serrano",
+     "team": "Washington Nationals",
+     "first": false
+    },
+    {
+     "num": "BCP-180",
+     "name": "Jaider Suarez",
+     "team": "Kansas City Royals",
+     "first": false
+    },
+    {
+     "num": "BCP-181",
+     "name": "Logan Sauve",
+     "team": "Athletics",
+     "first": false
+    },
+    {
+     "num": "BCP-182",
+     "name": "Jaiden Lo Re",
+     "team": "Baltimore Orioles",
+     "first": false
+    },
+    {
+     "num": "BCP-183",
+     "name": "Hyun Seung Lee",
+     "team": "Pittsburgh Pirates",
+     "first": false
+    },
+    {
+     "num": "BCP-184",
+     "name": "Gustavo Baptista",
+     "team": "Cleveland Guardians",
+     "first": false
+    },
+    {
+     "num": "BCP-185",
+     "name": "Ricky Duran",
+     "team": "Athletics",
+     "first": false
+    },
+    {
+     "num": "BCP-186",
+     "name": "Brendan Jones",
+     "team": "Miami Marlins",
+     "first": false
+    },
+    {
+     "num": "BCP-187",
+     "name": "Wyatt Vincent",
+     "team": "New York Mets",
+     "first": false
+    },
+    {
+     "num": "BCP-188",
+     "name": "Wilder Dalis",
+     "team": "Colorado Rockies",
+     "first": false
+    },
+    {
+     "num": "BCP-189",
+     "name": "Emil Morales",
+     "team": "Los Angeles Dodgers",
+     "first": false
+    },
+    {
+     "num": "BCP-190",
+     "name": "Sebastian Dos Santos",
+     "team": "St. Louis Cardinals",
+     "first": false
+    },
+    {
+     "num": "BCP-191",
+     "name": "Dawvris Brito",
+     "team": "Boston Red Sox",
+     "first": false
+    },
+    {
+     "num": "BCP-192",
+     "name": "Ricky Moneys",
+     "team": "Milwaukee Brewers",
+     "first": false
+    },
+    {
+     "num": "BCP-193",
+     "name": "Juan Rojas",
+     "team": "Houston Astros",
+     "first": false
+    },
+    {
+     "num": "BCP-194",
+     "name": "Angeibel Gomez",
+     "team": "Kansas City Royals",
+     "first": true
+    },
+    {
+     "num": "BCP-195",
+     "name": "Braylen Wimmer",
+     "team": "Colorado Rockies",
+     "first": false
+    },
+    {
+     "num": "BCP-196",
+     "name": "Jett Williams",
+     "team": "Milwaukee Brewers",
+     "first": false
+    },
+    {
+     "num": "BCP-197",
+     "name": "Juan Rijo",
+     "team": "Seattle Mariners",
+     "first": false
+    },
+    {
+     "num": "BCP-198",
+     "name": "Louis Andujar",
+     "team": "Boston Red Sox",
+     "first": false
+    },
+    {
+     "num": "BCP-199",
+     "name": "Walker Jenkins",
+     "team": "Minnesota Twins",
+     "first": false
+    },
+    {
+     "num": "BCP-200",
+     "name": "Luis Hernandez",
+     "team": "San Francisco Giants",
+     "first": true
+    },
+    {
+     "num": "BCP-201",
+     "name": "Joniel Hernandez",
+     "team": "San Diego Padres",
+     "first": false
+    },
+    {
+     "num": "BCP-202",
+     "name": "Avery Owusu-Asiedu",
+     "team": "Arizona Diamondbacks",
+     "first": false
+    },
+    {
+     "num": "BCP-203",
+     "name": "Stharlin Torres",
+     "team": "Cincinnati Reds",
+     "first": false
+    },
+    {
+     "num": "BCP-204",
+     "name": "Angel De Los Santos",
+     "team": "Detroit Tigers",
+     "first": false
+    },
+    {
+     "num": "BCP-205",
+     "name": "Eduardo Quintero",
+     "team": "Los Angeles Dodgers",
+     "first": false
+    },
+    {
+     "num": "BCP-206",
+     "name": "Adrian Lunar",
+     "team": "Kansas City Royals",
+     "first": false
+    },
+    {
+     "num": "BCP-207",
+     "name": "Santiago Solarte",
+     "team": "Miami Marlins",
+     "first": false
+    },
+    {
+     "num": "BCP-208",
+     "name": "Cleiner Ramirez",
+     "team": "New York Mets",
+     "first": false
+    },
+    {
+     "num": "BCP-209",
+     "name": "Ethan Holliday",
+     "team": "Colorado Rockies",
+     "first": true
+    },
+    {
+     "num": "BCP-210",
+     "name": "Angel Salio",
+     "team": "Cincinnati Reds",
+     "first": false
+    },
+    {
+     "num": "BCP-211",
+     "name": "Juneiker Caceres",
+     "team": "Cleveland Guardians",
+     "first": false
+    },
+    {
+     "num": "BCP-212",
+     "name": "Nelson Rada",
+     "team": "Los Angeles Angels",
+     "first": false
+    },
+    {
+     "num": "BCP-213",
+     "name": "Mike Sirota",
+     "team": "Los Angeles Dodgers",
+     "first": false
+    },
+    {
+     "num": "BCP-214",
+     "name": "Owen Ayers",
+     "team": "Chicago Cubs",
+     "first": false
+    },
+    {
+     "num": "BCP-215",
+     "name": "Gavin Fien",
+     "team": "Washington Nationals",
+     "first": false
+    },
+    {
+     "num": "BCP-216",
+     "name": "Enmanuel Merlo",
+     "team": "Minnesota Twins",
+     "first": false
+    },
+    {
+     "num": "BCP-217",
+     "name": "Sir Jamison Jones",
+     "team": "Washington Nationals",
+     "first": false
+    },
+    {
+     "num": "BCP-218",
+     "name": "Caleb Bonemer",
+     "team": "Chicago White Sox",
+     "first": false
+    },
+    {
+     "num": "BCP-219",
+     "name": "Yadier Muñoz",
+     "team": "Chicago Cubs",
+     "first": false
+    },
+    {
+     "num": "BCP-220",
+     "name": "Angel Nunez",
+     "team": "Cincinnati Reds",
+     "first": false
+    },
+    {
+     "num": "BCP-221",
+     "name": "Manuel Bolivar",
+     "team": "Detroit Tigers",
+     "first": false
+    },
+    {
+     "num": "BCP-222",
+     "name": "Jeancer Custodio",
+     "team": "Pittsburgh Pirates",
+     "first": false
+    },
+    {
+     "num": "BCP-223",
+     "name": "Elaineiker Coronado",
+     "team": "Toronto Blue Jays",
+     "first": false
+    },
+    {
+     "num": "BCP-224",
+     "name": "Dax Kilby",
+     "team": "New York Yankees",
+     "first": false
+    },
+    {
+     "num": "BCP-225",
+     "name": "Alexander Pio",
+     "team": "Pittsburgh Pirates",
+     "first": false
+    },
+    {
+     "num": "BCP-226",
+     "name": "Wellington Aracena",
+     "team": "Arizona Diamondbacks",
+     "first": false
+    },
+    {
+     "num": "BCP-227",
+     "name": "Pedro Gomez",
+     "team": "Baltimore Orioles",
+     "first": false
+    },
+    {
+     "num": "BCP-228",
+     "name": "Jeyson Horton",
+     "team": "Los Angeles Angels",
+     "first": false
+    },
+    {
+     "num": "BCP-229",
+     "name": "Randy Guzman",
+     "team": "New York Mets",
+     "first": false
+    },
+    {
+     "num": "BCP-230",
+     "name": "Jose Castro",
+     "team": "Miami Marlins",
+     "first": false
+    },
+    {
+     "num": "BCP-231",
+     "name": "Sebastian Walcott",
+     "team": "Texas Rangers",
+     "first": false
+    },
+    {
+     "num": "BCP-232",
+     "name": "Yunior Amparo",
+     "team": "New York Mets",
+     "first": false
+    },
+    {
+     "num": "BCP-233",
+     "name": "Dante Nori",
+     "team": "Philadelphia Phillies",
+     "first": false
+    },
+    {
+     "num": "BCP-234",
+     "name": "Kevin Alvarez",
+     "team": "Houston Astros",
+     "first": false
+    },
+    {
+     "num": "BCP-235",
+     "name": "Alfredo Duno",
+     "team": "Cincinnati Reds",
+     "first": false
+    },
+    {
+     "num": "BCP-236",
+     "name": "Max Clark",
+     "team": "Detroit Tigers",
+     "first": false
+    },
+    {
+     "num": "BCP-237",
+     "name": "Austin Overn",
+     "team": "Tampa Bay Rays",
+     "first": false
+    },
+    {
+     "num": "BCP-238",
+     "name": "Seth Hernandez",
+     "team": "Pittsburgh Pirates",
+     "first": false
+    },
+    {
+     "num": "BCP-239",
+     "name": "Samy Natera Jr.",
+     "team": "Los Angeles Angels",
+     "first": false
+    },
+    {
+     "num": "BCP-240",
+     "name": "Ariel Roque",
+     "team": "Baltimore Orioles",
+     "first": false
+    },
+    {
+     "num": "BCP-241",
+     "name": "Elian Rosario",
+     "team": "Texas Rangers",
+     "first": false
+    },
+    {
+     "num": "BCP-242",
+     "name": "Randy Arias",
+     "team": "Houston Astros",
+     "first": false
+    },
+    {
+     "num": "BCP-243",
+     "name": "Steele Hall",
+     "team": "Cincinnati Reds",
+     "first": false
+    },
+    {
+     "num": "BCP-244",
+     "name": "Jesús Made",
+     "team": "Milwaukee Brewers",
+     "first": false
+    },
+    {
+     "num": "BCP-245",
+     "name": "Eli Willits",
+     "team": "Washington Nationals",
+     "first": false
+    },
+    {
+     "num": "BCP-246",
+     "name": "Garielvin Silverio",
+     "team": "Boston Red Sox",
+     "first": false
+    },
+    {
+     "num": "BCP-247",
+     "name": "Erick De La Cruz",
+     "team": "Arizona Diamondbacks",
+     "first": false
+    },
+    {
+     "num": "BCP-248",
+     "name": "Cooper Pratt",
+     "team": "Milwaukee Brewers",
+     "first": false
+    },
+    {
+     "num": "BCP-249",
+     "name": "Andri Hidalgo",
+     "team": "Baltimore Orioles",
+     "first": false
+    },
+    {
+     "num": "BCP-250",
+     "name": "Yordani Soto",
+     "team": "Chicago White Sox",
+     "first": false
+    }
+   ]
+  }
+ }
 }

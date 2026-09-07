@@ -162,7 +162,9 @@ export default async function handler(req, res) {
     const params = new URLSearchParams({
       q,
       limit: String(limit),
-      category_ids: req.query.category_ids || TRADING_CARDS_CATEGORY,
+      // Card mode: honor the watchlist entry's own category (183454 for TCG
+      // singles - pinned room rule), same as the nightly engine (snapshot-free.mjs).
+      category_ids: req.query.category_ids || (card && card.categoryIds) || TRADING_CARDS_CATEGORY,
       filter: "buyingOptions:{FIXED_PRICE|AUCTION},itemLocationCountry:US",
     });
     if (sortParam) params.set("sort", sortParam);

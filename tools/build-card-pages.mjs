@@ -73,6 +73,8 @@ function facts(c) {
     set = `${year} Bowman${/sapphire/.test(q) ? " Sapphire" : /chrome/.test(q) ? " Chrome" : ""}`.trim();
     setHref = "/bowman-bangers";
     lane = type === "chrome-auto" ? "1st Bowman Chrome Auto · raw" : type === "sapphire-base" ? "1st Bowman Sapphire · raw base" : "1st Bowman Chrome · raw base";
+    // BOW26 (Sep 7 2026): 1st Chrome autos are constituents of the live index.
+    if (type === "chrome-auto") { indexHref = "/bowman-1st-chrome-index"; ticker = "BOW26"; }
   } else {
     const m = TCG_SETS[c.slug];
     if (m) { set = m[0]; indexHref = "/" + m[1]; ticker = m[2]; }
@@ -101,16 +103,16 @@ const CARD_CSS = `
 .cp-head { display:grid; grid-template-columns:120px 1fr; gap:18px; align-items:start; margin-bottom:22px; }
 .cp-photo { position:relative; display:block; background:var(--bg2); border:1px solid var(--border2); aspect-ratio:5/7; overflow:hidden; }
 .cp-photo img { width:100%; height:100%; object-fit:contain; display:block; }
-.cp-photo .cp-noimg { display:flex; align-items:center; justify-content:center; height:100%; font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:1px; }
-.cp-eyebrow { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+.cp-photo .cp-noimg { display:flex; align-items:center; justify-content:center; height:100%; font-family:var(--fm); font-size:11px; color:var(--text-dim); letter-spacing:1px; }
+.cp-eyebrow { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
 .cp-title { font-family:var(--fd); font-size:clamp(28px,6vw,44px); font-weight:900; line-height:0.98; letter-spacing:-0.5px; text-transform:uppercase; color:var(--text-head); margin:0 0 8px; }
 .cp-lane { font-family:var(--fm); font-size:12px; color:var(--text-dim); letter-spacing:0.5px; }
 .cp-lane b { color:var(--text); font-weight:600; }
 .cp-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; background:var(--border); border:1px solid var(--border); margin:18px 0 14px; }
 .cp-cell { background:var(--bg2); padding:14px 12px; min-width:0; }
-.cp-cell .l { font-family:var(--fm); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cp-cell .l { font-family:var(--fm); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .cp-cell .v { font-family:var(--fd); font-size:26px; font-weight:900; line-height:1; color:var(--text-head); letter-spacing:-0.5px; }
-.cp-cell .s { font-family:var(--fm); font-size:10px; color:var(--text-dim); margin-top:5px; }
+.cp-cell .s { font-family:var(--fm); font-size:11px; color:var(--text-dim); margin-top:5px; }
 .cp-cell .v.up { color:var(--green); } .cp-cell .v.dn { color:var(--red); }
 .cp-sig { display:inline-flex; align-items:center; gap:6px; font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border2); background:var(--bg2); color:var(--text); }
 .cp-sig.buy { border-color:rgba(0,224,122,0.5); color:var(--green); } .cp-sig.sell { border-color:rgba(255,46,85,0.5); color:var(--red); } .cp-sig.hold { border-color:rgba(245,200,0,0.4); color:var(--gold); }
@@ -123,14 +125,14 @@ const CARD_CSS = `
 .cp-sec .sub { font-size:13px; color:var(--text-dim); margin:0 0 14px; line-height:1.55; }
 .cp-chart { background:var(--bg2); border:1px solid var(--border2); padding:12px 8px 6px; }
 .cp-chart svg { width:100%; height:auto; display:block; }
-.cp-chart .axis { font-family:var(--fm); font-size:10px; fill:var(--text-dim); }
+.cp-chart .axis { font-family:var(--fm); font-size:11px; fill:var(--text-dim); }
 .cp-chart .grid { stroke:rgba(255,255,255,0.06); }
 .cp-chart .line { fill:none; stroke:var(--accent); stroke-width:2; stroke-linejoin:round; stroke-linecap:round; }
 .cp-chart .sma { fill:none; stroke:var(--gold); stroke-width:1.2; stroke-dasharray:4 4; opacity:0.85; }
 .cp-chart .area { fill:rgba(0,204,245,0.08); }
 .cp-chart .dot { fill:var(--accent); }
 .cp-chart .last { font-family:var(--fm); font-size:11px; font-weight:700; fill:var(--text-head); }
-.cp-legend { display:flex; gap:16px; flex-wrap:wrap; font-family:var(--fm); font-size:10px; color:var(--text-dim); padding:8px 4px 2px; letter-spacing:0.5px; }
+.cp-legend { display:flex; gap:16px; flex-wrap:wrap; font-family:var(--fm); font-size:11px; color:var(--text-dim); padding:8px 4px 2px; letter-spacing:0.5px; }
 .cp-legend i { display:inline-block; width:14px; height:2px; vertical-align:middle; margin-right:5px; background:var(--accent); }
 .cp-legend i.g { background:var(--gold); }
 .cp-note { font-family:var(--fm); font-size:11px; color:var(--text-dim); line-height:1.6; }
@@ -140,11 +142,11 @@ const CARD_CSS = `
 .cp-item .ph { position:relative; width:64px; height:64px; background:var(--bg3); overflow:hidden; }
 .cp-item .ph img { width:100%; height:100%; object-fit:cover; display:block; }
 .cp-item .t { font-size:13px; line-height:1.35; color:var(--text); overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
-.cp-item .m { font-family:var(--fm); font-size:10px; color:var(--text-dim); margin-top:4px; }
+.cp-item .m { font-family:var(--fm); font-size:11px; color:var(--text-dim); margin-top:4px; }
 .cp-item .p { text-align:right; white-space:nowrap; }
 .cp-item .p b { font-family:var(--fd); font-size:22px; font-weight:900; color:var(--green); display:block; line-height:1; }
-.cp-item .p span { font-family:var(--fm); font-size:10px; color:var(--text-dim); }
-.cp-item .p .ebay { display:block; font-family:var(--fm); font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--accent); margin-top:5px; }
+.cp-item .p span { font-family:var(--fm); font-size:11px; color:var(--text-dim); }
+.cp-item .p .ebay { display:block; font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--accent); margin-top:5px; }
 .cp-item.auction .p b { color:var(--gold); }
 .cp-foot { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center; margin-top:12px; }
 .cp-foot a.more { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); border:1px solid rgba(0,204,245,0.4); padding:11px 14px; min-height:44px; display:inline-flex; align-items:center; }
@@ -153,7 +155,7 @@ const CARD_CSS = `
 .cp-related { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
 .cp-related a { display:block; background:var(--bg2); border:1px solid var(--border2); padding:14px; color:var(--text); }
 .cp-related a:hover { border-color:var(--accent); text-decoration:none; }
-.cp-related .rt { font-family:var(--fm); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+.cp-related .rt { font-family:var(--fm); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
 .cp-related .rn { font-family:var(--fd); font-size:18px; font-weight:800; text-transform:uppercase; color:var(--text-head); line-height:1.1; }
 .cp-empty { background:var(--bg2); border:1px dashed var(--border2); padding:18px; font-family:var(--fm); font-size:12px; color:var(--text-dim); line-height:1.6; }
 @media (max-width:640px) {
@@ -379,7 +381,7 @@ ${nav}
 
   <!-- SIGNAL ALERTS — email capture (renders only when data/newsletter.json lists this page — MailerLite via /api/subscribe) -->
   <div class="sig-alerts" data-schsub="card-pages" style="display:none; background:var(--bg2); border:1px solid var(--border2); border-left:3px solid var(--accent); padding:22px 20px; margin:30px 0;">
-    <div style="font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">&#9993; Signal Alerts</div>
+    <div style="font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">&#9993; Signal Alerts</div>
     <div style="font-family:var(--fd); font-size:22px; font-weight:900; text-transform:uppercase; color:var(--text-head); letter-spacing:0.5px; margin-bottom:6px;">The Tape, In Your Inbox</div>
     <p style="font-size:14px; color:var(--text-dim); line-height:1.6; max-width:560px; margin-bottom:16px;">The engine re-prices every tracked card nightly. Get the weekly recap of what moved.</p>
     <form class="schsub-form" style="display:flex; gap:10px; flex-wrap:wrap; max-width:560px;">
@@ -388,7 +390,7 @@ ${nav}
       <button type="submit" class="btn-primary" style="border:none; cursor:pointer;">Get the Recap &#8594;</button>
     </form>
     <div class="schsub-msg" style="display:none; font-family:var(--fm); font-size:12px; color:var(--green); margin-top:12px;"></div>
-    <div style="font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:0.5px; margin-top:12px; opacity:0.7;">Weekly recap only. No spam, unsubscribe anytime.</div>
+    <div style="font-family:var(--fm); font-size:11px; color:var(--text-dim); letter-spacing:0.5px; margin-top:12px; opacity:0.7;">Weekly recap only. No spam, unsubscribe anytime.</div>
   </div>
 
   <section class="cp-sec">
@@ -479,9 +481,9 @@ ${items.map((c) => { const f = facts(c); const last = f.latest && f.latest.last 
 .hub-row:hover { border-color:var(--accent); text-decoration:none; color:var(--text); }
 .hub-row .ph { width:44px; height:60px; background:var(--bg3); overflow:hidden; } .hub-row .ph img { width:100%; height:100%; object-fit:cover; display:block; }
 .hub-row .t { display:block; font-family:var(--fd); font-size:18px; font-weight:800; text-transform:uppercase; color:var(--text-head); line-height:1.05; }
-.hub-row .m { display:block; font-family:var(--fm); font-size:10px; color:var(--text-dim); margin-top:3px; }
+.hub-row .m { display:block; font-family:var(--fm); font-size:11px; color:var(--text-dim); margin-top:3px; }
 .hub-row .p { text-align:right; } .hub-row .p b { font-family:var(--fd); font-size:22px; font-weight:900; color:var(--text-head); display:block; line-height:1; }
-.hub-row .p span { font-family:var(--fm); font-size:10px; color:var(--text-dim); } .hub-row .p span.up { color:var(--green); } .hub-row .p span.dn { color:var(--red); }
+.hub-row .p span { font-family:var(--fm); font-size:11px; color:var(--text-dim); } .hub-row .p span.up { color:var(--green); } .hub-row .p span.dn { color:var(--red); }
 `;
   return `<!DOCTYPE html>
 <html lang="en">
@@ -504,6 +506,21 @@ ${items.map((c) => { const f = facts(c); const last = f.latest && f.latest.last 
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="628">
   <meta name="twitter:image" content="https://www.shopcardhub.com/og/bowman.png">
+  <script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Card Charts — Nightly Price Lines for Every Engine-Tracked Card",
+    url: "https://www.shopcardhub.com/cards",
+    description: "One page per tracked card: the nightly engine mark, the price line, verified live eBay listings for that exact card, auction hammers, and a ★ Track button.",
+    isPartOf: { "@type": "WebSite", name: "ShopCardHub", url: "https://www.shopcardhub.com" },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: list.map((c, i) => ({
+        "@type": "ListItem", position: i + 1, name: c.label,
+        url: "https://www.shopcardhub.com/card-" + c.id,
+      })),
+    },
+  })}</script>
   <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/css/fonts.css">

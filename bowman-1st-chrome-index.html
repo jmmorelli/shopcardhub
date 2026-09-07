@@ -1,0 +1,959 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="view-transition" content="same-origin">
+<title>BOW26 · 2026 Bowman 1st Chrome Index — Live Ask-Basis Ticker | ShopCardHub</title>
+<meta name="description" content="BOW26: the 2026 Bowman 1st Chrome index. Ten flagship 1st Chrome Prospect Autos, price-weighted on the engine's nightly verified ask-floor marks. Base 100.00, 15% single-card cap, divisor-continuous. A measurement, not a recommendation.">
+<link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/css/fonts.css"><style>
+:root { --bg:#07090c; --p1:#0c1017; --p2:#111820; --bd:rgba(255,255,255,0.07); --bd2:rgba(255,255,255,0.12); --tx:#b8cdd4; --th:#e4f0f4; --dim:#5a7880; --ac:#00ccf5; --gn:#00e07a; --gd:#f5c800; --rd:#ff2e55; --iac:#00ccf5; --iac2:#0a6f85;
+--text:#b8cdd4; --text-head:#e4f0f4; --text-dim:#5a7880; --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12); --accent:#00ccf5; --accent-dim:rgba(0,204,245,0.1); --accent-glow:rgba(0,204,245,0.22); --gold:#f5c800; --green:#00e07a; --red:#ff2e55; --fb:'Barlow',-apple-system,sans-serif; --fd:'Barlow Condensed',Impact,sans-serif; --fm:'JetBrains Mono',Menlo,monospace; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--tx); font-family:var(--fb); font-size:14px; line-height:1.5; padding-bottom:60px; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+a { color:var(--ac); text-decoration:none; }
+a:hover { color:#fff; }
+.wrap { max-width:1060px; margin:0 auto; padding:0 24px; }
+.livebar { background:rgba(0,204,245,0.07); border-bottom:1px solid rgba(0,204,245,0.35); padding:9px 12px; text-align:center; font-family:var(--fm); font-size:11px; letter-spacing:1.5px; color:var(--ac); text-transform:uppercase; }
+.crumb { font-family:var(--fm); font-size:11px; letter-spacing:2px; color:var(--dim); text-transform:uppercase; }
+.crumb b { color:var(--iac); }
+.strip { display:flex; gap:8px; overflow-x:auto; padding:12px 0; border-bottom:1px solid var(--bd); }
+.chip { flex:0 0 auto; display:inline-flex; align-items:center; gap:6px; min-height:40px; background:var(--p1); border:1px solid var(--bd); border-radius:3px; padding:8px 13px; font-family:var(--fm); font-size:11px; color:var(--dim); text-decoration:none; }
+.chip b { color:var(--th); letter-spacing:1px; } .chip.on { border-color:rgba(0,204,245,0.5); background:rgba(0,204,245,0.06); } .chip.on b { color:var(--iac); } .chip .soon { color:var(--dim); font-style:italic; }
+.mast { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; padding:26px 0 4px; flex-wrap:wrap; }
+.eyebrow { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--iac); margin-bottom:8px; }
+h1 { font-family:var(--fd); font-weight:900; font-size:34px; letter-spacing:1.5px; text-transform:uppercase; color:var(--th); line-height:1.05; }
+h1 .tick { color:var(--iac); }
+.subline { font-size:13px; color:var(--dim); margin-top:6px; max-width:640px; }
+.subline b { color:var(--th); font-weight:600; }
+.levelbox { text-align:right; }
+.level { font-family:var(--fm); font-weight:700; font-size:40px; color:var(--th); line-height:1; }
+.basisbadge { display:inline-block; font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:2px; color:var(--gd); border:1px solid rgba(245,200,0,0.45); border-radius:2px; padding:2px 8px; vertical-align:middle; margin-left:8px; }
+.levelchg { font-family:var(--fm); font-size:12px; margin-top:6px; color:var(--dim); }
+.levelchg .g { color:var(--gn); } .levelchg .r { color:var(--rd); }
+.basisnote { font-family:var(--fm); font-size:11px; color:var(--dim); margin-top:6px; max-width:640px; }
+.stats { display:grid; grid-template-columns:repeat(8,1fr); gap:1px; background:var(--bd); border:1px solid var(--bd); border-radius:4px; overflow:hidden; margin:20px 0 6px; }
+.stat { background:var(--p1); padding:10px 12px; }
+.stat .k { font-family:var(--fm); font-size:11px; letter-spacing:0.5px; text-transform:uppercase; color:var(--dim); }
+.stat .v { font-family:var(--fm); font-size:15px; font-weight:700; color:var(--th); margin-top:3px; }
+.stat .v i { font-size:11px; color:var(--dim); font-style:normal; }
+.stat .v.acc { color:var(--iac); } .stat .v.gold { color:var(--gd); } .stat .v.grn { color:var(--gn); } .stat .v.rd { color:var(--rd); }
+.statnote { font-family:var(--fm); font-size:11px; color:var(--dim); margin:6px 2px 0; }
+.conc { margin:14px 0 18px; }
+.concbar { display:flex; height:14px; border-radius:2px; overflow:hidden; border:1px solid var(--bd2); }
+.concbar .a { background:var(--ac); opacity:0.9; } .concbar .b { background:#2a6b7c; } .concbar .c { background:#1a2733; }
+.conclbl { display:flex; gap:16px; flex-wrap:wrap; font-family:var(--fm); font-size:11px; color:var(--dim); margin-top:5px; }
+.conclbl .sw { display:inline-block; width:8px; height:8px; border-radius:1px; margin-right:5px; }
+.tabs { display:flex; gap:2px; margin:18px 0 0; border-bottom:1px solid var(--bd2); overflow-x:auto; }
+.tab { flex:0 0 auto; font-family:var(--fd); font-weight:600; font-size:14px; letter-spacing:2px; text-transform:uppercase; padding:11px 18px; min-height:40px; color:var(--dim); background:none; border:1px solid transparent; border-bottom:none; cursor:pointer; }
+.tab.on { color:var(--iac); background:var(--p1); border-color:var(--bd2); border-radius:3px 3px 0 0; }
+.tab .p2 { font-size:11px; color:var(--gd); vertical-align:super; }
+.tbl-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; }
+table { width:100%; border-collapse:collapse; font-family:var(--fm); font-size:12px; }
+thead th { font-size:11px; letter-spacing:0.5px; text-transform:uppercase; color:var(--dim); text-align:right; padding:8px 10px; border-bottom:1px solid var(--bd2); background:var(--p1); white-space:nowrap; }
+thead th:nth-child(1), thead th:nth-child(2), thead th:nth-child(3) { text-align:left; }
+td { padding:7px 10px; border-bottom:1px solid var(--bd); }
+td.rk { font-weight:700; color:var(--iac); width:34px; }
+td.card { font-family:var(--fb); font-size:13px; color:var(--th); }
+td.card .cn { font-family:var(--fm); font-size:11px; color:var(--dim); }
+td.num { text-align:right; white-space:nowrap; color:var(--tx); }
+td.wt { color:var(--th); font-weight:700; }
+td.trk { width:70px; text-align:center; }
+.dim2 { color:var(--dim); }
+.cpa { font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--gd); border:1px solid rgba(245,200,0,0.35); border-radius:2px; padding:1px 6px; white-space:nowrap; }
+.sig { display:inline-block; font-family:var(--fm); font-size:11px; letter-spacing:1px; border:1px solid var(--bd2); border-radius:2px; padding:2px 7px; color:var(--dim); white-space:nowrap; }
+.sig.buy { color:var(--gn); border-color:rgba(0,224,122,0.45); }
+.sig.sell { color:var(--rd); border-color:rgba(255,46,85,0.45); }
+.sig.hold { color:var(--tx); }
+.sig.thin { color:var(--dim); font-style:italic; }
+#panel-autos .sch-track-card, #panel-base .sch-track-card { min-height:40px; font-size:11px; }
+.roi-cell { display:flex; align-items:center; gap:12px; min-width:230px; }
+.roi-cell > div { min-width:0; }
+.block { background:var(--p1); border:1px solid var(--bd); border-radius:4px; padding:14px 16px; margin:18px 0; }
+.block h3 { font-family:var(--fd); font-weight:900; font-size:15px; letter-spacing:2px; text-transform:uppercase; color:var(--th); margin-bottom:8px; }
+.legend { font-family:var(--fm); font-size:11px; color:var(--dim); line-height:1.8; }
+.legend b { color:var(--tx); }
+.foot { font-family:var(--fm); font-size:11px; color:var(--dim); margin-top:24px; line-height:1.7; }
+.banner { background:rgba(245,200,0,0.06); border:1px solid rgba(245,200,0,0.35); border-radius:3px; padding:11px 14px; font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--gd); text-transform:uppercase; margin:14px 0; }
+.fst { font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--gd); border:1px solid rgba(245,200,0,0.4); border-radius:2px; padding:0 5px; white-space:nowrap; }
+.chartbox { background:var(--p1); border:1px solid var(--bd); border-radius:4px; padding:14px 14px 8px; margin:16px 0 6px; }
+.chartbox svg { display:block; width:100%; height:auto; }
+.chartlgd { display:flex; gap:18px; flex-wrap:wrap; font-family:var(--fm); font-size:11px; color:var(--dim); margin-top:8px; }
+.chartlgd .ln { display:inline-block; width:22px; height:0; border-top:2px solid var(--ac); vertical-align:middle; margin-right:6px; }
+.chartlgd .ln.dash { border-top-style:dashed; opacity:0.7; }
+.rel { display:flex; gap:10px; flex-wrap:wrap; margin:18px 0; }
+.rel a { display:flex; flex-direction:column; justify-content:center; min-height:44px; flex:1 1 200px; background:var(--p1); border:1px solid var(--bd); border-radius:3px; padding:10px 14px; }
+.rel a .rt { font-family:var(--fm); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--dim); }
+.rel a .rn { font-family:var(--fd); font-size:15px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--th); }
+.rel a:hover { border-color:var(--ac); }
+.rel a:hover .rn { color:var(--ac); }
+[role="tabpanel"][hidden] { display:none; }
+.btn-primary { background:var(--ac); color:#000; font-family:var(--fd); font-weight:700; font-size:14px; letter-spacing:1.5px; text-transform:uppercase; padding:12px 20px; min-height:44px; border-radius:2px; }
+/* NAV */
+    .nav { position:sticky; top:0; z-index:200; background:rgba(7,9,12,0.95); backdrop-filter:blur(16px); border-bottom:1px solid var(--border2); }
+.nav-inner { max-width:1080px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:58px; }
+.logo { font-family:var(--fd); font-size:20px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:var(--text-head); }
+.logo span { color:var(--accent); }
+.nav-links { display:flex; gap:4px; align-items:center; }
+.nav-item { position:relative; }
+.nav-item > a { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); transition:color 0.2s; padding:8px 12px; border-radius:2px; white-space:nowrap; }
+.nav-item > a:hover { color:var(--text-head); text-decoration:none; background:rgba(255,255,255,0.04); }
+.nav-item > a .chevron { font-size:8px; opacity:0.5; transition:transform 0.2s; }
+.nav-item:hover > a .chevron { transform:rotate(180deg); }
+.nav-dropdown { position:absolute; top:calc(100% + 1px); left:0; background:rgba(7,9,12,0.98); backdrop-filter:blur(20px); border:1px solid var(--border2); border-top:2px solid var(--accent); min-width:220px; padding:8px 0; opacity:0; visibility:hidden; transform:translateY(-6px); transition:opacity 0.18s ease, transform 0.18s ease, visibility 0.18s; z-index:300; }
+.nav-item:hover .nav-dropdown { opacity:1; visibility:visible; transform:translateY(0); }
+.nav-dropdown a { display:block; padding:9px 18px; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); transition:color 0.15s, background 0.15s; }
+.nav-dropdown a:hover { color:var(--text-head); background:rgba(0,204,245,0.06); text-decoration:none; }
+.nav-dropdown .dd-label { padding:6px 18px 4px; font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); opacity:0.6; }
+.nav-dropdown hr { border:none; border-top:1px solid var(--border); margin:4px 0; }
+.nav-cta { background:var(--accent) !important; color:#000 !important; padding:8px 18px; font-size:11px !important; font-weight:700 !important; border-radius:2px; margin-left:8px; }
+.nav-cta:hover { background:#fff !important; text-decoration:none !important; }
+@media(max-width:700px) {
+      .nav-links { display:none; } }
+/* ─── HAMBURGER & MOBILE DRAWER ─── */
+    .nav-hamburger { display:none; flex-direction:column; justify-content:center; gap:5px; width:40px; height:40px; background:none; border:none; cursor:pointer; padding:8px; z-index:210; }
+.nav-hamburger span { display:block; width:22px; height:2px; background:var(--text-head); border-radius:2px; transition:all 0.25s ease; transform-origin:center; }
+.nav-hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+.nav-hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+.mobile-nav { display:none; position:fixed; top:58px; left:0; right:0; bottom:0; background:rgba(7,9,12,0.99); backdrop-filter:blur(20px); z-index:199; overflow-y:auto; padding:24px; opacity:0; transform:translateY(-8px); transition:opacity 0.2s ease, transform 0.2s ease; pointer-events:none; }
+.mobile-nav.open { opacity:1; transform:translateY(0); pointer-events:all; }
+.mobile-nav a { display:block; font-family:var(--fd); font-size:20px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); padding:16px 0; border-bottom:1px solid var(--border); transition:color 0.15s; }
+.mobile-nav a:hover { color:var(--text-head); text-decoration:none; }
+.mobile-nav .m-label { font-family:var(--fm); font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--accent); opacity:0.6; padding:20px 0 6px; }
+.mobile-nav .m-cta { background:var(--accent); color:#000 !important; text-align:center; padding:16px; margin-top:20px; border-bottom:none; font-weight:900; }
+@media(max-width:768px) {
+      .nav-links { display:none !important; }
+      .nav-hamburger { display:flex !important; }
+      .mobile-nav { display:block !important; } }
+@media (max-width:800px) { .stats { grid-template-columns:repeat(4,1fr); } h1 { font-size:26px; } .level { font-size:30px; } }
+@media (max-width:480px) { .stats { grid-template-columns:repeat(2,1fr); } }
+
+    /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
+    .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
+    .hero .container > *, .hero.hero-grid > *, .rh-head .container > *, .mast.hero-grid > * { grid-column:1; min-width:0; }
+    .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1 / span 6; align-self:center; justify-self:end; margin:0; text-align:center; position:relative; z-index:1; }
+    .hero-card-photo .sch-cimg { display:block; margin:0 auto; }
+    .hero-card-photo .sch-cimg-link:hover img { transform:scale(1.02); }
+    .hero-card-cap { display:block; font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim, var(--dim)); line-height:1.5; margin-top:12px; max-width:240px; }
+    .hero-card-cap b { color:var(--accent, var(--iac)); font-weight:700; }
+    @media(max-width:700px) {
+      .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:block; }
+      .hero .container > .hero-card-photo, .hero.hero-grid > .hero-card-photo, .rh-head .container > .hero-card-photo, .mast.hero-grid > .hero-card-photo { float:right; width:120px; margin:0 0 12px 16px; }
+      .hero-card-photo .sch-cimg { width:120px !important; height:168px !important; }
+      .hero-card-cap { display:none; }
+      .hero h1 { font-size:clamp(28px,8.6vw,40px); }
+      .hero-sub, .section-intro, .rh-intro { clear:both; }
+    }
+    .mast.hero-grid { column-gap:40px; align-items:end; grid-template-columns:minmax(0,1fr) auto 200px; padding-bottom:10px; }
+    .mast.hero-grid > * { grid-column:auto; }
+    .mast.hero-grid > .hero-card-photo { grid-column:2; grid-row:1; align-self:end; justify-self:center; }
+    .mast.hero-grid > .levelbox { grid-column:3; grid-row:1; align-self:end; }
+    .mast.hero-grid .hero-card-photo .sch-cimg { width:150px !important; height:210px !important; }
+    .mast.hero-grid .hero-card-cap { max-width:170px; margin:10px auto 0; }
+    @media(max-width:800px) { .mast.hero-grid { grid-template-columns:minmax(0,1fr) 160px; } .mast.hero-grid > .levelbox { grid-column:1 / span 2; grid-row:2; text-align:left; } }
+    @media(max-width:700px) { .mast.hero-grid { display:block; position:relative; padding-right:104px; } .mast.hero-grid > .hero-card-photo { float:none; position:absolute; right:0; top:26px; width:90px; margin:0; } .mast.hero-grid .hero-card-photo .sch-cimg { width:90px !important; height:126px !important; } .mast.hero-grid > .levelbox { text-align:left; margin-top:12px; } }
+    td.card { white-space:normal; }
+    td.card .roi-cell { min-width:150px; gap:10px; }
+    td.card .roi-cell > div { white-space:nowrap; }
+    td.card .roi-cell > .sch-cimg { margin-top:0; }
+@media (prefers-reduced-motion: reduce) {
+  * { transition:none !important; animation:none !important; scroll-behavior:auto !important; }
+}
+</style>  <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
+  <script data-gtag-deferred="G-2Q52C5EKG7">
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2Q52C5EKG7');
+    (function(){
+      var done = false;
+      function load(){
+        if (done) return; done = true;
+        var s = document.createElement('script'); s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7';
+        document.head.appendChild(s);
+      }
+      var evs = ['pointerdown','keydown','scroll','touchstart'];
+      function onEv(){ load(); evs.forEach(function(e){ window.removeEventListener(e, onEv); }); }
+      evs.forEach(function(e){ window.addEventListener(e, onEv, { passive:true }); });
+      // idle path is armed only once the page has finished loading, so gtag.js never
+      // competes with first paint / the load event; interaction still fires it at once
+      function idle(){ if ('requestIdleCallback' in window) window.requestIdleCallback(load, { timeout:4000 }); else window.setTimeout(load, 4000); }
+      if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle);
+    })();
+  </script>
+  <link rel="canonical" href="https://www.shopcardhub.com/bowman-1st-chrome-index">
+  <meta property="og:title" content="BOW26 · 2026 Bowman 1st Chrome Index — Live Ask-Basis Ticker | ShopCardHub">
+  <meta property="og:description" content="Ten flagship 2026 Bowman 1st Chrome Prospect Autos, price-weighted on the engine's nightly verified ask-floor marks. Base 100.00, 15% cap, divisor-continuous. A measurement, not a recommendation.">
+  <meta property="og:url" content="https://www.shopcardhub.com/bowman-1st-chrome-index">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://www.shopcardhub.com/og/indices.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://www.shopcardhub.com/og/indices.png">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "BOW26 · 2026 Bowman 1st Chrome Index — Live Ask-Basis Ticker | ShopCardHub", "description": "BOW26: the 2026 Bowman 1st Chrome index. Ten flagship 1st Chrome Prospect Autos, price-weighted on the engine's nightly verified ask-floor marks. Base 100.00, 15% single-card cap, divisor-continuous.", "url": "https://www.shopcardhub.com/bowman-1st-chrome-index", "isPartOf": {"@type": "WebSite", "name": "ShopCardHub", "url": "https://www.shopcardhub.com"}, "about": {"@type": "Thing", "name": "BOW26 · 2026 Bowman 1st Chrome Index"}, "mainEntity": {"@type": "Dataset", "name": "BOW26 index level — nightly", "description": "Price-weighted index of ten 2026 Bowman 1st Chrome Prospect Autographs, computed nightly from the price engine's verified ask-floor marks. Base 100.00 at inception; divisor-continuous.", "creator": {"@type": "Organization", "name": "ShopCardHub", "url": "https://www.shopcardhub.com"}, "license": "https://www.shopcardhub.com/about", "temporalCoverage": "2026-09-06/..", "distribution": {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://www.shopcardhub.com/data/indices.json"}}}</script>
+  <link rel="stylesheet" href="/css/site-fixes.css">
+</head><body>
+<!-- NAV:START -->
+<style>
+  /* === NAV (generated by tools/build-nav.js — do not hand-edit between NAV markers) === */
+  .nav-search { position:relative; margin-left:8px; }
+  .nav-search-input { font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--text); background:rgba(255,255,255,0.04); border:1px solid var(--border2); border-radius:2px; padding:7px 10px; width:118px; transition:width .2s, border-color .2s; outline:none; }
+  .nav-search-input:focus { width:180px; border-color:var(--accent); }
+  .nav-search-input::placeholder { color:var(--text-dim); opacity:.7; }
+  .nav-search-results { position:absolute; top:calc(100% + 6px); right:0; min-width:240px; background:rgba(7,9,12,0.98); backdrop-filter:blur(20px); border:1px solid var(--border2); border-top:2px solid var(--accent); padding:6px 0; display:none; z-index:320; max-height:340px; overflow-y:auto; }
+  .nav-search-results.show { display:block; }
+  .nav-search-results a { display:block; padding:8px 16px; font-size:11px; font-weight:600; letter-spacing:.5px; color:var(--text-dim); font-family:var(--fb); text-transform:none; }
+  .nav-search-results a:hover, .nav-search-results a.sel { color:var(--text-head); background:rgba(0,204,245,0.08); text-decoration:none; }
+  .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
+  .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
+  /* dropdown + search panels: solid ground (page --bg2, fallback) so hero text never bleeds through */
+  .nav-dropdown, .nav-search-results { background:var(--bg2, #0c1017); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
+  /* mega panel (Sports): groups render as columns */
+  .nav-dropdown.nav-mega { left:-140px; min-width:0; width:max-content; max-width:min(880px, calc(100vw - 48px)); padding:14px 10px 12px; }
+  .nav-mega .dd-cols { display:flex; flex-wrap:wrap; }
+  .nav-mega .dd-col { min-width:190px; padding:0 8px; }
+  .nav-mega .dd-col .dd-label { padding:4px 12px 6px; border-bottom:1px solid var(--border); margin-bottom:4px; }
+  .nav-mega .dd-col a { padding:8px 12px; }
+  /* "All X →" hub links */
+  .nav-dropdown a.dd-all { color:var(--accent); font-weight:700; }
+  .nav-dropdown a.dd-all:hover { color:var(--text-head); }
+  /* panel footer (money path) */
+  .dd-foot { display:flex; align-items:center; gap:16px; margin:10px 12px 2px; padding:10px 6px 4px; border-top:1px solid var(--border); }
+  .dd-foot-label { font-family:var(--fm); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); opacity:.7; white-space:nowrap; }
+  .nav-dropdown a.dd-money, .dd-foot a.dd-money { color:#00e07a; font-weight:700; padding:4px 6px; }
+  .nav-dropdown a.dd-money:hover { color:#4dffab; background:rgba(0,224,122,0.06); }
+  /* mobile equivalents */
+  .mobile-nav a.m-all { color:var(--accent); font-weight:700; }
+  .mobile-nav a.m-money { color:#00e07a; font-weight:700; }
+  /* mobile search + accordion */
+  .m-search { position:relative; margin-bottom:8px; }
+  .m-search .nav-search-input { width:100%; font-size:14px; padding:12px 14px; }
+  .m-search .nav-search-input:focus { width:100%; }
+  .m-search .nav-search-results { left:0; right:0; min-width:0; }
+  .m-home { padding-top:16px; }
+  .m-group { border-bottom:1px solid var(--border); }
+  .m-group-btn { display:flex; align-items:center; justify-content:space-between; width:100%; background:none; border:none; cursor:pointer; font-family:var(--fd); font-size:20px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); padding:16px 0; text-align:left; transition:color .15s; }
+  .m-group-btn:hover, .m-group-btn[aria-expanded="true"] { color:var(--text-head); }
+  .m-group-chevron { font-size:13px; opacity:.6; transition:transform .25s ease; }
+  .m-group-btn[aria-expanded="true"] .m-group-chevron { transform:rotate(180deg); }
+  .m-group-panel { max-height:0; overflow:hidden; transition:max-height .28s ease; }
+  .m-group-panel a { font-size:15px; padding:12px 0 12px 14px; border-bottom:1px solid var(--border); }
+  .m-group-panel a:last-child { border-bottom:none; }
+  .m-group-panel .m-sublabel { font-family:var(--fm); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); opacity:.55; padding:12px 0 2px 14px; }
+  </style>
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="logo">Shop<span>Card</span>Hub</div>
+      <div class="nav-links">
+        <div class="nav-item">
+          <a href="/research">Tools + Research <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+          <div class="dd-label">Trackers & Tools</div>
+          <a href="/bowman-bangers">Bowman Bangers ⭐</a>
+          <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Ranked by ROI</a>
+          <a href="/watchlist">My Vault — Watchlist & Portfolio</a>
+          <a href="/indices" style="color:#00ccf5;">Set Indices — All Tickers</a>
+          <a href="/cards" style="color:#00ccf5;">Card Charts — Every Tracked Card</a>
+          <hr>
+          <div class="dd-label">Research</div>
+          <a href="/research">Research Hub — All Guides</a>
+          <a href="/how-prices-work">How Prices Work</a>
+          <a href="/roy-watch-2026">ROY Watch 2026</a>
+          <a href="/track-record">Track Record — Calls Graded</a>
+          <a href="/blog">All Posts (Blog)</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/research">Sports <span class="chevron">▾</span></a>
+          <div class="nav-dropdown nav-mega">
+          <div class="dd-cols">
+            <div class="dd-col">
+              <div class="dd-label">⚾ Baseball</div>
+              <a href="/bowman-bangers">2026 Bowman Bangers ⭐</a>
+              <a href="/bowman-1st-chrome-index" style="color:#00ccf5;">BOW26 — 1st Chrome Index ⭐</a>
+              <a href="/ethan-holliday-rookie-cards">Ethan Holliday 1st Bowman</a>
+              <a href="/bowman-chrome-baseball-2026">Bowman Chrome — Aug 10 ⭐</a>
+              <a href="/bowman-sapphire-2026">Bowman Sapphire</a>
+              <a href="/topps-tribute-baseball">Topps Tribute — Jul 29</a>
+              <a href="/research#baseball" class="dd-all">All Baseball →</a>
+            </div>
+            <div class="dd-col">
+              <div class="dd-label">🏀 Basketball</div>
+              <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+              <a href="/victor-wembanyama-rookie-cards">Victor Wembanyama</a>
+              <a href="/topps-chrome-basketball-2026">Topps Chrome Basketball</a>
+              <a href="/topps-chrome-black-basketball">Chrome Black — Jul 28</a>
+              <a href="/best-basketball-cards-under-50">Best Cards Under $50</a>
+              <a href="/research#basketball" class="dd-all">All Basketball →</a>
+            </div>
+            <div class="dd-col">
+              <div class="dd-label">🏈 Football</div>
+              <a href="/nfl-rookie-cards-2026">2026 NFL Rookie Guide</a>
+              <a href="/topps-cosmic-chrome-football">Cosmic Chrome</a>
+              <a href="/topps-chrome-black-football">Chrome Black — Jul 10</a>
+              <a href="/best-football-cards-under-50">Best Cards Under $50</a>
+              <a href="/topps-flagship-football">Flagship Football — Aug 21</a>
+              <a href="/bowman-football">Bowman Football — Sep 8</a>
+              <a href="/research#football" class="dd-all">All Football →</a>
+            </div>
+            <div class="dd-col">
+              <div class="dd-label">⚽ Soccer</div>
+              <a href="/world-cup-2026-soccer-cards">World Cup 2026 Cards</a>
+              <a href="/lamine-yamal-rookie-cards">Lamine Yamal</a>
+              <a href="/erling-haaland-rookie-cards">Erling Haaland</a>
+              <a href="/lionel-messi-cards">Lionel Messi</a>
+              <a href="/research#soccer" class="dd-all">All Soccer →</a>
+            </div>
+          </div>
+          <div class="dd-foot"><span class="dd-foot-label">Own the card, not just the guide</span><a href="https://comc.com/Users/DBCooper" class="dd-money" target="_blank" rel="noopener">Browse Our COMC Inventory →</a></div>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/pokemon-tcg-2026">Pokémon <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+          <div class="dd-label">Sets & Guides</div>
+          <a href="/pokemon-30th-anniversary-2026" style="color:#f5c800;">30th Celebration — Sep 16 ★</a>
+          <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
+          <a href="/chaos-rising">Chaos Rising</a>
+          <a href="/ascended-heroes">Ascended Heroes</a>
+          <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
+          <a href="/pokemon-tcg-2026">2026 Pokémon TCG Guide</a>
+          <a href="/research#pokemon" class="dd-all">All Pokémon →</a>
+          <hr>
+          <div class="dd-label">Set Indices — Live Trackers</div>
+          <a href="/pitch-black-index" style="color:#a78bfa;">PB26 — Pitch Black</a>
+          <a href="/chaos-rising-index" style="color:#00e0c0;">CR26 — Chaos Rising</a>
+          <a href="/ascended-heroes-index" style="color:#f5c800;">AH26 — Ascended Heroes</a>
+          <a href="/prismatic-evolutions-index" style="color:#e879f9;">PRIS25 — Prismatic Evolutions</a>
+          <a href="/destined-rivals-index" style="color:#ff2e55;">DR25 — Destined Rivals</a>
+          <a href="/indices" class="dd-all">All Indices →</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="/psa-grading-guide">Grading + Supplies <span class="chevron">▾</span></a>
+          <div class="nav-dropdown">
+          <div class="dd-label">Grading</div>
+          <a href="/psa-grading-guide">PSA Grading Guide</a>
+          <a href="/tag-grading-guide">TAG Grading Guide — AI Slabs</a>
+          <hr>
+          <div class="dd-label">Supplies</div>
+          <a href="/best-card-supplies">Best Card Supplies</a>
+          <a href="/research#grading" class="dd-all">All Grading & Supplies →</a>
+          </div>
+        </div>
+        <div class="nav-search" id="nav-search-desktop">
+          <input type="text" class="nav-search-input" id="nav-search-input-d" placeholder="Search…" aria-label="Search the site" autocomplete="off">
+          <div class="nav-search-results" id="nav-search-results-d" role="listbox"></div>
+        </div>
+        <a href="/#newsletter" class="nav-cta nav-cta2" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent);">📬 Tuesday Tape</a>
+        <a href="/watchlist" class="nav-cta">My Vault</a>
+      </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+<!-- ═══ MOBILE DRAWER ═══ -->
+<div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+  <div class="m-search">
+    <input type="text" class="nav-search-input" id="nav-search-input-m" placeholder="Search the site…" aria-label="Search the site" autocomplete="off">
+    <div class="nav-search-results" id="nav-search-results-m" role="listbox"></div>
+  </div>
+  <a href="/" class="m-home">Home</a>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-0">Tools + Research<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-0">
+        <div class="m-sublabel">Trackers & Tools</div>
+        <a href="/bowman-bangers">Bowman Bangers ⭐</a>
+        <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Ranked by ROI</a>
+        <a href="/watchlist">My Vault — Watchlist & Portfolio</a>
+        <a href="/indices" style="color:#00ccf5;">Set Indices — All Tickers</a>
+        <a href="/cards" style="color:#00ccf5;">Card Charts — Every Tracked Card</a>
+        <div class="m-sublabel">Research</div>
+        <a href="/research">Research Hub — All Guides</a>
+        <a href="/how-prices-work">How Prices Work</a>
+        <a href="/roy-watch-2026">ROY Watch 2026</a>
+        <a href="/track-record">Track Record — Calls Graded</a>
+        <a href="/blog">All Posts (Blog)</a>
+        </div>
+      </div>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-1">Sports<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-1">
+        <div class="m-sublabel">⚾ Baseball</div>
+        <a href="/bowman-bangers">2026 Bowman Bangers ⭐</a>
+        <a href="/bowman-1st-chrome-index" style="color:#00ccf5;">BOW26 — 1st Chrome Index ⭐</a>
+        <a href="/ethan-holliday-rookie-cards">Ethan Holliday 1st Bowman</a>
+        <a href="/bowman-chrome-baseball-2026">Bowman Chrome — Aug 10 ⭐</a>
+        <a href="/bowman-sapphire-2026">Bowman Sapphire</a>
+        <a href="/topps-tribute-baseball">Topps Tribute — Jul 29</a>
+        <a href="/research#baseball" class="m-all">All Baseball →</a>
+        <div class="m-sublabel">🏀 Basketball</div>
+        <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
+        <a href="/victor-wembanyama-rookie-cards">Victor Wembanyama</a>
+        <a href="/topps-chrome-basketball-2026">Topps Chrome Basketball</a>
+        <a href="/topps-chrome-black-basketball">Chrome Black — Jul 28</a>
+        <a href="/best-basketball-cards-under-50">Best Cards Under $50</a>
+        <a href="/research#basketball" class="m-all">All Basketball →</a>
+        <div class="m-sublabel">🏈 Football</div>
+        <a href="/nfl-rookie-cards-2026">2026 NFL Rookie Guide</a>
+        <a href="/topps-cosmic-chrome-football">Cosmic Chrome</a>
+        <a href="/topps-chrome-black-football">Chrome Black — Jul 10</a>
+        <a href="/best-football-cards-under-50">Best Cards Under $50</a>
+        <a href="/topps-flagship-football">Flagship Football — Aug 21</a>
+        <a href="/bowman-football">Bowman Football — Sep 8</a>
+        <a href="/research#football" class="m-all">All Football →</a>
+        <div class="m-sublabel">⚽ Soccer</div>
+        <a href="/world-cup-2026-soccer-cards">World Cup 2026 Cards</a>
+        <a href="/lamine-yamal-rookie-cards">Lamine Yamal</a>
+        <a href="/erling-haaland-rookie-cards">Erling Haaland</a>
+        <a href="/lionel-messi-cards">Lionel Messi</a>
+        <a href="/research#soccer" class="m-all">All Soccer →</a>
+        <a href="https://comc.com/Users/DBCooper" class="m-money" target="_blank" rel="noopener">Browse Our COMC Inventory →</a>
+        </div>
+      </div>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-2">Pokémon<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-2">
+        <div class="m-sublabel">Sets & Guides</div>
+        <a href="/pokemon-30th-anniversary-2026" style="color:#f5c800;">30th Celebration — Sep 16 ★</a>
+        <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
+        <a href="/chaos-rising">Chaos Rising</a>
+        <a href="/ascended-heroes">Ascended Heroes</a>
+        <a href="/prismatic-evolutions-guide">Prismatic Evolutions</a>
+        <a href="/pokemon-tcg-2026">2026 Pokémon TCG Guide</a>
+        <a href="/research#pokemon" class="m-all">All Pokémon →</a>
+        <div class="m-sublabel">Set Indices — Live Trackers</div>
+        <a href="/pitch-black-index" style="color:#a78bfa;">PB26 — Pitch Black</a>
+        <a href="/chaos-rising-index" style="color:#00e0c0;">CR26 — Chaos Rising</a>
+        <a href="/ascended-heroes-index" style="color:#f5c800;">AH26 — Ascended Heroes</a>
+        <a href="/prismatic-evolutions-index" style="color:#e879f9;">PRIS25 — Prismatic Evolutions</a>
+        <a href="/destined-rivals-index" style="color:#ff2e55;">DR25 — Destined Rivals</a>
+        <a href="/indices" class="m-all">All Indices →</a>
+        </div>
+      </div>
+      <div class="m-group">
+        <button class="m-group-btn" aria-expanded="false" aria-controls="mg-3">Grading + Supplies<span class="m-group-chevron">▾</span></button>
+        <div class="m-group-panel" id="mg-3">
+        <div class="m-sublabel">Grading</div>
+        <a href="/psa-grading-guide">PSA Grading Guide</a>
+        <a href="/tag-grading-guide">TAG Grading Guide — AI Slabs</a>
+        <div class="m-sublabel">Supplies</div>
+        <a href="/best-card-supplies">Best Card Supplies</a>
+        <a href="/research#grading" class="m-all">All Grading & Supplies →</a>
+        </div>
+      </div>
+  <a href="/#newsletter" class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
+  <a href="/watchlist" class="m-cta">My Vault →</a>
+</div>
+<script>
+/* === NAV controller (generated) — hamburger toggle + accordion + search + active page === */
+(function(){
+  var btn = document.getElementById('hamburger');
+  var drawer = document.getElementById('mobile-nav');
+  if (btn && drawer) {
+    function closeDrawer(){ btn.classList.remove('open'); drawer.classList.remove('open'); btn.setAttribute('aria-expanded','false'); drawer.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+    btn.addEventListener('click', function(){
+      var open = !drawer.classList.contains('open');
+      btn.classList.toggle('open', open); drawer.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open)); drawer.setAttribute('aria-hidden', String(!open));
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
+    drawer.querySelectorAll('.m-group-btn').forEach(function(b){
+      b.addEventListener('click', function(){
+        var exp = b.getAttribute('aria-expanded') === 'true';
+        b.setAttribute('aria-expanded', String(!exp));
+        var p = document.getElementById(b.getAttribute('aria-controls'));
+        if (p) p.style.maxHeight = exp ? '' : p.scrollHeight + 'px';
+      });
+    });
+  }
+  var INDEX = [{"t":"Home","u":"/","n":"home"},{"t":"Tools + Research","u":"/research","n":"tools research research"},{"t":"Bowman Bangers ⭐","u":"/bowman-bangers","n":"bowman bangers bowman bangers"},{"t":"Best Boxes 2026 — Ranked by ROI","u":"/best-hobby-boxes-2026","n":"best boxes 2026 ranked by roi best hobby boxes 2026"},{"t":"My Vault — Watchlist & Portfolio","u":"/watchlist","n":"my vault watchlist portfolio watchlist"},{"t":"Set Indices — All Tickers","u":"/indices","n":"set indices all tickers indices"},{"t":"Card Charts — Every Tracked Card","u":"/cards","n":"card charts every tracked card cards"},{"t":"How Prices Work","u":"/how-prices-work","n":"how prices work how prices work"},{"t":"ROY Watch 2026","u":"/roy-watch-2026","n":"roy watch 2026 roy watch 2026"},{"t":"Track Record — Calls Graded","u":"/track-record","n":"track record calls graded track record"},{"t":"All Posts (Blog)","u":"/blog","n":"all posts blog blog"},{"t":"BOW26 — 1st Chrome Index ⭐","u":"/bowman-1st-chrome-index","n":"bow26 1st chrome index bowman 1st chrome index"},{"t":"Ethan Holliday 1st Bowman","u":"/ethan-holliday-rookie-cards","n":"ethan holliday 1st bowman ethan holliday rookie cards"},{"t":"Bowman Chrome — Aug 10 ⭐","u":"/bowman-chrome-baseball-2026","n":"bowman chrome aug 10 bowman chrome baseball 2026"},{"t":"Bowman Sapphire","u":"/bowman-sapphire-2026","n":"bowman sapphire bowman sapphire 2026"},{"t":"Topps Tribute — Jul 29","u":"/topps-tribute-baseball","n":"topps tribute jul 29 topps tribute baseball"},{"t":"Cooper Flagg Rookie Cards","u":"/cooper-flagg-rookie-cards","n":"cooper flagg rookie cards cooper flagg rookie cards"},{"t":"Victor Wembanyama","u":"/victor-wembanyama-rookie-cards","n":"victor wembanyama victor wembanyama rookie cards"},{"t":"Topps Chrome Basketball","u":"/topps-chrome-basketball-2026","n":"topps chrome basketball topps chrome basketball 2026"},{"t":"Chrome Black — Jul 28","u":"/topps-chrome-black-basketball","n":"chrome black jul 28 topps chrome black basketball"},{"t":"Best Cards Under $50","u":"/best-basketball-cards-under-50","n":"best cards under 50 best basketball cards under 50"},{"t":"2026 NFL Rookie Guide","u":"/nfl-rookie-cards-2026","n":"2026 nfl rookie guide nfl rookie cards 2026"},{"t":"Cosmic Chrome","u":"/topps-cosmic-chrome-football","n":"cosmic chrome topps cosmic chrome football"},{"t":"Chrome Black — Jul 10","u":"/topps-chrome-black-football","n":"chrome black jul 10 topps chrome black football"},{"t":"Best Cards Under $50","u":"/best-football-cards-under-50","n":"best cards under 50 best football cards under 50"},{"t":"Flagship Football — Aug 21","u":"/topps-flagship-football","n":"flagship football aug 21 topps flagship football"},{"t":"Bowman Football — Sep 8","u":"/bowman-football","n":"bowman football sep 8 bowman football"},{"t":"World Cup 2026 Cards","u":"/world-cup-2026-soccer-cards","n":"world cup 2026 cards world cup 2026 soccer cards"},{"t":"Lamine Yamal","u":"/lamine-yamal-rookie-cards","n":"lamine yamal lamine yamal rookie cards"},{"t":"Erling Haaland","u":"/erling-haaland-rookie-cards","n":"erling haaland erling haaland rookie cards"},{"t":"Lionel Messi","u":"/lionel-messi-cards","n":"lionel messi lionel messi cards"},{"t":"Pokémon","u":"/pokemon-tcg-2026","n":"pok mon pokemon tcg 2026"},{"t":"30th Celebration — Sep 16 ★","u":"/pokemon-30th-anniversary-2026","n":"30th celebration sep 16 pokemon 30th anniversary 2026"},{"t":"Pitch Black — Jul 17","u":"/pitch-black-set-guide","n":"pitch black jul 17 pitch black set guide"},{"t":"Chaos Rising","u":"/chaos-rising","n":"chaos rising chaos rising"},{"t":"Ascended Heroes","u":"/ascended-heroes","n":"ascended heroes ascended heroes"},{"t":"Prismatic Evolutions","u":"/prismatic-evolutions-guide","n":"prismatic evolutions prismatic evolutions guide"},{"t":"PB26 — Pitch Black","u":"/pitch-black-index","n":"pb26 pitch black pitch black index"},{"t":"CR26 — Chaos Rising","u":"/chaos-rising-index","n":"cr26 chaos rising chaos rising index"},{"t":"AH26 — Ascended Heroes","u":"/ascended-heroes-index","n":"ah26 ascended heroes ascended heroes index"},{"t":"PRIS25 — Prismatic Evolutions","u":"/prismatic-evolutions-index","n":"pris25 prismatic evolutions prismatic evolutions index"},{"t":"DR25 — Destined Rivals","u":"/destined-rivals-index","n":"dr25 destined rivals destined rivals index"},{"t":"Grading + Supplies","u":"/psa-grading-guide","n":"grading supplies psa grading guide"},{"t":"TAG Grading Guide — AI Slabs","u":"/tag-grading-guide","n":"tag grading guide ai slabs tag grading guide"},{"t":"Best Card Supplies","u":"/best-card-supplies","n":"best card supplies best card supplies"},{"t":"About","u":"/about","n":"about about"},{"t":"Affiliate Disclosure","u":"/affiliate-disclosure","n":"affiliate disclosure affiliate disclosure"},{"t":"Privacy Policy","u":"/privacy","n":"privacy policy privacy"},{"t":"Shohei Ohtani Cards","u":"/shohei-ohtani-cards","n":"shohei ohtani cards shohei ohtani cards"},{"t":"Munetaka Murakami","u":"/munetaka-murakami-rookie-cards","n":"munetaka murakami munetaka murakami rookie cards"},{"t":"Jacob Misiorowski","u":"/jacob-misiorowski-rookie-cards","n":"jacob misiorowski jacob misiorowski rookie cards"},{"t":"Pete Crow-Armstrong","u":"/pete-crow-armstrong-cards","n":"pete crow armstrong pete crow armstrong cards"},{"t":"Chase DeLauter","u":"/chase-delauter-rookie-cards","n":"chase delauter chase delauter rookie cards"},{"t":"Roman Anthony Rookie Cards","u":"/roman-anthony-rookie-cards","n":"roman anthony rookie cards roman anthony rookie cards"},{"t":"Topps Series 1","u":"/topps-series-1-2026","n":"topps series 1 topps series 1 2026"},{"t":"Topps Chrome Baseball","u":"/topps-chrome-baseball-2026","n":"topps chrome baseball topps chrome baseball 2026"},{"t":"Topps Finest Baseball","u":"/topps-finest-baseball","n":"topps finest baseball topps finest baseball"},{"t":"Topps Inception Baseball","u":"/topps-inception-baseball","n":"topps inception baseball topps inception baseball"},{"t":"Topps Tier One","u":"/topps-tier-one-baseball","n":"topps tier one topps tier one baseball"},{"t":"Best Baseball Cards Under $50","u":"/best-baseball-cards-under-50","n":"best baseball cards under 50 best baseball cards under 50"},{"t":"Chrome Updates Basketball","u":"/topps-chrome-updates-basketball","n":"chrome updates basketball topps chrome updates basketball"},{"t":"Chrome Updates Sapphire (BKB)","u":"/topps-chrome-updates-basketball-sapphire-edition","n":"chrome updates sapphire bkb topps chrome updates basketball sapphire edition"},{"t":"Chrome Cactus Jack","u":"/topps-chrome-cactus-jack-basketball","n":"chrome cactus jack topps chrome cactus jack basketball"},{"t":"Topps Inception Basketball","u":"/topps-inception-basketball","n":"topps inception basketball topps inception basketball"},{"t":"WNBA Cards 2026","u":"/wnba-cards-2026","n":"wnba cards 2026 wnba cards 2026"},{"t":"Kylian Mbappé","u":"/kylian-mbappe-rookie-cards","n":"kylian mbapp kylian mbappe rookie cards"},{"t":"Harry Kane","u":"/harry-kane-cards","n":"harry kane harry kane cards"},{"t":"Cristiano Ronaldo","u":"/cristiano-ronaldo-cards","n":"cristiano ronaldo cristiano ronaldo cards"},{"t":"Topps Pristine Baseball","u":"/topps-pristine-baseball","n":"topps pristine baseball topps pristine baseball"},{"t":"Topps Series 2 2026","u":"/topps-series-2-2026","n":"topps series 2 2026 topps series 2 2026"},{"t":"Topps Museum Collection Baseball","u":"/topps-museum-collection-baseball","n":"topps museum collection baseball topps museum collection baseball"},{"t":"Topps Definitive Basketball","u":"/topps-definitive-basketball","n":"topps definitive basketball topps definitive basketball"},{"t":"LeBron James Cards","u":"/lebron-james-cards","n":"lebron james cards lebron james cards"},{"t":"Adley Rutschman Cards","u":"/adley-rutschman-cards","n":"adley rutschman cards adley rutschman cards"},{"t":"Cameron Boozer Rookie Cards","u":"/cameron-boozer-rookie-cards","n":"cameron boozer rookie cards cameron boozer rookie cards"},{"t":"Fernando Mendoza Rookie Cards","u":"/fernando-mendoza-rookie-cards","n":"fernando mendoza rookie cards fernando mendoza rookie cards"},{"t":"2026 Topps Chrome Sapphire Baseball","u":"/topps-chrome-sapphire-2026","n":"2026 topps chrome sapphire baseball topps chrome sapphire 2026"},{"t":"2025-26 Topps Pristine Basketball","u":"/topps-pristine-basketball","n":"2025 26 topps pristine basketball topps pristine basketball"},{"t":"Hobby Box ROI Calculator","u":"/hobby-box-roi-calculator","n":"hobby box roi calculator hobby box roi calculator"},{"t":"Card chart: Aiva Arquette","u":"/card-aiva-arquette","n":"card chart aiva arquette card aiva arquette"},{"t":"Card chart: Andrew Fischer","u":"/card-andrew-fischer","n":"card chart andrew fischer card andrew fischer"},{"t":"Card chart: Daniel Pierce","u":"/card-daniel-pierce","n":"card chart daniel pierce card daniel pierce"},{"t":"Card chart: Edward Florentino","u":"/card-edward-florentino","n":"card chart edward florentino card edward florentino"},{"t":"Card chart: Ethan Holliday Sapphire","u":"/card-ethan-holliday-sapphire","n":"card chart ethan holliday sapphire card ethan holliday sapphire"},{"t":"Card chart: Ethan Holliday","u":"/card-ethan-holliday","n":"card chart ethan holliday card ethan holliday"},{"t":"Card chart: Gage Jump","u":"/card-gage-jump","n":"card chart gage jump card gage jump"},{"t":"Card chart: Justin Gonzalez","u":"/card-justin-gonzalez","n":"card chart justin gonzalez card justin gonzalez"},{"t":"Card chart: Kevin Mcgonigle Sapphire","u":"/card-kevin-mcgonigle-sapphire","n":"card chart kevin mcgonigle sapphire card kevin mcgonigle sapphire"},{"t":"Card chart: Konnor Griffin Sapphire","u":"/card-konnor-griffin-sapphire","n":"card chart konnor griffin sapphire card konnor griffin sapphire"},{"t":"Card chart: Marek Houston","u":"/card-marek-houston","n":"card chart marek houston card marek houston"},{"t":"Card chart: Mega Darkrai Ex Sir","u":"/card-mega-darkrai-ex-sir","n":"card chart mega darkrai ex sir card mega darkrai ex sir"},{"t":"Card chart: Mega Greninja Ex Sir","u":"/card-mega-greninja-ex-sir","n":"card chart mega greninja ex sir card mega greninja ex sir"},{"t":"Card chart: Mega Lucario Ex Sir","u":"/card-mega-lucario-ex-sir","n":"card chart mega lucario ex sir card mega lucario ex sir"},{"t":"Card chart: Roman Anthony Sapphire","u":"/card-roman-anthony-sapphire","n":"card chart roman anthony sapphire card roman anthony sapphire"},{"t":"Card chart: Seong Jun Kim","u":"/card-seong-jun-kim","n":"card chart seong jun kim card seong jun kim"},{"t":"Card chart: Tr Mewtwo Ex Sir","u":"/card-tr-mewtwo-ex-sir","n":"card chart tr mewtwo ex sir card tr mewtwo ex sir"},{"t":"Card chart: Travis Bazzana","u":"/card-travis-bazzana","n":"card chart travis bazzana card travis bazzana"},{"t":"Card chart: Umbreon Ex Sir Pe","u":"/card-umbreon-ex-sir-pe","n":"card chart umbreon ex sir pe card umbreon ex sir pe"},{"t":"Card chart: Wehiwa Aloy","u":"/card-wehiwa-aloy","n":"card chart wehiwa aloy card wehiwa aloy"}];
+  function nk(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); }
+  function setup(input, results){
+    if (!input || !results) return;
+    var sel = -1;
+    function render(items){
+      sel = -1;
+      if (!input.value.trim()){ results.classList.remove('show'); results.innerHTML=''; return; }
+      if (!items.length){ results.innerHTML='<div class="ns-empty">No matches</div>'; results.classList.add('show'); return; }
+      results.innerHTML = items.map(function(it){ return '<a href="'+it.u+'">'+it.t+'</a>'; }).join('');
+      results.classList.add('show');
+    }
+    function find(q){ q = nk(q); if(!q) return []; return INDEX.filter(function(it){ return it.n.indexOf(q) > -1; }).slice(0,8); }
+    input.addEventListener('input', function(){ render(find(input.value)); });
+    input.addEventListener('keydown', function(e){
+      var links = results.querySelectorAll('a');
+      if (e.key === 'ArrowDown'){ e.preventDefault(); sel = Math.min(sel+1, links.length-1); }
+      else if (e.key === 'ArrowUp'){ e.preventDefault(); sel = Math.max(sel-1, 0); }
+      else if (e.key === 'Enter'){ var t = links[sel] || links[0]; if (t) location.href = t.getAttribute('href'); return; }
+      else if (e.key === 'Escape'){ input.value=''; render([]); input.blur(); return; }
+      else return;
+      links.forEach(function(l,i){ l.classList.toggle('sel', i === sel); });
+    });
+    document.addEventListener('click', function(e){ if (!results.contains(e.target) && e.target !== input) results.classList.remove('show'); });
+  }
+  setup(document.getElementById('nav-search-input-d'), document.getElementById('nav-search-results-d'));
+  setup(document.getElementById('nav-search-input-m'), document.getElementById('nav-search-results-m'));
+  // active-page highlight
+  var path = location.pathname.replace(/index\.html$/,'').replace(/\.html$/,'');
+  if (path.length > 1 && path.charAt(path.length-1) === '/') path = path.slice(0,-1);
+  document.querySelectorAll('.nav-links .nav-item > a, .mobile-nav a').forEach(function(a){
+    var h = a.getAttribute('href'); if (!h || h.charAt(0) !== '/') return;
+    var hn = h.replace(/\.html$/,''); if (hn.length > 1 && hn.charAt(hn.length-1) === '/') hn = hn.slice(0,-1);
+    if (hn === path){ a.classList.add('nav-active'); a.setAttribute('aria-current','page'); }
+  });
+})();
+</script>
+<!-- NAV:END -->
+
+<div class="livebar">BOW26 · LIVE — level recomputed nightly from the engine's verified ask-floor marks</div>
+
+<div class="wrap">
+<div class="crumb" style="padding:14px 0 0;">RESEARCH / <a href="/indices" style="color:var(--dim);">SET INDICES</a> / <b>BOW26</b></div>
+
+<div class="strip">
+<div class="chip on"><b>BOW26</b> <span id="chip-lv" class="soon">1st Chrome Autos · live</span></div>
+<a class="chip" href="/pitch-black-index"><b>PB26</b> <span class="soon">Pitch Black</span></a>
+<a class="chip" href="/chaos-rising-index"><b>CR26</b> <span class="soon">Chaos Rising</span></a>
+<a class="chip" href="/ascended-heroes-index"><b>AH26</b> <span class="soon">Ascended Heroes</span></a>
+<a class="chip" href="/prismatic-evolutions-index"><b>PRIS25</b> <span class="soon">Prismatic Evolutions</span></a>
+<a class="chip" href="/destined-rivals-index"><b>DR25</b> <span class="soon">Destined Rivals</span></a>
+<div class="chip"><b>BCB26</b> <span class="soon">Bowman Chrome · Sep 9</span></div>
+<div class="chip"><b>SAPH26</b> <span class="soon">coming</span></div>
+</div>
+
+<div class="mast hero-grid">
+<div>
+<div class="eyebrow">▮ Set Index · Price-Weighted · ASK BASIS · Base 100.00</div>
+<h1>BOW26 <span class="tick">·</span> 2026 Bowman 1st Chrome Index</h1>
+<div class="subline">Tracks the set's <b>1st Chrome Prospect Autos</b> — ten cards, price-weighted on the engine's nightly verified ask-floor marks for <b>the exact card, verified</b> (right code, right year, no slabs, no parallels, no lots). Launched at <b>100.00</b> on inception day · 15% single-card cap at constitution · divisor-continuous. An index is a measurement, not a recommendation.</div>
+<div class="basisnote">Marks are asking-price floors, labeled <span style="color:var(--gd);">ask basis</span>. Once enough real auction closes accumulate, the divisor restates to hammer basis — the level does not move on a basis change.</div>
+</div>
+<figure class="hero-card-photo">
+      <span data-card-img="ebay:ethan-holliday" data-card-name="Ethan Holliday 1st Bowman Chrome Auto" data-card-sub="1ST BOWMAN" data-card-size="hero" data-card-surface="bow26-hero"></span>
+      <figcaption class="hero-card-cap">Constituent at the 15% cap &middot; <b>Ethan Holliday CPA-EH</b> &middot; live eBay listing</figcaption>
+    </figure>
+<div class="levelbox">
+<div class="level"><span id="lv">—</span><span class="basisbadge" title="Constituent marks are nightly verified ask-floor medians, not sold prices — labeled plainly until hammer coverage supports a restatement.">ASK</span></div>
+<div class="levelchg" id="lvchg">loading nightly marks…</div>
+</div>
+</div>
+
+<div class="stats" id="stats">
+<div class="stat"><div class="k">Basket Value</div><div class="v" id="st-bv">—</div></div>
+<div class="stat"><div class="k">Priced / Universe</div><div class="v" id="st-pu">—</div></div>
+<div class="stat"><div class="k">Top 5 Weight</div><div class="v acc" id="st-t5">—</div></div>
+<div class="stat" title="1 / Σ(weight²) — the index behaves like an equal-weight basket of this many cards."><div class="k">Effective Holdings</div><div class="v" id="st-eff">—</div></div>
+<div class="stat" title="Cross-sectional skewness of the 10 current weights. High = a few cards ARE the index. Disclosure, not a flaw."><div class="k">Weight Skew</div><div class="v gold" id="st-skew">—</div></div>
+<div class="stat" title="Cross-sectional excess kurtosis of the 10 current weights — how tail-heavy the weight distribution is vs normal."><div class="k">Excess Kurtosis</div><div class="v gold" id="st-kurt">—</div></div>
+<div class="stat"><div class="k">Inception</div><div class="v" id="st-inc">—</div></div>
+<div class="stat" title="Constituents whose current weight sits at/above the 15% single-card cap applied at constitution."><div class="k">At 15% Cap</div><div class="v" id="st-cap">—</div></div>
+</div>
+<div class="statnote">EFFECTIVE HOLDINGS = 1/HHI. Weight skew &amp; excess kurtosis are of the weight distribution across the 10 constituents — they say how concentrated the basket is, plainly.</div>
+
+<div class="conc" id="conc" hidden>
+<div class="concbar"><div class="a" id="cb-a"></div><div class="b" id="cb-b"></div><div class="c" id="cb-c"></div></div>
+<div class="conclbl"><span><span class="sw" style="background:var(--ac)"></span><span id="cl-a">TOP CARD</span></span><span><span class="sw" style="background:#2a6b7c"></span><span id="cl-b">NEXT 4</span></span><span><span class="sw" style="background:#1a2733"></span><span id="cl-c">REST</span></span></div>
+</div>
+
+<div class="tabs" role="tablist" aria-label="BOW26 views">
+<button class="tab on" id="tab-autos" role="tab" aria-selected="true" aria-controls="panel-autos">Autos Index</button>
+<button class="tab" id="tab-base" role="tab" aria-selected="false" aria-controls="panel-base">Base Top-100 <span class="p2">PRE</span></button>
+<button class="tab" id="tab-method" role="tab" aria-selected="false" aria-controls="panel-method">Methodology</button>
+</div>
+
+<div id="panel-autos" role="tabpanel" aria-labelledby="tab-autos">
+
+<div class="chartbox">
+<div id="lv-chart"><div style="font-family:var(--fm);font-size:11px;color:var(--dim);padding:30px 0;text-align:center;">Drawing the level from nightly marks…</div></div>
+<div class="chartlgd"><span><span class="ln"></span>BOW26 level (live, from inception)</span><span><span class="ln dash"></span>backcast — same basket, pre-inception</span><span id="chart-n"></span></div>
+</div>
+
+<div class="tbl-scroll">
+<table>
+<thead><tr><th>RK</th><th>Card</th><th>CPA</th><th>Mark</th><th>Weight</th><th>Units</th><th>7D</th><th>Signal</th><th>★</th></tr></thead>
+<tbody id="autos-rows">
+<tr><td colspan="9" style="text-align:center;color:var(--dim);font-family:var(--fm);font-size:11px;padding:18px;">Loading the basket…</td></tr>
+</tbody>
+</table>
+</div>
+<div class="statnote" id="autos-note">Marks are the engine's nightly verified ask-floor medians for the exact card — dated, sourced, never hand-typed. Units are fixed at constitution; only prices move the level.</div>
+
+</div><!-- /panel-autos -->
+
+<div id="panel-base" role="tabpanel" aria-labelledby="tab-base" hidden>
+<div class="banner">PRE-ACTIVATION — activates when 60 of 100 cards carry a sourced mark</div>
+<div class="statnote" id="base-note" style="margin-bottom:10px;"></div>
+<div class="tbl-scroll">
+<table>
+<thead><tr><th>#</th><th>Player</th><th>Team</th><th>1st</th><th>Price</th></tr></thead>
+<tbody id="base-rows">
+<tr><td colspan="5" style="text-align:center;color:var(--dim);font-family:var(--fm);font-size:11px;padding:18px;">Loading the universe…</td></tr>
+</tbody>
+</table>
+</div>
+</div><!-- /panel-base -->
+
+<div id="panel-method" role="tabpanel" aria-labelledby="tab-method" hidden>
+<div class="block"><h3>Methodology — plainly</h3>
+<div class="legend">
+<b>LEVEL</b> — level = Σ (units × price) ÷ divisor. Each constituent's units were fixed at constitution (<span id="m-inception">—</span>) so no single card exceeded <b>15%</b> of basket value on day one; the divisor (<span id="m-divisor">—</span>) was set so the index launched at exactly 100.00. At base 100 the level IS the cumulative return. ·
+<b>PRICE-WEIGHTED</b> — weight = units × price ÷ basket value. Weights drift with prices between constitutions; the cap binds at constitution, not nightly. ·
+<b>MARKS</b> — the price engine's nightly verified ask-floor medians for <b>the exact card, verified</b>: right code, right year, no graded slabs, no parallels, no lots, no reprints. Asks, not solds — labeled <span style="color:var(--gd);">ask basis</span> everywhere on this page. How the engine prices cards, one-page read: <a href="/how-prices-work">/how-prices-work</a> · every tracked chart: <a href="/cards">/cards</a>. ·
+<b>HAMMER RESTATEMENT</b> — when the engine's captured auction closes cover enough of basket value (inside 30 days), the divisor restates to hammer basis. A basis change never moves the level; it is logged in the divisor log. ·
+<b>DIVISOR CONTINUITY</b> — any composition change (inclusion, drop, cap re-application) adjusts the divisor so the level is identical before and after. Only prices move the level. ·
+<b>BACKCAST</b> — chart dates before inception apply the same fixed units and divisor to the engine's historical nightly marks, and are drawn dashed and labeled. The backcast starts on the first night every constituent had a mark; no history is invented. ·
+<b>BASE TOP-100</b> — the Base tab is pre-activation: it lists the universe with no prices and activates when 60 of 100 cards carry a sourced mark. No fake numbers, ever. ·
+<b>NO CALLS</b> — no picks live on this page — calls live on <a href="/bowman-bangers">the board</a> and the <a href="/track-record">Track Record</a>. An index is a measurement, not a recommendation.
+</div></div>
+</div><!-- /panel-method -->
+
+  <!-- SIGNAL ALERTS — email capture (renders only when data/newsletter.json lists this page — MailerLite via /api/subscribe) -->
+  <div class="sig-alerts" data-schsub="bow26" style="display:none; background:var(--p1); border:1px solid var(--bd2); border-left:3px solid var(--ac); padding:22px 20px; margin:30px 0;">
+    <div style="font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--ac); margin-bottom:8px;">&#9993; Signal Alerts</div>
+    <div style="font-family:var(--fd); font-size:22px; font-weight:900; text-transform:uppercase; color:var(--th); letter-spacing:0.5px; margin-bottom:6px;">The Tape, In Your Inbox</div>
+    <p style="font-size:14px; color:var(--dim); line-height:1.6; max-width:560px; margin-bottom:16px;">The engine re-prices every tracked card nightly. Get the weekly recap of what moved.</p>
+    <form class="schsub-form" style="display:flex; gap:10px; flex-wrap:wrap; max-width:560px;">
+      <input type="email" name="email_address" required placeholder="you@example.com" aria-label="Email address"
+        style="flex:1 1 240px; min-width:0; background:var(--p2); border:1px solid var(--bd2); border-radius:2px; color:var(--tx); font-family:var(--fm); font-size:13px; padding:12px 14px; min-height:44px;">
+      <button type="submit" class="btn-primary" style="border:none; cursor:pointer;">Get the Recap &#8594;</button>
+    </form>
+    <div class="schsub-msg" style="display:none; font-family:var(--fm); font-size:12px; color:var(--gn); margin-top:12px;"></div>
+    <div style="font-family:var(--fm); font-size:11px; color:var(--dim); letter-spacing:0.5px; margin-top:12px; opacity:0.8;">Weekly recap only. No spam, unsubscribe anytime.</div>
+  </div>
+
+<div class="rel">
+<a href="/bowman-bangers"><span class="rt">The board</span><span class="rn">2026 Bowman Bangers</span></a>
+<a href="/cards"><span class="rt">All charts</span><span class="rn">Card Charts</span></a>
+<a href="/indices"><span class="rt">All tickers</span><span class="rn">Set Indices</span></a>
+<a href="/bowman-chrome-baseball-2026"><span class="rt">Set guide</span><span class="rn">Bowman Chrome 2026</span></a>
+</div>
+
+<div class="foot">BOW26 · ShopCardHub Set Indices · base 100.00 · ask-basis (labeled), restates to hammer basis when auction-close coverage allows — the level never moves on a basis change · marks are the engine's nightly verified ask-floor medians, dated and sourced, never hand-typed · divisor-continuous · card photos are verified eBay listing images and every photo is an EPN-tracked eBay link (labeled); prices and index math are independent of them · nothing here is investment advice — an index is a measurement, not a recommendation.</div>
+</div>
+
+<script src="/js/vault-track.js?v=5" defer></script>
+<script>
+(function () {
+  'use strict';
+  var FEED = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var fmt$ = function (n) { if (n == null || !isFinite(n)) return '—'; return '$' + (n >= 1000 ? Math.round(n).toLocaleString('en-US') : n.toFixed(2)); };
+  var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function dstr(d) { if (!d) return ''; var p = d.split('-'); return MON[+p[1] - 1] + ' ' + (+p[2]); }
+  function dshort(d) { if (!d) return '—'; var p = d.split('-'); return p[1] + '/' + p[2] + '/' + p[0].slice(2); }
+  function addDays(s, n) { var d = new Date(s + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+  function getJSON(u) { return fetch(u, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
+
+  /* ------- tabs (pure JS, no scroll jank) ------- */
+  var TABS = [['tab-autos', 'panel-autos'], ['tab-base', 'panel-base'], ['tab-method', 'panel-method']];
+  TABS.forEach(function (t) {
+    $(t[0]).addEventListener('click', function () {
+      TABS.forEach(function (u) {
+        var on = u[0] === t[0];
+        $(u[0]).classList.toggle('on', on);
+        $(u[0]).setAttribute('aria-selected', String(on));
+        $(u[1]).hidden = !on;
+      });
+    });
+  });
+
+  /* ------- data ------- */
+  Promise.all([
+    getJSON('/data/indices.json'),
+    getJSON(FEED + '/prices-history.json?t=' + Date.now()).catch(function () { return null; }),
+    getJSON(FEED + '/prices-latest.json?t=' + Date.now()).catch(function () { return null; })
+  ]).then(function (res) {
+    var idx = res[0] && res[0].BOW26;
+    if (!idx) throw new Error('no BOW26');
+    render(idx, res[1], res[2]);
+  }).catch(function () {
+    $('lvchg').textContent = 'index data is unavailable right now — check back tonight';
+    $('autos-rows').innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--dim);font-family:var(--fm);font-size:11px;padding:18px;">Index data is unavailable right now.</td></tr>';
+    $('lv-chart').innerHTML = '<div style="font-family:var(--fm);font-size:11px;color:var(--dim);padding:30px 0;text-align:center;">Chart unavailable — data did not load.</div>';
+  });
+
+  function render(idx, hist, latest) {
+    var basket = idx.basket || [];
+    var divisor = idx.divisor;
+    var inception = idx.inception;
+    var latestByKey = {};
+    if (latest && Array.isArray(latest.cards)) latest.cards.forEach(function (c) { if (c && c.key) latestByKey[c.key] = c; });
+    var live = !!(hist || (latest && latest.day));
+
+    /* per-card nightly series {d,p}, feed history + today's mark merged; fallback = the indices.json mark */
+    var series = {};
+    basket.forEach(function (b) {
+      var pts = null;
+      if (hist && hist[b.key] && Array.isArray(hist[b.key].series)) {
+        pts = hist[b.key].series.filter(function (p) { return p && p.p != null && isFinite(p.p); }).map(function (p) { return { d: p.d, p: p.p }; });
+      }
+      if (!pts || !pts.length) pts = [{ d: b.asOf, p: b.price }];
+      var c = latestByKey[b.key];
+      if (latest && latest.day && c && c.last != null && isFinite(c.last)) {
+        var lastPt = pts[pts.length - 1];
+        if (lastPt.d < latest.day) pts.push({ d: latest.day, p: c.last });
+        else if (lastPt.d === latest.day) lastPt.p = c.last;
+      }
+      series[b.key] = pts;
+    });
+
+    function markOn(key, d) { /* most recent mark on or before day d (carry-forward) */
+      var pts = series[key], out = null;
+      for (var i = 0; i < pts.length; i++) { if (pts[i].d <= d) out = pts[i].p; else break; }
+      return out;
+    }
+
+    /* level series: from the first night every constituent has a mark, one point per calendar day */
+    var levels = [];
+    if (live) {
+      var start = null, end = null;
+      basket.forEach(function (b) {
+        var f = series[b.key][0].d, l = series[b.key][series[b.key].length - 1].d;
+        if (start === null || f > start) start = f;
+        if (end === null || l > end) end = l;
+      });
+      if (latest && latest.day && latest.day > end) end = latest.day;
+      for (var d = start; d <= end; d = addDays(d, 1)) {
+        var sum = 0, ok = true;
+        for (var i = 0; i < basket.length; i++) {
+          var p = markOn(basket[i].key, d);
+          if (p == null) { ok = false; break; }
+          sum += basket[i].units * p;
+        }
+        if (ok) levels.push({ d: d, level: sum / divisor, back: d < inception });
+      }
+    }
+    if (!levels.length) { /* fallback: the committed history rows (inception 100.00) */
+      levels = (idx.history || []).map(function (h) { return { d: h.date, level: h.level, back: false }; });
+      live = false;
+    }
+
+    var cur = levels[levels.length - 1];
+    var prev = levels.length > 1 ? levels[levels.length - 2] : null;
+
+    /* current marks + weights */
+    var today = cur.d;
+    var rows = basket.map(function (b) {
+      var m = live ? markOn(b.key, today) : b.price;
+      return { b: b, mark: m == null ? b.price : m };
+    });
+    var bv = 0;
+    rows.forEach(function (r) { bv += r.b.units * r.mark; });
+    rows.forEach(function (r) { r.w = (r.b.units * r.mark) / bv; });
+    rows.sort(function (a, z) { return z.w - a.w; });
+
+    /* ------- level box + chip ------- */
+    $('lv').textContent = cur.level.toFixed(2);
+    function pct(v, label) {
+      if (Math.abs(v) < 0.005) return '<span class="dim2">0.00% ' + label + '</span>';
+      return '<span class="' + (v > 0 ? 'g' : 'r') + '">' + (v > 0 ? '▲ +' : '▼ −') + Math.abs(v).toFixed(2) + '% ' + label + '</span>';
+    }
+    var chg = [];
+    if (prev) chg.push(pct((cur.level / prev.level - 1) * 100, 'vs last night' + (prev.back ? ' (backcast)' : '')));
+    chg.push(pct((cur.level / 100 - 1) * 100, 'since inception'));
+    chg.push('base 100.00 · ' + dshort(inception));
+    $('lvchg').innerHTML = chg.join(' · ');
+    $('chip-lv').textContent = cur.level.toFixed(2);
+    $('chip-lv').style.color = 'var(--tx)';
+    $('chip-lv').style.fontStyle = 'normal';
+
+    /* ------- stats ------- */
+    var ws = rows.map(function (r) { return r.w; });
+    var n = ws.length;
+    var mean = 1 / n;
+    var m2 = 0, m3 = 0, m4 = 0;
+    ws.forEach(function (w) { var x = w - mean; m2 += x * x; m3 += x * x * x; m4 += x * x * x * x; });
+    m2 /= n; m3 /= n; m4 /= n;
+    var sd = Math.sqrt(m2);
+    var skew = sd ? m3 / Math.pow(sd, 3) : 0;
+    var kurt = sd ? m4 / Math.pow(sd, 4) - 3 : 0;
+    var eff = 1 / ws.reduce(function (s, w) { return s + w * w; }, 0);
+    var t5 = ws.slice(0, 5).reduce(function (s, w) { return s + w; }, 0);
+    var priced = rows.filter(function (r) { return r.mark != null && isFinite(r.mark); }).length;
+    var capped = ws.filter(function (w) { return w >= 0.1485; }).length;
+    $('st-bv').innerHTML = '$' + Math.round(bv).toLocaleString('en-US') + '<i> Σ u·px</i>';
+    $('st-pu').textContent = priced + ' / ' + (idx.universe ? idx.universe.length : basket.length);
+    $('st-t5').textContent = (t5 * 100).toFixed(1) + '%';
+    $('st-eff').textContent = eff.toFixed(1);
+    $('st-skew').textContent = (skew >= 0 ? '+' : '') + skew.toFixed(2);
+    $('st-kurt').textContent = (kurt >= 0 ? '+' : '') + kurt.toFixed(2);
+    $('st-inc').textContent = dshort(inception);
+    $('st-cap').textContent = String(capped);
+    $('m-inception') && ($('m-inception').textContent = dshort(inception));
+    $('m-divisor') && ($('m-divisor').textContent = String(divisor));
+
+    /* ------- concentration bar: top card / next 4 / rest ------- */
+    var a = ws[0], b4 = ws.slice(1, 5).reduce(function (s, w) { return s + w; }, 0), rest = 1 - a - b4;
+    $('cb-a').style.width = (a * 100).toFixed(1) + '%';
+    $('cb-b').style.width = (b4 * 100).toFixed(1) + '%';
+    $('cb-c').style.width = (rest * 100).toFixed(1) + '%';
+    $('cl-a').textContent = 'TOP CARD — ' + (a * 100).toFixed(1) + '%';
+    $('cl-b').textContent = 'NEXT 4 — ' + (b4 * 100).toFixed(1) + '%';
+    $('cl-c').textContent = 'REST — ' + (rest * 100).toFixed(1) + '%';
+    $('conc').hidden = false;
+
+    /* ------- chart ------- */
+    drawChart(levels, inception, live);
+
+    /* ------- autos table ------- */
+    var wk = addDays(today, -7);
+    var html = rows.map(function (r, i) {
+      var b = r.b;
+      var id = String(b.key).replace(/^ebay:/, '');
+      var fullName = b.name + ' 1st Bowman Chrome Auto';
+      var trackName = b.name + ' 1st Bowman Chrome Auto ' + b.num + ' 2026';
+      /* 7-day change from the nightly series (carry-forward); dash when the card has no mark that old */
+      var sevTxt = '<span class="dim2">—</span>';
+      if (live) {
+        var p0 = markOn(b.key, wk);
+        if (p0 != null && series[b.key][0].d <= wk && p0 > 0) {
+          var pc = (r.mark / p0 - 1) * 100;
+          sevTxt = '<span style="color:' + (pc > 0.05 ? 'var(--gn)' : pc < -0.05 ? 'var(--rd)' : 'var(--dim)') + '">' + (pc >= 0 ? '+' : '') + pc.toFixed(1) + '%</span>';
+        }
+      }
+      /* engine signal — homepage board rule: show only when points >= 20; gated = HOLD · thin */
+      var sigTxt = '<span class="dim2">—</span>';
+      var c = latestByKey[b.key];
+      if (c) {
+        if (c.gated) sigTxt = '<span class="sig thin">HOLD · thin</span>';
+        else if (c.signal && c.points >= 20) {
+          var s = String(c.signal).toUpperCase();
+          sigTxt = '<span class="sig ' + (s === 'BUY' ? 'buy' : s === 'SELL' ? 'sell' : 'hold') + '">' + esc(s) + '</span>';
+        }
+      }
+      return '<tr' + (i < 3 ? ' style="background:var(--p2);border-left:2px solid var(--iac);"' : ' style="border-left:2px solid transparent;"') + '>' +
+        '<td class="rk">' + (i + 1) + '</td>' +
+        '<td class="card"><div class="roi-cell"><span data-card-img="' + esc(b.key) + '" data-card-name="' + esc(fullName) + '" data-card-sub="1ST BOWMAN" data-card-size="thumb" data-card-surface="bow26-list"></span><div><b><a href="/card-' + esc(id) + '" style="color:inherit;text-decoration:none;border-bottom:1px dotted var(--iac);" title="Nightly chart, verified listings">' + esc(b.name) + '</a></b><a class="cn" href="/card-' + esc(id) + '" style="color:var(--iac);margin-left:6px;">chart →</a></div></div></td>' +
+        '<td style="text-align:left;"><span class="cpa">' + esc(b.num) + '</span></td>' +
+        '<td class="num">' + fmt$(r.mark) + '</td>' +
+        '<td class="num wt">' + (r.w * 100).toFixed(1) + '%</td>' +
+        '<td class="num dim2">' + b.units.toFixed(4) + '</td>' +
+        '<td class="num">' + sevTxt + '</td>' +
+        '<td class="num">' + sigTxt + '</td>' +
+        '<td class="trk" data-trk-i="' + i + '"></td></tr>';
+    }).join('');
+    html += '<tr class="sumrow"><td></td><td class="card" style="color:var(--th);font-weight:700;">TOTAL — 10 AUTOS</td><td></td><td class="num">$' + Math.round(bv).toLocaleString('en-US') + '</td><td class="num wt" style="color:var(--iac);">100.0%</td><td></td><td></td><td></td><td></td></tr>';
+    var tb = $('autos-rows');
+    tb.innerHTML = html;
+    /* ★ Track buttons built via DOM (vault-track contract: feed-linked buttons
+       carry data-feed only — the Vault charts the engine line, no static seed). */
+    rows.forEach(function (r2, i2) {
+      var cell = tb.querySelector('td[data-trk-i="' + i2 + '"]');
+      if (!cell) return;
+      var btn = document.createElement('button');
+      btn.className = 'sch-track-card';
+      btn.dataset.name = r2.b.name + ' 1st Bowman Chrome Auto ' + r2.b.num + ' 2026';
+      btn.dataset.set = '2026 Bowman Chrome';
+      btn.dataset.cat = 'baseball';
+      btn.dataset.grade = 'Raw';
+      btn.dataset.feed = r2.b.key;
+      btn.textContent = '★ Track';
+      cell.appendChild(btn);
+    });
+    $('autos-note').textContent = 'Marks as of ' + dstr(today) + ' — the engine’s nightly verified ask-floor medians for the exact card, dated and sourced, never hand-typed. Units fixed at constitution ' + dshort(inception) + '; only prices move the level. Signals shown only at 20+ nightly points, per the board rule.';
+    if (window.SCHVault && window.SCHVault.mark) window.SCHVault.mark(tb);
+    if (window.SCH_IMG) window.SCH_IMG.enhance(tb);
+
+    /* ------- base top-100 (pre-activation, no prices) ------- */
+    var uni = (idx.baseTab && idx.baseTab.universe) || [];
+    $('base-note').textContent = (idx.baseTab && idx.baseTab.note) || '';
+    $('base-rows').innerHTML = uni.map(function (u, i) {
+      return '<tr><td class="rk" style="color:var(--dim);font-weight:400;">' + esc(String(u.num).replace(/^BCP-/, '')) + '</td>' +
+        '<td class="card" style="text-align:left;">' + esc(u.name) + '</td>' +
+        '<td style="text-align:left;color:var(--dim);">' + esc(u.team || '') + '</td>' +
+        '<td style="text-align:left;">' + (u.first ? '<span class="fst">1ST</span>' : '<span class="dim2">—</span>') + '</td>' +
+        '<td class="num dim2">—</td></tr>';
+    }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--dim);font-family:var(--fm);font-size:11px;padding:18px;">Universe unavailable.</td></tr>';
+  }
+
+  function drawChart(levels, inception, live) {
+    var box = $('lv-chart');
+    if (!levels.length) { box.innerHTML = ''; return; }
+    var W = 640, H = 240, L = 46, R = 14, T = 16, B = 28;
+    var ys = levels.map(function (p) { return p.level; });
+    var lo = Math.min.apply(null, ys), hi = Math.max.apply(null, ys);
+    if (hi - lo < 1) { var mid = (hi + lo) / 2; lo = mid - 1; hi = mid + 1; }
+    var pad = (hi - lo) * 0.12; lo -= pad; hi += pad;
+    var x = function (i) { return levels.length > 1 ? L + (W - L - R) * i / (levels.length - 1) : (L + W - R) / 2; };
+    var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
+    var g = '';
+    for (var k = 0; k <= 4; k++) {
+      var v = lo + (hi - lo) * k / 4, yy = y(v);
+      g += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy.toFixed(1) + '" y2="' + yy.toFixed(1) + '" stroke="rgba(255,255,255,0.06)"/>' +
+        '<text x="' + (L - 6) + '" y="' + (yy + 3).toFixed(1) + '" text-anchor="end" font-size="11" fill="#5a7880" font-family="JetBrains Mono,monospace">' + v.toFixed(1) + '</text>';
+    }
+    if (100 >= lo && 100 <= hi) g += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(100).toFixed(1) + '" y2="' + y(100).toFixed(1) + '" stroke="rgba(245,200,0,0.28)" stroke-dasharray="2 4"/>';
+    /* split: backcast (dashed) vs live (solid); share the boundary point so the line connects */
+    var backPts = [], livePts = [];
+    levels.forEach(function (p, i) { if (p.back) backPts.push([x(i), y(p.level)]); else livePts.push([x(i), y(p.level)]); });
+    if (backPts.length && livePts.length) backPts.push(livePts[0]);
+    function path(pts) { return pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' '); }
+    var lines = '';
+    if (backPts.length > 1) lines += '<path d="' + path(backPts) + '" fill="none" stroke="#00ccf5" stroke-width="2" stroke-dasharray="5 5" opacity="0.65"/>';
+    if (livePts.length > 1) lines += '<path d="' + path(livePts) + '" fill="none" stroke="#00ccf5" stroke-width="2.5"/>';
+    /* inception marker */
+    var incI = -1;
+    levels.forEach(function (p, i) { if (incI === -1 && p.d >= inception) incI = i; });
+    var marks = '';
+    if (incI > -1 && levels[incI].d === inception) {
+      var ix = x(incI);
+      marks += '<line x1="' + ix.toFixed(1) + '" x2="' + ix.toFixed(1) + '" y1="' + T + '" y2="' + (H - B) + '" stroke="rgba(245,200,0,0.35)"/>' +
+        '<text x="' + (ix - 4).toFixed(1) + '" y="' + (T + 10) + '" text-anchor="end" font-size="11" fill="#f5c800" font-family="JetBrains Mono,monospace">inception 100.00</text>';
+    }
+    var lastI = levels.length - 1, lx = x(lastI), ly = y(levels[lastI].level);
+    marks += '<circle cx="' + lx.toFixed(1) + '" cy="' + ly.toFixed(1) + '" r="3.5" fill="#00ccf5"/>' +
+      '<text x="' + (lx - 8).toFixed(1) + '" y="' + (ly - 10).toFixed(1) + '" text-anchor="end" font-size="11" font-weight="700" fill="#e4f0f4" font-family="JetBrains Mono,monospace">' + levels[lastI].level.toFixed(2) + '</text>';
+    var xl = '<text x="' + L + '" y="' + (H - 8) + '" font-size="11" fill="#5a7880" font-family="JetBrains Mono,monospace">' + esc(dstr(levels[0].d)) + '</text>' +
+      '<text x="' + (W - R) + '" y="' + (H - 8) + '" text-anchor="end" font-size="11" fill="#5a7880" font-family="JetBrains Mono,monospace">' + esc(dstr(levels[lastI].d)) + '</text>';
+    box.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="BOW26 index level, ' + levels.length + ' nightly points">' + g + lines + marks + xl + '</svg>';
+    var nBack = levels.filter(function (p) { return p.back; }).length;
+    $('chart-n').textContent = levels.length + ' nightly point' + (levels.length === 1 ? '' : 's') + (nBack ? ' · ' + nBack + ' backcast' : '') + (live ? '' : ' · weekly history rows (feed offline)');
+  }
+})();
+</script>
+<script>
+  /* Signal Alerts signup — activates when data/newsletter.json lists this page (key = data-schsub). */
+  (function () {
+    var blocks = Array.prototype.slice.call(document.querySelectorAll('.sig-alerts'));
+    if (!blocks.length) return;
+    fetch('/data/newsletter.json', { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (cfg) {
+        if (!cfg || cfg.provider !== 'mailerlite' || !Array.isArray(cfg.pages)) return;
+        blocks.forEach(function (b) {
+          var key = b.getAttribute('data-schsub') || 'site';
+          if (cfg.pages.indexOf(key) === -1) return;
+          b.style.display = 'block';
+          var form = b.querySelector('.schsub-form');
+          var msg = b.querySelector('.schsub-msg');
+          var btn = form.querySelector('button[type="submit"]');
+          form.addEventListener('submit', function (ev) {
+            ev.preventDefault();
+            var email = form.querySelector('input[name="email_address"]').value.trim();
+            if (!email) return;
+            if (btn) btn.disabled = true;
+            fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: email, source: 'signal-' + key }) })
+              .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+              .then(function () {
+                form.style.display = 'none';
+                msg.textContent = '✓ You’re on the list — the next Tape Recap lands in your inbox.';
+                msg.style.display = 'block';
+                if (window.gtag) gtag('event', 'newsletter_signup', { method: 'mailerlite', location: 'signal-' + key });
+              })
+              .catch(function (status) {
+                if (btn) btn.disabled = false;
+                msg.textContent = status === 400 ? 'That address doesn’t look right — check it and try again.' : 'Hmm — that did not go through. Try again, or DM @shopcardhub.';
+                msg.style.color = 'var(--rd)';
+                msg.style.display = 'block';
+              });
+          });
+        });
+      })
+      .catch(function () {});
+  })();
+</script>
+<script src="/js/card-img.js?v=2" defer></script>
+</body></html>
