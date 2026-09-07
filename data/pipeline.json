@@ -1,7 +1,7 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-06T18:40:00-07:00",
-  "generator": "chief-of-staff (2026-09-06 Sunday full run)",
+  "generated": "2026-09-07T07:20:00-07:00",
+  "generator": "bcb26-index-prebuild (2026-09-07, CoS 4.8 one-time build; pushLog + curator entry only)",
   "agents": {
     "seeker": {
       "label": "SEEKER",
@@ -105,6 +105,10 @@
         {
           "ts": "2026-09-01",
           "msg": "Board re-marked (Sep 1 SCP solds): Arquette +18% first green week — Aloy crossover FAILED ($58.50 vs $59), no swap; Fischer 3rd red week, dip call suspended per his own three-week line; Kim flat x4 at $131.25; Florentino -5% first test; no reorders. Homepage panel/ticker/stamps synced in the same run (coach's fix)"
+        },
+        {
+          "ts": "2026-09-07",
+          "msg": "BCB26 pre-activation page shipped (7c3a5ce): /bowman-chrome-2026-index — per-set Bowman index #1, BASE 100 | AUTOS 104 (15% cap) | PARALLELS placeholder, 204 ★ Track rows (no price seed), EPN links, board-vs-index line (2 of 6 board names in set), status pre in indices.json; /indices hub gained a PRE-badge branch; nav + sitemap + board/guide links. Monday scan STEP 3.6 owns first ask marks + the activation check from today."
         }
       ],
       "log": [
@@ -1025,6 +1029,16 @@
           "gates": "audit-site FAIL 0/WARN 0 (100 pages); audit-prices FAIL 0/WARN 28",
           "liveVerified": "2026-09-04 12:18 PT (auditor, byte-identical)",
           "note": "index.lock/HEAD.lock stranded at 12:12 by the concurrent 27d4f2f session were deleted before commit; locks swept after push"
+        },
+        {
+          "date": "2026-09-07",
+          "commits": [
+            "7c3a5ce"
+          ],
+          "by": "bcb26-index-prebuild (CoS 4.8)",
+          "gates": "audit-prices FAIL 0 / WARN 28 (pre-existing); audit-site FAIL 0 / WARN 0 (101 pages)",
+          "liveVerified": "2026-09-07 07:1x PT (curl: /bowman-chrome-2026-index 200 byte-identical, /indices 200 byte-identical + BCB26 PRE row rendered in-browser, nav entry present, sitemap +1, data/indices.json BCB26 status pre / universe 204)",
+          "note": "Built in a detached git worktree from 24275a3 because the main working tree carried ~110 uncommitted files from another session (a BOW26 cross-set 'bowman-1st-chrome-index' build + the Sunday CoS pipeline.json edits) — those were neither staged nor touched; local refs/heads/main advanced to 7c3a5ce, so that tree now shows its own edits as diffs against the new HEAD. Locks renamed (unlink refused in the sandbox), never deleted. Per-ticker OG not supported by make.py (og = the five-ticker composite) — page reuses og/indices.png."
         }
       ]
     },
