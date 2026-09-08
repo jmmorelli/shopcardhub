@@ -1,6 +1,6 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} \u2014 keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures \u2014 counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] \u2014 stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] \u2014 status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-09-08T11:05:00-07:00",
+ "generated": "2026-09-08T11:35:00-07:00",
  "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
  "agents": {
   "seeker": {
@@ -197,18 +197,6 @@
    "nextRun": "2026-09-14",
    "actions": [
     {
-     "ts": "2026-08-18",
-     "msg": "7 tweet drafts written (#1 accountability = Pierce -46% wrong + reshuffle demotion) -- awaiting Mo pick"
-    },
-    {
-     "ts": "2026-08-18",
-     "msg": "Ledger gap closed: 10 finalizations + 4 trending updates reconstructed from Monday scan (Mo approved same-day); scoreboard 15 final / 6 trending"
-    },
-    {
-     "ts": "2026-08-18",
-     "msg": "POKEMON CALLS RETIRED (Mo's decision): no new Pokemon calls; /track-record split into Sports (active) + Pokemon (retired, history stays) with per-segment scoreboard; policy written into calls.json _comment"
-    },
-    {
      "ts": "2026-08-24",
      "msg": "Ledger: 6 trending calls re-read Aug 24 (Greninja PSA10 550, Darkrai 257, Zeraora 59, Gladion 31, Kim 131 flat, Florentino 80 flat); none past finalizeAfter"
     },
@@ -243,6 +231,18 @@
     {
      "ts": "2026-09-07",
      "msg": "Retention read: 7d active 342 / new 332 / returning ~10 (8 \u2192 10); 28d sessions 1,099, engaged 536, key events 133 (rate 8.3% \u2014 diluted by a Direct/Safari/Singapore surge Sep 1: Direct +312%, 45 Singapore users); organic 60%; AI Assistant 9 sessions @ 22%. Events 28d: newsletter_signup 1 (first real signup), vault_bulk_add 0, dest_strip 17, track_card_from_page 23 (4 users). Retention-surface split NOT captured (needs a saved exploration \u2014 flagged)."
+    },
+    {
+     "ts": "2026-09-08",
+     "msg": "Ledger (local, unpushed): NEW v-bb-gonzales-pass (PASS @ $90, Sep 8, thesis Mar 8 / Sep 8 2027); kim-wait flat $131.25 a 6th week; florentino-buy $71.25 (\u221210.2%, legacy 8-wk grade wrong, public EARLY). June Bangers reads untouched (final Aug 4). Scoreboard 16 final / 6 trending / 0 open."
+    },
+    {
+     "ts": "2026-09-08",
+     "msg": "TUESDAY BOARD TWEET QUEUED UNATTENDED ~11:20 AM (X native scheduler, fires 2:00 PM PT Sep 8; image = og/x/2026-09-08-bangers-tape.png via hosted-capture route, file_upload still unavailable). Unattended tally: 1 of 1 this week. Reply link owed after 2pm. 6 daily drafts Wed\u2192Mon written (Card Hub/tweets-2026-09-08.md), every draft with a generated image; #1 accountability = Fischer \"three red weeks is a top\" read wrong on timing (+40%)."
+    },
+    {
+     "ts": "2026-09-08",
+     "msg": "Tuesday Tape digest SENT via MailerLite (campaign 198065559048291783, \"Digest 2026-09-08\", instant, status sent 10:56 PT). Content gate passed (board live-verified, push 50576fa); kill switch clear (no unsubscribes/spam since the Sep 7 send; 4 active subscribers). Note: a \"Tape Recap \u2014 Sep 7 2026\" campaign (id 197965108307036033) was sent Sep 7 by a non-Tuesday run \u2014 4 sent / 2 opens."
     }
    ],
    "log": [
@@ -963,9 +963,9 @@
   }
  ],
  "scoreboard": {
-  "updated": "2026-09-07",
+  "updated": "2026-09-08",
   "final": 16,
-  "trending": 5,
+  "trending": 6,
   "open": 0,
   "finalGrades": {
    "miss_high": 8,
@@ -974,7 +974,7 @@
    "null": 2,
    "right": 1
   },
-  "note": "cr-greninja-psa10 finalized miss_high Sep 7 (PSA 10 $495 vs $800\u20131,200). Verdict grades are the 8-week tape only \u2014 public grades come at 6/12 months."
+  "note": "v-bb-gonzales-pass added Sep 8 (PASS @ $90). cr-greninja-psa10 finalized miss_high Sep 7. Verdict grades are the 8-week tape only \u2014 public grades come at 6/12 months."
  },
  "chiefOfStaff": {
   "_comment": "CHIEF OF STAFF \u2014 weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE \u2014 this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
@@ -1218,6 +1218,16 @@
      "gates": "audit-prices FAIL 0 / WARN 28 (pre-existing); audit-site FAIL 0 / WARN 0 (102 pages)",
      "liveVerified": "pending at commit time \u2014 result in checkpoint-2026-09-07.md",
      "note": "7 files: ledger reads (immutability verified), new index re-mark tool, watcher scaffolder fix + calendar state, dated notice on 2 guide pages (audit-2026-09-07-4 move 1). Trailers: Task-key + Authority."
+    },
+    {
+     "date": "2026-09-08",
+     "commits": [
+      "50576fa"
+     ],
+     "by": "tuesday-board (4.8)",
+     "gates": "audit-site FAIL 0 / WARN 0 (93 pages); audit-prices FAIL 0 / WARN 31 (pre-existing label cells + 3 held-page stamps)",
+     "liveVerified": "2026-09-08 11:15 PT (hero stamp Sep 8, data-prices-updated=2026-09-08, Gonzales #5 live, og/x tape 200)",
+     "note": "lane: bowman-bangers.html, data/board-history.json, data/pipeline.json, og/x/2026-09-08-bangers-tape.png + data/sets/bowman-sapphire-2026.json (Gonzales board:true/first:true \u2014 required for the auditor gate). Kept out: data/calls.json, tools/x-images/make.py. Second small commit = this pushLog + dm entries."
     }
    ]
   },
