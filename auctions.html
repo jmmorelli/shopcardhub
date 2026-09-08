@@ -412,6 +412,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 .au-vs b { display:inline-block; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:0.5px; padding:5px 8px; border:1px solid var(--border2); color:var(--text); }
 .au-vs b.g { color:var(--green); border-color:rgba(0,224,122,0.5); background:var(--green-dim); }
 .au-vs b.r { color:var(--red); border-color:rgba(255,46,85,0.4); }
+.au-vs b.o { color:var(--text-dim); border-style:dashed; border-color:rgba(0,224,122,0.35); background:transparent; }
+.au-row.opening { border-left:3px dashed rgba(0,224,122,0.35); }
 .au-vs span { display:block; font-family:var(--fm); font-size:10px; color:var(--text-dim); margin-top:5px; }
 .au-bid { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; background:var(--accent); color:#000; padding:12px 12px; text-align:center; display:block; min-height:44px; line-height:20px; }
 .au-bid:hover { background:#fff; color:#000; text-decoration:none; }
@@ -784,11 +786,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <div class="au-crumbs"><a href="/">Home</a> <span>/</span> <a href="/cards">Card Charts</a> <span>/</span> <span>Auction Desk</span></div>
   <div class="au-eyebrow"><span class="au-live" aria-hidden="true"></span> Auction desk · live · refreshes every 15 min</div>
   <h1 class="au-title">Auctions ending <em>under the mark</em></h1>
-  <p class="au-sub">Every live eBay auction that passes the exact-card filter for the 20 cards the engine tracks, with the card's nightly mark and what buyers actually paid at recent auctions beside the current bid. Sorted by time to close. A bid under the mark is the one thing on eBay you can act on today; whether it stays under is up to the last ten seconds.</p>
+  <p class="au-sub">Every live eBay auction that passes the exact-card filter for the 20 cards the engine tracks, with the card's nightly mark and what buyers actually paid at recent auctions beside the current bid. Sorted by time to close. A bid under the mark is the one thing on eBay you can act on today; whether it stays under is up to the last ten seconds. Opening prices with no bids are shown, but marked as exactly that.</p>
 
   <div class="au-strip" id="au-strip">
     <div class="au-cell"><div class="l">Live auctions</div><div class="v" id="k-count">—</div><div class="s">verified, 20 cards</div></div>
-    <div class="au-cell"><div class="l">Under the mark</div><div class="v g" id="k-under">—</div><div class="s">bid + ship below the ask floor</div></div>
+    <div class="au-cell"><div class="l">Under the mark · with bids</div><div class="v g" id="k-under">—</div><div class="s" id="k-under-s">bid + ship below the ask floor</div></div>
     <div class="au-cell"><div class="l">Closing in 6h</div><div class="v" id="k-soon">—</div><div class="s">act-now window</div></div>
     <div class="au-cell"><div class="l">Marks as of</div><div class="v" id="k-day" style="font-size:20px;">—</div><div class="s" id="k-gen">feed —</div></div>
   </div>
@@ -796,6 +798,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <div class="au-ctl" role="group" aria-label="Filter auctions">
     <button class="au-chip" data-f="all" aria-pressed="true">All verified</button>
     <button class="au-chip" data-f="under" aria-pressed="false">Under the mark</button>
+    <button class="au-chip" data-f="bids" aria-pressed="false">Has bids</button>
     <button class="au-chip" data-f="soon" aria-pressed="false">Closing in 6h</button>
     <select class="au-sel" id="au-card" aria-label="Card"><option value="">Every card</option><option value="ethan-holliday">Ethan Holliday — 1st Bowman Chrome Auto</option><option value="andrew-fischer">Andrew Fischer — 1st Bowman Chrome Auto</option><option value="aiva-arquette">Aiva Arquette — 1st Bowman Chrome Auto</option><option value="wehiwa-aloy">Wehiwa Aloy — 1st Bowman Chrome Auto</option><option value="daniel-pierce">Daniel Pierce — 1st Bowman Chrome Auto</option><option value="marek-houston">Marek Houston — 1st Bowman Chrome Auto</option><option value="gage-jump">Gage Jump — 1st Bowman Chrome Auto</option><option value="justin-gonzalez">Justin Gonzalez — 1st Bowman Chrome Auto</option><option value="edward-florentino">Edward Florentino — 1st Bowman Chrome Auto</option><option value="seong-jun-kim">Seong-Jun Kim — 1st Bowman Chrome Auto</option><option value="travis-bazzana">Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1</option><option value="umbreon-ex-sir-pe">Umbreon ex SIR #161 — Prismatic Evolutions</option><option value="mega-darkrai-ex-sir">Mega Darkrai ex SIR #116/084 — Pitch Black</option><option value="mega-greninja-ex-sir">Mega Greninja ex SIR #116/086 — Chaos Rising</option><option value="tr-mewtwo-ex-sir">T.R.'s Mewtwo ex SIR — Ascended Heroes</option><option value="mega-lucario-ex-sir">Mega Lucario ex SIR #179/132 — Mega Evolution</option><option value="konnor-griffin-sapphire">Konnor Griffin — 2026 Bowman Sapphire</option><option value="ethan-holliday-sapphire">Ethan Holliday — 2026 Bowman Sapphire</option><option value="roman-anthony-sapphire">Roman Anthony — 2026 Bowman Sapphire</option><option value="kevin-mcgonigle-sapphire">Kevin McGonigle — 2026 Bowman Sapphire</option></select>
   </div>
@@ -805,7 +808,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <p class="au-note" id="au-note">Mark = the engine's verified ask floor for the exact card (ask basis, re-marked nightly). Hammers = the median of auction closes we watched for that card, shown only after two or more closes. Bid + shipping is compared to each separately; they are never blended. Auctions that fail the exact-card filter (parallels, slabs, lots, other card codes) are not shown. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
 
   <div class="au-legend">
-    <div><b>Under the mark</b>Current bid + shipping is below the engine's ask floor for the card. That is where the ask side is tonight, not a promise of the hammer.</div>
+    <div><b>Under the mark</b>Current bid + shipping is below the engine's ask floor for the card. Solid green = someone has actually bid. Dashed "opening" = the seller's starting price with no bids yet; anyone can be first, and most of these move in the last hour.</div>
     <div><b>vs hammers</b>The same bid against the median of closes the engine has watched for this card. Fewer than two closes and it says "no hammers yet".</div>
     <div><b>Verified</b>Title must carry the card code, the year, and none of the parallel/slab/lot words. Same filter that makes the nightly mark.</div>
     <div><b>What we don't know</b>The reserve, the snipes queued for the last ten seconds, and whether the seller's photo matches the title. Read the listing.</div>
@@ -846,12 +849,12 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     return {t:t, soon: ms < 6*3600e3, over:false}; }
   function endsAt(end){ try { return new Date(end).toLocaleString('en-US', {weekday:'short', hour:'numeric', minute:'2-digit'}); } catch(e){ return ''; } }
   function render(){
-    var rows = state.rows.filter(function(r){ var l = left(r.endDate); if (l.over) return false; if (state.card && r.id !== state.card) return false; if (state.f==='under') return r.vsMark!=null && r.vsMark < 0; if (state.f==='soon') return l.soon; return true; });
-    if (!rows.length) { list.innerHTML = '<div class="au-empty"><b>Nothing here right now.</b> ' + (state.f==='under' ? 'No verified auction is bidding under its card\u2019s mark at the moment \u2014 that happens; the desk refreshes every 15 minutes and most of the action is in the last hour.' : state.f==='soon' ? 'No verified auction closes in the next six hours.' : 'No verified live auctions for ' + (state.card ? 'this card' : 'the tracked cards') + ' at the moment.') + ' <a href="/cards">Card charts \u2192</a></div>'; return; }
-    list.innerHTML = rows.map(function(r){ var l = left(r.endDate); var under = r.vsMark!=null && r.vsMark < 0; var href = HREFS[r.id] || ('/card-' + r.id);
-      var vsM = r.mark ? '<b class="' + (under?'g':'r') + '">' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>' : '<b>no mark</b>';
+    var rows = state.rows.filter(function(r){ var l = left(r.endDate); if (l.over) return false; if (state.card && r.id !== state.card) return false; if (state.f==='under') return r.vsMark!=null && r.vsMark < 0; if (state.f==='bids') return (r.bidCount||0) >= 1; if (state.f==='soon') return l.soon; return true; });
+    if (!rows.length) { list.innerHTML = '<div class="au-empty"><b>Nothing here right now.</b> ' + (state.f==='under' ? 'No verified auction is under its card\u2019s mark at the moment \u2014 that happens; the desk refreshes every 15 minutes and most of the action is in the last hour.' : state.f==='soon' ? 'No verified auction closes in the next six hours.' : 'No verified live auctions for ' + (state.card ? 'this card' : 'the tracked cards') + ' at the moment.') + ' <a href="/cards">Card charts \u2192</a></div>'; return; }
+    list.innerHTML = rows.map(function(r){ var l = left(r.endDate); var under = r.vsMark!=null && r.vsMark < 0; var opening = under && !(r.bidCount>=1); var href = HREFS[r.id] || ('/card-' + r.id);
+      var vsM = r.mark ? (opening ? '<b class="o" title="Opening price, no bids yet">opening ' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>' : '<b class="' + (under?'g':'r') + '">' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>') : '<b>no mark</b>';
       var vsH = r.hammerMedian ? '<span>' + pct(r.vsHammer) + ' vs hammers ' + fmt(r.hammerMedian) + ' (' + r.closes + ' closes)</span>' : '<span>no hammers yet</span>';
-      return '<div class="au-row' + (under?' under':'') + (l.soon?' soon':'') + '">' +
+      return '<div class="au-row' + (opening?' opening':under?' under':'') + (l.soon?' soon':'') + '">' +
         '<a class="ph" href="' + esc(href) + '">' + (r.image ? '<img src="' + esc(r.image) + '" alt="" loading="lazy">' : '') + '</a>' +
         '<div class="nm"><a class="c" href="' + esc(href) + '">' + esc(r.label.split(/\s[\u2014\u2013]\s/)[0]) + '</a><span class="t" title="' + esc(r.title) + '">' + esc(r.title) + '</span><span class="sl">' + (r.seller ? esc(r.seller.username) + ' \u00b7 ' + esc(r.seller.feedbackPct) + '% (' + esc(r.seller.feedbackScore) + ')' : '') + '</span></div>' +
         '<div class="au-num price"><b>' + fmt(r.total) + '</b><span>' + fmt(r.bid) + ' + ' + (r.shipping==null ? 'ship ?' : r.shipping===0 ? 'free ship' : fmt(r.shipping) + ' ship') + ' \u00b7 ' + (r.bidCount==null ? '' : r.bidCount + ' bid' + (r.bidCount===1?'':'s')) + '</span></div>' +
@@ -863,7 +866,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   }
   function kpis(){ var live = state.rows.filter(function(r){ return !left(r.endDate).over; });
     document.getElementById('k-count').textContent = live.length;
-    document.getElementById('k-under').textContent = live.filter(function(r){ return r.vsMark!=null && r.vsMark<0; }).length;
+    var underAll = live.filter(function(r){ return r.vsMark!=null && r.vsMark<0; }); var underBids = underAll.filter(function(r){ return (r.bidCount||0) >= 1; });
+    document.getElementById('k-under').textContent = underBids.length;
+    document.getElementById('k-under-s').textContent = (underAll.length - underBids.length) + ' more at an opening price, no bids yet';
     document.getElementById('k-soon').textContent = live.filter(function(r){ return left(r.endDate).soon; }).length;
     document.getElementById('k-day').textContent = state.day || '\u2014';
     document.getElementById('k-gen').textContent = state.gen ? 'feed ' + new Date(state.gen).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) : 'feed \u2014'; }
