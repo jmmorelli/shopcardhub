@@ -20,7 +20,11 @@ const SKIP_FILES = new Set(["card-dungeon.html", "welcome-email.html"]);
 // on this site; only truly private pages belong here)
 // index = served at /; set-index-preview = the BOW26 mockup (title starts "MOCKUP —"),
 // deliberately unlisted and noindexed rather than added to the sitemap (Aug 25, 2026).
-const SITEMAP_EXEMPT = new Set(["card-dungeon", "welcome-email", "index", "set-index-preview"]);
+const SITEMAP_EXEMPT = new Set(["card-dungeon", "welcome-email", "index", "set-index-preview",
+  // Sep 8 2026 (Business Read): noindex'd utility/app pages and the host-less /card-* chart pages are
+  // deliberately OUT of the sitemap — Google crawled the templated card pages and declined them.
+  "cards", "watchlist", "research", "privacy", "affiliate-disclosure"]);
+const SITEMAP_EXEMPT_RE = /^card-/;
 
 // THE mandatory EPN param set (see memory: Jul 28 2026 mkevt=1 incident —
 // every param below missing = untracked clicks = lost income)
@@ -128,7 +132,7 @@ if (navBlocks.size > 1) {
 try {
   const nav = JSON.parse(read("data/nav.json"));
   for (const e of nav.searchExtra || [])
-    if (!slugSet.has(e.href)) add("FAIL", "nav-search-dead", "data/nav.json", `searchExtra ${e.href} has no page`);
+    if (!slugSet.has(e.href.split("#")[0])) add("FAIL", "nav-search-dead", "data/nav.json", `searchExtra ${e.href} has no page`);
 } catch (e) { add("FAIL", "nav-json", "data/nav.json", "unparseable: " + e.message); }
 
 /* ---------- 7. Sitemap coverage (both directions) ---------- */
@@ -137,7 +141,7 @@ try {
   const inMap = new Set([...xml.matchAll(/shopcardhub\.com\/([a-z0-9-]*)/g)].map(m => m[1]).filter(Boolean));
   for (const f of pages) {
     const slug = f.replace(/\.html$/, "");
-    if (!inMap.has(slug) && !SITEMAP_EXEMPT.has(slug)) add("WARN", "sitemap-missing-page", f, `page not in sitemap.xml`);
+    if (!inMap.has(slug) && !SITEMAP_EXEMPT.has(slug) && !SITEMAP_EXEMPT_RE.test(slug)) add("WARN", "sitemap-missing-page", f, `page not in sitemap.xml`);
   }
   for (const slug of inMap)
     if (!fs.existsSync(path.join(REPO, slug + ".html"))) add("FAIL", "sitemap-dead-url", "sitemap.xml", `/${slug} listed but no file`);

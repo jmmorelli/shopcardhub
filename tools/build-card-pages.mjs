@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-// build-card-pages.mjs — per-card chart pages (Sep 4 2026, Mo's retention directive:
+// build-card-pages.mjs — per-card chart pages for HOST-LESS cards only (Sep 8 2026: hosted cards
+// render inside their guide page via tools/build-engine-blocks.mjs; these pages are noindex).
+// Original (Sep 4 2026, Mo's retention directive:
 // "index → card page → Vault"). One page per engine-tracked card in data/watchlist.json:
 //
 //   /card-<id>            e.g. /card-ethan-holliday, /card-umbreon-ex-sir-pe
@@ -48,6 +50,12 @@ if (!pageCss || !gtag || !nav || !footer) throw new Error("shell pieces not foun
 // ---------- data ----------
 const wl = JSON.parse(read("data/watchlist.json"));
 const cards = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.id && c.query);
+// Sep 8 2026: a card whose watchlist `slug` names a live guide page is HOSTED there
+// (tools/build-engine-blocks.mjs renders its block inside that page; /card-<id> 301s to it).
+// Only host-less cards get a standalone /card-<id> page, and those are noindex — Google
+// crawled the 21 templated card pages and declined them (Business Read, Sep 8).
+const hostOf = (c) => c.slug && exists(c.slug + ".html") ? c.slug : null;
+const cardHref = (c) => hostOf(c) ? "/" + hostOf(c) + "#engine-" + c.id : "/card-" + c.id;
 let latest = null;
 try { latest = JSON.parse(await (await fetch(`${FEED_BASE}/prices-latest.json?t=${Date.now()}`)).text()); } catch { latest = null; }
 const latestBy = new Map(((latest && latest.cards) || []).map((c) => [c.key, c]));
@@ -308,6 +316,7 @@ function renderCard(c) {
   <title>${esc(title)}</title>
   <meta name="description" content="${attr(desc)}">
   <link rel="canonical" href="${canon}">
+  <meta name="robots" content="noindex,follow">
   <meta property="og:type" content="website">
   <meta property="og:title" content="${attr(c.label + " — Price Chart & Live Listings")}">
   <meta property="og:description" content="${attr(desc)}">
@@ -467,7 +476,7 @@ function renderHub(list) {
     if (!items.length) return "";
     return `<h2 class="cp-sec-h">${esc(name)}</h2>
 <div class="hub-list">
-${items.map((c) => { const f = facts(c); const last = f.latest && f.latest.last != null ? fmt$(f.latest.last) : "—"; return `  <a class="hub-row" href="/card-${attr(c.id)}" data-key="ebay:${attr(c.id)}">
+${items.map((c) => { const f = facts(c); const last = f.latest && f.latest.last != null ? fmt$(f.latest.last) : "—"; return `  <a class="hub-row" href="${attr(cardHref(c))}" data-key="ebay:${attr(c.id)}">
     <span class="ph">${f.img ? `<img src="${attr(f.img.url)}" alt="" loading="lazy">` : ""}</span>
     <span class="nm"><span class="t">${esc(c.label.split(/\s[—–]\s/)[0])}</span><span class="m">${esc(f.lane)}${f.code ? " · " + esc(f.code) : ""}</span></span>
     <span class="p"><b data-last>${last}</b><span data-roc>&nbsp;</span></span>
@@ -495,6 +504,7 @@ ${items.map((c) => { const f = facts(c); const last = f.latest && f.latest.last 
   <title>Card Charts — Nightly Price Lines for Every Engine-Tracked Card | ShopCardHub</title>
   <meta name="description" content="One page per tracked card: the nightly engine mark, the price line, verified live eBay listings for that exact card, auction hammers, and a ★ Track button. 1st Bowman Chrome autos, Sapphire, and Pokémon index singles.">
   <link rel="canonical" href="https://www.shopcardhub.com/cards">
+  <meta name="robots" content="noindex,follow">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Card Charts — Nightly Price Lines">
   <meta property="og:description" content="One page per engine-tracked card: mark, price line, verified live listings, hammers, ★ Track.">
@@ -517,7 +527,7 @@ ${items.map((c) => { const f = facts(c); const last = f.latest && f.latest.last 
       "@type": "ItemList",
       itemListElement: list.map((c, i) => ({
         "@type": "ListItem", position: i + 1, name: c.label,
-        url: "https://www.shopcardhub.com/card-" + c.id,
+        url: "https://www.shopcardhub.com" + cardHref(c),
       })),
     },
   })}</script>
@@ -568,6 +578,7 @@ ${footer}
 // ---------- write ----------
 const written = [];
 for (const c of cards) {
+  if (hostOf(c)) continue; // hosted on its guide page — see build-engine-blocks.mjs
   const html = renderCard(c);
   const file = `card-${c.id}.html`;
   if (!DRY) fs.writeFileSync(path.join(REPO, file), html);
