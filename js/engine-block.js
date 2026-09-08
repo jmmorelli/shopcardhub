@@ -87,7 +87,7 @@
         fixed = (j.listings || []).filter(function (l) { var t = (l.title || '').toLowerCase(); return l.price > 0 && t.indexOf(must) !== -1 && (!CODE || t.replace(/[\s#‐-―-]/g, '').toUpperCase().indexOf(CODE.replace('-', '')) !== -1); }).map(function (l) { l.total = l.price + (l.shipping || 0); return l; }).sort(function (a, b) { return a.total - b.total; });
         set('list-sub', 'Title-matched live listings (engine filter unavailable right now).');
       }
-      var top = fixed.slice(0, 8);
+      var top = fixed.slice(0, 8); var SHOW = 4;
       var html = top.map(function (l) {
         return '<a class="cp-item" href="' + esc(l.url) + '" target="_blank" rel="noopener sponsored" data-kind="fixed">' +
           '<span class="ph">' + (l.image ? '<img src="' + esc(l.image) + '" alt="" loading="lazy">' : '') + '</span>' +
@@ -103,6 +103,15 @@
       });
       if (!html) html = '<div class="cp-empty">No live listing passes the exact-card filter right now (' + ((j.rejected && j.rejected.count) || j.count || 0) + ' listings looked at, none was this card). Check back tonight.</div>';
       list.innerHTML = html;
+      /* phone-first: 4 rows visible, the rest behind one tap */
+      var rows = Array.prototype.slice.call(list.querySelectorAll('a.cp-item'));
+      if (rows.length > SHOW) {
+        rows.slice(SHOW).forEach(function (r) { r.hidden = true; });
+        var more = document.createElement('button'); more.type = 'button'; more.className = 'cp-more';
+        more.textContent = 'Show all ' + rows.length + ' listings';
+        more.addEventListener('click', function () { rows.forEach(function (r) { r.hidden = false; }); more.remove(); });
+        list.appendChild(more);
+      }
       Array.prototype.forEach.call(list.querySelectorAll('a.cp-item'), function (a) {
         a.addEventListener('click', function () { if (window.gtag) gtag('event', 'click', { link_url: 'ebay', card: id, kind: a.getAttribute('data-kind'), page: location.pathname }); });
       });
@@ -115,6 +124,11 @@
     }).catch(function () { list.innerHTML = '<div class="cp-empty">Live listings are unavailable right now.</div>'; });
   }
 
-  function boot() { Array.prototype.forEach.call(document.querySelectorAll('.cp-embed[data-card]'), render); }
+  function boot() {
+    /* desktop: charts open; phone: the first card's chart open, the rest folded */
+    var wide = window.matchMedia && window.matchMedia('(min-width: 720px)').matches;
+    if (wide) Array.prototype.forEach.call(document.querySelectorAll('.cp-embed details.cp-fold[data-fold="chart"]'), function (d) { d.open = true; });
+    Array.prototype.forEach.call(document.querySelectorAll('.cp-embed[data-card]'), render);
+  }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
