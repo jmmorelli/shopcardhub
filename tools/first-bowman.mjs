@@ -24,6 +24,10 @@
 //   candidate      = no prior, no first flag            → reported; ADDED with --apply only when the set's
 //                    firstAudit.complete === true (its prior universe was checked outside data/sets too —
 //                    data/sets only reaches back to 2025, so an unverified set cannot be auto-flagged)
+//   parallel sets  = a set whose meta carries parallelOf:"<parent slug>" (2026 Bowman Sapphire = the sapphire parallel of
+//                    May's 2026 Bowman) is the SAME cards: its rows carry the 1st logo exactly as the parent's do, so the
+//                    parent and the parallel edition never count as priors of each other (Mo, Aug 21: Holliday's Sapphire
+//                    BCP-1 IS a 1st — that correction was about the parallel, and it stands).
 //   board          = Bangers board names (data/board-history.json entryDates minus departures) get board:true
 //                    in current-year Bowman-family sets; departed names lose it. board never implies first.
 // Usage: node tools/first-bowman.mjs [--apply] [--json]
@@ -76,7 +80,8 @@ export function audit({ apply = false, repo = REPO } = {}) {
       const baseSet = isBaseSetGroup(g);
       for (const c of g.cards || []) {
         const p = slug(c.player);
-        const priors = (seen[kind].get(p) || []);
+        const fam = s.d.parallelOf || s.d.slug;
+        const priors = (seen[kind].get(p) || []).filter(pr => pr.fam !== fam);
         const extPrior = ext[p] && (ext[p] === true || /\b(both|all)\b/i.test(ext[p]) || new RegExp(kind, "i").test(ext[p]) || !/\b(base|auto)\b/i.test(ext[p]));
         const hasPrior = baseSet || priors.length > 0 || !!extPrior;
         if (c.first && hasPrior) {
@@ -93,7 +98,7 @@ export function audit({ apply = false, repo = REPO } = {}) {
           if (c.board && !board.on.has(p)) { add("FIX", "bangers-tag-stray", s, c, `${c.n} ${c.player}: board:true but ${board.left.has(p) ? "left the board" : "not on the board"}`); if (apply) { delete c.board; dirty = true; changes++; } }
         } else if (c.board) { add("FIX", "bangers-tag-stray", s, c, `${c.n} ${c.player}: board:true in a ${s.year} set`); if (apply) { delete c.board; dirty = true; changes++; } }
         if (!here[kind].has(p)) here[kind].set(p, []);
-        here[kind].get(p).push({ release: s.release, rel: s.rel, n: c.n });
+        here[kind].get(p).push({ release: s.release, rel: s.rel, n: c.n, fam });
       }
     }
     // a player flagged 1st twice for the same kind inside one set (e.g. paper BP + chrome BCP of the same May set) is
