@@ -1163,6 +1163,11 @@
     "severity": "fixed",
     "what": "Wed Sep 9 audit ruled same day by the CoS (Mo: 'his call'): 2 of 4 findings fixed live, 1 stopgapped live, 1 rule queued",
     "detail": "Nav street-date convention settled (Bowman Chrome \u2014 Sep 9; Bowman Football \u2014 Pre-Order); Finest reads as released over a dated Jun 29 snapshot; de9d243 pushLog backfilled. Open for Mo: delete .git/index.lock in ~/Projects/shopcardhub, then git pull auto main."
+   },
+   {
+    "severity": "fixed",
+    "what": "HIGH \u2014 Mo (Sep 9, in chat): BCB26 index called Aiva Arquette BCP-174 a 1st Bowman (false \u2014 his 1sts are May 2026 Bowman) and missed 1sts Topps shows on its own page (Colome, A. Nunez, Custodio, Horton, Rosario). Root cause: the Aug 21 \"1st logo on every debut-year card\" propagation rule was wrong.",
+    "detail": "Rule corrected to Mo\u2019s definition (1st Bowman Chrome = first non-auto Bowman card; 1st Bowman Auto = first Bowman auto; never repeated; not an RC). Every BCB26 card re-derived against Bowman/Chrome/Draft/Sapphire checklists 2021\u20132026 + Topps images: 72/100 BCP and 97/104 CPA are 1sts; Holliday BCP-209 + Arquette BCP-174 untagged; Arquette\u2019s stale BANGERS tag removed (left the board Sep 8). 54 wrong flags removed from 2025 Chrome/Draft files. tools/first-bowman.mjs rewritten as the verifier; auditor \u00a710 + CHARTER rewritten; set-checklist.js no longer renders 1ST BOWMAN from board membership; guide + football copy fixed; re-seed path in build-bcb26-index.mjs fixed (it corrupted indices.json on re-seed) and CPA duplicate ids de-duplicated."
    }
   ],
   "analyst": {
@@ -1412,6 +1417,16 @@
      "gates": "audit-site FAIL 0/WARN 0 (94 pages); audit-prices FAIL 0/WARN 31 (pre-existing) \u2014 run on this tree before commit",
      "liveVerified": "pending at commit \u2014 curl check of /research + /topps-finest-baseball ~1 min after push; result in the chat report",
      "note": "audit-09-09-1 applied (nav.json 2 labels + build-nav on 94 pages, nav block only), audit-09-09-2 stopgap applied (topps-finest-baseball.html copy only), pipeline.json ruling + 2 pushLog backfills. Pushed from a fresh clone; Mo's clone untouched (pipeline.json copied back as a plain file)."
+    },
+    {
+     "date": "2026-09-09",
+     "commits": [
+      "<this commit \u2014 hash resolved by the next checkpoint>"
+     ],
+     "by": "CoS (Claude) on Mo\u2019s Sep 9 directive: 1st Bowman definition \u2014 chat session, pushed from a fresh clone on the Mac via deploy key",
+     "gates": "audit-site FAIL 0/WARN 3 (new WARN first-bowman-unverified on the three 2025/Sapphire set files \u2014 expected, queued); audit-prices FAIL 0/WARN 31 (pre-existing) \u2014 run on this tree before commit",
+     "liveVerified": "pending at commit \u2014 curl of /bowman-chrome-2026-index + /data/sets/2026-bowman-chrome-baseball.json after push; result in the chat report + handoff",
+     "note": "26 files: data/sets \u00d75 (BCB26 firstAudit + 169 verified 1st flags; 54 wrong flags removed), data/indices.json (BCB26 universe re-seeded, ids de-duped, basket/history untouched \u2014 still PRE), bowman-chrome-2026-index.html, bowman-chrome-baseball-2026.html + bowman-football.html copy, js/set-checklist.js v3 (+ ?v=3 on 14 set pages), tools/first-bowman.mjs, tools/build-bcb26-index.mjs, tools/site-auditor (audit-site.mjs \u00a710, CHARTER.md), data/pipeline.json."
     }
    ]
   },

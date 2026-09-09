@@ -9,7 +9,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { pathToFileURL, fileURLToPath } from "node:url";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const JSON_OUT = process.argv.includes("--json");
@@ -196,69 +196,44 @@ try {
   }
 } catch {}
 
-/* ---------- 10. set checklists: 1st Bowman + Bangers integrity (added Aug 21, 2026) ----------
-   Mo's rule: the 1st Bowman logo is on EVERY Bowman card a player gets in his debut year — paper,
-   Chrome, Sapphire, September Bowman Chrome, Draft, and all parallels. Saying a card is NOT a 1st
-   when it is (or vice versa) is a site-trust breakdown. These checks are deterministic and run on
-   every sweep:
-     first-bowman-board         a Bangers board name in a Bowman-family set MUST carry board:true AND first:true
-     bangers-tag-stray          board:true on a player who is not on the board (board-history.json entryDates)
-     first-bowman-inconsistent  same player, same Bowman year: first:true in one set, unflagged in another
-     first-bowman-contradiction first:true in year Y but the player appears in a set file of an earlier year
-     first-bowman-copy          page copy that denies a 1st ("not his 1st", "isn't a 1st Bowman", …)
-     sets-json-invalid/schema   data/sets/*.json must parse and carry set/slug/groups/cards{n,player}
-   Board names come from data/board-history.json → entryDates (slugs), so a new board name is covered
-   the week it is promoted — no list to maintain here. */
+/* ---------- 10. set checklists: 1st Bowman + Bangers integrity (rewritten Sep 9, 2026) ----------
+   THE RULE (Mo, Sep 9 2026 — the Aug 21 "1st logo on every debut-year card" rule was WRONG and is retired):
+   a card carries the 1st Bowman logo only if it is the player's FIRST Bowman-family card of its kind —
+   first non-auto card = 1st Bowman Chrome, first autograph = 1st Bowman Auto — and never again afterwards,
+   same year or not (Holliday/Arquette: 1sts in May's 2026 Bowman; their Sept 2026 Bowman Chrome BCPs are NOT
+   1sts). A 1st Bowman is not a rookie card. Calling a card a 1st when it is not is a site-trust breakdown.
+   The logic lives in tools/first-bowman.mjs (audit()) and is shared here so the two can never disagree:
+     first-bowman-contradiction  first:true on a card whose player has an earlier same-kind card (data/sets
+                                 release order, or the set's firstAudit.externalPriors) or on an MLB base-set card
+     first-bowman-unverified     a Bowman-family set with 1st tags on page but no firstAudit.verified (WARN)
+     bangers-tag-stray           board:true on a name not on the CURRENT board (entryDates minus departures)
+     bangers-tag-missing         a current board name in a current-year Bowman-family set without board:true
+     first-bowman-render         a renderer that derives the 1ST BOWMAN tag from anything but card.first
+     sets-json-invalid/schema    data/sets/*.json must parse and carry set/slug/groups/cards{n,player}   */
 try {
-  const slugify = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-  const bh = JSON.parse(read("data/board-history.json"));
-  const boardSlugs = new Set(Object.keys(bh.entryDates || {}));
   const setsDir = path.join(REPO, "data/sets");
   const setFiles = fs.existsSync(setsDir) ? fs.readdirSync(setsDir).filter(f => f.endsWith(".json")) : [];
-  const sets = [];
   for (const f of setFiles) {
     const rel = "data/sets/" + f;
     let d; try { d = JSON.parse(read(rel)); } catch (e) { add("FAIL", "sets-json-invalid", rel, e.message); continue; }
     if (!d.set || !d.slug || !Array.isArray(d.groups)) { add("FAIL", "sets-json-schema", rel, "missing set/slug/groups"); continue; }
-    const year = parseInt(String(d.set).match(/\b(20\d\d)\b/)?.[1] || "0", 10);
-    const bowman = /\bbowman\b/i.test(d.set);
-    const cards = [];
-    for (const g of d.groups) for (const c of (g.cards || [])) {
-      if (!c.n || !c.player) { add("FAIL", "sets-json-schema", rel, `${g.key || g.title}: card without n/player`); continue; }
-      cards.push({ ...c, group: g.key || g.title, pslug: slugify(c.player) });
-    }
-    sets.push({ rel, d, year, bowman, cards });
+    for (const g of d.groups) for (const c of (g.cards || [])) if (!c.n || !c.player) { add("FAIL", "sets-json-schema", rel, `${g.key || g.title}: card without n/player`); break; }
+    if (/\bbowman\b/i.test(d.set) && d.groups.some(g => (g.cards || []).some(c => c.first)) && !(d.firstAudit && d.firstAudit.verified))
+      add("WARN", "first-bowman-unverified", rel, "carries 1st tags but no firstAudit.verified — run the prior-set check (tools/first-bowman.mjs) against checklists outside data/sets before trusting them");
   }
-  // A. board names + stray BANGERS tags
-  for (const s of sets) {
-    for (const c of s.cards) {
-      const onBoard = boardSlugs.has(c.pslug);
-      if (onBoard && s.bowman && (!c.board || !c.first))
-        add("FAIL", "first-bowman-board", s.rel, `${c.n} ${c.player} (${c.group}): Bangers board name in a Bowman set must be board:true + first:true (has board=${!!c.board}, first=${!!c.first})`);
-      if (c.board && !onBoard)
-        add("FAIL", "bangers-tag-stray", s.rel, `${c.n} ${c.player} (${c.group}): board:true but not on the Bangers board`);
-    }
+  const fb = await import(pathToFileURL(path.join(REPO, "tools/first-bowman.mjs")).href);
+  const r = fb.audit({ apply: false, repo: REPO });
+  for (const x of r.findings) {
+    if (x.level === "FAIL") add("FAIL", x.code, x.set, x.msg);
+    else if (x.code === "bangers-tag-stray" || x.code === "bangers-tag-missing") add("FAIL", x.code, x.set, x.msg + " — run `node tools/first-bowman.mjs --apply`");
+    else if (x.level === "FIX") add("FAIL", "first-bowman-unapplied", x.set, x.msg + " — run `node tools/first-bowman.mjs --apply`");
   }
-  // B. same-year consistency across Bowman-family sets, and C. earlier-year contradictions
-  const firstBy = new Map();   // pslug → {year, rel, n}
-  const seenBy = new Map();    // pslug → [{year, rel, n, first}]
-  for (const s of sets) for (const c of s.cards) {
-    if (!seenBy.has(c.pslug)) seenBy.set(c.pslug, []);
-    seenBy.get(c.pslug).push({ year: s.year, rel: s.rel, n: c.n, first: !!c.first, bowman: s.bowman });
-    if (c.first && s.bowman && (!firstBy.has(c.pslug) || s.year < firstBy.get(c.pslug).year)) firstBy.set(c.pslug, { year: s.year, rel: s.rel, n: c.n });
+  // renderers: the 1ST BOWMAN tag may only come from card.first
+  for (const rf of ["js/set-checklist.js", "tools/build-bcb26-index.mjs"]) {
+    const src = fs.existsSync(path.join(REPO, rf)) ? read(rf) : "";
+    if (/\(c\.first\s*\|\|\s*c\.board\)|u\.board\s*\?\s*'<span class="tag board">BANGERS<\/span><span class="tag first">/.test(src))
+      add("FAIL", "first-bowman-render", rf, "renders the 1ST BOWMAN tag from board membership — it must come from card.first only");
   }
-  for (const [p, f] of firstBy) {
-    for (const o of seenBy.get(p) || []) {
-      if (!o.bowman) continue;
-      if (o.year === f.year && !o.first)
-        add("FAIL", "first-bowman-inconsistent", o.rel, `${o.n} ${p}: flagged 1st Bowman in ${f.rel} (${f.n}) but unflagged here — the 1st logo is on every ${f.year} Bowman card of a ${f.year} debut`);
-      if (o.year && o.year < f.year)
-        add("FAIL", "first-bowman-contradiction", f.rel, `${f.n} ${p}: flagged 1st Bowman (${f.year}) but appears in ${o.rel} (${o.n}, ${o.year}) — cannot be a ${f.year} debut`);
-    }
-  }
-  // D. copy that denies a 1st
-  const deny = /not his 1st|not (his|a|the) first bowman|isn.?t (his|a) (1st|first)( bowman)?|NOT HIS 1ST|no longer a 1st/i;
-  for (const f of pages) { const m = markup(f).match(deny); if (m) add("FAIL", "first-bowman-copy", f, `copy denies a 1st Bowman: "${m[0]}" — a 1st logo is on every debut-year Bowman card; verify before publishing any such claim`); }
   if (!setFiles.length) add("WARN", "sets-missing", "data/sets", "no checklist files found");
 } catch (e) { add("WARN", "first-bowman-check-error", "tools/site-auditor", e.message); }
 

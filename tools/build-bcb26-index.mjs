@@ -15,8 +15,11 @@
 //   cross-set instrument. BASE | AUTOS | PARALLELS tabs; AUTOS carries a 15% single-card weight cap at the
 //   basket level (applied at (re)constitution via fractional units, logged in divisorLog). Ask basis, labeled,
 //   until ≥60% SCP sold coverage allows a hammer restatement via a logged divisor adjustment (level unchanged).
-//   1st tag only where the checklist's own rules allow (first:true / board:true) — untagged = unknown, never
-//   "not a 1st". No price seed on ★ Track buttons (no verified price exists pre-street); no data-feed (no
+//   1ST BOWMAN tag = card.first ONLY (verified per card, Sep 9 2026 — see data/sets/…/firstAudit): the 1st logo is on a
+//   player's FIRST non-auto Bowman card (1st Bowman Chrome) and FIRST Bowman auto (1st Bowman Auto), never on a later
+//   card of the same kind — Holliday BCP-209 / Arquette BCP-174 are NOT 1sts here (theirs were May's 2026 Bowman).
+//   Untagged = not a 1st. BANGERS = current board (data/board-history.json entryDates minus departures) and never
+//   implies a 1st. No price seed on ★ Track buttons (no verified price exists pre-street); no data-feed (no
 //   engine-tracked card belongs to this set — the watchlist's CPA-* autos are May's paper-Bowman inserts).
 //
 // Usage: node tools/build-bcb26-index.mjs [--seed] [--check]
@@ -33,7 +36,19 @@ const NAV_SRC = path.join(REPO, "ascended-heroes-index.html"); // nav block dono
 const TICKER = "BCB26";
 const SLUG = "bowman-chrome-2026-index";
 const CUSTOMID = SLUG;
-const BOARD_NAMES = ["Ethan Holliday", "Aiva Arquette", "Seong-Jun Kim", "Andrew Fischer", "Edward Florentino", "Daniel Pierce"]; // current Bangers board (Sep 1 2026)
+import { currentBoard, slug as pslug } from "./first-bowman.mjs";
+// current Bangers board = data/board-history.json entryDates minus departures (Arquette left Sep 8 2026); display
+// names come from the set files where possible so this list never goes stale by hand.
+const BOARD = currentBoard(REPO);
+const nameOf = (() => {
+  const m = new Map();
+  for (const f of fs.readdirSync(path.join(REPO, "data/sets")).filter((f) => f.endsWith(".json"))) {
+    const d = JSON.parse(fs.readFileSync(path.join(REPO, "data/sets", f), "utf8"));
+    for (const g of d.groups || []) for (const c of g.cards || []) if (!m.has(pslug(c.player))) m.set(pslug(c.player), c.player);
+  }
+  return (s) => m.get(s) || s.replace(/-/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase());
+})();
+const BOARD_NAMES = [...BOARD.on].map(nameOf);
 const AUTO_CAP = 0.15;
 const args = process.argv.slice(2);
 const SEED = args.includes("--seed");
@@ -50,9 +65,11 @@ function universeFromSet() {
     const tab = TAB_OF[g.key];
     if (!tab) continue;
     for (const c of g.cards || []) {
-      const row = { id: `${set.slug}:${c.n.toLowerCase()}`, number: c.n, player: c.player, team: c.team, tab };
-      if (c.first) row.first = true;
-      if (c.board) row.board = true;
+      let id = `${set.slug}:${c.n.toLowerCase()}`;
+      if (out.some((r) => r.id === id)) id += "-" + pslug(c.player); // Topps reuses CPA-AN/ED/LD/RD for two players each
+      const row = { id, number: c.n, player: c.player, team: c.team, tab };
+      if (c.first) row.first = true;                 // verified per card — the only source of the 1ST BOWMAN tag
+      if (BOARD.on.has(pslug(c.player))) row.board = true; // current board, never implies a 1st
       out.push(row);
     }
   }
@@ -98,11 +115,10 @@ if (SEED) {
   if (at < 0) { console.error('could not find the "updated" key in data/indices.json'); process.exit(1); }
   let next;
   if (existing) {
-    // replace the existing (mark-free) entry in place
-    const start = rawIdx.indexOf(`\n "${TICKER}": {`);
-    const end = rawIdx.indexOf("\n }", start) + 3; // "\n }" + trailing ","
-    const tail = rawIdx.slice(end).startsWith(",") ? 1 : 0;
-    next = rawIdx.slice(0, start + 1) + block.trimEnd().replace(/,$/, "") + rawIdx.slice(end + tail);
+    // replace the existing (mark-free) entry in place — object-level, key order preserved (the file is canonical
+    // JSON.stringify(…, null, 1); the old textual splice corrupted the file on re-seed, Sep 9 2026)
+    idx[TICKER] = entry;
+    next = JSON.stringify(idx, null, 1) + (rawIdx.endsWith("\n") ? "\n" : "");
   } else {
     next = rawIdx.slice(0, at + 1) + block + rawIdx.slice(at + 1);
   }
@@ -123,7 +139,8 @@ const basketById = new Map((X.basket || []).map((b) => [b.id, b]));
 const last = (X.history || []).length ? X.history[X.history.length - 1] : null;
 const prev = (X.history || []).length > 1 ? X.history[X.history.length - 2] : null;
 const boardInSet = uni.filter((u) => u.board);
-const boardMissing = BOARD_NAMES.filter((n) => !boardInSet.some((u) => u.player === n));
+const boardMissing = BOARD_NAMES.filter((n) => !boardInSet.some((u) => pslug(u.player) === pslug(n)));
+const firstCount = { base: byTab.base.filter((u) => u.first).length, autos: byTab.autos.filter((u) => u.first).length };
 const fmtD = (iso) => { if (!iso) return "—"; const [y, m, d] = iso.split("-"); return `${m}/${d}/${y.slice(2)}`; };
 const fmtMoney = (n) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const today = new Date().toISOString().slice(0, 10);
@@ -139,7 +156,8 @@ function trackName(u) {
 }
 function row(u, i) {
   const b = basketById.get(u.id);
-  const tag = u.board ? '<span class="tag board">BANGERS</span><span class="tag first">1ST BOWMAN</span>' : u.first ? '<span class="tag first">1ST BOWMAN</span>' : "";
+  const tag = (u.board ? '<span class="tag board" title="On the Bowman Bangers board today">BANGERS</span>' : "") +
+    (u.first ? `<span class="tag first" title="Carries the 1st Bowman logo — his first Bowman ${u.tab === "autos" ? "autograph" : "non-auto card"} (verified per card, Sep 9 2026)">1ST BOWMAN</span>` : "");
   const mark = b && typeof b.price === "number"
     ? `<td class="num">${fmtMoney(b.price)} <span class="basis">${esc(b.basis || X.basis)}</span></td><td class="num dim2">${esc((b.asOf || "").slice(5))}</td>`
     : `<td class="num dim2">— <span class="basis">no verified ask yet</span></td><td class="num dim2">—</td>`;
@@ -307,7 +325,7 @@ ${navBlock}
 <div>
 <div class="eyebrow">&#9646; Set Index &middot; Per-Set &middot; Price-Weighted &middot; ${isPre ? "Pre-Activation" : esc(X.basis === "sold" ? "Sold Basis" : "Ask Basis (labeled)")}</div>
 <h1>${TICKER} <span class="tick">&middot;</span> 2026 Bowman Chrome Chase Index</h1>
-<div class="subline">2026 Bowman Chrome Baseball — streets ${fmtD(X.releaseDate)}. One fixed database for this set only: the ${byTab.base.length} Chrome Prospects (BASE) and the ${byTab.autos.length} published Chrome Prospect Autographs (AUTOS, 15% single-card cap). Not a cross-set 1st Bowman index — that market is the <a href="/bowman-bangers" style="color:var(--iac);">Bangers board</a>. This page tracks the set; it does not recommend cards. <a href="/bowman-chrome-baseball-2026" style="color:var(--iac);">Set guide &rarr;</a></div>
+<div class="subline">2026 Bowman Chrome Baseball — streets ${fmtD(X.releaseDate)}. One fixed database for this set only: the ${byTab.base.length} Chrome Prospects (BASE) and the ${byTab.autos.length} published Chrome Prospect Autographs (AUTOS, 15% single-card cap). ${firstCount.base} of the ${byTab.base.length} Chrome Prospects are <b>1st Bowman Chrome</b> cards and ${firstCount.autos} of the ${byTab.autos.length} autos are <b>1st Bowman Autos</b> — verified card by card, not assumed. Not a cross-set 1st Bowman index — that market is the <a href="/bowman-bangers" style="color:var(--iac);">Bangers board</a>. This page tracks the set; it does not recommend cards. <a href="/bowman-chrome-baseball-2026" style="color:var(--iac);">Set guide &rarr;</a></div>
 </div>
 ${levelBox}
 </div>
@@ -328,7 +346,7 @@ ${isPre ? `<div class="activate"><h3>Pre-activation &middot; what happens next</
 <div class="statnote">UNIVERSE = every card on the published checklist (as of ${esc(set.asof)}; the autograph list was still filling in — new cards enter via logged divisor adjustments). Unpriced cards carry zero weight until their first verified mark. ${isPre ? "No number on this page is a price: none exists yet that the site can attribute." : "Every mark is dated per row and labeled by basis."}</div>
 
 <div class="bench"><span class="lbl">Board vs Index &middot; benchmark line</span>
-<b>${boardInSet.length} of ${BOARD_NAMES.length} Bangers board names have a card in this set:</b> ${boardInSet.map((u) => `${esc(u.player)} (${esc(u.number)})`).join(", ") || "none"}.${boardMissing.length ? ` <b>Not on the published checklist as of ${esc(set.asof)}:</b> ${boardMissing.map(esc).join(", ")} — their 1st Bowman Chrome Autos were in May's 2026 Bowman; if the final Chrome checklist adds them they enter at the next re-mark.` : ""} ${isPre ? "Once BCB26 activates, this line carries the board's move vs the index's move over the same window — the board is the cross-set instrument, this index is the set." : "This line compares the board's move to the index's move over the same window."} <a href="/bowman-bangers">The board &rarr;</a></div>
+<b>${boardInSet.length} of ${BOARD_NAMES.length} Bangers board names have a card in this set:</b> ${boardInSet.map((u) => `${esc(u.player)} (${esc(u.number)})`).join(", ") || "none"}.${boardMissing.length ? ` <b>Not on the published checklist as of ${esc(set.asof)}:</b> ${boardMissing.map(esc).join(", ")} — their 1st Bowman Chrome and 1st Bowman Chrome Autos were in May's 2026 Bowman; if the final Chrome checklist adds them they enter at the next re-mark (as returning names, not 1sts).` : ""} ${boardInSet.length ? `Board names in this set are <b>returning</b> cards: their 1st Bowman Chrome and 1st Bowman Autos were May's 2026 Bowman, so the September cards carry no 1st logo.` : ""} ${isPre ? "Once BCB26 activates, this line carries the board's move vs the index's move over the same window — the board is the cross-set instrument, this index is the set." : "This line compares the board's move to the index's move over the same window."} <a href="/bowman-bangers">The board &rarr;</a></div>
 
 <div class="tabs" role="tablist">
 <button class="tab on" role="tab" data-pane="base">Base <span class="ct">${byTab.base.length}</span></button>
@@ -337,11 +355,11 @@ ${isPre ? `<div class="activate"><h3>Pre-activation &middot; what happens next</
 </div>
 
 <div class="pane on" id="pane-base">
-<div class="panenote"><b>BASE</b> — the ${byTab.base.length} Chrome Prospects, BCP-151 to BCP-250 (numbering continues from May's paper set). Chromium stock, non-auto, unnumbered; "base" here never means the paper card. Price-weighted once marks exist. <b>1ST BOWMAN</b> is shown only where the checklist's own rules allow it — an untagged name is unknown, not "not a 1st".</div>
+<div class="panenote"><b>BASE</b> — the ${byTab.base.length} Chrome Prospects, BCP-151 to BCP-250 (numbering continues from May's paper set). Chromium stock, non-auto, unnumbered; "base" here never means the paper card. Price-weighted once marks exist. <b>1ST BOWMAN</b> marks the ${firstCount.base} cards that carry the 1st logo — the player's first non-auto Bowman card, verified against every Bowman-family checklist 2021–2026. An untagged name (Holliday, Arquette, Made, Willits, Jenkins, Clark…) already had a Bowman card and is <b>not</b> a 1st here.</div>
 ${table(byTab.base)}
 </div>
 <div class="pane" id="pane-autos">
-<div class="panenote"><b>AUTOS</b> — the ${byTab.autos.length} published Chrome Prospect Autographs (CPA-), on-card. <b>15% single-card weight cap at the basket level:</b> at (re)constitution any auto whose share would exceed 15% of the autos basket gets fractional units so its share is exactly 15%; the cap is applied and logged in the divisor log, never by editing a price. The published auto list was still filling in on ${esc(set.asof)}; additions enter via logged divisor adjustments.</div>
+<div class="panenote"><b>AUTOS</b> — the ${byTab.autos.length} published Chrome Prospect Autographs (CPA-), on-card; <b>1ST BOWMAN</b> marks the ${firstCount.autos} that are the player's first Bowman autograph (a 1st Bowman Auto can sit in a later set than his 1st Chrome — the logo is judged per kind). The ${byTab.autos.length - firstCount.autos} untagged autos (Parker, Quintero, Kilby, F. Arias, J. Gonzalez, Doyle, Peña) signed for Bowman before. <b>15% single-card weight cap at the basket level:</b> at (re)constitution any auto whose share would exceed 15% of the autos basket gets fractional units so its share is exactly 15%; the cap is applied and logged in the divisor log, never by editing a price. The published auto list was still filling in on ${esc(set.asof)}; additions enter via logged divisor adjustments.</div>
 ${table(byTab.autos)}
 </div>
 <div class="pane" id="pane-parallels">
@@ -357,7 +375,7 @@ ${table(byTab.autos)}
 <b>BASIS</b> — ask basis, labeled on every row: a verified ask is what a seller is asking on a live, engine-verified listing — it is not a sale and is never called one. When SCP sold coverage reaches &ge;60% of basket value the index restates to hammer basis through a logged divisor adjustment; the level is identical before and after. Asks and solds are never blended. &middot;
 <b>ACTIVATION</b> — first re-mark with verified asks covering &ge;60% of chase-basket value: divisor = basket value &divide; 100, inception = that date, level 100.00. &middot;
 <b>WEIGHT</b> — price &divide; basket value within a tab; unpriced cards carry zero weight and enter via logged divisor adjustments so inclusion never moves the level. &middot;
-<b>1ST BOWMAN</b> — the 1st logo is on every Bowman card a player gets in his debut year (paper, Chrome, Sapphire, parallels). No checklist marks it per card, so the tag appears only on the Bangers board names and players the sources explicitly named as 2026 1st Bowmans. Untagged = unknown. &middot;
+<b>1ST BOWMAN</b> — the card with the 1st logo. Each prospect gets two, judged separately: his first non-auto Bowman card (<b>1st Bowman Chrome</b>) and his first Bowman autograph (<b>1st Bowman Auto</b>). A later card of the same kind never carries it — same year or not, paper, Chrome, Sapphire or Draft. Not a rookie card: an RC is a player in the league; a 1st Bowman is an unproven prospect, and that is where the edge is. Every tag on this page was checked card by card (prior Bowman, Bowman Chrome, Bowman Draft and Sapphire checklists 2021–2026, plus Topps' own card images) on Sep 9, 2026; untagged = not a 1st. BANGERS is a separate tag for the current board and never implies a 1st. &middot;
 <b>&#9733;</b> — Track in your Vault (free, no account): Hunting or I Own It. No price is seeded pre-activation. &middot;
 <b>FULL METHODOLOGY</b> — solds vs asks vs engine marks: <a href="/how-prices-work" style="color:var(--iac);">/how-prices-work</a>. &middot;
 <b>NO CALLS</b> — an index is a measurement, not a recommendation. The board makes calls and is graded in public on <a href="/track-record" style="color:var(--iac);">the Scorecard</a>; this page does not.

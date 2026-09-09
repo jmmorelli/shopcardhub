@@ -37,15 +37,20 @@ auditor itself. This separation *is* the audit trail: proposals in
      nav single-source drift, sitemap coverage both directions, vault
      track-button contract (feed-linked ≠ seeded), data/*.json validity,
      calls.json invariants (immutable projections, terminal grades, sold-basis
-     finals), **set-checklist integrity (added Aug 21, 2026 — Mo's trust
-     rule): 1st Bowman + Bangers flags in data/sets/*.json** — every Bangers
-     board name in a Bowman-family set is board+first; no stray BANGERS tags;
-     a player flagged 1st in one set of a Bowman year is flagged in every set
-     of that year; no 1st flag on a player who appears in an earlier-year
-     file; no page copy that denies a 1st ("not his 1st"). Any of these is a
-     HIGH finding — saying a card is not a 1st when it is (or vice versa) is a
-     site-trust breakdown. The 1st logo is on EVERY Bowman card of a player's
-     debut year (paper, Chrome, Sapphire, Sept Chrome, parallels).
+     finals), **set-checklist integrity (Mo's trust rule, corrected
+     Sep 9, 2026): 1st Bowman + Bangers flags in data/sets/*.json** — a card
+     carries the 1st logo only if it is the player's FIRST Bowman-family card
+     of its kind (first non-auto = 1st Bowman Chrome, first autograph = 1st
+     Bowman Auto) and never again, same year or not; a 1st Bowman is not a
+     rookie card. Checks: no 1st flag where the player has an earlier
+     same-kind card (release order across data/sets, or the set's
+     firstAudit.externalPriors) or on an MLB base-set card; 1st tags are
+     trusted only in sets with firstAudit.verified; BANGERS = the CURRENT
+     board (entryDates minus departures) and never implies a 1st; renderers
+     derive the 1ST BOWMAN tag from card.first only. Any FAIL here is HIGH —
+     calling a card a 1st when it is not (Arquette BCP-174, Sep 9) is a
+     site-trust breakdown. Logic: tools/first-bowman.mjs (shared with §10).
+     The Aug 21 "1st logo on every debut-year card" rule is retired.
    - `node tools/audit-prices.mjs` — pricing integrity: no placeholder prices,
      stamp freshness, price-table structure.
 2. **Live-site spot check** (network): fetch 3–5 pages on www.shopcardhub.com

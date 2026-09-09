@@ -1,3 +1,4 @@
+// v3 (Sep 9 2026): the 1ST BOWMAN tag renders ONLY from c.first (verified per card); BANGERS (c.board) never implies a 1st.
 /* set-checklist.js — renders a published set checklist from /data/sets/<slug>.json into any
    <div data-checklist="/data/sets/<slug>.json"></div>, with a ★ Track button on every row.
    Track buttons use the sitewide .sch-track-card contract (js/vault-track.js) — name/set/cat/grade
@@ -62,7 +63,7 @@
         var name = c.player + ' ' + data.set.replace(/ (Baseball|Basketball|Football|Soccer)$/, '') + ' ' + (gg.kind || '') + ' #' + c.n;
         return '<tr' + (c.board ? ' class="board"' : '') + '>' +
           '<td class="n">' + esc(c.n) + '</td>' +
-          '<td class="p">' + esc(c.player) + ((c.first || c.board) ? '<span class="first">1ST BOWMAN</span>' : '') + (c.rc ? '<span class="rc">RC</span>' : '') + (c._g ? '<span class="rc" style="color:var(--text-dim);border-color:var(--border2)">' + esc(c._g.title) + '</span>' : '') + '</td>' +
+          '<td class="p">' + esc(c.player) + (c.first ? '<span class="first" title="Carries the 1st Bowman logo — the player&#39;s first Bowman card of this kind (verified per card)">1ST BOWMAN</span>' : '') + (c.rc ? '<span class="rc">RC</span>' : '') + (c._g ? '<span class="rc" style="color:var(--text-dim);border-color:var(--border2)">' + esc(c._g.title) + '</span>' : '') + '</td>' +
           '<td class="t">' + esc(c.team) + '</td>' +
           '<td class="a"><button class="sch-track-card" data-name="' + esc(name) + '" data-set="' + esc(data.set) + '" data-cat="' + esc(data.cat || 'baseball') + '" data-grade="Raw">&#9733; Track</button></td></tr>';
       }).join('') || '<tr><td colspan="4" style="color:var(--text-dim)">No matches.</td></tr>';
