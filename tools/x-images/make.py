@@ -14,6 +14,8 @@ Usage:
   python3 tools/x-images/make.py movers AH26              # top/bottom movers vs prevPrice
   python3 tools/x-images/make.py vault                    # Vault pitch card (public data only)
   python3 tools/x-images/make.py og --out og              # og/indices.png link preview (1200x630), re-run each Monday
+  python3 tools/x-images/make.py bangers                  # THE TUESDAY BOARD tape: top-5 parsed straight off bowman-bangers.html (added Sep 8 2026)
+  python3 tools/x-images/make.py bcb26                    # BCB26 pre-activation / release-window card from indices.json (added Sep 8 2026; shows the level once live)
   python3 tools/x-images/make.py all AH26
 
 Output: --out DIR (default: ../Card Hub/x-images/<YYYY-MM-DD>/). Prints paths.
@@ -47,13 +49,13 @@ BAR6 = lambda s: F("barlow-600", s)
 MONO = lambda s: F("jetbrains-mono-var", s)
 
 # ---------- canvas ----------
-def canvas(eyebrow, title, sub=None):
+def canvas(eyebrow, title, sub=None, tag="//  SET INDICES · SOLD COMPS ONLY"):
     im = Image.new("RGB", (W, H), BG); d = ImageDraw.Draw(im)
     for x in range(0, W, 60): d.line([(x, 0), (x, H)], fill="#0a1218")
     for y in range(0, H, 60): d.line([(0, y), (W, y)], fill="#0a1218")
     d.text((48, 34), "SHOPCARD", font=COND9(26), fill=TXT)
     d.text((48 + d.textlength("SHOPCARD", font=COND9(26)), 34), "HUB", font=COND9(26), fill=CYAN)
-    d.text((240, 42), "//  SET INDICES · SOLD COMPS ONLY", font=MONO(12), fill=DIM)
+    d.text((240, 42), tag, font=MONO(12), fill=DIM)
     d.line([(48, 76), (W - 48, 76)], fill="#0e3a45", width=1)
     d.line([(48, 106), (80, 106)], fill=CYAN, width=2)
     d.text((94, 96), eyebrow.upper(), font=MONO(13), fill=CYAN)
@@ -168,7 +170,7 @@ def card_movers(ix, key, out):
             d.rounded_rectangle([x, yy, x + 540, yy + 54], 6, fill=PANEL, outline="#16303a")
             nm = f"#{r['num']} {r['name']}"; nm = nm if len(nm) < 30 else nm[:29] + "…"
             d.text((x + 16, yy + 8), nm, font=BAR6(20), fill=TXT)
-            d.text((x + 16, yy + 32), f"{money(r['prevPrice'])} → {money(r['price'])}", font=MONO(13), fill=DIM)
+            d.text((x + 16, yy + 32), f"{money(r['prevPrice'])} -> {money(r['price'])}", font=MONO(13), fill=DIM)  # ASCII arrow: the mono woff2 lacks U+2192 (tofu)
             s = f"{r['_chg']*100:+.0f}%"; d.text((x + 524 - d.textlength(s, font=COND7(34)), yy + 8), s, font=COND7(34), fill=col)
     footer(d, asof)
     p = out / f"{key.lower()}-movers.png"; im.save(p); return p
@@ -235,6 +237,85 @@ def card_og(idx, out):
     d.text((48, OH - 40), f"marks as of {asof} · shopcardhub.com/indices", font=MONO(13), fill=DIM)
     p = out / "indices.png"; im.save(p); return p
 
+def card_bangers(out):
+    """The Tuesday Board tape (STEP 4.25). Every number is parsed off bowman-bangers.html itself —
+    rank, name, the price-sub line (SCP raw / engine ask / PSA 10 / context / date) and the callout
+    headline — so the image can never show a number the live page doesn't. Added Sep 8 2026."""
+    import re, html as _h
+    page = open(ROOT / "bowman-bangers.html", encoding="utf8").read()
+    strip = lambda t: _h.unescape(re.sub(r"<[^>]+>", "", t)).replace("\u2212", "-").replace("\u2192", "->").replace("\u2014", "-").strip()
+    stamp = re.search(r'data-prices-updated="(\d{4}-\d{2}-\d{2})"', page).group(1)
+    head = strip(re.search(r'&#9889; <strong>(.*?)</strong>', page, re.S).group(1))
+    rows = []
+    for m in re.finditer(r'<div class="entry-rank">(\d\d)</div>(.*?)<div class="entry-since">', page, re.S):
+        rk, blk = m.group(1), m.group(2)
+        nm = strip(re.search(r'<div class="entry-title">(.*?)<br>', blk, re.S).group(1))
+        sub = strip(re.search(r'<div class="price-sub">(.*?)</div>', blk, re.S).group(1))
+        parts = [x.strip() for x in sub.split("\u00b7")]
+        raw = next((x for x in parts if x.startswith("SCP raw")), "").replace("SCP raw ", "")
+        eng = next((x for x in parts if x.startswith("engine")), "").replace("engine ", "")
+        psa = next((x for x in parts if x.startswith("PSA 10")), "").replace("PSA 10 ", "")
+        ctx = parts[3] if len(parts) > 4 else ""
+        ctx = re.split(r"[;,]", ctx)[0].strip()  # first clause only — the rest is on the page
+        rows.append((rk, nm, raw, eng, psa, ctx))
+    rows = rows[:5]
+    dt = datetime.date.fromisoformat(stamp)
+    im, d = canvas("the tuesday board \u00b7 1st bowman chrome autos", f"The Tuesday Board \u2014 {dt.strftime('%b %-d')}",
+                   "Ranked on two ladders together: raw sold AND PSA 10 sold (SportsCardsPro). Engine = tonight's eBay ask, never blended.",
+                   tag="//  BOWMAN BANGERS · SOLD COMPS + LABELED ASKS")
+    cols = ["#", "PLAYER", "RAW SOLD", "PSA 10", "ENGINE ASK", "THIS WEEK"]; xs = [64, 110, 470, 600, 730, 870]
+    y = 236; d.rounded_rectangle([48, y, W - 48, y + 44 + 50 * len(rows)], 8, fill=PANEL, outline="#16303a")
+    for c, x in zip(cols, xs): d.text((x, y + 14), c, font=MONO(12), fill=DIM)
+    for j, (rk, nm, raw, eng, psa, ctx) in enumerate(rows):
+        yy = y + 48 + j * 50
+        d.line([(60, yy - 6), (W - 60, yy - 6)], fill="#122028")
+        d.text((xs[0], yy + 6), rk, font=COND9(30), fill=CYAN)
+        d.text((xs[1], yy + 10), nm, font=BAR6(22), fill=TXT)
+        d.text((xs[2], yy + 12), raw, font=MONO(17), fill=TXT)
+        d.text((xs[3], yy + 12), psa, font=MONO(17), fill=TXT)
+        d.text((xs[4], yy + 12), eng, font=MONO(17), fill=DIM)
+        col = GREEN if ctx.startswith("+") else RED if ctx.startswith("-") or ctx.startswith("\u2212") else DIM
+        c2 = ctx if len(ctx) < 33 else ctx[:32] + "\u2026"
+        d.text((xs[5], yy + 14), c2, font=MONO(13), fill=col)
+    # headline = the page's own market-check callout, wrapped
+    words, lines, cur = head.split(), [], ""
+    for w_ in words:
+        t = (cur + " " + w_).strip()
+        if d.textlength(t, font=BAR4(17)) > W - 96: lines.append(cur); cur = w_
+        else: cur = t
+    lines.append(cur)
+    for i, ln in enumerate(lines[:2]): d.text((48, 556 + i * 24), ln, font=BAR4(17), fill=TXT if i == 0 else DIM)
+    d.line([(48, H - 52), (W - 48, H - 52)], fill="#0e3a45", width=1)
+    d.text((48, H - 40), f"marks as of {stamp} \u00b7 shopcardhub.com/bowman-bangers \u00b7 every call graded at 6 and 12 months", font=MONO(13), fill=DIM)
+    p = out / f"bangers-tape-{stamp}.png"; im.save(p); return p
+
+def card_bcb26(idx, out):
+    """BCB26 release-window card. PRE: universe counts + the activation rule, no prices (none exist that the
+    site can attribute). LIVE: level, w/w, priced count — same fields as `levels`. Added Sep 8 2026."""
+    ix = idx["BCB26"]; uni = ix.get("universe") or []; tabs = {}
+    for u in uni: tabs[u.get("tab", "?")] = tabs.get(u.get("tab", "?"), 0) + 1
+    live = ix.get("status") == "live" and ix.get("history")
+    im, d = canvas("BCB26 · 2026 bowman chrome · per-set index", "The Chrome index" if live else "Streets today. Index armed.",
+                   ("Ask basis, labeled on every row, until sold coverage allows a hammer restatement. Not a call, a measurement." if live else
+                    "Opens at 100.00 the moment 60% of the chase basket carries a verified ask. Until then: no level, no prices, no guesses."),
+                   tag="//  BOWMAN PER-SET INDEX · ASK BASIS, LABELED")
+    y = 250
+    rows = [("UNIVERSE", f"{len(uni)} cards on the published checklist"),
+            ("TABS", f"BASE {tabs.get('base', 0)} · AUTOS {tabs.get('autos', 0)} (15% single-card cap) · PARALLELS later"),
+            ("STREET DATE", ix.get("releaseDate", "2026-09-09")),
+            ("STATUS", "LIVE" if live else "PRE-ACTIVATION"),
+            ("RE-MARKS", "every board-touching run through street +21 days, then weekly")]
+    if live:
+        h = ix["history"]; lv = h[-1]["level"]; pv = h[-2]["level"] if len(h) > 1 else 100.0
+        rows.insert(0, ("LEVEL", f"{lv:.2f}  ({lv - pv:+.2f} w/w) · {len(ix.get('basket') or [])} cards priced"))
+    for k, v in rows:
+        d.rounded_rectangle([48, y, W - 48, y + 52], 6, fill=PANEL, outline="#16303a")
+        d.text((70, y + 18), k, font=MONO(13), fill=CYAN)
+        d.text((260, y + 12), v, font=BAR6(22), fill=TXT)
+        y += 60
+    footer(d, ix["history"][-1]["date"] if live else idx.get("updated", ""), "· shopcardhub.com/bowman-chrome-2026-index")
+    p = out / "bcb26.png"; im.save(p); return p
+
 # ---------- main ----------
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("kind"); ap.add_argument("ticker", nargs="?"); ap.add_argument("--out")
@@ -249,4 +330,6 @@ if __name__ == "__main__":
     if a.kind in ("movers", "all"): done.append(card_movers(ix, k, out))
     if a.kind in ("vault", "all"): done.append(card_vault(out))
     if a.kind == "og": done.append(card_og(idx, out))
+    if a.kind == "bangers": done.append(card_bangers(out))
+    if a.kind == "bcb26": done.append(card_bcb26(idx, out))
     for p in done: print(p)
