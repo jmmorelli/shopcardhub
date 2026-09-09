@@ -1,6 +1,6 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} \u2014 keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures \u2014 counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] \u2014 stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] \u2014 status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-09-09T08:15:00-07:00",
+ "generated": "2026-09-09T14:05:00-07:00",
  "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
  "agents": {
   "seeker": {
@@ -129,21 +129,9 @@
   "inspector": {
    "label": "INSPECTOR",
    "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-   "lastRun": "2026-09-08",
+   "lastRun": "2026-09-09",
    "nextRun": "2026-09-14",
    "actions": [
-    {
-     "ts": "2026-09-04",
-     "msg": "Fri audit \u2014 sweeps CLEAN: audit-site FAIL 0/WARN 0 on 100 pages (21 new card-chart pages + /cards hub absorbed with zero EPN/nav/sitemap faults); audit-prices FAIL 0/WARN 30 (25 known label cells + 5 stale Aug 12 stamps \u2192 filed audit-2026-09-04-1 LOW, confirmed live)."
-    },
-    {
-     "ts": "2026-09-04",
-     "msg": "Deploy matches main 96077dd \u2014 6/6 pages byte-identical (home, /cards, /indices, /bowman-bangers, card-ethan-holliday-sapphire, card-umbreon-ex-sir-pe); no .git locks; 13/13 sampled scrydex/pokemontcg/ebayimg images 200; /api/comps?card= verified-mode healthy (7 base listings kept, 15 parallels/lots rejected, customid card-<id> flows into every listing URL)."
-    },
-    {
-     "ts": "2026-09-04",
-     "msg": "GSC unchanged: 3 indexed / 58 not (19 crawled-not-indexed FAILED, 39 discovered); sitemap last read Aug 30 = 76 URLs while sitemap.xml now lists 100 \u2014 Google has not seen the 24 new URLs yet (Monday STEP 0.6 owns resubmit); manual actions + security clean. Dungeon store: 11 decisions, all already reconciled \u2014 no new decisions since Sep 1."
-    },
     {
      "ts": "2026-09-04",
      "msg": "Mo (chat, 10:30am): 'I think you got this \u2014 talk to the CoS and auditor if need be.' Under \u00a74.8: trader-2026-09-03 \u2192 approved (Mo ran the trader himself); audit-2026-09-04-1 mechanical half applied by the CoS (wnba/murakami stamps \u2192 Aug 31) and pushed after both gates; series-2/sapphire/roman-anthony re-marks held for Monday's lane (need comp pulls + 2\u03c3 gates, 3 days away)."
@@ -179,6 +167,18 @@
     {
      "ts": "2026-09-08",
      "msg": "Comp pull Sep 8 (SCP console, plain fetch): Holliday $110.75/PSA10 $720 \u00b7 Kim $131.25/$629 (6th flat week) \u00b7 Fischer $136.85/$421 (+40%) \u00b7 Florentino $71.25/$492 (\u22126%) \u00b7 Arquette $59.50/$125 (PSA10 \u221252%) \u00b7 watch: Gonzales $90/$425 (+27%), Aloy $60.11, Houston $30.90, Pierce $17.51. Engine Sep 8: Holliday 169.99 (24 asks), Kim 200.74 (4), Fischer 195.76 (4, stale 9/3), Florentino 115 (28, BUY), Arquette 109 (7), Gonzales 150 (4). No dispersion flags."
+    },
+    {
+     "ts": "2026-09-09",
+     "msg": "Wed audit \u2014 sweeps CLEAN: audit-site FAIL 0/WARN 0 (94 pages after the /card-* 301s); audit-prices FAIL 0/WARN 31 (25 label cells, 3 held Aug-12 stamps, 3 prose-drift). Deploy = main de9d243: 9/9 files byte-identical on www (home, bowman-chrome-baseball-2026, auctions, bowman-bangers, holliday, indices, indices.json, sitemap.xml, nav.json); /api/auctions healthy (20 cards, 67 live, 51 under mark, 0 errors, 67/67 rows EPN-tagged customid=auctions); 12/12 sampled scrydex/pokemontcg/ebayimg images 200."
+    },
+    {
+     "ts": "2026-09-09",
+     "msg": "Coach's fix applied as a standing check: absolute-age scan of human-readable price stamps on all 94 pages \u2192 17 pages \u226560d; 15 already inside audit-2026-09-07-1/09-02-2 (rolling to the Sep 14 lane), 1 NEW and worse than a stamp: /topps-finest-baseball still says 'Releases July 8 \u2014 pre-release' 63 days post-release \u2192 audit-2026-09-09-2 MED. Nav dates Bowman Chrome 'Aug 10' on street day Sep 9 \u2192 audit-2026-09-09-1 MED. 'Streets tomorrow' on the board \u2192 09-09-3 LOW. de9d243 unlogged in pushLog + stranded index.lock in Mo's clone \u2192 09-09-4 LOW."
+    },
+    {
+     "ts": "2026-09-09",
+     "msg": "GSC: 3 indexed (flat since Aug 31) / 74 not indexed (51 discovered + 23 crawled, validation Started) \u2014 up from 58 on Sep 4 because Google finally read the sitemap Sep 7 (Success, 101 URLs = the pre-866f9fd list; sitemap.xml now carries 77, so 24 retired /card-* URLs are in Google's queue as 308s). Manual actions + security: no issues. Dungeon store: 11 decisions, all reconciled, none new since Sep 1."
     }
    ],
    "log": [
@@ -250,7 +250,8 @@
     "2026-08-31: retention row logged \u2014 returning_users_7d 8 (was 13/13), newsletter_signup 0 BUT endpoint verified healthy \u2192 visibility problem, design proposal filed",
     "2026-08-31 PM: pipeline reconciled post-approval; prevPrice roll-forward added to STEP 3.6 duties (movers schema)",
     "2026-08-31 PM: Mon tape tweet POSTED live (thread) + Wed/Fri tweets scheduled with Mo; Tuesday Board auto-queue authorization written into the Tuesday task (STEP 4.25)",
-    "2026-09-08 2:21pm PT: reply-paster replied shopcardhub.com/bowman-bangers under THE TUESDAY BOARD \u2014 Sep 8 (status 2097429771047092530); verified 1 reply on thread"
+    "2026-09-08 2:21pm PT: reply-paster replied shopcardhub.com/bowman-bangers under THE TUESDAY BOARD \u2014 Sep 8 (status 2097429771047092530); verified 1 reply on thread",
+    "2026-09-09 10:24am PT: reply-paster replied shopcardhub.com/bowman-chrome-2026-index under '2026 Bowman Chrome streets today' (tweet 2097731768069791780, reply 2097737072060805281); verified 1 reply on thread; note: OG card on the reply rendered the old 118.42 indices mock (X cache) \u2014 check og image for /bowman-chrome-2026-index"
    ]
   },
   "trader": {
@@ -844,8 +845,8 @@
   {
    "id": "sandbox-git-lock-sweep-sep01",
    "area": "infrastructure",
-   "summary": "LOW (recurring, 3rd occurrence): git commits made from Claude's sandbox succeed but cannot delete their own .git/*.lock files on the Mac filesystem (Operation not permitted on unlink), stranding 0-byte index.lock/HEAD.lock that block the NEXT git operation until removed host-side. Sep 1: blocked Mo's follow-up commit twice; cleared with find .git -name '*.lock' -delete. Fix options: (a) weekly runs stop committing and only stage, Mo commits+pushes; (b) Mo runs the lock sweep after any session that commits; (c) auditor MWF adds a stale-lock check+report. Recommend (c) minimum. \u2014 Mo, 2026-09-01",
-   "status": "approved"
+   "summary": "LOW (recurring, 3rd occurrence): git commits made from Claude's sandbox succeed but cannot delete their own .git/*.lock files on the Mac filesystem (Operation not permitted on unlink), stranding 0-byte index.lock/HEAD.lock that block the NEXT git operation until removed host-side. Sep 1: blocked Mo's follow-up commit twice; cleared with find .git -name '*.lock' -delete. Fix options: (a) weekly runs stop committing and only stage, Mo commits+pushes; (b) Mo runs the lock sweep after any session that commits; (c) auditor MWF adds a stale-lock check+report. Recommend (c) minimum. \u2014 Mo, 2026-09-01 \u2014 CoS, 2026-09-09 (4.8): closed as applied under option (c) \u2014 the auditor reports stranded locks every run (Sep 4, 7, 9) and agents clone fresh, so locks now cost only Mo's own git until he runs the sweep; (b) stays Mo's habit after any sandbox session.",
+   "status": "applied"
   },
   {
    "id": "email-ownership-to-cos-sep01",
@@ -969,6 +970,26 @@
    "filed": "2026-09-09",
    "by": "chief-of-staff (light checkpoint, watchdog 2c)",
    "title": "LOW (data integrity, mechanical): the BCB26 universe in data/indices.json carries 4 duplicate autos ids where two different players share one key (cpa-an, cpa-ed, cpa-ld, cpa-rd) \u2014 when asks arrive the second player overwrites the first and the basket under-counts. Fix = disambiguate the ids (checklist convention, e.g. suffix), keep the display numbers. Owner: Friday release-window run before its first BCB26 re-mark; auditor gains a duplicate-id check on index universes. \u2014 CoS, 2026-09-09 (4.7): approved, mechanical"
+  },
+  {
+   "id": "audit-2026-09-09-1",
+   "status": "applied",
+   "title": "MED: global nav still dates Bowman Chrome by its PRE-ORDER day while the page says it streeted today \u2014 data/nav.json line 108 label 'Bowman Chrome \u2014 Aug 10 \u2b50' (rendered on every page via tools/build-nav.js, e.g. index.html 668, research.html 461, live on www 09:20) vs today's release-day conversion de9d243 on bowman-chrome-baseball-2026.html ('Live \u2014 streeted Sep 9, 2026'). Every other dated nav label is a street date (Chrome Black \u2014 Jul 28, Flagship Football \u2014 Aug 21, Tribute \u2014 Jul 29), so Aug 10 reads as a wrong release date on the site's flagship product in release week. Same class as audit-2026-08-28-3 (Flagship Football nav date, applied). Fix (mechanical, CoS 4.7): nav.json 108 \u2192 'Bowman Chrome \u2014 Sep 9 \u2b50', rerun tools/build-nav.js, push. Note the convention gap: 'Bowman Football \u2014 Sep 8' (line 180) is also a pre-order date \u2014 decide once whether nav dates mean street or pre-order and apply it to both. \u2014 CoS, 2026-09-09 (4.7) approved; (4.8) applied this session: convention settled = nav dates are STREET dates only; 'Bowman Chrome \u2014 Sep 9 \u2b50' and 'Bowman Football \u2014 Pre-Order' (no street date exists on its page yet; a date it doesn't have would be the same error), build-nav rerun on 94 pages, gates clean, pushed."
+  },
+  {
+   "id": "audit-2026-09-09-2",
+   "status": "approved",
+   "title": "MED: /topps-finest-baseball is frozen in PRE-RELEASE framing 63 days after release \u2014 line 878 banner 'Releases July 8, 2026 \u2014 pre-release.' (future tense), line 963 'Pre-release pricing is vapor. Until packs are opened there are no per-card\u2026', hero/footer basis 'sourced from the Topps product page, Jun 29, 2026' (72 days, no data-prices-updated so the sweep never sees it; caught by the coach's-fix absolute-age scan). Release confirmed Jul 8 (Beckett/Athlon/Yahoo). Confirmed live on www 09:20. Same class as audit-2026-08-21-1/2/3 (released products still saying unreleased \u2014 all applied). Fix: fold into the Sep 14 Monday reprice lane with it flagged as 'released' first \u2014 rewrite 878/963 to released framing, price the top rows on SCP/eBay solds (Super Rare tier + the two autos per box are the chase), rewrite the human stamp AND add data-prices-updated; if the lane can't reach it, a dated 'pre-release snapshot' banner like the ROY one is the stopgap. \u2014 CoS, 2026-09-09 (4.8) approved with the stopgap applied NOW: /topps-finest-baseball converted to released framing over a dated Jun 29 snapshot (hero badge, alert-bar, Honest Take \u2014 copy only, no prices touched, ROY/Holliday precedent); the sold-comp re-mark of the chase rows + human stamp + data-prices-updated stays routed to the Sep 14 Monday reprice lane (flag: released Jul 8)."
+  },
+  {
+   "id": "audit-2026-09-09-3",
+   "status": "approved",
+   "title": "LOW: /bowman-bangers narrative uses relative time that went wrong overnight \u2014 lines 975 'Bowman Chrome streets tomorrow, Sep 9', 1260 'the day before Bowman Chrome streets', 1261 'streets Sep 9 \u2014 tomorrow', 1421 'a set that streets tomorrow' (live on www Sep 9 09:20, 2 hits for 'streets tomorrow'). The board is dated Sep 8 and is honest on its face, but 'tomorrow' is read by every visitor Wed\u2013Mon on the #1 retention page and is false for six of the seven days it is live. Fix (style rule for the Tuesday run, no edit needed now \u2014 next Tuesday's rewrite clears it): board narrative uses absolute dates only ('streets Sep 9'), never 'tomorrow/yesterday/this week'; add the rule to the Tuesday task's STEP 4 copy checks so it doesn't recur on Mega Box (Sep 23) or 30th Celebration (Sep 16). \u2014 CoS, 2026-09-09 (4.8) approved as a standing rule: board narrative uses absolute dates only. The STEP 4 prompt edit itself is queued for the Sunday Sep 13 CoS run (task-prompt edits are the open charter-vs-run-prompt blocker, queue #1 there); next Tuesday board (Sep 15) is the first run it must hold for, ahead of 30th Celebration Sep 16 and Mega Box Sep 23."
+  },
+  {
+   "id": "audit-2026-09-09-4",
+   "status": "applied",
+   "title": "LOW (visible-delegation + lock hygiene): today's push de9d243 (08:12 PT, author 'Mo (via Claude weekly scan)', bowman-chrome-baseball-2026 release-day copy conversion) is on origin with NO chiefOfStaff.pushLog entry \u2014 pipeline.json's last entry is the 08:00 CoS checkpoint. The push itself is sound: both gates re-run clean on the pushed tree here (audit-site FAIL 0/WARN 0 on 94 pages; audit-prices FAIL 0/WARN 31, all known label cells + the 3 held Aug-12 stamps) and www is byte-identical to main on 9/9 files checked. Needs a one-line backfill by the next checkpoint. Same session synced Mo's clone (~/Projects/shopcardhub reflog f27bde0\u2192de9d243 at 08:12:05) and stranded .git/index.lock (0 bytes, 08:12:56, still present 09:09) \u2014 4th occurrence of the class in sandbox-git-lock-sweep-sep01 (approved Sep 2, never applied). Cost while unfixed: any git command Mo runs in his clone fails until he deletes the lock; agents are unaffected (they clone fresh). \u2014 CoS, 2026-09-09 (4.7) applied: pushLog line for de9d243 backfilled this session (4.2 janitorial) and the Sep 9 checkpoint's placeholder hash resolved to f27bde0. The index.lock in ~/Projects/shopcardhub is Mo's to delete (agents never touch his .git): rm .git/index.lock, then git pull auto main."
   }
  ],
  "scoreboard": {
@@ -1007,6 +1028,14 @@
     "why": "Dated notices are live as of today, so readers are protected; but a notice is a patch, not a page. The re-mark lane cannot do this. One session, two pages + ROY, sold pulls in batches. If Mo wants it sooner than the Sep 13 Sunday run can schedule it, open a chat session any evening this week and say \"rewrite the guides\".",
     "effort": "Mo: 0 min (CoS schedules) or one sentence in chat to pull it forward. Build: ~2 hours agent time.",
     "ref": "audit-2026-09-07-4, audit-2026-09-02-2"
+   },
+   {
+    "rank": 3,
+    "id": "tuesday-step4-absolute-dates-rule",
+    "title": "Sunday Sep 13: add the absolute-dates style rule to the Tuesday board task's STEP 4 copy checks (audit-2026-09-09-3)",
+    "why": "'streets tomorrow' was wrong six of seven days on the #1 retention page; the rule prevents a repeat on 30th Celebration (Sep 16) and Mega Box (Sep 23). Blocked today only by the run-prompt's no-task-prompt-edits clause, which Sunday is already resolving as queue #1.",
+    "effort": "Sunday run: 5 min",
+    "ref": "audit-2026-09-09-3"
    }
   ],
   "watchdog": [
@@ -1129,6 +1158,11 @@
     "severity": "watch",
     "what": "Decision loop: nothing awaiting Mo outside the Sunday queue; queue #1 (Tuesday sitting) completed Sep 8 \u2014 5 daily tweets scheduled with Mo present, X session confirmed",
     "detail": "Queue #2 (guides rewrite build session) still needs the Sep 13 Sunday run to schedule it \u2014 unchanged."
+   },
+   {
+    "severity": "fixed",
+    "what": "Wed Sep 9 audit ruled same day by the CoS (Mo: 'his call'): 2 of 4 findings fixed live, 1 stopgapped live, 1 rule queued",
+    "detail": "Nav street-date convention settled (Bowman Chrome \u2014 Sep 9; Bowman Football \u2014 Pre-Order); Finest reads as released over a dated Jun 29 snapshot; de9d243 pushLog backfilled. Open for Mo: delete .git/index.lock in ~/Projects/shopcardhub, then git pull auto main."
    }
   ],
   "analyst": {
@@ -1195,6 +1229,23 @@
      "root INDEX caught up"
     ],
     "note": "Both gates re-run on the live tree before this push. One item for Mo: confirm the Sep 7 recap email send was his call (one word)."
+   },
+   {
+    "date": "2026-09-09",
+    "by": "CoS ruling on the Wed audit (Mo in chat: 'ask the CoS if he approves. His call.')",
+    "authority": "4.7 / 4.8",
+    "approved": [
+     "audit-2026-09-09-1 (MED \u2014 applied: street-date convention, nav rebuilt, pushed)",
+     "audit-2026-09-09-2 (MED \u2014 stopgap applied now: Finest released framing over a dated snapshot; reprice \u2192 Sep 14 lane)",
+     "audit-2026-09-09-3 (LOW \u2014 absolute-dates rule approved; STEP 4 prompt edit queued for Sunday Sep 13)",
+     "audit-2026-09-09-4 (LOW \u2014 applied: de9d243 pushLog backfilled; index.lock is Mo's)"
+    ],
+    "declined": [],
+    "janitorial": [
+     "sandbox-git-lock-sweep-sep01 closed as applied under option (c) (auditor reports locks every run)",
+     "Sep 9 checkpoint pushLog placeholder resolved to f27bde0"
+    ],
+    "note": "Nothing needs Mo except the lock in his own clone."
    }
   ],
   "approvalsNote": "4.7 pass: nothing in the three self-approvable categories was waiting \u2014 the week's only audit item was already applied under 4.8 on Friday, no polish or comp item is open (Monday files the next ones).",
@@ -1334,12 +1385,33 @@
     {
      "date": "2026-09-09",
      "commits": [
-      "<this commit \u2014 hash in checkpoint-2026-09-09.md>"
+      "f27bde0"
      ],
      "by": "CoS light checkpoint Sep 9 (Tuesday slot, charter 4.8)",
      "gates": "audit-prices FAIL 0 / WARN 31 (pre-existing); audit-site FAIL 0 / WARN 0 (94 pages) \u2014 run on the live tree + these 3 files",
-     "liveVerified": "pending at commit time \u2014 result in checkpoint-2026-09-09.md",
+     "liveVerified": "2026-09-09 (auditor 09:20: www = main, 9/9 files byte-identical on de9d243 which contains f27bde0)",
      "note": "4 files: .gitignore (scratch folder), data/calls.json (Tuesday ledger, immutability verified 21/21), tools/x-images/make.py (bangers/bcb26 kinds), data/pipeline.json (this block). Pushed from a fresh clone; the owner's local clone was not modified."
+    },
+    {
+     "date": "2026-09-09",
+     "commits": [
+      "de9d243"
+     ],
+     "by": "shopcardhub-friday-release-window or weekly-scan identity ('Mo (via Claude weekly scan)') \u2014 copy-only release-day conversion of /bowman-chrome-baseball-2026",
+     "gates": "re-run clean by the Wed auditor on the pushed tree: audit-site FAIL 0/WARN 0 (94 pages); audit-prices FAIL 0/WARN 31 (pre-existing)",
+     "liveVerified": "2026-09-09 09:20 PT (auditor: 9/9 files byte-identical on www)",
+     "note": "BACKFILLED by the CoS ruling session Sep 9 (audit-2026-09-09-4, 4.2 janitorial). Same session left .git/index.lock in Mo's clone \u2014 Mo's to delete."
+    },
+    {
+     "date": "2026-09-09",
+     "commits": [
+      "9856208",
+      "<2nd commit of this push: pipeline.json ruling \u2014 hash resolved by the next checkpoint>"
+     ],
+     "by": "CoS ruling on the Wed audit (Mo in chat: 'ask the CoS if he approves. His call.') \u2014 charter 4.7/4.8",
+     "gates": "audit-site FAIL 0/WARN 0 (94 pages); audit-prices FAIL 0/WARN 31 (pre-existing) \u2014 run on this tree before commit",
+     "liveVerified": "pending at commit \u2014 curl check of /research + /topps-finest-baseball ~1 min after push; result in the chat report",
+     "note": "audit-09-09-1 applied (nav.json 2 labels + build-nav on 94 pages, nav block only), audit-09-09-2 stopgap applied (topps-finest-baseball.html copy only), pipeline.json ruling + 2 pushLog backfills. Pushed from a fresh clone; Mo's clone untouched (pipeline.json copied back as a plain file)."
     }
    ]
   },
