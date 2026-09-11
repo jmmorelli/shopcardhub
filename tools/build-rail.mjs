@@ -22,13 +22,18 @@ const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</
 
 const rail = JSON.parse(read("data/rail.json"));
 const nav = JSON.parse(read("data/nav.json"));
+// pills from the data files (Terminal step 4): board = the tracked 1st Bowman Chrome autos, indices = every ticker in indices.json
+let boardN = null, indicesN = null;
+try { const wl = JSON.parse(read("data/watchlist.json")); boardN = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.cardType === "chrome-auto" && !c.boardHide).length; } catch {}
+try { const idx = JSON.parse(read("data/indices.json")); indicesN = Object.keys(idx).filter((k) => k !== "_comment" && k !== "updated" && idx[k] && typeof idx[k] === "object").length; } catch {}
+const PILLS = { board: boardN == null ? null : String(boardN), indices: indicesN == null ? null : String(indicesN) };
 const allowed = new Set(["/", "/watchlist", "/indices", "/auctions"]);
 for (const m of JSON.stringify(nav).matchAll(/"href"\s*:\s*"([^"]+)"/g)) allowed.add(m[1].split("#")[0]);
 const check = (h) => { const p = h.split("#")[0].split("?")[0].replace(/\/$/, "") || "/"; if (!p.startsWith("/") || !allowed.has(p)) throw new Error(`rail href ${h} is not a nav.json path`); return h; };
 
-const item = (href, label, ico, pill, extra) => `      <a class="rl${extra ? " " + extra : ""}${href === "/" ? " on" : ""}" href="${esc(check(href))}"${extra === "sc" ? ` data-screen="${esc(href.split("screen=")[1] || "")}"` : ""}><span class="ico">${esc(ico || "")}</span><span class="lbl">${esc(label)}</span>${pill ? `<span class="pill">${esc(pill)}</span>` : ""}</a>`;
+const item = (href, label, ico, pill, extra) => `      <a class="rl${extra ? " " + extra : ""}" href="${esc(check(href))}"${extra === "sc" ? ` data-screen="${esc(href.split("screen=")[1] || "")}"` : ""}><span class="ico">${esc(ico || "")}</span><span class="lbl">${esc(label)}</span>${pill ? `<span class="pill">${esc(pill)}</span>` : ""}</a>`;
 
-const navRows = rail.nav.map((n) => item(n.href, n.label, n.ico, n.pill === "board" || n.pill === "indices" ? null : n.pill));
+const navRows = rail.nav.map((n) => item(n.href, n.label, n.ico, n.pill === "board" || n.pill === "indices" ? PILLS[n.pill] : n.pill));
 const cats = nav.categories.filter((c) => rail.guides.guideCategories.includes(c.label));
 const guides = cats.map((c, i) => `      <details class="rl-grp"${i === 0 ? "" : ""}>
         <summary class="rl"><span class="ico">▸</span><span class="lbl">${esc(c.label)}</span><span class="pill">${c.groups.reduce((n, g) => n + g.links.filter((l) => !l.allLink).length, 0)}</span></summary>
@@ -62,6 +67,18 @@ ${screens.join("\n")}
   </div>
   <div class="rail-foot">${esc(rail.foot)}</div>
 </aside>
+<script>
+/* rail: mark the row for THIS page (the block is byte-identical on every page, so the active state is read from the URL) */
+(function () {
+  var here = location.pathname; if (here.slice(-5) === ".html") here = here.slice(0, -5); if (here.length > 1 && here.slice(-1) === "/") here = here.slice(0, -1); if (here === "/index") here = "/";
+  var rows = document.querySelectorAll('#rail .rl-sec a.rl');
+  for (var i = 0; i < rows.length; i++) {
+    var h = rows[i].getAttribute("href") || ""; if (h.indexOf("#") > 0 || h.charAt(0) === "#") continue;
+    var p = h; if (p.length > 1 && p.slice(-1) === "/") p = p.slice(0, -1);
+    if (p === here) rows[i].classList.add("on");
+  }
+})();
+</script>
 <!-- RAIL:END -->`;
 
 let n = 0;

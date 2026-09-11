@@ -26,6 +26,7 @@ body { background:var(--bg); color:var(--tx); font-family:var(--fb); font-size:1
 a { color:var(--ac); text-decoration:none; }
 a:hover { color:#fff; }
 .wrap { max-width:1060px; margin:0 auto; padding:0 24px; }
+.term .wrap { padding:0; }
 .mast { padding:30px 0 8px; }
 .eyebrow { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--ac); margin-bottom:8px; }
 h1 { font-family:var(--fd); font-weight:900; font-size:36px; letter-spacing:1.5px; text-transform:uppercase; color:var(--th); line-height:1.05; }
@@ -144,6 +145,7 @@ tr.soon td { opacity:0.55; }
     })();
   </script>
   <link rel="stylesheet" href="/css/site-fixes.css">
+  <link rel="stylesheet" href="/css/terminal-shell.css?v=1">
 </head><body>
 <!-- NAV:START -->
 <style>
@@ -464,6 +466,110 @@ tr.soon td { opacity:0.55; }
 })();
 </script>
 <!-- NAV:END -->
+
+  <!-- ═══ TERMINAL SHELL (Terminal step 4, Sep 11 2026): the same rail as / and /watchlist (tools/build-rail.mjs) + this page in the main column ═══ -->
+  <div class="term">
+<!-- RAIL:START -->
+<aside class="rail" id="rail" aria-label="Terminal rail">
+  <nav class="rl-sec" aria-label="Terminal">
+      <a class="rl" href="/"><span class="ico">α</span><span class="lbl">Home</span></a>
+      <a class="rl" href="/bowman-bangers"><span class="ico">▤</span><span class="lbl">Bowman Bangers board</span><span class="pill">10</span></a>
+      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span><span class="pill">7</span></a>
+      <a class="rl" href="/auctions"><span class="ico">⚒</span><span class="lbl">Auction Desk</span></a>
+      <a class="rl" href="/#tape"><span class="ico">✉</span><span class="lbl">The Tuesday Tape</span><span class="pill">Tue</span></a>
+  </nav>
+  <div class="rl-sec rl-guides">
+    <h4>Guides <a href="/research">all →</a></h4>
+    <a class="rl rl-guides-chip" href="/research"><span class="ico">✎</span><span class="lbl">Guides</span></a>
+      <details class="rl-grp">
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Sports</span><span class="pill">22</span></summary>
+        <div class="rl-glabel">⚾ Baseball</div>
+        <a class="rl sub" href="/bowman-bangers"><span class="lbl">2026 Bowman Bangers ⭐</span></a>
+        <a class="rl sub" href="/bowman-1st-chrome-index"><span class="lbl">BOW26 — 1st Chrome Index ⭐</span></a>
+        <a class="rl sub" href="/bowman-chrome-2026-index"><span class="lbl">BCB26 — Bowman Chrome Index (pre)</span></a>
+        <a class="rl sub" href="/ethan-holliday-rookie-cards"><span class="lbl">Ethan Holliday 1st Bowman</span></a>
+        <a class="rl sub" href="/bowman-chrome-baseball-2026"><span class="lbl">Bowman Chrome — Sep 9 ⭐</span></a>
+        <a class="rl sub" href="/bowman-sapphire-2026"><span class="lbl">Bowman Sapphire</span></a>
+        <a class="rl sub" href="/topps-tribute-baseball"><span class="lbl">Topps Tribute — Jul 29</span></a>
+        <div class="rl-glabel">🏀 Basketball</div>
+        <a class="rl sub" href="/cooper-flagg-rookie-cards"><span class="lbl">Cooper Flagg Rookie Cards</span></a>
+        <a class="rl sub" href="/victor-wembanyama-rookie-cards"><span class="lbl">Victor Wembanyama</span></a>
+        <a class="rl sub" href="/topps-chrome-basketball-2026"><span class="lbl">Topps Chrome Basketball</span></a>
+        <a class="rl sub" href="/topps-chrome-black-basketball"><span class="lbl">Chrome Black — Jul 28</span></a>
+        <a class="rl sub" href="/best-basketball-cards-under-50"><span class="lbl">Best Cards Under $50</span></a>
+        <div class="rl-glabel">🏈 Football</div>
+        <a class="rl sub" href="/nfl-rookie-cards-2026"><span class="lbl">2026 NFL Rookie Guide</span></a>
+        <a class="rl sub" href="/topps-cosmic-chrome-football"><span class="lbl">Cosmic Chrome</span></a>
+        <a class="rl sub" href="/topps-chrome-black-football"><span class="lbl">Chrome Black — Jul 10</span></a>
+        <a class="rl sub" href="/best-football-cards-under-50"><span class="lbl">Best Cards Under $50</span></a>
+        <a class="rl sub" href="/topps-flagship-football"><span class="lbl">Flagship Football — Aug 21</span></a>
+        <a class="rl sub" href="/bowman-football"><span class="lbl">Bowman Football — Pre-Order</span></a>
+        <div class="rl-glabel">⚽ Soccer</div>
+        <a class="rl sub" href="/world-cup-2026-soccer-cards"><span class="lbl">World Cup 2026 Cards</span></a>
+        <a class="rl sub" href="/lamine-yamal-rookie-cards"><span class="lbl">Lamine Yamal</span></a>
+        <a class="rl sub" href="/erling-haaland-rookie-cards"><span class="lbl">Erling Haaland</span></a>
+        <a class="rl sub" href="/lionel-messi-cards"><span class="lbl">Lionel Messi</span></a>
+        <a class="rl sub all" href="/research"><span class="lbl">All Sports →</span></a>
+      </details>
+      <details class="rl-grp">
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Pokémon</span><span class="pill">11</span></summary>
+        <div class="rl-glabel">Sets &amp; Guides</div>
+        <a class="rl sub" href="/pokemon-30th-anniversary-2026"><span class="lbl">30th Celebration — Sep 16 ★</span></a>
+        <a class="rl sub" href="/pitch-black-set-guide"><span class="lbl">Pitch Black — Jul 17</span></a>
+        <a class="rl sub" href="/chaos-rising"><span class="lbl">Chaos Rising</span></a>
+        <a class="rl sub" href="/ascended-heroes"><span class="lbl">Ascended Heroes</span></a>
+        <a class="rl sub" href="/prismatic-evolutions-guide"><span class="lbl">Prismatic Evolutions</span></a>
+        <a class="rl sub" href="/pokemon-tcg-2026"><span class="lbl">2026 Pokémon TCG Guide</span></a>
+        <div class="rl-glabel">Set Indices — Live Trackers</div>
+        <a class="rl sub" href="/pitch-black-index"><span class="lbl">PB26 — Pitch Black</span></a>
+        <a class="rl sub" href="/chaos-rising-index"><span class="lbl">CR26 — Chaos Rising</span></a>
+        <a class="rl sub" href="/ascended-heroes-index"><span class="lbl">AH26 — Ascended Heroes</span></a>
+        <a class="rl sub" href="/prismatic-evolutions-index"><span class="lbl">PRIS25 — Prismatic Evolutions</span></a>
+        <a class="rl sub" href="/destined-rivals-index"><span class="lbl">DR25 — Destined Rivals</span></a>
+        <a class="rl sub all" href="/pokemon-tcg-2026"><span class="lbl">All Pokémon →</span></a>
+      </details>
+      <details class="rl-grp">
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Grading + Supplies</span><span class="pill">3</span></summary>
+        <div class="rl-glabel">Grading</div>
+        <a class="rl sub" href="/psa-grading-guide"><span class="lbl">PSA Grading Guide</span></a>
+        <a class="rl sub" href="/tag-grading-guide"><span class="lbl">TAG Grading Guide — AI Slabs</span></a>
+        <div class="rl-glabel">Supplies</div>
+        <a class="rl sub" href="/best-card-supplies"><span class="lbl">Best Card Supplies</span></a>
+        <a class="rl sub all" href="/psa-grading-guide"><span class="lbl">All Grading + Supplies →</span></a>
+      </details>
+  </div>
+  <div class="rl-sec">
+    <h4>Portfolios <a href="/watchlist">Vault →</a></h4>
+    <div data-rail="portfolios" data-cfg="{&quot;rows&quot;:[{&quot;status&quot;:&quot;own&quot;,&quot;label&quot;:&quot;My cards&quot;,&quot;ico&quot;:&quot;◆&quot;},{&quot;status&quot;:&quot;watch&quot;,&quot;label&quot;:&quot;Hunting&quot;,&quot;ico&quot;:&quot;◇&quot;}],&quot;vaultHref&quot;:&quot;/watchlist&quot;,&quot;empty&quot;:&quot;Start in the Vault →&quot;}">
+      <a class="rl pf" href="/watchlist" data-status="own"><span class="ico">◆</span><span class="lbl">My cards</span><span class="pill">—</span></a>
+      <a class="rl pf" href="/watchlist" data-status="watch"><span class="ico">◇</span><span class="lbl">Hunting</span><span class="pill">—</span></a>
+      <a class="rl pf-empty" href="/watchlist"><span class="ico">→</span><span class="lbl">Start in the Vault →</span></a>
+    </div>
+  </div>
+  <div class="rl-sec">
+    <h4>Saved screens</h4>
+      <a class="rl sc" href="/#screen=board" data-screen="board"><span class="ico">⌁</span><span class="lbl">Bowman Bangers board</span></a>
+      <a class="rl sc" href="/#screen=under100" data-screen="under100"><span class="ico">⌁</span><span class="lbl">Autos under $100</span></a>
+      <a class="rl sc" href="/#screen=drying" data-screen="drying"><span class="ico">⌁</span><span class="lbl">Supply drying up</span></a>
+      <a class="rl sc" href="/#screen=z2" data-screen="z2"><span class="ico">⌁</span><span class="lbl">|z| beyond 2</span></a>
+      <a class="rl sc" href="/#screen=fat" data-screen="fat"><span class="ico">⌁</span><span class="lbl">Fat tails</span></a>
+  </div>
+  <div class="rail-foot">Free · no account · your Vault stays on your device</div>
+</aside>
+<script>
+/* rail: mark the row for THIS page (the block is byte-identical on every page, so the active state is read from the URL) */
+(function () {
+  var here = location.pathname; if (here.slice(-5) === ".html") here = here.slice(0, -5); if (here.length > 1 && here.slice(-1) === "/") here = here.slice(0, -1); if (here === "/index") here = "/";
+  var rows = document.querySelectorAll('#rail .rl-sec a.rl');
+  for (var i = 0; i < rows.length; i++) {
+    var h = rows[i].getAttribute("href") || ""; if (h.indexOf("#") > 0 || h.charAt(0) === "#") continue;
+    var p = h; if (p.length > 1 && p.slice(-1) === "/") p = p.slice(0, -1);
+    if (p === here) rows[i].classList.add("on");
+  }
+})();
+</script>
+<!-- RAIL:END -->
+  <main class="tmain" id="main">
 <div class="wrap">
 <div class="mast hero-grid">
 <figure class="hero-card-photo">
@@ -481,6 +587,9 @@ tr.soon td { opacity:0.55; }
 <div id="sections"></div>
 <div class="foot">Methodology on every index page: price-weighted over sourced sold reads (PriceCharting for Pokémon, SportsCardsPro/eBay solds for sports) · unpriced universe cards carry zero weight and enter via logged divisor adjustments · base 100.00 at inception · weekly re-mark, Mondays. Affiliate disclosure: listing links on index pages are EPN-tracked; prices and index math are independent of them.</div>
 </div>
+  </main>
+  </div><!-- /.term -->
+
 <script>
 var FACE = {"PB26": ["ebay:mega-darkrai-ex-sir", "Mega Darkrai ex SIR #116/084"], "CR26": ["ebay:mega-greninja-ex-sir", "Mega Greninja ex SIR #116/086"], "AH26": ["ebay:tr-mewtwo-ex-sir", "Team Rocket's Mewtwo ex SIR #281/217"], "PRIS25": ["ebay:umbreon-ex-sir-pe", "Umbreon ex SIR #161/131"], "DR25": ["name:Misty's Psyduck 193/182 Pokemon", "Misty's Psyduck IR #193/182"], "BOW26": ["ebay:ethan-holliday", "Ethan Holliday 1st Bowman Chrome Auto"]};
 function faceThumb(t){ var fc = FACE[t]; if (!fc) return ''; return '<span data-card-img="' + fc[0].replace(/"/g, '&quot;') + '" data-card-name="' + fc[1].replace(/"/g, '&quot;') + '" data-card-sub="' + (t === 'BOW26' ? '1ST BOWMAN' : 'POKEMON') + '" data-card-size="row" data-card-surface="indices-list"></span>'; }

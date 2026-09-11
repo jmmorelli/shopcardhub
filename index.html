@@ -592,9 +592,9 @@ body::before{
 <!-- RAIL:START -->
 <aside class="rail" id="rail" aria-label="Terminal rail">
   <nav class="rl-sec" aria-label="Terminal">
-      <a class="rl on" href="/"><span class="ico">α</span><span class="lbl">Home</span></a>
-      <a class="rl" href="/bowman-bangers"><span class="ico">▤</span><span class="lbl">Bowman Bangers board</span></a>
-      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span></a>
+      <a class="rl" href="/"><span class="ico">α</span><span class="lbl">Home</span></a>
+      <a class="rl" href="/bowman-bangers"><span class="ico">▤</span><span class="lbl">Bowman Bangers board</span><span class="pill">10</span></a>
+      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span><span class="pill">7</span></a>
       <a class="rl" href="/auctions"><span class="ico">⚒</span><span class="lbl">Auction Desk</span></a>
       <a class="rl" href="/#tape"><span class="ico">✉</span><span class="lbl">The Tuesday Tape</span><span class="pill">Tue</span></a>
   </nav>
@@ -676,6 +676,18 @@ body::before{
   </div>
   <div class="rail-foot">Free · no account · your Vault stays on your device</div>
 </aside>
+<script>
+/* rail: mark the row for THIS page (the block is byte-identical on every page, so the active state is read from the URL) */
+(function () {
+  var here = location.pathname; if (here.slice(-5) === ".html") here = here.slice(0, -5); if (here.length > 1 && here.slice(-1) === "/") here = here.slice(0, -1); if (here === "/index") here = "/";
+  var rows = document.querySelectorAll('#rail .rl-sec a.rl');
+  for (var i = 0; i < rows.length; i++) {
+    var h = rows[i].getAttribute("href") || ""; if (h.indexOf("#") > 0 || h.charAt(0) === "#") continue;
+    var p = h; if (p.length > 1 && p.slice(-1) === "/") p = p.slice(0, -1);
+    if (p === here) rows[i].classList.add("on");
+  }
+})();
+</script>
 <!-- RAIL:END -->
     <main class="tmain" id="main">
       <header class="tm-head">
