@@ -90,7 +90,7 @@
   /* ---------- charts ---------- */
   function lineChart(series, labels, opts) {
     opts = opts || {};
-    var W = 560, H = 210, pl = 8, pr = 52, pt = 14, pb = 26;
+    var W = 560, H = opts.h || 300, pl = 8, pr = 52, pt = 14, pb = 26; /* H: the browser fits it to the panel (fitChart); the pre-render uses 300 */
     if (!series || series.length < 2) return '<div class="chart-empty">One mark so far — the line starts at the next re-mark.</div>';
     var lo = Math.min.apply(null, series), hi = Math.max.apply(null, series);
     if (opts.ref != null) { lo = Math.min(lo, opts.ref); hi = Math.max(hi, opts.ref); }
@@ -99,11 +99,13 @@
     var up = series[series.length - 1] >= series[0];
     var d = series.map(function (v, i) { return (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1); }).join(' ');
     var area = d + ' L' + X(series.length - 1).toFixed(1) + ' ' + (H - pb).toFixed(1) + ' L' + X(0).toFixed(1) + ' ' + (H - pb).toFixed(1) + ' Z';
-    var ticks = [y0 + pad * 0.3, (y0 + y1) / 2, y1 - pad * 0.3].map(function (v) { return '<line class="grid" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + Y(v).toFixed(1) + '" y2="' + Y(v).toFixed(1) + '"/><text class="axis" x="' + (W - pr + 6) + '" y="' + (Y(v) + 4).toFixed(1) + '">' + num(v, opts.dec == null ? 2 : opts.dec) + '</text>'; }).join('');
+    var refY = opts.ref != null ? Y(opts.ref) : null;
+    var ticks = [y0 + pad * 0.3, (y0 + y1) / 2, y1 - pad * 0.3].map(function (v) { var ty = Y(v); var hit = refY != null && Math.abs(ty - refY) < 12; return '<line class="grid" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + ty.toFixed(1) + '" y2="' + ty.toFixed(1) + '"/>' + (hit ? '' : '<text class="axis" x="' + (W - pr + 6) + '" y="' + (ty + 4).toFixed(1) + '">' + num(v, opts.dec == null ? 2 : opts.dec) + '</text>'); }).join('');
     var n = labels.length, step = Math.max(1, Math.ceil(n / 5));
     var xl = labels.map(function (l, i) { return (i % step === 0 || i === n - 1) ? '<text class="axis" x="' + X(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + (i === n - 1 ? 'end' : i === 0 ? 'start' : 'middle') + '">' + esc(l) + '</text>' : ''; }).join('');
     var e = [X(series.length - 1), Y(series[series.length - 1])];
-    var ref = opts.ref != null ? '<line class="ref" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + Y(opts.ref).toFixed(1) + '" y2="' + Y(opts.ref).toFixed(1) + '"/><text class="ref-l" x="' + (pl + 2) + '" y="' + (Y(opts.ref) - 4).toFixed(1) + '">' + esc(opts.refLabel || '') + '</text>' : '';
+    /* the reference value sits on the axis (right), its label rides the line at the left, above or below whichever side has room */
+    var ref = refY != null ? '<line class="ref" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + refY.toFixed(1) + '" y2="' + refY.toFixed(1) + '"/><text class="ref-l axis-ref" x="' + (W - pr + 6) + '" y="' + (refY + 4).toFixed(1) + '">' + num(opts.ref, opts.dec == null ? 2 : opts.dec) + '</text><text class="ref-l" x="' + (pl + 2) + '" y="' + (refY > (pt + 18) ? refY - 5 : refY + 12).toFixed(1) + '">' + esc(opts.refLabel || '') + '</text>' : '';
     return '<svg class="mchart ' + (up ? 'up' : 'dn') + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(opts.label || 'chart') + '">' + ticks + '<path class="area" d="' + area + '"/>' + ref + '<path class="line" d="' + d + '"/><circle class="dot" cx="' + e[0].toFixed(1) + '" cy="' + e[1].toFixed(1) + '" r="3"/>' + xl + '</svg>';
   }
 
@@ -122,12 +124,12 @@
     }).join('');
     return list;
   }
-  function renderChart(model, sel) {
+  function renderChart(model, sel, h) {
     var rows = marketRows(model);
     var r = rows.filter(function (x) { return x.k === sel; })[0] || rows[0];
     if (!r || r.status === 'pre') return '<div class="chart-empty">' + (r ? esc(r.k) + ' is pre-activation — no level yet.' : 'No index yet.') + '</div>';
     var levels = r.history.map(function (h) { return h.level; }), labels = r.history.map(function (h) { return dstr(h.date); });
-    return lineChart(levels, labels, { ref: 100, refLabel: '100 = ' + (r.k === 'BOARD' ? '30 nights ago' : 'inception'), label: r.name, dec: 2 }) +
+    return lineChart(levels, labels, { ref: 100, refLabel: '100 = ' + (r.k === 'BOARD' ? '30 nights ago' : 'inception'), label: r.name, dec: 2, h: h }) +
       '<div class="chart-cap"><b>' + esc(r.k) + '</b> · ' + esc(r.basis) + ' · ' + r.history.length + ' mark' + (r.history.length === 1 ? '' : 's') + (r.date ? ' · last ' + esc(dstr(r.date)) : '') + (r.page ? ' · <a href="' + esc(r.page) + '">open ' + esc(r.k) + ' »</a>' : '') + '</div>';
   }
   function renderEngine(model) {
@@ -154,7 +156,7 @@
     model.indices.filter(function (i) { return i.status === 'pre'; }).forEach(function (i) {
       line('pre', 'INDEX', '<a href="' + esc(i.page || '/indices') + '">' + esc(i.k) + '</a> is scaffolded, not live — activates once the weekly re-mark sources its first sold reads.');
     });
-    return li.join('');
+    return li.slice(0, 8).join(''); /* eight lines at rest; the rest lives on the board page ("All signals »") */
   }
   function renderFocus(focus) {
     return ((focus && focus.items) || []).map(function (f) { return '<a href="' + esc(f.href) + '">' + esc(f.label) + (f.meta ? '<em>' + esc(f.meta) + '</em>' : '') + '</a>'; }).join('');
@@ -168,7 +170,7 @@
   }
   function sigCell(c) {
     var conf = c.conf != null && c.conf > 0;
-    return '<span class="sig ' + (c.gated ? 'none' : c.sig) + '"' + (c.gate ? ' title="' + esc(c.gate) + '"' : '') + '>' + (c.gated ? 'HOLD' : esc(c.sig)) + '</span>' + (c.gated && c.raw !== 'HOLD' ? '<span class="sub">raw ' + esc(c.raw) + ' · gated</span>' : conf ? '' : '<span class="sub">no call yet</span>');
+    return '<span class="sig ' + (c.gated ? 'none' : c.sig) + '"' + (c.gate ? ' title="' + esc(c.gate) + '"' : '') + '>' + (c.gated ? 'HOLD' : esc(c.sig)) + '</span>' + (c.gated && c.raw !== 'HOLD' ? '<span class="sub">raw ' + esc(c.raw) + '</span>' : conf ? '' : '<span class="sub">no call</span>');
   }
   function rangeCell(lo, hi, v) {
     if (lo == null || hi == null) return '—';
@@ -236,11 +238,19 @@
       if (nm) nm.textContent = sm.name; if (mt) mt.textContent = sm.meta;
       Array.prototype.forEach.call(document.querySelectorAll('[data-screen]'), function (a) { a.classList.toggle('on', a.getAttribute('data-screen') === id); });
     }
+    /* size the chart's viewBox to the column it sits in, so it fills the Markets panel instead of floating in it */
+    function chartH(c) {
+      var cap = c.querySelector('.chart-cap'); var capH = cap ? cap.offsetHeight + 6 : 26;
+      var w = c.clientWidth - 24, h = c.clientHeight - 18 - capH;
+      if (!(w > 100) || !(h > 100)) return 300;
+      return Math.max(200, Math.min(520, Math.round(560 * h / w)));
+    }
     function paintMarkets() {
       var l = panel('markets'), c = panel('chart'); if (!model) return;
       if (l) l.innerHTML = renderMarkets(model, sel);
-      if (c) c.innerHTML = renderChart(model, sel);
+      if (c) { c.innerHTML = renderChart(model, sel, chartH(c)); c.innerHTML = renderChart(model, sel, chartH(c)); }
     }
+    var rt = null; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(paintMarkets, 150); });
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('a.mrow[data-k]'); if (!a || !model) return;
       if (a.classList.contains('pre-row')) return;
