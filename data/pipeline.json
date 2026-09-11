@@ -1,6 +1,6 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-09-10T17:20:00-07:00",
+ "generated": "2026-09-11T14:30:00-07:00",
  "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
  "agents": {
   "seeker": {
@@ -67,7 +67,7 @@
   "curator": {
    "label": "CURATOR",
    "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-   "lastRun": "2026-09-08",
+   "lastRun": "2026-09-11",
    "nextRun": "2026-09-14",
    "actions": [
     {
@@ -117,6 +117,22 @@
     {
      "ts": "2026-09-08",
      "msg": "BCB26 (STEP 2.7): still PRE — street is tomorrow (Sep 9); /api/comps probe finds 0 verified asks on the chase names (Hernandez, Asigen) and only May-CPA listings under Holliday; activation gate (≥60% of chase basket with a verified ask) not met. Friday run re-checks. BOW26 not re-marked here (Monday owns it)."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "Fri release-window board refresh (Bowman Chrome window, street+2): SCP raw/PSA10 pulled for board top 5 + watch tier via Chrome (sandbox curl got a Cloudflare 403 today); engine marks off prices-latest.json (day 2026-09-11). Fischer $136.85->$146.80 raw and $421->$537.50 PSA 10 resolved the crossover clock published Sep 8 -> Fischer #2, Kim #3. Holliday $110.98->$105.50 (-5%), Florentino $70.00 flat, Gonzales $90->$92, Kim carried $131.25 a 7th week."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "Page: 5 price-subs re-stamped Sep 11, hero stamp + data-prices-updated -> 2026-09-11, market-check callout rewritten movement-first (both directions), Fischer/Kim entry blocks swapped, all 5 verdicts + WHAT WOULD CHANGE OUR MIND lines rewritten under the Fischer verdict-honesty rule. Signal Board, EPN params and Track button data attributes untouched."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "Flagged, not applied: Gonzales ($92) now out-prints Florentino ($70) on raw while trailing him graded ($425 vs $492) -- #4/#5 crossover clock opened at week one of two, resolves on the next board run."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "STEP 0.75 signal harvest: 24 tracked signals, max count 2 (Misiorowski 2022 Bowman Chrome 1st Auto) vs the count>=5 auto-add threshold -- no watchlist additions this run."
     }
    ],
    "log": [
@@ -129,7 +145,7 @@
   "inspector": {
    "label": "INSPECTOR",
    "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-   "lastRun": "2026-09-09",
+   "lastRun": "2026-09-11",
    "nextRun": "2026-09-14",
    "actions": [
     {
@@ -179,6 +195,34 @@
     {
      "ts": "2026-09-09",
      "msg": "GSC: 3 indexed (flat since Aug 31) / 74 not indexed (51 discovered + 23 crawled, validation Started) — up from 58 on Sep 4 because Google finally read the sitemap Sep 7 (Success, 101 URLs = the pre-866f9fd list; sitemap.xml now carries 77, so 24 retired /card-* URLs are in Google's queue as 308s). Manual actions + security: no issues. Dungeon store: 11 decisions, all reconciled, none new since Sep 1."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "Fri audit — sweeps CLEAN: audit-site FAIL 0/WARN 3 (94 pages; all three WARNs are the known first-bowman-unverified sets, Monday Sep 14 clears them), audit-prices FAIL 0/WARN 31 (25 label cells + the 3 held Aug-12 re-marks + 2 prose stamps), tools/first-bowman.mjs clean (release order verified, 655 candidates, dry run). Deploy = repo: homepage, sitemap.xml (77 URLs both sides), /auctions, /bowman-bangers, /topps-finest all match; nav present, no error pages; prices-latest.json day 2026-09-11. 12/12 sampled scrydex/pokemontcg images 200."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "HIGH audit-2026-09-11-1: the homepage hero panel labels the engine's nightly ASK feed \"Raw\" (index.html:797) and stamps \"#1 on the board tonight\" on an ask-sorted list — live Kim $201/Fischer $187/Holliday $165 vs the Sep 8 board's Holliday $110.75 #1, Kim $131.25, Fischer $136.85. First screen overstates raw 37-67% and names the wrong #1, while the same page labels its lower Signal Board \"asks, not solds\" (:948). Plus MED -2 (hardcoded ticker publishes Holliday BUY at $109 beside the panel's $165 and the engine's SELL), MED -3 (hero still says \"Bowman next\"), LOW -4, LOW -5."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "Coach's fix run as a first-class check: the >60d human-readable stamp scan now returns 29 pages (was 22 when filed Monday as audit-2026-09-07-1) — the Jul 6 cohort (7 soccer/PCA pages) crossed the line this week. Not re-filed; -1 is approved and unactioned, as is its tooling half -3. Also verified /auctions healthy (66 verified live auctions, 36 under the mark with bids, marks 2026-09-11 9:39am, all 66 links carry mkevt/mkcid/mkrid/campid=5339155990/toolid/customid; the missing siteid=0 is eBay's own itemAffiliateWebUrl format, not a hand-built link — not a finding). All 1,044 hand-built eBay links in HTML carry the full param set."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "GSC: sitemap WIN — the Sep 7 resubmission was read Sep 7, status Success, 101 discovered (was last-read Aug 30 at 76). Coverage still 3 indexed (flat a third run) / 74 not indexed (51 discovered-not-indexed, 23 crawled-not-indexed); manual actions and security issues both clean. sitemap.xml has since been trimmed to 77 URLs (the 9 /card-* pages now 301, utility pages noindexed), so part of Google's 101 will resolve to redirects/noindex. Dungeon store: 11 decisions, updated 2026-09-02, none new. NOTE: sandbox web_fetch returns an EMPTY body for the price-data raw URLs while the browser returns them fine — read the decision store through the browser, not web_fetch."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "Board page integrity after the Fri refresh: rank order 01-05 sequential and matching board-history; 15 eBay links all carry the full mandatory EPN param set (mkevt/mkcid/mkrid/siteid/campid/toolid/customid=bowman-bangers); 6 Track buttons and 5 data-feed attributes unchanged; no price-sub left on a stale date stamp."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "BCB26 re-mark attempted per STEP 2.7 (every board-touching run through street+21d): NOT POSSIBLE -- chase basket is empty and data/watchlist.json carries no 2026 Bowman Chrome cards, so verified-ask coverage of the 204-card universe is 0% against the 60% activation gate. BCB26 stays status 'pre'. Blocker for the CoS: BCB26 cannot activate until its chase cards are added to the engine feed."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "Benchmark transition check (System Reference SS3): at street+2, SportsCardsPro has no console carrying 2026 Bowman Chrome prospect-autograph solds (the /baseball-cards-2026-bowman-chrome console exists but is base-set, 21 of 150 rows priced, no autos). Paper CPA remains the ranking benchmark; re-check Tuesday."
     }
    ],
    "log": [
@@ -193,7 +237,7 @@
   "dm": {
    "label": "DM",
    "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-   "lastRun": "2026-09-08",
+   "lastRun": "2026-09-11",
    "nextRun": "2026-09-14",
    "actions": [
     {
@@ -247,6 +291,18 @@
     {
      "ts": "2026-09-10",
      "msg": "Reply-paster: Thu Sep 10 link reply posted to status 2098094153213284558 (Fischer accountability tweet, fired 10:00am) - 'every call, graded in public, misses included: shopcardhub.com/track-record'. Posted on the 2:10pm fire because the 10:10am fire left the tweet with 0 replies; verified single reply, no duplicate."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "Reply-paster 10:10 fire: replied under 2098456543134097566 (Gonzales board tweet) with the board, the rule, and the name that came off it: shopcardhub.com/bowman-bangers — verified live, 1 reply. Chrome dropped mid-click; verified before any retry, no double-post."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "calls.json: reads rolled on the 3 trending /bowman-bangers verdict rows (Kim $131.25 7th carried week, Florentino $70.00, Gonzales $92.00), readDate 2026-09-11. All 16 FINAL rows untouched; projLow/projHigh/action/entry/callDate asserted unchanged across every row. No new call appended -- Fischer's re-entry is a Tier 3 (Mo-only) call and is queued, not logged."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "board-history.json: week 2026-09-11 appended with the Fischer/Kim swap; rank-hist strips on all 5 entries re-derived from it (1wk = Sep 8 snapshot, 1mo = Aug 11 snapshot). Prior weeks verified present and correct back to Jul 28 -- no backfill needed."
     }
    ],
    "log": [
@@ -999,6 +1055,31 @@
    "id": "trader-2026-09-10",
    "status": "awaiting-mo",
    "title": "TRADER: 3 recs this week (1 time-sensitive, expires in 3 days) + 1 explicit no-action; snapshot reconciled exactly, position-depth check all clear — details in local scan report"
+  },
+  {
+   "id": "audit-2026-09-11-1",
+   "status": "awaiting-mo",
+   "title": "HIGH: the homepage hero panel publishes the engine's nightly ASK marks under a \"Raw\" label and calls its own ordering \"the board\". index.html:797 panel-footer reads \"1st Bowman Chrome Auto · Raw · 2026 Class\"; the rows above it are rewritten by index.html:1484-1510 from prices-latest.json `last` (the ask feed) sorted ask-descending, and index.html:1511 stamps the feature \"#1 on the board tonight\". Live Sep 11: Kim $201 / Fischer $187 / Holliday $165 / Gonzalez $150 / Florentino $115, feature \"#1 ON THE BOARD TONIGHT — SEONG-JUN KIM\". The actual board (data/board-history.json week 2026-09-08, SCP raw solds) is Holliday $110.75 #1, Kim $131.25 #2, Fischer $136.85 #3, Florentino $71.25 #4, Gonzales $90.00 #5 — so the site's first screen overstates raw by 37-67% and names the wrong #1, one click from /bowman-bangers where the same cards carry the sold marks. The page already knows the rule: index.html:948 says \"asks, not solds\" and :1024 stamps \"engine mark · <day> · asks\", and bowman-bangers.html:1260 does it perfectly (\"Raw firmed $109 -> $111 ... while the nightly ask mark sits at $170\"). FIX: :797 -> \"1st Bowman Chrome Auto · nightly ask mark · 2026 Class\"; :1511 kicker -> \"#1 by tonight's ask mark\"; and either sort the panel by board rank or retitle it off \"Bowman Bangers — Top 5\"."
+  },
+  {
+   "id": "audit-2026-09-11-2",
+   "status": "awaiting-mo",
+   "title": "MED: the homepage ticker strip is hardcoded (index.html:806-826) and has never been re-marked, so it contradicts the board and the panel 50px above it. index.html:809 publishes \"Holliday 2026 Bowman Chrome Auto ~$109 BUY\" while the hero panel shows Holliday $165, tonight's engine signal on the same card is SELL, and bowman-bangers.html:1260 publishes \"Verdict: Hold\" — a BUY and a SELL for one card on one screen. Also stale: Arquette \"~$59 +18% WK\" (:812) is the Sep 1 week and he left the board Sep 8; Fischer \"~$114 -6% WK\" (:819) when the Sep 8 print was +40% ($97.80 -> $136.85); Kim \"FLAT x4 WKS\" (:815) is week six. FIX: feed the ticker from prices-latest.json like the panel, or strip the per-card call chips and leave the sealed-box lines."
+  },
+  {
+   "id": "audit-2026-09-11-3",
+   "status": "awaiting-mo",
+   "title": "MED: homepage hero copy is behind the build — index.html:722 says \"five Pokémon tickers live, Bowman next\". Bowman shipped: /bowman-1st-chrome-index is live and starred in the nav, /bowman-chrome-2026-index is live as PRE, and both render on /indices. The primary conversion surface undersells the quarter's main build and contradicts its own nav. FIX: one line, e.g. \"five Pokémon tickers and the Bowman 1st Chrome index live\"."
+  },
+  {
+   "id": "audit-2026-09-11-4",
+   "status": "awaiting-mo",
+   "title": "LOW: the Sep 9 released-framing fix on /topps-finest-baseball (audit-2026-09-09-2) landed in the body but not the metadata — topps-finest-baseball.html:9 meta description still ends \"Pre-release, June 2026.\" and the hero-meta at :841 carries both \"Releases Jul 8, 2026\" (future tense) and \"Released Jul 8, 2026 · pre-release snapshot\" in the same row. The meta description is what Google and every social unfurl show. FIX: rewrite :9 to released framing and drop the future-tense span at :841."
+  },
+  {
+   "id": "audit-2026-09-11-5",
+   "status": "awaiting-mo",
+   "title": "LOW: the GSC weekly request budget and the noindex policy are not talking to each other — /cards was submitted for indexing on Sep 7 (one of that week's five requests) and then set to robots \"noindex,follow\" (cards.html:11) by the Sep 8 Business Read, and it is absent from sitemap.xml. With only 3 of 101 URLs indexed, a wasted request is not free. FIX: the Monday STEP 0.6 request list should read each candidate's robots meta and drop noindex URLs before submitting."
   }
  ],
  "scoreboard": {
