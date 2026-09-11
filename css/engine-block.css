@@ -93,3 +93,79 @@
   .cp-item .ph { width:56px; height:56px; }
   .cp-item .p b { font-size:20px; }
 }
+
+/* ---- terminal step 1 (Sep 11 2026): the block as the stat band. Scoped to .cp-t1 so hosts still on the
+   old 4-cell markup render exactly as before until they are regenerated. Site tokens only. ---- */
+.cp-embed-wrap.cp-t1-wrap { margin:16px auto 0; }
+.cp-embed.cp-t1 { padding:14px 16px 12px; border-top-width:2px; }
+.cp-embed.cp-t1 + .cp-embed.cp-t1 { margin-top:12px; }
+.cp-t1 .cp-num, .cp-t1 .cp-cell .v, .cp-t1 .cp-cell .s, .cp-t1 .cp-mark, .cp-t1 .cp-mark-d { font-variant-numeric:tabular-nums; }
+.cp-t1 .cp-head { grid-template-columns:72px minmax(0,1fr) auto; gap:14px 16px; align-items:center; margin-bottom:12px; }
+.cp-t1 .cp-photo { width:72px; aspect-ratio:5/7; }
+.cp-t1 .cp-photo .sch-ebay-tag { font-size:8px; }
+.cp-t1 .cp-eyebrow { font-size:10px; letter-spacing:2px; margin-bottom:4px; }
+.cp-t1 h2.cp-title { font-size:clamp(20px,2.6vw,28px); line-height:1; margin:0 0 5px; }
+.cp-t1 .cp-lane { font-size:11px; }
+.cp-t1 .cp-markbox { text-align:right; min-width:0; }
+.cp-t1 .cp-mark { font-family:var(--fm); font-size:30px; font-weight:700; line-height:1; color:var(--text-head); letter-spacing:-0.5px; }
+.cp-t1 .cp-mark-d { font-family:var(--fm); font-size:10px; color:var(--text-dim); margin-top:4px; white-space:nowrap; }
+.cp-t1 .cp-actions { margin:8px 0 0; justify-content:flex-end; gap:6px; }
+.cp-t1 .cp-actions .sch-track-card { padding:0 12px; min-height:34px; font-size:11px; letter-spacing:1px; }
+.cp-t1 .cp-actions .cp-jump { padding:0 10px; min-height:34px; font-size:10px; letter-spacing:1px; }
+.cp-t1 .cp-strip.cp-band { grid-template-columns:repeat(9,minmax(0,1fr)); gap:0; background:var(--bg2); border:1px solid var(--border2); margin:0 0 6px; }
+.cp-t1 .cp-band .cp-cell { background:transparent; padding:8px 9px; border-right:1px solid var(--border); }
+.cp-t1 .cp-band .cp-cell:last-child { border-right:0; }
+.cp-t1 .cp-band .cp-cell .l { font-family:var(--fd); font-size:10.5px; font-weight:700; letter-spacing:1.5px; margin-bottom:3px; }
+.cp-t1 .cp-band .cp-cell .v { font-family:var(--fm); font-size:16px; font-weight:700; letter-spacing:0; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cp-t1 .cp-band .cp-cell .v.sm { font-size:13px; }
+.cp-t1 .cp-band .cp-cell .s { font-size:10px; line-height:1.3; margin-top:2px; }
+.cp-t1 .cp-band .cp-cell .s.up { color:var(--green); } .cp-t1 .cp-band .cp-cell .s.dn { color:var(--red); }
+.cp-t1 .cp-band .cp-sig { padding:2px 7px; font-size:11px; letter-spacing:1px; min-width:44px; justify-content:center; border-width:1px; }
+.cp-t1 .cp-band .cp-sig.buy { background:var(--green); color:#000; border-color:var(--green); }
+.cp-t1 .cp-band .cp-sig.sell { background:var(--red); color:#fff; border-color:var(--red); }
+.cp-t1 .cp-band .cp-sig.hold { background:var(--gold); color:#000; border-color:var(--gold); }
+.cp-t1 .cp-band .cp-sig.gated { background:var(--bg4); color:var(--text-dim); border-color:var(--border2); }
+.cp-t1 .cp-band .cp-sig > span + span { display:none; }
+.cp-t1 .cp-why { margin:0 0 8px; }
+.cp-t1 .cp-fold { margin:8px 0 0; }
+.cp-t1 .cp-fold > summary { padding:10px 0; min-height:40px; }
+.cp-t1 .cp-grid { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:14px; align-items:start; }
+.cp-t1 .cp-grid .cp-sec, .cp-t1 .cp-fold .cp-sec + .cp-sec { margin:0; padding:0; border-top:0; }
+.cp-t1 .cp-fold .cp-side { display:grid; gap:14px; align-content:start; min-width:0; }
+.cp-t1 h2.cp-h { font-size:13px; font-weight:700; letter-spacing:2px; margin:0 0 2px; }
+.cp-t1 .cp-sec .sub { font-size:11px; font-family:var(--fm); margin:0 0 8px; line-height:1.5; }
+.cp-t1 .cp-chart { padding:8px 6px 4px; }
+.cp-t1 .cp-chart .ref { fill:none; stroke:var(--gold); stroke-width:1; stroke-dasharray:3 3; }
+.cp-t1 .cp-chart .ref-l { font-family:var(--fm); font-size:9.5px; fill:var(--gold); }
+.cp-t1 .cp-chart .sma { opacity:0.55; }
+.cp-t1 .cp-legend i.r { background:var(--gold); }
+.cp-t1 .cp-hist { background:var(--bg2); border:1px solid var(--border2); padding:8px 8px 4px; }
+.cp-t1 .cp-hist svg { width:100%; height:auto; display:block; }
+.cp-t1 .cp-hist .axis { font-family:var(--fm); font-size:9.5px; fill:var(--text-dim); }
+.cp-t1 .cp-hist .zero { stroke:var(--text-head); stroke-dasharray:2 2; }
+.cp-t1 .cp-hist .neg { fill:var(--red); opacity:0.55; } .cp-t1 .cp-hist .pos { fill:var(--green); opacity:0.55; }
+.cp-t1 .cp-read { display:grid; gap:6px; margin-top:8px; }
+.cp-t1 .cp-read div { padding:6px 8px; background:var(--bg3); font-size:11px; line-height:1.4; color:var(--text-dim); }
+.cp-t1 .cp-read b { display:block; font-family:var(--fd); font-size:10.5px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); margin-bottom:1px; }
+.cp-t1 .cp-closes { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.cp-t1 .cp-closes .c { font-family:var(--fm); font-size:13px; font-weight:700; color:var(--text-head); background:var(--bg3); padding:5px 9px; font-variant-numeric:tabular-nums; }
+.cp-t1 .cp-closes .m { font-family:var(--fm); font-size:10px; color:var(--text-dim); flex-basis:100%; }
+.cp-t1 .cp-empty { background:transparent; border:0; padding:4px 0; font-size:11px; }
+.cp-t1 .cp-live { margin-top:14px; padding-top:12px; border-top:1px solid var(--border); }
+.cp-t1 .cp-list { gap:6px; }
+.cp-t1 .cp-foot { margin-top:8px; }
+@media (max-width:1100px) { .cp-t1 .cp-strip.cp-band { grid-template-columns:repeat(9,minmax(96px,1fr)); overflow-x:auto; } }
+@media (max-width:899px) { .cp-t1 .cp-grid { grid-template-columns:1fr; } }
+@media (max-width:720px) {
+  .cp-embed.cp-t1 { padding:12px 12px 10px; }
+  .cp-t1 .cp-head { grid-template-columns:56px minmax(0,1fr); gap:10px 12px; }
+  .cp-t1 .cp-photo { width:56px; }
+  .cp-t1 .cp-markbox { grid-column:1 / -1; text-align:left; display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; }
+  .cp-t1 .cp-mark { font-size:24px; }
+  .cp-t1 .cp-actions { margin:0; justify-content:flex-start; flex-basis:100%; }
+  .cp-t1 .cp-strip.cp-band { grid-template-columns:repeat(3,minmax(0,1fr)); overflow:visible; }
+  .cp-t1 .cp-band .cp-cell { border-bottom:1px solid var(--border); padding:7px 8px; }
+  .cp-t1 .cp-band .cp-cell:nth-child(3n) { border-right:0; }
+  .cp-t1 .cp-band .cp-cell:nth-last-child(-n+3) { border-bottom:0; }
+  .cp-t1 .cp-band .cp-cell .v { font-size:14px; }
+}

@@ -11,8 +11,16 @@
 //
 // Usage:  node tools/build-engine-blocks.mjs          (rewrites the ENGINE block in each host)
 //         node tools/build-engine-blocks.mjs --dry    (report only)
+//         node tools/build-engine-blocks.mjs --only=ethan-holliday-rookie-cards   (one host page only)
+//         FEED_BASE=/path/to/price-data/data node tools/build-engine-blocks.mjs   (read the feed from a
+//         local clone of the price-data branch instead of raw.githubusercontent.com — a URL also works)
 // Idempotent: the block lives between <!-- ENGINE:START --> and <!-- ENGINE:END -->;
 // first run inserts it right after <!-- DEST:END -->. Re-run on Mondays (fresh stamps).
+//
+// Terminal step 1 (Sep 11 2026): the block is now the page's stat band — compact head row with the
+// mark, a 9-cell strip (signal, 30D ROC, z, σ/day, skew, kurtosis, supply, ask Q1–Q3, hammer median),
+// the chart with the hammer median as a dashed reference, a daily-return histogram, then the
+// listings. Markup version class: .cp-t1 (js/engine-block.js renders both the old and new markup).
 
 import fs from "node:fs";
 import path from "node:path";
@@ -20,7 +28,9 @@ import { fileURLToPath } from "node:url";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
-const FEED_BASE = "https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data";
+const ONLY = (process.argv.find((a) => a.startsWith("--only=")) || "").slice(7) || null;
+const FEED_BASE = process.env.FEED_BASE || "https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data";
+const JS_V = 3; // bump when js/engine-block.js changes (cache-buster on the <script> tag)
 const EPN = "mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001";
 
 const read = (f) => fs.readFileSync(path.join(REPO, f), "utf8");
@@ -53,13 +63,93 @@ const EMBED_CSS = `
 .cp-more { display:block; width:100%; margin-top:8px; background:transparent; border:1px solid var(--border2); color:var(--text-dim); font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:12px; min-height:44px; cursor:pointer; }
 .cp-more:hover { color:var(--accent); border-color:var(--accent); }
 @media (max-width:720px) { .cp-embed-wrap { padding:0 16px; } .cp-embed { padding:16px 14px 14px; } }
-` + CARD_CSS;
+` + CARD_CSS + `
+/* ---- terminal step 1 (Sep 11 2026): the block as the stat band. Scoped to .cp-t1 so hosts still on the
+   old 4-cell markup render exactly as before until they are regenerated. Site tokens only. ---- */
+.cp-embed-wrap.cp-t1-wrap { margin:16px auto 0; }
+.cp-embed.cp-t1 { padding:14px 16px 12px; border-top-width:2px; }
+.cp-embed.cp-t1 + .cp-embed.cp-t1 { margin-top:12px; }
+.cp-t1 .cp-num, .cp-t1 .cp-cell .v, .cp-t1 .cp-cell .s, .cp-t1 .cp-mark, .cp-t1 .cp-mark-d { font-variant-numeric:tabular-nums; }
+.cp-t1 .cp-head { grid-template-columns:72px minmax(0,1fr) auto; gap:14px 16px; align-items:center; margin-bottom:12px; }
+.cp-t1 .cp-photo { width:72px; aspect-ratio:5/7; }
+.cp-t1 .cp-photo .sch-ebay-tag { font-size:8px; }
+.cp-t1 .cp-eyebrow { font-size:10px; letter-spacing:2px; margin-bottom:4px; }
+.cp-t1 h2.cp-title { font-size:clamp(20px,2.6vw,28px); line-height:1; margin:0 0 5px; }
+.cp-t1 .cp-lane { font-size:11px; }
+.cp-t1 .cp-markbox { text-align:right; min-width:0; }
+.cp-t1 .cp-mark { font-family:var(--fm); font-size:30px; font-weight:700; line-height:1; color:var(--text-head); letter-spacing:-0.5px; }
+.cp-t1 .cp-mark-d { font-family:var(--fm); font-size:10px; color:var(--text-dim); margin-top:4px; white-space:nowrap; }
+.cp-t1 .cp-actions { margin:8px 0 0; justify-content:flex-end; gap:6px; }
+.cp-t1 .cp-actions .sch-track-card { padding:0 12px; min-height:34px; font-size:11px; letter-spacing:1px; }
+.cp-t1 .cp-actions .cp-jump { padding:0 10px; min-height:34px; font-size:10px; letter-spacing:1px; }
+.cp-t1 .cp-strip.cp-band { grid-template-columns:repeat(9,minmax(0,1fr)); gap:0; background:var(--bg2); border:1px solid var(--border2); margin:0 0 6px; }
+.cp-t1 .cp-band .cp-cell { background:transparent; padding:8px 9px; border-right:1px solid var(--border); }
+.cp-t1 .cp-band .cp-cell:last-child { border-right:0; }
+.cp-t1 .cp-band .cp-cell .l { font-family:var(--fd); font-size:10.5px; font-weight:700; letter-spacing:1.5px; margin-bottom:3px; }
+.cp-t1 .cp-band .cp-cell .v { font-family:var(--fm); font-size:16px; font-weight:700; letter-spacing:0; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cp-t1 .cp-band .cp-cell .v.sm { font-size:13px; }
+.cp-t1 .cp-band .cp-cell .s { font-size:10px; line-height:1.3; margin-top:2px; }
+.cp-t1 .cp-band .cp-cell .s.up { color:var(--green); } .cp-t1 .cp-band .cp-cell .s.dn { color:var(--red); }
+.cp-t1 .cp-band .cp-sig { padding:2px 7px; font-size:11px; letter-spacing:1px; min-width:44px; justify-content:center; border-width:1px; }
+.cp-t1 .cp-band .cp-sig.buy { background:var(--green); color:#000; border-color:var(--green); }
+.cp-t1 .cp-band .cp-sig.sell { background:var(--red); color:#fff; border-color:var(--red); }
+.cp-t1 .cp-band .cp-sig.hold { background:var(--gold); color:#000; border-color:var(--gold); }
+.cp-t1 .cp-band .cp-sig.gated { background:var(--bg4); color:var(--text-dim); border-color:var(--border2); }
+.cp-t1 .cp-band .cp-sig > span + span { display:none; }
+.cp-t1 .cp-why { margin:0 0 8px; }
+.cp-t1 .cp-fold { margin:8px 0 0; }
+.cp-t1 .cp-fold > summary { padding:10px 0; min-height:40px; }
+.cp-t1 .cp-grid { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:14px; align-items:start; }
+.cp-t1 .cp-grid .cp-sec, .cp-t1 .cp-fold .cp-sec + .cp-sec { margin:0; padding:0; border-top:0; }
+.cp-t1 .cp-fold .cp-side { display:grid; gap:14px; align-content:start; min-width:0; }
+.cp-t1 h2.cp-h { font-size:13px; font-weight:700; letter-spacing:2px; margin:0 0 2px; }
+.cp-t1 .cp-sec .sub { font-size:11px; font-family:var(--fm); margin:0 0 8px; line-height:1.5; }
+.cp-t1 .cp-chart { padding:8px 6px 4px; }
+.cp-t1 .cp-chart .ref { fill:none; stroke:var(--gold); stroke-width:1; stroke-dasharray:3 3; }
+.cp-t1 .cp-chart .ref-l { font-family:var(--fm); font-size:9.5px; fill:var(--gold); }
+.cp-t1 .cp-chart .sma { opacity:0.55; }
+.cp-t1 .cp-legend i.r { background:var(--gold); }
+.cp-t1 .cp-hist { background:var(--bg2); border:1px solid var(--border2); padding:8px 8px 4px; }
+.cp-t1 .cp-hist svg { width:100%; height:auto; display:block; }
+.cp-t1 .cp-hist .axis { font-family:var(--fm); font-size:9.5px; fill:var(--text-dim); }
+.cp-t1 .cp-hist .zero { stroke:var(--text-head); stroke-dasharray:2 2; }
+.cp-t1 .cp-hist .neg { fill:var(--red); opacity:0.55; } .cp-t1 .cp-hist .pos { fill:var(--green); opacity:0.55; }
+.cp-t1 .cp-read { display:grid; gap:6px; margin-top:8px; }
+.cp-t1 .cp-read div { padding:6px 8px; background:var(--bg3); font-size:11px; line-height:1.4; color:var(--text-dim); }
+.cp-t1 .cp-read b { display:block; font-family:var(--fd); font-size:10.5px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); margin-bottom:1px; }
+.cp-t1 .cp-closes { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.cp-t1 .cp-closes .c { font-family:var(--fm); font-size:13px; font-weight:700; color:var(--text-head); background:var(--bg3); padding:5px 9px; font-variant-numeric:tabular-nums; }
+.cp-t1 .cp-closes .m { font-family:var(--fm); font-size:10px; color:var(--text-dim); flex-basis:100%; }
+.cp-t1 .cp-empty { background:transparent; border:0; padding:4px 0; font-size:11px; }
+.cp-t1 .cp-live { margin-top:14px; padding-top:12px; border-top:1px solid var(--border); }
+.cp-t1 .cp-list { gap:6px; }
+.cp-t1 .cp-foot { margin-top:8px; }
+@media (max-width:1100px) { .cp-t1 .cp-strip.cp-band { grid-template-columns:repeat(9,minmax(96px,1fr)); overflow-x:auto; } }
+@media (max-width:899px) { .cp-t1 .cp-grid { grid-template-columns:1fr; } }
+@media (max-width:720px) {
+  .cp-embed.cp-t1 { padding:12px 12px 10px; }
+  .cp-t1 .cp-head { grid-template-columns:56px minmax(0,1fr); gap:10px 12px; }
+  .cp-t1 .cp-photo { width:56px; }
+  .cp-t1 .cp-markbox { grid-column:1 / -1; text-align:left; display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; }
+  .cp-t1 .cp-mark { font-size:24px; }
+  .cp-t1 .cp-actions { margin:0; justify-content:flex-start; flex-basis:100%; }
+  .cp-t1 .cp-strip.cp-band { grid-template-columns:repeat(3,minmax(0,1fr)); overflow:visible; }
+  .cp-t1 .cp-band .cp-cell { border-bottom:1px solid var(--border); padding:7px 8px; }
+  .cp-t1 .cp-band .cp-cell:nth-child(3n) { border-right:0; }
+  .cp-t1 .cp-band .cp-cell:nth-last-child(-n+3) { border-bottom:0; }
+  .cp-t1 .cp-band .cp-cell .v { font-size:14px; }
+}
+`;
 
 // ---------- data ----------
 const wl = JSON.parse(read("data/watchlist.json"));
 const cards = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.id && c.query);
 let latest = null;
-try { latest = JSON.parse(await (await fetch(`${FEED_BASE}/prices-latest.json?t=${Date.now()}`)).text()); } catch { latest = null; }
+try {
+  latest = /^https?:\/\//.test(FEED_BASE)
+    ? JSON.parse(await (await fetch(`${FEED_BASE}/prices-latest.json?t=${Date.now()}`)).text())
+    : JSON.parse(fs.readFileSync(path.join(FEED_BASE, "prices-latest.json"), "utf8"));
+} catch { latest = null; }
 const latestBy = new Map(((latest && latest.cards) || []).map((c) => [c.key, c]));
 const day = (latest && latest.day) || new Date().toISOString().slice(0, 10);
 
@@ -93,7 +183,8 @@ function renderBlock(c, i) {
   const photo = f.img
     ? `<a class="cp-photo" data-k="photo" href="${attr(f.ebaySearch)}" target="_blank" rel="noopener sponsored" aria-label="${attr(c.label)} on eBay"><img data-k="img" src="${attr(f.img.url)}" alt="${attr(c.label)}" loading="lazy"><span class="sch-ebay-tag" aria-hidden="true">eBay</span></a>`
     : `<a class="cp-photo" data-k="photo" href="${attr(f.ebaySearch)}" target="_blank" rel="noopener sponsored" aria-label="${attr(c.label)} on eBay"><span class="cp-noimg">NO PHOTO YET</span><span class="sch-ebay-tag" aria-hidden="true">eBay</span></a>`;
-  return `  <div class="cp-embed" id="engine-${attr(c.id)}" data-card="${attr(c.id)}" data-code="${attr(f.code || "")}" data-must="${attr(f.must)}" data-prices-updated="${day}">
+  const id = attr(c.id);
+  return `  <div class="cp-embed cp-t1" id="engine-${id}" data-card="${id}" data-code="${attr(f.code || "")}" data-must="${attr(f.must)}" data-prices-updated="${day}">
     <div class="cp-head">
       ${photo}
       <div>
@@ -101,36 +192,53 @@ function renderBlock(c, i) {
         <h2 class="cp-title">${esc(name)}${f.isTcg ? "" : " — " + esc(f.lane.split(" · ")[0])}</h2>
         <div class="cp-lane"><b>${esc(f.lane)}</b>${f.code ? ` · <b>${esc(f.code)}</b>` : ""} · from verified eBay asks, not hand-typed</div>
       </div>
+      <div class="cp-markbox">
+        <div class="cp-mark" data-k="mark">${last != null ? fmt$(last) : "—"}</div>
+        <div class="cp-mark-d" data-k="mark-d">${last != null ? "engine mark · " + esc(day) : "no verified mark yet"}</div>
+        <div class="cp-actions">
+          <button class="sch-track-card" data-name="${attr(c.label)}" data-set="${attr(f.set)}" data-cat="${attr(f.cat)}" data-grade="Raw" data-feed="ebay:${id}">&#9733; Track this card</button>
+          <a class="cp-jump" href="#live-${id}">Live listings &#8595;</a>
+        </div>
+      </div>
     </div>
-    <div class="cp-strip">
-      <div class="cp-cell"><div class="l">Engine mark</div><div class="v" data-k="mark">${last != null ? fmt$(last) : "—"}</div><div class="s" data-k="mark-d">${last != null ? "engine mark · " + esc(day) : "no verified mark yet"}</div></div>
-      <div class="cp-cell"><div class="l">30-day change</div><div class="v" data-k="roc">—</div><div class="s">vs 30 nights ago</div></div>
-      <div class="cp-cell"><div class="l">Verified asks</div><div class="v" data-k="n">—</div><div class="s" data-k="n-s">in tonight's mark</div></div>
-      <div class="cp-cell"><div class="l">Supply</div><div class="v" data-k="sup">—</div><div class="s" data-k="sup-s">live listings of this card</div></div>
+    <div class="cp-strip cp-band">
+      <div class="cp-cell" data-k="sig-cell"><div class="l">Signal</div><div class="v"><span class="cp-sig hold" data-k="sig"><span>—</span></span></div><div class="s" data-k="sig-s">engine · nightly</div></div>
+      <div class="cp-cell"><div class="l">30D ROC</div><div class="v" data-k="roc">—</div><div class="s">vs 30 nights</div></div>
+      <div class="cp-cell"><div class="l">z-score</div><div class="v" data-k="z">—</div><div class="s">vs 30D mean</div></div>
+      <div class="cp-cell"><div class="l">&sigma; / day</div><div class="v" data-k="sd">—</div><div class="s" data-k="sd-s">daily returns</div></div>
+      <div class="cp-cell"><div class="l">Skew</div><div class="v" data-k="skew">—</div><div class="s" data-k="skew-s">daily returns</div></div>
+      <div class="cp-cell"><div class="l">Kurtosis</div><div class="v" data-k="kurt">—</div><div class="s" data-k="kurt-s">excess</div></div>
+      <div class="cp-cell"><div class="l">Supply</div><div class="v" data-k="sup">—</div><div class="s" data-k="sup-s">live listings</div></div>
+      <div class="cp-cell"><div class="l">Ask Q1&ndash;Q3</div><div class="v sm" data-k="askq">—</div><div class="s" data-k="n-s"><span data-k="n">—</span> asks in mark</div></div>
+      <div class="cp-cell"><div class="l">Hammer med</div><div class="v" data-k="ham">—</div><div class="s" data-k="ham-s">no watched close yet</div></div>
     </div>
-    <div class="cp-actions">
-      <button class="sch-track-card" data-name="${attr(c.label)}" data-set="${attr(f.set)}" data-cat="${attr(f.cat)}" data-grade="Raw" data-feed="ebay:${attr(c.id)}">&#9733; Track this card</button>
-      <span class="cp-sig hold" data-k="sig"><span>engine · —</span></span>
-      <a class="cp-jump" href="#live-${attr(c.id)}">Live listings &#8595;</a>
-    </div>
-    <div class="cp-note" data-k="why" style="margin:-14px 0 6px;"></div>
+    <div class="cp-note cp-why" data-k="why"></div>
 
     <details class="cp-fold" data-fold="chart"${first ? " open" : ""}>
-    <summary><span>Nightly price line &amp; what buyers paid</span><span class="cp-fold-hint">${first ? "" : "tap to open"}</span></summary>
-    <section class="cp-sec" id="chart-${attr(c.id)}">
+    <summary><span>Nightly price line &middot; distribution &middot; what buyers paid</span><span class="cp-fold-hint">${first ? "" : "tap to open"}</span></summary>
+    <div class="cp-grid">
+    <section class="cp-sec" id="chart-${id}">
       <h2 class="cp-h">Nightly price line</h2>
-      <p class="sub">One point per night: the trimmed low-ask mark for <b>this exact card</b> (price + shipping, cheapest junk dropped). Asks proxy solds; the method is identical every night, so the shape is what matters. <span data-k="chart-n"></span></p>
+      <p class="sub">Trimmed low-ask mark for <b>this exact card</b>, one point per night (price + shipping, cheapest junk dropped). Asks proxy solds; the method is identical every night, so the shape is what matters. <span data-k="chart-n"></span></p>
       <div class="cp-chart" data-k="chart"><div class="cp-empty">Loading the nightly series&hellip;</div></div>
     </section>
-
-    <section class="cp-sec" id="sold-${attr(c.id)}">
+    <div class="cp-side">
+    <section class="cp-sec" id="dist-${id}">
+      <h2 class="cp-h">Distribution &middot; daily returns</h2>
+      <p class="sub">Night-over-night % change of the mark. Population moments; excess kurtosis (normal = 0). Not a call.</p>
+      <div class="cp-hist" data-k="hist"><div class="cp-empty">Needs ~10 nightly marks.</div></div>
+      <div class="cp-read" data-k="hist-read"></div>
+    </section>
+    <section class="cp-sec" id="sold-${id}">
       <h2 class="cp-h">What buyers paid</h2>
-      <p class="sub">Auction closes the engine records itself. Hammer capture began in early September 2026 — this fills in as auctions for this card close.</p>
+      <p class="sub">Auction closes the engine records itself; hammer capture began in early September 2026.</p>
       <div data-k="hammers"><div class="cp-empty">No auction close recorded for this card yet.</div></div>
     </section>
+    </div>
+    </div>
     </details>
 
-    <section class="cp-sec" id="live-${attr(c.id)}">
+    <section class="cp-sec cp-live" id="live-${id}">
       <h2 class="cp-h">Verified live listings</h2>
       <p class="sub" data-k="list-sub">Only listings that pass the engine's exact-card filter — right code, right year, no graded slabs, parallels, lots or reprints. Cheapest first, price before shipping.</p>
       <div class="cp-list" data-k="list"><div class="cp-empty">Pulling live listings&hellip;</div></div>
@@ -149,16 +257,18 @@ for (const c of cards) { const h = hostOf(c); if (!h) continue; if (!byHost.has(
 if (!DRY) fs.writeFileSync(path.join(REPO, "css/engine-block.css"), EMBED_CSS.trim() + "\n");
 
 const report = [];
+let skipped = 0;
 for (const [host, list] of byHost) {
+  if (ONLY && host !== ONLY) { skipped++; continue; }
   const file = host + ".html";
   let html = read(file);
-  const block = `<!-- ENGINE:START — engine card blocks, generated by tools/build-engine-blocks.mjs (Sep 8 2026). Do not hand-edit; re-run the tool. Cards: ${list.map((c) => c.id).join(", ")} -->
+  const block = `<!-- ENGINE:START — engine card blocks, generated by tools/build-engine-blocks.mjs (Sep 8 2026; stat-band markup Sep 11 2026). Do not hand-edit; re-run the tool. Cards: ${list.map((c) => c.id).join(", ")} -->
 <link rel="stylesheet" href="/css/engine-block.css">
-<section class="cp-embed-wrap" id="engine" aria-label="Engine-tracked cards on this page">
+<section class="cp-embed-wrap cp-t1-wrap" id="engine" aria-label="Engine-tracked cards on this page">
 ${list.map((c, i) => renderBlock(c, i)).join("\n")}
   <p class="cp-note" style="margin:6px 2px 0;">Marks are the engine's nightly reads from verified eBay asking prices and, where recorded, auction closes; dated, sourced, never hand-typed. Cards are illiquid — think in 6–12 month holds. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
 </section>
-<script src="/js/engine-block.js?v=2" defer></script>
+<script src="/js/engine-block.js?v=${JS_V}" defer></script>
 <!-- ENGINE:END -->`;
   if (/<!-- ENGINE:START[\s\S]*?<!-- ENGINE:END -->/.test(html)) {
     html = html.replace(/<!-- ENGINE:START[\s\S]*?<!-- ENGINE:END -->/, block);
@@ -169,4 +279,4 @@ ${list.map((c, i) => renderBlock(c, i)).join("\n")}
   if (!DRY) fs.writeFileSync(path.join(REPO, file), html);
   report.push(`${file}  ← ${list.map((c) => c.id).join(", ")}`);
 }
-console.log(`${DRY ? "would update" : "updated"} ${byHost.size} host page(s) (feed day ${latest ? latest.day : "unavailable"}) + css/engine-block.css:\n  ` + report.join("\n  "));
+console.log(`${DRY ? "would update" : "updated"} ${report.length} host page(s)${ONLY ? ` (--only=${ONLY}; ${skipped} other host(s) left untouched)` : ""} (feed day ${latest ? latest.day : "unavailable — fell back to today"}) + css/engine-block.css:\n  ` + report.join("\n  "));

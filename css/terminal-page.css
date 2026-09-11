@@ -1,0 +1,144 @@
+/* terminal-page.css — Terminal step 1 (Sep 11 2026): card-page composition.
+   The number is the page; the essay is the footnote. Linked AFTER a page's inline <style> by
+   tools/build-guide-fold.mjs so it overrides. Site tokens only (--bg… --fd --fb --fm); no new colours.
+   Sections: 1 hero compaction · 2 destination strip · 3 guide fold · 4 quiet callouts/verdicts ·
+   5 snapshot notice · 6 phone. */
+
+/* ─── 1. HERO: one compact row — photo left, eyebrow + h1 + sub + meta ─── */
+.hero { padding:22px 0 0; min-height:0; }
+.hero .container { display:grid; grid-template-columns:100px minmax(0,1fr); column-gap:22px; align-items:center; }
+.hero .container > * { grid-column:2; min-width:0; }
+.hero .container > .hero-card-photo { grid-column:1; grid-row:1 / span 6; align-self:center; justify-self:start; margin:0; text-align:left; }
+.hero-card-photo .sch-cimg { width:100px !important; height:140px !important; }
+.hero-card-cap { display:none; }
+.hero-eyebrow { margin-bottom:6px; font-size:10px; letter-spacing:2.5px; }
+.hero-eyebrow::before { width:18px; }
+.hero h1 { font-size:clamp(28px,3.2vw,40px); line-height:1; letter-spacing:-0.5px; margin-bottom:6px; animation:none; }
+.hero h1 br { display:none; }
+.hero h1 em { display:inline; }
+.hero h1 em::before { content:" "; }
+.hero-sub { font-size:14px; line-height:1.5; max-width:760px; margin-bottom:6px; }
+.hero-meta { margin-top:4px; gap:14px; font-size:10px; }
+.hero-scan-line { display:none; }
+
+/* ─── 2. DESTINATION STRIP: two one-line tiles, not two cards ─── */
+body .dest-strip { margin-top:14px; gap:10px; }
+body .dest-strip .dest-tile { padding:8px 14px; gap:10px; }
+body .dest-strip .dest-tile .dt-ico { font-size:16px; }
+body .dest-strip .dest-tile .dt-k { font-size:9px; letter-spacing:1.5px; }
+body .dest-strip .dest-tile .dt-t { font-size:14px; margin-top:0; }
+body .dest-strip .dest-tile .dt-s { display:none !important; }
+body .dest-strip .dest-tile .dt-arrow { font-size:14px; }
+
+/* ─── 3. GUIDE FOLD: the rookie guide as <details> rows under the engine block ─── */
+.guide-wrap { max-width:1060px; margin:18px auto 0; padding:0 24px; }
+.guide-wrap .container { padding:0; }
+.guide-fold { border-top:1px solid var(--border); }
+.guide-fold:last-child { border-bottom:1px solid var(--border); }
+.guide-fold > summary { list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 0; min-height:44px; }
+.guide-fold > summary::-webkit-details-marker { display:none; }
+.guide-fold > summary::before { content:"\25B8"; flex:0 0 12px; font-size:12px; color:var(--text-dim); transition:transform 0.15s; }
+.guide-fold[open] > summary::before { transform:rotate(90deg); color:var(--accent); }
+.guide-fold > summary:hover .gf-h2 { color:var(--accent); }
+.guide-fold > summary .gf-h2 { flex:1 1 auto; font-family:var(--fd); font-size:15px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-head); margin:0; line-height:1.2; }
+.guide-fold > summary .gf-stamp { flex:0 0 auto; font-family:var(--fm); font-size:11px; color:var(--text-dim); font-variant-numeric:tabular-nums; text-align:right; }
+.guide-fold[open] > summary .gf-stamp { color:var(--gold); }
+.guide-fold > section { padding:4px 0 24px; border-top:0; animation:none; }
+.guide-fold .section-eyebrow { display:none; }
+.guide-fold .section-intro { font-size:14px; line-height:1.6; margin-bottom:18px; max-width:72ch; }
+.guide-fold .reveal { opacity:1; transform:none; transition:none; }
+.guide-fold .gf-lead { padding:2px 0 8px; }
+.guide-fold .gf-lead .stat-banner { margin:10px 0 0; gap:1px; }
+.guide-fold .gf-lead .banner-stat { padding:8px 10px; text-align:left; }
+.guide-fold .gf-lead .banner-stat-label { margin-bottom:2px; }
+.guide-fold .gf-lead .banner-stat-val { font-family:var(--fm); font-size:15px; font-weight:700; font-variant-numeric:tabular-nums; }
+.guide-fold .gf-lead .banner-stat-sub { margin-top:2px; }
+.guide-fold .gf-lead .disclosure { margin:8px 0 0; padding:6px 0 0; background:transparent; border:0; border-top:1px solid var(--border); font-family:var(--fm); font-size:11px; line-height:1.5; }
+.guide-fold .disclosure { margin:10px 0 0; }
+
+/* the essay's boxes as quiet rows — text untouched, chrome removed */
+.guide-fold .card-entry { padding:18px 20px; margin-bottom:12px; border-top-width:2px; animation:none; }
+.guide-fold .card-entry::before, .guide-fold .card-entry::after { display:none; }
+.guide-fold .card-entry:hover { box-shadow:none; }
+.guide-fold .entry-rank { font-size:32px; top:12px; right:16px; }
+.guide-fold .entry-header { margin-bottom:14px; gap:16px; }
+.guide-fold .entry-title { font-size:clamp(18px,2.2vw,22px); }
+.guide-fold .entry-sport-tag { margin-bottom:6px; }
+.guide-fold .price-main { font-family:var(--fm); font-size:22px; font-weight:700; text-shadow:none; font-variant-numeric:tabular-nums; }
+.guide-fold .entry-stats { gap:8px; margin-bottom:14px; }
+.guide-fold .entry-stat { padding:8px 10px; background:transparent; }
+.guide-fold .entry-stat-value { font-family:var(--fm); font-size:14px; font-weight:700; font-variant-numeric:tabular-nums; }
+.guide-fold .entry-body { font-size:14px; line-height:1.6; margin-bottom:14px; max-width:78ch; }
+.guide-fold .entry-body p + p { margin-top:8px !important; }
+.guide-fold .entry-ctas { gap:8px; }
+.guide-fold .entry-ctas .btn-primary, .guide-fold .entry-ctas .btn-secondary { padding:9px 14px; font-size:11px; }
+.guide-fold .timeline { margin:12px 0; }
+.guide-fold .tl-item { margin-bottom:14px; }
+.guide-fold .tl-title { font-size:16px; }
+.guide-fold .tl-body { font-size:13.5px; }
+.guide-fold .psa-table { margin:12px 0; }
+.guide-fold .psa-table td { padding:8px 12px; }
+.guide-fold .psa-table .price { font-family:var(--fm); font-size:14px; font-weight:700; font-variant-numeric:tabular-nums; }
+.guide-fold .parallel-grid { margin:12px 0; gap:6px; }
+.guide-fold .parallel-card { padding:10px 8px; }
+.guide-fold .parallel-card:hover { transform:none; }
+.guide-fold .parallel-price { font-family:var(--fm); font-size:15px; font-weight:700; font-variant-numeric:tabular-nums; }
+.guide-fold .parallel-print { margin-bottom:4px; }
+.guide-fold .strategy-grid { margin:12px 0 0; gap:10px; }
+.guide-fold h3 { font-size:18px; }
+
+/* ─── 4. CALLOUTS / VERDICTS / STRATEGY / VERDICT CELLS: one-line rows and chips, wording untouched ─── */
+.callout { background:transparent; border:0; border-left:2px solid var(--green); padding:2px 0 2px 12px; margin:14px 0; }
+.callout.gold { border-left-color:var(--gold); } .callout.red { border-left-color:var(--red); } .callout.orange { border-left-color:var(--orange); }
+.callout-title { display:inline; font-family:var(--fd); font-size:13px; font-weight:700; letter-spacing:1px; margin:0 8px 0 0; }
+.callout-title::after { content:" —"; color:var(--text-dim); }
+.callout p { display:inline; font-size:13.5px; line-height:1.55; }
+.entry-verdict { background:transparent; border-left:2px solid var(--green); padding:2px 0 2px 12px; margin-bottom:12px; font-size:13.5px; line-height:1.5; }
+.entry-verdict.watch { border-left-color:var(--gold); } .entry-verdict.hold { border-left-color:var(--orange); }
+.entry-verdict strong { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-right:6px; }
+.strategy-card { padding:12px 14px; background:transparent; border:1px solid var(--border); }
+.strategy-card:hover { transform:none; box-shadow:none; }
+.strategy-icon { font-size:14px; margin-bottom:4px; display:inline-block; margin-right:6px; vertical-align:baseline; }
+.strategy-title { display:inline; font-size:15px; }
+.strategy-body { font-size:13.5px; line-height:1.55; margin-top:6px; }
+.psa-table .verdict-cell { font-family:var(--fm); font-size:11px; }
+.psa-table .verdict-cell strong { color:var(--gold); font-weight:700; }
+
+/* ─── 5. SNAPSHOT NOTICE: one amber line (moved into the first fold's lead by the tool) ─── */
+.snapshot-notice { background:transparent; border:0; border-left:2px solid var(--orange); padding:2px 0 2px 12px; margin:6px 0 0; font-family:var(--fm); font-size:11px; line-height:1.55; color:var(--text-dim); }
+.snapshot-notice strong { color:var(--orange) !important; font-weight:700; }
+
+/* ─── page rhythm: sections outside the fold ─── */
+section { padding:28px 0; }
+.social-strip { padding:16px 22px; margin:24px 0; gap:16px; }
+.social-strip h3 { font-size:16px; margin-bottom:2px; }
+.social-strip p { font-size:13px; }
+.btn-twitter { padding:10px 18px; font-size:11px; }
+.section-intro { margin-bottom:20px; font-size:14px; }
+h2 { font-size:clamp(22px,2.6vw,28px); margin-bottom:10px; }
+.related-grid { margin-top:16px; gap:10px; }
+.related-card { padding:16px; }
+footer { padding:28px 0 20px; }
+
+/* ─── 6. PHONE ─── */
+@media (max-width:768px) {
+  .hero { padding:16px 0 0; }
+  section { padding:22px 0; }
+  .hero h1 { font-size:clamp(24px,7vw,32px); }
+}
+@media (max-width:700px) {
+  .hero .container { display:grid; grid-template-columns:72px minmax(0,1fr); column-gap:14px; align-items:center; }
+  .hero .container > .hero-card-photo { float:none; width:72px; margin:0; grid-row:1 / span 2; }
+  .hero .container > .hero-sub, .hero .container > .hero-meta { grid-column:1 / -1; }
+  .hero-eyebrow { font-size:9px; letter-spacing:1.5px; margin-bottom:4px; }
+  .hero-eyebrow::before { display:none; }
+  .hero-card-photo .sch-cimg { width:72px !important; height:101px !important; }
+  .hero-sub { clear:none; font-size:13px; }
+  .hero-meta { gap:10px; }
+  .guide-wrap { padding:0 16px; }
+  .guide-fold > summary .gf-h2 { font-size:14px; }
+  .guide-fold > summary .gf-stamp { font-size:10px; max-width:38%; }
+  .guide-fold .card-entry { padding:14px 12px; }
+  .guide-fold .entry-rank { display:none; }
+  .guide-fold .gf-lead .stat-banner { grid-template-columns:1fr 1fr; }
+}
