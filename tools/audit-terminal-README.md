@@ -2,10 +2,16 @@
 
 **Standing rule (Sep 11 2026): the Chief of Staff runs three gates before any push — `audit-prices`, `audit-site`, `audit-terminal` — and all three must report `FAIL: 0`.** A WARN never blocks a push, but every WARN is read and either actioned or explicitly left.
 
+The standing pre-push command (step 3 onward — `--run-tests` runs the Vault migration proof):
+
 ```
-node tools/audit-prices.mjs
-node tools/site-auditor/audit-site.mjs
-node tools/audit-terminal.mjs --feed ../pd/data
+node tools/audit-prices.mjs && node tools/site-auditor/audit-site.mjs && node tools/audit-terminal.mjs --feed <dir> --run-tests
+```
+
+or the one-flag equivalent, which runs the other two gates first and exits 1 if any of the three fails:
+
+```
+node tools/audit-terminal.mjs --all --feed ../pd/data --run-tests
 ```
 
 `audit-site` owns the page contract (EPN params, nav single-source, sitemap, tag balance, z-index, placeholder copy). `audit-prices` owns pricing integrity (no `$$`, dated stamps). `audit-terminal` owns the **connections**: nightly feed → engine block on its host page → ★ Track button → Vault → `/api/*`. If a check belongs to one of the other two gates it is not duplicated here — the one exception is the NAV css contract, which check 5 re-runs on terminal pages because those pages are the ones most likely to have their `<style>` reorganised.
@@ -27,6 +33,8 @@ Exit code 1 on any FAIL. `--json` prints `{date, pages, feed, fails[], warns[]}`
 |---|---|
 | `--feed <dir>` | a clone of the `price-data` branch's `data/` folder (`prices-latest.json`, `prices-history.json`, `market-latest.json`). Default: `<repo>/../pd/data`. Missing → one `WARN feed-unavailable` and the feed sub-checks are skipped (the gate still runs everything static). |
 | `--repo <dir>` | audit a different tree (used for the proof-of-fire run against a scratch copy). Default: the repo this file lives in. |
+| `--run-tests` | also run `tools/qa/vault-migration.test.cjs`; a red test is a FAIL (`migration-test-present`). Part of the standing pre-push command. |
+| `--all` | run `tools/audit-prices.mjs` and `tools/site-auditor/audit-site.mjs` first (their output streams through), then this gate; exit 1 if any of the three fails. |
 | `--json` | machine-readable output. |
 | `AUDIT_TERMINAL_DEBUG=1` | env var; prints every parsed `/api/*` call site (params sent, response keys read) to stderr. Use it when an `api-contract` finding looks wrong. |
 
@@ -51,6 +59,12 @@ Scans every root `*.html` except `card-dungeon.html` and `welcome-email.html` (s
 | `shared-stats-module` | WARN / FAIL | Only if `js/engine-stats.js` exists (the one place that does σ/skew/kurtosis). WARN if `js/engine-block.js` or `index.html` does not reference it (the math is forking). FAIL if a page's scripts use `SCH_STATS` but the page never loads `/js/engine-stats.js`, or loads a non-deferred consumer before it (`SCH_STATS` undefined at run time). |
 | `empty-state-box` | WARN | Engine empty-state copy ("loading nightly series", "no auction close recorded", "live listings are unavailable") sitting inside a bordered container. The container classes are detected from `css/engine-block.css` (a `.cp-*` rule with a solid/dashed/dotted border whose name contains empty/box/state — today that is `.cp-empty`). Scanned in pages and in `js/engine-block.js` (runtime-generated boxes). Reported with file:line. These 52 are expected to clear as the Terminal Builder lands the quiet-line treatment. |
 | `feed-shape` | FAIL / WARN | With `--feed`: `prices-latest.json` has a `day` (WARN if older than 2 days) and each card has `key`, `label`, `last` (number or null), `signal`, `gated` (array or null), `supply` (number or null), `points`; `prices-history.json[key].series[]` are `{d: YYYY-MM-DD, p: number|null}`; `market-latest.json.cards[key]` has `hammers[]` and `closes: number`. FAIL if any hosted card is missing from the feed (its block would show "—" forever). WARN if the feed prices a key that is not in the watchlist. |
+| `vault-schema-shared` | FAIL / WARN | Step 3 (portfolios): if `js/vault-schema.js` exists, both Vault writers — `watchlist.html` and `js/vault-track.js` — must load it (script tag, lazy `.src`, or `require`) and their constants must agree with it: `LS_KEY` vs the schema's `'sch_vault_vN'`, `IDB_NAME`/`IDB_STORE` vs the schema's `IndexedDB db/store/record`, `DEFAULT_LIST` vs `DEFAULT_ID`; a writer that defines its own `migrate()` without calling the schema's is a fork. WARN if a writer has no key literal to compare. |
+| `vault-track-contract` | WARN / FAIL | The header comment of `js/vault-track.js` is the page-side storage contract. It must carry the `key :` and `shape :` lines and, once the schema declares them, mention `lists` and `listId`. FAIL only if the header's key disagrees with the schema. |
+| `shell-css-shared` | FAIL / WARN | Every page with RAIL markers links `/css/terminal-shell.css` exactly once, inside `<head>`, after the page's own base `<style>`; the file exists; and the page carries no standalone `.shell{` / `.term{` / `.rail{` / `.rl{` rule in its inline CSS (descendant overrides like `.term .container{}` are fine; a private copy of the shell rules is how drift starts). |
+| `rail-portfolio-readonly` | FAIL | Only `watchlist.html` and `js/vault-track.js` may write the Vault. Any other page or `js/` file that does `localStorage.setItem('sch_vault_v1'…)` (or via an `LS_KEY` equal to it), opens the `sch_vault` IndexedDB, or `.put(state…)`, fails — and so does a RAIL block that touches storage at all. The rail and `js/home.js` are read-only views of the mirror. |
+| `migration-test-present` | FAIL | If `js/vault-schema.js` exists, `tools/qa/vault-migration.test.cjs` must exist; with `--run-tests` it is executed and must exit 0 (the last output lines are quoted on failure). A schema change without a lossless-migration proof cannot ship. |
+| `gate-missing` | FAIL | `--all` only: one of the other two gate scripts is not on disk. |
 | `feed-unavailable` | WARN | No feed clone found at the `--feed` path; feed sub-checks skipped. |
 | `watchlist-json` | FAIL | `data/watchlist.json` does not parse — nothing downstream can be trusted. |
 
@@ -66,4 +80,4 @@ Scans every root `*.html` except `card-dungeon.html` and `welcome-email.html` (s
 
 ## Proving it fires
 
-Copy the repo and the feed clone under the scratchpad, break something (a `data-feed` on a fake id, a duplicate `#chart-` id, a redirect to a page that does not exist, an extra `&foo=` on the engine's `/api/comps` call, a stale `day`), then run `node tools/audit-terminal.mjs --repo <copy> --feed <copy-feed>`. Every one of the ten step-1 checks fired on the Sep 11 2026 proof run (21 FAILs from 10 deliberate breaks); the four step-2 checks (`rail-single-source` rail.json listing, `home-prerender`, `board-bowman-only`, `shared-stats-module`) fired the same day (11 FAILs + 1 WARN from 8 breaks). Never introduce a break in the real tree to test the gate.
+Copy the repo and the feed clone under the scratchpad, break something (a `data-feed` on a fake id, a duplicate `#chart-` id, a redirect to a page that does not exist, an extra `&foo=` on the engine's `/api/comps` call, a stale `day`), then run `node tools/audit-terminal.mjs --repo <copy> --feed <copy-feed>`. Every one of the ten step-1 checks fired on the Sep 11 2026 proof run (21 FAILs from 10 deliberate breaks); the four step-2 checks (`rail-single-source` rail.json listing, `home-prerender`, `board-bowman-only`, `shared-stats-module`) fired the same day (11 FAILs + 1 WARN from 8 breaks); the five step-3 checks (`vault-schema-shared`, `vault-track-contract`, `shell-css-shared`, `rail-portfolio-readonly`, `migration-test-present`) fired on two scratch copies the same day (7 FAILs + 1 WARN from 8 breaks, plus the missing-test FAIL). Never introduce a break in the real tree to test the gate.

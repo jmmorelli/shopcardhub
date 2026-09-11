@@ -1,4 +1,6 @@
-# tools/qa — local render harness
+# tools/qa — local render harness + Vault migration proof
+
+`vault-migration.test.cjs` (Builder-owned, step 3) proves the Vault v1 → v2 migration in `js/vault-schema.js` is lossless; `node tools/audit-terminal.mjs --run-tests` runs it as part of the gate (`migration-test-present`).
 
 `render-local.cjs` renders repo pages in headless Chromium **without a single byte leaving the box**. It exists so the sweep/QA step is the same script every session instead of a per-session improvisation (STATE open item, closed Sep 11 2026).
 

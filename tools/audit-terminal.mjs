@@ -8,7 +8,9 @@
 //   [FAIL] code · file — detail      summary: "N pages scanned · FAIL: x · WARN: y"
 // exit 1 on any FAIL.
 //
-// Usage: node tools/audit-terminal.mjs [--json] [--feed <dir>] [--repo <dir>]
+// Usage: node tools/audit-terminal.mjs [--json] [--feed <dir>] [--repo <dir>] [--run-tests] [--all]
+//   --run-tests   also run tools/qa/vault-migration.test.cjs (migration-test-present FAILs on a red test)
+//   --all         run the other two gates first (tools/audit-prices.mjs, tools/site-auditor/audit-site.mjs)
 //   --feed <dir>  a clone of the price-data branch's data/ folder (prices-latest.json,
 //                 prices-history.json, market-latest.json). Default: <repo>/../pd/data.
 //                 Missing → the feed sub-checks are skipped with one WARN feed-unavailable.
@@ -17,10 +19,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process";
 
 const argv = process.argv.slice(2);
 const argOf = (k) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] ? argv[i + 1] : null; };
 const JSON_OUT = argv.includes("--json");
+const RUN_TESTS = argv.includes("--run-tests");
+const ALL = argv.includes("--all"); // run audit-prices + audit-site first (the standing pre-push command)
 const REPO = path.resolve(argOf("--repo") || path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."));
 const FEED_DIR = path.resolve(argOf("--feed") || path.join(REPO, "../pd/data"));
 
@@ -483,6 +488,98 @@ if (exists("js/engine-stats.js")) {
   }
 }
 
+/* ---------- 8e. the Vault contract (Terminal step 3: portfolios) ---------- */
+// Only two files may WRITE the Vault store: watchlist.html (full copy, IndexedDB + slim mirror) and
+// js/vault-track.js (the page-side ★ Track write). The schema (key, shape, migration) lives in
+// js/vault-schema.js and every writer must load it and agree with its constants — drift here is data loss.
+const VAULT_WRITERS = new Set(["watchlist.html", "js/vault-track.js"]);
+const jsFiles = fs.existsSync(path.join(REPO, "js")) ? fs.readdirSync(path.join(REPO, "js")).filter((f) => f.endsWith(".js")).map((f) => "js/" + f) : [];
+const strLit = (src, re) => { const m = src.match(re); return m ? m[1] : null; };
+if (exists("js/vault-schema.js")) {
+  const schema = read("js/vault-schema.js");
+  // constants declared by the schema: the store key, the IndexedDB db/store/record, the default list id
+  const S = {
+    key: strLit(schema, /['"](sch_vault_v\d+)['"]/),
+    idb: (schema.match(/IndexedDB\s+([\w-]+)\/([\w-]+)\/([\w-]+)/) || []).slice(1),
+    defaultId: strLit(schema, /DEFAULT_ID\s*=\s*['"]([^'"]+)['"]/),
+    declaresLists: /\blists\b/.test(schema), declaresListId: /\blistId\b/.test(schema),
+  };
+  if (!S.key) add("FAIL", "vault-schema-shared", "js/vault-schema.js", "schema file does not state the store key ('sch_vault_vN')");
+  /* (1) vault-schema-shared */
+  for (const f of VAULT_WRITERS) {
+    if (!exists(f)) { add("FAIL", "vault-schema-shared", f, "Vault writer is missing"); continue; }
+    const src = read(f);
+    if (!/<script\b[^>]*src="\/js\/vault-schema\.js|\.src\s*=\s*['"]\/js\/vault-schema\.js|require\([^)]*vault-schema/.test(src)) add("FAIL", "vault-schema-shared", f, "does not load /js/vault-schema.js (script tag, lazy .src, or require) — the writer is running on its own copy of the schema");
+    const key = strLit(src, /LS_KEY\s*=\s*['"]([^'"]+)['"]/);
+    if (key && S.key && key !== S.key) add("FAIL", "vault-schema-shared", f, `LS_KEY '${key}' disagrees with js/vault-schema.js '${S.key}'`);
+    if (!key && !new RegExp(`['"]${esc(S.key || "sch_vault_v1")}['"]`).test(src)) add("WARN", "vault-schema-shared", f, "no LS_KEY literal found to compare with the schema");
+    const dbName = strLit(src, /IDB_NAME\s*=\s*['"]([^'"]+)['"]/), dbStore = strLit(src, /IDB_STORE\s*=\s*['"]([^'"]+)['"]/);
+    if (S.idb.length === 3) {
+      if (dbName && dbName !== S.idb[0]) add("FAIL", "vault-schema-shared", f, `IDB_NAME '${dbName}' disagrees with the schema's IndexedDB ${S.idb.join("/")}`);
+      if (dbStore && dbStore !== S.idb[1]) add("FAIL", "vault-schema-shared", f, `IDB_STORE '${dbStore}' disagrees with the schema's IndexedDB ${S.idb.join("/")}`);
+    }
+    const dl = strLit(src, /DEFAULT_LIST(?:_ID)?\s*=\s*['"]([^'"]+)['"]/);
+    if (dl && S.defaultId && dl !== S.defaultId) add("FAIL", "vault-schema-shared", f, `default list id '${dl}' disagrees with the schema's '${S.defaultId}'`);
+    // a private migrate()/normalise that ignores the schema's is the fork the shared file exists to prevent
+    if (/function\s+migrate\s*\(/.test(src) && !/(?:V|VS|SCH_VSCHEMA)\.migrate\(/.test(src)) add("FAIL", "vault-schema-shared", f, "defines its own migrate() and never calls the schema's");
+  }
+  /* (2) vault-track-contract — the header comment is the page-side contract; it must name the v2 fields */
+  if (exists("js/vault-track.js")) {
+    const head = (read("js/vault-track.js").match(/^[\s\S]*?\*\//) || [""])[0];
+    const keyLine = /key\s*:\s*['"]sch_vault_v\d+['"]/.test(head), shapeLine = /shape\s*:/.test(head);
+    if (!keyLine || !shapeLine) add("WARN", "vault-track-contract", "js/vault-track.js", `header contract lacks the ${!keyLine ? "key" : "shape"} line`);
+    if (S.declaresLists && !/\blists\b/.test(head)) add("WARN", "vault-track-contract", "js/vault-track.js", "schema declares lists[] but the header contract never mentions lists");
+    if (S.declaresListId && !/\blistId\b/.test(head)) add("WARN", "vault-track-contract", "js/vault-track.js", "schema declares listId but the header contract never mentions listId");
+    const hk = strLit(head, /key\s*:\s*['"]([^'"]+)['"]/);
+    if (hk && S.key && hk !== S.key) add("FAIL", "vault-track-contract", "js/vault-track.js", `header says key '${hk}', schema says '${S.key}'`);
+  }
+  /* (5) migration-test-present */
+  const T = "tools/qa/vault-migration.test.cjs";
+  if (!exists(T)) add("FAIL", "migration-test-present", T, "js/vault-schema.js exists but the migration test does not — a schema change without a lossless-migration proof cannot ship");
+  else if (RUN_TESTS) {
+    const r = spawnSync(process.execPath, [path.join(REPO, T)], { cwd: REPO, encoding: "utf8", timeout: 60000 });
+    const tail = String((r.stdout || "") + (r.stderr || "")).trim().split("\n").slice(-3).join(" | ");
+    if (r.status !== 0) add("FAIL", "migration-test-present", T, `exit ${r.status === null ? "signal " + r.signal : r.status}: ${tail.slice(0, 300)}`);
+  }
+  /* (4) rail-portfolio-readonly — nobody but the two writers may write the store */
+  const writeRe = new RegExp(`localStorage\\.setItem\\(\\s*(?:['"]${esc(S.key || "sch_vault_v1")}['"]|LS_KEY\\b)|indexedDB\\.open\\(\\s*['"]${esc(S.idb[0] || "sch_vault")}['"]|\\.put\\(\\s*(?:state|store)\\b`, "g");
+  const srcsRO = [...pages.map((f) => [f, P.get(f).raw]), ...jsFiles.map((f) => [f, read(f)])];
+  for (const [f, src] of srcsRO) {
+    if (VAULT_WRITERS.has(f)) continue;
+    const hasKey = new RegExp(`LS_KEY\\s*=\\s*['"]${esc(S.key || "sch_vault_v1")}['"]`).test(src);
+    for (const m of src.matchAll(writeRe)) {
+      if (/LS_KEY/.test(m[0]) && !hasKey) continue; // some other LS_KEY (a page-local pref key)
+      add("FAIL", "rail-portfolio-readonly", `${f}:${lineOf(src, m.index)}`, `writes the Vault store (${m[0].slice(0, 40)}…) — only watchlist.html and js/vault-track.js may write sch_vault`);
+    }
+  }
+  for (const f of pages) {
+    const m = P.get(f).raw.match(/<!-- RAIL:START -->([\s\S]*?)<!-- RAIL:END -->/);
+    if (m && /localStorage\.setItem|indexedDB/.test(m[1])) add("FAIL", "rail-portfolio-readonly", f, "the RAIL block touches storage — the rail is a read-only view of the Vault mirror");
+  }
+}
+/* (3) shell-css-shared — the two-column shell is one file, linked once, after the page's own base <style> */
+for (const f of pages) {
+  const { raw } = P.get(f);
+  if (!raw.includes("<!-- RAIL:START -->")) continue;
+  const links = [...raw.matchAll(/<link\b[^>]*href="\/css\/terminal-shell\.css(?:\?[^"]*)?"[^>]*>/g)];
+  if (links.length !== 1) { add("FAIL", "shell-css-shared", f, `page carries the rail but links /css/terminal-shell.css ${links.length} times (need exactly 1)`); }
+  if (!exists("css/terminal-shell.css")) add("FAIL", "shell-css-shared", f, "/css/terminal-shell.css is not on disk");
+  const headEnd = raw.indexOf("</head>");
+  if (links.length) {
+    const link = links[0];
+    if (headEnd < 0 || link.index > headEnd) add("FAIL", "shell-css-shared", f, "/css/terminal-shell.css link is not inside <head>");
+    else {
+      const firstStyle = raw.slice(0, headEnd).match(/<style\b[^>]*>[\s\S]*?<\/style>/);
+      if (!firstStyle) add("WARN", "shell-css-shared", f, "no inline <style> in <head> to order against");
+      else if (link.index < firstStyle.index + firstStyle[0].length) add("FAIL", "shell-css-shared", f, `/css/terminal-shell.css link (line ${lineOf(raw, link.index)}) must come AFTER the page's inline <style> (ends line ${lineOf(raw, firstStyle.index + firstStyle[0].length)})`);
+    }
+  }
+  // no private copy of the shell rules: a standalone .shell/.term/.rail/.rl rule in the page's own CSS is drift
+  const css = [...raw.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join("\n");
+  for (const m of css.matchAll(/(?:^|[}\n;])\s*((?:\.(?:shell|term|rail|rl))(?:\s*,\s*[^{]+)?)\s*\{/g))
+    add("FAIL", "shell-css-shared", f, `inline rule "${m[1].trim().slice(0, 40)} {" duplicates css/terminal-shell.css — that is how drift starts; move it to the shared file`);
+}
+
 /* ---------- 9. empty-state-box (WARN) ---------- */
 {
   // the CSS's bordered empty-state containers, detected from css/engine-block.css itself
@@ -550,6 +647,17 @@ if (feed) {
   for (const c of hostCards) if (!feedKeys.has(`${c.source}:${c.id}`)) add("FAIL", "feed-shape", "prices-latest.json", `${c.source}:${c.id} is hosted on /${hostOf(c)} but the feed has no entry for it`);
 }
 
+/* ---------- --all: the other two gates first ---------- */
+let othersFailed = 0;
+if (ALL) {
+  for (const g of ["tools/audit-prices.mjs", "tools/site-auditor/audit-site.mjs"]) {
+    if (!exists(g)) { add("FAIL", "gate-missing", g, "gate script not on disk"); othersFailed++; continue; }
+    const r = spawnSync(process.execPath, [path.join(REPO, g)], { cwd: REPO, encoding: "utf8", timeout: 300000 });
+    if (!JSON_OUT) process.stdout.write((r.stdout || "") + (r.stderr || ""));
+    if (r.status !== 0) othersFailed++;
+  }
+}
+
 /* ---------- report ---------- */
 const fails = findings.filter((x) => x.level === "FAIL");
 const warns = findings.filter((x) => x.level === "WARN");
@@ -561,4 +669,5 @@ if (JSON_OUT) {
   for (const x of fails) console.log(`  [FAIL] ${x.check} · ${x.file} — ${x.detail}`);
   for (const x of warns) console.log(`  [WARN] ${x.check} · ${x.file} — ${x.detail}`);
 }
-process.exit(fails.length ? 1 : 0);
+if (ALL && !JSON_OUT) console.log(`--all: ${othersFailed ? othersFailed + " other gate(s) FAILED" : "audit-prices + audit-site clean"} · audit-terminal FAIL: ${fails.length}`);
+process.exit(fails.length || othersFailed ? 1 : 0);
