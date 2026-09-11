@@ -75,172 +75,6 @@
     .nav-cta { background:var(--accent) !important; color:#000 !important; padding:8px 18px; font-size:11px !important; font-weight:700 !important; border-radius:2px; margin-left:8px; transition:background 0.2s, transform 0.1s !important; }
     .nav-cta:hover { background:#fff !important; transform:translateY(-1px); text-decoration:none !important; }
 
-    /* HERO */
-    .hero { min-height:88vh; display:flex; align-items:center; position:relative; overflow:hidden; padding:80px 0 60px; }
-    .hero::before { content:''; position:absolute; top:0; right:0; bottom:0; width:50%; background:linear-gradient(135deg,transparent 0%,rgba(0,204,245,0.04) 50%,transparent 100%); clip-path:polygon(20% 0%,100% 0%,100% 100%,0% 100%); pointer-events:none; }
-    .hero::after { content:''; position:absolute; left:50%; top:10%; bottom:10%; width:1px; background:linear-gradient(180deg,transparent,rgba(0,204,245,0.18),transparent); pointer-events:none; }
-    .hero-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; position:relative; z-index:1; }
-    .hero-eyebrow { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:8px; margin-bottom:20px; }
-    .hero-eyebrow::before { content:''; width:28px; height:1px; background:var(--accent); box-shadow:0 0 8px var(--accent); }
-    .hero h1 { font-family:var(--fd); font-size:clamp(44px,5.5vw,80px); font-weight:900; line-height:0.95; letter-spacing:-1px; text-transform:uppercase; color:var(--text-head); margin-bottom:24px; }
-    .hero h1 .accent { color:var(--accent); display:block; }
-    .hero h1 .ghost { -webkit-text-stroke:1px rgba(228,240,244,0.18); color:transparent; display:block; }
-    .hero-body { font-size:17px; color:var(--text-dim); line-height:1.75; max-width:480px; margin-bottom:40px; }
-    .hero-body strong { color:var(--text); }
-    .hero-ctas { display:flex; gap:14px; flex-wrap:wrap; }
-    .btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#000; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; border-radius:2px; transition:all 0.15s; }
-    .btn-primary:hover { background:#fff; color:#000; text-decoration:none; transform:translateY(-2px); }
-    .btn-secondary { display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-dim); font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; border:1px solid var(--border2); border-radius:2px; transition:all 0.15s; }
-    .btn-secondary:hover { color:var(--text-head); border-color:var(--accent); text-decoration:none; }
-    /* quiet third CTA — a text link, not a third button */
-    .hero-textlink { display:inline-flex; align-items:center; gap:6px; align-self:center; font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); padding:14px 4px; border-bottom:1px solid transparent; transition:color 0.15s, border-color 0.15s; }
-    .hero-textlink:hover { color:var(--accent); border-bottom-color:var(--accent); text-decoration:none; }
-    .hero-textlink .arr::before { content:'\2193'; }                       /* tablet: board sits below the copy */
-    @media (min-width:861px) { .hero-textlink .arr::before { content:'\2192'; } }   /* desktop: board sits beside it */
-    .hero-panel { scroll-margin-top:72px; }
-
-    /* Hero panel */
-    .hero-panel { background:var(--bg2); border:1px solid var(--border2); border-top:2px solid var(--accent); padding:0; animation:panel-in 0.8s ease-out 0.2s both; }
-    @keyframes panel-in { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-    .panel-header { padding:14px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
-    .panel-dot { width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); animation:pulse 2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .panel-title { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); }
-    .panel-updated { margin-left:auto; font-family:var(--fm); font-size:9px; color:var(--text-dim); letter-spacing:1px; }
-    .panel-rows { padding:6px 0; }
-    .panel-feature { display:flex; gap:18px; align-items:center; padding:16px 20px; border-bottom:1px solid var(--border); background:linear-gradient(90deg, rgba(0,204,245,0.06), transparent 70%); }
-    .feature-kicker { font-family:var(--fm); font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
-    .feature-name { font-family:var(--fd); font-size:26px; font-weight:900; text-transform:uppercase; color:var(--text-head); line-height:1; }
-    .feature-sub { font-size:12px; color:var(--text-dim); margin:6px 0 8px; }
-    .feature-link { font-family:var(--fm); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--accent); text-decoration:none; }
-    .panel-row { display:flex; align-items:center; padding:11px 20px; gap:14px; border-bottom:1px solid var(--border); transition:background 0.15s; }
-    .panel-row:last-child { border-bottom:none; }
-    .panel-row:hover { background:rgba(0,204,245,0.04); }
-    .panel-rank { font-family:var(--fd); font-size:18px; font-weight:900; color:var(--text-dim); min-width:28px; }
-    .panel-rank.top { color:var(--accent); }
-    .panel-name { font-family:var(--fd); font-size:15px; font-weight:700; color:var(--text-head); text-transform:uppercase; letter-spacing:0.5px; flex:1; line-height:1.1; }
-    .panel-sub { font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:0.5px; }
-    .panel-price { font-family:var(--fd); font-size:18px; font-weight:800; text-align:right; }
-    .panel-price.hot { color:var(--green); }
-    .panel-price.mid { color:var(--orange); }
-    .panel-footer { padding:12px 20px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); background:var(--bg3); }
-    .panel-footer-text { font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:1px; }
-    .panel-footer a { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--accent); }
-
-    /* TICKER */
-    .ticker { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:10px 0; overflow:hidden; }
-    .ticker-inner { display:flex; gap:48px; animation:ticker-scroll 28s linear infinite; white-space:nowrap; }
-    @keyframes ticker-scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-    .ticker-item { display:inline-flex; align-items:center; gap:8px; font-family:var(--fm); font-size:11px; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; }
-    .ticker-item .tick-label { color:var(--accent); }
-    .ticker-item .tick-up { color:var(--green); }
-    .ticker-item .tick-down { color:var(--red); }
-
-    /* SECTIONS */
-    section { padding:80px 0; }
-    .section-eyebrow { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
-    .section-eyebrow::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(0,204,245,0.3),transparent); max-width:120px; }
-    h2 { font-family:var(--fd); font-size:clamp(28px,4vw,44px); font-weight:900; line-height:1.0; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-head); margin-bottom:16px; }
-    .section-body { font-size:16px; color:var(--text-dim); line-height:1.75; max-width:580px; margin-bottom:48px; }
-
-    /* GUIDES GRID */
-    .guides-grid { display:grid; grid-template-columns:2fr 1fr; gap:2px; background:var(--border); }
-    .guide-card { background:var(--bg2); padding:32px; position:relative; overflow:hidden; transition:background 0.2s; display:flex; flex-direction:column; }
-    .guide-card:hover { background:var(--bg3); }
-    .guide-card.featured { grid-row:span 2; }
-    .guide-tag { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
-    .guide-tag .hot-tag { background:rgba(255,46,85,0.12); color:var(--red); border:1px solid rgba(255,46,85,0.3); padding:2px 8px; border-radius:2px; }
-    .guide-title { font-family:var(--fd); font-size:clamp(20px,2.5vw,30px); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-head); line-height:1.05; margin-bottom:12px; }
-    .guide-desc { font-size:14px; color:var(--text-dim); line-height:1.65; margin-bottom:24px; flex:1; }
-    .guide-meta { display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:20px; border-top:1px solid var(--border); }
-    .guide-stat { font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:1px; }
-    .guide-stat strong { color:var(--green); }
-    .guide-link { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:6px; transition:gap 0.2s; }
-    .guide-link:hover { gap:10px; text-decoration:none; color:#fff; }
-    .guide-card::before { content:''; position:absolute; top:0; left:0; width:0; height:2px; background:var(--accent); transition:width 0.3s ease; }
-    .guide-card:hover::before { width:100%; }
-
-    /* STATS ROW */
-
-    /* CATEGORIES */
-    .categories-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-    .cat-card { background:var(--bg2); border:1px solid var(--border); border-top:2px solid transparent; padding:28px 24px; transition:all 0.2s; cursor:default; }
-    .cat-card:hover { border-top-color:var(--accent); background:var(--bg3); }
-    .cat-icon { font-size:28px; margin-bottom:16px; display:block; }
-    .cat-name { font-family:var(--fd); font-size:18px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--text-head); margin-bottom:8px; }
-    .cat-desc { font-size:13px; color:var(--text-dim); line-height:1.6; }
-
-    /* INVENTORY CTA */
-    .inventory-cta { background:var(--bg2); border:1px solid var(--border2); padding:64px 48px; display:grid; grid-template-columns:1fr auto; gap:48px; align-items:center; position:relative; overflow:hidden; }
-    .inventory-cta::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(0,204,245,0.04),transparent 60%); pointer-events:none; }
-    .inventory-cta h2 { font-size:clamp(24px,3vw,38px); margin-bottom:14px; }
-    .inventory-cta p { font-size:16px; color:var(--text-dim); max-width:520px; }
-    .inventory-cta-side { text-align:right; }
-    .inventory-big { font-family:var(--fd); font-size:80px; font-weight:900; line-height:1; color:var(--accent); text-shadow:0 0 60px rgba(0,204,245,0.25); letter-spacing:-2px; }
-    .inventory-sub { font-family:var(--fm); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-top:4px; }
-    .inventory-cta-ctas { display:flex; gap:12px; margin-top:28px; flex-wrap:wrap; }
-
-    /* SOCIAL */
-    .social-strip { background:#1a2733; border:1px solid rgba(29,161,242,0.2); border-left:3px solid #1da1f2; padding:28px 40px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap; }
-    .social-strip-text h3 { font-family:var(--fd); font-size:22px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--text-head); margin-bottom:6px; }
-    .social-strip-text p { font-size:14px; color:var(--text-dim); }
-    .btn-twitter { display:inline-flex; align-items:center; gap:10px; background:#1da1f2; color:#fff; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; border-radius:2px; transition:all 0.2s; white-space:nowrap; }
-    .btn-twitter:hover { background:#fff; color:#1da1f2; text-decoration:none; }
-
-    /* DISCLOSURE */
-    .disclosure { background:var(--bg3); border:1px solid var(--border); border-left:3px solid var(--text-dim); padding:16px 22px; font-size:13px; color:var(--text-dim); line-height:1.6; margin:56px 0 0; }
-
-    /* FOOTER */
-    footer { background:var(--bg2); border-top:1px solid var(--border2); padding:48px 0 32px; }
-    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; margin-bottom:40px; }
-    .footer-logo-block .logo { font-size:18px; margin-bottom:14px; }
-    .footer-tagline { font-size:14px; color:var(--text-dim); line-height:1.65; max-width:240px; }
-    .footer-col h4 { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:16px; }
-    .footer-links { display:flex; flex-direction:column; gap:10px; }
-    .footer-links a { font-size:14px; color:var(--text-dim); transition:color 0.2s; }
-    .footer-links a:hover { color:var(--text-head); text-decoration:none; }
-    .footer-bottom { border-top:1px solid var(--border); padding-top:24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
-    .footer-copy { font-size:12px; color:var(--text-dim); opacity:0.6; line-height:1.6; }
-
-    /* Animations */
-    @keyframes fade-up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    .fade-up { animation:fade-up 0.6s ease-out both; }
-    .fade-up-1 { animation-delay:0.1s; }
-    .fade-up-2 { animation-delay:0.2s; }
-    .fade-up-3 { animation-delay:0.35s; }
-    .fade-up-4 { animation-delay:0.5s; }
-
-    /* Responsive */
-    @media (max-width:860px) {
-      .hero-grid, .footer-grid { grid-template-columns:1fr; }
-      .hero::after { display:none; }
-      .guides-grid { grid-template-columns:1fr; }
-      .guide-card.featured { grid-row:auto; }
-        .categories-grid { grid-template-columns:1fr 1fr; }
-      .inventory-cta { grid-template-columns:1fr; }
-      .inventory-cta-side { text-align:left; }
-      .nav-links { display:none; }
-    }
-    @media (max-width:540px) {
-      .categories-grid { grid-template-columns:1fr; }
-      .hero { min-height:0; padding:36px 0 28px; }
-      .hero-grid { gap:28px; }
-      .hero h1 { font-size:clamp(38px,11vw,50px); margin-bottom:14px; }
-      .hero h1 .ghost { display:none; }
-      .hero-body { font-size:15px; margin-bottom:20px; line-height:1.55; }
-      .hero-ctas { gap:10px; }
-      .hero-ctas .btn-primary, .hero-ctas .btn-secondary { width:100%; justify-content:center; text-align:center; padding:14px 16px; }
-      /* the board sits ABOVE the headline on phones (order:-1 below), so the text link points up */
-      .hero-textlink { width:100%; justify-content:center; padding:8px 4px; }
-      .hero-textlink .arr::before { content:'\2191'; }
-      /* X traffic lands here on a phone: the card comes first, the headline second. */
-      .hero-panel { order:-1; }
-      .panel-feature { padding:12px 14px; gap:12px; }
-      .feature-name { font-size:20px; }
-      .panel-row { padding:9px 14px; gap:10px; }
-    }
-  
-    
     /* ─── HAMBURGER & MOBILE DRAWER ─── */
     .nav-hamburger { display:none; flex-direction:column; justify-content:center; gap:5px; width:40px; height:40px; background:none; border:none; cursor:pointer; padding:8px; z-index:210; }
     .nav-hamburger span { display:block; width:22px; height:2px; background:var(--text-head); border-radius:2px; transition:all 0.25s ease; transform-origin:center; }
@@ -260,54 +94,20 @@
       .mobile-nav { display:block !important; }
     }
   
-/* ═══ DUNGEON EFFECTS — The Seeker → The Curator ═══ */
+    /* DISCLOSURE */
+    .disclosure { background:var(--bg3); border:1px solid var(--border); border-left:3px solid var(--text-dim); padding:16px 22px; font-size:13px; color:var(--text-dim); line-height:1.6; margin:56px 0 0; }
 
-/* 1. Corner bracket accents on card/roi entries */
-.card-entry,.roy-entry{position:relative;}
-.card-entry::before,.card-entry::after,
-.roy-entry::before,.roy-entry::after{
-  content:'';position:absolute;width:12px;height:12px;pointer-events:none;z-index:1;
-}
-.card-entry::before,.roy-entry::before{top:-2px;left:-2px;border-top:2px solid;border-left:2px solid;}
-.card-entry::after,.roy-entry::after{bottom:-2px;right:-2px;border-bottom:2px solid;border-right:2px solid;}
-.card-entry::before,.card-entry::after{border-color:var(--orange);}
-.card-entry.gold-tier::before,.card-entry.gold-tier::after{border-color:var(--gold);}
-.card-entry.watch-tier::before,.card-entry.watch-tier::after{border-color:var(--accent);}
-.card-entry.emotional::before,.card-entry.emotional::after{border-color:var(--purple);}
-.roy-entry::before,.roy-entry::after{border-color:var(--accent);}
-.roy-entry.nl-entry::before,.roy-entry.nl-entry::after{border-color:var(--green);}
-.roy-entry.il-entry::before,.roy-entry.il-entry::after{border-color:var(--red);}
-.roy-entry.watch-entry::before,.roy-entry.watch-entry::after{border-color:var(--gold);}
-
-/* 2. Neon glow on prices and key labels */
-.price-main{text-shadow:0 0 16px rgba(0,224,122,0.45);}
-.price-main.orange{text-shadow:0 0 16px rgba(255,140,0,0.45);}
-.price-main.gold{text-shadow:0 0 16px rgba(245,200,0,0.45);}
-.price-main.purple{text-shadow:0 0 16px rgba(155,93,229,0.45);}
-.poll-pts{text-shadow:0 0 16px rgba(0,204,245,0.45);}
-.poll-pts.nl{text-shadow:0 0 16px rgba(0,224,122,0.45);}
-.panel-price.hot{text-shadow:0 0 12px rgba(0,224,122,0.5);}
-.panel-price.mid{text-shadow:0 0 12px rgba(255,140,0,0.5);}
-.hero-eyebrow{text-shadow:0 0 8px rgba(0,204,245,0.5);}
-.section-eyebrow{text-shadow:0 0 6px rgba(0,204,245,0.35);}
-.entry-tag{text-shadow:0 0 8px rgba(255,140,0,0.4);}
-.entry-tag.gold{text-shadow:0 0 8px rgba(245,200,0,0.5);}
-.entry-tag.cyan{text-shadow:0 0 8px rgba(0,204,245,0.5);}
-.entry-tag.purple{text-shadow:0 0 8px rgba(155,93,229,0.5);}
-
-/* 3. Glitch entrance on hero H1 */
-@keyframes glitch-entrance{
-  0%{transform:translate(0,0);filter:none;opacity:0}
-  8%{transform:translate(-4px,0);filter:hue-rotate(90deg) saturate(2);opacity:1}
-  16%{transform:translate(4px,0);filter:none}
-  24%{transform:translate(-2px,0);filter:hue-rotate(-30deg)}
-  32%{transform:translate(2px,0);filter:none}
-  40%,100%{transform:translate(0,0);filter:none;opacity:1}
-}
-.hero h1{animation:glitch-entrance 1.4s ease-out 0.1s both;}
-
-/* 4. (Sep 1 2026) hotspot-ring loop on the panel dot removed — the dot keeps its single
-   status-dot opacity pulse (.panel-dot → @keyframes pulse), the one loop the page keeps besides the ticker. */
+    /* FOOTER */
+    footer { background:var(--bg2); border-top:1px solid var(--border2); padding:48px 0 32px; }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; margin-bottom:40px; }
+    .footer-logo-block .logo { font-size:18px; margin-bottom:14px; }
+    .footer-tagline { font-size:14px; color:var(--text-dim); line-height:1.65; max-width:240px; }
+    .footer-col h4 { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:16px; }
+    .footer-links { display:flex; flex-direction:column; gap:10px; }
+    .footer-links a { font-size:14px; color:var(--text-dim); transition:color 0.2s; }
+    .footer-links a:hover { color:var(--text-head); text-decoration:none; }
+    .footer-bottom { border-top:1px solid var(--border); padding-top:24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    .footer-copy { font-size:12px; color:var(--text-dim); opacity:0.6; line-height:1.6; }
 
 /* 5. CRT scanline overlay */
 body::before{
@@ -316,45 +116,156 @@ body::before{
   pointer-events:none;z-index:9998;
 }
 
-/* 6. Hero scan line sweep — injected by JS below */
-@keyframes hero-scan{
-  0%{top:0;opacity:0.7}90%{opacity:0.5}100%{top:100%;opacity:0}
-}
-.hero{overflow:hidden;}
-.hero-scan-line{
-  position:absolute;left:0;right:0;height:1px;top:0;
-  background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);
-  pointer-events:none;z-index:2;
-  animation:hero-scan 3.5s ease-in-out 0.8s 1 forwards;
-}
 
-/* 7. Cursor on the hero eyebrow — class added by JS below. Sep 1 2026: blinks three times on
-   arrival, then holds steady (was an infinite loop). */
-@keyframes blink-cur{0%,100%{opacity:1}50%{opacity:0}}
-.blink-cursor::after{
-  content:'\25AE';display:inline-block;margin-left:3px;
-  font-size:0.8em;animation:blink-cur 1s step-end 3;
-  color:var(--accent);opacity:0.7;
-}
-
-/* 8. (Sep 1 2026) wire-pulse — the 5 s border-color loop on every <section> — removed. */
-
-/* 9. Log-in slide entry on card entries */
-@keyframes log-in{
-  from{opacity:0;transform:translateX(14px)}
-  to{opacity:1;transform:translateX(0)}
-}
-.card-entry,.roy-entry{animation:log-in 0.4s ease-out both;}
-.card-entry:nth-child(1),.roy-entry:nth-child(1){animation-delay:0.05s}
-.card-entry:nth-child(2),.roy-entry:nth-child(2){animation-delay:0.12s}
-.card-entry:nth-child(3),.roy-entry:nth-child(3){animation-delay:0.19s}
-.card-entry:nth-child(4),.roy-entry:nth-child(4){animation-delay:0.26s}
-.card-entry:nth-child(5),.roy-entry:nth-child(5){animation-delay:0.33s}
-.card-entry:nth-child(6),.roy-entry:nth-child(6){animation-delay:0.40s}
-
-/* 10. (Sep 1 2026) entry-marquee — the looping ghost strip under entries — removed with its CSS;
-   the JS injection was already gone. */
-
+    /* ═══ TERMINAL — the dashboard (Terminal step 2, Sep 11 2026). Site tokens only. ═══ */
+    .num, .rl .pill, .mrow .num, .tr-list .num, table.scr td, .tm-stamp, .chart-cap { font-variant-numeric:tabular-nums; }
+    .up { color:var(--green); } .dn { color:var(--red); } .flat { color:var(--text-dim); }
+    .term { display:grid; grid-template-columns:248px minmax(0,1fr); max-width:1440px; margin:0 auto; align-items:start; }
+    /* rail */
+    .rail { position:sticky; top:58px; max-height:calc(100vh - 58px); overflow-y:auto; background:var(--bg2); border-right:1px solid var(--border2); padding:12px 12px 22px; scrollbar-width:thin; }
+    .rail h4 { font-family:var(--fd); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin:16px 6px 6px; font-weight:700; display:flex; justify-content:space-between; align-items:center; }
+    .rail h4 a { font-family:var(--fm); font-size:10px; letter-spacing:0; text-transform:none; color:var(--accent); }
+    .rl { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; text-align:left; padding:7px 8px; border-radius:3px; color:var(--text); font-size:13.5px; font-weight:500; line-height:1.3; cursor:pointer; }
+    .rl:hover { background:rgba(255,255,255,0.04); color:var(--text-head); text-decoration:none; }
+    .rl.on { background:var(--accent-dim); color:var(--text-head); box-shadow:inset 2px 0 0 var(--accent); }
+    .rl .ico { width:16px; color:var(--text-dim); font-family:var(--fm); font-size:11px; text-align:center; margin-right:4px; flex:0 0 auto; }
+    .rl .lbl { flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .rl .pill { font-family:var(--fm); font-size:10.5px; font-weight:700; padding:2px 6px; border-radius:2px; background:var(--bg4); color:var(--text-dim); flex:0 0 auto; }
+    .rl .pill.on { background:var(--green-dim); color:var(--green); }
+    .rl.sub { padding:5px 8px 5px 30px; font-size:12.5px; color:var(--text-dim); }
+    .rl.sub:hover { color:var(--text-head); }
+    .rl.sub.all { color:var(--accent); font-family:var(--fm); font-size:11px; }
+    .rl-glabel { font-family:var(--fm); font-size:9.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); opacity:0.7; padding:8px 8px 2px 30px; }
+    .rl-grp > summary { list-style:none; }
+    .rl-grp > summary::-webkit-details-marker { display:none; }
+    .rl-grp[open] > summary .ico { transform:rotate(90deg); }
+    .rl-grp > summary .ico { transition:transform 0.15s; }
+    .rl-guides-chip { display:none; }
+    .rail-foot { margin-top:20px; padding:12px 8px 0; border-top:1px solid var(--border); font-family:var(--fm); font-size:10.5px; color:var(--text-dim); line-height:1.7; }
+    /* main */
+    .tmain { padding:16px 22px 40px; min-width:0; }
+    .tm-head { display:flex; align-items:baseline; justify-content:space-between; gap:8px 16px; flex-wrap:wrap; margin:0 0 14px; }
+    .tm-head h1 { font-family:var(--fd); font-size:22px; font-weight:800; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-head); line-height:1.1; margin:0; }
+    .tm-stamp { font-family:var(--fm); font-size:11px; color:var(--text-dim); }
+    .tm-stamp b { color:var(--text-head); font-weight:700; }
+    .panel { background:var(--bg2); border:1px solid var(--border); border-radius:4px; min-width:0; }
+    .panel-h { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 16px; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+    .panel-h h2 { margin:0; font-family:var(--fd); font-size:14px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-head); line-height:1.2; }
+    .panel-h .sub { font-family:var(--fm); font-size:11px; color:var(--text-dim); }
+    .panel-h a { font-family:var(--fm); font-size:11px; letter-spacing:0.5px; }
+    .panel-b { padding:10px 16px; }
+    .grid2 { display:grid; grid-template-columns:1.15fr 1fr; gap:14px; align-items:start; }
+    .grid2.top { grid-template-columns:1.7fr 1fr; }
+    .grid2 + .grid2, .grid2 + .focus, .focus + .grid2, .grid2 + .panel { margin-top:14px; }
+    /* markets */
+    .mkt { display:grid; grid-template-columns:318px minmax(0,1fr); }
+    .mkt .list { padding:6px 0; border-right:1px solid var(--border); min-width:0; }
+    .mrow { display:grid; grid-template-columns:minmax(0,1fr) 54px 50px 56px; gap:8px; align-items:center; padding:6px 14px; font-size:13px; color:var(--text); border-left:3px solid transparent; }
+    .mrow:hover { background:rgba(255,255,255,0.03); color:var(--text); text-decoration:none; }
+    .mrow.on { border-left-color:var(--accent); background:var(--accent-dim); color:var(--text-head); }
+    .mrow .k { font-family:var(--fm); font-weight:700; color:var(--accent); font-size:12px; }
+    .mrow.on .k { color:var(--text-head); }
+    .mrow .name { font-size:11px; color:var(--text-dim); display:block; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .mrow .num { text-align:right; font-family:var(--fm); font-size:12px; }
+    .mrow .pre { color:var(--gold); font-family:var(--fm); font-size:10.5px; text-align:right; grid-column:2 / 5; }
+    .chart-wrap { padding:10px 12px 8px; min-width:0; overflow:hidden; }
+    .chart-wrap svg { width:100%; height:auto; display:block; }
+    .mchart .grid { stroke:rgba(255,255,255,0.07); }
+    .mchart .axis { font-family:var(--fm); font-size:10px; fill:var(--text-dim); }
+    .mchart .line { fill:none; stroke:var(--green); stroke-width:1.8; stroke-linejoin:round; }
+    .mchart .area { fill:var(--green); opacity:0.14; }
+    .mchart .dot { fill:var(--green); }
+    .mchart.dn .line, .mchart.dn .dot { stroke:var(--red); } .mchart.dn .dot { fill:var(--red); } .mchart.dn .area { fill:var(--red); }
+    .mchart .ref { stroke:var(--gold); stroke-dasharray:3 3; stroke-width:1; }
+    .mchart .ref-l { font-family:var(--fm); font-size:9.5px; fill:var(--gold); }
+    .chart-cap { font-family:var(--fm); font-size:10.5px; color:var(--text-dim); padding:6px 2px 0; }
+    .chart-cap b { color:var(--text-head); }
+    .chart-empty, .news .empty, .tr-list .empty, table.scr td.empty { font-family:var(--fm); font-size:11.5px; color:var(--text-dim); padding:10px 16px; text-align:left; }
+    /* engine list */
+    .news { list-style:none; margin:0; padding:0; }
+    .news li { display:grid; grid-template-columns:48px 1fr; gap:10px; padding:8px 16px; border-bottom:1px solid var(--border); font-size:13px; line-height:1.45; align-items:baseline; }
+    .news li:last-child { border-bottom:0; }
+    .news .t { font-family:var(--fm); font-size:10.5px; color:var(--text-dim); }
+    .news a { color:var(--text-head); font-weight:600; }
+    .news a:hover { color:var(--accent); }
+    .news .b { font-family:var(--fm); font-size:10px; padding:1px 5px; border-radius:2px; margin-right:6px; vertical-align:middle; font-weight:700; }
+    .b.sell { background:rgba(255,46,85,0.12); color:var(--red); } .b.buy { background:var(--green-dim); color:var(--green); } .b.gate { background:rgba(245,200,0,0.12); color:var(--gold); } .b.feed, .b.index { background:var(--accent-dim); color:var(--accent); }
+    /* focus strip */
+    .focus { display:flex; align-items:stretch; margin:14px 0; background:var(--bg2); border:1px solid var(--border); border-radius:4px; overflow:hidden; }
+    .focus .tag { background:var(--red); color:#fff; font-family:var(--fd); font-weight:700; letter-spacing:2px; text-transform:uppercase; font-size:12px; padding:10px 14px; white-space:nowrap; display:flex; align-items:center; }
+    .focus .items { display:flex; overflow-x:auto; white-space:nowrap; scrollbar-width:none; min-width:0; }
+    .focus .items a { padding:10px 14px; color:var(--text); font-size:13px; font-weight:500; border-left:1px solid var(--border); display:flex; align-items:center; }
+    .focus .items a:first-child { border-left:0; }
+    .focus .items a:hover { color:var(--text-head); text-decoration:none; background:rgba(255,255,255,0.03); }
+    .focus .items a em { font-style:normal; color:var(--text-dim); font-family:var(--fm); font-size:10.5px; margin-left:6px; }
+    /* movers / auctions */
+    .tr-list { list-style:none; margin:0; padding:0; }
+    .tr-list li { display:grid; grid-template-columns:26px minmax(0,1fr) auto auto; gap:12px; align-items:center; padding:8px 16px; border-bottom:1px solid var(--border); }
+    .tr-list li:last-child { border-bottom:0; }
+    .tr-list li.empty { display:block; }
+    .tr-list .rk { width:24px; height:24px; border-radius:50%; background:var(--bg4); color:var(--text-dim); font-family:var(--fm); font-size:11px; display:grid; place-items:center; }
+    .tr-list .nm { color:var(--text-head); font-weight:500; font-size:13.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+    .tr-list .nm a { color:var(--text-head); } .tr-list .nm a:hover { color:var(--accent); }
+    .tr-list .nm small { display:block; font-family:var(--fm); font-size:10.5px; color:var(--text-dim); font-weight:400; overflow:hidden; text-overflow:ellipsis; }
+    .tr-list .nm .ebay { color:var(--accent); font-weight:700; }
+    .tr-list .num { font-family:var(--fm); font-size:12.5px; text-align:right; white-space:nowrap; }
+    .tr-list .num.head { color:var(--text-head); font-weight:700; }
+    .spark { width:72px; height:22px; display:block; }
+    .spark path { fill:none; stroke-width:1.4; stroke:var(--green); } .spark circle { fill:var(--green); }
+    .spark.dn path { stroke:var(--red); } .spark.dn circle { fill:var(--red); }
+    /* screens */
+    .scr-head { display:flex; align-items:flex-end; justify-content:space-between; gap:10px 16px; flex-wrap:wrap; padding:11px 16px; border-bottom:1px solid var(--border); }
+    .scr-head h2 { margin:0; font-family:var(--fd); font-size:14px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-head); }
+    .scr-head h2 span { color:var(--accent); }
+    .scr-head .meta { font-family:var(--fm); font-size:11px; color:var(--text-dim); display:block; letter-spacing:0; text-transform:none; margin-top:2px; }
+    .scr-chips { display:flex; gap:6px; flex-wrap:wrap; }
+    .scr-chips a { font-family:var(--fm); font-size:10.5px; padding:4px 9px; border-radius:2px; border:1px solid var(--border2); color:var(--text); }
+    .scr-chips a:hover { color:var(--text-head); border-color:var(--accent); text-decoration:none; }
+    .scr-chips a.on { background:var(--accent-dim); border-color:var(--accent); color:var(--text-head); }
+    .tbl-wrap { overflow-x:auto; }
+    table.scr { border-collapse:collapse; width:100%; min-width:1040px; }
+    table.scr th { font-family:var(--fd); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); text-align:right; padding:10px 10px; border-bottom:1px solid var(--border2); white-space:nowrap; font-weight:700; }
+    table.scr th:first-child, table.scr td:first-child { text-align:left; position:sticky; left:0; background:var(--bg2); z-index:1; }
+    table.scr td { padding:8px 10px; border-bottom:1px solid var(--border); text-align:right; font-family:var(--fm); font-size:12.5px; white-space:nowrap; vertical-align:middle; }
+    table.scr tr:last-child td { border-bottom:0; }
+    table.scr tbody tr:hover td { background:var(--bg3); }
+    table.scr td.head { color:var(--text-head); font-weight:700; }
+    table.scr td.sym a { font-family:var(--fd); font-weight:700; color:var(--accent); font-size:15px; letter-spacing:0.3px; }
+    table.scr td.sym small { display:block; font-family:var(--fb); color:var(--text-dim); font-size:11.5px; font-weight:400; white-space:nowrap; line-height:1.25; }
+    table.scr td .sub { display:block; font-size:10.5px; color:var(--text-dim); }
+    .sig { display:inline-block; min-width:44px; text-align:center; font-weight:700; font-size:11px; padding:3px 7px; border-radius:2px; letter-spacing:0.5px; }
+    .sig.BUY { background:var(--green); color:#000; } .sig.SELL { background:var(--red); color:#fff; } .sig.HOLD { background:var(--gold); color:#000; } .sig.none { background:var(--bg4); color:var(--text-dim); }
+    .rng { display:inline-grid; grid-template-columns:auto 64px auto; gap:6px; align-items:center; font-size:10.5px; color:var(--text-dim); }
+    .rng .tr { height:2px; background:var(--border2); position:relative; }
+    .rng .tr i { position:absolute; top:-3px; width:8px; height:8px; border-radius:50%; background:var(--text-head); margin-left:-4px; }
+    .tm-foot { font-family:var(--fm); font-size:11px; color:var(--text-dim); line-height:1.6; margin-top:14px; }
+    /* tape + disclosure spacing under the terminal */
+    #tape { max-width:1440px; margin:0 auto; padding:0 22px; }
+    #tape #newsletter { margin:8px 0 24px; }
+    @media (max-width:1100px) {
+      .grid2, .grid2.top { grid-template-columns:1fr; }
+    }
+    @media (max-width:860px) {
+      .footer-grid { grid-template-columns:1fr; gap:24px; }
+    }
+    @media (max-width:820px) {
+      .term { grid-template-columns:1fr; }
+      .rail { position:static; max-height:none; overflow:visible; border-right:0; border-bottom:1px solid var(--border2); padding:8px 12px; display:flex; flex-wrap:nowrap; gap:6px; overflow-x:auto; scrollbar-width:none; }
+      .rail .rl-sec, .rail [data-rail] { display:contents; }
+      .rail h4, .rl-grp, .rail-foot, .rl.pf-empty { display:none; }
+      .rl-guides-chip { display:flex; }
+      .rl { flex:0 0 auto; width:auto; padding:6px 10px; border:1px solid var(--border2); border-radius:2px; font-size:12px; white-space:nowrap; }
+      .rl.on { box-shadow:none; border-color:var(--accent); }
+      .rl .ico { display:none; }
+      .tmain { padding:12px 16px 32px; }
+      .mkt { grid-template-columns:1fr; }
+      .mkt .list { border-right:0; border-bottom:1px solid var(--border); }
+      .tr-list li { grid-template-columns:26px minmax(0,1fr) auto; }
+      .tr-list .spark { display:none; }
+      .tr-list .num.head { grid-column:3; }
+      .focus .tag { padding:8px 10px; font-size:11px; }
+      #tape { padding:0 16px; }
+    }
 </style>
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
   <script data-gtag-deferred="G-2Q52C5EKG7">
@@ -704,583 +615,192 @@ body::before{
 </script>
 <!-- NAV:END -->
 
-<!-- HERO -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-grid">
-
-        <!-- Left -->
-        <div>
-          <div class="hero-eyebrow fade-up">Sports Card Intelligence</div>
-          <h1 class="fade-up fade-up-1">
-            <span class="ghost">Every Set</span>
-            <span class="accent">Priced.</span>
-            Pick Your Cards.
-          </h1>
-          <p class="hero-body fade-up fade-up-2">
-            Set indices that put every chase card on one screen — five Pokémon
-            tickers live, Bowman next. Find the cards you're after, hit
-            <strong>★ Track</strong>, and come back for the tape. Free, from a
-            collector who <strong>actually buys and sells</strong>.
-          </p>
-          <!-- Sep 4 2026 CTA hierarchy (Mo's directive, claude/cos/directive-2026-09-04): one primary (the Set
-               Indices — "set the table, they pick what goes on the plate"), one secondary outline (the Vault, the
-               account layer people adopt after they trust the number), one quiet text link to the Bowman board.
-               Superseded the Sep 1 Vault-first hero. Best Boxes lives in the nav; "Browse Inventory" in the Sports
-               mega-menu footer; the Tuesday Tape CTA only in the newsletter block at the bottom. -->
-          <div class="hero-ctas fade-up fade-up-3">
-            <a href="/indices" class="btn-primary">See the Set Indices →</a>
-            <a href="/watchlist" class="btn-secondary">Open the Vault</a>
-            <a href="#bowman-board" class="hero-textlink">See the Bowman board <span class="arr" aria-hidden="true"></span></a>
-          </div>
-        </div>
-
-        <!-- Right — 2026 Bowman prospect panel (live: fed nightly by the price engine; static values below are the Jul 31 2026 fallback) -->
-        <div class="hero-panel fade-up fade-up-4" id="bowman-board">
-          <div class="panel-header">
-            <div class="panel-dot"></div>
-            <span class="panel-title">2026 Bowman Bangers — Top 5 by Auto Value</span>
-            <span class="panel-updated" id="bb-panel-updated">Updated Sep 7, 2026</span>
-          </div>
-          <div class="panel-feature" id="bb-panel-feature">
-            <span data-card-img="ebay:ethan-holliday" data-card-name="Ethan Holliday" data-card-size="card" data-card-surface="home-feature" data-card-tilt="1"></span>
-            <div class="feature-txt"><div class="feature-kicker">#1 on the board</div><div class="feature-name">Ethan Holliday</div><div class="feature-sub">1st Bowman Chrome Auto · the most-tracked card of 2026</div><a href="/bowman-bangers" class="feature-link">Full board →</a></div>
-          </div>
-          <div class="panel-rows" id="bb-panel-rows">
-            <a href="/ethan-holliday-rookie-cards#engine-ethan-holliday" class="panel-row" style="text-decoration:none; display:flex;">
-              <div class="panel-rank top">01</div>
-              <span data-card-img="ebay:ethan-holliday" data-card-name="Ethan Holliday" data-card-size="row" data-card-surface="home-top5" data-card-link="off"></span>
-              <div style="flex:1;">
-                <div class="panel-name">Ethan Holliday</div>
-                <div class="panel-sub">COL · SS · 2025 #4 Pick</div>
-              </div>
-              <div class="panel-price hot">~$173</div>
-            </a>
-            <a href="/card-seong-jun-kim" class="panel-row" style="text-decoration:none; display:flex;">
-              <div class="panel-rank top">02</div>
-              <span data-card-img="ebay:seong-jun-kim" data-card-name="Seong-Jun Kim" data-card-size="row" data-card-surface="home-top5" data-card-link="off"></span>
-              <div style="flex:1;">
-                <div class="panel-name">Seong-Jun Kim</div>
-                <div class="panel-sub">TEX · SS/RHP · Two-Way</div>
-              </div>
-              <div class="panel-price hot">~$201</div>
-            </a>
-            <a href="/card-andrew-fischer" class="panel-row" style="text-decoration:none; display:flex;">
-              <div class="panel-rank">03</div>
-              <span data-card-img="ebay:andrew-fischer" data-card-name="Andrew Fischer" data-card-size="row" data-card-surface="home-top5" data-card-link="off"></span>
-              <div style="flex:1;">
-                <div class="panel-name">Andrew Fischer</div>
-                <div class="panel-sub">MIL · 3B · Duke HR Record</div>
-              </div>
-              <div class="panel-price mid">~$196</div>
-            </a>
-            <a href="/card-edward-florentino" class="panel-row" style="text-decoration:none; display:flex;">
-              <div class="panel-rank">04</div>
-              <span data-card-img="ebay:edward-florentino" data-card-name="Edward Florentino" data-card-size="row" data-card-surface="home-top5" data-card-link="off"></span>
-              <div style="flex:1;">
-                <div class="panel-name">Edward Florentino</div>
-                <div class="panel-sub">PIT · OF · #44 MLB.com</div>
-              </div>
-              <div class="panel-price mid">~$110</div>
-            </a>
-            <a href="/aiva-arquette-1st-bowman#engine-aiva-arquette" class="panel-row" style="text-decoration:none; display:flex;">
-              <div class="panel-rank">05</div>
-              <span data-card-img="ebay:aiva-arquette" data-card-name="Aiva Arquette" data-card-size="row" data-card-surface="home-top5" data-card-link="off"></span>
-              <div style="flex:1;">
-                <div class="panel-name">Aiva Arquette</div>
-                <div class="panel-sub">MIA · SS · 2025 #7 Pick</div>
-              </div>
-              <div class="panel-price mid">~$109</div>
-            </a>
-          </div>
-          <div class="panel-footer">
-            <span class="panel-footer-text">1st Bowman Chrome Auto · Raw · 2026 Class</span>
-            <a href="/bowman-bangers">Full Guide →</a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- TICKER -->
-  <div class="ticker">
-    <div class="ticker-inner">
-      <span class="ticker-item"><span class="tick-label">Holliday 2026 Bowman Chrome Auto</span> ~$109 <span class="tick-up">▲ BUY</span></span>
-      <span class="ticker-item"><span class="tick-label">Topps Series 2 Hobby</span> $140 <span class="tick-up">▲ 2.1%</span></span>
-      <span class="ticker-item" style="color:#9b5de5;"><span class="tick-label" style="color:#9b5de5;">🌑 Mega Darkrai ex SIR (Pitch Black)</span> $225 sold <span class="tick-down">▼ GRADED MISS</span></span>
-      <span class="ticker-item"><span class="tick-label">Aiva Arquette 2026 Bowman</span> ~$59 <span class="tick-up">▲ +18% WK</span></span>
-      <span class="ticker-item"><span class="tick-label">Prizm Basketball Hobby</span> $180 <span class="tick-down">▼ 1.4%</span></span>
-      <span class="ticker-item"><span class="tick-label">Wehiwa Aloy 2026 Bowman</span> ~$58 <span class="tick-down">▼ WATCH TIER</span></span>
-      <span class="ticker-item"><span class="tick-label">Seong-Jun Kim 2026 Bowman</span> ~$131 <span class="tick-up">— FLAT ×4 WKS</span></span>
-      <span class="ticker-item"><span class="tick-label">Bowman Chrome Hobby</span> $260 <span class="tick-up">▲ 0.9%</span></span>
-      <span class="ticker-item"><span class="tick-label">Daniel Pierce 2026 Bowman</span> ~$17 <span class="tick-down">▼ OFF BOARD</span></span>
-      <span class="ticker-item"><span class="tick-label">Select Football Hobby</span> $110 <span class="tick-up">▲ 3.7%</span></span>
-      <span class="ticker-item"><span class="tick-label">Andrew Fischer 2026 Bowman</span> ~$114 <span class="tick-down">▼ −6% WK</span></span>
-      <span class="ticker-item"><span class="tick-label">Holliday 2026 Bowman Chrome Auto</span> ~$109 <span class="tick-up">▲ BUY</span></span>
-      <span class="ticker-item"><span class="tick-label">Topps Series 2 Hobby</span> $140 <span class="tick-up">▲ 2.1%</span></span>
-      <span class="ticker-item" style="color:#9b5de5;"><span class="tick-label" style="color:#9b5de5;">🌑 Mega Darkrai ex SIR (Pitch Black)</span> $225 sold <span class="tick-down">▼ GRADED MISS</span></span>
-      <span class="ticker-item"><span class="tick-label">Aiva Arquette 2026 Bowman</span> ~$59 <span class="tick-up">▲ +18% WK</span></span>
-      <span class="ticker-item"><span class="tick-label">Prizm Basketball Hobby</span> $180 <span class="tick-down">▼ 1.4%</span></span>
-      <span class="ticker-item"><span class="tick-label">Wehiwa Aloy 2026 Bowman</span> ~$58 <span class="tick-down">▼ WATCH TIER</span></span>
-      <span class="ticker-item"><span class="tick-label">Seong-Jun Kim 2026 Bowman</span> ~$131 <span class="tick-up">— FLAT ×4 WKS</span></span>
-      <span class="ticker-item"><span class="tick-label">Bowman Chrome Hobby</span> $260 <span class="tick-up">▲ 0.9%</span></span>
-      <span class="ticker-item"><span class="tick-label">Daniel Pierce 2026 Bowman</span> ~$17 <span class="tick-down">▼ OFF BOARD</span></span>
-      <span class="ticker-item"><span class="tick-label">Select Football Hobby</span> $110 <span class="tick-up">▲ 3.7%</span></span>
-      <span class="ticker-item"><span class="tick-label">Andrew Fischer 2026 Bowman</span> ~$114 <span class="tick-down">▼ −6% WK</span></span>
+  <!-- ═══ TERMINAL — the dashboard (Terminal step 2, Sep 11 2026). Rail: tools/build-rail.mjs. Panels: tools/build-home.mjs pre-renders the nightly numbers into the HOME markers; js/home.js refreshes them from the live feed. ═══ -->
+  <div class="term" data-prices-updated="2026-09-11">
+<!-- RAIL:START -->
+<aside class="rail" id="rail" aria-label="Terminal rail">
+  <nav class="rl-sec" aria-label="Terminal">
+      <a class="rl on" href="/"><span class="ico">α</span><span class="lbl">Home</span></a>
+      <a class="rl" href="/bowman-bangers"><span class="ico">▤</span><span class="lbl">Bowman Bangers board</span></a>
+      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span></a>
+      <a class="rl" href="/auctions"><span class="ico">⚒</span><span class="lbl">Auction Desk</span></a>
+      <a class="rl" href="/#tape"><span class="ico">✉</span><span class="lbl">The Tuesday Tape</span><span class="pill">Tue</span></a>
+  </nav>
+  <div class="rl-sec rl-guides">
+    <h4>Guides <a href="/research">all →</a></h4>
+    <a class="rl rl-guides-chip" href="/research"><span class="ico">✎</span><span class="lbl">Guides</span></a>
+      <details class="rl-grp">
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Sports</span><span class="pill">22</span></summary>
+        <div class="rl-glabel">⚾ Baseball</div>
+        <a class="rl sub" href="/bowman-bangers"><span class="lbl">2026 Bowman Bangers ⭐</span></a>
+        <a class="rl sub" href="/bowman-1st-chrome-index"><span class="lbl">BOW26 — 1st Chrome Index ⭐</span></a>
+        <a class="rl sub" href="/bowman-chrome-2026-index"><span class="lbl">BCB26 — Bowman Chrome Index (pre)</span></a>
+        <a class="rl sub" href="/ethan-holliday-rookie-cards"><span class="lbl">Ethan Holliday 1st Bowman</span></a>
+        <a class="rl sub" href="/bowman-chrome-baseball-2026"><span class="lbl">Bowman Chrome — Sep 9 ⭐</span></a>
+        <a class="rl sub" href="/bowman-sapphire-2026"><span class="lbl">Bowman Sapphire</span></a>
+        <a class="rl sub" href="/topps-tribute-baseball"><span class="lbl">Topps Tribute — Jul 29</span></a>
+        <div class="rl-glabel">🏀 Basketball</div>
+        <a class="rl sub" href="/cooper-flagg-rookie-cards"><span class="lbl">Cooper Flagg Rookie Cards</span></a>
+        <a class="rl sub" href="/victor-wembanyama-rookie-cards"><span class="lbl">Victor Wembanyama</span></a>
+        <a class="rl sub" href="/topps-chrome-basketball-2026"><span class="lbl">Topps Chrome Basketball</span></a>
+        <a class="rl sub" href="/topps-chrome-black-basketball"><span class="lbl">Chrome Black — Jul 28</span></a>
+        <a class="rl sub" href="/best-basketball-cards-under-50"><span class="lbl">Best Cards Under $50</span></a>
+        <div class="rl-glabel">🏈 Football</div>
+        <a class="rl sub" href="/nfl-rookie-cards-2026"><span class="lbl">2026 NFL Rookie Guide</span></a>
+        <a class="rl sub" href="/topps-cosmic-chrome-football"><span class="lbl">Cosmic Chrome</span></a>
+        <a class="rl sub" href="/topps-chrome-black-football"><span class="lbl">Chrome Black — Jul 10</span></a>
+        <a class="rl sub" href="/best-football-cards-under-50"><span class="lbl">Best Cards Under $50</span></a>
+        <a class="rl sub" href="/topps-flagship-football"><span class="lbl">Flagship Football — Aug 21</span></a>
+        <a class="rl sub" href="/bowman-football"><span class="lbl">Bowman Football — Pre-Order</span></a>
+        <div class="rl-glabel">⚽ Soccer</div>
+        <a class="rl sub" href="/world-cup-2026-soccer-cards"><span class="lbl">World Cup 2026 Cards</span></a>
+        <a class="rl sub" href="/lamine-yamal-rookie-cards"><span class="lbl">Lamine Yamal</span></a>
+        <a class="rl sub" href="/erling-haaland-rookie-cards"><span class="lbl">Erling Haaland</span></a>
+        <a class="rl sub" href="/lionel-messi-cards"><span class="lbl">Lionel Messi</span></a>
+        <a class="rl sub all" href="/research"><span class="lbl">All Sports →</span></a>
+      </details>
+      <details class="rl-grp">
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Pokémon</span><span class="pill">11</span></summary>
+        <div class="rl-glabel">Sets &amp; Guides</div>
+        <a class="rl sub" href="/pokemon-30th-anniversary-2026"><span class="lbl">30th Celebration — Sep 16 ★</span></a>
+        <a class="rl sub" href="/pitch-black-set-guide"><span class="lbl">Pitch Black — Jul 17</span></a>
+        <a class="rl sub" href="/chaos-rising"><span class="lbl">Chaos Rising</span></a>
+        <a class="rl sub" href="/ascended-heroes"><span class="lbl">Ascended Heroes</span></a>
+        <a class="rl sub" href="/prismatic-evolutions-guide"><span class="lbl">Prismatic Evolutions</span></a>
+        <a class="rl sub" href="/pokemon-tcg-2026"><span class="lbl">2026 Pokémon TCG Guide</span></a>
+        <div class="rl-glabel">Set Indices — Live Trackers</div>
+        <a class="rl sub" href="/pitch-black-index"><span class="lbl">PB26 — Pitch Black</span></a>
+        <a class="rl sub" href="/chaos-rising-index"><span class="lbl">CR26 — Chaos Rising</span></a>
+        <a class="rl sub" href="/ascended-heroes-index"><span class="lbl">AH26 — Ascended Heroes</span></a>
+        <a class="rl sub" href="/prismatic-evolutions-index"><span class="lbl">PRIS25 — Prismatic Evolutions</span></a>
+        <a class="rl sub" href="/destined-rivals-index"><span class="lbl">DR25 — Destined Rivals</span></a>
+        <a class="rl sub all" href="/pokemon-tcg-2026"><span class="lbl">All Pokémon →</span></a>
+      </details>
+      <details class="rl-grp">
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Grading + Supplies</span><span class="pill">3</span></summary>
+        <div class="rl-glabel">Grading</div>
+        <a class="rl sub" href="/psa-grading-guide"><span class="lbl">PSA Grading Guide</span></a>
+        <a class="rl sub" href="/tag-grading-guide"><span class="lbl">TAG Grading Guide — AI Slabs</span></a>
+        <div class="rl-glabel">Supplies</div>
+        <a class="rl sub" href="/best-card-supplies"><span class="lbl">Best Card Supplies</span></a>
+        <a class="rl sub all" href="/psa-grading-guide"><span class="lbl">All Grading + Supplies →</span></a>
+      </details>
+  </div>
+  <div class="rl-sec">
+    <h4>Portfolios <a href="/watchlist">Vault →</a></h4>
+    <div data-rail="portfolios" data-cfg="{&quot;rows&quot;:[{&quot;status&quot;:&quot;own&quot;,&quot;label&quot;:&quot;My cards&quot;,&quot;ico&quot;:&quot;◆&quot;},{&quot;status&quot;:&quot;watch&quot;,&quot;label&quot;:&quot;Hunting&quot;,&quot;ico&quot;:&quot;◇&quot;}],&quot;vaultHref&quot;:&quot;/watchlist&quot;,&quot;empty&quot;:&quot;Start in the Vault →&quot;}">
+      <a class="rl pf" href="/watchlist" data-status="own"><span class="ico">◆</span><span class="lbl">My cards</span><span class="pill">—</span></a>
+      <a class="rl pf" href="/watchlist" data-status="watch"><span class="ico">◇</span><span class="lbl">Hunting</span><span class="pill">—</span></a>
+      <a class="rl pf-empty" href="/watchlist"><span class="ico">→</span><span class="lbl">Start in the Vault →</span></a>
     </div>
   </div>
-
-  <!-- ============================================================
-       DASHBOARD — Concept B, Stage 3 (LIVE, Aug 31 2026).
-       Signal Board card pulls the nightly engine feed (price-data branch);
-       Watchlist + Portfolio cards read the local Vault (sch_vault_v1).
-       No placeholders remain — every card links to a live surface.
-       ============================================================ -->
-  <style>
-    .dash{padding:56px 0 8px;}
-    .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-    .dash-card{background:var(--bg2);border:1px solid var(--border);border-top:2px solid var(--accent);padding:22px 24px;display:flex;flex-direction:column;}
-    .dash-card.soon{border-top-color:var(--text-dim);}
-    .dash-card h3{font-family:var(--fd);font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-head);margin:0 0 6px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-    .dash-badge{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);border:1px solid var(--border2);border-radius:2px;padding:3px 8px;white-space:nowrap;}
-    .dash-badge.live{color:var(--green);border-color:rgba(0,224,122,0.4);}
-    .dash-cap{font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 16px;}
-    .dash-ph{height:11px;background:var(--bg3);border-radius:3px;border:1px solid var(--border);display:block;}
-    .dash-ph-rows{display:flex;flex-direction:column;gap:9px;margin-bottom:16px;}
-    .dash-ph-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--border);}
-    .dash-ph-row:last-child{border-bottom:none;}
-    .dash-ph-row .l{flex:1;}
-    .dash-ph-row .r{width:62px;}
-    .dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-    .dash-stat .k{font-family:var(--fm);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px;}
-    .dash-stat .v{font-family:var(--fd);font-size:30px;font-weight:900;color:var(--text-dim);line-height:1;}
-    .dash-link{font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-top:auto;}
-    .dash-link.muted{color:var(--text-dim);}
-    .dash-watch{min-height:54px;margin-bottom:16px;}
-    .dash-watch .wrow{display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:var(--fm);font-size:13px;color:var(--text);padding:7px 0;border-bottom:1px solid var(--border);}
-    .dash-watch .wrow:last-child{border-bottom:none;}
-    .dash-watch .wempty{font-size:13px;color:var(--text-dim);line-height:1.6;}
-    /* Sep 1 2026 — sample state for new visitors + "moved since your last visit" flashes */
-    .dash-watch .wrow.sample a{color:var(--text);}
-    .dash-watch .wrow.sample a:hover{color:var(--accent);}
-    .dash-watch .wtag,.dash-stat .v small{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);border:1px solid var(--border2);border-radius:2px;padding:1px 6px;margin-left:8px;vertical-align:middle;}
-    .dash-watch .wnote{font-family:var(--fm);font-size:11px;color:var(--text-dim);padding:8px 0 0;line-height:1.6;}
-    .dash-watch .wnote b{color:var(--accent);}
-    .dash-watch .tick-up{color:var(--green);} .dash-watch .tick-down{color:var(--red);}
-    .dash-stat .v.sample{color:var(--text);}
-    @keyframes wrow-up{from{background:rgba(0,224,122,0.3);}to{background:transparent;}}
-    @keyframes wrow-down{from{background:rgba(255,46,85,0.28);}to{background:transparent;}}
-    .dash-watch .wrow{transition:background .16s;}
-    .dash-watch .wrow.flash-up{animation:wrow-up .4s ease-out .35s 1 backwards;}
-    .dash-watch .wrow.flash-down{animation:wrow-down .4s ease-out .35s 1 backwards;}
-    .dash-card .dash-link:active,.dash-digest .btn-primary:active{transform:translateY(2px);}
-    @media(prefers-reduced-motion:reduce){.dash-watch .wrow.flash-up,.dash-watch .wrow.flash-down{animation:none;}}
-    .dash-digest{background:linear-gradient(180deg,var(--bg3),var(--bg2));border:1px solid var(--border2);padding:24px 28px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
-    .dash-digest-h{font-family:var(--fd);font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-head);line-height:1.05;}
-    @media(max-width:860px){.dash-grid{grid-template-columns:1fr;}}
-    /* Movers (Sep 1 2026) — top 3 up / top 3 down by 30-day rate of change, from the nightly feed. Hidden until the feed lands. */
-    .dash-movers{margin-top:16px;}
-    .dash-movers[hidden]{display:none;}
-    .mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;}
-    .mv-col-h{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);padding:2px 0 6px;border-bottom:1px solid var(--border);}
-    .mv-col-h.up{color:var(--green);} .mv-col-h.down{color:var(--red);}
-    .mv-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);color:var(--text);text-decoration:none;transition:background .15s;}
-    .mv-row:last-child{border-bottom:none;}
-    .mv-row:hover{background:rgba(0,204,245,0.04);color:var(--text);}
-    .mv-row .sch-cimg,.mv-row .sch-cimg-row{flex:none;}
-    .mv-txt{flex:1;min-width:0;}
-    .mv-name{display:block;font-family:var(--fd);font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-head);line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .mv-sub{display:block;font-family:var(--fm);font-size:9.5px;color:var(--text-dim);letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
-    .mv-px{font-family:var(--fd);font-size:17px;font-weight:800;color:var(--text-head);font-variant-numeric:tabular-nums;white-space:nowrap;}
-    .mv-chip{font-family:var(--fm);font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;min-width:58px;text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap;}
-    .mv-chip.up{color:var(--green);background:var(--green-dim);border:1px solid rgba(0,224,122,0.3);}
-    .mv-chip.down{color:var(--red);background:rgba(255,46,85,0.1);border:1px solid rgba(255,46,85,0.3);}
-    .mv-chip.flat{color:var(--text-dim);background:rgba(255,255,255,0.04);border:1px solid var(--border2);}
-    .mv-empty{font-family:var(--fm);font-size:11px;color:var(--text-dim);padding:10px 0;}
-    .dash-movers .dash-badge{color:var(--text);}
-    @media(max-width:640px){
-      .mv-grid{grid-template-columns:1fr;}
-      .mv-col-h{margin-top:10px;} .mv-col-h:first-child{margin-top:0;}
-      .mv-name{font-size:14px;} .mv-px{font-size:15px;}
-    }
-  </style>
-  <section class="dash">
-    <div class="container">
-      <div class="section-eyebrow">Your Market, Today</div>
-      <h2>The Floor</h2>
-      <p class="section-body">The price engine marks the board nightly and the Vault tracks your positions — a page you <em>check</em>, not a brochure you read once. <a href="/how-prices-work">How our prices work →</a></p>
-
-      <div class="dash-grid">
-        <!-- Signal Board — LIVE, fed nightly by the price engine (price-data branch) -->
-        <div class="dash-card">
-          <h3>Signal Board <span class="dash-badge live">Live nightly</span></h3>
-          <p class="dash-cap">Every 1st Bowman Chrome auto, marked nightly by the price engine — chart-derived, no fundamentals. Points accrue on real crossovers, not vibes.</p>
-          <div class="dash-watch" id="dash-signal"><div class="wempty">Loading tonight's marks…</div></div>
-          <a href="/bowman-bangers" class="dash-link">Open the Signal Board →</a>
-        </div>
-
-        <!-- My Watchlist — functional (localStorage) -->
-        <div class="dash-card">
-          <h3>My Watchlist <span class="dash-badge live">Live now</span></h3>
-          <p class="dash-cap">Track any card by name — saved in your browser, with live asks and your own logged marks in the Vault.</p>
-          <div class="dash-watch" id="dash-watch"></div>
-          <a href="/watchlist" class="dash-link">Open watchlist →</a>
-        </div>
-      </div>
-
-      <!-- My Portfolio — LIVE in the Vault (reads local sch_vault_v1) -->
-      <div class="dash-card" style="margin-top:16px;">
-        <h3>My Portfolio <span class="dash-badge live">Live in the Vault</span></h3>
-        <p class="dash-cap">Cost basis, logged marks, and position tracking — all in the Vault, saved in your browser. Imports your COMC inventory CSV as your book.</p>
-        <div class="dash-stats" id="dash-port">
-          <div class="dash-stat"><div class="k">Tracked Value</div><div class="v" id="dp-val">—</div></div>
-          <div class="dash-stat"><div class="k">Owned</div><div class="v" id="dp-own">—</div></div>
-          <div class="dash-stat"><div class="k">Hunting</div><div class="v" id="dp-hunt">—</div></div>
-        </div>
-        <a href="/watchlist" class="dash-link" style="margin-top:16px;">Open the Vault →</a>
-      </div>
-
-      <!-- Movers — LIVE, top 3 up / top 3 down by 30-day rate of change from the nightly feed (Sep 1 2026).
-           Stays hidden if the feed fails; rendered by the dashboard script below. -->
-      <div class="dash-card dash-movers" id="dash-movers" hidden>
-        <h3>Movers <span class="dash-badge live" id="mv-marked">Marked —</span></h3>
-        <p class="dash-cap">The biggest 30-day moves on the board, from last night's marks — asks, not solds. Tap a row to track it in the Vault.</p>
-        <div class="mv-grid" id="mv-grid"></div>
-        <a href="/watchlist" class="dash-link" style="margin-top:16px;">Track these in the Vault →</a>
-      </div>
-
-      <!-- Digest CTA → existing newsletter form lower on the page -->
-      <div class="dash-digest">
-        <div>
-          <div class="dash-digest-h">Weekly Bangers + Market Digest</div>
-          <p class="dash-cap" style="margin:6px 0 0;">Top movers, prospect call-ups, and buy signals — the reason to come back.</p>
-        </div>
-        <a href="#newsletter" class="btn-primary">Get it free →</a>
-      </div>
-    </div>
-  </section>
-  <script>
-    /* Dashboard watchlist preview — prefers the Vault (sch_vault_v1), falls back to legacy sch_watchlist */
-    (function(){
-      var el=document.getElementById('dash-watch'); if(!el) return;
-      var items=[];
-      try{
-        var v=JSON.parse(localStorage.getItem('sch_vault_v1'));
-        if(v&&Array.isArray(v.cards)&&v.cards.length&&!v.demo){
-          items=v.cards.map(function(c){
-            var last=(c.prices&&c.prices.length)?c.prices[c.prices.length-1].p:null;
-            return {name:c.name,tag:last!=null?('$'+Number(last).toLocaleString()):(c.status==='own'?'owned':'tracked')};
-          });
-        }
-      }catch(e){ items=[]; }
-      if(!items.length){ try{ items=JSON.parse(localStorage.getItem('sch_watchlist'))||[]; }catch(e){ items=[]; } }
-      function esc(s){ return String(s==null?'':s).replace(/[<>&]/g,''); }
-      if(!Array.isArray(items)||!items.length){
-        /* Sep 1 2026: new visitors see a SAMPLE state (three rows tagged "sample", linked to /watchlist)
-           instead of "No cards tracked yet". Real vaults render real rows below. */
-        var SAMPLE=[
-          {name:'Ethan Holliday 1st Bowman Chrome Auto',px:'$788',cls:'tick-up',d:'+6.3%'},
-          {name:'Cooper Flagg Prizm Silver RC',px:'$351',cls:'tick-down',d:'−3.0%'},
-          {name:'Umbreon ex SIR #161',px:'$1,344',cls:'tick-down',d:'−2.0%'}
-        ];
-        el.innerHTML=SAMPLE.map(function(r){
-          return '<div class="wrow sample"><span><a href="/watchlist">'+esc(r.name)+'</a><span class="wtag">sample</span></span><span style="color:var(--text-dim);white-space:nowrap;">'+r.px+' <span class="'+r.cls+'" style="font-size:11px;">'+r.d+'</span></span></div>';
-        }).join('')+'<div class="wnote">Your rows go here — <b>★ Track</b> on any guide, or <a href="/watchlist" style="color:var(--accent);">open the Vault</a>.</div>';
-        return;
-      }
-      var rows=items.slice(0,3).map(function(it){
-        return '<div class="wrow"><span>'+esc(it&&it.name)+'</span><span style="color:var(--text-dim);">'+esc((it&&it.tag)||'tracked')+'</span></div>';
-      }).join('');
-      var more=items.length>3?'<div class="wrow"><span style="color:var(--text-dim);">+ '+(items.length-3)+' more</span><span></span></div>':'';
-      el.innerHTML=rows+more;
-    })();
-
-    /* Signal Board mini-feed — top 3 from the nightly engine (price-data branch) */
-    (function(){
-      var el=document.getElementById('dash-signal'); if(!el) return;
-      function esc(s){ return String(s==null?'':s).replace(/[<>&]/g,''); }
-      /* Sep 1 2026: remember each key's last mark (sch_signal_seen_v1). A row whose mark differs from
-         the previous visit flashes green/red once; a "since your last visit: N moved" line follows. */
-      var SEEN='sch_signal_seen_v1', prev=null;
-      try{ prev=JSON.parse(localStorage.getItem(SEEN)||'null'); if(!prev||typeof prev!=='object') prev=null; }catch(e){ prev=null; }
-      /* Sep 1 2026: ONE fetch of the nightly feed per page view, shared by the Signal Board, the Movers
-         panel and the hero Top-5 (window.SCH_FEED_P resolves to the parsed JSON or null — never rejects). */
-      window.SCH_FEED_P = window.SCH_FEED_P || fetch('https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json?t='+Date.now(), { cache:'no-store' })
-        .then(function(r){ return r.ok ? r.json() : null; })
-        .catch(function(){ return null; });
-      window.SCH_FEED_P
-        .then(function(d){ if(!d) throw 0; return d; })
-        .then(function(d){
-          var all=(d&&d.cards)||[];
-          if(!all.length) throw 0;
-          var cards=all.slice().sort(function(a,b){ return (b.points||0)-(a.points||0) || (b.last||0)-(a.last||0); }).slice(0,3);
-          var dir=function(c){ if(!prev||typeof c.last!=='number'||typeof prev[c.key]!=='number'||prev[c.key]===c.last) return 0; return c.last>prev[c.key]?1:-1; };
-          var moved=0,up=0,down=0; all.forEach(function(c){ var m=dir(c); if(m>0){up++;moved++;} else if(m<0){down++;moved++;} });
-          el.innerHTML=cards.map(function(c){
-            var px=(typeof c.last==='number')?('$'+c.last.toLocaleString(undefined,{maximumFractionDigits:2})):'—';
-            var m=dir(c), arrow=m>0?' <span class="tick-up" style="font-size:11px;">▲</span>':m<0?' <span class="tick-down" style="font-size:11px;">▼</span>':'';
-            return '<div class="wrow'+(m>0?' flash-up':m<0?' flash-down':'')+'"><span>'+esc(c.label)+'</span><span style="color:var(--green);white-space:nowrap;">'+px+arrow+'</span></div>';
-          }).join('')+(d.day?'<div class="wrow"><span style="color:var(--text-dim);">engine mark · '+esc(d.day)+' · asks</span><span></span></div>':'')
-            +(prev?'<div class="wnote">since your last visit: <b>'+moved+'</b> moved'+(moved?' · <span class="tick-up">'+up+' ▲</span> <span class="tick-down">'+down+' ▼</span>':'')+'</div>':'');
-          var seen={}; all.forEach(function(c){ if(c&&c.key&&typeof c.last==='number') seen[c.key]=c.last; });
-          try{ localStorage.setItem(SEEN, JSON.stringify(seen)); }catch(e){}
-        })
-        .catch(function(){
-          el.innerHTML='<div class="wempty">Board marks load on <a href="/bowman-bangers" style="color:var(--accent);">the Signal Board</a> — every 1st Bowman Chrome auto, nightly.</div>';
-        });
-    })();
-
-    /* Movers (Sep 1 2026) — top 3 up / top 3 down by roc30 (30-day rate of change, %) among feed cards with a
-       numeric last AND a numeric roc30. The feed carries no per-card series, so roc30 is the delta. Panel
-       stays hidden unless there is at least one row; photos come from js/card-img.js via data-card-img. */
-    (function(){
-      var panel=document.getElementById('dash-movers'), grid=document.getElementById('mv-grid'), mark=document.getElementById('mv-marked');
-      if(!panel||!grid||!window.SCH_FEED_P) return;
-      function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-      function num(v){ return typeof v==='number'&&isFinite(v); }
-      window.SCH_FEED_P.then(function(d){
-        var all=(d&&Array.isArray(d.cards))?d.cards.filter(function(c){ return c&&c.key&&num(c.last)&&num(c.roc30); }):[];
-        if(!all.length) return;
-        var byRoc=all.slice().sort(function(a,b){ return b.roc30-a.roc30; });
-        var ups=byRoc.filter(function(c){ return c.roc30>0; }), downs=byRoc.filter(function(c){ return c.roc30<0; }).reverse();
-        var up=ups.slice(0,3), down=downs.slice(0,3);
-        if(!up.length&&!down.length) return;
-        var breadth=' <div class="mv-empty">'+ups.length+' of '+all.length+' marked cards up over 30 days · '+downs.length+' down.</div>';
-        function row(c){
-          var parts=String(c.label||c.key).split(' — '), name=parts[0], sub=parts.slice(1).join(' — ')||'engine mark';
-          var r=c.roc30, cls=r>0.05?'up':r<-0.05?'down':'flat';
-          var chip=(r>0?'+':'')+r.toFixed(1)+'%';
-          var px='$'+c.last.toLocaleString(undefined,{maximumFractionDigits:c.last>=100?0:2});
-          return '<a href="/card-'+esc(String(c.key).replace(/^ebay:/,''))+'" class="mv-row" title="Open the '+esc(name)+' price chart">'+
-            '<span data-card-img="'+esc(c.key)+'" data-card-name="'+esc(name)+'" data-card-size="row" data-card-surface="home-movers" data-card-link="off"></span>'+
-            '<span class="mv-txt"><span class="mv-name">'+esc(name)+'</span><span class="mv-sub">'+esc(sub)+'</span></span>'+
-            '<span class="mv-px">'+px+'</span><span class="mv-chip '+cls+'">'+chip+'</span></a>';
-        }
-        grid.innerHTML=
-          '<div><div class="mv-col-h up">▲ Gaining · 30D</div>'+(up.length?up.map(row).join(''):'<div class="mv-empty">Nothing up over 30 days.</div>')+(up.length<3?breadth:'')+'</div>'+
-          '<div><div class="mv-col-h down">▼ Fading · 30D</div>'+(down.length?down.map(row).join(''):'<div class="mv-empty">Nothing down over 30 days.</div>')+(down.length<3&&up.length>=3?breadth:'')+'</div>';
-        if(mark) mark.textContent='Marked '+(d.day||'tonight');
-        panel.hidden=false;
-        if(window.SCH_IMG) SCH_IMG.enhance(grid);
-      }).catch(function(){ /* feed failed → panel stays hidden */ });
-    })();
-
-    /* Portfolio snapshot from the local Vault — a labelled SAMPLE value for new visitors (Sep 1 2026), real numbers once a vault exists */
-    (function(){
-      var v=null;
-      try{ v=JSON.parse(localStorage.getItem('sch_vault_v1')); }catch(e){}
-      var f=function(id,txt,color,sample){ var e=document.getElementById(id); if(!e) return; e.textContent=txt; if(sample){ var s=document.createElement('small'); s.textContent='sample'; e.appendChild(s); } e.classList.toggle('sample',!!sample); if(color)e.style.color=color; };
-      if(!v||!Array.isArray(v.cards)||!v.cards.length||v.demo){
-        f('dp-val','$452','',true); f('dp-own','2','',true); f('dp-hunt','3','',true);
-        var l=document.querySelector('#dash-port + .dash-link'); if(l) l.textContent='Start your Vault — it takes one card →';
-        return;
-      }
-      var val=0,own=0,hunt=0;
-      v.cards.forEach(function(c){
-        if(c.status==='own') own++; else hunt++;
-        var last=(c.prices&&c.prices.length)?c.prices[c.prices.length-1].p:null;
-        if(typeof last==='number') val+=last*(c.status==='own'?(c.qty||1):1);
-      });
-      f('dp-val', '$'+Math.round(val).toLocaleString(), 'var(--text-head)');
-      f('dp-own', String(own), 'var(--text-head)');
-      f('dp-hunt', String(hunt), 'var(--text-head)');
-    })();
-  </script>
-
-  <div class="container">
-  <!-- SIGNAL ALERTS — email capture (renders only when data/newsletter.json lists this page — MailerLite via /api/subscribe) -->
-  <div class="sig-alerts" data-schsub="homepage" style="display:none; background:var(--bg2); border:1px solid var(--border2); border-left:3px solid var(--accent); padding:26px 30px; margin:40px 0;">
-    <div style="font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">&#9993; Signal Alerts</div>
-    <div style="font-family:var(--fd); font-size:24px; font-weight:900; text-transform:uppercase; color:var(--text-head); letter-spacing:0.5px; margin-bottom:6px;">Track Cards Like Stocks &mdash; In Your Inbox</div>
-    <p style="font-size:14px; color:var(--text-dim); line-height:1.6; max-width:560px; margin-bottom:16px;">Weekly Tape Recap of the biggest 1st Bowman movers and every call change, straight from our nightly price engine &mdash; with the calls graded in public. Free, from the tape, no hype.</p>
-    <form class="schsub-form" style="display:flex; gap:10px; flex-wrap:wrap; max-width:560px;">
-      <input type="email" name="email_address" required placeholder="you@example.com" aria-label="Email address"
-        style="flex:1 1 240px; min-width:0; background:var(--bg3); border:1px solid var(--border2); border-radius:2px; color:var(--text); font-family:var(--fm); font-size:13px; padding:12px 14px;">
-      <button type="submit" class="btn-primary" style="border:none; cursor:pointer;">Get the Recap &#8594;</button>
-    </form>
-    <div class="schsub-msg" style="display:none; font-family:var(--fm); font-size:12px; color:var(--green); margin-top:12px;"></div>
-    <div style="font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:0.5px; margin-top:12px; opacity:0.7;">Weekly recap only. No spam, unsubscribe anytime.</div>
+  <div class="rl-sec">
+    <h4>Saved screens</h4>
+      <a class="rl sc" href="/#screen=board" data-screen="board"><span class="ico">⌁</span><span class="lbl">Bowman Bangers board</span></a>
+      <a class="rl sc" href="/#screen=under100" data-screen="under100"><span class="ico">⌁</span><span class="lbl">Autos under $100</span></a>
+      <a class="rl sc" href="/#screen=drying" data-screen="drying"><span class="ico">⌁</span><span class="lbl">Supply drying up</span></a>
+      <a class="rl sc" href="/#screen=z2" data-screen="z2"><span class="ico">⌁</span><span class="lbl">|z| beyond 2</span></a>
+      <a class="rl sc" href="/#screen=fat" data-screen="fat"><span class="ico">⌁</span><span class="lbl">Fat tails</span></a>
   </div>
-</div>
+  <div class="rail-foot">Free · no account · your Vault stays on your device</div>
+</aside>
+<!-- RAIL:END -->
+    <main class="tmain" id="main">
+      <header class="tm-head">
+        <h1>Every set priced. Pick your cards.</h1>
+        <span class="tm-stamp"><!-- HOME:stamp:START -->
+feed <b data-home="day">Sep 11</b> · <span data-home="stamp">19/20 marked · 6 gated</span> · ask-basis
+<!-- HOME:stamp:END --></span>
+      </header>
 
-  <!-- HOW WE THINK ABOUT CARDS — the editorial position (Aug 21, 2026). Keep this short. -->
-  <section style="padding:0 0 8px; border-top:none;">
-    <div class="container">
-      <div class="disclosure" style="border-left-color:var(--accent); margin:0 0 8px; font-size:14px; color:var(--text);">
-        <strong style="color:var(--text-head);">How we think about cards.</strong> A card is not a stock. You can't sell it in a second, the spread is wide, and a prospect's best moment usually arrives without warning &mdash; a call-up on a Tuesday and the card is gone by Thursday. So we don't try to time it. We look for cards we'd be glad to own a year from now, buy them at a price that makes sense today, and let the player do the rest. Every call we publish is graded at 6 and 12 months on <a href="/track-record">the Scorecard</a>, and nothing is ever deleted.
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURED GUIDES -->
-  <section style="background:var(--bg); padding-bottom:0;">
-    <div class="container">
-      <div class="section-eyebrow">Featured Guides</div>
-      <h2>Start Here</h2>
-      <p class="section-body">Every guide is built around a specific buying decision. No filler, no fluff — just what you need to buy smarter. <a href="/blog" style="color:var(--accent);">Browse all guides →</a></p>
-
-      <div class="guides-grid">
-        <!-- Featured large -->
-        <div class="guide-card featured">
-          <div class="guide-tag">
-            Hobby Boxes
-            <span class="hot-tag">🔥 Priority Read</span>
-          </div>
-          <div class="guide-title">Best Hobby Boxes to Buy in 2026 — Ranked by ROI</div>
-          <div class="guide-desc">
-            31,400 people search this every month. We broke down the math on every major
-            2026 release — Topps Chrome, Bowman, Prizm Basketball, Select Football,
-            and Pokémon — ranked by expected ROI per box, not hype. Know what you're
-            actually paying for hits before you open anything.
-          </div>
-          <div class="guide-meta">
-            <div>
-              <div class="guide-stat">Keyword: <strong>31.4K/mo searches</strong></div>
-              <div class="guide-stat" style="margin-top:4px;">6 boxes compared · Affiliate links: Fanatics + eBay</div>
+      <div class="grid2 top">
+        <div class="panel">
+          <div class="panel-h"><h2>Markets</h2><span class="sub">board ask-basis · nightly · indices sold-only · weekly</span></div>
+          <div class="mkt">
+            <div class="list" data-home="markets">
+<!-- HOME:markets:START -->
+<a class="mrow on" href="/bowman-bangers" data-k="BOARD"><span><span class="k">BOARD</span><span class="name">Bangers board · 30D composite</span></span><span class="num">99.54</span><span class="num dn">-1.12</span><span class="num dn">-1.11%</span></a><a class="mrow" href="/pitch-black-index" data-k="PB26"><span><span class="k">PB26</span><span class="name">Pitch Black Chase Index</span></span><span class="num">93.51</span><span class="num up">+0.32</span><span class="num up">+0.34%</span></a><a class="mrow" href="/chaos-rising-index" data-k="CR26"><span><span class="k">CR26</span><span class="name">Chaos Rising Chase Index</span></span><span class="num">93.71</span><span class="num dn">-1.64</span><span class="num dn">-1.72%</span></a><a class="mrow" href="/ascended-heroes-index" data-k="AH26"><span><span class="k">AH26</span><span class="name">Ascended Heroes Chase Index</span></span><span class="num">97.97</span><span class="num dn">-2.34</span><span class="num dn">-2.33%</span></a><a class="mrow" href="/prismatic-evolutions-index" data-k="PRIS25"><span><span class="k">PRIS25</span><span class="name">Prismatic Evolutions Chase Index</span></span><span class="num">97.44</span><span class="num dn">-4.32</span><span class="num dn">-4.25%</span></a><a class="mrow" href="/destined-rivals-index" data-k="DR25"><span><span class="k">DR25</span><span class="name">Destined Rivals Chase Index</span></span><span class="num">96.25</span><span class="num dn">-1.34</span><span class="num dn">-1.37%</span></a><a class="mrow pre-row" href="/bowman-chrome-2026-index" data-k="BCB26"><span><span class="k">BCB26</span><span class="name">2026 Bowman Chrome Chase Index</span></span><span class="pre">PRE · activates on verified sold reads</span></a><a class="mrow" href="/bowman-1st-chrome-index" data-k="BOW26"><span><span class="k">BOW26</span><span class="name">2026 Bowman 1st Chrome Index</span></span><span class="num">97.99</span><span class="num dn">-2.01</span><span class="num dn">-2.01%</span></a>
+<!-- HOME:markets:END -->
             </div>
-            <a href="/best-hobby-boxes-2026" class="guide-link">Read Guide →</a>
+            <div class="chart-wrap" data-home="chart">
+<!-- HOME:chart:START -->
+<svg class="mchart dn" viewBox="0 0 560 210" role="img" aria-label="Bangers board · 30D composite"><line class="grid" x1="8" x2="508" y1="179.1" y2="179.1"/><text class="axis" x="514" y="183.1">96.89</text><line class="grid" x1="8" x2="508" y1="99.0" y2="99.0"/><text class="axis" x="514" y="103.0">102.87</text><line class="grid" x1="8" x2="508" y1="18.9" y2="18.9"/><text class="axis" x="514" y="22.9">108.86</text><path class="area" d="M8.0 137.4 L25.2 115.3 L42.5 108.4 L59.7 67.7 L77.0 30.5 L94.2 45.8 L111.4 97.5 L128.7 81.8 L145.9 50.7 L163.2 58.0 L180.4 96.2 L197.7 104.7 L214.9 130.3 L232.1 132.7 L249.4 117.0 L266.6 150.6 L283.9 124.1 L301.1 114.7 L318.3 112.1 L335.6 143.4 L352.8 151.7 L370.1 157.5 L387.3 148.5 L404.6 167.5 L421.8 165.3 L439.0 161.9 L456.3 153.1 L473.5 160.5 L490.8 128.6 L508.0 143.6 L508.0 184.0 L8.0 184.0 Z"/><line class="ref" x1="8" x2="508" y1="137.4" y2="137.4"/><text class="ref-l" x="10" y="133.4">100 = 30 nights ago</text><path class="line" d="M8.0 137.4 L25.2 115.3 L42.5 108.4 L59.7 67.7 L77.0 30.5 L94.2 45.8 L111.4 97.5 L128.7 81.8 L145.9 50.7 L163.2 58.0 L180.4 96.2 L197.7 104.7 L214.9 130.3 L232.1 132.7 L249.4 117.0 L266.6 150.6 L283.9 124.1 L301.1 114.7 L318.3 112.1 L335.6 143.4 L352.8 151.7 L370.1 157.5 L387.3 148.5 L404.6 167.5 L421.8 165.3 L439.0 161.9 L456.3 153.1 L473.5 160.5 L490.8 128.6 L508.0 143.6"/><circle class="dot" cx="508.0" cy="143.6" r="3"/><text class="axis" x="8.0" y="202" text-anchor="start">Aug 13</text><text class="axis" x="111.4" y="202" text-anchor="middle">Aug 19</text><text class="axis" x="214.9" y="202" text-anchor="middle">Aug 25</text><text class="axis" x="318.3" y="202" text-anchor="middle">Aug 31</text><text class="axis" x="421.8" y="202" text-anchor="middle">Sep 6</text><text class="axis" x="508.0" y="202" text-anchor="end">Sep 11</text></svg><div class="chart-cap"><b>BOARD</b> · equal-weight · 9 autos · ask-basis · 100 = Aug 13 · 30 marks · last Sep 11 · <a href="/bowman-bangers">open BOARD »</a></div>
+<!-- HOME:chart:END -->
+            </div>
           </div>
         </div>
-
-        <!-- Bowman Bangers — UPDATED -->
-        <div class="guide-card">
-          <div class="guide-tag">Prospects</div>
-          <div class="guide-title">2026 Bowman Bangers</div>
-          <div class="guide-desc">
-            The 2025 draft class hits wax. Top 5 prospects ranked by 1st Bowman Chrome Auto value —
-            Ethan Holliday, Aiva Arquette, Wehiwa Aloy, Daniel Pierce, and Andrew Fischer.
-            Buy signals, eBay sold comps, and the full 2026 set breakdown.
-          </div>
-          <div class="guide-meta">
-            <div class="guide-stat">10 prospects · 2025 draft class · eBay links</div>
-            <a href="/bowman-bangers" class="guide-link">Read →</a>
-          </div>
-        </div>
-
-        <div class="guide-card">
-          <div class="guide-tag">Grading</div>
-          <div class="guide-title">PSA Grading Guide 2026</div>
-          <div class="guide-desc">
-            Every tier, real turnaround times, hidden fees, and the ROI math.
-            Updated after the February 10, 2026 price increase.
-          </div>
-          <div class="guide-meta">
-            <div class="guide-stat">All 6 tiers covered · Feb 2026 prices</div>
-            <a href="/psa-grading-guide" class="guide-link">Read →</a>
-          </div>
-        </div>
-
-        <div class="guide-card">
-          <div class="guide-tag" style="color:#FFD700;">🎴 Pokémon TCG</div>
-          <div class="guide-title">Pokémon TCG 2026 — Hot Cards &amp; Sets</div>
-          <div class="guide-desc">
-            All four 2026 Mega Evolution sets on one page — Chaos Rising, Ascended Heroes, Pitch Black, and beyond. Full Pitch Black set guide live. Mega Greninja ex SIR at $210–$240 sold.
-          </div>
-          <div class="guide-meta">
-            <div class="guide-stat">4 sets · 6 hot cards ranked · eBay + PriceCharting</div>
-            <a href="/pokemon-tcg-2026" class="guide-link" style="color:#FFD700;">Read →</a>
-          </div>
-        </div>
-
-        <div class="guide-card">
-          <div class="guide-tag">🏀 NBA Rookie Cards</div>
-          <div class="guide-title">Cooper Flagg Rookie Cards 2026</div>
-          <div class="guide-desc">
-            Chrome #251 PSA 10 at $2,075. Superfractor auto at $180K.
-            Every Flagg card ranked by ROI with real eBay sold comps — what to buy and what to avoid.
-          </div>
-          <div class="guide-meta">
-            <div class="guide-stat">5 cards ranked · eBay sold comps · June 2026</div>
-            <a href="/cooper-flagg-rookie-cards" class="guide-link">Read →</a>
-          </div>
-        </div>
-
-        <div class="guide-card">
-          <div class="guide-tag" style="color:#bb88ff;">🎴 Pokémon TCG</div>
-          <div class="guide-title">Prismatic Evolutions 2026</div>
-          <div class="guide-desc">
-            Umbreon ex SIR peaked at $1,500. Glaceon ex IR at $450.
-            All 9 Eeveelutions ranked by eBay sold price with honest sealed EV math.
-          </div>
-          <div class="guide-meta">
-            <div class="guide-stat">9 Eeveelutions ranked · sealed EV math · eBay sold</div>
-            <a href="/prismatic-evolutions-guide" class="guide-link" style="color:#bb88ff;">Read →</a>
-          </div>
-        </div>
-
-        <div class="guide-card" style="border-top:2px solid #9b5de5;">
-          <div class="guide-tag" style="color:#9b5de5;">🌑 Pokémon TCG · ME05 · Jul 17, 2026</div>
-          <div class="guide-title">Pitch Black Set Guide 2026</div>
-          <div class="guide-desc">
-            Released Jul 17 — and the market called our bluff: Mega Darkrai ex SIR printed $249 sold vs our $550–$750 projection, graded MISS on the Track Record. Post-release reality check: 10 chase cards re-priced against actual solds, hobby box EV math re-run.
-          </div>
-          <div class="guide-meta">
-            <div class="guide-stat">10 cards ranked · hobby box EV math · released Jul 17</div>
-            <a href="/pitch-black-set-guide" class="guide-link" style="color:#9b5de5;">Read Guide →</a>
-          </div>
+        <div class="panel">
+          <div class="panel-h"><h2>From the engine last night</h2><a href="/bowman-bangers">All signals »</a></div>
+          <ul class="news" data-home="engine">
+<!-- HOME:engine:START -->
+<li><span class="t">Sep 11</span><span><span class="b feed">FEED</span>Nightly landed — 19 of 20 cards marked, 6 gated to HOLD, 43 auction closes watched. Asks, not solds.</span></li><li><span class="t">Sep 11</span><span><span class="b buy">BUY</span><a href="/card-edward-florentino">Edward Florentino</a> published BUY at 0.83 confidence — $115, +15.0% / 30D, z 2.10, 27 verified asks (-34% / 30D).</span></li><li><span class="t">Sep 11</span><span><span class="b sell">SELL</span><a href="/ethan-holliday-rookie-cards#engine-ethan-holliday">Ethan Holliday</a> published SELL at 0.83 confidence — $165, -10.7% / 30D, z -1.74, 24 verified asks (-8% / 30D).</span></li><li><span class="t">Sep 11</span><span><span class="b sell">SELL</span><a href="/card-gage-jump">Gage Jump</a> published SELL at 0.83 confidence — $85.00, -27.7% / 30D, z -1.10, 15 verified asks (+25% / 30D).</span></li><li><span class="t">Sep 11</span><span><span class="b gate">GATE</span><a href="/aiva-arquette-1st-bowman#engine-aiva-arquette">Aiva Arquette</a> raw SELL withheld — thin market - 7 verified asks (need 8 for a call); $109, -7.5% / 30D, z -0.42. No call.</span></li><li><span class="t">Sep 11</span><span><span class="b gate">GATE</span><a href="/card-andrew-fischer">Andrew Fischer</a> raw BUY withheld — thin market - 4 verified asks (need 8 for a call); $187, +28.1% / 30D, z 2.51. No call.</span></li><li><span class="t">Sep 11</span><span><span class="b gate">GATE</span><a href="/card-seong-jun-kim">Seong-Jun Kim</a> raw BUY withheld — thin market - 4 verified asks (need 8 for a call); $201, +10.9% / 30D, z 2.07. No call.</span></li><li><span class="t">Sep 11</span><span><span class="b feed">FEED</span><a href="/card-andrew-fischer">Andrew Fischer</a> +28.1% / 30D — the board's biggest 30-night move; $187, supply 4 (-20% / 30D).</span></li><li><span class="t">Sep 7</span><span><span class="b index">INDEX</span>Weekly re-mark — <a href="/pitch-black-index">PB26</a> 93.51 (+0.3%), <a href="/chaos-rising-index">CR26</a> 93.71 (-1.7%), <a href="/ascended-heroes-index">AH26</a> 97.97 (-2.3%), <a href="/prismatic-evolutions-index">PRIS25</a> 97.44 (-4.2%), <a href="/destined-rivals-index">DR25</a> 96.25 (-1.4%), <a href="/bowman-1st-chrome-index">BOW26</a> 97.99 (-2.0%). Sold comps only.</span></li><li><span class="t">pre</span><span><span class="b index">INDEX</span><a href="/bowman-chrome-2026-index">BCB26</a> is scaffolded, not live — activates once the weekly re-mark sources its first sold reads.</span></li>
+<!-- HOME:engine:END -->
+          </ul>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- WHAT WE COVER -->
-  <section>
-    <div class="container">
-      <div class="section-eyebrow">Coverage</div>
-      <h2>What We Write About</h2>
-      <p class="section-body">Every category is covered from one angle — what's worth buying and at what price.</p>
-      <div class="categories-grid">
-        <div class="cat-card">
-          <span class="cat-icon">⚾</span>
-          <div class="cat-name">Baseball Cards</div>
-          <div class="cat-desc">Bowman Chrome prospects, Topps Series, veteran HOF cards, and PSA-graded singles from our COMC inventory.</div>
-        </div>
-        <div class="cat-card">
-          <span class="cat-icon">🏈</span>
-          <div class="cat-name">Football Cards</div>
-          <div class="cat-desc">Prizm Football rookies, Select, Mosaic — ranked by value and upside. 95 football cards in our current COMC inventory.</div>
-        </div>
-        <div class="cat-card">
-          <span class="cat-icon">🏀</span>
-          <div class="cat-name">Basketball Cards</div>
-          <div class="cat-desc">Prizm Basketball hobby breakdowns, rookie rankings, and comp analysis for the 32 basketball cards we actively track.</div>
-        </div>
-        <div class="cat-card" onclick="window.location='/pokemon-tcg-2026'" style="cursor:pointer;">
-          <span class="cat-icon">🎴</span>
-          <div class="cat-name">Pokémon TCG</div>
-          <div class="cat-desc">Chaos Rising, Ascended Heroes, Pitch Black — all four 2026 Mega Evolution sets covered with pull rates and eBay sold comps.</div>
-        </div>
-        <div class="cat-card" onclick="window.location='/psa-grading-guide'" style="cursor:pointer;">
-          <span class="cat-icon">📐</span>
-          <div class="cat-name">Grading</div>
-          <div class="cat-desc">PSA, BGS, and SGC — tier-by-tier ROI math, updated for the February 2026 price hike. Know before you ship.</div>
-        </div>
-        <div class="cat-card" onclick="window.location='/bowman-bangers'" style="cursor:pointer;">
-          <span class="cat-icon">🔭</span>
-          <div class="cat-name">Prospects</div>
-          <div class="cat-desc">2026 Bowman 1st Bowman Chrome Autos — 2025 draft class ranked by upside, buy signals, and Chrome auto ROI.</div>
+      <div class="focus">
+        <span class="tag">In focus</span>
+        <div class="items" data-home="focus">
+<!-- HOME:focus:START -->
+<a href="/#tape">The Tuesday Tape<em>Tue 2pm PT</em></a><a href="/auctions">Auction Desk<em>live auctions vs mark</em></a><a href="/bowman-chrome-2026-index">BCB26 activation watch<em>pre · streeted Sep 9</em></a><a href="/pokemon-30th-anniversary-2026">Pokémon 30th<em>Sep 16</em></a><a href="/research#baseball">Topps Update<em>Sep 14 · baseball hub</em></a><a href="/bowman-bangers">Tape Recap<em>Mondays</em></a>
+<!-- HOME:focus:END -->
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- SOCIAL STRIP -->
-  <div class="container">
-    <div class="social-strip">
-      <div class="social-strip-text">
-        <h3>Price Alerts on Twitter</h3>
-        <p>We post card price movement, pull rate data, and buy signals in real time on @shopcardhub.</p>
+      <div class="grid2">
+        <div class="panel">
+          <div class="panel-h"><h2>Board movers · 30D</h2><span class="sub">1st Bowman Chrome autos · raw · ask-basis</span></div>
+          <ul class="tr-list" data-home="movers">
+<!-- HOME:movers:START -->
+<li><span class="rk">1</span><span class="nm"><a href="/card-andrew-fischer">Andrew Fischer</a><small>$187 · supply 4 · z 2.51 · gated</small></span><svg class="spark up" viewBox="0 0 72 22" aria-hidden="true"><path d="M1.0 17.5 L3.4 17.7 L5.8 17.7 L8.2 18.5 L10.7 18.5 L13.1 17.7 L15.5 17.7 L17.9 18.5 L20.3 17.7 L22.7 16.9 L25.1 16.1 L27.6 16.9 L30.0 17.7 L32.4 19.2 L34.8 19.2 L37.2 19.2 L39.6 19.2 L42.0 19.2 L44.4 19.2 L46.9 19.2 L49.3 20.0 L51.7 15.2 L54.1 11.2 L56.5 10.6 L58.9 10.6 L61.3 11.2 L63.8 11.2 L66.2 11.2 L68.6 2.0 L71.0 4.7"/><circle cx="71.0" cy="4.7" r="1.8"/></svg><span class="num up">+28.1%</span></li><li><span class="rk">2</span><span class="nm"><a href="/card-gage-jump">Gage Jump</a><small>$85.00 · supply 15 · z -1.10</small></span><svg class="spark dn" viewBox="0 0 72 22" aria-hidden="true"><path d="M1.0 3.1 L3.4 3.1 L5.8 2.0 L8.2 3.1 L10.7 4.2 L13.1 4.2 L15.5 6.2 L17.9 6.2 L20.3 6.2 L22.7 10.5 L25.1 10.5 L27.6 11.7 L30.0 17.8 L32.4 17.8 L34.8 15.0 L37.2 15.0 L39.6 13.9 L42.0 13.9 L44.4 15.0 L46.9 15.0 L49.3 15.0 L51.7 17.8 L54.1 17.8 L56.5 20.0 L58.9 20.0 L61.3 20.0 L63.8 20.0 L66.2 17.2 L68.6 17.2 L71.0 17.2"/><circle cx="71.0" cy="17.2" r="1.8"/></svg><span class="num dn">-27.7%</span></li><li><span class="rk">3</span><span class="nm"><a href="/card-edward-florentino">Edward Florentino</a><small>$115 · supply 27 · z 2.10</small></span><svg class="spark up" viewBox="0 0 72 22" aria-hidden="true"><path d="M1.0 13.2 L3.4 14.8 L5.8 14.8 L8.2 11.2 L10.7 11.2 L13.1 10.0 L15.5 14.0 L17.9 14.0 L20.3 10.0 L22.7 13.2 L25.1 18.0 L27.6 13.2 L30.0 18.0 L32.4 20.0 L34.8 11.2 L37.2 11.2 L39.6 11.2 L42.0 10.0 L44.4 11.2 L46.9 11.2 L49.3 11.2 L51.7 11.2 L54.1 10.0 L56.5 6.0 L58.9 6.0 L61.3 2.0 L63.8 2.0 L66.2 2.0 L68.6 2.0 L71.0 2.0"/><circle cx="71.0" cy="2.0" r="1.8"/></svg><span class="num up">+15.0%</span></li><li><span class="rk">4</span><span class="nm"><a href="/card-seong-jun-kim">Seong-Jun Kim</a><small>$201 · supply 4 · z 2.07 · gated</small></span><svg class="spark up" viewBox="0 0 72 22" aria-hidden="true"><path d="M1.0 20.0 L3.4 20.0 L5.8 20.0 L8.2 20.0 L10.7 20.0 L13.1 20.0 L15.5 20.0 L17.9 20.0 L20.3 20.0 L22.7 20.0 L25.1 20.0 L27.6 20.0 L30.0 20.0 L32.4 20.0 L34.8 20.0 L37.2 20.0 L39.6 20.0 L42.0 20.0 L44.4 20.0 L46.9 20.0 L49.3 20.0 L51.7 20.0 L54.1 2.0 L56.5 2.0 L58.9 2.0 L61.3 2.0 L63.8 2.0 L66.2 2.0 L68.6 2.0 L71.0 2.0"/><circle cx="71.0" cy="2.0" r="1.8"/></svg><span class="num up">+10.9%</span></li><li><span class="rk">5</span><span class="nm"><a href="/ethan-holliday-rookie-cards#engine-ethan-holliday">Ethan Holliday</a><small>$165 · supply 24 · z -1.74</small></span><svg class="spark dn" viewBox="0 0 72 22" aria-hidden="true"><path d="M1.0 9.1 L3.4 2.0 L5.8 2.0 L8.2 5.7 L10.7 5.7 L13.1 13.4 L15.5 13.4 L17.9 13.4 L20.3 13.4 L22.7 10.6 L25.1 10.6 L27.6 10.6 L30.0 10.6 L32.4 8.9 L34.8 11.7 L37.2 11.7 L39.6 14.5 L42.0 11.7 L44.4 14.5 L46.9 14.5 L49.3 14.5 L51.7 14.5 L54.1 11.7 L56.5 11.7 L58.9 15.8 L61.3 17.2 L63.8 17.2 L66.2 17.2 L68.6 15.8 L71.0 20.0"/><circle cx="71.0" cy="20.0" r="1.8"/></svg><span class="num dn">-10.7%</span></li><li><span class="rk">6</span><span class="nm"><a href="/aiva-arquette-1st-bowman#engine-aiva-arquette">Aiva Arquette</a><small>$109 · supply 7 · z -0.42 · gated</small></span><svg class="spark dn" viewBox="0 0 72 22" aria-hidden="true"><path d="M1.0 2.0 L3.4 10.6 L5.8 10.6 L8.2 10.6 L10.7 10.6 L13.1 10.6 L15.5 15.4 L17.9 15.4 L20.3 6.3 L22.7 6.3 L25.1 11.1 L27.6 11.1 L30.0 15.4 L32.4 16.3 L34.8 16.3 L37.2 16.3 L39.6 16.3 L42.0 16.3 L44.4 15.4 L46.9 16.3 L49.3 20.0 L51.7 20.0 L54.1 17.1 L56.5 17.1 L58.9 17.1 L61.3 16.3 L63.8 17.1 L66.2 17.1 L68.6 17.1 L71.0 17.1"/><circle cx="71.0" cy="17.1" r="1.8"/></svg><span class="num dn">-7.5%</span></li><li><span class="rk">7</span><span class="nm"><a href="/card-wehiwa-aloy">Wehiwa Aloy</a><small>$79.99 · supply 27 · z -1.27</small></span><svg class="spark dn" viewBox="0 0 72 22" aria-hidden="true"><path d="M1.0 13.5 L3.4 8.8 L5.8 13.5 L8.2 3.8 L10.7 8.8 L13.1 3.8 L15.5 3.8 L17.9 3.8 L20.3 2.0 L22.7 2.0 L25.1 2.0 L27.6 2.0 L30.0 2.0 L32.4 2.0 L34.8 2.0 L37.2 2.0 L39.6 2.0 L42.0 2.0 L44.4 2.0 L46.9 2.0 L49.3 3.8 L51.7 3.8 L54.1 16.8 L56.5 20.0 L58.9 19.7 L61.3 20.0 L63.8 20.0 L66.2 19.7 L68.6 20.0 L71.0 20.0"/><circle cx="71.0" cy="20.0" r="1.8"/></svg><span class="num dn">-7.2%</span></li>
+<!-- HOME:movers:END -->
+          </ul>
+          <div class="panel-b"><a href="/bowman-bangers" class="num" style="font-family:var(--fm);font-size:11.5px;">Full board »</a></div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h2>Auction Desk</h2><span class="sub" data-home="auctions-n">live auctions vs the engine's mark</span></div>
+          <ul class="tr-list" data-home="auctions">
+            <li class="empty">Live auctions load from the Auction Desk — asks and bids, not solds.</li>
+          </ul>
+          <div class="panel-b"><a href="/auctions" class="num" style="font-family:var(--fm);font-size:11.5px;">Auction Desk »</a></div>
+        </div>
       </div>
-      <a href="https://twitter.com/shopcardhub" target="_blank" rel="noopener" class="btn-twitter">Follow @shopcardhub</a>
-    </div>
+
+      <div class="panel" id="screens">
+        <div class="scr-head">
+          <h2>Screen · <span data-home="screen-name">Bowman Bangers board</span><span class="meta" data-home="screen-meta">—</span></h2>
+          <div class="scr-chips">
+            <a href="/#screen=board" data-screen="board" class="on">Board</a>
+            <a href="/#screen=under100" data-screen="under100">Autos under $100</a>
+            <a href="/#screen=drying" data-screen="drying">Supply drying up</a>
+            <a href="/#screen=z2" data-screen="z2">|z| beyond 2</a>
+            <a href="/#screen=fat" data-screen="fat">Fat tails</a>
+            <a href="/#screen=all" data-screen="all">All cards</a>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table class="scr">
+            <thead><tr><th>Card</th><th>Last</th><th>5D Δ</th><th>Supply</th><th>Sup Δ30D</th><th>Ask Q1 – Q3</th><th>30D range</th><th>30D ROC</th><th>z</th><th>σ/day</th><th>Skew</th><th>Kurt</th><th>Signal</th><th>Conf</th></tr></thead>
+            <tbody data-home="screen">
+<!-- HOME:screen:START -->
+<tr><td class="sym"><a href="/card-seong-jun-kim">Seong-Jun Kim</a><small>1st Bowman Chrome Auto</small></td><td class="head">$201</td><td class="flat">$0.00<span class="sub">0.0%</span></td><td>4</td><td class="up">-56%</td><td><span class="rng"><span>$175</span><span class="tr"><i style="left:31%"></i></span><span>$257</span></span></td><td><span class="rng"><span>$181</span><span class="tr"><i style="left:100%"></i></span><span>$201</span></span></td><td class="up">+10.9%</td><td class="up">2.07</td><td>1.66%</td><td class="up">6.25</td><td class="dn">37.02</td><td><span class="sig none" title="thin market - 4 verified asks (need 8 for a call)">HOLD</span><span class="sub">raw BUY · gated</span></td><td>0.83</td></tr><tr><td class="sym"><a href="/card-andrew-fischer">Andrew Fischer</a><small>1st Bowman Chrome Auto</small></td><td class="head">$187</td><td class="up">+$19.00<span class="sub">+11.3%</span></td><td>4</td><td class="up">-20%</td><td><span class="rng"><span>$174</span><span class="tr"><i style="left:52%"></i></span><span>$199</span></span></td><td><span class="rng"><span>$138</span><span class="tr"><i style="left:85%"></i></span><span>$196</span></span></td><td class="up">+28.1%</td><td class="up">2.51</td><td>4.24%</td><td class="up">2.60</td><td class="dn">7.02</td><td><span class="sig none" title="thin market - 4 verified asks (need 8 for a call)">HOLD</span><span class="sub">raw BUY · gated</span></td><td>0.50</td></tr><tr><td class="sym"><a href="/ethan-holliday-rookie-cards#engine-ethan-holliday">Ethan Holliday</a><small>1st Bowman Chrome Auto</small></td><td class="head">$165</td><td class="dn">−$7.50<span class="sub">-4.3%</span></td><td>24</td><td class="up">-8%</td><td><span class="rng"><span>$155</span><span class="tr"><i style="left:9%"></i></span><span>$266</span></span></td><td><span class="rng"><span>$165</span><span class="tr"><i style="left:0%"></i></span><span>$198</span></span></td><td class="dn">-10.7%</td><td class="">-1.74</td><td>2.84%</td><td class="">0.02</td><td class="">0.31</td><td><span class="sig SELL">SELL</span></td><td>0.83</td></tr><tr><td class="sym"><a href="/card-justin-gonzalez">Justin Gonzalez</a><small>1st Bowman Chrome Auto</small></td><td class="head">$150</td><td class="flat">$0.00<span class="sub">0.0%</span></td><td>4</td><td class="flat">0%</td><td><span class="rng"><span>$119</span><span class="tr"><i style="left:53%"></i></span><span>$178</span></span></td><td><span class="rng"><span>$125</span><span class="tr"><i style="left:45%"></i></span><span>$180</span></span></td><td class="flat">—</td><td class="">-0.04</td><td>12.42%</td><td class="">0.43</td><td class="">-0.68</td><td><span class="sig none" title="thin market - 4 verified asks (need 8 for a call)">HOLD</span><span class="sub">no call yet</span></td><td>—</td></tr><tr><td class="sym"><a href="/card-edward-florentino">Edward Florentino</a><small>1st Bowman Chrome Auto</small></td><td class="head">$115</td><td class="up">+$5.00<span class="sub">+4.5%</span></td><td>27</td><td class="up">-34%</td><td><span class="rng"><span>$115</span><span class="tr"><i style="left:0%"></i></span><span>$191</span></span></td><td><span class="rng"><span>$92.50</span><span class="tr"><i style="left:100%"></i></span><span>$115</span></span></td><td class="up">+15.0%</td><td class="up">2.10</td><td>3.91%</td><td class="">0.75</td><td class="">0.88</td><td><span class="sig BUY">BUY</span></td><td>0.83</td></tr><tr><td class="sym"><a href="/aiva-arquette-1st-bowman#engine-aiva-arquette">Aiva Arquette</a><small>1st Bowman Chrome Auto</small></td><td class="head">$109</td><td class="flat">$0.00<span class="sub">0.0%</span></td><td>7</td><td class="up">-59%</td><td><span class="rng"><span>$95.00</span><span class="tr"><i style="left:62%"></i></span><span>$118</span></span></td><td><span class="rng"><span>$107</span><span class="tr"><i style="left:16%"></i></span><span>$118</span></span></td><td class="dn">-7.5%</td><td class="">-0.42</td><td>1.82%</td><td class="up">1.63</td><td class="dn">5.39</td><td><span class="sig none" title="thin market - 7 verified asks (need 8 for a call)">HOLD</span><span class="sub">raw SELL · gated</span></td><td>0.33</td></tr><tr><td class="sym"><a href="/card-gage-jump">Gage Jump</a><small>1st Bowman Chrome Auto</small></td><td class="head">$85.00</td><td class="up">+$6.42<span class="sub">+8.2%</span></td><td>15</td><td class="dn">+25%</td><td><span class="rng"><span>$65.00</span><span class="tr"><i style="left:44%"></i></span><span>$110</span></span></td><td><span class="rng"><span>$78.58</span><span class="tr"><i style="left:15%"></i></span><span>$120</span></span></td><td class="dn">-27.7%</td><td class="">-1.10</td><td>4.08%</td><td class="">-0.30</td><td class="dn">3.50</td><td><span class="sig SELL">SELL</span></td><td>0.83</td></tr><tr><td class="sym"><a href="/card-wehiwa-aloy">Wehiwa Aloy</a><small>1st Bowman Chrome Auto</small></td><td class="head">$79.99</td><td class="dn">−$0.29<span class="sub">-0.4%</span></td><td>27</td><td class="up">-7%</td><td><span class="rng"><span>$79.99</span><span class="tr"><i style="left:0%"></i></span><span>$109</span></span></td><td><span class="rng"><span>$79.99</span><span class="tr"><i style="left:0%"></i></span><span>$97.19</span></span></td><td class="dn">-7.2%</td><td class="">-1.27</td><td>3.51%</td><td class="">-0.20</td><td class="dn">4.73</td><td><span class="sig SELL">SELL</span></td><td>0.50</td></tr><tr><td class="sym"><a href="/card-marek-houston">Marek Houston</a><small>1st Bowman Chrome Auto</small></td><td class="head">$50.99</td><td class="up">+$3.04<span class="sub">+6.3%</span></td><td>12</td><td class="dn">+33%</td><td><span class="rng"><span>$43.71</span><span class="tr"><i style="left:33%"></i></span><span>$65.73</span></span></td><td><span class="rng"><span>$45.45</span><span class="tr"><i style="left:26%"></i></span><span>$66.44</span></span></td><td class="up">+6.3%</td><td class="">-0.22</td><td>9.05%</td><td class="up">1.93</td><td class="dn">7.89</td><td><span class="sig SELL">SELL</span></td><td>0.33</td></tr><tr><td class="sym"><a href="/card-daniel-pierce">Daniel Pierce</a><small>1st Bowman Chrome Auto</small></td><td class="head">$28.99</td><td class="dn">−$3.50<span class="sub">-10.8%</span></td><td>31</td><td class="dn">+3%</td><td><span class="rng"><span>$29.49</span><span class="tr"><i style="left:0%"></i></span><span>$73.61</span></span></td><td><span class="rng"><span>$28.99</span><span class="tr"><i style="left:0%"></i></span><span>$45.50</span></span></td><td class="dn">-3.3%</td><td class="">-1.12</td><td>8.94%</td><td class="">-0.21</td><td class="">0.14</td><td><span class="sig SELL">SELL</span></td><td>0.50</td></tr>
+<!-- HOME:screen:END -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="tm-foot">Marks are the engine's nightly reads from verified eBay asking prices — asks, not solds — dated above and never hand-typed; set indices are sold comps only, re-marked weekly. Cards are illiquid: think in 6–12 month holds. ShopCardHub earns a commission on eBay purchases made through links on this site.</p>
+    </main>
   </div>
 
+  <div id="tape">
   <!-- EMAIL SIGNUP (MailerLite, account 2456008, form dUWPT2 / 190645772985829345).
        Custom dark form posting to MailerLite's HTML endpoint; target=_blank shows the
        MailerLite success page on submit (double opt-in is ON, so subscribers get a confirm email). -->
   <div class="container">
-    <div id="newsletter" style="background:var(--bg2); border:1px solid var(--border2); border-top:3px solid var(--accent); padding:48px 40px; margin:56px 0; text-align:center; scroll-margin-top:80px;">
+    <div id="newsletter" style="background:var(--bg2); border:1px solid var(--border2); border-top:3px solid var(--accent); padding:48px 40px; margin:56px 0; text-align:center; scroll-margin-top:80px; padding:32px 28px;">
       <div style="font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">Free · Every Tuesday</div>
       <h2 style="font-family:var(--fd); font-size:clamp(26px,4vw,40px); font-weight:900; text-transform:uppercase; color:var(--text-head); margin-bottom:12px; line-height:1.05;">The Tuesday Tape</h2>
       <p style="font-size:16px; color:var(--text-dim); max-width:520px; margin:0 auto 28px; line-height:1.6;">Every Tuesday: the 1st Bowman board reshuffle, the week's biggest movers with the engine's verified prices, and <strong style="color:var(--text-head);">my own calls graded in public</strong> — including the wrong ones. No hype, no spam, unsubscribe anytime.</p>
@@ -1350,11 +870,13 @@ body::before{
     </div>
   </div>
 
+  </div>
+
   <div class="container" style="margin-bottom:0;">
     <div class="disclosure">
       <strong>Affiliate Disclosure:</strong> ShopCardHub participates in the eBay Partner Network,
       Amazon Associates, and COMC Referral Program. We may earn commissions when you purchase through links on this site.
-      All prices shown are estimates based on recent sold-market comps, updated September 1, 2026, and may not reflect current market conditions.
+      Prices on this page are the engine's nightly reads from verified eBay asking prices (asks, not solds) and the set indices' weekly sold-comp re-marks, dated on the page, and may not reflect current market conditions.
       This site does not provide financial or investment advice.
     </div>
   </div>
@@ -1402,169 +924,14 @@ body::before{
           <a href="/blog" style="color:inherit;">All Guides</a> · <a href="/about" style="color:inherit;">About</a> · <a href="/affiliate-disclosure" style="color:inherit;">Affiliate Disclosure</a> · <a href="/privacy" style="color:inherit;">Privacy Policy</a><br>
           © 2026 ShopCardHub · shopcardhub.com · <a href="https://twitter.com/shopcardhub" target="_blank" rel="noopener" style="color:inherit;">@shopcardhub</a><br>
           ShopCardHub participates in the eBay Partner Network.
-          Card prices are estimates based on recent sold-market comps, September 1, 2026. Not financial advice.
+          Card prices are the engine's nightly ask-basis reads and weekly sold-comp index re-marks, dated on the page. Not financial advice.
         </p>
         <div class="logo" style="font-size:16px;">Shop<span>Card</span>Hub</div>
       </div>
     </div>
   </footer>
 
-
-
-<script>
-/* DUNGEON EFFECTS — DOM injections */
-(function(){
-  // 6. Scan line sweep in hero sections
-  document.querySelectorAll('.hero').forEach(function(h){
-    if(!h.querySelector('.hero-scan-line')){
-      var sl=document.createElement('div');
-      sl.className='hero-scan-line';
-      h.insertBefore(sl,h.firstChild);
-    }
-  });
-  // 7. Blinking cursor on hero eyebrow labels
-  document.querySelectorAll('.hero-eyebrow').forEach(function(el){
-    el.classList.add('blink-cursor');
-  });
-  // 10. Marquee strip in card/roy entries
-  // Sep 1 2026: looping ghost marquee under entries removed (audit: read as a rendering glitch).
-})();
-</script>
-  <script>
-  /* Bowman Bangers hero panel — live top-5 by current 1st Bowman Chrome Auto value.
-     Reads the same nightly feed as the /bowman-bangers signal board (price-data
-     branch raw URL). If the feed isn't there yet, the static Jul 31 2026 markup
-     above stays as-is — no flash, no dead panel.
-     BOWMAN-ONLY GUARD (Aug 17 2026): the feed now carries non-Bowman watchlist
-     cards (Pokemon tcg-singles, Vault adds) which out-price the prospect autos
-     and were hijacking this panel. Filter exactly like the signal board does:
-     enrich from same-origin watchlist.json (cardType/boardHide), and if that
-     fetch fails, fall back to requiring "1st Bowman Chrome Auto" in the label. */
-  (function () {
-    var FEED = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json';
-    var META = {
-      'ebay:ethan-holliday':   { sub: 'COL · SS · 2025 #4 Pick' },
-      'ebay:aiva-arquette':    { sub: 'MIA · SS · 2025 #7 Pick · 6\'5"' },
-      'ebay:wehiwa-aloy':      { sub: 'BAL · SS · SEC POY · 35 College HR' },
-      'ebay:daniel-pierce':    { sub: 'TB · SS · 2025 #14 Pick · Rays System' },
-      'ebay:andrew-fischer':   { sub: 'MIL · 3B · Duke HR Record' },
-      'ebay:marek-houston':    { sub: 'MIN · SS · 2025 #16 Pick' },
-      'ebay:gage-jump':        { sub: 'ATH · RHP · #49 MLB.com' },
-      'ebay:justin-gonzalez':  { sub: 'BOS · OF · IFA · Latin Program POY' },
-      'ebay:edward-florentino':{ sub: 'PIT · OF · IFA · #44 MLB.com' },
-      'ebay:seong-jun-kim':    { sub: 'TEX · SS/RHP · KBO Two-Way' }
-    };
-    function esc(x){ return String(x == null ? '' : x).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-    var wl = null; // key -> {cardType, boardHide} from same-origin watchlist; null = fetch failed
-    function isBowmanAuto(c){
-      if (!c) return false;
-      if (wl) {
-        var m = wl[c.key];
-        return !!m && m.cardType === 'chrome-auto' && !m.boardHide;
-      }
-      return /1st Bowman Chrome Auto/i.test(String(c.label || ''));
-    }
-    var pWatch = fetch('/data/watchlist.json', { cache: 'no-store' })
-      .then(function(r){ return r.ok ? r.json() : null; })
-      .then(function(j){
-        if (j && Array.isArray(j.cards)) {
-          wl = {};
-          j.cards.forEach(function(c){ wl[c.source + ':' + c.id] = { cardType: c.cardType, boardHide: !!c.boardHide }; });
-        }
-      })
-      .catch(function(){ /* wl stays null -> label fallback */ });
-    // Sep 1 2026: reuse the page-wide feed promise (set by the dashboard script) — one fetch per view.
-    var pFeed = window.SCH_FEED_P || fetch(FEED + '?t=' + Date.now(), { cache: 'no-store' })
-      .then(function(r){ return r.ok ? r.json() : null; })
-      .catch(function(){ return null; });
-    Promise.all([pWatch, pFeed])
-      .then(function(res){
-        var feed = res[1];
-        if (!feed || !Array.isArray(feed.cards)) return;
-        var rowsEl = document.getElementById('bb-panel-rows');
-        var updEl = document.getElementById('bb-panel-updated');
-        if (!rowsEl) return;
-        var top = feed.cards
-          .filter(function(c){ return isBowmanAuto(c) && typeof c.last === 'number' && isFinite(c.last); })
-          .sort(function(a, b){ return b.last - a.last; })
-          .slice(0, 5);
-        if (top.length < 5) return; // thin feed -> keep static fallback
-        rowsEl.innerHTML = top.map(function(c, i){
-          var name = esc((c.label || c.key).split(' — ')[0]);
-          var meta = META[c.key] || {};
-          var sig = (c.signal && c.points >= 20) ? c.signal : null;
-          // Mo, Sep 3 2026: the tag is the ENGINE's chart signal, labelled as such ("data beats narratives").
-          var sub = esc(meta.sub || '1st Bowman Chrome Auto') + (sig ? ' · engine ' + esc(sig) : '');
-          var rankCls = i < 2 ? 'panel-rank top' : 'panel-rank';
-          var priceCls = i < 2 ? 'panel-price hot' : 'panel-price mid';
-          // Sep 4 2026: each row opens the card's own chart page (index -> card page -> Vault).
-          return '<a href="/card-' + esc(String(c.key).replace(/^ebay:/, '')) + '" class="panel-row" style="text-decoration:none; display:flex;">' +
-            '<div class="' + rankCls + '">0' + (i + 1) + '</div>' +
-            '<span data-card-img="' + esc(c.key) + '" data-card-name="' + name + '" data-card-size="row" data-card-surface="home-top5" data-card-link="off"></span>' +
-            '<div style="flex:1;"><div class="panel-name">' + name + '</div>' +
-            '<div class="panel-sub">' + sub + '</div></div>' +
-            '<div class="' + priceCls + '">~$' + Math.round(c.last) + '</div></a>';
-        }).join('');
-        if (updEl && feed.day) updEl.textContent = 'Updated ' + feed.day;
-        var featEl = document.getElementById('bb-panel-feature');
-        if (featEl && top[0]) {
-          var f = top[0], fname = esc((f.label || f.key).split(' — ')[0]);
-          featEl.innerHTML = '<span data-card-img="' + esc(f.key) + '" data-card-name="' + fname + '" data-card-size="card" data-card-surface="home-feature" data-card-tilt="1"></span>' +
-            '<div class="feature-txt"><div class="feature-kicker">#1 on the board tonight</div><div class="feature-name">' + fname + '</div><div class="feature-sub">1st Bowman Chrome Auto · engine mark ~$' + Math.round(f.last) + '</div><a href="/bowman-bangers" class="feature-link">Full board →</a></div>';
-          if (window.SCH_IMG) SCH_IMG.enhance(featEl);
-        }
-        if (window.SCH_IMG) SCH_IMG.enhance(rowsEl);
-      })
-      .catch(function(){ /* keep static fallback */ });
-  })();
-  </script>
-
-
-  <script>
-  /* Signal Alerts signup — activates when data/newsletter.json lists this page
-     ({"provider":"mailerlite","pages":["roy-watch"]}; page key = data-schsub).
-     Posts to our own /api/subscribe (MailerLite API, subscriber lands active —
-     no confirmation click). Pages not listed stay hidden, so this ships dark
-     and lights up per page with a one-line config change. */
-  (function () {
-    var blocks = Array.prototype.slice.call(document.querySelectorAll('.sig-alerts'));
-    if (!blocks.length) return;
-    fetch('/data/newsletter.json', { cache: 'no-store' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (cfg) {
-        if (!cfg || cfg.provider !== 'mailerlite' || !Array.isArray(cfg.pages)) return;
-        blocks.forEach(function (b) {
-          var key = b.getAttribute('data-schsub') || 'site';
-          if (cfg.pages.indexOf(key) === -1) return;
-          b.style.display = 'block';
-          var form = b.querySelector('.schsub-form');
-          var msg = b.querySelector('.schsub-msg');
-          var btn = form.querySelector('button[type="submit"]');
-          form.addEventListener('submit', function (ev) {
-            ev.preventDefault();
-            var email = form.querySelector('input[name="email_address"]').value.trim();
-            if (!email) return;
-            if (btn) btn.disabled = true;
-            fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: email, source: 'signal-' + key }) })
-              .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-              .then(function () {
-                form.style.display = 'none';
-                msg.textContent = '\u2713 You\u2019re on the list \u2014 the next Tape Recap lands in your inbox.';
-                msg.style.display = 'block';
-                if (window.gtag) gtag('event', 'newsletter_signup', { method: 'mailerlite', location: 'signal-' + key });
-              })
-              .catch(function (status) {
-                if (btn) btn.disabled = false;
-                msg.textContent = status === 400 ? 'That address doesn\u2019t look right \u2014 check it and try again.' : 'Hmm \u2014 that did not go through. Try again, or DM @shopcardhub.';
-                msg.style.color = 'var(--orange)';
-                msg.style.display = 'block';
-              });
-          });
-        });
-      })
-      .catch(function () {});
-  })();
-  </script>
-<script src="/js/card-img.js?v=2" defer></script>
+<script src="/js/engine-stats.js?v=1"></script>
+<script src="/js/home.js?v=1" defer></script>
 </body>
 </html>

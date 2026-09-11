@@ -30,7 +30,8 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
 const ONLY = (process.argv.find((a) => a.startsWith("--only=")) || "").slice(7) || null;
 const FEED_BASE = process.env.FEED_BASE || "https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data";
-const JS_V = 3; // bump when js/engine-block.js changes (cache-buster on the <script> tag)
+const JS_V = 4; // bump when js/engine-block.js changes (cache-buster on the <script> tag)
+const STATS_V = 1; // js/engine-stats.js (shared return math) — loaded before engine-block.js
 const EPN = "mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001";
 
 const read = (f) => fs.readFileSync(path.join(REPO, f), "utf8");
@@ -268,6 +269,7 @@ for (const [host, list] of byHost) {
 ${list.map((c, i) => renderBlock(c, i)).join("\n")}
   <p class="cp-note" style="margin:6px 2px 0;">Marks are the engine's nightly reads from verified eBay asking prices and, where recorded, auction closes; dated, sourced, never hand-typed. Cards are illiquid — think in 6–12 month holds. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
 </section>
+<script src="/js/engine-stats.js?v=${STATS_V}"></script>
 <script src="/js/engine-block.js?v=${JS_V}" defer></script>
 <!-- ENGINE:END -->`;
   if (/<!-- ENGINE:START[\s\S]*?<!-- ENGINE:END -->/.test(html)) {

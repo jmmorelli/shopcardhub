@@ -1,0 +1,31 @@
+{
+  "_comment": "TERMINAL RAIL (Terminal step 2, Sep 11 2026). Source of truth for the left rail on / — sections, order, labels. Guides groups are pulled from data/nav.json categories by label (guideCategories). Rendered by tools/build-rail.mjs into <!-- RAIL:START --> … <!-- RAIL:END -->. Every href must be a site path that exists in nav.json (or / /watchlist /indices /auctions); hash fragments allowed. Portfolios rows render client-side from the Vault mirror (read-only); screens switch the Screens panel via /#screen=<id>.",
+  "nav": [
+    { "id": "home", "href": "/", "label": "Home", "ico": "α" },
+    { "id": "board", "href": "/bowman-bangers", "label": "Bowman Bangers board", "ico": "▤", "pill": "board" },
+    { "id": "indices", "href": "/indices", "label": "Set indices", "ico": "≋", "pill": "indices" },
+    { "id": "auctions", "href": "/auctions", "label": "Auction Desk", "ico": "⚒" },
+    { "id": "tape", "href": "/#tape", "label": "The Tuesday Tape", "ico": "✉", "pill": "Tue" }
+  ],
+  "guides": { "label": "Guides", "allHref": "/research", "guideCategories": ["Sports", "Pokémon", "Grading + Supplies"] },
+  "portfolios": {
+    "label": "Portfolios",
+    "vaultHref": "/watchlist",
+    "rows": [
+      { "status": "own", "label": "My cards", "ico": "◆" },
+      { "status": "watch", "label": "Hunting", "ico": "◇" }
+    ],
+    "empty": "Start in the Vault →"
+  },
+  "screens": {
+    "label": "Saved screens",
+    "rows": [
+      { "id": "board", "label": "Bowman Bangers board" },
+      { "id": "under100", "label": "Autos under $100" },
+      { "id": "drying", "label": "Supply drying up" },
+      { "id": "z2", "label": "|z| beyond 2" },
+      { "id": "fat", "label": "Fat tails" }
+    ]
+  },
+  "foot": "Free · no account · your Vault stays on your device"
+}

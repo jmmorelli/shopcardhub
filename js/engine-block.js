@@ -4,7 +4,7 @@
  * old /card-<id> pages did, so guide pages that already rank carry the nightly mark,
  * the price line, the hammers and the verified live listings. Multi-instance safe.
  *
- * Terminal step 1 (v3): the block is the page's stat band — signal, 30D ROC, z, σ/day, skew,
+ * Terminal step 1 (v3; v4 Sep 11 2026 moves the moment math to js/engine-stats.js): the block is the page's stat band — signal, 30D ROC, z, σ/day, skew,
  * kurtosis, supply, ask Q1–Q3, hammer median — plus the hammer median as a dashed reference on
  * the chart and a histogram of daily returns. σ/skew/excess-kurtosis are population moments of
  * night-over-night % returns over the whole nightly series (the engine's retSkew/retKurtosis
@@ -28,18 +28,10 @@
   var mktP = getJSON(FEED + '/market-latest.json?t=' + Date.now());
   var quiet = function (p) { return p.catch(function () { return null; }); };
 
-  /* night-over-night % returns of the mark series */
-  function returns(ys) { var r = []; for (var i = 1; i < ys.length; i++) if (ys[i - 1]) r.push((ys[i] / ys[i - 1] - 1) * 100); return r; }
-  /* population moments: σ, skew, excess kurtosis (normal = 0) */
-  function moments(r) {
-    var n = r.length; if (n < 3) return null;
-    var mu = 0; r.forEach(function (v) { mu += v; }); mu /= n;
-    var m2 = 0, m3 = 0, m4 = 0;
-    r.forEach(function (v) { var d = v - mu; m2 += d * d; m3 += d * d * d; m4 += d * d * d * d; });
-    m2 /= n; m3 /= n; m4 /= n;
-    var sd = Math.sqrt(m2); if (!(sd > 0)) return { n: n, sd: 0, skew: null, kurt: null };
-    return { n: n, sd: sd, skew: m3 / (sd * sd * sd), kurt: m4 / (m2 * m2) - 3 };
-  }
+  /* σ / skew / kurtosis come from js/engine-stats.js (loaded by the ENGINE block before this file) */
+  var ST = window.SCH_STATS;
+  function returns(ys) { return ST ? ST.returns(ys) : []; }
+  function moments(r) { return ST ? ST.moments(r) : null; }
   function histSVG(r) {
     if (r.length < 8) return '';
     var lo = Math.min.apply(null, r), hi = Math.max.apply(null, r), span = Math.max(hi - lo, 0.5), bins = 12, cnt = [];
