@@ -1620,11 +1620,11 @@
     },
     {
      "ts": "2026-09-11",
-     "commit": "PENDING - filled by the push step",
+     "commit": "4340eff",
      "by": "fri release-window run (CoS-approved in chat, 4.8)",
      "what": "bowman-bangers Sep 11 re-mark + Fischer/Kim swap; calls.json reads + v-bb-fischer-buy-2; board-history week; watchlist +9 BCB26 feeds; indices BCB26 chaseBasket; pipeline rulings + position-language redaction",
-     "gates": "PENDING",
-     "verified": "PENDING"
+     "gates": "audit-prices FAIL 0 / WARN 31 (pre-existing); audit-site FAIL 0 / WARN 3 (known first-bowman-unverified, Monday clears); first-bowman.mjs clean - all three re-run on the pushed tree in a fresh clone",
+     "verified": "live 2026-09-11 ~15:2x PT - /data/calls.json carries v-bb-fischer-buy-2 (updated 2026-09-11); /data/watchlist.json 9 bcb26 feeds; /data/pipeline.json 0 competitor names / 0 handles / 0 position vocabulary; /bowman-bangers stamp 2026-09-11, Fischer rendered at #2, re-entry copy live"
     }
    ]
   },
