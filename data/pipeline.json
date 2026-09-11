@@ -1559,6 +1559,15 @@
      "what": "competitor-name redaction across 4 blocks; trader SUPERSEDED annotations; Thursday trader filing shipped",
      "gates": "audit-prices FAIL 0 / WARN 31 (pre-existing); audit-site FAIL 0 / WARN 3 (known first-bowman-unverified, Monday clears)",
      "verified": "live 2026-09-10 ~17:3x PT - /data/pipeline.json 200, 0 competitor names, 0 outside handles, trader lastRun 2026-09-10"
+    },
+    {
+     "ts": "2026-09-11",
+     "commit": "5ea9810",
+     "by": "chief-of-staff (Mo asked in chat: commit what we missed; push approved by Mo in chat Sep 11)",
+     "what": "Friday release-window board refresh that the Fri run left uncommitted in Mo's local clone: bowman-bangers.html (Fischer #2 / Kim #3 crossover resolved, 5 price-subs + hero re-stamped Sep 11), data/board-history.json (week 2026-09-11), data/calls.json (3 reads rolled, no new projections), data/pipeline.json (curator +4, inspector +7, dm +3 actions, proposals audit-2026-09-11-1..5)",
+     "gates": "audit-prices FAIL 0 / WARN 31 (pre-existing, none on bowman-bangers); audit-site FAIL 0 / WARN 3 (known first-bowman-unverified); first-bowman.mjs clean; all JSON parses",
+     "verified": "live 2026-09-11 ~2:0x PT - /bowman-bangers 200 with data-prices-updated=2026-09-11 and Fischer at #2; /data/pipeline.json 200, generated 2026-09-11, 0 competitor names, 0 outside handles",
+     "note": "Merged onto origin ef0a5d1 from a FRESH clone, not Mo's stale local mirror: his clone was 2 behind (missing Thursday's cc736ab redaction) so a straight commit there would have reverted the 9 redacted names and dropped 4 inspector entries. Those 4 were preserved. Mo's local clone is now 3 behind origin and still has an unremovable .git/index.lock - he needs `rm .git/index.lock` + `git reset --hard origin/main` (his 4 modified files are now all on origin)."
     }
    ]
   },
