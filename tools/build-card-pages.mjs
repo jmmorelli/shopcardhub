@@ -464,7 +464,7 @@ ${footer}
       .catch(function () {});
   })();
 </script>
-<script src="/js/vault-track.js?v=5" defer></script>
+<script src="/js/vault-track.js?v=6" defer></script>
 </body>
 </html>
 `;
@@ -576,7 +576,7 @@ ${footer}
   }).catch(function(){});
 })();
 </script>
-<script src="/js/vault-track.js?v=5" defer></script>
+<script src="/js/vault-track.js?v=6" defer></script>
 </body>
 </html>
 `;

@@ -277,7 +277,7 @@ ${list.map((c, i) => renderBlock(c, i)).join("\n")}
   } else if (html.includes("<!-- DEST:END -->")) {
     html = html.replace("<!-- DEST:END -->", "<!-- DEST:END -->\n\n" + block);
   } else throw new Error(`${file}: no <!-- DEST:END --> anchor to insert the engine block after`);
-  if (!/\/js\/vault-track\.js\?v=\d+/.test(html)) html = html.replace("</body>", '<script src="/js/vault-track.js?v=5" defer></script>\n</body>');
+  if (!/\/js\/vault-track\.js\?v=\d+/.test(html)) html = html.replace("</body>", '<script src="/js/vault-track.js?v=6" defer></script>\n</body>');
   if (!DRY) fs.writeFileSync(path.join(REPO, file), html);
   report.push(`${file}  ← ${list.map((c) => c.id).join(", ")}`);
 }

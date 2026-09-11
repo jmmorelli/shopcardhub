@@ -384,7 +384,7 @@ ${table(byTab.autos)}
 <div class="foot">${TICKER} &middot; ShopCardHub Set Indices &middot; per-set Bowman index #1 &middot; ${isPre ? "pre-activation, streets Sep 9, 2026" : `inception ${fmtD(X.inception)} at 100.00`} &middot; ask basis labeled until hammer restatement, dated per mark, divisor-continuous &middot; affiliate disclosure: eBay listing links are EPN-tracked; marks and index math are independent of them.</div>
 </div>
 
-<script src="/js/vault-track.js?v=5" defer></script>
+<script src="/js/vault-track.js?v=6" defer></script>
 <script>
 (function(){
   var tabs = document.querySelectorAll('.tab'), panes = document.querySelectorAll('.pane');

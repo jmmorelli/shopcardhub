@@ -549,6 +549,61 @@
     })();
   </script>
   <link rel="stylesheet" href="/css/site-fixes.css">
+  <link rel="stylesheet" href="/css/terminal-shell.css?v=1">
+  <style>
+    /* ═══ PORTFOLIOS (Terminal step 3, Sep 11 2026) — the Vault inside the terminal shell ═══ */
+    .term .container { max-width:none; padding:0; }
+    .term .vault-hero { padding:16px 0 0; }
+    .term .vault-hero h1 { font-size:24px; }
+    .term .rail .rl.on[href="/"] { background:transparent; box-shadow:none; color:var(--text); }
+    .tmain > .container { padding:0; }
+    .pf-head { display:flex; align-items:flex-end; justify-content:space-between; gap:12px 16px; flex-wrap:wrap; margin:14px 0 4px; }
+    .pf-name-row { position:relative; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .pf-name { font-family:var(--fd); font-size:32px; font-weight:900; letter-spacing:0.5px; color:var(--text-head); line-height:1; background:none; border:0; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:10px; text-transform:none; }
+    .pf-name .chev { font-size:16px; color:var(--text-dim); }
+    .pf-name:hover .chev { color:var(--accent); }
+    .pf-menu { display:none; position:absolute; top:calc(100% + 8px); left:0; z-index:60; min-width:260px; background:var(--bg2); border:1px solid var(--border2); border-radius:3px; box-shadow:0 12px 40px rgba(0,0,0,0.55); padding:6px; }
+    .pf-menu.open { display:block; }
+    .pf-menu a, .pf-menu button { display:flex; justify-content:space-between; gap:10px; width:100%; text-align:left; padding:8px 10px; border-radius:2px; color:var(--text); font-family:var(--fb); font-size:13.5px; background:none; border:0; cursor:pointer; }
+    .pf-menu a:hover, .pf-menu button:hover { background:rgba(255,255,255,0.05); color:var(--text-head); text-decoration:none; }
+    .pf-menu .on { background:rgba(0,204,245,0.1); color:var(--text-head); box-shadow:inset 2px 0 0 var(--accent); }
+    .pf-menu .n { font-family:var(--fm); font-size:11px; color:var(--text-dim); }
+    .pf-menu hr { border:0; border-top:1px solid var(--border); margin:5px 0; }
+    .pf-menu .act { font-family:var(--fm); font-size:11px; color:var(--accent); }
+    .pf-menu .act.danger { color:var(--red); }
+    .pf-val { display:flex; align-items:baseline; gap:12px; margin-top:8px; flex-wrap:wrap; }
+    .pf-val .big { font-family:var(--fm); font-size:26px; font-weight:700; color:var(--text-head); font-variant-numeric:tabular-nums; }
+    .pf-val .chg { font-family:var(--fm); font-size:13px; font-weight:700; font-variant-numeric:tabular-nums; }
+    .pf-meta { font-family:var(--fm); font-size:11px; color:var(--text-dim); margin-top:4px; }
+    .pf-acts { display:flex; gap:8px; flex-wrap:wrap; }
+    .pf-tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:14px 0 12px; }
+    .pf-tiles .kpi { padding:12px 14px 10px; }
+    .pf-tiles .kpi-value { font-family:var(--fm); font-size:21px; font-weight:700; }
+    .pf-tiles .kpi-value .up { color:var(--green); } .pf-tiles .kpi-value .dn { color:var(--red); }
+    .pf-warn { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 8px; padding:9px 14px; border-radius:3px; border:1px solid; font-size:13px; font-weight:500; line-height:1.45; }
+    .pf-warn.red { background:rgba(255,46,85,0.12); border-color:rgba(255,46,85,0.35); color:#ffd5dd; }
+    .pf-warn.gold { background:rgba(245,200,0,0.12); border-color:rgba(245,200,0,0.3); color:#fff2b0; }
+    .pf-warn.cyan { background:rgba(0,204,245,0.1); border-color:rgba(0,204,245,0.3); color:#c9f3ff; }
+    .pf-warn b { font-family:var(--fm); font-weight:700; }
+    .pf-warn a { white-space:nowrap; font-family:var(--fm); font-size:11px; }
+    .pf-warn .x { color:inherit; opacity:0.6; font-family:var(--fm); background:none; border:0; cursor:pointer; font-size:12px; }
+    .pf-tape { display:grid; grid-template-columns:1.15fr 1fr; gap:12px; margin:14px 0 6px; }
+    .pf-panel { background:var(--bg2); border:1px solid var(--border); border-radius:4px; min-width:0; }
+    .pf-panel-h { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; border-bottom:1px solid var(--border); }
+    .pf-panel-h h3 { margin:0; font-family:var(--fd); font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-head); }
+    .pf-panel-h .sub { font-family:var(--fm); font-size:11px; color:var(--text-dim); }
+    .pf-panel-b { padding:10px 14px; font-size:13.5px; line-height:1.55; }
+    .pf-panel-b p { margin:0 0 8px; } .pf-panel-b p:last-child { margin:0; }
+    .pf-dist { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .pf-dist .kv { padding:8px 10px; background:var(--bg3); border-radius:3px; }
+    .pf-dist .kv .l { font-family:var(--fd); font-size:10.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .pf-dist .kv .v { font-family:var(--fm); font-size:17px; font-weight:700; color:var(--text-head); font-variant-numeric:tabular-nums; }
+    .pf-dist .kv .s { font-size:11px; color:var(--text-dim); line-height:1.3; margin-top:2px; }
+    .vgrid td.w { font-variant-numeric:tabular-nums; }
+    .pf-pick { display:none; }
+    @media (max-width:900px) { .pf-tiles { grid-template-columns:1fr 1fr; } .pf-tape { grid-template-columns:1fr; } }
+    @media (max-width:640px) { .pf-name { font-size:26px; } .pf-val .big { font-size:22px; } .pf-tiles { gap:6px; } .pf-dist { grid-template-columns:1fr; } }
+  </style>
 </head>
 <body>
 
@@ -872,6 +927,97 @@
 </script>
 <!-- NAV:END -->
 
+  <!-- ═══ TERMINAL SHELL (Terminal step 3, Sep 11 2026): the same rail as / (tools/build-rail.mjs) + the Vault in the main column ═══ -->
+  <div class="term">
+<!-- RAIL:START -->
+<aside class="rail" id="rail" aria-label="Terminal rail">
+  <nav class="rl-sec" aria-label="Terminal">
+      <a class="rl on" href="/"><span class="ico">α</span><span class="lbl">Home</span></a>
+      <a class="rl" href="/bowman-bangers"><span class="ico">▤</span><span class="lbl">Bowman Bangers board</span></a>
+      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span></a>
+      <a class="rl" href="/auctions"><span class="ico">⚒</span><span class="lbl">Auction Desk</span></a>
+      <a class="rl" href="/#tape"><span class="ico">✉</span><span class="lbl">The Tuesday Tape</span><span class="pill">Tue</span></a>
+  </nav>
+  <div class="rl-sec rl-guides">
+    <h4>Guides <a href="/research">all →</a></h4>
+    <a class="rl rl-guides-chip" href="/research"><span class="ico">✎</span><span class="lbl">Guides</span></a>
+      <details class="rl-grp">
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Sports</span><span class="pill">22</span></summary>
+        <div class="rl-glabel">⚾ Baseball</div>
+        <a class="rl sub" href="/bowman-bangers"><span class="lbl">2026 Bowman Bangers ⭐</span></a>
+        <a class="rl sub" href="/bowman-1st-chrome-index"><span class="lbl">BOW26 — 1st Chrome Index ⭐</span></a>
+        <a class="rl sub" href="/bowman-chrome-2026-index"><span class="lbl">BCB26 — Bowman Chrome Index (pre)</span></a>
+        <a class="rl sub" href="/ethan-holliday-rookie-cards"><span class="lbl">Ethan Holliday 1st Bowman</span></a>
+        <a class="rl sub" href="/bowman-chrome-baseball-2026"><span class="lbl">Bowman Chrome — Sep 9 ⭐</span></a>
+        <a class="rl sub" href="/bowman-sapphire-2026"><span class="lbl">Bowman Sapphire</span></a>
+        <a class="rl sub" href="/topps-tribute-baseball"><span class="lbl">Topps Tribute — Jul 29</span></a>
+        <div class="rl-glabel">🏀 Basketball</div>
+        <a class="rl sub" href="/cooper-flagg-rookie-cards"><span class="lbl">Cooper Flagg Rookie Cards</span></a>
+        <a class="rl sub" href="/victor-wembanyama-rookie-cards"><span class="lbl">Victor Wembanyama</span></a>
+        <a class="rl sub" href="/topps-chrome-basketball-2026"><span class="lbl">Topps Chrome Basketball</span></a>
+        <a class="rl sub" href="/topps-chrome-black-basketball"><span class="lbl">Chrome Black — Jul 28</span></a>
+        <a class="rl sub" href="/best-basketball-cards-under-50"><span class="lbl">Best Cards Under $50</span></a>
+        <div class="rl-glabel">🏈 Football</div>
+        <a class="rl sub" href="/nfl-rookie-cards-2026"><span class="lbl">2026 NFL Rookie Guide</span></a>
+        <a class="rl sub" href="/topps-cosmic-chrome-football"><span class="lbl">Cosmic Chrome</span></a>
+        <a class="rl sub" href="/topps-chrome-black-football"><span class="lbl">Chrome Black — Jul 10</span></a>
+        <a class="rl sub" href="/best-football-cards-under-50"><span class="lbl">Best Cards Under $50</span></a>
+        <a class="rl sub" href="/topps-flagship-football"><span class="lbl">Flagship Football — Aug 21</span></a>
+        <a class="rl sub" href="/bowman-football"><span class="lbl">Bowman Football — Pre-Order</span></a>
+        <div class="rl-glabel">⚽ Soccer</div>
+        <a class="rl sub" href="/world-cup-2026-soccer-cards"><span class="lbl">World Cup 2026 Cards</span></a>
+        <a class="rl sub" href="/lamine-yamal-rookie-cards"><span class="lbl">Lamine Yamal</span></a>
+        <a class="rl sub" href="/erling-haaland-rookie-cards"><span class="lbl">Erling Haaland</span></a>
+        <a class="rl sub" href="/lionel-messi-cards"><span class="lbl">Lionel Messi</span></a>
+        <a class="rl sub all" href="/research"><span class="lbl">All Sports →</span></a>
+      </details>
+      <details class="rl-grp">
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Pokémon</span><span class="pill">11</span></summary>
+        <div class="rl-glabel">Sets &amp; Guides</div>
+        <a class="rl sub" href="/pokemon-30th-anniversary-2026"><span class="lbl">30th Celebration — Sep 16 ★</span></a>
+        <a class="rl sub" href="/pitch-black-set-guide"><span class="lbl">Pitch Black — Jul 17</span></a>
+        <a class="rl sub" href="/chaos-rising"><span class="lbl">Chaos Rising</span></a>
+        <a class="rl sub" href="/ascended-heroes"><span class="lbl">Ascended Heroes</span></a>
+        <a class="rl sub" href="/prismatic-evolutions-guide"><span class="lbl">Prismatic Evolutions</span></a>
+        <a class="rl sub" href="/pokemon-tcg-2026"><span class="lbl">2026 Pokémon TCG Guide</span></a>
+        <div class="rl-glabel">Set Indices — Live Trackers</div>
+        <a class="rl sub" href="/pitch-black-index"><span class="lbl">PB26 — Pitch Black</span></a>
+        <a class="rl sub" href="/chaos-rising-index"><span class="lbl">CR26 — Chaos Rising</span></a>
+        <a class="rl sub" href="/ascended-heroes-index"><span class="lbl">AH26 — Ascended Heroes</span></a>
+        <a class="rl sub" href="/prismatic-evolutions-index"><span class="lbl">PRIS25 — Prismatic Evolutions</span></a>
+        <a class="rl sub" href="/destined-rivals-index"><span class="lbl">DR25 — Destined Rivals</span></a>
+        <a class="rl sub all" href="/pokemon-tcg-2026"><span class="lbl">All Pokémon →</span></a>
+      </details>
+      <details class="rl-grp">
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Grading + Supplies</span><span class="pill">3</span></summary>
+        <div class="rl-glabel">Grading</div>
+        <a class="rl sub" href="/psa-grading-guide"><span class="lbl">PSA Grading Guide</span></a>
+        <a class="rl sub" href="/tag-grading-guide"><span class="lbl">TAG Grading Guide — AI Slabs</span></a>
+        <div class="rl-glabel">Supplies</div>
+        <a class="rl sub" href="/best-card-supplies"><span class="lbl">Best Card Supplies</span></a>
+        <a class="rl sub all" href="/psa-grading-guide"><span class="lbl">All Grading + Supplies →</span></a>
+      </details>
+  </div>
+  <div class="rl-sec">
+    <h4>Portfolios <a href="/watchlist">Vault →</a></h4>
+    <div data-rail="portfolios" data-cfg="{&quot;rows&quot;:[{&quot;status&quot;:&quot;own&quot;,&quot;label&quot;:&quot;My cards&quot;,&quot;ico&quot;:&quot;◆&quot;},{&quot;status&quot;:&quot;watch&quot;,&quot;label&quot;:&quot;Hunting&quot;,&quot;ico&quot;:&quot;◇&quot;}],&quot;vaultHref&quot;:&quot;/watchlist&quot;,&quot;empty&quot;:&quot;Start in the Vault →&quot;}">
+      <a class="rl pf" href="/watchlist" data-status="own"><span class="ico">◆</span><span class="lbl">My cards</span><span class="pill">—</span></a>
+      <a class="rl pf" href="/watchlist" data-status="watch"><span class="ico">◇</span><span class="lbl">Hunting</span><span class="pill">—</span></a>
+      <a class="rl pf-empty" href="/watchlist"><span class="ico">→</span><span class="lbl">Start in the Vault →</span></a>
+    </div>
+  </div>
+  <div class="rl-sec">
+    <h4>Saved screens</h4>
+      <a class="rl sc" href="/#screen=board" data-screen="board"><span class="ico">⌁</span><span class="lbl">Bowman Bangers board</span></a>
+      <a class="rl sc" href="/#screen=under100" data-screen="under100"><span class="ico">⌁</span><span class="lbl">Autos under $100</span></a>
+      <a class="rl sc" href="/#screen=drying" data-screen="drying"><span class="ico">⌁</span><span class="lbl">Supply drying up</span></a>
+      <a class="rl sc" href="/#screen=z2" data-screen="z2"><span class="ico">⌁</span><span class="lbl">|z| beyond 2</span></a>
+      <a class="rl sc" href="/#screen=fat" data-screen="fat"><span class="ico">⌁</span><span class="lbl">Fat tails</span></a>
+  </div>
+  <div class="rail-foot">Free · no account · your Vault stays on your device</div>
+</aside>
+<!-- RAIL:END -->
+  <main class="tmain" id="main">
   <div class="container">
     <div class="vault-hero">
       <div class="vault-h1row">
@@ -879,6 +1025,11 @@
         <div class="vault-eyebrow">Free · No Account<span class="eb-long"> · Data Stays On Your Device</span><span id="feedPill"></span></div>
       </div>
     </div>
+
+    <!-- PORTFOLIO HEADER (own tab) — name ▾ menu, value, 5D change, meta, tiles, warnings: renderPf() -->
+    <div class="pf-head" id="pfHead" hidden></div>
+    <div class="pf-tiles" id="pfTiles" hidden></div>
+    <div id="pfWarns"></div>
 
     <div class="kpi-strip" id="kpiStrip"></div>
 
@@ -945,6 +1096,9 @@
 
     <div class="vlist" id="vlist"></div>
 
+    <!-- "This portfolio on the tape" + Distribution (own tab): templated sentences from the numbers, no model -->
+    <div class="pf-tape" id="pfTape" hidden></div>
+
     <details class="vault-how" id="vaultHow">
       <summary>How the Vault works</summary>
       <p class="vault-sub">Track the cards you're hunting and the cards you own. Prices log themselves — the nightly engine covers tracked cards, and opening any other card auto-logs the live ask median (always labeled asks, never solds). The Vault builds your <strong>candle charts</strong>, flags cards that hit your <strong>buy zone</strong>, and runs the <strong>stats</strong> on every card. The chart doesn't lie: green candle means more buyers than sellers.</p>
@@ -966,6 +1120,18 @@
       <button class="btn btn-sm" onclick="document.getElementById('importFile').click()" title="Vault JSON backup or a COMC inventory CSV">Import (JSON / COMC CSV)</button>
       <input type="file" id="importFile" accept=".json,.csv,application/json,text/csv" style="display:none" onchange="importData(event)">
       <button class="btn btn-sm btn-ghost" onclick="wipeAll()">Wipe Vault</button>
+    </div>
+  </div>
+  </main>
+  </div><!-- /.term -->
+
+  <!-- Portfolio picker (COMC CSV import asks which portfolio; default My cards) -->
+  <div class="modal-veil" id="pfPickVeil" onclick="if(event.target===this)pfPickCancel()">
+    <div class="modal">
+      <h3 id="pfPickTitle">Import into which portfolio?</h3>
+      <div class="f-row"><label>Portfolio</label><select id="pfPickSel"></select></div>
+      <div class="f-row" id="pfPickNewRow" style="display:none;"><label>New portfolio name</label><input type="text" id="pfPickNew" maxlength="40" placeholder="e.g. Kids' box"></div>
+      <div class="modal-actions"><button class="btn" onclick="pfPickCancel()">Cancel</button><button class="btn btn-primary" onclick="pfPickOk()">Continue</button></div>
     </div>
   </div>
 
@@ -1075,6 +1241,11 @@
             <input type="date" id="fBuyDate">
           </div>
         </div>
+        <div class="f-row">
+          <label>Portfolio</label>
+          <select id="fList" onchange="if(this.value==='__new'){document.getElementById('fListNew').style.display='';document.getElementById('fListNew').focus();}else{document.getElementById('fListNew').style.display='none';}"></select>
+          <input type="text" id="fListNew" maxlength="40" placeholder="New portfolio name" style="display:none; margin-top:6px;">
+        </div>
       </div>
       <div class="f-row">
         <label>Current Price ($) — starts the chart</label>
@@ -1088,6 +1259,8 @@
   </div>
 
   <div class="toast" id="toast"></div>
+  <script src="/js/engine-stats.js?v=1"></script>
+  <script src="/js/vault-schema.js?v=1"></script>
 
   <footer>
     <div class="container">
@@ -1107,8 +1280,12 @@
 /* ============ THE VAULT — ShopCardHub watchlist + portfolio ============ */
 const LS_KEY = 'sch_vault_v1';
 const EPN = 'mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=vault';
-let state = { cards: [], demo: false };
+let state = { cards: [], demo: false, lists: [] };
 let tab = 'watch';
+/* Portfolios (Terminal step 3, Sep 11 2026): schema v2 lives in /js/vault-schema.js — lists[] + own-card listId,
+   migrated in save() (idempotent) so every write keeps the invariants. pf = selected portfolio id | 'all'. */
+const VS = window.SCH_VSCHEMA, ST = window.SCH_STATS;
+let pf = 'all';
 let editId = null;
 let segStatus = 'watch';
 const openSet = new Set();   // expanded card ids
@@ -1140,7 +1317,8 @@ function idbGet(key) { return idbOpen().then(db => new Promise((res, rej) => { c
 function idbSet(key, val) { return idbOpen().then(db => new Promise((res, rej) => { const t = db.transaction(IDB_STORE, 'readwrite'); t.objectStore(IDB_STORE).put(val, key); t.oncomplete = () => res(); t.onerror = () => rej(t.error); })); }
 function readLS() { try { const raw = localStorage.getItem(LS_KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } }
 function slimState() {
-  return { demo: !!state.demo, slim: true, cards: state.cards.map(c => Object.assign({}, c, { prices: (c.prices || []).slice(-2) })) };
+  /* the mirror keeps the last 6 points per card (was 2) so the rail's 5D change can be read on any page */
+  return { demo: !!state.demo, slim: true, lists: VS.lists(state).map(l => Object.assign({}, l)), cards: state.cards.map(c => Object.assign({}, c, { prices: (c.prices || []).slice(-6) })) };
 }
 function mergeMirror(full, mirror) {
   // cards present in the localStorage mirror but not in the full store were added from a card page
@@ -1148,6 +1326,8 @@ function mergeMirror(full, mirror) {
   if (mirror.demo && !full.demo) return 0;
   const ids = new Set(full.cards.map(c => c.id)), names = new Set(full.cards.map(c => (c.name || '').toLowerCase()));
   let added = 0;
+  // lists created from a card page's chooser ("+ New…") live only in the mirror until this merge
+  if (Array.isArray(mirror.lists)) { VS.migrate(full); const have = new Set(full.lists.map(l => l.id)); mirror.lists.forEach(l => { if (l && l.id && !have.has(String(l.id))) { full.lists.push({ id: String(l.id), name: String(l.name || 'Portfolio'), createdAt: l.createdAt || Date.now() }); have.add(String(l.id)); } }); }
   mirror.cards.forEach(c => {
     if (!c || ids.has(c.id) || names.has((c.name || '').toLowerCase())) return;
     if (!Array.isArray(c.prices)) c.prices = [];
@@ -1180,6 +1360,7 @@ async function load() {
 }
 let saveTimer = null;
 function save() {
+  VS.migrate(state);   // v2 invariants on every write: lists[] with the default, own cards carry listId
   if (idbOK) {
     try { localStorage.setItem(LS_KEY, JSON.stringify(slimState())); } catch (e) {}
     clearTimeout(saveTimer);
@@ -1209,7 +1390,7 @@ function seedDemo() {
   save();
 }
 function clearDemo() {
-  state = { demo: false, cards: [] };
+  state = { demo: false, cards: [], lists: [] };
   save(); render();
   toast('Vault cleared — it\'s all yours');
   track('vault_clear_demo');
@@ -1901,6 +2082,8 @@ let searchTimer = null;
 function searchChanged() { clearTimeout(searchTimer); searchTimer = setTimeout(() => { shown = CHUNK; renderList(); }, 120); }
 function render() {           // full: KPIs + analytics + list (call after data changes)
   renderKPIs();
+  renderPf();
+  renderRail();
   renderOnboard();
   renderNotifyCtl();
   checkZoneAlerts();
@@ -1916,8 +2099,9 @@ function render() {           // full: KPIs + analytics + list (call after data 
 }
 function renderList() {       // cheap: just the grid / cards (search, sort, group, scroll)
   const watch = state.cards.filter(c => c.status === 'watch');
-  const own = state.cards.filter(c => c.status === 'own');
+  const own = pfCards();       // the selected portfolio ('all' = every own card)
   let list = tab === 'watch' ? watch : own;
+  pfValTotal = 0; own.forEach(c => { const lp = last(c); if (lp != null) pfValTotal += lp * (c.qty || 1); });
   const q = document.getElementById('searchBox').value.trim().toLowerCase();
   if (q) list = list.filter(c => (c.name + ' ' + (c.set || '') + ' ' + c.cat).toLowerCase().includes(q));
 
@@ -1944,7 +2128,7 @@ function renderList() {       // cheap: just the grid / cards (search, sort, gro
   if (!list.length) {
     const msg = tab === 'watch'
       ? { big: 'Nothing on the radar', p: 'Add the cards you\'re hunting, set a target price, and the Vault will tell you the moment your logged comps hit the buy zone.' }
-      : { big: 'No cards in the vault yet', p: 'Add cards you own with your cost basis. Every price you log updates your P&L and portfolio value.' };
+      : (pf !== 'all' && state.cards.some(c => c.status === 'own') ? { big: 'Nothing in ' + VS.listName(state, pf) + ' yet', p: 'Move a card here from its Edit dialog (Portfolio ▾), or add one — this portfolio starts empty.' } : { big: 'No cards in the vault yet', p: 'Add cards you own with your cost basis. Every price you log updates your P&L and portfolio value.' });
     el.innerHTML = '<div class="empty-state"><div class="big">' + msg.big + '</div><p>' + msg.p + '</p><button class="btn btn-primary" onclick="openAdd()">+ Add Your First Card</button></div>';
     return;
   }
@@ -2000,6 +2184,7 @@ function rowModel(c, isOwn) {
     plp: (isOwn && c.cost > 0 && lp != null) ? (lp - c.cost) / c.cost : null,
     dist, inZone: !isOwn && dist != null && dist <= 0,
     value: (isOwn && lp != null) ? lp * q : null,
+    w: (isOwn && lp != null && pfValTotal > 0) ? lp * q / pfValTotal : null,
     since: isOwn ? (c.buyDate || '') : (c.added ? dstr(c.added) : (n ? dstr(c.prices[0].t) : '')) };
 }
 // Column spec — order matters; `own`/`watch` flags pick the tab; hidden set comes from the chooser.
@@ -2018,6 +2203,7 @@ const COLS = [
   { key:'plp',   label:'P/L %', own:true, sortv:r => r.plp, delta:r => r.plp },
   { key:'qty',   label:'Qty', own:true, sortv:r => r.q, cell:r => String(r.q) },
   { key:'value', label:'Value', own:true, sortv:r => r.value, cls:r => r.value != null ? '' : 'dim', cell:r => r.value != null ? '$' + fmt$(r.value, 0) : '—' },
+  { key:'weight', label:'Weight', own:true, sortv:r => r.w, cls:r => r.w != null ? 'w' : 'dim', cell:r => r.w != null ? (r.w * 100).toFixed(1) + '%' : '—' },
   { key:'target',label:'Target', watch:true, sortv:r => r.c.target, cls:r => r.c.target != null ? '' : 'dim', cell:r => r.c.target != null ? '$' + fmt$(r.c.target, 0) : '—' },
   { key:'dist',  label:'To Zone', watch:true, sortv:r => r.dist == null ? null : -r.dist, cls:r => r.dist == null ? 'dim' : r.dist <= 0 ? 'pos' : '',
     cell:r => r.dist == null ? '—' : (r.dist <= 0 ? 'GO · ' + pct(-r.dist, 0) + ' under' : '+$' + fmt$(r.lp - r.c.target, 0) + ' away') },
@@ -2282,6 +2468,7 @@ function toggleAnalytics() {
 /* ---------- interactions ---------- */
 function setTab(t) {
   tab = t; shown = CHUNK;
+  if (t === 'watch' && /#pf=/.test(location.hash) && !/#pf=hunting/.test(location.hash)) history.replaceState(null, '', location.pathname + '#pf=hunting');
   document.getElementById('tabWatch').classList.toggle('active', t === 'watch');
   document.getElementById('tabOwn').classList.toggle('active', t === 'own');
   track('vault_tab', { tab: t });
@@ -2354,6 +2541,7 @@ function openAdd() {
   document.getElementById('fBuyDate').value = new Date().toISOString().slice(0,10);
   document.getElementById('fPrivate').checked = false;
   document.getElementById('fCat').value = 'baseball';
+  fillListSelect(document.getElementById('fList'), pf !== 'all' && tab === 'own' ? pf : VS.DEFAULT_ID);
   setSeg(tab);
   document.getElementById('fFirstPrice').parentElement.style.display = '';
   document.getElementById('modalVeil').classList.add('show');
@@ -2373,6 +2561,7 @@ function openEdit(id) {
   document.getElementById('fQty').value = c.qty || 1;
   document.getElementById('fBuyDate').value = c.buyDate || '';
   document.getElementById('fPrivate').checked = !!c.private;
+  fillListSelect(document.getElementById('fList'), c.listId || VS.DEFAULT_ID);
   setSeg(c.status);
   document.getElementById('fFirstPrice').parentElement.style.display = 'none';
   document.getElementById('modalVeil').classList.add('show');
@@ -2393,10 +2582,14 @@ function saveCard() {
     buyDate: segStatus === 'own' ? document.getElementById('fBuyDate').value : null,
     private: !!document.getElementById('fPrivate').checked
   };
+  if (segStatus === 'own') data.listId = listFromSelect(document.getElementById('fList'), document.getElementById('fListNew'));
   if (editId) {
     const c = state.cards.find(x => x.id === editId);
+    const moved = c.status === 'own' && data.status === 'own' && data.listId !== (c.listId || VS.DEFAULT_ID);
+    if (data.status !== 'own') delete c.listId;
     Object.assign(c, data);
-    toast('Card updated');
+    toast(moved ? 'Moved to ' + VS.listName(state, data.listId) : 'Card updated');
+    if (moved) track('vault_pf_move');
   } else {
     if (state.demo) { state.cards = []; state.demo = false; } // first real card replaces demo
     const c = Object.assign({ id: uid(), prices: [] }, data);
@@ -2536,7 +2729,8 @@ function saveBulk() {
       target: null,
       cost: bulkSeg === 'own' ? r.cost : null,
       qty: bulkSeg === 'own' ? r.qty : null,
-      buyDate: null
+      buyDate: null,
+      listId: bulkSeg === 'own' ? (pf !== 'all' ? pf : VS.DEFAULT_ID) : undefined
     });
   });
   save();
@@ -2567,7 +2761,7 @@ function importData(ev) {
     try {
       const d = JSON.parse(txt);
       if (!d || !Array.isArray(d.cards)) throw 0;
-      state = { demo: false, cards: d.cards.filter(c => c && c.name && Array.isArray(c.prices)) };
+      state = { demo: false, lists: Array.isArray(d.lists) ? d.lists : [], cards: d.cards.filter(c => c && c.name && Array.isArray(c.prices)) };
       save(); render();
       toast(state.cards.length + ' cards imported');
       track('vault_import');
@@ -2608,6 +2802,9 @@ function comcGrade(card) { const m = card.match(/\b(PSA|SGC|BGS|CGC|TAG)\s*(10|9
 function comcSet(card) { const i = card.search(/\s[\[#]/); return (i > 0 ? card.slice(0, i) : card).replace(/\s*-\s*$/, '').trim(); }
 function comcName(card) { const i = card.search(/\s[\[#]/); let n = i > 0 ? card.slice(i) : card; n = n.replace(/^\s*\[[^\]]*\]\s*/, '').trim(); return n || card; }
 function comcImport(txt, fname) {
+  pfPick('Import into which portfolio?', listId => comcImportInto(txt, fname, listId));
+}
+function comcImportInto(txt, fname, listId) {
   const rows = parseCSV(txt);
   if (!rows.length) { toast('Empty file'); return; }
   const head = rows[0].map(h => h.trim().toLowerCase()), ix = k => head.indexOf(k);
@@ -2642,11 +2839,12 @@ function comcImport(txt, fname) {
     const pricePt = g.lo != null ? { t: snap, p: g.lo, src: 'comc' } : null;
     if (existing) {
       existing.qty = qty; if (avg != null) existing.cost = Math.round(avg * 100) / 100;
+      if (existing.status === 'own' && listId && listId !== VS.DEFAULT_ID) existing.listId = listId;
       existing.private = g.nfs > 0; existing.comc = { key, ids: g.ids, nfs: g.nfs, fs: g.fs, ask: g.ask, lo: g.lo, hi: g.hi, n: g.n, snap };
       if (pricePt && !existing.prices.some(p => Math.abs(p.t - snap) < 36e5 && p.src === 'comc')) { existing.prices.push(pricePt); existing.prices.sort((a, b) => a.t - b.t); }
       updated++;
     } else {
-      state.cards.push({ id: uid(), status: 'own', cat: comcCat(g.card), name: comcName(g.card), set: comcSet(g.card), grade: comcGrade(g.card),
+      state.cards.push({ id: uid(), status: 'own', listId: listId || VS.DEFAULT_ID, cat: comcCat(g.card), name: comcName(g.card), set: comcSet(g.card), grade: comcGrade(g.card),
         cost: avg != null ? Math.round(avg * 100) / 100 : null, qty, buyDate: g.dates.length ? new Date(Math.min.apply(null, g.dates)).toISOString().slice(0, 10) : null,
         added: Date.now(), private: g.nfs > 0, comc: { key, ids: g.ids, nfs: g.nfs, fs: g.fs, ask: g.ask, lo: g.lo, hi: g.hi, n: g.n, snap },
         prices: pricePt ? [pricePt] : [] });
@@ -2661,7 +2859,7 @@ function comcImport(txt, fname) {
 function wipeAll() {
   if (idbOK) idbSet('state', null).catch(() => {});
   if (!confirm('Wipe the entire Vault? This deletes every card and price log on this device. Export first if you want a backup.')) return;
-  state = { demo: false, cards: [] };
+  state = { demo: false, cards: [], lists: [] };
   save(); render();
 }
 
@@ -2744,6 +2942,7 @@ function supplyHtml(fe) {
 const FEED_BASE = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/';
 let FEED = null;       // { cards:[], byKey:{} } from prices-latest.json
 let FEED_HIST = null;  // prices-history.json cache
+let FEED_MKT = null;   // market-latest.json cards{} — closes per feed key (hammer coverage tile); closes count only, never the hammers
 const dayOf = t => new Date(t).toISOString().slice(0, 10);
 
 async function loadFeed() {
@@ -2754,8 +2953,9 @@ async function loadFeed() {
     const j = await r.json();
     const cards = Array.isArray(j) ? j : (j.cards || []);
     if (!cards.length) throw 0;
-    FEED = { cards: cards, byKey: {} };
+    FEED = { cards: cards, byKey: {}, day: j.day || null };
     cards.forEach(e => { if (e && e.key) FEED.byKey[e.key] = e; });
+    fetch(FEED_BASE + 'market-latest.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(m => { FEED_MKT = m && m.cards ? m.cards : null; if (tab === 'own') renderPf(); }).catch(() => {});
     if (pill) pill.innerHTML = ' · <b style="color:var(--green)">\u25CF live price engine on</b>';
     autoLinkFeeds();
     feedSync();
@@ -3141,13 +3341,175 @@ function compsInner(c) {
 }
 
 /* ---------- boot ---------- */
+/* ═══════════════════════════════════════════════════════════════════
+   PORTFOLIOS (Terminal step 3, Sep 11 2026) — the mockup's portfolio view inside the Vault.
+   Schema + list ops: /js/vault-schema.js. Math: /js/engine-stats.js. Every sentence below is
+   templated from the numbers — no model, no free text. Hammers appear only as a coverage count.
+   ═══════════════════════════════════════════════════════════════════ */
+let pfValTotal = 0;
+function pfCards() { return VS.ownIn(state, pf); }
+function pfName() { return pf === 'all' ? 'All portfolios' : VS.listName(state, pf); }
+function readPfHash() {
+  const m = (location.hash || '').match(/#pf=([^&]+)/); if (!m) return;
+  const id = decodeURIComponent(m[1]);
+  if (id === 'hunting') { if (tab !== 'watch') { tab = 'watch'; document.getElementById('tabWatch').classList.add('active'); document.getElementById('tabOwn').classList.remove('active'); } return; }
+  if (id === 'new') { history.replaceState(null, '', location.pathname); newPortfolio(); return; }
+  pf = id === 'all' || VS.lists(state).some(l => l.id === id) ? id : 'all';
+  if (tab !== 'own') { tab = 'own'; shown = CHUNK; document.getElementById('tabWatch').classList.remove('active'); document.getElementById('tabOwn').classList.add('active'); }
+}
+function switchPf(id) {
+  pf = id; shown = CHUNK;
+  const m = document.getElementById('pfMenu'); if (m) m.classList.remove('open');
+  history.replaceState(null, '', location.pathname + '#pf=' + encodeURIComponent(id));
+  if (tab !== 'own') setTab('own'); else render();
+  track('vault_pf_switch');
+}
+function newPortfolio() {
+  const name = prompt('Name the new portfolio', '');
+  if (name == null || !name.trim()) return;
+  if (state.demo) { state.cards = []; state.demo = false; }
+  const id = VS.addList(state, name);
+  save(); switchPf(id);
+  toast('Portfolio "' + name.trim() + '" created — move cards in from their Edit dialog');
+  track('vault_pf_new');
+}
+function renamePf() {
+  if (pf === 'all' || pf === VS.DEFAULT_ID) { toast(pf === 'all' ? 'Pick a portfolio first' : '"My cards" keeps its name'); return; }
+  const name = prompt('Rename portfolio', VS.listName(state, pf)); if (name == null || !name.trim()) return;
+  VS.renameList(state, pf, name); save(); render(); track('vault_pf_rename');
+}
+function deletePf() {
+  if (pf === 'all' || pf === VS.DEFAULT_ID) { toast(pf === 'all' ? 'Pick a portfolio first' : '"My cards" can’t be deleted'); return; }
+  const n = VS.ownIn(state, pf).length;
+  if (!confirm('Delete "' + VS.listName(state, pf) + '"? ' + (n ? 'Its ' + n + ' card' + (n === 1 ? '' : 's') + ' move to My cards — nothing is deleted.' : 'It is empty.'))) return;
+  VS.removeList(state, pf); save(); switchPf(VS.DEFAULT_ID); track('vault_pf_delete');
+}
+function togglePfMenu() { const m = document.getElementById('pfMenu'); if (m) m.classList.toggle('open'); }
+function fillListSelect(sel, value) {
+  if (!sel) return;
+  sel.innerHTML = VS.lists(state).map(l => '<option value="' + esc(l.id) + '">' + esc(l.name) + '</option>').join('') + '<option value="__new">+ New portfolio…</option>';
+  sel.value = VS.lists(state).some(l => l.id === value) ? value : VS.DEFAULT_ID;
+  const nw = document.getElementById('fListNew'); if (nw) nw.style.display = 'none';
+}
+function listFromSelect(sel, newInp) {
+  if (!sel) return VS.DEFAULT_ID;
+  if (sel.value === '__new') { const nm = newInp ? newInp.value.trim() : ''; return nm ? VS.addList(state, nm) : VS.DEFAULT_ID; }
+  return sel.value || VS.DEFAULT_ID;
+}
+/* portfolio picker modal (COMC CSV import) */
+let pfPickCb = null;
+function pfPick(title, cb) {
+  pfPickCb = cb;
+  document.getElementById('pfPickTitle').textContent = title;
+  const sel = document.getElementById('pfPickSel');
+  sel.innerHTML = VS.lists(state).map(l => '<option value="' + esc(l.id) + '">' + esc(l.name) + '</option>').join('') + '<option value="__new">+ New portfolio…</option>';
+  sel.value = pf !== 'all' ? pf : VS.DEFAULT_ID;
+  sel.onchange = () => { document.getElementById('pfPickNewRow').style.display = sel.value === '__new' ? '' : 'none'; };
+  document.getElementById('pfPickNewRow').style.display = 'none';
+  document.getElementById('pfPickVeil').classList.add('show');
+}
+function pfPickCancel() { pfPickCb = null; document.getElementById('pfPickVeil').classList.remove('show'); }
+function pfPickOk() {
+  const id = listFromSelect(document.getElementById('pfPickSel'), document.getElementById('pfPickNew'));
+  const cb = pfPickCb; pfPickCancel(); if (cb) cb(id);
+}
+/* ---- numbers for the header / tiles / warnings / tape ---- */
+function feedOf(c) { return c.feedKey && FEED ? FEED.byKey[c.feedKey] : null; }
+function pfModel(cards) {
+  const sm = VS.summary(cards);
+  const rows = cards.map(c => {
+    const lp = last(c), q = c.qty || 1, v = lp != null ? lp * q : 0, fe = feedOf(c);
+    const ys = c.prices.map(p => p.p).filter(p => p != null && isFinite(p));
+    const mo = ST.moments(ST.returns(ys));
+    const gated = !!(fe && (fe.gated && (Array.isArray(fe.gated) ? fe.gated.length : true) || (fe.signalRaw && fe.signalRaw !== fe.signal)));
+    return { c, lp, q, v, w: sm.val > 0 ? v / sm.val : 0, fe, sig: fe ? String(fe.signal || 'HOLD').toUpperCase() : null, raw: fe ? String(fe.signalRaw || fe.signal || 'HOLD').toUpperCase() : null, gated,
+      gate: fe ? (Array.isArray(fe.gated) && fe.gated[0]) || (gated ? (fe.reasons || [])[0] : null) : null, conf: fe ? fe.confidence : null, roc: fe ? fe.roc30 : null, z: fe ? fe.z : null, sup: fe ? fe.supply : null, supd: fe ? fe.supplyChange30 : null,
+      closes: (c.feedKey && FEED_MKT && FEED_MKT[c.feedKey] && FEED_MKT[c.feedKey].closes) || 0, sd: mo ? mo.sd : null, skew: mo ? mo.skew : null, kurt: mo ? mo.kurt : null, nret: mo ? mo.n : 0 };
+  });
+  const buys = rows.filter(r => !r.gated && r.sig === 'BUY' && r.conf >= 0.5).length, sells = rows.filter(r => !r.gated && r.sig === 'SELL' && r.conf >= 0.5).length, gatedN = rows.filter(r => r.gated).length;
+  let wsup = 0, wsupW = 0; rows.forEach(r => { if (r.supd != null && isFinite(r.supd)) { wsup += r.supd * r.w; wsupW += r.w; } });
+  const supW = wsupW > 0 ? wsup / wsupW : null;
+  const covered = rows.filter(r => r.closes > 0).length;
+  const top = rows.slice().sort((a, b) => b.w - a.w)[0] || null;
+  return { sm, rows, buys, sells, gatedN, supW, covered, top, linked: rows.filter(r => r.fe).length };
+}
+const WARN_KEY = 'sch_vault_warn_dismissed';
+function warnDismissed() { try { return new Set(JSON.parse(sessionStorage.getItem(WARN_KEY) || '[]')); } catch (e) { return new Set(); } }
+function dismissWarn(k) { try { const d = warnDismissed(); d.add(k); sessionStorage.setItem(WARN_KEY, JSON.stringify([...d])); } catch (e) {} renderPf(); }
+function warnsFor(m, hunting) {
+  const w = [], dis = warnDismissed();
+  const push = (k, cls, html, link, href) => { if (!dis.has(k)) w.push({ k, cls, html, link, href }); };
+  if (!hunting) m.rows.forEach(r => {
+    const nm = '<b>' + esc(r.c.name) + '</b>';
+    if (!r.gated && r.sig === 'SELL' && r.conf >= 0.8) push('sell:' + r.c.id, 'red', nm + ' is on a published SELL at ' + fmt$(r.conf, 2) + ' — ' + pctN(r.roc) + ' / 30D, z ' + fmt$(r.z, 2) + ', ' + (r.sup == null ? '—' : r.sup) + ' verified asks.', 'Learn why »', '/how-prices-work');
+    if (r.gated && (r.raw === 'BUY' || r.raw === 'SELL')) push('gate:' + r.c.id, 'gold', nm + ': raw signal ' + r.raw + ' but withheld — ' + esc(r.gate || 'thin sample') + '.', 'How gating works »', '/how-prices-work');
+    if (r.kurt != null && r.kurt > 10 && r.nret >= 8) push('kurt:' + r.c.id, 'cyan', nm + ': 30D return kurtosis ' + fmt$(r.kurt, 1) + ', skew ' + fmt$(r.skew, 1) + ' — one jump day carries the whole move; σ otherwise ' + fmt$(r.sd, 1) + '%/day. Treat the ROC as one print, not a trend.', 'See distribution »', '#pfTape');
+  });
+  else state.cards.filter(c => c.status === 'watch').forEach(c => { const lp = last(c); if (c.target != null && lp != null && lp <= c.target) push('zone:' + c.id, 'cyan', '<b>' + esc(c.name) + '</b> is in your buy zone — last $' + fmt$(lp, 0) + ' vs target $' + fmt$(c.target, 0) + '.', 'Live listings »', ebayUrl(c, false)); });
+  return w.slice(0, 4);
+}
+function pctN(v, dp) { return v == null || !isFinite(v) ? '—' : (v > 0 ? '+' : '') + Number(v).toFixed(dp == null ? 1 : dp) + '%'; }
+function renderPf() {
+  const head = document.getElementById('pfHead'), tiles = document.getElementById('pfTiles'), warns = document.getElementById('pfWarns'), tape = document.getElementById('pfTape'), kpi = document.getElementById('kpiStrip');
+  if (!head) return;
+  const own = tab === 'own';
+  head.hidden = !own; tiles.hidden = !own; tape.hidden = !own; kpi.style.display = own ? 'none' : '';
+  const m = pfModel(own ? pfCards() : []);
+  warns.innerHTML = warnsFor(m, !own).map(w => '<div class="pf-warn ' + w.cls + '"><span>&#9888; ' + w.html + ' <a href="' + esc(w.href) + '"' + (/^https?:/.test(w.href) ? ' target="_blank" rel="noopener sponsored"' : '') + '>' + w.link + '</a></span><button class="x" type="button" aria-label="Dismiss" onclick="dismissWarn(\'' + w.k + '\')">&#10005;</button></div>').join('');
+  if (!own) return;
+  const sm = m.sm, lists = VS.lists(state);
+  const menu = '<div class="pf-menu" id="pfMenu">' +
+    '<a href="#pf=all" class="' + (pf === 'all' ? 'on' : '') + '" onclick="event.preventDefault();switchPf(\'all\')">All portfolios<span class="n">' + VS.ownIn(state, 'all').length + '</span></a>' +
+    lists.map(l => '<a href="#pf=' + esc(l.id) + '" class="' + (pf === l.id ? 'on' : '') + '" onclick="event.preventDefault();switchPf(\'' + esc(l.id) + '\')">' + esc(l.name) + '<span class="n">' + VS.ownIn(state, l.id).length + '</span></a>').join('') +
+    '<hr><button type="button" class="act" onclick="newPortfolio()">+ New portfolio</button><button type="button" class="act" onclick="renamePf()">Rename</button><button type="button" class="act danger" onclick="deletePf()">Delete (cards move to My cards)</button></div>';
+  const chgCls = sm.chgp == null ? '' : sm.chgp > 0.05 ? 'pos' : sm.chgp < -0.05 ? 'neg' : '';
+  head.innerHTML = '<div><div class="pf-name-row"><button type="button" class="pf-name" onclick="togglePfMenu()" aria-haspopup="menu">' + esc(pfName()) + ' <span class="chev">&#9662;</span></button>' + menu + '</div>' +
+    '<div class="pf-val"><span class="big">' + (sm.priced ? '$' + fmt$(sm.val, 0) : (sm.n ? sm.n + ' card' + (sm.n === 1 ? '' : 's') + ' · no price yet' : 'empty')) + '</span>' +
+      (sm.chg != null ? '<span class="chg ' + chgCls + '">' + (sm.chg >= 0 ? '↗ +$' : '↘ −$') + fmt$(Math.abs(sm.chg), 0) + ' (' + pctN(sm.chgp, 2) + ') 5D</span>' : '') + '</div>' +
+    '<div class="pf-meta">' + (sm.cost > 0 ? 'cost $' + fmt$(sm.cost, 0) + ' · unrealized ' + (sm.unreal >= 0 ? '+$' : '−$') + fmt$(Math.abs(sm.unreal), 0) + ' (' + pctN(sm.val / sm.cost * 100 - 100, 1) + ') · ' : '') + sm.n + ' card' + (sm.n === 1 ? '' : 's') + (FEED && FEED.day ? ' · marks as of ' + FEED.day + ' nightly' : ' · engine marks nightly') + '</div></div>' +
+    '<div class="pf-acts"><button class="btn" onclick="document.getElementById(\'importFile\').click()">Import COMC CSV</button><button class="btn" onclick="shareVaultImg()">&#120143; Share</button><button class="btn btn-primary" onclick="openAdd()">+ Add card</button></div>';
+  const tile = (l, v, s) => '<div class="kpi"><div class="kpi-label">' + l + '</div><div class="kpi-value">' + v + '</div><div class="kpi-note">' + s + '</div></div>';
+  tiles.innerHTML =
+    tile('Published signals', '<span class="up">' + m.buys + ' BUY</span> · <span class="dn">' + m.sells + ' SELL</span>', 'conf ≥ 0.50 · ' + m.gatedN + ' gated · ' + m.linked + '/' + sm.n + ' engine-linked') +
+    tile('Weighted supply Δ30D', m.supW == null ? '—' : '<span class="' + (m.supW > 0.5 ? 'dn' : m.supW < -0.5 ? 'up' : '') + '">' + pctN(m.supW, 1) + '</span>', 'listings counted last night vs 30D ago') +
+    tile('Hammer coverage', m.covered + '/' + sm.n, 'cards with a watched auction close') +
+    tile('Top weight', m.top && m.top.w > 0 ? (m.top.w * 100).toFixed(1) + '%' : '—', m.top && m.top.w > 0 ? esc(m.top.c.name) : 'add a price to weigh the book');
+  /* tape + distribution */
+  const rows = m.rows, top = m.top;
+  const linked = rows.filter(r => r.roc != null);
+  const best = linked.slice().sort((a, b) => b.roc - a.roc)[0], worst = linked.slice().sort((a, b) => a.roc - b.roc)[0];
+  let tp = '';
+  if (!sm.n) tp = '<p>' + esc(pfName()) + ' is empty. Add a card you own, or move one in from its Edit dialog.</p>';
+  else {
+    tp += '<p>' + (sm.priced ? '$' + fmt$(sm.val, 0) : 'No priced card yet') + ' across ' + sm.n + ' card' + (sm.n === 1 ? '' : 's') + (top && top.w > 0 ? '; ' + esc(top.c.name) + ' is ' + (top.w * 100).toFixed(0) + '% of it' + (top.w > 0.4 ? ' — one card decides your month' : '') : '') + '.</p>';
+    if (sm.chg != null) tp += '<p>' + (sm.chg >= 0 ? 'Up' : 'Down') + ' $' + fmt$(Math.abs(sm.chg), 0) + ' (' + pctN(sm.chgp, 2) + ') over the last five marks' + (sm.cost > 0 ? '; ' + (sm.unreal >= 0 ? '+' : '−') + '$' + fmt$(Math.abs(sm.unreal), 0) + ' unrealized on $' + fmt$(sm.cost, 0) + ' of cost' : '') + '.</p>';
+    if (best) tp += '<p>Best 30D: ' + esc(best.c.name) + ' ' + pctN(best.roc) + (best.gated ? ' (gated — thin)' : '') + (worst && worst !== best ? '. Worst: ' + esc(worst.c.name) + ' ' + pctN(worst.roc) + (worst.sig === 'SELL' && worst.conf >= 0.8 && !worst.gated ? ' on a published SELL' : '') : '') + '.</p>';
+    if (m.supW != null) tp += '<p>Supply, weighted: ' + pctN(m.supW, 1) + ' vs 30 days ago — ' + (m.supW > 10 ? 'more copies listed than a month ago; asks tend to soften when supply builds' : m.supW < -10 ? 'fewer copies listed; thin markets gate the calls' : 'about flat') + '.</p>';
+    if (!linked.length) tp += '<p>None of these cards is engine-linked yet — link one from its card popup and the nightly marks, signals and supply flow in.</p>';
+  }
+  const dist = rows.filter(r => r.sd != null && r.nret >= 3).sort((a, b) => b.w - a.w).slice(0, 4);
+  tape.innerHTML = '<div class="pf-panel"><div class="pf-panel-h"><h3>This portfolio on the tape</h3><span class="sub">plain words, from the numbers above</span></div><div class="pf-panel-b">' + tp + '</div></div>' +
+    '<div class="pf-panel"><div class="pf-panel-h"><h3>Distribution · daily returns</h3><span class="sub">σ · skew · excess kurtosis · top weights</span></div><div class="pf-panel-b">' +
+    (dist.length ? '<div class="pf-dist">' + dist.map(r => '<div class="kv"><div class="l" title="' + esc(r.c.name) + '">' + esc(r.c.name) + '</div><div class="v">σ ' + fmt$(r.sd, 1) + '%</div><div class="s">skew ' + fmt$(r.skew, 2) + ' · kurt ' + fmt$(r.kurt, 2) + ' · ' + r.nret + ' returns<br>' + (r.kurt > 3 ? 'fat tails — jump risk' : r.kurt < 0 ? 'flat-topped — grinds' : 'near-normal') + (Math.abs(r.skew) > 1 ? (r.skew > 0 ? ' · upside jumps' : ' · downside jumps') : '') + '</div></div>').join('') + '</div>' : '<p style="color:var(--text-dim);font-family:var(--fm);font-size:11.5px;">Needs a few logged points per card — engine-linked cards get one every night.</p>') +
+    '</div></div>';
+}
+/* the terminal rail's PORTFOLIOS section, from the live store — never writes */
+function renderRail() {
+  const el = document.querySelector('[data-rail="portfolios"]'); if (!el) return;
+  el.innerHTML = VS.railRows(state, { hrefFor: id => '#pf=' + encodeURIComponent(id), newHref: null, active: tab === 'own' ? pf : 'hunting' });
+  const home = document.querySelector('.rail .rl[href="/"]'); if (home) home.classList.remove('on');
+}
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 load().then(() => {
   migrateOld();
+  if (VS.migrate(state).changed) save();     // v1 → v2 (portfolios): additive, idempotent, lossless
+  readPfHash();
   render();
   handleDeepLink();
   loadFeed();
 });
+window.addEventListener('hashchange', () => { readPfHash(); render(); });
+document.addEventListener('click', e => { const m = document.getElementById('pfMenu'); if (m && m.classList.contains('open') && !e.target.closest('.pf-name-row')) m.classList.remove('open'); if (e.target.closest && e.target.closest('[data-pf-new]')) { e.preventDefault(); newPortfolio(); } });
 </script>
 <!-- VAULT SHARE CARDS (Aug 21, 2026) — renders a position or the whole vault to a 1200×675 PNG for X.
      Pure canvas, no libraries. Entry points: shareCardImg(id), shareVaultImg(). Text-only fallbacks remain shareCard()/shareVault(). -->

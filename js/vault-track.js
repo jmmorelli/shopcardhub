@@ -1,18 +1,26 @@
 /* ============================================================================
-   ShopCardHub — vault-track.js  (v2)
+   ShopCardHub — vault-track.js  (v3 · Terminal step 3, Sep 11 2026)
    Per-card "Track this card" → writes directly into the Vault (localStorage).
 
    THIS FILE OWNS THE PAGE-SIDE WRITE CONTRACT for the Vault store. Do not
    hand-roll vault writes on pages — add markup and include this script.
 
-   Storage contract (must stay in sync with watchlist.html):
-     key   : 'sch_vault_v1'
-     shape : { demo: bool, cards: [{ id, status:'watch'|'own', cat, name, set,
-               grade, target, cost?, qty?, buyDate?, feedKey?, notes?,
-               prices:[{t,p,src}], ... }] }
+   Storage contract (must stay in sync with watchlist.html and js/vault-schema.js):
+     key   : 'sch_vault_v1'   (the SLIM MIRROR — the Vault page keeps the full copy in
+                               IndexedDB sch_vault/kv/state and merges mirror-only cards
+                               and lists on every load)
+     shape : { demo: bool, slim?: bool,
+               lists: [{ id, name, createdAt }],           ← v2: portfolios; the fixed
+                                                             default is {id:'default', name:'My cards'}
+               cards: [{ id, status:'watch'|'own', listId?, cat, name, set,
+                         grade, target, cost?, qty?, buyDate?, feedKey?, notes?,
+                         prices:[{t,p,src}], ... }] }
+             own cards carry listId (missing → 'default'); watch cards never do.
      rules : dedupe on lowercase name; real user data beats demo;
              NEVER write over a store that fails to parse (fail open to the
-             legacy /watchlist?card= deep-link instead).
+             legacy /watchlist?card= deep-link instead); this file only ever
+             APPENDS a card or a list — it never edits, moves or deletes.
+             Schema helpers come from /js/vault-schema.js (loaded lazily here).
 
    Page markup:
      <button class="sch-track-card"
@@ -30,6 +38,9 @@
    buyDate today). data-price seeds the first price point (src:'page');
    data-feed sets card.feedKey so watchlist feedSync appends engine points
    nightly. GA event 'track_card_from_page' now carries vault_status.
+   v3: I OWN IT also asks "Portfolio ▾" (lists from the mirror, default
+   'My cards', "+ New…" creates the list in the mirror; the Vault page
+   merges it on next load) and writes card.listId.
    ========================================================================== */
 (function () {
   'use strict';
@@ -38,6 +49,19 @@
   var CATS = { baseball: 1, basketball: 1, football: 1, pokemon: 1, other: 1 };
 
   function uid() { return Math.random().toString(36).slice(2, 10) + Date.now().toString(36); }
+  var DEFAULT_LIST = 'default';
+  /* schema helpers (/js/vault-schema.js) — injected once so pages keep a single include; the chooser
+     falls back to the default list if it has not arrived yet */
+  function loadSchema() {
+    if (window.SCH_VSCHEMA || document.querySelector('script[data-sch-vschema]')) return;
+    var sc = document.createElement('script'); sc.src = '/js/vault-schema.js?v=1'; sc.async = true; sc.setAttribute('data-sch-vschema', '1');
+    document.head.appendChild(sc);
+  }
+  function listsOf(state) {
+    var V = window.SCH_VSCHEMA;
+    if (V) return V.lists(state);
+    return (state && Array.isArray(state.lists) && state.lists.length) ? state.lists : [{ id: DEFAULT_LIST, name: 'My cards' }];
+  }
   function ga(name, params) { if (typeof gtag === 'function') gtag('event', name, params || {}); }
   function todayISO() { return new Date().toISOString().slice(0, 10); }
 
@@ -91,6 +115,15 @@
       card.cost = (isFinite(cost) && cost > 0) ? cost : null;
       card.qty = 1;
       card.buyDate = todayISO();
+      /* portfolio: an existing list id, or a new list name (spec.newList) appended to the mirror's lists */
+      var V = window.SCH_VSCHEMA;
+      if (V) V.migrate(state); else if (!Array.isArray(state.lists)) state.lists = [{ id: DEFAULT_LIST, name: 'My cards', createdAt: 0 }];
+      var listId = DEFAULT_LIST;
+      if (spec.newList && String(spec.newList).trim()) {
+        if (V) listId = V.addList(state, spec.newList) || DEFAULT_LIST;
+        else { var nl = { id: 'pf' + uid(), name: String(spec.newList).trim(), createdAt: Date.now() }; state.lists.push(nl); listId = nl.id; }
+      } else if (spec.listId && listsOf(state).some(function (l) { return l.id === spec.listId; })) listId = spec.listId;
+      card.listId = listId;
     }
     var feed = String(spec.feed || '').trim();
     if (feed) card.feedKey = feed;   // watchlist feedSync appends engine prices nightly
@@ -159,6 +192,9 @@
     '#sch-track-pop input{width:100%;box-sizing:border-box;background:#111820;border:1px solid rgba(255,255,255,0.12);' +
     'border-radius:2px;color:#e4f0f4;font-family:inherit;font-size:12px;padding:8px 10px;margin-bottom:8px;}' +
     '#sch-track-pop input:focus{outline:none;border-color:#f5c800;}' +
+    '#sch-track-pop select{width:100%;box-sizing:border-box;background:#111820;border:1px solid rgba(255,255,255,0.12);' +
+    'border-radius:2px;color:#e4f0f4;font-family:inherit;font-size:12px;padding:8px 10px;margin-bottom:8px;}' +
+    '#sch-track-pop .sch-pop-new{display:none;}' +
     '#sch-track-snack{position:fixed;left:50%;bottom:70px;transform:translateX(-50%) translateY(20px);' +
     'background:#0c1017;border:1px solid #00e07a;color:#e4f0f4;font-family:"JetBrains Mono",monospace;' +
     'font-size:12px;padding:12px 18px;border-radius:2px;z-index:10400;opacity:0;pointer-events:none;' +
@@ -205,9 +241,9 @@
       page: location.pathname
     };
   }
-  function commit(btn, status, cost) {
+  function commit(btn, status, cost, listId, newList) {
     var spec = specFrom(btn);
-    spec.status = status; spec.cost = cost;
+    spec.status = status; spec.cost = cost; spec.listId = listId; spec.newList = newList;
     var res = track(spec);
     closePop();
     if (res === 'added') {
@@ -235,6 +271,9 @@
       '<div class="sch-pop-cost" style="display:none;">' +
         '<label>What did you pay? (optional)</label>' +
         '<input type="number" min="0" step="0.01" placeholder="$" inputmode="decimal">' +
+        '<label>Portfolio &#9662;</label>' +
+        '<select class="sch-pop-list"></select>' +
+        '<input type="text" class="sch-pop-new" maxlength="40" placeholder="New portfolio name">' +
         '<div class="sch-pop-row">' +
           '<button type="button" class="sch-own-add sch-own-btn">Add to My Cards</button>' +
         '</div>' +
@@ -246,22 +285,34 @@
     pop.style.top = top + 'px';
     pop.style.left = left + 'px';
 
+    var sel = pop.querySelector('.sch-pop-list'), newInp = pop.querySelector('.sch-pop-new');
+    function fillLists() {
+      var st = readStore(); var state = st.err ? null : st.state;
+      var ls = (state && !state.demo) ? listsOf(state) : [{ id: DEFAULT_LIST, name: 'My cards' }];
+      sel.innerHTML = ls.map(function (l) { return '<option value="' + String(l.id).replace(/"/g, '&quot;') + '">' + String(l.name).replace(/</g, '&lt;') + '</option>'; }).join('') + '<option value="__new">+ New…</option>';
+      sel.value = DEFAULT_LIST;
+    }
+    sel.addEventListener('change', function () { var isNew = sel.value === '__new'; newInp.style.display = isNew ? 'block' : 'none'; if (isNew) newInp.focus(); });
+    function own() {
+      var listId = sel.value === '__new' ? null : sel.value, newList = sel.value === '__new' ? newInp.value : '';
+      if (sel.value === '__new' && !String(newList).trim()) { newInp.focus(); return; }
+      commit(btn, 'own', pop.querySelector('.sch-pop-cost input').value, listId, newList);
+    }
     pop.querySelector('.sch-hunt-btn').addEventListener('click', function () { commit(btn, 'watch'); });
     pop.querySelector('.sch-own-btn').addEventListener('click', function (e) {
       if (e.target.classList.contains('sch-own-add')) return;
       pop.querySelector('.sch-pop-row').style.display = 'none';
       var costBox = pop.querySelector('.sch-pop-cost');
       costBox.style.display = 'block';
+      fillLists();
       var inp = costBox.querySelector('input');
       inp.focus();
-      inp.addEventListener('keydown', function (ev) {
-        if (ev.key === 'Enter') commit(btn, 'own', inp.value);
+      [inp, newInp].forEach(function (el) { el.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter') own();
         if (ev.key === 'Escape') closePop();
-      });
+      }); });
     });
-    pop.querySelector('.sch-own-add').addEventListener('click', function () {
-      commit(btn, 'own', pop.querySelector('.sch-pop-cost input').value);
-    });
+    pop.querySelector('.sch-own-add').addEventListener('click', own);
   }
 
   /* ---- floating "★ Track this card" pill (#sch-track-cta, inlined per page) ----
@@ -317,6 +368,7 @@
   }
 
   function init() {
+    loadSchema();
     var style = document.createElement('style');
     style.textContent = css;
     document.head.appendChild(style);
@@ -353,5 +405,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  window.SCHVault.track = track; window.SCHVault.version = 5;
+  window.SCHVault.track = track; window.SCHVault.version = 6;
 })();

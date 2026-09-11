@@ -211,17 +211,11 @@
       return '<li><span class="rk">' + (i + 1) + '</span><span class="nm"><a href="' + esc(r.url) + '" target="_blank" rel="noopener sponsored">' + esc(r.label || r.title) + '</a><small>' + (r.bidCount || 0) + ' bid' + (r.bidCount === 1 ? '' : 's') + (ends != null ? ' · ends in ' + (ends >= 48 ? Math.round(ends / 24) + 'd' : Math.round(ends) + 'h') : '') + ' · mark ' + fmt(r.mark) + (day ? ' (' + dstr(day) + ')' : '') + ' · <span class="ebay">eBay</span></small></span><span class="num ' + (vs == null ? '' : vs < 0 ? 'up' : 'dn') + '">' + (vs == null ? '—' : pct(vs, 0) + ' vs mark') + '</span><span class="num head">' + fmt(r.total) + '</span></li>';
     }).join('');
   }
-  /* rail portfolios — read-only view of the Vault mirror (sch_vault_v1); never writes */
+  /* rail portfolios — read-only view of the Vault mirror (sch_vault_v1) via js/vault-schema.js; never writes */
   function renderPortfolios(store, cfg) {
-    var cards = (store && Array.isArray(store.cards)) ? store.cards : [];
-    var lastP = function (c) { var ps = (c.prices || []).filter(function (p) { return p && p.p != null && isFinite(p.p); }); return ps.length ? ps[ps.length - 1].p : null; };
-    return (cfg.rows || []).map(function (r) {
-      var mine = cards.filter(function (c) { return c.status === r.status; });
-      var n = mine.length, val = 0, priced = 0;
-      mine.forEach(function (c) { var p = lastP(c); if (p != null) { val += p * (c.qty > 0 ? c.qty : 1); priced++; } });
-      var txt = !n ? '—' : r.status === 'own' ? n + ' · ' + (priced ? fmt(val) : '—') : String(n);
-      return '<a class="rl pf" href="' + esc(cfg.vaultHref || '/watchlist') + '" data-status="' + esc(r.status) + '"><span class="ico">' + esc(r.ico || '') + '</span><span class="lbl">' + esc(r.label) + '</span><span class="pill' + (n ? ' on' : '') + '">' + esc(txt) + '</span></a>';
-    }).join('') + (cards.length ? '' : '<a class="rl pf-empty" href="' + esc(cfg.vaultHref || '/watchlist') + '"><span class="ico">→</span><span class="lbl">' + esc(cfg.empty || 'Start in the Vault →') + '</span></a>');
+    var VS = (typeof self !== 'undefined' && self.SCH_VSCHEMA) || null;
+    if (VS) return VS.railRows(store, { vaultHref: (cfg && cfg.vaultHref) || '/watchlist' });
+    return '<a class="rl pf-empty" href="' + esc((cfg && cfg.vaultHref) || '/watchlist') + '"><span class="ico">→</span><span class="lbl">' + esc((cfg && cfg.empty) || 'Start in the Vault →') + '</span></a>';
   }
 
   /* ---------- browser ---------- */
