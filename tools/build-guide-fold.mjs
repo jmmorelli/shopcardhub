@@ -27,7 +27,7 @@ if (!files.length) { console.error("usage: node tools/build-guide-fold.mjs [--dr
 
 const CSS_LINK = '<link rel="stylesheet" href="/css/terminal-page.css?v=1">';
 const STOP_H2 = /^(gear for|more from|related|other .* to know|explore)/i; // sections that stay outside the fold
-const OPEN_H2 = /\bcard(s)?\s*[—–-]\s*ranked\b|\branked\b/i;                // the ranked list stays open
+const OPEN_H2 = /\branked\b|worth hunting|worth chasing|chase cards?\b/i;       // the chase list stays open (so does any section with feed-linked ★ Track buttons)
 
 // ---- balanced-tag scanner: index just past the </tag> that closes the <tag …> opening at `start` ----
 function closeOf(html, start, tag) {
@@ -52,7 +52,12 @@ function stamp(sectionHtml, underReverification) {
   if ((m = t.match(new RegExp(`re-?checked\\s+(${MONTHS})\\.?\\s+(\\d{1,2})(?:,\\s*20\\d{2})?`, "i")))) return `${short(m[1])} ${+m[2]} re-check`;
   // "prices/figures/comps/sold/listings … <Month YYYY>" — the sentence that dates the numbers
   const CUE = "(?:prices?|figures?|comps?|solds?|sales|listings|snapshot|as of|updated)";
-  if ((m = t.match(new RegExp(`${CUE}[^.]{0,160}?\\b(${MONTHS})\\.?\\s+(?:(\\d{1,2}),\\s+)?(20\\d{2})\\b`, "i")))) {
+  // every dated claim, skipping street dates ("released July 17, 2026") that ride in the same sentence
+  const re = new RegExp(`${CUE}[^.]{0,160}?\\b(${MONTHS})\\.?\\s+(?:(\\d{1,2}),\\s+)?(20\\d{2})\\b`, "gi");
+  while ((m = re.exec(t))) {
+    const monthAt = m.index + m[0].search(new RegExp(`\\b${m[1]}\\.?\\s+(?:\\d{1,2},\\s+)?20\\d{2}$`, "i"));
+    const before = t.slice(Math.max(0, monthAt - 24), monthAt);
+    if (/(?:releas\w*|launch\w*|street date|drops?|dropped)\s*(?:on|in)?\s*$/i.test(before)) continue;
     const s = m[2] ? `${short(m[1])} ${+m[2]}, ${m[3]}` : `${m[1][0].toUpperCase() + m[1].slice(1).toLowerCase()} ${m[3]}`;
     return underReverification && /june 2026/i.test(s) ? `${s} · under re-verification` : s;
   }
@@ -86,10 +91,21 @@ for (const rel of files) {
   }
   const underRev = /under re-verification/i.test(text(notice));
 
-  // 2. walk the top-level blocks after ENGINE:END until the first non-guide block
-  const start = html.indexOf("<!-- ENGINE:END -->") + "<!-- ENGINE:END -->".length;
-  let i = start, lead = null, sections = [], end = start;
+  // 2. walk the blocks after ENGINE:END until the first non-guide block. Two page shapes:
+  //    player pages (Holliday): sections are top-level siblings after the ENGINE block;
+  //    set guides / newer player pages: everything sits inside ONE <div class="container"> whose
+  //    first child is an .alert-bar — then we walk INSIDE that container and fold there.
+  let start = html.indexOf("<!-- ENGINE:END -->") + "<!-- ENGINE:END -->".length;
   const tagAt = (pos) => { const m = html.slice(pos).match(/^<([a-z0-9]+)([^>]*)>/i); return m ? { tag: m[1].toLowerCase(), attrs: m[2] } : null; };
+  const skipWs = (pos) => { pos += html.slice(pos).match(/^\s*/)[0].length; while (html.startsWith("<!--", pos)) { pos = html.indexOf("-->", pos) + 3; pos += html.slice(pos).match(/^\s*/)[0].length; } return pos; };
+  {
+    const p0 = skipWs(start); const t0 = tagAt(p0);
+    if (t0 && t0.tag === "div" && /class="container"/.test(t0.attrs)) {
+      const inner = html.slice(p0, closeOf(html, p0, "div"));
+      if (/<section\b/.test(inner) && !/stat-banner/.test(inner.slice(0, inner.indexOf("<section")))) start = p0 + t0.attrs.length + "<div>".length; // step inside
+    }
+  }
+  let i = start, lead = null, alerts = [], hoisted = [], skipped = [], sections = [], end = start;
   while (i < html.length) {
     const ws = html.slice(i).match(/^\s*/)[0].length; i += ws;
     if (html.startsWith("<!--", i)) { i = html.indexOf("-->", i) + 3; continue; } // banner comments ride along
@@ -98,32 +114,42 @@ for (const rel of files) {
     const close = closeOf(html, i, t.tag);
     const block = html.slice(i, close);
     if (t.tag === "div") {
-      if (/class="container"/.test(t.attrs) && /stat-banner|class="disclosure/.test(block) && !lead && !sections.length) { lead = { s: i, e: close }; i = close; end = close; continue; }
+      if (!sections.length && /class="container"/.test(t.attrs) && /stat-banner|class="disclosure/.test(block) && !lead) { lead = { s: i, e: close }; i = close; end = close; continue; }
+      if (!sections.length && /class="alert-bar/.test(t.attrs)) { alerts.push(block.replace(/^<div class="alert-bar"[^>]*>/, '<div class="alert-bar">')); i = close; end = close; continue; } // dated advisory → first fold's lead (inline style dropped; css/terminal-page.css restyles it)
       break; // social strip or anything else → the guide is over
     }
     if (t.tag !== "section") break;
-    const h2 = block.match(/<h2[^>]*>([\s\S]*?)<\/h2>/);
-    if (!h2 || STOP_H2.test(text(h2[1]))) break;
-    sections.push({ s: i, e: close, h2: h2[0], h2text: text(h2[1]) });
+    let h2 = block.match(/<h2[^>]*>([\s\S]*?)<\/h2>/);
+    if (!h2) { if (sections.length) break; skipped.push({ s: i, e: close }); i = close; continue; } // no heading → nothing to put in a summary; stays above the fold
+    if (STOP_H2.test(text(h2[1]))) break;
+    // a set-index tile (<a href="/…-index"> before the h2) is a destination, not essay — hoist it above the fold
+    let body = block; const pre = block.slice(0, block.indexOf(h2[0]));
+    for (const am of pre.matchAll(/<a\b[^>]*href="\/[a-z0-9-]+-index"[^>]*>/g)) { const ae = closeOf(pre, am.index, "a"); hoisted.push(pre.slice(am.index, ae)); body = body.replace(pre.slice(am.index, ae), ""); }
+    sections.push({ s: i, e: close, body, h2: h2[0], h2text: text(h2[1]) });
     i = close; end = close;
   }
   if (!sections.length) { console.log(`${name}: no essay <section> after the engine block — nothing to fold`); continue; }
+  if (skipped.length) { // h2-less sections stay above the fold region, in their original order
+    const keep = skipped.map((k) => html.slice(k.s, k.e)).join("\n\n");
+    hoisted.unshift(keep);
+  }
 
   // 3. build the fold region
   let leadHtml = "";
-  if (notice || lead) {
+  if (notice || lead || alerts.length) {
     const inner = lead ? html.slice(lead.s, lead.e).replace(/^<div class="container">/, "").replace(/<\/div>\s*(<!--\s*\/container\s*-->)?\s*$/, "") : "";
-    leadHtml = `\n  <div class="container gf-lead">${notice ? "\n    " + notice : ""}${inner}\n  </div>`;
+    leadHtml = `\n  <div class="container gf-lead">${notice ? "\n    " + notice : ""}${alerts.map((a) => "\n    " + a).join("")}${inner}\n  </div>`;
   }
+  const leadText = text(notice + " " + alerts.join(" "));
   const folds = sections.map((sec, k) => {
-    const body = html.slice(sec.s, sec.e).replace(sec.h2, "");                      // h2 moves into the summary
+    const body = sec.body.replace(sec.h2, "");                                       // h2 moves into the summary
     const h2 = sec.h2.replace(/<h2([^>]*)>/, (m0, a) => `<h2${/class="/.test(a) ? a.replace(/class="/, 'class="gf-h2 ') : ` class="gf-h2"${a}`}>`);
-    sec.open = OPEN_H2.test(sec.h2text) && !/ranked by/i.test(sec.h2text);
-    sec.stamp = stamp(html.slice(sec.s, sec.e), underRev);
-    if (k === 0 && sec.stamp === "guide" && notice) sec.stamp = stamp(notice, underRev); // the lead's own stamp dates the first fold
+    sec.open = OPEN_H2.test(sec.h2text) || /sch-track-card[^>]*data-feed=/.test(sec.body);   // the chase list / tracked cards stay open
+    sec.stamp = stamp(sec.body, underRev);
+    if (k === 0 && sec.stamp === "guide" && leadText) sec.stamp = stamp(leadText, underRev); // the lead's own stamp dates the first fold
     return `<details class="guide-fold"${sec.open ? " open" : ""} data-fold="${k + 1}">\n  <summary>${h2}<span class="gf-stamp">${sec.stamp}</span></summary>${k === 0 ? leadHtml : ""}\n${body}\n</details>`;
   });
-  const region = `\n\n<!-- FOLD:START — rookie guide folded under the engine block, generated by tools/build-guide-fold.mjs (Sep 11 2026). Re-run the tool to rebuild; it refuses to double-wrap. -->\n<div class="guide-wrap" id="guide" aria-label="Rookie guide">\n${folds.join("\n\n")}\n</div>\n<!-- FOLD:END -->\n\n`;
+  const region = `\n\n${hoisted.length ? '<div class="gf-hoist">\n' + hoisted.join("\n\n") + "\n</div>\n\n" : ""}<!-- FOLD:START — rookie guide folded under the engine block, generated by tools/build-guide-fold.mjs (Sep 11 2026). Re-run the tool to rebuild; it refuses to double-wrap. -->\n<div class="guide-wrap" id="guide" aria-label="Rookie guide">\n${folds.join("\n\n")}\n</div>\n<!-- FOLD:END -->\n\n`;
 
   // 4. splice: everything from ENGINE:END to the last folded section is replaced by the region
   html = html.slice(0, start) + region + html.slice(end).replace(/^\s*\n/, "");
@@ -134,6 +160,7 @@ for (const rel of files) {
   if (!DRY) fs.writeFileSync(file, html);
   touched++;
   console.log(`${name}: ${DRY ? "would fold" : "folded"} ${sections.length} section(s)${lead ? " + stat banner/disclosure lead" : ""}${notice ? " + snapshot notice" : ""}:\n  ` +
-    sections.map((s) => `${s.open ? "[open]  " : "[closed]"} ${s.h2text}  ·  ${s.stamp}`).join("\n  "));
+    sections.map((s) => `${s.open ? "[open]  " : "[closed]"} ${s.h2text}  ·  ${s.stamp}`).join("\n  ") +
+    (hoisted.length ? `\n  above the fold (not folded): ${skipped.length ? skipped.length + " section(s) without an <h2>" : ""}${skipped.length && hoisted.length > skipped.length ? " + " : ""}${hoisted.length - (skipped.length ? 1 : 0) ? (hoisted.length - (skipped.length ? 1 : 0)) + " set-index tile(s)" : ""}` : ""));
 }
 console.log(`${DRY ? "would update" : "updated"} ${touched} page(s)`);

@@ -120,7 +120,7 @@ const EMBED_CSS = `
 .cp-t1 .cp-closes { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
 .cp-t1 .cp-closes .c { font-family:var(--fm); font-size:13px; font-weight:700; color:var(--text-head); background:var(--bg3); padding:5px 9px; font-variant-numeric:tabular-nums; }
 .cp-t1 .cp-closes .m { font-family:var(--fm); font-size:10px; color:var(--text-dim); flex-basis:100%; }
-.cp-t1 .cp-empty { background:transparent; border:0; padding:4px 0; font-size:11px; }
+.cp-t1 .cp-empty { font-size:11px; }
 .cp-t1 .cp-live { margin-top:14px; padding-top:12px; border-top:1px solid var(--border); }
 .cp-t1 .cp-list { gap:6px; }
 .cp-t1 .cp-foot { margin-top:8px; }

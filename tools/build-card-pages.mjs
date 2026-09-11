@@ -21,6 +21,7 @@
 // the static markup for crawlers and for audit-prices (numeric price + dated stamp).
 //
 // Usage:  node tools/build-card-pages.mjs            (writes card-*.html + cards.html)
+//         FEED_BASE=/path/to/price-data/data node tools/build-card-pages.mjs   (bake marks from a local feed clone)
 //         node tools/build-card-pages.mjs --dry      (report only)
 // Then:   node tools/build-nav.js  (only if nav.json changed) · audit gates · push.
 // Re-run on the Monday run so the baked stamps stay fresh (audit-prices STALE_DAYS=21).
@@ -31,7 +32,9 @@ import { fileURLToPath } from "node:url";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
-const FEED_BASE = "https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data";
+const FEED_BASE = "https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data"; // baked into the client JS — always the canonical URL
+// Build-time read of the feed: FEED_BASE env may point at a local clone of the price-data branch (a dir) or a URL
+const FEED_SRC = process.env.FEED_BASE || FEED_BASE;
 const EPN = "mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001";
 
 const read = (f) => fs.readFileSync(path.join(REPO, f), "utf8");
@@ -57,7 +60,11 @@ const cards = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.id &&
 const hostOf = (c) => c.slug && exists(c.slug + ".html") ? c.slug : null;
 const cardHref = (c) => hostOf(c) ? "/" + hostOf(c) + "#engine-" + c.id : "/card-" + c.id;
 let latest = null;
-try { latest = JSON.parse(await (await fetch(`${FEED_BASE}/prices-latest.json?t=${Date.now()}`)).text()); } catch { latest = null; }
+try {
+  latest = /^https?:\/\//.test(FEED_SRC)
+    ? JSON.parse(await (await fetch(`${FEED_SRC}/prices-latest.json?t=${Date.now()}`)).text())
+    : JSON.parse(fs.readFileSync(path.join(FEED_SRC, "prices-latest.json"), "utf8"));
+} catch { latest = null; }
 const latestBy = new Map(((latest && latest.cards) || []).map((c) => [c.key, c]));
 
 // ---------- per-card derived facts ----------
@@ -165,7 +172,7 @@ const CARD_CSS = `
 .cp-related a:hover { border-color:var(--accent); text-decoration:none; }
 .cp-related .rt { font-family:var(--fm); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
 .cp-related .rn { font-family:var(--fd); font-size:18px; font-weight:800; text-transform:uppercase; color:var(--text-head); line-height:1.1; }
-.cp-empty { background:var(--bg2); border:1px dashed var(--border2); padding:18px; font-family:var(--fm); font-size:12px; color:var(--text-dim); line-height:1.6; }
+.cp-empty { padding:4px 0; font-family:var(--fm); font-size:12px; color:var(--text-dim); line-height:1.6; } /* Sep 11 2026 (terminal): empty states are one quiet line, never a bordered box */
 @media (max-width:640px) {
   .cp-wrap { padding:18px 14px 50px; }
   .cp-head { grid-template-columns:96px 1fr; gap:14px; }

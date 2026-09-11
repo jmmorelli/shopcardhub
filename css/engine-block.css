@@ -81,7 +81,7 @@
 .cp-related a:hover { border-color:var(--accent); text-decoration:none; }
 .cp-related .rt { font-family:var(--fm); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
 .cp-related .rn { font-family:var(--fd); font-size:18px; font-weight:800; text-transform:uppercase; color:var(--text-head); line-height:1.1; }
-.cp-empty { background:var(--bg2); border:1px dashed var(--border2); padding:18px; font-family:var(--fm); font-size:12px; color:var(--text-dim); line-height:1.6; }
+.cp-empty { padding:4px 0; font-family:var(--fm); font-size:12px; color:var(--text-dim); line-height:1.6; } /* Sep 11 2026 (terminal): empty states are one quiet line, never a bordered box */
 @media (max-width:640px) {
   .cp-wrap { padding:18px 14px 50px; }
   .cp-head { grid-template-columns:96px 1fr; gap:14px; }
@@ -150,7 +150,7 @@
 .cp-t1 .cp-closes { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
 .cp-t1 .cp-closes .c { font-family:var(--fm); font-size:13px; font-weight:700; color:var(--text-head); background:var(--bg3); padding:5px 9px; font-variant-numeric:tabular-nums; }
 .cp-t1 .cp-closes .m { font-family:var(--fm); font-size:10px; color:var(--text-dim); flex-basis:100%; }
-.cp-t1 .cp-empty { background:transparent; border:0; padding:4px 0; font-size:11px; }
+.cp-t1 .cp-empty { font-size:11px; }
 .cp-t1 .cp-live { margin-top:14px; padding-top:12px; border-top:1px solid var(--border); }
 .cp-t1 .cp-list { gap:6px; }
 .cp-t1 .cp-foot { margin-top:8px; }

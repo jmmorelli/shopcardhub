@@ -33,6 +33,9 @@ body .dest-strip .dest-tile .dt-arrow { font-size:14px; }
 /* ─── 3. GUIDE FOLD: the rookie guide as <details> rows under the engine block ─── */
 .guide-wrap { max-width:1060px; margin:18px auto 0; padding:0 24px; }
 .guide-wrap .container { padding:0; }
+.container > .guide-wrap, .container > .gf-hoist { padding:0; max-width:none; }
+.gf-hoist { max-width:1060px; margin:16px auto 0; }
+.gf-hoist > a { margin:0 !important; }
 .guide-fold { border-top:1px solid var(--border); }
 .guide-fold:last-child { border-bottom:1px solid var(--border); }
 .guide-fold > summary { list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 0; min-height:44px; }
@@ -40,7 +43,7 @@ body .dest-strip .dest-tile .dt-arrow { font-size:14px; }
 .guide-fold > summary::before { content:"\25B8"; flex:0 0 12px; font-size:12px; color:var(--text-dim); transition:transform 0.15s; }
 .guide-fold[open] > summary::before { transform:rotate(90deg); color:var(--accent); }
 .guide-fold > summary:hover .gf-h2 { color:var(--accent); }
-.guide-fold > summary .gf-h2 { flex:1 1 auto; font-family:var(--fd); font-size:15px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-head); margin:0; line-height:1.2; }
+.guide-fold > summary .gf-h2 { flex:1 1 auto; font-family:var(--fd); font-size:15px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-head); margin:0 !important; line-height:1.2; }
 .guide-fold > summary .gf-stamp { flex:0 0 auto; font-family:var(--fm); font-size:11px; color:var(--text-dim); font-variant-numeric:tabular-nums; text-align:right; }
 .guide-fold[open] > summary .gf-stamp { color:var(--gold); }
 .guide-fold > section { padding:4px 0 24px; border-top:0; animation:none; }
@@ -55,6 +58,20 @@ body .dest-strip .dest-tile .dt-arrow { font-size:14px; }
 .guide-fold .gf-lead .banner-stat-sub { margin-top:2px; }
 .guide-fold .gf-lead .disclosure { margin:8px 0 0; padding:6px 0 0; background:transparent; border:0; border-top:1px solid var(--border); font-family:var(--fm); font-size:11px; line-height:1.5; }
 .guide-fold .disclosure { margin:10px 0 0; }
+.guide-fold .gf-lead .alert-bar { margin:6px 0 0; padding:2px 0 2px 12px; background:transparent; border:0; border-left:2px solid var(--orange); font-family:var(--fm); font-size:11px; line-height:1.55; color:var(--text-dim); }
+.guide-fold .gf-lead .alert-bar strong { color:var(--orange); }
+/* set guides / newer player pages: the At-a-Glance banner, chase table, mechanic + avoid blocks as quiet rows */
+.guide-fold .set-banner { padding:14px 16px; margin-bottom:8px; border-top-width:2px; }
+.guide-fold .set-banner > p { font-size:14px !important; line-height:1.55; }
+.guide-fold .set-banner-grid { gap:6px; margin-top:12px; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); }
+.guide-fold .set-banner-grid .banner-stat { padding:8px 10px; text-align:left; background:transparent; }
+.guide-fold .set-banner-grid .banner-stat-value { font-family:var(--fm); font-size:13px; font-weight:700; font-variant-numeric:tabular-nums; }
+.guide-fold .bio-block { gap:16px; }
+.guide-fold .roi-table thead th { padding:8px 12px; }
+.guide-fold .roi-table td { padding:8px 12px; }
+.guide-fold .roi-price { font-family:var(--fm); font-size:14px; font-weight:700; font-variant-numeric:tabular-nums; }
+.guide-fold .mechanic-block, .guide-fold .avoid-list { padding:12px 16px; margin:14px 0 0; background:transparent; }
+.guide-fold .product-item { padding:14px; }
 
 /* the essay's boxes as quiet rows — text untouched, chrome removed */
 .guide-fold .card-entry { padding:18px 20px; margin-bottom:12px; border-top-width:2px; animation:none; }
