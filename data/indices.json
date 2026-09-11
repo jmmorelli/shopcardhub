@@ -4073,7 +4073,8 @@
     "player": "Wandy Asigen",
     "team": "New York Mets",
     "tab": "base",
-    "first": true
+    "first": true,
+    "feed": "ebay:wandy-asigen-bcb26-base"
    },
    {
     "id": "2026-bowman-chrome-baseball:bcp-153",
@@ -4159,7 +4160,8 @@
     "player": "Francisco Renteria",
     "team": "Philadelphia Phillies",
     "tab": "base",
-    "first": true
+    "first": true,
+    "feed": "ebay:francisco-renteria-bcb26-base"
    },
    {
     "id": "2026-bowman-chrome-baseball:bcp-164",
@@ -4401,7 +4403,8 @@
     "player": "Angeibel Gomez",
     "team": "Kansas City Royals",
     "tab": "base",
-    "first": true
+    "first": true,
+    "feed": "ebay:angeibel-gomez-bcb26-base"
    },
    {
     "id": "2026-bowman-chrome-baseball:bcp-195",
@@ -4447,7 +4450,8 @@
     "player": "Luis Hernandez",
     "team": "San Francisco Giants",
     "tab": "base",
-    "first": true
+    "first": true,
+    "feed": "ebay:luis-hernandez-bcb26-base"
    },
    {
     "id": "2026-bowman-chrome-baseball:bcp-201",
@@ -4518,7 +4522,8 @@
     "player": "Ethan Holliday",
     "team": "Colorado Rockies",
     "tab": "base",
-    "board": true
+    "board": true,
+    "feed": "ebay:ethan-holliday-bcb26-base"
    },
    {
     "id": "2026-bowman-chrome-baseball:bcp-210",
@@ -4854,7 +4859,8 @@
     "player": "Angeibel Gomez",
     "team": "Kansas City Royals",
     "tab": "autos",
-    "first": true
+    "first": true,
+    "feed": "ebay:angeibel-gomez-bcb26-auto"
    },
    {
     "id": "2026-bowman-chrome-baseball:cpa-ah",
@@ -5155,7 +5161,8 @@
     "player": "Francisco Renteria",
     "team": "Philadelphia Phillies",
     "tab": "autos",
-    "first": true
+    "first": true,
+    "feed": "ebay:francisco-renteria-bcb26-auto"
    },
    {
     "id": "2026-bowman-chrome-baseball:cpa-gb",
@@ -5376,7 +5383,8 @@
     "player": "Luis Hernandez",
     "team": "San Francisco Giants",
     "tab": "autos",
-    "first": true
+    "first": true,
+    "feed": "ebay:luis-hernandez-bcb26-auto"
    },
    {
     "id": "2026-bowman-chrome-baseball:cpa-lp",
@@ -5591,7 +5599,8 @@
     "player": "Wandy Asigen",
     "team": "New York Mets",
     "tab": "autos",
-    "first": true
+    "first": true,
+    "feed": "ebay:wandy-asigen-bcb26-auto"
    },
    {
     "id": "2026-bowman-chrome-baseball:cpa-war",
@@ -5660,10 +5669,64 @@
   ],
   "basket": [],
   "history": [],
-  "divisorLog": [],
-  "activationRule": "≥60% of chase-basket value with verified asks; restates to hammer basis via logged divisor adjustment at ≥60% SCP sold coverage",
+  "divisorLog": [
+   {
+    "date": "2026-09-11",
+    "event": "chase-basket-defined",
+    "note": "Chase basket v1 (9 cards) defined and fed; no marks yet - first engine snapshot with these feeds lands 2026-09-12 ~1:15am PT. Status stays pre. No level, no divisor."
+   }
+  ],
+  "activationRule": "COUNT basis (restated 2026-09-11 by the CoS - on an ask basis an unverified card has no value, so a value-share gate was unmeasurable): activates on the first re-mark where >=60% of chase-basket CARDS (>=6 of 9 in v1) carry an engine-verified ask (>=4 verified listings); divisor = basket value / 100, inception = that date, level 100.00. Restates to hammer basis via a logged divisor adjustment at >=60% SCP sold coverage.",
   "releaseDate": "2026-09-09",
-  "window": "street +21d, re-marks every board-touching run"
+  "window": "street +21d, re-marks every board-touching run",
+  "chaseBasket": [
+   {
+    "id": "2026-bowman-chrome-baseball:bcp-209",
+    "feed": "ebay:ethan-holliday-bcb26-base",
+    "tab": "base"
+   },
+   {
+    "id": "2026-bowman-chrome-baseball:cpa-lh",
+    "feed": "ebay:luis-hernandez-bcb26-auto",
+    "tab": "autos"
+   },
+   {
+    "id": "2026-bowman-chrome-baseball:cpa-wa",
+    "feed": "ebay:wandy-asigen-bcb26-auto",
+    "tab": "autos"
+   },
+   {
+    "id": "2026-bowman-chrome-baseball:cpa-fr",
+    "feed": "ebay:francisco-renteria-bcb26-auto",
+    "tab": "autos"
+   },
+   {
+    "id": "2026-bowman-chrome-baseball:cpa-ag",
+    "feed": "ebay:angeibel-gomez-bcb26-auto",
+    "tab": "autos"
+   },
+   {
+    "id": "2026-bowman-chrome-baseball:bcp-200",
+    "feed": "ebay:luis-hernandez-bcb26-base",
+    "tab": "base"
+   },
+   {
+    "id": "2026-bowman-chrome-baseball:bcp-152",
+    "feed": "ebay:wandy-asigen-bcb26-base",
+    "tab": "base"
+   },
+   {
+    "id": "2026-bowman-chrome-baseball:bcp-163",
+    "feed": "ebay:francisco-renteria-bcb26-base",
+    "tab": "base"
+   },
+   {
+    "id": "2026-bowman-chrome-baseball:bcp-194",
+    "feed": "ebay:angeibel-gomez-bcb26-base",
+    "tab": "base"
+   }
+  ],
+  "chaseBasketNote": "CHASE BASKET v1 (CoS ruling 2026-09-11, charter 4.8). The universe is every checklist card; the CHASE BASKET is the bounded subset the engine actually feeds and the activation gate is measured on. v1 = the cards the site itself already names as the chase on /bowman-chrome-baseball-2026: Ethan Holliday BCP-209 (board-flagged base) + the four 2026 IFA headliners' 1st Bowman Chrome Prospect Autos (Luis Hernandez CPA-LH, Wandy Asigen CPA-WA, Francisco Renteria CPA-FR, Angeibel Gomez CPA-AG) and their 1st Bowman base cards (BCP-200/152/163/194). Grows only via the Tuesday STEP 0 release synthesis, each addition a logged divisor adjustment. Feeds carry boardHide:true (Signal Board stays 2026 paper-class)."
  },
  "updated": "2026-09-07",
  "BOW26": {

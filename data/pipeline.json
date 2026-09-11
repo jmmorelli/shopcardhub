@@ -1,6 +1,6 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-09-11T14:30:00-07:00",
+ "generated": "2026-09-11T15:10:00-07:00",
  "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
  "agents": {
   "seeker": {
@@ -223,6 +223,10 @@
     {
      "ts": "2026-09-11",
      "msg": "Benchmark transition check (System Reference SS3): at street+2, SportsCardsPro has no console carrying 2026 Bowman Chrome prospect-autograph solds (the /baseball-cards-2026-bowman-chrome console exists but is base-set, 21 of 150 rows priced, no autos). Paper CPA remains the ranking benchmark; re-check Tuesday."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "Whole-payload scan (CoS ruling): 6 phrases describing the owner's selling-venue position strategy were public in this file inside trader actions/proposals - the Sep 10 sweep covered competitor names only. Redacted to neutral inventory wording; the venue name itself stays (it is linked from the site). Mapping kept local in chief-of-staff/checkpoint-2026-09-11.md. Site email in two GSC notes -> 'the site's own Google account'."
     }
    ],
    "log": [
@@ -303,6 +307,14 @@
     {
      "ts": "2026-09-11",
      "msg": "board-history.json: week 2026-09-11 appended with the Fischer/Kim swap; rank-hist strips on all 5 entries re-derived from it (1wk = Sep 8 snapshot, 1mo = Aug 11 snapshot). Prior weeks verified present and correct back to Jul 28 -- no backfill needed."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "FOLLOW-UP to the 'queued, not logged' entry above: Mo delegated approval to the CoS in chat; under 4.8 the re-entry is logged as v-bb-fischer-buy-2 BUY @ $146.80 (callDate 2026-09-11, 6-mo 2027-03-11, 12-mo 2027-09-11, reentryOf v-bb-fischer-buy). Board copy changed from 'queued' to 'logged today'. Immutable fields asserted on all 22 prior rows."
+    },
+    {
+     "ts": "2026-09-11",
+     "msg": "BCB26 chase basket v1 fed: 9 engine feeds added to data/watchlist.json (boardHide) - Holliday BCP-209 + the four IFA headliners' 1st Bowman autos (CPA-LH/WA/FR/AG) and 1st Bowman base (BCP-200/152/163/194); universe rows carry feed keys; activation gate restated to COUNT basis (>=6 of 9 verified). First snapshot with these feeds: 2026-09-12 ~1:15am PT. Status stays pre."
     }
    ],
    "log": [
@@ -330,11 +342,11 @@
     },
     {
      "ts": "2026-09-03",
-     "msg": "execution check — all 8 items from the owner's weekend session verified live at target (5 reprices, 2 completed corners, 1 vintage relist). 13 recs executed lifetime, 0 closed, trader realized P/L still $0.00 by design; the week's 4 sales were all legacy, walked item by item."
+     "msg": "execution check — all 8 items from the owner's weekend session verified live at target (5 reprices, 2 completed repositions, 1 vintage relist). 13 recs executed lifetime, 0 closed, trader realized P/L still $0.00 by design; the week's 4 sales were all legacy, walked item by item."
     },
     {
      "ts": "2026-09-03",
-     "msg": "float check partial — one legacy single-copy monopoly closed by sale (not a break); one accumulation position saw its outside floor undercut by a new seller; the other monopolies are carried forward unverified until the next logged-in run. Lesson filed: fall back to snapshots by schema, not by date."
+     "msg": "inventory check partial — one legacy single-copy position closed by sale; one multi-copy position was undercut by a new seller; the other positions are carried forward unverified until the next logged-in run. Lesson filed: fall back to snapshots by schema, not by date."
     },
     {
      "ts": "2026-09-10",
@@ -637,7 +649,7 @@
   {
    "id": "trader-2026-08-19",
    "status": "applied",
-   "title": "TRADER: first scan filed 5 recs (2 SELL, 1 REPRICE x10 items, 1 GRADE pilot, 1 HOLD-NOTE on the two accumulation plays) — details in local comc-trader/scan-2026-08-19.md; agent scheduled Thursdays 8am — Mo, 2026-08-28 — CoS closed 2026-09-07 (4.2 janitorial): recs executed by Mo; the Thursday trader ledger is the record, this row was a filing pointer carried 19d with nothing left to apply."
+   "title": "TRADER: first scan filed 5 recs (2 SELL, 1 REPRICE x10 items, 1 GRADE pilot, 1 HOLD-NOTE) — details in local comc-trader/scan-2026-08-19.md; agent scheduled Thursdays 8am — Mo, 2026-08-28 — CoS closed 2026-09-07 (4.2 janitorial): recs executed by Mo; the Thursday trader ledger is the record, this row was a filing pointer carried 19d with nothing left to apply."
   },
   {
    "id": "audit-2026-08-19-5",
@@ -849,7 +861,7 @@
    "id": "gsc-google-visibility-aug28",
    "status": "applied",
    "verified": "2026-08-30 diagnosis session (Mo + Claude, live in Search Console): 3 indexed / 58 not (39 discovered-not-crawled, 19 crawled-not-indexed); NO manual action, NO security issues, sitemap healthy. Verdict: new-site authority gate, not a technical fault. Actions: sitemap resubmitted (re-read same minute, discovery 60->76 pages incl. the index pages) + Request Indexing on 5 priority URLs. Recurring hygiene (auditor STEP 3.5 coverage watch, Monday STEP 0.6 sitemap+request-indexing) now active. Long lever: external links to pages (X, newsletter). Found in passing: pokemon-30th sitemap entry missing www — host mismatch, filed as sitemap-host-fix-aug30.",
-   "title": "HIGH (growth, Mo-flagged Aug 28): Google organic is near-invisible while Bing-family thrives — 7d organic sessions: Bing 75 / DDG 36 / Yahoo 32 / Google 12. Same content ranks elsewhere, so suspect indexing/Search Console (sitemap status, coverage, canonical issues), not quality. INVESTIGATE in GSC (shopcardhub@gmail.com account) → fix findings → then recurring hygiene lands in the MWF auditor (coverage check) + Monday run (sitemap resubmit + request-indexing for new/updated pages). If Google merely matched Bing, organic ~doubles. Effort: 1 focused session."
+   "title": "HIGH (growth, Mo-flagged Aug 28): Google organic is near-invisible while Bing-family thrives — 7d organic sessions: Bing 75 / DDG 36 / Yahoo 32 / Google 12. Same content ranks elsewhere, so suspect indexing/Search Console (sitemap status, coverage, canonical issues), not quality. INVESTIGATE in GSC (the site's own Google account) → fix findings → then recurring hygiene lands in the MWF auditor (coverage check) + Monday run (sitemap resubmit + request-indexing for new/updated pages). If Google merely matched Bing, organic ~doubles. Effort: 1 focused session."
   },
   {
    "id": "audit-2026-08-31-1",
@@ -997,7 +1009,7 @@
    "area": "analytics",
    "filed": "2026-09-07",
    "by": "monday-scan (dm)",
-   "title": "MED: the Sep 6 CoS retention-split KPI (retention surfaces vs everything else, 7d users + returning share) cannot be read from GA4 standard reports in an unattended run — it needs a saved Exploration (segment: page path matches /indices|-index|/bowman-bangers|/cards|/card-|/watchlist; new vs returning breakdown). Propose a one-time live session to build and save it under the shopcardhub@gmail.com property so Monday runs can read two numbers off it. Until then the CSV columns are NA. Separately: GA4 shows a Direct/Safari/Singapore surge since Sep 1 (Direct sessions +312% 7d, 45 Singapore users) that is diluting every rate — key-event rate 14.1% → 8.3% on the same ~133 key events. Recommend a GA4 internal-traffic/bot filter review in that same session. — CoS, 2026-09-07 (4.8): APPROVED. Route: the Tuesday live sitting (Sep 8; Mo present, browser logged in) builds + saves the Exploration and reviews the internal-traffic/bot filter in the same ~20 min; Monday runs read two numbers off it from Sep 14. No credentials handled by the agent."
+   "title": "MED: the Sep 6 CoS retention-split KPI (retention surfaces vs everything else, 7d users + returning share) cannot be read from GA4 standard reports in an unattended run — it needs a saved Exploration (segment: page path matches /indices|-index|/bowman-bangers|/cards|/card-|/watchlist; new vs returning breakdown). Propose a one-time live session to build and save it under the site's own Google property so Monday runs can read two numbers off it. Until then the CSV columns are NA. Separately: GA4 shows a Direct/Safari/Singapore surge since Sep 1 (Direct sessions +312% 7d, 45 Singapore users) that is diluting every rate — key-event rate 14.1% → 8.3% on the same ~133 key events. Recommend a GA4 internal-traffic/bot filter review in that same session. — CoS, 2026-09-07 (4.8): APPROVED. Route: the Tuesday live sitting (Sep 8; Mo present, browser logged in) builds + saves the Exploration and reviews the internal-traffic/bot filter in the same ~20 min; Monday runs read two numbers off it from Sep 14. No credentials handled by the agent."
   },
   {
    "id": "gonzales-name-query-sep08",
@@ -1080,6 +1092,26 @@
    "id": "audit-2026-09-11-5",
    "status": "awaiting-mo",
    "title": "LOW: the GSC weekly request budget and the noindex policy are not talking to each other — /cards was submitted for indexing on Sep 7 (one of that week's five requests) and then set to robots \"noindex,follow\" (cards.html:11) by the Sep 8 Business Read, and it is absent from sitemap.xml. With only 3 of 101 URLs indexed, a wasted request is not free. FIX: the Monday STEP 0.6 request list should read each candidate's robots meta and drop noindex URLs before submitting."
+  },
+  {
+   "id": "bb-transition-doctrine-2026-09-11",
+   "status": "queued-tuesday",
+   "title": "MED / DOCTRINE (Tuesday STEP 0): the board's paper->Chrome benchmark-transition premise (System Reference SS3) does not fit the published 2026 Bowman Chrome checklist - none of the five board names (Holliday, Fischer, Kim, Florentino, Gonzales) has a Chrome Prospect Autograph in BCB26 (Holliday's only Chrome card is base BCP-209), and under Mo's Sep 9 1st Bowman rule their 1st Bowman Auto is the May paper CPA regardless. Caveat: Topps' CPA list was 'still filling in' on Aug 21 - VERIFY against the final checklist first. If confirmed: retire the 'once his Chrome auto has 2-3 weeks of solds' language on all five entries + the callout, keep paper CPA as benchmark BY RULE, and amend SS3 so the transition applies only to names whose 1st auto lands in a Chrome-family set. The Fri run left the conditional copy in place rather than rewrite doctrine mid-window."
+  },
+  {
+   "id": "watch-hygiene-gage-jump-2026-09-11",
+   "status": "queued-tuesday",
+   "title": "LOW / SS4.7 watch-tier hygiene: Gage Jump has NO base CPA row on SportsCardsPro (only a Gold Refractor /50 at $470), so he is untrackable on the sold side; the engine does mark him on asks ($85, 15 listings, SELL). Propose: keep in the feed, label the watch row 'ask-only' rather than silently carry a name the ranking basis cannot see. Not dropped - removals are proposed, never silent."
+  },
+  {
+   "id": "scp-sandbox-path-2026-09-11",
+   "status": "applied",
+   "title": "LOW / TOOLING: SportsCardsPro consoles returned Cloudflare 403 to the sandbox curl with a browser UA on Sep 11 (worked Sep 1 and Sep 8). Fallback order in SS3 held - Chrome navigate + same-origin fetch() + DOMParser read all 150 rows and probed 5 sibling consoles in one tab load. System Reference SS3 note updated; treat the sandbox path as best-effort, not primary."
+  },
+  {
+   "id": "bcb26-chase-basket-v1-2026-09-11",
+   "status": "applied",
+   "title": "MED / INDEX (4.8): BCB26 could never activate - basket empty, zero feeds. CoS defined chase basket v1 (9 cards the site already names as the chase) and restated the activation gate to a count basis (>=60% of chase-basket cards with a verified ask). Grows only via Tuesday STEP 0 with logged divisor adjustments. Vetoable by Mo."
   }
  ],
  "scoreboard": {
@@ -1374,15 +1406,32 @@
     "approved": [],
     "declined": [],
     "note": "No Tier 2 item was sitting. The only open proposal is money-adjacent and stays with Mo."
+   },
+   {
+    "date": "2026-09-11",
+    "by": "CoS ruling on Mo's chat delegation (Fri Sep 11)",
+    "authority": "4.8",
+    "approved": [
+     "bcb26-chase-basket-v1-2026-09-11",
+     "v-bb-fischer-buy-2 (re-entry call, SS7)",
+     "position-language redaction (whole payload)",
+     "scp-sandbox-path-2026-09-11"
+    ],
+    "queued": [
+     "bb-transition-doctrine-2026-09-11 -> Tuesday STEP 0",
+     "watch-hygiene-gage-jump-2026-09-11 -> Tuesday SS4.7",
+     "audit-2026-09-11-1..5 (Friday auditor, homepage) -> Sunday checkpoint"
+    ],
+    "note": "Board reorder (Fischer #2 / Kim #3) needed no approval - it executed a condition the Sep 8 run published on the page."
    }
   ],
   "approvalsNote": "4.7 pass: nothing in the three self-approvable categories was waiting — the week's only audit item was already applied under 4.8 on Friday, no polish or comp item is open (Monday files the next ones).",
   "lastCheckpoint": {
-   "date": "2026-09-10",
-   "mode": "light (Thursday)",
-   "verdict": "Thursday trader run and the reply-paster slot both verified clean; one real finding, fixed in-run — competitor names were live in this public file.",
-   "approvals": "none — no Tier 2 item was sitting; the one open proposal is money-adjacent (Mo's)",
-   "ref": "chief-of-staff/checkpoint-2026-09-10.md"
+   "date": "2026-09-11",
+   "mode": "in-chat (Friday, Mo-delegated)",
+   "verdict": "Fri release-window run shipped in full: board re-marked + reordered on a published condition, Fischer re-entry logged, BCB26 unblocked with a defined chase basket, a second leak class (venue positions) closed in this file.",
+   "approvals": "4 approved / 3 queued - see approvals[-1]",
+   "ref": "chief-of-staff/checkpoint-2026-09-11.md"
   },
   "pushLog": {
    "_comment": "Added by CoS light checkpoint 2026-09-03 (janitorial state, charter 4.8 visible-delegation). Pushes outside the Monday STEP 3.98 lane; gates = read-only re-run on the pushed tree by the checkpoint unless the pushing run reported them.",
@@ -1568,6 +1617,14 @@
      "gates": "audit-prices FAIL 0 / WARN 31 (pre-existing, none on bowman-bangers); audit-site FAIL 0 / WARN 3 (known first-bowman-unverified); first-bowman.mjs clean; all JSON parses",
      "verified": "live 2026-09-11 ~2:0x PT - /bowman-bangers 200 with data-prices-updated=2026-09-11 and Fischer at #2; /data/pipeline.json 200, generated 2026-09-11, 0 competitor names, 0 outside handles",
      "note": "Merged onto origin ef0a5d1 from a FRESH clone, not Mo's stale local mirror: his clone was 2 behind (missing Thursday's cc736ab redaction) so a straight commit there would have reverted the 9 redacted names and dropped 4 inspector entries. Those 4 were preserved. Mo's local clone is now 3 behind origin and still has an unremovable .git/index.lock - he needs `rm .git/index.lock` + `git reset --hard origin/main` (his 4 modified files are now all on origin)."
+    },
+    {
+     "ts": "2026-09-11",
+     "commit": "PENDING - filled by the push step",
+     "by": "fri release-window run (CoS-approved in chat, 4.8)",
+     "what": "bowman-bangers Sep 11 re-mark + Fischer/Kim swap; calls.json reads + v-bb-fischer-buy-2; board-history week; watchlist +9 BCB26 feeds; indices BCB26 chaseBasket; pipeline rulings + position-language redaction",
+     "gates": "PENDING",
+     "verified": "PENDING"
     }
    ]
   },
@@ -1642,6 +1699,11 @@
    "date": "2026-09-07",
    "by": "Mo (chat)",
    "decision": "On the CoS's Sep 7 ruling (four audit approvals + retiring BOW26's pre-activation Base tab): 'Fine by me — if Chief of Staff wants to do it or not, it's his call.' No veto; Base tab retirement stands as a 4.8 call."
+  },
+  {
+   "date": "2026-09-11",
+   "by": "Mo (chat)",
+   "decision": "'I switched models, please review the thread and resolve the issues you are running into. The Chief of Staff is in charge of approving.' - approval for the Fri Sep 11 release-window run's open items delegated to the CoS under 4.8; Mo's veto retroactive."
   }
  ]
 }
