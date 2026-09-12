@@ -57,6 +57,12 @@ const V1_STORE = { demo: false, cards: [
  *   optional: selector may be absent (WARN scenario-skipped instead of FAIL dead-control) */
 const ownTab = async (page) => { const t = await page.$("#tabOwn"); if (t) { await t.click(); await page.waitForTimeout(250); } };
 const openPfMenu = async (page) => { await ownTab(page); await page.click(".pf-name", { timeout: 3000 }); await page.waitForTimeout(150); };
+/* COMMON runs on every page the suite visits (added Sep 12 2026: build-nav.js emitted the
+ * nav logo as a plain <div> — dead on all 94 pages until the brand anchor fix). */
+const COMMON = [
+  { name: "nav logo → home", sel: "nav.nav a.logo", expect: "nav" },
+];
+
 const SCENARIOS = {
   index: [
     { name: "rail nav row", sel: '#rail nav a.rl[href^="/"]:not([href^="/#"])', all: true, expect: "nav" },
@@ -222,7 +228,7 @@ async function genericChecks(page, slug, origin, redirects, ctxRequest) {
     const load = async (hash) => { await page.goto(base + (hash || ""), { waitUntil: "networkidle", timeout: 30000 }).catch(() => page.goto(base + (hash || ""), { waitUntil: "load", timeout: 30000 })); await page.waitForTimeout(600); };
     await load();
     pagesRun.push(slug);
-    for (const sc of scenarios || []) {
+    for (const sc of COMMON.concat(scenarios || [])) {
       if (ONLY && !sc.name.includes(ONLY)) continue;
       let targets = [null];
       if (sc.all) { const n = await page.locator(sc.sel).count(); targets = Array.from({ length: n }, (_, i) => i); if (!n) targets = [null]; }

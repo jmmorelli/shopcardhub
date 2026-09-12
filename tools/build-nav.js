@@ -115,7 +115,7 @@ function buildDesktop() {
   const cta = cfg.cta;
   return `  <nav class="nav">
     <div class="nav-inner">
-      <div class="logo">${cfg.brand.html}</div>
+      <a class="logo" href="${(cfg.brand && cfg.brand.href) || "/"}" style="text-decoration:none;" aria-label="ShopCardHub — home">${cfg.brand.html}</a>
       <div class="nav-links">${items}
         <div class="nav-search" id="nav-search-desktop">
           <input type="text" class="nav-search-input" id="nav-search-input-d" placeholder="Search…" aria-label="Search the site" autocomplete="off">

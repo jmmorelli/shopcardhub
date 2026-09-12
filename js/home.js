@@ -50,7 +50,7 @@
         id: id, key: c.key, label: c.label || id, name: parts[0], set: parts[1] || '', cardType: c.cardType || '',
         type: c.cardType === 'chrome-auto' ? 'auto' : c.cardType === 'tcg-single' ? 'tcg' : 'base',
         board: c.cardType === 'chrome-auto' && !c.boardHide,
-        slug: c.slug || null, href: c.slug ? '/' + c.slug + '#engine-' + id : '/card-' + id,
+        slug: c.slug || null, href: c.slug ? '/' + c.slug + '#engine-' + id : /-bcb26-/.test(id) ? '/bowman-chrome-2026-index' : '/card-' + id,
         last: c.last, prev5: prev5, chg: c.last != null && prev5 != null ? c.last - prev5 : null, chgp: ST.pctChange(prev5, c.last),
         lo30: last30.length ? Math.min.apply(null, last30) : null, hi30: last30.length ? Math.max.apply(null, last30) : null,
         roc: c.roc30, z: c.z, sd: m ? m.sd : null,
