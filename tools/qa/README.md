@@ -1,8 +1,43 @@
-# tools/qa — local render harness + Vault migration proof
+# tools/qa — harness, click-through suite, render, migration proof
+
+| file | what |
+|---|---|
+| `harness.cjs` | the shared beacon-safe harness: localhost server with Vercel semantics, request routing (feed → clone, `/api/*` → fixtures, images → 1×1 PNG, analytics/fonts ABORTED, everything else off-box ABORTED), Playwright loader. Every other file here builds on it; **nothing in this folder ever sends a beacon.** |
+| `interactions.cjs` | the scripted click-through suite — a **gate** via `audit-terminal.mjs --run-tests` |
+| `render-local.cjs` | fold + full screenshots at 1440/390 and a `report.json` — a *look*, not a gate |
+| `vault-migration.test.cjs` | Builder-owned proof that the Vault v1 → v2 migration is lossless (run by `--run-tests`) |
+| `controls-audit.cjs` | Builder's one-off audit that found the dead saved screens (Sep 12); superseded by `interactions.cjs` |
+| `fixtures/` | `/api/comps` and `/api/auctions` responses shaped like the real handlers |
+
+## interactions.cjs — the click-through suite
+
+```
+node tools/qa/interactions.cjs                          # all five pages on the local harness
+node tools/qa/interactions.cjs --pages index --only "saved screen" --feed ../pd/data
+node tools/qa/interactions.cjs --prod https://www.shopcardhub.com --json > sweep.json
+```
+
+| flag | meaning |
+|---|---|
+| `--pages a,b` | scope to these slugs (default: `index,watchlist,indices,auctions,bowman-bangers`) |
+| `--feed <dir>` / `--repo <dir>` | as for the render harness |
+| `--only <text>` | run only scenarios whose name contains the text (debugging); `QA_DEBUG=1` prints each verdict |
+| `--json` | `{date, mode, origin, pages[], scenarios, fails[], warns[]}` |
+| `--prod <origin>` | run the SAME scenarios against production: the origin, `raw.githubusercontent.com` and image hosts continue; analytics/fonts hosts are aborted; `dead-link` uses HEAD requests. **After every prod run, open GA4 → Realtime and confirm no event arrived from the run (CHARTER §4)** — the abort list is the safeguard, the realtime check is the proof. |
+
+**What a scenario asserts.** Each control is clicked on a fresh page load (the Vault mirror is re-seeded with a v1 store before every load; `prompt`/`confirm`/`alert` are stubbed) and must produce a *visible* change within **1.5 s**: a navigation (`nav`), a DOM mutation inside the named panel or a class/`hidden`/`open`/`aria-*` toggle anywhere (`dom`), a scroll or hash-with-target (`scroll`), a file chooser (`picker`), or — for saved screens — the Screens rows changing **and** the panel entering the viewport (`screen`). Selects are tried on every other option (two options may legitimately sort identically). A self-link (rail row for the current page) is a reload, not a control, and is skipped. No change → `[FAIL] dead-control · page — scenario: selector [n] "text" (href) — no visible change within 1500 ms`.
+
+**Scenarios.** `/`: every rail nav row, the #tape anchor, every guides group (open and close), every guides link, Guides all →, every portfolio row, Vault →, every saved screen, every Screens chip, every Markets row (chart panel must change; PRE rows are n-a and need only link), All signals », Full board », Auction Desk », every In Focus item, engine/movers/screen row links, and the `#screen=<id>` deep link on load. `/watchlist`: rail rows, Hunting / My cards tabs, portfolio ▾ menu, portfolio switch, + New, Rename, Delete, Cards / Table, Columns ▾, sort and group selects, + Add Card open and close, Paste a List, Share, Import (file picker), ★ Track chooser, row popup, How the Vault works, and the `#pf=<id>` deep link. `/indices`: rail rows, every index row, ★ Track. `/auctions`: rail rows, the four filter chips (and back to All), the card select. `/bowman-bangers`: rail rows, board tabs (optional), every Signal Board filter (and back to All), ★ Track. Scenarios marked optional in the file WARN `scenario-skipped` when their selector is absent instead of failing.
+
+**Generic per page.** `dead-link` (FAIL): every internal `<a href>` must resolve to a file, a cleanUrl or a `vercel.json` redirect (HEAD < 400 in prod). `inert-control` (WARN): a visible `button`/`[role=button]`/`summary` with no `onclick`, no form, no href context and no click listener (own, ancestor, or document-level delegation — inspected through CDP). `console-error` (FAIL): any console error or page error not caused by a harness abort. `offbox-request` (WARN): the page asked for a host the harness had to abort — a new dependency.
+
+**Proof it catches the bug.** On `origin/main` `6f9a9cd` (before the hotfix) the suite reports 7 `dead-control` FAILs on `/` with the feed (all five rail saved screens, the Board chip, and the `#screen=fat` deep link: rows changed but the Screens panel never entered the viewport) and 12 without the feed (nothing changed at all). On the hotfix branch: 134 scenarios, FAIL 0.
+
+## render-local.cjs — screenshots
 
 `vault-migration.test.cjs` (Builder-owned, step 3) proves the Vault v1 → v2 migration in `js/vault-schema.js` is lossless; `node tools/audit-terminal.mjs --run-tests` runs it as part of the gate (`migration-test-present`).
 
-`render-local.cjs` renders repo pages in headless Chromium **without a single byte leaving the box**. It exists so the sweep/QA step is the same script every session instead of a per-session improvisation (STATE open item, closed Sep 11 2026).
+`render-local.cjs` renders repo pages in headless Chromium **without a single byte leaving the box** (routing lives in `harness.cjs`). It exists so the sweep/QA step is the same script every session instead of a per-session improvisation (STATE open item, closed Sep 11 2026).
 
 ```
 node tools/qa/render-local.cjs --pages index,ethan-holliday-rookie-cards,auctions --out ../qa-2026-09-11 --feed ../pd/data

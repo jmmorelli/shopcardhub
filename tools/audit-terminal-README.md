@@ -33,7 +33,7 @@ Exit code 1 on any FAIL. `--json` prints `{date, pages, feed, fails[], warns[]}`
 |---|---|
 | `--feed <dir>` | a clone of the `price-data` branch's `data/` folder (`prices-latest.json`, `prices-history.json`, `market-latest.json`). Default: `<repo>/../pd/data`. Missing → one `WARN feed-unavailable` and the feed sub-checks are skipped (the gate still runs everything static). |
 | `--repo <dir>` | audit a different tree (used for the proof-of-fire run against a scratch copy). Default: the repo this file lives in. |
-| `--run-tests` | also run `tools/qa/vault-migration.test.cjs`; a red test is a FAIL (`migration-test-present`). Part of the standing pre-push command. |
+| `--run-tests` | also run `tools/qa/vault-migration.test.cjs` (a red test is a FAIL, `migration-test-present`) **and the click-through suite `tools/qa/interactions.cjs`** (every FAIL it reports becomes a gate FAIL, `interaction-suite`; its WARNs pass through). Adds ~5 minutes (134 scenarios over 5 pages in headless Chromium). Part of the standing pre-push command. |
 | `--all` | run `tools/audit-prices.mjs` and `tools/site-auditor/audit-site.mjs` first (their output streams through), then this gate; exit 1 if any of the three fails. |
 | `--json` | machine-readable output. |
 | `AUDIT_TERMINAL_DEBUG=1` | env var; prints every parsed `/api/*` call site (params sent, response keys read) to stderr. Use it when an `api-contract` finding looks wrong. |
@@ -64,9 +64,14 @@ Scans every root `*.html` except `card-dungeon.html` and `welcome-email.html` (s
 | `shell-css-shared` | FAIL / WARN | Every page with RAIL markers links `/css/terminal-shell.css` exactly once, inside `<head>`, after the page's own base `<style>`; the file exists; and the page carries no standalone `.shell{` / `.term{` / `.rail{` / `.rl{` rule in its inline CSS (descendant overrides like `.term .container{}` are fine; a private copy of the shell rules is how drift starts). |
 | `rail-portfolio-readonly` | FAIL | Only `watchlist.html` and `js/vault-track.js` may write the Vault. Any other page or `js/` file that does `localStorage.setItem('sch_vault_v1'…)` (or via an `LS_KEY` equal to it), opens the `sch_vault` IndexedDB, or `.put(state…)`, fails — and so does a RAIL block that touches storage at all. The rail and `js/home.js` are read-only views of the mirror. |
 | `migration-test-present` | FAIL | If `js/vault-schema.js` exists, `tools/qa/vault-migration.test.cjs` must exist; with `--run-tests` it is executed and must exit 0 (the last output lines are quoted on failure). A schema change without a lossless-migration proof cannot ship. |
+| `interaction-suite` | FAIL / WARN | `--run-tests` only. The scripted click-through suite (`tools/qa/interactions.cjs`, run from the gate's own tree against `--repo`) must be green: every control the terminal promises must produce a **visible** change within 1.5 s when clicked — the Sep 12 2026 saved-screens bug class, where the links existed and the old gate passed them. Sub-codes in the detail: `dead-control` (page + selector + text), `console-error`, `dead-link`, `scenario-error` → FAIL; `inert-control`, `scenario-skipped`, `offbox-request` → WARN. See `tools/qa/README.md`. |
 | `gate-missing` | FAIL | `--all` only: one of the other two gate scripts is not on disk. |
 | `feed-unavailable` | WARN | No feed clone found at the `--feed` path; feed sub-checks skipped. |
 | `watchlist-json` | FAIL | `data/watchlist.json` does not parse — nothing downstream can be trusted. |
+
+## The click-through suite (a gate, since Sep 12 2026)
+
+`tools/qa/interactions.cjs` clicks every rail row, saved screen, chip, tab, filter, select, modal button and ★ Track on `/`, `/watchlist`, `/indices`, `/auctions` and `/bowman-bangers` and asserts a visible change. It caught the saved-screens bug on `origin/main` (7 dead controls with the feed, 12 without) that the wiring checks alone passed. It runs inside `--run-tests`, and it has a `--prod <origin>` mode for the nightly sweep against production — beacons aborted, same scenarios; **a prod run must be followed by a GA4 realtime check (CHARTER §4)** to confirm the run left no trace.
 
 ## The render harness (visual QA, not a gate)
 

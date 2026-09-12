@@ -9,7 +9,8 @@
 // exit 1 on any FAIL.
 //
 // Usage: node tools/audit-terminal.mjs [--json] [--feed <dir>] [--repo <dir>] [--run-tests] [--all]
-//   --run-tests   also run tools/qa/vault-migration.test.cjs (migration-test-present FAILs on a red test)
+//   --run-tests   also run tools/qa/vault-migration.test.cjs (migration-test-present) and the click-through suite
+//                 tools/qa/interactions.cjs (interaction-suite) — a dead control is a gate FAIL
 //   --all         run the other two gates first (tools/audit-prices.mjs, tools/site-auditor/audit-site.mjs)
 //   --feed <dir>  a clone of the price-data branch's data/ folder (prices-latest.json,
 //                 prices-history.json, market-latest.json). Default: <repo>/../pd/data.
@@ -540,6 +541,24 @@ if (exists("js/vault-schema.js")) {
     const r = spawnSync(process.execPath, [path.join(REPO, T)], { cwd: REPO, encoding: "utf8", timeout: 60000 });
     const tail = String((r.stdout || "") + (r.stderr || "")).trim().split("\n").slice(-3).join(" | ");
     if (r.status !== 0) add("FAIL", "migration-test-present", T, `exit ${r.status === null ? "signal " + r.signal : r.status}: ${tail.slice(0, 300)}`);
+  }
+  /* (5b) interaction-suite — the click-through suite (tools/qa/interactions.cjs) must be green: a control that exists
+     but does nothing visible (the Sep 12 saved-screens bug) is a gate FAIL, not a QA note. Runs with --run-tests. */
+  if (RUN_TESTS) {
+    // the suite ships with the gate (this tools/ tree), and is pointed at the tree under audit (--repo)
+    const I = "tools/qa/interactions.cjs";
+    const suite = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "qa/interactions.cjs");
+    if (!fs.existsSync(suite)) add("FAIL", "interaction-suite", I, "click-through suite missing next to the gate");
+    else {
+      const r = spawnSync(process.execPath, [suite, "--repo", REPO, "--feed", FEED_DIR, "--json", "--port", "4177"], { cwd: REPO, encoding: "utf8", timeout: 900000, maxBuffer: 64 * 1024 * 1024 });
+      let j = null; try { j = JSON.parse(r.stdout); } catch {}
+      if (!j) add("FAIL", "interaction-suite", I, `did not produce a report (exit ${r.status}): ${String(r.stderr || r.stdout).trim().split("\n").slice(-2).join(" | ").slice(0, 300)}`);
+      else {
+        for (const x of j.fails) add("FAIL", "interaction-suite", `${I} → ${x.page}`, `${x.code}: ${x.detail}`);
+        for (const x of j.warns) add("WARN", "interaction-suite", `${I} → ${x.page}`, `${x.code}: ${x.detail}`);
+        if (!JSON_OUT) console.log(`  interaction suite: ${j.pages.length} pages · ${j.scenarios} scenarios · FAIL ${j.fails.length} · WARN ${j.warns.length}`);
+      }
+    }
   }
   /* (4) rail-portfolio-readonly — nobody but the two writers may write the store */
   const writeRe = new RegExp(`localStorage\\.setItem\\(\\s*(?:['"]${esc(S.key || "sch_vault_v1")}['"]|LS_KEY\\b)|indexedDB\\.open\\(\\s*['"]${esc(S.idb[0] || "sch_vault")}['"]|\\.put\\(\\s*(?:state|store)\\b`, "g");
