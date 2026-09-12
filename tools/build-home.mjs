@@ -57,7 +57,7 @@ if (latest && history) {
   put("chart", HOME.renderChart(model, sel));
   put("engine", HOME.renderEngine(model));
   put("movers", HOME.renderMovers(model));
-  put("screen", HOME.renderScreen(model, "board"));
+  put("screen", HOME.renderScreens(model, "board"));   // every saved screen pre-rendered (one visible) so switching needs no feed
   const sm = HOME.screenMeta(model, "board");
   html = html.replace(/(<span data-home="screen-name">)[^<]*(<\/span>)/, `$1${sm.name}$2`).replace(/(<span data-home="screen-meta">)[^<]*(<\/span>)/, `$1${sm.meta}$2`);
   put("stamp", `feed <b data-home="day">${ST.dstr(model.day)}</b> · <span data-home="stamp">${model.marked}/${model.total} marked · ${model.gatedN} gated</span> · ask-basis`);

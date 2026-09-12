@@ -202,6 +202,13 @@
         '<td>' + (c.conf != null && c.conf > 0 ? num(c.conf, 2) : '—') + '</td></tr>';
     }).join('');
   }
+  /* every saved screen as its own <tbody> (one visible) — the page can switch screens with no feed at all */
+  function renderScreens(model, active) {
+    return Object.keys(SCREENS).map(function (id) {
+      var sm = screenMeta(model, id);
+      return '<tbody data-screen-body="' + id + '" data-name="' + esc(sm.name) + '" data-meta="' + esc(sm.meta) + '"' + (id === active ? '' : ' hidden') + '>' + renderScreen(model, id) + '</tbody>';
+    }).join('\n');
+  }
   function renderAuctions(rows, day) {
     rows = (rows || []).filter(function (r) { return r && r.url && r.total != null; }).sort(function (a, b) { return new Date(a.endDate) - new Date(b.endDate); }).slice(0, 5);
     if (!rows.length) return '<li class="empty">No verified live auction on a tracked card right now — the desk refreshes every 15 minutes.</li>';
@@ -224,13 +231,29 @@
     var panel = function (k) { return document.querySelector('[data-home="' + k + '"]'); };
     var model = null, sel = null;
     var screenId = function () { var m = (location.hash || '').match(/screen=([a-z0-9]+)/); return m && SCREENS[m[1]] ? m[1] : 'board'; };
-    function paintScreen() {
-      var id = screenId(); var body = panel('screen'); if (!body || !model) return;
-      var sm = screenMeta(model, id);
-      body.innerHTML = renderScreen(model, id);
+    var REDUCED = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    /* paintScreen: with no model (feed not here yet, or failed) it toggles the pre-rendered <tbody>s; with a model it
+       re-renders them. Always updates the header + the active chip/rail row, so a click is visible at once. */
+    function paintScreen(show) {
+      var id = screenId();
+      var bodies = document.querySelectorAll('[data-screen-body]');
       var nm = $('[data-home="screen-name"]'), mt = $('[data-home="screen-meta"]');
-      if (nm) nm.textContent = sm.name; if (mt) mt.textContent = sm.meta;
+      Array.prototype.forEach.call(bodies, function (tb) {
+        var k = tb.getAttribute('data-screen-body');
+        if (model) { var sm = screenMeta(model, k); tb.innerHTML = renderScreen(model, k); tb.setAttribute('data-name', sm.name); tb.setAttribute('data-meta', sm.meta); }
+        tb.hidden = k !== id;
+        if (k === id) { if (nm) nm.textContent = tb.getAttribute('data-name') || SCREENS[id].n; if (mt) mt.textContent = tb.getAttribute('data-meta') || SCREENS[id].meta; }
+      });
       Array.prototype.forEach.call(document.querySelectorAll('[data-screen]'), function (a) { a.classList.toggle('on', a.getAttribute('data-screen') === id); });
+      if (show) revealScreens();
+    }
+    /* bring the Screens panel to the user and flash its header — the response has to be visible where they clicked */
+    function revealScreens() {
+      var p = $('#screens'); if (!p) return;
+      try { p.scrollIntoView({ block: 'start', behavior: REDUCED ? 'auto' : 'smooth' }); } catch (e) { p.scrollIntoView(); }
+      var h = p.querySelector('.scr-head'); if (!h) return;
+      h.classList.remove('flash'); void h.offsetWidth; h.classList.add('flash');
+      setTimeout(function () { h.classList.remove('flash'); }, 1000);
     }
     /* size the chart's viewBox to the column it sits in, so it fills the Markets panel instead of floating in it */
     function chartH(c) {
@@ -245,35 +268,56 @@
       if (c) { c.innerHTML = renderChart(model, sel, chartH(c)); c.innerHTML = renderChart(model, sel, chartH(c)); }
     }
     var rt = null; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(paintMarkets, 150); });
+    /* markets rows swap the chart even when the nightly feed is unreachable: indices.json is same-origin, so an
+       indices-only model draws every index chart; only the BOARD composite needs the feed (its row then navigates) */
+    var idxModel = null;
     document.addEventListener('click', function (e) {
-      var a = e.target.closest && e.target.closest('a.mrow[data-k]'); if (!a || !model) return;
+      var a = e.target.closest && e.target.closest('a.mrow[data-k]'); if (!a) return;
       if (a.classList.contains('pre-row')) return;
-      e.preventDefault(); sel = a.getAttribute('data-k'); paintMarkets();
+      var k = a.getAttribute('data-k');
+      if (!model && !(idxModel && k !== 'BOARD')) return;
+      e.preventDefault(); sel = k;
+      if (model) { paintMarkets(); return; }
+      try {
+        var c = panel('chart'); if (c) c.innerHTML = renderChart(idxModel, sel, chartH(c));
+        Array.prototype.forEach.call(document.querySelectorAll('a.mrow[data-k]'), function (r) { r.classList.toggle('on', r.getAttribute('data-k') === sel); });
+      } catch (er) {}
     });
-    window.addEventListener('hashchange', paintScreen);
-    Array.prototype.forEach.call(document.querySelectorAll('[data-screen]'), function (a) { a.classList.toggle('on', a.getAttribute('data-screen') === screenId()); });
+    window.addEventListener('hashchange', function () { paintScreen(true); });
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('[data-screen]'); if (!a) return;
+      var id = a.getAttribute('data-screen'); if (!SCREENS[id]) return;
+      e.preventDefault();
+      if (screenId() === id && (location.hash || '').indexOf('screen=') >= 0) { paintScreen(true); return; }   // same screen: still answer the click
+      try { history.pushState(null, '', location.pathname + '#screen=' + id); } catch (er) { location.hash = 'screen=' + id; return; }
+      paintScreen(true);
+    });
+    window.addEventListener('popstate', function () { paintScreen(false); });
+    try { paintScreen(/screen=/.test(location.hash || '')); } catch (e) {}
     /* live feed → re-render; any failure leaves the pre-rendered HTML alone */
     var get = function (u) { return fetch(u, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
     Promise.all([get(FEED + '/prices-latest.json?t=' + Date.now()), get(FEED + '/prices-history.json?t=' + Date.now()), get(FEED + '/market-latest.json?t=' + Date.now()).catch(function () { return null; }), get('/data/indices.json?t=' + Date.now()).catch(function () { return null; })])
       .then(function (a) {
         model = buildModel(a[0], a[1], a[2], a[3] || {});
-        var m = panel('markets'); var on = m && m.querySelector('.mrow.on'); sel = on ? on.getAttribute('data-k') : null;
-        paintMarkets();
-        var en = panel('engine'); if (en) en.innerHTML = renderEngine(model);
-        var mv = panel('movers'); if (mv) mv.innerHTML = renderMovers(model);
-        paintScreen();
-        var dy = $('[data-home="day"]'); if (dy) dy.textContent = dstr(model.day);
-        var st = $('[data-home="stamp"]'); if (st) st.textContent = model.marked + '/' + model.total + ' marked · ' + model.gatedN + ' gated';
-      }).catch(function () { /* pre-rendered numbers stay */ });
+        /* each panel paints on its own — one bad panel never blanks the others (the pre-render stays) */
+        var safe = function (f) { try { f(); } catch (e) { if (window.console) console.warn('home panel skipped:', e && e.message); } };
+        safe(function () { var m = panel('markets'); var on = m && m.querySelector('.mrow.on'); sel = on ? on.getAttribute('data-k') : null; paintMarkets(); });
+        safe(function () { var en = panel('engine'); if (en) en.innerHTML = renderEngine(model); });
+        safe(function () { var mv = panel('movers'); if (mv) mv.innerHTML = renderMovers(model); });
+        safe(function () { paintScreen(false); });
+        safe(function () { var dy = $('[data-home="day"]'); if (dy) dy.textContent = dstr(model.day); var st = $('[data-home="stamp"]'); if (st) st.textContent = model.marked + '/' + model.total + ' marked · ' + model.gatedN + ' gated'; });
+      }).catch(function () { /* pre-rendered numbers stay */
+        get('/data/indices.json?t=' + Date.now()).then(function (idx) { idxModel = buildModel({ day: '', cards: [] }, {}, null, idx || {}); }).catch(function () {});
+      });
     /* auction desk (same-origin) */
     var au = panel('auctions');
     if (au) get('/api/auctions').then(function (d) { au.innerHTML = renderAuctions(d.rows, d.markDay); var n = $('[data-home="auctions-n"]'); if (n) n.textContent = (d.count || 0) + ' live · ' + (d.underMark || 0) + ' under the mark'; })
       .catch(function () { au.innerHTML = '<li class="empty">Live auctions are unavailable right now — open the Auction Desk.</li>'; });
     /* rail portfolios from the Vault mirror (read-only) */
     var pf = $('[data-rail="portfolios"]');
-    if (pf) { var store = null; try { store = JSON.parse(localStorage.getItem('sch_vault_v1') || 'null'); } catch (e) { store = null; } var cfg = {}; try { cfg = JSON.parse(pf.getAttribute('data-cfg') || '{}'); } catch (e2) {} pf.innerHTML = renderPortfolios(store, cfg); }
+    try { if (pf) { var store = null; try { store = JSON.parse(localStorage.getItem('sch_vault_v1') || 'null'); } catch (e) { store = null; } var cfg = {}; try { cfg = JSON.parse(pf.getAttribute('data-cfg') || '{}'); } catch (e2) {} pf.innerHTML = renderPortfolios(store, cfg); } } catch (e3) {}
   }
   if (typeof document !== 'undefined') { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot(); }
 
-  return { SCREENS: SCREENS, buildModel: buildModel, renderMarkets: renderMarkets, renderChart: renderChart, renderEngine: renderEngine, renderFocus: renderFocus, renderMovers: renderMovers, renderScreen: renderScreen, screenMeta: screenMeta, renderAuctions: renderAuctions, renderPortfolios: renderPortfolios, lineChart: lineChart };
+  return { SCREENS: SCREENS, buildModel: buildModel, renderMarkets: renderMarkets, renderChart: renderChart, renderEngine: renderEngine, renderFocus: renderFocus, renderMovers: renderMovers, renderScreen: renderScreen, renderScreens: renderScreens, screenMeta: screenMeta, renderAuctions: renderAuctions, renderPortfolios: renderPortfolios, lineChart: lineChart };
 });
