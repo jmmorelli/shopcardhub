@@ -1632,11 +1632,11 @@
         {
           "date": "2026-09-14",
           "commits": [
-            "PENDING"
+            "b73bec0"
           ],
           "by": "site-auditor (Mo in chat: \"ok fix it or give me the terminal commands\"; charter 4.8 + owner instruction)",
-          "gates": "PENDING",
-          "liveVerified": "PENDING",
+          "gates": "audit-prices FAIL 0 / WARN 31 (pre-existing); audit-site FAIL 0 / WARN 3 (first-bowman-unverified trio); audit-terminal FAIL 0 / WARN 0 (price-data feed clone of 2026-09-13); first-bowman.mjs 0 contradictions — all run on the tree before commit, from a fresh clone of main 6393b5f in the sandbox",
+          "liveVerified": "verification recorded in Card Hub/site-audit-2026-09-14.md after the push (auditor session, ~12:00 PT)",
           "note": "Audit fixes: pipeline.json leak rewrite (audit-2026-09-14-1) + pushLog backfill (-2); bowman-sapphire-2026.json 4 duplicate 1st flags stripped + firstNote corrected (-3 partial); index.html IN FOCUS strip wraps + 11px (-4). Mo's clone lock (-5) is his terminal step."
         }
       ]
