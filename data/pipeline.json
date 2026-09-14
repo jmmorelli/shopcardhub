@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-13T23:55:00-07:00",
+  "generated": "2026-09-14T11:45:00-07:00",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
   "agents": {
     "seeker": {
@@ -149,54 +149,6 @@
       "nextRun": "2026-09-14",
       "actions": [
         {
-          "ts": "2026-09-04",
-          "msg": "Mo (chat, 10:30am): 'I think you got this — talk to the CoS and auditor if need be.' Under §4.8: trader-2026-09-03 → approved (Mo ran the trader himself); audit-2026-09-04-1 mechanical half applied by the CoS (wnba/murakami stamps → Aug 31) and pushed after both gates; series-2/sapphire/roman-anthony re-marks held for Monday's lane (need comp pulls + 2σ gates, 3 days away)."
-        },
-        {
-          "ts": "2026-09-07",
-          "msg": "Mon audit — sweeps CLEAN: audit-site FAIL 0/WARN 0 (102 pages, BOW26 + BCB26 pages absorbed); audit-prices FAIL 0/WARN 28 (25 label cells + series-2/sapphire/roman-anthony Aug 12 stamps still held for the reprice lane). Deploy = main ff5a1a1: 12/12 pages + indices.json/sitemap/nav.json byte-identical; working tree clean, local main = origin; 12/12 sampled scrydex/pokemontcg/ebayimg images 200."
-        },
-        {
-          "ts": "2026-09-07",
-          "msg": "Coach's fix applied: scanned human-readable stamps on all 103 pages → 22 pages at 63–87 days with no machine stamp, two of them board names contradicting the board (Holliday guide $85 vs board $109; Arquette guide June $55–85) → audit-2026-09-07-1 MED; tooling follow-up audit-2026-09-07-3 LOW so the sweep owns this class."
-        },
-        {
-          "ts": "2026-09-07",
-          "msg": "Judgment: new /bowman-1st-chrome-index says 'NO CALLS' (line 610) yet renders BUY/SELL badges in the constituent table → audit-2026-09-07-2 MED. Polish scout filed polish-2026-09-07 (live levels on the ticker strip). GSC: 3 indexed (flat), not-indexed 74 (58 → 74 as Google discovered the new URLs: crawled-not-indexed 23, discovered 51); sitemap still last read Aug 30 at 76 URLs vs 101 in sitemap.xml; manual actions + security clean. Dungeon store: 11 decisions, none new."
-        },
-        {
-          "ts": "2026-09-07",
-          "msg": "GSC: sitemap.xml resubmitted (Submitted Sep 7; Google last read Aug 30 at 76 URLs vs 101 live — every new URL inspected showed \"no referring sitemaps\", i.e. Google has not re-read it). Indexing requested for 5: /bowman-football, /bowman-chrome-2026-index, /bowman-1st-chrome-index, /cards, /pitch-black-index (all \"URL unknown to Google\"). Coverage 3 indexed / 74 not."
-        },
-        {
-          "ts": "2026-09-07",
-          "msg": "Price sweep: SportsCardsPro throttled mid-run (fetch timeouts), so the 3 held re-marks (series-2, sapphire, roman-anthony) and the ROY refresh did NOT get their comp pulls — held again, listed for the CoS. Reads that did land: Holliday CPA-EH $110.75 raw / $720 PSA 10; Arquette CPA-AA $59.50; Bazzana BDC-1 $2.25; Tolle BDC-63 $3.62; McGonigle CPA-KM $272.92 raw / $870.75 PSA 10."
-        },
-        {
-          "ts": "2026-09-07",
-          "msg": "DECISION-GRADE: /ethan-holliday-rookie-cards prices the BCP-1 BASE card at ~$85 raw / ~$380 PSA 10; market is ~$1–2 raw (eBay asks median $1.50, SCP $1.23) / $35.61 PSA 10. The gem-candidate grade-up thesis is built on a number off by ~50×. Same class on /aiva-arquette-1st-bowman (BCP-40 base \"$8–$15\" vs ~$1). NARRATIVE gate — nothing applied; filed audit-2026-09-07-4 HIGH for the CoS."
-        },
-        {
-          "ts": "2026-09-07",
-          "msg": "Gates for the lane push: audit-prices FAIL 0 / WARN 28 (25 label cells + 3 held-page 26-day stamps, all pre-existing); audit-site FAIL 0 / WARN 0 (102 pages); index invariants PASS (base/inception/divisorLog/past rows byte-identical, level = Σpx ÷ divisor on all 5 Pokémon tickers)."
-        },
-        {
-          "ts": "2026-09-08",
-          "msg": "Comp pull Sep 8 (SCP console, plain fetch): Holliday $110.75/PSA10 $720 · Kim $131.25/$629 (6th flat week) · Fischer $136.85/$421 (+40%) · Florentino $71.25/$492 (−6%) · Arquette $59.50/$125 (PSA10 −52%) · watch: Gonzales $90/$425 (+27%), Aloy $60.11, Houston $30.90, Pierce $17.51. Engine Sep 8: Holliday 169.99 (24 asks), Kim 200.74 (4), Fischer 195.76 (4, stale 9/3), Florentino 115 (28, BUY), Arquette 109 (7), Gonzales 150 (4). No dispersion flags."
-        },
-        {
-          "ts": "2026-09-09",
-          "msg": "Wed audit — sweeps CLEAN: audit-site FAIL 0/WARN 0 (94 pages after the /card-* 301s); audit-prices FAIL 0/WARN 31 (25 label cells, 3 held Aug-12 stamps, 3 prose-drift). Deploy = main de9d243: 9/9 files byte-identical on www (home, bowman-chrome-baseball-2026, auctions, bowman-bangers, holliday, indices, indices.json, sitemap.xml, nav.json); /api/auctions healthy (20 cards, 67 live, 51 under mark, 0 errors, 67/67 rows EPN-tagged customid=auctions); 12/12 sampled scrydex/pokemontcg/ebayimg images 200."
-        },
-        {
-          "ts": "2026-09-09",
-          "msg": "Coach's fix applied as a standing check: absolute-age scan of human-readable price stamps on all 94 pages → 17 pages ≥60d; 15 already inside audit-2026-09-07-1/09-02-2 (rolling to the Sep 14 lane), 1 NEW and worse than a stamp: /topps-finest-baseball still says 'Releases July 8 — pre-release' 63 days post-release → audit-2026-09-09-2 MED. Nav dates Bowman Chrome 'Aug 10' on street day Sep 9 → audit-2026-09-09-1 MED. 'Streets tomorrow' on the board → 09-09-3 LOW. de9d243 unlogged in pushLog + stranded index.lock in Mo's clone → 09-09-4 LOW."
-        },
-        {
-          "ts": "2026-09-09",
-          "msg": "GSC: 3 indexed (flat since Aug 31) / 74 not indexed (51 discovered + 23 crawled, validation Started) — up from 58 on Sep 4 because Google finally read the sitemap Sep 7 (Success, 101 URLs = the pre-866f9fd list; sitemap.xml now carries 77, so 24 retired /card-* URLs are in Google's queue as 308s). Manual actions + security: no issues. Dungeon store: 11 decisions, all reconciled, none new since Sep 1."
-        },
-        {
           "ts": "2026-09-11",
           "msg": "Fri audit — sweeps CLEAN: audit-site FAIL 0/WARN 3 (94 pages; all three WARNs are the known first-bowman-unverified sets, Monday Sep 14 clears them), audit-prices FAIL 0/WARN 31 (25 label cells + the 3 held Aug-12 re-marks + 2 prose stamps), tools/first-bowman.mjs clean (release order verified, 655 candidates, dry run). Deploy = repo: homepage, sitemap.xml (77 URLs both sides), /auctions, /bowman-bangers, /topps-finest all match; nav present, no error pages; prices-latest.json day 2026-09-11. 12/12 sampled scrydex/pokemontcg images 200."
         },
@@ -227,6 +179,22 @@
         {
           "ts": "2026-09-11",
           "msg": "Whole-payload scan (CoS ruling): 6 phrases describing the owner's selling-venue position strategy were public in this file inside trader actions/proposals - the Sep 10 sweep covered competitor names only. Redacted to neutral inventory wording; the venue name itself stays (it is linked from the site). Mapping kept local in chief-of-staff/checkpoint-2026-09-11.md. Site email in two GSC notes -> 'the site's own Google account'."
+        },
+        {
+          "ts": "2026-09-14",
+          "msg": "Mon audit — sweeps run on the mounted clone AND on a fresh read-only clone of main 6393b5f (mount is 2 commits behind): audit-site FAIL 0/WARN 3 (the first-bowman-unverified trio, 3rd run), audit-prices FAIL 0/WARN 31 (same 31; the 3 Aug-12 machine stamps are now 33 days old), audit-terminal FAIL 0/WARN 0 with the price-data feed, first-bowman.mjs 0 contradictions / 655 candidates. Deployed == main byte-identical on 7 pages; remote images 12/12 resolve (10 scrydex + 2 ebayimg). Dungeon store: 11 decisions, updated Sep 2, none new."
+        },
+        {
+          "ts": "2026-09-14",
+          "msg": "Whole-payload leak scan: competitor names 0, outside handles 0, email 0, $/qty 0 — but five trader lines still used venue-approach wording of the class redacted Sep 11 → HIGH audit-2026-09-14-1 (phrases kept local, not repeated here). Two Monday commits on main (cb9d85a, 6393b5f) carry no pushLog entry and no Task-key/Authority trailers → MED audit-2026-09-14-2."
+        },
+        {
+          "ts": "2026-09-14",
+          "msg": "GSC (site account): 3 indexed / 74 not indexed (51 discovered-not-indexed, 23 crawled-not-indexed with validation Started) — flat a 4th run; sitemap.xml last read Sep 7, Success, 101 discovered; manual actions and security issues both clean. Coach's fix delivered: every data/sets 1st flag read against first-bowman.mjs (0 contradictions) and audit-terminal added to the sweep; the rendered unverified set (/bowman-sapphire-2026, 20 tags, in-file duplicate 1sts) filed as MED audit-2026-09-14-3; polish-2026-09-14 = Markets-row sparklines."
+        },
+        {
+          "ts": "2026-09-14",
+          "msg": "Mo (in chat): \"fix it\" — auditor applied its own findings this once: 5 leak lines rewritten to listing wording (mapping local), pushLog backfilled for the two Monday commits, 4 duplicate same-set 1st flags stripped from the Sapphire checklist (verified still unset), IN FOCUS strip wraps at 11px. Gates re-run before push; Mo's stale clone lock is his terminal step."
         }
       ],
       "log": [
@@ -354,7 +322,7 @@
         },
         {
           "ts": "2026-09-03",
-          "msg": "inventory check partial — one legacy single-copy position closed by sale; one multi-copy position was undercut by a new seller; the other positions are carried forward unverified until the next logged-in run. Lesson filed: fall back to snapshots by schema, not by date."
+          "msg": "inventory check partial — one legacy listing closed by sale; one listing was repriced by the market; the remaining listings are carried forward unverified until the next logged-in run. Lesson filed: fall back to snapshots by schema, not by date."
         },
         {
           "ts": "2026-09-10",
@@ -362,7 +330,7 @@
         },
         {
           "ts": "2026-09-10",
-          "msg": "coach's fix delivered — the position-depth check now runs entirely from the public side when the venue is logged out, and it turns out to return MORE than the logged-in view does. Every position checked came back unchanged; no escalations. Coverage was deliberately bounded to the largest positions rather than swept across the book."
+          "msg": "coach's fix delivered — the listing check now runs entirely from the public side when the venue is logged out, and it turns out to return MORE than the logged-in view does. Every listing checked came back unchanged; no escalations. Coverage was deliberately bounded to the largest listings rather than the whole inventory."
         },
         {
           "ts": "2026-09-10",
@@ -378,7 +346,7 @@
         },
         {
           "ts": "2026-09-10",
-          "msg": "run completed in full after the session was recovered mid-run — the venue was never logged out, the tooling was pointed at the wrong browser profile. Snapshot reconciled exactly on every dashboard figure; position-depth check matched all tracked positions with zero escalations and several new sole-seller positions earned."
+          "msg": "run completed in full after the session was recovered mid-run — the venue was never logged out, the tooling was pointed at the wrong browser profile. Snapshot reconciled exactly on every dashboard figure; listing check matched all tracked listings with zero escalations; several listings changed status on the venue."
         },
         {
           "ts": "2026-09-10",
@@ -386,7 +354,7 @@
         },
         {
           "ts": "2026-09-10",
-          "msg": "lesson filed against my own escalation — two runs were reported as blocked by the venue before anyone diagnosed the cause, which turned out to be a one-question fix. Escalating an undiagnosed blocker hands the owner work the agent should have done. Also filed: newly earned sole-seller positions now require a market check on arrival, since one of this week's is materially underwater."
+          "msg": "lesson filed against my own escalation — two runs were reported as blocked by the venue before anyone diagnosed the cause, which turned out to be a one-question fix. Escalating an undiagnosed blocker hands the owner work the agent should have done. Also filed: listings that change status on the venue now require a market check on arrival."
         }
       ]
     },
@@ -1074,7 +1042,7 @@
     {
       "id": "trader-2026-09-10",
       "status": "awaiting-mo",
-      "title": "TRADER: 3 recs this week (1 time-sensitive, expires in 3 days) + 1 explicit no-action; snapshot reconciled exactly, position-depth check all clear — details in local scan report"
+      "title": "TRADER: 3 recs this week (1 time-sensitive, expires in 3 days) + 1 explicit no-action; snapshot reconciled exactly, listing check all clear — details in local scan report"
     },
     {
       "id": "audit-2026-09-11-1",
@@ -1130,6 +1098,36 @@
       "id": "bcb26-chase-basket-v1-2026-09-11",
       "status": "applied",
       "title": "MED / INDEX (4.8): BCB26 could never activate - basket empty, zero feeds. CoS defined chase basket v1 (9 cards the site already names as the chase) and restated the activation gate to a count basis (>=60% of chase-basket cards with a verified ask). Grows only via Tuesday STEP 0 with logged divisor adjustments. Vetoable by Mo."
+    },
+    {
+      "id": "audit-2026-09-14-1",
+      "status": "applied",
+      "title": "HIGH (leak, whole-payload scan): five trader lines in this public file (agents.trader.actions ×4 + the trader-2026-09-10 title) still described the owner's selling-venue approach in the same class the Sep 11 pass redacted from proposals but not from the trader's own action lines; the Sep 11 note claimed the class was covered. Competitor names, outside handles, the owner email and $/quantity figures: 0 hits. FIX: rewrite to neutral listing wording, mapping kept local in Card Hub/chief-of-staff/; extend the auditor's scan list (kept local too). — Mo in chat 2026-09-14 (\"fix it\"): five lines rewritten to neutral listing wording by the auditor in the same session; mapping kept local at Card Hub/chief-of-staff/leak-redaction-2026-09-14.md."
+    },
+    {
+      "id": "audit-2026-09-14-2",
+      "status": "applied",
+      "title": "MED (push discipline): two commits landed on main this morning with no chiefOfStaff.pushLog entry and no Task-key:/Authority: trailers — cb9d85a \"Weekly fixes: copy follows the engine (5 surfaces), sealed-book leak queries, rail text floor 11px…\" (16 files incl. bowman-bangers.html Signal chip, aiva-arquette verdict table, pitch-black prose, css/terminal-shell.css, tools/site-auditor/sweep.mjs new) and 6393b5f \"Monday build 2026-09-14: BOW26 re-mark 99.21…\" (6 files); both messages carry only Co-Authored-By + Claude-Session. Deployed == main verified byte-identical on 7 pages (/, /destined-rivals-index, /bowman-sapphire-2026, /indices, /auctions, /bowman-chrome-2026-index, /bowman-bangers), so this is the MED class, not the Jul 30 HIGH. Gates re-run read-only on main 6393b5f this run: audit-site FAIL 0/WARN 3, audit-prices FAIL 0/WARN 31, audit-terminal FAIL 0/WARN 0 (with the price-data feed), first-bowman clean. FIX: backfill one pushLog entry for both hashes stating the three gates + live verification; the Monday lane prompt must add the trailers before commit. — Mo in chat 2026-09-14: pushLog entry backfilled for cb9d85a + 6393b5f with the gates re-run read-only on main; trailer rule for the Monday lane prompt stays with the CoS."
+    },
+    {
+      "id": "audit-2026-09-14-3",
+      "status": "applied",
+      "title": "MED (data integrity, coach’s fix class): /bowman-sapphire-2026 renders 20 1ST BOWMAN tags (bowman-sapphire-2026.html:925 → data/sets/bowman-sapphire-2026.json) with the tooltip \"verified per card\" (js/set-checklist.js:66) while the file has no firstAudit.verified — third run as a WARN, and the only unverified set that is actually rendered (bowman-baseball-2025 / bowman-chrome-baseball-2025 carry 308 + 175 unverified flags but no page loads them; they are BCB26’s priors). Inside the file the flags contradict Mo’s one-1st-per-kind rule and the verifier cannot see it because same-set cards never count as priors: Holliday is 1st base on BCP-1 AND on Hidden Gems insert HG-4; Holliday, Florentino and Aloy are 1st auto on BSPA AND on Sapphire Selections SSA. The file’s own firstNote says \"the 31 BSPA autos are 1st Bowman Autos\" but only 8 BSPA rows carry the flag, so 23 rows the note calls 1sts render untagged. tools/first-bowman.mjs on main: 0 contradictions, 655 INFO candidates (424 in the Draft file, 0 flags by design). FIX: (a) rule the insert/SSA rows (Topps prints the 1st logo on BCP/BSPA, not on Hidden Gems or Sapphire Selections — confirm against the checklist) and strip or confirm; (b) either flag all 31 BSPA or fix the note; (c) set firstAudit.verified with the source, which clears the 3-run WARN; (d) add a same-set duplicate-kind check to first-bowman.mjs (exempt paper BP + chrome BCP pairs of the same card, which legitimately both carry the logo). — Mo in chat 2026-09-14: PARTIAL — the 4 same-set duplicate 1st flags stripped (HG-4 Holliday base; SSA-EF/EH/WA autos: the BCP/BSPA row keeps the 1st) and the firstNote corrected (8 BSPA verified-flagged, 23 unverified). firstAudit.verified NOT set — nobody has checked these 20 flags against a checklist outside data/sets; the WARN stays until someone does."
+    },
+    {
+      "id": "audit-2026-09-14-4",
+      "status": "applied",
+      "title": "LOW (home, user-visible): the IN FOCUS strip on / hides its own items — .focus .items is overflow-x:auto with scrollbar-width:none (index.html:176), so at 1456px the 5th chip is cut mid-word (\"Topps Update Sep 14 · bas\") and the 6th (\"Tape Recap · Mondays\") is invisible with no arrow, fade or scrollbar; and the chip stamps are 10.5px (index.html:180 .focus .items a em) — under the 11px text floor cb9d85a enforced on the rail this morning. Generated by tools/build-home.mjs (HOME block) — fix the template, not the page: em → 11px, and either a right-edge fade + scroll-snap or wrap to two rows under 1500px. — Mo in chat 2026-09-14: .focus .items now wraps (all chips visible at every width) and the chip stamp is 11px; index.html <style> only, not a generated block."
+    },
+    {
+      "id": "audit-2026-09-14-5",
+      "status": "awaiting-mo",
+      "title": "LOW (Mo’s clone, physically his): ~/Projects/shopcardhub is 2 commits behind main (HEAD b4c82fc; origin/main already fetched to 6393b5f) and carries .git/index.lock created 10:24 PT today — a pull stopped between fetch and merge. Until `rm .git/index.lock && git pull` the local tree shows Sep 11 marks on / and every commit attempt fails; the Wed Sep 16 build session should start from a fresh clone regardless (cos-sunday-sep13 rule)."
+    },
+    {
+      "id": "polish-2026-09-14",
+      "status": "awaiting-cos",
+      "title": "POLISH: / — Markets panel — give each ticker row (BOARD, PB26, CR26, AH26, PRIS25, DR25, BOW26) a 30-mark sparkline in the row, the same svg.spark up/dn that Board Movers already draws 300px lower, sourced from the history arrays indices.json already carries — why it earns a wow: today the Markets list is seven lines of text and only the selected row gets a chart; with sparklines a first-time visitor reads the whole tape moving at a glance (PRIS25 −4.25% vs BOW26 +1.25% as shapes, not digits), which is the single thing that makes a terminal read like a terminal — and the renderer, CSS and data all exist, so it is a js/home.js + build-home.mjs change, not a new system."
     }
   ],
   "scoreboard": {
@@ -1619,6 +1617,27 @@
           "gates": "audit-prices FAIL 0 / WARN 31; audit-site FAIL 0 / WARN 3; audit-terminal FAIL 0 / WARN 0 (feed clone)",
           "liveVerified": "live 2026-09-13 ~23:5x PT — DR25 and AH26 heroes render the #1 constituent as a raw card photo",
           "note": "Mo: a DR25 hero photo was an \"Extended Art Case\", not the card. Image resolver (tools/price-engine/resolve-page-images.mjs) and the client fallback (js/card-img.js) now reject cases/frames/display accessories and prefer a raw listing over a graded slab; DR25 + AH26 heroes moved from \"top constituent with a photo (#6)\" to the true #1; three photos re-resolved."
+        },
+        {
+          "date": "2026-09-14",
+          "commits": [
+            "cb9d85a",
+            "6393b5f"
+          ],
+          "by": "monday-weekly-trend-scan (scheduled; charter 4.8) — entry backfilled by the site auditor on Mo's instruction, same day",
+          "gates": "re-run read-only on main 6393b5f by the auditor at ~11:00 PT: audit-prices FAIL 0 / WARN 31 (pre-existing); audit-site FAIL 0 / WARN 3 (first-bowman-unverified trio); audit-terminal FAIL 0 / WARN 0 (price-data feed clone); first-bowman.mjs 0 contradictions. The lane's own pre-commit gate output was not recorded — that is the finding (audit-2026-09-14-2).",
+          "liveVerified": "live 2026-09-14 ~11:00 PT — /, /destined-rivals-index, /bowman-sapphire-2026, /indices, /auctions, /bowman-chrome-2026-index, /bowman-bangers byte-identical to main",
+          "note": "Weekly fixes (copy follows the engine on 5 surfaces, sealed-book queries, rail text floor 11px, sealed routing, tools/site-auditor/sweep.mjs) + Monday build (BOW26 re-mark 99.21, engine blocks/card pages/home re-baked on the 09-13 feed, card-images 417→430). Neither commit carried Task-key/Authority trailers."
+        },
+        {
+          "date": "2026-09-14",
+          "commits": [
+            "PENDING"
+          ],
+          "by": "site-auditor (Mo in chat: \"ok fix it or give me the terminal commands\"; charter 4.8 + owner instruction)",
+          "gates": "PENDING",
+          "liveVerified": "PENDING",
+          "note": "Audit fixes: pipeline.json leak rewrite (audit-2026-09-14-1) + pushLog backfill (-2); bowman-sapphire-2026.json 4 duplicate 1st flags stripped + firstNote corrected (-3 partial); index.html IN FOCUS strip wraps + 11px (-4). Mo's clone lock (-5) is his terminal step."
         }
       ]
     },

@@ -173,11 +173,11 @@ body::before{
     /* focus strip */
     .focus { display:flex; align-items:stretch; margin:14px 0; background:var(--bg2); border:1px solid var(--border); border-radius:4px; overflow:hidden; }
     .focus .tag { background:var(--red); color:#fff; font-family:var(--fd); font-weight:700; letter-spacing:2px; text-transform:uppercase; font-size:12px; padding:10px 14px; white-space:nowrap; display:flex; align-items:center; }
-    .focus .items { display:flex; overflow-x:auto; white-space:nowrap; scrollbar-width:none; min-width:0; }
+    .focus .items { display:flex; flex-wrap:wrap; min-width:0; }
     .focus .items a { padding:10px 14px; color:var(--text); font-size:13px; font-weight:500; border-left:1px solid var(--border); display:flex; align-items:center; }
     .focus .items a:first-child { border-left:0; }
     .focus .items a:hover { color:var(--text-head); text-decoration:none; background:rgba(255,255,255,0.03); }
-    .focus .items a em { font-style:normal; color:var(--text-dim); font-family:var(--fm); font-size:10.5px; margin-left:6px; }
+    .focus .items a em { font-style:normal; color:var(--text-dim); font-family:var(--fm); font-size:11px; margin-left:6px; white-space:nowrap; }
     /* movers / auctions */
     .tr-list { list-style:none; margin:0; padding:0; }
     .tr-list li { display:grid; grid-template-columns:26px minmax(0,1fr) auto auto; gap:12px; align-items:center; padding:8px 16px; border-bottom:1px solid var(--border); }
