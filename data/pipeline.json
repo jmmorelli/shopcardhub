@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-13T23:20:00-07:00",
+  "generated": "2026-09-13T23:55:00-07:00",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
   "agents": {
     "seeker": {
@@ -1148,7 +1148,7 @@
   },
   "chiefOfStaff": {
     "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
-    "generated": "2026-09-13T23:20:00-07:00",
+    "generated": "2026-09-13T23:55:00-07:00",
     "weekOf": "2026-09-14",
     "headline": "The Terminal shipped on Mo's word — 11 pushes in two days, / is a dashboard, three gates now. Sunday evening with Mo present: Monday, Tuesday and auditor prompts made Terminal-aware; a production click-through sweep found 9 dead links on the Auction Desk and they were fixed live; the Sep 7 rogue email traced to a non-staff session. Queue is 1 item: the trader's recs.",
     "doNothing": "Only queue item left is the trader's recs (money, yours). Everything else this week runs on schedule: Monday lane 10 am (three gates, home re-render), Tuesday board + checkpoint, Wed 1 pm build session, Thursday trader + checkpoint, Friday board window + Keeper (Rookie Extractor conversion approved).",
@@ -1609,6 +1609,16 @@
           "gates": "audit-prices FAIL 0 / WARN 31 (pre-existing); audit-site FAIL 0 / WARN 3 (first-bowman-unverified trio); audit-terminal FAIL 0 / WARN 0 (with the Sep 13 feed clone) — run on the tree before each commit",
           "liveVerified": "live 2026-09-13 ~23:1x PT — /prismatic-evolutions-index renders the SEALED row (\"first mark tonight\", index 30D −2.6%, Shop ETBs on eBay with the full EPN set); no console errors",
           "note": "SEALED row on the 5 Pokémon index pages (tools/build-sealed-rows.mjs, generated block SEALED:START/END; js/sealed-row.js fills from the nightly feed). Engine: cardType \"sealed\" + TITLE_BAD_SEALED in tools/price-engine/snapshot-free.mjs; 5 watchlist feeds (boardHide, categoryIds 183456, sealedOf/product fields). First marks land with the next nightly snapshot. Verified against live listings before shipping: PB26 38 asks, PRIS25 ETB 44, AH26 ETB 11, CR26 7 (thin), DR25 4 (thin, at the 4-ask floor). Bowman held back on Mo's call."
+        },
+        {
+          "date": "2026-09-13",
+          "commits": [
+            "c13b792"
+          ],
+          "by": "chief-of-staff-sunday (in-chat, Mo present; charter 4.8)",
+          "gates": "audit-prices FAIL 0 / WARN 31; audit-site FAIL 0 / WARN 3; audit-terminal FAIL 0 / WARN 0 (feed clone)",
+          "liveVerified": "live 2026-09-13 ~23:5x PT — DR25 and AH26 heroes render the #1 constituent as a raw card photo",
+          "note": "Mo: a DR25 hero photo was an \"Extended Art Case\", not the card. Image resolver (tools/price-engine/resolve-page-images.mjs) and the client fallback (js/card-img.js) now reject cases/frames/display accessories and prefer a raw listing over a graded slab; DR25 + AH26 heroes moved from \"top constituent with a photo (#6)\" to the true #1; three photos re-resolved."
         }
       ]
     },
