@@ -33,7 +33,11 @@ function pick(listings, q) {
     if (!l.image || !/^https:\/\/i\.ebayimg\.com\//.test(l.image)) continue;
     if (num && !t.includes(num)) continue;
     if (!toks.every((k) => t.includes(k))) continue;
-    if (/(lot of|reprint|digital|custom|proxy|you pick|choose)/.test(t)) continue;
+    // Sep 13 2026 (Mo: a DR25 hero was a card CASE, not the card): accessories and
+    // display products never picture the card; graded slabs are allowed but a raw
+    // listing wins when one exists (the loop keeps the first raw fixed-price hit).
+    if (/(lot of|reprint|digital|custom|proxy|you pick|choose|\bcase\b|cases|frame|display|magnetic|toploader|top loader|sleeve|binder|stand|holder|acrylic|protector|playmat|deck box|storage)/.test(t)) continue;
+    if (/(psa|bgs|cgc|sgc|graded|slab)\b/.test(t)) { if (!best) best = { url: l.image.replace(/s-l\d+\./, "s-l500."), item: l.url || null, title: l.title || null }; continue; }
     best = { url: l.image.replace(/s-l\d+\./, "s-l500."), item: l.url || null, title: l.title || null };
     if (l.buyingOption === "FIXED_PRICE") break;
   }

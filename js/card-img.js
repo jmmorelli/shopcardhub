@@ -88,7 +88,7 @@
         if (num && t.indexOf(num) < 0) continue;
         var ok = toks.every(function (k) { return t.indexOf(k) > -1; });
         if (!ok) continue;
-        if (/(lot of|reprint|digital|custom|proxy|you pick|choose)/.test(t)) continue;
+        if (/(lot of|reprint|digital|custom|proxy|you pick|choose|\bcase\b|cases|frame|display|magnetic|toploader|top loader|sleeve|binder|stand|holder|acrylic|protector|playmat|deck box|storage)/.test(t)) continue;
         best = { url: l.image.replace(/s-l\d+\./, 's-l500.'), item: l.url || null, title: l.title || null };
         if (l.buyingOption === 'FIXED_PRICE') break;
       }
