@@ -239,10 +239,6 @@
         {
           "ts": "2026-09-14",
           "msg": "GA4 28d: 977 active / 968 new / 1,174 sessions / 576 engaged / 110 key events (6.2% rate, was 12.1–14.5%) / organic 61.2% / AI Assistant 4 sessions @ 0%. 7d: 274 active / 268 new → returning ≈6 (13→13→8→10→6). Retention surfaces 28d: / 48 users, bangers 28, DR25 7, /indices 7, watchlist 11, other index pages 1–5; split by new/returning still NA (no exploration)."
-        },
-        {
-          "ts": "2026-09-14",
-          "msg": "Lane discipline (MED): commits cb9d85a + 6393b5f landed 5:42am PT Sep 14 from a Claude Code session with no Task-key/Authority trailers and no pushLog entry. CORRECTION to the auditor's same-day backfill: they were NOT this scheduled run (which started 10:06 PT from a fresh clone at 6393b5f; its own commit carries trailers + a pushLog entry with all three gates) — the pushLog entry attributing them to 'monday-weekly-trend-scan' is wrong, and audit-2026-09-14-2's 'lane did not record its gates' applies to that session, not to this run. Needs the CoS to re-attribute."
         }
       ],
       "log": [
@@ -1091,7 +1087,7 @@
       "id": "audit-2026-09-14-5",
       "status": "awaiting-mo",
       "title": "LOW (Mo’s clone, physically his): ~/Projects/shopcardhub is 2 commits behind main (HEAD b4c82fc; origin/main already fetched to 6393b5f) and carries .git/index.lock created 10:24 PT today — a pull stopped between fetch and merge. Until `rm .git/index.lock && git pull` the local tree shows Sep 11 marks on / and every commit attempt fails; the Wed Sep 16 build session should start from a fresh clone regardless (cos-sunday-sep13 rule).",
-      "appliedNote": "Monday scan 13:40 PT: the 10:24 index.lock was created by THIS run's read-only `git fetch` in Mo's mounted clone (the mount refuses unlink); it was renamed to .git/index.stale-1789419686 at 10:30 (harmless) and the clone now sits at edb8b15 = origin/main with no .lock present. After the lane push it is 2 behind again: `git pull --ff-only origin main` (nothing to rm). This run did all its work in a fresh /tmp clone and did not touch Mo's tree otherwise. — Monday scan 13:40 PT: the 10:24 index.lock was created by THIS run's read-only `git fetch` in Mo's mounted clone (the mount refuses unlink); it was renamed to .git/index.stale-1789419686 at 10:30 (harmless) and the clone now sits at edb8b15 = origin/main with no .lock present. After the lane push it is 2 behind again: `git pull --ff-only origin main` (nothing to rm). This run did all its work in a fresh /tmp clone and did not touch Mo's tree otherwise."
+      "appliedNote": "Monday scan 13:40 PT: the 10:24 index.lock was created by THIS run's read-only `git fetch` in Mo's mounted clone (the mount refuses unlink); it was renamed to .git/index.stale-1789419686 at 10:30 (harmless) and the clone now sits at edb8b15 = origin/main with no .lock present. After the lane push it is 2 behind again: `git pull --ff-only origin main` (nothing to rm). This run did all its work in a fresh /tmp clone and did not touch Mo's tree otherwise. — Monday scan 13:40 PT: the 10:24 index.lock was created by THIS run's read-only `git fetch` in Mo's mounted clone (the mount refuses unlink); it was renamed to .git/index.stale-1789419686 at 10:30 (harmless) and the clone now sits at edb8b15 = origin/main with no .lock present. After the lane push it is 2 behind again: `git pull --ff-only origin main` (nothing to rm). This run did all its work in a fresh /tmp clone and did not touch Mo's tree otherwise"
     },
     {
       "id": "polish-2026-09-14",
