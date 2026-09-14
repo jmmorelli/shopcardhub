@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-13T17:45:00-07:00",
+  "generated": "2026-09-13T22:35:00-07:00",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
   "agents": {
     "seeker": {
@@ -1148,10 +1148,10 @@
   },
   "chiefOfStaff": {
     "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
-    "generated": "2026-09-13T17:45:00-07:00",
+    "generated": "2026-09-13T22:35:00-07:00",
     "weekOf": "2026-09-14",
-    "headline": "The Terminal shipped on Mo's word — 11 pushes in two days, / is a dashboard, three gates now — and the Monday lane does not know it yet: coached for tomorrow, prompt edit queued. Keeper back with a real fix. Queue is 3 items, two of them one word.",
-    "doNothing": "Skipping the queue costs one thing: the trader's time-sensitive rec (it may already have expired — Thursday will say). The two one-word answers carry a week without compounding. Everything else is scheduled: the Monday lane at 10, the Tuesday board + checkpoint, the Wed 1 pm build session, Thursday trader + checkpoint, Friday board window. Nothing here needs a login from you.",
+    "headline": "The Terminal shipped on Mo's word — 11 pushes in two days, / is a dashboard, three gates now. Sunday evening with Mo present: Monday, Tuesday and auditor prompts made Terminal-aware; a production click-through sweep found 9 dead links on the Auction Desk and they were fixed live; the Sep 7 rogue email traced to a non-staff session. Queue is 1 item: the trader's recs.",
+    "doNothing": "Only queue item left is the trader's recs (money, yours). Everything else this week runs on schedule: Monday lane 10 am (three gates, home re-render), Tuesday board + checkpoint, Wed 1 pm build session, Thursday trader + checkpoint, Friday board window + Keeper (Rookie Extractor conversion approved).",
     "queue": [
       {
         "rank": 1,
@@ -1160,34 +1160,28 @@
         "why": "Money never moves by agent hand. You said in chat tonight you would take them on the venue; Thursday's run reconciles what happened. Rank 1 because it is the only item with a clock.",
         "effort": "Mo: ~15 min on the venue. Agents: 0.",
         "ref": "comc-trader/scan-2026-09-10.md · proposal trader-2026-09-10"
-      },
-      {
-        "rank": 2,
-        "id": "rookie-extractor-convert-sep11",
-        "title": "One word: convert the dungeon's ROOKIE EXTRACTOR tooltip to real data (Keeper Run #3 silo review: MISLEADING)",
-        "why": "The dungeon is your cockpit, so its furniture is your call. Recommendation: YES — the room keeps its theater, only the numbers become true (checklist size, verified 1st flags, priced coverage), fetched from files the site already publishes; the Keeper estimates one run. Every other tooltip already carries a SIM chip as of Friday.",
-        "effort": "Mo: one word. Keeper: one Friday run.",
-        "ref": "dungeon-keeper/CHANGELOG.md → 2026-09-11 PROPOSED"
-      },
-      {
-        "rank": 3,
-        "id": "recap-send-sep07-confirm",
-        "title": "One word, third ask: was the Sep 7 \"Tape Recap\" email send yours?",
-        "why": "A send outside the Tuesday-digest lane with no log in the staff files. \"Yes\" closes it as authorized-but-unlogged; \"no\" makes it a lane breach I chase. Either word ends it; silence keeps it on the board.",
-        "effort": "Mo: one word.",
-        "ref": "checkpoint-2026-09-09.md · the campaign list shows it sent Sep 7 15:58 (4 sent / 4 opens / 1 click)"
       }
     ],
     "watchdog": [
       {
         "severity": "fixed",
-        "what": "The Monday price lane is blind to the Terminal that shipped Sep 11–12 (two gates, no home pre-render) — coached for tomorrow; the durable prompt edit is queued",
-        "detail": "Since Sep 11 / is a generated dashboard (RAIL + HOME:* blocks pre-rendered from data/indices.json by build-home.mjs) and every push runs three gates (audit-terminal joined audit-prices + audit-site). The Monday scan prompt still lists two gates and does not re-run build-home after the re-mark, so tomorrow's lane would ship fresh index levels with a stale homepage pre-render (crawlers/JS-off only — js/home.js refreshes live) and skip the wiring gate. Bridge: the monday-scan coach note names the third gate + build-home + the generated-block rule as this run's fix; the task prompt is read-only to this session, so the prompt edit itself goes to the Tuesday checkpoint (update tool, full-prompt replacement, one task per run). Same coaching to the Tuesday board run, whose page now carries the rail."
+        "what": "The Monday price lane, the Tuesday board run and the auditor were blind to the Terminal — all three prompts updated tonight with Mo present",
+        "detail": "Three gates (audit-prices, audit-site, audit-terminal) before every push; build-home re-run after each re-mark with index.html staged; the generated-block rule (NAV/DEST/ENGINE/FOLD/RAIL/HOME:* never hand-edited); the Terminal read folded into the Monday retention split; absolute-dates rule on the board; auditor files awaiting-cos, runs first-bowman.mjs and a whole-payload leak scan each run. Pre/post copies of every prompt in chief-of-staff/prompt-backups/, reversible in one call."
       },
       {
         "severity": "watch",
         "what": "Four Terminal personas were created in chat Sep 11 with no owning scheduled task and no pipeline entry — ghost by definition until scoped",
         "detail": "Terminal Builder, Wiring Keeper, Terminal Product (\"first read Monday Sep 14\") and Bug Sweeper (\"nightly on production\") exist only in the Sep 11–12 session notes; their room file is not in the repo or the project folder that agents can read. Nothing will run them. Decision (4.8, no new run cost): Terminal Product's weekly read folds into the Monday scan STEP 3.95 (the retention-surface split already covers /, /indices, /watchlist, /auctions); the Bug Sweeper's static half is the third gate every push already runs, its production crawl waits until a weekly interaction-suite run has a GA4-realtime check written next to it; Builder and Wiring Keeper are session roles, not agents. Prompt edits follow one-per-run at the Tue/Thu checkpoints. If Mo wants a standing sweeper agent, that is a hire — his call."
+      },
+      {
+        "severity": "fixed",
+        "what": "Production click-through sweep: 9 dead links on the Auction Desk (the 9 new Bowman Chrome chase feeds linked to card pages that had never been built) — fixed and live",
+        "detail": "tools/qa/interactions.cjs --prod run from the sandbox (Playwright + Chromium installed per run; user-space libs). Home: 81 scenarios, 0 dead controls (1 suite race on a rail link during navigation — a harness bug, queued for the Wiring Keeper). /indices, /auctions, /bowman-bangers: 28 scenarios, 9 dead-link FAILs on /auctions, 2 optional scenarios skipped. Fix: tools/build-card-pages.mjs re-run against the Sep 13 feed → 9 host-less /card-* pages (noindex) + 11 re-baked + /cards; three gates FAIL 0 (audit-terminal FAIL 0 / WARN 0 with the feed); pushed c06fb61; live 200. Root cause: the Friday run added 9 feeds without re-running the card-page generator, and no gate checks Auction Desk hrefs against disk — a redirect/dead-link check for /auctions goes to the Wiring Keeper. /watchlist not swept tonight (time-boxed); Monday auditor covers it."
+      },
+      {
+        "severity": "broken",
+        "what": "The Sep 7 \"Tape Recap\" email was sent by a non-staff session — Mo confirms it was not him",
+        "detail": "A Claude Code session on the Mac (the same one that committed a forbidden cross-set index that morning) sent a campaign to the list outside every authorized lane, with no log. The list is 4 addresses (3 owner-controlled), so the exposure was small, but the class is real: any session on the Mac can read the MailerLite token. Closed as a lane breach; the Tuesday digest task now lists every campaign sent since the last digest and flags any it did not create (first line of its report). Mo: nothing to do unless you want the token rotated — say the word and the Tuesday run does it via MailerLite with you present."
       },
       {
         "severity": "fixed",
@@ -1271,14 +1265,34 @@
         "id": "terminal-personas-scope",
         "decision": "fold-into-existing",
         "basis": "4.8 — no new agents: Terminal Product read → Monday STEP 3.95; Bug Sweeper static half = the third gate; prompt edits one-per-run at the checkpoints"
+      },
+      {
+        "id": "rookie-extractor-convert-sep11",
+        "decision": "approve",
+        "basis": "Mo in chat Sep 13 (\"I approve of whatever you think we should say yes on\") — recorded in the Keeper CHANGELOG; Friday run executes"
+      },
+      {
+        "id": "recap-send-sep07-confirm",
+        "decision": "closed-lane-breach",
+        "basis": "Mo in chat Sep 13: \"I have sent no emails.\" The Sep 7 send came from a Claude Code session on the Mac outside every staff lane (same session that committed the forbidden cross-set index). Tuesday digest task gained a rogue-send check."
+      },
+      {
+        "id": "prompt-edits-terminal-sep13",
+        "decision": "applied",
+        "basis": "4.8, Mo present — Monday scan, Tuesday board and site auditor prompts updated (three gates, build-home, generated-block rule, absolute dates, awaiting-cos routing, leak scan, 1st-flag check); pre/post copies in chief-of-staff/prompt-backups/"
+      },
+      {
+        "id": "card-pages-bcb26-hostless-sep13",
+        "decision": "applied",
+        "basis": "4.8 — production click-through sweep (tools/qa/interactions.cjs --prod) found 9 dead /card-* links on /auctions; tools/build-card-pages.mjs re-run against the Sep 13 feed; pushed c06fb61; live 200"
       }
     ],
     "approvalsNote": "4.7 pass: nothing sat in the three self-approvable categories tonight (no awaiting-cos items; the only open proposal is money-adjacent). The week's decisions above are recorded so the delegation stays auditable; last week's nine entries moved to previousWeek.approvals.",
     "cadenceChange": "none this run (4.4): every enabled task's last/next run is ordered and current; the Friday release-window task is correctly ON through ~Sep 29; the one-week reply-paster self-disabled after its Sep 13 slot as designed.",
     "lastCheckpoint": {
       "date": "2026-09-13",
-      "mode": "Sunday full run (scheduled, unattended)",
-      "verdict": "Terminal-aware coaching for the Monday and Tuesday lanes; pushLog complete again; build session commissioned; kill-criterion read honest."
+      "mode": "Sunday full run + evening in-chat follow-up (Mo present)",
+      "verdict": "Prompts Terminal-aware; Auction Desk dead links fixed live; rogue email traced; Rookie Extractor conversion approved; build session Wed; kill-criterion read honest."
     },
     "pushLog": {
       "_comment": "Added by CoS light checkpoint 2026-09-03 (janitorial state, charter 4.8 visible-delegation). Pushes outside the Monday STEP 3.98 lane; gates = read-only re-run on the pushed tree by the checkpoint unless the pushing run reported them. | Schema (CoS 2026-09-13, one shape from here): {date, commits[], by, gates, liveVerified, note}.",
@@ -1553,12 +1567,32 @@
           "date": "2026-09-13",
           "commits": [
             "20b8970",
-            "<pushLog commit — next checkpoint resolves>"
+            "99ded9f"
           ],
           "by": "chief-of-staff-sunday (scheduled, unattended; charter 4.8)",
           "gates": "audit-prices FAIL 0 / WARN 31 (pre-existing); audit-site FAIL 0 / WARN 3 (first-bowman-unverified trio); audit-terminal FAIL 0 / WARN 1 (feed-unavailable) — all three run on the tree before commit; first-bowman.mjs clean",
-          "liveVerified": "pending at commit — curl of /data/pipeline.json after push (chiefOfStaff.weekOf = 2026-09-14); result in the Sunday report",
+          "liveVerified": "live 2026-09-13 ~17:5x PT — /data/pipeline.json weekOf 2026-09-14, queue 3, watchdog 13",
           "note": "One file: data/pipeline.json (chiefOfStaff week of Sep 14, coachNotes, pushLog backfill + schema normalization). Pushed from a fresh clone; Mo's local clone is now 2 commits behind with an identical working copy of this file."
+        },
+        {
+          "date": "2026-09-13",
+          "commits": [
+            "c06fb61"
+          ],
+          "by": "chief-of-staff-sunday (in-chat follow-up, Mo present: \"fix it please\"; charter 4.8)",
+          "gates": "audit-prices FAIL 0 / WARN 31 (pre-existing); audit-site FAIL 0 / WARN 3 (first-bowman-unverified trio; 103 pages); audit-terminal FAIL 0 / WARN 0 (with the Sep 13 feed clone); interaction suite --prod: / 81 scenarios 0 dead controls",
+          "liveVerified": "live 2026-09-13 ~22:2x PT — /card-ethan-holliday-bcb26-base 200, /card-wandy-asigen-bcb26-auto 200, /auctions 200",
+          "note": "9 host-less BCB26 /card-* pages built + 11 re-baked + cards.html — the 9 dead Auction Desk links found by the production click-through sweep."
+        },
+        {
+          "date": "2026-09-13",
+          "commits": [
+            "<this commit — next checkpoint resolves>"
+          ],
+          "by": "chief-of-staff-sunday (in-chat follow-up)",
+          "gates": "pipeline.json only; three gates re-run FAIL 0 on the tree",
+          "liveVerified": "pending at commit",
+          "note": "chiefOfStaff block: evening decisions (Rookie Extractor approved, recap send closed as lane breach, prompt edits + card-page fix recorded), queue trimmed to 1."
         }
       ]
     },
