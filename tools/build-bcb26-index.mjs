@@ -182,7 +182,7 @@ const desc = isPre
 const priced = (X.basket || []).length;
 const levelBox = isPre
   ? `<div class="levelbox"><div class="level pre">PRE</div><div class="levelchg">no level yet · base 100.00 at activation · ask basis, labeled · streets ${fmtD(X.releaseDate)}</div></div>`
-  : `<div class="levelbox"><div class="level">${last ? last.level.toFixed(2) : "—"}</div><div class="levelchg">base 100.00 · inception ${fmtD(X.inception)} · re-marked ${fmtD(last && last.date)} · ${esc(X.basisLabel || X.basis)}${prev && last ? ` · ${last.level >= prev.level ? "▲" : "▼"} ${((last.level / prev.level - 1) * 100).toFixed(1)}% vs prior mark` : ""}</div></div>`;
+  : `<div class="levelbox"><div class="level">${last ? last.level.toFixed(2) : "—"}</div><div class="levelchg"${last ? ` data-prices-updated="${last.date}"` : ""}>base 100.00 · inception ${fmtD(X.inception)} · re-marked ${fmtD(last && last.date)} · ${esc(X.basisLabel || X.basis)}${prev && last ? ` · ${last.level >= prev.level ? "▲" : "▼"} ${((last.level / prev.level - 1) * 100).toFixed(1)}% vs prior mark` : ""}</div></div>`;
 
 const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="view-transition" content="same-origin">
 <title>${esc(title)}</title>

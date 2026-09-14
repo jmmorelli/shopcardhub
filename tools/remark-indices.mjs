@@ -91,8 +91,13 @@ const stripHtml = () => {
     const pages = { PB26: "/pitch-black-index", CR26: "/chaos-rising-index", AH26: "/ascended-heroes-index", PRIS25: "/prismatic-evolutions-index", DR25: "/destined-rivals-index" };
     let h = `<div class="strip">`;
     for (const t of POKE) h += chip(t, pages[t], t === active);
-    h += `<a class="chip" href="/bowman-1st-chrome-index" style="text-decoration:none;"><b>BOW26</b> <span class="up">live · ask</span></a>`;
-    h += `<a class="chip" href="/bowman-chrome-2026-index" style="text-decoration:none;"><b>BCB26</b> <span class="soon">pre · streets 09/09</span></a>`;
+    // Bowman chips follow indices.json status (BCB26 activated 2026-09-14) — never hardcode pre/live here
+    const bow = (t, href, preTxt) => {
+      const x = idx[t] || {}; const live = x.status === "live";
+      return `<a class="chip" href="${href}" style="text-decoration:none;"><b>${t}</b> <span class="${live ? "up" : "soon"}">${live ? "live · ask" : preTxt}</span></a>`;
+    };
+    h += bow("BOW26", "/bowman-1st-chrome-index", "pre");
+    h += bow("BCB26", "/bowman-chrome-2026-index", "pre · streets 09/09");
     h += `<div class="chip"><b>MEGA26</b> <span class="soon">Mega Evolution base · planned</span></div></div>`;
     return h;
   };
@@ -129,7 +134,9 @@ for (const k of POKE) {
   const s2 = w.reduce((a, x) => a + (x - mean) ** 2, 0) / n, s3 = w.reduce((a, x) => a + (x - mean) ** 3, 0) / n;
   const skew = s3 / Math.pow(s2, 1.5);
   const sinceInc = (s.level / 100 - 1) * 100;
-  const rep = (re, to, what) => { must(re, what); html = html.replace(re, to); };
+  // NOTE: replacement is a function so "$1,712.21" is never read as a capture-group reference
+  // (Sep 7 bug: DR25 TOTAL row shipped as "<group 1>,712.21").
+  const rep = (re, to, what) => { must(re, what); html = html.replace(re, (...m) => to.replace(/\$(\d)(?![\d,.])/g, (_, g) => m[+g] ?? "$" + g)); };
   rep(/<div class="k">Top 2 Weight<\/div><div class="v acc">[\d.]+%/, `<div class="k">Top 2 Weight</div><div class="v acc">${top2.toFixed(1)}%`, "top2");
   rep(/<div class="k">Effective Holdings<\/div><div class="v">[\d.]+/, `<div class="k">Effective Holdings</div><div class="v">${(1 / hhi).toFixed(1)}`, "eff");
   rep(/<div class="k">Basket Value<\/div><div class="v">\$[\d,]+/, `<div class="k">Basket Value</div><div class="v">$${Math.round(s.bv).toLocaleString("en-US")}`, "bv");
