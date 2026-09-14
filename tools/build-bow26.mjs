@@ -39,7 +39,10 @@ const feed = feedPath
   ? JSON.parse(fs.readFileSync(feedPath, "utf8"))
   : await fetch(FEED_URL).then((r) => r.json());
 
-const autos = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.cardType === "chrome-auto");
+// BOW26's universe is the 2026 Bowman (paper) 1st Chrome autos only. Other sets' chrome autos
+// carry a set suffix in their watchlist id (e.g. -bcb26-) and belong to their own index —
+// without this exclusion the Sep-12 BCB26 seeds break the Monday --remark (luis-hernandez null mark).
+const autos = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.cardType === "chrome-auto" && !/-bcb26-/.test(c.id));
 const byKey = new Map((feed.cards || []).map((c) => [c.key, c]));
 
 const rows = autos.map((c) => {

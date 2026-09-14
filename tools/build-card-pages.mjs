@@ -52,7 +52,10 @@ if (!pageCss || !gtag || !nav || !footer) throw new Error("shell pieces not foun
 
 // ---------- data ----------
 const wl = JSON.parse(read("data/watchlist.json"));
-const cards = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.id && c.query);
+// Sealed products get no /card- chart page: the sealed row on the set's index page is their
+// surface (Mo, Sep 13 — "track the box on each index"). Their home/screens links route to that
+// index page (js/home.js). Revisit only on an explicit decision.
+const cards = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.id && c.query && c.cardType !== "sealed");
 // Sep 8 2026: a card whose watchlist `slug` names a live guide page is HOSTED there
 // (tools/build-engine-blocks.mjs renders its block inside that page; /card-<id> 301s to it).
 // Only host-less cards get a standalone /card-<id> page, and those are noindex — Google

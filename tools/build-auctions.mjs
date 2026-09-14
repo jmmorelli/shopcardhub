@@ -69,7 +69,7 @@ const CSS = `
 .au-row .nm a.c { display:block; font-family:var(--fd); font-size:18px; font-weight:800; text-transform:uppercase; color:var(--text-head); line-height:1.05; }
 .au-row .nm a.c:hover { color:var(--accent); text-decoration:none; }
 .au-row .nm .t { display:block; font-size:12px; color:var(--text-dim); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.au-row .nm .sl { display:block; font-family:var(--fm); font-size:10px; color:var(--text-dim); opacity:0.7; margin-top:3px; }
+.au-row .nm .sl { display:block; font-family:var(--fm); font-size:11px; color:var(--text-dim); opacity:0.7; margin-top:3px; }
 .au-num { text-align:right; }
 .au-num b { font-family:var(--fd); font-size:22px; font-weight:900; color:var(--text-head); display:block; line-height:1; }
 .au-num span { font-family:var(--fm); font-size:11px; color:var(--text-dim); display:block; margin-top:4px; }
