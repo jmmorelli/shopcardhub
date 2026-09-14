@@ -96,11 +96,12 @@ function yearOf(query) { const m = String(query || "").match(/\b(20\d{2})\b/); r
 export function verifyListings(listings, card, label, opts = {}) {
   const mode = opts.mode === "AUCTION" ? "AUCTION" : "FIXED_PRICE";
   const type = (card && card.cardType) || "chrome-auto";
-  const isTcg = type === "tcg-single";
+  const isSealed = type === "sealed";
+  const isTcg = type === "tcg-single" || isSealed; // sealed products skip every sports-card check below
   const query = (card && card.query) || "";
   const musts = (Array.isArray(card?.titleMust) && card.titleMust.length
     ? card.titleMust : [lastNameOf(label)]).map((m) => String(m).toLowerCase());
-  const bad = isTcg ? TITLE_BAD_TCG : (type === "sapphire-base" ? TITLE_BAD_SAPPHIRE : TITLE_BAD);
+  const bad = isSealed ? TITLE_BAD_SEALED : (type === "tcg-single" ? TITLE_BAD_TCG : (type === "sapphire-base" ? TITLE_BAD_SAPPHIRE : TITLE_BAD));
   const code = isTcg ? null : cardCode(card);
   const year = isTcg ? null : yearOf(query);
   const verified = [], rejected = [], seen = new Map();
@@ -148,6 +149,16 @@ const TITLE_BAD_SAPPHIRE = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|sl
 // are REQUIRED in titles (so no serial-number exclusion), "mega"/"prism" are set
 // names not parallels. Excluded instead: grading, accessories, pick-a-card
 // storefronts, lots, customs.
+// SEALED product feeds (added Sep 13 2026, Mo: track the box on every index page).
+// One flagship sealed SKU per set index (booster box, or the Elite Trainer Box
+// where the set has no booster box — Prismatic Evolutions, Ascended Heroes).
+// titleMust carries the product words ("booster box" / "elite trainer"), so the
+// blocklist only has to remove what still slips through a "booster box" title:
+// single/partial pack lots ("12 packs", "half box"), bundles/cases/tins, other
+// languages, empty/opened/resealed, weighed "god pack" bait, mystery boxes.
+// "36 packs" / "30 packs" (the box's own count) is allowed on purpose.
+const TITLE_BAD_SEALED = /(\b([1-9]|1\d|2\d)\s*(booster\s*)?packs?\b|\bsingle\b|blister|bundle|\btin\b|\bcase\b|cases|lot\s?of|\blots?\b|\bmix(ed)?\b|loose|opened|empty|resealed|damaged|japanese|korean|chinese|thai|\bjp\b|proxy|custom|poster|surprise|\bmini\b|\d+\s*(boxes|etbs?)\b|\bx\s*\d|mystery|\bhalf\b|weigh|heavy|god\s?pack|display|art\s?set|\bread\b|\bset\s?of\b|\bplus\b|\band\b|\bwith\b|\+)/i;
+
 const TITLE_BAD_TCG = /(psa|bgs|sgc|cgc|tag\s?grade|graded|gem\s?m(in)?t|slab|reprint|digital|custom|proxy|metal\s?card|gold\s?card|lot\s?of|bulk|pick|choose|you\s?pick|case|sleeve|playmat|binder|jumbo|oversize|sticker|fan\s?art|\bdiy\b|placeholder|damage|\btag\s?(mint\s?)?\d|contender|\bace\s?\d|\bcga\b|\bpgi\b)/i;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

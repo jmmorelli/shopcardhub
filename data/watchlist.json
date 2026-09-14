@@ -1,311 +1,388 @@
 {
- "_comment": "Cards the price engine snapshots nightly \u2014 the watchlist's source of truth, and the feed behind the on-page Prospect Signal Board. SCOPE DECISION (Jun 26 2026): for baseball prospects we track ONE canonical card per player = the 1st Bowman Chrome AUTO. Fallback: if a prospect had NO auto in their first Bowman, track the 1st Bowman Chrome BASE instead and set cardType:\"chrome-base\". BOARD scope stays Chrome / Chrome Auto only. SAPPHIRE ADDENDUM (Aug 31 2026, Mo): Sapphire cards the SITE invites people to track (bowman-sapphire-2026 page) get their own boardHide feeds so the Vault links them to SAPPHIRE prices, never Chrome proxies; all chrome queries carry -sapphire so the board medians stay pure. VAULT-DRIVEN ADDITIONS (Aug 11 2026): cards Mo owns/hunts may be added so the Vault can link them to live pricing, even outside the 2026 CPA class \u2014 set boardHide:true so they stay OFF the /bowman-bangers Signal Board (board stays 2026-class only). Exact card the vault holds, not a proxy. CARD CODES (Sep 3 2026, Mo: the price must be THIS card): every chrome-auto query carries its card code (CPA-XX) and the engine requires that code in the listing title, so a signed base card (BCP-45), a Mega Box auto (BMA-SK) or a 2025 Draft auto can never price a 1st Bowman Chrome Auto.",
- "_engine": "ZERO-SECRET PATH (Jul 31 2026): the nightly snapshot runs as a GitHub Action (.github/workflows/price-snapshot.yml) and prices each card off the site's own public /api/comps endpoint (eBay Browse, already live on Vercel) \u2014 no tokens anywhere. Each card's `query` is the eBay search used to mark it nightly (trimmed median of the lowest fixed-price asks). `id` is a stable slug; feed rows are keyed source:id, e.g. ebay:ethan-holliday. Ranks mirror the Jul 28 editorial re-rank on /bowman-bangers.",
- "_schema": {
-  "id": "string \u2014 stable slug (free path) or product id (paid path)",
-  "source": "ebay (free Browse API) | pricecharting | sportscardspro",
-  "label": "string \u2014 human name for display",
-  "query": "string \u2014 eBay search terms for the free path",
-  "condition": "loose | graded | psa10 | new | cib (paid path only)",
-  "cardType": "chrome-auto (default) | chrome-base (no-auto fallback) | tcg-single (Pokemon etc: no auto requirement, TCG noise filter)",
-  "slug": "optional \u2014 site page this card links back to",
-  "rank": "optional integer \u2014 editorial rank if it's a featured top-10 card (else omit)",
-  "titleMust": "optional string[] \u2014 tokens that must ALL appear in a listing title (overrides last-name check). Use card numbers (161/131) for TCG.",
-  "categoryIds": "optional \u2014 eBay category override for /api/comps. 183454 = CCG Individual Cards (Pokemon). Default 212 = Sports Trading Cards."
- },
- "cards": [
-  {
-   "id": "ethan-holliday",
-   "source": "ebay",
-   "label": "Ethan Holliday \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto ethan holliday CPA-EH -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "slug": "ethan-holliday-rookie-cards",
-   "rank": 1
+  "_comment": "Cards the price engine snapshots nightly — the watchlist's source of truth, and the feed behind the on-page Prospect Signal Board. SCOPE DECISION (Jun 26 2026): for baseball prospects we track ONE canonical card per player = the 1st Bowman Chrome AUTO. Fallback: if a prospect had NO auto in their first Bowman, track the 1st Bowman Chrome BASE instead and set cardType:\"chrome-base\". BOARD scope stays Chrome / Chrome Auto only. SAPPHIRE ADDENDUM (Aug 31 2026, Mo): Sapphire cards the SITE invites people to track (bowman-sapphire-2026 page) get their own boardHide feeds so the Vault links them to SAPPHIRE prices, never Chrome proxies; all chrome queries carry -sapphire so the board medians stay pure. VAULT-DRIVEN ADDITIONS (Aug 11 2026): cards Mo owns/hunts may be added so the Vault can link them to live pricing, even outside the 2026 CPA class — set boardHide:true so they stay OFF the /bowman-bangers Signal Board (board stays 2026-class only). Exact card the vault holds, not a proxy. CARD CODES (Sep 3 2026, Mo: the price must be THIS card): every chrome-auto query carries its card code (CPA-XX) and the engine requires that code in the listing title, so a signed base card (BCP-45), a Mega Box auto (BMA-SK) or a 2025 Draft auto can never price a 1st Bowman Chrome Auto.",
+  "_engine": "ZERO-SECRET PATH (Jul 31 2026): the nightly snapshot runs as a GitHub Action (.github/workflows/price-snapshot.yml) and prices each card off the site's own public /api/comps endpoint (eBay Browse, already live on Vercel) — no tokens anywhere. Each card's `query` is the eBay search used to mark it nightly (trimmed median of the lowest fixed-price asks). `id` is a stable slug; feed rows are keyed source:id, e.g. ebay:ethan-holliday. Ranks mirror the Jul 28 editorial re-rank on /bowman-bangers.",
+  "_schema": {
+    "id": "string — stable slug (free path) or product id (paid path)",
+    "source": "ebay (free Browse API) | pricecharting | sportscardspro",
+    "label": "string — human name for display",
+    "query": "string — eBay search terms for the free path",
+    "condition": "loose | graded | psa10 | new | cib (paid path only)",
+    "cardType": "chrome-auto (default) | chrome-base (no-auto fallback) | tcg-single (Pokemon etc: no auto requirement, TCG noise filter) | sealed (Sep 13 2026: one flagship sealed product per set index — booster box, or the ETB where the set has no booster box; titleMust carries the product words; TITLE_BAD_SEALED in the engine; never blended with singles)",
+    "slug": "optional — site page this card links back to",
+    "rank": "optional integer — editorial rank if it's a featured top-10 card (else omit)",
+    "titleMust": "optional string[] — tokens that must ALL appear in a listing title (overrides last-name check). Use card numbers (161/131) for TCG.",
+    "categoryIds": "optional — eBay category override for /api/comps. 183454 = CCG Individual Cards (Pokemon). Default 212 = Sports Trading Cards.",
+    "sealedOf": "optional — for cardType sealed: the index ticker this product belongs to (PB26 …); the index page renders it as the SEALED row",
+    "product": "optional — for cardType sealed: the product name shown on-page (Booster box | Elite Trainer Box)"
   },
-  {
-   "id": "andrew-fischer",
-   "source": "ebay",
-   "label": "Andrew Fischer \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto andrew fischer CPA-AF -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "rank": 2
-  },
-  {
-   "id": "aiva-arquette",
-   "source": "ebay",
-   "label": "Aiva Arquette \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto aiva arquette CPA-AA -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "slug": "aiva-arquette-1st-bowman",
-   "rank": 3
-  },
-  {
-   "id": "wehiwa-aloy",
-   "source": "ebay",
-   "label": "Wehiwa Aloy \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto wehiwa aloy CPA-WA -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "rank": 4
-  },
-  {
-   "id": "daniel-pierce",
-   "source": "ebay",
-   "label": "Daniel Pierce \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto daniel pierce CPA-DP -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "rank": 5
-  },
-  {
-   "id": "marek-houston",
-   "source": "ebay",
-   "label": "Marek Houston \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto marek houston CPA-MHO -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "rank": 6
-  },
-  {
-   "id": "gage-jump",
-   "source": "ebay",
-   "label": "Gage Jump \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto gage jump CPA-GJ -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "rank": 7
-  },
-  {
-   "id": "justin-gonzalez",
-   "source": "ebay",
-   "label": "Justin Gonzalez \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome 1st auto justin gonzalez CPA-JG -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "rank": 8
-  },
-  {
-   "id": "edward-florentino",
-   "source": "ebay",
-   "label": "Edward Florentino \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto edward florentino CPA-EF -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "rank": 9
-  },
-  {
-   "id": "seong-jun-kim",
-   "source": "ebay",
-   "label": "Seong-Jun Kim \u2014 1st Bowman Chrome Auto",
-   "query": "2026 bowman chrome auto seong-jun kim CPA-SK -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "rank": 10
-  },
-  {
-   "id": "travis-bazzana",
-   "source": "ebay",
-   "label": "Travis Bazzana \u2014 2024 Bowman Draft Chrome #BDC-1",
-   "query": "2024 bowman draft chrome travis bazzana BDC-1 -auto -autograph -sapphire -lot -reprint -digital",
-   "cardType": "chrome-base",
-   "boardHide": true
-  },
-  {
-   "id": "umbreon-ex-sir-pe",
-   "source": "ebay",
-   "label": "Umbreon ex SIR #161 \u2014 Prismatic Evolutions",
-   "query": "umbreon ex sir 161/131 prismatic -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
-   "cardType": "tcg-single",
-   "titleMust": [
-    "umbreon",
-    "161"
-   ],
-   "categoryIds": "183454",
-   "slug": "prismatic-evolutions-guide",
-   "boardHide": true
-  },
-  {
-   "id": "mega-darkrai-ex-sir",
-   "source": "ebay",
-   "label": "Mega Darkrai ex SIR #116/084 \u2014 Pitch Black",
-   "query": "mega darkrai ex sir 116/084 pitch black -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
-   "cardType": "tcg-single",
-   "titleMust": [
-    "darkrai",
-    "116/084"
-   ],
-   "categoryIds": "183454",
-   "slug": "pitch-black-set-guide",
-   "boardHide": true
-  },
-  {
-   "id": "mega-greninja-ex-sir",
-   "source": "ebay",
-   "label": "Mega Greninja ex SIR #116/086 \u2014 Chaos Rising",
-   "query": "mega greninja ex sir 116/086 chaos rising -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
-   "cardType": "tcg-single",
-   "titleMust": [
-    "greninja",
-    "116/086"
-   ],
-   "categoryIds": "183454",
-   "slug": "chaos-rising",
-   "boardHide": true
-  },
-  {
-   "id": "tr-mewtwo-ex-sir",
-   "source": "ebay",
-   "label": "T.R.'s Mewtwo ex SIR \u2014 Ascended Heroes",
-   "query": "mewtwo ex sir ascended heroes -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
-   "cardType": "tcg-single",
-   "titleMust": [
-    "mewtwo",
-    "sir"
-   ],
-   "categoryIds": "183454",
-   "slug": "ascended-heroes",
-   "boardHide": true
-  },
-  {
-   "id": "mega-lucario-ex-sir",
-   "source": "ebay",
-   "label": "Mega Lucario ex SIR #179/132 \u2014 Mega Evolution",
-   "query": "mega lucario ex sir 179/132 -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
-   "cardType": "tcg-single",
-   "titleMust": [
-    "lucario",
-    "179/132"
-   ],
-   "categoryIds": "183454",
-   "slug": "ascended-heroes",
-   "boardHide": true
-  },
-  {
-   "id": "konnor-griffin-sapphire",
-   "source": "ebay",
-   "label": "Konnor Griffin \u2014 2026 Bowman Sapphire",
-   "query": "2026 bowman sapphire konnor griffin -auto -autograph -lot -reprint -digital",
-   "cardType": "sapphire-base",
-   "boardHide": true
-  },
-  {
-   "id": "ethan-holliday-sapphire",
-   "source": "ebay",
-   "label": "Ethan Holliday \u2014 2026 Bowman Sapphire",
-   "query": "2026 bowman sapphire ethan holliday -auto -autograph -lot -reprint -digital",
-   "cardType": "sapphire-base",
-   "slug": "ethan-holliday-rookie-cards",
-   "boardHide": true
-  },
-  {
-   "id": "roman-anthony-sapphire",
-   "source": "ebay",
-   "label": "Roman Anthony \u2014 2026 Bowman Sapphire",
-   "query": "2026 bowman sapphire roman anthony -auto -autograph -lot -reprint -digital",
-   "cardType": "sapphire-base",
-   "slug": "roman-anthony-rookie-cards",
-   "boardHide": true
-  },
-  {
-   "id": "kevin-mcgonigle-sapphire",
-   "source": "ebay",
-   "label": "Kevin McGonigle \u2014 2026 Bowman Sapphire",
-   "query": "2026 bowman sapphire kevin mcgonigle -auto -autograph -lot -reprint -digital",
-   "cardType": "sapphire-base",
-   "boardHide": true
-  },
-  {
-   "id": "ethan-holliday-bcb26-base",
-   "source": "ebay",
-   "label": "Ethan Holliday \u2014 2026 Bowman Chrome Prospect #BCP-209",
-   "query": "2026 bowman chrome ethan holliday BCP-209 -auto -autograph -sapphire -lot -reprint -digital",
-   "cardType": "chrome-base",
-   "boardHide": true,
-   "set": "2026-bowman-chrome-baseball",
-   "indexTicker": "BCB26",
-   "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
-  },
-  {
-   "id": "luis-hernandez-bcb26-auto",
-   "source": "ebay",
-   "label": "Luis Hernandez \u2014 2026 Bowman Chrome 1st Bowman Auto CPA-LH",
-   "query": "2026 bowman chrome 1st auto luis hernandez CPA-LH -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "boardHide": true,
-   "set": "2026-bowman-chrome-baseball",
-   "indexTicker": "BCB26",
-   "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
-  },
-  {
-   "id": "wandy-asigen-bcb26-auto",
-   "source": "ebay",
-   "label": "Wandy Asigen \u2014 2026 Bowman Chrome 1st Bowman Auto CPA-WA",
-   "query": "2026 bowman chrome 1st auto wandy asigen CPA-WA -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "boardHide": true,
-   "set": "2026-bowman-chrome-baseball",
-   "indexTicker": "BCB26",
-   "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
-  },
-  {
-   "id": "francisco-renteria-bcb26-auto",
-   "source": "ebay",
-   "label": "Francisco Renteria \u2014 2026 Bowman Chrome 1st Bowman Auto CPA-FR",
-   "query": "2026 bowman chrome 1st auto francisco renteria CPA-FR -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "boardHide": true,
-   "set": "2026-bowman-chrome-baseball",
-   "indexTicker": "BCB26",
-   "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
-  },
-  {
-   "id": "angeibel-gomez-bcb26-auto",
-   "source": "ebay",
-   "label": "Angeibel Gomez \u2014 2026 Bowman Chrome 1st Bowman Auto CPA-AG",
-   "query": "2026 bowman chrome 1st auto angeibel gomez CPA-AG -lot -reprint -digital -sapphire",
-   "cardType": "chrome-auto",
-   "boardHide": true,
-   "set": "2026-bowman-chrome-baseball",
-   "indexTicker": "BCB26",
-   "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
-  },
-  {
-   "id": "luis-hernandez-bcb26-base",
-   "source": "ebay",
-   "label": "Luis Hernandez \u2014 2026 Bowman Chrome 1st Bowman #BCP-200",
-   "query": "2026 bowman chrome luis hernandez BCP-200 -auto -autograph -sapphire -lot -reprint -digital",
-   "cardType": "chrome-base",
-   "boardHide": true,
-   "set": "2026-bowman-chrome-baseball",
-   "indexTicker": "BCB26",
-   "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
-  },
-  {
-   "id": "wandy-asigen-bcb26-base",
-   "source": "ebay",
-   "label": "Wandy Asigen \u2014 2026 Bowman Chrome 1st Bowman #BCP-152",
-   "query": "2026 bowman chrome wandy asigen BCP-152 -auto -autograph -sapphire -lot -reprint -digital",
-   "cardType": "chrome-base",
-   "boardHide": true,
-   "set": "2026-bowman-chrome-baseball",
-   "indexTicker": "BCB26",
-   "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
-  },
-  {
-   "id": "francisco-renteria-bcb26-base",
-   "source": "ebay",
-   "label": "Francisco Renteria \u2014 2026 Bowman Chrome 1st Bowman #BCP-163",
-   "query": "2026 bowman chrome francisco renteria BCP-163 -auto -autograph -sapphire -lot -reprint -digital",
-   "cardType": "chrome-base",
-   "boardHide": true,
-   "set": "2026-bowman-chrome-baseball",
-   "indexTicker": "BCB26",
-   "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
-  },
-  {
-   "id": "angeibel-gomez-bcb26-base",
-   "source": "ebay",
-   "label": "Angeibel Gomez \u2014 2026 Bowman Chrome 1st Bowman #BCP-194",
-   "query": "2026 bowman chrome angeibel gomez BCP-194 -auto -autograph -sapphire -lot -reprint -digital",
-   "cardType": "chrome-base",
-   "boardHide": true,
-   "set": "2026-bowman-chrome-baseball",
-   "indexTicker": "BCB26",
-   "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
-  }
- ]
+  "cards": [
+    {
+      "id": "ethan-holliday",
+      "source": "ebay",
+      "label": "Ethan Holliday — 1st Bowman Chrome Auto",
+      "query": "2026 bowman chrome auto ethan holliday CPA-EH -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "slug": "ethan-holliday-rookie-cards",
+      "rank": 1
+    },
+    {
+      "id": "andrew-fischer",
+      "source": "ebay",
+      "label": "Andrew Fischer — 1st Bowman Chrome Auto",
+      "query": "2026 bowman chrome auto andrew fischer CPA-AF -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "rank": 2
+    },
+    {
+      "id": "aiva-arquette",
+      "source": "ebay",
+      "label": "Aiva Arquette — 1st Bowman Chrome Auto",
+      "query": "2026 bowman chrome auto aiva arquette CPA-AA -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "slug": "aiva-arquette-1st-bowman",
+      "rank": 3
+    },
+    {
+      "id": "wehiwa-aloy",
+      "source": "ebay",
+      "label": "Wehiwa Aloy — 1st Bowman Chrome Auto",
+      "query": "2026 bowman chrome auto wehiwa aloy CPA-WA -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "rank": 4
+    },
+    {
+      "id": "daniel-pierce",
+      "source": "ebay",
+      "label": "Daniel Pierce — 1st Bowman Chrome Auto",
+      "query": "2026 bowman chrome auto daniel pierce CPA-DP -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "rank": 5
+    },
+    {
+      "id": "marek-houston",
+      "source": "ebay",
+      "label": "Marek Houston — 1st Bowman Chrome Auto",
+      "query": "2026 bowman chrome auto marek houston CPA-MHO -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "rank": 6
+    },
+    {
+      "id": "gage-jump",
+      "source": "ebay",
+      "label": "Gage Jump — 1st Bowman Chrome Auto",
+      "query": "2026 bowman chrome auto gage jump CPA-GJ -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "rank": 7
+    },
+    {
+      "id": "justin-gonzalez",
+      "source": "ebay",
+      "label": "Justin Gonzalez — 1st Bowman Chrome Auto",
+      "query": "2026 bowman chrome 1st auto justin gonzalez CPA-JG -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "rank": 8
+    },
+    {
+      "id": "edward-florentino",
+      "source": "ebay",
+      "label": "Edward Florentino — 1st Bowman Chrome Auto",
+      "query": "2026 bowman chrome auto edward florentino CPA-EF -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "rank": 9
+    },
+    {
+      "id": "seong-jun-kim",
+      "source": "ebay",
+      "label": "Seong-Jun Kim — 1st Bowman Chrome Auto",
+      "query": "2026 bowman chrome auto seong-jun kim CPA-SK -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "rank": 10
+    },
+    {
+      "id": "travis-bazzana",
+      "source": "ebay",
+      "label": "Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1",
+      "query": "2024 bowman draft chrome travis bazzana BDC-1 -auto -autograph -sapphire -lot -reprint -digital",
+      "cardType": "chrome-base",
+      "boardHide": true
+    },
+    {
+      "id": "umbreon-ex-sir-pe",
+      "source": "ebay",
+      "label": "Umbreon ex SIR #161 — Prismatic Evolutions",
+      "query": "umbreon ex sir 161/131 prismatic -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "umbreon",
+        "161"
+      ],
+      "categoryIds": "183454",
+      "slug": "prismatic-evolutions-guide",
+      "boardHide": true
+    },
+    {
+      "id": "mega-darkrai-ex-sir",
+      "source": "ebay",
+      "label": "Mega Darkrai ex SIR #116/084 — Pitch Black",
+      "query": "mega darkrai ex sir 116/084 pitch black -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "darkrai",
+        "116/084"
+      ],
+      "categoryIds": "183454",
+      "slug": "pitch-black-set-guide",
+      "boardHide": true
+    },
+    {
+      "id": "mega-greninja-ex-sir",
+      "source": "ebay",
+      "label": "Mega Greninja ex SIR #116/086 — Chaos Rising",
+      "query": "mega greninja ex sir 116/086 chaos rising -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "greninja",
+        "116/086"
+      ],
+      "categoryIds": "183454",
+      "slug": "chaos-rising",
+      "boardHide": true
+    },
+    {
+      "id": "tr-mewtwo-ex-sir",
+      "source": "ebay",
+      "label": "T.R.'s Mewtwo ex SIR — Ascended Heroes",
+      "query": "mewtwo ex sir ascended heroes -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "mewtwo",
+        "sir"
+      ],
+      "categoryIds": "183454",
+      "slug": "ascended-heroes",
+      "boardHide": true
+    },
+    {
+      "id": "mega-lucario-ex-sir",
+      "source": "ebay",
+      "label": "Mega Lucario ex SIR #179/132 — Mega Evolution",
+      "query": "mega lucario ex sir 179/132 -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "lucario",
+        "179/132"
+      ],
+      "categoryIds": "183454",
+      "slug": "ascended-heroes",
+      "boardHide": true
+    },
+    {
+      "id": "konnor-griffin-sapphire",
+      "source": "ebay",
+      "label": "Konnor Griffin — 2026 Bowman Sapphire",
+      "query": "2026 bowman sapphire konnor griffin -auto -autograph -lot -reprint -digital",
+      "cardType": "sapphire-base",
+      "boardHide": true
+    },
+    {
+      "id": "ethan-holliday-sapphire",
+      "source": "ebay",
+      "label": "Ethan Holliday — 2026 Bowman Sapphire",
+      "query": "2026 bowman sapphire ethan holliday -auto -autograph -lot -reprint -digital",
+      "cardType": "sapphire-base",
+      "slug": "ethan-holliday-rookie-cards",
+      "boardHide": true
+    },
+    {
+      "id": "roman-anthony-sapphire",
+      "source": "ebay",
+      "label": "Roman Anthony — 2026 Bowman Sapphire",
+      "query": "2026 bowman sapphire roman anthony -auto -autograph -lot -reprint -digital",
+      "cardType": "sapphire-base",
+      "slug": "roman-anthony-rookie-cards",
+      "boardHide": true
+    },
+    {
+      "id": "kevin-mcgonigle-sapphire",
+      "source": "ebay",
+      "label": "Kevin McGonigle — 2026 Bowman Sapphire",
+      "query": "2026 bowman sapphire kevin mcgonigle -auto -autograph -lot -reprint -digital",
+      "cardType": "sapphire-base",
+      "boardHide": true
+    },
+    {
+      "id": "ethan-holliday-bcb26-base",
+      "source": "ebay",
+      "label": "Ethan Holliday — 2026 Bowman Chrome Prospect #BCP-209",
+      "query": "2026 bowman chrome ethan holliday BCP-209 -auto -autograph -sapphire -lot -reprint -digital",
+      "cardType": "chrome-base",
+      "boardHide": true,
+      "set": "2026-bowman-chrome-baseball",
+      "indexTicker": "BCB26",
+      "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
+    },
+    {
+      "id": "luis-hernandez-bcb26-auto",
+      "source": "ebay",
+      "label": "Luis Hernandez — 2026 Bowman Chrome 1st Bowman Auto CPA-LH",
+      "query": "2026 bowman chrome 1st auto luis hernandez CPA-LH -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "boardHide": true,
+      "set": "2026-bowman-chrome-baseball",
+      "indexTicker": "BCB26",
+      "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
+    },
+    {
+      "id": "wandy-asigen-bcb26-auto",
+      "source": "ebay",
+      "label": "Wandy Asigen — 2026 Bowman Chrome 1st Bowman Auto CPA-WA",
+      "query": "2026 bowman chrome 1st auto wandy asigen CPA-WA -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "boardHide": true,
+      "set": "2026-bowman-chrome-baseball",
+      "indexTicker": "BCB26",
+      "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
+    },
+    {
+      "id": "francisco-renteria-bcb26-auto",
+      "source": "ebay",
+      "label": "Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR",
+      "query": "2026 bowman chrome 1st auto francisco renteria CPA-FR -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "boardHide": true,
+      "set": "2026-bowman-chrome-baseball",
+      "indexTicker": "BCB26",
+      "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
+    },
+    {
+      "id": "angeibel-gomez-bcb26-auto",
+      "source": "ebay",
+      "label": "Angeibel Gomez — 2026 Bowman Chrome 1st Bowman Auto CPA-AG",
+      "query": "2026 bowman chrome 1st auto angeibel gomez CPA-AG -lot -reprint -digital -sapphire",
+      "cardType": "chrome-auto",
+      "boardHide": true,
+      "set": "2026-bowman-chrome-baseball",
+      "indexTicker": "BCB26",
+      "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
+    },
+    {
+      "id": "luis-hernandez-bcb26-base",
+      "source": "ebay",
+      "label": "Luis Hernandez — 2026 Bowman Chrome 1st Bowman #BCP-200",
+      "query": "2026 bowman chrome luis hernandez BCP-200 -auto -autograph -sapphire -lot -reprint -digital",
+      "cardType": "chrome-base",
+      "boardHide": true,
+      "set": "2026-bowman-chrome-baseball",
+      "indexTicker": "BCB26",
+      "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
+    },
+    {
+      "id": "wandy-asigen-bcb26-base",
+      "source": "ebay",
+      "label": "Wandy Asigen — 2026 Bowman Chrome 1st Bowman #BCP-152",
+      "query": "2026 bowman chrome wandy asigen BCP-152 -auto -autograph -sapphire -lot -reprint -digital",
+      "cardType": "chrome-base",
+      "boardHide": true,
+      "set": "2026-bowman-chrome-baseball",
+      "indexTicker": "BCB26",
+      "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
+    },
+    {
+      "id": "francisco-renteria-bcb26-base",
+      "source": "ebay",
+      "label": "Francisco Renteria — 2026 Bowman Chrome 1st Bowman #BCP-163",
+      "query": "2026 bowman chrome francisco renteria BCP-163 -auto -autograph -sapphire -lot -reprint -digital",
+      "cardType": "chrome-base",
+      "boardHide": true,
+      "set": "2026-bowman-chrome-baseball",
+      "indexTicker": "BCB26",
+      "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
+    },
+    {
+      "id": "angeibel-gomez-bcb26-base",
+      "source": "ebay",
+      "label": "Angeibel Gomez — 2026 Bowman Chrome 1st Bowman #BCP-194",
+      "query": "2026 bowman chrome angeibel gomez BCP-194 -auto -autograph -sapphire -lot -reprint -digital",
+      "cardType": "chrome-base",
+      "boardHide": true,
+      "set": "2026-bowman-chrome-baseball",
+      "indexTicker": "BCB26",
+      "addedBy": "CoS 2026-09-11 (BCB26 chase basket v1 - charter 4.8)"
+    },
+    {
+      "id": "pitch-black-booster-box",
+      "source": "ebay",
+      "label": "Pitch Black Booster Box (ME05) — sealed",
+      "query": "pokemon pitch black booster box -etb -bundle -tin -case -japanese -thai -korean -lot -single -half -mystery -empty -opened",
+      "cardType": "sealed",
+      "titleMust": [
+        "pitch black",
+        "booster box"
+      ],
+      "categoryIds": "183456",
+      "boardHide": true,
+      "sealedOf": "PB26",
+      "product": "Booster box"
+    },
+    {
+      "id": "chaos-rising-booster-box",
+      "source": "ebay",
+      "label": "Chaos Rising Booster Box (ME04) — sealed",
+      "query": "pokemon chaos rising booster box -japanese -korean -thai",
+      "cardType": "sealed",
+      "titleMust": [
+        "chaos rising",
+        "booster box"
+      ],
+      "categoryIds": "183456",
+      "boardHide": true,
+      "sealedOf": "CR26",
+      "product": "Booster box"
+    },
+    {
+      "id": "ascended-heroes-etb",
+      "source": "ebay",
+      "label": "Ascended Heroes Elite Trainer Box — sealed",
+      "query": "pokemon ascended heroes elite trainer box -bundle -tin -case -japanese -thai -korean -lot -half -mystery -empty -opened -booster",
+      "cardType": "sealed",
+      "titleMust": [
+        "ascended heroes",
+        "elite trainer"
+      ],
+      "categoryIds": "183456",
+      "boardHide": true,
+      "sealedOf": "AH26",
+      "product": "Elite Trainer Box"
+    },
+    {
+      "id": "prismatic-evolutions-etb",
+      "source": "ebay",
+      "label": "Prismatic Evolutions Elite Trainer Box — sealed",
+      "query": "pokemon prismatic evolutions elite trainer box -bundle -tin -case -japanese -thai -korean -lot -half -mystery -empty -opened -booster",
+      "cardType": "sealed",
+      "titleMust": [
+        "prismatic evolutions",
+        "elite trainer"
+      ],
+      "categoryIds": "183456",
+      "boardHide": true,
+      "sealedOf": "PRIS25",
+      "product": "Elite Trainer Box"
+    },
+    {
+      "id": "destined-rivals-booster-box",
+      "source": "ebay",
+      "label": "Destined Rivals Booster Box (SV10) — sealed",
+      "query": "destined rivals booster box",
+      "cardType": "sealed",
+      "titleMust": [
+        "destined rivals",
+        "booster box"
+      ],
+      "categoryIds": "183456",
+      "boardHide": true,
+      "sealedOf": "DR25",
+      "product": "Booster box"
+    }
+  ]
 }
