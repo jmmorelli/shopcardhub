@@ -197,10 +197,6 @@
       "nextRun": "2026-09-21",
       "actions": [
         {
-          "ts": "2026-09-08",
-          "msg": "Tuesday Tape digest SENT via MailerLite (campaign 198065559048291783, \"Digest 2026-09-08\", instant, status sent 10:56 PT). Content gate passed (board live-verified, push 50576fa); kill switch clear (no unsubscribes/spam since the Sep 7 send; 4 active subscribers). Note: a \"Tape Recap — Sep 7 2026\" campaign (id 197965108307036033) was sent Sep 7 by a non-Tuesday run — 4 sent / 2 opens."
-        },
-        {
           "ts": "2026-09-10",
           "msg": "Reply-paster: Thu Sep 10 link reply posted to status 2098094153213284558 (Fischer accountability tweet, fired 10:00am) - 'every call, graded in public, misses included: shopcardhub.com/track-record'. Posted on the 2:10pm fire because the 10:10am fire left the tweet with 0 replies; verified single reply, no duplicate."
         },
@@ -243,6 +239,10 @@
         {
           "ts": "2026-09-14",
           "msg": "GA4 28d: 977 active / 968 new / 1,174 sessions / 576 engaged / 110 key events (6.2% rate, was 12.1–14.5%) / organic 61.2% / AI Assistant 4 sessions @ 0%. 7d: 274 active / 268 new → returning ≈6 (13→13→8→10→6). Retention surfaces 28d: / 48 users, bangers 28, DR25 7, /indices 7, watchlist 11, other index pages 1–5; split by new/returning still NA (no exploration)."
+        },
+        {
+          "ts": "2026-09-14",
+          "msg": "Lane discipline (MED): commits cb9d85a + 6393b5f landed 5:42am PT Sep 14 from a Claude Code session with no Task-key/Authority trailers and no pushLog entry. CORRECTION to the auditor's same-day backfill: they were NOT this scheduled run (which started 10:06 PT from a fresh clone at 6393b5f; its own commit carries trailers + a pushLog entry with all three gates) — the pushLog entry attributing them to 'monday-weekly-trend-scan' is wrong, and audit-2026-09-14-2's 'lane did not record its gates' applies to that session, not to this run. Needs the CoS to re-attribute."
         }
       ],
       "log": [
@@ -1091,7 +1091,7 @@
       "id": "audit-2026-09-14-5",
       "status": "awaiting-mo",
       "title": "LOW (Mo’s clone, physically his): ~/Projects/shopcardhub is 2 commits behind main (HEAD b4c82fc; origin/main already fetched to 6393b5f) and carries .git/index.lock created 10:24 PT today — a pull stopped between fetch and merge. Until `rm .git/index.lock && git pull` the local tree shows Sep 11 marks on / and every commit attempt fails; the Wed Sep 16 build session should start from a fresh clone regardless (cos-sunday-sep13 rule).",
-      "appliedNote": "Monday scan 13:40 PT: the 10:24 index.lock was created by THIS run's read-only `git fetch` in Mo's mounted clone (the mount refuses unlink); it was renamed to .git/index.stale-1789419686 at 10:30 (harmless) and the clone now sits at edb8b15 = origin/main with no .lock present. After the lane push it is 2 behind again: `git pull --ff-only origin main` (nothing to rm). This run did all its work in a fresh /tmp clone and did not touch Mo's tree otherwise."
+      "appliedNote": "Monday scan 13:40 PT: the 10:24 index.lock was created by THIS run's read-only `git fetch` in Mo's mounted clone (the mount refuses unlink); it was renamed to .git/index.stale-1789419686 at 10:30 (harmless) and the clone now sits at edb8b15 = origin/main with no .lock present. After the lane push it is 2 behind again: `git pull --ff-only origin main` (nothing to rm). This run did all its work in a fresh /tmp clone and did not touch Mo's tree otherwise. — Monday scan 13:40 PT: the 10:24 index.lock was created by THIS run's read-only `git fetch` in Mo's mounted clone (the mount refuses unlink); it was renamed to .git/index.stale-1789419686 at 10:30 (harmless) and the clone now sits at edb8b15 = origin/main with no .lock present. After the lane push it is 2 behind again: `git pull --ff-only origin main` (nothing to rm). This run did all its work in a fresh /tmp clone and did not touch Mo's tree otherwise."
     },
     {
       "id": "polish-2026-09-14",
@@ -1639,6 +1639,16 @@
           "gates": "audit-prices FAIL 0 / WARN 31 (pre-existing); audit-site FAIL 0 / WARN 3 (first-bowman-unverified trio); audit-terminal FAIL 0 / WARN 0 (price-data feed clone of 2026-09-13); first-bowman.mjs 0 contradictions — all run on the tree before commit, from a fresh clone of main 6393b5f in the sandbox",
           "liveVerified": "verification recorded in Card Hub/site-audit-2026-09-14.md after the push (auditor session, ~12:00 PT)",
           "note": "Audit fixes: pipeline.json leak rewrite (audit-2026-09-14-1) + pushLog backfill (-2); bowman-sapphire-2026.json 4 duplicate 1st flags stripped + firstNote corrected (-3 partial); index.html IN FOCUS strip wraps + 11px (-4). Mo's clone lock (-5) is his terminal step."
+        },
+        {
+          "date": "2026-09-14",
+          "commits": [
+            "0a2a6ef"
+          ],
+          "by": "monday-scan STEP 3.98 (scheduled; charter 4.8 Monday price lane)",
+          "gates": "pre-commit on the rebased tree: audit-prices FAIL 0 / WARN 28; audit-site FAIL 0 / WARN 3; audit-terminal FAIL 0 / WARN 0 (09-14 feed); index invariants PASS",
+          "liveVerified": "see weekly-scan-2026-09-14.md (post-deploy curl)",
+          "note": "Pokémon re-mark 253/253 + BCB26 activation + DR25 TOTAL-row repair + 3 held pages re-marked + engine/card/home re-bake on the 09-14 feed. NOT this run: cb9d85a/6393b5f (5:42am, unlogged session) — see lane-discipline-2026-09-14."
         }
       ]
     },
@@ -1795,8 +1805,9 @@
     }
   },
   "publish": {
-    "date": "2026-09-07",
+    "date": "2026-09-14",
     "by": "monday-scan STEP 3.98",
+    "commit": "0a2a6ef",
     "lane": [
       "data/indices.json",
       "pitch-black-index.html",
@@ -1804,17 +1815,27 @@
       "ascended-heroes-index.html",
       "prismatic-evolutions-index.html",
       "destined-rivals-index.html",
-      "bowman-1st-chrome-index.html",
+      "bowman-chrome-2026-index.html (ACTIVATED)",
+      "bowman-1st-chrome-index.html (chip)",
+      "indices.html (hub copy)",
       "og/indices.png",
-      "cards.html + 20 card-*.html",
+      "index.html (build-home)",
+      "cards.html + 24 card-*.html",
+      "7 engine-host pages (ENGINE/SEALED blocks re-baked)",
+      "topps-series-2-2026.html",
+      "bowman-sapphire-2026.html",
+      "roman-anthony-rookie-cards.html",
+      "tools/remark-indices.mjs (bug fix)",
+      "tools/build-bcb26-index.mjs (stamp)",
       "data/pipeline.json"
     ],
     "gates": {
-      "audit-site": "FAIL 0 / WARN 0 (102 pages)",
-      "audit-prices": "FAIL 0 / WARN 28 (25 label cells + 3 held-page stale stamps, pre-existing)",
-      "index-invariants": "PASS — base/inception/divisorLog/past rows identical; level = Σpx ÷ divisor on all 5 Pokémon tickers; BOW26 units/divisor fixed"
+      "audit-prices": "FAIL 0 / WARN 28 (25 label cells + 3 prose-drift; the 3 held-page stale-stamp WARNs cleared)",
+      "audit-site": "FAIL 0 / WARN 3 (first-bowman-unverified ×3, pre-existing)",
+      "audit-terminal": "FAIL 0 / WARN 0 (--feed /tmp clone of price-data, day 2026-09-14)",
+      "index-invariants": "PASS — base/inception/divisor/divisorLog/past history rows identical on 6 prior tickers; level = Σpx ÷ divisor on 5 Pokémon tickers; BCB26 inception level 100.00 = Σ(units·px) ÷ 0.8296"
     },
-    "note": "commit hash + live check in weekly-scan-2026-09-07.md | CoS 2026-09-07: tools/remark-indices.mjs removed from this list — not in d625fc5; shipped by the CoS checkpoint commit fab730b."
+    "note": "First push rejected (auditor pushed b73bec0/edb8b15 mid-run); rebased on edb8b15, pipeline.json re-applied on the auditor's version, build-home re-run, all three gates re-run before the commit. Live check in weekly-scan-2026-09-14.md."
   },
   "decisions": [
     {
