@@ -1697,6 +1697,16 @@
           "gates": "pre-commit on the rebased tree: audit-prices FAIL 0 / WARN 28; audit-site FAIL 0 / WARN 3; audit-terminal FAIL 0 / WARN 0 (09-14 feed); index invariants PASS",
           "liveVerified": "see weekly-scan-2026-09-14.md (post-deploy curl)",
           "note": "Pokémon re-mark 253/253 + BCB26 activation + DR25 TOTAL-row repair + 3 held pages re-marked + engine/card/home re-bake on the 09-14 feed. NOT this run: cb9d85a/6393b5f (5:42am, unlogged session) — see lane-discipline-2026-09-14."
+        },
+        {
+          "date": "2026-09-15",
+          "commits": [
+            "0b66612"
+          ],
+          "by": "tuesday-board (4.8)",
+          "gates": "audit-prices FAIL 0 / WARN 28 · audit-site FAIL 0 / WARN 3 (first-bowman-unverified x3, pre-existing) · audit-terminal FAIL 0 / WARN 0 against a local clone of the price-data branch seeded with the live day 2026-09-15 feed",
+          "liveVerified": "2026-09-15 — /bowman-bangers 200, hero stamp + data-prices-updated 2026-09-15, ranks 04 Gonzales / 05 Florentino live; /bowman-chrome-2026-index 200, level 95.67, stamp 2026-09-15",
+          "note": "Board lane. data/calls.json deliberately NOT pushed (stays local for the CoS). Two generator files rode in the lane and are called out: tools/build-bcb26-index.mjs (count-basis activation copy + priced counter) and tools/x-images/make.py (new `call` card kind, bangers ctx clause fix, bcb26 marked-count + no fake w/w at inception). Run started on a 3-commit-stale mount clone and briefly re-activated BCB26 before catching it; nothing stale was pushed, work was rebuilt in a fresh /tmp clone on dffe844 — filed as tuesday-lane-staleness-2026-09-15."
         }
       ]
     },
