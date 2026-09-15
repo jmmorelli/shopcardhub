@@ -84,7 +84,7 @@ if (SEED) {
     process.exit(1);
   }
   const entry = {
-    _note: "PRE-ACTIVATION per-set Bowman index #1 (built 2026-09-07 by bcb26-index-prebuild, charter 4.8). Universe rows use {id, number, player, team, tab, first?, board?} (the Pokémon tickers use {num, name, rarity}; /indices reads only .length). basket rows, once STEP 3.6 writes them: {id, number, player, tab, price, basis:'ask (eBay verified, engine)'|'sold (SCP)', asOf, units?, prevPrice?, prevAsOf?}. AUTOS 15% single-card cap = fractional units at (re)constitution, logged in divisorLog. Activation: first re-mark where verified asks cover ≥60% of chase-basket value → divisor = basketValue/100, inception = that date, history[0] = {level 100.00}, status 'live', basis stays 'ask' (labeled on-page) until ≥60% SCP sold coverage → restate to 'sold' via a logged divisor adjustment (level identical before/after). Never blend asks and solds in one basket. Re-marks: every board-touching run (Mon/Tue/Fri) through street+21d, then weekly.",
+    _note: "PRE-ACTIVATION per-set Bowman index #1 (built 2026-09-07 by bcb26-index-prebuild, charter 4.8). Universe rows use {id, number, player, team, tab, first?, board?} (the Pokémon tickers use {num, name, rarity}; /indices reads only .length). basket rows, once STEP 3.6 writes them: {id, number, player, tab, price, basis:'ask (eBay verified, engine)'|'sold (SCP)', asOf, units?, prevPrice?, prevAsOf?}. AUTOS 15% single-card cap = fractional units at (re)constitution, logged in divisorLog. Activation: first re-mark where verified asks cover ≥60% of chase-basket CARDS (count basis, CoS restatement 2026-09-11) → divisor = basketValue/100, inception = that date, history[0] = {level 100.00}, status 'live', basis stays 'ask' (labeled on-page) until ≥60% SCP sold coverage → restate to 'sold' via a logged divisor adjustment (level identical before/after). Never blend asks and solds in one basket. Re-marks: every board-touching run (Mon/Tue/Fri) through street+21d, then weekly.",
     ticker: TICKER,
     name: "2026 Bowman Chrome Chase Index",
     slug: SLUG,
@@ -103,7 +103,7 @@ if (SEED) {
     basket: [],
     history: [],
     divisorLog: [],
-    activationRule: "≥60% of chase-basket value with verified asks; restates to hammer basis via logged divisor adjustment at ≥60% SCP sold coverage",
+    activationRule: "≥60% of chase-basket cards with a verified ask (count basis, CoS 2026-09-11); restates to hammer basis via logged divisor adjustment at ≥60% SCP sold coverage",
     releaseDate: set.release,
     window: "street +21d, re-marks every board-touching run"
   };
@@ -179,7 +179,7 @@ const title = `${TICKER} · 2026 Bowman Chrome Chase Index — ${isPre ? "pre-ac
 const desc = isPre
   ? `${TICKER}: the 2026 Bowman Chrome chase index — ${byTab.base.length} Chrome Prospects + ${byTab.autos.length} Chrome Prospect Autos, one fixed per-set database. Pre-activation: streets Sep 9, 2026; ask basis, labeled, until sold coverage allows a hammer restatement. No level until ≥60% of the basket has verified asks. No calls — just the tape.`
   : `${TICKER}: the 2026 Bowman Chrome chase index — price-weighted over verified marks, ${esc(X.basisLabel || X.basis)}, re-marked from a 100.00 base. No calls — just the tape.`;
-const priced = (X.basket || []).length;
+const priced = (X.basket || []).filter((r) => r.price != null).length; // cards actually carrying a mark, not basket slots
 const levelBox = isPre
   ? `<div class="levelbox"><div class="level pre">PRE</div><div class="levelchg">no level yet · base 100.00 at activation · ask basis, labeled · streets ${fmtD(X.releaseDate)}</div></div>`
   : `<div class="levelbox"><div class="level">${last ? last.level.toFixed(2) : "—"}</div><div class="levelchg"${last ? ` data-prices-updated="${last.date}"` : ""}>base 100.00 · inception ${fmtD(X.inception)} · re-marked ${fmtD(last && last.date)} · ${esc(X.basisLabel || X.basis)}${prev && last ? ` · ${last.level >= prev.level ? "▲" : "▼"} ${((last.level / prev.level - 1) * 100).toFixed(1)}% vs prior mark` : ""}</div></div>`;
@@ -373,7 +373,7 @@ ${table(byTab.autos)}
 <b>PER SET</b> — ${TICKER} is 2026 Bowman Chrome only. May's paper Bowman, Sapphire and Draft each get their own ticker; nothing is mixed across sets. The Bangers board is the cross-set 1st Bowman instrument. &middot;
 <b>TABS</b> — BASE (Chrome Prospects) and AUTOS (Chrome Prospect Autographs, 15% single-card cap) are separate baskets; PARALLELS activates when parallel asks are verifiable. &middot;
 <b>BASIS</b> — ask basis, labeled on every row: a verified ask is what a seller is asking on a live, engine-verified listing — it is not a sale and is never called one. When SCP sold coverage reaches &ge;60% of basket value the index restates to hammer basis through a logged divisor adjustment; the level is identical before and after. Asks and solds are never blended. &middot;
-<b>ACTIVATION</b> — first re-mark with verified asks covering &ge;60% of chase-basket value: divisor = basket value &divide; 100, inception = that date, level 100.00. &middot;
+<b>ACTIVATION</b> — first re-mark with verified asks on &ge;60% of the chase-basket cards: divisor = basket value &divide; 100, inception = that date, level 100.00. BCB26 activated Sep 14, 2026. &middot;
 <b>WEIGHT</b> — price &divide; basket value within a tab; unpriced cards carry zero weight and enter via logged divisor adjustments so inclusion never moves the level. &middot;
 <b>1ST BOWMAN</b> — the card with the 1st logo. Each prospect gets two, judged separately: his first non-auto Bowman card (<b>1st Bowman Chrome</b>) and his first Bowman autograph (<b>1st Bowman Auto</b>). A later card of the same kind never carries it — same year or not, paper, Chrome, Sapphire or Draft. Not a rookie card: an RC is a player in the league; a 1st Bowman is an unproven prospect, and that is where the edge is. Every tag on this page was checked card by card (prior Bowman, Bowman Chrome, Bowman Draft and Sapphire checklists 2021–2026, plus Topps' own card images) on Sep 9, 2026; untagged = not a 1st. BANGERS is a separate tag for the current board and never implies a 1st. &middot;
 <b>&#9733;</b> — Track in your Vault (free, no account): Hunting or I Own It. No price is seeded pre-activation. &middot;

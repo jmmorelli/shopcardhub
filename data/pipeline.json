@@ -1,18 +1,14 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-14T13:40:00-07:00",
+  "generated": "2026-09-15T11:20:00-07:00",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
   "agents": {
     "seeker": {
       "label": "SEEKER",
       "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
-      "lastRun": "2026-09-14",
-      "nextRun": "2026-09-21",
+      "lastRun": "2026-09-15",
+      "nextRun": "2026-09-22",
       "actions": [
-        {
-          "ts": "2026-08-24",
-          "msg": "Calendar watch: 1 NEW release (Chrome Updates BKB Sapphire, Sep 3); Star Wars/Samurai Japan/Tennis/Vault Marvel already on skip list"
-        },
         {
           "ts": "2026-08-24",
           "msg": "Trends: Celebrini record YG sale; Adley +12% on Red Sox trade; Murakami S1 base $8->$22; Phantasmal Flames Charizard X SIR ~$719 and NO page exists"
@@ -56,6 +52,10 @@
         {
           "ts": "2026-09-14",
           "msg": "Competitor sweep: the HIGH-overlap index site added a narrative 'Today's brief' (4-question dashboard) + an audited hit-rate badge + paywalled picks; the HIGH-overlap tracker site moved to freemium (free ≤100 cards). Quiet week — no comp proposal. Watchlist Log updated."
+        },
+        {
+          "ts": "2026-09-15",
+          "msg": "Signal harvest: track-signals.json read, 25 entries, none at the count ≥ 5 auto-add threshold (top is Jacob Misiorowski 2022 Bowman Chrome 1st auto at 3, first seen Aug 23, last Sep 11 — watch it). No auto-adds, no dispersion flags in the feed. watchlist.json: Gonzales label corrected to the Topps spelling and a queryNote added explaining why the QUERY must keep the seller spelling."
         }
       ],
       "log": [
@@ -67,17 +67,9 @@
     "curator": {
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-09-14",
-      "nextRun": "2026-09-21",
+      "lastRun": "2026-09-15",
+      "nextRun": "2026-09-22",
       "actions": [
-        {
-          "ts": "2026-09-07",
-          "msg": "BOW26 weekly re-mark (ask basis): 100.00 → 97.99 (−2.0%), basket $1,106 → $1,083.80; Gonzalez −16.7% the drag, Florentino +4.5%; units/divisor unchanged. BCB26 stays PRE (streets Sep 9; 0/204 priced) — build-bcb26-index --check in sync."
-        },
-        {
-          "ts": "2026-09-07",
-          "msg": "audit-2026-09-07-2 APPLIED: Signal column dropped from /bowman-1st-chrome-index (header, cells, TOTAL row, colspan, note sentence); page now matches the Pokémon tickers — measurement, not calls. BCB26 chip on the strip now links to the live pre page."
-        },
         {
           "ts": "2026-09-07",
           "msg": "/card-* pages (20) + /cards regenerated from the Sep 7 engine feed; og/indices.png re-rendered from indices.json."
@@ -117,6 +109,14 @@
         {
           "ts": "2026-09-14",
           "msg": "Engine blocks + 24 /card-* pages + /cards + home + sealed rows re-baked on the 09-14 nightly feed (31/34 marked, 8 gated)."
+        },
+        {
+          "ts": "2026-09-15",
+          "msg": "Board re-marked Sep 15: Gonzales #4 / Florentino #5 on the two-week crossover clock the page published Sep 11 (second reorder in two runs to resolve on a pre-published condition). Benchmark transition CLOSED as not-applicable — the published 2026 Bowman Chrome checklist has 104 prospect autos and none belongs to a board name, so May's paper CPA is this class's permanent benchmark; Holliday/Fischer/Kim/Gonzales/Florentino break-conditions rewritten off it. Fischer verdict softened Buy→Hold (Fischer rule)."
+        },
+        {
+          "ts": "2026-09-15",
+          "msg": "BCB26 re-mark (release window, street +6): 100.00 → 95.67, −4.33%; divisor 0.8296 and all units unchanged from Monday's inception. Autos led it down — CPA-AG −10.0%, CPA-FR −4.6%, BCP-200 −12.9%, against CPA-WA +1.8%. CPA-LH still has zero verified asks and stays out of the basket."
         }
       ],
       "log": [
@@ -129,13 +129,9 @@
     "inspector": {
       "label": "INSPECTOR",
       "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-      "lastRun": "2026-09-14",
-      "nextRun": "2026-09-21",
+      "lastRun": "2026-09-15",
+      "nextRun": "2026-09-22",
       "actions": [
-        {
-          "ts": "2026-09-11",
-          "msg": "Board page integrity after the Fri refresh: rank order 01-05 sequential and matching board-history; 15 eBay links all carry the full mandatory EPN param set (mkevt/mkcid/mkrid/siteid/campid/toolid/customid=bowman-bangers); 6 Track buttons and 5 data-feed attributes unchanged; no price-sub left on a stale date stamp."
-        },
         {
           "ts": "2026-09-11",
           "msg": "BCB26 re-mark attempted per STEP 2.7 (every board-touching run through street+21d): NOT POSSIBLE -- chase basket is empty and data/watchlist.json carries no 2026 Bowman Chrome cards, so verified-ask coverage of the 204-card universe is 0% against the 60% activation gate. BCB26 stays status 'pre'. Blocker for the CoS: BCB26 cannot activate until its chase cards are added to the engine feed."
@@ -179,6 +175,10 @@
         {
           "ts": "2026-09-14",
           "msg": "GSC: sitemap last read Sep 7 (101 URLs, success); coverage 3 indexed / 74 not (flat); indexing requested for /indices (crawled Aug 31, not indexed → re-requested) and /destined-rivals-index (unknown to Google). Google 7d sessions 10 (was 27) vs bing 137 / yahoo 40 / ddg 23."
+        },
+        {
+          "ts": "2026-09-15",
+          "msg": "SCP comp pull for the 5 board names via Chrome (sandbox curl 403'd on Cloudflare again). Flat tape: Holliday $106→$104.00 (−1.9%, the board's biggest move either way), Fischer $146.80→$148.32 (+1.0%), Kim carried $131.25 an 8th week (last printed sale Aug 5 — 41 days), Gonzales $92.00 and Florentino $70.00 both flat to the cent. PSA 10s: $720 / $537.50 / $626.08 / $425 / $492. Engine asks 37–63% above last sold on Fischer, Kim and Gonzales, 4 verified asks each."
         }
       ],
       "log": [
@@ -193,8 +193,8 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-09-14",
-      "nextRun": "2026-09-21",
+      "lastRun": "2026-09-15",
+      "nextRun": "2026-09-22",
       "actions": [
         {
           "ts": "2026-09-10",
@@ -239,6 +239,10 @@
         {
           "ts": "2026-09-14",
           "msg": "GA4 28d: 977 active / 968 new / 1,174 sessions / 576 engaged / 110 key events (6.2% rate, was 12.1–14.5%) / organic 61.2% / AI Assistant 4 sessions @ 0%. 7d: 274 active / 268 new → returning ≈6 (13→13→8→10→6). Retention surfaces 28d: / 48 users, bangers 28, DR25 7, /indices 7, watchlist 11, other index pages 1–5; split by new/returning still NA (no exploration)."
+        },
+        {
+          "ts": "2026-09-15",
+          "msg": "Calls re-graded on the Sep 15 SCP reads: v-bb-fischer-buy-2 $148.32 (+1.0% on the Sep 11 re-entry, ungraded in band), v-bb-florentino-buy $70.00 (−11.7%, legacy 8-wk grade wrong), v-bb-gonzales-pass $92.00, v-bb-kim-wait carried $131.25. Aug 10 finals untouched. calls.json stays local for the CoS."
         }
       ],
       "log": [
@@ -366,8 +370,8 @@
       "slug": "set-indices",
       "title": "Set Indices (ETF-style, per set)",
       "stage": "live",
-      "note": "7 tickers: PB26/CR26/AH26/PRIS25/DR25 live (sold basis, weekly), BOW26 live (ask), BCB26 ACTIVATED Sep 14 at 100.00 (ask basis, 8/9 chase cards); SAPH26/DRAFT26 next.",
-      "ts": "2026-08-24"
+      "note": "7 tickers: PB26/CR26/AH26/PRIS25/DR25 live (sold basis, weekly), BOW26 live (ask), BCB26 live — activated Sep 14 at 100.00, first re-mark Sep 15 at 95.67 (−4.33%, ask basis, 8/9 chase cards); SAPH26/DRAFT26 next.",
+      "ts": "2026-09-15"
     },
     {
       "stage": "live",
@@ -1125,6 +1129,54 @@
       "filed": "2026-09-14",
       "by": "monday-scan (seeker)",
       "title": "2026 Topps Update Series: full checklist posted (Checklist Insider, Sep 11) but Topps release date TBA and no box configuration/pricing. Scaffold exists (drafts/topps-updates-baseball.html). Build the pre-release guide at the Wed Sep 16 build session or when the street date posts — not in the Monday lane."
+    },
+    {
+      "id": "bcb26-cap-base-weight-2026-09-15",
+      "status": "awaiting-cos",
+      "area": "indices",
+      "filed": "2026-09-15",
+      "by": "tuesday-board (curator)",
+      "title": "BCB26 basket weights: the 15% single-card cap is written for AUTOS only, so base BCP-163 (Renteria) carries ~17% of the basket at the Sep 15 re-mark — a heavier single-card weight than any capped auto. Rides alongside bcb26-activation-2026-09-14's cap-semantics question; recommend the CoS answer both in one ruling rather than capping base cards unilaterally mid-window."
+    },
+    {
+      "id": "gonzales-name-query-sep08-close",
+      "status": "awaiting-cos",
+      "area": "engine",
+      "filed": "2026-09-15",
+      "by": "tuesday-board (seeker)",
+      "title": "RECOMMEND CLOSE AS WON'T-FIX: gonzales-name-query-sep08 asked this run to change the watchlist query from 'gonzalez' to 'gonzales'. Verified first — the live matched eBay listing title reads 'Justin Gonzalez', sellers use the wrong spelling, and the feed sits at exactly 4 verified asks (the MIN_COMPS floor), so the change would have taken a board name's engine mark dark. Applied instead: label corrected to Gonzales, queryNote added so nobody 'fixes' it later. Card-number-only anchoring rejected — CPA-JG collides with CPA-JGO (Josuar Gonzalez), a real BCB26 auto."
+    },
+    {
+      "id": "tuesday-lane-staleness-2026-09-15",
+      "status": "awaiting-cos",
+      "area": "process",
+      "filed": "2026-09-15",
+      "by": "tuesday-board",
+      "title": "SELF-REPORTED: this run started on the mount's clone, which was 3 commits stale, and re-ACTIVATED BCB26 from scratch (inception Sep 15, divisor 0.793272) before catching it against the Monday scan file. Nothing was pushed; work was rebuilt in a fresh /tmp clone on the true HEAD and converted to a re-mark. Root cause: no fetch at STEP 0, and the Monday lane pushes from /tmp so the mount's clone never advances. Requested: add a mandatory 'git fetch auto main + git log HEAD..auto/main' staleness gate to STEP 0 of this task (and the Friday one), and default both to a fresh /tmp clone as the CoS already required of Monday on Sep 13."
+    },
+    {
+      "id": "bangers-prompt-doctrine-drift-2026-09-15",
+      "status": "awaiting-cos",
+      "area": "process",
+      "filed": "2026-09-15",
+      "by": "tuesday-board",
+      "title": "The Tuesday task prompt still carries the Aug 20 presentation doctrine verbatim: 'Dry Powder is rank 00 and stays at the top permanently' and 'WHAT BREAKS THIS' with hard dated deadlines. Mo superseded BOTH on Aug 21 (Dry Powder removed, never re-add; label renamed to WHAT WOULD CHANGE OUR MIND, deadlines dropped). This run followed the System Reference, not the prompt. The prompt needs the same edit or a future run will re-add a block Mo deleted."
+    },
+    {
+      "id": "kim-unrankable-clock-2026-09-15",
+      "status": "awaiting-cos",
+      "area": "board",
+      "filed": "2026-09-15",
+      "by": "tuesday-board (curator)",
+      "title": "Seong-Jun Kim has printed no sale since Aug 5 (41 days) and is carried at $131.25 for an 8th week while holding #3 on a sold-price board. The board has no rule for a card that stops trading. His card now says on-page that if Aug 5 is still the last print by mid-October we will say where that line is — the CoS should set the rule before then rather than after. Options: a staleness badge, a demotion trigger at N days, or an explicit 'carried quote' tier."
+    },
+    {
+      "id": "origin-remote-token-2026-09-15",
+      "status": "awaiting-mo",
+      "area": "security",
+      "filed": "2026-09-15",
+      "by": "tuesday-board",
+      "title": "The clone at ~/Projects/shopcardhub has a GitHub personal access token embedded in its `origin` push URL in .git/config. No token value is recorded in this or any other report. Recommend Mo revoke that PAT in GitHub settings and reset origin to the plain https or ssh URL; the lanes all push via the `auto` deploy key and do not need it. Physically his: it is his account credential."
     }
   ],
   "scoreboard": {

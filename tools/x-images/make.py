@@ -16,6 +16,7 @@ Usage:
   python3 tools/x-images/make.py og --out og              # og/indices.png link preview (1200x630), re-run each Monday
   python3 tools/x-images/make.py bangers                  # THE TUESDAY BOARD tape: top-5 parsed straight off bowman-bangers.html (added Sep 8 2026)
   python3 tools/x-images/make.py bcb26                    # BCB26 pre-activation / release-window card from indices.json (added Sep 8 2026; shows the level once live)
+  python3 tools/x-images/make.py call v-bb-florentino-buy # accountability card for ONE published call, straight from data/calls.json (added Sep 15 2026)
   python3 tools/x-images/make.py all AH26
 
 Output: --out DIR (default: ../Card Hub/x-images/<YYYY-MM-DD>/). Prints paths.
@@ -256,7 +257,7 @@ def card_bangers(out):
         eng = next((x for x in parts if x.startswith("engine")), "").replace("engine ", "")
         psa = next((x for x in parts if x.startswith("PSA 10")), "").replace("PSA 10 ", "")
         ctx = parts[3] if len(parts) > 4 else ""
-        ctx = re.split(r"[;,]", ctx)[0].strip()  # first clause only — the rest is on the page
+        ctx = re.split(r"[;,]|\s-\s", ctx)[0].strip()  # first clause only (em-dash already normalised to "-") — the rest is on the page
         rows.append((rk, nm, raw, eng, psa, ctx))
     rows = rows[:5]
     dt = datetime.date.fromisoformat(stamp)
@@ -289,6 +290,41 @@ def card_bangers(out):
     d.text((48, H - 40), f"marks as of {stamp} \u00b7 shopcardhub.com/bowman-bangers \u00b7 every call graded at 6 and 12 months", font=MONO(13), fill=DIM)
     p = out / f"bangers-tape-{stamp}.png"; im.save(p); return p
 
+def card_call(cid, out):
+    """Accountability card for a single published call (STEP 4's draft #1 is always the accountability tweet).
+    Every number comes from data/calls.json — the same file /track-record renders — so the image cannot show a
+    grade or a price the public Scorecard does not. Never prints an 8-week read as RIGHT/WRONG (grading v3).
+    Added Sep 15 2026."""
+    calls = json.load(open(ROOT / "data" / "calls.json", encoding="utf8"))["calls"]
+    c = next((x for x in calls if x.get("id") == cid), None)
+    if c is None: raise SystemExit(f"no call {cid} in data/calls.json")
+    entry, read = float(c["entry"]), float(c["read"])
+    mv = (read / entry - 1) * 100
+    act = str(c.get("action", "")).split("@")[0].strip().upper().replace("WAIT", "PASS")
+    who = (c.get("player") or c.get("name") or c.get("card") or cid.replace("v-bb-", "").replace("-", " ")).title()
+    im, d = canvas("the scorecard \u00b7 one call, in public", "We said it. Here it is.",
+                   "Published calls carry their own number, up or down. First real grade at 6 months, then 12.",
+                   tag="//  SHOPCARDHUB SCORECARD · SOLD COMPS ONLY")
+    y = 250
+    d.rounded_rectangle([48, y, W - 48, y + 300], 8, fill=PANEL, outline="#16303a")
+    d.text((80, y + 30), who.upper(), font=COND9(46), fill=TXT)
+    sub = str(c.get("readLabel", "") or "")
+    if sub.lower().startswith(str(c.get("card", "") or "").lower()[:12]): sub = ""
+    d.text((80, y + 92), (sub or str(c.get("card", "")))[:78], font=MONO(14), fill=DIM)
+    cells = [("OUR CALL", f"{act} @ ${entry:,.2f}", CYAN), ("CALLED", str(c.get("callDate", "")), TXT),
+             ("LATEST SOLD", f"${read:,.2f}", TXT), ("MOVE", f"{mv:+.1f}%", GREEN if mv >= 0 else RED)]
+    for i, (k, v, col) in enumerate(cells):
+        x = 80 + i * 268
+        d.text((x, y + 160), k, font=MONO(13), fill=DIM)
+        d.text((x, y + 184), v, font=COND7(40), fill=col)
+    # grading clock — never a public RIGHT/WRONG on the 8-week read
+    d.text((80, y + 252), "PUBLIC GRADE: EARLY \u00b7 first real grade at +6 months, then +12 \u00b7 the 8-week read is shown, never graded",
+           font=MONO(14), fill=DIM)
+    d.text((48, 580), f"read {c.get('readDate','')} \u00b7 SportsCardsPro raw sold \u00b7 entry, projection and call date are immutable once published",
+           font=BAR4(17), fill=TXT)
+    footer(d, c.get("readDate", ""), "\u00b7 shopcardhub.com/track-record")
+    p_ = out / f"call-{cid}.png"; im.save(p_); return p_
+
 def card_bcb26(idx, out):
     """BCB26 release-window card. PRE: universe counts + the activation rule, no prices (none exist that the
     site can attribute). LIVE: level, w/w, priced count — same fields as `levels`. Added Sep 8 2026."""
@@ -306,8 +342,12 @@ def card_bcb26(idx, out):
             ("STATUS", "LIVE" if live else "PRE-ACTIVATION"),
             ("RE-MARKS", "every board-touching run through street +21 days, then weekly")]
     if live:
-        h = ix["history"]; lv = h[-1]["level"]; pv = h[-2]["level"] if len(h) > 1 else 100.0
-        rows.insert(0, ("LEVEL", f"{lv:.2f}  ({lv - pv:+.2f} w/w) · {len(ix.get('basket') or [])} cards priced"))
+        h = ix["history"]; lv = h[-1]["level"]
+        marked = len([r for r in (ix.get("basket") or []) if r.get("price") is not None])
+        total = len(ix.get("basket") or [])
+        # at inception there is no prior level to move against — say "inception", never a fake +0.00 w/w
+        chg = "inception" if len(h) == 1 else f"{lv - h[-2]['level']:+.2f} w/w"
+        rows.insert(0, ("LEVEL", f"{lv:.2f}  ({chg}) · {marked} of {total} basket cards marked"))
     for k, v in rows:
         d.rounded_rectangle([48, y, W - 48, y + 52], 6, fill=PANEL, outline="#16303a")
         d.text((70, y + 18), k, font=MONO(13), fill=CYAN)
@@ -332,4 +372,5 @@ if __name__ == "__main__":
     if a.kind == "og": done.append(card_og(idx, out))
     if a.kind == "bangers": done.append(card_bangers(out))
     if a.kind == "bcb26": done.append(card_bcb26(idx, out))
+    if a.kind == "call": done.append(card_call(a.ticker, out))
     for p in done: print(p)
