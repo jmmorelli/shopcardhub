@@ -94,6 +94,38 @@ recommendation was work finished three weeks earlier.*
 - **Declare your own stumbles in your filing.** Every lane that has self-reported a miss has had
   the finding accepted; the misses that cost something were the unreported ones.
 
+## Cadence — the authoritative copy (moved here 2026-09-16)
+
+This table used to live in `claude/cos/CHARTER.md` §6. It moved because the charter is a
+28 KB document that has to be rewritten whole to change one cell, so its cadence table went
+stale. This file is cheap to edit, in git, and read at STEP 0 — so the schedule lives here now
+and the charter points at it. **If you see a day in any other document, this table wins.**
+
+### Cloud scheduled tasks (editable from any session via the scheduled-task API)
+
+| Task | When (Pacific) | What |
+|---|---|---|
+| CoS · daily ops check | every day 06:00 | Engine Watch · Pricing Integrity audit · Wiring Keeper gate · Bug Sweeper · light Mobile QA (5 pages) · NEEDS-MO review · §0 light read when Chrome is reachable. Cloud-only: no commits. |
+| **CoS · weekly site audit** | **Wednesday 04:30** *(moved from Monday by Mo, 2026-09-16 — "a bigger gap" from the Sunday run)* | §0 Business Read first → Terminal Product read → full §4 audit + full-site sweep → Pricing Integrity weekly → the build order → Tape Recap → adjudicate every `awaiting-cos` filing → fix, commit and push behind the three gates → IndexNow. |
+| CoS · monthly roster & rooms review | 1st of the month 05:00 | Re-read Mo's direction, retire/create agents and rooms, rewrite CHARTER §2, prune rooms. |
+
+### Desktop-local lanes (in the Claude desktop app — NOT in the scheduled-task API; only Mo edits these prompts)
+
+| Lane | Task-key | What |
+|---|---|---|
+| Sunday Chief of Staff run | `chief-of-staff-sunday` | Weekly planning brief, queue, coach notes, roster |
+| Monday trend scan (price lane) | `shopcardhub-weekly-trend-scan` | Autonomous price lane — mechanical re-marks and index levels behind the gates |
+| Tuesday board update | `bowman-bangers-tuesday-update` | Bowman Bangers re-mark, board tweet queue, Tuesday Tape digest |
+| MWF site auditor | `shopcardhub-site-auditor` | Read-only find-and-file QA (`tools/site-auditor/CHARTER.md`) |
+| Thursday trader · Friday release window · Wednesday build session | — | Trader recs; release-day conversion; the build session that lands queued patches |
+
+**Open question for Mo (raised 2026-09-16, not yet answered):** the weekly run's Tape Recap send
+now falls on Wednesday, one day after the Tuesday lane's own digest. Email ownership was decided
+on 2026-09-06 as *"Tuesday owns the digest, no email agent"*, which reads as though the weekly's
+separate recap send is leftover doctrine. Until Mo rules, **the weekly does not send a recap in a
+week where the Tuesday digest already went out** — it drafts and says so. One list, four active
+subscribers; two sends in 24 hours is the wrong side of the line.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
