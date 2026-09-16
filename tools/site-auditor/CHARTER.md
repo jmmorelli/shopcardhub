@@ -5,7 +5,9 @@
 contract. Every finding becomes a proposal Mo can approve in the Card Dungeon;
 an approved proposal is applied by a separate fixer run (or Mo), never by the
 auditor itself. This separation *is* the audit trail: proposals in
-`data/pipeline.json`, applications as git diffs, deployment as Mo's push.
+`data/pipeline.json`, applications as git diffs, deployment as a gated push by a
+publishing lane. (Updated 2026-09-16: deployment stopped being Mo's push on 2026-09-02,
+when he granted full operating authority. Nothing waits on him to deploy.)
 
 ## Repo boundary — Mo, Sep 16 2026 (applies to EVERY filing lane, not just this one)
 
@@ -59,7 +61,10 @@ filings every checkpoint.
    `https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/dungeon-decisions.json`.
    For every decision matching a pipeline.json proposal still `awaiting-mo`:
    set its status to `approved` or `declined` (append ` — Mo, <date>` to the
-   title). Approved items are NOT fixed by the auditor — list them in the
+   title). **2026-09-16: `awaiting-mo` is now reserved for things physically
+   Mo's — a sign-in, money, a credential, a `calls.json` question. Everything
+   else files as `awaiting-cos` and the Chief of Staff rules on it (LANE-RULES
+   R1). Do not park a technical call on Mo; it drifts while it waits.** Approved items are NOT fixed by the auditor — list them in the
    report under "Approved, awaiting fixer" so Mo (or a fixer run) executes
    them. Declined audit-* findings are remembered: do not re-file the same
    finding unless it materially worsens.
@@ -110,9 +115,11 @@ filings every checkpoint.
      evidence, then a "recurring/unresolved" section listing prior findings Mo
      hasn't actioned (with age). No padding — a clean run is a three-line report.
 6. **Never:** edit HTML/JS/py files, touch calls.json grades or projections,
-   run git commands in the mounted repo (sandbox lock bug — see
-   reference_deployment memory), push, tweet, or create pages. pipeline.json
-   and the report file are the ONLY writes.
+   run git commands anywhere — the mounted clone included — push, tweet, or
+   create pages. pipeline.json and the report file are the ONLY writes.
+   (2026-09-16: this was written as a workaround for a sandbox lock bug. It is
+   now policy in its own right — LANE-RULES R1. A filing lane does not touch
+   git even where git would work.)
 
 ## Escalation
 
@@ -124,7 +131,15 @@ filings every checkpoint.
 
 ## Trust ladder (the path Mo chose toward full autonomy)
 
-Stage 1 (now): auditor proposes; Mo approves; Mo/fixer applies; Mo pushes.
+Stage 1 (Aug 17 – Sep 2 2026, HISTORICAL): auditor proposes; Mo approves;
+Mo/fixer applies; Mo pushes.
+**Where we actually are (2026-09-16): past Stage 2 for the price and board lanes.**
+The auditor still only proposes — that part never graduates, by design. What changed
+is everything downstream: the **Chief of Staff** approves (not Mo), a fixer or
+publishing lane applies, and that lane **pushes itself** behind three gates
+(`audit-prices`, `audit-site`, `audit-terminal`, all FAIL 0). Mo's veto stays
+absolute and retroactive; it is a veto, not a gate. Stages 3 and 4 below are
+unchanged and not yet reached.
 Stage 2: task classes with ~95% of proposals approved unmodified over ~a month
 graduate to auto-apply via GitHub Actions (the price-data branch pattern),
 post-hoc review in the dungeon. Candidates: stamp refreshes, image remaps,
