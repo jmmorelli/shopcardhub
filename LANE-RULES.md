@@ -9,8 +9,12 @@ week, and lanes acted on stale copies. This file is in git. It changes the day a
 1. **Mo, in chat, now.**
 2. **This file.** Where it conflicts with your task prompt, THIS FILE WINS and the prompt is the
    stale copy. Say so in your run summary so the prompt gets fixed.
-3. `claude/cos/CHARTER.md` and `claude/cos/STATE.md` (project docs) — standing doctrine and
-   current state.
+3. `claude/cos/CHARTER.md` and **`claude/cos/STATE.md` — both in the repo** — standing doctrine
+   and current state. *(STATE.md was committed into the repo on 2026-09-16. Until that evening it
+   existed only as a claude.ai Project doc, which meant R4 below — 'read STATE.md before
+   recommending channel work' — required lanes to read a file they could not open. That was the
+   CoS's error, not the lanes'. The repo copy is now canonical; the CoS mirrors it into the
+   Project doc in the same run, and nobody else writes either copy.)*
 4. Your task prompt — the job, the cadence, the mechanics.
 
 Read this file at STEP 0 of every run, from a **fresh clone**, and say in your filing that you
@@ -58,6 +62,25 @@ stale inputs, caught it against the true HEAD before pushing, and lost its 2:00 
 to the recovery. Nothing wrong reached the site. Applies to the Tuesday board lane, the Friday
 release-window lane and the Monday scan — none of their prompts carried this.*
 
+**AMENDED 2026-09-16 (evening) — this is now a refusal, not a preference, and it binds filing
+lanes too.** Every lane prints a freshness header as the FIRST LINE of its report:
+
+```
+HEAD <sha> · origin/main <sha> · delta <n> commits · gate WARN <prices>/<site>/<terminal> vs baseline <b>
+```
+
+**A lane that is behind origin/main does not file.** It re-clones and re-runs, or it files one
+line saying it could not get a fresh tree and stops. A report with no freshness header is not
+read. The WARN-vs-baseline delta is the second tripwire and is free: the site auditor's own
+2026-09-16 report showed `WARN 32/3/1` against a stated baseline of `29/3/1`, and that `+3` was
+exactly three false positives from its stale mount. It had the number and filed anyway.
+
+*Second origin: the MWF site auditor filed five findings on 2026-09-16 and three were wrong —
+a HIGH that a commissioned build session had fixed five minutes earlier, a risk the CoS had
+already accepted and downgraded, and a WARN inside the CoS's own stated gate baseline. The
+revised report then added a fourth: it stated that `/LANE-RULES.md` does not exist in the repo.
+It has existed at the root since `728c6e5`. The lane was reading a mount nine commits behind.*
+
 ## R3 · A prompt never re-adds something Mo deleted
 
 Specifically, and permanently, for the Bowman Bangers board:
@@ -82,6 +105,35 @@ in code.
 Webmaster Tools and submit the sitemap. Both have been live since 2026-09-08 and are read
 weekly. The investigation around it was genuinely good and changed the roadmap; the headline
 recommendation was work finished three weeks earlier.*
+
+## R5 · Verify a finding against the LIVE SITE before filing it
+
+A finding is about what the public sees. **Re-fetch the live URL and reproduce the defect there
+immediately before filing**, and say in the finding that you did. If it does not reproduce live,
+it is not a finding — the tree is behind, or someone already fixed it.
+
+This is cheap and it is decisive. It kills the whole class of "the file on my disk says X".
+
+## R6 · Check the ledger before filing — re-filing a settled item is a defect
+
+Before a finding is written, check it against **`data/pipeline.json`** (every proposal, its
+status and its decision) and **`claude/cos/STATE.md` in the repo**. If the item already has a
+ruling, an acceptance, a downgrade, or sits inside a stated baseline, **it is closed and you do
+not re-open it** — if you disagree with the ruling, say so in one line as a disagreement with a
+named decision, not as a new finding at the old severity.
+
+*Origin: 2026-09-16 — the auditor re-filed a clone/ledger risk the CoS had accepted, backed up
+in full and downgraded MED→LOW the day before, at the old severity and with a superseded fix;
+and separately asked the CoS to rule a question the CoS had already ruled in writing.*
+
+## R7 · An absence claim requires a fresh clone
+
+"File X does not exist", "the rule is not in the repo", "nothing implements Y" — these may only
+be filed after `git ls-files` **in a clone taken this run**. Never from a mount, never from
+memory, never from a search that came back empty. An absence claim from a stale tree is the
+easiest wrong finding to make and the most expensive to read, because it reads like a fact.
+
+---
 
 ---
 

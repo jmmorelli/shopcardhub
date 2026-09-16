@@ -666,6 +666,38 @@ if (feed) {
   for (const c of hostCards) if (!feedKeys.has(`${c.source}:${c.id}`)) add("FAIL", "feed-shape", "prices-latest.json", `${c.source}:${c.id} is hosted on /${hostOf(c)} but the feed has no entry for it`);
 }
 
+/* ---------- check: the home Markets panel must agree with data/indices.json ---------- */
+// Filed as audit-2026-09-16-1: the home panel is BAKED by tools/build-home.mjs, the index page
+// renders live, so a lane that re-marks an index without re-baking publishes two levels for one
+// ticker. This gate exists to catch exactly that and did not, until now.
+try {
+  const idxPath = path.join(REPO, "data/indices.json");
+  if (fs.existsSync(idxPath) && exists("index.html")) {
+    const idx = JSON.parse(fs.readFileSync(idxPath, "utf8"));
+    const home = read("index.html");
+    const mk = home.match(/<!-- HOME:markets:START -->([\s\S]*?)<!-- HOME:markets:END -->/);
+    if (!mk) add("WARN", "home-index-level", "index.html", "HOME:markets block not found - cannot cross-check index levels");
+    else {
+      for (const [tk, v] of Object.entries(idx)) {
+        if (!v || typeof v !== "object" || Array.isArray(v) || v.status !== "live" || !Array.isArray(v.history)) continue;
+        const last = [...v.history].reverse().find((h) => h && typeof h.level === "number");
+        if (!last) continue;
+        const row = mk[1].match(new RegExp('data-k="' + esc(tk) + '"[\\s\\S]{0,400}?<span class="num">([-\\d.,]+)</span>'));
+        if (!row) { add("FAIL", "home-index-level", "index.html", `${tk} is live (${last.level} on ${last.date}) but has no row in HOME:markets`); continue; }
+        const shown = Number(String(row[1]).replace(/,/g, ""));
+        if (!Number.isFinite(shown) || Math.abs(shown - last.level) > 0.005)
+          add("FAIL", "home-index-level", "index.html", `${tk}: HOME:markets shows ${row[1]} but data/indices.json marks ${last.level} on ${last.date} - re-run tools/build-home.mjs after any re-mark`);
+        // an activated ticker must not still be labelled "(pre)" anywhere in the generated chrome
+        for (const f of pages) {
+          const src = read(f);
+          if (new RegExp(esc(tk) + "[^<]{0,80}\\(pre\\)").test(src))
+            add("FAIL", "home-index-level", f, `${tk} is live but the page still labels it "(pre)" - fix data/nav.json, then re-run build-nav.js and build-rail.mjs`);
+        }
+      }
+    }
+  }
+} catch (e) { add("WARN", "home-index-level", "data/indices.json", `home/index cross-check skipped: ${e.message}`); }
+
 /* ---------- --all: the other two gates first ---------- */
 let othersFailed = 0;
 if (ALL) {

@@ -77,6 +77,33 @@ for (const page of pages) {
   if (cells.length && !/sold comps|sold-market comps/i.test(text))
     add(page, "WARN", "no-disclaimer", `has ${cells.length} price cell(s) but no "sold comps" disclaimer text`);
 
+  // 7. FAIL — a GRADED figure labelled "sold" without saying how many dated sales are behind it.
+  //    Filed 2026-09-16 after a build session published SportsCardsPro's grade LADDER — which is
+  //    partly modelled from comparable cards — as "(sold)" on three pages. All three gates passed:
+  //    the cells were numeric and stamped. A price-guide row is not a sale, and a date somewhere on
+  //    the page is not provenance. The contract is now explicit: a graded figure reads either
+  //    "(N dated sale(s))" or "No verified sale". The bare word "sold" on a graded tier is a FAIL.
+  const GRADED_SOLD = /(?:PSA|BGS|SGC|CGC|Grade)\s*\d+(?:\.\d)?\s*(?:\(sold\)|sold\s*[:\-]?\s*\$)/gi;
+  const unsourced = [...text.matchAll(GRADED_SOLD)].map((m) => m[0].replace(/\s+/g, " ").trim());
+  if (unsourced.length)
+    add(page, "FAIL", "sold-provenance", `${unsourced.length} graded figure(s) labelled "sold" with no sale count: ${[...new Set(unsourced)].slice(0, 6).join(" | ")} — use "(N dated sale)" or "No verified sale"`);
+
+  // 8. WARN — an ask, a live bid or a BIN sitting in a price slot on a sold-basis page.
+  //    Three of these shipped live on /aiva-arquette-1st-bowman ("$1,500 · Active Auction" in a
+  //    price-main). Numeric and stamped, so every existing check passed them.
+  const clean = stripCode(html);
+  const ASKY = /active auction|current bid|\d+\s+bids\b|buy it now|\bBIN\b|asking price/i;
+  const askSlots = [...clean.matchAll(/class="(?:price-main|roi-price|entry-stat-value)[^"]*"[^>]*>\s*\$[\d,]+(?:\.\d\d)?\s*</g)]
+    .filter((m) => ASKY.test(clean.slice(Math.max(0, m.index - 250), m.index + 250).replace(/<[^>]+>/g, " ")));
+  if (askSlots.length)
+    add(page, "WARN", "ask-in-price-slot", `${askSlots.length} price slot(s) sit within 250 chars of auction/BIN/ask language — confirm the number is a sale, not a listing`);
+
+  // 9. WARN — a page with a price table and no machine stamp at all is invisible to check 4.
+  //    /roy-watch-2026 carried prose stamps and ~31 price cells and no data-prices-updated, so it
+  //    aged four months without ever being flagged stale.
+  if (cells.length && !/data-prices-updated=/.test(html))
+    add(page, "WARN", "no-machine-stamp", `has ${cells.length} price cell(s) but no data-prices-updated attribute — the staleness check cannot see this page`);
+
   // 6. WARN — prose date stamps that disagree with the page's freshest date.
   // Added Aug 25, 2026: the bowman-bangers footer sat on "August 18, 2026" for a
   // week after the Tuesday re-mark refreshed every price above it. Machine-readable

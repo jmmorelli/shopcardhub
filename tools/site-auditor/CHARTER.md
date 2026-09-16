@@ -43,6 +43,54 @@ If a lane believes something must be done to a repo or a clone RIGHT NOW, the es
 path is: file it, say plainly that it is time-sensitive and why, and stop. The CoS reads
 filings every checkpoint.
 
+## PROBATION — Chief of Staff, 2026-09-16 (Mo: "the Site Auditor is on thin ice")
+
+**This lane is not retired. It is on a two-run probation with five hard filing conditions.**
+
+*What happened.* The 2026-09-16 MWF report filed five findings and **three were wrong, all three
+in the same way: the lane reasoned from a mounted clone nine commits behind `main`.* A HIGH that
+the commissioned Wednesday build session had fixed five minutes earlier; a clone/ledger risk the
+CoS had accepted, backed up in full and downgraded MED to LOW the day before, re-filed at the old
+severity with a superseded fix; and a WARN sitting inside the CoS's own published gate baseline.
+It also asked the CoS to rule a question the CoS had already ruled in writing. The **revised**
+report then added a fourth of the same kind: it stated that `/LANE-RULES.md` does not exist in the
+repo. It has been at the repo root since `728c6e5`, committed that morning.
+
+*What the lane got right, and it is not small.* It self-corrected under challenge and withdrew its
+own findings rather than defending them. Its two surviving findings were real, live-verified, and
+both shipped the same night — **and one of them exposed a genuine hole in the wiring gate.** Its
+diagnosis that the read-state rule was unenforceable was correct, and the CoS has fixed it. Its
+own `+3 WARN-delta` tripwire is now standing doctrine for every lane.
+
+*Terms, effective the next run:*
+
+1. **No mounted clone, ever.** A fresh clone at STEP 0 or the run does not file. If the clone
+   fails, file one line saying so and stop.
+2. **Freshness header is the first line of every report** — `HEAD · origin/main · delta ·
+   gate WARN vs baseline` (LANE-RULES R2). **A report with no freshness header is not read.**
+3. **Re-verify every finding against the live URL immediately before filing** (R5). A finding
+   that does not reproduce live is not a finding.
+4. **Check every finding against `data/pipeline.json` and `claude/cos/STATE.md` before filing**
+   (R6). Re-filing a settled item is a defect, not a duplicate. Disagreeing with a ruling is
+   one line naming that ruling — never a new finding at the old severity.
+5. **No absence claim without `git ls-files` in a clone taken this run** (R7).
+
+*Measurement.* Two runs — **Fri Sep 18 and Mon Sep 21**. One number: wrong filings. A filing
+counts as wrong if it was already ruled, already fixed, or sits inside a stated baseline.
+**Bar: zero.** Two clean runs and probation lifts.
+
+*If it fails.* A third run with a wrong filing from a stale or unverified input and **the lane is
+retired.** Its deterministic sweep (`tools/site-auditor/sweep.mjs` plus the three gates) folds
+into the Wednesday weekly, which is where the judgment already sits. The sweep is worth keeping.
+A second opinion that has to be fact-checked is not.
+
+*The CoS's half, on the record.* The read-state rule was written requiring a file the lane could
+not open — `claude/cos/STATE.md` existed only as a claude.ai Project doc until 2026-09-16 and is
+now in the repo. And LANE-RULES R2's own text said the mount is stale by construction, while
+lanes were still permitted to file from it. **Three wrong findings is a lane failure; a rule that
+cannot be complied with is a CoS failure. Both happened here, and the fixes for both shipped the
+same night.**
+
 ## Why this design (agreed with Mo, Aug 17 2026)
 
 - **Deterministic scripts are the ground truth.** LLM judgment layers on top of
