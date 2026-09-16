@@ -1971,6 +1971,17 @@
           "gates": "audit-prices FAIL 0 / WARN 29 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 1",
           "liveVerified": "docs only; scheduled task cron updated to 0 18 * * 3",
           "note": "Weekly audit final: Wednesday 11:00 PT. Next fire 2026-09-16 18:06 UTC (today). Overlap with the Wed 1 PM build session flagged in the cadence block."
+        },
+        {
+          "date": "2026-09-16",
+          "commits": [
+            "357c02a",
+            "ec865b3"
+          ],
+          "by": "CoS night run on Mo's chat direction (\"do what you see fit that you can handle for this tonight\") — COMC nav CTA removed sitewide; portfolio rail hydrated on the 3 pages where it was dead markup",
+          "gates": "run by the pushing session on the pushed tree: audit-site FAIL 0 / WARN 3 (baseline) · audit-prices FAIL 0 / WARN 29 (baseline) · audit-terminal FAIL 0 / WARN 0 (feed present) · interaction suite run per-page because the device shell caps at 180s and the bundled --run-tests spawn exceeds it: index 82 / watchlist 30 / bowman-bangers 11 / auctions 10 / indices 7 = 140 scenarios, FAIL 0, WARN 5 (pre-existing fixture skips) · vault-migration 193 checks / 0 failed",
+          "liveVerified": "2026-09-16 (curl: 4 pages HTTP 200, 0 COMC nav links on any, /js/rail-hydrate.js 200 and referenced on auctions+indices+bowman-bangers, footer COMC column intact, 16 nav dropdowns still rendering); IndexNow 77 URLs → 200",
+          "note": "Two independently revertible commits by design. Playwright is not installed on the Mac VM — installed locally to $HOME/pw with the X libs extracted from apt debs into a private apt state dir (the global install and apt lists both need root); recipe now works on the device VM as well as the cloud sandbox. NOT done and deliberately filed rather than half-run: 72 in-body COMC promo units (38 related-card, 22 product-link, 11 related-link, 1 guide-card) across 93 pages — hand-written wrappers, not generated blocks, so each needs its prose removed with it and a mobile pass."
         }
       ]
     },
