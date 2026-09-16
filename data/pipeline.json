@@ -1804,6 +1804,16 @@
           "gates": "re-run read-only by the checkpoint on the pushed tree: audit-prices FAIL 0 / WARN 29 - audit-site FAIL 0 / WARN 3 (pre-existing trio) - audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected off-feed)",
           "liveVerified": "2026-09-15 - board page 200, price stamp current, corrected entry copy present live and the superseded wording absent",
           "note": "Two bookkeeping commits plus one content commit that had no entry of its own: a board entry's copy carried a stale relative-time phrase (the same class as the Sep 9 absolute-dates ruling) and was corrected to an absolute date with a refreshed mark. Trailers and authority were correct; only the log was missing."
+        },
+        {
+          "date": "2026-09-15",
+          "commits": [
+            "8537e49"
+          ],
+          "by": "chief-of-staff (Tuesday light checkpoint; charter 4.2 janitorial + 4.7/4.8 approvals)",
+          "gates": "audit-prices FAIL 0 / WARN 29 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected off-feed); all three run on the tree before the commit, from a fresh clone of main",
+          "liveVerified": "panel payload only (no page content changed); leak check on the full payload before writing - 0 names, prices, positions, handles or credentials in the checkpoint's own text",
+          "note": "Checkpoint state only: watchdog, approvals, the pushLog backfill and attribution fix, and the proposal rulings. No page, price, verdict or ledger touched. Logged under the same rule this run enforced on another lane - a push without its own entry is the defect."
         }
       ]
     },
