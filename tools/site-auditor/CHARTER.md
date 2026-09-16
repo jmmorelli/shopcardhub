@@ -9,6 +9,8 @@ auditor itself. This separation *is* the audit trail: proposals in
 
 ## Repo boundary — Mo, Sep 16 2026 (applies to EVERY filing lane, not just this one)
 
+**Canonical text: `/LANE-RULES.md` at the repo root — read it at STEP 0 of every run. Where it conflicts with a task prompt, the file wins and the prompt is the stale copy.**
+
 Mo, after a lane proposed syncing his working clone and nearly reverted an unpushed
 ledger: *"I only want you to touch the GitHub repo stuff... I'd prefer you guys just
 talk to each other about this so I don't have to be involved."*
