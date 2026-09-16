@@ -1325,13 +1325,15 @@
   },
   {
    "id": "cos-2026-09-16-key-events-dead",
-   "status": "awaiting-cos",
+   "status": "awaiting-mo",
    "area": "analytics",
    "filed": "2026-09-16",
    "by": "chief-of-staff",
    "title": "CRITICAL: GA4 key events are ZERO for Sep 10-16 (258 sessions) against 35 for Sep 1-9 (527 sessions). Zero across every channel and source, organic search included. At the Sep 1-9 rate the probability of a 7-day zero is ~1e-12 under Poisson — the instrument is dead, not quiet. Coincides with the Terminal rebuild (4eff6c7 -> 6f9a9cd, Sep 11-12). Repo evidence: the DEST block is gone from index.html (zero DEST:START markers) and from every terminal-shell page and every generated /card-* page; dest_strip is the site's highest-volume event, 122 call sites across the guide pages.",
    "decision": "NOT FIXED TONIGHT, ON PURPOSE. Which events are configured as key events in GA4 Admin has not been read, and without it 'restore the DEST strip' is a guess — re-adding a block the Terminal rebuild removed deliberately would violate LANE-RULES R3. NEXT CHROME-LINKED RUN, in order: (1) read GA4 Admin -> Key events and record the exact configured list; (2) identify which of those events lost its call site in the Sep 11-12 rebuild; (3) restore only that capture, on the terminal pages, without re-adding anything else the rebuild dropped; (4) verify in GA4 Realtime that it fires. CONSEQUENCE: the 'organic-channel key-event rate (8.1%)' adopted as the standing retention metric earlier the same evening is computed on a window containing seven days of dead instrument — it is not a valid baseline and is not to be quoted until a clean window exists. This also blocks the W5 Signal Alert tier on its own stated terms: we do not ship an email tier we cannot measure.",
-   "decidedBy": "chief-of-staff"
+   "decidedBy": "chief-of-staff",
+   "correction": "2026-09-16, same night, BEFORE any change: the first diagnosis was WRONG and is superseded. Sep 4-9 shows 286 sessions and 0 key events, so the blackout begins Sep 4, not Sep 10, and the 35 events fell in Sep 1-3. GA4 Admin > Events lists only four configured key events - close_convert_lead, newsletter_signup, purchase, qualify_lead - three of which are default placeholders with no stream data ever; newsletter_signup fired once in 28 days. Admin > Property change history shows 'Key event settings - Modified' twice on 2026-09-03 (2:17 PM and 9:48 PM PT, shopcardhub@gmail.com) and nothing since. CAUSE: a GA4 configuration change on Sep 3 narrowed the key-event set. NOT a code regression; the Terminal rebuild is exonerated. Blackout is 13 days. FIX is a settings change and needs Mo's explicit approval because it alters his analytics configuration - proposed set: keep newsletter_signup, add `click` (outbound click to eBay, 150 events/28d, the revenue moment on an affiliate site) and `track_card_from_page` (20/28d, the retention moment the return-user program is built on). The DEST-block removal from / and the terminal/card pages is a SEPARATE real defect and remains open; it is not what zeroed the count. Lesson recorded: a repo diff that lines up with a date is a hypothesis, not a cause.",
+   "awaitingMoReason": "GA4 key-event configuration change — account settings, needs explicit approval"
   }
  ],
  "scoreboard": {

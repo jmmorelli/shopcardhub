@@ -113,10 +113,38 @@ not open, and the mount was known to be stale by construction (LANE-RULES R2's o
 while lanes were still allowed to file from it. Both are fixed above. **Three wrong findings is a
 lane failure; a rule that cannot be complied with is a CoS failure. Both happened.**
 
-## ⚠ KEY EVENTS HAVE BEEN DEAD FOR SEVEN DAYS (found 2026-09-16 late, in GA4)
+## ⚠ KEY EVENTS HAVE BEEN DEAD SINCE SEP 3 — CAUSE FOUND, AND MY FIRST DIAGNOSIS WAS WRONG
 
 Found while checking whether Mo's Reddit link sent anyone. It did not — and the report it was read
 from showed something worse.
+
+**CORRECTION, same night, before anything was changed.** The first version of this block said the
+blackout started Sep 10 and blamed the Terminal rebuild on the strength of a repo diff. **Both were
+wrong.** Reading further in GA4:
+
+- **Sep 4 – Sep 9: 286 sessions, 0 key events.** So the blackout starts **Sep 4**, not Sep 10. The
+  35 events I attributed to "Sep 1–9" all fell in **Sep 1–3**.
+- **Admin → Events shows only four events configured as key events:** `close_convert_lead`,
+  `newsletter_signup`, `purchase`, `qualify_lead`. Three of those are GA4's default lead-gen
+  placeholders with **no stream data, ever**. The only live one, `newsletter_signup`, fired
+  **once** in 28 days.
+- **Admin → Property change history: "Key event settings — Modified" twice on Sep 3**
+  (2:17 PM and 9:48 PM PT, under shopcardhub@gmail.com) and **nothing since**. The last property
+  change of any kind was the Internal Traffic data filter on Sep 7.
+
+**So the cause is a GA4 configuration change on Sep 3 that narrowed the key-event set down to
+`newsletter_signup` plus three empty defaults. It is not a code regression and the Terminal rebuild
+is exonerated.** The blackout is **13 days**, not 7. The fix is a settings change, not a build.
+
+**The DEST-block removal is still real and still needs fixing** — `dest_strip` no longer exists on
+`/`, the terminal-shell pages or the `/card-*` pages — but it is a *separate* defect, and it is not
+what zeroed the key-event count. Filing the two as one thing was the error.
+
+**How the wrong version happened, on the record:** I bracketed with a 7-day window, found a repo
+change in the same window, and stopped. A repo diff that lines up with a date is a hypothesis, not
+a cause — the same mistake as reading a price ladder and calling it a sale. Two GA4 reads (a
+narrower window, and the change history) settled it in four minutes. **Nothing was committed to the
+site on the wrong diagnosis, and the corrected version is what stands.**
 
 **The fact, from GA4 (property a397485386p541047014), read live:**
 
