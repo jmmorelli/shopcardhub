@@ -1910,6 +1910,16 @@
           "gates": "audit-prices FAIL 0 / WARN 29 - audit-site FAIL 0 / WARN 3 (pre-existing first-bowman trio) - audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected off-feed); all three run on the tree before the commit, from a fresh clone of main",
           "liveVerified": "panel payload only (no page content changed). Independently re-verified live this run: robots 200 with only /api/ disallowed and the sitemap declared, sitemap 200 with 77 URLs - the technical-SEO half of the filing, checked rather than taken",
           "note": "Rulings only: 7 proposals decided, 1 reclassified. No page, price, verdict or ledger touched. The ledger backup this run took lives outside the repo by design - a durable copy inside the tree would be one more thing to drift."
+        },
+        {
+          "date": "2026-09-16",
+          "commits": [
+            "3dcf86c"
+          ],
+          "by": "chief-of-staff (Mo's repo-boundary directive in chat)",
+          "gates": "audit-prices FAIL 0 / WARN 29 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected off-feed); all three run on the tree before the commit",
+          "liveVerified": "docs + panel payload only, no page content changed",
+          "note": "Governance: filing lanes never touch git; the CoS adjudicates every finding; publishing lanes keep their push authority. Same run also rotated the classic PAT out of Mo's clone push URL (set to SSH) and revoked it in GitHub with Mo present - the Vercel store token is a separate fine-grained PAT and was left alone, verified by /api/track-signal still returning 400 rather than 503."
         }
       ]
     },
