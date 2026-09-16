@@ -1951,6 +1951,16 @@
           "gates": "audit-prices FAIL 0 / WARN 29 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 1",
           "liveVerified": "docs only, no page content changed",
           "note": "Stale-doctrine sweep of the site-auditor charter: four lines predating Mo's Sep 2 authority grant. Same class as the 'Never push' line in the weekly task prompt."
+        },
+        {
+          "date": "2026-09-16",
+          "commits": [
+            "840f453"
+          ],
+          "by": "chief-of-staff (Mo's schedule change)",
+          "gates": "audit-prices FAIL 0 / WARN 29 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 1",
+          "liveVerified": "docs only; scheduled task itself updated via the scheduled-task API and re-signed for the bound device",
+          "note": "Weekly audit Monday -> Wednesday 04:30 PT. Cadence now lives in /LANE-RULES.md. Next fire: 2026-09-16 11:36 UTC (today)."
         }
       ]
     },
@@ -2169,6 +2179,11 @@
       "date": "2026-09-16",
       "by": "Mo (chat)",
       "decision": "REPO BOUNDARY: no investigating or filing lane touches git — not the repo, not Mo's working clone, not .git anything (no sync, fast-forward, reset, lock sweep, remote change, commit or push). File findings; the Chief of Staff is the end result on whether a finding is valid and what happens next. No lane acts on its own finding or on another lane's. Publishing lanes (Monday price lane, Tuesday board lane) keep their existing push authority from a fresh clone behind the three gates — this closes the investigation-acting-on-itself hole without reducing autonomy. Mo's words: 'I only want you to touch the GitHub repo stuff' and 'I'd prefer you guys just talk to each other about this so I don't have to be involved.' Written into tools/site-auditor/CHARTER.md and the CoS charter the same day."
+    },
+    {
+      "date": "2026-09-16",
+      "by": "Mo (chat)",
+      "decision": "Cloud weekly site audit moves Monday -> WEDNESDAY 04:30 PT, for a bigger gap from the Sunday CoS run. Cadence table relocated from CHARTER Sec 6 to /LANE-RULES.md, which is now the authoritative copy - the charter is too large to edit for one cell, which is why its table went stale. Open and unanswered: whether the weekly still sends a Tape Recap now that it lands the day after the Tuesday digest; interim rule is no second send in a week the digest already went out."
     }
   ]
 }
