@@ -1322,6 +1322,16 @@
    "decision": "APPLIED 2026-09-16. Mo ruled strip-and-re-mark over a full revert: reverting would have restored a page that was off ~45x on base raw. Every graded figure with no dated sale behind it now reads 'No verified sale'; #CPA-EH keeps PSA 10 $720.00 labelled 'one dated sale, Aug 6 2026' and PSA 9 $155.00 labelled '(5 dated sales)'; #CPA-AA's modelled PSA 9 $105.11 and PSA 10 $126.00 are replaced by the two real sales, PSA 8 $41.00 (Aug 13) and PSA 10 $76.00 (Aug 21); 21 graded tails stripped from /roy-watch-2026. Derived arguments rewritten: the '$21 gap' and the '6.7x raw' multiple are gone. All three disclosures now state that graded figures appear only where a dated sale record was read and that SCP's grade ladder is partly modelled. Also fixed a set-identity error the escalation surfaced: the Holliday guide said 'two cards carry the Holliday name in 2026 Bowman Chrome' — #CPA-EH and #BCP-1 are in MAY's 2026 Bowman; #BCP-209 is the returning base in SEPTEMBER's 2026 Bowman Chrome. That conflation is why the build session could not tell whether the tracked base was BCP-1 or BCP-209. RULING: both are correct, they are different cards in different sets; data/watchlist.json's ethan-holliday-bcb26-base (#BCP-209) is unchanged and correct, and the guide now names all three cards with their sets.",
    "decidedBy": "chief-of-staff",
    "resolvedOn": "2026-09-16"
+  },
+  {
+   "id": "cos-2026-09-16-key-events-dead",
+   "status": "awaiting-cos",
+   "area": "analytics",
+   "filed": "2026-09-16",
+   "by": "chief-of-staff",
+   "title": "CRITICAL: GA4 key events are ZERO for Sep 10-16 (258 sessions) against 35 for Sep 1-9 (527 sessions). Zero across every channel and source, organic search included. At the Sep 1-9 rate the probability of a 7-day zero is ~1e-12 under Poisson — the instrument is dead, not quiet. Coincides with the Terminal rebuild (4eff6c7 -> 6f9a9cd, Sep 11-12). Repo evidence: the DEST block is gone from index.html (zero DEST:START markers) and from every terminal-shell page and every generated /card-* page; dest_strip is the site's highest-volume event, 122 call sites across the guide pages.",
+   "decision": "NOT FIXED TONIGHT, ON PURPOSE. Which events are configured as key events in GA4 Admin has not been read, and without it 'restore the DEST strip' is a guess — re-adding a block the Terminal rebuild removed deliberately would violate LANE-RULES R3. NEXT CHROME-LINKED RUN, in order: (1) read GA4 Admin -> Key events and record the exact configured list; (2) identify which of those events lost its call site in the Sep 11-12 rebuild; (3) restore only that capture, on the terminal pages, without re-adding anything else the rebuild dropped; (4) verify in GA4 Realtime that it fires. CONSEQUENCE: the 'organic-channel key-event rate (8.1%)' adopted as the standing retention metric earlier the same evening is computed on a window containing seven days of dead instrument — it is not a valid baseline and is not to be quoted until a clean window exists. This also blocks the W5 Signal Alert tier on its own stated terms: we do not ship an email tier we cannot measure.",
+   "decidedBy": "chief-of-staff"
   }
  ],
  "scoreboard": {

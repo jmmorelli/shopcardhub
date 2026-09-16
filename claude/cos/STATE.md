@@ -113,6 +113,47 @@ not open, and the mount was known to be stale by construction (LANE-RULES R2's o
 while lanes were still allowed to file from it. Both are fixed above. **Three wrong findings is a
 lane failure; a rule that cannot be complied with is a CoS failure. Both happened.**
 
+## ⚠ KEY EVENTS HAVE BEEN DEAD FOR SEVEN DAYS (found 2026-09-16 late, in GA4)
+
+Found while checking whether Mo's Reddit link sent anyone. It did not — and the report it was read
+from showed something worse.
+
+**The fact, from GA4 (property a397485386p541047014), read live:**
+
+| Window | Sessions | Key events |
+|---|---|---|
+| Sep 1 – Sep 9 | 527 | **35** |
+| **Sep 10 – Sep 16** | **258** | **0** |
+| Sep 1 – Sep 16 (combined) | 785 | 35 (2.93%) |
+
+Zero across **every** channel and **every** source — organic search included, not just `/`. At the
+Sep 1–9 rate (≈3.9/day) a 7-day zero has probability ≈ **1 × 10⁻¹²** under Poisson. **This is a
+dead instrument, not a quiet week.**
+
+**What changed in that window:** the Terminal rebuild shipped Sep 11–12 (`4eff6c7` → `6f9a9cd`,
+hotfixes `5276303`, `90a0f1b`). Repo evidence: the **`DEST` block is gone from `index.html`** (zero
+`DEST:START` markers) and from every terminal-shell page (`/auctions`, `/bowman-bangers`,
+`/indices`, `/watchlist`) and every generated `/card-*` page. `dest_strip` is the site's
+highest-volume event — 122 call sites across the guide pages — and it no longer exists on the
+pages the rebuild touched.
+
+**What is NOT established, and must be read before anything is changed: which events are
+configured as key events in GA4 Admin → Key events.** Without that, "restore the DEST strip" is a
+guess, and re-adding a block the Terminal rebuild removed on purpose would be an R3 violation. The
+next Chrome-linked run reads the key-event configuration first, then restores whichever capture
+died — and only that one.
+
+**Consequence that corrects work done earlier the same evening:** the standing retention metric
+written into this file hours ago — *"the organic-channel key-event rate (8.1%)"* — is computed on a
+window that now includes seven days of dead instrument. **It is not a valid baseline and must not
+be quoted until the capture is restored and a clean window exists.** The blended-vs-organic
+argument still stands; the number does not.
+
+**Also worth recording from the same read:** GA4 classifies `t.co` (X) as Organic Social, and X is
+the whole of that channel — 30 sessions / 28 days at **3m 48s** average engagement and a 13.33%
+key-event rate, against a 36s site average. It is the best-engaging channel on the site by a wide
+margin on a small n. Nothing on Reddit, ever.
+
 ## MO'S RULINGS — 2026-09-16 LATE (all four of his open technical questions, closed)
 
 **1. Hammer tape on Home — NO CHART. Two numbers, split by category.** Mo: *"I don't think hammer
