@@ -182,6 +182,41 @@ the whole of that channel — 30 sessions / 28 days at **3m 48s** average engage
 key-event rate, against a 36s site average. It is the best-engaging channel on the site by a wide
 margin on a small n. Nothing on Reddit, ever.
 
+## KEY EVENTS — FIXED 2026-09-16, with Mo's explicit approval
+
+Mo approved the configuration change in chat. Applied in GA4 Admin → Events, verified in the Key
+events tab (**1–6 of 6**):
+
+| Key event | Stream data | Why |
+|---|---|---|
+| **`click`** | live | outbound click to eBay — **the revenue moment** on an affiliate site (~150 events/28d) |
+| **`track_card_from_page`** | live | someone saves a card — **the retention moment** the whole return-user program is graded on (~20/28d) |
+| `newsletter_signup` | live | already key; the email tier depends on it (1/28d) |
+| `close_convert_lead` · `purchase` · `qualify_lead` | none, ever | GA4 default lead-gen placeholders, left alone |
+
+**Standing rules from this incident:**
+- **Key events count forward only.** Marking these does not backfill Sep 4–16; that window stays a
+  hole and must be reported as one, never averaged over.
+- **No retention or conversion number is quoted from Sep 4–16.** A clean baseline needs a full
+  week of the new configuration — earliest read **Sep 24**.
+- **A GA4 configuration change is an account setting: Mo approves it every time.** Tonight's was
+  approved in chat before it was made.
+- **Nobody is to change key-event settings without recording it here** — the Sep 3 change was made
+  under Mo's account with no note anywhere, which is why it took thirteen days and a Reddit
+  question to find.
+- **Still open and separate:** the `DEST` block, and with it `dest_strip`, is gone from `/`, the
+  four terminal-shell pages and every `/card-*` page. Not the cause of the blackout; still a real
+  loss of signal on the highest-traffic surfaces. Belongs to the Terminal Builder, not to this fix.
+
+**The monitoring hole this exposed, which is the CoS's to answer:** every gate on this project
+checks the *site*. Nothing watches the *instruments*. The site auditor reads HTML, the three gates
+read HTML, and the GA4 read has been an optional "when Chrome is reachable" step on the daily —
+which the cloud runs cannot do, because scheduled runs have no browser. So a metric going to zero
+for thirteen days was nobody's job. **Next weekly ships an instrument watch: key events, feed rows,
+index marks and engine-marked card counts each compared against their own trailing median, with a
+zero or a >60% drop raising a FAIL.** Every incident this week was an absence that nothing was
+watching for — the stale mount, the modelled prices, the un-rebaked home level, and now this.
+
 ## MO'S RULINGS — 2026-09-16 LATE (all four of his open technical questions, closed)
 
 **1. Hammer tape on Home — NO CHART. Two numbers, split by category.** Mo: *"I don't think hammer
