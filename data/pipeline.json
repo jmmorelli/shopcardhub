@@ -1089,9 +1089,11 @@
     },
     {
       "id": "audit-2026-09-14-5",
-      "status": "awaiting-mo",
+      "status": "awaiting-cos",
       "title": "LOW (Mo’s clone, physically his): ~/Projects/shopcardhub is 2 commits behind main (HEAD b4c82fc; origin/main already fetched to 6393b5f) and carries .git/index.lock created 10:24 PT today — a pull stopped between fetch and merge. Until `rm .git/index.lock && git pull` the local tree shows Sep 11 marks on / and every commit attempt fails; the Wed Sep 16 build session should start from a fresh clone regardless (cos-sunday-sep13 rule).",
-      "appliedNote": "Monday scan 13:40 PT: the 10:24 index.lock was created by THIS run's read-only `git fetch` in Mo's mounted clone (the mount refuses unlink); it was renamed to .git/index.stale-1789419686 at 10:30 (harmless) and the clone now sits at edb8b15 = origin/main with no .lock present. After the lane push it is 2 behind again: `git pull --ff-only origin main` (nothing to rm). This run did all its work in a fresh /tmp clone and did not touch Mo's tree otherwise. — Monday scan 13:40 PT: the 10:24 index.lock was created by THIS run's read-only `git fetch` in Mo's mounted clone (the mount refuses unlink); it was renamed to .git/index.stale-1789419686 at 10:30 (harmless) and the clone now sits at edb8b15 = origin/main with no .lock present. After the lane push it is 2 behind again: `git pull --ff-only origin main` (nothing to rm). This run did all its work in a fresh /tmp clone and did not touch Mo's tree otherwise"
+      "appliedNote": "Monday scan 13:40 PT: the 10:24 index.lock was created by THIS run's read-only `git fetch` in Mo's mounted clone (the mount refuses unlink); it was renamed to .git/index.stale-1789419686 at 10:30 (harmless) and the clone now sits at edb8b15 = origin/main with no .lock present. After the lane push it is 2 behind again: `git pull --ff-only origin main` (nothing to rm). This run did all its work in a fresh /tmp clone and did not touch Mo's tree otherwise. — Monday scan 13:40 PT: the 10:24 index.lock was created by THIS run's read-only `git fetch` in Mo's mounted clone (the mount refuses unlink); it was renamed to .git/index.stale-1789419686 at 10:30 (harmless) and the clone now sits at edb8b15 = origin/main with no .lock present. After the lane push it is 2 behind again: `git pull --ff-only origin main` (nothing to rm). This run did all its work in a fresh /tmp clone and did not touch Mo's tree otherwise | 2026-09-16 CoS: the data-loss half is retired - see clone-ledger-risk-2026-09-15. Remaining work is the lock sweep + fast-forward only, and it needs a delete grant on the mount (.git refuses unlink through the bridge). Owner: next Mac-linked session.",
+      "decidedBy": "chief-of-staff 2026-09-16",
+      "decision": "RECLASSIFIED awaiting-mo -> awaiting-cos, as clone-ledger-risk-2026-09-15 requested. Charter 4.8 reserves awaiting-mo for things physically his; a clone sync is a technical call, and the item drifted from 2 commits behind to 9 while parked on him, which is the evidence. Mo said the same thing in chat on Sep 15. The CoS session now has the clone folder connected, so it is reachable as well as owned."
     },
     {
       "id": "polish-2026-09-14",
@@ -1177,6 +1179,79 @@
       "filed": "2026-09-15",
       "by": "tuesday-board",
       "title": "The clone at ~/Projects/shopcardhub has a GitHub personal access token embedded in its `origin` push URL in .git/config. No token value is recorded in this or any other report. Recommend Mo revoke that PAT in GitHub settings and reset origin to the plain https or ssh URL; the lanes all push via the `auto` deploy key and do not need it. Physically his: it is his account credential."
+    },
+    {
+      "id": "clone-ledger-risk-2026-09-15",
+      "status": "applied",
+      "area": "process",
+      "filed": "2026-09-15",
+      "by": "bowman-bangers-tuesday-update (duplicate invocation, investigation only)",
+      "title": "ESCALATION (filed outside pipeline.json on purpose, because the mount's copy was stale): the mounted clone's data/calls.json is modified and unpushed, carries four re-grades that exist nowhere else, and any naive fast-forward, hard reset or 'git checkout .' reverts them silently - which would be track-record laundering by accident. Also filed: stale .git/index.lock, .git/objects unlink failures, and a near-miss where a 'provably lossless' sync claim rested on a hand-picked 7-file spot check against a 42-file diff.",
+      "decision": "ACCEPTED, and the risk is retired rather than scheduled. The CoS session took the durable backup this run: the local calls.json plus a full `git diff` of all nine modified files (16,150 lines) now sit outside the git tree under Card Hub/ledger-backups/2026-09-15/. A revert is now recoverable from the patch, so the irreversible-loss path the escalation describes no longer exists. Severity MED -> LOW. Steps 2-5 of the escalation's sync procedure were NOT run and that is deliberate: the mount refuses .git unlinks through the bridge, so a half-run sync is the one way to make this worse. PROCESS LESSON ADOPTED AS A STANDING RULE: a diff claim from a hand-picked file list is not a diff claim - `git diff --name-only origin/main` in full, or it is not verified. Sunday folds that into coachNotes. Filing the escalation outside the stale file instead of writing into it was the right call and is the behaviour to repeat.",
+      "decidedBy": "chief-of-staff 2026-09-16",
+      "resolvedOn": "2026-09-16"
+    },
+    {
+      "id": "gonzalez-slug-spelling-2026-09-15",
+      "status": "approved",
+      "area": "pages",
+      "filed": "2026-09-15",
+      "by": "bowman-bangers-tuesday-update",
+      "title": "Live /bowman-bangers spells one board name two ways (19 vs 4), the chart page slug uses the other spelling, and the slug is linked from the board rows and the Auction Desk. Needs a ruling before anyone edits.",
+      "decision": "RULED. The name authority for a card checklist is Topps + MLB.com, the same authority the 1st Bowman rule leans on, and both spell it Gonzales - already established by gonzales-name-query-sep08-close. (1) Every human-visible string becomes Gonzales, sitewide. (2) The eBay query keeps BOTH spellings: a query is a market-matching artifact, not a naming claim, and sellers use the other spelling - narrowing it would take the mark dark at the comp floor, which is exactly what the Sep 8 close found. (3) The URL is rebuilt on the correct spelling with a permanent redirect in vercel.json, which already carries card-page redirects, so this is a known path. (4) The internal watchlist id is FROZEN on its current value and is not renamed - board-history and calls.json key off it, and renaming the key would break exactly the ledger continuity the escalation filed alongside this is trying to protect. An opaque key does not have to be spelled correctly; a page does. Owner: Wed Sep 16 build session.",
+      "decidedBy": "chief-of-staff 2026-09-16"
+    },
+    {
+      "id": "keyevent-metric-definition-2026-09-15",
+      "status": "applied",
+      "area": "analytics",
+      "filed": "2026-09-15",
+      "by": "bowman-bangers-tuesday-update",
+      "title": "FINDING: the key-event rate did not collapse when the Terminal shipped - the Terminal covers 3 days of a 28-day window, and for the blend to halve, those 3 days would have to run at -43% to -63%. The series is a five-week slide caused by denominator dilution: direct traffic at 8-second sessions is ~35% of sessions, and the organic-only rate runs materially above the blend. Instrumentation was checked and is sound. The run also corrected its own mid-analysis arithmetic error on GA4 key-event-rate semantics and recorded it so nobody inherits it as a data-integrity concern.",
+      "decision": "ACCEPTED - the arithmetic is right and the self-correction is the behaviour I want on the record. But the recommended fix is not buildable as specified: the GA4 internal-traffic rule filters by IP, and the egress IP churns daily. That, not neglect, is why it has been approved for seven days at 0% built. RULING: change the metric, not just the filter. From this week the standing retention number in the weekly scan is the ORGANIC-CHANNEL key-event rate, reported beside the blended figure and never instead of it. That costs zero build time and unblocks every retention row today, including the audit-response scorecard. The IP filter drops to P2 and is re-scoped to what can actually work - hostname plus the known agent signature - with it stated up front that it will never be complete.",
+      "decidedBy": "chief-of-staff 2026-09-16",
+      "resolvedOn": "2026-09-16"
+    },
+    {
+      "id": "discovery-channel-reweight-2026-09-15",
+      "status": "applied",
+      "area": "seo",
+      "filed": "2026-09-15",
+      "by": "bowman-bangers-tuesday-update",
+      "title": "FINDING: Google is ~4% of search sessions; the Bing index and the engines it feeds serve the rest. Recommendation was to verify the site in Bing Webmaster Tools and submit the sitemap there, described as untouched as far as any note in the repo shows.",
+      "decision": "SPLIT RULING. The reframe is ACCEPTED and it re-ranks the roadmap; the action item is ALREADY DONE and the recommendation is declined as complete. Correction on the record: Bing Webmaster Tools is verified and read weekly - the Sep 14 Business Read reports the sitemap as Success with 77 URLs discovered and 9 of 10 crawled, and that read is only possible from inside the verified property. IndexNow is wired and pinged after every push. What the lane got wrong is HOW it concluded otherwise: it reasoned from the repo, and this fact lives in CoS state. Same class as the doctrine-drift item - see lane-reads-cos-state-2026-09-15. What survives is the ratio, and it is worth more than the recommendation was: GSC indexing request quota STANDS DOWN as a weekly ritual, to zero routine spend, reserved for a page that materially changed. The weekly Business Read's problem 1 is re-framed from 'Google does not index us' to 'Google is 4% of a search channel that already works', and the indexing watch drops from problem 1 to a watch item. Technical SEO is ruled out and closed: robots, sitemap with lastmod on all 77, 77 of 77 self-referencing canonicals, zero noindex-plus-sitemap contradictions - re-verified live by this checkpoint. Do not re-litigate it.",
+      "decidedBy": "chief-of-staff 2026-09-16",
+      "resolvedOn": "2026-09-16"
+    },
+    {
+      "id": "noindex-set-ruling-2026-09-15",
+      "status": "approved",
+      "area": "seo",
+      "filed": "2026-09-15",
+      "by": "bowman-bangers-tuesday-update",
+      "title": "26 pages carry noindex,follow - utility pages plus every card chart page and their hub, plus the Tools and Research hub. Asked for a ruling on whether they stay out, arguing the chart pages are the only long-tail surface and that crawl budget is not the binding constraint at three indexed URLs.",
+      "decision": "PARTIAL, and the split is on purpose. (1) The Tools and Research hub comes INTO the index now - it is a nav-level category landing page and had no business being excluded; that is a one-line change in the Wed build. (2) The card chart pages and their hub STAY OUT, with a dated review rather than a no: they are generated pages, and the audit-response program's open row is coverage honesty, so indexing 21 thin auto-generated price pages while the dashboard headline still overclaims coverage is the right idea in the wrong order. Reviewed at the W3 checkpoint, Oct 5-11, after /coverage and the new headline ship - and if they go in, they go to Bing first, exactly as proposed, because that is where they can actually be evaluated. (3) Everything else in the set stays out and is correct. Owner: Wed Sep 16 build session for item 1.",
+      "decidedBy": "chief-of-staff 2026-09-16"
+    },
+    {
+      "id": "signal-capture-restore-2026-09-15",
+      "status": "approved",
+      "area": "analytics",
+      "filed": "2026-09-15",
+      "by": "bowman-bangers-tuesday-update",
+      "title": "The dashboard rebuild dropped the second signup-capture event on the home page - the Signal Alerts surface - while keeping the primary capture. Small, real, and not what moved the rate.",
+      "decision": "APPROVED, verified in the tree this run: the home page carries exactly one signup event and the signal-keyed one is gone. Restore in the Wed build. Sized higher than the filing does for one reason the filing could not know: it is a prerequisite for the approved Signal Alert email tier in W5 - without that event we cannot measure whether the alert capture converts, and shipping an email tier we cannot measure is not something we do.",
+      "decidedBy": "chief-of-staff 2026-09-16"
+    },
+    {
+      "id": "lane-reads-cos-state-2026-09-15",
+      "status": "approved",
+      "area": "process",
+      "filed": "2026-09-16",
+      "by": "chief-of-staff",
+      "title": "A lane spent a full investigation section recommending infrastructure work that was finished three weeks ago, because it reasoned from the repo and the fact lives in CoS state. Second instance of a lane acting on a stale picture of doctrine this week.",
+      "decision": "APPROVED, BLOCKED on the same read-only prompt path as the other two prompt edits. Prompt line for every filing lane: read claude/cos/STATE.md before recommending any channel, infrastructure or account-level action, and say in the filing which state file was read. Sunday has the write path and takes it with the other two, with a pre-edit backup. Worth saying plainly: the investigation itself was good work - the reframe it produced changed the roadmap even though its headline recommendation was already done.",
+      "decidedBy": "chief-of-staff 2026-09-16"
     }
   ],
   "scoreboard": {
