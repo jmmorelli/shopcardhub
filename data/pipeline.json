@@ -1889,6 +1889,16 @@
           "gates": "audit-prices FAIL 0 / WARN 29 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected off-feed); all three run on the tree before the commit, from a fresh clone of main",
           "liveVerified": "panel payload only (no page content changed); leak check on the full payload before writing - 0 names, prices, positions, handles or credentials in the checkpoint's own text",
           "note": "Checkpoint state only: watchdog, approvals, the pushLog backfill and attribution fix, and the proposal rulings. No page, price, verdict or ledger touched. Logged under the same rule this run enforced on another lane - a push without its own entry is the defect."
+        },
+        {
+          "date": "2026-09-16",
+          "commits": [
+            "92288fa"
+          ],
+          "by": "chief-of-staff (adjudication of the Sep 15 auditor filings; charter 4.7/4.8, Mo-delegated in chat)",
+          "gates": "audit-prices FAIL 0 / WARN 29 - audit-site FAIL 0 / WARN 3 (pre-existing first-bowman trio) - audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected off-feed); all three run on the tree before the commit, from a fresh clone of main",
+          "liveVerified": "panel payload only (no page content changed). Independently re-verified live this run: robots 200 with only /api/ disallowed and the sitemap declared, sitemap 200 with 77 URLs - the technical-SEO half of the filing, checked rather than taken",
+          "note": "Rulings only: 7 proposals decided, 1 reclassified. No page, price, verdict or ledger touched. The ledger backup this run took lives outside the repo by design - a durable copy inside the tree would be one more thing to drift."
         }
       ]
     },
