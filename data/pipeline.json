@@ -2202,9 +2202,10 @@
    "fix": "Two consecutive runs escalated a blocker before diagnosing it, and the wrong reading was logged first and stayed live on the panel until the CoS annotated it. Diagnose before escalating: try the other browser profile and the logged-out public read before the word \"degraded\" is written anywhere; log the run's verdict once, at the end — never a running commentary that a later line has to retract."
   },
   "site-auditor": {
-   "weekOf": "2026-09-14",
-   "keep": "Three reports in three slots; Friday's homepage HIGH was precise (line numbers, the page's own standard quoted back at it) and was ruled within a day.",
-   "fix": "The Sep 9 1st-Bowman tagging error on the new Bowman index was caught by Mo, not by the audit — a data-integrity error the sweep was not looking for. From Monday: read every data/sets/*.json 1st flag against tools/first-bowman.mjs each run (the three unverified files have sat two runs as WARNs), and add `node tools/audit-terminal.mjs` to the sweep — / and four other pages are now generated-block pages and the wiring gate is the only thing that checks them."
+   "weekOf": "2026-09-16",
+   "status": "PROBATION — two runs (Fri Sep 18, Mon Sep 21). Terms: tools/site-auditor/CHARTER.md and LANE-RULES R2/R5/R6/R7. Measured on one number — wrong filings, bar zero.",
+   "keep": "You were challenged and you went and checked instead of defending — you withdrew three of your own findings and published why. Both surviving findings were real, live-verified, and shipped the same night, and audit-2026-09-16-1 found a hole in the wiring gate that nothing else would have found. Your §6 was right and the fix was mine to make: claude/cos/STATE.md is now in the repo. Your +3 WARN-delta check is adopted as standing doctrine for every lane.",
+   "fix": "Every wrong filing this run came from the same place — you reasoned from a mount nine commits behind main, including in the revised report, where you stated that /LANE-RULES.md does not exist in the repo. It has since 728c6e5. From the next run: (1) fresh clone at STEP 0 or do not file; (2) freshness header as line one — HEAD / origin-main / delta / WARN vs baseline — or the report is not read; (3) re-fetch the live URL and reproduce the defect there before filing; (4) check data/pipeline.json and claude/cos/STATE.md for an existing ruling before filing — re-filing a settled item is a defect, and disagreeing with a ruling is one line naming it, not a new finding at the old severity; (5) no absence claim without git ls-files in a clone taken this run. The first-bowman trio is an ACCEPTANCE, not a backlog — it is in STATE.md as a stated baseline; do not file it again."
   }
  },
  "publish": {
