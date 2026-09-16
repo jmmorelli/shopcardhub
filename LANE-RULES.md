@@ -106,7 +106,7 @@ and the charter points at it. **If you see a day in any other document, this tab
 | Task | When (Pacific) | What |
 |---|---|---|
 | CoS · daily ops check | every day 06:00 | Engine Watch · Pricing Integrity audit · Wiring Keeper gate · Bug Sweeper · light Mobile QA (5 pages) · NEEDS-MO review · §0 light read when Chrome is reachable. Cloud-only: no commits. |
-| **CoS · weekly site audit** | **Wednesday 04:30** *(moved from Monday by Mo, 2026-09-16 — "a bigger gap" from the Sunday run)* | §0 Business Read first → Terminal Product read → full §4 audit + full-site sweep → Pricing Integrity weekly → the build order → Tape Recap → adjudicate every `awaiting-cos` filing → fix, commit and push behind the three gates → IndexNow. |
+| **CoS · weekly site audit** | **Wednesday 11:00** *(moved from Monday 04:30 by Mo, 2026-09-16 — "a bigger gap" from the Sunday run, and a working hour rather than pre-dawn)* | §0 Business Read first → Terminal Product read → full §4 audit + full-site sweep → Pricing Integrity weekly → the build order → Tape Recap → adjudicate every `awaiting-cos` filing → fix, commit and push behind the three gates → IndexNow. |
 | CoS · monthly roster & rooms review | 1st of the month 05:00 | Re-read Mo's direction, retire/create agents and rooms, rewrite CHARTER §2, prune rooms. |
 
 ### Desktop-local lanes (in the Claude desktop app — NOT in the scheduled-task API; only Mo edits these prompts)
@@ -118,6 +118,12 @@ and the charter points at it. **If you see a day in any other document, this tab
 | Tuesday board update | `bowman-bangers-tuesday-update` | Bowman Bangers re-mark, board tweet queue, Tuesday Tape digest |
 | MWF site auditor | `shopcardhub-site-auditor` | Read-only find-and-file QA (`tools/site-auditor/CHARTER.md`) |
 | Thursday trader · Friday release window · Wednesday build session | — | Trader recs; release-day conversion; the build session that lands queued patches |
+
+**Overlap to watch (2026-09-16):** the weekly now starts at 11:00 PT Wednesday and the last full
+audit took about 3.5 hours, so it can still be running when the **Wednesday 1 PM build session**
+starts. Two sessions pushing the same tree is exactly the collision R2 exists for: whichever runs
+second fetches and rebases rather than forcing, and neither works in a reused clone. If they keep
+colliding, the build session is the one to move.
 
 **Open question for Mo (raised 2026-09-16, not yet answered):** the weekly run's Tape Recap send
 now falls on Wednesday, one day after the Tuesday lane's own digest. Email ownership was decided
