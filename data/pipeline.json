@@ -1252,6 +1252,17 @@
       "title": "A lane spent a full investigation section recommending infrastructure work that was finished three weeks ago, because it reasoned from the repo and the fact lives in CoS state. Second instance of a lane acting on a stale picture of doctrine this week.",
       "decision": "APPROVED, BLOCKED on the same read-only prompt path as the other two prompt edits. Prompt line for every filing lane: read claude/cos/STATE.md before recommending any channel, infrastructure or account-level action, and say in the filing which state file was read. Sunday has the write path and takes it with the other two, with a pre-edit backup. Worth saying plainly: the investigation itself was good work - the reframe it produced changed the roadmap even though its headline recommendation was already done.",
       "decidedBy": "chief-of-staff 2026-09-16"
+    },
+    {
+      "id": "repo-boundary-2026-09-16",
+      "status": "applied",
+      "area": "process",
+      "filed": "2026-09-16",
+      "by": "chief-of-staff (Mo's directive in chat)",
+      "title": "Mo's Sep 16 directive after the clone near-miss: only the CoS touches git-level state, and the CoS is the sole adjudicator of whether an audit finding is valid.",
+      "decision": "APPLIED the same run. Three parts: (1) no investigating lane touches git, Mo's clone included — filing is the whole job; (2) the CoS rules on every finding before it becomes work, and no lane acts on its own or another lane's finding; (3) publishing lanes keep their push authority from fresh clones behind the three gates, because the hole was investigation-acting-on-itself, not autonomy. Scope confirmed by Mo in chat when asked how wide to cut it. Written into tools/site-auditor/CHARTER.md (new Repo boundary section) and the CoS charter. Prompt-level enforcement for the desktop-local lanes is stacked behind the read-only prompt path with the other three edits - Sunday.",
+      "decidedBy": "Mo 2026-09-16 (chat), applied by chief-of-staff",
+      "resolvedOn": "2026-09-16"
     }
   ],
   "scoreboard": {
@@ -2112,6 +2123,11 @@
       "date": "2026-09-11",
       "by": "Mo (chat)",
       "decision": "'I switched models, please review the thread and resolve the issues you are running into. The Chief of Staff is in charge of approving.' - approval for the Fri Sep 11 release-window run's open items delegated to the CoS under 4.8; Mo's veto retroactive."
+    },
+    {
+      "date": "2026-09-16",
+      "by": "Mo (chat)",
+      "decision": "REPO BOUNDARY: no investigating or filing lane touches git — not the repo, not Mo's working clone, not .git anything (no sync, fast-forward, reset, lock sweep, remote change, commit or push). File findings; the Chief of Staff is the end result on whether a finding is valid and what happens next. No lane acts on its own finding or on another lane's. Publishing lanes (Monday price lane, Tuesday board lane) keep their existing push authority from a fresh clone behind the three gates — this closes the investigation-acting-on-itself hole without reducing autonomy. Mo's words: 'I only want you to touch the GitHub repo stuff' and 'I'd prefer you guys just talk to each other about this so I don't have to be involved.' Written into tools/site-auditor/CHARTER.md and the CoS charter the same day."
     }
   ]
 }

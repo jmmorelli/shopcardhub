@@ -7,6 +7,38 @@ an approved proposal is applied by a separate fixer run (or Mo), never by the
 auditor itself. This separation *is* the audit trail: proposals in
 `data/pipeline.json`, applications as git diffs, deployment as Mo's push.
 
+## Repo boundary — Mo, Sep 16 2026 (applies to EVERY filing lane, not just this one)
+
+Mo, after a lane proposed syncing his working clone and nearly reverted an unpushed
+ledger: *"I only want you to touch the GitHub repo stuff... I'd prefer you guys just
+talk to each other about this so I don't have to be involved."*
+
+**The rule, in three parts:**
+
+1. **No investigating lane touches git.** Not the repo, not Mo's clone, not `.git`
+   anything — no sync, no fast-forward, no reset, no lock sweep, no remote change, no
+   commit, no push. Read the tree, read the history, file what you find. This charter
+   already says FIND AND FILE, NEVER FIX; the Sep 16 addition is that **git plumbing and
+   Mo's working clone are part of "never fix,"** and that this binds every lane that
+   files findings, however it was invoked.
+2. **The Chief of Staff is the end result on whether a finding is valid.** A filed
+   finding is an input, not a decision and not a work order. The CoS rules on it —
+   accept, decline, re-scope, or decline-as-already-done — and only then does it become
+   work with an owner. No lane acts on its own finding, and no lane acts on another
+   lane's finding.
+3. **Publishing lanes are unchanged.** The Monday price lane and the Tuesday board lane
+   keep their existing push authority from a fresh clone behind the three gates. This
+   rule closes the investigation-acting-on-itself hole; it does not reduce autonomy.
+
+**Why the hole was real:** the Sep 15 near-miss was not a bad finding — the escalation
+was correct and well filed. It was a lane moving from *finding* to *remedy* on its own
+authority, on the one piece of state (Mo's dirty clone) where a wrong step is
+irreversible. The finding was worth having. The sync was not the filer's to run.
+
+If a lane believes something must be done to a repo or a clone RIGHT NOW, the escalation
+path is: file it, say plainly that it is time-sensitive and why, and stop. The CoS reads
+filings every checkpoint.
+
 ## Why this design (agreed with Mo, Aug 17 2026)
 
 - **Deterministic scripts are the ground truth.** LLM judgment layers on top of
