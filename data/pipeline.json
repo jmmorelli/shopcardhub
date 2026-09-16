@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-15T11:20:00-07:00",
+  "generated": "2026-09-15T17:45:00-07:00",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
   "agents": {
     "seeker": {
@@ -1095,32 +1095,32 @@
     },
     {
       "id": "polish-2026-09-14",
-      "status": "awaiting-cos",
-      "title": "POLISH: / — Markets panel — give each ticker row (BOARD, PB26, CR26, AH26, PRIS25, DR25, BOW26) a 30-mark sparkline in the row, the same svg.spark up/dn that Board Movers already draws 300px lower, sourced from the history arrays indices.json already carries — why it earns a wow: today the Markets list is seven lines of text and only the selected row gets a chart; with sparklines a first-time visitor reads the whole tape moving at a glance (PRIS25 −4.25% vs BOW26 +1.25% as shapes, not digits), which is the single thing that makes a terminal read like a terminal — and the renderer, CSS and data all exist, so it is a js/home.js + build-home.mjs change, not a new system."
+      "status": "approved",
+      "title": "POLISH: / — Markets panel — give each ticker row (BOARD, PB26, CR26, AH26, PRIS25, DR25, BOW26) a 30-mark sparkline in the row, the same svg.spark up/dn that Board Movers already draws 300px lower, sourced from the history arrays indices.json already carries — why it earns a wow: today the Markets list is seven lines of text and only the selected row gets a chart; with sparklines a first-time visitor reads the whole tape moving at a glance (PRIS25 −4.25% vs BOW26 +1.25% as shapes, not digits), which is the single thing that makes a terminal read like a terminal — and the renderer, CSS and data all exist, so it is a js/home.js + build-home.mjs change, not a new system. - CoS checkpoint, 2026-09-15 (4.7/4.8)"
     },
     {
       "id": "price-exceptions-2026-09-14",
-      "status": "awaiting-cos",
+      "status": "approved",
       "area": "pricing-integrity",
       "filed": "2026-09-14",
       "by": "monday-scan (inspector)",
-      "title": "Price-sweep exceptions Sep 14 (SCP solds): (1) /bowman-sapphire-2026 McGonigle row was framed as 'Orange Sapphire Auto (featured) $175–225 · Gold /50 ~$500' — no Orange/Gold sold read exists; cell re-marked to the base auto ($292) + Selections auto ($228) with the parallels marked 'no sold read' — narrative sub-label still says Orange (NARRATIVE gate, CoS to bless or rewrite the row). (2) /roman-anthony-rookie-cards refractor row said 'from base ~$500+ by /#' — SCP: Refractor /499 $135, Blue /150 $253, Rose Gold /10 $2,039 (cell replaced; the prose 'where a $50 base becomes a four-figure card' is now inconsistent with a $6.76 base — NARRATIVE gate). (3) /topps-series-2-2026 Murakami base $1.56 vs '~$2–6' (applied) and the 1952 Variation $838 (row range '$20–90' is for other players; tagged, CoS to decide whether Murakami gets his own 1952 row). (4) /topps-finest-baseball not reached — snapshot stays. (5) 20 pages in audit-2026-09-07-1 still unmarked — dated-notice pass recommended."
+      "title": "Price-sweep exceptions Sep 14 (SCP solds): (1) /bowman-sapphire-2026 McGonigle row was framed as 'Orange Sapphire Auto (featured) $175–225 · Gold /50 ~$500' — no Orange/Gold sold read exists; cell re-marked to the base auto ($292) + Selections auto ($228) with the parallels marked 'no sold read' — narrative sub-label still says Orange (NARRATIVE gate, CoS to bless or rewrite the row). (2) /roman-anthony-rookie-cards refractor row said 'from base ~$500+ by /#' — SCP: Refractor /499 $135, Blue /150 $253, Rose Gold /10 $2,039 (cell replaced; the prose 'where a $50 base becomes a four-figure card' is now inconsistent with a $6.76 base — NARRATIVE gate). (3) /topps-series-2-2026 Murakami base $1.56 vs '~$2–6' (applied) and the 1952 Variation $838 (row range '$20–90' is for other players; tagged, CoS to decide whether Murakami gets his own 1952 row). (4) /topps-finest-baseball not reached — snapshot stays. (5) 20 pages in audit-2026-09-07-1 still unmarked — dated-notice pass recommended. - CoS checkpoint, 2026-09-15 (4.7/4.8)"
     },
     {
       "id": "bcb26-activation-2026-09-14",
-      "status": "awaiting-cos",
+      "status": "approved",
       "area": "indices",
       "filed": "2026-09-14",
       "by": "monday-scan (curator)",
-      "title": "BCB26 activated 2026-09-14 at 100.00 (8/9 chase cards verified, count gate met). Two things for the CoS: (a) CAP SEMANTICS — the AUTOS 15% cap was applied at the whole-basket level via fractional units on the three priced autos (the page prose says 'of the autos basket', which is mathematically unsatisfiable with 3 autos); ratify whole-basket (BOW26 precedent) or restate with a logged adjustment. (b) LUIS HERNANDEZ AUTO (ebay:luis-hernandez-bcb26-auto) has 0 verified asks in the nightly feed while his base card has 13 — the query is probably starved (accent/title variants); fix the watchlist query so the #1 IFA headliner's auto enters the basket. Also: nav/rail labels still read 'BCB26 — Bowman Chrome Index (pre)' — generated blocks (data/nav.json + data/rail.json → build-nav/build-rail), not in the price lane; one-word edit in the non-lane patch."
+      "title": "BCB26 activated 2026-09-14 at 100.00 (8/9 chase cards verified, count gate met). Two things for the CoS: (a) CAP SEMANTICS — the AUTOS 15% cap was applied at the whole-basket level via fractional units on the three priced autos (the page prose says 'of the autos basket', which is mathematically unsatisfiable with 3 autos); ratify whole-basket (BOW26 precedent) or restate with a logged adjustment. (b) LUIS HERNANDEZ AUTO (ebay:luis-hernandez-bcb26-auto) has 0 verified asks in the nightly feed while his base card has 13 — the query is probably starved (accent/title variants); fix the watchlist query so the #1 IFA headliner's auto enters the basket. Also: nav/rail labels still read 'BCB26 — Bowman Chrome Index (pre)' — generated blocks (data/nav.json + data/rail.json → build-nav/build-rail), not in the price lane; one-word edit in the non-lane patch. - CoS checkpoint, 2026-09-15 (4.7/4.8)"
     },
     {
       "id": "lane-discipline-2026-09-14",
-      "status": "awaiting-cos",
+      "status": "applied",
       "area": "process",
       "filed": "2026-09-14",
       "by": "monday-scan (dm)",
-      "title": "MED (attribution): the site auditor's Sep 14 pushLog backfill credits cb9d85a + 6393b5f (5:42am PT, no trailers, no gates recorded) to 'monday-weekly-trend-scan (scheduled; charter 4.8)'. That is wrong: the scheduled Monday scan started 10:06 PT from a fresh clone at 6393b5f and its own commit carries trailers + a pushLog entry with all three gates. The 5:42am commits came from an unlogged Claude Code session (Claude-Session trailer in the commit body). Re-attribute the pushLog entry and audit-2026-09-14-2; if it was Mo-directed, record it in decisions[]. Also: 6393b5f did a Monday-lane duty (BOW26 re-mark, 09-13 feed) — this run left that row as the week's mark rather than double-marking."
+      "title": "MED (attribution): the site auditor's Sep 14 pushLog backfill credits cb9d85a + 6393b5f (5:42am PT, no trailers, no gates recorded) to 'monday-weekly-trend-scan (scheduled; charter 4.8)'. That is wrong: the scheduled Monday scan started 10:06 PT from a fresh clone at 6393b5f and its own commit carries trailers + a pushLog entry with all three gates. The 5:42am commits came from an unlogged Claude Code session (Claude-Session trailer in the commit body). Re-attribute the pushLog entry and audit-2026-09-14-2; if it was Mo-directed, record it in decisions[]. Also: 6393b5f did a Monday-lane duty (BOW26 re-mark, 09-13 feed) — this run left that row as the week's mark rather than double-marking. - CoS checkpoint, 2026-09-15 (4.7/4.8)"
     },
     {
       "id": "update-series-page-2026-09-14",
@@ -1128,39 +1128,39 @@
       "area": "pages",
       "filed": "2026-09-14",
       "by": "monday-scan (seeker)",
-      "title": "2026 Topps Update Series: full checklist posted (Checklist Insider, Sep 11) but Topps release date TBA and no box configuration/pricing. Scaffold exists (drafts/topps-updates-baseball.html). Build the pre-release guide at the Wed Sep 16 build session or when the street date posts — not in the Monday lane."
+      "title": "2026 Topps Update Series: full checklist posted (Checklist Insider, Sep 11) but Topps release date TBA and no box configuration/pricing. Scaffold exists (drafts/topps-updates-baseball.html). Build the pre-release guide at the Wed Sep 16 build session or when the street date posts — not in the Monday lane. - CoS checkpoint 2026-09-15: HOLD until the street date posts"
     },
     {
       "id": "bcb26-cap-base-weight-2026-09-15",
-      "status": "awaiting-cos",
+      "status": "declined",
       "area": "indices",
       "filed": "2026-09-15",
       "by": "tuesday-board (curator)",
-      "title": "BCB26 basket weights: the 15% single-card cap is written for AUTOS only, so base BCP-163 (Renteria) carries ~17% of the basket at the Sep 15 re-mark — a heavier single-card weight than any capped auto. Rides alongside bcb26-activation-2026-09-14's cap-semantics question; recommend the CoS answer both in one ruling rather than capping base cards unilaterally mid-window."
+      "title": "BCB26 basket weights: the 15% single-card cap is written for AUTOS only, so base BCP-163 (Renteria) carries ~17% of the basket at the Sep 15 re-mark — a heavier single-card weight than any capped auto. Rides alongside bcb26-activation-2026-09-14's cap-semantics question; recommend the CoS answer both in one ruling rather than capping base cards unilaterally mid-window. - CoS checkpoint, 2026-09-15 (4.7/4.8)"
     },
     {
       "id": "gonzales-name-query-sep08-close",
-      "status": "awaiting-cos",
+      "status": "approved",
       "area": "engine",
       "filed": "2026-09-15",
       "by": "tuesday-board (seeker)",
-      "title": "RECOMMEND CLOSE AS WON'T-FIX: gonzales-name-query-sep08 asked this run to change the watchlist query from 'gonzalez' to 'gonzales'. Verified first — the live matched eBay listing title reads 'Justin Gonzalez', sellers use the wrong spelling, and the feed sits at exactly 4 verified asks (the MIN_COMPS floor), so the change would have taken a board name's engine mark dark. Applied instead: label corrected to Gonzales, queryNote added so nobody 'fixes' it later. Card-number-only anchoring rejected — CPA-JG collides with CPA-JGO (Josuar Gonzalez), a real BCB26 auto."
+      "title": "RECOMMEND CLOSE AS WON'T-FIX: gonzales-name-query-sep08 asked this run to change the watchlist query from 'gonzalez' to 'gonzales'. Verified first — the live matched eBay listing title reads 'Justin Gonzalez', sellers use the wrong spelling, and the feed sits at exactly 4 verified asks (the MIN_COMPS floor), so the change would have taken a board name's engine mark dark. Applied instead: label corrected to Gonzales, queryNote added so nobody 'fixes' it later. Card-number-only anchoring rejected — CPA-JG collides with CPA-JGO (Josuar Gonzalez), a real BCB26 auto. - CoS checkpoint, 2026-09-15 (4.7/4.8)"
     },
     {
       "id": "tuesday-lane-staleness-2026-09-15",
-      "status": "awaiting-cos",
+      "status": "approved",
       "area": "process",
       "filed": "2026-09-15",
       "by": "tuesday-board",
-      "title": "SELF-REPORTED: this run started on the mount's clone, which was 3 commits stale, and re-ACTIVATED BCB26 from scratch (inception Sep 15, divisor 0.793272) before catching it against the Monday scan file. Nothing was pushed; work was rebuilt in a fresh /tmp clone on the true HEAD and converted to a re-mark. Root cause: no fetch at STEP 0, and the Monday lane pushes from /tmp so the mount's clone never advances. Requested: add a mandatory 'git fetch auto main + git log HEAD..auto/main' staleness gate to STEP 0 of this task (and the Friday one), and default both to a fresh /tmp clone as the CoS already required of Monday on Sep 13."
+      "title": "SELF-REPORTED: this run started on the mount's clone, which was 3 commits stale, and re-ACTIVATED BCB26 from scratch (inception Sep 15, divisor 0.793272) before catching it against the Monday scan file. Nothing was pushed; work was rebuilt in a fresh /tmp clone on the true HEAD and converted to a re-mark. Root cause: no fetch at STEP 0, and the Monday lane pushes from /tmp so the mount's clone never advances. Requested: add a mandatory 'git fetch auto main + git log HEAD..auto/main' staleness gate to STEP 0 of this task (and the Friday one), and default both to a fresh /tmp clone as the CoS already required of Monday on Sep 13. - CoS checkpoint, 2026-09-15 (4.7/4.8)"
     },
     {
       "id": "bangers-prompt-doctrine-drift-2026-09-15",
-      "status": "awaiting-cos",
+      "status": "approved",
       "area": "process",
       "filed": "2026-09-15",
       "by": "tuesday-board",
-      "title": "The Tuesday task prompt still carries the Aug 20 presentation doctrine verbatim: 'Dry Powder is rank 00 and stays at the top permanently' and 'WHAT BREAKS THIS' with hard dated deadlines. Mo superseded BOTH on Aug 21 (Dry Powder removed, never re-add; label renamed to WHAT WOULD CHANGE OUR MIND, deadlines dropped). This run followed the System Reference, not the prompt. The prompt needs the same edit or a future run will re-add a block Mo deleted."
+      "title": "The Tuesday task prompt still carries the Aug 20 presentation doctrine verbatim: 'Dry Powder is rank 00 and stays at the top permanently' and 'WHAT BREAKS THIS' with hard dated deadlines. Mo superseded BOTH on Aug 21 (Dry Powder removed, never re-add; label renamed to WHAT WOULD CHANGE OUR MIND, deadlines dropped). This run followed the System Reference, not the prompt. The prompt needs the same edit or a future run will re-add a block Mo deleted. - CoS checkpoint, 2026-09-15 (4.7/4.8)"
     },
     {
       "id": "kim-unrankable-clock-2026-09-15",
@@ -1168,7 +1168,7 @@
       "area": "board",
       "filed": "2026-09-15",
       "by": "tuesday-board (curator)",
-      "title": "Seong-Jun Kim has printed no sale since Aug 5 (41 days) and is carried at $131.25 for an 8th week while holding #3 on a sold-price board. The board has no rule for a card that stops trading. His card now says on-page that if Aug 5 is still the last print by mid-October we will say where that line is — the CoS should set the rule before then rather than after. Options: a staleness badge, a demotion trigger at N days, or an explicit 'carried quote' tier."
+      "title": "Seong-Jun Kim has printed no sale since Aug 5 (41 days) and is carried at $131.25 for an 8th week while holding #3 on a sold-price board. The board has no rule for a card that stops trading. His card now says on-page that if Aug 5 is still the last print by mid-October we will say where that line is — the CoS should set the rule before then rather than after. Options: a staleness badge, a demotion trigger at N days, or an explicit 'carried quote' tier. - CoS checkpoint 2026-09-15: deferred to the Sunday run (published clock runs to mid-October)"
     },
     {
       "id": "origin-remote-token-2026-09-15",
@@ -1195,7 +1195,7 @@
   },
   "chiefOfStaff": {
     "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
-    "generated": "2026-09-13T23:55:00-07:00",
+    "generated": "2026-09-15T17:45:00-07:00",
     "weekOf": "2026-09-14",
     "headline": "The Terminal shipped on Mo's word — 11 pushes in two days, / is a dashboard, three gates now. Sunday evening with Mo present: Monday, Tuesday and auditor prompts made Terminal-aware; a production click-through sweep found 9 dead links on the Auction Desk and they were fixed live; the Sep 7 rogue email traced to a non-staff session. Queue is 1 item: the trader's recs.",
     "doNothing": "Only queue item left is the trader's recs (money, yours). Everything else this week runs on schedule: Monday lane 10 am (three gates, home re-render), Tuesday board + checkpoint, Wed 1 pm build session, Thursday trader + checkpoint, Friday board window + Keeper (Rookie Extractor conversion approved).",
@@ -1289,6 +1289,41 @@
         "severity": "watch",
         "what": "Task-description drift ×2 (carried): the Keeper task id says Saturday and runs Friday; the Tuesday task description predates the Terminal gates",
         "detail": "Cosmetic; both resolve with the one-per-run prompt/description edits at the checkpoints."
+      },
+      {
+        "severity": "fixed",
+        "what": "CHECKPOINT Sep 15: a content push had no pushLog entry of its own - backfilled with gates re-run read-only and a live check",
+        "detail": "The lane's main commit was logged; a follow-up copy commit was not. Its trailers and authority were correct - only the log was missing. Entry added with all three gates re-run by this checkpoint on the pushed tree (FAIL 0 / FAIL 0 / FAIL 0, the off-feed WARN expected) and the corrected wording confirmed live. A push without its own entry is the defect; visible delegation only exists if the log is complete."
+      },
+      {
+        "severity": "fixed",
+        "what": "CHECKPOINT Sep 15: pushLog attribution corrected - two commits were credited to a scheduled lane that did not make them",
+        "detail": "Filed by the Monday run against itself. Those two commits came from an unlogged session on the Mac (session trailer in the body, no task key, no gates recorded); the scheduled lane started later from a fresh clone and carries its own trailers, gates and entry. Re-attributed rather than left crediting an agent that did not do the work. Second unlogged-session write in eight days - the class is now tracked, not one-off."
+      },
+      {
+        "severity": "watch",
+        "what": "CHECKPOINT Sep 15: the weekly board tweet queued unattended but at the wrong minute - day kept, minute missed",
+        "detail": "Queued unattended with the fresh image attached and confirmed sitting in the scheduler, but timed hours after the series' fixed slot: the run overran on a repo-staleness recovery and the slot had passed by the time the composer opened. Mo's veto window was preserved, just shorter. Unattended tally 2 of the 4 consecutive runs the autonomous label depends on; the label stays 'attempted' this week. Root cause is the clone-state item below, not the tweet lane."
+      },
+      {
+        "severity": "broken",
+        "what": "CHECKPOINT Sep 15: the working clone on Mo's machine is stale, dirty and locked - it has now cost a lane its timing slot",
+        "detail": "It sits several commits behind, carries nine modified files left over from work the lane rebuilt and pushed from a scratch clone instead, and has a lock file present again. Runs that start there read old state: this week one did, rebuilt a set index from scratch on stale inputs, caught it before pushing, and lost the tweet slot to the recovery. Nothing wrong reached the site. This was filed twice as a low-severity note because the machine is physically his; it is not low any more. Two commands in his terminal clear it. The structural half - make every board-touching run compare against the remote at step 0 and default to a scratch clone - is a prompt edit this checkpoint could not make (next item)."
+      },
+      {
+        "severity": "broken",
+        "what": "CHECKPOINT Sep 15: scheduled-task prompts are read-only to checkpoint sessions, so the one-edit-per-checkpoint plan set Sep 13 cannot execute",
+        "detail": "Two prompt-drift items now wait on it: the staleness gate above, and a doctrine block in one weekly prompt that still tells a run to carry a block Mo deleted Aug 21 and to use a label he renamed the same day. The interim control holds and was verified this week - both affected runs read the System Reference at start, it carries Mo's version, and both followed the doc against the prompt; the live page shows Mo's version, not the prompt's. Carried to Sunday, which has the write path and can take a full pre-edit backup. Until then, no run should be assumed to be reading current doctrine from its own prompt."
+      },
+      {
+        "severity": "watch",
+        "what": "CHECKPOINT Sep 15: autonomous writes verified clean - two gated pushes, one send, one self-disable",
+        "detail": "Price lane: three gates FAIL 0, live-verified, logged. Board lane: three gates FAIL 0, live-verified, logged, and it declared its own stumble rather than hiding it. Digest: re-verified directly against the provider by this checkpoint - delivered in full, opens climbed after send, no clicks, no unsubscribes, no spam, no bounces; kill switch clear; the provider shows four campaigns in total, so the rogue-send check is clean and the Sep 7 non-staff send remains the only one. The one-week paster self-disabled after its final slot as designed. Nothing outside an authorized lane was swept into any push."
+      },
+      {
+        "severity": "watch",
+        "what": "CHECKPOINT Sep 15: two consecutive digests delivered in full and drew zero clicks",
+        "detail": "Opens are steady and there are no complaints, so nothing is broken and the kill switch stays clear. At this list size, with owner addresses among the recipients, this is noise rather than a finding - noted so the Sunday analyst grades it on purpose rather than by accident once the list is real. Email trigger: 4 of ~100 active, owner addresses included; no email agent commissioned."
       }
     ],
     "analyst": {
@@ -1337,14 +1372,64 @@
         "id": "card-pages-bcb26-hostless-sep13",
         "decision": "applied",
         "basis": "4.8 — production click-through sweep (tools/qa/interactions.cjs --prod) found 9 dead /card-* links on /auctions; tools/build-card-pages.mjs re-run against the Sep 13 feed; pushed c06fb61; live 200"
+      },
+      {
+        "id": "polish-2026-09-14",
+        "decision": "approve",
+        "basis": "4.7 polish well - clears the wow bar (the whole tape reads as shapes at a glance instead of a list of digits) and reuses an existing renderer, CSS and data, so it is a change, not a new system"
+      },
+      {
+        "id": "gonzales-name-query-sep08-close",
+        "decision": "approve-close",
+        "basis": "4.7 mechanical - the run verified the live source before acting, found the requested change would have taken a board name's mark dark at the comp floor, and applied the honest fix instead. Closed as won't-fix."
+      },
+      {
+        "id": "bcb26-activation-2026-09-14",
+        "decision": "ratify + approve",
+        "basis": "cap semantics ratified at whole-basket level on the existing index precedent - no new method invented mid-window - and the page prose corrected to match what the math does (mechanical copy). The starved feed on one basket entry approved as an engine-query fix."
+      },
+      {
+        "id": "bcb26-cap-base-weight-2026-09-15",
+        "decision": "decline-for-now",
+        "basis": "no methodology change to a live index mid-window: a published level does not move because of a rule written after it. Re-examined at the window close with a logged adjustment if the weight still stands out. The run was right to ask rather than cap unilaterally."
+      },
+      {
+        "id": "price-exceptions-2026-09-14",
+        "decision": "part-approve + route",
+        "basis": "4.7 - the dated-notice pass on the still-unmarked pages is mechanical, approved. The two rows whose prose now contradicts an applied mark are narrative and go to the build session already scheduled tomorrow, which is doing exactly this class of work. One structural question deferred to Sunday."
+      },
+      {
+        "id": "lane-discipline-2026-09-14",
+        "decision": "approve-applied",
+        "basis": "attribution is filing, so this checkpoint applied it directly rather than queueing it"
+      },
+      {
+        "id": "tuesday-lane-staleness-2026-09-15",
+        "decision": "approve-blocked",
+        "basis": "approved in substance - compare against the remote at step 0, default to a scratch clone, for this lane and the other board-touching ones. Execution blocked: prompts are read-only to checkpoint sessions. Carried to Sunday."
+      },
+      {
+        "id": "bangers-prompt-doctrine-drift-2026-09-15",
+        "decision": "approve-blocked",
+        "basis": "approved - a prompt must not instruct a run to re-add something Mo deleted. Same read-only block; interim control verified live this week."
+      },
+      {
+        "id": "update-series-page-2026-09-14",
+        "decision": "hold",
+        "basis": "no street date and no configuration published yet - a pre-release page with neither is filler, and the bar is the opposite of filler. Builds when the date posts."
+      },
+      {
+        "id": "kim-unrankable-clock-2026-09-15",
+        "decision": "defer-sunday",
+        "basis": "a rule for a name that stops trading is a real rule and the published clock runs to mid-October, so it gets the full run, not a checkpoint. Lean on record: say plainly in place that the quote is carried, rather than demote a name for not trading."
       }
     ],
-    "approvalsNote": "4.7 pass: nothing sat in the three self-approvable categories tonight (no awaiting-cos items; the only open proposal is money-adjacent). The week's decisions above are recorded so the delegation stays auditable; last week's nine entries moved to previousWeek.approvals.",
+    "approvalsNote": "Sunday Sep 13 pass plus the Tue Sep 15 checkpoint. The checkpoint decided or routed 10 sitting items: 4 approved, 1 part-approved and routed, 1 ratified on precedent, 1 declined for now, 1 held, 1 deferred to Sunday, 2 approved but blocked on a read-only prompt path. Two open items stay with Mo; both are on his own machine and neither is an agent's to touch.",
     "cadenceChange": "none this run (4.4): every enabled task's last/next run is ordered and current; the Friday release-window task is correctly ON through ~Sep 29; the one-week reply-paster self-disabled after its Sep 13 slot as designed.",
     "lastCheckpoint": {
-      "date": "2026-09-13",
-      "mode": "Sunday full run + evening in-chat follow-up (Mo present)",
-      "verdict": "Prompts Terminal-aware; Auction Desk dead links fixed live; rogue email traced; Rookie Extractor conversion approved; build session Wed; kill-criterion read honest."
+      "date": "2026-09-15",
+      "mode": "Tuesday light checkpoint (unattended)",
+      "verdict": "The week's three autonomous writes verified clean: two lanes pushed behind three gates each and live-verified, the digest sent and re-verified against the provider, the one-week paster self-disabled as designed. One deviation: the weekly board tweet queued unattended but at the wrong minute. Two pushes carried a missing or wrong log entry - both repaired. Ten sitting judgment items decided or routed; two stay with Mo, both on his own machine."
     },
     "pushLog": {
       "_comment": "Added by CoS light checkpoint 2026-09-03 (janitorial state, charter 4.8 visible-delegation). Pushes outside the Monday STEP 3.98 lane; gates = read-only re-run on the pushed tree by the checkpoint unless the pushing run reported them. | Schema (CoS 2026-09-13, one shape from here): {date, commits[], by, gates, liveVerified, note}.",
@@ -1673,10 +1758,10 @@
             "cb9d85a",
             "6393b5f"
           ],
-          "by": "monday-weekly-trend-scan (scheduled; charter 4.8) — entry backfilled by the site auditor on Mo's instruction, same day",
+          "by": "unlogged session on the Mac (session trailer in the commit body; no task key, no gates recorded) - NOT the Monday scheduled lane; re-attributed by the CoS checkpoint 2026-09-15",
           "gates": "re-run read-only on main 6393b5f by the auditor at ~11:00 PT: audit-prices FAIL 0 / WARN 31 (pre-existing); audit-site FAIL 0 / WARN 3 (first-bowman-unverified trio); audit-terminal FAIL 0 / WARN 0 (price-data feed clone); first-bowman.mjs 0 contradictions. The lane's own pre-commit gate output was not recorded — that is the finding (audit-2026-09-14-2).",
           "liveVerified": "live 2026-09-14 ~11:00 PT — /, /destined-rivals-index, /bowman-sapphire-2026, /indices, /auctions, /bowman-chrome-2026-index, /bowman-bangers byte-identical to main",
-          "note": "Weekly fixes (copy follows the engine on 5 surfaces, sealed-book queries, rail text floor 11px, sealed routing, tools/site-auditor/sweep.mjs) + Monday build (BOW26 re-mark 99.21, engine blocks/card pages/home re-baked on the 09-13 feed, card-images 417→430). Neither commit carried Task-key/Authority trailers."
+          "note": "Weekly fixes (copy follows the engine on 5 surfaces, sealed-book queries, rail text floor 11px, sealed routing, tools/site-auditor/sweep.mjs) + Monday build (BOW26 re-mark 99.21, engine blocks/card pages/home re-baked on the 09-13 feed, card-images 417→430). Neither commit carried Task-key/Authority trailers. | ATTRIBUTION CORRECTED 2026-09-15 (CoS checkpoint, per lane-discipline-2026-09-14): originally credited to the Monday scheduled scan, which in fact started later from a fresh clone and carries its own trailers, gates and entry. One of these two commits did a lane duty, which the scheduled run deliberately did not double-mark."
         },
         {
           "date": "2026-09-14",
@@ -1707,6 +1792,18 @@
           "gates": "audit-prices FAIL 0 / WARN 28 · audit-site FAIL 0 / WARN 3 (first-bowman-unverified x3, pre-existing) · audit-terminal FAIL 0 / WARN 0 against a local clone of the price-data branch seeded with the live day 2026-09-15 feed",
           "liveVerified": "2026-09-15 — /bowman-bangers 200, hero stamp + data-prices-updated 2026-09-15, ranks 04 Gonzales / 05 Florentino live; /bowman-chrome-2026-index 200, level 95.67, stamp 2026-09-15",
           "note": "Board lane. data/calls.json deliberately NOT pushed (stays local for the CoS). Two generator files rode in the lane and are called out: tools/build-bcb26-index.mjs (count-basis activation copy + priced counter) and tools/x-images/make.py (new `call` card kind, bangers ctx clause fix, bcb26 marked-count + no fake w/w at inception). Run started on a 3-commit-stale mount clone and briefly re-activated BCB26 before catching it; nothing stale was pushed, work was rebuilt in a fresh /tmp clone on dffe844 — filed as tuesday-lane-staleness-2026-09-15."
+        },
+        {
+          "date": "2026-09-15",
+          "commits": [
+            "2658c82",
+            "2f13342",
+            "90f5a28"
+          ],
+          "by": "tuesday-board (4.8) - logged by the CoS checkpoint 2026-09-15 (backfill)",
+          "gates": "re-run read-only by the checkpoint on the pushed tree: audit-prices FAIL 0 / WARN 29 - audit-site FAIL 0 / WARN 3 (pre-existing trio) - audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected off-feed)",
+          "liveVerified": "2026-09-15 - board page 200, price stamp current, corrected entry copy present live and the superseded wording absent",
+          "note": "Two bookkeeping commits plus one content commit that had no entry of its own: a board entry's copy carried a stale relative-time phrase (the same class as the Sep 9 absolute-dates ruling) and was corrected to an absolute date with a refreshed mark. Trailers and authority were correct; only the log was missing."
         }
       ]
     },
