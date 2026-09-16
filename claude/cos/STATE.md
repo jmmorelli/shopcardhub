@@ -113,6 +113,92 @@ not open, and the mount was known to be stale by construction (LANE-RULES R2's o
 while lanes were still allowed to file from it. Both are fixed above. **Three wrong findings is a
 lane failure; a rule that cannot be complied with is a CoS failure. Both happened.**
 
+## MO'S RULINGS — 2026-09-16 LATE (all four of his open technical questions, closed)
+
+**1. Hammer tape on Home — NO CHART. Two numbers, split by category.** Mo: *"I don't think hammer
+candles on the home page - maybe just a normal line, hammers can be on individual card pages."*
+Agreed, and the data says go further: **no line either.** 92 closes across 34 cards, **median 1.5
+closes per card**, 7 cards at zero — a time series drawn through that implies continuity that does
+not exist.
+
+What the 26 cards with both a hammer and an ask actually show (2026-09-16 feed):
+
+| Population | n | median ask-over-hammer | IQR | skew (z) | excess kurtosis (z) |
+|---|---|---|---|---|---|
+| All | 26 | **+74.9%** | +26…+150 | +3.41 (**+7.1**) | +12.68 (**+13.2**) |
+| Pokémon SIR + sealed | 8 | **+20.0%** | +15…+33 | +2.00 (+2.3) | +2.48 (+1.4) |
+| Baseball singles | 18 | **+110.1%** | +63…+154 | +3.08 (+5.3) | +9.26 (+8.0) |
+| Closes ≥ 5 only | 9 | +100.6% | +39…+154 | **+0.08 (+0.1)** | **−1.53 (−0.9)** |
+
+**Ask > hammer on 26 of 26.** Two findings that change what we publish:
+
+- **The split is category, not liquidity.** Spearman(closes, gap) = **+0.18** — essentially
+  nothing, and the *wrong sign* for a thin-market explanation. Spearman(ask level, gap) = −0.25.
+  Pokémon/sealed at +20% and baseball singles at +110% is a 5× difference and it is the structure.
+- **The fat tail is a sampling artifact, not a market property.** Pooled skew z = +7.1 and excess
+  kurtosis z = +13.2; restrict to cards with ≥5 closes and both collapse to noise (+0.1, −0.9).
+  The tail is the single-close cards — Kim at +703% on **n = 1**.
+
+**Therefore, and this is a standing rule: never publish the pooled mean (+106.6%).** With skew at
+z = +7.1 the mean is not a summary of anything. Publish medians, split by category, with n and the
+date. Home gets a two-number stat tile, not a chart. **Card pages** get the hammer prints as dated
+event markers on the existing nightly ask line — never a second line, never a candle — plus the
+close count, so a one-close card reads as one close. Same rule as the graded marks: *the number
+carries its own n.*
+
+**2. `luis-hernandez-bcb26-auto` — RULED, and it did not need a methodology decision after all.**
+The card has **exactly one auction close, $147.49.** Under the rule shipped tonight for graded
+sales — a single print is a data point, not a price — n = 1 is not a mark. **CPA-LH stays
+unpriced and stays out of the BCB26 basket**, and its card page shows the fact: "1 auction close,
+$147.49", the way `#CPA-EH`'s PSA 10 now shows "one dated sale". The general rule, adopted so this
+does not come back card by card: **a hammer-basis mark requires ≥ 5 closes in 60 days, is labelled
+`hammer basis` on its face, and never enters an ask-basis index level.** BCB26's own
+`basisLabel` already contemplates the whole index restating to hammer basis at ≥ 60% SCP sold
+coverage — that is an index-wide event, not a per-card exception, and nothing about this changes
+it.
+
+**3. SV151 — Mo votes CLEAN MEDIANS.** One correction on the record: **SV151 is live** — activated
+Sep 15, base 100, divisor 19.0946, one mark deep. Mo's note said "since it's not live"; it is, it
+is just one day old, which is the best possible moment to restate.
+
+*Mechanism:* the rulebook pre-committed to this before the first mark — **a basis restatement is a
+logged divisor adjustment with the level unchanged, never a silent re-base.** We follow our own
+published rule rather than improvising a re-base because it is convenient. Both figures (`price`
+and `cleanMedian`) are stored per row from day one, so the restatement is fully auditable. Effect
+on the level: **99.19 vs 100.00** — 0.81 of a point, the size of the entire question.
+
+*The consistency cost, stated plainly, because Mo's Sep 15 ruling turned on it.* Marking on our
+clean medians makes the **screen and the mark** more consistent, not less — the 6/4 liquidity
+screen already counts our own clean comps, so today SV151 screens on one number and marks on
+another. But DR25 and PRIS25 mark on PriceCharting's headline, so SV151 would diverge from the
+rest of the Pokémon family.
+
+*Plan, proceeding unless Mo says hold:* switch **at the Oct 5 quarterly reconstitution, announced
+Sep 28** — an already-scheduled event where divisor changes are expected and announced. Compute
+clean medians for the other four Pokémon baskets in the same pass and move them the same day if
+the compute lands; if it does not, **each page states its own basis explicitly rather than
+implying a consistency we did not compute.** A labelled difference beats a pretended match.
+
+*One property of clean medians to disclose in the methodology box:* PriceCharting caps its
+ungraded tab at 60 sold rows and 141 of 207 cards hit that cap, so a clean median's effective
+lookback varies by card — weeks for a liquid card, months for an illiquid one. It is a *recent*
+median, which is arguably what we want, but it is not a fixed window and must not be described as
+one.
+
+**4. Off-site links — Mo posted one to Reddit pointing at the Pitch Black page.** *Correction to
+something the CoS told him:* the note that "X does not count (nofollow)" implied Reddit does.
+Reddit marks outbound links `nofollow`/`ugc` as well, so **the post does not pass link equity
+directly.** It is still the right move, for second-order reasons: it puts the page in front of
+people who *do* run linkable sites and newsletters, it drives referral sessions, and it gets the
+URL crawled. The dofollow links come from whoever picks it up, not from Reddit. **Action for the
+next Chrome-linked run:** get the post URL from Mo, confirm the rendered link's `rel`, and read
+GA4 referral sessions from reddit.com for `/pitch-black-set-guide` — that is the first real
+measurement of whether this channel does anything. Until then it is a hypothesis with one trial.
+
+**5. Mo agreed to all open vetoes** (2026-09-16): the SA benchmark ruling, the discovery
+re-weighting, the site auditor's probation terms, the return-user program, and Terminal step 5.
+*"I agree with all your vetos, I won't say no to them."* None of these needs to be re-raised.
+
 ## TOP 3 PROBLEMS IN THE BUSINESS (Sep 14 Business Read; problem 1 re-framed, problem 3 amended Sep 16)
 
 1. **Google is 4% of a search channel that already works — a links problem, not an indexing
