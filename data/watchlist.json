@@ -78,10 +78,14 @@
       "id": "justin-gonzalez",
       "source": "ebay",
       "label": "Justin Gonzales — 1st Bowman Chrome Auto",
-      "query": "2026 bowman chrome 1st auto justin gonzalez CPA-JG -lot -reprint -digital -sapphire",
+      "query": "2026 bowman chrome 1st auto justin (gonzalez,gonzales) CPA-JG -lot -reprint -digital -sapphire",
       "cardType": "chrome-auto",
       "rank": 8,
-      "queryNote": "QUERY SPELLING IS DELIBERATE, DO NOT \"FIX\" IT. Topps and MLB.com print Gonzales; eBay sellers list Gonzalez (verified Sep 15 2026 in the matched listing title). The query follows the marketplace so the feed keeps marking; the label follows the official spelling. Supply sits at 4 verified asks = the engine MIN_COMPS floor, so flipping the query to \"gonzales\" would take a board name dark."
+      "queryNote": "CORRECTED 2026-09-17. The Sep 15 note said 'Topps and MLB.com print Gonzales; eBay sellers list Gonzalez' and kept the query on gonzalez alone. The marketplace is the OTHER WAY ROUND: a live /api/comps read of 30 titles on 2026-09-17 returned gonzales 28, gonzalez 3 (one title carries both). The gonzalez-only query was returning 3 listings while the dual form returns 30, of which 18 pass the full filter — the card had been stuck at 4 verified asks, one above the MIN_COMPS floor and below the 8 needed for a call, because of the spelling. Query now carries BOTH spellings per the Sep 16 ruling; titleMust is the prefix 'gonzal' so either spelling verifies, with cpa-jg holding the card identity. The LABEL still follows Topps/MLB (Gonzales) and must not be changed.",
+      "titleMust": [
+        "gonzal",
+        "cpa-jg"
+      ]
     },
     {
       "id": "edward-florentino",
