@@ -256,6 +256,50 @@ Three bounds on that channel, and they are what keep R10 from being undone by it
   rules on it.
 
 
+## R11 · Every commercial page sells its product above the fold (Mo, 2026-09-17)
+
+**The incident:** `/pokemon-30th-anniversary-2026` is one of the site's top landing pages and it
+shipped with no way to buy the ETB where a reader lands — the only eBay links sat about 150 lines
+down, under the lineup table. Mo: *"when we notice a page is our top landing page like this, we
+need to absolutely make sure we are doing everything we can to drive them to ebay for earnings…
+the ebay links to ETBs or whatever pokemon set the index is about should be easy money for us,
+always."* A sitewide sweep the same hour found the same shape on 58 pages.
+
+**Why it is a rule and not a preference:** eBay/EPN is the only monetization lane on this project.
+Topps and Fanatics Collect are both retired (Aug 23) and paid acquisition is off the table. A
+commercial page that does not offer its product where the reader lands is not under-optimized —
+it is the whole income mechanism, switched off, on a page we already paid for in traffic.
+
+**The contract.** Every commercial page carries at least one EPN-tagged eBay link **above the
+fold** — before the second `<section>` and before the second `<h2>` of the body. A set or index
+page points at that set's **sealed product** (hobby box, ETB, booster bundle), because that is the
+thing the page is about and the thing that converts.
+
+**How it is held:**
+- `site-auditor §15` FAILs on a below-the-fold first link, on a commercial page with no EPN link
+  at all, and on a configured page missing its block. It is a FAIL, not a WARN — it blocks a push.
+- Exemptions live in the auditor's `CONVERSION_EXEMPT` set, never in a page. An exemption is a
+  decision on the record with a reason beside it; today's list is utility/legal pages, the two
+  grading guides, the ROI calculator, the Amazon-lane supplies page, and the Bowman Bangers board
+  (it spans every release and has no single sealed product).
+- `tools/build-buy-strip.mjs` + `data/buy-strip.json` write and refresh the strip. The block
+  between the `BUYSTRIP` markers is machine-owned: change the config, never the page.
+- `tools/buy-strip-health.mjs` is the weekly read that §15 cannot do — it runs every live query
+  through production `/api/comps` and exits 1 on a **dead shelf**: a buy button with nothing
+  behind it, because the query rotted. Owned by Gengar (see the cadence table).
+
+**Honesty binds here exactly as it does on a price.** A figure in a strip is the lowest live
+single-unit **ask**, never a sold comp and never a market price; cases, multi-box lots and the
+cheap accessory tail are filtered out before the number is shown; and a query with nothing behind
+it shows nothing rather than a wrong number. `live:true` is set only where the query names one
+sealed product — the cheapest listing on a broad player search is a $0.99 common, and a number
+that misleads is worse than no number.
+
+**Standing obligation for every lane that ships a page:** a new commercial page is not done until
+it is in `data/buy-strip.json` and carries its block. The gate will catch it, but catching it at
+the gate means it was built wrong.
+
+
 ## Cadence — the authoritative copy (moved here 2026-09-16)
 
 This table used to live in `claude/cos/CHARTER.md` §6. It moved because the charter is a
@@ -269,6 +313,7 @@ and the charter points at it. **If you see a day in any other document, this tab
 |---|---|---|
 | CoS · daily ops check | every day 06:00 | Engine Watch · Pricing Integrity audit · Wiring Keeper gate · Bug Sweeper · light Mobile QA (5 pages) · NEEDS-MO review · §0 light read when Chrome is reachable. Cloud-only: no commits. |
 | **CoS · weekly site audit** | **Wednesday 11:00** *(moved from Monday 04:30 by Mo, 2026-09-16 — "a bigger gap" from the Sunday run, and a working hour rather than pre-dawn)* | §0 Business Read first → Terminal Product read → full §4 audit + full-site sweep → Pricing Integrity weekly → the build order → Tape Recap → adjudicate every `awaiting-cos` filing → fix, commit and push behind the three gates → IndexNow. |
+| **Gengar · conversion coverage** *(created 2026-09-17, R11)* | **Monday 07:00** | Runs `site-auditor §15` and `tools/buy-strip-health.mjs` against production. Fixes dead eBay queries in `data/buy-strip.json`, re-runs `tools/build-buy-strip.mjs`, and pushes behind the gates. Writes the week's coverage line into Gengar's feed in `data/pipeline.json`. Messages Mo only when a shelf is dead and the fix needs him. |
 | CoS · monthly roster & rooms review | 1st of the month 05:00 | Re-read Mo's direction, retire/create agents and rooms, rewrite CHARTER §2, prune rooms. |
 | **X Desk Watch — audit Grok Bot** *(created 2026-09-17, R10)* | **every day 13:00** | Reads @shopcardhub in Mo's Chrome (Browser 1) — the day's posts and the reply sweeps — and checks every number and claim against our own feed and pages. Monday's run is the weekly grade against Grok's own 10:00 audit + GA4. Find-and-file only: it never posts, replies, or fixes. Device-bound: it needs the Mac awake, so it reports "could not read" rather than guessing. Spec: `claude/cos/x-desk-watch-2026-09-17.md`. |
 
