@@ -11,12 +11,17 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — 2 things to actually do, 1 do-not, 1 parked. Three items closed on 2026-09-17.
+## Open — 1 small thing to send me, 2 do-nots, 1 parked. Everything else closed on 2026-09-17.
 
-**The two to do:** approve the Grok post sitting in the Grok Bot app (one click), and paste the
-r/baseballcards link post when convenient. Everything else here is either a hold or not due.
+**The one to do:** send the CoS the URL of the Reddit post you already made. The Grok approval is
+done (Mo set it to always-approve on 2026-09-17). Everything else here is a hold or not due.
 
-- **🟡 APPROVE THE PENDING X POST IN THE GROK BOT APP.** The CoS briefed the vendor on the
+- **✅ DONE — the queued X post was approved, and Mo set the vendor to ALWAYS APPROVE (2026-09-17).**
+  Recorded because it changes the risk model: there is no longer a human gate in front of an
+  @shopcardhub post. The CoS still never touches the account, so **X Desk Watch is now the only
+  check on the feed, and it is after the fact** — daily 13:00 PT, claims/taxonomy/exposure, with a
+  same-hour correction routed to the vendor through the direct channel. Mo's veto stays absolute and
+  retroactive. *(Superseded item, kept for the record:)* APPROVE THE PENDING X POST IN THE GROK BOT APP. The CoS briefed the vendor on the
   rule-change piece (board ranks on the last printed sale + a 30-day liquidity gate; it cost
   Holliday the #1 seat he had held since Jun 12); the vendor verified the page and queued it, and
   its own approval gate is now waiting on a human. **The CoS does not press that button** — it
@@ -66,16 +71,28 @@ r/baseballcards link post when convenient. Everything else here is either a hold
   (forward-start, no backfill), so inception is the day the rebuilt index first marks. STATE is
   corrected and its Sep 15 SV151 figures are now labelled unverified.
 
-- **Off-site link-earning posts.** Mo posted one to **Reddit → the Pitch Black page** (~Sep 14).
-  One draft remains ready to paste: `claude/recaps/link-post-2026-09-14.md` (r/baseballcards, the
-  ask-vs-hammer data). Needs a human account because Reddit and the hobby forums ban bot posting.
-  **Action: paste it when convenient — no schedule.** *And send the CoS the URL of the post you
-  already made,* so the next Chrome-linked run can confirm the link's `rel` and read GA4 referral
-  sessions. **Honest framing, corrected 2026-09-16:** Reddit nofollows outbound links, so the post
-  does not pass link equity directly. It works by putting the page in front of people who run
-  linkable sites, by referral traffic, and by getting the URL crawled. It is still the best Google
-  lever we have — the Search Console request quota is stood down to zero — but it is a hypothesis
-  with one trial, not a proven channel.
+- **⛔ DO NOT POST THE r/baseballcards DRAFT EITHER — pulled 2026-09-17, and this one is on the CoS.**
+  `claude/recaps/link-post-2026-09-14.md` was sitting in your queue saying *"Aiva Arquette — seven
+  auctions closed, median $36"*, *"Edward Florentino — twelve closed, median $40"*, *"Ethan Holliday
+  — six closed, median $65"*. **Those are not closes.** They are the last bid the engine saw, a
+  median of ~12 hours before the auction actually ended — the Sep 16 retraction, which withdrew this
+  exact finding and pulled this exact post. A later session re-drafted it on Sep 17 anyway and it
+  landed back on your list. **Its own receipt link disproves it:** `/auctions` now reads *"These are
+  a floor, not sale prices."* The independent check points the same way — SportsCardsPro holds seven
+  dated sold records for Arquette's `#CPA-AA` at **$55.00–$80.85** against our book's $32–$57. Had
+  you pasted it, we would have published under our own domain a number we had already retracted.
+  **Standing rule: no lane publishes an ask-vs-sold gap figure anywhere until close-time capture is
+  fixed.** *(Mo also asked whether r/baseballcards would even know the word "hammer" — a fair
+  separate point, and no: the plain phrasing is "what it actually sold for". Moot while the number
+  is wrong.)*
+
+  **What replaces it, when we want a link post:** the board's published ranking-rule change, or the
+  151 index once it is live. Both are things we can stand behind line by line.
+
+- **📨 SEND THE CoS THE URL OF THE REDDIT POST YOU ALREADY MADE** (~Sep 14, the Pitch Black page).
+  It is the only real measurement we have of whether that channel does anything — the next
+  Chrome-linked run reads the link's `rel` and the referral sessions in GA4. Thirty seconds of
+  copy-paste.
 
 - **Personal (per-subscriber) email alerts — parked, not due.** Vaults are device-local and
   encrypted, so by design we cannot email someone about *their* cards. A real personal alert list
