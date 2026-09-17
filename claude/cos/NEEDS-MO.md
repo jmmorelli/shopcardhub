@@ -11,7 +11,17 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — 1 item, and it is a DO-NOT. Everything else on this list closed on 2026-09-17.
+## Open — 2 things to actually do, 1 do-not, 1 parked. Three items closed on 2026-09-17.
+
+**The two to do:** approve the Grok post sitting in the Grok Bot app (one click), and paste the
+r/baseballcards link post when convenient. Everything else here is either a hold or not due.
+
+- **🟡 APPROVE THE PENDING X POST IN THE GROK BOT APP.** The CoS briefed the vendor on the
+  rule-change piece (board ranks on the last printed sale + a 30-day liquidity gate; it cost
+  Holliday the #1 seat he had held since Jun 12); the vendor verified the page and queued it, and
+  its own approval gate is now waiting on a human. **The CoS does not press that button** — it
+  directs the vendor and never touches the X account, and pressing the post button is the same act
+  by another route. One human between this project and anything public is the guardrail.
 
 - **✅ CLOSED — the two X posting tasks are deleted** (Mo, 2026-09-17: *"I deleted them, because if
   I need to remake them we can start fresh."*). With R10 in doctrine and the tasks gone, there is now
@@ -94,7 +104,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
   close, $147.49. n = 1 is not a mark. It stays unpriced and out of the BCB26 basket; its page
   shows "1 auction close, $147.49". General rule adopted: a hammer-basis mark needs ≥ 5 closes in
   60 days, is labelled on its face, and never enters an ask-basis index level.
-- **SV151 — MO VOTES CLEAN MEDIANS.** Correction: it *is* live (Sep 15, one mark deep). Executes as
+- **SV151 — MO VOTES CLEAN MEDIANS.** *(Amended 2026-09-17: the "it is live" correction below was itself wrong — SV151 never reached `main` and is NOT live. The vote stands and now applies at inception: constitute the rebuilt index ON clean medians, which removes the restatement entirely.)* Originally recorded as: it *is* live (Sep 15, one mark deep), executing as
   a **logged divisor adjustment, level unchanged**, at the **Oct 5 quarterly reconstitution,
   announced Sep 28** — the rulebook pre-committed to exactly this before the first mark. The other
   Pokémon indices move the same day if the clean-median compute lands; otherwise each page states
