@@ -159,6 +159,52 @@ None of the three was a data error. All three were the same naming collision.*
 
 ---
 
+## R9 · The Bowman taxonomy, and who the site is for (Mo, 2026-09-16)
+
+**Four distinct things. They are not interchangeable and the site must never write as if they are.**
+
+| | What it is | Who buys it |
+|---|---|---|
+| **1st Bowman Chrome** | a player's first Chrome card, **no autograph** | retail / value buyer |
+| **1st Bowman Chrome Auto** | the on-card autograph. **The utmost important thing on this site.** | the investor |
+| **PSA 10 1st Bowman Chrome** | graded copy of the base | its own tracker (see below) |
+| **PSA 10 1st Bowman Chrome Auto** | graded copy of the auto | its own tracker (see below) |
+
+**The rules, in Mo's terms:**
+
+1. **A 1st Bowman Chrome does NOT mean the player gets a 1st Bowman Chrome Auto.** Usually he does.
+   Not always. Never imply the one from the other, and never say a player "has a 1st Bowman" as
+   shorthand for the auto.
+2. **There are Bowman Chromes and Bowman Chrome Autos that are NOT 1sts at all** — returning cards
+   in a later set carry no 1st logo (Holliday `#BCP-209` and Arquette `#BCP-174` in September's
+   2026 Bowman Chrome are the live examples; see R8).
+3. **The Bangers board is 1st Bowman Chrome AUTOS ONLY. Not PSA 10. Not non-autos.** Enforced —
+   `audit-terminal` check `board-autos-only` FAILs on a ranked card that is not `chrome-auto`, whose
+   label is not a 1st Bowman Chrome Auto, whose label names a grade, or whose eBay query does not
+   require "auto". It also FAILs if the board page describes itself as "1st Bowman cards," which is
+   the base-card category.
+4. **The set indices are the opposite and that is correct** — they track the **full set, per
+   set/box**: autos and base, 1sts and returning cards, whatever clears the liquidity screen. Do not
+   "fix" an index by removing non-autos.
+5. **The autograph is the investor play; the non-auto is the retail value pick.** Both can appear on
+   the site, but they are labelled for different buyers and never ranked against each other.
+
+**Who we are building for, and why it decides these calls.** Mo: *"We want to push the investors,
+not the retail… We want retention from investors (hence Seeking Alpha) looking for high end cards.
+These users finding value is a gold mine versus someone who only buys low end cards here and there.
+Investors continually buy and if they find a site they jive with, they call it home."* When a
+wording, ranking or feature choice is ambiguous, **resolve it toward the investor** — the person
+deciding whether to buy a $150–$2,000 card — not toward the browser looking for a $2 common.
+
+*Origin: 2026-09-16. Mo had to point out, himself, that the board's own title and description sold
+it as "Top 1st Bowman Cards to Collect" — the retail, non-auto category — while the board has only
+ever held autos. The data was right the whole time; the public face was not. He also caught the
+graded-ladder prices and the twelve-hour "hammer" lag the same night. **Three catches by the owner
+in one night is a gate problem, not an attention problem** — each is now a check that fails the
+build.*
+
+---
+
 ## Standing evidence rules (adopted from lanes' own self-reports)
 
 - **A diff claim from a hand-picked file list is not a diff claim.** `git diff --name-only

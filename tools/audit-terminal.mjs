@@ -666,6 +666,38 @@ if (feed) {
   for (const c of hostCards) if (!feedKeys.has(`${c.source}:${c.id}`)) add("FAIL", "feed-shape", "prices-latest.json", `${c.source}:${c.id} is hosted on /${hostOf(c)} but the feed has no entry for it`);
 }
 
+/* ---------- 8d. board-autos-only (Mo, 2026-09-16) ---------- */
+// Mo, in his words: "for the BANGERS - these are FIRST BOWMAN CHROME AUTOS ONLY. Not PSA 10,
+// Not non-autos." A player having a 1st Bowman Chrome does NOT mean he gets a 1st Bowman Chrome
+// Auto — usually, not always — and there are Bowman Chromes and Chrome Autos that are not 1sts at
+// all. Full-set coverage (autos AND base, 1sts AND returning cards) is the job of the set indices.
+// The board is the investor surface: the on-card auto, raw.
+{
+  const ranked = (wl?.cards || []).filter((c) => c && Number.isFinite(c.rank) && !c.boardHide);
+  if (!ranked.length) add("WARN", "board-autos-only", "data/watchlist.json", "no ranked board cards found — check the rank/boardHide fields");
+  for (const c of ranked) {
+    const label = String(c.label || "");
+    if (c.cardType !== "chrome-auto")
+      add("FAIL", "board-autos-only", "data/watchlist.json", `${c.id} is ranked #${c.rank} on the board but cardType is "${c.cardType}" — the board is 1st Bowman Chrome Autos only`);
+    if (!/1st\s+Bowman\s+Chrome\s+Auto/i.test(label))
+      add("FAIL", "board-autos-only", "data/watchlist.json", `${c.id} is ranked #${c.rank} but its label is not a 1st Bowman Chrome Auto: "${label}"`);
+    if (/\b(psa|bgs|sgc|cgc|gem\s?mt|slab|graded)\b/i.test(label))
+      add("FAIL", "board-autos-only", "data/watchlist.json", `${c.id} is ranked #${c.rank} and its label names a grade — board marks are raw autos; graded belongs in its own tracker`);
+    if (!/auto/i.test(String(c.query || "")))
+      add("FAIL", "board-autos-only", "data/watchlist.json", `${c.id} is ranked #${c.rank} but its eBay query does not require "auto" — it can match the base card`);
+  }
+  // The board page must not sell itself as the base-card category.
+  if (exists("bowman-bangers.html")) {
+    const src = read("bowman-bangers.html");
+    const meta = (src.match(/<title>[\s\S]*?<\/title>/) || [""])[0]
+      + (src.match(/name="description"[^>]*>/) || [""])[0]
+      + (src.match(/og:(?:title|description)"[^>]*>/g) || []).join("")
+      + (markup(src).match(/<h1[\s\S]{0,900}?<\/p>/) || [""])[0];
+    const m = meta.match(/1st\s+Bowman\s+[Cc]ards?\b/);
+    if (m) add("FAIL", "board-autos-only", "bowman-bangers.html", `the board describes itself as "${m[0]}" in its title/description/hero — that is the base-card category; this board is 1st Bowman Chrome Autos`);
+  }
+}
+
 /* ---------- check: the home Markets panel must agree with data/indices.json ---------- */
 // Filed as audit-2026-09-16-1: the home panel is BAKED by tools/build-home.mjs, the index page
 // renders live, so a lane that re-marks an index without re-baking publishes two levels for one

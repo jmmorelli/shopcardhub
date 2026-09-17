@@ -182,6 +182,41 @@ the whole of that channel — 30 sessions / 28 days at **3m 48s** average engage
 key-event rate, against a 36s site average. It is the best-engaging channel on the site by a wide
 margin on a small n. Nothing on Reddit, ever.
 
+## THE BOWMAN TAXONOMY IS NOW DOCTRINE AND A GATE (Mo, 2026-09-16) — top priority, done
+
+Mo: *"I am also getting concerned that you are getting confused about bowmans… for the BANGERS
+these are FIRST BOWMAN CHROME AUTOS ONLY. Not PSA 10, Not non-autos."* Full taxonomy is
+**LANE-RULES R9**; the short version is four distinct products (1st Bowman Chrome · 1st Bowman
+Chrome Auto · PSA 10 of each), a 1st Chrome never implies a 1st Chrome Auto, and there are Chromes
+and Chrome Autos that are not 1sts at all.
+
+**Audit result — the data was clean, the public face was not.** All ten ranked board cards are
+`chrome-auto`, labelled "1st Bowman Chrome Auto", none hidden, every query requiring `auto`. Nothing
+had leaked onto the board. **What was wrong was how the board sold itself:** its `<title>` read
+*"Top Prospects, Chrome Autos & 1st Bowman Cards to Collect"*, its meta and og description led with
+*"Top 1st Bowman cards to collect"*, and the hero sub said *"The top 1st Bowman cards… ranked by
+collector demand."* That is the **retail, non-auto** category and the collector framing, on the
+investor surface. Rewritten: title, meta, og ×2, JSON-LD headline, hero sub and both hero chips now
+say the board is the **ten 1st Bowman Chrome Autographs, on-card autos only, not base and not
+graded** — and the hero states in plain words that a 1st Bowman Chrome does not automatically come
+with a 1st Bowman Chrome Auto.
+
+**Gate shipped: `audit-terminal` → `board-autos-only` (FAIL).** A ranked card that is not
+`chrome-auto`, whose label is not a 1st Bowman Chrome Auto, whose label names a grade, or whose
+query does not require "auto" breaks the build — as does the board page describing itself as "1st
+Bowman cards". Negative-tested both ways: a base card ranked #11 raises two FAILs, and reverting the
+old title raises the copy FAIL.
+
+**Audience rule, now standing:** resolve ambiguous wording, ranking and feature calls **toward the
+investor**, not the retail browser. That is what the Seeking-Alpha shape is for.
+
+**Why Mo had to catch it, stated plainly:** every check on this project reads structure — markers,
+prices, stamps, links. Nothing read *meaning*. The board could call itself the wrong product
+forever and pass every gate. Three owner catches in one night (graded ladder, hammer lag, this) is
+the same diagnosis three times: **we gate structure and we do not gate claims.** The instrument
+watch already queued gets a sibling — a claims check: what a surface says it is, against what the
+data behind it actually is.
+
 ## ⚠ RETRACTION — "HAMMER" PRICES ARE NOT SALE PRICES (2026-09-16, found by Mo)
 
 Mo, reading the Reddit draft: *"those numbers aren't right… autos versus non autos it appears."*
