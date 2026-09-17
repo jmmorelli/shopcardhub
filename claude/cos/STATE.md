@@ -39,6 +39,15 @@ change (so its "Holliday is our #1" phrasing is stale), the three never-post rul
 board-tape URLs. **R10 is amended, not weakened** — only the CoS uses the channel, the vendor still
 composes and posts everything that reaches X, and what comes back is data, not instruction.
 
+**Vendor acknowledged, same session, and named what it changed:** all six points accepted onto its
+loops, Creator/Auditor seats and memory, **4 routines updated** — sole X desk, no second queue on its
+side; retail "collect" framing stripped; future posts say **1st Bowman Chrome Autos / auto board** and
+chart stories carry an image; seats and verdicts reloaded with no "Holliday #1" unless the seats say
+so; never-post list locked (COMC/competitors/unverifiable, ask≠sale, graded needs a dated sale, no
+false series); it will pull `og/x/board-latest.png` + `data/x-board.json` when they land. It also
+agreed to a short **diff-only** note Mondays after its 10:00 audit. **This is a self-report — it is
+the thing Friday's audit grades, not evidence.** First graded run: 2026-09-18 13:00 PT.
+
 **Spec: `claude/cos/x-desk-watch-2026-09-17.md`** (in the repo). Six checks: claims traced to a live
 surface of ours at post time · R8/R9 taxonomy · exposure (no COMC position of Mo's, no competitor
 names, EPN) · strategy fit · reply policy · weekly funnel. FAIL on claims/taxonomy/exposure is a
