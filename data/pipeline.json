@@ -2199,6 +2199,17 @@
           "gates": "audit-prices FAIL 0 / WARN 62 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 1 — baseline",
           "liveVerified": "2026-09-17 (data + docs only; no rendered surface changed)",
           "note": "Third push of the day. Rollback: git revert <sha>."
+        },
+        {
+          "date": "2026-09-17",
+          "commits": [
+            "445c00a",
+            "3b1da26"
+          ],
+          "by": "Mo-directed in chat (CoS-authored): /pokemon-30th-anniversary-2026 top-of-page eBay buy module",
+          "gates": "audit-prices FAIL 0 / WARN 62, site-auditor FAIL 0 / WARN 3 (103 pages), all 14 eBay links carry mkevt=1, six /api/comps queries verified against production",
+          "liveVerified": "2026-09-17 (live md5 == pushed tree; BUYBOX block present, ETB tile renders 'Ask from $175.00 · 3.5× · 1 ask')",
+          "note": "No conversion path above the fold on a top-traffic page; the only eBay links sat ~150 lines down under the lineup table. Single-unit ask filter added in the second commit after the first pass would have printed a 6-box case ($583.95) as the Poster Collection ask."
         }
       ]
     },
