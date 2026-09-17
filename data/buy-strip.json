@@ -1,0 +1,853 @@
+{
+ "_comment": "Above-the-fold eBay conversion strip, one entry per page. Consumed by tools/build-buy-strip.mjs, which writes the BUYSTRIP block into each page; enforced by site-auditor §15 (conversion-coverage). q = eBay _nkw for the strip's primary CTA; customid = EPN Custom ID so per-product earnings are readable in the EPN 'Performance by Custom ID' report. live=true shows the lowest live single-unit ask from /api/comps beside the product; it is only set where the primary query names ONE sealed product, because the cheapest listing on a broad player search is a $0.99 common and tells the reader nothing. Pages deliberately outside the contract are listed in the auditor's CONVERSION_EXEMPT set, not here.",
+ "generated": "2026-09-17",
+ "pages": {
+  "adley-rutschman-cards": {
+   "product": "Adley Rutschman cards",
+   "primary": {
+    "label": "Shop Adley Rutschman cards on eBay",
+    "q": "Adley Rutschman rookie -lot -reprint -digital -custom",
+    "customid": "adley-rutschman-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Adley Rutschman Topps Chrome Rookie Auto 2023 RA-AR",
+    "customid": "adley-rutschman-cards-hero",
+    "title": "Adley Rutschman 2023 Topps Chrome Rookie Auto"
+   },
+   "live": false
+  },
+  "aiva-arquette-1st-bowman": {
+   "product": "Aiva Arquette 1st Bowman",
+   "primary": {
+    "label": "Shop Aiva Arquette 1st Bowman on eBay",
+    "q": "Aiva Arquette 1st Bowman Chrome -lot -reprint -digital -custom",
+    "customid": "aiva-arquette-1st-bowman-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Aiva Arquette Bowman Chrome Auto Refractor 2026 CPA-AA",
+    "customid": "aiva-arquette-1st-bowman-hero",
+    "title": "Aiva Arquette Chrome Auto Refractor #CPA-AA /499"
+   },
+   "live": false
+  },
+  "ascended-heroes": {
+   "product": "Pokémon TCG Ascended Heroes Elite Trainer Box",
+   "primary": {
+    "label": "Shop ETBs on eBay",
+    "q": "Pokemon Ascended Heroes Elite Trainer Box -divider -redeem -promo -code -case -japanese -psa -cgc -bundle -sleeve -playmat -topper",
+    "customid": "ascended-heroes-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "Pokémon TCG Ascended Heroes card -lot -reprint -digital -sealed -box",
+    "customid": "ascended-heroes-singles",
+    "title": "Pokémon TCG Ascended Heroes singles"
+   },
+   "live": true
+  },
+  "best-baseball-cards-under-50": {
+   "product": "Baseball rookie autos under $50",
+   "primary": {
+    "label": "Shop Baseball rookie autos under $50 →",
+    "q": "baseball rookie auto card -lot -reprint -digital -custom",
+    "customid": "best-baseball-cards-under-50-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Roman Anthony Bowman Chrome Auto 2024 -lot -reprint -digital -ip -signed -coa",
+    "customid": "best-baseball-cards-under-50-hero",
+    "title": "Roman Anthony 2024 Bowman Chrome Auto"
+   },
+   "live": false
+  },
+  "best-basketball-cards-under-50": {
+   "product": "Basketball rookies under $50",
+   "primary": {
+    "label": "Shop Basketball rookies under $50 →",
+    "q": "basketball rookie prizm silver -lot -reprint -digital -custom",
+    "customid": "best-basketball-cards-under-50-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Ausar Thompson Prizm Silver #178 PSA 9 2023-24 -monopoly -emergent -instant -sensational -select -draft -auto",
+    "customid": "best-basketball-cards-under-50-hero",
+    "title": "Ausar Thompson 2023-24 Prizm Silver #178 PSA 9"
+   },
+   "live": false
+  },
+  "best-football-cards-under-50": {
+   "product": "Football rookies under $50",
+   "primary": {
+    "label": "Shop Football rookies under $50 →",
+    "q": "football rookie prizm silver -lot -reprint -digital -custom",
+    "customid": "best-football-cards-under-50-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Carnell Tate Prizm Draft Picks Silver 2025 -auto -lot",
+    "customid": "best-football-cards-under-50-hero",
+    "title": "Carnell Tate 2025 Prizm Draft Picks Silver"
+   },
+   "live": false
+  },
+  "best-hobby-boxes-2026": {
+   "product": "2026 Bowman Baseball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Bowman Baseball 2026 -chrome -sapphire -draft -\"best of\" -mega -case -pack -packs -jumbo -blaster -lot",
+    "customid": "best-hobby-boxes-2026-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Bowman Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "best-hobby-boxes-2026-singles",
+    "title": "2026 Bowman Baseball singles"
+   },
+   "live": true
+  },
+  "bowman-1st-chrome-index": {
+   "product": "2026 Bowman Chrome Baseball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Bowman Chrome Baseball 2026 -sapphire -draft -topps -case -pack -packs -jumbo -blaster -lot",
+    "customid": "bowman-1st-chrome-index-top"
+   },
+   "secondary": null,
+   "live": true,
+   "req": "bowman chrome"
+  },
+  "bowman-chrome-baseball-2026": {
+   "product": "2026 Bowman Chrome Baseball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Bowman Chrome Baseball 2026 -sapphire -draft -topps -case -pack -packs -jumbo -blaster -lot",
+    "customid": "bowman-chrome-baseball-2026-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Bowman Chrome Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "bowman-chrome-baseball-2026-singles",
+    "title": "2026 Bowman Chrome Baseball singles"
+   },
+   "live": true,
+   "req": "bowman chrome"
+  },
+  "bowman-football": {
+   "product": "2026 Bowman Football hobby box",
+   "primary": {
+    "label": "Shop 2026 Bowman Football hobby box →",
+    "q": "2026 Bowman Football Hobby Box -lot -case -break -blaster -pack",
+    "customid": "bowman-football-top"
+   },
+   "secondary": null,
+   "live": true
+  },
+  "bowman-sapphire-2026": {
+   "product": "2026 Bowman Sapphire Edition Baseball Box",
+   "primary": {
+    "label": "Shop sealed boxes on eBay",
+    "q": "Bowman Sapphire Edition Baseball 2026 Box -draft -chrome -case -pack -packs -jumbo -blaster -lot",
+    "customid": "bowman-sapphire-2026-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Bowman Sapphire Edition Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "bowman-sapphire-2026-singles",
+    "title": "2026 Bowman Sapphire Edition Baseball singles"
+   },
+   "live": true
+  },
+  "cameron-boozer-rookie-cards": {
+   "product": "Cameron Boozer rookie cards",
+   "primary": {
+    "label": "Shop Cameron Boozer rookie cards →",
+    "q": "Cameron Boozer rookie -lot -reprint -digital -custom",
+    "customid": "cameron-boozer-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Cameron Boozer Bowman Chrome Prospect Auto Duke",
+    "customid": "cameron-boozer-rookie-cards-hero",
+    "title": "Cameron Boozer 2025-26 Bowman U Chrome Prospect Auto"
+   },
+   "live": false
+  },
+  "chaos-rising": {
+   "product": "Pokémon TCG Chaos Rising Elite Trainer Box",
+   "primary": {
+    "label": "Shop ETBs on eBay",
+    "q": "Pokemon Chaos Rising Elite Trainer Box Sealed -divider -redeem -promo -code -case -japanese -psa -cgc -sleeve -playmat -topper",
+    "customid": "chaos-rising-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "Pokémon TCG Chaos Rising card -lot -reprint -digital -sealed -box",
+    "customid": "chaos-rising-singles",
+    "title": "Pokémon TCG Chaos Rising singles"
+   },
+   "live": true
+  },
+  "chase-delauter-rookie-cards": {
+   "product": "Chase DeLauter rookie cards",
+   "primary": {
+    "label": "Shop Chase DeLauter rookie cards →",
+    "q": "Chase DeLauter rookie -lot -reprint -digital -custom",
+    "customid": "chase-delauter-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Chase DeLauter Bowman 2026 #37 Rookie RC",
+    "customid": "chase-delauter-rookie-cards-hero",
+    "title": "Chase DeLauter 2026 Bowman #37 RC"
+   },
+   "live": false
+  },
+  "cooper-flagg-rookie-cards": {
+   "product": "Cooper Flagg rookie cards",
+   "primary": {
+    "label": "Shop Cooper Flagg rookie cards on eBay",
+    "q": "Cooper Flagg rookie -lot -reprint -digital -custom",
+    "customid": "cooper-flagg-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Cooper Flagg Topps Chrome Silver Refractor 2025-26 #251",
+    "customid": "cooper-flagg-rookie-cards-hero",
+    "title": "Cooper Flagg 2025-26 Topps Chrome #251 Silver Refractor"
+   },
+   "live": false
+  },
+  "cristiano-ronaldo-cards": {
+   "product": "Cristiano Ronaldo cards",
+   "primary": {
+    "label": "Shop Cristiano Ronaldo cards on eBay",
+    "q": "Cristiano Ronaldo card -lot -reprint -digital -custom",
+    "customid": "cristiano-ronaldo-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Ronaldo Mega Craques Rookie PSA 2002-03 Panini #137",
+    "customid": "cristiano-ronaldo-cards-hero",
+    "title": "Cristiano Ronaldo 2002-03 Panini Mega Craques #137 RC"
+   },
+   "live": false
+  },
+  "erling-haaland-rookie-cards": {
+   "product": "Erling Haaland rookie cards",
+   "primary": {
+    "label": "Shop Erling Haaland rookie cards →",
+    "q": "Erling Haaland rookie -lot -reprint -digital -custom",
+    "customid": "erling-haaland-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Erling Haaland Topps Chrome UCL 2019-20 #74 Rookie",
+    "customid": "erling-haaland-rookie-cards-hero",
+    "title": "Erling Haaland 2019-20 Topps Chrome UCL #74 RC"
+   },
+   "live": false
+  },
+  "ethan-holliday-rookie-cards": {
+   "product": "Ethan Holliday rookie cards",
+   "primary": {
+    "label": "Shop Ethan Holliday rookie cards →",
+    "q": "Ethan Holliday 1st Bowman -lot -reprint -digital -custom",
+    "customid": "ethan-holliday-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Ethan Holliday PSA 10 Bowman Chrome Auto 2026 CPA-EH",
+    "customid": "ethan-holliday-rookie-cards-hero",
+    "title": "Ethan Holliday 2026 Bowman Chrome 1st Auto #CPA-EH PSA 10"
+   },
+   "live": false
+  },
+  "fernando-mendoza-rookie-cards": {
+   "product": "Fernando Mendoza rookie cards",
+   "primary": {
+    "label": "Shop Fernando Mendoza rookie cards →",
+    "q": "Fernando Mendoza rookie -lot -reprint -digital -custom",
+    "customid": "fernando-mendoza-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Fernando Mendoza Topps Now Draft 2026 Rookie RC",
+    "customid": "fernando-mendoza-rookie-cards-hero",
+    "title": "Fernando Mendoza 2026 Topps NOW Draft RC"
+   },
+   "live": false
+  },
+  "harry-kane-cards": {
+   "product": "Harry Kane cards",
+   "primary": {
+    "label": "Shop Harry Kane cards on eBay",
+    "q": "Harry Kane card -lot -reprint -digital -custom",
+    "customid": "harry-kane-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Harry Kane Topps Merlin 2014-15 #492 Rookie",
+    "customid": "harry-kane-cards-hero",
+    "title": "Harry Kane 2014-15 Topps Merlin #492 Rookie"
+   },
+   "live": false
+  },
+  "jacob-misiorowski-rookie-cards": {
+   "product": "Jacob Misiorowski rookie cards",
+   "primary": {
+    "label": "Shop Jacob Misiorowski rookie cards →",
+    "q": "Jacob Misiorowski rookie -lot -reprint -digital -custom",
+    "customid": "jacob-misiorowski-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Jacob Misiorowski Bowman Draft Chrome Auto 2022 1st CDA",
+    "customid": "jacob-misiorowski-rookie-cards-hero",
+    "title": "Jacob Misiorowski 2022 Bowman Chrome 1st Auto"
+   },
+   "live": false
+  },
+  "kylian-mbappe-rookie-cards": {
+   "product": "Kylian Mbappe rookie cards",
+   "primary": {
+    "label": "Shop Kylian Mbappe rookie cards →",
+    "q": "Kylian Mbappe rookie -lot -reprint -digital -custom",
+    "customid": "kylian-mbappe-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Kylian Mbappe Topps Chrome UCL 2017-18 Rookie RC",
+    "customid": "kylian-mbappe-rookie-cards-hero",
+    "title": "Kylian Mbappé 2017-18 Topps Chrome UCL RC"
+   },
+   "live": false
+  },
+  "lamine-yamal-rookie-cards": {
+   "product": "Lamine Yamal rookie cards",
+   "primary": {
+    "label": "Shop Lamine Yamal rookie cards on eBay",
+    "q": "Lamine Yamal rookie -lot -reprint -digital -custom",
+    "customid": "lamine-yamal-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Lamine Yamal Topps Chrome UCC 2023-24 Rookie #64",
+    "customid": "lamine-yamal-rookie-cards-hero",
+    "title": "Lamine Yamal 2023-24 Topps Chrome UCC #64 RC"
+   },
+   "live": false
+  },
+  "lebron-james-cards": {
+   "product": "LeBron James cards",
+   "primary": {
+    "label": "Shop LeBron James cards on eBay",
+    "q": "LeBron James card -lot -reprint -digital -custom",
+    "customid": "lebron-james-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "LeBron James Topps Rookie PSA 10 2003-04 #221",
+    "customid": "lebron-james-cards-hero",
+    "title": "LeBron James 2003-04 Topps #221 RC"
+   },
+   "live": false
+  },
+  "lionel-messi-cards": {
+   "product": "Lionel Messi cards",
+   "primary": {
+    "label": "Shop Lionel Messi cards on eBay",
+    "q": "Lionel Messi card -lot -reprint -digital -custom",
+    "customid": "lionel-messi-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Messi Megacracks 2004-05 Panini #71 Rookie",
+    "customid": "lionel-messi-cards-hero",
+    "title": "Lionel Messi 2004-05 Panini Megacracks #71 RC"
+   },
+   "live": false
+  },
+  "munetaka-murakami-rookie-cards": {
+   "product": "Munetaka Murakami rookie cards",
+   "primary": {
+    "label": "Shop Munetaka Murakami rookie cards →",
+    "q": "Munetaka Murakami rookie -lot -reprint -digital -custom",
+    "customid": "munetaka-murakami-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Munetaka Murakami Bowman 2026 #9 Rookie RC",
+    "customid": "munetaka-murakami-rookie-cards-hero",
+    "title": "Munetaka Murakami 2026 Bowman #9 RC"
+   },
+   "live": false
+  },
+  "nfl-rookie-cards-2026": {
+   "product": "2026 NFL rookie cards",
+   "primary": {
+    "label": "Shop 2026 NFL rookie cards on eBay",
+    "q": "2026 Topps Chrome NFL rookie auto -lot -reprint -digital -custom",
+    "customid": "nfl-rookie-cards-2026-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Fernando Mendoza Topps Chrome Rookie Auto 2026 -lot -reprint -digital",
+    "customid": "nfl-rookie-cards-2026-hero",
+    "title": "2026 Topps Chrome NFL Fernando Mendoza RC Auto"
+   },
+   "live": false
+  },
+  "pete-crow-armstrong-cards": {
+   "product": "Pete Crow-Armstrong cards",
+   "primary": {
+    "label": "Shop Pete Crow-Armstrong cards on eBay",
+    "q": "Pete Crow-Armstrong rookie -lot -reprint -digital -custom",
+    "customid": "pete-crow-armstrong-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Pete Crow-Armstrong Bowman Chrome Draft Auto 2020 CDA-PC",
+    "customid": "pete-crow-armstrong-cards-hero",
+    "title": "Pete Crow-Armstrong 2020 Bowman Chrome Draft 1st Auto"
+   },
+   "live": false
+  },
+  "pitch-black-set-guide": {
+   "product": "Pokémon TCG Pitch Black Booster Bundle",
+   "primary": {
+    "label": "Shop sealed on eBay",
+    "q": "Pokemon Mega Evolution Pitch Black Booster Bundle Box -proxy -custom -empty -code -japanese -divider -sleeve",
+    "customid": "pitch-black-set-guide-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "Pokémon TCG Pitch Black card -lot -reprint -digital -sealed -box",
+    "customid": "pitch-black-set-guide-singles",
+    "title": "Pokémon TCG Pitch Black singles"
+   },
+   "live": true
+  },
+  "pokemon-tcg-2026": {
+   "product": "2026 Pokemon sealed boxes",
+   "primary": {
+    "label": "Shop 2026 Pokemon sealed boxes on eBay",
+    "q": "Pokemon 2026 Elite Trainer Box -proxy -custom -empty -code -japanese -divider -sleeve -playmat -topper",
+    "customid": "pokemon-tcg-2026-top"
+   },
+   "secondary": null,
+   "live": true
+  },
+  "prismatic-evolutions-guide": {
+   "product": "Prismatic Evolutions ETB",
+   "primary": {
+    "label": "Shop Prismatic Evolutions ETB on eBay",
+    "q": "Pokemon Prismatic Evolutions Elite Trainer Box -proxy -custom -empty -code -japanese -divider -sleeve -playmat -topper",
+    "customid": "prismatic-evolutions-guide-top"
+   },
+   "secondary": null,
+   "live": true
+  },
+  "roman-anthony-rookie-cards": {
+   "product": "Roman Anthony rookie cards",
+   "primary": {
+    "label": "Shop Roman Anthony rookie cards →",
+    "q": "Roman Anthony rookie -lot -reprint -digital -custom",
+    "customid": "roman-anthony-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Roman Anthony Bowman Chrome 1st Prospect 2023 Red Sox",
+    "customid": "roman-anthony-rookie-cards-hero",
+    "title": "Roman Anthony 2023 Bowman Chrome 1st Prospect"
+   },
+   "live": false
+  },
+  "roy-watch-2026": {
+   "product": "2026 ROY-watch rookie autos",
+   "primary": {
+    "label": "Shop 2026 ROY-watch rookie autos →",
+    "q": "2026 Bowman Chrome 1st auto -lot -reprint -digital -custom",
+    "customid": "roy-watch-2026-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Kevin McGonigle Bowman Chrome Auto CPA-KM 2025 -lot -reprint",
+    "customid": "roy-watch-2026-hero",
+    "title": "Kevin McGonigle 2025 Bowman Chrome Auto #CPA-KM"
+   },
+   "live": false
+  },
+  "shohei-ohtani-cards": {
+   "product": "Shohei Ohtani cards",
+   "primary": {
+    "label": "Shop Shohei Ohtani cards on eBay",
+    "q": "Shohei Ohtani card -lot -reprint -digital -custom",
+    "customid": "shohei-ohtani-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Shohei Ohtani Topps Update Rookie Debut 2018 #US285 PSA 10",
+    "customid": "shohei-ohtani-cards-hero",
+    "title": "Shohei Ohtani 2018 Topps Update #US285 Rookie Debut"
+   },
+   "live": false
+  },
+  "topps-chrome-baseball-2026": {
+   "product": "2026 Topps Chrome Baseball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Chrome Baseball 2026 -sapphire -black -update -updates -pristine -cosmic -mega -logofractor -bowman -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-chrome-baseball-2026-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Topps Chrome Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-chrome-baseball-2026-singles",
+    "title": "2026 Topps Chrome Baseball singles"
+   },
+   "live": true
+  },
+  "topps-chrome-basketball-2026": {
+   "product": "2025-26 Topps Chrome Basketball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Chrome Basketball 2025-26 -black -updates -update -cactus -cosmic -sapphire -pristine -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-chrome-basketball-2026-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2025-26 Topps Chrome Basketball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-chrome-basketball-2026-singles",
+    "title": "2025-26 Topps Chrome Basketball singles"
+   },
+   "live": true
+  },
+  "topps-chrome-black-basketball": {
+   "product": "2025-26 Topps Chrome Black Basketball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Chrome Black Basketball 2025-26 -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-chrome-black-basketball-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2025-26 Topps Chrome Black Basketball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-chrome-black-basketball-singles",
+    "title": "2025-26 Topps Chrome Black Basketball singles"
+   },
+   "live": true
+  },
+  "topps-chrome-black-football": {
+   "product": "2025 Topps Chrome Black Football Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Chrome Black Football 2025 -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-chrome-black-football-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2025 Topps Chrome Black Football card -lot -reprint -digital -sealed -box",
+    "customid": "topps-chrome-black-football-singles",
+    "title": "2025 Topps Chrome Black Football singles"
+   },
+   "live": true
+  },
+  "topps-chrome-cactus-jack-basketball": {
+   "product": "2025-26 Topps Chrome Cactus Jack Basketball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Chrome Cactus Jack Basketball 2025-26 -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-chrome-cactus-jack-basketball-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2025-26 Topps Chrome Cactus Jack Basketball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-chrome-cactus-jack-basketball-singles",
+    "title": "2025-26 Topps Chrome Cactus Jack Basketball singles"
+   },
+   "live": true
+  },
+  "topps-chrome-sapphire-2026": {
+   "product": "2026 Topps Chrome Sapphire Baseball Box",
+   "primary": {
+    "label": "Shop sealed boxes on eBay",
+    "q": "Sealed Hobby Box Topps Chrome Sapphire Baseball 2026 -bowman -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-chrome-sapphire-2026-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Topps Chrome Sapphire Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-chrome-sapphire-2026-singles",
+    "title": "2026 Topps Chrome Sapphire Baseball singles"
+   },
+   "live": true
+  },
+  "topps-chrome-updates-basketball-sapphire-edition": {
+   "product": "2025-26 Topps Chrome Updates Basketball Sapphire Edition Box",
+   "primary": {
+    "label": "Shop sealed boxes on eBay",
+    "q": "2025-26 Topps Chrome Updates Basketball Sapphire Edition box",
+    "customid": "topps-chrome-updates-basketball-sapphire-edition-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2025-26 Topps Chrome Updates Basketball Sapphire Edition card -lot -reprint -digital -sealed -box",
+    "customid": "topps-chrome-updates-basketball-sapphire-edition-singles",
+    "title": "2025-26 Topps Chrome Updates Basketball Sapphire Edition singles"
+   },
+   "live": true
+  },
+  "topps-chrome-updates-basketball": {
+   "product": "2025-26 Topps Chrome Updates Basketball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Chrome Updates Basketball 2025-26 -sapphire -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-chrome-updates-basketball-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2025-26 Topps Chrome Updates Basketball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-chrome-updates-basketball-singles",
+    "title": "2025-26 Topps Chrome Updates Basketball singles"
+   },
+   "live": true
+  },
+  "topps-cosmic-chrome-football": {
+   "product": "2025 Topps Cosmic Chrome Football Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Cosmic Chrome Football 2025 -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-cosmic-chrome-football-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2025 Topps Cosmic Chrome Football card -lot -reprint -digital -sealed -box",
+    "customid": "topps-cosmic-chrome-football-singles",
+    "title": "2025 Topps Cosmic Chrome Football singles"
+   },
+   "live": true
+  },
+  "topps-definitive-basketball": {
+   "product": "2025-26 Topps Definitive Basketball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Definitive Basketball 2025-26 -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-definitive-basketball-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2025-26 Topps Definitive Basketball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-definitive-basketball-singles",
+    "title": "2025-26 Topps Definitive Basketball singles"
+   },
+   "live": true
+  },
+  "topps-finest-baseball": {
+   "product": "2026 Topps Finest Baseball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Finest Baseball 2026 -flashbacks -mini -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-finest-baseball-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Topps Finest Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-finest-baseball-singles",
+    "title": "2026 Topps Finest Baseball singles"
+   },
+   "live": true
+  },
+  "topps-flagship-football": {
+   "product": "2026 Topps Flagship Football Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Football 2026 -chrome -cosmic -black -inception -bowman -finest -nscc -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-flagship-football-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Topps Flagship Football card -lot -reprint -digital -sealed -box",
+    "customid": "topps-flagship-football-singles",
+    "title": "2026 Topps Flagship Football singles"
+   },
+   "live": true
+  },
+  "topps-inception-baseball": {
+   "product": "2025 Topps Inception Baseball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Inception Baseball 2025 -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-inception-baseball-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2025 Topps Inception Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-inception-baseball-singles",
+    "title": "2025 Topps Inception Baseball singles"
+   },
+   "live": true
+  },
+  "topps-inception-basketball": {
+   "product": "2025-26 Topps Inception Basketball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Inception Basketball 2025-26 -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-inception-basketball-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2025-26 Topps Inception Basketball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-inception-basketball-singles",
+    "title": "2025-26 Topps Inception Basketball singles"
+   },
+   "live": true
+  },
+  "topps-museum-collection-baseball": {
+   "product": "Museum Collection hobby box",
+   "primary": {
+    "label": "Shop Museum Collection hobby box →",
+    "q": "2026 Topps Museum Collection Baseball Hobby Box -lot -case -break -pack",
+    "customid": "topps-museum-collection-baseball-top"
+   },
+   "secondary": null,
+   "live": true
+  },
+  "topps-pristine-baseball": {
+   "product": "2026 Topps Pristine Baseball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Pristine Baseball 2026 -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-pristine-baseball-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Topps Pristine Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-pristine-baseball-singles",
+    "title": "2026 Topps Pristine Baseball singles"
+   },
+   "live": true
+  },
+  "topps-pristine-basketball": {
+   "product": "2025-26 Topps Pristine Basketball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Pristine Basketball 2025-26 -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-pristine-basketball-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2025-26 Topps Pristine Basketball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-pristine-basketball-singles",
+    "title": "2025-26 Topps Pristine Basketball singles"
+   },
+   "live": true
+  },
+  "topps-series-1-2026": {
+   "product": "2026 Topps Series 1 Baseball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Series 1 Baseball 2026 -\"series 2\" -chrome -heritage -mega -complete -japan -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-series-1-2026-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Topps Series 1 Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-series-1-2026-singles",
+    "title": "2026 Topps Series 1 Baseball singles"
+   },
+   "live": true
+  },
+  "topps-series-2-2026": {
+   "product": "2026 Topps Series 2 Baseball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Series 2 Baseball 2026 -chrome -heritage -mega -complete -sets -japan -case -pack -packs -jumbo -blaster -lot -qty -quantity",
+    "customid": "topps-series-2-2026-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Topps Series 2 Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-series-2-2026-singles",
+    "title": "2026 Topps Series 2 Baseball singles"
+   },
+   "live": true
+  },
+  "topps-tier-one-baseball": {
+   "product": "2026 Topps Tier One Baseball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Tier One Baseball 2026 -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-tier-one-baseball-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Topps Tier One Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-tier-one-baseball-singles",
+    "title": "2026 Topps Tier One Baseball singles"
+   },
+   "live": true
+  },
+  "topps-tribute-baseball": {
+   "product": "2026 Topps Tribute Baseball Hobby Box",
+   "primary": {
+    "label": "Shop hobby boxes on eBay",
+    "q": "Sealed Hobby Box Topps Tribute Baseball 2026 -case -pack -packs -jumbo -blaster -lot",
+    "customid": "topps-tribute-baseball-box"
+   },
+   "secondary": {
+    "label": "Singles on eBay",
+    "q": "2026 Topps Tribute Baseball card -lot -reprint -digital -sealed -box",
+    "customid": "topps-tribute-baseball-singles",
+    "title": "2026 Topps Tribute Baseball singles"
+   },
+   "live": true
+  },
+  "victor-wembanyama-rookie-cards": {
+   "product": "Victor Wembanyama rookie cards",
+   "primary": {
+    "label": "Shop Victor Wembanyama rookie cards →",
+    "q": "Victor Wembanyama rookie -lot -reprint -digital -custom",
+    "customid": "victor-wembanyama-rookie-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Wembanyama Panini Prizm Silver 2023-24 #136 Rookie",
+    "customid": "victor-wembanyama-rookie-cards-hero",
+    "title": "Victor Wembanyama 2023-24 Panini Prizm #136 Silver"
+   },
+   "live": false
+  },
+  "wnba-cards-2026": {
+   "product": "2026 WNBA cards",
+   "primary": {
+    "label": "Shop 2026 WNBA cards on eBay",
+    "q": "2026 WNBA prizm rookie -lot -reprint -digital -custom",
+    "customid": "wnba-cards-2026-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Caitlin Clark Panini Prizm WNBA Rookie #22 Fever 2024 -auto -lot -select -mosaic -digital -reprint -orientation -insert -dp",
+    "customid": "wnba-cards-2026-hero",
+    "title": "Caitlin Clark 2024 Panini Prizm WNBA #22 RC"
+   },
+   "live": false
+  },
+  "world-cup-2026-soccer-cards": {
+   "product": "World Cup 2026 cards",
+   "primary": {
+    "label": "Shop World Cup 2026 cards on eBay",
+    "q": "2026 World Cup Panini Prizm -lot -reprint -digital -custom",
+    "customid": "world-cup-2026-soccer-cards-top"
+   },
+   "secondary": {
+    "label": "Top card &rarr;",
+    "q": "Messi Prizm World Cup PSA 2022 Panini #7",
+    "customid": "world-cup-2026-soccer-cards-hero",
+    "title": "Lionel Messi 2022 Panini Prizm World Cup #7"
+   },
+   "live": false
+  }
+ }
+}

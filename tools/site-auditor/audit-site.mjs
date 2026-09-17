@@ -332,6 +332,61 @@ for (const f of pages) {
   if (missing.length) add("FAIL", "nav-css-missing", f, `NAV block present but page CSS lacks ${missing.join(", ")} — nav renders as raw links`);
 }
 
+/* ---------- 15. Above-the-fold conversion coverage (Mo's directive, Sep 17 2026) ----------
+   /pokemon-30th-anniversary-2026 is a top landing page and shipped with no way to buy the ETB
+   above the fold — the only eBay links sat ~150 lines down, under the lineup table. A sweep found
+   58 pages with the same shape. eBay is the only monetization lane on this site (Topps and
+   Fanatics are both retired), so a commercial page that does not offer its product where the
+   reader lands is giving away the one reliable line of income.
+
+   Contract: every commercial page carries at least one EPN-tagged eBay link above the fold —
+   before the second <section> and before the second <h2> of the body. Pages that are genuinely
+   not commercial are named in CONVERSION_EXEMPT, so the exemption is a decision on the record
+   rather than an accident. The fix is tools/build-buy-strip.mjs; the config is data/buy-strip.json. */
+const CONVERSION_EXEMPT = new Set([
+  // utility / app / legal — nothing to sell on them
+  "about", "privacy", "affiliate-disclosure", "blog", "index", "research", "watchlist", "cards",
+  "track-record", "how-prices-work", "set-index-preview", "indices",
+  // /auctions builds its own affiliate rows client-side from /api/auctions
+  "auctions",
+  // service + tool pages: the honest CTA is not a product (revisit if that changes)
+  "psa-grading-guide", "tag-grading-guide", "hobby-box-roi-calculator",
+  // Amazon lane (supplies) — the Associates account needs the volume, see epn-mkevt-fix notes
+  "best-card-supplies",
+  // the Bowman Bangers board spans every release; it has no single sealed product to sell
+  "bowman-bangers",
+]);
+{
+  let stripCfg = null;
+  try { stripCfg = JSON.parse(fs.readFileSync(path.join(REPO, "data/buy-strip.json"), "utf8")); }
+  catch { add("WARN", "buy-strip-config-missing", "data/buy-strip.json", "conversion strip config not readable — coverage is unenforced"); }
+
+  for (const f of pages) {
+    const slug = f.replace(/\.html$/, "");
+    if (CONVERSION_EXEMPT.has(slug)) continue;
+    const body = (markup(f).split(/<body[^>]*>/)[1] || "")
+      .replace(/<style[\s\S]*?<\/style>/g, "")
+      .replace(/<!--[\s\S]*?-->/g, "");
+    const m = body.match(/https?:\/\/(?:www\.)?ebay\.com\/(?:sch|itm)\/[^"' )<>]*campid=5339155990/);
+    if (!m) {
+      add("FAIL", "conversion-missing", f, "commercial page carries no EPN eBay link at all — nothing on it can earn");
+      continue;
+    }
+    const before = body.slice(0, m.index);
+    const sections = (before.match(/<section\b/g) || []).length;
+    const h2 = (before.match(/<h2\b/g) || []).length;
+    if (sections > 1 || h2 > 1)
+      add("FAIL", "conversion-below-fold", f, `first eBay link sits ${sections} section(s) / ${h2} h2(s) deep — a reader who lands here sees no way to buy. Fix: add the page to data/buy-strip.json and run tools/build-buy-strip.mjs`);
+  }
+
+  // The strip is machine-owned: a page in the config must actually carry the block.
+  if (stripCfg) for (const slug of Object.keys(stripCfg.pages || {})) {
+    const f = slug + ".html";
+    if (!fs.existsSync(path.join(REPO, f))) { add("FAIL", "buy-strip-orphan", "data/buy-strip.json", `config names ${f}, which is not on disk`); continue; }
+    if (!read(f).includes("<!-- BUYSTRIP:START")) add("FAIL", "buy-strip-missing", f, "page is in data/buy-strip.json but has no BUYSTRIP block — run tools/build-buy-strip.mjs");
+  }
+}
+
 /* ---------- report ---------- */
 const fails = findings.filter(x => x.level === "FAIL");
 const warns = findings.filter(x => x.level === "WARN");
