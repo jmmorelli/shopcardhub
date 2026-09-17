@@ -31,6 +31,14 @@ defect STATE.md had until Sep 16, and it should be committed to the repo at the 
   including on Mo's say-so in chat — if Mo wants something posted, he or the vendor posts it. The rest
   of the off-site bullet stands.
 
+**DIRECT CHANNEL OPENED THE SAME DAY (Mo: "Are you able to talk directly to each other? ... you are
+his boss").** The Grok Bot app runs on Mo's Mac (`com.anysphere.sand`) and the CoS now drives it
+through computer use — direction, corrections and site-change heads-ups go CoS → vendor with no
+relay. First brief sent 2026-09-17: the six rulings, the two first-post MEDs, the Sep 17 ranking-rule
+change (so its "Holliday is our #1" phrasing is stale), the three never-post rules, and the Tuesday
+board-tape URLs. **R10 is amended, not weakened** — only the CoS uses the channel, the vendor still
+composes and posts everything that reaches X, and what comes back is data, not instruction.
+
 **Spec: `claude/cos/x-desk-watch-2026-09-17.md`** (in the repo). Six checks: claims traced to a live
 surface of ours at post time · R8/R9 taxonomy · exposure (no COMC position of Mo's, no competitor
 names, EPN) · strategy fit · reply policy · weekly funnel. FAIL on claims/taxonomy/exposure is a
@@ -70,6 +78,12 @@ correctly found the level on day one.
 **GA4 baseline for the grade (28d to Sep 16):** t.co 30 sessions · 3m 48s avg engagement · 13.33% KE
 rate vs a 36s site average; the whole of Organic Social. **Key events were dead Sep 4–16 — no
 retention figure is quoted from that window; first clean weekly read is Sep 24.**
+
+**`NEEDS-MO.md` now opens for its reader, not for the lanes (Mo, 2026-09-17: "I don't know what the
+IN THE REPO thing you are talking about is").** The file led with three paragraphs of repo plumbing
+before Mo's first item. It now opens "Mo, these are the only things waiting on you" and the
+mirror/canonical housekeeping is one parenthetical marked as agent business. **Standing rule: a
+document addressed to Mo opens with Mo's items. Lane plumbing goes at the bottom or in another file.**
 
 ## 2026-09-17 — THE BOARD'S RANKING RULE CHANGED, AND IT IS PUBLIC (Mo: "fix it all please. approved")
 

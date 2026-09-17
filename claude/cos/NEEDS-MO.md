@@ -1,20 +1,17 @@
-# Needs Mo — open queue
+# Mo, these are the only things waiting on you
 
-**IN THE REPO since 2026-09-16, beside `STATE.md`, for the same reason: a lane that cannot open the
-queue cannot check whether an item is already Mo's.** Canonical here; the CoS mirrors it into the
-claude.ai Project doc in the same run. No other lane writes either copy.
+Everything else is decided and running. An item is on this list only if it physically cannot be done
+without you — a sign-in, money, a credential, a human account, or a switch in an app only you can
+reach. If something here no longer needs you, say so and it comes off.
 
-Only things that physically require Mo stay listed — a sign-in, money, a credential, a human
-account. Everything else is `awaiting-cos` and gets decided, not parked (LANE-RULES R1).
-
-Standing grants: *Sep 4* — "anything that needs Mo, I approve." *Sep 8* — "I don't want to sign
-into anything, I want the CoS to do it." *Sep 16* — "I'd prefer you guys just talk to each other
-about this so I don't have to be involved," and "I agree with all your vetos, I won't say no to
-them."
+*(Housekeeping for the agents, not for Mo: this file lives in the repo beside `STATE.md`; that copy
+is canonical and the Project copy is a mirror written in the same run. Standing grants — Sep 4 "anything
+that needs Mo, I approve"; Sep 8 "I don't want to sign into anything"; Sep 16 "I'd prefer you guys just
+talk to each other so I don't have to be involved" and "I agree with all your vetos".)*
 
 ---
 
-## Open — 5 items. ONE IS A DO-NOT, one needs ten minutes of your browser, and one is two switches in the desktop app.
+## Open — 3 real items, and one thing to know. ONE IS A DO-NOT, one needs ten minutes of your browser, one is two switches in the desktop app.
 
 - **🔌 TURN OFF THE TWO X POSTING TASKS IN THE CLAUDE DESKTOP APP — only you can.** Their prompts
   live in the desktop app and the scheduled-task API cannot reach them, so the CoS closed the write
@@ -25,14 +22,14 @@ them."
   digest, and from Sep 22 the board-tape publish, are still ours). Two minutes, and then there is
   genuinely no path from this project to your X account.
 
-- **📨 RELAY THE WEEKLY X NOTE TO GROK.** You are the only channel to the vendor — no lane DMs it,
-  replies to it, or negotiates with it. Every Monday the audit hands you five lines: what to keep
-  doing, what drifted, what changed on the site that would make its stock phrasing false, and the
-  Tuesday Tape angle to tease. **This week's note, ready now:** its proof post's numbers were all
-  correct, but "1st Bowman chase board" is the retail, non-auto category — the board is nine **1st
-  Bowman Chrome Autos**, and that exact copy was stripped off the board's own title on Sep 16. Also:
-  the board's ranking rule changed on Sep 17 (last printed sold price + a 30-day liquidity gate;
-  Fischer took #1 from Holliday), so any "Holliday is our #1" phrasing it carries is now false.
+- **👀 NOTHING TO RELAY TO GROK ANY MORE — but read this once.** Mo opened a direct channel on
+  2026-09-17 (the Grok Bot app on his Mac) and made the CoS its boss, so direction and corrections
+  now go straight from the CoS to the vendor and nothing queues behind Mo. **The first brief was
+  sent the same day** — its proof post's numbers all checked out, but "1st Bowman chase board" is
+  the retail non-auto category (the board is nine 1st Bowman Chrome Autos), and the board's ranking
+  rule changed Sep 17, so any "Holliday is our #1" phrasing it carried is now false. **What is still
+  only Mo's:** the X account itself. Nothing on this project touches it — the CoS directs the vendor,
+  the vendor composes and posts, and Mo's veto over anything live is absolute and retroactive.
 
 
 - **⚠ THE ONE THING ONLY YOU CAN UNBLOCK: your PriceCharting login.** The SV151 rebuild is stuck on
