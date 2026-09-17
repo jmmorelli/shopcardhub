@@ -182,6 +182,54 @@ the whole of that channel — 30 sessions / 28 days at **3m 48s** average engage
 key-event rate, against a 36s site average. It is the best-engaging channel on the site by a wide
 margin on a small n. Nothing on Reddit, ever.
 
+## 30th CELEBRATION RELEASE NIGHT (2026-09-16) — the tape shipped, the engine block did NOT
+
+The P0 read "engine block + fold at release." **Neither shipped, and the reason is the finding.**
+Live `/api/comps` at 21:50 PT, release night:
+
+| | Listings | Read |
+|---|---|---|
+| Mewtwo ex 157/128 (top chase) | **0** | no ask, no sale |
+| Mew ex 158/128 | **0** | no ask, no sale |
+| Every single in the 128-card set | **3** | Salamence ex 109/128 $0.99 · Articuno 097 $1.79 · Pikachu 031/128 $20.00 |
+| Elite Trainer Box (no booster box exists for this set) | **3** | $175.00 single · $1,320/8 = $165.00/box · $2,060.95/10 = $206.10/box · **median $175.00 = 3.5× the $49.99 MSRP**, range 3.3×–4.1× |
+
+An engine block would have been an **empty bordered box on the site's #1 lander on its release
+day**, and `build-guide-fold.mjs` refuses to run without one — the fold hangs off the engine block
+by design. Marking the ETB off its single clean listing is the Hernandez ruling and the
+graded-ladder incident in a third costume. **Do not force a number onto a market that does not
+exist yet.**
+
+**Shipped instead** (`57089c2` → `7cf5acc`): a dated release-night tape at the top of the page —
+the counts above as a table, labelled **asks, not sales**, merged into the release-day notice so
+there is one box not two, with the arithmetic that matters (cheapest way in is $165/box inside an
+eight-box lot against a $49.99 box; the Oct 2 Booster Bundle is $4.49/pack) and a plain statement
+that **nobody has resold this set yet, so there is no support under a 3.5× day-one ask.**
+Also corrected the line written earlier the same evening promising marks "with tonight's nightly
+run" — there was nothing for the nightly to mark.
+
+**Measured at a real 390×844 viewport (Playwright, mobile UA), three passes:** the verdict sentence
+sits at **1.32 screens** and the table at **1.79**, against BCB26's 4,392px (≈5.2 screens) that
+started this workstream. Table height 505px → 241px after the cells were shortened and given
+`min-width:520px` so `.tbl-scroll` scrolls as designed instead of squeezing; `vs MSRP` was moved
+ahead of `Ask` so **3.5×** is visible without swiping. Page 14.9 → 13.9 screens. 0 console errors.
+**The DEST strip stays above it on purpose:** `tools/dest.py` re-inserts that block after the first
+`</section>`, so hoisting content above it would flip back on the next run of that generator — not
+worth fighting an idempotent tool for 244px.
+
+**On the engine now:** `mewtwo-ex-sir-th26`, `mew-ex-sir-th26`, `th26-etb` in `data/watchlist.json`,
+so the series starts the day the market does. **The two singles deliberately carry NO `slug`** —
+naming the guide as host obliges the page to carry an engine block, and `audit-terminal`'s
+`engine-host-consistency` check caught exactly that and FAILed twice before the slug came off. The
+ETB carries no `sealedOf` because **TH26 does not exist** (still COMING on `/indices`), and a note
+that two of its three listings are multi-box lots — `TITLE_BAD_SEALED` has to hold or it marks off
+a lot.
+
+**TRIGGER, recorded on each card and here:** the first night a 30th chase card carries a verified
+mark → add the `slug`, run `tools/build-engine-blocks.mjs` then `tools/build-guide-fold.mjs` on
+`pokemon-30th-anniversary-2026.html`, add the `/card-<id>` 301 to `vercel.json`, and swap the
+static tape table for the live block. **A number needs a market, not a deadline.**
+
 ## KEY EVENTS — FIXED 2026-09-16, with Mo's explicit approval
 
 Mo approved the configuration change in chat. Applied in GA4 Admin → Events, verified in the Key

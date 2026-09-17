@@ -1336,6 +1336,17 @@
    "awaitingMoReason": "GA4 key-event configuration change — account settings, needs explicit approval",
    "resolvedOn": "2026-09-16",
    "appliedNote": "FIXED 2026-09-16 with Mo's explicit approval in chat (GA4 config = account setting). Marked `click` (outbound eBay click, the revenue moment, ~150/28d) and `track_card_from_page` (card saved to Vault, the retention moment, ~20/28d) as key events; `newsletter_signup` was already key. Verified in Admin > Events > Key events: 1-6 of 6. Key events count FORWARD ONLY - Sep 4-16 stays a hole and must be reported as one, never averaged over; earliest clean baseline Sep 24. STILL OPEN AND SEPARATE: the DEST block and dest_strip are gone from / and the terminal-shell and /card-* pages (Terminal Builder). MONITORING GAP THE CoS OWNS: every gate here checks the site, nothing watches the instruments, and the GA4 read is an optional 'when Chrome is reachable' step the cloud runs cannot perform. Next weekly ships an instrument watch - key events, feed rows, index marks and engine-marked card counts against their trailing median, zero or >60% drop = FAIL."
+  },
+  {
+   "id": "cos-2026-09-16-th26-release-night",
+   "status": "applied",
+   "area": "content",
+   "filed": "2026-09-16",
+   "by": "chief-of-staff",
+   "title": "P0: /pokemon-30th-anniversary-2026 release-day conversion — engine block + fold per the Sep 8 rule.",
+   "decision": "APPLIED IN PART, AND THE PART NOT APPLIED IS THE FINDING. Live /api/comps on release night: Mewtwo ex 157/128 = 0 listings, Mew ex 158/128 = 0, all singles in the 128-card set = 3 (Salamence ex 109/128 $0.99, Articuno 097 $1.79, Pikachu 031/128 $20.00), Elite Trainer Box = 3 ($175.00 single; $1,320/8 = $165.00/box; $2,060.95/10 = $206.10/box; median $175.00 = 3.5x the $49.99 MSRP). An engine block would have been an empty box on the site's #1 lander on release day, and build-guide-fold.mjs refuses to run without one. SHIPPED: a dated release-night tape merged into the release-day notice - counts as a table, labelled asks not sales, with the per-box arithmetic and a plain statement that nobody has resold this set yet. Measured at 390x844: verdict at 1.32 screens, table at 1.79, table height 505px -> 241px, vs-MSRP column moved ahead of Ask so 3.5x is visible without swiping, 0 console errors. Three cards added to the engine; the two singles carry NO slug because audit-terminal's engine-host-consistency check FAILed twice when they did - that gate worked. TRIGGER: first verified mark -> add slug, build-engine-blocks then build-guide-fold, add the /card-<id> 301, swap the static table for the live block.",
+   "decidedBy": "chief-of-staff",
+   "resolvedOn": "2026-09-16"
   }
  ],
  "scoreboard": {
@@ -2066,6 +2077,19 @@
      "gates": "audit-prices FAIL 0 / WARN 62 (NEW BASELINE — 34 no-machine-stamp + 25 non-numeric-price + 3 stale-prose-stamp; the old 29 predates checks 7-9); audit-site FAIL 0 / WARN 3; audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected in sandbox); first-bowman.mjs clean",
      "liveVerified": "pending curl after push",
      "note": "Escalation response. Stripped modelled SCP grade-ladder figures published as sold comps on three pages and re-marked the two cards with real graded sales; re-baked the home Markets panel and the nav/rail after Mo ruled KEEP on BCB26; flipped /pokemon-30th-anniversary-2026 to released framing on its release day; shipped three new gates (audit-prices sold-provenance FAIL, ask-in-price-slot WARN, no-machine-stamp WARN; audit-terminal home-index-level FAIL), all negative-tested; committed claude/cos/STATE.md into the repo so the read-state rule is satisfiable from a lane; rewrote LANE-RULES R2 and added R5-R7."
+    },
+    {
+     "date": "2026-09-16",
+     "commits": [
+      "57089c2",
+      "c4d010d",
+      "ab813df",
+      "7cf5acc"
+     ],
+     "by": "chief-of-staff (Mo present)",
+     "gates": "audit-prices FAIL 0 / WARN 62; audit-site FAIL 0 / WARN 3; audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected); first-bowman clean",
+     "liveVerified": "2026-09-16 — curl 200, tape renders, 0 'Preorder phase'; Playwright 390x844 mobile: verdict 1.32 screens, table 1.79, 0 console errors; IndexNow 200",
+     "note": "30th Celebration release night: dated tape shipped, engine block and fold deliberately NOT shipped (zero listings for both chase cards). Three cards added to the engine with a recorded trigger."
     }
    ]
   },
