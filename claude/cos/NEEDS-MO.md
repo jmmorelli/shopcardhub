@@ -14,7 +14,26 @@ them."
 
 ---
 
-## Open — 3 items. ONE IS A DO-NOT, and one needs ten minutes of your browser.
+## Open — 5 items. ONE IS A DO-NOT, one needs ten minutes of your browser, and one is two switches in the desktop app.
+
+- **🔌 TURN OFF THE TWO X POSTING TASKS IN THE CLAUDE DESKTOP APP — only you can.** Their prompts
+  live in the desktop app and the scheduled-task API cannot reach them, so the CoS closed the write
+  path in doctrine instead (`/LANE-RULES.md` R10, read at STEP 0 by every lane): if either fires, it
+  now refuses the tweet step and reports the prompt as stale. That holds, but it is a seatbelt, not
+  a locked door. **Disable `shopcardhub-tweet-reply-paster` outright, and delete the board-tweet
+  queue step from `bowman-bangers-tuesday-update`** (keep the rest of that task — the re-mark, the
+  digest, and from Sep 22 the board-tape publish, are still ours). Two minutes, and then there is
+  genuinely no path from this project to your X account.
+
+- **📨 RELAY THE WEEKLY X NOTE TO GROK.** You are the only channel to the vendor — no lane DMs it,
+  replies to it, or negotiates with it. Every Monday the audit hands you five lines: what to keep
+  doing, what drifted, what changed on the site that would make its stock phrasing false, and the
+  Tuesday Tape angle to tease. **This week's note, ready now:** its proof post's numbers were all
+  correct, but "1st Bowman chase board" is the retail, non-auto category — the board is nine **1st
+  Bowman Chrome Autos**, and that exact copy was stripped off the board's own title on Sep 16. Also:
+  the board's ranking rule changed on Sep 17 (last printed sold price + a 30-day liquidity gate;
+  Fischer took #1 from Holliday), so any "Holliday is our #1" phrasing it carries is now false.
+
 
 - **⚠ THE ONE THING ONLY YOU CAN UNBLOCK: your PriceCharting login.** The SV151 rebuild is stuck on
   one step and it is not a decision, it is an authenticated session. The 207-slot universe is

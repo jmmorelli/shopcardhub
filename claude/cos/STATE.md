@@ -14,6 +14,63 @@
 > **R6 check the ledger — re-filing a settled item is a defect** · **R7 an absence claim requires
 > a fresh clone.**
 
+## 2026-09-17 — THE X DESK IS NO LONGER OURS. WE AUDIT IT NOW (Mo: "I have hired Grok bot")
+
+Mo hired an outside vendor, **Grok Bot**, to run @shopcardhub, and instructed the CoS to close our
+own posting agent and rebuild it as an auditor of the vendor. Done today.
+
+**Doctrine: `/LANE-RULES.md` R10.** No lane on this project writes to X — post, reply, like, repost,
+follow, queue, schedule or delete — under any authority. **Two standing authorizations revoked:** the
+Aug 31 Tuesday board-tweet auto-queue (which was the *only* unattended social write in the system)
+and the `shopcardhub-tweet-reply-paster`. This project now has **zero** unattended social writes.
+
+**Charter amendments, recorded here because `CHARTER.md` is still Project-doc-only** — the identical
+defect STATE.md had until Sep 16, and it should be committed to the repo at the Oct 1 roster review:
+- §2 roster **+ X Desk Watch** (room `growth`), daily 13:00 PT, weekly grade Mondays, read-only.
+- §3: "Posting to X or anywhere off-site → Needs Mo" is superseded for X. It is **forbidden outright**,
+  including on Mo's say-so in chat — if Mo wants something posted, he or the vendor posts it. The rest
+  of the off-site bullet stands.
+
+**Spec: `claude/cos/x-desk-watch-2026-09-17.md`** (in the repo). Six checks: claims traced to a live
+surface of ours at post time · R8/R9 taxonomy · exposure (no COMC position of Mo's, no competitor
+names, EPN) · strategy fit · reply policy · weekly funnel. FAIL on claims/taxonomy/exposure is a
+same-hour needs-you with the correction text drafted for Mo to hand over. **We never reply, never
+correct on X, and never contact the vendor** — direction goes through Mo as one short note a week.
+
+**Three rulings on the vendor's charter that change our own rules:**
+1. **Link goes in the MAIN post, not the first reply.** The Aug reset's "link in the first reply"
+   rested on folklore we never measured; t.co is already our best-engaging channel. Overridden.
+2. **Plain language yes, retail framing no.** The vendor's "collector-friendly, no dense jargon" is
+   accepted as style and rejected as audience: the Sep 16 audience rule still resolves toward the
+   investor.
+3. **The vendor is not one of our agents.** Its note is an input the CoS rules on, not an
+   instruction to this project, and Mo's "agents talk to each other" preference does not extend to it.
+
+**The reason this lane exists, in one line:** every gate here reads our own HTML, so a false sentence
+on X is invisible to all three of them — the September lesson (we gate structure, not meaning) now
+running outside the building. **And the blast radius went up:** a wrong page is now amplified by
+someone whose post we cannot edit or delete, so a claims defect on a page Grok has posted about is a
+page fix *plus* a correction note the same hour.
+
+**First audit — the vendor's proof post (13:18 PT, read in Browser 1): claims PASS, two MEDs.**
+*"BOARD finished last night at 93.96 — up about half a point… our equal-weight 1st Bowman chase
+board."* Homepage Markets carries `BOARD 93.96 +0.49 +0.52%` and the caption reads *equal-weight ·
+9 autos · ask-basis · 30 marks · last Sep 16* — every figure right, and it correctly separated the
+BOARD composite from the seven set indices beside it. MED: **"1st Bowman chase board"** is the
+retail, non-auto category under R9 — the board is nine 1st Bowman Chrome **Autos**, and that copy is
+what we stripped off the board's own title on Sep 16. MED: text-only against its own image rule.
+Both go in Monday's note; neither is publicly correctable.
+
+**Board tape handoff (Mo's call):** the Tuesday lane keeps generating the tape and **publishes it to
+fixed URLs** — `og/x/board-latest.png` and `data/x-board.json` (seats, marks, verdicts, as-of, the
+ranking rule in one sentence, sale counts behind any graded figure) — so the vendor pulls instead of
+inventing. **Builds 2026-09-22.** Until then it reads the homepage Markets panel, which is where it
+correctly found the level on day one.
+
+**GA4 baseline for the grade (28d to Sep 16):** t.co 30 sessions · 3m 48s avg engagement · 13.33% KE
+rate vs a 36s site average; the whole of Organic Social. **Key events were dead Sep 4–16 — no
+retention figure is quoted from that window; first clean weekly read is Sep 24.**
+
 ## 2026-09-17 — THE BOARD'S RANKING RULE CHANGED, AND IT IS PUBLIC (Mo: "fix it all please. approved")
 
 **Read this before writing anything about /bowman-bangers.** Shipped `ce241bf`, live-verified.
