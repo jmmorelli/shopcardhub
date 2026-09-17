@@ -297,6 +297,21 @@
 
 /* Board legend + rank-history strip */
 .board-legend{font-family:var(--fm);font-size:11px;color:var(--text-dim);line-height:1.7;background:var(--bg2);border:1px solid var(--border);padding:12px 16px;margin:0 0 24px;}
+details.board-legend{padding:0;margin:0 0 26px;}
+details.board-legend>summary{cursor:pointer;list-style:none;padding:11px 16px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);outline-offset:-2px;}
+details.board-legend>summary::-webkit-details-marker{display:none;}
+details.board-legend>summary::after{content:" \25B8";color:var(--accent);}
+details.board-legend[open]>summary::after{content:" \25BE";}
+details.board-legend>summary:hover{color:var(--text-head);}
+details.board-legend .bl-body{padding:0 16px 14px;border-top:1px solid var(--border);padding-top:12px;}
+.bb-tape{display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline;margin:12px 18px 0;padding:10px 0 0;border-top:1px solid var(--border);font-family:var(--fm);font-size:11px;line-height:1.7;color:var(--text-dim);}
+.bb-tape b{font-weight:400;text-transform:uppercase;letter-spacing:1px;opacity:.65;margin-right:6px;}
+.bb-tape .v{color:var(--text-head);font-weight:700;margin-right:5px;}
+.bb-tape .k{color:var(--accent);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+.bb-tape a{color:var(--accent);text-decoration:none;margin-left:auto;white-space:nowrap;}
+.bb-tape a:hover{text-decoration:underline;}
+@media(max-width:700px){.bb-tape{gap:4px 14px;}.bb-tape a{margin-left:0;}}
+.tape-read{margin:0 0 8px;padding-top:4px;}
 .board-legend b{color:var(--text-head);font-weight:700;}
 .rank-hist{display:inline-flex;gap:5px;align-items:center;font-family:var(--fm);font-size:10px;color:var(--text-dim);margin-top:6px;letter-spacing:0.5px;}
 .rank-hist .rh-cell{background:var(--bg3);border:1px solid var(--border);padding:1px 6px;color:var(--text);}
@@ -1057,26 +1072,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <section style="border-top:none; padding-top:0;">
     <div class="section-eyebrow">Ranked by Upside + Demand</div>
     <h2>Top 5 Prospects to Chase in 2026 Bowman</h2>
-    <p class="section-intro">A prospect&rsquo;s <strong>1st Bowman Chrome</strong> is his first Chrome card. His <strong>1st Bowman Chrome Autograph</strong> is the on-card auto &mdash; a different card with a different market, and a player with the first does not automatically get the second. <strong>This board ranks the autos.</strong> The base 1st Bowman Chrome is the retail value pick; it is priced on each player&rsquo;s page, not here. Both are issued before a prospect earns a major-league RC designation. These are the names driving the most activity in the 2026 class.<a href="/best-baseball-cards-under-50">best baseball cards under $50</a>.</p>
-
-    <!-- Legend: define every convention used on this board, in the document.
-         Costs nothing, removes all ambiguity, and signals the numbers were
-         built deliberately rather than eyeballed. -->
-    <div class="board-legend">
-      <b>How to read this board.</b>
-      Players are ranked on two price ladders together &mdash; what the raw 1st Bowman Chrome Auto sells for AND what the PSA 10 sells for. A higher raw print alone doesn't take the top seat: a name unseats #1 only by out-pricing him on <em>both</em> ladders (that's why Kim's $131 raw sits at #2 under Holliday's $111 &mdash; Holliday's PSA 10 leads $720 to $629).
-      <b>Sold</b> = a real completed sale (SportsCardsPro). <b>Asking</b> = what sellers are listing at on eBay tonight — always higher than sold, never a price you should pay.
-      <b>PSA 10</b> = the graded copy's sold price.
-      <b>▲▼</b> = moved up or down since last week.
-      Every price carries the date we read it. When a card has no real sale to point to, we say so instead of guessing.
-      <b>Our calls are long-hold calls.</b> A Buy here means we think you'll be glad you own the card a year from now — not that it goes up next week. Every call is graded at 6 and 12 months on <a href="/track-record">the Scorecard</a>.
-    </div>
+    <p class="section-intro">Ranked on two ladders together: what the raw <strong>1st Bowman Chrome Auto</strong> sells for, and what the PSA 10 sells for.</p>
 
 
-    <!-- 01 ETHAN HOLLIDAY -->
-    <div class="alert-bar" style="margin:0 0 28px;">
-  &#9889; <strong>Sep 15 board: Gonzales takes #4 from Florentino on the clock this page published Sep 11, Holliday &minus;1.9% to $104 is the biggest move on the board in either direction, and Kim has now gone 41 days without a printed sale.</strong> (SportsCardsPro raw solds.) This was a flat week on the tape and the flatness is the story: three of the five names printed the same number they printed Sep 11, to the cent. <strong>Top:</strong> nothing on the board rose more than <strong>Fischer +1.0%</strong> ($146.80 &rarr; $148.32), and his graded print did not move at all &mdash; the +8.3% jump in his <em>ask</em> mark ($187 &rarr; $202.50, on 4 listings) is the number people will quote and it is not a sold price. <strong>Bottom:</strong> <strong>Holliday &minus;1.9%</strong> ($106 &rarr; $104.00), which is the smallest weekly bottom this board has printed since June, with the PSA 10 pinned at $720 a sixth week and 27 sales logged in 30 days. <strong>The seat change:</strong> Sep 11 this page said that if Gonzales held his raw edge on the next run he takes #4. He printed $92.00 against Florentino&rsquo;s $70.00 again, so <strong>Gonzales is #4 and Florentino is #5</strong> &mdash; the second reorder in two runs to resolve on a condition we published in advance rather than on a judgment call. Florentino still leads the graded ladder $492 to $425, which is why it is a seat change and not a verdict change. <strong>The Bowman Chrome question is settled, and the answer is that it does not apply.</strong> The published 2026 Bowman Chrome checklist runs 204 cards &mdash; 100 Chrome Prospects and 104 Chrome Prospect Autographs &mdash; and <em>not one of the five names on this board has an autograph in it</em>. Holliday and Arquette appear only as base prospects, and those are not 1st Bowman cards either, because their firsts were May&rsquo;s paper Bowman. We have been carrying a break-condition on this since Sep 8 that said a Chrome auto printing below the paper card would make these ranks wrong. There is no Chrome auto. The May CPA card is the benchmark for this class permanently, and the ranks on this page do not rest on a transition that was never coming. <strong>What is worth watching instead:</strong> the gap between what people ask and what people pay. Fischer $202.50 asked against $148.32 sold, Kim $200.74 asked against a $131.25 quote that is 41 days old, Gonzales $150 against $92.00. Three of the top four now carry ask marks 37% to 63% above their last sold print, on four verified listings each. That is a thin tape quoting itself, and we are naming it as a fact rather than building a thesis on it. The per-set <a href="/bowman-chrome-2026-index">BCB26 index</a> activated Sep 14 at 100.00 and printed its first move Sep 15: <strong>95.67, &minus;4.3%</strong> on an ask basis, labeled &mdash; the Chrome chase basket giving back more in one day than this whole board gave back in a week. Every call graded at 6 and 12 months on <a href="/track-record">the Scorecard</a>.
-</div>
+
 
 <!-- THE BOARD — compact ranked table, built at runtime from the entries below (nothing here is typed twice).
      Rank moves since the reader's last visit animate (FLIP) and wear a "was #n" badge. -->
@@ -1142,6 +1141,16 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="bb-board-title">The <em>Board</em></div>
     <div class="bb-board-note" id="bb-board-note">Ranked by what sells &middot; &#9650;&#9660; = moved since your last visit</div>
   </div>
+  <!-- TAPE STRIP — the three numbers from this week's read. Full column below the board at #tape.
+       Added 2026-09-17 (Mo: too much text above the board). Tuesday lane: update these three
+       cells when you write the column; they are the only numbers duplicated on this page. -->
+  <div class="bb-tape" data-prices-updated="2026-09-15">
+    <span class="k">Sep 15 tape</span>
+    <span><b>Top</b><span class="v">Fischer +1.0%</span> $148.32</span>
+    <span><b>Bottom</b><span class="v">Holliday &minus;1.9%</span> $104.00</span>
+    <span><b>Seat</b><span class="v">Gonzales takes #4</span></span>
+    <a href="#tape">Full read &darr;</a>
+  </div>
   <div class="tbl-scroll">
     <table class="bb-table" aria-describedby="bb-board-note">
       <thead><tr>
@@ -1155,7 +1164,31 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <tbody id="bb-rows"></tbody>
     </table>
   </div>
-  <div class="bb-board-note" style="padding:8px 18px 14px;">Set index: <a href="/bowman-chrome-2026-index" style="color:var(--accent);">BCB26 &mdash; 2026 Bowman Chrome</a> &middot; pre-activation, streets Sep 9 &middot; the board is the cross-set instrument, the index is the set</div>
+  <div class="bb-board-note" style="padding:8px 18px 14px;">Set index: <a href="/bowman-chrome-2026-index" style="color:var(--accent);">BCB26 &mdash; 2026 Bowman Chrome</a> &middot; live &mdash; 95.67 on Sep 15, &minus;4.3% since the Sep 14 inception &middot; the board is the cross-set instrument, the index is the set</div>
+</div>
+
+<!-- HOW TO READ — reference, not reading. Collapsed by default so the board is the first thing
+     on the page. Moved below the board and made a disclosure on 2026-09-17 (Mo). Content unchanged. -->
+<details class="board-legend">
+  <summary>How to read this board</summary>
+  <div class="bl-body">
+      Players are ranked on two price ladders together &mdash; what the raw 1st Bowman Chrome Auto sells for AND what the PSA 10 sells for. A higher raw print alone doesn't take the top seat: a name unseats #1 only by out-pricing him on <em>both</em> ladders (that's why Kim's $131 raw sits at #2 under Holliday's $111 &mdash; Holliday's PSA 10 leads $720 to $629).
+      <b>Sold</b> = a real completed sale (SportsCardsPro). <b>Asking</b> = what sellers are listing at on eBay tonight — always higher than sold, never a price you should pay.
+      <b>PSA 10</b> = the graded copy's sold price.
+      <b>▲▼</b> = moved up or down since last week.
+      Every price carries the date we read it. When a card has no real sale to point to, we say so instead of guessing.
+      <b>Our calls are long-hold calls.</b> A Buy here means we think you'll be glad you own the card a year from now — not that it goes up next week. Every call is graded at 6 and 12 months on <a href="/track-record">the Scorecard</a>.
+  </div>
+</details>
+
+<!-- THIS WEEK ON THE TAPE — the weekly column. Lived above the board until 2026-09-17; moved
+     here on Mo's call ("too much text above the board"). The Tuesday lane rewrites the .alert-bar
+     below and the .bb-tape strip in the board head. Nothing else on this page carries these numbers. -->
+<div id="tape" class="tape-read">
+  <div class="section-eyebrow">This Week On The Tape &middot; Sep 15, 2026</div>
+  <div class="alert-bar" style="margin:10px 0 28px;">
+  &#9889; <strong>Sep 15 board: Gonzales takes #4 from Florentino on the clock this page published Sep 11, Holliday &minus;1.9% to $104 is the biggest move on the board in either direction, and Kim has now gone 41 days without a printed sale.</strong> (SportsCardsPro raw solds.) This was a flat week on the tape and the flatness is the story: three of the five names printed the same number they printed Sep 11, to the cent. <strong>Top:</strong> nothing on the board rose more than <strong>Fischer +1.0%</strong> ($146.80 &rarr; $148.32), and his graded print did not move at all &mdash; the +8.3% jump in his <em>ask</em> mark ($187 &rarr; $202.50, on 4 listings) is the number people will quote and it is not a sold price. <strong>Bottom:</strong> <strong>Holliday &minus;1.9%</strong> ($106 &rarr; $104.00), which is the smallest weekly bottom this board has printed since June, with the PSA 10 pinned at $720 a sixth week and 27 sales logged in 30 days. <strong>The seat change:</strong> Sep 11 this page said that if Gonzales held his raw edge on the next run he takes #4. He printed $92.00 against Florentino&rsquo;s $70.00 again, so <strong>Gonzales is #4 and Florentino is #5</strong> &mdash; the second reorder in two runs to resolve on a condition we published in advance rather than on a judgment call. Florentino still leads the graded ladder $492 to $425, which is why it is a seat change and not a verdict change. <strong>The Bowman Chrome question is settled, and the answer is that it does not apply.</strong> The published 2026 Bowman Chrome checklist runs 204 cards &mdash; 100 Chrome Prospects and 104 Chrome Prospect Autographs &mdash; and <em>not one of the five names on this board has an autograph in it</em>. Holliday and Arquette appear only as base prospects, and those are not 1st Bowman cards either, because their firsts were May&rsquo;s paper Bowman. We have been carrying a break-condition on this since Sep 8 that said a Chrome auto printing below the paper card would make these ranks wrong. There is no Chrome auto. The May CPA card is the benchmark for this class permanently, and the ranks on this page do not rest on a transition that was never coming. <strong>What is worth watching instead:</strong> the gap between what people ask and what people pay. Fischer $202.50 asked against $148.32 sold, Kim $200.74 asked against a $131.25 quote that is 41 days old, Gonzales $150 against $92.00. Three of the top four now carry ask marks 37% to 63% above their last sold print, on four verified listings each. That is a thin tape quoting itself, and we are naming it as a fact rather than building a thesis on it. The per-set <a href="/bowman-chrome-2026-index">BCB26 index</a> activated Sep 14 at 100.00 and printed its first move Sep 15: <strong>95.67, &minus;4.3%</strong> on an ask basis, labeled &mdash; the Chrome chase basket giving back more in one day than this whole board gave back in a week. Every call graded at 6 and 12 months on <a href="/track-record">the Scorecard</a>.
+</div>
 </div>
 <script>
 (function () {
@@ -2074,6 +2107,12 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div class="section-eyebrow">Related Reading</div>
     <h2>More From ShopCardHub</h2>
     <div class="related-grid">
+      <div class="related-card">
+        <div class="related-tag">Value Picks</div>
+        <div class="related-title">Best Baseball Cards Under $50</div>
+        <div class="related-desc">The board is the investor list. This is the other end of it &mdash; what is worth owning in 2026 baseball when the budget is two figures.</div>
+        <a href="/best-baseball-cards-under-50" class="related-link">Read Guide &rarr;</a>
+      </div>
       <div class="related-card">
         <div class="related-tag">Premium Prospects</div>
         <div class="related-title">2026 Bowman Sapphire Edition</div>
