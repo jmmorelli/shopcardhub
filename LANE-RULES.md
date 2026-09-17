@@ -137,6 +137,28 @@ easiest wrong finding to make and the most expensive to read, because it reads l
 
 ---
 
+## R8 · 2026 Bowman and 2026 Bowman Chrome are different products — check which one you mean
+
+**May's 2026 Bowman** holds the 1st Bowman Chrome autos of the board class — Holliday `#CPA-EH`,
+Arquette `#CPA-AA`, Fischer, Florentino, Kim — and their 1st Bowman Chrome base cards
+(Holliday `#BCP-1`, Arquette `#BCP-40`). **September's 2026 Bowman Chrome** is a different set with a
+mostly international 1st class (Asigen, Gomez, Renteria, Hernandez); the board names that appear in
+it do so as **returning** cards with no 1st logo — Holliday is `#BCP-209` there, Arquette `#BCP-174`.
+A player gets one 1st Bowman Chrome and one 1st Bowman Auto, never a second of either.
+
+**Before publishing a card number, a set name or a link, say out loud which of the two products it
+is.** Wrong-product claims are the easiest thing for the hobby to catch and the most expensive to
+our credibility.
+
+*Origin: three instances in one night, 2026-09-16. The Holliday guide's own explainer said "two
+different cards carry the Holliday name in 2026 Bowman Chrome" when both cards it named are May's;
+a build session could not tell whether the tracked base was `#BCP-1` or `#BCP-209` and escalated it
+as a contradiction when both records were right; and a link-earning post drafted for r/baseballcards
+was titled "2026 Bowman Chrome 1st autos" over three May cards and linked the September index page.
+None of the three was a data error. All three were the same naming collision.*
+
+---
+
 ## Standing evidence rules (adopted from lanes' own self-reports)
 
 - **A diff claim from a hand-picked file list is not a diff claim.** `git diff --name-only
