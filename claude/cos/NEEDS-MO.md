@@ -14,7 +14,26 @@ them."
 
 ---
 
-## Open — 2 items, neither urgent
+## Open — 3 items. ONE IS A DO-NOT.
+
+- **⚠ DO NOT POST THE 151 LINK POST.** `claude/recaps/link-post-sv151-2026-09-17.md` was drafted
+  at 05:55 on 2026-09-17 and marked *"Fine to post any time this week."* **Hold it.** It is a
+  disclosed-builder r/PokemonTCG post whose hook is a prediction we got wrong, published *with the
+  receipt attached* — and the receipt does not exist. Its notes say *"Every number is on the live
+  page … If someone checks, it matches."* It does not: `shopcardhub.com/indices` returns 200 and
+  contains the string "151" zero times, and six candidate 151 URLs all 404. **The post is good and
+  the hook is right; the link is wrong.** It unblocks the day the rebuilt index is live.
+
+- **✅ 151 PATH A IS CLOSED — nothing further for you on it.** *(2026-09-17, desktop-linked session,
+  Mo present.)* We got into `~/Projects/shopcardhub` and ran the check. **The Sep 15 SV151 work is
+  not there and never was.** `tools/build-sv151.mjs`, `scarlet-violet-151-index.html` and an
+  `SV151` key in `data/indices.json` are absent from your clone *and* from a clone of origin taken
+  the same minute (R7 satisfied). Your clone was also three days stale (`edb8b15` vs origin
+  `9e2d2b2`), so that session was never on this machine — it died with its sandbox. **Decision,
+  CoS-owned, no input needed: Path B.** Rebuild from
+  `claude/cos/sector-index-rulebook-2026-09-15.md`; **Sep 15 is not a valid inception date**
+  (forward-start, no backfill), so inception is the day the rebuilt index first marks. STATE is
+  corrected and its Sep 15 SV151 figures are now labelled unverified.
 
 - **Off-site link-earning posts.** Mo posted one to **Reddit → the Pitch Black page** (~Sep 14).
   One draft remains ready to paste: `claude/recaps/link-post-2026-09-14.md` (r/baseballcards, the
@@ -68,3 +87,10 @@ them."
 - **Fischer verdict — RULED "engine wins"** (Sep 15). Execution queued with the Content Editor.
 - **SV151 price basis, Vault zero-knowledge sync, the triggered Signal Alert email, the COMC
   pullback** — all ruled Sep 15–16 and in `STATE.md`.
+
+## Lane discipline — logged 2026-09-17
+
+The 05:55 session wrote its SV151 findings into the claude.ai Project copy of this file **only**.
+The repo copy — the canonical one under LANE-RULES — still read "2 items, neither urgent" when the
+desktop session opened it at 13:00 PT, so the held post and the parked Path A check existed in one
+copy and not the other for seven hours. **Both copies are written in the same run or neither is.**

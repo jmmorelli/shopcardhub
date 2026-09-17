@@ -2113,6 +2113,16 @@
      "gates": "audit-prices FAIL 0 / WARN 62; audit-site FAIL 0 / WARN 3; audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected); first-bowman clean",
      "liveVerified": "2026-09-17 — every page down to a single footer COMC link (About keeps 2), eBay links intact, new h1 and title serving, IndexNow 200 on 78 URLs",
      "note": "Tier 4 (/research + sitemap, Gonzales dual-spelling query, three items closed as not-defects), Tier 1.3 (72 COMC in-body units), Tier 2 (homepage coverage overclaim). Integrity Watch lane created as a daily cloud task."
+    },
+    {
+     "date": "2026-09-17",
+     "commits": [
+      "5fbedfb"
+     ],
+     "by": "CoS desktop-linked session (Mo in chat: \"too much text\" above the Bangers board; layout option picked by Mo)",
+     "gates": "re-run on the pushed tree, fresh clone at 9e2d2b2: audit-prices FAIL 0 / WARN 62 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 1 — all three exactly at the 2026-09-16 baseline",
+     "liveVerified": "2026-09-17 (curl -L /bowman-bangers: bb-tape strip, #tape section and the collapsed legend all present; 'pre-activation, streets Sep 9' gone; 29 visible words between the H2 and the board, was 851)",
+     "note": "/bowman-bangers reorder only — board first, weekly column moved below it as #tape, legend collapsed below the board, orphan /best-baseball-cards-under-50 link rehomed to Related Reading. Same commit fixed a live contradiction: the set-index note still said BCB26 'pre-activation, streets Sep 9' while the column below it said BCB26 activated Sep 14 (indices.json: status live, inception 2026-09-14, 95.67 on 09-15). TUESDAY LANE: the weekly column is still div.alert-bar, unchanged target, now inside #tape; it now ALSO owns the three cells in div.bb-tape in the board head (top / bottom / seat change) — the only numbers duplicated on the page."
     }
    ]
   },

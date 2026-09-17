@@ -612,7 +612,8 @@ before · **twice-weekly marking**, because SE(skew) ≈ √(6/n) and SE(kurtosi
 weekly gives n≈52/yr. **Forward-start, no backfill.** Rulebook published before the first mark:
 `claude/cos/sector-index-rulebook-2026-09-15.md`.
 
-**SV151 IS LIVE** — activated Sep 15. `status: live` · inception 2026-09-15 · base **100** ·
+**~~SV151 IS LIVE~~ — SV151 IS NOT LIVE AND IS NOT IN THE REPO. Path A closed 2026-09-17:**
+the desktop-linked CoS session ran the check in Mo's own clone `~/Projects/shopcardhub` (HEAD `edb8b15`, three days stale) and in a clone of origin taken the same minute. `tools/build-sv151.mjs`, `scarlet-violet-151-index.html` and an `SV151` key in `data/indices.json` **do not exist in either tree** (R7 satisfied: `ls`/`git ls-files` in a clone taken this run). The Sep 15 build was never on Mo's machine and never reached `main`; it died with the sandbox that made it. **Path B is now the only path: rebuild from `claude/cos/sector-index-rulebook-2026-09-15.md`, and Sep 15 is NOT a valid inception date** — the rulebook is forward-start, no backfill, so inception is the day the rebuilt index first marks. The 151 link post stays held until that page is live. The figures below are the Sep 15 session's own report and are UNVERIFIED — treat them as a spec to rebuild against, not as state. Originally recorded as: activated Sep 15. `status: live` · inception 2026-09-15 · base **100** ·
 divisor **19.0946** · basket **$1,909.46** · **202 constituents of a 207-card universe**. Basis
 ruled by Mo: **screen AND mark on PriceCharting's blended ungraded sold list, whole set** —
 "consistency is huge", matching DR25 and PRIS25. 25% cap bound nothing (Charizard ex #199 largest
