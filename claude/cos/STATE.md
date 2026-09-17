@@ -182,6 +182,84 @@ the whole of that channel — 30 sessions / 28 days at **3m 48s** average engage
 key-event rate, against a 36s site average. It is the best-engaging channel on the site by a wide
 margin on a small n. Nothing on Reddit, ever.
 
+## OVERNIGHT RUN — 2026-09-16/17 (Mo asleep, Tiers 1-4 authorised)
+
+**Shipped, all gated FAIL 0 and live-verified.** `4413820` → `f8ab3af` → `0e29a65`.
+
+**Tier 1.3 — the 72 in-body COMC units are gone.** Inventory first: 169 COMC anchors across 93
+pages. Removed 38 `<a class="related-card">`, 22 `<div class="product-item">`, 11
+`<div class="related-card">`, plus the `/topps-finest-baseball` prose CTA (advice kept) and the
+home footer's four-link COMC column normalised to the single link every other page carries. **Kept:**
+the 91 standard footer links and About's two mentions — About legitimately describes the business.
+Every removal was a whole unit taken with a balanced-tag scanner; div and anchor counts balance on
+all 103 pages; the diff is deletions only outside the two named edits. eBay links untouched.
+
+**Tier 2 — the homepage stopped overclaiming.** The `<h1>` read *"Every set priced. Pick your
+cards."* directly above the stamp *"31/34 marked."* Now *"Every card we price, priced every night."*
+Title, meta, og ×2 and JSON-LD moved off "Guides, Prices & Where to Buy" onto the investor (R9).
+
+**Tier 4 — two real, three closed as already-done-or-never-real.** `/research` is indexable and in
+the sitemap (77→78). **The Gonzales query fix is the one that matters:** the `queryNote` said *"Topps
+and MLB.com print Gonzales; eBay sellers list Gonzalez"* and kept the query on `gonzalez` alone. The
+marketplace is the other way round — a live read of 30 titles returned **gonzales 28, gonzalez 3**.
+The single-spelling query returned 3 listings; the dual form returns 30, of which **18 pass the full
+filter**. Rank #8 has been pinned at 4 verified asks — one above the floor, four below a call —
+**purely on spelling.** Query now carries both, `titleMust` is the prefix `gonzal` plus `cpa-jg`,
+label unchanged per Topps/MLB. *I nearly "fixed" the label off the set checklists before reading the
+DO-NOT-FIX note; the note was right about the official spelling and wrong about the marketplace, and
+both halves are now on the record.*
+
+**Closed rather than "fixed" — the queue was stale:** the `newsletter_signup` capture on `/` is
+byte-identical to its pre-rebuild version (`git show 4eff6c7^`) and the form renders on production,
+so nothing was dropped; the Fischer verdict already reads Hold and the engine has Fischer at HOLD,
+so page and engine agree; the Rutschman price exception already reads "the pop has round-tripped."
+**Three of five Tier-4 items were not defects.** That is how lanes waste runs, and it is why the
+Integrity Watch below checks the ledger before filing.
+
+## NEW LANE — INTEGRITY WATCH (created 2026-09-17, daily 05:00 PT, cloud)
+
+Mo: *"For all tier 3 items, I feel like these should be a task of an existing or new agent… You are
+in charge of the site and our public face."* Created as a cloud scheduled task, automatic approval,
+find-and-file only — it never fixes, never pushes, never touches git beyond reading.
+
+**Part A — instruments.** Feed card counts, numeric marks, signal/gated counts, live index cadence
+and auction closes, each against its own trailing 14-observation median. Zero or a >60% drop is a
+FAIL. **GA4 cannot be read from a cloud run** — that is exactly how the 13-day key-event blackout
+survived — so the lane instead checks the date of the last recorded GA4 read in this file and files
+**HIGH if it is more than 7 days old.** The absence of looking is now itself detectable.
+
+**Part B — claims.** Six live pages a run, rotating monthly, always including `/` and
+`/bowman-bangers`: a figure labelled "sold" that is not a dated transaction, "what buyers paid" over
+anything that is not a completed sale, coverage claims against the real tracked count, the R8/R9
+product-naming errors, a verdict contradicting the engine's current signal, a price past its
+`data-prices-ttl`.
+
+**Why it exists, in one line:** every gate here reads structure and none read meaning, so three
+defects in one night passed every check and the owner caught all three himself.
+
+## EMAIL PROGRAM — approved, nothing sent (`claude/cos/email-program-2026-09-17.md`)
+
+Mo approved email marketing for investor retention. **The plan says the constraint is not the
+email.** 6 subscribers on 1,182 sessions is a **0.5% capture rate**, `newsletter_signup` fired
+**once** in 28 days, and the capture sits on `/` while the investor is on `/bowman-bangers` or a
+card page. Order: move the ask to where investors already are with a provable offer ("we mark these
+cards every night — get an email the day one flips"); make the confirmation email the current board,
+dated, as proof; send the Tuesday Tape every week or cancel it. **GATE: the triggered Signal Alert
+tier (W5) is not built until 40 confirmed subscribers.** Below that it is engineering for an
+audience that does not exist. Re-read at the Oct 26 W6 re-grade; if capture is still ~0.5% after the
+ask moves, the offer is wrong and email should be abandoned rather than quietly continued.
+
+## THE VAULT — cut, do not build the mockup (`claude/cos/vault-simplify-2026-09-17.md`)
+
+The screenshot Mo sent is **AI-generated** — garbled text ("Chazizard", "Liotizon", "Nest %") and
+invented prices. Not a spec, and nothing in it is real. **It is also a picture of the problem he
+named:** 20 rows, 8 columns, 5 moving averages and a volume histogram before the user has done
+anything. Recommendation: demote the dense table to a tab and build the summary head — total value,
+change **since you were last here**, and any signal flip on a card he holds. That answers the three
+questions an investor actually has and is the same work as W2's `HOME:mine` return screen, already
+scheduled Sep 22–28. One question for Mo: the "since last here" line needs a **local-only**
+timestamp on the device — nothing server-side, no account — worth his nod before it ships.
+
 ## THE BOWMAN TAXONOMY IS NOW DOCTRINE AND A GATE (Mo, 2026-09-16) — top priority, done
 
 Mo: *"I am also getting concerned that you are getting confused about bowmans… for the BANGERS

@@ -1,6 +1,6 @@
 {
  "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
- "generated": "2026-09-16",
+ "generated": "2026-09-17",
  "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
  "agents": {
   "seeker": {
@@ -1347,6 +1347,17 @@
    "decision": "APPLIED IN PART, AND THE PART NOT APPLIED IS THE FINDING. Live /api/comps on release night: Mewtwo ex 157/128 = 0 listings, Mew ex 158/128 = 0, all singles in the 128-card set = 3 (Salamence ex 109/128 $0.99, Articuno 097 $1.79, Pikachu 031/128 $20.00), Elite Trainer Box = 3 ($175.00 single; $1,320/8 = $165.00/box; $2,060.95/10 = $206.10/box; median $175.00 = 3.5x the $49.99 MSRP). An engine block would have been an empty box on the site's #1 lander on release day, and build-guide-fold.mjs refuses to run without one. SHIPPED: a dated release-night tape merged into the release-day notice - counts as a table, labelled asks not sales, with the per-box arithmetic and a plain statement that nobody has resold this set yet. Measured at 390x844: verdict at 1.32 screens, table at 1.79, table height 505px -> 241px, vs-MSRP column moved ahead of Ask so 3.5x is visible without swiping, 0 console errors. Three cards added to the engine; the two singles carry NO slug because audit-terminal's engine-host-consistency check FAILed twice when they did - that gate worked. TRIGGER: first verified mark -> add slug, build-engine-blocks then build-guide-fold, add the /card-<id> 301, swap the static table for the live block.",
    "decidedBy": "chief-of-staff",
    "resolvedOn": "2026-09-16"
+  },
+  {
+   "id": "cos-2026-09-17-overnight",
+   "status": "applied",
+   "area": "ops",
+   "filed": "2026-09-17",
+   "by": "chief-of-staff",
+   "title": "Overnight run under Mo's Tier 1-4 authorisation: COMC in-body removal (72 units), homepage coverage overclaim, /research indexable, Gonzales dual-spelling query, Integrity Watch lane created, email program and Vault simplification proposed.",
+   "decision": "See STATE. Headline findings: (a) the Gonzales queryNote had the marketplace backwards — eBay titles run gonzales 28 : gonzalez 3, so the single-spelling query had pinned board rank #8 at 4 verified asks for weeks; dual spelling returns 18 passing listings. (b) Three of five Tier-4 items were not defects at all — newsletter_signup is byte-identical to its pre-rebuild version, the Fischer verdict already matches the engine, the Rutschman exception was already corrected. The queue, not the site, was stale. (c) The COMC inventory came to exactly 72 in-body units, matching the count in STATE. NOT DONE ON PURPOSE: the generated /coverage page (needs a real decision about what it is for versus /cards), the graded sales-table pull and the fernando-mendoza price exception (both need Chrome + SportsCardsPro), the Bowman release-guide conversion, and card-level search.",
+   "decidedBy": "chief-of-staff",
+   "resolvedOn": "2026-09-17"
   }
  ],
  "scoreboard": {
@@ -2090,6 +2101,18 @@
      "gates": "audit-prices FAIL 0 / WARN 62; audit-site FAIL 0 / WARN 3; audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected); first-bowman clean",
      "liveVerified": "2026-09-16 — curl 200, tape renders, 0 'Preorder phase'; Playwright 390x844 mobile: verdict 1.32 screens, table 1.79, 0 console errors; IndexNow 200",
      "note": "30th Celebration release night: dated tape shipped, engine block and fold deliberately NOT shipped (zero listings for both chase cards). Three cards added to the engine with a recorded trigger."
+    },
+    {
+     "date": "2026-09-17",
+     "commits": [
+      "4413820",
+      "f8ab3af",
+      "0e29a65"
+     ],
+     "by": "chief-of-staff (overnight, Mo asleep, Tiers 1-4 authorised)",
+     "gates": "audit-prices FAIL 0 / WARN 62; audit-site FAIL 0 / WARN 3; audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected); first-bowman clean",
+     "liveVerified": "2026-09-17 — every page down to a single footer COMC link (About keeps 2), eBay links intact, new h1 and title serving, IndexNow 200 on 78 URLs",
+     "note": "Tier 4 (/research + sitemap, Gonzales dual-spelling query, three items closed as not-defects), Tier 1.3 (72 COMC in-body units), Tier 2 (homepage coverage overclaim). Integrity Watch lane created as a daily cloud task."
     }
    ]
   },
