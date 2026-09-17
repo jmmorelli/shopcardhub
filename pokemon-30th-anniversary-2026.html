@@ -917,6 +917,128 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     </div>
   </div>
 </section>
+<!-- BUYBOX:START — top-of-page eBay buy module (Sep 17, 2026). EPN-tagged, live asks via /api/comps. Asks, not solds. -->
+<style>
+  .bb-wrap { max-width:1060px; margin:32px auto 0; padding:0 24px; }
+  .bb { background:linear-gradient(180deg,rgba(124,58,237,0.10) 0%,rgba(124,58,237,0) 55%),var(--bg2); border:1px solid var(--border2); border-top:3px solid var(--pb); padding:26px 26px 22px; }
+  .bb-head { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:6px; }
+  .bb-k { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--pb); display:flex; align-items:center; gap:8px; }
+  .bb-k .dot { width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 0 3px rgba(0,224,122,0.18); animation:bbpulse 2.2s ease-in-out infinite; }
+  @keyframes bbpulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  .bb h2.bb-t { font-family:var(--fd); font-size:clamp(24px,3.6vw,36px); font-weight:900; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-head); line-height:1.04; margin:6px 0 0; }
+  .bb-note { font-size:12.5px; color:var(--text-dim); line-height:1.6; margin-top:8px; max-width:660px; }
+  .bb-note strong { color:var(--text); }
+  .bb-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(232px,1fr)); gap:12px; margin-top:20px; }
+  .bb-tile { display:flex; flex-direction:column; background:var(--bg3); border:1px solid var(--border); border-left:3px solid var(--accent); padding:14px 16px 13px; text-decoration:none !important; color:var(--text); transition:border-color .15s, background .15s, transform .15s; }
+  .bb-tile:hover { background:var(--bg4); border-color:var(--border2); transform:translateY(-2px); text-decoration:none; }
+  .bb-tile.pre { border-left-color:var(--text-dim); }
+  .bb-tile.flag { border-left-width:5px; border-left-color:var(--gold); border-top:1px solid rgba(245,200,0,0.35); background:linear-gradient(180deg,rgba(245,200,0,0.11),rgba(245,200,0,0.02) 60%),var(--bg3); }
+  .bb-badge { font-family:var(--fm); font-size:9px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:var(--green); }
+  .bb-badge.pre { color:var(--text-dim); }
+  .bb-badge.flag { color:var(--gold); }
+  .bb-name { font-family:var(--fd); font-size:19px; font-weight:800; text-transform:uppercase; color:var(--text-head); line-height:1.1; margin:5px 0 8px; }
+  .bb-rows { font-family:var(--fm); font-size:11px; letter-spacing:0.4px; color:var(--text-dim); line-height:1.7; }
+  .bb-rows b { color:var(--text-head); font-weight:700; }
+  .bb-ask { color:var(--gold); }
+  .bb-cta { margin-top:11px; padding-top:10px; border-top:1px solid var(--border); font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; justify-content:space-between; }
+  .bb-tile.flag .bb-cta { color:var(--gold); }
+  .bb-tile.pre .bb-cta { color:var(--text-dim); }
+  .bb-tile:hover .bb-cta { color:var(--text-head); }
+  .bb-bar { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+  .bb-fine { font-size:11.5px; color:var(--text-dim); margin-top:14px; line-height:1.6; }
+  @media (max-width:720px){ .bb { padding:20px 16px 18px; } .bb-wrap { padding:0 16px; } .bb-grid { grid-template-columns:1fr; } }
+</style>
+<div class="bb-wrap">
+  <div class="bb">
+    <div class="bb-head">
+      <div>
+        <div class="bb-k"><span class="dot"></span>Buy It Now &middot; Live eBay Listings</div>
+        <h2 class="bb-t">Get the 30th Celebration Products</h2>
+      </div>
+    </div>
+    <p class="bb-note">Straight to live eBay listings for every 30th Celebration product. <strong>Asking prices, pulled live &mdash; not sold comps.</strong> MSRP is the official list price; anything above it is somebody&rsquo;s ask. Our rule stands: <strong>MSRP or the next wave.</strong></p>
+
+    <div class="bb-grid" id="bbGrid">
+      <a class="bb-tile flag" data-q="pokemon 30th celebration elite trainer box" data-req="30th|elite trainer" href="https://www.ebay.com/sch/i.html?_nkw=pokemon+30th+celebration+elite+trainer+box&LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=pokemon-30th-anniversary-2026" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buybox_click',{item:'etb',page:location.pathname})">
+        <span class="bb-badge flag">&#9733; Flagship sealed &middot; Shipping now</span>
+        <span class="bb-name">Elite Trainer Box</span>
+        <span class="bb-rows"><span>MSRP <b>$49.99</b> &middot; 9 packs</span><br><span class="bb-live">Checking live asks&hellip;</span></span>
+        <span class="bb-cta">Shop ETBs on eBay <span>&rarr;</span></span>
+      </a>
+
+      <a class="bb-tile" data-q="pokemon 30th celebration ex box" data-req="30th|ex box" href="https://www.ebay.com/sch/i.html?_nkw=pokemon+30th+celebration+ex+box&LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=pokemon-30th-anniversary-2026" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buybox_click',{item:'ex-box',page:location.pathname})">
+        <span class="bb-badge">Shipping now</span>
+        <span class="bb-name">Pok&eacute;mon ex Box</span>
+        <span class="bb-rows"><span>MSRP <b>$21.99</b> &middot; 4 packs</span><br><span class="bb-live">Checking live asks&hellip;</span></span>
+        <span class="bb-cta">Shop ex Boxes <span>&rarr;</span></span>
+      </a>
+
+      <a class="bb-tile" data-q="pokemon 30th celebration poster collection" data-req="30th|poster" href="https://www.ebay.com/sch/i.html?_nkw=pokemon+30th+celebration+poster+collection&LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=pokemon-30th-anniversary-2026" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buybox_click',{item:'poster',page:location.pathname})">
+        <span class="bb-badge">Shipping now</span>
+        <span class="bb-name">Poster Collection</span>
+        <span class="bb-rows"><span>MSRP <b>$14.99</b> &middot; 3 packs</span><br><span class="bb-live">Checking live asks&hellip;</span></span>
+        <span class="bb-cta">Shop Posters <span>&rarr;</span></span>
+      </a>
+
+      <a class="bb-tile" data-q="pokemon 30th celebration tech sticker collection" data-req="30th|sticker" href="https://www.ebay.com/sch/i.html?_nkw=pokemon+30th+celebration+tech+sticker+collection&LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=pokemon-30th-anniversary-2026" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buybox_click',{item:'sticker',page:location.pathname})">
+        <span class="bb-badge">Shipping now</span>
+        <span class="bb-name">Tech Sticker Collection</span>
+        <span class="bb-rows"><span>MSRP <b>$14.99</b> &middot; 3 packs</span><br><span class="bb-live">Checking live asks&hellip;</span></span>
+        <span class="bb-cta">Shop Stickers <span>&rarr;</span></span>
+      </a>
+
+      <a class="bb-tile pre" data-q="pokemon 30th celebration booster bundle" data-req="30th|bundle" href="https://www.ebay.com/sch/i.html?_nkw=pokemon+30th+celebration+booster+bundle&LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=pokemon-30th-anniversary-2026" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buybox_click',{item:'bundle',page:location.pathname})">
+        <span class="bb-badge pre">Wave 2 &middot; Oct 2 &middot; presale</span>
+        <span class="bb-name">Booster Bundle</span>
+        <span class="bb-rows"><span>MSRP <b>$26.94</b> &middot; ~$4.49/pack</span><br><span class="bb-live">Checking live asks&hellip;</span></span>
+        <span class="bb-cta">Cheapest pack in the set <span>&rarr;</span></span>
+      </a>
+
+      <a class="bb-tile pre" data-q="pokemon 30th celebration ultra premium collection" data-req="30th|ultra" href="https://www.ebay.com/sch/i.html?_nkw=pokemon+30th+celebration+ultra+premium+collection&LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=pokemon-30th-anniversary-2026" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buybox_click',{item:'upc',page:location.pathname})">
+        <span class="bb-badge pre">Wave 4 &middot; Nov 6 &middot; presale</span>
+        <span class="bb-name">Ultra-Premium Collection</span>
+        <span class="bb-rows"><span>MSRP <b>$179.99</b> &middot; 29+1 packs</span><br><span class="bb-live">Checking live asks&hellip;</span></span>
+        <span class="bb-cta">Only home of Classic pack <span>&rarr;</span></span>
+      </a>
+    </div>
+
+    <div class="bb-bar">
+      <a class="btn-primary" href="https://www.ebay.com/sch/i.html?_nkw=pokemon+30th+celebration&LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=pokemon-30th-anniversary-2026" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buybox_click',{item:'all-sealed',page:location.pathname})">Shop all 30th Celebration &rarr;</a>
+      <a class="btn-secondary" href="https://www.ebay.com/sch/i.html?_nkw=pokemon+30th+celebration+mewtwo+ex+157&LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=pokemon-30th-anniversary-2026" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buybox_click',{item:'mewtwo-157',page:location.pathname})">Mewtwo ex 157/128 &rarr;</a>
+      <a class="btn-secondary" href="https://www.ebay.com/sch/i.html?_nkw=pokemon+30th+celebration+mew+ex+158&LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=pokemon-30th-anniversary-2026" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buybox_click',{item:'mew-158',page:location.pathname})">Mew ex 158/128 &rarr;</a>
+      <a class="btn-secondary" href="#lineup">See the full lineup &darr;</a>
+    </div>
+
+    <p class="bb-fine">Live asks read from eBay&rsquo;s Browse API when this page loads &mdash; lowest Buy It Now, before shipping, unverified seller listings. No sold comps exist for this set yet, so nothing here is a market price. ShopCardHub earns an eBay Partner Network commission on qualifying purchases at no extra cost to you.</p>
+  </div>
+</div>
+<script>
+(function(){
+  var tiles = document.querySelectorAll('#bbGrid .bb-tile');
+  Array.prototype.forEach.call(tiles, function(t){
+    var el = t.querySelector('.bb-live');
+    var q = t.getAttribute('data-q');
+    var req = (t.getAttribute('data-req') || '').toLowerCase().split('|').filter(Boolean);
+    if (!el || !q) return;
+    fetch('/api/comps?q=' + encodeURIComponent(q) + '&limit=50&sort=price&customid=pokemon-30th-anniversary-2026')
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(j){
+        var keep = (j.listings || []).filter(function(l){
+          var s = (l.title || '').toLowerCase();
+          if (!req.every(function(w){ return s.indexOf(w) !== -1; })) return false;
+          return typeof l.price === 'number' && l.price > 0;
+        });
+        var ps = keep.map(function(l){ return l.price; }).sort(function(a,b){ return a - b; });
+        if (!ps.length) { el.innerHTML = '<span style="color:var(--text-dim)">No live listing right now</span>'; return; }
+        var lo = ps[0];
+        var n = ps.length;
+        el.innerHTML = 'Live ask from <b class="bb-ask">$' + lo.toFixed(2) + '</b> &middot; ' + n + ' listing' + (n === 1 ? '' : 's');
+      })
+      .catch(function(){ el.innerHTML = '<span style="color:var(--text-dim)">Live asks unavailable &mdash; see eBay</span>'; });
+  });
+})();
+</script>
+<!-- BUYBOX:END -->
 <!-- DEST:START — destination strip (Aug 21, 2026). Vault + Bowman Bangers are the destinations; this page is the on-ramp. Managed by tools/dest.py -->
 <style>
   .dest-strip { display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:1060px; margin:28px auto 0; padding:0 24px; }
@@ -1028,7 +1150,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   </section>
 
   <!-- PRODUCT LINEUP -->
-  <section>
+  <section id="lineup">
     <div class="section-eyebrow">Full Lineup · Official MSRPs</div>
     <h2>Every 30th Celebration Product, By Release Wave</h2>
     <p class="section-intro">Five staggered waves. Booster packs are not sold individually — every pack lives inside one of these products, so cost-per-pack is the number that matters.</p>
