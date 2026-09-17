@@ -6,12 +6,12 @@
   <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1 — Price Chart &amp; Verified Live Listings | ShopCardHub</title>
-  <meta name="description" content="Nightly price chart for Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1 (engine mark $4.98 as of 2026-09-14): verified live eBay listings for this exact card, auction hammers, and a ★ Track button for your Vault.">
+  <meta name="description" content="Nightly price chart for Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1 (engine mark $4.98 as of 2026-09-14): verified live eBay listings for this exact card, the auction bid watch, and a ★ Track button for your Vault.">
   <link rel="canonical" href="https://www.shopcardhub.com/card-travis-bazzana">
   <meta name="robots" content="noindex,follow">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1 — Price Chart &amp; Live Listings">
-  <meta property="og:description" content="Nightly price chart for Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1 (engine mark $4.98 as of 2026-09-14): verified live eBay listings for this exact card, auction hammers, and a ★ Track button for your Vault.">
+  <meta property="og:description" content="Nightly price chart for Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1 (engine mark $4.98 as of 2026-09-14): verified live eBay listings for this exact card, the auction bid watch, and a ★ Track button for your Vault.">
   <meta property="og:url" content="https://www.shopcardhub.com/card-travis-bazzana">
   <meta property="og:site_name" content="ShopCardHub">
   <meta name="twitter:card" content="summary_large_image">
@@ -20,7 +20,7 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="628">
   <meta name="twitter:image" content="https://www.shopcardhub.com/og/bowman.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1 — price chart","url":"https://www.shopcardhub.com/card-travis-bazzana","description":"Nightly price chart for Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1 (engine mark $4.98 as of 2026-09-14): verified live eBay listings for this exact card, auction hammers, and a ★ Track button for your Vault.","isPartOf":{"@type":"WebSite","name":"ShopCardHub","url":"https://www.shopcardhub.com"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1 — price chart","url":"https://www.shopcardhub.com/card-travis-bazzana","description":"Nightly price chart for Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1 (engine mark $4.98 as of 2026-09-14): verified live eBay listings for this exact card, the auction bid watch, and a ★ Track button for your Vault.","isPartOf":{"@type":"WebSite","name":"ShopCardHub","url":"https://www.shopcardhub.com"}}</script>
   <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/css/fonts.css">
@@ -825,8 +825,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   </section>
 
   <section class="cp-sec" id="sold">
-    <h2>What buyers paid</h2>
-    <p class="sub">Auction closes the engine records itself. Hammer capture began in early September 2026 — this fills in as auctions for this card close.</p>
+    <h2>Auction bid watch</h2>
+    <p class="sub">The engine watches live auctions and records the last bid it sees before they end. It looks once a night, so that last look lands a median of about 12 hours before the close — and eBay auctions do most of their bidding in the final minutes. Treat these as a floor: the card sold for at least this, usually more. They are not sale prices and are never blended into the mark.</p>
     <div id="cp-hammers"><div class="cp-empty">No auction close recorded for this card yet.</div></div>
   </section>
 
@@ -948,8 +948,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     var n = (b.hammers||[]).length;
     if (!n && !b.watching) return;
     box.innerHTML = '<div class="cp-hammers">' +
-      '<div class="cp-cell"><div class="l">Hammers \u00b7 30d</div><div class="v">' + n + '</div><div class="s">auction closes captured</div></div>' +
-      '<div class="cp-cell"><div class="l">Median hammer</div><div class="v">' + (b.hammerMedian!=null ? fmt(b.hammerMedian) : '\u2014') + '</div><div class="s">what buyers actually paid</div></div>' +
+      '<div class="cp-cell"><div class="l">Closed auctions \u00b7 30d</div><div class="v">' + n + '</div><div class="s">ended with a bid on them</div></div>' +
+      '<div class="cp-cell"><div class="l">Median last bid</div><div class="v">' + (b.hammerMedian!=null ? fmt(b.hammerMedian) : '\u2014') + '</div><div class="s">a floor, not the sale price</div></div>' +
       '<div class="cp-cell"><div class="l">Watching</div><div class="v">' + (b.watching||0) + '</div><div class="s">live auctions tracked nightly</div></div></div>';
   }).catch(function(){});
 

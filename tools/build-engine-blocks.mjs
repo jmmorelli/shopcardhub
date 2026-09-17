@@ -19,7 +19,7 @@
 //
 // Terminal step 1 (Sep 11 2026): the block is now the page's stat band — compact head row with the
 // mark, a 9-cell strip (signal, 30D ROC, z, σ/day, skew, kurtosis, supply, ask Q1–Q3, hammer median),
-// the chart with the hammer median as a dashed reference, a daily-return histogram, then the
+// the chart with the median last bid as a dashed reference, a daily-return histogram, then the
 // listings. Markup version class: .cp-t1 (js/engine-block.js renders both the old and new markup).
 
 import fs from "node:fs";

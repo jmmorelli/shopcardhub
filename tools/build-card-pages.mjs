@@ -250,8 +250,8 @@ const CLIENT_JS = `
     var n = (b.hammers||[]).length;
     if (!n && !b.watching) return;
     box.innerHTML = '<div class="cp-hammers">' +
-      '<div class="cp-cell"><div class="l">Hammers \\u00b7 30d</div><div class="v">' + n + '</div><div class="s">auction closes captured</div></div>' +
-      '<div class="cp-cell"><div class="l">Median hammer</div><div class="v">' + (b.hammerMedian!=null ? fmt(b.hammerMedian) : '\\u2014') + '</div><div class="s">what buyers actually paid</div></div>' +
+      '<div class="cp-cell"><div class="l">Hammers \\u00b7 30d</div><div class="v">' + n + '</div><div class="s">ended with a bid on them</div></div>' +
+      '<div class="cp-cell"><div class="l">Median last bid</div><div class="v">' + (b.hammerMedian!=null ? fmt(b.hammerMedian) : '\\u2014') + '</div><div class="s">a floor, not the sale price</div></div>' +
       '<div class="cp-cell"><div class="l">Watching</div><div class="v">' + (b.watching||0) + '</div><div class="s">live auctions tracked nightly</div></div></div>';
   }).catch(function(){});
 
@@ -297,7 +297,7 @@ function renderCard(c) {
   const last = f.latest && f.latest.last != null ? f.latest.last : null;
   const day = (latest && latest.day) || new Date().toISOString().slice(0, 10);
   const title = `${c.label} — Price Chart & Verified Live Listings | ShopCardHub`;
-  const desc = `Nightly price chart for ${c.label}${last != null ? ` (engine mark ${fmt$(last)} as of ${day})` : ""}: verified live eBay listings for this exact card, auction hammers, and a ★ Track button for your Vault.`;
+  const desc = `Nightly price chart for ${c.label}${last != null ? ` (engine mark ${fmt$(last)} as of ${day})` : ""}: verified live eBay listings for this exact card, the auction bid watch, and a ★ Track button for your Vault.`;
   const ld = { "@context": "https://schema.org", "@type": "WebPage", name: c.label + " — price chart", url: canon, description: desc, isPartOf: { "@type": "WebSite", name: "ShopCardHub", url: "https://www.shopcardhub.com" } };
   // Fallback title token for the client-side filter (only used if /api/comps card mode is unavailable):
   // the longest real word of the card name, never a rarity/prefix token.
@@ -383,8 +383,8 @@ ${nav}
   </section>
 
   <section class="cp-sec" id="sold">
-    <h2>What buyers paid</h2>
-    <p class="sub">Auction closes the engine records itself. Hammer capture began in early September 2026 — this fills in as auctions for this card close.</p>
+    <h2>Auction bid watch</h2>
+    <p class="sub">The engine watches live auctions and records the last bid it sees before they end. It looks once a night, so that last look lands a median of about 12 hours before the close — and eBay auctions do most of their bidding in the final minutes. Treat these as a floor: the card sold for at least this, usually more. They are not sale prices and are never blended into the mark.</p>
     <div id="cp-hammers"><div class="cp-empty">No auction close recorded for this card yet.</div></div>
   </section>
 
@@ -512,7 +512,7 @@ ${items.map((c) => { const f = facts(c); const last = f.latest && f.latest.last 
   <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>Card Charts — Nightly Price Lines for Every Engine-Tracked Card | ShopCardHub</title>
-  <meta name="description" content="One page per tracked card: the nightly engine mark, the price line, verified live eBay listings for that exact card, auction hammers, and a ★ Track button. 1st Bowman Chrome autos, Sapphire, and Pokémon index singles.">
+  <meta name="description" content="One page per tracked card: the nightly engine mark, the price line, verified live eBay listings for that exact card, the auction bid watch, and a ★ Track button. 1st Bowman Chrome autos, Sapphire, and Pokémon index singles.">
   <link rel="canonical" href="https://www.shopcardhub.com/cards">
   <meta name="robots" content="noindex,follow">
   <meta property="og:type" content="website">
@@ -531,7 +531,7 @@ ${items.map((c) => { const f = facts(c); const last = f.latest && f.latest.last 
     "@type": "CollectionPage",
     name: "Card Charts — Nightly Price Lines for Every Engine-Tracked Card",
     url: "https://www.shopcardhub.com/cards",
-    description: "One page per tracked card: the nightly engine mark, the price line, verified live eBay listings for that exact card, auction hammers, and a ★ Track button.",
+    description: "One page per tracked card: the nightly engine mark, the price line, verified live eBay listings for that exact card, the auction bid watch, and a ★ Track button.",
     isPartOf: { "@type": "WebSite", name: "ShopCardHub", url: "https://www.shopcardhub.com" },
     mainEntity: {
       "@type": "ItemList",

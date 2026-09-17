@@ -182,6 +182,67 @@ the whole of that channel — 30 sessions / 28 days at **3m 48s** average engage
 key-event rate, against a 36s site average. It is the best-engaging channel on the site by a wide
 margin on a small n. Nothing on Reddit, ever.
 
+## ⚠ RETRACTION — "HAMMER" PRICES ARE NOT SALE PRICES (2026-09-16, found by Mo)
+
+Mo, reading the Reddit draft: *"those numbers aren't right… autos versus non autos it appears."*
+**He was right that they are wrong. The cause is not the one he named, and it is worse.**
+
+Checked instead of defended. The auction book and the ask book run through the *same*
+`verifyListings()` with the same card: `chrome-auto` requires `/auto/` in the title, plus the card
+code and the year, on both sides. So autos and base are not being mixed. Then:
+
+**`listings-history.json`, 92 recorded "hammers", every one carrying `hammerLagMin`:**
+
+| | minutes before the auction actually closed |
+|---|---|
+| min | 91 |
+| q1 | 605 |
+| **median** | **719 — about 12 hours** |
+| q3 | 779 |
+| max | 1,416 |
+| observed within 15 min of close | **0%** |
+| observed more than 6 h out | **95%** |
+
+**These are not hammer prices. They are mid-auction bids, recorded a median of twelve hours early,
+because the engine looks once a night and eBay auctions do most of their bidding in the final
+minutes.** Florentino's $36.11 "hammer" had 21 bids on it with 11.5 hours still to run.
+
+**The independent check confirms it:** the guides-rewrite session read 7 dated eBay sold records for
+`#CPA-AA` on SportsCardsPro — **$55.00–$80.85** — while our book calls the same card $32–$57. Our
+numbers sit below the real distribution, exactly as a systematic early-read would.
+
+**WHAT IS RETRACTED, all of it written earlier tonight, none of it ever published:**
+- The ask-over-hammer medians — "Pokémon/sealed +20%, baseball singles +110%", the +74.9% pooled
+  median, the skew/kurtosis read and the Spearman(closes, gap) = +0.18 — **all computed on this
+  data. Withdrawn. Do not quote them.**
+- The **Home stat-tile spec** built on those medians. Withdrawn; nothing was built.
+- The **r/baseballcards link post**, which was entirely this finding. **Pulled.**
+- BCB26's `basisLabel` promise to *"restate to hammer basis at ≥60% SCP sold coverage"* is unsafe as
+  written and must not be executed until the capture is fixed.
+- The auction-desk line in this file — *"ask-vs-hammer gap well-sampled, sports +31%…+162%"* — was
+  the same artifact. The gap is real in direction (asks do exceed clearing prices) and wrong in size.
+
+**WHAT WAS LIVE AND IS NOW FIXED** (the site was making the false claim on 26 files):
+`<h2>What buyers paid</h2>` and **"what buyers actually paid"** under the median, on **21 card
+pages**; "Median hammer"; "Hammers · 30d / auction closes captured"; `/auctions` defining hammers as
+*"the median of auction closes we watched"*; the chart's `hammer median` reference line; and the
+meta description on 65 pages promising "auction hammers". All relabelled to **last bid seen**, with
+the 12-hour lag and the word **floor** stated on the face of it: *the card sold for at least this,
+usually more.*
+
+**THE REAL FIX, not done tonight:** capture near the close. Options are an intraday poll of watched
+auctions in their final hour (the engine is a nightly GitHub Action, so this is new work), or using
+eBay's completed-items data where available, or simply keeping this as a published floor and
+sourcing true solds from SportsCardsPro as we already do for singles. **Until one of those lands,
+no lane publishes an ask-vs-sold gap figure**, and the `/auctions` desk stands as a bid watch only.
+
+**What this cost and what it did not:** nothing wrong reached the public *as a number* — the marks,
+indices and the board were never touched by this feed, exactly as `snapshot-free.mjs` intended
+(`"OBSERVATION ONLY … Not published on the site; not yet a mark"`). What did reach the public was
+the **label**: 21 card pages told readers a mid-auction bid was what buyers paid. The instruction in
+the code was right and the surface ignored it. **A gate that compares what a feed says it is against
+what the page calls it belongs in the instrument watch.**
+
 ## 30th CELEBRATION RELEASE NIGHT (2026-09-16) — the tape shipped, the engine block did NOT
 
 The P0 read "engine block + fold at release." **Neither shipped, and the reason is the finding.**

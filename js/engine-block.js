@@ -5,7 +5,7 @@
  * the price line, the hammers and the verified live listings. Multi-instance safe.
  *
  * Terminal step 1 (v3; v4 Sep 11 2026 moves the moment math to js/engine-stats.js): the block is the page's stat band — signal, 30D ROC, z, σ/day, skew,
- * kurtosis, supply, ask Q1–Q3, hammer median — plus the hammer median as a dashed reference on
+ * kurtosis, supply, ask Q1–Q3, median last bid — plus the median last bid as a dashed reference on
  * the chart and a histogram of daily returns. σ/skew/excess-kurtosis are population moments of
  * night-over-night % returns over the whole nightly series (the engine's retSkew/retKurtosis
  * are preferred when the nightly ships them non-null). Every write is guarded by the target
@@ -103,7 +103,7 @@
       }
     });
 
-    /* 2. history chart (+ hammer median as a dashed reference when the market feed has closes) */
+    /* 2. history chart (+ median last bid as a dashed reference when the market feed has closes) */
     Promise.all([histP, quiet(mktP)]).then(function (a) {
       var h = a[0], m = a[1];
       var e = h[KEY]; var box = $('chart'); if (!e || !box) return;
@@ -128,8 +128,8 @@
       if (ref != null) {
         var inRange = ref >= lo && ref <= hi; var ry = inRange ? y(ref) : ref > hi ? T : H - B;
         rl = '<line class="ref" x1="' + L + '" x2="' + (W - R) + '" y1="' + ry.toFixed(1) + '" y2="' + ry.toFixed(1) + '"/>' +
-          '<text class="ref-l" x="' + (L + 4) + '" y="' + (ry - 4).toFixed(1) + '">hammer median ' + fmt(ref) + (inRange ? '' : ref > hi ? ' · above chart' : ' · below chart') + '</text>';
-        rlg = '<span><i class="r"></i>hammer median (' + (b.hammers || []).length + ' close' + ((b.hammers || []).length === 1 ? '' : 's') + ')</span>';
+          '<text class="ref-l" x="' + (L + 4) + '" y="' + (ry - 4).toFixed(1) + '">median last bid ' + fmt(ref) + (inRange ? '' : ref > hi ? ' · above chart' : ' · below chart') + '</text>';
+        rlg = '<span><i class="r"></i>median last bid (' + (b.hammers || []).length + ' close' + ((b.hammers || []).length === 1 ? '' : 's') + ')</span>';
       }
       box.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Nightly engine mark, ' + pts.length + ' points">' + g + '<path class="area" d="' + area + '"/><path class="sma" d="' + sl + '"/>' + rl + '<path class="line" d="' + line + '"/>' + lab + xl + '</svg>' +
         '<div class="cp-legend"><span><i></i>engine mark (trimmed low-ask, price + shipping)</span><span><i class="g"></i>30-night average</span>' + rlg + '</div>';
@@ -154,8 +154,8 @@
           '<span class="m">' + (n ? n + ' close' + (n === 1 ? '' : 's') + ' · median ' + fmt(b.hammerMedian) + ' · ' : '') + (b.watching || 0) + ' live auction' + (b.watching === 1 ? '' : 's') + ' watched nightly</span></div>';
       } else {
         box.innerHTML = '<div class="cp-hammers">' +
-          '<div class="cp-cell"><div class="l">Hammers · 30d</div><div class="v">' + n + '</div><div class="s">auction closes captured</div></div>' +
-          '<div class="cp-cell"><div class="l">Median hammer</div><div class="v">' + (b.hammerMedian != null ? fmt(b.hammerMedian) : '—') + '</div><div class="s">what buyers actually paid</div></div>' +
+          '<div class="cp-cell"><div class="l">Closed auctions · 30d</div><div class="v">' + n + '</div><div class="s">ended with a bid on them</div></div>' +
+          '<div class="cp-cell"><div class="l">Median last bid</div><div class="v">' + (b.hammerMedian != null ? fmt(b.hammerMedian) : '—') + '</div><div class="s">a floor, not the sale price</div></div>' +
           '<div class="cp-cell"><div class="l">Watching</div><div class="v">' + (b.watching || 0) + '</div><div class="s">live auctions tracked nightly</div></div></div>';
       }
     }).catch(function () {});

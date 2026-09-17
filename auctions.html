@@ -6,11 +6,11 @@
   <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>Auction Desk — Live eBay Auctions Ending Under the Mark | ShopCardHub</title>
-  <meta name="description" content="Every verified live eBay auction for the cards our price engine tracks — 1st Bowman Chrome autos, Sapphire, Pokémon index singles — with the nightly mark and recent hammers beside the current bid, sorted by time to close. Refreshed every 15 minutes.">
+  <meta name="description" content="Every verified live eBay auction for the cards our price engine tracks — 1st Bowman Chrome autos, Sapphire, Pokémon index singles — with the nightly mark and the last bid we saw on auctions that ended, beside the current bid, sorted by time to close. Refreshed every 15 minutes.">
   <link rel="canonical" href="https://www.shopcardhub.com/auctions">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Auction Desk — Live Auctions Ending Under the Mark">
-  <meta property="og:description" content="Verified live eBay auctions for every engine-tracked card, current bid vs the nightly mark and recent hammers, sorted by time to close.">
+  <meta property="og:description" content="Verified live eBay auctions for every engine-tracked card, current bid vs the nightly mark and the last bid we saw on auctions that ended, sorted by time to close.">
   <meta property="og:url" content="https://www.shopcardhub.com/auctions">
   <meta property="og:site_name" content="ShopCardHub">
   <meta name="twitter:card" content="summary_large_image">
@@ -19,7 +19,7 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="628">
   <meta name="twitter:image" content="https://www.shopcardhub.com/og/bowman.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Auction Desk — Live eBay Auctions Ending Under the Mark","url":"https://www.shopcardhub.com/auctions","description":"Every verified live eBay auction for the cards the ShopCardHub price engine tracks, with the nightly mark and recent hammers beside the current bid, sorted by time to close.","isPartOf":{"@type":"WebSite","name":"ShopCardHub","url":"https://www.shopcardhub.com"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Auction Desk — Live eBay Auctions Ending Under the Mark","url":"https://www.shopcardhub.com/auctions","description":"Every verified live eBay auction for the cards the ShopCardHub price engine tracks, with the nightly mark and the last bid we saw on auctions that ended, beside the current bid, sorted by time to close.","isPartOf":{"@type":"WebSite","name":"ShopCardHub","url":"https://www.shopcardhub.com"}}</script>
   <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/css/fonts.css">
@@ -890,7 +890,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <div class="au-crumbs"><a href="/">Home</a> <span>/</span> <a href="/cards">Card Charts</a> <span>/</span> <span>Auction Desk</span></div>
   <div class="au-eyebrow"><span class="au-live" aria-hidden="true"></span> Auction desk · live · refreshes every 15 min</div>
   <h1 class="au-title">Auctions ending <em>under the mark</em></h1>
-  <p class="au-sub">Every live eBay auction that passes the exact-card filter for the 20 cards the engine tracks, with the card's nightly mark and what buyers actually paid at recent auctions beside the current bid. Sorted by time to close. A bid under the mark is the one thing on eBay you can act on today; whether it stays under is up to the last ten seconds. Opening prices with no bids are shown, but marked as exactly that.</p>
+  <p class="au-sub">Every live eBay auction that passes the exact-card filter for the 20 cards the engine tracks, with the card's nightly mark and a floor, not the sale price at recent auctions beside the current bid. Sorted by time to close. A bid under the mark is the one thing on eBay you can act on today; whether it stays under is up to the last ten seconds. Opening prices with no bids are shown, but marked as exactly that.</p>
 
   <div class="au-strip" id="au-strip">
     <div class="au-cell"><div class="l">Live auctions</div><div class="v" id="k-count">—</div><div class="s">verified, 20 cards</div></div>
@@ -909,11 +909,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
   <div class="au-list" id="au-list"><div class="au-skel"></div><div class="au-skel"></div><div class="au-skel"></div><div class="au-skel"></div></div>
 
-  <p class="au-note" id="au-note">Mark = the engine's verified ask floor for the exact card (ask basis, re-marked nightly). Hammers = the median of auction closes we watched for that card, shown only after two or more closes. Bid + shipping is compared to each separately; they are never blended. Auctions that fail the exact-card filter (parallels, slabs, lots, other card codes) are not shown. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
+  <p class="au-note" id="au-note">Mark = the engine's verified ask floor for the exact card (ask basis, re-marked nightly). Last bids = the median of the LAST BID the engine saw on auctions for that card before they ended, shown only after two or more. The engine looks once a night, so that last look is a median of ~12 hours before the close; eBay auctions do most of their bidding in the final minutes. These are a floor, not sale prices. Bid + shipping is compared to each separately; they are never blended. Auctions that fail the exact-card filter (parallels, slabs, lots, other card codes) are not shown. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
 
   <div class="au-legend">
     <div><b>Under the mark</b>Current bid + shipping is below the engine's ask floor for the card. Solid green = someone has actually bid. Dashed "opening" = the seller's starting price with no bids yet; anyone can be first, and most of these move in the last hour.</div>
-    <div><b>vs hammers</b>The same bid against the median of closes the engine has watched for this card. Fewer than two closes and it says "no hammers yet".</div>
+    <div><b>vs last bids</b>The same bid against the median of last-seen bids on auctions for this card that ended. A floor, not a sale price &mdash; see above. Fewer than two and it says "no closed auctions yet".</div>
     <div><b>Verified</b>Title must carry the card code, the year, and none of the parallel/slab/lot words. Same filter that makes the nightly mark.</div>
     <div><b>What we don't know</b>The reserve, the snipes queued for the last ten seconds, and whether the seller's photo matches the title. Read the listing.</div>
   </div>
@@ -960,7 +960,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     if (!rows.length) { list.innerHTML = '<div class="au-empty"><b>Nothing here right now.</b> ' + (state.f==='under' ? 'No verified auction is under its card\u2019s mark at the moment \u2014 that happens; the desk refreshes every 15 minutes and most of the action is in the last hour.' : state.f==='soon' ? 'No verified auction closes in the next six hours.' : 'No verified live auctions for ' + (state.card ? 'this card' : 'the tracked cards') + ' at the moment.') + ' <a href="/cards">Card charts \u2192</a></div>'; return; }
     list.innerHTML = rows.map(function(r){ var l = left(r.endDate); var under = r.vsMark!=null && r.vsMark < 0; var opening = under && !(r.bidCount>=1); var href = HREFS[r.id] || ('/card-' + r.id);
       var vsM = r.mark ? (opening ? '<b class="o" title="Opening price, no bids yet">opening ' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>' : '<b class="' + (under?'g':'r') + '">' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>') : '<b>no mark</b>';
-      var vsH = r.hammerMedian ? '<span>' + pct(r.vsHammer) + ' vs hammers ' + fmt(r.hammerMedian) + ' (' + r.closes + ' closes)</span>' : '<span>no hammers yet</span>';
+      var vsH = r.hammerMedian ? '<span>' + pct(r.vsHammer) + ' vs last bids ' + fmt(r.hammerMedian) + ' (' + r.closes + ' closes)</span>' : '<span>no closed auctions yet</span>';
       return '<div class="au-row' + (opening?' opening':under?' under':'') + (l.soon?' soon':'') + '">' +
         '<a class="ph" href="' + esc(href) + '">' + (r.image ? '<img src="' + esc(r.image) + '" alt="" loading="lazy">' : '') + '</a>' +
         '<div class="nm"><a class="c" href="' + esc(href) + '">' + esc(r.label.split(/\s[\u2014\u2013]\s/)[0]) + '</a><span class="t" title="' + esc(r.title) + '">' + esc(r.title) + '</span><span class="sl">' + (r.seller ? esc(r.seller.username) + ' \u00b7 ' + esc(r.seller.feedbackPct) + '% (' + esc(r.seller.feedbackScore) + ')' : '') + '</span></div>' +
