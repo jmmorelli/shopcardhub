@@ -145,6 +145,37 @@ FAIL 0 the entire time it was wrong, because every price gate reads price **cell
 lived in prose and in card-strip meta. That is this lane's founding case reproduced on the flagship
 page. Proposed check shape is in the ledger.
 
+## 2026-09-17 (evening) — THE REDDIT "LINK POST" IS A ONE-LINE COMMENT AT 1 POINT, AND IT SENT NOBODY
+
+Mo supplied the URL. Read in his Chrome, then measured in GA4. **Both of this project's standing
+beliefs about the channel were wrong.**
+
+**What it actually is:** not a post. A **comment** — `r/pokemoncards`, on someone else's submission
+("nicest looking card of mega evolution so far", 559 points, 113 comments), posted 2 days ago from
+`u/BUYMYBASEBALLCARDS`. One line, ~30 words, ending in a bare link to `/pitch-black-index`.
+**Score: 1 point.** In a 113-comment thread sorted by best, that is the bottom of the page. Our notes
+called it "an off-site link post" and "the primary Google play"; it is neither. Nobody submitted
+anything.
+
+**What it sent: zero.** GA4 traffic acquisition, Session source/medium, Sep 1–17, filtered `reddit`:
+**No data available.** Not a small number — no rows at all. For scale, the entire **Referral** channel
+is **2 sessions in 17 days** against 851 total (Organic Search 459, Direct 348, Organic Social 23).
+
+**What this means for the strategy, and it is not "post more":**
+- **Problem 1 in the Business Read rests on an untested lever.** It says Google is a links game and
+  the link-earning posts are the play. The evidence for that is now: one comment, one point, zero
+  sessions — and the *other* queued post was pulled today because its numbers were retracted. **The
+  channel has never actually been tried.** A submission has never been made.
+- A bare link dropped in a comment is the weakest possible form of it. If we test this properly it is
+  a **submission** with the content in the body and the link as the receipt, in a subreddit whose
+  topic matches the page — and we judge it on referral sessions, not on whether it felt right.
+- Until that trial exists, **no plan may assume off-site links are working.** Saying "links are the
+  Google lever" is a hypothesis with zero trials, and this file is where that gets stated plainly.
+
+**Also corrected:** the channel was recorded as r/baseballcards / r/PokemonTCG and as pointing at the
+Pitch Black page from a post. It is r/pokemoncards, from a comment. `rel` was never the issue —
+reach was.
+
 ## 2026-09-17 (evening) — THE SV151 BLOCKER WAS NOT REAL. THE SCREEN IS RUN, 207/207.
 
 Mo, asked to log in to PriceCharting, said: *"I'm not sure why you can't get into price charting? I

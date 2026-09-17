@@ -11,10 +11,10 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — 1 small thing to send me, 2 do-nots, 1 parked. Everything else closed on 2026-09-17.
+## Open — nothing to do. 2 do-nots, 1 parked. Everything else closed on 2026-09-17.
 
-**The one to do:** send the CoS the URL of the Reddit post you already made. The Grok approval is
-done (Mo set it to always-approve on 2026-09-17). Everything else here is a hold or not due.
+**Nothing needs you right now.** Two do-nots (the 151 post and the r/baseballcards draft) and one
+parked item are listed below so nobody re-raises them.
 
 - **✅ DONE — the queued X post was approved, and Mo set the vendor to ALWAYS APPROVE (2026-09-17).**
   Recorded because it changes the risk model: there is no longer a human gate in front of an
@@ -89,10 +89,13 @@ done (Mo set it to always-approve on 2026-09-17). Everything else here is a hold
   **What replaces it, when we want a link post:** the board's published ranking-rule change, or the
   151 index once it is live. Both are things we can stand behind line by line.
 
-- **📨 SEND THE CoS THE URL OF THE REDDIT POST YOU ALREADY MADE** (~Sep 14, the Pitch Black page).
-  It is the only real measurement we have of whether that channel does anything — the next
-  Chrome-linked run reads the link's `rel` and the referral sessions in GA4. Thirty seconds of
-  copy-paste.
+- **✅ CLOSED — you sent the URL, and the answer is that it sent nobody.** It was a one-line
+  **comment** (not a post) in r/pokemoncards on someone else's thread, at **1 point** in a
+  113-comment thread, with a bare link to `/pitch-black-index`. GA4 Sep 1–17, source/medium filtered
+  `reddit`: **no rows at all.** The whole Referral channel is 2 sessions in 17 days. **Nothing for
+  you to do** — the lesson is the CoS's: we had been calling this "the primary Google play" on the
+  strength of a trial that was never really run. Recorded in `STATE.md`; no plan may assume off-site
+  links work until a real submission has been made and measured.
 
 - **Personal (per-subscriber) email alerts — parked, not due.** Vaults are device-local and
   encrypted, so by design we cannot email someone about *their* cards. A real personal alert list
