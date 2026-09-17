@@ -65,11 +65,20 @@ for (const page of pages) {
   if (wordCells.length)
     add(page, "WARN", "non-numeric-price", `${wordCells.length} price cell(s) with no number: ${[...new Set(wordCells)].slice(0, 6).join(" | ")}`);
 
-  // 4. WARN — stale price stamps
-  const stamps = [...html.matchAll(/data-prices-updated="(\d{4}-\d{2}-\d{2})"/g)].map((m) => m[1]);
-  for (const d of stamps) {
+  // 4. WARN — stale price stamps.
+  //    A page may shorten its own fuse with data-prices-ttl="N" on the same element as the stamp.
+  //    Added 2026-09-16: the 30th Celebration release-night tape is true for about three days —
+  //    a 21-day default is how /pokemon-30th-anniversary-2026 served 33-day-old preorder copy on
+  //    its release day in the first place. A page that makes a time-boxed claim declares the box.
+  const stampTags = [...html.matchAll(/<[^>]*data-prices-updated="(\d{4}-\d{2}-\d{2})"[^>]*>/g)];
+  const stamps = stampTags.map((t) => t[1]); // check 6 reads this
+  for (const t of stampTags) {
+    const d = t[1];
+    const ttlM = t[0].match(/data-prices-ttl="(\d{1,3})"/);
+    const limit = ttlM ? Number(ttlM[1]) : STALE_DAYS;
     const age = Math.floor((today - new Date(d)) / 86400000);
-    if (age > STALE_DAYS) add(page, "WARN", "stale-prices", `price stamp ${d} is ${age} days old (limit ${STALE_DAYS})`);
+    if (age > limit)
+      add(page, "WARN", "stale-prices", `price stamp ${d} is ${age} days old (limit ${limit}${ttlM ? ", page-declared ttl" : ""})`);
     else pagesFresh++;
   }
 

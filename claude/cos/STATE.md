@@ -225,6 +225,15 @@ ETB carries no `sealedOf` because **TH26 does not exist** (still COMING on `/ind
 that two of its three listings are multi-box lots — `TITLE_BAD_SEALED` has to hold or it marks off
 a lot.
 
+**The tape is a snapshot with a fuse, because Mo's read is that singles take a few days to list.**
+`audit-prices` check 4 now honours a page-declared **`data-prices-ttl="N"`** on the stamp element, and the
+30th tape declares **3 days**. After that the gate WARNs on that page specifically while every other page
+keeps the 21-day default. A 21-day fuse on a release-night claim is how this same page served 33-day-old
+preorder copy on its release day; a page that makes a time-boxed claim now declares the box.
+*(Negative-tested three ways: 6-day-old stamp with ttl 3 → WARN; same stamp with no ttl → silent at the
+default; and the first cut of the patch broke check 6 by removing a variable it read — caught by running
+the gate, not by reading the diff.)*
+
 **TRIGGER, recorded on each card and here:** the first night a 30th chase card carries a verified
 mark → add the `slug`, run `tools/build-engine-blocks.mjs` then `tools/build-guide-fold.mjs` on
 `pokemon-30th-anniversary-2026.html`, add the `/card-<id>` 301 to `vercel.json`, and swap the
