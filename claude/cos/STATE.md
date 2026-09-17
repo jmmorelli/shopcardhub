@@ -14,6 +14,78 @@
 > **R6 check the ledger — re-filing a settled item is a defect** · **R7 an absence claim requires
 > a fresh clone.**
 
+## 2026-09-17 — THE BOARD'S RANKING RULE CHANGED, AND IT IS PUBLIC (Mo: "fix it all please. approved")
+
+**Read this before writing anything about /bowman-bangers.** Shipped `ce241bf`, live-verified.
+
+**The rule now, in one sentence, and it is published in three places on the page:** ranks run on
+**one ladder — the last printed sold price, highest first — plus a 30-day liquidity gate**, so a
+card that has not printed a sale in 30 days cannot outrank one that has. Nothing else moves a seat:
+not the ask mark, not our verdict, and not the graded copy.
+
+**Why it changed.** `iw-2026-09-17-1` (FAIL): the board published five PSA 10 figures with no
+provenance and ranked on them. Four of the five — Fischer $538, Kim $626, Gonzales $425, Florentino
+$492 — have no verified sale anywhere on this site, and those four card pages publish no graded
+figure at all. Only Holliday's $720 does: **one** sale, Aug 6 2026. The Sep 16 "strip and re-mark"
+remediation reached three card pages and never reached the board. Worse than the figures was the
+language over them — "the graded tape did not flinch", "pinned at $720 a sixth week", "graded flat",
+"a $492.00 graded print" — all asserting a series that did not exist.
+
+**THE SEATS, as of Sep 17, on unchanged Sep 15 marks:** **1 Fischer** ($148.32, 2 sales/7d) ·
+**2 Holliday** ($104.00, 27 sales/30d) · 3 Kim · 4 Gonzales · 5 Florentino. Holliday held #1 from
+Jun 12 and lost it to the rule, not to the tape. Kim stays #3 because the gate holds his 43-day-old
+carried $131.25 below a card that is trading — **the line the Sep 15 board itself said it would have
+to draw by mid-October.** Drawn early.
+
+**NO VERDICT MOVED AND NO PRICE MOVED.** Holliday SELL, Fischer HOLD, Kim PASS, Gonzales PASS,
+Florentino BUY. Seats are ordering; verdicts are calls; the Scorecard clocks are untouched.
+
+**Standing rules that come out of this:**
+
+1. **A graded figure is published only where we can point at a dated sale.** Otherwise the page says
+   *no verified sale*. Board, card pages, alumni strips, everywhere. SportsCardsPro's grade ladder is
+   partly modelled and is never published as a sale.
+2. **Never narrate a carried value as a series.** "Flat", "pinned", "held", "did not flinch", "a
+   sixth straight week" all assert repeated observation. If there is one sale, say one sale.
+3. **The board's rule is published, and it is one rule.** Before this, the hero said one thing
+   ("liquidity and the nightly verified-ask mark"), the board header JS hardcoded another ("ranked
+   by what sells", overwriting the static markup), and the legend a third ("two price ladders
+   together"). If you change the rule, change all three, and the header's copy lives in the JS at
+   `bb-board-note`, not only in the markup.
+4. **Corrections are dated and visible.** The method change is a block above the weekly column; the
+   Sep 15 column carries its own struck correction. We do not silently re-rank.
+
+**`iw-2026-09-17-3` (MED) applied the same commit:** `/indices` asserted "Sold-Basis … never
+estimated" in its banner, subline, meta description, og description and JSON-LD while BCB26 and
+BOW26 are 100% ask-priced (18 of 271 basket rows). All five surfaces now say five tickers mark on
+sold comps and two on verified asks, labelled per ticker. No index changed.
+
+**`iw-2026-09-17-4` is OPEN and it is the real lesson:** all three gates passed /bowman-bangers at
+FAIL 0 the entire time it was wrong, because every price gate reads price **cells** and these claims
+lived in prose and in card-strip meta. That is this lane's founding case reproduced on the flagship
+page. Proposed check shape is in the ledger.
+
+## 2026-09-17 — SV151: Path A closed, universe rebuilt, screen still blocked
+
+Path A is dead (see `NEEDS-MO.md`). **Path B terms are ruled: inception is the rebuild date, not
+Sep 15.** What exists now: `data/sv151-universe.json` — **all 207 slots** with PriceCharting product
+ids, URLs and headline figures, pulled 2026-09-17, plus the pagination and variant-slot rules needed
+to reproduce it. Corroboration the source is right: today's headline sum over 207 slots is
+**$1,905.79** against the Sep 15 run's **$1,909.46** over 202. Two days and five slots apart, 0.2%.
+
+**The screen is not run and cannot be from here.** Completed-auction rows are not in the item page
+HTML and are not reachable unauthenticated — `/offers` returns for-sale offers, and `status=sold`,
+`sold=true`, `sold=1` and `type=sold` each return no sold row. It needs Mo's authenticated
+PriceCharting Chrome session, **which is the same wall as the P0 SportsCardsPro graded sales-table
+pull. Solve them once, not twice.** Full spec: `claude/cos/sv151-rebuild-spec-2026-09-17.md`.
+
+**`claude/cos/sector-index-rulebook-2026-09-15.md` is now in the repo**, with a header marking every
+SV151 activation figure in it as the Sep 15 run's own report rather than state. It was Project-only,
+which is the same defect that lost the Sep 15 work and left NEEDS-MO stale for seven hours.
+
+**The 151 Reddit post stays held** until the rebuilt page is live and all five of its numbers are
+re-checked against it line by line.
+
 ## GATE BASELINES (re-stated 2026-09-16 evening — the old numbers are dead)
 
 | Gate | FAIL | WARN | Composition |

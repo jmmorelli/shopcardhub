@@ -1358,6 +1358,42 @@
    "decision": "See STATE. Headline findings: (a) the Gonzales queryNote had the marketplace backwards — eBay titles run gonzales 28 : gonzalez 3, so the single-spelling query had pinned board rank #8 at 4 verified asks for weeks; dual spelling returns 18 passing listings. (b) Three of five Tier-4 items were not defects at all — newsletter_signup is byte-identical to its pre-rebuild version, the Fischer verdict already matches the engine, the Rutschman exception was already corrected. The queue, not the site, was stale. (c) The COMC inventory came to exactly 72 in-body units, matching the count in STATE. NOT DONE ON PURPOSE: the generated /coverage page (needs a real decision about what it is for versus /cards), the graded sales-table pull and the fernando-mendoza price exception (both need Chrome + SportsCardsPro), the Bowman release-guide conversion, and card-level search.",
    "decidedBy": "chief-of-staff",
    "resolvedOn": "2026-09-17"
+  },
+  {
+   "id": "iw-2026-09-17-1",
+   "status": "applied",
+   "area": "pricing-integrity",
+   "filed": "2026-09-17",
+   "by": "integrity-watch",
+   "title": "FAIL — /bowman-bangers published five PSA 10 figures with no provenance and ranked cards on them; the Sep 16 graded-ladder remediation reached three card pages and never reached the board.",
+   "decision": "APPLIED 2026-09-17 in ce241bf, Mo in chat (\"fix it all please. approved\"). Four of five graded figures had no verified sale anywhere on the site (Fischer $538, Kim $626, Gonzales $425, Florentino $492); only Holliday's $720 does, one sale dated Aug 6 2026. Graded figures now print only with a dated sale behind them; the rest read 'no verified sale'. All sale-implying language removed ('the graded tape did not flinch', 'pinned at $720 a sixth week', 'graded flat', 'a $492.00 graded print', 'parked at $425.00', 'held $492.00 for a fifth'). RANKING RULE CHANGED, Mo choosing between three options in chat: the graded ladder is removed as a ranking input and ranks now run on the last printed sold price plus a 30-day liquidity gate. Two seats moved on unchanged Sep 15 marks — Fischer #1, Holliday #2; Kim stays #3 because the gate holds his 43-day-old carried $131.25 below a card trading 27 times a month, which is the line the Sep 15 board said it would have to draw by mid-October. No verdict and no price moved. The one published rule now appears in all three places that previously stated different ones (hero, board header JS at bb-board-note, legend). Change disclosed on-page and dated; the Sep 15 column carries its own struck correction rather than being silently rewritten. Also corrected: the alumni strip's claim that Arquette's PSA 10 'halved to $125' — his one dated PSA 10 sale is $76.00, Aug 21 2026. GATE GAP, OPEN: all three gates passed this page FAIL 0 throughout, because audit-prices check 7 sold-provenance reads price CELLS and these figures lived in prose and card-strip meta. See iw-2026-09-17-4."
+  },
+  {
+   "id": "iw-2026-09-17-2",
+   "status": "in-progress",
+   "area": "indices",
+   "filed": "2026-09-17",
+   "by": "integrity-watch",
+   "title": "HIGH — SV151 is recorded live in STATE and staked in a queued public Reddit post, but the index, its tool and its page exist nowhere.",
+   "decision": "Path A CLOSED 2026-09-17 with Mo present: the Sep 15 work is absent from Mo's own clone (HEAD edb8b15, three days stale) and from a clone of origin taken the same minute — R7 satisfied both ways. It never left a working tree and that tree is gone. PATH B is the only path and its terms are ruled: rebuild from the rulebook, forward-start, INCEPTION IS THE REBUILD DATE, NOT SEP 15. STATE corrected in 8f84d4f; the Sep 15 figures are kept as a spec to rebuild against and labelled unverified. THE REDDIT POST STAYS HELD until the rebuilt page is live and all five of its numbers re-checked against it. Progress this run: the universe is BUILT and in the repo — data/sv151-universe.json, all 207 slots with PriceCharting product ids, URLs and headline figures, pulled 2026-09-17. Corroboration that the source and slot rule are right: headline sum across 207 slots today is $1,905.79 against the Sep 15 run's $1,909.46 over 202 — 0.2% apart, two days and five slots apart. The screen is NOT run: completed-auction rows are not in the item page HTML and are not reachable unauthenticated (/offers returns for-sale offers; status=sold, sold=true, sold=1 and type=sold all tried and none yields a sold row). It needs Mo's authenticated PriceCharting Chrome session — THE SAME WALL AS THE P0 SPORTSCARDSPRO GRADED SALES-TABLE PULL, so these are one problem and should be solved once. Full spec: claude/cos/sv151-rebuild-spec-2026-09-17.md. Rulebook landed in the repo the same commit."
+  },
+  {
+   "id": "iw-2026-09-17-3",
+   "status": "applied",
+   "area": "indices",
+   "filed": "2026-09-17",
+   "by": "integrity-watch",
+   "title": "MED — /indices sells the whole page as sold-basis in its banner, subline, meta description and JSON-LD while BCB26 and BOW26 are 100% ask-priced (18 of 271 basket rows).",
+   "decision": "APPLIED 2026-09-17 in ce241bf. Banner was 'Price-Weighted · Sold-Basis · Base 100.00' and the subline 'from real sold comps … never estimated', with the meta description and JSON-LD — what Google and every unfurl show — asserting sold-basis flat. All five surfaces now state that five tickers mark on sold comps and two on verified asks, each labelled per ticker. No index changed and the CoS decision to label rather than exclude is untouched. This was also the first thing a reader clicking through from the held Reddit post would have read."
+  },
+  {
+   "id": "iw-2026-09-17-4",
+   "status": "awaiting-cos",
+   "area": "tooling",
+   "filed": "2026-09-17",
+   "by": "chief-of-staff",
+   "title": "Gate gap: every price gate reads price CELLS, so a false price claim written in prose or in card-strip meta passes FAIL 0 forever. Reproduced on the flagship page for weeks.",
+   "decision": "OPEN. iw-2026-09-17-1 was live on /bowman-bangers with all three gates at baseline the entire time: audit-prices FAIL 0 / WARN 62, audit-site 0/3, audit-terminal 0/1, and bowman-bangers.html raising no WARN at all. Check 7 sold-provenance was shipped Sep 16 precisely for this class and it looks at price cells; these figures lived in <div class=\"price-sub\"> meta strips and in verdict prose. This is the Integrity Watch lane's founding case reproduced four weeks later. Proposed shape, for the CoS to rule: a prose-scoped check that FAILs when a grade token (PSA/BGS/SGC/CGC + a number) appears within N characters of a dollar figure on a page that does not also carry a provenance token ('dated sale' / 'no verified sale') in the same block. Negative-test it against the three remediated card pages, which must pass."
   }
  ],
  "scoreboard": {
@@ -2123,6 +2159,16 @@
      "gates": "re-run on the pushed tree, fresh clone at 9e2d2b2: audit-prices FAIL 0 / WARN 62 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 1 — all three exactly at the 2026-09-16 baseline",
      "liveVerified": "2026-09-17 (curl -L /bowman-bangers: bb-tape strip, #tape section and the collapsed legend all present; 'pre-activation, streets Sep 9' gone; 29 visible words between the H2 and the board, was 851)",
      "note": "/bowman-bangers reorder only — board first, weekly column moved below it as #tape, legend collapsed below the board, orphan /best-baseball-cards-under-50 link rehomed to Related Reading. Same commit fixed a live contradiction: the set-index note still said BCB26 'pre-activation, streets Sep 9' while the column below it said BCB26 activated Sep 14 (indices.json: status live, inception 2026-09-14, 95.67 on 09-15). TUESDAY LANE: the weekly column is still div.alert-bar, unchanged target, now inside #tape; it now ALSO owns the three cells in div.bb-tape in the board head (top / bottom / seat change) — the only numbers duplicated on the page."
+    },
+    {
+     "date": "2026-09-17",
+     "commits": [
+      "ce241bf"
+     ],
+     "by": "CoS desktop-linked session (Mo in chat: \"fix it all please. approved\"; ranking rule chosen by Mo the same turn)",
+     "gates": "fresh clone at 8f84d4f: audit-prices FAIL 0 / WARN 62 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 1 — all three at the 2026-09-16 baseline, and bowman-bangers/indices raise no WARN of their own",
+     "liveVerified": "pending in the same run — see the following entry",
+     "note": "iw-2026-09-17-1 (FAIL) and iw-2026-09-17-3 (MED) applied. Board ranking rule changed and two seats moved; /indices basis claims qualified on five surfaces. Full reasoning in the proposals of the same ids."
     }
    ]
   },

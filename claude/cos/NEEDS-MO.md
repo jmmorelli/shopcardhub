@@ -14,7 +14,16 @@ them."
 
 ---
 
-## Open — 3 items. ONE IS A DO-NOT.
+## Open — 3 items. ONE IS A DO-NOT, and one needs ten minutes of your browser.
+
+- **⚠ THE ONE THING ONLY YOU CAN UNBLOCK: your PriceCharting login.** The SV151 rebuild is stuck on
+  one step and it is not a decision, it is an authenticated session. The 207-slot universe is
+  rebuilt and in the repo; the liquidity screen needs each card's **completed-auction rows**, and
+  those are not served to anyone who is not signed in to your Legendary sub. **The same wall blocks
+  the P0 SportsCardsPro graded sales-table pull — the thing that would let the board publish graded
+  figures again at all.** One session unblocks both. Next time you are at the machine with Chrome
+  open, say so and the CoS will drive it from there; nothing needs typing from you beyond being
+  logged in. Spec: `claude/cos/sv151-rebuild-spec-2026-09-17.md`.
 
 - **⚠ DO NOT POST THE 151 LINK POST.** `claude/recaps/link-post-sv151-2026-09-17.md` was drafted
   at 05:55 on 2026-09-17 and marked *"Fine to post any time this week."* **Hold it.** It is a
