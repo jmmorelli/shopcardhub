@@ -11,16 +11,12 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — 3 real items, and one thing to know. ONE IS A DO-NOT, one needs ten minutes of your browser, one is two switches in the desktop app.
+## Open — 1 item, and it is a DO-NOT. Everything else on this list closed on 2026-09-17.
 
-- **🔌 TURN OFF THE TWO X POSTING TASKS IN THE CLAUDE DESKTOP APP — only you can.** Their prompts
-  live in the desktop app and the scheduled-task API cannot reach them, so the CoS closed the write
-  path in doctrine instead (`/LANE-RULES.md` R10, read at STEP 0 by every lane): if either fires, it
-  now refuses the tweet step and reports the prompt as stale. That holds, but it is a seatbelt, not
-  a locked door. **Disable `shopcardhub-tweet-reply-paster` outright, and delete the board-tweet
-  queue step from `bowman-bangers-tuesday-update`** (keep the rest of that task — the re-mark, the
-  digest, and from Sep 22 the board-tape publish, are still ours). Two minutes, and then there is
-  genuinely no path from this project to your X account.
+- **✅ CLOSED — the two X posting tasks are deleted** (Mo, 2026-09-17: *"I deleted them, because if
+  I need to remake them we can start fresh."*). With R10 in doctrine and the tasks gone, there is now
+  no path of any kind from this project to the X account.
+
 
 - **👀 NOTHING TO RELAY TO GROK ANY MORE — but read this once.** Mo opened a direct channel on
   2026-09-17 (the Grok Bot app on his Mac) and made the CoS its boss, so direction and corrections
@@ -32,14 +28,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
   the vendor composes and posts, and Mo's veto over anything live is absolute and retroactive.
 
 
-- **⚠ THE ONE THING ONLY YOU CAN UNBLOCK: your PriceCharting login.** The SV151 rebuild is stuck on
-  one step and it is not a decision, it is an authenticated session. The 207-slot universe is
-  rebuilt and in the repo; the liquidity screen needs each card's **completed-auction rows**, and
-  those are not served to anyone who is not signed in to your Legendary sub. **The same wall blocks
-  the P0 SportsCardsPro graded sales-table pull — the thing that would let the board publish graded
-  figures again at all.** One session unblocks both. Next time you are at the machine with Chrome
-  open, say so and the CoS will drive it from there; nothing needs typing from you beyond being
-  logged in. Spec: `claude/cos/sv151-rebuild-spec-2026-09-17.md`.
+- **✅ CLOSED — you do NOT need to log in to PriceCharting, and you were right that you never paid
+  them.** You asked why we couldn't get in; we tested instead of repeating the claim. The completed
+  sale rows are in the page HTML with no cookies at all — plain `curl` from the cloud returns 347 of
+  them. The old item was a misdiagnosis: a Cloudflare block on *SportsCardsPro* was read as a login
+  wall on *PriceCharting*. **The SV151 screen is already run: all 207 cards, 207 pass, basket
+  $1,905.79 — matching this morning's independent pull to the cent.** What is left is a build, not
+  a decision. The SportsCardsPro graded pull is the separate one and it needs a browser, not a
+  login — it runs in your laptop window, and still costs nothing.
 
 - **⚠ DO NOT POST THE 151 LINK POST.** `claude/recaps/link-post-sv151-2026-09-17.md` was drafted
   at 05:55 on 2026-09-17 and marked *"Fine to post any time this week."* **Hold it.** It is a

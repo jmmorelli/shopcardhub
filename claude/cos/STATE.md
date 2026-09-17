@@ -145,7 +145,58 @@ FAIL 0 the entire time it was wrong, because every price gate reads price **cell
 lived in prose and in card-strip meta. That is this lane's founding case reproduced on the flagship
 page. Proposed check shape is in the ledger.
 
-## 2026-09-17 — SV151: Path A closed, universe rebuilt, screen still blocked
+## 2026-09-17 (evening) — THE SV151 BLOCKER WAS NOT REAL. THE SCREEN IS RUN, 207/207.
+
+Mo, asked to log in to PriceCharting, said: *"I'm not sure why you can't get into price charting? I
+also have not paid for anything from them."* He was right to push. **We tested instead of assuming,
+and the earlier diagnosis — "needs Mo's authenticated PriceCharting Chrome session / Legendary
+sub" — is WRONG and is withdrawn.**
+
+**What is actually true, measured today from three places:**
+
+| Path | PriceCharting item page | SportsCardsPro |
+|---|---|---|
+| Cloud container, plain `curl`, no cookies | **200, 963 KB, 347 completed-auction rows** | **403 (Cloudflare)** |
+| Mac VM shell, plain `curl` | **200, same rows** | **403** |
+| Mo's Chrome | 200, rows visible | 200, rows visible |
+
+The completed-auction rows **are in the item-page HTML, unauthenticated**. They sit in
+`<div class="completed-auctions-used">` (one div per grade tab; `Ungraded (60)` is the one the
+screen wants), as `<tr id="ebay-…">` / `<tr id="tcgplayer-…">` with `<td class="date">` and the
+price. What is paywalled is the **Time Warp sale photos**, nothing else. The earlier session's
+`status=sold` / `sold=true` / `type=sold` query experiments all failed because the rows were never
+behind a query parameter in the first place — and a Cloudflare 403 on a *different site* was read as
+an auth wall on this one. **Same error class as the price ladder read as a sale: a symptom that
+matched a story, filed as a cause.**
+
+**So the screen ran, tonight, with no credential and no spend:** `data/sv151-screen-2026-09-17.json`
+— all 207 slots, ungraded sold rows, 30-day window to 2026-09-17, per card: row count, clean comps,
+eBay/TCGplayer split, clean median, last sale date.
+
+- **207 of 207 PASS the ≥6 clean-comps-in-30-days entry screen. Zero fail.** (The Sep 15 run
+  reported 202/5 — a different day and an unverifiable report; today's number is the measured one.)
+- **Headline basket $1,905.79** — to the cent the same figure the universe pull produced this
+  morning from a different page of the same site, which is a real cross-check, not a coincidence.
+- **Clean-median basket $1,881.87** — 1.25% under headline, the same direction and rough size as
+  the Sep 15 estimate (99.19 vs 100.00).
+- **Comp mix 51.4% eBay / 48.6% TCGplayer**, which again explains why the pre-registered "55–70
+  constituents" prediction was wrong: TCGplayer clears commons one at a time.
+- Rate limiting is the only real constraint: 4 workers hit **429** after ~150 pages. One worker with
+  a ~1.6 s gap and a back-off completed the remaining 57 cleanly. **The rebuild pulls politely.**
+
+**What is left, and it is a build, not a blocker:** rewrite `tools/build-sv151.mjs` (lost with the
+Sep 15 sandbox) against `claude/cos/sector-index-rulebook-2026-09-15.md`, constitute at base 100 on
+the rebuild date, generate the page through its marker regions, gate, push. **Basis recommendation
+for Mo, who already voted clean medians: constitute ON clean medians at inception rather than
+starting on headline and restating at Oct 5** — the restatement only existed because the index was
+already live on the other basis. It is not live. Nothing to restate.
+
+**The P0 SportsCardsPro graded sales-table pull is a different problem and now has a clear shape:**
+SCP 403s every shell, from both machines, so it is a **Chrome-automation job in Mo's laptop window**
+— still no login and no subscription. It was never one wall with SV151; it was two, and only one of
+them was ever real.
+
+## 2026-09-17 — SV151: Path A closed, universe rebuilt, screen still blocked *(SUPERSEDED the same evening — see the block above; the screen is run)*
 
 Path A is dead (see `NEEDS-MO.md`). **Path B terms are ruled: inception is the rebuild date, not
 Sep 15.** What exists now: `data/sv151-universe.json` — **all 207 slots** with PriceCharting product
