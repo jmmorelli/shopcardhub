@@ -384,6 +384,49 @@
       "boardHide": true,
       "sealedOf": "DR25",
       "product": "Booster box"
+    },
+    {
+      "id": "mewtwo-ex-sir-th26",
+      "source": "ebay",
+      "label": "Mewtwo ex SIR #157/128 — 30th Celebration",
+      "query": "mewtwo ex 30th celebration 157/128 -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "mewtwo",
+        "157"
+      ],
+      "categoryIds": "183454",
+      "boardHide": true,
+      "_note": "Added 2026-09-16 on release night. NO slug on purpose: naming the guide as host obliges the page to carry an engine block (audit-terminal engine-host-consistency), and on release night this card had ZERO eBay listings — the block would have been an empty box on the site's #1 lander. TRIGGER: the moment this card carries a verified mark in the feed, add the slug, run tools/build-engine-blocks.mjs then tools/build-guide-fold.mjs on pokemon-30th-anniversary-2026.html, and add the /card-<id> 301 to vercel.json. Same rule as luis-hernandez-bcb26-auto: a number needs a market, not a deadline."
+    },
+    {
+      "id": "mew-ex-sir-th26",
+      "source": "ebay",
+      "label": "Mew ex SIR #158/128 — 30th Celebration",
+      "query": "mew ex 30th celebration 158/128 -psa -bgs -cgc -graded -case -pick -choose -lot -digital -proxy -custom -metal -jumbo",
+      "cardType": "tcg-single",
+      "titleMust": [
+        "mew",
+        "158"
+      ],
+      "categoryIds": "183454",
+      "boardHide": true,
+      "_note": "Added 2026-09-16 on release night. NO slug on purpose: naming the guide as host obliges the page to carry an engine block (audit-terminal engine-host-consistency), and on release night this card had ZERO eBay listings — the block would have been an empty box on the site's #1 lander. TRIGGER: the moment this card carries a verified mark in the feed, add the slug, run tools/build-engine-blocks.mjs then tools/build-guide-fold.mjs on pokemon-30th-anniversary-2026.html, and add the /card-<id> 301 to vercel.json. Same rule as luis-hernandez-bcb26-auto: a number needs a market, not a deadline."
+    },
+    {
+      "id": "th26-etb",
+      "source": "ebay",
+      "label": "30th Celebration Elite Trainer Box — sealed",
+      "query": "pokemon 30th celebration elite trainer box -bundle -tin -case -japanese -thai -korean -lot -half -mystery -empty -opened -booster -center -pokecenter -x8 -x6 -x4 -x2",
+      "cardType": "sealed",
+      "titleMust": [
+        "30th",
+        "elite trainer"
+      ],
+      "categoryIds": "183456",
+      "boardHide": true,
+      "product": "Elite Trainer Box",
+      "_note": "No sealedOf: the TH26 index does not exist yet (indices.html still lists it as COMING). Added 2026-09-16 on release night so the series starts the day the market does. Sealed supply that night was 3 listings, two of them multi-box lots — the engine's TITLE_BAD_SEALED must hold or this marks off a lot; watch it."
     }
   ]
 }
