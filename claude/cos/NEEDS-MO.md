@@ -11,28 +11,17 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — 2026-09-18 morning: three yes/no answers, nothing else
+## Open — 2026-09-18 midday: one thing, and it is a password
 
-1. **Pick the Chrome for console reads (10 seconds).** Two Chrome extensions are connected to the
-   account ("Browser 1" and "Browser 2") and the browser tool will not act until you choose one in
-   the question the overnight session left in chat. Once you answer, the fresh Sep 8→18 EPN read and
-   the first post-buy-strip GA4 read get appended to `claude/cos/gap-analysis-2026-09-18.md` §6.
-2. **GA4 read-only service account — yes or no ($0).** The single biggest backend hole is that cloud
-   runs cannot read analytics (that is how key events sat at zero for 13 days). Google's official GA4
-   MCP fixes it with a service account added as *Viewer* on property 541047014. It is an
-   account-level change, so it needs your yes; the CoS drives it in your Chrome in ~10 minutes and
-   you type nothing. Detail: `claude/cos/repo-scan-2026-09-18.md` §1.1.
-3. **`/track-record` correction — yes or no.** The 05:00 Integrity Watch found four retracted PSA 10
-   figures still served from `data/calls.json` (the Sep 17 strip never reached the ledger file).
-   `calls.json` is immutable and `/track-record` is on your list, so: **may the CoS append a dated
-   bracketed correction to the affected `readLabel`/`note` strings, projections and dates untouched?**
-   Detail in `STATE.md` (2026-09-18 block, item 1). The board seat-order finding from the same run
-   is CoS-owned and is being fixed without you.
+1. **Sign in to eBay in Browser 1 (the tab is open).** partner.ebay.com bounced to eBay's password page
+   for shopcardhub@gmail.com in both Chrome profiles. Type the password, hit Sign in, done — the CoS
+   never types passwords. Then the Sep 8→18 EPN read and the first per-product Custom-ID read land in
+   `claude/cos/gap-analysis-2026-09-18.md` §6 without you.
 
-Also new, no action: the **Earnings Ideas Desk** runs daily at 04:15 PT from tomorrow (Sep 19) and
-you will get a 1–3 line push each morning; the milestone ladder is **M0 $300 · M1 $1,000 · M2
-$10,000 per month**, trailing-30-day EPN, current rung below M0 at ≈$35/mo trailing-60d. If you
-remember more about the faceless-YouTube idea, one line in chat and it goes on the ledger.
+**Closed today with your three yeses:** the Chrome choice (Browser 2 for GA4, done); the GA4 service
+account (built keyless — no secret, nothing for you to paste — first nightly run verified at 11:00 PT;
+every cloud lane now reads analytics without a browser); the `/track-record` correction (live, five
+rows, projections untouched).
 
 Two do-nots (the 151 post and the r/baseballcards draft) and one parked item stay listed below so
 nobody re-raises them.

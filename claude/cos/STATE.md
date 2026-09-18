@@ -14,6 +14,16 @@
 > **R6 check the ledger — re-filing a settled item is a defect** · **R7 an absence claim requires
 > a fresh clone.**
 
+## 2026-09-18 MID-DAY — MO SAID YES TO ALL THREE; TWO ARE DONE, THE THIRD WAITS ON HIS PASSWORD
+
+**1 · `/track-record` correction — DONE, live.** `75f0cd7` + `0697e5a` (formatting restore): five `calls.json` rows carry appended `[corrected Sep 18 2026: …]` text naming the withdrawn PSA 10 figures; projections, entries, dates, states byte-identical; `updated` → 2026-09-18. `iw-2026-09-18-1` → `applied`. The board seat-order finding (`iw-2026-09-18-2`) is unchanged: seats move under the published rule, owner = first publishing lane from a fresh clone.
+
+**2 · GA4 IS NOW READ WITHOUT A BROWSER — DONE, first run verified.** Mo said he would not handle GitHub secrets, so it was built **keyless**: GitHub Actions → OIDC → Google Workload Identity → `ga4-reader` (Viewer on property 541047014). No JSON key exists anywhere. Setup record with every identifier: `claude/handoffs/ga4-snapshot-2026-09-18.md`. Pieces: `tools/ga4-snapshot.mjs` (`73bc373`), `.github/workflows/ga4-snapshot.yml` (added via the web UI in Mo's Chrome, `7655480`, nightly 02:00 PT). **First run `cc36fb7` on `price-data` at 18:00Z matched the same-morning UI read figure for figure** (Organic 709 sessions / 7.05% KE; Direct 467; `/bowman-chrome-baseball-2026` 92 sessions / 0 KE; Singapore 61 sessions/7d). Read URL for every lane: `https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/ga4-latest.json` (+ `ga4-history.json`, one summary row per day). **Prompts rewired the same hour:** Integrity Watch Part A now checks `keyEventsYesterday`, `clicks7`, organic-beside-blended KE rate, returning share and the non-US cluster against trailing medians, and files HIGH if the snapshot is older than 36 h; the CoS daily's §0 light read is now step 1b off the same file. **The "nobody looked at GA4 for a week" class of incident is closed by construction.** The GA4 UI in Chrome stays for the weekly's deeper reads and for anything the Data API cannot express.
+
+**3 · EPN read — BLOCKED on a sign-in only Mo can do.** Both Chrome profiles have lost the EPN session (partner.ebay.com bounces to eBay's password page for shopcardhub@gmail.com). The tab is open in Browser 1; the CoS never types a password. The moment he signs in, the Sep 8→18 Performance-by-Day and the first per-product Custom-ID read go into `gap-analysis-2026-09-18.md` §6.
+
+**Bridge quirk, on the record:** `device_commit_files` served a stale copy for a path that had been staged earlier in the session — twice (calls.json landed reformatted, then fixed; the ga4 script landed one version behind, then fixed by staging under a new filename). **Rule: stage a changed file under a new name, and md5 it on the Mac before committing.**
+
 ## 2026-09-18 — OVERNIGHT RUN (Mo asleep; three asks) + MILESTONE LADDER + TWO NEW FAILS FROM THE 05:00 WATCH
 
 **Mo, 2026-09-17 night, three asks:** (1) look at the free GitHub repos people use with Claude and at our own site for retention or backend efficiency; (2) analyze our eBay + GA4 gaps; (3) an agent that delivers a daily report of 1–3 new ethical, site-synthesized earnings ideas, with tangible milestones: **$1,000/mo would amaze him, $10,000/mo is the home run.** All three done; the docs are the deliverables:
@@ -1023,6 +1033,7 @@ ruled strip-and-re-mark.**
 
 ## RUN LOG (most recent first)
 
+- **Sep 18 07:00 → 11:10 PT — Mo present, three yeses.** calls.json corrections live; GA4 keyless nightly built end-to-end and verified; two prompts rewired to read it; EPN blocked on Mo's sign-in.
 - **Sep 17 23:00 → Sep 18 06:20 PT — overnight run (Mo asleep).** Repo scan + gap analysis + Earnings Ideas Desk created (see the 2026-09-18 block); two prompts repaired; 05:00 Integrity Watch adjudicated (1 → NEEDS-MO, 1 → seats move). Docs committed from a fresh clone on the Mac; no site HTML changed.
 - **Sep 16 evening — escalation review (Mo present).** Two escalations adjudicated; graded-ladder
   defect stripped and re-marked on three pages; BCB26 kept and the home/nav/rail gap closed;

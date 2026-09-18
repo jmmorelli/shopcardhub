@@ -2327,6 +2327,20 @@
           "by": "CoS overnight run 2026-09-17/18 (Mo asleep) — docs only: repo scan, eBay+GA4 gap analysis, Earnings Ideas Desk charter + ledger + milestone ladder, ROADMAP into the repo, LANE-RULES cadence rows, STATE/NEEDS-MO. Pushed from a fresh clone on the Mac.",
           "gates": "audit-prices FAIL 0 / WARN 62 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected off-feed). Baseline, no delta.",
           "rollback": "git revert a4f9916 (docs only; no HTML, no data beyond this pushLog line)"
+        },
+        {
+          "date": "2026-09-18",
+          "commits": [
+            "75f0cd7",
+            "0697e5a",
+            "caa36c4",
+            "32ba428",
+            "7655480",
+            "73bc373"
+          ],
+          "by": "CoS, Mo present (three yeses): calls.json dated corrections (iw-2026-09-18-1); GA4 keyless nightly snapshot (script, workflow via web UI, WIF setup record); prompts rewired",
+          "gates": "audit-prices FAIL 0 / WARN 62 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 1 on the calls.json tree; later commits are tools/docs/workflow only (no HTML)",
+          "rollback": "git revert 0697e5a 75f0cd7 (ledger text); delete .github/workflows/ga4-snapshot.yml + WIF pool per claude/handoffs/ga4-snapshot-2026-09-18.md"
         }
       ]
     },
