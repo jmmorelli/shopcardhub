@@ -2271,7 +2271,7 @@
           "by": "BACKFILL by CoS Thursday checkpoint — six pushes after the last logged entry had none (Mo-directed + CoS sessions, conversion lane + doctrine + ledger corrections)",
           "gates": "re-run read-only by this checkpoint on a fresh clone of the pushed tree (6be379a): audit-prices FAIL 0 / WARN 62 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected off-feed). Exactly the 2026-09-16 baseline, no WARN delta. Pushing commits reported their own gates in-message except the three docs-only ones.",
           "liveVerified": "2026-09-17 - the 58-page conversion lane checked against production: 3 of 3 sampled set pages return 200 with both strip markers and an EPN-tagged link; the one page without a strip carries its own bespoke buy module by design and is deliberately not in the config. buy-strip-health re-run read-only: exit 0, 0 dead shelves, 2 thin.",
-          "note": "Backfill only - this checkpoint pushed no content of its own. Filed because 4.8's promise is that every push is readable in this file afterward."
+          "note": "Backfill only - this checkpoint pushed no content of its own. Filed because 4.8's promise is that every push is readable in this file afterward. | This checkpoint's own janitorial commit is 663f557 (agent-state correction, revoked-authorization annotation, this backfill, two proposal closures) - logged here rather than left unlogged, which would have reproduced the defect being fixed."
         }
       ]
     },
