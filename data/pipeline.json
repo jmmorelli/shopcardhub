@@ -2389,6 +2389,17 @@
           "gates": "2f8ef53 and aa4dd22: audit-prices FAIL 0 / WARN 63 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 0 (--feed price-data 2026-09-18); the three doc commits touched no HTML",
           "liveVerified": "2026-09-18 22:03Z (15:03 PT) via the 4e1ae23 build - /phantasmal-flames-index 200, PF25 in indices.json + home Markets row, polish CSS and prose serving",
           "rollback": "git revert aa4dd22 2f8ef53 (PF25 + polish); docs commits are text only"
+        },
+        {
+          "date": "2026-09-18",
+          "commits": [
+            "d46d7e4",
+            "936d564"
+          ],
+          "by": "CoS, Mo in chat ('the top seems a little busy'): pokemon-30th top redesign (hero, buy module, engine-block fold rule JS_V 5 on 8 hosts); STATE log",
+          "gates": "d46d7e4: audit-prices FAIL 0 / WARN 63 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 0 (--feed price-data 2026-09-18)",
+          "liveVerified": "2026-09-18 22:00Z (15:00 PT) after a manual Vercel redeploy (queue zombie cancelled) - bb-also line + JS_V 5 serving; Playwright 390px: buy module 1584 -> 966px, guide 6.75 -> 5.91 screens",
+          "rollback": "git revert d46d7e4 (page + JS + 8 regenerated hosts)"
         }
       ]
     },
