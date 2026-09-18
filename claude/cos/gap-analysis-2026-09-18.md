@@ -74,6 +74,14 @@ Two things fall out of that table and they are the whole strategy:
 
 Technical SEO (verified clean Sep 16). EPN link compliance (92/92 tagged, `mkevt=1`, labels; review closed Sep 8). The nightly engine (healthy, 34 cards, 31/34 numeric). The Sep 2 compliance change did not cost clicks (up 69% week-on-week after it). Paid acquisition (ruled out Jul 28 — the arithmetic above confirms it: $0.28/click cannot clear any CPC).
 
-## 6. Fresh console read — pending Mo's browser choice
+## 6. Fresh console read — 2026-09-18 06:40 PT, Browser 2 (Mo chose it this morning)
 
-*To be appended: EPN Performance by Day Sep 8→18 (clicks/day, any actions), Performance by Custom ID with the new per-product IDs live since Sep 17 (first desktop attribution), GA4 Sep 17→18 landing pages + `buystrip_click`/`buybox_click` counts, and the Singapore cluster's landing pages.*
+**GA4, read live (property 541047014).**
+
+*Traffic acquisition, 28d Aug 21–Sep 17:* **1,235 sessions** · Organic Search 709 (62.1% engaged, 45s, **7.05% KE rate**) · Direct 467 (19.3% engaged, **8s**, 2.14%) · Organic Social 35 (71.4% engaged, **4m 37s**, 14.29%) · Unassigned 26 · Cross-network 8 · AI Assistant 4 · Referral 3 · Email 1. Total key events **102**, blended rate 5.59% — **still diluted by the Sep 4–16 dead window; not a baseline.** GA4's own anomaly card: Direct/Safari sessions jumped 1 → 73 in the week of Sep 1 — the agent-sweep signature, on the record again.
+
+*Landing pages, 28d (sessions · avg engagement · KE rate):* `/pokemon-30th-anniversary-2026` **155 · 31s · 8.39%** · `/best-hobby-boxes-2026` 95 · 46s · 6.32% · `/bowman-chrome-baseball-2026` **92 · 47s · 0.00%** · `/` 90 · **1m 38s** · 7.78% · `/bowman-football` 83 · 42s · 1.20% · `/nfl-rookie-cards-2026` 73 · 51s · **13.7%** · `(not set)` 52 · 4s · 0% · `/topps-chrome-updates-basketball` 48 · 24s · 2.08% · `/topps-chrome-baseball-2026` 34 · 1m 02s · 2.94%. 97 landing pages in total. **G2 confirmed with a fresh number: the #3 lander has 92 sessions and zero key events in 28 days**, 47 seconds of reading each and nothing to click. `/nfl-rookie-cards-2026` is the quiet outperformer (13.7%) and is not on anyone's list — worth one look at what it does right before the Gengar read.
+
+*Events, Sep 17 → Sep 18 partial (the first buy-strip day):* 75 sessions · 71 users · `click` **12** · `buystrip_click` **1** · `buybox_click` **1** · `scroll` 15 · `checklist_tab` 1. One day, two strip clicks — not a read, a heartbeat: **the new events fire.** The Gengar Monday beat (Sep 21) and the Sep 24 clean-week read are where this gets judged.
+
+**EPN — not read.** `partner.ebay.com` is **signed out in Browser 2**; the signed-in session is on Mo's primary profile (Browser 1, per the Sep 4/8 reads and Mo's own note). No credential was entered. The Sep 8→18 EPN read (Performance by Day, and the first Performance-by-Custom-ID with the per-product IDs) goes to the next session Mo points at Browser 1, or to the Wednesday weekly. The §1–§3 arithmetic stands on the Sep 8 60-day header.
