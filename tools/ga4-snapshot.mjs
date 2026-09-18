@@ -52,6 +52,10 @@ const REPORTS = {
   returning7: { dateRanges: RANGES.d7, dimensions: d("newVsReturning"), metrics: m("activeUsers", "sessions", "keyEvents"), limit: 5 },
   countries7: { dateRanges: RANGES.d7, dimensions: d("country"), metrics: m("activeUsers", "sessions", "averageSessionDuration"), orderBys: [{ metric: { metricName: "sessions" }, desc: true }], limit: 12 },
   devices28: { dateRanges: RANGES.d28, dimensions: d("deviceCategory"), metrics: m("sessions", "keyEvents", "sessionKeyEventRate"), limit: 5 },
+  // No dimension → one totals row. sessionKeyEventRate here is GA4's own "sessions with a key event ÷ sessions",
+  // which is what the UI's Traffic-acquisition total shows (5.59% on 2026-09-18), not key events ÷ sessions.
+  totals28: { dateRanges: RANGES.d28, metrics: m("sessions", "activeUsers", "keyEvents", "sessionKeyEventRate", "engagementRate"), limit: 1 },
+  totals7: { dateRanges: RANGES.d7, metrics: m("sessions", "activeUsers", "keyEvents", "sessionKeyEventRate", "engagementRate"), limit: 1 },
 };
 
 function b64url(buf) { return Buffer.from(buf).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
@@ -92,12 +96,16 @@ function derive(rep) {
   const ev = (rows, name) => (rows.find((r) => r.eventName === name) || {}).eventCount || 0;
   return {
     // The two standing metric rulings (STATE.md, 2026-09-16): organic-channel KE rate beside the blended, never instead.
-    sessions28: tot(ch28, "sessions"), keyEvents28: tot(ch28, "keyEvents"),
-    blendedKeyEventRate28: tot(ch28, "sessions") ? +(tot(ch28, "keyEvents") / tot(ch28, "sessions") * 100).toFixed(2) : null,
+    sessions28: (rep.totals28.rows[0] || {}).sessions ?? tot(ch28, "sessions"), keyEvents28: (rep.totals28.rows[0] || {}).keyEvents ?? tot(ch28, "keyEvents"),
+    // "blended" = GA4's session key event rate over all channels (sessions with ≥1 key event ÷ sessions), as the UI reports it.
+    blendedKeyEventRate28: (rep.totals28.rows[0] || {}).sessionKeyEventRate != null ? +((rep.totals28.rows[0].sessionKeyEventRate) * 100).toFixed(2) : null,
+    blendedKeyEventRate7: (rep.totals7.rows[0] || {}).sessionKeyEventRate != null ? +((rep.totals7.rows[0].sessionKeyEventRate) * 100).toFixed(2) : null,
+    sessions7: (rep.totals7.rows[0] || {}).sessions ?? null, keyEvents7: (rep.totals7.rows[0] || {}).keyEvents ?? null,
     organicKeyEventRate28: org28.sessionKeyEventRate != null ? +(org28.sessionKeyEventRate * 100).toFixed(2) : null,
     organicKeyEventRate7: org7.sessionKeyEventRate != null ? +(org7.sessionKeyEventRate * 100).toFixed(2) : null,
     organicSessions28: org28.sessions || 0, directSessions28: pick(ch28, "Direct").sessions || 0,
-    directAvgSessionSec28: pick(ch28, "Direct").averageSessionDuration != null ? Math.round(pick(ch28, "Direct").averageSessionDuration) : null,
+    // averageSessionDuration is GA4's session-duration metric (seconds), NOT the UI's "average engagement time per session" — the two differ by design.
+    directAvgSessionDurationSec28: pick(ch28, "Direct").averageSessionDuration != null ? Math.round(pick(ch28, "Direct").averageSessionDuration) : null,
     returningUsers28: ret28.activeUsers || 0, returningShare28: (() => { const all = tot(rep.returning28.rows, "activeUsers"); return all ? +((ret28.activeUsers || 0) / all * 100).toFixed(2) : null; })(),
     returningShare7: (() => { const all = tot(rep.returning7.rows, "activeUsers"); return all ? +((ret7.activeUsers || 0) / all * 100).toFixed(2) : null; })(),
     clicks7: ev(rep.events7.rows, "click"), buystripClicks7: ev(rep.events7.rows, "buystrip_click"), buyboxClicks7: ev(rep.events7.rows, "buybox_click"),
