@@ -1,5 +1,50 @@
 # CoS state — read at the start of every run, update at the end
 
+## 2026-09-18 EVENING — THE FRIDAY RELEASE-WINDOW WORK, DONE BY THE CoS (Mo in chat: "you are in charge to get it done")
+
+The desktop Friday lane never pushed, so its two owned items shipped from this session, behind the three gates:
+
+**1 · `iw-2026-09-18-2` APPLIED — the board's seats now follow the board's published rule.** `0d9ae49`. Seats: **1 Fischer $148.32 · 2 Holliday $104.00 · 3 Gonzales $92.00 · 4 Florentino $70.00 · 5 Kim (gated, carried $131.25, last print Aug 5)**. Dated "Correction · Sep 18" block above the Sep 17 method-change column, struck note inside it, and — the lane's suggested shape, adopted — **every ranked seat now publishes its last-sale date**, so the 30-day gate is checkable by a reader. No price and no verdict moved. `board-history.json` carries the 2026-09-18 entry. The Sep 17 Kim/Holliday reasoning was not re-opened.
+
+**2 · THE POKEMON-30TH TRIGGER FIRED AND WAS EXECUTED.** `486c246`. Mewtwo ex SIR ($115.77, supply 28) and Mew ex SIR ($165.00, supply 31) carried their first verified marks in the 2026-09-18 feed, so the plan recorded on each watchlist entry ran exactly as written: slugs added, ENGINE blocks + guide fold on the #1 lander, `/card-*` 301s (no `#fragment` — the redirect gate rejects fragments; same pattern as the other 7 hosts), search INDEX entries via `data/nav.json` + `build-nav.js` (103 pages regenerated). **The Sep 16 static tape (ttl-3, due to WARN Sep 19) is retired with a dated note** — its fuse resolved by replacement, not by re-reading. Marks are labelled **ask-basis, building-history (2/20)**; the ETB still prints **no number** (no verified mark); sold-comp claims untouched — nothing in the set has a verified sold comp and the page still says so.
+
+**GATE BASELINE MOVES 62 → 63 WARN on audit-prices, and the cause is named:** the nightly ENGINE regeneration moved `aiva-arquette-1st-bowman.html`'s newest date to 2026-09-18, which pushed its dated prose ("Sep 11, 2026") across the 7-day `stale-prose-stamp` line. Not drift and not a defect in this push — it is the prose-freshness check doing its job on a page whose engine data refreshes nightly. **New stated baseline: 63/3/1** (35 no-machine-stamp-class + the aiva prose line; audit-site 3; audit-terminal 1 feed-unavailable). Clearing it = re-reading the aiva prose, queued for the Wednesday build. Any lane comparing against 62/3/1 is reading a stale baseline.
+
+**Deliberately NOT done:** `data/buy-strip.json` gains no pokemon-30th entry from this session — the page passes §15 on its hand-placed module and wiring the module's ETB query into `buy-strip-health` is **Gengar's Monday beat (Sep 21)**, where the config semantics live. Noted for Gengar, not forced on a Friday.
+
+**Push path, on the record:** this cloud session cannot push (`git push` → the git proxy refuses to inject a credential for this repo; the `auto` deploy key lives on the Mac). Commits are prepared and gated in the session clone; push happens via Mo linking the session to his Mac or adding the repo to the session's sources — or the patches stage for the next Mac-linked lane. The run log entry below records which way it went. **It went the patch way:** the four commits were replayed on the Mac by the next CoS session (2026-09-18 afternoon PT) from `claude/handoffs/friday-2026-09-18.patch.txt` in a fresh deploy-key clone of `a7eddb3`; gates re-run there matched exactly (63/3/1; audit-terminal 0/0 with `--feed`); shas in this file and in `pipeline.json` are the real ones.
+
+**3 · THE X DESK WATCH's FIRST GRADED RUN — its FAIL is OVERTURNED, and the vendor is exonerated.**
+The 11:26 PT run filed a FAIL: today's 9:39 AM vendor post carries a homepage screenshot reading
+`BOARD 97.43 · feed Sep 18 · 33/37 marked · 130 closes`, which the lane called "a level that has
+never been published," reasoning from baked `index.html` (93.96, feed Sep 16) and a curl fetch.
+**This CoS session re-verified in a real browser before ruling (R5): the live homepage repaints
+client-side from the nightly feed, and rendered in headless Chromium at ~19:30Z it reads exactly
+what the screenshot reads** — feed Sep 18 · 33/37 marked · 9 gated · 130 auction closes ·
+Florentino BUY $115, +15.0%/30D, z 1.53 · BOARD chart "last Sep 18" at ≈97.42 — and
+`build-home.mjs` against the Sep 18 feed prints `composite 97.43 (9 autos)`. The screenshot is our
+live site in a normal browser. **This is the identical trap the Sep 17 Integrity Watch documented
+and dodged as its stumble #1 (baked fallback vs client repaint), now filed by a second lane a day
+later — the trap goes in the lane's prompt.** Consequences: the drafted correction brief is NOT
+sent; nothing about the post goes to NEEDS-MO; the post stands. What the run DID get right, ruled
+here: (a) **the Markets panel subheader called all seven indices "sold-only" while BCB26 and BOW26
+are ask-basis — real claims defect, fixed this push** (one string, outside the generated markers);
+(b) the baked HOME fallback ages between Monday re-bakes — accepted as a P2 hygiene item, correctly
+scoped to the *fallback* (a "home stamp vs newest nightly" gate as the lane proposed would
+false-positive against the client repaint); (c) three MEDs (cadence 09:39 vs doctrine, the
+disappeared Sep 17 proof post, quote-what-a-reader-can-see) go in Monday's vendor diff-note;
+(d) the lane's own prompt defects (deviceId points at Browser 2; task cadence vs the LANE-RULES
+table) are queued for the next scheduled-task edit pass together with the browser-render rule.
+
+**⚠ MONDAY-SCAN TRAP, flagged in advance:** the Monday `build-home.mjs` re-bake will run against a
+feed that (post-push) carries slugs for the two 30th singles — those bake correctly as
+`/pokemon-30th-anniversary-2026#engine-*` — **but `th26-etb` still bakes a dead `/th26-index` link**
+(home.js's `-(booster-box|etb)$` rule; TH26 is still COMING on /indices). `audit-site`'s
+`dead-internal-link` FAIL will block that push, which is the gate working; the fix belongs to the
+Wednesday build (home.js: only link an index that exists in `data/indices.json`), not to a Monday
+hotfix. Also on the record: `audit-site` resolves internal links against page FILES only and does
+not read `vercel.json` redirects — a redirect-aware `slugSet` is a small tools item, same build.
+
 > **THIS FILE IS IN GIT (since 2026-09-16, evening).** It used to exist only as a claude.ai
 > Project doc, which meant LANE-RULES R4 — "read STATE.md before recommending channel or
 > infrastructure work" — required lanes to read a file they could not open. Filed by the site
@@ -16,7 +61,7 @@
 
 ## 2026-09-18 MID-DAY — MO SAID YES TO ALL THREE; TWO ARE DONE, THE THIRD WAITS ON HIS PASSWORD
 
-**1 · `/track-record` correction — DONE, live.** `75f0cd7` + `0697e5a` (formatting restore): five `calls.json` rows carry appended `[corrected Sep 18 2026: …]` text naming the withdrawn PSA 10 figures; projections, entries, dates, states byte-identical; `updated` → 2026-09-18. `iw-2026-09-18-1` → `applied`. The board seat-order finding (`iw-2026-09-18-2`) is unchanged: seats move under the published rule, owner = first publishing lane from a fresh clone.
+**1 · `/track-record` correction — DONE, live.** `75f0cd7` + `0697e5a` (formatting restore): five `calls.json` rows carry appended `[corrected Sep 18 2026: …]` text naming the withdrawn PSA 10 figures; projections, entries, dates, states byte-identical; `updated` → 2026-09-18. `iw-2026-09-18-1` → `applied`. The board seat-order finding (`iw-2026-09-18-2`) is unchanged: seats move under the published rule, owner = first publishing lane from a fresh clone. *(Applied the same evening, `0d9ae49` — see the EVENING block above.)*
 
 **2 · GA4 IS NOW READ WITHOUT A BROWSER — DONE, first run verified.** Mo said he would not handle GitHub secrets, so it was built **keyless**: GitHub Actions → OIDC → Google Workload Identity → `ga4-reader` (Viewer on property 541047014). No JSON key exists anywhere. Setup record with every identifier: `claude/handoffs/ga4-snapshot-2026-09-18.md`. Pieces: `tools/ga4-snapshot.mjs` (`73bc373`), `.github/workflows/ga4-snapshot.yml` (added via the web UI in Mo's Chrome, `7655480`, nightly 02:00 PT). **First run `cc36fb7` on `price-data` at 18:00Z matched the same-morning UI read figure for figure** (Organic 709 sessions / 7.05% KE; Direct 467; `/bowman-chrome-baseball-2026` 92 sessions / 0 KE; Singapore 61 sessions/7d). Read URL for every lane: `https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/ga4-latest.json` (+ `ga4-history.json`, one summary row per day). **Prompts rewired the same hour:** Integrity Watch Part A now checks `keyEventsYesterday`, `clicks7`, organic-beside-blended KE rate, returning share and the non-US cluster against trailing medians, and files HIGH if the snapshot is older than 36 h; the CoS daily's §0 light read is now step 1b off the same file. **The "nobody looked at GA4 for a week" class of incident is closed by construction.** The GA4 UI in Chrome stays for the weekly's deeper reads and for anything the Data API cannot express.
 
@@ -1033,6 +1078,7 @@ ruled strip-and-re-mark.**
 
 ## RUN LOG (most recent first)
 
+- **Sep 18 evening — Friday release-window work (CoS session, Mo in chat).** Reviewed the day's filings on Mo's instruction; two builds shipped by parallel agents and CoS-verified: board re-seat under the published gate (`0d9ae49`) and the pokemon-30th engine-block conversion on the fired trigger (`486c246`); `iw-2026-09-18-1/-2` appended to `pipeline.json` as `applied`; gate baseline restated 63/3/1 with the cause named; buy-strip wiring left for Gengar Mon Sep 21. Push path per the EVENING block.
 - **Sep 18 07:00 → 11:10 PT — Mo present, three yeses.** calls.json corrections live; GA4 keyless nightly built end-to-end and verified; two prompts rewired to read it; EPN blocked on Mo's sign-in.
 - **Sep 17 23:00 → Sep 18 06:20 PT — overnight run (Mo asleep).** Repo scan + gap analysis + Earnings Ideas Desk created (see the 2026-09-18 block); two prompts repaired; 05:00 Integrity Watch adjudicated (1 → NEEDS-MO, 1 → seats move). Docs committed from a fresh clone on the Mac; no site HTML changed.
 - **Sep 16 evening — escalation review (Mo present).** Two escalations adjudicated; graded-ladder

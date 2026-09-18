@@ -1426,6 +1426,30 @@
       "by": "chief-of-staff",
       "title": "Gate gap: every price gate reads price CELLS, so a false price claim written in prose or in card-strip meta passes FAIL 0 forever. Reproduced on the flagship page for weeks.",
       "decision": "OPEN. iw-2026-09-17-1 was live on /bowman-bangers with all three gates at baseline the entire time: audit-prices FAIL 0 / WARN 62, audit-site 0/3, audit-terminal 0/1, and bowman-bangers.html raising no WARN at all. Check 7 sold-provenance was shipped Sep 16 precisely for this class and it looks at price cells; these figures lived in <div class=\"price-sub\"> meta strips and in verdict prose. This is the Integrity Watch lane's founding case reproduced four weeks later. Proposed shape, for the CoS to rule: a prose-scoped check that FAILs when a grade token (PSA/BGS/SGC/CGC + a number) appears within N characters of a dollar figure on a page that does not also carry a provenance token ('dated sale' / 'no verified sale') in the same block. Negative-test it against the three remediated card pages, which must pass."
+    },
+    {
+      "id": "iw-2026-09-18-1",
+      "status": "applied",
+      "area": "pricing-integrity",
+      "filed": "2026-09-18",
+      "by": "integrity-watch",
+      "title": "FAIL — data/calls.json still served four of the five retracted PSA 10 figures to /track-record, one of them half the published trigger of an open BUY. The Sep 17 remediation was page-scoped and missed the data file.",
+      "decision": "ACCEPTED and APPLIED same day. Ruling: calls.json and /track-record are Mo's under CHARTER §3 — remedy proposed to Mo, approved in chat 2026-09-18 morning. Applied 75f0cd7 + 0697e5a (formatting restore): five rows carry appended dated bracketed corrections naming the withdrawn PSA 10 figures; projections, entries, dates and states byte-identical; the 'updated' stamp fixed to 2026-09-18. v-bb-fischer-buy-2 keeps its call and date with the note that half its stated trigger is withdrawn — Mo did not close the call. Gate gap widened onto data files: a calls.json-aware graded-provenance check is in scope for iw-2026-09-17-4 (open, Wednesday build).",
+      "severity": "FAIL",
+      "surface": "/track-record, data/calls.json",
+      "liveVerified": "2026-09-18 (mid-day session, corrected rows fetched live)"
+    },
+    {
+      "id": "iw-2026-09-18-2",
+      "status": "applied",
+      "area": "board",
+      "filed": "2026-09-18",
+      "by": "integrity-watch",
+      "title": "FAIL — /bowman-bangers published its 30-day liquidity gate in four places while its own seat order broke it at #3/#4: Kim (no printed sale in 44 days) outranked Gonzales, who printed inside 30 days.",
+      "decision": "ACCEPTED; ruled 2026-09-18 morning (CoS daily): the published rule wins, the seats move — the rule is Mo-approved and public, the seats are ours. APPLIED 0d9ae49 (Sep 18 evening CoS session, Mo in chat): seats now 1 Fischer $148.32 · 2 Holliday $104.00 · 3 Gonzales $92.00 · 4 Florentino $70.00 · 5 Kim (gated, carried $131.25); dated Sep 18 correction block above the Sep 17 method-change column plus a struck note inside it; every ranked seat now publishes its last-sale date (the lane's suggested shape, adopted); board-history.json carries the 2026-09-18 entry. No price and no verdict moved. The Sep 17 Kim/Holliday reasoning was not re-opened.",
+      "severity": "FAIL",
+      "surface": "/bowman-bangers",
+      "liveVerified": "pending deploy — live re-verify recorded in STATE run log after push"
     }
   ],
   "scoreboard": {
@@ -2341,6 +2365,16 @@
           "by": "CoS, Mo present (three yeses): calls.json dated corrections (iw-2026-09-18-1); GA4 keyless nightly snapshot (script, workflow via web UI, WIF setup record); prompts rewired",
           "gates": "audit-prices FAIL 0 / WARN 62 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 1 on the calls.json tree; later commits are tools/docs/workflow only (no HTML)",
           "rollback": "git revert 0697e5a 75f0cd7 (ledger text); delete .github/workflows/ga4-snapshot.yml + WIF pool per claude/handoffs/ga4-snapshot-2026-09-18.md"
+        },
+        {
+          "date": "2026-09-18",
+          "commits": [
+            "0d9ae49",
+            "486c246"
+          ],
+          "by": "Friday release-window work, CoS-authored (Mo in chat: 'review all and determine what we need to fix/push live… you are in charge')",
+          "gates": "run in the build clone at a7eddb3+: audit-prices FAIL 0 / WARN 63 (baseline 62 +1 — aiva stale-prose-stamp crossed its 7-day line when the nightly ENGINE regen moved the page's newest date to 2026-09-18; composition noted in STATE), audit-site FAIL 0 / WARN 3, audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected)",
+          "liveVerified": "recorded in STATE run log after push"
         }
       ]
     },
