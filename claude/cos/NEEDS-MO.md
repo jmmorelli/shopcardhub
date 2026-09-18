@@ -11,7 +11,9 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — nothing. All three of today's items closed by 11:30 PT.
+## Open — one item (2026-09-18 ~14:45 PT)
+
+- **⚠ VERCEL DID NOT DEPLOY THE 2:35 PM PUSH — please hit Redeploy.** `2f8ef53` (the Phantasmal Flames index your son asked for) and `aa4dd22` (the polish pass) are on GitHub `main` with all gates green, but Vercel never picked them up (the Jul 30 webhook failure again). Vercel is signed out in your Chrome, so I can't press it. vercel.com → shopcardhub → Deployments → **Redeploy** the latest, or Create Deployment from `main`. The moment it deploys, `/phantasmal-flames-index` is live and the home Markets panel shows PF25; nothing else is needed from you. *(Superseded header, kept:)* All three of the morning's items closed by 11:30 PT.
 
 **Closed today with your three yeses:** the Chrome choice (Browser 2 for GA4, done); the GA4 service
 account (built keyless — no secret, nothing for you to paste — first nightly run verified at 11:00 PT;

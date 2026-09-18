@@ -2375,6 +2375,20 @@
           "by": "Friday release-window work, CoS-authored (Mo in chat: 'review all and determine what we need to fix/push live… you are in charge')",
           "gates": "run in the build clone at a7eddb3+: audit-prices FAIL 0 / WARN 63 (baseline 62 +1 — aiva stale-prose-stamp crossed its 7-day line when the nightly ENGINE regen moved the page's newest date to 2026-09-18; composition noted in STATE), audit-site FAIL 0 / WARN 3, audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected)",
           "liveVerified": "2026-09-18 19:48Z (12:48 PT) — /bowman-bangers, /pokemon-30th-anniversary-2026 and / each md5-identical to the pushed files; both 30th ENGINE blocks live, no ttl-3 tape, Markets subheader reads Pokémon sold-basis / Bowman ask-basis; /card-mew-ex-sir-th26 → 308 to the guide"
+        },
+        {
+          "date": "2026-09-18",
+          "commits": [
+            "0413235",
+            "2034f0b",
+            "9ce1cff",
+            "2f8ef53",
+            "aa4dd22"
+          ],
+          "by": "CoS, Mo in chat: run-log/pushLog bookkeeping; X Desk Watch cadence + LANE-RULES; plugin ruling; PF25 Phantasmal Flames index (Mo's ask) + home re-bake with three hand-corrected dead links inside the generated block; polish pass (CSS + 15 humanizer prose edits)",
+          "gates": "2f8ef53 and aa4dd22: audit-prices FAIL 0 / WARN 63 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 0 (--feed price-data 2026-09-18); the three doc commits touched no HTML",
+          "liveVerified": "PENDING - Vercel did not auto-deploy 2f8ef53; redeploy handed to Mo (NEEDS-MO 2026-09-18 14:45 PT)",
+          "rollback": "git revert aa4dd22 2f8ef53 (PF25 + polish); docs commits are text only"
         }
       ]
     },
