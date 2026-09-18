@@ -1613,6 +1613,11 @@
         "severity": "fixed",
         "what": "CHECKPOINT Sep 17 (Mo in chat): the X desk was filed as revoked when it had actually been STAFFED - the vendor running it was doing daily work for us and appeared nowhere in the roster, and the lane that grades him had no owning task",
         "detail": "Corrected on Mo's direction: he is workforce and is tracked like workforce. Roster row added so he renders on this panel and carries a feed; the daily audit lane created from the spec already in the repo, first graded read tomorrow, with a per-run scorecard so his record accumulates instead of resetting. The Chief's own framing was the defect - a lane that stops being ours is not a lane that stops being measured."
+      },
+      {
+        "severity": "fixed",
+        "what": "CHECKPOINT Sep 17 (Mo answered in chat): the Tuesday board lane had been deleted with the two X posting tasks - rebuilt, with the doctrine violations its own backup carried stripped out",
+        "detail": "It owns the weekly board re-mark, the ledger re-grade, the release-window index marks, the Tuesday digest, and - since this week - the board tape and feed the X vendor is supposed to pull instead of inventing numbers. Restoring the last backup verbatim would have re-added two things Mo deleted in August and a doctrine rule bans re-adding, plus every posting step revoked this morning. Rebuilt with those removed and the vendor-feed step in their place. The lane prompt now lives IN THE REPO and the scheduled task is a thin wrapper that reads it fresh each run - doctrine inside a task prompt is editable one hour a week, which is the failure the rules were written for."
       }
     ],
     "analyst": {
@@ -1726,6 +1731,11 @@
         "id": "x-desk-watch-task",
         "decision": "create",
         "basis": "Mo in chat 2026-09-17 - track and audit the vendor's performance; impossible without the grading lane existing, and its full spec was already in the repo"
+      },
+      {
+        "id": "bowman-bangers-tuesday-rebuild",
+        "decision": "create",
+        "basis": "Mo in chat 2026-09-17 answered 'gone - rebuild it'; deadline is its own Tuesday run, which is when the vendor's feed is due to first exist"
       }
     ],
     "approvalsNote": "Sunday Sep 13 pass plus the Tue Sep 15 checkpoint. The checkpoint decided or routed 10 sitting items: 4 approved, 1 part-approved and routed, 1 ratified on precedent, 1 declined for now, 1 held, 1 deferred to Sunday, 2 approved but blocked on a read-only prompt path. Two open items stay with Mo; both are on his own machine and neither is an agent's to touch.",
