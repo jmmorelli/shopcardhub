@@ -11,10 +11,31 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — nothing to do. 2 do-nots, 1 parked. Everything else closed on 2026-09-17.
+## Open — 2026-09-18 morning: three yes/no answers, nothing else
 
-**Nothing needs you right now.** Two do-nots (the 151 post and the r/baseballcards draft) and one
-parked item are listed below so nobody re-raises them.
+1. **Pick the Chrome for console reads (10 seconds).** Two Chrome extensions are connected to the
+   account ("Browser 1" and "Browser 2") and the browser tool will not act until you choose one in
+   the question the overnight session left in chat. Once you answer, the fresh Sep 8→18 EPN read and
+   the first post-buy-strip GA4 read get appended to `claude/cos/gap-analysis-2026-09-18.md` §6.
+2. **GA4 read-only service account — yes or no ($0).** The single biggest backend hole is that cloud
+   runs cannot read analytics (that is how key events sat at zero for 13 days). Google's official GA4
+   MCP fixes it with a service account added as *Viewer* on property 541047014. It is an
+   account-level change, so it needs your yes; the CoS drives it in your Chrome in ~10 minutes and
+   you type nothing. Detail: `claude/cos/repo-scan-2026-09-18.md` §1.1.
+3. **`/track-record` correction — yes or no.** The 05:00 Integrity Watch found four retracted PSA 10
+   figures still served from `data/calls.json` (the Sep 17 strip never reached the ledger file).
+   `calls.json` is immutable and `/track-record` is on your list, so: **may the CoS append a dated
+   bracketed correction to the affected `readLabel`/`note` strings, projections and dates untouched?**
+   Detail in `STATE.md` (2026-09-18 block, item 1). The board seat-order finding from the same run
+   is CoS-owned and is being fixed without you.
+
+Also new, no action: the **Earnings Ideas Desk** runs daily at 04:15 PT from tomorrow (Sep 19) and
+you will get a 1–3 line push each morning; the milestone ladder is **M0 $300 · M1 $1,000 · M2
+$10,000 per month**, trailing-30-day EPN, current rung below M0 at ≈$35/mo trailing-60d. If you
+remember more about the faceless-YouTube idea, one line in chat and it goes on the ledger.
+
+Two do-nots (the 151 post and the r/baseballcards draft) and one parked item stay listed below so
+nobody re-raises them.
 
 - **✅ DONE — the queued X post was approved, and Mo set the vendor to ALWAYS APPROVE (2026-09-17).**
   Recorded because it changes the risk model: there is no longer a human gate in front of an
