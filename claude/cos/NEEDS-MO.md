@@ -11,17 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — 2026-09-18 midday: one thing, and it is a password
-
-1. **Sign in to eBay in Browser 1 (the tab is open).** partner.ebay.com bounced to eBay's password page
-   for shopcardhub@gmail.com in both Chrome profiles. Type the password, hit Sign in, done — the CoS
-   never types passwords. Then the Sep 8→18 EPN read and the first per-product Custom-ID read land in
-   `claude/cos/gap-analysis-2026-09-18.md` §6 without you.
+## Open — nothing. All three of today's items closed by 11:30 PT.
 
 **Closed today with your three yeses:** the Chrome choice (Browser 2 for GA4, done); the GA4 service
 account (built keyless — no secret, nothing for you to paste — first nightly run verified at 11:00 PT;
 every cloud lane now reads analytics without a browser); the `/track-record` correction (live, five
-rows, projections untouched).
+rows, projections untouched); and the EPN read once you signed in (Sep 4–17: $37.98 on 94 clicks,
+95% attributed, one $860 sale off the Messi page — `gap-analysis-2026-09-18.md` §6).
 
 Two do-nots (the 151 post and the r/baseballcards draft) and one parked item stay listed below so
 nobody re-raises them.

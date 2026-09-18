@@ -84,4 +84,26 @@ Technical SEO (verified clean Sep 16). EPN link compliance (92/92 tagged, `mkevt
 
 *Events, Sep 17 → Sep 18 partial (the first buy-strip day):* 75 sessions · 71 users · `click` **12** · `buystrip_click` **1** · `buybox_click` **1** · `scroll` 15 · `checklist_tab` 1. One day, two strip clicks — not a read, a heartbeat: **the new events fire.** The Gengar Monday beat (Sep 21) and the Sep 24 clean-week read are where this gets judged.
 
-**EPN — not read.** `partner.ebay.com` is **signed out in Browser 2**; the signed-in session is on Mo's primary profile (Browser 1, per the Sep 4/8 reads and Mo's own note). No credential was entered. The Sep 8→18 EPN read (Performance by Day, and the first Performance-by-Custom-ID with the per-product IDs) goes to the next session Mo points at Browser 1, or to the Wednesday weekly. The §1–§3 arithmetic stands on the Sep 8 60-day header.
+**EPN — read 2026-09-18 11:20 PT, Browser 1, after Mo signed in himself (both profiles had lost the session; no credential was entered by the CoS).**
+
+*Performance by Day, Sep 4–17 (14 days):* **94 clicks · 15 actions · $1,275.45 sales · $37.98 earned** · EPC **$0.40** · CR 16.0% · AOV $85.03. By day (clicks / actions / earnings): Sep 4 13/0 · 5 1/0 · 6 3/0 · 7 2/0 · 8 11/0 · **9 3/3/$29.27 ($975.52 — one buyer)** · 10 9/1/$0.17 · 11 5/2/$0.26 · 12 8/0 · 13 4/1/$4.62 ($153.99) · 14 1/0 · 15 13/5/$0.93 · 16 9/2/$1.23 · 17 12/1/$1.50. **6.7 clicks/day** (was 6.0 on the Sep 8 read); the "0 actions on 58 September clicks" worry from Sep 8 resolved into 15 actions the following fortnight. Same shape as ever: one buyer on Sep 9 is 77% of the fortnight.
+
+*Performance by Custom ID, Sep 4–17 — and this reverses the Sep 4 finding.* **Tagged pages earned $36.01 of $37.98 (95%); "No Custom ID" is 11 clicks / 6 tiny transactions / $1.97.** The phone-bucket theory still explains the *small* sales, but the money this fortnight arrived attributed:
+
+| Custom ID | Clicks | Sales | Txns | Earned |
+|---|---|---|---|---|
+| **`lionel-messi-cards`** | **4** | **$860.52** | 1 | **$25.82** |
+| `pokemon-30th-anniversary-2026` | 21 | $153.99 | 1 | $4.62 |
+| `img-player-list` | 12 | $115.00 | 2 | $3.45 |
+| `No Custom ID` | 11 | $65.68 | 6 | $1.97 |
+| `jacob-misiorowski-rookie-cards` | 2 | $59.95 | 1 | $1.50 |
+| `bowman-football` | 2 | $14.75 | 3 | $0.45 |
+| `bowman-chrome-b…` | 3 | $5.56 | 1 | $0.17 |
+| 23 other IDs (vault 2, erling-haaland 5, pete-crow-armstrong 3, img-set-hero 3, auctions 2, card-mega-* 2+2, bowman-bangers 1, best-* 1–2 each, …) | 39 | $0 | 0 | $0 |
+
+Three things this says, all of them new:
+1. **The one sale that mattered came off a soccer player page — four clicks, $860.** `/lionel-messi-cards` is not on any priority list, not on the board, not an index host, and sits inside the surface-area freeze. This is G3 and §2 in one row: a high-ticket single, deep-linked from a page that names the exact card, at $6.46 per click. The Ideas Desk brief should carry it as evidence for "point every buy surface at the high-end single".
+2. **The #1 lander converts at $0.22 a click.** `pokemon-30th-anniversary-2026`: 21 clicks (most of any ID) → one $154 sale. The traffic is there; the basket is retail-sized. R11's buy module went live Sep 17, so Sep 18 onward is the clean read on whether the ETB tile changes that.
+3. **Per-product buy-strip IDs (`*-box`, `*-singles`) do not appear yet** — one day of data. First real read at the Wednesday weekly.
+
+*Run-rate update:* trailing 30 days to Sep 17 ≈ **$102** (Aug 20–Sep 3 $64.70 per the Sep 4 read + Sep 4–17 $37.98, one day of overlap ignored). **Rung: below M0 ($300).** Two buyers made $84 of that $102. The §2 arithmetic stands; today's EPC ($0.40) is a shade better than the 60-day $0.28 because of the Messi sale, and it is one sale.
