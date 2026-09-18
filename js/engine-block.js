@@ -208,9 +208,11 @@
   }
 
   function boot() {
-    /* ≥ 900px: charts open at rest; narrower: the first card's chart open, the rest folded */
-    var wide = window.matchMedia && window.matchMedia('(min-width: 900px)').matches;
-    if (wide) Array.prototype.forEach.call(document.querySelectorAll('.cp-embed details.cp-fold[data-fold="chart"]'), function (d) { d.open = true; });
+    /* Sep 18 2026: the first card's chart opens at rest at every width; the rest stay folded (a host with two
+       or three cards was three screens of stat bands before anyone reached the guide). The generator already
+       bakes the first fold open; this only guarantees it. */
+    var folds = document.querySelectorAll('.cp-embed details.cp-fold[data-fold="chart"]');
+    if (folds.length) folds[0].open = true;
     Array.prototype.forEach.call(document.querySelectorAll('.cp-embed[data-card]'), render);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
