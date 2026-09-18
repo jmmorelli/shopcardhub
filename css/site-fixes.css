@@ -221,3 +221,60 @@ body .bb-tower .beam, body .hero h1 em { animation: none !important; }
    the EPN label stays legible without defacing the card). */
 .sch-cimg-thumb .sch-ebay-tag { font-size: 9px; padding: 0 2px; right: 1px; bottom: 1px; }
 a[href*="ebay.com"] { position: relative; }
+
+/* ===== Sep 18 2026 polish pass (page-polish + accessibility audit) — additive only; selectors verified on /, /bowman-bangers, /pokemon-30th ===== */
+/* 1. Keyboard focus ring (nothing on the site declared :focus-visible). */
+body a:focus-visible, body button:focus-visible, body summary:focus-visible,
+body input:focus-visible, body select:focus-visible, body textarea:focus-visible,
+body [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+body #sch-signup input[type="email"]:focus-visible,
+body #bb-signup input[type="email"]:focus-visible { outline: 2px solid var(--accent) !important; outline-offset: 2px; }
+/* 2. Hover / pressed feedback (150ms, background + transform only). */
+body .tr-list li { transition: background .15s; }
+body .tr-list li:hover { background: rgba(255,255,255,0.03); }
+body .bb-table tbody tr:hover td { background: var(--bg3); }
+body .ob-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+body .cp-fold > summary:hover { color: var(--text-head); }
+body .scr-chips a, body .focus .items a, body .rl { transition: background .15s, color .15s, border-color .15s, transform .1s; }
+body .scr-chips a:active, body .rl:active, body .focus .items a:active,
+body .btn-primary:active, body .btn-secondary:active, body .nav-cta:active,
+body .bb-tile:active, body .dest-tile:active, body .cp-foot a.more:active, body .cp-more:active { transform: translateY(1px); }
+body #sch-signup button[type="submit"]:hover, body #bb-signup button[type="submit"]:hover,
+body #tapecap-form button[type="submit"]:hover { filter: brightness(1.15); }
+body #sch-signup button[type="submit"]:active, body #bb-signup button[type="submit"]:active,
+body #tapecap-form button[type="submit"]:active { transform: translateY(1px); }
+body #sch-signup button:disabled, body #bb-signup button:disabled { opacity: .6; cursor: progress; filter: none; }
+/* 3. Tabular figures where numbers stack. */
+body .news .t, body .mrow .pre, body .tr-list .nm small, body .scr-head .meta,
+body .bb-num, body .bb-pr, body .bb-table td, body .bb-was, body .bb-tape .v,
+body .ob-table td, body .spec-table td, body .roi-table td, body #sig-table-wrap td,
+body .rank-hist, body .entry-since, body .entry-stat-value, body .price-main, body .price-sub,
+body .banner-stat-value, body .bb-rows, body .bb-live, body .hero-meta, body .sig-note,
+body .cp-cell .v, body .cp-item .p, body .cp-closes .c { font-variant-numeric: tabular-nums; }
+/* 4. Headings without an orphaned last word; long prose wraps prettier (progressive). */
+body h1, body h2, body h3, body .entry-title, body .bb-board-title, body .related-title,
+body .prospect-mini-name, body .cp-title, body .bb-name { text-wrap: balance; }
+body .hero-sub, body .section-intro, body .entry-body p, body .entry-verdict, body .bb-note,
+body .tm-foot, body .disclosure { text-wrap: pretty; }
+/* 5. Contrast (WCAG 1.4.3 / 1.4.11), ratios computed on the real palette. */
+body .footer-copy { opacity: 1; }                       /* 2.9:1 -> 6.1:1 */
+body .prospect-quote cite { opacity: 1; }                /* 2.8:1 -> 5.3:1 */
+body .rl-glabel { opacity: 1; }                          /* 3.6:1 -> 6.1:1 */
+body .nav-dropdown .dd-label, body .mobile-nav .m-label,
+body .m-group-panel .m-sublabel, body .dd-foot-label { opacity: .85; }
+body .btn-twitter { color: #07090c; }                    /* #fff on #1da1f2 2.8:1 -> 7.1:1 */
+body .sig.SELL, body .focus .tag, body .cp-t1 .cp-band .cp-sig.sell { color: #000; }  /* 3.6:1 -> 5.8:1, matches BUY/HOLD */
+.btn-primary[href*="customid=pokemon-30th-anniversary-2026"] { color: #000; }      /* #fff on #ffde00 1.3:1 -> 15.7:1 */
+body #sch-signup input[type="email"], body #bb-signup input[type="email"],
+body #tapecap-form input[type="email"], body .schsub-form input[type="email"],
+body .sig-filter { box-shadow: inset 0 0 0 1px rgba(122,150,158,.65); }  /* field edge 1.4:1 -> 3.3:1 */
+/* 6. Touch targets. */
+body .nav-hamburger { width: 44px; height: 44px; }
+body .scr-chips a { display: inline-flex; align-items: center; min-height: 32px; }
+body .focus .items a { min-height: 44px; }
+@media (max-width: 820px) {
+  body .rail .rl { min-height: 40px; align-items: center; }
+  body #tapecap-form input, body #tapecap-form button { min-height: 40px; }
+}
+/* 7. Sticky rail height in dynamic-viewport units. */
+@supports (height: 100dvh) { body .rail { max-height: calc(100dvh - 58px); } }
