@@ -11,9 +11,9 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — one item (2026-09-18 ~14:45 PT)
+## Open — nothing (2026-09-18 15:05 PT)
 
-- **⚠ VERCEL DID NOT DEPLOY THE 2:35 PM PUSH — please hit Redeploy.** `2f8ef53` (the Phantasmal Flames index your son asked for) and `aa4dd22` (the polish pass) are on GitHub `main` with all gates green, but Vercel never picked them up (the Jul 30 webhook failure again). Vercel is signed out in your Chrome, so I can't press it. vercel.com → shopcardhub → Deployments → **Redeploy** the latest, or Create Deployment from `main`. The moment it deploys, `/phantasmal-flames-index` is live and the home Markets panel shows PF25; nothing else is needed from you. *(Superseded header, kept:)* All three of the morning's items closed by 11:30 PT.
+- **✅ CLOSED — the deploy landed on its own.** Vercel skipped creating deployments for `2f8ef53` and `aa4dd22` but built the next commit (`4e1ae23`) from the full `main` tree, which carries both. Live-verified 15:03 PT: `/phantasmal-flames-index` 200, PF25 at 100.00 in `indices.json`, PF25 row on the home Markets panel, polish CSS and prose serving. Nothing was needed from Mo after all; the item is kept so the pattern is on record (Vercel can skip a webhook and catch up on the next push — if a push ever needs to deploy alone, push a docs commit behind it). *(Superseded header, kept:)* All three of the morning's items closed by 11:30 PT.
 
 **Closed today with your three yeses:** the Chrome choice (Browser 2 for GA4, done); the GA4 service
 account (built keyless — no secret, nothing for you to paste — first nightly run verified at 11:00 PT;
