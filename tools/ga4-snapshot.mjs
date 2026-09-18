@@ -7,9 +7,13 @@
 // Business Read and the Integrity Watch actually use, and commits them to the price-data branch next
 // to the price feed. Lanes then read https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/ga4-latest.json.
 //
-// AUTH: env GA4_SA_KEY = the service-account JSON (a GitHub Actions secret; never in a doc, prompt or
-// commit). The account is a Viewer on GA4 property 541047014 and nothing else. No npm deps — Node 20's
-// crypto + fetch. Scope is analytics.readonly.
+// AUTH (keyless, decided 2026-09-18 after Mo said he will not handle GitHub secrets): the workflow
+// authenticates to Google with GitHub's OIDC token through Workload Identity Federation
+// (google-github-actions/auth@v2, pool "github", provider "github-actions", project 61398544448) and
+// hands this script a short-lived access token in env GA4_ACCESS_TOKEN. No key file exists anywhere.
+// Fallback for local use only: env GA4_SA_KEY = a service-account JSON (never committed, never in a
+// doc or prompt). The account ga4-reader@shopcardhub-analytics.iam.gserviceaccount.com is a Viewer on
+// GA4 property 541047014 and nothing else. No npm deps — Node 20's crypto + fetch.
 //
 // USAGE:  node tools/ga4-snapshot.mjs --out price-data/data        (writes ga4-latest.json + ga4-history.json)
 //         node tools/ga4-snapshot.mjs --dry                        (prints the report requests, no network)
@@ -105,10 +109,12 @@ function derive(rep) {
 
 async function main() {
   if (DRY) { console.log(JSON.stringify({ property: PROPERTY, reports: REPORTS }, null, 2)); return; }
-  const keyRaw = process.env.GA4_SA_KEY;
-  if (!keyRaw) { console.error("GA4_SA_KEY is not set — nothing read, nothing written. (Set it as a GitHub Actions secret; see claude/handoffs/ga4-snapshot-2026-09-18.md)"); process.exit(2); }
-  const sa = JSON.parse(keyRaw);
-  const token = await accessToken(sa);
+  let token = process.env.GA4_ACCESS_TOKEN;
+  if (!token) {
+    const keyRaw = process.env.GA4_SA_KEY;
+    if (!keyRaw) { console.error("Neither GA4_ACCESS_TOKEN (Workload Identity, the normal path in Actions) nor GA4_SA_KEY is set — nothing read, nothing written. See claude/handoffs/ga4-snapshot-2026-09-18.md"); process.exit(2); }
+    token = await accessToken(JSON.parse(keyRaw));
+  }
   const rep = {};
   for (const [name, body] of Object.entries(REPORTS)) rep[name] = await runReport(token, body);
   const generatedAt = new Date().toISOString();
