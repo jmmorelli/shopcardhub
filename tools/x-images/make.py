@@ -261,23 +261,51 @@ def card_bangers(out):
         rows.append((rk, nm, raw, eng, psa, ctx))
     rows = rows[:5]
     dt = datetime.date.fromisoformat(stamp)
-    im, d = canvas("the tuesday board \u00b7 1st bowman chrome autos", f"The Tuesday Board \u2014 {dt.strftime('%b %-d')}",
-                   "Ranked on two ladders together: raw sold AND PSA 10 sold (SportsCardsPro). Engine = tonight's eBay ask, never blended.",
-                   tag="//  BOWMAN BANGERS · SOLD COMPS + LABELED ASKS")
-    cols = ["#", "PLAYER", "RAW SOLD", "PSA 10", "ENGINE ASK", "THIS WEEK"]; xs = [64, 110, 470, 600, 730, 870]
+    # The ranking rule is READ OFF THE PAGE, never hardcoded. It changed on 2026-09-17, and a baked-in
+    # sentence would publish a methodology the page no longer uses. First <p class="section-intro"> is the rule.
+    rule_m = re.search(r'<p class="section-intro">(.*?)</p>', page, re.S)
+    rule = strip(rule_m.group(1)) if rule_m else ""
+    sub = (rule + "  Engine = the same night's eBay ask, labeled, never blended into a sold figure.").strip()
+    im, d = canvas("the tuesday board · 1st bowman chrome autos", f"The Tuesday Board — {dt.strftime('%b %-d')}",
+                   None, tag="//  BOWMAN BANGERS · SOLD COMPS + LABELED ASKS")
+    _sw, _sl, _sc = sub.split(), [], ""
+    for _w in _sw:
+        _t = (_sc + " " + _w).strip()
+        if d.textlength(_t, font=BAR4(17)) > W - 96: _sl.append(_sc); _sc = _w
+        else: _sc = _t
+    _sl.append(_sc)
+    for _i, _ln in enumerate(_sl[:2]): d.text((48, 188 + _i * 22), _ln, font=BAR4(17), fill=DIM)
+
+    def fit(txt, font, width):
+        """Ellipsize to fit its column. No cell may ever run into its neighbour."""
+        if d.textlength(txt, font=font) <= width: return txt
+        while txt and d.textlength(txt + "…", font=font) > width: txt = txt[:-1]
+        return (txt.rstrip() + "…") if txt else ""
+
+    cols = ["#", "PLAYER", "RAW SOLD", "PSA 10", "ENGINE ASK", "THIS WEEK"]
+    xs   = [64, 110, 430, 548, 792, 900]
+    wid  = [40, 306, 106, 232, 96, 252]
     y = 236; d.rounded_rectangle([48, y, W - 48, y + 44 + 50 * len(rows)], 8, fill=PANEL, outline="#16303a")
     for c, x in zip(cols, xs): d.text((x, y + 14), c, font=MONO(12), fill=DIM)
     for j, (rk, nm, raw, eng, psa, ctx) in enumerate(rows):
         yy = y + 48 + j * 50
         d.line([(60, yy - 6), (W - 60, yy - 6)], fill="#122028")
         d.text((xs[0], yy + 6), rk, font=COND9(30), fill=CYAN)
-        d.text((xs[1], yy + 10), nm, font=BAR6(22), fill=TXT)
-        d.text((xs[2], yy + 12), raw, font=MONO(17), fill=TXT)
-        d.text((xs[3], yy + 12), psa, font=MONO(17), fill=TXT)
-        d.text((xs[4], yy + 12), eng, font=MONO(17), fill=DIM)
-        col = GREEN if ctx.startswith("+") else RED if ctx.startswith("-") or ctx.startswith("\u2212") else DIM
-        c2 = ctx if len(ctx) < 33 else ctx[:32] + "\u2026"
-        d.text((xs[5], yy + 14), c2, font=MONO(13), fill=col)
+        d.text((xs[1], yy + 10), fit(nm, BAR6(22), wid[1]), font=BAR6(22), fill=TXT)
+        d.text((xs[2], yy + 12), fit(raw, MONO(17), wid[2]), font=MONO(17), fill=TXT)
+        # The PSA 10 cell carries its own sale count ("$720.00 (1 dated sale, Aug 6 2026)") or says there
+        # is none. That count IS the honesty of the figure, so it is never dropped - it wraps to line two.
+        if "(" in psa:
+            head_, paren = psa.split("(", 1)
+            d.text((xs[3], yy + 4), fit(head_.strip(), MONO(16), wid[3]), font=MONO(16), fill=TXT)
+            d.text((xs[3], yy + 26), fit("(" + paren.strip(), MONO(11), wid[3]), font=MONO(11), fill=DIM)
+        elif psa and not psa.startswith("$"):
+            d.text((xs[3], yy + 14), fit(psa, MONO(13), wid[3]), font=MONO(13), fill=DIM)
+        else:
+            d.text((xs[3], yy + 12), fit(psa, MONO(17), wid[3]), font=MONO(17), fill=TXT)
+        d.text((xs[4], yy + 12), fit(eng, MONO(17), wid[4]), font=MONO(17), fill=DIM)
+        col = GREEN if ctx.startswith("+") else RED if ctx.startswith("-") or ctx.startswith("−") else DIM
+        d.text((xs[5], yy + 14), fit(ctx, MONO(13), wid[5]), font=MONO(13), fill=col)
     # headline = the page's own market-check callout, wrapped
     words, lines, cur = head.split(), [], ""
     for w_ in words:
@@ -288,7 +316,11 @@ def card_bangers(out):
     for i, ln in enumerate(lines[:2]): d.text((48, 556 + i * 24), ln, font=BAR4(17), fill=TXT if i == 0 else DIM)
     d.line([(48, H - 52), (W - 48, H - 52)], fill="#0e3a45", width=1)
     d.text((48, H - 40), f"marks as of {stamp} \u00b7 shopcardhub.com/bowman-bangers \u00b7 every call graded at 6 and 12 months", font=MONO(13), fill=DIM)
-    p = out / f"bangers-tape-{stamp}.png"; im.save(p); return p
+    p = out / f"bangers-tape-{stamp}.png"; im.save(p)
+    # The vendor desk consumes a FIXED path, overwritten every run (claude/lanes/bowman-bangers-tuesday.md).
+    # Writing only the dated file is what left og/x/board-latest.png 404 from Sep 8 to Sep 19.
+    latest = out / "board-latest.png"; im.save(latest); print(latest)
+    return p
 
 def card_call(cid, out):
     """Accountability card for a single published call (STEP 4's draft #1 is always the accountability tweet).

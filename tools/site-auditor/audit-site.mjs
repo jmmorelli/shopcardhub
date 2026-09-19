@@ -387,6 +387,40 @@ const CONVERSION_EXEMPT = new Set([
   }
 }
 
+/* ---------- chart links point at the card they name (Sep 19 2026) ----------
+   Caught live by Mo: the DR25 chase row for "Team Rocket's Mewtwo ex SIR #231/182 Destined Rivals"
+   linked to /ascended-heroes#engine-tr-mewtwo-ex-sir — a DIFFERENT card in a different set that
+   happens to share a slug. A reader clicking a price row landed on another set's chart. The engine
+   block states its own set in .cp-eyebrow ("Engine-tracked · Ascended Heroes · re-priced nightly"),
+   so the set the link lands on is checkable against the set the row names. No hardcoded map. */
+{
+  const blockSet = new Map(); // "host#id" -> set name printed on the block
+  for (const f of pages) {
+    const p = read(f);
+    for (const m of p.matchAll(/id="engine-([^"]+)"[\s\S]{0,4000}?class="cp-eyebrow">([^<]*)</g)) {
+      const eyebrow = m[2].replace(/&middot;/g, "·").split("·").map(s => s.trim()).filter(Boolean);
+      // "Engine-tracked · <Set> · re-priced nightly" — the set is the middle token
+      if (eyebrow.length >= 2) blockSet.set(f.replace(/\.html$/, "") + "#" + m[1], eyebrow[1]);
+    }
+  }
+  for (const f of pages) {
+    const p = read(f);
+    for (const cell of p.match(/<td class="card">[\s\S]*?<\/td>/g) || []) {
+      const nm = (cell.match(/data-card-name="([^"]*)"/) || [])[1];
+      if (!nm) continue;
+      const name = nm.replace(/&#x27;/g, "'").replace(/&amp;/g, "&").toLowerCase();
+      for (const href of new Set([...cell.matchAll(/href="\/([a-z0-9-]+)#engine-([^"]+)"/g)].map(m => m[1] + "#" + m[2]))) {
+        const target = blockSet.get(href);
+        if (target === undefined) {
+          add("FAIL", "chart-link-dangling", f, `row "${nm}" links to /${href}, which has no such engine block`);
+        } else if (!name.includes(target.toLowerCase())) {
+          add("FAIL", "chart-link-cross-set", f, `row "${nm}" links to /${href}, an engine block for ${target} — different set, wrong card. Drop the link or point it at this card's own chart.`);
+        }
+      }
+    }
+  }
+}
+
 /* ---------- report ---------- */
 const fails = findings.filter(x => x.level === "FAIL");
 const warns = findings.filter(x => x.level === "WARN");
