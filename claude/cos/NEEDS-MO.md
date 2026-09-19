@@ -11,6 +11,29 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — nothing (2026-09-19 15:5x PT)
+
+**The football work you asked for this afternoon is live — nothing in it is waiting on you.** Seven
+pages, one push (`c0398f9`), verified on the live site. What I would want you to know, in three lines:
+
+- **The 2026 rookie guide was pricing a product that does not exist.** It ranked "2026 Topps Chrome
+  NFL" cards at June figures; that set has not released, and its eBay buy link returned **zero
+  listings**. On the page with the best conversion rate on the site. Fixed, and the old figures are
+  withdrawn rather than replaced with new guesses.
+- **Football has real sold comps now, free.** The same PriceCharting trick that unblocked SV151 works
+  for football, so the class is priced on **dated completed sales** instead of asks — Mendoza's base
+  rookie is **$2.87** on ~7 sales a day. Every number is backed by a committed file you can re-run.
+- **One thing I got wrong for three days:** a **"PSA 10 ~$51"** with no sale behind it has been sitting
+  on the Mendoza page since your Sep 16 graded ruling. Stripped today. No gate caught it, which is the
+  same hole as last week.
+
+**One thing I would like you to look at when you are back, but it needs no action today:** the cheaper
+Bowman Football offers ($42.97 blaster, $79.99 mega box) went up specifically to test whether the $371
+box was the reason that page converts at 1.1%. I have booked the re-read for **Oct 3**. If you disagree
+with putting a $43 retail box on an investor page, say so and it comes straight back off.
+
+---
+
 ## Open — nothing (2026-09-18 15:05 PT)
 
 - **✅ CLOSED — the deploy landed on its own.** Vercel skipped creating deployments for `2f8ef53` and `aa4dd22` but built the next commit (`4e1ae23`) from the full `main` tree, which carries both. Live-verified 15:03 PT: `/phantasmal-flames-index` 200, PF25 at 100.00 in `indices.json`, PF25 row on the home Markets panel, polish CSS and prose serving. Nothing was needed from Mo after all; the item is kept so the pattern is on record (Vercel can skip a webhook and catch up on the next push — if a push ever needs to deploy alone, push a docs commit behind it). *(Superseded header, kept:)* All three of the morning's items closed by 11:30 PT.

@@ -1450,6 +1450,66 @@
       "severity": "FAIL",
       "surface": "/bowman-bangers",
       "liveVerified": "2026-09-18 19:48Z (12:48 PT) — live /bowman-bangers md5-identical to the repo file; seats 1 Fischer · 2 Holliday · 3 Gonzales · 4 Florentino · 5 Kim, Correction · Sep 18 block present"
+    },
+    {
+      "id": "iw-2026-09-19-3",
+      "status": "applied",
+      "area": "claims",
+      "filed": "2026-09-19",
+      "by": "integrity-watch",
+      "title": "HIGH — /bowman-football published two opposite definitions of the 1st Bowman logo and told the reader the correct one was the mistake to avoid.",
+      "decision": "ACCEPTED and APPLIED same day, c0398f9. The Structure paragraph matched R8/R9 doctrine and stood; the 'Ignoring the debut-year rule' bullet contradicted it and is replaced with 'Treating every Bowman card as a 1st', which states the rule the same way the paragraph does. The lane was right about which sentence should move. On the record: this is R8's first instance in the football product, and the CoS found a second, larger one on /nfl-rookie-cards-2026 in the same session (cos-2026-09-19-1).",
+      "severity": "HIGH",
+      "surface": "/bowman-football",
+      "liveVerified": "2026-09-19 ~22:45Z — live /bowman-football md5-identical to the repo file; 'debut-year rule' returns 0 matches on the rendered page"
+    },
+    {
+      "id": "cos-2026-09-19-1",
+      "status": "applied",
+      "area": "claims",
+      "filed": "2026-09-19",
+      "by": "chief-of-staff",
+      "title": "FAIL — /nfl-rookie-cards-2026, the highest key-event rate on the site, ranked and priced '2026 Topps Chrome NFL' cards at June figures. That product has not released, and the page's buy-strip hero query returned zero listings.",
+      "decision": "FOUND AND APPLIED same session, c0398f9. Evidence read live 2026-09-19: a 2026 Topps Chrome Football hobby box search returns 2 listings (one mislabelled basketball); the same search for 2025 returns 237 at a $739.99 median; PriceCharting's football catalogue lists 2026 Topps Flagship, its 1991 35th insert sets and NFL Living, and no 2026 Chrome set. The 2026 class is in Topps Flagship. Ranked section rebuilt on five cards that exist, every figure a median of dated completed sales with count and window published. The two June figures ($400+ raw Mendoza auto, $1,349 Tate Black Shimmer) are WITHDRAWN and deliberately not restated — same handling as the graded-ladder retraction. Teams corrected (Love = Arizona, previously 'undisclosed'; Bailey = Jets, previously unstated), pre-Week-1 timing copy replaced in Week 3, buy strip repointed off the dead query. Same defect class found and fixed on /best-football-cards-under-50, which recommended Panini Prizm/Optic parallels for a class that is in Topps.",
+      "severity": "FAIL",
+      "surface": "/nfl-rookie-cards-2026, /best-football-cards-under-50",
+      "liveVerified": "2026-09-19 ~22:45Z — both pages live and md5-identical to the repo; 'has not released' renders, $2.87 renders 9 times, 'No verified sale' 5 times"
+    },
+    {
+      "id": "cos-2026-09-19-2",
+      "status": "applied",
+      "area": "pricing-integrity",
+      "filed": "2026-09-19",
+      "by": "chief-of-staff",
+      "title": "Football had no live price anywhere on the site. It now has dated SOLD comps, free — and the nightly ask engine is ruled the wrong instrument for it.",
+      "decision": "RULED and BUILT, c0398f9. The filing's item 4 ('put football in the engine') is DECLINED as written and answered better: the 2026 class trades at $1.44-$3.99 and snapshot-free.mjs rejects any listing under $3 as 'no usable price', so an ask engine with a $3 floor cannot see this market at all. Recorded so it is not re-proposed. Instead tools/football-solds.mjs reads dated completed sales off PriceCharting's public item pages — the same unauthenticated path that unblocked the SV151 screen on Sep 17 — and data/football-solds-2026-09-19.json is the committed evidence behind every football figure published today (8/8 cards, reproducible by re-running the tool). Football therefore marks on SOLD comps, not asks, a better basis than five of the eight live tickers. GRADED IS EMPTY AND SAYS SO: gradedDatedRows is 0 on all eight cards, so every football page reads 'No verified sale' at every grade, and the unattributed 'PSA 10 ~$51' that had been live on /fernando-mendoza-rookie-cards since the Sep 16 graded-ladder ruling is stripped. OPEN, for the Wednesday build: wire the tool into a cadence and decide whether a football index can be constituted on it. Not done unattended on a Saturday.",
+      "severity": "MED",
+      "surface": "tools/football-solds.mjs, data/football-solds-2026-09-19.json, all seven football pages",
+      "liveVerified": "2026-09-19 — tool re-run end to end, 8/8 cards, 0 failures; every dollar figure published on the four repriced pages traced back to the JSON"
+    },
+    {
+      "id": "cos-2026-09-19-3",
+      "status": "applied",
+      "area": "conversion",
+      "filed": "2026-09-19",
+      "by": "chief-of-staff",
+      "title": "/bowman-football sent every visitor to a $371 sealed box and nothing else. Two cheaper formats exist and are now on the page and in the strip.",
+      "decision": "ACCEPTED and APPLIED, c0398f9 — the cheap test of the filing's Finding 1 (an 88-session page converting at 1.1% against a 65-session page at 15.4%, the cheap one selling singles). Read live 2026-09-19: value blaster ask from $42.97 (14 listings), mega box from $79.99 (50+), against the $368.99 hobby box that was the only offer above the fold. All three now sit in a dated ask table high on the page, labelled asks and not sales because nothing in the set has sold, and the strip gains a 'Cheaper way in' secondary pointing at the mega box. Release re-dated Sep 30 from 13 of 18 dated presale titles (the page said pre-order Sep 8 and nothing else), so the promised index lands mid-October, not late September. RE-READ THE KEY-EVENT RATE ON /bowman-football IN TWO WEEKS — that is the whole point of the change and nobody has booked the read yet.",
+      "severity": "MED",
+      "surface": "/bowman-football, data/buy-strip.json",
+      "liveVerified": "2026-09-19 ~22:45Z — live page md5-identical; $42.97 and 'Releases Sep 30' both render"
+    },
+    {
+      "id": "cos-2026-09-19-4",
+      "status": "closed",
+      "area": "claims",
+      "filed": "2026-09-19",
+      "by": "chief-of-staff",
+      "title": "Correction to the football-shelf filing: /topps-cosmic-chrome-football and /topps-chrome-black-football are not stale 2025 products.",
+      "decision": "The filing's Finding 4 called them '2025 products carrying Jun 22 / Aug 25 stamps'. They carry 2025 BRANDING and 2026 RELEASE DATES — Cosmic Chrome released Jun 19 2026, Chrome Black Jul 10 2026 — which is normal for football, where the product year trails the season. Correcting the year would have been the error. What is true is that they are zero-session pages disconnected from the priced 2026 class, so both now carry a dated cross-link into /topps-flagship-football, /nfl-rookie-cards-2026, /fernando-mendoza-rookie-cards and /bowman-football. That also answers the filing's item 6 (surface Mendoza): his page drew 0 landing sessions in 28 days while being the hero query on the best-converting page, and it is now linked from four football pages instead of one. The lane's finding was worth having; its diagnosis of the cause was wrong and that is not held against it.",
+      "severity": "LOW",
+      "surface": "/topps-cosmic-chrome-football, /topps-chrome-black-football",
+      "liveVerified": "2026-09-19 ~22:45Z — both live and md5-identical to the repo"
     }
   ],
   "scoreboard": {

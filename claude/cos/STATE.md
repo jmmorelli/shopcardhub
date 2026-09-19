@@ -1,5 +1,90 @@
 # CoS state — read at the start of every run, update at the end
 
+## 2026-09-19 AFTERNOON — THE FOOTBALL SHELF, DONE (Mo in chat: "update/add to the football pages ASAP since it is football season!!! ... go ahead and do what you need")
+
+**Shipped `c0398f9`, pushed from a fresh deploy-key clone on the Mac, all seven football pages
+live-verified md5-identical at ~22:45Z, IndexNow 200.** Acting on
+`claude/cos/football-shelf-2026-09-19.md` (X Desk Watch's filing). Mo away for the afternoon;
+everything below is decided, not queued.
+
+**THE FILING WAS RIGHT THAT FOOTBALL WAS A CONVERSION PROBLEM AND WRONG ABOUT WHICH ONE.** It
+found an 88-session page converting at 1.1% and blamed the $371 price point, which is a real
+finding and is now tested. The larger defect was underneath it: **`/nfl-rookie-cards-2026` — the
+highest key-event rate on the entire site, 15.4% — ranked and priced a product that has not
+released.** Read live 2026-09-19: a *2026* Topps Chrome Football hobby box search returns **2**
+listings, one of them mislabelled basketball; the same search for *2025* returns **237** at a
+$739.99 median; PriceCharting's football catalogue lists 2026 Topps Flagship, its 1991 35th insert
+sets and NFL Living, and **no 2026 Chrome set**. The page's own buy-strip hero query
+(`2026 Topps Chrome NFL Fernando Mendoza RC Auto`) returned **zero listings** — a dead shelf on the
+best-converting page we have. `/best-football-cards-under-50` had the same defect in a different
+costume: it recommended **Panini Prizm and Optic** parallels for a class that is in Topps.
+**This is R8's naming collision, in football, on the money page. `cos-2026-09-19-1`, FAIL.**
+
+**FOOTBALL NOW HAS SOLD COMPS, FREE, AND THE ASK ENGINE IS RULED OUT FOR IT.** The filing's item 4
+was "put football in the engine." **Declined as written, and recorded so it is not re-proposed:**
+the 2026 class trades at **$1.44–$3.99** and `snapshot-free.mjs` rejects any listing under **$3**
+as `no usable price` — an ask engine with a $3 floor cannot see this market at all. What works
+instead is the **Sep 17 SV151 unlock, reused**: PriceCharting's public item pages carry their
+completed-auction rows in the HTML unauthenticated, and their catalogue covers 2026 Topps Flagship.
+So **`tools/football-solds.mjs`** now reads dated completed sales for eight football cards, and
+**`data/football-solds-2026-09-19.json` is the committed evidence behind every football figure
+published today** — 8/8 cards, 0 failures, re-runnable. Football marks on **sold comps, not asks**,
+which is a better basis than five of the eight live tickers carry. **Graded is empty and the pages
+say so:** `gradedDatedRows` is **0** on all eight, so every football page reads *No verified sale*
+at every grade — and the unattributed **"PSA 10 ~$51"** that had been live on
+`/fernando-mendoza-rookie-cards` since the Sep 16 graded-ladder ruling is **stripped**. That one was
+ours, it survived three days, and no gate saw it.
+
+**What shipped, page by page:**
+- **`/nfl-rookie-cards-2026`** — ranked section rebuilt on five cards that exist. Mendoza Flagship
+  RC **#301 $2.87** (30 most recent, all Sep 18, ~7 sales/day); 1991 35th **#91TR-1 $3.99**; Tate
+  **#318 $1.44**; Love **#309 $1.50**; Bailey **#343 $1.59**. The **Real One auto gets no mark** —
+  two dated sales ($175 Sep 10, $252 Aug 31) is a data point, not a price, and the $725+ ask book is
+  **mostly redemptions**, which is itself the read worth publishing. The June figures ($400+ raw,
+  $1,349 Black Shimmer) are **withdrawn and not restated**, the same handling as the graded-ladder
+  retraction. Teams fixed: **Love is Arizona** (the page said "undisclosed"), **Bailey is the Jets**
+  (unsaid) — both read off the titles of the sales themselves, which is the cheapest fact-check
+  available and one we should have run in June.
+- **`/bowman-football`** — `iw-2026-09-19-3` applied. Release **re-dated Sep 30** (13 of 18 dated
+  presale titles; the page carried only "pre-order Sep 8"), so the index it promises lands
+  **mid-October**, not late September. Two cheaper price points added and in the strip: **value
+  blaster ask $42.97** (14 live), **mega box $79.99** (50+), beside the **$368.99** hobby box that
+  was the only offer above the fold.
+- **`/best-football-cards-under-50`** — rewritten, 8 picks, every one a dated sold median.
+- **`/topps-flagship-football`** — the set page for the set that holds the class gains the base-rookie
+  table; its banner stat **"Comps — forming"** (since August) becomes **$1.44–$3.99**.
+- **`/fernando-mendoza-rookie-cards`** — 0 landing sessions in 28 days on the #1 overall pick.
+  Re-read: **RC #301 is down 37%** from our Aug 31 ~$4.56 to $2.87. Real One row added, graded stripped.
+- **The two 2025-branded pages** cross-link into the priced class, which is also how Mendoza gets
+  surfaced (filing item 6): his page is now linked from four football pages instead of one.
+
+**A CORRECTION TO THE FILING, on the record (`cos-2026-09-19-4`):** its Finding 4 called
+`/topps-cosmic-chrome-football` and `/topps-chrome-black-football` "2025 products." They carry 2025
+**branding** and 2026 **release dates** — Jun 19 and Jul 10, 2026 — which is normal in football,
+where the product year trails the season. **Re-dating them would have been the error.** The lane's
+observation (zero sessions, disconnected) was right; its cause was not, and that is not held against
+it.
+
+**⚠ GATE BASELINE MOVES 63 → 60 WARN on `audit-prices`, and it is a decrease with a named cause:**
+three pages gained `data-prices-updated` stamps in this push (`/nfl-rookie-cards-2026`,
+`/fernando-mendoza-rookie-cards`, `/best-football-cards-under-50`), clearing three
+`no-machine-stamp` WARNs off the 34-page backlog. **New stated baseline: 60/3/1** (31
+no-machine-stamp + 25 non-numeric-price + 4 stale-prose-stamp; audit-site 3; audit-terminal 1
+feed-unavailable). **Any lane comparing against 63/3/1 is reading a stale baseline.**
+
+**FREEZE:** every page touched is an existing page. No new page, no new nav item, no new vertical.
+Mo's "make some updates/pages now that it is football season" released the "no new nav items" clause
+and it was not needed — recorded, and unspent.
+
+**BOOKED, AND NOBODY HAS OWNED IT YET:** the $42.97/$79.99 offers on `/bowman-football` exist to
+test the filing's Finding 1. **Re-read that page's key-event rate on or about Oct 3** — two weeks —
+against the 1.1% baseline. A test nobody reads is not a test.
+
+**STILL OPEN after this run:** wiring `tools/football-solds.mjs` into a cadence, and whether a
+football index can be constituted on it once 2026 Bowman Football prints solds in mid-October.
+**Both are Wednesday-build decisions and were deliberately not taken unattended on a Saturday.**
+
+
 ## 2026-09-18 EVENING — THE FRIDAY RELEASE-WINDOW WORK, DONE BY THE CoS (Mo in chat: "you are in charge to get it done")
 
 The desktop Friday lane never pushed, so its two owned items shipped from this session, behind the three gates:
