@@ -2400,6 +2400,16 @@
           "gates": "d46d7e4: audit-prices FAIL 0 / WARN 63 - audit-site FAIL 0 / WARN 3 - audit-terminal FAIL 0 / WARN 0 (--feed price-data 2026-09-18)",
           "liveVerified": "2026-09-18 22:00Z (15:00 PT) after a manual Vercel redeploy (queue zombie cancelled) - bb-also line + JS_V 5 serving; Playwright 390px: buy module 1584 -> 966px, guide 6.75 -> 5.91 screens",
           "rollback": "git revert d46d7e4 (page + JS + 8 regenerated hosts)"
+        },
+        {
+          "date": "2026-09-19",
+          "commits": [
+            "95c9335"
+          ],
+          "by": "CoS, Mo in chat (homepage rework: 'defer this to you'); Seeking Alpha home/portfolio as the template",
+          "gates": "cloud clone + Mac clone both: audit-prices 0/63, audit-site 0/3, audit-terminal 0/0 (--feed; --run-tests 0 FAIL in the cloud, 83 scenarios on /)",
+          "liveVerified": "2026-09-19 15:44Z — / md5-identical to the repo, home.js?v=4 serves renderTape, /data/releases.json 200; real-browser render: tape 98 items (2 runs) animating, Ending soon 6 rows off /api/auctions (272 live · 203 under), releases 9 rows, 390px scrollWidth 390",
+          "note": "HOME:tape + HOME:releases replace HOME:engine + HOME:focus; data/home-focus.json removed; home.js sealed-product links resolve only to an index that exists (the th26-etb /th26-index Monday-bake trap is closed)"
         }
       ]
     },
