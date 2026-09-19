@@ -5,10 +5,12 @@
  * numbers, so the page is complete at rest (crawlers, JS off). In the browser the same
  * functions re-render from the live feed; if any fetch fails the pre-rendered HTML stays.
  *
- * Panels: markets (Bangers board 30D composite + every index in data/indices.json, chart),
- * engine (what the nightly did: FEED / BUY / SELL / GATE / INDEX), focus (data/home-focus.json),
- * movers (board autos by |30D ROC|), auctions (client-only, /api/auctions), screen (one table
- * over every feed card, filtered by the saved screen in the URL hash).
+ * Panels (homepage rework, Sep 19 2026 — investor shape, Seeking Alpha as the template): tape (every live
+ * index + the top 5 cards of each, from data/indices.json), markets (Bangers board 30D composite + every
+ * index, chart), releases (data/releases.json, upcoming Pokémon + sports), movers (board autos by |30D ROC|),
+ * auctions = "Ending soon" (client-only, /api/auctions), screen (one table over every feed card, filtered by
+ * the saved screen in the URL hash). renderEngine ("From the engine last night") is kept for callers but no
+ * longer on the page — Mo, Sep 19: too trader, not investor.
  *
  * Rules baked in: the board row is 1st Bowman Chrome autos only (cardType chrome-auto,
  * !boardHide) — never a Pokémon card; hammers appear only as the "closes" count; every number
@@ -33,6 +35,13 @@
   };
 
   /* ---------- model ---------- */
+  /* a sealed product links to its set's index page only when that index exists in data/indices.json (th26-etb
+     used to bake a dead /th26-index — the Sep 18 trap); otherwise the tickers hub, which always exists */
+  function indexPage(indices, base) {
+    var want = '/' + base + '-index';
+    for (var k in indices || {}) { var v = indices[k]; if (v && typeof v === 'object' && v.page === want) return want; }
+    return '/indices';
+  }
   function buildModel(latest, history, market, indices) {
     var day = (latest && latest.day) || '';
     var cards = ((latest && latest.cards) || []).map(function (c) {
@@ -50,7 +59,7 @@
         id: id, key: c.key, label: c.label || id, name: parts[0], set: parts[1] || '', cardType: c.cardType || '',
         type: c.cardType === 'chrome-auto' ? 'auto' : c.cardType === 'tcg-single' ? 'tcg' : 'base',
         board: c.cardType === 'chrome-auto' && !c.boardHide,
-        slug: c.slug || null, href: c.slug ? '/' + c.slug + '#engine-' + id : /-bcb26-/.test(id) ? '/bowman-chrome-2026-index' : /-(booster-box|etb)$/.test(id) ? '/' + id.replace(/-(booster-box|etb)$/, '') + '-index' : '/card-' + id,
+        slug: c.slug || null, href: c.slug ? '/' + c.slug + '#engine-' + id : /-(booster-box|etb)$/.test(id) ? indexPage(indices, id.replace(/-(booster-box|etb)$/, '')) : '/card-' + id,
         last: c.last, prev5: prev5, chg: c.last != null && prev5 != null ? c.last - prev5 : null, chgp: ST.pctChange(prev5, c.last),
         lo30: last30.length ? Math.min.apply(null, last30) : null, hi30: last30.length ? Math.max.apply(null, last30) : null,
         roc: c.roc30, z: c.z, sd: m ? m.sd : null,
@@ -158,8 +167,56 @@
     });
     return li.slice(0, 8).join(''); /* eight lines at rest; the rest lives on the board page ("All signals »") */
   }
-  function renderFocus(focus) {
-    return ((focus && focus.items) || []).map(function (f) { return '<a href="' + esc(f.href) + '">' + esc(f.label) + (f.meta ? '<em>' + esc(f.meta) + '</em>' : '') + '</a>'; }).join('');
+  /* ---------- tape (homepage rework, Sep 19 2026 — Mo: the ticker tape over the In Focus bar) ----------
+   * One pass of items: every live index (level, Δ vs previous mark) then the top 5 cards of each index by
+   * price with their change vs the previous re-mark, straight from data/indices.json baskets — sold-basis
+   * where the index is, ask-basis where it is (BOW26/BCB26), the index's own basis label carries. The BOARD
+   * composite rides first when the feed gave us one. The page duplicates the pass (aria-hidden) for the loop. */
+  function tapeItems(model, indices) {
+    var items = [];
+    var idxRows = marketRows(model).filter(function (r) { return r.status !== 'pre' && r.level != null; });
+    idxRows.forEach(function (r) {
+      var p = r.prev != null ? ST.pctChange(r.prev, r.level) : null;
+      items.push({ k: r.k, label: r.k, sub: r.k === 'BOARD' ? 'board · 30D' : 'index', href: r.page || '/indices', v: num(r.level, 2), d: p, dtext: p == null ? (r.history && r.history.length === 1 ? 'inception' : '—') : pct(p, 2) });
+    });
+    for (var k in indices || {}) {
+      var v = indices[k]; if (!v || typeof v !== 'object' || k === '_comment' || k === 'updated') continue;
+      if (v.status === 'pre' || v.status === 'pre-activation' || !(v.history || []).length) continue;
+      var basket = Array.isArray(v.basket) ? v.basket : [];
+      basket.filter(function (b) { return b && b.price != null && isFinite(b.price); }).sort(function (a, b) { return b.price - a.price; }).slice(0, 5).forEach(function (b) {
+        var name = b.name || b.player || b.id || '';
+        var tag = b.rarity || (b.tab === 'autos' ? 'Auto' : b.tab === 'base' ? 'Base' : '') || '';
+        var p = b.prevPrice != null && b.prevPrice > 0 ? ST.pctChange(b.prevPrice, b.price) : null;
+        items.push({ k: k, label: name + (tag ? ' ' + tag : ''), sub: k, href: v.page || '/indices', v: fmt(b.price), d: p, dtext: p == null ? 'first mark' : pct(p, 1) });
+      });
+    }
+    return items;
+  }
+  function renderTape(model, indices) {
+    var items = tapeItems(model, indices);
+    if (!items.length) return '<div class="tape-track"><div class="tape-run"><a class="tp" href="/indices"><span class="tp-k">Indices</span><span class="tp-v">no live mark yet — 0 marks</span></a></div></div>';
+    var run = items.map(function (it) {
+      return '<a class="tp" href="' + esc(it.href) + '"><span class="tp-k">' + esc(it.label) + '</span><span class="tp-s">' + esc(it.sub) + '</span><span class="tp-v">' + esc(it.v) + '</span><span class="tp-d ' + (it.d == null ? '' : cls(it.d)) + '">' + esc(it.dtext) + '</span></a>';
+    }).join('');
+    /* two identical runs, the track slides −50% and loops; ~3 s per item keeps it readable at any count */
+    return '<div class="tape-track" style="animation-duration:' + Math.max(40, items.length * 3) + 's"><div class="tape-run">' + run + '</div><div class="tape-run" aria-hidden="true">' + run + '</div></div>';
+  }
+
+  /* ---------- upcoming releases (data/releases.json) ---------- */
+  function upcoming(releases, today) {
+    var t = today || (new Date()).toISOString().slice(0, 10);
+    return ((releases && releases.items) || []).filter(function (r) { return r && r.date && r.date >= t; }).sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+  }
+  function renderReleases(releases, today, max) {
+    var rows = upcoming(releases, today).slice(0, max || 9);
+    if (!rows.length) return '<li class="empty">Nothing dated on the calendars we read — check back after the next Monday re-bake.</li>';
+    return rows.map(function (r) {
+      var d = new Date(r.date + 'T12:00:00Z');
+      var day = r.status === 'expected' && r.window ? r.window : (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getUTCMonth()] + ' ' + d.getUTCDate());
+      var lbl = r.href ? '<a href="' + esc(r.href) + '">' + esc(r.label) + '</a>' : '<span class="nolink">' + esc(r.label) + '</span>';
+      var meta = [r.status === 'expected' ? 'expected window' : r.status === 'reported' ? 'reported' : '', r.note || ''].filter(Boolean).join(' · ');
+      return '<li data-date="' + esc(r.date) + '"><span class="dt">' + esc(day) + '</span><span class="fam ' + esc(r.family || '') + '">' + esc(r.sport || (r.family === 'pokemon' ? 'PKMN' : '')) + '</span><span class="lb">' + lbl + (meta ? '<small>' + esc(meta) + '</small>' : '') + '</span></li>';
+    }).join('');
   }
   function renderMovers(model) {
     var rows = model.cards.filter(function (c) { return c.board && c.roc != null; }).sort(function (a, b) { return Math.abs(b.roc) - Math.abs(a.roc); }).slice(0, 7);
@@ -209,13 +266,30 @@
       return '<tbody data-screen-body="' + id + '" data-name="' + esc(sm.name) + '" data-meta="' + esc(sm.meta) + '"' + (id === active ? '' : ' hidden') + '>' + renderScreen(model, id) + '</tbody>';
     }).join('\n');
   }
-  function renderAuctions(rows, day) {
-    rows = (rows || []).filter(function (r) { return r && r.url && r.total != null; }).sort(function (a, b) { return new Date(a.endDate) - new Date(b.endDate); }).slice(0, 5);
+  /* Ending Soon (homepage rework, Sep 19 2026): the Auction Desk's live rows on the cards the engine tracks —
+   * auctions with a bid first, soonest close first, one family tag per row so a reader knows which desk it belongs to.
+   * The desk's universe is data/watchlist.json (38 cards); widening it to each index's top constituents is an
+   * /api/auctions change, queued, not faked here. */
+  function family(r) {
+    var id = String(r.id || ''), t = String(r.cardType || '');
+    if (/-bcb26-/.test(id)) return 'BCB26';
+    if (t === 'sealed') return 'Sealed';
+    if (t === 'tcg-single') return 'Pokémon';
+    if (/sapphire/.test(t) || /sapphire/.test(id)) return 'Sapphire';
+    if (t === 'chrome-auto') return 'Board';
+    return 'Bowman';
+  }
+  function renderAuctions(rows, day, max) {
+    rows = (rows || []).filter(function (r) { return r && r.url && r.total != null; }).sort(function (a, b) {
+      var ab = (a.bidCount || 0) > 0 ? 0 : 1, bb = (b.bidCount || 0) > 0 ? 0 : 1;
+      return ab - bb || (new Date(a.endDate) - new Date(b.endDate));
+    }).slice(0, max || 6);
     if (!rows.length) return '<li class="empty">No verified live auction on a tracked card right now — the desk refreshes every 15 minutes.</li>';
     return rows.map(function (r, i) {
       var ends = r.endDate ? Math.max(0, (new Date(r.endDate).getTime() - Date.now()) / 36e5) : null;
       var vs = r.vsMark != null ? r.vsMark * 100 : null;
-      return '<li><span class="rk">' + (i + 1) + '</span><span class="nm"><a href="' + esc(r.url) + '" target="_blank" rel="noopener sponsored">' + esc(r.label || r.title) + '</a><small>' + (r.bidCount || 0) + ' bid' + (r.bidCount === 1 ? '' : 's') + (ends != null ? ' · ends in ' + (ends >= 48 ? Math.round(ends / 24) + 'd' : Math.round(ends) + 'h') : '') + ' · mark ' + fmt(r.mark) + (day ? ' (' + dstr(day) + ')' : '') + ' · <span class="ebay">eBay</span></small></span><span class="num ' + (vs == null ? '' : vs < 0 ? 'up' : 'dn') + '">' + (vs == null ? '—' : pct(vs, 0) + ' vs mark') + '</span><span class="num head">' + fmt(r.total) + '</span></li>';
+      var endTxt = ends == null ? '' : ends < 1 ? Math.max(1, Math.round(ends * 60)) + 'm' : ends >= 48 ? Math.round(ends / 24) + 'd' : Math.round(ends) + 'h';
+      return '<li><span class="rk">' + (i + 1) + '</span><span class="nm"><a href="' + esc(r.url) + '" target="_blank" rel="noopener sponsored" data-card="' + esc(r.id || '') + '" data-kind="auction">' + esc(r.label || r.title) + '</a><small><span class="fam-tag">' + esc(family(r)) + '</span>' + (r.bidCount || 0) + ' bid' + (r.bidCount === 1 ? '' : 's') + (endTxt ? ' · ends in ' + endTxt : '') + ' · mark ' + fmt(r.mark) + ' · <span class="ebay">eBay</span></small></span><span class="num ' + (vs == null ? '' : vs < 0 ? 'up' : 'dn') + '">' + (vs == null ? '—' : pct(vs, 0) + ' vs mark') + '</span><span class="num head">' + fmt(r.total) + '</span></li>';
     }).join('');
   }
   /* rail portfolios — read-only view of the Vault mirror (sch_vault_v1) via js/vault-schema.js; never writes */
@@ -302,22 +376,31 @@
         /* each panel paints on its own — one bad panel never blanks the others (the pre-render stays) */
         var safe = function (f) { try { f(); } catch (e) { if (window.console) console.warn('home panel skipped:', e && e.message); } };
         safe(function () { var m = panel('markets'); var on = m && m.querySelector('.mrow.on'); sel = on ? on.getAttribute('data-k') : null; paintMarkets(); });
-        safe(function () { var en = panel('engine'); if (en) en.innerHTML = renderEngine(model); });
+        safe(function () { var tp = panel('tape'); if (tp) tp.innerHTML = renderTape(model, a[3] || {}); });
         safe(function () { var mv = panel('movers'); if (mv) mv.innerHTML = renderMovers(model); });
         safe(function () { paintScreen(false); });
         safe(function () { var dy = $('[data-home="day"]'); if (dy) dy.textContent = dstr(model.day); var st = $('[data-home="stamp"]'); if (st) st.textContent = model.marked + '/' + model.total + ' marked · ' + model.gatedN + ' gated'; });
       }).catch(function () { /* pre-rendered numbers stay */
         get('/data/indices.json?t=' + Date.now()).then(function (idx) { idxModel = buildModel({ day: '', cards: [] }, {}, null, idx || {}); }).catch(function () {});
       });
-    /* auction desk (same-origin) */
+    /* upcoming releases: the bake is Monday's; drop rows whose date has passed since (the <li> keeps data-date) */
+    try {
+      var today = (new Date()).toISOString().slice(0, 10);
+      Array.prototype.forEach.call(document.querySelectorAll('[data-home="releases"] li[data-date]'), function (li) { if (li.getAttribute('data-date') < today) li.hidden = true; });
+    } catch (e4) {}
+    /* ending soon (same-origin Auction Desk feed); every eBay link reports the click like /auctions does */
     var au = panel('auctions');
     if (au) get('/api/auctions').then(function (d) { au.innerHTML = renderAuctions(d.rows, d.markDay); var n = $('[data-home="auctions-n"]'); if (n) n.textContent = (d.count || 0) + ' live · ' + (d.underMark || 0) + ' under the mark'; })
       .catch(function () { au.innerHTML = '<li class="empty">Live auctions are unavailable right now — open the Auction Desk.</li>'; });
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('[data-home="auctions"] a[data-kind="auction"]'); if (!a) return;
+      if (window.gtag) gtag('event', 'click', { link_url: 'ebay', card: a.getAttribute('data-card'), kind: 'auction', page: location.pathname });
+    });
     /* rail portfolios from the Vault mirror (read-only) */
     var pf = $('[data-rail="portfolios"]');
     try { if (pf) { var store = null; try { store = JSON.parse(localStorage.getItem('sch_vault_v1') || 'null'); } catch (e) { store = null; } var cfg = {}; try { cfg = JSON.parse(pf.getAttribute('data-cfg') || '{}'); } catch (e2) {} pf.innerHTML = renderPortfolios(store, cfg); } } catch (e3) {}
   }
   if (typeof document !== 'undefined') { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot(); }
 
-  return { SCREENS: SCREENS, buildModel: buildModel, renderMarkets: renderMarkets, renderChart: renderChart, renderEngine: renderEngine, renderFocus: renderFocus, renderMovers: renderMovers, renderScreen: renderScreen, renderScreens: renderScreens, screenMeta: screenMeta, renderAuctions: renderAuctions, renderPortfolios: renderPortfolios, lineChart: lineChart };
+  return { SCREENS: SCREENS, buildModel: buildModel, renderMarkets: renderMarkets, renderChart: renderChart, renderEngine: renderEngine, renderTape: renderTape, tapeItems: tapeItems, renderReleases: renderReleases, upcoming: upcoming, renderMovers: renderMovers, renderScreen: renderScreen, renderScreens: renderScreens, screenMeta: screenMeta, renderAuctions: renderAuctions, renderPortfolios: renderPortfolios, lineChart: lineChart };
 });

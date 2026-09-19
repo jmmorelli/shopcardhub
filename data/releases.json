@@ -1,0 +1,25 @@
+{
+  "_comment": "UPCOMING RELEASES panel on / (homepage rework, Sep 19 2026). Rendered by tools/build-home.mjs (HOME:releases) and re-filtered client-side by js/home.js so a past date drops off between Monday re-bakes. Hand-curated: only dates read from the named source, never guessed. status = confirmed (a dated line on the maker's calendar) | expected (a window a calendar publishes without a day — shown with its window text, no fake day). href only to a page that exists (build-home refuses otherwise). Keep ~10 upcoming; prune past rows when re-baking.",
+  "asOf": "2026-09-19",
+  "sources": {
+    "topps": "https://www.topps.com/release-calendar (read 2026-09-19)",
+    "bowman-chrome-mega": "https://www.topps.com/pages/bowman-chrome-baseball (Mega boxes available September 23 at 12pm ET)",
+    "pokemon-30th-waves": "https://tcgradar.eu/guides/pokemon-tcg-set-release-calendar-2026 + the product waves on /pokemon-30th-anniversary-2026",
+    "delta-reign": "https://pokecottage.com/pokemon-set-release-calendar and https://www.cardrake.com/guides/upcoming-sets (name and date reported, not yet on pokemon.com)",
+    "baseball-windows": "https://baseball.cards/release-calendar/ (expected windows, no day)"
+  },
+  "items": [
+    { "date": "2026-09-22", "family": "sports", "sport": "NBA", "label": "2026-27 Topps Flagship Basketball", "note": "pre-order opens", "status": "confirmed", "href": null },
+    { "date": "2026-09-23", "family": "sports", "sport": "MLB", "label": "2026 Bowman Chrome Baseball — Mega boxes", "note": "retail config · hobby streeted Sep 9", "status": "confirmed", "href": "/bowman-chrome-baseball-2026" },
+    { "date": "2026-09-24", "family": "sports", "sport": "NBA", "label": "2025-26 Topps Pristine Basketball", "note": "", "status": "confirmed", "href": "/topps-pristine-basketball" },
+    { "date": "2026-10-02", "family": "pokemon", "sport": "PKMN", "label": "30th Celebration — wave 2 (Booster Bundle)", "note": "best $/pack in the set", "status": "confirmed", "href": "/pokemon-30th-anniversary-2026" },
+    { "date": "2026-10-07", "family": "sports", "sport": "MLB", "label": "2026 Topps Museum Collection Baseball", "note": "", "status": "confirmed", "href": "/topps-museum-collection-baseball" },
+    { "date": "2026-10-07", "family": "sports", "sport": "MLB", "label": "2026 Topps Allen & Ginter Baseball", "note": "", "status": "confirmed", "href": null },
+    { "date": "2026-10-30", "family": "pokemon", "sport": "PKMN", "label": "30th Celebration — wave 3 + Espeon ex / Umbreon ex Battle Deck", "note": "", "status": "confirmed", "href": "/pokemon-30th-anniversary-2026" },
+    { "date": "2026-11-06", "family": "pokemon", "sport": "PKMN", "label": "Delta Reign (Mega Evolution set 6, Mega Rayquaza ex)", "note": "not yet on pokemon.com", "status": "reported", "href": "/pokemon-tcg-2026" },
+    { "date": "2026-11-06", "family": "pokemon", "sport": "PKMN", "label": "30th Celebration — wave 4 (Figure Collections)", "note": "", "status": "confirmed", "href": "/pokemon-30th-anniversary-2026" },
+    { "date": "2026-11-15", "family": "sports", "sport": "MLB", "label": "2026 Topps Chrome Update Baseball", "note": "", "status": "expected", "window": "mid-Nov", "href": null },
+    { "date": "2026-12-04", "family": "pokemon", "sport": "PKMN", "label": "30th Celebration — wave 5 (final wave)", "note": "", "status": "confirmed", "href": "/pokemon-30th-anniversary-2026" },
+    { "date": "2026-12-15", "family": "sports", "sport": "MLB", "label": "2026 Bowman Draft Baseball", "note": "next 1st Bowman class", "status": "expected", "window": "mid-Dec", "href": null }
+  ]
+}

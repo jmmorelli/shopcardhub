@@ -3,16 +3,17 @@
 //
 // Runs js/home.js (the same renderer the browser uses) in Node against the nightly feed and
 // writes real numbers into index.html between the markers
+//   <!-- HOME:tape:START/END -->     the ticker tape (every live index + the top 5 cards of each, data/indices.json)
 //   <!-- HOME:markets:START/END -->  Markets rows (Bangers board 30D composite + every index)
 //   <!-- HOME:chart:START/END -->    the default chart (board composite, 100 reference)
-//   <!-- HOME:engine:START/END -->   "From the engine last night"
-//   <!-- HOME:focus:START/END -->    In Focus strip (data/home-focus.json)
+//   <!-- HOME:releases:START/END --> Upcoming releases (data/releases.json — Pokémon + sports, dated, sourced)
 //   <!-- HOME:movers:START/END -->   Board movers · 30D
 //   <!-- HOME:screen:START/END -->   the Screens table (default screen = the board)
 //   <!-- HOME:stamp:START/END -->    feed day + marked/gated counts in the page header
 // so the page is complete at rest for crawlers and with JS off; js/home.js then refreshes from
 // the live feed and leaves this HTML alone if the fetch fails. Idempotent — re-run Mondays (and
-// after editing data/home-focus.json or data/indices.json).
+// after editing data/releases.json or data/indices.json). Homepage rework Sep 19 2026 (Mo): the
+// "From the engine last night" panel and the In Focus strip are gone — tape + releases replace them.
 //
 // Usage:  node tools/build-home.mjs            node tools/build-home.mjs --dry
 //         FEED_BASE=/path/to/price-data/data node tools/build-home.mjs   (local clone; a URL also works)
@@ -40,8 +41,16 @@ const latest = await feed("prices-latest.json");
 const history = await feed("prices-history.json");
 const market = await feed("market-latest.json");
 const indices = JSON.parse(read("data/indices.json"));
-const focus = JSON.parse(read("data/home-focus.json"));
-for (const it of focus.items || []) { const p = it.href.split("#")[0].replace(/\/$/, "") || "/"; if (p !== "/" && !fs.existsSync(path.join(REPO, p.slice(1) + ".html"))) throw new Error(`home-focus.json: ${it.href} has no page`); }
+const releases = JSON.parse(read("data/releases.json"));
+const TODAY = process.env.HOME_TODAY || new Date().toISOString().slice(0, 10);
+for (const it of releases.items || []) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(it.date || "")) throw new Error(`releases.json: "${it.label}" has no YYYY-MM-DD date`);
+  if (!it.href) continue;
+  const p = it.href.split("#")[0].replace(/\/$/, "") || "/";
+  if (p !== "/" && !fs.existsSync(path.join(REPO, p.slice(1) + ".html"))) throw new Error(`releases.json: ${it.href} has no page`);
+}
+const upcomingN = HOME.upcoming(releases, TODAY).length;
+if (!upcomingN) throw new Error(`releases.json: nothing dated on or after ${TODAY} — add the next releases before baking`);
 
 let html = read("index.html");
 const put = (key, body) => {
@@ -55,7 +64,7 @@ if (latest && history) {
   const sel = model.composite ? "BOARD" : (model.indices.find((i) => i.status !== "pre") || {}).k;
   put("markets", HOME.renderMarkets(model, sel));
   put("chart", HOME.renderChart(model, sel));
-  put("engine", HOME.renderEngine(model));
+  put("tape", HOME.renderTape(model, indices));
   put("movers", HOME.renderMovers(model));
   put("screen", HOME.renderScreens(model, "board"));   // every saved screen pre-rendered (one visible) so switching needs no feed
   const sm = HOME.screenMeta(model, "board");
@@ -63,8 +72,9 @@ if (latest && history) {
   put("stamp", `feed <b data-home="day">${ST.dstr(model.day)}</b> · <span data-home="stamp">${model.marked}/${model.total} marked · ${model.gatedN} gated</span> · ask-basis`);
   html = html.replace(/data-prices-updated="\d{4}-\d{2}-\d{2}"/, `data-prices-updated="${model.day}"`);
   console.log(`feed day ${model.day}: ${model.marked}/${model.total} marked · ${model.gatedN} gated · ${model.closes} closes · composite ${model.composite ? ST.num(model.composite.level, 2) + " (" + model.composite.n + " autos)" : "n/a"} · ${model.indices.length} indices`);
-} else console.log("feed unavailable — markets/engine/movers/screen panels left as previously rendered");
-put("focus", HOME.renderFocus(focus));
+} else console.log("feed unavailable — tape/markets/movers/screen panels left as previously rendered");
+put("releases", HOME.renderReleases(releases, TODAY, 9));
+console.log(`releases: ${upcomingN} upcoming from ${TODAY} (asOf ${releases.asOf}) · tape ${latest && history ? HOME.tapeItems(HOME.buildModel(latest, history, market, indices), indices).length : "?"} items`);
 
 if (!DRY) fs.writeFileSync(path.join(REPO, "index.html"), html);
 console.log(`${DRY ? "would update" : "updated"} index.html`);
