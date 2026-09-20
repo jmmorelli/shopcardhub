@@ -50,7 +50,11 @@ const REPORTS = {
   events1: { dateRanges: RANGES.d1, dimensions: d("eventName"), metrics: m("eventCount", "totalUsers"), limit: 60 },
   returning28: { dateRanges: RANGES.d28, dimensions: d("newVsReturning"), metrics: m("activeUsers", "sessions", "keyEvents"), limit: 5 },
   returning7: { dateRanges: RANGES.d7, dimensions: d("newVsReturning"), metrics: m("activeUsers", "sessions", "keyEvents"), limit: 5 },
-  countries7: { dateRanges: RANGES.d7, dimensions: d("country"), metrics: m("activeUsers", "sessions", "averageSessionDuration"), orderBys: [{ metric: { metricName: "sessions" }, desc: true }], limit: 12 },
+  countries7: { dateRanges: RANGES.d7, dimensions: d("country"), metrics: m("activeUsers", "sessions", "keyEvents", "averageSessionDuration"), orderBys: [{ metric: { metricName: "sessions" }, desc: true }], limit: 40 },
+  // country x day. Added 2026-09-20 on Mo's yes. The 2026-09-19 Integrity Watch found a country averaging
+  // 0.149s over 61 sessions (21% of the window) and had to file "cause not established" because this file
+  // carried no country-by-day report, so it could not test whether the burst landed on one day. It can now.
+  countriesDaily7: { dateRanges: RANGES.d7, dimensions: d("country", "date"), metrics: m("sessions", "keyEvents", "averageSessionDuration"), orderBys: [{ dimension: { dimensionName: "date" } }], limit: 400 },
   devices28: { dateRanges: RANGES.d28, dimensions: d("deviceCategory"), metrics: m("sessions", "keyEvents", "sessionKeyEventRate"), limit: 5 },
   // No dimension → one totals row. sessionKeyEventRate here is GA4's own "sessions with a key event ÷ sessions",
   // which is what the UI's Traffic-acquisition total shows (5.59% on 2026-09-18), not key events ÷ sessions.
@@ -86,6 +90,50 @@ async function runReport(token, body) {
   return { rows, rowCount: j.rowCount || rows.length };
 }
 
+// BOT FILTER (2026-09-20, Mo: "yes bot filter").
+//
+// GA4 CANNOT DO THIS ITSELF, and that is why it lives here. GA4 data filters support exactly two
+// types — Internal traffic and Developer traffic. There is no country filter and no duration filter.
+// Its built-in IAB bot exclusion is already on and does not catch this. So the choice is (a) block
+// upstream so the sessions never fire, or (b) subtract them where the numbers are read. This is (b),
+// and it is applied HERE because every lane reads this one file — fixing the denominator once fixes
+// the Business Read, the Integrity Watch and the weekly together.
+//
+// THE TEST IS BEHAVIOURAL, NOT A COUNTRY LIST, on purpose. The Sep 19 watch made exactly this
+// argument against its own prompt: its bar was a share test (">40% of US sessions") and the evidence
+// was a duration test, so a literal reading would have let 0.149-second traffic through. Naming
+// Singapore in code would catch this one burst and miss the next one from somewhere else. A country
+// averaging under two seconds a session is not people, wherever it is.
+//
+// WHAT IT DOES NOT DO: delete anything. Both figures are always emitted — raw and clean, with the
+// suspects named — because a filter nobody can audit is how a number quietly becomes wrong. Same
+// rule as organic-beside-blended.
+const BOT_MAX_AVG_SESSION_SEC = 2;   // a real visit is not under two seconds
+const BOT_MIN_SESSIONS = 10;         // below this it is noise, not a cluster worth subtracting
+
+function botFilter(rep) {
+  const rows = rep.countries7.rows || [];
+  const suspects = rows.filter((r) => (r.sessions || 0) >= BOT_MIN_SESSIONS && r.averageSessionDuration != null && r.averageSessionDuration < BOT_MAX_AVG_SESSION_SEC);
+  const totalSessions = rows.reduce((s, r) => s + (r.sessions || 0), 0);
+  const botSessions = suspects.reduce((s, r) => s + (r.sessions || 0), 0);
+  const botKeyEvents = suspects.reduce((s, r) => s + (r.keyEvents || 0), 0);
+  const cleanSessions = totalSessions - botSessions;
+  const cleanKeyEvents = rows.reduce((s, r) => s + (r.keyEvents || 0), 0) - botKeyEvents;
+  return {
+    rule: `avg session < ${BOT_MAX_AVG_SESSION_SEC}s over >= ${BOT_MIN_SESSIONS} sessions, 7d, by country`,
+    suspects: suspects.map((r) => ({ country: r.country, sessions: r.sessions, keyEvents: r.keyEvents || 0, avgSessionSec: +(r.averageSessionDuration || 0).toFixed(3) })),
+    botSessions7: botSessions,
+    botShare7: totalSessions ? +(botSessions / totalSessions * 100).toFixed(2) : null,
+    cleanSessions7: cleanSessions,
+    cleanKeyEvents7: cleanKeyEvents,
+    // keyEvents / sessions, NOT GA4's sessionKeyEventRate (which is sessions-with-a-key-event / sessions
+    // and cannot be recomputed after subtracting rows). Labelled so nobody compares it to the blended
+    // figure above and calls the difference a change in behaviour. Compare clean to clean.
+    cleanKeyEventsPerSession7: cleanSessions ? +(cleanKeyEvents / cleanSessions * 100).toFixed(2) : null,
+    rawKeyEventsPerSession7: totalSessions ? +(rows.reduce((s, r) => s + (r.keyEvents || 0), 0) / totalSessions * 100).toFixed(2) : null,
+  };
+}
+
 function derive(rep) {
   const ch28 = rep.channels28.rows, ch7 = rep.channels7.rows;
   const pick = (rows, name) => rows.find((r) => r.sessionDefaultChannelGroup === name) || {};
@@ -112,6 +160,8 @@ function derive(rep) {
     trackCardFromPage7: ev(rep.events7.rows, "track_card_from_page"), newsletterSignup7: ev(rep.events7.rows, "newsletter_signup"),
     keyEventsYesterday: (rep.daily28.rows.at(-1) || {}).keyEvents ?? null, sessionsYesterday: (rep.daily28.rows.at(-1) || {}).sessions ?? null,
     topCountry7: (rep.countries7.rows[0] || {}).country || null, nonUSTopCountry7: (rep.countries7.rows.find((r) => r.country !== "United States") || {}),
+    // Raw figures stay above, unchanged. The bot-adjusted pair sits beside them, never instead of them.
+    bots: botFilter(rep),
   };
 }
 

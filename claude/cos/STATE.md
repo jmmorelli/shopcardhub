@@ -1,5 +1,93 @@
 # CoS state — read at the start of every run, update at the end
 
+## 2026-09-20 — BOT FILTER SHIPPED (Mo: "yes bot filter"), AND THE EXPOSURE AUDIT THAT CAME WITH IT
+
+**The bot traffic is worse than the Sep 19 watch measured, and it is still growing.** Applying the new
+rule to today's live snapshot (day 2026-09-19):
+
+| Country | Sessions (7d) | Avg session | Verdict |
+|---|---|---|---|
+| United States | 185 | 183.6 s | real |
+| **Singapore** | **104** | **0.146 s** | **bot** |
+| **China** | **13** | **0.318 s** | **bot** |
+| Canada · Australia · Netherlands | 7 · 6 · 5 | 73 · 74 · 13 s | real |
+
+**117 of 331 sessions — 35.3% of the 7-day window — is not people.** The Sep 19 watch measured
+Singapore at 61 sessions / 21%. It is now 104, and China has appeared beside it. **Every 7-day rate in
+`summary` has been computed over a denominator that is now roughly a third junk**, and STATE's
+"earliest clean baseline Sep 24" assumed one contaminant that was not growing. That date is void.
+
+**THE FIX IS IN `tools/ga4-snapshot.mjs`, NOT IN GA4, AND THAT IS NOT A SHORTCUT.** GA4 data filters
+support exactly two types — Internal traffic and Developer traffic. **There is no country filter and no
+duration filter**, and the built-in IAB bot exclusion is already on and does not catch this. So the only
+places to subtract are upstream (block it) or at the read. The read is where every lane looks, so one
+change fixes the Business Read, the Integrity Watch and the weekly together.
+
+**The test is behavioural, not a country list, and that was deliberate.** The Sep 19 watch made this
+argument against its own prompt: its bar was a share test (">40% of US sessions") while the evidence was
+a duration test, so a literal reading would have let 0.146-second traffic through. Naming Singapore in
+code catches this burst and misses the next one. The rule shipped is **average session under 2 seconds
+over at least 10 sessions, by country, 7-day window**. On today's data it flags Singapore and China and
+correctly ignores Czechia (2 sessions, 0.000 s) as noise.
+
+**Both numbers are always emitted — raw and clean, with the suspects named.** Same rule as
+organic-beside-blended. A filter nobody can audit is how a number quietly becomes wrong. New in
+`summary.bots`: `rule`, `suspects[]`, `botSessions7`, `botShare7`, `cleanSessions7`, `cleanKeyEvents7`,
+`cleanKeyEventsPerSession7`, `rawKeyEventsPerSession7`. **`cleanKeyEventsPerSession7` is keyEvents ÷
+sessions, NOT GA4's `sessionKeyEventRate`** (which is sessions-with-a-key-event ÷ sessions and cannot be
+recomputed after subtracting rows) — compare clean to clean, never clean to blended.
+
+**`countriesDaily7` added** (country × date). The Sep 19 watch had to file its Finding 6(b) as "cause not
+established" because it could not test whether the bot burst landed on the Sep 17 engagement floor or
+spread across the week. From tomorrow's nightly it can.
+
+---
+
+### THE EXPOSURE AUDIT — asked by Mo the same message ("can we stop them / prevent bots stealing our code")
+
+Ranked by what is actually at risk. **The HTML is not the asset and blocking scrapers is not the answer.**
+
+**1 · THE GITHUB REPO IS PUBLIC. This is the whole business, readable by anyone, and it dwarfs
+everything else.** Verified unauthenticated this run: `claude/cos/STATE.md` (200), `LANE-RULES.md` (200),
+`data/pipeline.json` (200), `tools/price-engine/snapshot-free.mjs` (200), `data/watchlist.json` (200).
+That is the price engine, every eBay query, the full operating doctrine, every ruling — **and this file,
+which carries EPN earnings, GA4 traffic, the milestone ladder, competitor notes and Mo's own words.**
+Nobody needs a scraper; they need `git clone`.
+
+**AND IT CANNOT SIMPLY BE FLIPPED PRIVATE — that would break the live site.** `js/home.js`,
+`js/engine-block.js` and `api/auctions.js` each fetch the price feed from
+`raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/...` **in the visitor's browser**.
+Private repo → raw 404 → the homepage ticker and every engine block go blank. **So it is two steps, in
+order:** (a) serve the feed through our own origin (a Vercel rewrite or `/api/feed`) and cut the three
+hotlinks; (b) then flip the repo private. Step (a) is worth doing on its own merits — it removes a
+hard runtime dependency on GitHub's availability and puts the feed behind our own CDN. **Queued for the
+Wednesday build. Do not flip the repo private before (a) ships.**
+
+**2 · `/api/comps` IS AN OPEN PROXY ON MO'S EBAY KEYSET.** No auth, no referer check, no rate limit
+(verified live: 200, 34 KB, `x-vercel-cache: MISS` — a live eBay call from an anonymous request).
+Quota is 5,000/day. The 15-minute CDN cache protects repeated *identical* queries; varying `q` walks
+straight past it. One script can zero the pricing engine for a day. `/api/auctions` returns the whole
+desk — 230 KB — in one anonymous call. robots.txt disallows `/api/` but that is honour-system and is
+not what protects anything.
+
+**3 · Scrapers and AI crawlers reading the HTML — real, and the least of the three.** Vercel's Bot
+Protection and AI Bots managed rulesets are **both off by default** and are one click each in the
+Firewall dashboard. **Safe for search:** Vercel auto-excludes verified bots from bot protection, and
+bingbot / googlebot / duckduckbot / yahoo-slurp are all on that list — which is ~95% of our search
+traffic (Bing-fed). WAF **custom rules, IP blocking and DDoS mitigation are free on every plan** and can
+ship in `vercel.json` via `routes` + `mitigate` (deny/challenge only). **Rate limiting and managed
+rulesets are the priced/Pro-gated ones** — check the plan before promising either.
+
+**What cannot be fixed, stated plainly so nobody spends a session on it:** client-side code shipped to
+a browser is readable, permanently. Minification and obfuscation are speed bumps. The defensible asset
+is the *data and the method* — the nightly feed, the sold-comp reads, the rulebooks — not the markup.
+
+**NOT DONE, AND DELIBERATELY NOT DONE UNATTENDED:** no country has been blocked. Blocking Singapore and
+China wholesale is a business decision with real downside (collectors in Asia), the traffic costs
+nothing today (Vercel mitigated traffic is free and these sessions do not touch the eBay quota), and it
+is Mo's call. Put to him 2026-09-20.
+
+
 ## 2026-09-19 AFTERNOON — THE FOOTBALL SHELF, DONE (Mo in chat: "update/add to the football pages ASAP since it is football season!!! ... go ahead and do what you need")
 
 **Shipped `c0398f9`, pushed from a fresh deploy-key clone on the Mac, all seven football pages
