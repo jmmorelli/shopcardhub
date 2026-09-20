@@ -12,12 +12,26 @@
 // with the exact filter js/buy-strip.js applies in the browser, and reports what a
 // reader would actually see.
 //
+// Sep 20 2026 — this read now also covers the two links added with ideas #32 and #33:
+//   · CASE shelves (`case` in the config). A case link earns its place only while real
+//     case supply exists; under CASE_MIN clean listings it is reported THIN and under 1
+//     it is DEAD. It is also the link most likely to rot into the wrong thing, because
+//     "case break"/"case hit" listings are $20 break slots that match the word "case" —
+//     hence the shared filter in tools/case-shelf.mjs and the `must` phrase guard.
+//   · AG links (`secondary.ag`). eBay's Authenticity Guarantee filter belongs on a link
+//     only while the card it points at still trades at $200+, which is the threshold
+//     eBay set in August 2026. If the median ask falls below that, the trust copy is
+//     making a claim about a bracket the card has left, and the flag comes off.
+//
 // Usage: node tools/buy-strip-health.mjs [--json] [--origin https://www.shopcardhub.com]
 // Exit 1 if any live query returns nothing — that is a dead shelf, not a warning.
+// Case and AG findings are reported but do NOT fail the run: neither renders a figure,
+// so a thin one is a link to fewer listings, not a wrong number on a page.
 
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { cleanCases, CASE_MIN } from "./case-shelf.mjs";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const JSON_OUT = process.argv.includes("--json");
@@ -66,11 +80,46 @@ for (const [slug, v] of live) {
   rows.push(row);
 }
 
+// --- case shelves (idea #32) ---
+const caseRows = [];
+for (const [slug, v] of Object.entries(cfg.pages)) {
+  if (!v.case) continue;
+  const row = { slug, product: v.product, clean: 0, low: null, title: null, state: "dead" };
+  try {
+    const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(v.case.q)}&limit=50&sort=price`);
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const j = await r.json();
+    const cc = cleanCases(j.listings, v.case.must);
+    row.clean = cc.length;
+    if (cc.length) { row.low = cc[0].price; row.title = cc[0].title; }
+    row.state = cc.length >= CASE_MIN ? "ok" : cc.length ? "thin" : "dead";
+  } catch (e) { row.state = "error"; row.error = e.message; }
+  caseRows.push(row);
+}
+
+// --- Authenticity Guarantee links (idea #33) ---
+const agRows = [];
+for (const [slug, v] of Object.entries(cfg.pages)) {
+  if (!v.secondary || !v.secondary.ag) continue;
+  const row = { slug, median: null, n: 0, state: "error" };
+  try {
+    const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(v.secondary.q)}&limit=50`);
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const j = await r.json();
+    row.median = (j.stats || {}).median ?? null;
+    row.n = (j.stats || {}).n || 0;
+    row.state = row.median >= 200 ? "ok" : row.median == null ? "no-listings" : "below-threshold";
+  } catch (e) { row.state = "error"; row.error = e.message; }
+  agRows.push(row);
+}
+
 const dead = rows.filter(r => r.state === "filtered-out" || r.state === "no-listings" || r.state === "error");
 const thin = rows.filter(r => r.state === "thin");
+const caseBad = caseRows.filter(r => r.state !== "ok");
+const agBad = agRows.filter(r => r.state !== "ok");
 
 if (JSON_OUT) {
-  console.log(JSON.stringify({ date: new Date().toISOString().slice(0, 10), checked: rows.length, dead: dead.length, thin: thin.length, rows }, null, 1));
+  console.log(JSON.stringify({ date: new Date().toISOString().slice(0, 10), checked: rows.length, dead: dead.length, thin: thin.length, rows, cases: caseRows, ag: agRows }, null, 1));
 } else {
   console.log(`Buy-strip health — ${new Date().toISOString().slice(0, 10)} · ${rows.length} live queries · dead ${dead.length} · thin ${thin.length}`);
   for (const r of rows.sort((a, b) => a.slug.localeCompare(b.slug))) {
@@ -81,6 +130,23 @@ if (JSON_OUT) {
     console.log(`\n  DEAD SHELF — these pages show a buy button with nothing behind it:`);
     for (const r of dead) console.log(`    ${r.slug} (${r.state}${r.error ? ": " + r.error : ""}) — query: ${cfg.pages[r.slug].primary.q}`);
     console.log(`  Fix the query in data/buy-strip.json, re-run tools/build-buy-strip.mjs, or set live:false if the product is genuinely gone.`);
+  }
+
+  if (caseRows.length) {
+    console.log(`\nCase shelves — ${caseRows.length} configured · under CASE_MIN(${CASE_MIN}) ${caseBad.length}`);
+    for (const r of caseRows.sort((a, b) => a.slug.localeCompare(b.slug))) {
+      const fig = r.low == null ? "—" : "$" + Math.round(r.low);
+      console.log(`  [${r.state.toUpperCase().padEnd(5)}] ${fig.padStart(8)} ${String(r.clean).padStart(3)} clean  ${r.slug}${r.title ? "  · " + r.title.slice(0, 50) : ""}`);
+    }
+    if (caseBad.length) console.log(`  Remove the \`case\` entry for these in data/buy-strip.json and re-run the builder — a case link with nothing behind it is the failure it was added to avoid.`);
+  }
+
+  if (agRows.length) {
+    console.log(`\nAuthenticity-Guarantee links — ${agRows.length} configured · off-threshold ${agBad.length}`);
+    for (const r of agRows.sort((a, b) => a.slug.localeCompare(b.slug))) {
+      console.log(`  [${r.state.toUpperCase().padEnd(15)}] median ${String(r.median == null ? "—" : "$" + Math.round(r.median)).padStart(8)}  n=${String(r.n).padStart(3)}  ${r.slug}`);
+    }
+    if (agBad.length) console.log(`  Drop \`ag\` from the secondary for these — eBay authenticates single cards at $200+, and the fine print says so.`);
   }
 }
 process.exit(dead.length ? 1 : 0);

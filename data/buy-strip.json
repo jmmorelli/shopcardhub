@@ -1,6 +1,6 @@
 {
- "_comment": "Above-the-fold eBay conversion strip, one entry per page. Consumed by tools/build-buy-strip.mjs, which writes the BUYSTRIP block into each page; enforced by site-auditor §15 (conversion-coverage). q = eBay _nkw for the strip's primary CTA; customid = EPN Custom ID so per-product earnings are readable in the EPN 'Performance by Custom ID' report. live=true shows the lowest live single-unit ask from /api/comps beside the product; it is only set where the primary query names ONE sealed product, because the cheapest listing on a broad player search is a $0.99 common and tells the reader nothing. Pages deliberately outside the contract are listed in the auditor's CONVERSION_EXEMPT set, not here.",
- "generated": "2026-09-17",
+ "_comment": "Above-the-fold eBay conversion strip, one entry per page. Consumed by tools/build-buy-strip.mjs, which writes the BUYSTRIP block into each page; enforced by site-auditor §15 (conversion-coverage). q = eBay _nkw for the strip's primary CTA; customid = EPN Custom ID so per-product earnings are readable in the EPN 'Performance by Custom ID' report. live=true shows the lowest live single-unit ask from /api/comps beside the product; it is only set where the primary query names ONE sealed product, because the cheapest listing on a broad player search is a $0.99 common and tells the reader nothing. Pages deliberately outside the contract are listed in the auditor's CONVERSION_EXEMPT set, not here. case = the sealed-CASE link rendered beside the box link (Idea #32, adopted 2026-09-20): a LINK ONLY — no figure is ever rendered from it, it never reaches the price engine and it is never an index input, because a case would corrupt a per-box mark. It is present only where tools/buy-strip-health.mjs measured at least CASE_MIN clean case listings (tools/case-shelf.mjs); `must` is a contiguous-phrase guard so a Bowman Chrome case link cannot land on a plain Bowman case (LANE-RULES R8). secondary.ag = true adds eBay's Authenticity Guarantee filter (LH_AV=1, read off eBay's own 'Show only' sidebar 2026-09-20) and routes the click to its own -ag custom ID, so the trust-copy effect is readable against the plain IDs. Set only where the link's own /api/comps median ask is >= $200 (eBay's Aug 2026 AG threshold for single cards) AND the AG-filtered search still has real depth — a narrow query plus AG is how you send a reader to an empty page.",
+ "generated": "2026-09-20",
  "pages": {
   "adley-rutschman-cards": {
    "product": "Adley Rutschman cards",
@@ -105,7 +105,12 @@
     "customid": "best-hobby-boxes-2026-singles",
     "title": "2026 Bowman Baseball singles"
    },
-   "live": true
+   "live": true,
+   "case": {
+    "q": "Hobby Box Bowman Baseball 2026 Case -chrome -sapphire -draft -mega -break -pyp -pick -rip -random -slot -spot",
+    "customid": "best-hobby-boxes-2026-case",
+    "must": "bowman baseball"
+   }
   },
   "bowman-1st-chrome-index": {
    "product": "2026 Bowman Chrome Baseball Hobby Box",
@@ -116,7 +121,12 @@
    },
    "secondary": null,
    "live": true,
-   "req": "bowman chrome"
+   "req": "bowman chrome",
+   "case": {
+    "q": "Hobby Box Bowman Chrome Baseball 2026 Case -sapphire -draft -break -pyp -pick -rip -random -slot -spot",
+    "customid": "bowman-1st-chrome-index-case",
+    "must": "bowman chrome"
+   }
   },
   "bowman-chrome-baseball-2026": {
    "product": "2026 Bowman Chrome Baseball Hobby Box",
@@ -132,7 +142,12 @@
     "title": "2026 Bowman Chrome Baseball singles"
    },
    "live": true,
-   "req": "bowman chrome"
+   "req": "bowman chrome",
+   "case": {
+    "q": "Hobby Box Bowman Chrome Baseball 2026 Case -sapphire -draft -break -pyp -pick -rip -random -slot -spot",
+    "customid": "bowman-chrome-baseball-2026-case",
+    "must": "bowman chrome"
+   }
   },
   "bowman-football": {
    "product": "2026 Bowman Football hobby box",
@@ -147,7 +162,12 @@
     "customid": "bowman-football-mega",
     "title": "2026 Bowman Football mega box"
    },
-   "live": true
+   "live": true,
+   "case": {
+    "q": "2026 Bowman Football Hobby Box Case -break -pyp -pick -rip -random -slot -spot",
+    "customid": "bowman-football-case",
+    "must": "bowman football"
+   }
   },
   "bowman-sapphire-2026": {
    "product": "2026 Bowman Sapphire Edition Baseball Box",
@@ -172,10 +192,11 @@
     "customid": "cameron-boozer-rookie-cards-top"
    },
    "secondary": {
-    "label": "Top card &rarr;",
+    "label": "Authenticated on eBay &rarr;",
     "q": "Cameron Boozer Bowman Chrome Prospect Auto Duke",
-    "customid": "cameron-boozer-rookie-cards-hero",
-    "title": "Cameron Boozer 2025-26 Bowman U Chrome Prospect Auto"
+    "customid": "cameron-boozer-rookie-cards-ag",
+    "title": "Cameron Boozer 2025-26 Bowman U Chrome Prospect Auto",
+    "ag": true
    },
    "live": false
   },
@@ -352,10 +373,11 @@
     "customid": "lebron-james-cards-top"
    },
    "secondary": {
-    "label": "Top card &rarr;",
+    "label": "Authenticated on eBay &rarr;",
     "q": "LeBron James Topps Rookie PSA 10 2003-04 #221",
-    "customid": "lebron-james-cards-hero",
-    "title": "LeBron James 2003-04 Topps #221 RC"
+    "customid": "lebron-james-cards-ag",
+    "title": "LeBron James 2003-04 Topps #221 RC",
+    "ag": true
    },
    "live": false
   },
@@ -367,10 +389,11 @@
     "customid": "lionel-messi-cards-top"
    },
    "secondary": {
-    "label": "Top card &rarr;",
+    "label": "Authenticated on eBay &rarr;",
     "q": "Messi Megacracks 2004-05 Panini #71 Rookie",
-    "customid": "lionel-messi-cards-hero",
-    "title": "Lionel Messi 2004-05 Panini Megacracks #71 RC"
+    "customid": "lionel-messi-cards-ag",
+    "title": "Lionel Messi 2004-05 Panini Megacracks #71 RC",
+    "ag": true
    },
    "live": false
   },
@@ -512,7 +535,12 @@
     "customid": "topps-chrome-baseball-2026-singles",
     "title": "2026 Topps Chrome Baseball singles"
    },
-   "live": true
+   "live": true,
+   "case": {
+    "q": "Hobby Box Topps Chrome Baseball 2026 Case -sapphire -black -update -updates -pristine -cosmic -mega -bowman -break -pyp -pick -rip -random -slot -spot",
+    "customid": "topps-chrome-baseball-2026-case",
+    "must": "topps chrome baseball"
+   }
   },
   "topps-chrome-basketball-2026": {
    "product": "2025-26 Topps Chrome Basketball Hobby Box",
@@ -542,7 +570,12 @@
     "customid": "topps-chrome-black-basketball-singles",
     "title": "2025-26 Topps Chrome Black Basketball singles"
    },
-   "live": true
+   "live": true,
+   "case": {
+    "q": "Hobby Box Topps Chrome Black Basketball 2025-26 Case -break -pyp -pick -rip -random -slot -spot",
+    "customid": "topps-chrome-black-basketball-case",
+    "must": "chrome black basketball"
+   }
   },
   "topps-chrome-black-football": {
    "product": "2025 Topps Chrome Black Football Hobby Box",
@@ -677,7 +710,12 @@
     "customid": "topps-flagship-football-singles",
     "title": "2026 Topps Flagship Football singles"
    },
-   "live": true
+   "live": true,
+   "case": {
+    "q": "Hobby Box Topps Football 2026 Case -chrome -cosmic -black -inception -bowman -finest -nscc -premier -league -soccer -break -pyp -pick -rip -random -slot -spot",
+    "customid": "topps-flagship-football-case",
+    "must": "topps football|topps flagship"
+   }
   },
   "topps-inception-baseball": {
    "product": "2025 Topps Inception Baseball Hobby Box",
@@ -692,7 +730,12 @@
     "customid": "topps-inception-baseball-singles",
     "title": "2025 Topps Inception Baseball singles"
    },
-   "live": true
+   "live": true,
+   "case": {
+    "q": "Hobby Box Topps Inception Baseball 2025 Case -break -pyp -pick -rip -random -slot -spot",
+    "customid": "topps-inception-baseball-case",
+    "must": "inception baseball"
+   }
   },
   "topps-inception-basketball": {
    "product": "2025-26 Topps Inception Basketball Hobby Box",
@@ -732,7 +775,12 @@
     "customid": "topps-pristine-baseball-singles",
     "title": "2026 Topps Pristine Baseball singles"
    },
-   "live": true
+   "live": true,
+   "case": {
+    "q": "Hobby Box Topps Pristine Baseball 2026 Case -break -pyp -pick -rip -random -slot -spot",
+    "customid": "topps-pristine-baseball-case",
+    "must": "pristine baseball"
+   }
   },
   "topps-pristine-basketball": {
    "product": "2025-26 Topps Pristine Basketball Hobby Box",
@@ -762,7 +810,12 @@
     "customid": "topps-series-1-2026-singles",
     "title": "2026 Topps Series 1 Baseball singles"
    },
-   "live": true
+   "live": true,
+   "case": {
+    "q": "Hobby Box Topps Series 1 Baseball 2026 Case -\"series 2\" -chrome -heritage -mega -japan -break -pyp -pick -rip -random -slot -spot",
+    "customid": "topps-series-1-2026-case",
+    "must": "series 1"
+   }
   },
   "topps-series-2-2026": {
    "product": "2026 Topps Series 2 Baseball Hobby Box",
@@ -777,7 +830,12 @@
     "customid": "topps-series-2-2026-singles",
     "title": "2026 Topps Series 2 Baseball singles"
    },
-   "live": true
+   "live": true,
+   "case": {
+    "q": "Hobby Box Topps Series 2 Baseball 2026 Case -chrome -heritage -mega -japan -break -pyp -pick -rip -random -slot -spot",
+    "customid": "topps-series-2-2026-case",
+    "must": "series 2"
+   }
   },
   "topps-tier-one-baseball": {
    "product": "2026 Topps Tier One Baseball Hobby Box",
@@ -792,7 +850,12 @@
     "customid": "topps-tier-one-baseball-singles",
     "title": "2026 Topps Tier One Baseball singles"
    },
-   "live": true
+   "live": true,
+   "case": {
+    "q": "Hobby Box Topps Tier One Baseball 2026 Case -break -pyp -pick -rip -random -slot -spot",
+    "customid": "topps-tier-one-baseball-case",
+    "must": "tier one"
+   }
   },
   "topps-tribute-baseball": {
    "product": "2026 Topps Tribute Baseball Hobby Box",
@@ -807,7 +870,12 @@
     "customid": "topps-tribute-baseball-singles",
     "title": "2026 Topps Tribute Baseball singles"
    },
-   "live": true
+   "live": true,
+   "case": {
+    "q": "Hobby Box Topps Tribute Baseball 2026 Case -break -pyp -pick -rip -random -slot -spot",
+    "customid": "topps-tribute-baseball-case",
+    "must": "tribute baseball"
+   }
   },
   "victor-wembanyama-rookie-cards": {
    "product": "Victor Wembanyama rookie cards",
@@ -817,10 +885,11 @@
     "customid": "victor-wembanyama-rookie-cards-top"
    },
    "secondary": {
-    "label": "Top card &rarr;",
+    "label": "Authenticated on eBay &rarr;",
     "q": "Wembanyama Panini Prizm Silver 2023-24 #136 Rookie",
-    "customid": "victor-wembanyama-rookie-cards-hero",
-    "title": "Victor Wembanyama 2023-24 Panini Prizm #136 Silver"
+    "customid": "victor-wembanyama-rookie-cards-ag",
+    "title": "Victor Wembanyama 2023-24 Panini Prizm #136 Silver",
+    "ag": true
    },
    "live": false
   },
