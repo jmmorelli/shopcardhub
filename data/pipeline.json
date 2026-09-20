@@ -1510,6 +1510,54 @@
       "severity": "LOW",
       "surface": "/topps-cosmic-chrome-football, /topps-chrome-black-football",
       "liveVerified": "2026-09-19 ~22:45Z — both live and md5-identical to the repo"
+    },
+    {
+      "id": "cos-2026-09-20-1",
+      "status": "applied",
+      "area": "instruments",
+      "filed": "2026-09-20",
+      "by": "chief-of-staff",
+      "title": "GA4 bot filter — 35.3% of the 7-day window is sub-0.2-second traffic, and GA4 cannot filter it itself.",
+      "decision": "APPLIED 5929714 on Mo's yes. Measured on the 2026-09-19 snapshot: Singapore 104 sessions at 0.146s (61 on Sep 19 — growing), China 13 at 0.318s; 117 of 331 sessions = 35.3%. GA4 data filters support only Internal and Developer traffic — no country filter, no duration filter, and its IAB bot exclusion is already on and misses this — so the subtraction is applied in tools/ga4-snapshot.mjs, the one file every lane reads. THE TEST IS BEHAVIOURAL, NOT A COUNTRY LIST (avg session < 2s over >= 10 sessions, by country, 7d): the Sep 19 watch argued exactly this against its own share-based bar, and a country list catches this burst and misses the next. Both figures always emitted with suspects named — raw and clean — same rule as organic-beside-blended. cleanKeyEventsPerSession7 is keyEvents/sessions and is labelled as such, because GA4's sessionKeyEventRate cannot be recomputed after subtracting rows. Also adds countriesDaily7, which is what the Sep 19 Finding 6(b) needed to settle whether the burst landed on the Sep 17 engagement floor. CONSEQUENCE: STATE's 'earliest clean baseline Sep 24' assumed one contaminant that was not growing — that date is void; the first clean read is the first nightly carrying summary.bots.",
+      "severity": "HIGH",
+      "surface": "tools/ga4-snapshot.mjs, data/ga4-latest.json",
+      "liveVerified": "2026-09-20 — rule applied to the live snapshot: flags Singapore and China, correctly ignores Czechia (2 sessions, 0.000s) as below the 10-session floor"
+    },
+    {
+      "id": "cos-2026-09-20-2",
+      "status": "awaiting-cos",
+      "area": "security",
+      "filed": "2026-09-20",
+      "by": "chief-of-staff",
+      "title": "The GitHub repo is PUBLIC — price engine, every eBay query, LANE-RULES and STATE.md with EPN earnings and strategy are readable by anyone. It cannot be flipped private without breaking the site and every scheduled lane.",
+      "decision": "RULED by Mo 2026-09-20: do it properly on Wednesday, not rushed on a Sunday. Spec: claude/cos/feed-origin-and-repo-privacy-2026-09-20.md. THE BLOCKER IS BIGGER THAN FIRST REPORTED — the first pass said 'three browser hotlinks'; a full grep found 13+ call sites across browser JS (home, engine-block, card-img, sealed-row), serverless (auctions, decisions, track-signal, _lib/store) and build tools, PLUS the lane prompts and the Oct 3 conversion-read task, all reading raw.githubusercontent, which serves public repos only. The lane row is the one that would have been missed: ga4-snapshot exists precisely because cloud lanes have no browser and read analytics from a raw URL, so taking the repo private silently kills every lane's GA4 read. Order is fixed in the spec and must not be reordered: pick a no-runtime-secret origin (Mo does not handle secrets), one FEED_BASE constant per layer, cut every call site, update the prompts and the scheduled task, verify live, and only then flip. Owner: Wednesday build session.",
+      "severity": "HIGH",
+      "surface": "the repo; js/*, api/*, tools/*, claude/lanes/*",
+      "liveVerified": "2026-09-20 — five sensitive paths fetched unauthenticated, all 200; the raw feed URL confirmed present in browser JS served to every visitor"
+    },
+    {
+      "id": "cos-2026-09-20-3",
+      "status": "awaiting-cos",
+      "area": "security",
+      "filed": "2026-09-20",
+      "by": "chief-of-staff",
+      "title": "/api/comps is an open proxy on Mo's eBay keyset — no auth, no referer check, no rate limit, 5,000/day quota. One script can blank the pricing engine for a day.",
+      "decision": "RULED by Mo 2026-09-20: fix it in the Wednesday session alongside the feed work. Verified live: anonymous GET returns 200, 34 KB, x-vercel-cache MISS — a live eBay call. The 15-minute CDN cache protects repeated identical queries only; varying q walks past it. /api/auctions hands out the whole desk (230 KB) anonymously. THE CONSTRAINT THAT MAKES THIS NON-TRIVIAL IS DELIBERATE: customid is a query param rather than a Referer sniff on purpose, because the response is CDN-cached and a header-derived value would not be part of the cache key — one page's cached response could leak its custom ID to another page's visitors. Any fix must not re-introduce that. Three options ruled between in the spec; note that WAF rate limiting is a priced/Pro feature while custom rules, IP blocking and DDoS mitigation are free on every plan.",
+      "severity": "MED",
+      "surface": "api/comps.js, api/auctions.js",
+      "liveVerified": "2026-09-20 — anonymous request from an unrelated host returned a live uncached eBay result"
+    },
+    {
+      "id": "cos-2026-09-20-4",
+      "status": "closed",
+      "area": "security",
+      "filed": "2026-09-20",
+      "by": "chief-of-staff",
+      "title": "Blocking bot traffic at the edge — declined by Mo, recorded so it is not re-proposed.",
+      "decision": "DECLINED by Mo 2026-09-20: filter, do not block. Reasoning on the record: the traffic costs nothing (Vercel bills no CDN requests or data transfer for firewall-mitigated traffic, and these sessions never touch the eBay quota), the GA4 filter already removes it from every number, and blocking Singapore and China wholesale risks genuine collectors in Asia for no measurable gain. Vercel's Bot Protection and AI Bots managed rulesets stay OFF. If scraping ever shows up as a real cost this is safe to revisit — Vercel auto-excludes verified bots from bot protection and bingbot, googlebot, duckduckbot and yahoo-slurp are all on that list, which is ~95% of our search traffic. ALSO CLOSED, so nobody spends a session on it: client-side code shipped to a browser cannot be protected. Minification and obfuscation are speed bumps. The defensible asset is the data and the method, not the markup.",
+      "severity": "LOW",
+      "surface": "Vercel Firewall (unchanged)",
+      "liveVerified": "n/a — no change made"
     }
   ],
   "scoreboard": {
