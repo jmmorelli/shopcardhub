@@ -1,5 +1,89 @@
 # CoS state — read at the start of every run, update at the end
 
+## 2026-09-20 (afternoon) — IDEAS #32 AND #33 SHIPPED. Mo approved both in chat: "CoS: please begin working on this, I approve."
+
+Commit `7d0f85f`, pushed from a fresh Mac clone at `fef4f58`. Gates on both a fresh cloud clone and the
+Mac clone: audit-prices FAIL 0 / WARN 60 (baseline 60) · audit-site FAIL 0 / WARN 3 (baseline 3) ·
+audit-terminal FAIL 0 / WARN 0 with the feed. Live-verified 15:58Z.
+
+**#32 — sealed-case links.** `case` in `data/buy-strip.json` renders one short text link, *"Sealed
+cases →"*, after the box link, with its own `-case` custom ID. **It is a link, never a mark:** no figure
+is rendered from it, nothing it returns reaches the price engine or an index, and the fine print says so.
+That is the whole reason the site had no case link before — every sealed query carries `-case -lot`
+because a case would corrupt a per-box mark, which is right for a mark and was wrong for a link.
+
+**The measurement is the story, and two thirds of the idea did not survive it.** 26 sealed pages were run
+through `/api/comps`; **13 cleared the 3-clean-listing bar and shipped, 13 were dropped** rather than
+left pointing at nothing:
+
+| Dropped | Clean case listings |
+|---|---|
+| All six Pokémon sealed rows (PB26 · CR26 · AH26 · PRIS25 · DR25 · PF25) | 2 · 2 · 0 · 0 · 1 · 1 |
+| All five Pokémon guide/lander strips | 0–2 |
+| topps-chrome-black-football · cactus-jack · pristine-basketball | 2 each |
+| definitive-basketball · finest · museum · cosmic-chrome · bowman-sapphire | 1 · 1 · 1 · 1 · 0 |
+
+**No Pokémon page ships a case link and `tools/build-sealed-rows.mjs` was not touched** — no dead code
+for a market that is not there. The counts above are the Wednesday build's trigger: when a Pokémon set's
+case supply reaches 3, the mechanism is a config entry plus ~8 lines in that generator.
+
+**Two traps found while building, both now held in code (`tools/case-shelf.mjs`):**
+1. **"Case" is a false-positive magnet.** All 30 raw `/api/comps` hits for 2025-26 Topps Definitive were
+   `CASE BREAK` / `case hit` slots at **$20–$40**, not $34,000 cases. `CASE_OK` requires a case *shape*
+   ("12-box case", "hobby case", "sealed case"); `CASE_BAD` throws out break/PYP/lot/single.
+2. **A loose word match is an R8 violation waiting to happen.** `must: "bowman chrome"` matched
+   *"2026 BOWMAN BASEBALL 12-BOX HOBBY CASE (12 AUTOs) MLB w/Chrome"* — a different product — until the
+   guard was made a **contiguous phrase** match. The shipped Bowman Chrome link was then re-opened in a
+   browser: 9 results, top hit a real 2026 Bowman Chrome 12-box hobby case at $7,199.99.
+
+**#33 — Authenticity Guarantee links.** `secondary.ag` adds eBay's own "Show only" filter, relabels the
+Top-card link *"Authenticated on eBay →"*, routes it to a `-ag` custom ID so the trust-copy effect is
+readable against the plain IDs, and adds one dated line of fine print naming the program as **eBay's, not
+our assessment**.
+
+**The parameter is `LH_AV=1`**, read off eBay's own search sidebar in a browser. The Sep 20 desk declared
+that it could not verify it (the cloud fetch of eBay search is 403) and that declaration is why it was
+checked before anything shipped.
+
+**Four pages carry it** — each with an `/api/comps` median ask well over $200 and real AG depth:
+
+| Page | Median ask | AG listings |
+|---|---|---|
+| lebron-james-cards | $9,500 | 19 |
+| lionel-messi-cards | $4,875 | 17 |
+| cameron-boozer-rookie-cards | $2,322 | 15 |
+| victor-wembanyama-rookie-cards | $1,873 | 491 |
+
+**`ethan-holliday-rookie-cards` was the desk's own pilot page and did NOT ship.** Its PSA 10 query goes
+from **1 result to 0** under the filter, and its broad link is a sub-$200 basket. Over-filtering a thin
+market was the idea's named kill criterion; it fired before launch, so the link stayed off. A narrow
+query plus AG is how you send a reader to an empty page.
+
+**Both levers are now on Gengar's Monday beat.** `tools/buy-strip-health.mjs` reports a case shelf under
+3 clean listings as THIN/DEAD and an AG link whose median falls under $200 as off-threshold. **Neither
+fails the run** — neither renders a figure, so a thin one is a link to fewer listings, not a wrong number
+on a page.
+
+**Kill criterion, at the Oct 21 EPN read (two weekly reads):** `-case` IDs with 0 actions on ≥ 20 clicks
+combined, or under 5% of sealed clicks → remove. `-ag` IDs drawing fewer actions per click than the same
+pages' plain IDs on ≥ 30 clicks each → revert to the plain link. Record either way.
+
+**Phone width checked** at 390px on a case page and an AG page (Playwright, local tree): the case link
+stays a short text link beside the buttons, not a tile (Mo, Sep 18 — "the top seems a little busy");
+scrollWidth 390, no overflow.
+
+### Open, from the same desk — NOT an idea, a flag the CoS owes an answer on
+
+**eBay expanded Extended Bidding to more auction categories and all global marketplaces** (Value Added
+Resource, Sep 2026). An auction that extends on a late bid **moves its close time**, which bears directly
+on the parked close-time capture and the 12-hour "last bid seen" lag (ledger #28; the Sep 16 retraction).
+`/api/auctions` reads `itemEndDate` at snapshot time — if that timestamp can move after we record it, a
+"hammer" we log may not be the hammer. **Queued for the Wednesday build session to rule on** alongside the
+`/api/comps` work: the question is whether the auction desk must re-read `endDate` at close rather than
+trusting the snapshot.
+
+---
+
 ## 2026-09-20 — BOT FILTER SHIPPED (Mo: "yes bot filter"), AND THE EXPOSURE AUDIT THAT CAME WITH IT
 
 **The bot traffic is worse than the Sep 19 watch measured, and it is still growing.** Applying the new

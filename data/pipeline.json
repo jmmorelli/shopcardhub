@@ -1558,6 +1558,30 @@
       "severity": "LOW",
       "surface": "Vercel Firewall (unchanged)",
       "liveVerified": "n/a — no change made"
+    },
+    {
+      "id": "cos-2026-09-20-5",
+      "status": "closed",
+      "area": "conversion",
+      "filed": "2026-09-20",
+      "by": "chief-of-staff",
+      "title": "Ideas #32 (sealed-case links) and #33 (Authenticity-Guarantee links for $200+ singles) — approved by Mo in chat and SHIPPED the same day, 7d0f85f.",
+      "decision": "APPROVED by Mo 2026-09-20 ('CoS: please begin working on this, I approve') and shipped rather than queued for the Sep 28 build: both are a config entry plus one renderer branch, and each one's ship-gate required live measurement anyway, so deferring would have meant doing the expensive half twice. #32: 13 of 26 measured sealed pages carry a 'Sealed cases' link; 13 dropped under the idea's own 3-clean-listing bar, including ALL SIX Pokemon sealed rows and all five Pokemon guide strips (supply 0-2), so no Pokemon page ships one and build-sealed-rows.mjs was left untouched rather than shipping dead code. The link publishes no figure and never reaches the price engine or an index. #33: the ship-gate passed — the parameter is LH_AV=1, read off eBay's own search sidebar in a browser after the desk declared it could not verify it from the cloud. Four pages carry it (lebron $9,500/19 AG, messi $4,875/17, boozer $2,322/15, wembanyama $1,873/491). THE DESK'S OWN PILOT PAGE DID NOT SHIP: ethan-holliday-rookie-cards' PSA 10 query goes 1 result to 0 under the filter and its broad link is a sub-$200 basket, so the over-filtering kill criterion fired before launch. Both levers are now on Gengar's Monday beat via tools/buy-strip-health.mjs, which reports but does not fail, because neither renders a figure. Kill criterion for both at the Oct 21 EPN read.",
+      "severity": "n/a",
+      "surface": "data/buy-strip.json, tools/case-shelf.mjs, tools/build-buy-strip.mjs, tools/buy-strip-health.mjs, 58 regenerated BUYSTRIP blocks",
+      "liveVerified": "2026-09-20 15:58Z — -case IDs serving on bowman-chrome-baseball-2026 and topps-series-2-2026, -ag ID on lionel-messi-cards; the shipped Bowman Chrome case URL opened in a browser returns 9 results, top hit a real 2026 Bowman Chrome 12-box hobby case at $7,199.99; Playwright 390px, no overflow, case link renders as a text link not a tile"
+    },
+    {
+      "id": "cos-2026-09-20-6",
+      "status": "awaiting-cos",
+      "area": "data-integrity",
+      "filed": "2026-09-20",
+      "by": "chief-of-staff",
+      "title": "eBay expanded Extended Bidding to more auction categories and all global marketplaces — an auction that extends on a late bid MOVES its close time, which the auction desk records from a snapshot.",
+      "decision": "OPEN — for the Wednesday build session to rule on, alongside the /api/comps work. Flagged by the Sep 20 Earnings Ideas Desk as explicitly NOT an earnings idea (Value Added Resource, Sep 2026 seller news). /api/auctions reads itemEndDate at snapshot time; if that timestamp can move after we record it, a close we log as the hammer may not be the hammer. This bears directly on the parked close-time capture (ledger #28) and the 12-hour 'last bid seen' lag retracted on Sep 16 — the same defect, with a newly widened cause. The question to rule: must the desk re-read endDate at close rather than trusting the snapshot, and does the retraction's wording need widening. Nothing is published off auction closes today, so this is a correctness item, not a live-wrong-number item.",
+      "severity": "MED",
+      "surface": "api/auctions.js, tools/build-auctions.mjs, the close-time capture spec",
+      "liveVerified": "n/a — no change made; flag only"
     }
   ],
   "scoreboard": {
@@ -2518,6 +2542,17 @@
           "gates": "cloud clone + Mac clone both: audit-prices 0/63, audit-site 0/3, audit-terminal 0/0 (--feed; --run-tests 0 FAIL in the cloud, 83 scenarios on /)",
           "liveVerified": "2026-09-19 15:44Z — / md5-identical to the repo, home.js?v=4 serves renderTape, /data/releases.json 200; real-browser render: tape 98 items (2 runs) animating, Ending soon 6 rows off /api/auctions (272 live · 203 under), releases 9 rows, 390px scrollWidth 390",
           "note": "HOME:tape + HOME:releases replace HOME:engine + HOME:focus; data/home-focus.json removed; home.js sealed-product links resolve only to an index that exists (the th26-etb /th26-index Monday-bake trap is closed)"
+        },
+        {
+          "date": "2026-09-20",
+          "commits": [
+            "7d0f85f"
+          ],
+          "by": "CoS, Mo in chat ('please begin working on this, I approve'): earnings ideas #32 sealed-case links + #33 Authenticity-Guarantee links for $200+ singles",
+          "gates": "fresh cloud clone + fresh Mac clone at fef4f58, both: audit-prices FAIL 0 / WARN 60 (baseline 60), audit-site FAIL 0 / WARN 3 (baseline 3), audit-terminal FAIL 0 / WARN 0 (--feed price-data 2026-09-20); build-buy-strip --check 0 stale",
+          "liveVerified": "2026-09-20 15:58Z - shopcardhub.com serves -case IDs on bowman-chrome-baseball-2026 and topps-series-2-2026 and the -ag ID on lionel-messi-cards; the shipped Bowman Chrome case URL opened in a browser returns 9 results, top hit a real 2026 Bowman Chrome 12-box hobby case at $7,199.99; Playwright 390px on a case page and an AG page - the case link stays a short text link beside the buttons, scrollWidth 390, no overflow",
+          "note": "13 of 26 measured sealed pages carry a case link; 13 dropped for under 3 clean case listings, including all six Pokemon sealed rows and all five Pokemon guide pages (supply 0-2). 4 pages carry the AG filter (LH_AV=1, read off eBay's own sidebar - the Sep 20 desk could not verify it and said so). ethan-holliday-rookie-cards was the desk's own pilot and did NOT ship: its PSA 10 query goes 1 result -> 0 under the filter. Case links publish no figure and never reach the price engine or an index.",
+          "rollback": "git revert 7d0f85f (data/buy-strip.json + tools/case-shelf.mjs + 2 tools + the 58 regenerated BUYSTRIP blocks)"
         }
       ]
     },
