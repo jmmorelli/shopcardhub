@@ -69,7 +69,7 @@ calls and anything needing an uncertain mark. Write path is a persistent browser
 
 ## 3. The checks
 
-Run twice daily, 13:30 PT and 17:30 PT (set 2026-09-18; the 13:30 run covers the 09:00 post + 12:00 sweep, the 17:30 run the 17:00 sweep — matches the LANE-RULES cadence table and the task). Monday's 13:30 run is the weekly grade. Every run opens with a freshness header
+Run once daily, 17:30 PT (cut from twice daily on 2026-09-21 under Mo's "too many scheduled runs" instruction; one run covers the 09:00 post and both the 12:00 and 17:00 sweeps — matches the LANE-RULES cadence table and the task prompt, both updated the same hour). Monday's run is the weekly grade. Every run opens with a freshness header
 (R2) and states which surfaces it could and could not read.
 
 **A · Claims (FAIL).** Every figure, level, rank, verdict, date and superlative in the day's posts
