@@ -10,6 +10,29 @@ what happens when a check fails. It is read at STEP 0 of every X Desk Watch run,
 
 ---
 
+
+## §0 · The voice, in Mo's words (2026-09-21 — grade replies against this first)
+
+Mo deleted the first five vendor replies the day they went out: *"they reek of AI bot replies … I want engagement
+with our twitter account, not 'check out our site' type replies."* He then approved this pair as the standard:
+
+- **Bad:** "Nice pull! Check our index for where it sits."
+- **Good:** "That centering looks better than most I've seen. You keeping it raw?"
+
+*"This is exactly what I want the voice to be more like."* — Mo, 2026-09-21.
+
+So a reply is a collector joining a conversation: it reacts to what the person said, asks more than it tells,
+one idea, phone-typed. The stranger test decides: would someone who has never heard of us read it as an ad?
+Then it fails. Concretely, for two weeks from Sep 21: **no links in replies**, **no mention of the site or what
+it does** (no "we track / our page / our index / our board / we built / check out / shopcardhub"), **no numbers**
+unless the thread is already about that number and it reads the way a collector would say it, never with a
+source. No em dashes, no not-X-but-Y, no lists, no hashtags, no emoji strings, no sign-off, no repeated sentence
+shape in a day. Posts in the A/B test's **B arm ("the collector") use this same voice**; the A arm stays the
+analytical desk voice on purpose — that contrast is the test. A reply that fails the stranger test is a FAIL
+under checks D/E and goes to the CoS the same run. `?ref=x-reply` is paused until links return (Oct 5 earliest);
+until then the reply channel is graded on engagement (replies back, follows, profile visits in the vendor's
+Monday note), not sessions.
+
 ## 1. What changed
 
 | | Before 2026-09-17 | After |
