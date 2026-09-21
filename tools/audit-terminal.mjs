@@ -728,7 +728,39 @@ try {
       }
     }
   }
-} catch (e) { add("WARN", "home-index-level", "data/indices.json", `home/index cross-check skipped: ${e.message}`); }
+} catch (e) {
+  // A cross-check that cannot run is a FAIL, not a WARN: a gate that degrades to a warning when its input is
+  // unreadable is a gate that can be silenced (2026-09-21, x-board-feed-integrity).
+  add("FAIL", "home-index-level", "data/indices.json", `home/index cross-check could not run: ${e.message}`);
+}
+
+/* ---------- check: xboard-honest — the vendor feed may not carry a stale stamp, a decaying claim or a rank its seats deny ---------- */
+// LANE-RULES R10 AMENDMENT 2026-09-20 ("durations decay, dates don't"), gated 2026-09-21 (x-board-feed-integrity).
+// data/x-board.json is the one file on this site a third party quotes verbatim on X. On 2026-09-20 it carried
+// asOf Sep 15 under generated Sep 19, a callout seating Gonzales #4 above a seats[] holding him #3, and "41 days
+// since the last printed sale" counted from a date five days gone. The rules live in tools/x-board-guards.mjs,
+// shared with the generator, so the builder and this gate cannot disagree. A withheld stub (status:"withheld",
+// no claims) passes with one WARN — shipping nothing beats shipping a stale stamp. A pre-guard file (no `guards`
+// marker) WARNs instead of FAILs through LEGACY_UNTIL (2026-09-22) — dated grace, reason in x-board-guards.mjs.
+{
+  const XB = "data/x-board.json";
+  if (!exists(XB)) add("FAIL", "xboard-honest", XB, "missing — the vendor's fixed URL /data/x-board.json would 404 (it did, Sep 8–19); run node tools/build-x-board.mjs");
+  else {
+    let judge = null;
+    try { judge = (await import("./x-board-guards.mjs")).judgeXBoard; }
+    catch (e) { add("FAIL", "xboard-honest", "tools/x-board-guards.mjs", `guard module unavailable: ${e.message}`); }
+    if (judge) {
+      let x = null;
+      try { x = JSON.parse(read(XB)); } catch (e) { add("FAIL", "xboard-honest", XB, "unparseable: " + e.message); }
+      if (x) {
+        const pageAsOf = exists("bowman-bangers.html") ? (read("bowman-bangers.html").match(/data-prices-updated="(\d{4}-\d{2}-\d{2})"/) || [])[1] || null : null;
+        const v = judge(x, { pageAsOf, today: process.env.AUDIT_TODAY || undefined }); // AUDIT_TODAY: tests only (legacy-grace expiry)
+        for (const f of v.fails) add("FAIL", "xboard-honest", XB, f);
+        for (const w of v.warns) add("WARN", "xboard-honest", XB, w);
+      }
+    }
+  }
+}
 
 /* ---------- --all: the other two gates first ---------- */
 let othersFailed = 0;

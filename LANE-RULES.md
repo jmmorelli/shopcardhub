@@ -300,6 +300,314 @@ it is in `data/buy-strip.json` and carries its block. The gate will catch it, bu
 the gate means it was built wrong.
 
 
+## R12 · The Card Dungeon is private, secondary, and gated at $500/month (Mo, 2026-09-20)
+
+**Mo's words, verbatim:** *"The dungeon is a 'funsie' thing for me, and not something to focus on. It
+is beyond secondary, it is only meant to one day be a dashboard for me to approve things and watch
+the site — to the point where I wouldn't need to interact with the CoS here, but rather in the
+dungeon. This is all not a main point though, it is secondary to the entire project and only meant to
+be a focus when we are making over $500/month from the site. The dungeon is also private and only for
+me, not public in any way."*
+
+### 1 · The gate
+
+**No lane spends a run, a build slot, or a queue rank on dungeon work while trailing-30-day site
+earnings are under $500/month.** The figure is the same trailing-30-day EPN number the milestone
+ladder uses (M0 $300 · M1 $1,000 · M2 $10,000), so the gate sits between M0 and M1 and needs no new
+instrument.
+
+**Below the gate, the dungeon is maintenance-only.** Two jobs and no third:
+
+1. **Keep it from lying.** SIM labels on theater, honest OFFLINE states, no unlabelled dollar figure
+   anywhere on any room face. This is not polish — it is the Aug 28 rule, and it costs one run.
+2. **Keep it from breaking.** Backup-first, `node --check` after, restore on failure.
+
+**Above the gate it becomes a real workstream**, because at that point it is the approval surface
+that retires the chat channel — which is the whole point of building it.
+
+### 2 · What the gate changes about ranking
+
+- **A dungeon finding never outranks an earnings, pricing-integrity, or public-claims item, and is
+  never queue rank 1.** Not when it is embarrassing, not when it is the founding failure of a role,
+  not when it is one command from fixed.
+- **"The panel is stale" is a `watch`, not `broken`,** until the gate. Stale state on a private page
+  Mo has told us he is not using is a filing defect, not a business defect. It still gets fixed —
+  as janitorial, folded into whatever lane is already touching the file, never as its own commissioned
+  job.
+- **Keeper stays on cadence.** It is cheap, it is the only honesty check on a surface Mo may open on
+  any given day, and its silo reviews are what stop the rooms inventing numbers. But **its proposals
+  rank as housekeeping**, and a conversion waits unless it costs one run and clears §1.1 above.
+
+### 3 · Private means private, and one dependency is not
+
+**The page is private today and stays that way.** Verified 2026-09-20 against the repo and the live
+site: `card-dungeon.html` is **not tracked in git**, **not in `sitemap.xml`**, **not in
+`data/nav.json`**, **not in `robots.txt`**, and **linked from zero pages**. No lane commits it, links
+it, lists it, adds it to a sitemap or nav, or ships an OG image for it.
+
+**But its data feed is fully public, and that is load-bearing, not an oversight.** The page is a
+local `file://` document, and a `file://` page cannot `fetch` a sibling file — so every REAL-data
+room reads `https://www.shopcardhub.com/data/pipeline.json`. That file is deployed, world-readable,
+and returns 200 to anyone who guesses the path. It carries the agent roster, the full proposals
+ledger, the coach's notes and the public half of every CoS brief.
+
+Therefore:
+
+- **The redaction line is not a style preference. It is the only thing that makes a private cockpit
+  safe to feed from a public file.** Counts, ids, lanes and reasons only — never card names, prices,
+  costs, budgets, float, corner data, position sizes, competitor names, outside handles, or the
+  owner's email. The whole-payload leak scan before every write is mandatory and its result is stated
+  in the run summary.
+- **`robots.txt` gains `Disallow: /data/pipeline.json`** — one line, stops it being crawled and
+  indexed. It does not stop it being read, and nothing short of moving it behind an authenticated
+  route would; that is not worth building below the gate.
+- **A future "private" claim about the dungeon must name the feed.** Saying the dungeon is private
+  while its entire state is a public URL is the kind of half-true that this project files as a defect
+  on its own pages. Same standard applies to us.
+
+### 4 · Consequence for the Chief of Staff's own kill criterion
+
+Charter §6 retires the Chief if **Mo does not open the dungeon panel first for four consecutive
+weeks.** Under R12 that test is **dead, and it was measuring the wrong thing.**
+
+Mo has now said plainly that the panel is not how he interacts with the Chief today, and will not be
+until the gate. Measuring the Chief on panel-opens measures a behaviour Mo has explicitly deferred —
+and would have returned a false verdict anyway, because the deployed file has been serving a stale
+block.
+
+**Replacement test, effective now:** the Chief is measured on **what Mo actions.** If, for four
+consecutive weeks, Mo actions nothing the Chief put in front of him — in chat or anywhere else — the
+Chief proposes its own retirement. Channel-agnostic, instrument-free, and it measures the thing the
+role exists to produce.
+
+---
+
+---
+
+## R13 · The site is the business. Two things are not. (Mo, 2026-09-20)
+
+**Mo's words, verbatim:** *"both the dungeon and comc are super secondary to the site as a whole — the
+comc thing is mainly to track ourselves — it doesn't have anything to do with the website or our
+success imo."*
+
+**Why this is a general rule and not a second per-surface exception.** The Chief made the same ranking
+error twice in one run on 2026-09-20: it ranked the private dungeon panel at queue 1 over Mo's time,
+then — corrected — ranked the COMC book at queue 1 on the reasoning "it's money, and money is his
+lane." Both times it ranked by *category* rather than by *what moves the site.* A rule per surface
+would have caught neither. This one is the test.
+
+### The ranking test — ask it of every queue item, in this order
+
+1. Does it change **what a visitor sees or believes**?
+2. Does it change **what the site earns**?
+3. Does it stop a **public claim** from being false?
+4. Does it **unblock** one of the above?
+
+**If the answer is no four times, it is secondary** — it is recorded, it is maintained, and **it never
+outranks something that answers yes.** "It is money," "it is embarrassing," "it is one command from
+fixed," and "it is the founding failure of this role" are not answers to the test.
+
+### Named secondary, until Mo says otherwise
+
+- **The Card Dungeon** — R12 above.
+- **The COMC book** — this rule.
+
+Adding a third requires Mo. Removing either requires Mo.
+
+### What this changes about the COMC lane specifically
+
+**Its job is bookkeeping, not recommendations.** It reconciles the snapshot, keeps the ledger, keeps
+the retrospective, and reports. That is genuinely useful and it is *self-tracking*, which is what Mo
+says he wants from it.
+
+- **It stops filing recs as `awaiting-mo`.** A lane whose output went unactioned two weeks running was
+  not being ignored — it was being told its output is not decision-grade for its only reader.
+  Generating a decision request nobody wants is how a queue turns into noise, and the Chief
+  re-ranked that request to #1 twice rather than reading it.
+- **No COMC item enters the CoS queue unless Mo asks for one.** Its findings live in its own report,
+  where he can read them when he wants them.
+- **Nothing changes about money.** No agent transacts, prices, or moves a dollar — ever. That is a
+  permanent structural line, not a priority question, and no re-ranking touches it.
+- **Cadence: a proposal, not a change.** LANE-RULES and charter 4.4 forbid the Chief from touching
+  `comc-trader-thursday` at all, because it is money-adjacent, and 4.8 did not waive that.
+  **Proposed: weekly → monthly, aligned to the treasury run** — the ledger stays continuous at a
+  quarter of the run cost. **Mo decides.**
+
+### What this changes about the analyst read, every Sunday
+
+1. **What Mo ignores is data about priority, not evidence of a process defect.** Two weeks of
+   unactioned output means **re-scope the lane or stop asking** — never re-rank the same item a third
+   time. Written after the Chief did exactly that and had to be told twice in one evening.
+2. **Report the secondary-surface run cost.** Count the weekly touchpoints that answer *no* to all
+   four questions above and state the number. The project's bar is ~$100/month breakeven; a lane
+   serving a named-secondary surface on a weekly cadence is the first thing to re-scope, and that
+   number is the evidence for doing it.
+
+---
+
+## R14 · The Earnings Cohort — how ideas compete (Mo's idea, 2026-09-20; scoped by the CoS)
+
+**Mo's proposal, verbatim:** *"would you like to create a competition between some agents to see who
+can make the most money? I was thinking you make 10 agents and after a month, you fire the bottom 50%
+and replicate the top 20% and then hire new agents… a fun/competitive way for you the CoS to actually
+bring some revenue to the table that is 'not what I am thinking about'."* Then: *"I approve everything
+you do."*
+
+**What was kept:** a fixed slate, one scoring date, cull the losers on a pre-committed rule, breed the
+winners, and brief a generator against the gap the cull exposes. That structure is right.
+
+**What was changed, and why — the arithmetic.** The unit of competition is an **idea**, not an agent,
+and **zero new agents were hired.**
+
+| | Figure | Source |
+|---|---|---|
+| Clicks | ~130–200 / month | 256 clicks over Jul 11–Sep 8; 94 over Sep 4–17 |
+| Revenue per click | $0.28–$0.40 | same reads |
+| Share of one fortnight's revenue from **one** sale | **68%** | $25.82 of $37.98 |
+
+Ten arms on ~200 clicks is ~20 clicks each and an *expected* 0.5 conversions per arm. The ranking
+would be decided by which arm happened to own the page a whale landed on. **Firing on that is negative
+selection:** it culls the better idea, clones the luckier one, and compounds the error next round.
+Affiliate revenue here is fat-tailed enough that a one-month mean is not an estimate of anything.
+
+### The two reads, and they are never confused
+
+- **FLOOR READ — "is this arm dead?"** Valid at n ≈ 20–50. Must be pre-committed, falsifiable and
+  dated *before the arm ships*. This is exactly what the ledger's kill criteria already are.
+- **RANKING READ — "is arm A better than arm B?"** Requires **≥ 300 clicks on each arm being
+  compared.** Below that threshold **no arm is ranked, promoted, cloned, or rolled wider on
+  performance grounds.** Not "provisionally." Not "directionally." Not at all.
+
+**The floor read culls. Only the ranking read breeds.** That one sentence is the rule.
+
+### Slate design
+
+- **Arm budget ≈ 1 arm per 300 monthly clicks, minimum 3.** It is a function of traffic, not ambition.
+  At today's volume the honest slate is **4 arms + 1 control, floor-read only.**
+- **A control is mandatory** — the plain custom-ID families on the same pages. An arm with no control
+  is not an arm, it is an anecdote.
+- **Metric: clicks per 1,000 sessions** on the pages carrying that family. **Not dollars.** Revenue is
+  market-controlled and fat-tailed; click-through is what the arm actually controls and it is two
+  orders of magnitude higher frequency. Dollars are reported, never ranked on.
+- **One scoring date for the whole slate**, fixed when the cohort opens.
+
+### The integrity clause — not negotiable at any revenue level
+
+**No arm is ever scored in a way that pays for shading a number.** An arm that would score better by
+calling an ask a sold comp, widening a claim, dropping a dated stamp, or publishing a figure it cannot
+point at on our own page is **disqualified at design time, not caught at audit.** If an arm could
+avoid its own cull by weakening a claim, the arm dies instead.
+
+This exists because a revenue tournament rewards the exact instinct this site is built against. The
+honesty *is* the product: the desk's own charter already puts it "above revenue," and on 2026-09-20
+two shipped ideas were cut back by their own measurement (13 of 26 pages dropped; the desk's own pilot
+page killed before launch). That instinct is the asset. A scoreboard must not tax it.
+
+### Cull and breed
+
+1. **Floor read on the scoring date.** Dead arms die on their own pre-written criteria only. No
+   retroactive "it was unlucky," and no reprieve granted by a number written after the fact.
+2. **No cloning until a ranking read is available.** If nothing clears 300 clicks, the correct output
+   of a cohort is "floor read done, nothing rankable, slate carried" — and that is a success, not a
+   thin result.
+3. **After a cull, the Earnings Ideas Desk is briefed against the gap the cull exposed.** That is Mo's
+   "hire new agents to do something new," executed with the generator that already exists and costs
+   nothing extra.
+4. Cohorts are numbered `COHORT-NN`, chartered in `claude/ideas/`, and their arms stay in `LEDGER.md`
+   under their existing numbers.
+
+### What the cohort's own scoring rule proves about priorities
+
+Four arms need roughly **1,200 clicks/month** to be rankable. The site does **130–200**. So **the
+tournament cannot grade itself until traffic rises roughly 6–10×** — and eBay pays ~3% of GMV, so M1
+is ~20× today's clicks at today's basket either way.
+
+**Both levers point at the same term: clicks.** That is arithmetic, not opinion, and it is why this
+run commissioned one bounded discovery session and hired no one. Any future cohort proposal that does
+not state its arm budget against current clicks is not decision-ready.
+
+---
+
+## R10 · AMENDMENT — durations decay, dates don't (Mo, 2026-09-20)
+
+**Mo:** *"I don't like how I have to keep deleting tweets because our 'engine' says something
+different. Deleting tweets is not good for our brand… do you need to talk to the grok bots about
+this? This is their lane, but you are the boss of the project so it's on you."*
+
+**He is right, and the cause is us. Evidence, from the live site tonight:**
+
+1. **`data/x-board.json` — the feed we hand the vendor — is stale and self-contradicting.**
+   `asOf: 2026-09-15` while `generated: 2026-09-19T14:21Z`. Its `callout` reads *"Gonzales takes
+   #4 from Florentino"* while its own `seats` array has Gonzales at **rank 3**. It publishes
+   decaying claims — *"41 days without a printed sale," "carried an 8th week," "flat a third
+   week"* — all counted from Sep 15 and all wrong by Sep 20. **A vendor quoting that feed
+   publishes a false number through no fault of his own.**
+2. **We changed the ranking rule on Sep 17 and did not tell him first.** The graded ladder came
+   off, a seat order moved, and his Sep 17 post went false the next day. The Tuesday lane's own
+   prompt already obliges the CoS to flag *"a ranking-rule change, a methodology change, or
+   something we published that turned out wrong and that he may already have posted about."*
+   **That obligation was not executed. It is the CoS's miss, not the vendor's.**
+3. **The vendor has zero FAILs across four audited runs (Sep 17–20).** The Sep 20 audit is *all
+   clean* — every figure a reader sees is inside a screenshot of our rendered page and matches it
+   to the digit. **The post Mo keeps being asked to delete is OURS, dated Sep 15, two days before
+   the hire.**
+
+### The rule, and the page already invented it
+
+**A duration decays. A date does not.** *"41 days without a sale"* is false tomorrow; *"last
+printed sale: Aug 5"* is true forever. Same information, one of them permanently safe. **Every
+stale-post incident on this project traces to a duration, a streak, or an undated rank.**
+
+`/bowman-bangers` already does this correctly and is the model: it carries a dated **"Correction ·
+Sep 18"** block, a dated **"Method Change · Sep 17"** block, a **Sep 15** tape column that keeps
+its own stamp, and the line *"We would rather publish this than quietly re-rank."* **The page's
+posture is the standard; the feed and the account are the laggards.**
+
+### Binding, from now
+
+**On what we publish to the vendor (`data/x-board.json` + `og/x/board-latest.png`):**
+
+- **`asOf` must equal the run that produced the marks, and the file does not ship if it doesn't.**
+  A feed whose stamp is older than its own generation is a wrong number leaving the building.
+- **No elapsed-day counts, no ordinal weeks, no "flat for N weeks."** Publish the **date** of the
+  last printed sale and the **date** of the mark. The reader does the subtraction; the file never
+  goes stale.
+- **The callout is regenerated with the seats, never carried.** A headline that disagrees with the
+  seat array in the same file is a FAIL, and `audit-terminal` should hold it.
+- **Ship nothing rather than something stale** — already the rule for the tape image; it now binds
+  the JSON identically.
+- Add a `changeLog` block mirroring the page's Rule / Seats / Tape strip, each with its own date,
+  so the vendor can see *what changed and when* without paraphrasing a page.
+
+**On the account (CoS → vendor, the direct channel, R10 as amended Sep 17):**
+
+- **Every figure or rank carries its as-of date, or sits inside a screenshot of our rendered
+  page** (which self-dates, and is what the vendor's clean runs already do).
+- **Prefer a date to a duration**, for the reason above.
+- **Quote the feed; never paraphrase a page.** Paraphrase is how a number arrives without its
+  stamp.
+- **WE NEVER DELETE. WE SUPERSEDE.** A post that a later re-mark makes wrong gets a dated
+  correction post, exactly as the page gets a dated correction block. Deletion costs brand and
+  buys nothing — and it contradicts the project's own spine, where projections are immutable and
+  retractions stay on the record. *(A post that was false when written is a different case and
+  still comes down.)*
+
+**On the CoS, and this is the part that was actually broken:**
+
+- **The vendor is told BEFORE a ranking rule, a basis, or a seat order changes** — not after his
+  post goes stale. Every board-touching lane already ends its report by flagging exactly this to
+  the CoS; the CoS relays it the same day.
+- **The vendor is on ALWAYS APPROVE since 2026-09-17**, so there is no human gate in front of a
+  post and `X Desk Watch` is after-the-fact only. **This standard is therefore the only
+  pre-publication control that exists.** Treat it as one.
+- **Direction only, never copy.** The CoS sets the standard and relays what changed; the vendor
+  composes and posts under his own checks. The CoS never hands him finished copy — that is using
+  a vendor as a remote control to reach the account, which R10 forbids by another route.
+
+---
+
+*(R12–R14 and the R10 amendment were staged by the CoS on 2026-09-20 in `Card Hub/chief-of-staff/LANE-RULES-R12-2026-09-20.md` and applied to this file on 2026-09-21 by the x-board-feed-integrity build session, per that file's own instruction. Text unchanged.)*
+
 ## Cadence — the authoritative copy (moved here 2026-09-16)
 
 This table used to live in `claude/cos/CHARTER.md` §6. It moved because the charter is a
