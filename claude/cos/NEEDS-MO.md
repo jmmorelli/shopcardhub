@@ -11,6 +11,26 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — two items (2026-09-21 13:30 PT, the cadence cut)
+
+- **Delete three scheduled tasks in the Claude desktop app — only you can reach those.** You said we run too
+  many runs; you were right (46 a week, on a site doing ~230 real sessions a week). I cut the cloud side myself
+  today (36 → 19 fires a week) and killed the docs-commit deploys that were jamming Vercel. The desktop tasks I
+  cannot touch. **Action: in the desktop app's scheduled tasks, delete `shopcardhub-site-auditor` (MWF) and
+  turn the Chief of Staff task to Sunday-only (drop its Tuesday/Thursday firings).** Keep Monday scan, Tuesday
+  board, Thursday trader, Friday release-window, Dungeon Keeper. Nothing else changes for you.
+- **Block the Singapore/China bot traffic at the edge? Your call, no urgency.** The analytics side is solved
+  (your "yes bot filter" shipped Sep 20; the first filtered snapshot landed today: 147 of 376 sessions were
+  bots, 39%, and the clean numbers now read beside the raw ones). What is left is whether to also block or
+  challenge those countries at Vercel's firewall. Downside is real (collectors in Asia); the traffic costs
+  nothing today. **Reply "block them", "challenge them", or "leave them"** — a Chrome-linked session does the rest.
+
+**Nothing else is waiting on you.** *(Closed Sep 20–21: the GA4 bot filter — shipped at the read in
+`tools/ga4-snapshot.mjs`, no GA4 setting changed. The Sep 19 football work is live; the Oct 3 re-read of the
+cheaper Bowman Football offers is booked; the `/best-football-cards-under-50` leftover is CoS-owned.)*
+
+---
+
 ## Open — nothing (2026-09-19 15:5x PT)
 
 **The football work you asked for this afternoon is live — nothing in it is waiting on you.** Seven

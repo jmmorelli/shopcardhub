@@ -1,5 +1,66 @@
 # CoS state — read at the start of every run, update at the end
 
+## 2026-09-21 (13:30 PT) — THE CADENCE CUT. Mo: "we are running too many scheduled runs… causing issues with the site. Give me your honest assessment and fix it."
+
+**The honest assessment: yes, and the damage was not to the pages — it was to the deploy queue and to
+the lanes' own inputs.** Measured this run from a fresh clone and the scheduled-task list:
+
+| Fact | Number |
+|---|---|
+| Standing LLM fires per week, Card Hub, before today | **~46** (36 cloud + ~10 desktop) — on a site doing ~230 clean sessions/week and ~$100/mo |
+| Commits Sep 14 → 21 | **110**; **68 touched no public file** (STATE mirrors, ledger, specs, tooling) |
+| Vercel builds those 68 commits queued | 68 — Hobby plan, one build at a time. The Sep 18 zombie build, the two stale older-tree builds queued *behind* the fix, and the skipped webhooks were this |
+| What every lane reads at STEP 0 | STATE.md **128 KB** + LANE-RULES 24 KB + a 34–43 KB desktop prompt |
+| Lanes whose job was auditing other lanes' output | 4 (MWF auditor · daily Integrity Watch · Wednesday full audit · daily ops) sweeping the same 103 pages |
+| Wrong or stale filings this week attributable to lanes reading each other's stale state | Sep 16 auditor ×3 · Sep 18 X-desk FAIL overturned · daily-vs-table drift filed 5 runs running · Sunday brief: "three gate baselines in circulation" · STATE assumed Gengar ran today — **its task had been disabled since creation** |
+| Dead scheduled work | `vercel.json` cron `/api/cron-snapshot` nightly 01:00 PT — throws `Missing PRICECHARTING_TOKEN` (Mo never paid), 500 every night, and is a second writer pointed at the exact `prices-latest.json`/`prices-history.json` the GitHub Action owns |
+
+The site itself was not being hurt by *traffic* from the lanes: every Playwright/QA tool aborts the GA4 hosts
+(`tools/qa/harness.cjs`, `sweep.mjs`), the cloud egress is US, and the Singapore/China clusters are not us. **The
+harm was: deploy churn from docs commits, and lanes spending their runs reconciling each other instead of
+moving a number.** More runs produced more reports about reports; none of the extra runs moved earnings, and
+the one lane that actually builds — the Wednesday weekly — logged a **7-second run on its last fire** (Sep 17 06:08Z,
+SUCCEEDED, did nothing) and nobody noticed because five find-and-file lanes ran fine around it.
+
+**DONE this run (CoS authority, Mo: "fix it to how you think is best"):**
+
+1. **Cloud tasks — 36 → 19 fires/week.** Integrity Watch daily → **Mon + Thu 05:00** (`0 12 * * 1,4`). Earnings
+   Ideas Desk daily → **Tue + Fri 04:15** (`15 11 * * 2,5`) — 35 ideas in four days against one build slot a week is
+   inventory, not ideas; Mo asked for daily on Sep 17 and can restore it with one word. X Desk Watch 13:30 + 17:30 →
+   **17:30 only** (`30 0 * * *`) — one run sees the 09:00 post and both reply sweeps. **Gengar · conversion coverage
+   DELETED** — never fired; its two commands (`site-auditor §15`, `buy-strip-health.mjs`) are the Wednesday weekly's.
+   Unchanged: CoS daily 06:00 · CoS weekly Wed 11:00 · monthly Oct 1 · the Oct 3 football re-read one-shot. Cron-only
+   edits — prompts were not blind-replaced, so a prompt that says "daily"/"13:30" is stale by the table (LANE-RULES
+   wins, and says so).
+2. **`vercel.json`: `ignoreCommand` → `tools/vercel-ignore.sh`.** A commit builds only if it changes a file a visitor
+   can load; `claude/`, `tools/`, `.github/`, `data/pipeline.json`, `*.md` never trigger a build. Compares against
+   `VERCEL_GIT_PREVIOUS_SHA` when present (so a docs commit still builds if the site commit before it was skipped by a
+   missed webhook), falls back to `HEAD^`, and any git error → build. Self-tested on four recent commits (2 skip, 2 build).
+   **The nightly `/api/cron-snapshot` Vercel cron is removed** (the function file stays; it is auth-gated and harmless).
+3. **Desktop lanes — ruled, Mo executes (only he can edit those tasks):** **MWF site auditor RETIRED** (its sweep is in the
+   weekly; its claims check is the Integrity Watch; probation moot). **Tue/Thu light CoS checkpoints RETIRED** (the cloud
+   daily is that). Keep: Sunday brief (Mo reads it), Monday price lane, Tuesday board, Thursday trader, Friday
+   release-window (off unless flipped), Dungeon Keeper (R12: cheap, stays). ~10 → ~6.
+4. **LANE-RULES cadence table rewritten** with the cut and a standing rule: **a new lane needs a named number it moves
+   and a lane it replaces; find-and-file lanes are capped at two.**
+
+**QUEUED for the Wednesday build (Sep 23), in this order — not done unattended because they change what every lane reads:**
+- **Split STATE.md.** A 128 KB file read whole by every run is the drift engine: a lane reads a 10-day-old block as
+  current. Shape: `STATE.md` = gate baselines · standing rules · open items · waiting-on-Mo · cadence pointer · the last
+  7 days of run log, **under 25 KB**; everything dated older moves to `claude/cos/STATE-ARCHIVE-2026-09.md` (grep-able,
+  never read at STEP 0). Same for the 43 KB Monday prompt — its doctrine paragraphs point at LANE-RULES instead of
+  restating it.
+- Fold the Integrity Watch's Part A (instrument medians) into the CoS daily's prompt, since both read the same feed and
+  the same `ga4-latest.json` — then the Integrity Watch is claims-only. Needs the daily's prompt text in hand (a full
+  replacement, with pre/post copies in `Card Hub/chief-of-staff/prompt-backups/`).
+- Watch the Sep 23 weekly's own duration: if it is another sub-minute run, the task is broken at the infrastructure
+  layer and the fix is `fire_trigger` with a diagnosis, not a new lane.
+- The Sunday lane asked (Sep 20 §7) to be folded into the Wednesday weekly. Not taken today; Mo reads the Sunday brief.
+  Re-ask at the Oct 1 roster review with a week of the cut behind us.
+
+**What the cut does NOT touch:** the nightly price engine (GitHub Action, no LLM), the nightly GA4 snapshot, the Mon/Fri
+`price-audit` workflow, the three gates, any page, any price.
+
 ## 2026-09-20 (afternoon) — IDEAS #32 AND #33 SHIPPED. Mo approved both in chat: "CoS: please begin working on this, I approve."
 
 Commit `7d0f85f`, pushed from a fresh Mac clone at `fef4f58`. Gates on both a fresh cloud clone and the
@@ -1337,6 +1398,10 @@ ruled strip-and-re-mark.**
   created; third gate. · Sep 9/8/7/4/3/1 as before.
 
 ## RUN LOG (most recent first)
+
+- **Sep 21 ~13:30 PT (CoS, Mac-linked, Mo in chat) — THE CADENCE CUT.** See the block at the top of this file. Cloud tasks re-cadenced/deleted via the scheduled-task API (cron-only edits; ids: Integrity Watch `trig_01N14qVz8gtHCFHCL6TQNcsZ`, Ideas Desk `trig_016ppW1e5SPGio6X3Wf2k83E`, X Desk Watch `trig_013U6U94vAk19yDdWZv82SFd`, Gengar `trig_01CTxnDGUuRcgPYeixbb4N4g` deleted). `vercel.json` ignoreCommand + cron removal, LANE-RULES cadence table, this file and NEEDS-MO pushed from a fresh deploy-key clone on the Mac; the Monday price lane had pushed `42762e7` two minutes before this clone was taken — fetched and merge-base-checked before push. Project copies of STATE and NEEDS-MO mirrored from the pushed tree in the same run.
+
+- **Sep 21 ~13:10 UTC (Engine Watch + Mobile QA, daily — cloud; entry mirrored from the Project copy by the 13:30 PT CoS run).** Feed day 2026-09-20 at 13:06Z (nightly not landed yet, in-window): 38 cards, 33/38 numeric `last`, 37/38 `image.url`, signals 27 HOLD / 10 SELL / 1 BUY, 10 gated, zero BUY/SELL on gated. GA4 snapshot 2026-09-20T13:16Z (last pre-bot-filter snapshot): KE yesterday 5 / 58 sessions, organic KE7 6.33% beside blended 4.71%, returning7 5.61%, clicks7 39 (buystrip 2 · buybox 3), Singapore 104 sessions/7d @ 0.15 s. Mobile QA 5/5 clean. origin/main `7ce80d1`. **Ideas ruled: #34 adopted** (Wednesday build week of Sep 21, pairs with #30) · **#35 adopted** (Sep 28 build; ships only pages the guard clears at ≥3 clean set listings). NEEDS-MO: the GA4 bot-filter item CLOSED as actioned; one open item = the Vercel country-block decision. Prompt/table drift noted a 5th run. Cloud run, no push. *(Later the same day the 15:25Z snapshot carried `summary.bots`: Singapore 127 + China 20 = 147 of 376 sessions, 39.1%, clean KE/session 13.1 vs raw 7.98 — the filter works.)*
 
 - **Sep 19 ~08:15–08:55 PT — HOMEPAGE REWORK, LIVE `95c9335` (+ `228b6e6` docs/v5) (Mo in chat: "I don't love our homepage… 'from the engine last night' is too trader, not investor… defer this to you and your agents"; Seeking Alpha home + portfolio pages as the template).** Ruled and shipped in one session, all four of Mo's suggestions taken: **(1) the ticker tape is back, replacing the In Focus strip** — top of the main column; every live index (level, Δ vs previous mark) then the top 5 cards of each index by price with their change vs the previous re-mark, straight from `data/indices.json` baskets (49 items, two runs, transform-only loop ~3 s/item, pauses on hover/focus, static + scrollable under reduced-motion; the one ambient loop the page keeps, per site-fixes.css). **(2) "Upcoming releases" replaces "From the engine last night"** (top right): new `data/releases.json`, Pokémon + sports, every date read today from topps.com's calendar (Bowman Chrome Mega boxes Sep 23 · Pristine BKB Sep 24 · Museum + A&G Oct 7 · Flagship BKB pre-order Sep 22) and two Pokémon calendars (30th waves Oct 2 / Oct 30 / Nov 6 / Dec 4; **Delta Reign Nov 6 is labelled "reported" on its face** — not on pokemon.com yet); Chrome Update and Bowman Draft carry "expected window" text, no fake day. `build-home` refuses a link to a page that does not exist and refuses an empty upcoming list; `home.js` hides rows whose date passes between Monday re-bakes. **(3) Board movers moves up** into the Trending-Analysis slot. **(4) The Auction Desk panel is "Ending soon"**: bids first, soonest close first, a family tag per row (Board / BCB26 / Pokémon / Sealed / Sapphire), eBay clicks reported like `/auctions`. **The honest limit, told to Mo:** the desk's universe is still the 38 tracked cards, so "top 5 of every index" is not in that feed — widening `/api/auctions` to each index's top constituents is queued in OPEN ITEMS, not faked. The engine panel's two useful facts (feed day, marked/gated) already live in the header stamp; `renderEngine` is kept for callers, off the page. **Also closed en route:** the Monday-scan trap — `home.js` links a sealed product to its index page only when that index exists in `data/indices.json` (th26-etb → `/indices`, no more dead `/th26-index`), and slugless cards link `/card-<id>` since all nine BCB26 card pages exist; the Monday `build-home` needs no hand substitutions. `data/home-focus.json` deleted (nothing read it). `interactions.cjs`: In Focus / engine scenarios replaced by "tape item (animation paused)" + upcoming-release links. Gates in the cloud clone AND the Mac clone: 0/63 · 0/3 · 0/0 (+ `--run-tests` 0 FAIL, 83 scenarios on `/`). Render 1440h 3,193 → 3,096, 390h 5,804 → 5,505, 0 console errors. Push from a fresh deploy-key clone on the Mac (patch replayed from the cloud, md5 matched); Vercel built within 90 s, no zombie; live md5-identical 15:44Z. **Not touched, on purpose:** Mo's "cards in my Vault" tracker = `HOME:mine` (W2, Sep 22–28); no new page, no nav change, freeze respected.
 - **Sep 19 ~07:10-08:05 PT - Grok Bot check-in (Mo: "make sure they aren't stuck in a loop") + the fix.** Read the vendor app and the ShopCardHub Content room with background computer-use, read-only. **Not hung - spinning.** Every routine fired, left its room line and stopped; **no routine wrote to X (condition 1 held), every pulse left a line (condition 2 held)**. But Seeker's hourly ran 2:14, ~3, 4:09 and 5:00 on Sep 18 carrying the **identical three angles** every pulse (its own 5pm line: *"no new angles vs 4:09"*) while Coach, Creator and Auditor re-ratified the same Monday sequence each time - four seats, four pulses, zero new information. **Condition 3 was never met:** no 5:30 PM report, and the Sep 18 15:06 PT ruling is still the last message in the vendor thread, unconfirmed. **The cause was ours.** `og/x/board-latest.png` and `data/x-board.json` - the vendor's two fixed-path URLs (`claude/lanes/bowman-bangers-tuesday.md`) - had 404'd since Sep 8; the desk re-reported the gap every pulse, appended "No owner escalation", and correctly refused to fake a visual. **Shipped `3aeef18`, live-verified 07:5x PT (both 200, PNG 89,695b, JSON 6,277b):** make.py `bangers` now also writes `board-latest.png` in the same out dir; **it reads the ranking rule off the page (`p.section-intro`) instead of the hardcoded "two ladders together: raw sold AND PSA 10 sold", which went stale when the board moved to one ladder on Sep 17** - it would have published a methodology the page no longer uses; and the column layout is fixed (PSA 10 ran into ENGINE ASK on every row, Holliday's "$720.00 (1 dated sale, Aug 6 2026)" crossed two columns) with per-cell measurement and the PSA sale count wrapping to line two rather than being dropped. New `tools/build-x-board.mjs` generates the JSON - seats, labeled marks, sale counts, current verdict per seat, rule, as-of - all parsed off `bowman-bangers.html` and `calls.json`, nothing inferred; a player with two calls carries the live one (Fischer: the Sep 11 re-entry, not the finalised Jun 12 BUY). Nudge sent to the vendor 07:35 PT: confirm the three conditions, one line per pulse when there is no new angle, stop re-listing the 404, and answer the standing question - **cloud runner, or do the hourly routines only exist while the laptop is open?** **Also, caught by Mo on the live site:** the DR25 chase row for "Team Rocket's Mewtwo ex SIR #231/182 Destined Rivals" linked to `/ascended-heroes#engine-tr-mewtwo-ex-sir` - a different card in a different set sharing a slug, the only row on that page with a chart link and the only cross-set mislink sitewide. Link removed (no chart exists for the DR25 card) and `audit-site.mjs` now FAILs on any chart link whose target block names a different set than the row does, or that does not exist (negative-tested). Gates after: **audit-site 0 FAIL / 3 WARN**. Push from a fresh deploy-key clone on the Mac; nothing run in a mounted repo.
