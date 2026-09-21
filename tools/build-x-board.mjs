@@ -36,16 +36,34 @@ if (!asOf) throw new Error("no data-prices-updated stamp on bowman-bangers.html"
 const rankingRule = strip((page.match(/<p class="section-intro">([\s\S]*?)<\/p>/) || [])[1] || "");
 if (!rankingRule) throw new Error("no ranking rule (p.section-intro) on bowman-bangers.html");
 
-// The week's market-check callout.
-const callout = strip((page.match(/&#9889; <strong>([\s\S]*?)<\/strong>/) || [])[1] || "");
+// The week's market-check callout — UNLESS a dated "Correction · <date>" block newer than the tape column
+// exists on the page, in which case the correction IS the callout. Sep 21 2026: the page carried
+// "Gonzales takes #4 from Florentino" (Sep 15 column) under a "Correction · Sep 18" block that re-seated
+// him #3; this file and the tape image printed the superseded sentence beneath a table that contradicted it.
+const MONTHS = { Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6, Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12 };
+const isoOf = (mon, d, y) => `${y}-${String(MONTHS[mon]).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+const tapeCallout = strip((page.match(/&#9889; <strong>([\s\S]*?)<\/strong>/) || [])[1] || "");
+let callout = tapeCallout, calloutBasis = "tape column";
+for (const m of page.matchAll(/<div class="section-eyebrow">Correction\s*(?:&middot;|·)\s*([A-Z][a-z]{2}) (\d{1,2}), (\d{4})<\/div>\s*<div class="alert-bar"[^>]*>([\s\S]*?)<\/div>/g)) {
+  const [, mon, d, y, body] = m;
+  const iso = isoOf(mon, d, y);
+  if (iso <= asOf) continue;                       // older than the tape column: the column stands
+  const text = strip(body);
+  const seatsSentence = ((text.match(/seats now read[^.]*\./) || [])[0] || "").replace(/^seats/, "The seats");
+  callout = `Correction · ${mon} ${d}, ${y}: ${strip((body.match(/<strong>([\s\S]*?)<\/strong>/) || [])[1] || "")} ${seatsSentence}`.replace(/\s+/g, " ").trim();
+  calloutBasis = `correction block dated ${iso}`;
+}
 
 // Open verdicts for this page, keyed by the card string in data/calls.json.
 const calls = JSON.parse(read("data/calls.json")).calls.filter((c) => c.page === "/bowman-bangers");
 
 const seats = [];
 const re = /<div class="entry-rank">(\d\d)<\/div>([\s\S]*?)<div class="entry-since">([\s\S]*?)<\/div>/g;
-for (const m of page.matchAll(re)) {
+const seatMatches = [...page.matchAll(re)];
+for (const [mi, m] of seatMatches.entries()) {
   const [, rank, blk, sinceRaw] = m;
+  // Everything belonging to this seat, up to the next seat — the verdict paragraph sits after entry-since.
+  const seatHtml = page.slice(m.index, mi + 1 < seatMatches.length ? seatMatches[mi + 1].index : m.index + 20000);
   const title = strip((blk.match(/<div class="entry-title">([\s\S]*?)<\/div>/) || [])[1] || "");
   const player = strip((blk.match(/<div class="entry-title">([\s\S]*?)<br>/) || [])[1] || "");
   const sub = strip((blk.match(/<div class="price-sub">([\s\S]*?)<\/div>/) || [])[1] || "");
@@ -61,6 +79,15 @@ for (const m of page.matchAll(re)) {
     .sort((a, b) => (a.state === "final") - (b.state === "final") ||
                     String(b.callDate).localeCompare(String(a.callDate)));
   const call = mine[0] || null;
+
+  // The CURRENT signal is what a reader sees on the page: the "Signal" stat when the seat carries one, else
+  // the "Verdict: <Word>" lead of the entry's verdict paragraph. It is NOT the logged Scorecard call below —
+  // those were published under the same word ("verdict") until Sep 21 2026 and contradicted the page on
+  // three of five seats (Fischer BUY vs HOLD, Holliday BUY vs SELL, Kim WAIT vs PASS).
+  const sigStat = (seatHtml.match(/<div class="entry-stat-label">Signal<\/div>\s*<div class="entry-stat-value[^"]*">([^<]+)<\/div>/) || [])[1];
+  const sigVerdict = (seatHtml.match(/<div class="entry-verdict"><strong>Verdict: ([A-Za-z]+)/) || [])[1];
+  const currentSignal = (sigStat || sigVerdict || "").trim().toUpperCase() || null;
+  if (!currentSignal) throw new Error(`seat ${rank} ${player}: no Signal stat and no "Verdict:" line on bowman-bangers.html — refusing to ship a file with only the historical call`);
   const priorCalls = mine.slice(1).map((c) => ({ id: c.id, action: c.action, callDate: c.callDate, state: c.state, grade: c.grade ?? null }));
 
   seats.push({
@@ -81,11 +108,21 @@ for (const m of page.matchAll(re)) {
       since: (since.match(/ON THE BOARD SINCE ([^·]+)/) || [])[1]?.trim() || null,
       suggestedSizing: (since.match(/SUGGESTED SIZING (.+)$/) || [])[1]?.trim() || null,
     },
-    verdict: call
+    // What the page says NOW. Vocabulary is the page's: BUY / HOLD / SELL / PASS / WATCH. Use THIS for any
+    // per-card line. "WAIT" is a calls.json state and appears on no public surface.
+    currentSignal,
+    currentSignalSource: sigStat ? "Signal stat on the seat" : "Verdict: line on the seat",
+    // The logged Scorecard call — a dated, immutable projection graded at 6 and 12 months. Historical.
+    loggedCall: call
       ? {
+          scope: "the logged Scorecard call, not the board's current signal — never quote it as the current call",
           id: call.id, action: call.action, callDate: call.callDate,
           entry: call.entry, entryLabel: call.entryLabel, basis: call.basis,
-          state: call.state, grade: call.grade ?? null,
+          state: call.state,
+          // A grade exists only on a finalised call that carries one. Florentino's trending call carried
+          // grade:"wrong" in calls.json while the page said "not yet graded — first real grade Dec 2026".
+          grade: call.state === "final" && call.grade ? call.grade : null,
+          gradeStatus: call.state === "final" ? (call.grade ? "graded" : "finalised, no grade recorded") : "not yet graded — first grade at 6 months, final at 12",
           gradedAt: "6 and 12 months", scorecard: "https://shopcardhub.com/track-record#" + call.id,
           priorCalls,
         }
@@ -93,6 +130,18 @@ for (const m of page.matchAll(re)) {
   });
 }
 if (seats.length < 5) throw new Error(`parsed only ${seats.length} seats off bowman-bangers.html`);
+
+// The callout may not name a seat number that disagrees with the table it sits under — the exact check
+// that would have caught the Sep 21 "Gonzales takes #4" caption beneath a table seating him #3.
+for (const st of seats.slice(0, 5)) {
+  const sn = st.player.split(" ").slice(-1)[0];
+  // Affirmative seatings only: "3 Gonzales", "#3 Gonzales", "Gonzales takes #4", "Gonzales to #4". A negation
+  // ("Kim cannot hold #3") is prose about a seat he does NOT have and is not checked.
+  for (const mm of callout.matchAll(new RegExp(`(?:#?\\b(\\d)\\s+${sn}\\b|${sn}\\s+(?:takes|to|at|holds|moves to|climbs to|drops to)\\s+#(\\d))`, "g"))) {
+    const n = Number(mm[1] || mm[2]);
+    if (n && n !== st.rank) throw new Error(`callout seats ${sn} #${n} but the table seats him #${st.rank}: "${callout}"`);
+  }
+}
 
 const out = {
   _comment:
@@ -105,6 +154,8 @@ const out = {
   image: "https://shopcardhub.com/og/x/board-latest.png",
   rankingRule,
   callout,
+  calloutBasis,
+  signalVocabulary: "currentSignal uses the page's words — BUY / HOLD / SELL / PASS / WATCH. loggedCall.action is the historical Scorecard call and may differ; the page's current signal always wins.",
   marksPolicy:
     "Sold comps and asks are separate figures and are never blended. A PSA 10 line states the sale " +
     "count behind it, or states that there is no verified sale. Calls are graded at 6 and 12 months only.",

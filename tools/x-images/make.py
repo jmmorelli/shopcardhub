@@ -247,6 +247,15 @@ def card_bangers(out):
     strip = lambda t: _h.unescape(re.sub(r"<[^>]+>", "", t)).replace("\u2212", "-").replace("\u2192", "->").replace("\u2014", "-").strip()
     stamp = re.search(r'data-prices-updated="(\d{4}-\d{2}-\d{2})"', page).group(1)
     head = strip(re.search(r'&#9889; <strong>(.*?)</strong>', page, re.S).group(1))
+    # A dated "Correction · <date>" block NEWER than the tape column supersedes the column's callout (Sep 21
+    # 2026: the image printed "Gonzales takes #4 from Florentino" under a table seating him #3). Same rule as
+    # tools/build-x-board.mjs — the two artifacts must never disagree with each other or with the page.
+    _MON = {m: i for i, m in enumerate(["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], 1)}
+    for _cm in re.finditer(r'<div class="section-eyebrow">Correction\s*(?:&middot;|\u00b7)\s*([A-Z][a-z]{2}) (\d{1,2}), (\d{4})</div>\s*<div class="alert-bar"[^>]*>(.*?)</div>', page, re.S):
+        _iso = f"{_cm.group(3)}-{_MON[_cm.group(1)]:02d}-{int(_cm.group(2)):02d}"
+        if _iso <= stamp: continue
+        _seats = re.search(r'seats now read[^.]*\.', strip(_cm.group(4)))
+        head = f"Correction ({_cm.group(1)} {_cm.group(2)}): " + (("The " + _seats.group(0)) if _seats else strip(re.search(r'<strong>(.*?)</strong>', _cm.group(4), re.S).group(1)))
     rows = []
     for m in re.finditer(r'<div class="entry-rank">(\d\d)</div>(.*?)<div class="entry-since">', page, re.S):
         rk, blk = m.group(1), m.group(2)
@@ -260,6 +269,12 @@ def card_bangers(out):
         ctx = re.split(r"[;,]|\s-\s", ctx)[0].strip()  # first clause only (em-dash already normalised to "-") — the rest is on the page
         rows.append((rk, nm, raw, eng, psa, ctx))
     rows = rows[:5]
+    # The headline may not seat a player at a number the table beside it does not — affirmative seatings only.
+    for rk, nm, *_ in rows:
+        _sn = re.escape(nm.split()[-1])
+        for _mm in re.finditer(rf"(?:#?\b(\d)\s+{_sn}\b|{_sn}\s+(?:takes|to|at|holds|moves to|climbs to|drops to)\s+#(\d))", head):
+            _n = int(_mm.group(1) or _mm.group(2))
+            if _n != int(rk): raise SystemExit(f"tape headline seats {nm} #{_n} but the table seats him #{int(rk)}: {head!r}")
     dt = datetime.date.fromisoformat(stamp)
     # The ranking rule is READ OFF THE PAGE, never hardcoded. It changed on 2026-09-17, and a baked-in
     # sentence would publish a methodology the page no longer uses. First <p class="section-intro"> is the rule.
