@@ -54,7 +54,10 @@ const ASSET_PREFIXES = ["/api/", "/js/", "/css/", "/fonts/", "/data/"];
 /* ---------- 1. EPN link compliance ---------- */
 for (const f of pages) {
   const html = markup(f);
-  const links = html.match(/https?:\/\/(?:www\.)?ebay\.com\/[^"' )<>]+/g) || [];
+  // A ")" is legal inside an eBay search URL — the watchlist's OR syntax `justin (gonzalez,gonzales)` puts one in
+  // `_nkw` — so it must not end the match (Sep 21 2026: the class excluded it, the URL was cut before campid/mkevt/
+  // customid, and the gate filed three false FAILs that held card-justin-gonzalez.html on a near-empty query).
+  const links = html.match(/https?:\/\/(?:www\.)?ebay\.com\/[^"' <>]+/g) || [];
   for (const u of links) {
     if (!u.includes("/sch/") && !u.includes("/itm/")) continue; // only search/item links carry EPN params
     const missing = EPN_REQUIRED.filter(p => !u.includes(p));
@@ -367,7 +370,7 @@ const CONVERSION_EXEMPT = new Set([
     const body = (markup(f).split(/<body[^>]*>/)[1] || "")
       .replace(/<style[\s\S]*?<\/style>/g, "")
       .replace(/<!--[\s\S]*?-->/g, "");
-    const m = body.match(/https?:\/\/(?:www\.)?ebay\.com\/(?:sch|itm)\/[^"' )<>]*campid=5339155990/);
+    const m = body.match(/https?:\/\/(?:www\.)?ebay\.com\/(?:sch|itm)\/[^"' <>]*campid=5339155990/);
     if (!m) {
       add("FAIL", "conversion-missing", f, "commercial page carries no EPN eBay link at all — nothing on it can earn");
       continue;

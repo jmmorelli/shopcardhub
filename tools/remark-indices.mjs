@@ -36,7 +36,7 @@ const marksFile = opt("--marks", null);
 const DATE = opt("--date", new Date().toLocaleDateString("en-CA"));
 if (!marksFile) { console.error("usage: node tools/remark-indices.mjs --marks marks.txt [--date YYYY-MM-DD] [--dry]"); process.exit(2); }
 
-const POKE = ["PB26", "CR26", "AH26", "PRIS25", "DR25"];
+const POKE = ["PB26", "CR26", "AH26", "PRIS25", "DR25", "PF25"];  // PF25 added 2026-09-21 — first re-mark branch below
 const idxPath = path.join(REPO, "data/indices.json");
 const idx = JSON.parse(fs.readFileSync(idxPath, "utf8"));
 
@@ -120,8 +120,12 @@ for (const k of POKE) {
   // level + levelchg
   must(/<div class="level">[\d.]+<\/div>/, "level");
   html = html.replace(/<div class="level">[\d.]+<\/div>/, `<div class="level">${s.level.toFixed(2)}</div>`);
-  must(/<div class="levelchg"[^>]*>base 100\.00 · inception ([\d/]+) · re-marked [\d/]+ · [▲▼] [+−-][\d.]+% w\/w<\/div>/, "levelchg");
-  html = html.replace(/<div class="levelchg"[^>]*>base 100\.00 · inception ([\d/]+) · re-marked [\d/]+ · [▲▼] [+−-][\d.]+% w\/w<\/div>/,
+  // Two shapes: a page that has been re-marked before ("re-marked <date> · ▲ +x% w/w") and a page still at
+  // inception ("marked <date> · w/w accrues from first re-mark" — PF25 shipped Sep 18 2026 in that shape and the
+  // Monday lane could not mark it for a week because only the first shape was accepted).
+  const LEVELCHG = /<div class="levelchg"[^>]*>base 100\.00 · inception ([\d/]+) · (?:re-marked [\d/]+ · [▲▼] [+−-][\d.]+% w\/w|marked [\d/]+ · w\/w accrues from first re-mark)<\/div>/;
+  must(LEVELCHG, "levelchg");
+  html = html.replace(LEVELCHG,
     `<div class="levelchg" data-prices-updated="${DATE}">base 100.00 · inception $1 · re-marked ${mdy(DATE)} · ${s.wow >= 0 ? "▲" : "▼"} ${signed(s.wow, 1)} w/w</div>`);
 
   // stats
@@ -141,7 +145,8 @@ for (const k of POKE) {
   rep(/<div class="k">Effective Holdings<\/div><div class="v">[\d.]+/, `<div class="k">Effective Holdings</div><div class="v">${(1 / hhi).toFixed(1)}`, "eff");
   rep(/<div class="k">Basket Value<\/div><div class="v">\$[\d,]+/, `<div class="k">Basket Value</div><div class="v">$${Math.round(s.bv).toLocaleString("en-US")}`, "bv");
   rep(/<div class="k">Weight Skew<\/div><div class="v gold">[+−-][\d.]+/, `<div class="k">Weight Skew</div><div class="v gold">${skew >= 0 ? "+" : "−"}${Math.abs(skew).toFixed(2)}`, "skew");
-  rep(/<div class="k">Since Inception<\/div><div class="v (?:grn|rd)">[+−-][\d.]+%/, `<div class="k">Since Inception</div><div class="v ${sinceInc >= 0 ? "grn" : "rd"}">${signed(sinceInc, 2)}`, "sinceInc");
+  // At inception the cell is class "v" with a bare "0.00%" (PF25's Sep 18 template); after the first re-mark it is grn/rd.
+  rep(/<div class="k">Since Inception<\/div><div class="v(?: (?:grn|rd))?">[+−-]?[\d.]+%/, `<div class="k">Since Inception</div><div class="v ${sinceInc >= 0 ? "grn" : "rd"}">${signed(sinceInc, 2)}`, "sinceInc");
 
   // holdings table rows
   const rowRe = /<tr class="hrow" data-i="(\d+)"[^>]*>[\s\S]*?<\/tr>\n?/g;
