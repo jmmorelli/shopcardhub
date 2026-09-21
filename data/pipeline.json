@@ -2602,6 +2602,16 @@
           "gates": "audit-prices 0 FAIL / 60 WARN · audit-site 0 FAIL / 3 WARN · audit-terminal 0 FAIL / 0 WARN (run against the live price-data feed, day 2026-09-21)",
           "liveVerified": "2026-09-21 — indices.json + /pitch-black-index confirmed serving the new marks",
           "note": "7 indices re-marked. card-justin-gonzalez.html held out of the lane (site-auditor EPN regex bug). PF25 not markable by the tool. Worked from a fresh clone of e13fcdf per LANE-RULES R1/R2; Mo's mount untouched."
+        },
+        {
+          "date": "2026-09-21",
+          "commits": [
+            "b50d54c"
+          ],
+          "by": "x-board-feed-integrity build session (CoS-commissioned, charter 4.8, 2026-09-20)",
+          "gates": "fresh clone at f24c37c, feed = price-data @ 642f32a: audit-prices FAIL 0 / WARN 60 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 5 with --feed (all five WARNs = the one pre-guard data/x-board.json under the dated legacy grace, LEGACY_UNTIL 2026-09-22; feed-key-valid and feed-shape ran clean); tools/qa/x-board-guards.test.mjs 30/30",
+          "liveVerified": "2026-09-21 ~21:30Z — robots.txt serves Disallow: /data/pipeline.json; /data/x-board.json unchanged (asOf 2026-09-15, generated 2026-09-21T20:54:31Z, callout = Correction Sep 18); / HOME:markets BCB26 73.14 = data/indices.json 2026-09-21 73.14",
+          "note": "Tooling + doctrine push: build-x-board guards (asOf freshness, decaying language, callout/price-line vs seats, changeLog, --withhold), audit-terminal xboard-honest + home-index-level catch→FAIL, build-home exit 2 without a feed, LANE-RULES R12/R13/R14 + R10 amendment applied from the staged file, three ledger filings (friday-2026-09-18-build-home-th26 re-entered awaiting-cos; xbi-2026-09-21-1/-2). Report: Card Hub/x-board-integrity-2026-09-21.md"
         }
       ]
     },
