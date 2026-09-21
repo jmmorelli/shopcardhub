@@ -172,6 +172,9 @@
    * price with their change vs the previous re-mark, straight from data/indices.json baskets — sold-basis
    * where the index is, ask-basis where it is (BOW26/BCB26), the index's own basis label carries. The BOARD
    * composite rides first when the feed gave us one. The page duplicates the pass (aria-hidden) for the loop. */
+  /* Card items in the tape are the index basket's Monday re-mark (price vs the previous Monday), NOT the nightly
+     engine ask the Screens table shows — the two can differ mid-week (Gonzales, Sep 19–21: $150 +20% vs $127 −15%),
+     so the sub label says which one this is. Labelled 2026-09-21 (site-auditor MED, verified live). */
   function tapeItems(model, indices) {
     var items = [];
     var idxRows = marketRows(model).filter(function (r) { return r.status !== 'pre' && r.level != null; });
@@ -187,7 +190,7 @@
         var name = b.name || b.player || b.id || '';
         var tag = b.rarity || (b.tab === 'autos' ? 'Auto' : b.tab === 'base' ? 'Base' : '') || '';
         var p = b.prevPrice != null && b.prevPrice > 0 ? ST.pctChange(b.prevPrice, b.price) : null;
-        items.push({ k: k, label: name + (tag ? ' ' + tag : ''), sub: k, href: v.page || '/indices', v: fmt(b.price), d: p, dtext: p == null ? 'first mark' : pct(p, 1) });
+        items.push({ k: k, label: name + (tag ? ' ' + tag : ''), sub: k + ' · Mon mark', href: v.page || '/indices', v: fmt(b.price), d: p, dtext: p == null ? 'first mark' : pct(p, 1) });
       });
     }
     return items;
