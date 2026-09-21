@@ -2565,6 +2565,16 @@
           "liveVerified": "2026-09-20 15:58Z - shopcardhub.com serves -case IDs on bowman-chrome-baseball-2026 and topps-series-2-2026 and the -ag ID on lionel-messi-cards; the shipped Bowman Chrome case URL opened in a browser returns 9 results, top hit a real 2026 Bowman Chrome 12-box hobby case at $7,199.99; Playwright 390px on a case page and an AG page - the case link stays a short text link beside the buttons, scrollWidth 390, no overflow",
           "note": "13 of 26 measured sealed pages carry a case link; 13 dropped for under 3 clean case listings, including all six Pokemon sealed rows and all five Pokemon guide pages (supply 0-2). 4 pages carry the AG filter (LH_AV=1, read off eBay's own sidebar - the Sep 20 desk could not verify it and said so). ethan-holliday-rookie-cards was the desk's own pilot and did NOT ship: its PSA 10 query goes 1 result -> 0 under the filter. Case links publish no figure and never reach the price engine or an index.",
           "rollback": "git revert 7d0f85f (data/buy-strip.json + tools/case-shelf.mjs + 2 tools + the 58 regenerated BUYSTRIP blocks)"
+        },
+        {
+          "date": "2026-09-21",
+          "commits": [
+            "42762e7"
+          ],
+          "by": "monday-scan STEP 3.98 (Monday price lane, charter 4.8)",
+          "gates": "audit-prices 0 FAIL / 60 WARN · audit-site 0 FAIL / 3 WARN · audit-terminal 0 FAIL / 0 WARN (run against the live price-data feed, day 2026-09-21)",
+          "liveVerified": "2026-09-21 — indices.json + /pitch-black-index confirmed serving the new marks",
+          "note": "7 indices re-marked. card-justin-gonzalez.html held out of the lane (site-auditor EPN regex bug). PF25 not markable by the tool. Worked from a fresh clone of e13fcdf per LANE-RULES R1/R2; Mo's mount untouched."
         }
       ]
     },
@@ -2724,7 +2734,7 @@
   "publish": {
     "date": "2026-09-21",
     "by": "monday-scan STEP 3.98",
-    "commit": "PENDING",
+    "commit": "42762e7",
     "lane": [
       "data/indices.json (PB26/CR26/AH26/PRIS25/DR25/BOW26/BCB26 re-marked)",
       "pitch-black-index.html",
@@ -2740,7 +2750,8 @@
     ],
     "gates": "audit-prices 0 FAIL/60 WARN · audit-site 0 FAIL/3 WARN · audit-terminal 0 FAIL/0 WARN (live feed)",
     "held": "card-justin-gonzalez.html reverted from the lane — site-auditor EPN regex bug (see inspector feed)",
-    "notPublished": "PF25 (tool refuses the page), calls.json (not in the lane)"
+    "notPublished": "PF25 (tool refuses the page), calls.json (not in the lane)",
+    "liveVerified": "2026-09-21 — /data/indices.json serves updated 2026-09-21 with all 7 new levels; /pitch-black-index renders 84.72 (no stale 90.52). Deploy propagated in ~90s."
   },
   "decisions": [
     {
