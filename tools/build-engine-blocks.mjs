@@ -160,6 +160,7 @@ function facts(c) {
   const q = c.query.split(/\s+/).filter((t) => t && !t.startsWith("-")).join(" ").toLowerCase();
   const year = (q.match(/\b(20\d{2})\b/) || [])[1] || "";
   const type = c.cardType || "chrome-auto";
+  if (type === "single") throw new Error(`${c.id}: cardType "single" is not supported by facts() yet — it would label a non-Bowman card as Bowman (idea #30 build item). Remove the slug or teach facts() the set first.`);
   const isTcg = type === "tcg-single";
   const code = (c.query.match(/\b([A-Z]{2,4}-[A-Z]{1,3}\d{0,3}|[A-Z]{2,4}-\d{1,3})\b/) || [])[1] || null;
   let set = "Pokémon TCG", cat = "pokemon", lane = "SIR single · raw";

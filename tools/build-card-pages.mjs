@@ -55,7 +55,10 @@ const wl = JSON.parse(read("data/watchlist.json"));
 // Sealed products get no /card- chart page: the sealed row on the set's index page is their
 // surface (Mo, Sep 13 — "track the box on each index"). Their home/screens links route to that
 // index page (js/home.js). Revisit only on an explicit decision.
-const cards = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.id && c.query && c.cardType !== "sealed");
+const cards = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.id && c.query && c.cardType !== "sealed")
+  // cardType "single" (idea #30 star-page cards, Sep 21 2026): facts() below still labels every non-TCG card as Bowman —
+  // a Messi Megacracks page would read "2004 Bowman · 1st Bowman Chrome". No page until facts() reads the set off the label.
+  .filter((c) => c.cardType !== "single");
 // Sep 8 2026: a card whose watchlist `slug` names a live guide page is HOSTED there
 // (tools/build-engine-blocks.mjs renders its block inside that page; /card-<id> 301s to it).
 // Only host-less cards get a standalone /card-<id> page, and those are noindex — Google

@@ -7,7 +7,7 @@
     "label": "string — human name for display",
     "query": "string — eBay search terms for the free path",
     "condition": "loose | graded | psa10 | new | cib (paid path only)",
-    "cardType": "chrome-auto (default) | chrome-base (no-auto fallback) | tcg-single (Pokemon etc: no auto requirement, TCG noise filter) | sealed (Sep 13 2026: one flagship sealed product per set index — booster box, or the ETB where the set has no booster box; titleMust carries the product words; TITLE_BAD_SEALED in the engine; never blended with singles)",
+    "cardType": "chrome-auto (default) | chrome-base (no-auto fallback) | single (Sep 21 2026, idea #30: a non-Bowman sports single — verifier default path, no auto/chrome requirement, no slug until the block generators can name its set) | tcg-single (Pokemon etc: no auto requirement, TCG noise filter) | sealed (Sep 13 2026: one flagship sealed product per set index — booster box, or the ETB where the set has no booster box; titleMust carries the product words; TITLE_BAD_SEALED in the engine; never blended with singles)",
     "slug": "optional — site page this card links back to",
     "rank": "optional integer — editorial rank if it's a featured top-10 card (else omit)",
     "titleMust": "optional string[] — tokens that must ALL appear in a listing title (overrides last-name check). Use card numbers (161/131) for TCG.",
@@ -449,6 +449,53 @@
       "boardHide": true,
       "product": "Elite Trainer Box",
       "_note": "No sealedOf: the TH26 index does not exist yet (indices.html still lists it as COMING). Added 2026-09-16 on release night so the series starts the day the market does. Sealed supply that night was 3 listings, two of them multi-box lots — the engine's TITLE_BAD_SEALED must hold or this marks off a lot; watch it."
+    },
+    {
+      "id": "shohei-ohtani-2018-topps-update-us285",
+      "source": "ebay",
+      "label": "Shohei Ohtani — 2018 Topps Update #US285 Rookie Debut",
+      "query": "2018 Topps Update Shohei Ohtani US285 -psa -bgs -sgc -cgc -graded -reprint -lot -digital -custom -chrome -rainbow -gold -black -blue -red -orange -purple -foil",
+      "cardType": "single",
+      "titleMust": [
+        "ohtani",
+        "us285"
+      ],
+      "boardHide": true,
+      "hostPage": "shohei-ohtani-cards",
+      "addedBy": "CoS 2026-09-21 (idea #30, charter 4.8)",
+      "_note": "Idea #30 (adopted 2026-09-19, Mo approved): engine the star-player pages. Added 2026-09-21 by the CoS so the nightly series starts before the Wednesday build. NO slug on purpose (a slug obliges the host page to carry an engine block — audit-terminal engine-host-consistency — and the block/card-page generators still hardcode 'Bowman' set labels for every non-TCG card, so a slug today would publish a false set name; both generators refuse cardType 'single' until facts() reads the set off the label). TRIGGER: first verified mark in the feed + generator support → add slug, run tools/build-engine-blocks.mjs + build-guide-fold.mjs on the host, add the /card-<id> 301. Query verified 2026-09-21 through verifyListings() against live /api/comps: 35 verified fixed-price asks, cheapest $137.99."
+    },
+    {
+      "id": "victor-wembanyama-2023-prizm-136",
+      "source": "ebay",
+      "label": "Victor Wembanyama — 2023-24 Panini Prizm #136 RC (base)",
+      "query": "2023-24 Panini Prizm Victor Wembanyama 136 -psa -bgs -sgc -cgc -graded -silver -reprint -lot -digital -custom -draft -picks -instant -choice -magnet",
+      "cardType": "single",
+      "titleMust": [
+        "wembanyama",
+        "prizm",
+        "136"
+      ],
+      "boardHide": true,
+      "hostPage": "victor-wembanyama-rookie-cards",
+      "addedBy": "CoS 2026-09-21 (idea #30, charter 4.8)",
+      "_note": "Idea #30 (adopted 2026-09-19, Mo approved): engine the star-player pages. Added 2026-09-21 by the CoS so the nightly series starts before the Wednesday build. NO slug on purpose (a slug obliges the host page to carry an engine block — audit-terminal engine-host-consistency — and the block/card-page generators still hardcode 'Bowman' set labels for every non-TCG card, so a slug today would publish a false set name; both generators refuse cardType 'single' until facts() reads the set off the label). TRIGGER: first verified mark in the feed + generator support → add slug, run tools/build-engine-blocks.mjs + build-guide-fold.mjs on the host, add the /card-<id> 301. Query verified 2026-09-21 through verifyListings() against live /api/comps: 31 verified fixed-price asks, cheapest $75.00. Base Prizm, not the Silver the page's hero names — every colour word is on the engine blocklist by design."
+    },
+    {
+      "id": "lamine-yamal-2023-topps-chrome-ucc-64",
+      "source": "ebay",
+      "label": "Lamine Yamal — 2023-24 Topps Chrome UCC #64 RC",
+      "query": "2023-24 Topps Chrome UCC Lamine Yamal 64 -psa -bgs -sgc -cgc -graded -refractor -reprint -lot -digital -custom -sapphire -auto -ucl -merlin",
+      "cardType": "single",
+      "titleMust": [
+        "yamal",
+        "chrome",
+        "64"
+      ],
+      "boardHide": true,
+      "hostPage": "lamine-yamal-rookie-cards",
+      "addedBy": "CoS 2026-09-21 (idea #30, charter 4.8)",
+      "_note": "Idea #30 (adopted 2026-09-19, Mo approved): engine the star-player pages. Added 2026-09-21 by the CoS so the nightly series starts before the Wednesday build. NO slug on purpose (a slug obliges the host page to carry an engine block — audit-terminal engine-host-consistency — and the block/card-page generators still hardcode 'Bowman' set labels for every non-TCG card, so a slug today would publish a false set name; both generators refuse cardType 'single' until facts() reads the set off the label). TRIGGER: first verified mark in the feed + generator support → add slug, run tools/build-engine-blocks.mjs + build-guide-fold.mjs on the host, add the /card-<id> 301. Query verified 2026-09-21 through verifyListings() against live /api/comps: 10 verified fixed-price asks, cheapest $44.50."
     }
   ]
 }
