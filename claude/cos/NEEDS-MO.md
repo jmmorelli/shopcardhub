@@ -11,14 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — two items (2026-09-21 13:30 PT, the cadence cut)
+## Open — one item (2026-09-21 14:00 PT)
 
-- **Delete three scheduled tasks in the Claude desktop app — only you can reach those.** You said we run too
-  many runs; you were right (46 a week, on a site doing ~230 real sessions a week). I cut the cloud side myself
-  today (36 → 19 fires a week) and killed the docs-commit deploys that were jamming Vercel. The desktop tasks I
-  cannot touch. **Action: in the desktop app's scheduled tasks, delete `shopcardhub-site-auditor` (MWF) and
-  turn the Chief of Staff task to Sunday-only (drop its Tuesday/Thursday firings).** Keep Monday scan, Tuesday
-  board, Thursday trader, Friday release-window, Dungeon Keeper. Nothing else changes for you.
+- **✅ DONE by Mo (2026-09-21, self-reported: "ok I think I did it")** — the MWF site-auditor task deleted and the
+  Chief of Staff task set to Sunday-only. Verified Wednesday by absence (no `site-audit-2026-09-23.md`, no Tue/Thu
+  checkpoint file). Nothing more on the desktop side.
+- **Your local clone is stale and it is fine.** `~/Projects/shopcardhub` sits at Sep 14 with your nine Sep 15 files
+  uncommitted; they are backed up (twice) under `Card Hub/ledger-backups/`. Syncing it needs a file-delete grant the
+  session could not take unattended, and nothing reads that clone any more, so it is left alone. You never need to
+  touch it.
 - **Block the Singapore/China bot traffic at the edge? Your call, no urgency.** The analytics side is solved
   (your "yes bot filter" shipped Sep 20; the first filtered snapshot landed today: 147 of 376 sessions were
   bots, 39%, and the clean numbers now read beside the raw ones). What is left is whether to also block or
