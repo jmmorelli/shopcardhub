@@ -318,7 +318,15 @@ for (const [file, src] of sources) {
   for (const m of src.matchAll(/['"`]\/api\/([a-z-]+)(\??)/g)) {
     // the statement: from the string start to the end of the line (all call sites are single-expression)
     const lineStart = src.lastIndexOf("\n", m.index) + 1;
-    const lineEnd = src.indexOf("\n", m.index);
+    let lineEnd = src.indexOf("\n", m.index);
+    // a concatenated URL continues onto following lines that open with '+' (pokemon-30th tiles,
+    // bb-2026-09-22-terminal-api-contract-fp) — those fragments are part of the same statement
+    while (lineEnd >= 0) {
+      const nx = src.indexOf("\n", lineEnd + 1);
+      const nextLine = src.slice(lineEnd + 1, nx < 0 ? src.length : nx);
+      if (!/^\s*\+\s*/.test(nextLine)) break;
+      lineEnd = nx;
+    }
     const stmt = src.slice(lineStart, lineEnd < 0 ? src.length : lineEnd);
     if (/^\s*(\/\/|\*|<!--)/.test(stmt) || /^\s*[\/\*]/.test(stmt)) continue; // comment line
     const params = new Set();

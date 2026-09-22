@@ -1626,57 +1626,81 @@
       "id": "bb-2026-09-22-psa10-correction",
       "area": "pricing-integrity",
       "summary": "Holliday's $720 PSA 10 was a guide estimate, not a sale (the real Aug 6 sale is a PSA 9 at $155.00), and it survived the Sep 17 graded review as the one figure judged verified. Corrected live on /bowman-bangers, in data/x-board.json and on the board tape this run. FOR THE COS: the vendor has been handed this figure in previous weekly feeds and may have posted it — this is the one item this week that needs a vendor correction, not just a page fix.",
-      "status": "awaiting-cos",
-      "ts": "2026-09-22"
+      "status": "applied",
+      "ts": "2026-09-22",
+      "decision": "ACCEPTED. Page, data/x-board.json and board tape corrected in a520a87 and verified live by the 13:03 X Desk Watch (board-latest.png md5 1963a29c, asOf 2026-09-22). Vendor correction is NOT a Mo item: the vendor posted the 10:24 PT board image an hour before the 11:24 re-mark, so it is our correction to hand over, not a vendor FAIL. The CoS desk (14:00 PT today) sends the X Desk Watch's three-point note through the Grok Bot app: (1) Holliday PSA 10 $720 struck, never a sale, Aug 6 sale is PSA 9 $155.00; (2) SELL is the engine ask-side signal, calls are BUY/HOLD/PASS/WATCH; (3) on Tuesdays read asOf in data/x-board.json before posting the board and wait for today's date. Ask: replace the 10:24 post with the Sep 22 tape carrying the 'Replacing an earlier post' line; the Sep 21 SELL wording is corrected in the next board post, not chased.",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     },
     {
       "id": "bb-2026-09-22-graded-source-rule",
       "area": "pricing-integrity",
       "summary": "The Sep 17 review read price-guide cells as sales and got the direction wrong on three of five seats. Proposal: no graded figure is published anywhere on this site unless it is read off the sales tape with BOTH a date and a grade — a guide cell is never sufficient. Would have caught this and the Arquette $125 before it.",
-      "status": "awaiting-cos",
-      "ts": "2026-09-22"
+      "status": "approved",
+      "ts": "2026-09-22",
+      "decision": "ACCEPTED as an amendment to standing rule 1 (Sep 17). A graded figure is published only when ONE sales-tape row supplies the date, the grade and the price together. A guide/ladder cell never suffices, and a date may not be borrowed from a row of a different grade - the Holliday defect was a real Aug 6 date on a PSA 9 row attached to a PSA 10 guide number. The Sep 22 board already complies (Fischer $650.00 Sep 7, Florentino $492.00 Aug 17 re-read row by row). Enforcement: written into LANE-RULES standing rules at the Wednesday build; the mechanical half rides iw-2026-09-17-4 (prose/meta-scoped claims check) and the P0 SCP graded sales-table pull re-verifies every remaining graded figure sitewide against this rule.",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     },
     {
       "id": "bb-2026-09-22-home-single-link-guard",
       "area": "tooling",
       "summary": "js/home.js linked unslugged feed cards to /card-<id>; idea #30's three 'single' cards have no page, so build-home shipped three dead homepage links (baked and client-rendered). Guarded this run so cardType 'single' renders unlinked. The real fix is idea #30 finishing — either build the three card pages or give the feed rows a slug.",
-      "status": "awaiting-cos",
-      "ts": "2026-09-22"
+      "status": "applied",
+      "ts": "2026-09-22",
+      "decision": "ACCEPTED. The guard stays (cardType 'single' renders unlinked). No card pages get built for the three singles (freeze through Oct 26). The real fix is already the Wednesday build's idea #30 item: teach facts() to read the set for 'single', then give the three feed rows their slugs - at which point the guard stops mattering. Tracked under #30, not a separate item.",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     },
     {
       "id": "bb-2026-09-22-xboard-signal-source",
       "area": "tooling",
       "summary": "tools/build-x-board.mjs prefers the seat's Signal stat over the published 'Verdict:' line for currentSignal. On this board three seats mirror the verdict and one (Holliday) carried the engine's ask-side word, so the vendor feed would have stated SELL against a published Hold. Patched at the page this run rather than in the generator; the preference order still mis-ranks any future disagreement, and its verdict regex misses the entry-verdict class variants (hold/watch).",
-      "status": "awaiting-cos",
-      "ts": "2026-09-22"
+      "status": "approved",
+      "ts": "2026-09-22",
+      "decision": "ACCEPTED, Wednesday build P1. tools/build-x-board.mjs: currentSignal comes from the published 'Verdict:' line (including the entry-verdict class variants hold/watch); the Signal stat is a fallback only when no verdict line exists; the engine's ask-side word never enters currentSignal; when stat and verdict disagree the build uses the verdict and prints the disagreement. Today's page patch holds until the next regen (Tue Sep 29), so this is not same-day.",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     },
     {
       "id": "bb-2026-09-22-terminal-api-contract-fp",
       "area": "tooling",
       "summary": "audit-terminal api-contract reads only the line holding '/api/', so pokemon-30th-anniversary-2026.html:1011 — whose customid sits on a concatenated continuation line since 3850e99 — FAILs as having no customid. Verified against the live page: the per-tile customids are present and sent. Same class as the Sep 21 audit-site ')' truncation. This FAIL is standing in the tree and will block the next lane that touches that page.",
-      "status": "awaiting-cos",
-      "ts": "2026-09-22"
+      "status": "applied",
+      "ts": "2026-09-22",
+      "decision": "APPLIED by the CoS this run. audit-terminal's call-site extractor now extends the statement across following lines that open with '+', so a concatenated URL is read whole. pokemon-30th-anniversary-2026.html:1011 clears (FAIL 1 -> 0); negative-tested by removing the continuation customid line, which FAILs again at the same line. Same class as the Sep 21 audit-site ')' truncation: a gate reading one line of a multi-line expression.",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     },
     {
       "id": "bb-2026-09-22-stale-price-stamps",
       "area": "content",
       "summary": "Two pages crossed the 21-day price-stamp limit on their own this week: munetaka-murakami-rookie-cards.html and wnba-cards-2026.html, both stamped 2026-08-31 (22 days). They are the entire delta between today's audit-prices WARN 62 and the stated baseline 60.",
-      "status": "awaiting-cos",
-      "ts": "2026-09-22"
+      "status": "approved",
+      "ts": "2026-09-22",
+      "decision": "ACCEPTED. audit-prices baseline restated 60 -> 62 WARN with the cause named (murakami + wnba stamps 2026-08-31, 22 days). Owner: Wednesday build - re-read the prices on both pages, then restamp; never roll a stamp without the re-read (audit-2026-09-07-1's mistake). Add /victor-wembanyama-rookie-cards to the same pass: dated Aug 31 with no machine stamp, it crossed 21 days today invisibly (Integrity Watch Sep 21 alsoNoted).",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     },
     {
       "id": "bb-2026-09-22-pierce-watch-tier",
       "area": "board",
       "summary": "Watch-tier hygiene: Daniel Pierce's nightly ask mark is $29.49 and his June call is down 46%; he is far below a banger entry point and has been on the watch tier since Aug 18. Proposing removal is complicated by the Off-the-Board footer, which promises in print that all three demoted names stay tracked in the watch tier. Not acted on — CoS to rule whether the tier keeps him or the footer changes.",
-      "status": "awaiting-cos",
-      "ts": "2026-09-22"
+      "status": "declined",
+      "ts": "2026-09-22",
+      "decision": "RULED: Pierce stays on the watch tier and the footer stands. (1) The footer is a published promise; breaking it to tidy a losing name is worse than the tidiness. (2) His June call grades at 6 months (Dec) under long-hold v3 and needs a continuous mark to be graded honestly. (3) Dropping a -46% name from tracking is survivorship bias on a page whose credibility is the track record. The watch tier means tracked, not recommended. Revisit only at the call's December grade.",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     },
     {
       "id": "bb-2026-09-22-coach-note-stale",
       "area": "process",
       "summary": "coachNotes['tuesday-bangers'] is still weekOf 2026-09-14 — the Sunday Sep 20 run did not write a fresh one. The Monday lane filed the same gap for monday-scan on Sep 21. Second consecutive week both ends of the loop went unwritten.",
-      "status": "awaiting-cos",
-      "ts": "2026-09-22"
+      "status": "declined",
+      "ts": "2026-09-22",
+      "decision": "RULED: coachNotes are retired as a standing weekly duty and a stale weekOf is no longer a finding. The Sunday lane writing notes that the Monday/Tuesday lanes then audit for freshness is the lanes-reading-lanes loop the Sep 21 cadence cut removed. Doctrine is LANE-RULES + STATE; a coach note is written only when there is a specific correction to hand a lane, by the CoS desk, which now reads every filing on weekdays. The existing notes stay as history. Lanes: stop filing their age.",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     }
   ],
   "scoreboard": {
@@ -2832,7 +2856,8 @@
       "status": "PROBATION — two runs (Fri Sep 18, Mon Sep 21). Terms: tools/site-auditor/CHARTER.md and LANE-RULES R2/R5/R6/R7. Measured on one number — wrong filings, bar zero.",
       "keep": "You were challenged and you went and checked instead of defending — you withdrew three of your own findings and published why. Both surviving findings were real, live-verified, and shipped the same night, and audit-2026-09-16-1 found a hole in the wiring gate that nothing else would have found. Your §6 was right and the fix was mine to make: claude/cos/STATE.md is now in the repo. Your +3 WARN-delta check is adopted as standing doctrine for every lane.",
       "fix": "Every wrong filing this run came from the same place — you reasoned from a mount nine commits behind main, including in the revised report, where you stated that /LANE-RULES.md does not exist in the repo. It has since 728c6e5. From the next run: (1) fresh clone at STEP 0 or do not file; (2) freshness header as line one — HEAD / origin-main / delta / WARN vs baseline — or the report is not read; (3) re-fetch the live URL and reproduce the defect there before filing; (4) check data/pipeline.json and claude/cos/STATE.md for an existing ruling before filing — re-filing a settled item is a defect, and disagreeing with a ruling is one line naming it, not a new finding at the old severity; (5) no absence claim without git ls-files in a clone taken this run. The first-bowman trio is an ACCEPTANCE, not a backlog — it is in STATE.md as a stated baseline; do not file it again."
-    }
+    },
+    "_retired": "2026-09-22 (bb-2026-09-22-coach-note-stale): no longer a standing weekly duty; written ad hoc by the CoS desk only when a lane needs a specific correction. Stale weekOf is not a finding."
   },
   "publish": {
     "date": "2026-09-21",
