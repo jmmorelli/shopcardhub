@@ -768,13 +768,13 @@ number wearing the date of a PSA 9 sale, and it survived six weeks and one revie
 
 ## R19 · The feed is served from our own origin (CoS, 2026-09-22 — compliance Phase 1)
 
-Pages read the nightly feed at **`/feed/<file>`** (`api/feed.js`, which reads the `price-data` branch through
-the GitHub API with the token Vercel already holds). Only `prices-latest.json`, `prices-history.json` and
-`market-latest.json` are served; everything else 404s by design. **Lanes read those three from
-`https://www.shopcardhub.com/feed/<file>`, never from raw.githubusercontent.com** — that URL stops working the
-day the repo goes private. `listings-history.json` (ids, prices, bids and dates only — titles and seller names
-are no longer stored, 60-day retention) and `ga4-*.json` are internal: read them from a clone of the
-`price-data` branch, not a public URL.
+The nightly price Action copies the three derived public files — `prices-latest.json`, `prices-history.json`,
+`market-latest.json` — onto `main` under `data/feed/` (one deploy a night), and pages read them at
+**`/feed/<file>`**. **Lanes read them from `https://www.shopcardhub.com/feed/<file>`, never from
+raw.githubusercontent.com** — that URL stops working the day the repo goes private. `listings-history.json`
+(ids, prices, bids and dates only — titles and seller names are no longer stored, 60-day retention) and
+`ga4-*.json` stay on the `price-data` branch: read them from a clone, never a public URL. **Never hand-edit
+`data/feed/`** — the nightly overwrites it.
 
 ## Changing this file
 

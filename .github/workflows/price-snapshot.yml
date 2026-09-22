@@ -75,3 +75,26 @@ jobs:
           fi
           git commit -m "price-engine: snapshot $(date -u +%F)"
           git push -u origin price-data
+
+      # Compliance Phase 1 (2026-09-22): the site serves the feed from its own origin, so the repo can
+      # go private. Copy ONLY the three derived public files onto main under data/feed/ — the push
+      # triggers one Vercel deploy a night. listings-history.json and ga4-*.json never leave price-data.
+      - name: Publish the public feed to the site (data/feed on main)
+        run: |
+          set -e
+          git config user.name "price-engine[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch -q origin main
+            git checkout -q -B main origin/main
+            mkdir -p data/feed
+            for f in prices-latest.json prices-history.json market-latest.json; do
+              cp "price-data/data/$f" "data/feed/$f"
+            done
+            git add data/feed
+            if git diff --cached --quiet; then echo "Feed unchanged."; exit 0; fi
+            git commit -q -m "feed: nightly $(date -u +%F)"
+            if git push -q origin main; then echo "Feed published."; exit 0; fi
+            echo "push rejected (a lane pushed meanwhile) - retrying"; sleep 10
+          done
+          echo "could not publish the feed after 3 attempts"; exit 1
