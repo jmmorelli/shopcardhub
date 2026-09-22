@@ -2668,6 +2668,16 @@
           "gates": "fresh clone at f24c37c, feed = price-data @ 642f32a: audit-prices FAIL 0 / WARN 60 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 5 with --feed (all five WARNs = the one pre-guard data/x-board.json under the dated legacy grace, LEGACY_UNTIL 2026-09-22; feed-key-valid and feed-shape ran clean); tools/qa/x-board-guards.test.mjs 30/30",
           "liveVerified": "2026-09-21 ~21:30Z — robots.txt serves Disallow: /data/pipeline.json; /data/x-board.json unchanged (asOf 2026-09-15, generated 2026-09-21T20:54:31Z, callout = Correction Sep 18); / HOME:markets BCB26 73.14 = data/indices.json 2026-09-21 73.14",
           "note": "Tooling + doctrine push: build-x-board guards (asOf freshness, decaying language, callout/price-line vs seats, changeLog, --withhold), audit-terminal xboard-honest + home-index-level catch→FAIL, build-home exit 2 without a feed, LANE-RULES R12/R13/R14 + R10 amendment applied from the staged file, three ledger filings (friday-2026-09-18-build-home-th26 re-entered awaiting-cos; xbi-2026-09-21-1/-2). Report: Card Hub/x-board-integrity-2026-09-21.md"
+        },
+        {
+          "date": "2026-09-22",
+          "commits": [
+            "a520a87"
+          ],
+          "by": "tuesday-board (4.8)",
+          "gates": "fresh clone rebased onto 91fda24, feed = price-data @ day 2026-09-22: audit-prices FAIL 0 / WARN 62 (baseline 60; +2 = munetaka-murakami and wnba-cards crossing the 21-day stamp limit on their own, neither touched this run) · audit-site FAIL 0 / WARN 3 (baseline 3) · audit-terminal FAIL 1 / WARN 0 with --feed. The single FAIL is api-contract on pokemon-30th-anniversary-2026.html:1011, untouched by this run and verified against the live page as a false positive — the per-tile customids are present and sent; the check reads only the line holding '/api/' and that call's customid has sat on a concatenated continuation line since 3850e99. Filed awaiting-cos as bb-2026-09-22-terminal-api-contract-fp. FAIL 0 on every file this run touched.",
+          "liveVerified": "2026-09-22 ~18:35Z — /bowman-bangers serves data-prices-updated 2026-09-22 with Fischer 'PSA 10 $650.00' and Holliday 'no verified sale'; every remaining $720 on the page sits inside a dated correction. /data/x-board.json asOf 2026-09-22 with the corrected psa10 fields. /og/x/board-latest.png md5 1963a29c6574e750e00e91cad4a64d87, identical to the committed file. /bowman-chrome-2026-index 200 at BCB26 69.52.",
+          "note": "Tuesday board lane. No seat moved. Live correction: Holliday's $720 PSA 10 was a price-guide estimate read as a sale — struck from the page, the vendor feed and the tape; Fischer's and Florentino's PSA 10 figures restored with dated sales. BCB26 re-marked 69.52. index.html and js/home.js are outside this lane's usual scoped add: index.html because the BCB26 re-mark trips home-index-level, and js/home.js because re-baking it surfaced three dead homepage links from idea #30's unslugged 'single' cards — guarded rather than shipped. data/calls.json re-graded locally and deliberately left unpushed for the CoS."
         }
       ]
     },
