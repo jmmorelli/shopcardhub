@@ -99,6 +99,13 @@
     return inflight[ck];
   }
 
+  // Point a listing URL at a specific custom ID (the ID is the whole read — see epn.mjs).
+  function withCid(url, cid) {
+    var u = String(url);
+    return /[?&]customid=/.test(u) ? u.replace(/customid=[^&]*/, 'customid=' + cid)
+                                   : u + (u.indexOf('?') > -1 ? '&' : '?') + 'customid=' + cid;
+  }
+
   function tagLink(item, surface) {
     if (!item) return null;
     return item.replace(/customid=[^&]*/, 'customid=img-' + (surface || 'site').replace(/[^a-z0-9-]/gi, '').slice(0, 24).toLowerCase());
@@ -130,6 +137,22 @@
       return null;
     }).then(function (hit) {
       if (!hit || !hit.url) return;
+      // Set-index rows carry a per-card "Listings" link (tools/build-index-listings-col.mjs).
+      // This thumbnail has already resolved the cheapest verified listing for the row, so point
+      // that link at the listing instead of a search — the listing-level links converted 39% on
+      // the Sep 4 read while search links sold sub-$3, and it costs no extra API call.
+      // $200+ rows (data-av) are left alone on purpose: their link is filtered to eBay's
+      // Authenticity Guarantee, and one cheapest listing is not a guaranteed one.
+      try {
+        var row = el.closest && el.closest('tr');
+        var rowA = row && row.querySelector('a.ebay[data-cid]');
+        if (rowA && hit.item && !rowA.getAttribute('data-av') && !rowA.getAttribute('data-listing')) {
+          rowA.href = withCid(hit.item, rowA.getAttribute('data-cid'));
+          rowA.setAttribute('data-listing', '1');
+          rowA.title = 'The cheapest verified listing for this card on eBay';
+          rowA.innerHTML = 'Listing &rarr;';
+        }
+      } catch (e) {}
       // eBay serves the same photo at several widths; fetch only what the slot needs
       // (a 32px thumb at s-l500 was ~80KB × 60 rows on a set index).
       var want = { thumb: 140, row: 225, card: 300, hero: 500 }[o.size || 'thumb'] || 300;
