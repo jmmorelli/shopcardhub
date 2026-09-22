@@ -1,6 +1,6 @@
 {
  "_comment": "Above-the-fold eBay conversion strip, one entry per page. Consumed by tools/build-buy-strip.mjs, which writes the BUYSTRIP block into each page; enforced by site-auditor §15 (conversion-coverage). q = eBay _nkw for the strip's primary CTA; customid = EPN Custom ID so per-product earnings are readable in the EPN 'Performance by Custom ID' report. live=true shows the lowest live single-unit ask from /api/comps beside the product; it is only set where the primary query names ONE sealed product, because the cheapest listing on a broad player search is a $0.99 common and tells the reader nothing. Pages deliberately outside the contract are listed in the auditor's CONVERSION_EXEMPT set, not here. case = the sealed-CASE link rendered beside the box link (Idea #32, adopted 2026-09-20): a LINK ONLY — no figure is ever rendered from it, it never reaches the price engine and it is never an index input, because a case would corrupt a per-box mark. It is present only where tools/buy-strip-health.mjs measured at least CASE_MIN clean case listings (tools/case-shelf.mjs); `must` is a contiguous-phrase guard so a Bowman Chrome case link cannot land on a plain Bowman case (LANE-RULES R8). secondary.ag = true adds eBay's Authenticity Guarantee filter (LH_AV=1, read off eBay's own 'Show only' sidebar 2026-09-20) and routes the click to its own -ag custom ID, so the trust-copy effect is readable against the plain IDs. Set only where the link's own /api/comps median ask is >= $200 (eBay's Aug 2026 AG threshold for single cards) AND the AG-filtered search still has real depth — a narrow query plus AG is how you send a reader to an empty page.",
- "generated": "2026-09-20",
+ "generated": "2026-09-22",
  "pages": {
   "adley-rutschman-cards": {
    "product": "Adley Rutschman cards",
@@ -540,7 +540,8 @@
     "q": "Hobby Box Topps Chrome Baseball 2026 Case -sapphire -black -update -updates -pristine -cosmic -mega -bowman -break -pyp -pick -rip -random -slot -spot",
     "customid": "topps-chrome-baseball-2026-case",
     "must": "topps chrome baseball"
-   }
+   },
+   "deny": "finest"
   },
   "topps-chrome-basketball-2026": {
    "product": "2025-26 Topps Chrome Basketball Hobby Box",
@@ -701,7 +702,7 @@
    "product": "2026 Topps Flagship Football Hobby Box",
    "primary": {
     "label": "Shop hobby boxes on eBay",
-    "q": "Sealed Hobby Box Topps Football 2026 -chrome -cosmic -black -inception -bowman -finest -nscc -case -pack -packs -jumbo -blaster -lot",
+    "q": "Sealed Hobby Box Topps Football 2026 -heritage -chrome -cosmic -black -inception -bowman -finest -nscc -case -pack -packs -jumbo -blaster -lot",
     "customid": "topps-flagship-football-box"
    },
    "secondary": {
@@ -715,7 +716,9 @@
     "q": "Hobby Box Topps Football 2026 Case -chrome -cosmic -black -inception -bowman -finest -nscc -premier -league -soccer -break -pyp -pick -rip -random -slot -spot",
     "customid": "topps-flagship-football-case",
     "must": "topps football|topps flagship"
-   }
+   },
+   "req": "topps|football",
+   "deny": "heritage|chrome|cosmic|inception|bowman|finest|stadium club|gallery"
   },
   "topps-inception-baseball": {
    "product": "2025 Topps Inception Baseball Hobby Box",
@@ -815,7 +818,8 @@
     "q": "Hobby Box Topps Series 1 Baseball 2026 Case -\"series 2\" -chrome -heritage -mega -japan -break -pyp -pick -rip -random -slot -spot",
     "customid": "topps-series-1-2026-case",
     "must": "series 1"
-   }
+   },
+   "deny": "update"
   },
   "topps-series-2-2026": {
    "product": "2026 Topps Series 2 Baseball Hobby Box",

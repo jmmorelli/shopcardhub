@@ -42,6 +42,33 @@ const LOT = /\bcase\b|\blot\b|\bbundle of\b|\bpallet\b|\bbreak\b|\brandom\b/;
 const XN = /(^|[^a-z0-9])(x\s?\d{1,2}|\d{1,2}\s?x)([^a-z0-9]|$)/;
 const NBOX = /\b\d{1,2}\s?(box|boxes|etb|etbs|pack lot)\b/;
 
+// Product LINES that are different products from one another. If one of these words is in a
+// passing listing's title but NOT in the page's own product name, that listing is probably a
+// sibling product the query never excluded. This is the check the tool was missing on
+// 2026-09-22: it measured whether a shelf was EMPTY, never whether it held the RIGHT THING —
+// and 15 of 40 listings passing the "2026 Topps Flagship Football" query were Topps HERITAGE
+// Football boxes priced $199.99-$205 against a Flagship low of $199.95. The page was one sold
+// listing away from printing a Heritage price under a Flagship label, and nothing would have
+// said so. Same gap #32's `must` closed for case links.
+const LINES = ["heritage", "chrome", "sapphire", "black", "cosmic", "inception", "finest", "bowman",
+  "definitive", "museum", "pristine", "tribute", "tier one", "stadium club", "gallery", "allen",
+  "update series", "series 1", "series 2", "cactus jack", "big league", "archives", "gypsy",
+  "flagship"];
+const lineWords = (product) => {
+  const prod = String(product || "").toLowerCase();
+  return { own: LINES.filter((w) => prod.includes(w)), foreign: LINES.filter((w) => !prod.includes(w)) };
+};
+// A listing is another product only if it names a line this page is NOT, and does not name the
+// line this page IS. Without that second half the check cries wolf: "Topps Pristine Basketball
+// Hobby Box ... Sealed Chrome Flagg" is a Pristine box whose title happens to say "chrome"
+// (and "Flagg" is a rookie's surname). A gate that fires every Monday on a correct page gets
+// ignored, which is how a real one gets missed.
+const isForeign = (title, { own, foreign }) => {
+  const t = String(title || "").toLowerCase();
+  if (!foreign.some((w) => t.includes(w))) return false;
+  return !(own.length && own.some((w) => t.includes(w)));
+};
+
 const cfg = JSON.parse(fs.readFileSync(path.join(REPO, "data/buy-strip.json"), "utf8"));
 const live = Object.entries(cfg.pages).filter(([, v]) => v.live);
 
@@ -68,10 +95,19 @@ for (const [slug, v] of live) {
       ps = ps.filter(p => p >= mid / 5);
     }
     row.kept = ps.length;
+    // Does this shelf hold the product the page names? A page that prints a dollar figure
+    // with no req/deny guard has nothing stopping a sibling line from setting that figure.
+    row.guard = (v.req || v.deny) ? "yes" : "none";
+    const lines = lineWords(v.product);
+    const priced = keep.filter(l => ps.includes(l.price));
+    row.foreign = priced.filter(l => isForeign(l.title, lines));
+    row.foreignPct = priced.length ? Math.round(row.foreign.length / priced.length * 100) : 0;
     if (ps.length) {
       row.low = ps[0];
       row.title = (keep.find(l => l.price === ps[0]) || {}).title || null;
-      row.state = ps.length === 1 ? "thin" : "ok";
+      // The figure is WRONG right now: the cheapest passing listing is another product.
+      const lowIsForeign = isForeign(row.title, lines);
+      row.state = lowIsForeign ? "wrong-product" : ps.length === 1 ? "thin" : "ok";
     } else {
       // raw hits that all got filtered out is a different problem from no hits at all
       row.state = row.raw ? "filtered-out" : "no-listings";
@@ -115,16 +151,30 @@ for (const [slug, v] of Object.entries(cfg.pages)) {
 
 const dead = rows.filter(r => r.state === "filtered-out" || r.state === "no-listings" || r.state === "error");
 const thin = rows.filter(r => r.state === "thin");
+const wrong = rows.filter(r => r.state === "wrong-product");
+// Not yet wrong, but nothing is holding it right: an unguarded shelf with sibling-product
+// listings in it. Report over 10% so a one-off false positive ("w/Chrome autos" on a real
+// Bowman Football box) does not cry wolf every Monday.
+const unguarded = rows.filter(r => r.state !== "wrong-product" && r.foreignPct >= 10);
 const caseBad = caseRows.filter(r => r.state !== "ok");
 const agBad = agRows.filter(r => r.state !== "ok");
 
 if (JSON_OUT) {
-  console.log(JSON.stringify({ date: new Date().toISOString().slice(0, 10), checked: rows.length, dead: dead.length, thin: thin.length, rows, cases: caseRows, ag: agRows }, null, 1));
+  console.log(JSON.stringify({ date: new Date().toISOString().slice(0, 10), checked: rows.length, dead: dead.length, thin: thin.length, wrongProduct: wrong.length, unguarded: unguarded.length, rows, cases: caseRows, ag: agRows }, null, 1));
 } else {
-  console.log(`Buy-strip health — ${new Date().toISOString().slice(0, 10)} · ${rows.length} live queries · dead ${dead.length} · thin ${thin.length}`);
+  console.log(`Buy-strip health — ${new Date().toISOString().slice(0, 10)} · ${rows.length} live queries · dead ${dead.length} · thin ${thin.length} · wrong-product ${wrong.length} · unguarded ${unguarded.length}`);
   for (const r of rows.sort((a, b) => a.slug.localeCompare(b.slug))) {
     const fig = r.low == null ? "—" : "$" + r.low.toFixed(2);
     console.log(`  [${r.state.toUpperCase().padEnd(12)}] ${fig.padStart(10)} ${String(r.kept).padStart(3)} live  ${r.slug}${r.title ? "  · " + r.title.slice(0, 54) : ""}`);
+  }
+  if (wrong.length) {
+    console.log(`\n  WRONG PRODUCT — the figure these pages print is set by a DIFFERENT product:`);
+    for (const r of wrong) console.log(`    ${r.slug} — page says "${r.product}", cheapest listing is: ${r.title}`);
+    console.log(`  Add the sibling line to \`deny\` (and a contiguous \`req\`) in data/buy-strip.json, re-run the builder, and re-check.`);
+  }
+  if (unguarded.length) {
+    console.log(`\n  UNGUARDED SHELF — right today, nothing keeping it right (≥10% of priced listings are another line):`);
+    for (const r of unguarded) console.log(`    ${String(r.foreignPct).padStart(3)}% ${r.guard === "none" ? "no guard " : "guarded  "} ${r.slug} — e.g. ${(r.foreign[0] || {}).title || ""}`.slice(0, 150));
   }
   if (dead.length) {
     console.log(`\n  DEAD SHELF — these pages show a buy button with nothing behind it:`);
