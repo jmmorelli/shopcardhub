@@ -11,14 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — one decision (2026-09-22, ~15:30 PT)
+## Open — one click, when Phase 1 is ready (2026-09-22)
 
-- **eBay/EPN terms — a ruling only you can make.** While doing the Wednesday build early I had the current
-  eBay API License Agreement and EPN Network Agreement read line by line, as you asked on Sep 21. Part of what
-  it found goes to how the price engine itself works, so it is a business decision, not a fix. The full brief
-  and my recommendation are in the chat and in the Project doc `claude/cos/compliance-posture.md` (kept out of
-  the public repo on purpose). Two build items are on hold until you rule: moving the feed off GitHub, and
-  adding three more cards to the engine.
+- **✅ RULED by Mo (2026-09-22): the eBay terms.** Approved: raw listings off the public repo and the repo
+  private; every published price moved to sold data; disclosure/privacy check. **No email to eBay/EPN.**
+- **Coming, not yet:** before the repo goes private, the scheduled cloud agents need to be able to read it
+  (today they read it as the public does). I will ask for that one click when Phase 1 is built and tested,
+  with the exact screen to click. Nothing to do today.
 
 ---
 

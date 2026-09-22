@@ -25,12 +25,12 @@ items marked DONE on the live site; do not redo them.** Commits: `fff90e6` (eigh
 | Item | State |
 |---|---|
 | `/api/comps` + `/api/auctions` open-proxy fix (P0) | **DONE `ddc5466`**, live-verified: anonymous 403, our pages 200 (headless render of three pages), tools 200 with `X-ShopCardHub-Client: tool`. `?raw=1` removed, q-mode `limit` ≤ 50, ACAO `*` removed, 60/min/IP on uncached browser calls. **LANE-RULES R17.** Watch: the 01:00 nightly engine run is the first under the guard — if `prices-latest.json` for 2026-09-23 is short or empty, the header is the first suspect. |
-| eBay/EPN compliance posture (P0 item 3) | **READ, and it needs Mo.** Project doc `claude/cos/compliance-posture.md` — kept out of this public repo on purpose; the findings are not restated here. |
-| Feed onto our own origin + repo private (P0 item 2) | **HELD for Mo's compliance ruling.** What the feed may contain at all (raw listing history, Browse-derived marks) is now the question; building the new origin first would be built twice. Spec stands: `claude/cos/feed-origin-and-repo-privacy-2026-09-20.md`. |
+| eBay/EPN compliance posture (P0 item 3) | **RULED by Mo 2026-09-22 ~14:15 PT:** approved (1) raw listing content off the public repo + repo private, (2) move every published mark/index/signal to non-eBay sold data, eBay shown only as live listings with buy links, (4) disclosure + privacy-notice audit. **No contact with eBay/EPN — do not propose it again.** Plan: Project doc `claude/cos/compliance-posture.md`. |
+| Feed onto our own origin + repo private (P0 item 2) | **APPROVED (Mo, Sep 22) — Phase 1 of the compliance program; see OPEN ITEMS.** Was held for the ruling: What the feed may contain at all (raw listing history, Browse-derived marks) is now the question; building the new origin first would be built twice. Spec stands: `claude/cos/feed-origin-and-repo-privacy-2026-09-20.md`. |
 | R18 graded rule + prose gate (`iw-2026-09-17-4`) | **DONE.** `audit-prices` check 10 `graded-claim-unsourced` (WARN, one per page) + a scan of `data/calls.json` strings, negative-tested both ways. 16 pages carry the backlog (Flagg 15 figures, Ohtani 10, Mbappé 9, LeBron 8 …) — **this list IS the SCP graded sales-table pull's work order.** |
 | `bb-2026-09-22-xboard-signal-source` | **DONE.** Verdict line outranks the Signal stat; SELL can never reach `currentSignal`; `data/x-board.json` regenerated (seats unchanged: HOLD HOLD PASS BUY PASS). |
 | Stale price stamps (murakami, wnba, wembanyama) | **DONE — re-read, not rolled.** SCP dated solds read 2026-09-22 (sportscardspro.com via node `fetch`; curl 403s). Wemby base was published at "~$6", real ~$68; Optic RR is #225 not #218; WNBA's June auto/1-1 figures withdrawn, Reese PSA 10 → No verified sale, Reese is a 2024 RC; Murakami record $14,000 → $14,400 (Jun 23), Kanji $20,000 dated Jul 8 and identified (#BA-3), "redemption" claim dropped. |
-| Idea #30 — `facts()` for `single` + slug the three star cards | **HELD for the compliance ruling** — it adds three more Browse-derived marks to public pages. The home.js guard stays. |
+| Idea #30 — `facts()` for `single` + slug the three star cards | **DECLINED under the Sep 22 ruling** — no new Browse-derived marks on public pages. The three cards come back only as sold-basis marks in Phase 2. The home.js guard stays. |
 | `releases.json` | **DONE.** Bowman Football Sep 30 added (status `reported`, presale-sourced); panel re-baked `--releases-only`. |
 | Extended Bidding (Sep 20 flag) | **RULED, no code.** `/api/auctions` reads `itemEndDate` live on every uncached call, so displayed close times move when eBay moves them. The nightly "last bid seen" is already a labelled floor. **If close-time capture is ever built, it re-reads `endDate` at poll time and never trusts a snapshot.** |
 | PF25 first real re-mark | **NOT DONE** — the Monday lane owns re-marks (Sep 28). |
@@ -98,13 +98,23 @@ finding only if its cause is not named here.
 
 ## OPEN ITEMS (auto-approved, for agents) — ranked
 
-- **P0 — Mo's compliance ruling, then the feed/privacy work it decides.** See NEEDS-MO. Nothing that adds
-  Browse-derived marks to public pages ships until he rules (idea #30 slugs held).
+- **P0 — the compliance program (Mo, Sep 22). Phases, in order; plan in the Project doc:**
+  - **Phase 1 — nothing raw in public.** Feed served from our own origin (spec
+    `claude/cos/feed-origin-and-repo-privacy-2026-09-20.md`), raw listing history out of anything public,
+    then the repo goes private. **Prerequisite, Mo's click:** cloud lanes clone over anonymous HTTPS today,
+    so a private repo blinds them until the repo is granted to Claude's GitHub access (see NEEDS-MO).
+  - **Phase 2 — marks on sold data.** Every published mark, index level and signal moves to non-eBay dated
+    solds (SCP/PriceCharting, the path the football shelf and the Sep 22 re-reads already use). BCB26/BOW26
+    and the nightly engine signals are the big ones. eBay stays as live listings with buy links only.
+  - **Phase 3 — disclosure + privacy notice** audit (EPN disclosure next to link blocks, visible on a phone;
+    privacy notice names EPN tracking/cookies). CoS-owned, small.
+  - **Standing:** no new Browse-derived mark on any public page from today. Agents work from derived numbers,
+    not raw listing payloads.
 - **P0 — the SCP graded sales-table pull**, now with a work order: the 16 pages `audit-prices` check 10
   lists. Chrome/node-fetch path (sportscardspro.com 403s curl). Clears `audit-2026-09-07-4` and
   `audit-2026-09-02-2` back to applied.
 - **P1 — Ending Soon: widen `/api/auctions` to each live index's top 5** (`desk:true`, never a slug, never a
-  mark). Also a Browse expansion — **held with the P0 ruling.**
+  mark). Live listings only — allowed under the Sep 22 ruling; after Phase 1.
 - **P1 — the 31 `no-machine-stamp` pages**, oldest-traffic first. Re-read before stamping.
 - **P1 — engine block on a phone:** collapse the band to cells with a value; fold listings behind "Show
   listings" (Mewtwo block is 1,969 px on a phone).
@@ -127,7 +137,7 @@ finding only if its cause is not named here.
 
 ## WAITING ON MO — see `NEEDS-MO.md`
 
-The eBay/EPN compliance ruling (opened 2026-09-22). Nothing else.
+One click: grant the repo to Claude's GitHub access before it goes private (Phase 1). Nothing else.
 
 ---
 
