@@ -1032,8 +1032,16 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         }
         var lo = ps[0];
         var n = ps.length;
+        // Under three clean asks there is no market to multiply against: the UPC tile was
+        // printing "6.9x MSRP" off ONE listing, the same visual weight as the ETB's 3.6x off
+        // eleven. The ask is still real and still shown - the multiple and the confident
+        // framing are what get dropped, and the reader is told why.
+        if (n < 3) {
+          el.innerHTML = 'Ask from <b class="bb-ask">$' + lo.toFixed(2) + '</b> &middot; <span style="color:var(--text-dim)">only ' + n + ' ask' + (n === 1 ? '' : 's') + ' &mdash; thin, see eBay</span>';
+          return;
+        }
         var mult = msrp ? ' &middot; <b>' + (lo / msrp).toFixed(1) + '&times;</b>' : '';
-        el.innerHTML = 'Ask from <b class="bb-ask">$' + lo.toFixed(2) + '</b>' + mult + ' &middot; ' + n + ' ask' + (n === 1 ? '' : 's');
+        el.innerHTML = 'Ask from <b class="bb-ask">$' + lo.toFixed(2) + '</b>' + mult + ' &middot; ' + n + ' asks';
       })
       .catch(function(){ el.innerHTML = '<span style="color:var(--text-dim)">Live asks unavailable &mdash; see eBay</span>'; });
   });

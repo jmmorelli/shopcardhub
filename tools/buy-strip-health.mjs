@@ -149,6 +149,34 @@ for (const [slug, v] of Object.entries(cfg.pages)) {
   agRows.push(row);
 }
 
+// --- watched tiles (hand-built shelves that publish live asks outside the strip) ---
+// pokemon-30th-anniversary-2026 has a better shelf than the standard strip and must not be
+// rewritten by the builder — but it was publishing asks with nothing watching them. These are
+// read here so a dead or thin product on that page shows up on Monday like any other.
+const tileRows = [];
+for (const [slug, tiles] of Object.entries(cfg.watchTiles || {})) {
+  for (const t of tiles) {
+    const req = (t.req || "").toLowerCase().split("|").filter(Boolean);
+    const row = { slug, cid: t.cid, product: t.product, kept: 0, low: null, state: "dead" };
+    try {
+      const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(t.q)}&limit=50&sort=price${t.cat ? `&category_ids=${t.cat}` : ""}`);
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const j = await r.json();
+      const keep = (j.listings || []).filter(l => {
+        const x = (l.title || "").toLowerCase();
+        if (typeof l.price !== "number" || !(l.price > 0)) return false;
+        if (req.length && !req.every(w => x.includes(w))) return false;
+        if (t.msrp && l.price > t.msrp * 8) return false;
+        return !(LOT.test(x) || XN.test(x) || NBOX.test(x));
+      }).sort((a, b) => a.price - b.price);
+      row.kept = keep.length;
+      if (keep.length) { row.low = keep[0].price; row.title = keep[0].title; row.state = keep.length < 3 ? "thin" : "ok"; }
+    } catch (e) { row.state = "error"; row.error = e.message; }
+    tileRows.push(row);
+  }
+}
+const tileBad = tileRows.filter(r => r.state !== "ok");
+
 const dead = rows.filter(r => r.state === "filtered-out" || r.state === "no-listings" || r.state === "error");
 const thin = rows.filter(r => r.state === "thin");
 const wrong = rows.filter(r => r.state === "wrong-product");
@@ -160,7 +188,7 @@ const caseBad = caseRows.filter(r => r.state !== "ok");
 const agBad = agRows.filter(r => r.state !== "ok");
 
 if (JSON_OUT) {
-  console.log(JSON.stringify({ date: new Date().toISOString().slice(0, 10), checked: rows.length, dead: dead.length, thin: thin.length, wrongProduct: wrong.length, unguarded: unguarded.length, rows, cases: caseRows, ag: agRows }, null, 1));
+  console.log(JSON.stringify({ date: new Date().toISOString().slice(0, 10), checked: rows.length, dead: dead.length, thin: thin.length, wrongProduct: wrong.length, unguarded: unguarded.length, tiles: tileRows, rows, cases: caseRows, ag: agRows }, null, 1));
 } else {
   console.log(`Buy-strip health — ${new Date().toISOString().slice(0, 10)} · ${rows.length} live queries · dead ${dead.length} · thin ${thin.length} · wrong-product ${wrong.length} · unguarded ${unguarded.length}`);
   for (const r of rows.sort((a, b) => a.slug.localeCompare(b.slug))) {
@@ -189,6 +217,15 @@ if (JSON_OUT) {
       console.log(`  [${r.state.toUpperCase().padEnd(5)}] ${fig.padStart(8)} ${String(r.clean).padStart(3)} clean  ${r.slug}${r.title ? "  · " + r.title.slice(0, 50) : ""}`);
     }
     if (caseBad.length) console.log(`  Remove the \`case\` entry for these in data/buy-strip.json and re-run the builder — a case link with nothing behind it is the failure it was added to avoid.`);
+  }
+
+  if (tileRows.length) {
+    console.log(`\nWatched tiles (hand-built shelves) — ${tileRows.length} products · thin/dead ${tileBad.length}`);
+    for (const r of tileRows) {
+      const fig = r.low == null ? "—" : "$" + r.low.toFixed(2);
+      console.log(`  [${r.state.toUpperCase().padEnd(5)}] ${fig.padStart(10)} ${String(r.kept).padStart(3)} asks  ${r.cid}  ${r.product}`);
+    }
+    if (tileBad.length) console.log(`  Under 3 asks the page drops the ×MSRP multiple and says "thin" — no action needed unless it goes dead.`);
   }
 
   if (agRows.length) {
