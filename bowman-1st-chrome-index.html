@@ -682,7 +682,7 @@ td.trk { width:70px; text-align:center; }
 <script>
 (function () {
   'use strict';
-  var FEED = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data';
+  var FEED = '/feed';
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var fmt$ = function (n) { if (n == null || !isFinite(n)) return '—'; return '$' + (n >= 1000 ? Math.round(n).toLocaleString('en-US') : n.toFixed(2)); };
@@ -708,8 +708,8 @@ td.trk { width:70px; text-align:center; }
   /* ------- data ------- */
   Promise.all([
     getJSON('/data/indices.json'),
-    getJSON(FEED + '/prices-history.json?t=' + Date.now()).catch(function () { return null; }),
-    getJSON(FEED + '/prices-latest.json?t=' + Date.now()).catch(function () { return null; })
+    getJSON(FEED + '/prices-history.json?t=' + Math.floor(Date.now() / 600000)).catch(function () { return null; }),
+    getJSON(FEED + '/prices-latest.json?t=' + Math.floor(Date.now() / 600000)).catch(function () { return null; })
   ]).then(function (res) {
     var idx = res[0] && res[0].BOW26;
     if (!idx) throw new Error('no BOW26');
@@ -990,5 +990,5 @@ td.trk { width:70px; text-align:center; }
       .catch(function () {});
   })();
 </script>
-<script src="/js/card-img.js?v=2" defer></script>
+<script src="/js/card-img.js?v=3" defer></script>
 </body></html>

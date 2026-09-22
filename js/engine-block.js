@@ -12,7 +12,7 @@
  * element's presence, so hosts still on the 4-cell markup render exactly as before. */
 (function () {
   'use strict';
-  var FEED = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data';
+  var FEED = '/feed';
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var fmt = function (n) { if (n == null || !isFinite(n)) return '—'; return '$' + (n >= 1000 ? Math.round(n).toLocaleString('en-US') : n >= 100 ? String(Math.round(n)) : n.toFixed(2)); };
   var num = function (n, d) { if (n == null || !isFinite(n)) return '—'; return n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }); };
@@ -23,9 +23,9 @@
     if (!cache[u]) cache[u] = fetch(u, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
     return cache[u];
   }
-  var latestP = getJSON(FEED + '/prices-latest.json?t=' + Date.now());
-  var histP = getJSON(FEED + '/prices-history.json?t=' + Date.now());
-  var mktP = getJSON(FEED + '/market-latest.json?t=' + Date.now());
+  var latestP = getJSON(FEED + '/prices-latest.json?t=' + Math.floor(Date.now() / 600000));
+  var histP = getJSON(FEED + '/prices-history.json?t=' + Math.floor(Date.now() / 600000));
+  var mktP = getJSON(FEED + '/market-latest.json?t=' + Math.floor(Date.now() / 600000));
   var quiet = function (p) { return p.catch(function () { return null; }); };
 
   /* σ / skew / kurtosis come from js/engine-stats.js (loaded by the ENGINE block before this file) */

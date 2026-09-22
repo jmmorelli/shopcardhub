@@ -999,7 +999,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
 <script>
 (function(){
-  fetch('https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json?t=' + Date.now(), {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){
+  fetch('/feed/prices-latest.json?t=' + Math.floor(Date.now() / 600000), {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){
     var by = {}; (d.cards||[]).forEach(function(c){ by[c.key] = c; });
     var fmt = function(n){ if (n==null || !isFinite(n)) return '\u2014'; return '$' + (n>=1000 ? Math.round(n).toLocaleString('en-US') : n>=100 ? String(Math.round(n)) : n.toFixed(2)); };
     document.querySelectorAll('.hub-row').forEach(function(row){

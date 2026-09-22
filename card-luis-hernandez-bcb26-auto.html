@@ -896,7 +896,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   'use strict';
   var C = window.SCH_CARD; if (!C) return;
   var KEY = 'ebay:' + C.id;
-  var FEED = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data';
+  var FEED = '/feed';
   var $ = function(id){ return document.getElementById(id); };
   var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
   var fmt = function(n){ if (n==null || !isFinite(n)) return '\u2014'; return '$' + (n>=1000 ? Math.round(n).toLocaleString('en-US') : n>=100 ? String(Math.round(n)) : n.toFixed(2)); };
@@ -904,7 +904,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   function getJSON(u){ return fetch(u, {cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); }); }
 
   /* 1. latest mark + strip + signal */
-  getJSON(FEED + '/prices-latest.json?t=' + Date.now()).then(function(d){
+  getJSON(FEED + '/prices-latest.json?t=' + Math.floor(Date.now() / 600000)).then(function(d){
     var c = (d.cards||[]).filter(function(x){ return x.key===KEY; })[0]; if(!c) return;
     var day = d.day || '';
     if (c.last != null) { $('cp-mark').textContent = fmt(c.last); $('cp-mark-d').textContent = 'engine mark \u00b7 ' + dstr(day); }
@@ -923,7 +923,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   }).catch(function(){});
 
   /* 2. history chart */
-  getJSON(FEED + '/prices-history.json?t=' + Date.now()).then(function(h){
+  getJSON(FEED + '/prices-history.json?t=' + Math.floor(Date.now() / 600000)).then(function(h){
     var e = h[KEY]; var box = $('cp-chart'); if(!e || !box) return;
     var pts = (e.series||[]).filter(function(p){ return p && p.p != null && isFinite(p.p); });
     $('cp-chart-n').textContent = pts.length + ' nightly point' + (pts.length===1?'':'s') + (pts.length ? ' \u00b7 ' + dstr(pts[0].d) + ' \u2192 ' + dstr(pts[pts.length-1].d) : '');
@@ -945,7 +945,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   }).catch(function(){});
 
   /* 3. hammers / auction closes (market-latest.json exists once the engine has recorded closes) */
-  getJSON(FEED + '/market-latest.json?t=' + Date.now()).then(function(m){
+  getJSON(FEED + '/market-latest.json?t=' + Math.floor(Date.now() / 600000)).then(function(m){
     var b = m && (m[KEY] || (m.byKey && m.byKey[KEY]) || (m.cards && m.cards[KEY])); if(!b) return;
     var box = $('cp-hammers'); if(!box) return;
     var n = (b.hammers||[]).length;

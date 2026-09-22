@@ -8,7 +8,7 @@
 (function () {
   var rows = document.querySelectorAll('.sealed[data-box-feed]');
   if (!rows.length) return;
-  var FEED = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data';
+  var FEED = '/feed';
   var get = function (u) { return fetch(u, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
   var fmt = function (n) { return '$' + (n >= 1000 ? Math.round(n).toLocaleString() : n.toFixed(n >= 100 ? 0 : 2)); };
   var pct = function (a, b) { return (a == null || b == null || !b) ? null : ((a - b) / b) * 100; };
@@ -24,7 +24,7 @@
     for (var i = 0; i < series.length; i++) { if (new Date(series[i][dateKey] + 'T00:00:00Z').getTime() <= target) pick = series[i]; else break; }
     return pick === last ? null : pick[valKey];
   };
-  Promise.all([get(FEED + '/prices-latest.json?t=' + Date.now()), get(FEED + '/prices-history.json?t=' + Date.now()).catch(function () { return {}; }), get('/data/indices.json?t=' + Date.now()).catch(function () { return {}; })])
+  Promise.all([get(FEED + '/prices-latest.json?t=' + Math.floor(Date.now() / 600000)), get(FEED + '/prices-history.json?t=' + Math.floor(Date.now() / 600000)).catch(function () { return {}; }), get('/data/indices.json?t=' + Date.now()).catch(function () { return {}; })])
     .then(function (r) {
       var latest = r[0] || {}, hist = r[1] || {}, idx = r[2] || {};
       var byKey = {}; (latest.cards || []).forEach(function (c) { byKey[c.key] = c; });

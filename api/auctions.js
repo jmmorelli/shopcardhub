@@ -27,6 +27,7 @@
 //   vsMark / vsHammer = (total / reference) - 1, negative = under.
 
 import { guard } from "./_lib/guard.js";
+import { readFeedJson } from "./_lib/feed.js";
 import { getAppToken } from "./_lib/ebay-token.js";
 
 const BROWSE_URL = "https://api.ebay.com/buy/browse/v1/item_summary/search";
@@ -34,7 +35,7 @@ const EPN_CAMPAIGN_ID = "5339155990";
 const CUSTOM_ID = "auctions";
 const TRADING_CARDS_CATEGORY = "212";
 const SITE_ORIGIN = (process.env.SITE_URL || "https://www.shopcardhub.com").replace(/\/$/, "");
-const FEED_BASE = "https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data";
+// the nightly feed is read server-side through api/_lib/feed.js (private-repo safe, 2026-09-22)
 
 function trimListing(item) {
   return {
@@ -97,8 +98,8 @@ export default async function handler(req, res) {
   try {
     const [wl, latest, market, token, eng] = await Promise.all([
       getJSON(`${SITE_ORIGIN}/data/watchlist.json`),
-      getJSON(`${FEED_BASE}/prices-latest.json?t=${Math.floor(Date.now() / 600000)}`).catch(() => null),
-      getJSON(`${FEED_BASE}/market-latest.json?t=${Math.floor(Date.now() / 600000)}`).catch(() => null),
+      readFeedJson("prices-latest.json").catch(() => null),
+      readFeedJson("market-latest.json").catch(() => null),
       getAppToken(),
       import("../tools/price-engine/snapshot-free.mjs"),
     ]);

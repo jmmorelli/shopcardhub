@@ -19,7 +19,8 @@ const { execSync } = require("node:child_process");
 
 const ABORT_HOSTS = [/(^|\.)googletagmanager\.com$/, /(^|\.)google-analytics\.com$/, /\.analytics\.google\.com$/, /^stats\.g\.doubleclick\.net$/, /(^|\.)doubleclick\.net$/, /^fonts\.googleapis\.com$/, /^fonts\.gstatic\.com$/];
 const IMAGE_HOSTS = [/^i\.ebayimg\.com$/, /^images\./];
-const FEED_RE = /^https:\/\/raw\.githubusercontent\.com\/[^/]+\/shopcardhub\/price-data\/data\/([a-z0-9-]+\.json)/;
+// the feed: our own /feed/<file> (since 2026-09-22, api/feed.js) or the legacy raw.githubusercontent URL
+const FEED_RE = /^https?:\/\/[^/]+\/(?:feed|[^/]+\/shopcardhub\/price-data\/data)\/([a-z0-9-]+\.json)/;
 const PNG_1x1 = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
 const MIME = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".mjs": "text/javascript", ".cjs": "text/javascript", ".json": "application/json", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".ico": "image/x-icon", ".woff2": "font/woff2", ".woff": "font/woff", ".xml": "application/xml", ".txt": "text/plain" };
 const FIXTURES = path.join(__dirname, "fixtures");
@@ -73,6 +74,12 @@ async function routeContext(ctx, { mode = "local", origin, feed, log }) {
     const req = route.request(); const url = req.url(); let host = "";
     try { host = new URL(url).hostname; } catch { return route.abort(); }
     const hostPort = (() => { try { return new URL(url).host; } catch { return ""; } })();
+    const fm0 = mode !== "prod" ? url.match(FEED_RE) : null; // local runs serve /feed/* from the --feed clone, before the local-host pass-through
+    if (fm0) {
+      const f = feedOk ? path.join(feed, fm0[1]) : null;
+      if (f && fs.existsSync(f)) { L.feed.push(fm0[1]); return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: fs.readFileSync(f) }); }
+      L.aborted.push("feed"); return route.abort();
+    }
     if (host === "127.0.0.1" || host === "localhost" || (own && hostPort === own)) return route.continue();
     if (ABORT_HOSTS.some((re) => re.test(host))) { L.aborted.push(host); return route.abort(); }
     if (mode === "prod") {

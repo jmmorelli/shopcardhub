@@ -22,7 +22,7 @@
   'use strict';
   var num = ST.num, fmt = ST.fmt, pct = ST.pct, sgn = ST.sgn, cls = ST.cls, dstr = ST.dstr;
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
-  var FEED = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data';
+  var FEED = '/feed';
 
   /* ---------- screens (saved filters over the feed) ---------- */
   var SCREENS = {
@@ -378,7 +378,7 @@
     try { paintScreen(/screen=/.test(location.hash || '')); } catch (e) {}
     /* live feed → re-render; any failure leaves the pre-rendered HTML alone */
     var get = function (u) { return fetch(u, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
-    Promise.all([get(FEED + '/prices-latest.json?t=' + Date.now()), get(FEED + '/prices-history.json?t=' + Date.now()), get(FEED + '/market-latest.json?t=' + Date.now()).catch(function () { return null; }), get('/data/indices.json?t=' + Date.now()).catch(function () { return null; })])
+    Promise.all([get(FEED + '/prices-latest.json?t=' + Math.floor(Date.now() / 600000)), get(FEED + '/prices-history.json?t=' + Math.floor(Date.now() / 600000)), get(FEED + '/market-latest.json?t=' + Math.floor(Date.now() / 600000)).catch(function () { return null; }), get('/data/indices.json?t=' + Date.now()).catch(function () { return null; })])
       .then(function (a) {
         model = buildModel(a[0], a[1], a[2], a[3] || {});
         /* each panel paints on its own — one bad panel never blanks the others (the pre-render stays) */

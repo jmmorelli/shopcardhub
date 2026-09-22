@@ -32,7 +32,7 @@ import { createRequire } from "node:module";
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
 const RELEASES_ONLY = process.argv.includes("--releases-only");
-const FEED_BASE = process.env.FEED_BASE || "https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data";
+const FEED_BASE = process.env.FEED_BASE || "https://www.shopcardhub.com/feed";
 const require = createRequire(import.meta.url);
 const HOME = require(path.join(REPO, "js/home.js"));
 const ST = require(path.join(REPO, "js/engine-stats.js"));

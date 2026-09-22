@@ -2951,7 +2951,7 @@ function supplyHtml(fe) {
 }
 
 /* ---------- live price feed (nightly price engine, price-data branch) ---------- */
-const FEED_BASE = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/';
+const FEED_BASE = '/feed/';
 let FEED = null;       // { cards:[], byKey:{} } from prices-latest.json
 let FEED_HIST = null;  // prices-history.json cache
 let FEED_MKT = null;   // market-latest.json cards{} — closes per feed key (hammer coverage tile); closes count only, never the hammers
@@ -3755,6 +3755,6 @@ document.addEventListener('click', e => { const m = document.getElementById('pfM
   window.imgPostX = function () { track('vault_share_img_post'); xShare(current.text, null); };
 })();
 </script>
-<script src="/js/card-img.js?v=2" defer></script>
+<script src="/js/card-img.js?v=3" defer></script>
 </body>
 </html>

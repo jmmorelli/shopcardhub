@@ -27,7 +27,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const REPO = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
-const FEED_URL = "https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json";
+const FEED_URL = "https://www.shopcardhub.com/feed/prices-latest.json";
 const CAP = 0.15;
 const args = process.argv.slice(2);
 const DRY = args.includes("--dry");

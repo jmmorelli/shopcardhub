@@ -57,7 +57,7 @@ function block(c, ticker) {
   <div class="sc">30D · box <i class="sealed-box30">—</i> · index <i class="sealed-idx30">—</i> <span class="sealed-note"></span></div>
   <a class="buy" href="${esc(href)}" target="_blank" rel="sponsored nofollow noopener">Shop ${esc(product === "Booster box" ? "booster boxes" : "ETBs")} on eBay ↗</a>
 </div>
-<script src="/js/sealed-row.js?v=1" defer></script>
+<script src="/js/sealed-row.js?v=2" defer></script>
 <!-- SEALED:END -->`;
 }
 

@@ -1224,7 +1224,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); return; } init();
   function init() {
   var SEEN = 'sch_bb_rank_seen_v1';
-  var FEED = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json';
+  var FEED = '/feed/prices-latest.json';
   var board = document.getElementById('bb-board'), tbody = document.getElementById('bb-rows');
   if (!board || !tbody) return;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1780,7 +1780,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   (function () {
     var REPO = 'jmmorelli/shopcardhub';   // must match the live GitHub repo / GITHUB_REPO env var
     var BRANCH = 'price-data';
-    var FEED = 'https://raw.githubusercontent.com/' + REPO + '/' + BRANCH + '/data/prices-latest.json';
+    var FEED = '/feed/prices-latest.json';
     var MIN_HISTORY = 20;
 
     /* Day-one seed — real raw-market marks read from SportsCardsPro price pages
@@ -2289,7 +2289,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 /* ═══ MOBILE NAV TOGGLE ═══ */
 </script>
 <script src="/js/vault-track.js?v=6" defer></script>
-<script src="/js/card-img.js?v=2" defer></script>
+<script src="/js/card-img.js?v=3" defer></script>
 
   <script>
   /* Signal Alerts signup — activates when data/newsletter.json lists this page

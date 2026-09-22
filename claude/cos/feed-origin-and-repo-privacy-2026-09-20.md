@@ -1,5 +1,11 @@
 # Spec — move the feed onto our own origin, then take the repo private
 
+> **BUILT 2026-09-22 (compliance Phase 1, Mo: "start it").** The origin chosen was neither (a) nor (b) below:
+> `api/feed.js` reads the `price-data` branch through the GitHub API using the `GITHUB_TOKEN` Vercel already
+> holds for `api/_lib/store.js` — no new secret, no nightly deploy, no new service. `/feed/<file>` is a rewrite
+> to it; three derived files are allowlisted. Every browser call site, generator and QA route moved in the
+> same commit. What remains before the flip is listed in STATE (the cloud lanes' read access).
+
 **Ruled by Mo, 2026-09-20, in chat.** Three questions put to him; he took the recommended option on
 all three: filter the bots but do not block them, do the repo-privacy work **properly on Wednesday**
 rather than rushed on a Sunday, and fix `/api/comps` in the same session.

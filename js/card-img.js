@@ -18,7 +18,7 @@
  *   and for any element with data-card-tilt="1". Strength lives in SCH_IMG.TILT.
  */
 (function () {
-  var FEED = 'https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data/prices-latest.json';
+  var FEED = '/feed/prices-latest.json';
   var LOCAL = '/data/card-images.json';
   var SIZES = { thumb: [32, 45], row: [44, 62], card: [120, 168], hero: [240, 336] };
   var cache = null;

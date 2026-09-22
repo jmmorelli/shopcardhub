@@ -32,9 +32,9 @@ import { fileURLToPath } from "node:url";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
-const FEED_BASE = "https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data"; // baked into the client JS — always the canonical URL
+const FEED_BASE = "/feed"; // baked into the client JS — our own origin since 2026-09-22 (api/feed.js; the repo can go private)
 // Build-time read of the feed: FEED_BASE env may point at a local clone of the price-data branch (a dir) or a URL
-const FEED_SRC = process.env.FEED_BASE || FEED_BASE;
+const FEED_SRC = process.env.FEED_BASE || "https://www.shopcardhub.com/feed";
 const EPN = "mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001";
 
 const read = (f) => fs.readFileSync(path.join(REPO, f), "utf8");
@@ -206,7 +206,7 @@ const CLIENT_JS = `
   function getJSON(u){ return fetch(u, {cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); }); }
 
   /* 1. latest mark + strip + signal */
-  getJSON(FEED + '/prices-latest.json?t=' + Date.now()).then(function(d){
+  getJSON(FEED + '/prices-latest.json?t=' + Math.floor(Date.now() / 600000)).then(function(d){
     var c = (d.cards||[]).filter(function(x){ return x.key===KEY; })[0]; if(!c) return;
     var day = d.day || '';
     if (c.last != null) { $('cp-mark').textContent = fmt(c.last); $('cp-mark-d').textContent = 'engine mark \\u00b7 ' + dstr(day); }
@@ -225,7 +225,7 @@ const CLIENT_JS = `
   }).catch(function(){});
 
   /* 2. history chart */
-  getJSON(FEED + '/prices-history.json?t=' + Date.now()).then(function(h){
+  getJSON(FEED + '/prices-history.json?t=' + Math.floor(Date.now() / 600000)).then(function(h){
     var e = h[KEY]; var box = $('cp-chart'); if(!e || !box) return;
     var pts = (e.series||[]).filter(function(p){ return p && p.p != null && isFinite(p.p); });
     $('cp-chart-n').textContent = pts.length + ' nightly point' + (pts.length===1?'':'s') + (pts.length ? ' \\u00b7 ' + dstr(pts[0].d) + ' \\u2192 ' + dstr(pts[pts.length-1].d) : '');
@@ -247,7 +247,7 @@ const CLIENT_JS = `
   }).catch(function(){});
 
   /* 3. hammers / auction closes (market-latest.json exists once the engine has recorded closes) */
-  getJSON(FEED + '/market-latest.json?t=' + Date.now()).then(function(m){
+  getJSON(FEED + '/market-latest.json?t=' + Math.floor(Date.now() / 600000)).then(function(m){
     var b = m && (m[KEY] || (m.byKey && m.byKey[KEY]) || (m.cards && m.cards[KEY])); if(!b) return;
     var box = $('cp-hammers'); if(!box) return;
     var n = (b.hammers||[]).length;
@@ -569,7 +569,7 @@ ${footer}
 
 <script>
 (function(){
-  fetch('${FEED_BASE}/prices-latest.json?t=' + Date.now(), {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){
+  fetch('${FEED_BASE}/prices-latest.json?t=' + Math.floor(Date.now() / 600000), {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){
     var by = {}; (d.cards||[]).forEach(function(c){ by[c.key] = c; });
     var fmt = function(n){ if (n==null || !isFinite(n)) return '\\u2014'; return '$' + (n>=1000 ? Math.round(n).toLocaleString('en-US') : n>=100 ? String(Math.round(n)) : n.toFixed(2)); };
     document.querySelectorAll('.hub-row').forEach(function(row){

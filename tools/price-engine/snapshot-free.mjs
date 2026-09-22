@@ -331,10 +331,10 @@ async function thumbIsPortrait(imageUrl) {
 // instead of hand-read third-party values.
 //
 // Shape of listings-history.json:
-//   { "<itemId>": { key, kind, title, seller, price|bid, bids, endDate,
+//   { "<itemId>": { key, kind, price|bid, bids, endDate,
 //                   first, last, obs: [{t, p, b}], gone, hammer, hammerLagMin } }
 // Pruned to PRUNE_DAYS after a listing was last seen.
-const PRUNE_DAYS = 120;
+const PRUNE_DAYS = 60; // was 120; 60 covers the ">= 5 closes in 60 days" hammer rule and nothing longer is used (2026-09-22)
 const MAX_OBS = 60; // keep the trajectory bounded; oldest points drop first
 
 export function trackListings(store, key, verifiedFixed, verifiedAuctions, nowMs) {
@@ -346,8 +346,10 @@ export function trackListings(store, key, verifiedFixed, verifiedAuctions, nowMs
     if (!id) return;
     seen.add(id);
     const e = store[id] || {
-      key, kind, title: l.title || null,
-      seller: (l.seller && (l.seller.username || l.seller)) || null,
+      // No title, no seller (compliance Phase 1, 2026-09-22): this store is an intermediate copy that only
+      // needs ids, prices, bids and dates to derive the hammer/vanished roll-ups. Raw listing text and
+      // seller usernames are never kept.
+      key, kind,
       endDate: l.endDate || null, first: nowISO, obs: [],
     };
     e.key = key; e.kind = kind;
@@ -358,6 +360,9 @@ export function trackListings(store, key, verifiedFixed, verifiedAuctions, nowMs
     if (e.obs.length > MAX_OBS) e.obs = e.obs.slice(-MAX_OBS);
     store[id] = e;
   };
+
+  // scrub entries written before 2026-09-22
+  for (const e of Object.values(store)) { delete e.title; delete e.seller; }
 
   for (const l of verifiedFixed || []) touch(l, "fixed");
   for (const l of verifiedAuctions || []) touch(l, "auction");

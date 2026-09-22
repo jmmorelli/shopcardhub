@@ -766,6 +766,16 @@ from a row of a different grade** — Holliday's $720 "PSA 10 (1 dated sale, Aug
 number wearing the date of a PSA 9 sale, and it survived six weeks and one review. One row reads
 `(1 dated sale, <date>)`, never as a price or a range. Otherwise the cell reads **No verified sale**.
 
+## R19 · The feed is served from our own origin (CoS, 2026-09-22 — compliance Phase 1)
+
+Pages read the nightly feed at **`/feed/<file>`** (`api/feed.js`, which reads the `price-data` branch through
+the GitHub API with the token Vercel already holds). Only `prices-latest.json`, `prices-history.json` and
+`market-latest.json` are served; everything else 404s by design. **Lanes read those three from
+`https://www.shopcardhub.com/feed/<file>`, never from raw.githubusercontent.com** — that URL stops working the
+day the repo goes private. `listings-history.json` (ids, prices, bids and dates only — titles and seller names
+are no longer stored, 60-day retention) and `ga4-*.json` are internal: read them from a clone of the
+`price-data` branch, not a public URL.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.

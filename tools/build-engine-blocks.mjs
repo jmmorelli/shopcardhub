@@ -29,8 +29,8 @@ import { fileURLToPath } from "node:url";
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
 const ONLY = (process.argv.find((a) => a.startsWith("--only=")) || "").slice(7) || null;
-const FEED_BASE = process.env.FEED_BASE || "https://raw.githubusercontent.com/jmmorelli/shopcardhub/price-data/data";
-const JS_V = 5; // bump when js/engine-block.js changes (cache-buster on the <script> tag)
+const FEED_BASE = process.env.FEED_BASE || "https://www.shopcardhub.com/feed";
+const JS_V = 6; // bump when js/engine-block.js changes (cache-buster on the <script> tag)
 const STATS_V = 1; // js/engine-stats.js (shared return math) — loaded before engine-block.js
 const EPN = "mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001";
 
