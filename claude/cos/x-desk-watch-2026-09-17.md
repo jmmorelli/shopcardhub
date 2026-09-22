@@ -33,6 +33,34 @@ under checks D/E and goes to the CoS the same run. `?ref=x-reply` is paused unti
 until then the reply channel is graded on engagement (replies back, follows, profile visits in the vendor's
 Monday note), not sessions.
 
+## §0.1 · The reply read moves BEFORE the post (2026-09-22, Mo's approval)
+
+Monday's five replies were graded by Mo, live, on his own account, after they had posted. He
+deleted all five. That is the wrong order: the audit was working exactly as designed and the
+design was wrong — everything in this file grades what is already public.
+
+**So for the reply channel only, the read happens first.** The vendor drafts the batch and sends
+it to the Chief of Staff through the direct channel before any of it posts. The CoS runs
+`node tools/reply-voice-check.mjs` on the batch, then applies the stranger test by hand, and
+answers in one line per reply: **post**, **change this**, or **drop**. Anything not answered
+inside two hours the vendor may post — this gate must not become a reason the account goes quiet.
+
+**What this does not change.** The vendor still composes and still posts; the CoS still never
+writes to X (R10). A grade is direction, not a draft: if a reply needs changing, the CoS says
+what is wrong with it, not what to write instead. Mo's veto stays absolute and retroactive.
+
+**How long.** Until the first batch where every reply passes both the tool and the stranger test,
+then it reverts to after-the-fact auditing. A gate that never comes off is a gate nobody
+maintains — the point is to hand the voice back, not to hold it.
+
+**What the tool settles and what it does not.** It settles the mechanical rules: links (paused
+until 2026-10-05), any mention of the site or what it does, em dashes, not-X-but-Y, lists,
+hashtags, emoji strings, sign-offs, over 280 characters. It WARNS on numbers (a machine cannot
+read the thread), on anything that sounds sourced, on a stock opener like "Nice pull!", on a
+reply that asks nothing, and on two replies in a batch that open the same way. It cannot see
+whether a reply reacts to what the person actually said. **The stranger test outranks the tool
+in both directions** — a reply can pass every rule here and still be an ad.
+
 ## 1. What changed
 
 | | Before 2026-09-17 | After |

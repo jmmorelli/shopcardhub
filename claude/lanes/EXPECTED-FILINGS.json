@@ -1,0 +1,40 @@
+{
+ "_comment": "What each lane owes, and when. Read by tools/lane-heartbeat.mjs, which the CoS desk runs every weekday. Written 2026-09-22 after the Sep 21 X Desk Watch filing went missing and nobody noticed until Mo asked a question that depended on it — the CoS desk's own condition (2) says a stalled loop must be visible in minutes, not days, and nothing was actually checking. NOTE the filings live in the claude.ai PROJECT, not the repo: these lanes hold no push credential by design, so a repo-side check can never see them. The heartbeat takes the Project's doc list and diffs it against what was due.",
+ "timezone": "America/Los_Angeles",
+ "lanes": [
+  {
+   "id": "x-desk-watch",
+   "name": "X Desk Watch (audits Grok Bot)",
+   "days": "daily",
+   "hourPT": 13,
+   "path": "claude/cos/x-desk-watch-run-{date}",
+   "prefixMatch": true,
+   "why": "the only check on the vendor's feed; a silent day is a day nobody read what went public",
+   "startedOn": "2026-09-18"
+  },
+  {
+   "id": "integrity-watch",
+   "name": "Integrity Watch (instruments and claims)",
+   "days": [
+    1,
+    4
+   ],
+   "hourPT": 5,
+   "path": "claude/cos/integrity-watch-{date}.md",
+   "why": "catches a published number drifting from its source",
+   "startedOn": "2026-09-17"
+  },
+  {
+   "id": "ideas-desk",
+   "name": "Earnings Ideas Desk",
+   "days": [
+    2,
+    5
+   ],
+   "hourPT": 4,
+   "path": "claude/ideas/{date}.md",
+   "why": "the only lane whose job is finding money",
+   "startedOn": "2026-09-19"
+  }
+ ]
+}
