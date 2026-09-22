@@ -11,6 +11,19 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — one setting, tonight if you can (2026-09-22 15:00 PT, from the desk)
+
+- **⏰ The "Chief of staff sunday" scheduled task still runs Sunday, Tuesday AND Thursday at 5:00 PM PT**
+  (its schedule reads `0 17 * * 0,2,4`; next fire is tonight at 17:00). You set it to Sunday-only on Sep 21
+  ("ok I think I did it") — the schedule did not take. The desk tried to change it to Sunday-only itself
+  and was refused (scheduled-task edits are gated for the desk's session). **Action: open the task's settings
+  and set the schedule to Sundays only.** Until then it fires two extra times a week — the runs Mo cut on
+  Sep 21 because "we are running too many scheduled runs". Nothing else is wrong with it.
+- **Housekeeping, no action needed:** the desk's vendor note today landed as four messages in the Grok Bot
+  app (the composer sends on newline), and its last line — *"One line back when the replacement is up, with
+  the permalink."* — is sitting unsent in the Grok Bot composer. The vendor already answered with the
+  permalink, so it can be deleted or sent; either is fine.
+
 ## Open — one click, when Phase 1 is ready (2026-09-22)
 
 - **✅ RULED by Mo (2026-09-22): the eBay terms.** Approved: raw listings off the public repo and the repo
@@ -18,6 +31,8 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 - **Coming, not yet:** before the repo goes private, the scheduled cloud agents need to be able to read it
   (today they read it as the public does). I will ask for that one click when Phase 1 is built and tested,
   with the exact screen to click. Nothing to do today.
+  *(Desk, Sep 22 15:00 PT: Phase 1 is built and live (`ddecb71`); the click is asked once tomorrow's 01:15 nightly
+  publishes `data/feed/` to main — still nothing to do today.)*
 
 ---
 

@@ -1055,8 +1055,11 @@
     },
     {
       "id": "trader-2026-09-10",
-      "status": "awaiting-mo",
-      "title": "TRADER: 3 recs this week (1 time-sensitive, expires in 3 days) + 1 explicit no-action; snapshot reconciled exactly, listing check all clear — details in local scan report"
+      "status": "closed",
+      "title": "TRADER: 3 recs this week (1 time-sensitive, expires in 3 days) + 1 explicit no-action; snapshot reconciled exactly, listing check all clear — details in local scan report",
+      "decision": "DESK 2026-09-22: CLOSED under LANE-RULES R13 (the COMC lane is bookkeeping, files no awaiting-mo, and no COMC item enters the CoS queue unless Mo asks). The Sep 10 time-sensitive rec expired Sep 13. Findings live in Card Hub/comc-trader/ where Mo reads them when he wants them.",
+      "decidedBy": "chief-of-staff (desk)",
+      "decided": "2026-09-22"
     },
     {
       "id": "audit-2026-09-11-1",
@@ -1172,11 +1175,14 @@
     },
     {
       "id": "update-series-page-2026-09-14",
-      "status": "awaiting-cos",
+      "status": "declined",
       "area": "pages",
       "filed": "2026-09-14",
       "by": "monday-scan (seeker)",
-      "title": "2026 Topps Update Series: full checklist posted (Checklist Insider, Sep 11) but Topps release date TBA and no box configuration/pricing. Scaffold exists (drafts/topps-updates-baseball.html). Build the pre-release guide at the Wed Sep 16 build session or when the street date posts — not in the Monday lane. - CoS checkpoint 2026-09-15: HOLD until the street date posts"
+      "title": "2026 Topps Update Series: full checklist posted (Checklist Insider, Sep 11) but Topps release date TBA and no box configuration/pricing. Scaffold exists (drafts/topps-updates-baseball.html). Build the pre-release guide at the Wed Sep 16 build session or when the street date posts — not in the Monday lane. - CoS checkpoint 2026-09-15: HOLD until the street date posts",
+      "decision": "DESK 2026-09-22: DECLINED FOR NOW. The street date has still not posted (data/releases.json carries no dated Update Series row) and a new page is barred by the freeze through 2026-10-26 regardless. Re-file when Topps names the date; the drafts/ scaffold stays. Not a Monday-lane job.",
+      "decidedBy": "chief-of-staff (desk)",
+      "decided": "2026-09-22"
     },
     {
       "id": "bcb26-cap-base-weight-2026-09-15",
@@ -1212,11 +1218,14 @@
     },
     {
       "id": "kim-unrankable-clock-2026-09-15",
-      "status": "awaiting-cos",
+      "status": "closed",
       "area": "board",
       "filed": "2026-09-15",
       "by": "tuesday-board (curator)",
-      "title": "Seong-Jun Kim has printed no sale since Aug 5 (41 days) and is carried at $131.25 for an 8th week while holding #3 on a sold-price board. The board has no rule for a card that stops trading. His card now says on-page that if Aug 5 is still the last print by mid-October we will say where that line is — the CoS should set the rule before then rather than after. Options: a staleness badge, a demotion trigger at N days, or an explicit 'carried quote' tier. - CoS checkpoint 2026-09-15: deferred to the Sunday run (published clock runs to mid-October)"
+      "title": "Seong-Jun Kim has printed no sale since Aug 5 (41 days) and is carried at $131.25 for an 8th week while holding #3 on a sold-price board. The board has no rule for a card that stops trading. His card now says on-page that if Aug 5 is still the last print by mid-October we will say where that line is — the CoS should set the rule before then rather than after. Options: a staleness badge, a demotion trigger at N days, or an explicit 'carried quote' tier. - CoS checkpoint 2026-09-15: deferred to the Sunday run (published clock runs to mid-October)",
+      "decision": "DESK 2026-09-22: CLOSED BY WORK, verified live on /bowman-bangers 21:13Z. The rule the filing asked for exists since the Sep 17 method change: one ladder on the last printed sold price with a 30-day liquidity gate (a card with no sale in 30 days cannot outrank one that has), plus an explicit carried-quote tier — Kim's line reads '$131.25 is a carried quote, not a new print — last printed sale Aug 5' and he sits #5 on it. The mid-October clock on his card is answered by the gate, not by a badge.",
+      "decidedBy": "chief-of-staff (desk)",
+      "decided": "2026-09-22"
     },
     {
       "id": "origin-remote-token-2026-09-15",
@@ -1605,30 +1614,36 @@
     },
     {
       "id": "friday-2026-09-18-build-home-th26",
-      "status": "awaiting-cos",
+      "status": "closed",
       "area": "tooling",
       "filed": "2026-09-18",
       "by": "bowman-bangers-release-window-friday",
       "title": "Gate conflict after a BCB26 re-mark: audit-terminal home-index-level FAILs until tools/build-home.mjs re-runs, and build-home on the Sep 18 feed FAILed audit-site with 4 dead links on / (three 30th Celebration feeds with no card pages, /th26-index).",
-      "decision": "RE-OPENED awaiting-cos 2026-09-21 (x-board-feed-integrity). This proposal was filed in the Friday Sep 18 LOCAL patch (Card Hub/deploy/friday-2026-09-18/data/pipeline.json) and never reached the repo ledger; the CoS's Sep 20 janitorial pass re-statused it closed-by-work off a commit message, then filed against itself (cos-2026-09-20 payload) and re-opened it. Entered here so the ledger carries it. The dead-link half: home.js links an index only when it exists in data/indices.json (Sep 19); NOT verified live by this session. The silent-no-op half of build-home.mjs is FIXED this push (exits 2 when the feed is missing, writes nothing) — verified by negative test, not yet by a live bake. Rule adopted from the CoS: closed-by-work requires the work VERIFIED LIVE, never a commit that plausibly did it. Companion filing friday-2026-09-18-psa10-dated-sales (pricing-integrity disagreement) is ALSO only in that local patch and is not entered here — it is the CoS's to carry or decline."
+      "decision": "RE-OPENED awaiting-cos 2026-09-21 (x-board-feed-integrity). This proposal was filed in the Friday Sep 18 LOCAL patch (Card Hub/deploy/friday-2026-09-18/data/pipeline.json) and never reached the repo ledger; the CoS's Sep 20 janitorial pass re-statused it closed-by-work off a commit message, then filed against itself (cos-2026-09-20 payload) and re-opened it. Entered here so the ledger carries it. The dead-link half: home.js links an index only when it exists in data/indices.json (Sep 19); NOT verified live by this session. The silent-no-op half of build-home.mjs is FIXED this push (exits 2 when the feed is missing, writes nothing) — verified by negative test, not yet by a live bake. Rule adopted from the CoS: closed-by-work requires the work VERIFIED LIVE, never a commit that plausibly did it. Companion filing friday-2026-09-18-psa10-dated-sales (pricing-integrity disagreement) is ALSO only in that local patch and is not entered here — it is the CoS's to carry or decline. | DESK 2026-09-22: CLOSED, VERIFIED LIVE. audit-site FAIL 0 on the tree at 41ce931 (the dead-link check covers /), build-home.mjs exits 2 without a feed (tools/build-home.mjs:55), and the Sep 21/22 home bakes (2378ba7, a520a87) ran it live without the FAIL recurring. The companion psa10-dated-sales disagreement is moot: R18 (Sep 22) and bb-2026-09-22-psa10-correction settled it the other way and the page carries the strike.",
+      "decidedBy": "chief-of-staff (desk)",
+      "decided": "2026-09-22"
     },
     {
       "id": "xbi-2026-09-21-1",
-      "status": "awaiting-cos",
+      "status": "applied",
       "area": "public-claims",
       "filed": "2026-09-21",
       "by": "x-board-feed-integrity",
       "title": "bowman-bangers.html contradicts itself one row below the Sep 18 correction: Florentino's price line still reads 'lost #4 to Gonzales on the published clock' (Sep 15) while the correction and the table seat Gonzales #3 and Florentino #4.",
-      "decision": "OPEN — reproduced live 2026-09-21 on /bowman-bangers (price-sub of seat 4) and in the live /data/x-board.json. The new build guard (tools/build-x-board.mjs, guard 3) and the gate (audit-terminal xboard-honest) both FAIL on it, which is the correct outcome: the feed will not ship while the page disagrees with itself. Not edited by this session (page prose is not a parser). The Tuesday lane rewrites every price line on re-mark; it must not re-write this clause, and any seat claim in a price line must match the table. Also present on the page and converted (losslessly) rather than refused by the feed builder: 'an 8th week', 'a third week', 'three straight weekly reads (...)', '41 days since the last printed sale (Aug 5)' — the page may keep its weekly-column style; the vendor copy carries the date form."
+      "decision": "OPEN — reproduced live 2026-09-21 on /bowman-bangers (price-sub of seat 4) and in the live /data/x-board.json. The new build guard (tools/build-x-board.mjs, guard 3) and the gate (audit-terminal xboard-honest) both FAIL on it, which is the correct outcome: the feed will not ship while the page disagrees with itself. Not edited by this session (page prose is not a parser). The Tuesday lane rewrites every price line on re-mark; it must not re-write this clause, and any seat claim in a price line must match the table. Also present on the page and converted (losslessly) rather than refused by the feed builder: 'an 8th week', 'a third week', 'three straight weekly reads (...)', '41 days since the last printed sale (Aug 5)' — the page may keep its weekly-column style; the vendor copy carries the date form. | DESK 2026-09-22: APPLIED by the Tuesday lane's re-mark (a520a87) — Florentino's price line now reads 'lost #4 to Gonzales Sep 15, 2026 on the clock this page published Sep 11; re-seated #4 Sep 18', the date form, agreeing with the table; verified on the live page 21:13Z. The guarded builder then rebuilt data/x-board.json (6178f7d) without refusing.",
+      "decidedBy": "chief-of-staff (desk)",
+      "decided": "2026-09-22"
     },
     {
       "id": "xbi-2026-09-21-2",
-      "status": "awaiting-cos",
+      "status": "closed",
       "area": "public-claims",
       "filed": "2026-09-21",
       "by": "x-board-feed-integrity",
       "title": "DECISION TAKEN, for review: the live vendor feed /data/x-board.json (regenerated by the CoS 13:54 PT from Sep 15 marks) was LEFT IN PLACE under a dated legacy grace in the new xboard-honest gate (WARN through 2026-09-22, FAIL from 2026-09-23) rather than withheld.",
-      "decision": "Why: the committed feed fails the new gate five ways (stale stamp 6 days; Florentino's price line seats Gonzales #4 vs seats[] #3; decaying language on three seats) and cannot be rebuilt honestly from a Sep 15 page — the guarded builder refuses (exit 2). This lane first wrote an honest WITHHELD stub (R10 amendment: ship nothing rather than something stale), then found f24c37c: the CoS delivered vendor brief 2026-09-21 at 14:15 PT telling the vendor the feed is FIXED and to 'pull fresh before your next board post', on Mo's instruction in chat — which outranks the file. Withholding would have contradicted that an hour later with no way to reach the vendor before its 09:00 PT post. So: file left as the CoS built it; the gate carries a dated, self-expiring grace for a pre-guard file (no `guards` marker), on the record in tools/x-board-guards.mjs LEGACY_UNTIL; a file the guarded builder writes never gets it. The Tuesday 11:02 rebuild replaces the file; if the builder refuses there (it WILL on the Florentino line unless the re-mark rewrites it), the lane should run `--withhold` rather than push the old file, and from Sep 23 the old file FAILs the gate for everyone. `--withhold` exists and is tested; not used today. og/x/board-latest.png untouched."
+      "decision": "Why: the committed feed fails the new gate five ways (stale stamp 6 days; Florentino's price line seats Gonzales #4 vs seats[] #3; decaying language on three seats) and cannot be rebuilt honestly from a Sep 15 page — the guarded builder refuses (exit 2). This lane first wrote an honest WITHHELD stub (R10 amendment: ship nothing rather than something stale), then found f24c37c: the CoS delivered vendor brief 2026-09-21 at 14:15 PT telling the vendor the feed is FIXED and to 'pull fresh before your next board post', on Mo's instruction in chat — which outranks the file. Withholding would have contradicted that an hour later with no way to reach the vendor before its 09:00 PT post. So: file left as the CoS built it; the gate carries a dated, self-expiring grace for a pre-guard file (no `guards` marker), on the record in tools/x-board-guards.mjs LEGACY_UNTIL; a file the guarded builder writes never gets it. The Tuesday 11:02 rebuild replaces the file; if the builder refuses there (it WILL on the Florentino line unless the re-mark rewrites it), the lane should run `--withhold` rather than push the old file, and from Sep 23 the old file FAILs the gate for everyone. `--withhold` exists and is tested; not used today. og/x/board-latest.png untouched. | DESK 2026-09-22: RATIFIED and CLOSED. The decision to leave the pre-guard file in place under a dated grace was right given f24c37c's brief to the vendor. The grace is now moot: /data/x-board.json live carries the guards marker (asof-freshness, no-decaying-language, callout-agrees-with-seats), asOf 2026-09-22, generated 20:39Z, callout agreeing with seats — verified 21:13Z. LEGACY_UNTIL expires on its own tomorrow; no code change.",
+      "decidedBy": "chief-of-staff (desk)",
+      "decided": "2026-09-22"
     },
     {
       "id": "bb-2026-09-22-psa10-correction",
@@ -1708,6 +1723,50 @@
       "ts": "2026-09-22",
       "decision": "RULED: coachNotes are retired as a standing weekly duty and a stale weekOf is no longer a finding. The Sunday lane writing notes that the Monday/Tuesday lanes then audit for freshness is the lanes-reading-lanes loop the Sep 21 cadence cut removed. Doctrine is LANE-RULES + STATE; a coach note is written only when there is a specific correction to hand a lane, by the CoS desk, which now reads every filing on weekdays. The existing notes stay as history. Lanes: stop filing their age.",
       "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
+    },
+    {
+      "id": "iw-2026-09-21-1",
+      "area": "pricing-integrity",
+      "filed": "2026-09-21",
+      "by": "integrity-watch",
+      "status": "approved",
+      "title": "FAIL · /lebron-james-cards publishes three graded figures (PSA 10 $6,000–$7,200; Chrome #111 PSA 10 ~$12,000 from a May 2026 auction; PSA 9 ~$2,637) as 'recent sold comps' sourced to a third-party grade ladder, stamped Aug 10 (42 days), on the page that gained an AG buy link Sep 20; the hero's +24% 30-day move has no window and the page uses +24% and +11.4% interchangeably for the same event.",
+      "decision": "DESK 2026-09-22: ACCEPTED, QUEUED to the Wednesday weekly (2026-09-23 11:00 PT) as the first page of the graded sales-table work order — reproduced live 21:13Z ('prices below are recent sold comps', 'Comps as of Aug 10, 2026' ×2, PSA 10 ~$12K). Not a desk fix: the honest remedy is a re-read on dated third-party sold rows (the path the Sep 22 murakami/wnba/wemby re-reads used), not a strip, and audit-prices check 10 already WARNs the page (it is one of the 16 in the Sep 22 baseline). Weekly: every graded cell reads one dated row per R18 or 'No verified sale'; drop the 'recent sold comps' sentence; give the 30-day move its window or drop it; reconcile +24% vs +11.4% rather than refresh both; restamp only after the re-read. The IW's gate note stands — a page whose every date is equally old is invisible to check 6 by construction.",
+      "decidedBy": "chief-of-staff (desk)",
+      "decided": "2026-09-22"
+    },
+    {
+      "id": "iw-2026-09-21-2",
+      "area": "public-claims",
+      "filed": "2026-09-21",
+      "by": "integrity-watch",
+      "status": "applied",
+      "title": "MED · the homepage said 'set indices are sold comps only, re-marked weekly' and 'weekly sold-comp index re-marks' in three disclosure strings below a Markets panel that labels BCB26 and BOW26 ask-basis (the Sep 18 fix corrected the subheader and left these three).",
+      "decision": "DESK 2026-09-22: APPLIED 585028e, live-verified 21:35Z — each string now names both bases (Pokémon sold-basis, Bowman BOW26/BCB26 ask-basis), prose outside every HOME: marker. Reproduced live before editing (R5).",
+      "decidedBy": "chief-of-staff (desk)",
+      "decided": "2026-09-22"
+    },
+    {
+      "id": "iw-2026-09-21-3",
+      "area": "public-claims",
+      "filed": "2026-09-21",
+      "by": "integrity-watch",
+      "status": "applied",
+      "title": "MED · /lionel-messi-cards sold itself as 'with live eBay sold comps' in its meta description, og:description and hero, one line above its own 'Ask marks · Aug 31, 2026' chip — the money page (the $860 EPN sale, Sep 4–17).",
+      "decision": "DESK 2026-09-22: APPLIED 585028e, live-verified 21:35Z — all three now read 'live eBay ask marks (labeled as asks; a sold feed comes later)', the sentence the Wembanyama page already carried. The disclosure's 'always verify live eBay sold comps before buying' is advice to the reader, not a claim about the page, and stays.",
+      "decidedBy": "chief-of-staff (desk)",
+      "decided": "2026-09-22"
+    },
+    {
+      "id": "idea-37-nfl-basket-floor",
+      "area": "conversion",
+      "filed": "2026-09-22",
+      "by": "earnings-ideas-desk",
+      "status": "applied",
+      "title": "Idea #37 — basket floor for strip primaries: /nfl-rookie-cards-2026 (best-converting lander, 54 sessions / 16.7% KE, 28d) sold a $1.44–$3.99 singles class as its primary; the class's sealed product (2026 Bowman Football hobby box, ships Sep 30) becomes the live primary, the Mendoza RC #301 link stays as the R14 control.",
+      "decision": "DESK 2026-09-22: ADOPTED and APPLIED 41ce931 (config + one generated block), live-verified 21:36Z: strip renders 'ask from $375.00 · 48 live', customid nfl-rookie-cards-2026-box, req/deny guard (R8: -chrome -jumbo; 'first day' issue is a $1,149 variant). Supply measured on production /api/comps with the guard before the edit: 29 clean single-box asks $375–$500. buy-strip-health: OK, wrong-product 0. -top retires; -hero is the control. Kill: Oct 21 EPN read, -box 0 actions on >= 20 clicks or the page's KE rate under 8% on >= 40 sessions -> restore the singles primary; the rule does not roll to /wnba-cards-2026 or /world-cup-2026-soccer-cards until that read. The Oct 3 /bowman-football re-read (the $371 box at 1.1%) is the counter-evidence and is why the cheaper secondary stays.",
+      "decidedBy": "chief-of-staff (desk)",
       "decided": "2026-09-22"
     }
   ],
@@ -2023,7 +2082,7 @@
     ],
     "approvalsNote": "Sunday Sep 13 pass plus the Tue Sep 15 checkpoint. The checkpoint decided or routed 10 sitting items: 4 approved, 1 part-approved and routed, 1 ratified on precedent, 1 declined for now, 1 held, 1 deferred to Sunday, 2 approved but blocked on a read-only prompt path. Two open items stay with Mo; both are on his own machine and neither is an agent's to touch.",
     "cadenceChange": "none this run (4.4): every enabled task's last/next run is ordered and current; the Friday release-window task is correctly ON through ~Sep 29; the one-week reply-paster self-disabled after its Sep 13 slot as designed.",
-    "lastCheckpoint": "2026-09-17T21:55:00-07:00",
+    "lastCheckpoint": "2026-09-22T14:45:00-07:00",
     "pushLog": {
       "_comment": "Added by CoS light checkpoint 2026-09-03 (janitorial state, charter 4.8 visible-delegation). Pushes outside the Monday STEP 3.98 lane; gates = read-only re-run on the pushed tree by the checkpoint unless the pushing run reported them. | Schema (CoS 2026-09-13, one shape from here): {date, commits[], by, gates, liveVerified, note}.",
       "entries": [
@@ -2710,6 +2769,17 @@
           "gates": "fresh clone rebased onto 91fda24, feed = price-data @ day 2026-09-22: audit-prices FAIL 0 / WARN 62 (baseline 60; +2 = munetaka-murakami and wnba-cards crossing the 21-day stamp limit on their own, neither touched this run) · audit-site FAIL 0 / WARN 3 (baseline 3) · audit-terminal FAIL 1 / WARN 0 with --feed. The single FAIL is api-contract on pokemon-30th-anniversary-2026.html:1011, untouched by this run and verified against the live page as a false positive — the per-tile customids are present and sent; the check reads only the line holding '/api/' and that call's customid has sat on a concatenated continuation line since 3850e99. Filed awaiting-cos as bb-2026-09-22-terminal-api-contract-fp. FAIL 0 on every file this run touched.",
           "liveVerified": "2026-09-22 ~18:35Z — /bowman-bangers serves data-prices-updated 2026-09-22 with Fischer 'PSA 10 $650.00' and Holliday 'no verified sale'; every remaining $720 on the page sits inside a dated correction. /data/x-board.json asOf 2026-09-22 with the corrected psa10 fields. /og/x/board-latest.png md5 1963a29c6574e750e00e91cad4a64d87, identical to the committed file. /bowman-chrome-2026-index 200 at BCB26 69.52.",
           "note": "Tuesday board lane. No seat moved. Live correction: Holliday's $720 PSA 10 was a price-guide estimate read as a sale — struck from the page, the vendor feed and the tape; Fischer's and Florentino's PSA 10 figures restored with dated sales. BCB26 re-marked 69.52. index.html and js/home.js are outside this lane's usual scoped add: index.html because the BCB26 re-mark trips home-index-level, and js/home.js because re-baking it surfaced three dead homepage links from idea #30's unslugged 'single' cards — guarded rather than shipped. data/calls.json re-graded locally and deliberately left unpushed for the CoS."
+        },
+        {
+          "date": "2026-09-22",
+          "commits": [
+            "585028e",
+            "41ce931"
+          ],
+          "by": "CoS · desk (weekdays 14:00, Mac-linked) — first run",
+          "gates": "fresh deploy-key clone on the Mac, rebased onto e87980e then 263bf17 (another CoS session was pushing Phase 1 concurrently; fetch+rebase before each push, no force): audit-prices FAIL 0 / WARN 76 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 1 (no --feed) — exactly the Sep 22 baseline on both commits",
+          "liveVerified": "2026-09-22 21:35–21:36Z — / carries no 'sold comps only' and names both bases twice; /lionel-messi-cards reads 'live eBay ask marks' in meta/og/hero; /nfl-rookie-cards-2026 strip renders 'ask from $375.00 · 48 live' under customid nfl-rookie-cards-2026-box (headless iPhone 13). Mobile QA on six pages after the Phase 1 deploy: 200, no horizontal overflow, 0 console errors, photos 100%.",
+          "note": "Both deploy. 585028e = Integrity Watch Sep 21 F2/F3 (home + messi basis claims). 41ce931 = idea #37 (NFL lander sells the Bowman Football hobby box first). Ledger rulings in this file: iw-2026-09-21-1 queued to the Wednesday weekly; five stale awaiting-cos items closed; trader-2026-09-10 closed under R13. Vendor: psa10 correction delivered through the Grok Bot app 14:30 PT, vendor replaced the 10:24 post (new permalink recorded in STATE)."
         }
       ]
     },

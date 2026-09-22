@@ -123,7 +123,8 @@ finding only if its cause is not named here.
   - **Standing:** no new Browse-derived mark on any public page from today. Agents work from derived numbers,
     not raw listing payloads.
 - **P0 — the SCP graded sales-table pull**, now with a work order: the 16 pages `audit-prices` check 10
-  lists. Chrome/node-fetch path (sportscardspro.com 403s curl). Clears `audit-2026-09-07-4` and
+  lists. **First page: `/lebron-james-cards` (`iw-2026-09-21-1`, FAIL — three graded figures published as
+  "recent sold comps" 43 days stale on an AG page; queued to the Sep 23 weekly by the desk).** Chrome/node-fetch path (sportscardspro.com 403s curl). Clears `audit-2026-09-07-4` and
   `audit-2026-09-02-2` back to applied.
 - **P1 — Ending Soon: widen `/api/auctions` to each live index's top 5** (`desk:true`, never a slug, never a
   mark). Live listings only — allowed under the Sep 22 ruling; after Phase 1.
@@ -149,11 +150,60 @@ finding only if its cause is not named here.
 
 ## WAITING ON MO — see `NEEDS-MO.md`
 
-One click, not yet: read access for the cloud lanes before the repo goes private — asked when the Sep 23 nightly feed publish is verified. Nothing else.
+One click, not yet: read access for the cloud lanes before the repo goes private — asked when the Sep 23 nightly feed publish is verified. **And one now (desk, Sep 22 15:00 PT): the "Chief of staff sunday" scheduled task still runs Sun/Tue/Thu 17:00 PT — set it to Sunday only.** Nothing else.
 
 ---
 
 ## RUN LOG (last 7 days; older entries in the archive)
+
+- **Sep 22 14:08–15:0x PT (CoS · desk, first run, Mac-linked, unattended).** HEAD `e87980e` · origin/main
+  `e87980e` at start (another CoS session pushed `74f8e60`, `ddecb71`, `263bf17` during the run — fetch+rebase
+  before every push, no force) · gates 0/76 · 0/3 · 0/1 = the Sep 22 baseline, on both pushed trees. Read
+  LANE-RULES R1–R19 from a fresh deploy-key clone; **the desk prompt is the stale copy on two points and the
+  file wins:** X Desk Watch is daily 13:00 (not 13:30/17:30), and the vendor brief for the desk to deliver
+  was a pipeline ruling (`bb-2026-09-22-psa10-correction`), not an `x-desk/vendor-brief-<date>.md`.
+  **Inbox (since Sep 21 15:00 PT), 16 items, every one ruled:**
+  *Project:* `x-desk-watch-run-2026-09-22-1300` → its G-note delivered (below); `x-desk-watch-2026-09-22-
+  needs-mo-block` → agreed, not a Mo item, handled through the vendor channel; `vendor-brief-2026-09-22-reply-
+  gate`, `buy-strip-product-guard`, `epn-fragment-fix`, `compliance-posture` → CoS-authored today, read, no
+  action; `ideas/2026-09-22` → #36 already live (`0a25121`), flags 1–2 already closed, **#37 adopted and
+  shipped `41ce931`** (supply re-measured with a guard: 29 clean single-box asks $375–$500; live "ask from
+  $375.00 · 48 live"; `-hero` is the R14 control; kill Oct 21); `integrity-watch-2026-09-21` + proposals —
+  **never entered the ledger; entered and ruled now:** F2 home "sold comps only" ×3 and F3 Messi "live eBay
+  sold comps" ×3 **applied `585028e`** (reproduced live 21:13Z first, live-verified 21:35Z); F1 LeBron graded
+  figures as "recent sold comps" **accepted, queued to the Wednesday weekly (Sep 23 11:00)** as the first page
+  of the graded sales-table work order — a re-read, not a strip. *Mac folder:* three `x-desk/vendor-brief-2026-
+  09-21-*.DELIVERED` → already delivered; `x-desk/watch-2026-09-22.md` + `scorecard.md` → read, same content
+  as the Project filing; `digests/digest-2026-09-22.md` + `calls-2026-09-22-tuesday-regrade.json` → Tuesday
+  lane's own (digest sent `2d374ff`; calls re-grade left for the Monday lane, projections immutable);
+  `chief-of-staff/ledger-mirror-2026-09-22.md` → mirror, refreshed. *Pipeline `awaiting-cos` (5) + 1
+  `awaiting-mo`:* `update-series-page-2026-09-14` declined for now (no street date; freeze); `kim-unrankable-
+  clock` closed by the Sep 17 gate + carried-quote tier, verified live; `friday-2026-09-18-build-home-th26`
+  closed, verified (audit-site 0 FAIL on /, build-home exits 2); `xbi-2026-09-21-1` applied by `a520a87`,
+  verified live; `xbi-2026-09-21-2` ratified/closed (guarded feed live, asOf Sep 22); `trader-2026-09-10`
+  closed under R13. **Heartbeat** (`lane-heartbeat --since 2026-09-21`): 4 due, 1 missing = Sep 21 X Desk
+  Watch, already diagnosed under R15 (cron moved after its slot); `list_triggers` confirms the task fired
+  today 13:02 PT under its corrected name. **Not new.**
+  **Delivery:** psa10 correction sent to the vendor through the Grok Bot app 14:30 PT — three points (Holliday
+  $720 struck, SELL is not a call, read `asOf` before a Tuesday board post) plus the Fischer Sep 29 angle;
+  direction only, no copy. **Vendor, verbatim:** *"Board of record replaced: Deleted 2102448980261282140.
+  Live: https://x.com/shopcardhub/status/2102511217290133853. Sep 22 tape + replace note + BUY/HOLD/PASS/WATCH
+  (no SELL) + Kim #5 PASS + board-latest.png. Wed W1' still locked for 09:00±10."* Tomorrow's 13:00 watch
+  grades the replacement; the desk did not open X. **Stumble:** the app's composer sends on newline, so the
+  note landed as four messages, and the closing line ("One line back when the replacement is up") sits
+  unsent in the Grok Bot composer — the tool would not press send for me. Harmless; Mo can clear it.
+  **Instruments:** `prices-latest` day 2026-09-22 (13:25Z — the last nightly BEFORE the R17 guard; tomorrow's
+  is the first under it), 41 cards, 36 numeric `last`, 40 `image.url`, HOLD 29 / SELL 10 / BUY 2. `ga4-latest`
+  13:43Z (7.5 h): KE yesterday **1 on 38 sessions** (not zero, no FAIL, but the lowest settled day since the
+  Sep 18 restart — watch); organic KE7 **9.72%** beside blended 5.04%; returningShare7 4.31%; clicks7 42;
+  bots: botShare7 **42.15%** (Singapore 137 @ 0.151 s, China 24 @ 0.23 s), clean KE/session 14.03 vs raw
+  8.12. Mobile QA (iPhone 13, headless, after the Phase 1 deploy): / · /watchlist · /bowman-bangers ·
+  /destined-rivals-index · /cooper-flagg-rookie-cards · /nfl-rookie-cards-2026 all 200, no overflow, 0
+  console errors, photos 100%; `/bowman-bangers` is 42,706 px tall on a phone (the open P1).
+  **Schedule fault found, needs Mo:** the "Chief of staff sunday" task's cron still reads Sun/Tue/Thu 17:00 PT
+  (`0 17 * * 0,2,4`) — it fires again tonight. The desk tried to set it to Sunday-only and the write was
+  refused (scheduled-task writes are gated for this session). In NEEDS-MO.
+  **Pushed:** `585028e` (home + messi), `41ce931` (NFL strip), plus the docs commit below (no deploy).
 
 - **Sep 22 ~14:20–15:00 PT (CoS, Mac-linked, Mo: "perfect. start it.")** — compliance Phase 1 built. First cut
   (`74f8e60`) served the feed through an API function on Vercel's GITHUB_TOKEN; live it fell back to the public
