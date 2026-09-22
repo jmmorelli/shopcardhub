@@ -78,7 +78,7 @@ for (const [slug, v] of live) {
   const deny = (v.deny || "").toLowerCase().split("|").filter(Boolean);
   let row = { slug, product: v.product, raw: 0, kept: 0, low: null, title: null, state: "dead" };
   try {
-    const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(v.primary.q)}&limit=50&sort=price`);
+    const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(v.primary.q)}&limit=50&sort=price${v.cat ? `&category_ids=${encodeURIComponent(v.cat)}` : ""}`);
     if (!r.ok) throw new Error("HTTP " + r.status);
     const j = await r.json();
     row.raw = j.count || 0;

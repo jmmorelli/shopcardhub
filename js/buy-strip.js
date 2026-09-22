@@ -21,8 +21,14 @@
     var msrp = parseFloat(s.getAttribute('data-bs-msrp')) || 0;
     var req = (s.getAttribute('data-bs-req') || '').toLowerCase().split('|').filter(Boolean);
     var deny = (s.getAttribute('data-bs-deny') || '').toLowerCase().split('|').filter(Boolean);
+    // eBay category to scope the search to. Without it /api/comps searches its default
+    // category (212, sports trading cards), where Pokemon SEALED product is barely listed:
+    // the same Prismatic Evolutions ETB query returned 2 listings from $197.99 on the
+    // default and 43 from $135 under 183456 (sealed/booster boxes). Every Pokemon shelf on
+    // the site was printing an ask 13-47% above the real cheapest. Measured 2026-09-22.
+    var cat = s.getAttribute('data-bs-cat') || '';
     if (!el || !q) return;
-    fetch('/api/comps?q=' + encodeURIComponent(q) + '&limit=50&sort=price' + (cid ? '&customid=' + encodeURIComponent(cid) : ''))
+    fetch('/api/comps?q=' + encodeURIComponent(q) + '&limit=50&sort=price' + (cat ? '&category_ids=' + encodeURIComponent(cat) : '') + (cid ? '&customid=' + encodeURIComponent(cid) : ''))
       .then(function (r) { if (!r.ok) throw 0; return r.json(); })
       .then(function (j) {
         var keep = (j.listings || []).filter(function (l) {
