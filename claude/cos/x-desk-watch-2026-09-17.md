@@ -61,6 +61,48 @@ reply that asks nothing, and on two replies in a batch that open the same way. I
 whether a reply reacts to what the person actually said. **The stranger test outranks the tool
 in both directions** — a reply can pass every rule here and still be an ad.
 
+## §0.2 · The read-the-post test (2026-09-22, the same afternoon the gate first ran)
+
+The gate worked and it still let a bad reply through, so this is the rule that was missing.
+
+Today's five all passed §0 and all passed the stranger test — not one mentions us, not one sells
+anything. Mo read one of them and caught it in seconds:
+
+> **Their post:** *"Day 2 Post 2 - $30 — Brito 1st Bowman Auto #Moorestacks"*
+> **Our reply:** *"thirty for a brito auto is a nice day. you sitting on it or flipping?"*
+
+He is a seller pricing his inventory. We asked him whether he was selling. And the CoS had graded
+that one **post**, and called it the best of the batch.
+
+A second one, same class, smaller: Cooper wrote *"outside of the 1/1 Superfractor, almost done
+with his rainbow"* and we asked how far he was from finishing the rainbow. He had just said. And
+a third: a man who **bought** a card for a dollar had it described back to him as a **pull**.
+
+**Why the existing checks could not catch any of it.** Every rule in §0 reads the REPLY. The
+stranger test reads the REPLY. Nothing read the POST. "Does this sound like an ad" and "did you
+read what they said" are different questions, and the second is the harder one.
+
+**The rule. Before a reply ships it must:**
+
+1. **Name something from their post that could only come from having read it** — the card, the
+   break, the joke they made. A reply that would fit under any card is not a reply.
+2. **Not ask what the post already answers.** If they said where they are, do not ask where they are.
+3. **Not hand them their own story back wrong.** Bought is not pulled. Traded is not bought.
+4. **Never ask about intent when the post carries a price or a selling tag.** Asking a seller
+   whether he is selling is the single clearest proof nobody read the thread.
+
+`tools/reply-voice-check.mjs --pairs batch.json` takes `{handle, post, reply}` and checks 1, 3 and
+4 mechanically. Rule 2 it can only prompt — it says *"their post already talks about that, check
+they have not answered it themselves"* — because a shared noun is not proof, and the first draft
+of that check failed the one genuinely good reply in the batch. **Twice in one day a naive version
+of a check cried wolf on something correct.** The prompt is the right output; the reading is the
+CoS's job.
+
+**Standing cost of this one:** the CoS graded five replies without opening five posts. The owner
+opened one and found the defect. A grade given without reading the thread is not a grade — it is
+the same shape as the September lesson that started all of this, which is that we keep gating
+structure and not meaning.
+
 ## 1. What changed
 
 | | Before 2026-09-17 | After |

@@ -692,6 +692,13 @@ sourced, a stock opener, a reply that asks nothing, two replies in a batch openi
 **The stranger test outranks the tool in both directions** — a reply can pass every rule and
 still be an ad, which is what the five Mo deleted were.
 
+**And the reply is graded against THEIR POST, not on its own** (§0.2, added the same day the gate
+first ran): it must name something only a reader of that post would know, must not ask what the
+post already answers, must not describe their story back to them wrong, and must never ask about
+intent when the post carries a price or a selling tag. Run the checker in `--pairs` mode so the
+post is in front of you. The first batch passed every reply-only rule and still asked a seller
+whether he was selling; Mo caught it, the Chief of Staff had graded it "post".
+
 The voice itself is Mo's, in `claude/cos/x-desk-watch-2026-09-17.md` §0, and his bad/good pair is
 the whole spec.
 

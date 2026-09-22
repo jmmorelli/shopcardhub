@@ -22,11 +22,44 @@
 
 import fs from "fs";
 
+// PAIRS MODE — added 2026-09-22, the same afternoon the tool's first real batch went out.
+// All five replies passed every rule below and Mo still caught a bad one in ten seconds, because
+// every rule below reads the REPLY. None of them read the POST. The batch asked a seller pricing
+// his inventory ("Day 2 Post 2 - $30 ... #Moorestacks") whether he was "sitting on it or
+// flipping", and asked a man how far he was from finishing a rainbow two lines after he wrote
+// "almost done with his rainbow". Neither is an ad. Both prove nobody read the thread.
+//
+//   node tools/reply-voice-check.mjs --pairs batch.json
+//   [ { "handle": "@x", "post": "<their post text>", "reply": "<our draft>" }, ... ]
+//
+// The stranger test asks "does this read as an ad". These checks ask "did you read what they
+// said". A reply has to survive both, and the second one is the harder of the two.
+
 const argv = process.argv.slice(2);
 const JSON_OUT = argv.includes("--json");
 const file = argv.find(a => !a.startsWith("--"));
+const PAIRS = argv.includes("--pairs");
 const raw = file ? fs.readFileSync(file, "utf8") : fs.readFileSync(0, "utf8");
-const replies = raw.split("\n").map(s => s.trim()).filter(Boolean);
+const pairs = PAIRS ? JSON.parse(raw) : [];
+const replies = PAIRS ? pairs.map(p => p.reply) : raw.split("\n").map(s => s.trim()).filter(Boolean);
+
+// Is the post someone selling? Then asking about their intent is asking a seller if he sells.
+// A price alone is NOT a sale. DetroitTankCity wrote "going to be worth $100 at the LCS when
+// Kevin wins Rookie of the Year" — a prediction — and the first version of this check called it
+// a sale and failed the one genuinely good reply in the batch. Twice in one day the naive
+// version of a check cried wolf on a correct page. So: a selling PHRASE always counts, and a
+// bare price counts only when it is not part of a prediction about future value.
+const SELL_PHRASE = /(\bfor sale\b|\bF\/?S\b|\btaking offers\b|\bDM (me )?(for|to)\b|\bday \d+ post\b|#\w*stacks\b|\bBIN\b|\bprice drop\b|\bppf\b|\bshipped\b)/i;
+const PRICE = /\$\s?\d/;
+const PREDICTION = /\b(going to be|gonna be|will be|could be|should be|worth|value|by next|when .{0,30} wins)\b/i;
+const SELLING = (t) => SELL_PHRASE.test(t) || (PRICE.test(t) && !PREDICTION.test(t));
+const INTENT  = /\b(flip(ping)?|sitting on|keeping|hold(ing)? (it|them)|moving it|selling|part with|let (it|them) go)\b/i;
+// They bought it. We called it a pull.
+const BOUGHT  = /\b(bought|paid|picked (it|one) up|got .{0,20}for (a|\$)|steal|bargain bin|dollar bin)\b/i;
+const PULLED  = /\b(pull(ed|s)?|hit|banger out of)\b/i;
+const STOP = new Set("the a an and or but for of to in on at is are was were it its this that these those you your my our we i he she they them with from have has had get got about what how far are do does did".split(" "));
+const words = t => String(t).toLowerCase().match(/[a-z']{3,}/g) || [];
+const content = t => words(t).filter(w => !STOP.has(w));
 
 // The no-link window: §0 pauses links in replies for two weeks from 2026-09-21.
 const LINKS_RETURN = "2026-10-05";
@@ -71,7 +104,8 @@ const shape = t => t.toLowerCase().replace(/[^a-z\s]/g, "").trim().split(/\s+/).
 const shapes = new Map();
 for (const r of replies) { const k = shape(r); shapes.set(k, (shapes.get(k) || 0) + 1); }
 
-const out = replies.map(text => {
+const out = replies.map((text, i) => {
+  const pair = PAIRS ? pairs[i] : null;
   const fails = checks.filter(c => c.test(text)).map(c => ({ id: c.id, why: c.why }));
   const warns = [];
   if (hasNumber(text)) warns.push({ id: "number", why: "carries a number — read the thread: fine if the thread is already about it, a FAIL if it arrives with a source" });
@@ -83,14 +117,34 @@ const out = replies.map(text => {
     warns.push({ id: "stock-opener", why: "opens with a stock compliment — says nothing about THIS card and asks nothing back" });
   if (!/\?/.test(text)) warns.push({ id: "no-question", why: "asks nothing; §0 wants a reply that asks more than it tells" });
   if (shapes.get(shape(text)) > 1) warns.push({ id: "repeat-shape", why: `opens the same way as another reply in this batch ("${shape(text)}…")` });
-  return { text, verdict: fails.length ? "FAIL" : "CHECK", fails, warns };
+
+  if (pair && pair.post) {
+    const post = pair.post;
+    if (SELLING(post) && INTENT.test(text))
+      fails.push({ id: "seller-intent", why: "their post is a SALE (price or selling tag) and this asks whether they are selling — the reply that proves nobody read the post" });
+    if (BOUGHT.test(post) && PULLED.test(text))
+      fails.push({ id: "story-wrong", why: "they bought it; this calls it a pull — do not hand someone their own story back wrong" });
+    // Cooper wrote "almost done with his rainbow" and we asked how far he was from finishing the
+    // rainbow. A shared noun is not proof the post answers the question — it is a reason to go
+    // read that sentence. So this prompts, it does not rule. Judgment stays with the reader.
+    const q = (text.match(/[^.!?]*\?/g) || []).join(" ");
+    if (q) {
+      const hits = [...new Set(content(q))].filter(w => w.length > 4 && words(post).includes(w));
+      if (hits.length)
+        warns.push({ id: "read-it-again", why: `the question is about "${hits.slice(0, 3).join(", ")}" and their post already talks about that — check they have not answered it themselves` });
+    }
+    const overlap = [...new Set(content(text))].filter(w => words(post).includes(w));
+    if (overlap.length < 2)
+      warns.push({ id: "no-evidence-of-reading", why: "nothing in this reply could only have come from their post — it would fit under any card" });
+  }
+  return { text, handle: pair && pair.handle, verdict: fails.length ? "FAIL" : "CHECK", fails, warns };
 });
 
 if (JSON_OUT) { console.log(JSON.stringify({ linksStillPaused, replies: out }, null, 1)); process.exit(out.some(r => r.verdict === "FAIL") ? 1 : 0); }
 
 console.log(`Reply voice check (spec §0) — ${out.length} replies · links ${linksStillPaused ? "PAUSED until " + LINKS_RETURN : "allowed"}\n`);
 for (const r of out) {
-  console.log(`[${r.verdict}] ${r.text}`);
+  console.log(`[${r.verdict}] ${r.handle ? r.handle + " — " : ""}${r.text}`);
   for (const f of r.fails) console.log(`    FAIL  ${f.id}: ${f.why}`);
   for (const w of r.warns) console.log(`    warn  ${w.id}: ${w.why}`);
   console.log();
