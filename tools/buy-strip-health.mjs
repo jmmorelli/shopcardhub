@@ -78,7 +78,7 @@ for (const [slug, v] of live) {
   const deny = (v.deny || "").toLowerCase().split("|").filter(Boolean);
   let row = { slug, product: v.product, raw: 0, kept: 0, low: null, title: null, state: "dead" };
   try {
-    const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(v.primary.q)}&limit=50&sort=price${v.cat ? `&category_ids=${encodeURIComponent(v.cat)}` : ""}`);
+    const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(v.primary.q)}&limit=50&sort=price${v.cat ? `&category_ids=${encodeURIComponent(v.cat)}` : ""}`, { headers: { "x-shopcardhub-client": "tool" } });
     if (!r.ok) throw new Error("HTTP " + r.status);
     const j = await r.json();
     row.raw = j.count || 0;
@@ -122,7 +122,7 @@ for (const [slug, v] of Object.entries(cfg.pages)) {
   if (!v.case) continue;
   const row = { slug, product: v.product, clean: 0, low: null, title: null, state: "dead" };
   try {
-    const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(v.case.q)}&limit=50&sort=price`);
+    const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(v.case.q)}&limit=50&sort=price`, { headers: { "x-shopcardhub-client": "tool" } });
     if (!r.ok) throw new Error("HTTP " + r.status);
     const j = await r.json();
     const cc = cleanCases(j.listings, v.case.must);
@@ -139,7 +139,7 @@ for (const [slug, v] of Object.entries(cfg.pages)) {
   if (!v.secondary || !v.secondary.ag) continue;
   const row = { slug, median: null, n: 0, state: "error" };
   try {
-    const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(v.secondary.q)}&limit=50`);
+    const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(v.secondary.q)}&limit=50`, { headers: { "x-shopcardhub-client": "tool" } });
     if (!r.ok) throw new Error("HTTP " + r.status);
     const j = await r.json();
     row.median = (j.stats || {}).median ?? null;
@@ -159,7 +159,7 @@ for (const [slug, tiles] of Object.entries(cfg.watchTiles || {})) {
     const req = (t.req || "").toLowerCase().split("|").filter(Boolean);
     const row = { slug, cid: t.cid, product: t.product, kept: 0, low: null, state: "dead" };
     try {
-      const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(t.q)}&limit=50&sort=price${t.cat ? `&category_ids=${t.cat}` : ""}`);
+      const r = await fetch(`${ORIGIN}/api/comps?q=${encodeURIComponent(t.q)}&limit=50&sort=price${t.cat ? `&category_ids=${t.cat}` : ""}`, { headers: { "x-shopcardhub-client": "tool" } });
       if (!r.ok) throw new Error("HTTP " + r.status);
       const j = await r.json();
       const keep = (j.listings || []).filter(l => {

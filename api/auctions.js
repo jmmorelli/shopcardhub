@@ -26,6 +26,7 @@
 //              closes, vsMark, vsHammer }
 //   vsMark / vsHammer = (total / reference) - 1, negative = under.
 
+import { guard } from "./_lib/guard.js";
 import { getAppToken } from "./_lib/ebay-token.js";
 
 const BROWSE_URL = "https://api.ebay.com/buy/browse/v1/item_summary/search";
@@ -90,6 +91,7 @@ export default async function handler(req, res) {
     res.setHeader("Allow", "GET");
     return res.status(405).json({ error: "Method not allowed." });
   }
+  if (!guard(req, res)) return;
   const only = String(req.query.card || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 80);
 
   try {
@@ -146,7 +148,6 @@ export default async function handler(req, res) {
     const rows = perCard.flatMap((c) => c.rows).sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
 
     res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=1800");
-    res.setHeader("Access-Control-Allow-Origin", "*");
     return res.status(200).json({
       generated: new Date().toISOString(),
       basis: "mark = engine verified ask floor (ask basis), hammerMedian = median of watched auction closes (sold side); never blended",

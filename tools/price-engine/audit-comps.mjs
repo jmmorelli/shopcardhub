@@ -36,7 +36,7 @@ for (const card of cards) {
   let url = SITE + "/api/comps?q=" + encodeURIComponent(card.query) + "&sort=price&limit=50&customid=price-audit";
   if (card.categoryIds) url += "&category_ids=" + encodeURIComponent(card.categoryIds);
   let j;
-  try { const r = await fetch(url, { headers: { Accept: "application/json" } }); if (!r.ok) throw new Error("HTTP " + r.status); j = await r.json(); }
+  try { const r = await fetch(url, { headers: { Accept: "application/json", "x-shopcardhub-client": "tool" } }); if (!r.ok) throw new Error("HTTP " + r.status); j = await r.json(); }
   catch (e) { report.push({ id: card.id, error: String(e.message || e) }); bad++; continue; }
   const { verified, rejected, code, year } = verifyListings(j.listings || [], card, card.label);
   const asks = verified.map((l) => l.total);

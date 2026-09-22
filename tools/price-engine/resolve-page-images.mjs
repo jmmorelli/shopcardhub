@@ -63,7 +63,7 @@ for (const f of files) {
     const prev = out.cards[key];
     if (prev && prev.url && prev.d && Date.now() - new Date(prev.d).getTime() < 14 * 864e5) { cached++; continue; }
     try {
-      const get = async (qq) => { const r = await fetch(SITE + "/api/comps?q=" + encodeURIComponent(qq) + "&sort=price&limit=30&customid=img-resolver" + (catid ? "&category_ids=" + catid : ""), { headers: { Accept: "application/json" } }); return r.ok ? r.json() : null; };
+      const get = async (qq) => { const r = await fetch(SITE + "/api/comps?q=" + encodeURIComponent(qq) + "&sort=price&limit=30&customid=img-resolver" + (catid ? "&category_ids=" + catid : ""), { headers: { Accept: "application/json", "x-shopcardhub-client": "tool" } }); return r.ok ? r.json() : null; };
       let j = await get(q);
       let best = pick((j && j.listings) || [], q);
       if (!best) { // retry with the number written the way sellers write it (90/84), then without it

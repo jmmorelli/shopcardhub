@@ -7,7 +7,6 @@
 //   GET /api/comps?q=2025+bowman+chrome+cooper+flagg+psa+10
 //   GET /api/comps?q=...&limit=25&sort=price          (cheapest first)
 //   GET /api/comps?q=...&sort=-price                  (highest first)
-//   GET /api/comps?q=...&raw=1                        (include full eBay payload)
 //   GET /api/comps?card=ethan-holliday&customid=card-ethan-holliday
 //        (Sep 4 2026, card chart pages) — looks the card up in /data/watchlist.json,
 //        runs ITS query, and returns the engine's verified view of the book:
@@ -24,6 +23,7 @@
 //
 // Required Vercel env vars: EBAY_CLIENT_ID, EBAY_CERT_ID (see api/_lib/ebay-token.js)
 
+import { guard } from "./_lib/guard.js";
 import { getAppToken } from "./_lib/ebay-token.js";
 
 const BROWSE_URL = "https://api.ebay.com/buy/browse/v1/item_summary/search";
@@ -123,6 +123,7 @@ export default async function handler(req, res) {
     res.setHeader("Allow", "GET");
     return res.status(405).json({ error: "Method not allowed." });
   }
+  if (!guard(req, res)) return;
 
   // Card mode (Sep 4 2026): resolve ?card=<id> to the watchlist entry so the
   // query is the engine's query, never a caller-supplied approximation.
@@ -142,7 +143,8 @@ export default async function handler(req, res) {
   }
 
   // Clamp inputs so callers can't burn quota with giant pages.
-  const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || (card ? 100 : 50), 1), 100);
+  // free-text queries cap at 50 (the most any page asks for); card mode keeps 100 for the engine's filter
+  const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || (card ? 100 : 50), 1), card ? 100 : 50);
   const sortParam = req.query.sort === "price" ? "price" : req.query.sort === "-price" ? "-price" : null;
 
   // EPN custom ID (added Aug 25, 2026). Until now these links went out with a
@@ -195,7 +197,6 @@ export default async function handler(req, res) {
     // CDN cache: identical queries served from edge for 15 min, stale allowed
     // for 1 hour while revalidating. This is the quota shield.
     res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=3600");
-    res.setHeader("Access-Control-Allow-Origin", "*");
 
     const payload = {
       query: q,
@@ -228,7 +229,7 @@ export default async function handler(req, res) {
         payload.verifyError = String(e && e.message || e).slice(0, 200);
       }
     }
-    if (req.query.raw === "1") payload.raw = data;
+    // ?raw=1 (the full eBay payload) removed 2026-09-22: republishing raw eBay Content is outside the license.
 
     return res.status(200).json(payload);
   } catch (err) {

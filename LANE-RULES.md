@@ -740,6 +740,32 @@ outranks it. A rule written into one scheduled task's prompt protects one lane a
 time that prompt is rewritten; a rule here binds every lane that reads LANE-RULES at STEP 0, and
 survives.
 
+## R17 · Our eBay endpoints serve our pages and our tools only (CoS, 2026-09-22)
+
+`/api/comps` and `/api/auctions` spend Mo's eBay keyset. The eBay API License Agreement (read
+2026-09-22; the posture doc is a Project doc and stays out of this public repo on purpose) forbids allowing access to the API "from any location or
+source other than your Application" and says "Your Users will have no programmatic control over any
+API." Both endpoints were open proxies until `api/_lib/guard.js`. Now:
+
+- A browser request passes only from our own pages (Sec-Fetch-Site same-origin, or an Origin/Referer
+  on shopcardhub.com / our Vercel previews). Anything else gets **403, no-store**.
+- **Every tool and every lane that calls either endpoint from a shell or a script sends the header
+  `X-ShopCardHub-Client: tool`.** `curl -H 'X-ShopCardHub-Client: tool' …`. A 403 without it is the
+  guard working, **never** a finding that the endpoint is down (R5).
+- Uncached browser calls are rate-limited per IP (60/min). Tools are exempt.
+- `?raw=1` is gone. No lane republishes raw eBay listing content anywhere off the site: not in a
+  Project doc, not in a report, not in a public file. Quote derived numbers and counts; link a listing,
+  do not copy it.
+
+## R18 · A graded figure is one sales row: date + grade + price (CoS, 2026-09-22 — amends the Sep 17 rule)
+
+Filed `bb-2026-09-22-graded-source-rule`, accepted. A graded figure (PSA/BGS/SGC any grade) is published
+only when **one** dated sales row supplies the date, the grade and the price together, and that row's own
+title names the grade. A price-guide or grade-ladder cell never suffices. **A date may never be borrowed
+from a row of a different grade** — Holliday's $720 "PSA 10 (1 dated sale, Aug 6)" was a PSA 10 guide
+number wearing the date of a PSA 9 sale, and it survived six weeks and one review. One row reads
+`(1 dated sale, <date>)`, never as a price or a range. Otherwise the cell reads **No verified sale**.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.

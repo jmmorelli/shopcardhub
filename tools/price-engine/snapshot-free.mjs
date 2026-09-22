@@ -245,7 +245,7 @@ function lastNameOf(label) {
 export async function compsMark(query, label, card = {}) {
   let url = SITE + "/api/comps?q=" + encodeURIComponent(query) + "&sort=price&limit=50&customid=price-engine";
   if (card.categoryIds) url += "&category_ids=" + encodeURIComponent(card.categoryIds);
-  const r = await fetch(url, { headers: { Accept: "application/json" } });
+  const r = await fetch(url, { headers: { Accept: "application/json", "x-shopcardhub-client": "tool" } });
   if (!r.ok) throw new Error('/api/comps "' + query + '" -> HTTP ' + r.status);
   const j = await r.json();
   const { verified } = verifyListings(j.listings || [], { ...card, query }, label);
