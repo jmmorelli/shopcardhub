@@ -662,6 +662,77 @@ separate recap send is leftover doctrine. Until Mo rules, **the weekly does not 
 week where the Tuesday digest already went out** — it drafts and says so. One list, four active
 subscribers; two sends in 24 hours is the wrong side of the line.
 
+## R16 · The reply gate — graded before the post, and it comes off (CoS, 2026-09-22, on Mo's go-ahead)
+
+Monday's five vendor replies were graded by **Mo**, live, on his own account, and deleted. The
+X Desk Watch lane was working exactly as specified; the specification was the problem, because
+every check in it grades what is already public.
+
+**Until the gate lifts:** the vendor sends each reply batch to the Chief of Staff through the
+Grok Bot app before any of it posts. The desk runs `node tools/reply-voice-check.mjs` on the
+drafts, applies the stranger test by hand, and answers one line per reply — **post · change this
+· drop**. Saying what is wrong, never writing the replacement: the voice has to become the
+vendor's, not ours.
+
+**Three bounds, and they matter more than the gate:**
+
+- **Unanswered in two hours, the vendor posts anyway.** A gate that silences the account is worse
+  than the replies it was built to catch. The desk runs once a weekday, so a batch outside that
+  window will already have gone — grade it after the fact and say so.
+- **R10 is untouched.** The vendor composes and posts; nothing on this project writes to X. A
+  grade is direction, not a draft.
+- **It comes off after the first batch where every reply passes** both the tool and the stranger
+  test. Record it in STATE and tell the vendor. A gate that never comes off is a gate nobody
+  maintains, and the point is to hand the voice back.
+
+**The tool settles the mechanical half only** — links (paused to 2026-10-05), any mention of the
+site or what it does, em dashes, not-X-but-Y, lists, hashtags, emoji strings, sign-offs, length.
+It warns where a machine cannot decide: numbers (it cannot read the thread), anything that sounds
+sourced, a stock opener, a reply that asks nothing, two replies in a batch opening alike.
+**The stranger test outranks the tool in both directions** — a reply can pass every rule and
+still be an ad, which is what the five Mo deleted were.
+
+The voice itself is Mo's, in `claude/cos/x-desk-watch-2026-09-17.md` §0, and his bad/good pair is
+the whole spec.
+
+## R15 · A lane that does not file is an incident, not a quiet day (CoS, 2026-09-22)
+
+**The incident.** On 2026-09-21 the X Desk Watch run never fired. Its cron had been moved to
+13:00 PT that afternoon — after 13:00 had already passed — so the scheduler booked the next
+occurrence for Tuesday and Monday was skipped. `last_run` 2026-09-21T05:30Z, `next_run`
+2026-09-22T20:01Z, nothing between. **The lane did not fail. It was never asked.**
+
+Two things hid it: the task was still *named* "5:30pm PT" while its cron said 13:00, and nothing
+anywhere counted whether a lane that owed a filing produced one. The cost was not a missing
+document. It was the Chief of Staff answering Mo about the vendor's replies out of Sunday's
+filing — confidently, two days stale — on the day the vendor did the thing that mattered.
+
+**The rule.**
+
+1. **Every weekday desk run counts what did not arrive.** `node tools/lane-heartbeat.mjs
+   --since <previous desk run> --have <the Project doc paths you just listed>`, against
+   `claude/lanes/EXPECTED-FILINGS.json`. A miss is an inbox item with a name and a date, not an
+   absence.
+2. **A miss is diagnosed before it is reported.** Check `list_triggers` first: a cron edited
+   after that day's slot silently skips it, and that looks exactly like a lane going quiet.
+   Say which of the two it was.
+3. **Twice running is a schedule fault, and the desk fixes it** — renaming a task whose name no
+   longer matches its cron is part of the fix, because a stale name is how the first miss hid.
+   It is needs-Mo only when the repair is physically his.
+4. **A new lane joins the manifest the day it is created**, with its `startedOn`. A lane is never
+   reported silent for a day it did not exist — the first heartbeat run cried wolf on the Ideas
+   Desk for the morning it was created, and a gate that cries wolf is the one nobody reads on the
+   day it is right.
+5. **Filings live in the claude.ai Project, not the repo.** These lanes hold no push credential by
+   design, so no repo-side check can see them: the heartbeat takes the doc list it is given and
+   does the date arithmetic. Anything that moves a lane's filing path updates the manifest in the
+   same commit.
+
+**Why it is in this file rather than in a prompt.** Every lane prompt already says this file
+outranks it. A rule written into one scheduled task's prompt protects one lane and dies the next
+time that prompt is rewritten; a rule here binds every lane that reads LANE-RULES at STEP 0, and
+survives.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
