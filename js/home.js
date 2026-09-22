@@ -59,7 +59,11 @@
         id: id, key: c.key, label: c.label || id, name: parts[0], set: parts[1] || '', cardType: c.cardType || '',
         type: c.cardType === 'chrome-auto' ? 'auto' : c.cardType === 'tcg-single' ? 'tcg' : 'base',
         board: c.cardType === 'chrome-auto' && !c.boardHide,
-        slug: c.slug || null, href: c.slug ? '/' + c.slug + '#engine-' + id : /-(booster-box|etb)$/.test(id) ? indexPage(indices, id.replace(/-(booster-box|etb)$/, '')) : '/card-' + id,
+        // href: a card links only where a page exists. cardType 'single' is idea #30's star-page type,
+        // which entered the nightly feed 2026-09-21 with no slug and no /card-<id> page built yet — linking it
+        // shipped three dead hrefs onto the home Screens table. Same rule the other generators already apply:
+        // refuse the new type until it can name its page. Null href renders the name unlinked (see screen rows).
+        slug: c.slug || null, href: c.slug ? '/' + c.slug + '#engine-' + id : /-(booster-box|etb)$/.test(id) ? indexPage(indices, id.replace(/-(booster-box|etb)$/, '')) : c.cardType === 'single' ? null : '/card-' + id,
         last: c.last, prev5: prev5, chg: c.last != null && prev5 != null ? c.last - prev5 : null, chgp: ST.pctChange(prev5, c.last),
         lo30: last30.length ? Math.min.apply(null, last30) : null, hi30: last30.length ? Math.max.apply(null, last30) : null,
         roc: c.roc30, z: c.z, sd: m ? m.sd : null,
@@ -143,7 +147,7 @@
   }
   function renderEngine(model) {
     var li = [], t = dstr(model.day);
-    var card = function (c) { return '<a href="' + esc(c.href) + '">' + esc(c.name) + '</a>'; };
+    var card = function (c) { return c.href ? '<a href="' + esc(c.href) + '">' + esc(c.name) + '</a>' : esc(c.name); };
     var line = function (when, b, html) { li.push('<li><span class="t">' + esc(when) + '</span><span><span class="b ' + b.toLowerCase() + '">' + esc(b) + '</span>' + html + '</span></li>'); };
     line(t, 'FEED', 'Nightly landed — ' + model.marked + ' of ' + model.total + ' cards marked, ' + model.gatedN + ' gated to HOLD' + (model.closes ? ', ' + model.closes + ' auction close' + (model.closes === 1 ? '' : 's') + ' watched' : '') + '. Asks, not solds.');
     model.cards.filter(function (c) { return !c.gated && (c.sig === 'BUY' || c.sig === 'SELL') && c.conf != null && c.conf >= 0.8; }).sort(function (a, b) { return b.conf - a.conf; }).forEach(function (c) {
@@ -225,7 +229,7 @@
     var rows = model.cards.filter(function (c) { return c.board && c.roc != null; }).sort(function (a, b) { return Math.abs(b.roc) - Math.abs(a.roc); }).slice(0, 7);
     if (!rows.length) return '<li class="empty">No board mark yet tonight.</li>';
     return rows.map(function (c, i) {
-      return '<li><span class="rk">' + (i + 1) + '</span><span class="nm"><a href="' + esc(c.href) + '">' + esc(c.name) + '</a><small>' + fmt(c.last) + ' · supply ' + (c.sup == null ? '—' : c.sup) + ' · z ' + num(c.z, 2) + (c.gated ? ' · gated' : '') + '</small></span>' + ST.sparkSVG(c.spark) + '<span class="num ' + cls(c.roc) + '">' + pct(c.roc, 1) + '</span></li>';
+      return '<li><span class="rk">' + (i + 1) + '</span><span class="nm">' + (c.href ? '<a href="' + esc(c.href) + '">' + esc(c.name) + '</a>' : esc(c.name)) + '<small>' + fmt(c.last) + ' · supply ' + (c.sup == null ? '—' : c.sup) + ' · z ' + num(c.z, 2) + (c.gated ? ' · gated' : '') + '</small></span>' + ST.sparkSVG(c.spark) + '<span class="num ' + cls(c.roc) + '">' + pct(c.roc, 1) + '</span></li>';
     }).join('');
   }
   function sigCell(c) {
@@ -246,7 +250,8 @@
     var rows = sm.rows.slice().sort(function (a, b) { return (b.last || 0) - (a.last || 0); });
     if (!rows.length) return '<tr><td colspan="14" class="empty">No card passes this screen tonight.</td></tr>';
     return rows.map(function (c) {
-      return '<tr><td class="sym"><a href="' + esc(c.href) + '">' + esc(c.name) + '</a><small>' + esc(c.set) + '</small></td>' +
+      var symCell = c.href ? '<a href="' + esc(c.href) + '">' + esc(c.name) + '</a>' : esc(c.name);
+      return '<tr><td class="sym">' + symCell + '<small>' + esc(c.set) + '</small></td>' +
         '<td class="head">' + fmt(c.last) + '</td>' +
         '<td class="' + cls(c.chg) + '">' + (c.chg == null ? '—' : sgn(c.chg) + '<span class="sub">' + pct(c.chgp, 1) + '</span>') + '</td>' +
         '<td>' + (c.sup == null ? '—' : c.sup) + '</td>' +

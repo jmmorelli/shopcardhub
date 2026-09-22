@@ -1,22 +1,14 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-21",
+  "generated": "2026-09-22",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
   "agents": {
     "seeker": {
       "label": "SEEKER",
       "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
-      "lastRun": "2026-09-21",
-      "nextRun": "2026-09-28",
+      "lastRun": "2026-09-22",
+      "nextRun": "2026-09-29",
       "actions": [
-        {
-          "ts": "2026-08-25",
-          "msg": "STEP 0.75 signal harvest: 3 signals in file, none at count>=5 threshold — no auto-adds; test entries permanently excluded"
-        },
-        {
-          "ts": "2026-09-01",
-          "msg": "STEP 0.75 signal harvest: 3 signals in file, none at count>=5 — no auto-adds; test entries permanently excluded"
-        },
         {
           "ts": "2026-09-07",
           "msg": "Topps calendar refreshed (16 releases): NEW 2026 Topps Update Series (Sep 14) scaffolded as a draft — Topps product page has no checklist yet (\"Get notified\"), so no page built; Neon Marvel + Triumphant Tennis added to skip. Watcher scaffolder had been broken since the Sep 1 self-hosted-fonts pass (template marker gone) — fixed locally in page_builder.py."
@@ -56,6 +48,14 @@
         {
           "ts": "2026-09-21",
           "msg": "Coach note for monday-scan is weekOf 2026-09-14 — one week stale; the Sunday Sep 20 run did not write a fresh one."
+        },
+        {
+          "ts": "2026-09-22",
+          "msg": "Signal harvest: no card reached the count>=5 auto-add threshold (highest is jacob-misiorowski-2022-bowman-chrome-1st-auto at 3). No watchlist additions. Aug 11 test entries stay excluded."
+        },
+        {
+          "ts": "2026-09-22",
+          "msg": "Watch-tier hygiene: all five names are trackable (Houston 15 asks, Jump 15, Arquette 9, Aloy 27, Pierce 27) - none untrackable. All five read SELL on the nightly engine; four are down double digits over 30 days (Houston -27.8%, Jump -17.8%, Aloy -17.7%, Pierce -9.1%, Arquette -6.7%)."
         }
       ],
       "log": [
@@ -67,21 +67,9 @@
     "curator": {
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-09-21",
-      "nextRun": "2026-09-28",
+      "lastRun": "2026-09-22",
+      "nextRun": "2026-09-29",
       "actions": [
-        {
-          "ts": "2026-09-08",
-          "msg": "BCB26 (STEP 2.7): still PRE — street is tomorrow (Sep 9); /api/comps probe finds 0 verified asks on the chase names (Hernandez, Asigen) and only May-CPA listings under Holliday; activation gate (≥60% of chase basket with a verified ask) not met. Friday run re-checks. BOW26 not re-marked here (Monday owns it)."
-        },
-        {
-          "ts": "2026-09-11",
-          "msg": "Fri release-window board refresh (Bowman Chrome window, street+2): SCP raw/PSA10 pulled for board top 5 + watch tier via Chrome (sandbox curl got a Cloudflare 403 today); engine marks off prices-latest.json (day 2026-09-11). Fischer $136.85->$146.80 raw and $421->$537.50 PSA 10 resolved the crossover clock published Sep 8 -> Fischer #2, Kim #3. Holliday $110.98->$105.50 (-5%), Florentino $70.00 flat, Gonzales $90->$92, Kim carried $131.25 a 7th week."
-        },
-        {
-          "ts": "2026-09-11",
-          "msg": "Page: 5 price-subs re-stamped Sep 11, hero stamp + data-prices-updated -> 2026-09-11, market-check callout rewritten movement-first (both directions), Fischer/Kim entry blocks swapped, all 5 verdicts + WHAT WOULD CHANGE OUR MIND lines rewritten under the Fischer verdict-honesty rule. Signal Board, EPN params and Track button data attributes untouched."
-        },
         {
           "ts": "2026-09-11",
           "msg": "Flagged, not applied: Gonzales ($92) now out-prints Florentino ($70) on raw while trailing him graded ($425 vs $492) -- #4/#5 crossover clock opened at week one of two, resolves on the next board run."
@@ -117,6 +105,18 @@
         {
           "ts": "2026-09-21",
           "msg": "BCB26 release-window re-mark: 95.67→73.14 (−23.5% in 6 days, ask basis). Every one of the 8 basket cards marked down off the Sep 21 feed; units and divisor unchanged; CPA-LH still carries no verified ask and stays out of the basket. Flagged to the CoS for magnitude, not for doubt — the direction is uniform across the basket and is release-window ask decay."
+        },
+        {
+          "ts": "2026-09-22",
+          "msg": "Board re-marked on the Sep 22 SCP read. No seat moved: 1 Fischer $154.60 (+4.2%) · 2 Holliday $107.16 (+3.0%) · 3 Gonzales $91.25 (-0.8%) · 4 Florentino $70.00 flat · 5 Kim $131.25 carried (gated, last print Aug 5)."
+        },
+        {
+          "ts": "2026-09-22",
+          "msg": "Fischer's published two-run clock is now running: last printed sale Sep 14, none on the Sep 22 read. A second empty read on Sep 29 hands #1 to Holliday on the rule."
+        },
+        {
+          "ts": "2026-09-22",
+          "msg": "BCB26 release-window re-mark: 73.14->69.52 (-4.95% w/w, -30.48% since the Sep 14 inception, ask basis, feed day 2026-09-22). 7 of 8 basket cards marked; BCP-200 carried (engine flags its last real mark 2026-09-18). CPA-LH still unverified and still out of the basket; no divisor change."
         }
       ],
       "log": [
@@ -129,21 +129,9 @@
     "inspector": {
       "label": "INSPECTOR",
       "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-      "lastRun": "2026-09-21",
-      "nextRun": "2026-09-28",
+      "lastRun": "2026-09-22",
+      "nextRun": "2026-09-29",
       "actions": [
-        {
-          "ts": "2026-09-14",
-          "msg": "Mon audit — sweeps run on the mounted clone AND on a fresh read-only clone of main 6393b5f (mount is 2 commits behind): audit-site FAIL 0/WARN 3 (the first-bowman-unverified trio, 3rd run), audit-prices FAIL 0/WARN 31 (same 31; the 3 Aug-12 machine stamps are now 33 days old), audit-terminal FAIL 0/WARN 0 with the price-data feed, first-bowman.mjs 0 contradictions / 655 candidates. Deployed == main byte-identical on 7 pages; remote images 12/12 resolve (10 scrydex + 2 ebayimg). Dungeon store: 11 decisions, updated Sep 2, none new."
-        },
-        {
-          "ts": "2026-09-14",
-          "msg": "Whole-payload leak scan: competitor names 0, outside handles 0, email 0, $/qty 0 — but five trader lines still used venue-approach wording of the class redacted Sep 11 → HIGH audit-2026-09-14-1 (phrases kept local, not repeated here). Two Monday commits on main (cb9d85a, 6393b5f) carry no pushLog entry and no Task-key/Authority trailers → MED audit-2026-09-14-2."
-        },
-        {
-          "ts": "2026-09-14",
-          "msg": "GSC (site account): 3 indexed / 74 not indexed (51 discovered-not-indexed, 23 crawled-not-indexed with validation Started) — flat a 4th run; sitemap.xml last read Sep 7, Success, 101 discovered; manual actions and security issues both clean. Coach's fix delivered: every data/sets 1st flag read against first-bowman.mjs (0 contradictions) and audit-terminal added to the sweep; the rendered unverified set (/bowman-sapphire-2026, 20 tags, in-file duplicate 1sts) filed as MED audit-2026-09-14-3; polish-2026-09-14 = Markets-row sparklines."
-        },
         {
           "ts": "2026-09-14",
           "msg": "Mo (in chat): \"fix it\" — auditor applied its own findings this once: 5 leak lines rewritten to listing wording (mapping local), pushLog backfilled for the two Monday commits, 4 duplicate same-set 1st flags stripped from the Sapphire checklist (verified still unset), IN FOCUS strip wraps at 11px. Gates re-run before push; Mo's stale clone lock is his terminal step."
@@ -179,6 +167,18 @@
         {
           "ts": "2026-09-21",
           "msg": "STEP 0.5 blocked: topps.com/release-calendar returns a bot-challenge page. No calendar diff, no new-release scaffolding this run. data/releases.json left as-is (all 12 rows still future-dated)."
+        },
+        {
+          "ts": "2026-09-22",
+          "msg": "PRICING-INTEGRITY DEFECT, live and now corrected: /bowman-bangers published 'PSA 10 $720.00 (1 dated sale, Aug 6 2026)' for Holliday. SportsCardsPro's Aug 6 graded sale on that card is a PSA 9 at $155.00; there is no PSA 10 sale of it at any date. The $720 was a guide estimate read as a sale and carried for six weeks - including through the Sep 17 review that kept it as the one figure judged verified."
+        },
+        {
+          "ts": "2026-09-22",
+          "msg": "The same read reversed the Sep 17 finding on two other seats: Fischer HAS dated PSA 10 sales ($650.00 Sep 7, $425.00 Aug 12, $417.00 Jun 10) and Florentino's $492.00 IS dated (Aug 17). Both restored with dates. Gonzales (only graded sale a PSA 8 at $113.50) and Kim (no graded sale at any grade) stay off."
+        },
+        {
+          "ts": "2026-09-22",
+          "msg": "Regression found and fixed in shared tooling: js/home.js linked every unslugged feed card to /card-<id>. Idea #30's three 'single' star-page cards (Ohtani, Yamal, Wembanyama) entered the feed with no page built, so any build-home run shipped three dead hrefs onto the home Screens table - client-side render included. Guarded: cardType 'single' renders unlinked until it can name a page."
         }
       ],
       "log": [
@@ -193,17 +193,9 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-09-21",
-      "nextRun": "2026-09-28",
+      "lastRun": "2026-09-22",
+      "nextRun": "2026-09-29",
       "actions": [
-        {
-          "ts": "2026-09-11",
-          "msg": "FOLLOW-UP to the 'queued, not logged' entry above: Mo delegated approval to the CoS in chat; under 4.8 the re-entry is logged as v-bb-fischer-buy-2 BUY @ $146.80 (callDate 2026-09-11, 6-mo 2027-03-11, 12-mo 2027-09-11, reentryOf v-bb-fischer-buy). Board copy changed from 'queued' to 'logged today'. Immutable fields asserted on all 22 prior rows."
-        },
-        {
-          "ts": "2026-09-11",
-          "msg": "BCB26 chase basket v1 fed: 9 engine feeds added to data/watchlist.json (boardHide) - Holliday BCP-209 + the four IFA headliners' 1st Bowman autos (CPA-LH/WA/FR/AG) and 1st Bowman base (BCP-200/152/163/194); universe rows carry feed keys; activation gate restated to COUNT basis (>=6 of 9 verified). First snapshot with these feeds: 2026-09-12 ~1:15am PT. Status stays pre."
-        },
         {
           "ts": "2026-09-12",
           "msg": "reply-paster 10:10am PT fire: replied under '49 cards priced in Prismatic Evolutions' (tweet 2098818932035514768) with the right-skew explainer + shopcardhub.com/prismatic-evolutions-index; verified 1 reply on thread (@shopcardhub, 19s). Not committed/pushed; next Tuesday/CoS run carries it."
@@ -243,6 +235,14 @@
         {
           "ts": "2026-09-21",
           "msg": "Prompt drift filed: STEP 3.98 step 5 tells this lane to sweep locks in Mo's mount, which LANE-RULES R1 forbids. The file wins; the prompt is the stale copy."
+        },
+        {
+          "ts": "2026-09-22",
+          "msg": "Vendor feed rebuilt after the re-mark: data/x-board.json asOf 2026-09-22 (the pre-guard LEGACY file's dated grace expired today) and og/x/board-latest.png regenerated and read before shipping."
+        },
+        {
+          "ts": "2026-09-22",
+          "msg": "Feed defect caught before it shipped: currentSignal for Holliday resolved to SELL off the seat's Signal stat while his published verdict is Hold - the vendor would have quoted an engine ask-signal as our call. Fixed on the page (the Signal stat now matches the verdict; the engine's SELL stays named as the engine's in the verdict prose)."
         }
       ],
       "log": [
@@ -412,8 +412,8 @@
       "slug": "set-indices",
       "title": "Set Indices (ETF-style, per set)",
       "stage": "live",
-      "note": "7 tickers: PB26/CR26/AH26/PRIS25/DR25 live (sold basis, weekly), BOW26 live (ask), BCB26 live — activated Sep 14 at 100.00, first re-mark Sep 15 at 95.67 (−4.33%, ask basis, 8/9 chase cards); SAPH26/DRAFT26 next.",
-      "ts": "2026-09-15"
+      "note": "7 tickers: PB26/CR26/AH26/PRIS25/DR25 live (sold basis, weekly), BOW26 live (ask), BCB26 live — activated Sep 14 at 100.00, re-marked Sep 22 at 69.52 (−4.95% w/w, −30.48% since inception, ask basis, 8/9 chase cards); SAPH26/DRAFT26 next.",
+      "ts": "2026-09-22"
     },
     {
       "stage": "live",
@@ -1621,6 +1621,62 @@
       "by": "x-board-feed-integrity",
       "title": "DECISION TAKEN, for review: the live vendor feed /data/x-board.json (regenerated by the CoS 13:54 PT from Sep 15 marks) was LEFT IN PLACE under a dated legacy grace in the new xboard-honest gate (WARN through 2026-09-22, FAIL from 2026-09-23) rather than withheld.",
       "decision": "Why: the committed feed fails the new gate five ways (stale stamp 6 days; Florentino's price line seats Gonzales #4 vs seats[] #3; decaying language on three seats) and cannot be rebuilt honestly from a Sep 15 page — the guarded builder refuses (exit 2). This lane first wrote an honest WITHHELD stub (R10 amendment: ship nothing rather than something stale), then found f24c37c: the CoS delivered vendor brief 2026-09-21 at 14:15 PT telling the vendor the feed is FIXED and to 'pull fresh before your next board post', on Mo's instruction in chat — which outranks the file. Withholding would have contradicted that an hour later with no way to reach the vendor before its 09:00 PT post. So: file left as the CoS built it; the gate carries a dated, self-expiring grace for a pre-guard file (no `guards` marker), on the record in tools/x-board-guards.mjs LEGACY_UNTIL; a file the guarded builder writes never gets it. The Tuesday 11:02 rebuild replaces the file; if the builder refuses there (it WILL on the Florentino line unless the re-mark rewrites it), the lane should run `--withhold` rather than push the old file, and from Sep 23 the old file FAILs the gate for everyone. `--withhold` exists and is tested; not used today. og/x/board-latest.png untouched."
+    },
+    {
+      "id": "bb-2026-09-22-psa10-correction",
+      "area": "pricing-integrity",
+      "summary": "Holliday's $720 PSA 10 was a guide estimate, not a sale (the real Aug 6 sale is a PSA 9 at $155.00), and it survived the Sep 17 graded review as the one figure judged verified. Corrected live on /bowman-bangers, in data/x-board.json and on the board tape this run. FOR THE COS: the vendor has been handed this figure in previous weekly feeds and may have posted it — this is the one item this week that needs a vendor correction, not just a page fix.",
+      "status": "awaiting-cos",
+      "ts": "2026-09-22"
+    },
+    {
+      "id": "bb-2026-09-22-graded-source-rule",
+      "area": "pricing-integrity",
+      "summary": "The Sep 17 review read price-guide cells as sales and got the direction wrong on three of five seats. Proposal: no graded figure is published anywhere on this site unless it is read off the sales tape with BOTH a date and a grade — a guide cell is never sufficient. Would have caught this and the Arquette $125 before it.",
+      "status": "awaiting-cos",
+      "ts": "2026-09-22"
+    },
+    {
+      "id": "bb-2026-09-22-home-single-link-guard",
+      "area": "tooling",
+      "summary": "js/home.js linked unslugged feed cards to /card-<id>; idea #30's three 'single' cards have no page, so build-home shipped three dead homepage links (baked and client-rendered). Guarded this run so cardType 'single' renders unlinked. The real fix is idea #30 finishing — either build the three card pages or give the feed rows a slug.",
+      "status": "awaiting-cos",
+      "ts": "2026-09-22"
+    },
+    {
+      "id": "bb-2026-09-22-xboard-signal-source",
+      "area": "tooling",
+      "summary": "tools/build-x-board.mjs prefers the seat's Signal stat over the published 'Verdict:' line for currentSignal. On this board three seats mirror the verdict and one (Holliday) carried the engine's ask-side word, so the vendor feed would have stated SELL against a published Hold. Patched at the page this run rather than in the generator; the preference order still mis-ranks any future disagreement, and its verdict regex misses the entry-verdict class variants (hold/watch).",
+      "status": "awaiting-cos",
+      "ts": "2026-09-22"
+    },
+    {
+      "id": "bb-2026-09-22-terminal-api-contract-fp",
+      "area": "tooling",
+      "summary": "audit-terminal api-contract reads only the line holding '/api/', so pokemon-30th-anniversary-2026.html:1011 — whose customid sits on a concatenated continuation line since 3850e99 — FAILs as having no customid. Verified against the live page: the per-tile customids are present and sent. Same class as the Sep 21 audit-site ')' truncation. This FAIL is standing in the tree and will block the next lane that touches that page.",
+      "status": "awaiting-cos",
+      "ts": "2026-09-22"
+    },
+    {
+      "id": "bb-2026-09-22-stale-price-stamps",
+      "area": "content",
+      "summary": "Two pages crossed the 21-day price-stamp limit on their own this week: munetaka-murakami-rookie-cards.html and wnba-cards-2026.html, both stamped 2026-08-31 (22 days). They are the entire delta between today's audit-prices WARN 62 and the stated baseline 60.",
+      "status": "awaiting-cos",
+      "ts": "2026-09-22"
+    },
+    {
+      "id": "bb-2026-09-22-pierce-watch-tier",
+      "area": "board",
+      "summary": "Watch-tier hygiene: Daniel Pierce's nightly ask mark is $29.49 and his June call is down 46%; he is far below a banger entry point and has been on the watch tier since Aug 18. Proposing removal is complicated by the Off-the-Board footer, which promises in print that all three demoted names stay tracked in the watch tier. Not acted on — CoS to rule whether the tier keeps him or the footer changes.",
+      "status": "awaiting-cos",
+      "ts": "2026-09-22"
+    },
+    {
+      "id": "bb-2026-09-22-coach-note-stale",
+      "area": "process",
+      "summary": "coachNotes['tuesday-bangers'] is still weekOf 2026-09-14 — the Sunday Sep 20 run did not write a fresh one. The Monday lane filed the same gap for monday-scan on Sep 21. Second consecutive week both ends of the loop went unwritten.",
+      "status": "awaiting-cos",
+      "ts": "2026-09-22"
     }
   ],
   "scoreboard": {
