@@ -125,3 +125,60 @@ Live-verified: the hub reads *"ask from $149.99 · 8 live"*, Prismatic *"$135.00
   all.** It passes the conversion gate because that gate looks for *an EPN link*, not a managed
   shelf — so the page with the year's biggest Pokémon release has no live ask, no per-product
   custom ID beyond the page slug, and nothing watching it on Mondays.
+
+---
+
+# Correction to the addendum, same hour (`3850e99`)
+
+Mo approved both open items. Checking the first before building it showed **the item was wrong,
+and so was the change I had already shipped.**
+
+## Phantasmal Flames is a 2025 set
+
+Our own PF25 index page says *"Pokémon Mega Evolution: Phantasmal Flames — released **Nov 14,
+2025**"*, and the ticker is **PF25** — the same convention as PRIS25 and DR25, against PB26 /
+CR26 / AH26 for the 2026 sets.
+
+So:
+
+- Pointing the **2026** hub's strip at its ETB (`568fc10`, an hour earlier) was wrong.
+- My note that the hub's set timeline was "missing a Phantasmal Flames row" was also wrong. That
+  timeline covers 2026 and is **correct to omit a 2025 set**. The approved content fix is
+  therefore *not made* — there is nothing to add, and adding it would have put a 2025 set into a
+  2026 timeline on Mo's approval of my own mistake.
+
+**The hub now sells the page's own ★ capstone, the 30th Celebration Elite Trainer Box** (Sep 16
+2026): **11 live from $180**, 3.6× its $49.99 MSRP, under category 183456.
+
+### One method note worth keeping
+
+The first version of that query carried the house exclusion string
+(`-proxy -custom -empty -japanese …`) and went **17 raw listings → 4 → one listing standing**.
+The bare query with the same filtering moved into `req`/`deny` returns 11. Piling negative
+keywords into `_nkw` is what made this shelf look thin in the first place — the filtering belongs
+client-side, where it can be tuned without destroying recall.
+
+## The 30th page (the second approved item) — and a correction to how I described it
+
+I called it unmonetised with "real money left sitting". **That was wrong too.** The page has a
+*better* shelf than the standard strip: a three-product grid with MSRP, live asks and a
+×MSRP multiple, plus six further product links and two card blocks.
+
+What it actually lacked, which is narrower and real:
+
+- **All 12 product links shared ONE custom ID** — `pokemon-30th-anniversary-2026`. The ETB, the
+  booster bundle, the UPC, the ex box, the poster collection, the sticker collection, the booster
+  box and the catch-all, spanning **$14.99 to $179.99**, all reporting as a single row in EPN.
+  Exactly the defect fixed on the Pokémon index pages this morning, on the page for the year's
+  biggest release.
+- **The tile fetch passed no category**, so its published asks were measured in the sports-card
+  default — the same bug as the strips.
+
+Both fixed. Ten distinct custom IDs live on the page now, and the tiles read:
+ETB **$180.00 · 3.6× · 11 asks** · Booster Bundle **$74.99 · 2.8× · 7 asks** ·
+UPC **$1,249.95 · 6.9× · 1 ask**.
+
+**Worth a look, not fixed:** the UPC tile is publishing a 6.9× MSRP figure off a **single**
+listing. That is a real ask, honestly labelled "1 ask", but one listing is not a market and this
+page is not on the Monday health beat — no config entry covers it. Either bring the 30th page's
+grid under `buy-strip.json` governance, or teach `buy-strip-health` to read the page's tiles.
