@@ -11,6 +11,17 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — one decision (2026-09-22, ~15:30 PT)
+
+- **eBay/EPN terms — a ruling only you can make.** While doing the Wednesday build early I had the current
+  eBay API License Agreement and EPN Network Agreement read line by line, as you asked on Sep 21. Part of what
+  it found goes to how the price engine itself works, so it is a business decision, not a fix. The full brief
+  and my recommendation are in the chat and in the Project doc `claude/cos/compliance-posture.md` (kept out of
+  the public repo on purpose). Two build items are on hold until you rule: moving the feed off GitHub, and
+  adding three more cards to the engine.
+
+---
+
 ## Open — nothing (2026-09-21 14:30 PT)
 
 - **✅ DONE by Mo (2026-09-21, self-reported: "ok I think I did it")** — the MWF site-auditor task deleted and the

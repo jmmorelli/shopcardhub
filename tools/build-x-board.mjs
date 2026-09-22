@@ -167,14 +167,22 @@ for (const [mi, m] of seatMatches.entries()) {
                     String(b.callDate).localeCompare(String(a.callDate)));
   const call = mine[0] || null;
 
-  // The CURRENT signal is what a reader sees on the page: the "Signal" stat when the seat carries one, else
-  // the "Verdict: <Word>" lead of the entry's verdict paragraph. It is NOT the logged Scorecard call below —
-  // those were published under the same word ("verdict") until Sep 21 2026 and contradicted the page on
-  // three of five seats (Fischer BUY vs HOLD, Holliday BUY vs SELL, Kim WAIT vs PASS).
+  // The CURRENT signal is the board's published call: the "Verdict: <Word>" lead of the seat's entry-verdict
+  // paragraph (any class variant — entry-verdict, entry-verdict hold, entry-verdict watch). The seat's
+  // "Signal" stat is only a fallback when a seat carries no verdict line, because that stat can carry the
+  // ENGINE's nightly ask-side word (Holliday read SELL against a published Hold on Sep 22 —
+  // bb-2026-09-22-xboard-signal-source). The engine's word is not one of our calls and never reaches the
+  // vendor feed. It is NOT the logged Scorecard call below either — those contradicted the page on three
+  // of five seats until Sep 21 2026 (Fischer BUY vs HOLD, Holliday BUY vs SELL, Kim WAIT vs PASS).
   const sigStat = (seatHtml.match(/<div class="entry-stat-label">Signal<\/div>\s*<div class="entry-stat-value[^"]*">([^<]+)<\/div>/) || [])[1];
-  const sigVerdict = (seatHtml.match(/<div class="entry-verdict"><strong>Verdict: ([A-Za-z]+)/) || [])[1];
-  const currentSignal = (sigStat || sigVerdict || "").trim().toUpperCase() || null;
-  if (!currentSignal) throw new Error(`seat ${rank} ${player}: no Signal stat and no "Verdict:" line on bowman-bangers.html — refusing to ship a file with only the historical call`);
+  const sigVerdict = (seatHtml.match(/<div class="entry-verdict(?:\s[^"]*)?"><strong>Verdict: ([A-Za-z]+)/) || [])[1];
+  const CALLS = new Set(["BUY", "HOLD", "PASS", "WATCH"]);
+  const vWord = (sigVerdict || "").trim().toUpperCase();
+  const sWord = (sigStat || "").trim().toUpperCase();
+  if (vWord && sWord && vWord !== sWord) console.warn(`  note: seat ${rank} ${player} — Signal stat "${sWord}" disagrees with the published Verdict "${vWord}"; the verdict is used`);
+  const currentSignal = vWord || (CALLS.has(sWord) ? sWord : "") || null;
+  if (!currentSignal) throw new Error(`seat ${rank} ${player}: no "Verdict:" line and no Signal stat in BUY/HOLD/PASS/WATCH on bowman-bangers.html — refusing to ship a file with only the historical call (or the engine's ask-side word)`);
+  if (!CALLS.has(currentSignal)) throw new Error(`seat ${rank} ${player}: verdict "${currentSignal}" is not one of BUY/HOLD/PASS/WATCH`);
   const dated = datedForm(sub);
   const priorCalls = mine.slice(1).map((c) => ({ id: c.id, action: c.action, callDate: c.callDate, state: c.state, grade: c.grade ?? null }));
 
@@ -202,7 +210,7 @@ for (const [mi, m] of seatMatches.entries()) {
     // What the page says NOW. Vocabulary is the page's: BUY / HOLD / SELL / PASS / WATCH. Use THIS for any
     // per-card line. "WAIT" is a calls.json state and appears on no public surface.
     currentSignal,
-    currentSignalSource: sigStat ? "Signal stat on the seat" : "Verdict: line on the seat",
+    currentSignalSource: vWord ? "Verdict: line on the seat" : "Signal stat on the seat (no verdict line)",
     // The logged Scorecard call — a dated, immutable projection graded at 6 and 12 months. Historical.
     loggedCall: call
       ? {
@@ -247,7 +255,7 @@ const out = {
   rankingRule,
   callout,
   calloutBasis,
-  signalVocabulary: "currentSignal uses the page's words — BUY / HOLD / SELL / PASS / WATCH. loggedCall.action is the historical Scorecard call and may differ; the page's current signal always wins.",
+  signalVocabulary: "currentSignal is the board's published call — BUY / HOLD / PASS / WATCH. SELL is the engine's nightly ask-side signal and is never a board call. loggedCall.action is the historical Scorecard call and may differ; the page's current signal always wins.",
   marksPolicy:
     "Sold comps and asks are separate figures and are never blended. A PSA 10 line states the sale " +
     "count behind it, or states that there is no verified sale. Calls are graded at 6 and 12 months only.",

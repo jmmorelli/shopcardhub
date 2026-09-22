@@ -1432,12 +1432,14 @@
     },
     {
       "id": "iw-2026-09-17-4",
-      "status": "awaiting-cos",
+      "status": "applied",
       "area": "tooling",
       "filed": "2026-09-17",
       "by": "chief-of-staff",
       "title": "Gate gap: every price gate reads price CELLS, so a false price claim written in prose or in card-strip meta passes FAIL 0 forever. Reproduced on the flagship page for weeks.",
-      "decision": "OPEN. iw-2026-09-17-1 was live on /bowman-bangers with all three gates at baseline the entire time: audit-prices FAIL 0 / WARN 62, audit-site 0/3, audit-terminal 0/1, and bowman-bangers.html raising no WARN at all. Check 7 sold-provenance was shipped Sep 16 precisely for this class and it looks at price cells; these figures lived in <div class=\"price-sub\"> meta strips and in verdict prose. This is the Integrity Watch lane's founding case reproduced four weeks later. Proposed shape, for the CoS to rule: a prose-scoped check that FAILs when a grade token (PSA/BGS/SGC/CGC + a number) appears within N characters of a dollar figure on a page that does not also carry a provenance token ('dated sale' / 'no verified sale') in the same block. Negative-test it against the three remediated card pages, which must pass."
+      "decision": "APPLIED 2026-09-22 (Wednesday build, run early): audit-prices check 10 graded-claim-unsourced reads visible TEXT for PSA/BGS/SGC/CGC <grade> ... $<n> with no dated-sale language, date or retraction within ~200 chars; WARN one per page; plus the same test over data/calls.json strings. Negative-tested on a page and on calls.json. 16 pages carry the backlog; that list is the SCP graded pull's work order. LANE-RULES R18.",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     },
     {
       "id": "iw-2026-09-18-1",
@@ -1537,27 +1539,31 @@
     },
     {
       "id": "cos-2026-09-20-2",
-      "status": "awaiting-cos",
+      "status": "awaiting-mo",
       "area": "security",
       "filed": "2026-09-20",
       "by": "chief-of-staff",
       "title": "The GitHub repo is PUBLIC — price engine, every eBay query, LANE-RULES and STATE.md with EPN earnings and strategy are readable by anyone. It cannot be flipped private without breaking the site and every scheduled lane.",
-      "decision": "RULED by Mo 2026-09-20: do it properly on Wednesday, not rushed on a Sunday. Spec: claude/cos/feed-origin-and-repo-privacy-2026-09-20.md. THE BLOCKER IS BIGGER THAN FIRST REPORTED — the first pass said 'three browser hotlinks'; a full grep found 13+ call sites across browser JS (home, engine-block, card-img, sealed-row), serverless (auctions, decisions, track-signal, _lib/store) and build tools, PLUS the lane prompts and the Oct 3 conversion-read task, all reading raw.githubusercontent, which serves public repos only. The lane row is the one that would have been missed: ga4-snapshot exists precisely because cloud lanes have no browser and read analytics from a raw URL, so taking the repo private silently kills every lane's GA4 read. Order is fixed in the spec and must not be reordered: pick a no-runtime-secret origin (Mo does not handle secrets), one FEED_BASE constant per layer, cut every call site, update the prompts and the scheduled task, verify live, and only then flip. Owner: Wednesday build session.",
+      "decision": "HELD 2026-09-22: the feed-origin + repo-private work now depends on Mo's ruling on the eBay/EPN compliance brief (what the feed may contain at all). Spec unchanged: claude/cos/feed-origin-and-repo-privacy-2026-09-20.md.",
       "severity": "HIGH",
       "surface": "the repo; js/*, api/*, tools/*, claude/lanes/*",
-      "liveVerified": "2026-09-20 — five sensitive paths fetched unauthenticated, all 200; the raw feed URL confirmed present in browser JS served to every visitor"
+      "liveVerified": "2026-09-20 — five sensitive paths fetched unauthenticated, all 200; the raw feed URL confirmed present in browser JS served to every visitor",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     },
     {
       "id": "cos-2026-09-20-3",
-      "status": "awaiting-cos",
+      "status": "applied",
       "area": "security",
       "filed": "2026-09-20",
       "by": "chief-of-staff",
       "title": "/api/comps is an open proxy on Mo's eBay keyset — no auth, no referer check, no rate limit, 5,000/day quota. One script can blank the pricing engine for a day.",
-      "decision": "RULED by Mo 2026-09-20: fix it in the Wednesday session alongside the feed work. Verified live: anonymous GET returns 200, 34 KB, x-vercel-cache MISS — a live eBay call. The 15-minute CDN cache protects repeated identical queries only; varying q walks past it. /api/auctions hands out the whole desk (230 KB) anonymously. THE CONSTRAINT THAT MAKES THIS NON-TRIVIAL IS DELIBERATE: customid is a query param rather than a Referer sniff on purpose, because the response is CDN-cached and a header-derived value would not be part of the cache key — one page's cached response could leak its custom ID to another page's visitors. Any fix must not re-introduce that. Three options ruled between in the spec; note that WAF rate limiting is a priced/Pro feature while custom rules, IP blocking and DDoS mitigation are free on every plan.",
+      "decision": "APPLIED ddc5466: api/_lib/guard.js on /api/comps and /api/auctions (same-origin / our Origin-Referer / tool header; 403 no-store otherwise; 60/min/IP uncached; ACAO * removed; q-mode limit <= 50; ?raw=1 removed). customid stays a query param, so the cache-key concern in the Sep 20 spec does not arise. Live-verified. LANE-RULES R17.",
       "severity": "MED",
       "surface": "api/comps.js, api/auctions.js",
-      "liveVerified": "2026-09-20 — anonymous request from an unrelated host returned a live uncached eBay result"
+      "liveVerified": "2026-09-20 — anonymous request from an unrelated host returned a live uncached eBay result",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     },
     {
       "id": "cos-2026-09-20-4",
@@ -1585,15 +1591,17 @@
     },
     {
       "id": "cos-2026-09-20-6",
-      "status": "awaiting-cos",
+      "status": "applied",
       "area": "data-integrity",
       "filed": "2026-09-20",
       "by": "chief-of-staff",
       "title": "eBay expanded Extended Bidding to more auction categories and all global marketplaces — an auction that extends on a late bid MOVES its close time, which the auction desk records from a snapshot.",
-      "decision": "OPEN — for the Wednesday build session to rule on, alongside the /api/comps work. Flagged by the Sep 20 Earnings Ideas Desk as explicitly NOT an earnings idea (Value Added Resource, Sep 2026 seller news). /api/auctions reads itemEndDate at snapshot time; if that timestamp can move after we record it, a close we log as the hammer may not be the hammer. This bears directly on the parked close-time capture (ledger #28) and the 12-hour 'last bid seen' lag retracted on Sep 16 — the same defect, with a newly widened cause. The question to rule: must the desk re-read endDate at close rather than trusting the snapshot, and does the retraction's wording need widening. Nothing is published off auction closes today, so this is a correctness item, not a live-wrong-number item.",
+      "decision": "RULED 2026-09-22, no code: /api/auctions reads itemEndDate live on every uncached call, so displayed close times follow eBay. The nightly last-bid-seen is a labelled floor already. Any future close-time capture re-reads endDate at poll time and never trusts a snapshot.",
       "severity": "MED",
       "surface": "api/auctions.js, tools/build-auctions.mjs, the close-time capture spec",
-      "liveVerified": "n/a — no change made; flag only"
+      "liveVerified": "n/a — no change made; flag only",
+      "decidedBy": "chief-of-staff",
+      "decided": "2026-09-22"
     },
     {
       "id": "friday-2026-09-18-build-home-th26",
@@ -1636,9 +1644,9 @@
       "id": "bb-2026-09-22-graded-source-rule",
       "area": "pricing-integrity",
       "summary": "The Sep 17 review read price-guide cells as sales and got the direction wrong on three of five seats. Proposal: no graded figure is published anywhere on this site unless it is read off the sales tape with BOTH a date and a grade — a guide cell is never sufficient. Would have caught this and the Arquette $125 before it.",
-      "status": "approved",
+      "status": "applied",
       "ts": "2026-09-22",
-      "decision": "ACCEPTED as an amendment to standing rule 1 (Sep 17). A graded figure is published only when ONE sales-tape row supplies the date, the grade and the price together. A guide/ladder cell never suffices, and a date may not be borrowed from a row of a different grade - the Holliday defect was a real Aug 6 date on a PSA 9 row attached to a PSA 10 guide number. The Sep 22 board already complies (Fischer $650.00 Sep 7, Florentino $492.00 Aug 17 re-read row by row). Enforcement: written into LANE-RULES standing rules at the Wednesday build; the mechanical half rides iw-2026-09-17-4 (prose/meta-scoped claims check) and the P0 SCP graded sales-table pull re-verifies every remaining graded figure sitewide against this rule.",
+      "decision": "ACCEPTED as an amendment to standing rule 1 (Sep 17). A graded figure is published only when ONE sales-tape row supplies the date, the grade and the price together. A guide/ladder cell never suffices, and a date may not be borrowed from a row of a different grade - the Holliday defect was a real Aug 6 date on a PSA 9 row attached to a PSA 10 guide number. The Sep 22 board already complies (Fischer $650.00 Sep 7, Florentino $492.00 Aug 17 re-read row by row). Enforcement: written into LANE-RULES standing rules at the Wednesday build; the mechanical half rides iw-2026-09-17-4 (prose/meta-scoped claims check) and the P0 SCP graded sales-table pull re-verifies every remaining graded figure sitewide against this rule. | APPLIED 2026-09-22: LANE-RULES R18 + audit-prices check 10.",
       "decidedBy": "chief-of-staff",
       "decided": "2026-09-22"
     },
@@ -1656,9 +1664,9 @@
       "id": "bb-2026-09-22-xboard-signal-source",
       "area": "tooling",
       "summary": "tools/build-x-board.mjs prefers the seat's Signal stat over the published 'Verdict:' line for currentSignal. On this board three seats mirror the verdict and one (Holliday) carried the engine's ask-side word, so the vendor feed would have stated SELL against a published Hold. Patched at the page this run rather than in the generator; the preference order still mis-ranks any future disagreement, and its verdict regex misses the entry-verdict class variants (hold/watch).",
-      "status": "approved",
+      "status": "applied",
       "ts": "2026-09-22",
-      "decision": "ACCEPTED, Wednesday build P1. tools/build-x-board.mjs: currentSignal comes from the published 'Verdict:' line (including the entry-verdict class variants hold/watch); the Signal stat is a fallback only when no verdict line exists; the engine's ask-side word never enters currentSignal; when stat and verdict disagree the build uses the verdict and prints the disagreement. Today's page patch holds until the next regen (Tue Sep 29), so this is not same-day.",
+      "decision": "ACCEPTED, Wednesday build P1. tools/build-x-board.mjs: currentSignal comes from the published 'Verdict:' line (including the entry-verdict class variants hold/watch); the Signal stat is a fallback only when no verdict line exists; the engine's ask-side word never enters currentSignal; when stat and verdict disagree the build uses the verdict and prints the disagreement. Today's page patch holds until the next regen (Tue Sep 29), so this is not same-day. | APPLIED 2026-09-22: build-x-board.mjs takes the Verdict line (all entry-verdict class variants) over the Signal stat; SELL can never reach currentSignal; disagreement is printed. Feed regenerated, seats unchanged.",
       "decidedBy": "chief-of-staff",
       "decided": "2026-09-22"
     },
@@ -1676,9 +1684,9 @@
       "id": "bb-2026-09-22-stale-price-stamps",
       "area": "content",
       "summary": "Two pages crossed the 21-day price-stamp limit on their own this week: munetaka-murakami-rookie-cards.html and wnba-cards-2026.html, both stamped 2026-08-31 (22 days). They are the entire delta between today's audit-prices WARN 62 and the stated baseline 60.",
-      "status": "approved",
+      "status": "applied",
       "ts": "2026-09-22",
-      "decision": "ACCEPTED. audit-prices baseline restated 60 -> 62 WARN with the cause named (murakami + wnba stamps 2026-08-31, 22 days). Owner: Wednesday build - re-read the prices on both pages, then restamp; never roll a stamp without the re-read (audit-2026-09-07-1's mistake). Add /victor-wembanyama-rookie-cards to the same pass: dated Aug 31 with no machine stamp, it crossed 21 days today invisibly (Integrity Watch Sep 21 alsoNoted).",
+      "decision": "ACCEPTED. audit-prices baseline restated 60 -> 62 WARN with the cause named (murakami + wnba stamps 2026-08-31, 22 days). Owner: Wednesday build - re-read the prices on both pages, then restamp; never roll a stamp without the re-read (audit-2026-09-07-1's mistake). Add /victor-wembanyama-rookie-cards to the same pass: dated Aug 31 with no machine stamp, it crossed 21 days today invisibly (Integrity Watch Sep 21 alsoNoted). | APPLIED 2026-09-22: murakami, wnba and wembanyama re-read on SCP dated solds (not rolled) and restamped Sep 22; several figures corrected or withdrawn (see STATE NOW table).",
       "decidedBy": "chief-of-staff",
       "decided": "2026-09-22"
     },

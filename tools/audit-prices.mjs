@@ -33,6 +33,14 @@ const visibleText = (html) => stripCode(html).replace(/<[^>]+>/g, " ");
 // $$-style placeholder: 2+ dollar signs NOT followed by a digit (so "$$" "$$$+" "$$-$$$" hit, "$5" doesn't)
 const PLACEHOLDER = /~?\$\$+(?!\d)[-+]?\$*\+?/g;
 
+// check 10 (graded-claim-unsourced) — see the check for why
+const GRADED_FIG = /\b(?:PSA|BGS|SGC|CGC)\s?(?:10|9\.5|9|8)\b[^$.]{0,40}?\$\s?[\d,]+(?:\.\d\d)?(?:\s?[KkMm])?/g;
+const GMON = "(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\.?";
+const GRADED_SRC = new RegExp(`dated sales?|no verified sale|\\b${GMON}\\s\\d{1,2}\\b|\\b\\d{1,2}/\\d{1,2}/\\d{2,4}\\b`, "i");
+const GRADED_RETRACT = /struck|never (?:been )?a (?:verified )?sale|withdrawn|retract|corrected|was not a sale|guide estimate|not a sale|no verified/i;
+// pages whose graded figures are worked examples, not market claims (the grading-ROI calculator)
+const GRADED_EXAMPLE_PAGES = new Set(["psa-grading-guide.html"]);
+
 const findings = []; // {page, level, type, detail}
 const add = (page, level, type, detail) => findings.push({ page, level, type, detail });
 
@@ -113,6 +121,22 @@ for (const page of pages) {
   if (cells.length && !/data-prices-updated=/.test(html))
     add(page, "WARN", "no-machine-stamp", `has ${cells.length} price cell(s) but no data-prices-updated attribute — the staleness check cannot see this page`);
 
+  // 10. WARN — graded-claim-unsourced (iw-2026-09-17-4 + LANE-RULES R18, shipped 2026-09-22).
+  //     Every other price check reads price CELLS, so a graded figure written in prose, a card strip or a
+  //     hero chip passed FAIL 0 forever — /bowman-bangers carried five of them for weeks. This reads the
+  //     page's visible TEXT: a "PSA/BGS/SGC/CGC <grade> … $<n>" with no dated-sale language, no date and
+  //     no retraction language within ~200 chars is a graded figure nobody can trace. WARN, one per page,
+  //     because the backlog predates the rule; the SCP graded sales-table pull clears it page by page.
+  if (!GRADED_EXAMPLE_PAGES.has(page)) {
+    const vt = text.replace(/&[a-z]+;|&#\d+;/g, " ").replace(/\s+/g, " ");
+    const hits = [...vt.matchAll(GRADED_FIG)].filter((m) => {
+      const win = vt.slice(Math.max(0, m.index - 80), m.index + m[0].length + 120);
+      return !GRADED_SRC.test(win) && !GRADED_RETRACT.test(win);
+    });
+    if (hits.length)
+      add(page, "WARN", "graded-claim-unsourced", `${hits.length} graded figure(s) in text with no dated sale / date near them — e.g. "${hits[0][0].slice(0, 60)}" — R18: one row with date + grade + price, or "No verified sale"`);
+  }
+
   // 6. WARN — prose date stamps that disagree with the page's freshest date.
   // Added Aug 25, 2026: the bowman-bangers footer sat on "August 18, 2026" for a
   // week after the Tuesday re-mark refreshed every price above it. Machine-readable
@@ -160,6 +184,22 @@ for (const page of pages) {
     }
   }
 }
+
+// 10b. WARN — the same test over data/calls.json strings, which /track-record renders client-side and no
+//      gate read until 2026-09-22 (iw-2026-09-18-1 found four retracted PSA 10 figures there).
+try {
+  const calls = JSON.parse(readFileSync(join(ROOT, "data/calls.json"), "utf8"));
+  const rows = Array.isArray(calls) ? calls : calls.calls || [];
+  let n = 0, eg = "";
+  for (const c of rows) for (const k of ["readLabel", "note", "thesis", "label"]) {
+    const v = typeof c[k] === "string" ? c[k] : "";
+    for (const m of v.matchAll(GRADED_FIG)) {
+      const win = v.slice(Math.max(0, m.index - 80), m.index + m[0].length + 120);
+      if (!GRADED_SRC.test(win) && !GRADED_RETRACT.test(win)) { n++; eg ||= `${c.id}.${k}: "${m[0].slice(0, 50)}"`; }
+    }
+  }
+  if (n) add("data/calls.json", "WARN", "graded-claim-unsourced", `${n} graded figure(s) with no dated sale near them — e.g. ${eg}`);
+} catch (e) { /* no calls.json in this tree */ }
 
 // --- report ------------------------------------------------------------------
 const fails = findings.filter((f) => f.level === "FAIL");
