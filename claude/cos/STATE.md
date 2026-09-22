@@ -99,10 +99,22 @@ finding only if its cause is not named here.
 ## OPEN ITEMS (auto-approved, for agents) — ranked
 
 - **P0 — the compliance program (Mo, Sep 22). Phases, in order; plan in the Project doc:**
-  - **Phase 1 — nothing raw in public.** Feed served from our own origin (spec
-    `claude/cos/feed-origin-and-repo-privacy-2026-09-20.md`), raw listing history out of anything public,
-    then the repo goes private. **Prerequisite, Mo's click:** cloud lanes clone over anonymous HTTPS today,
-    so a private repo blinds them until the repo is granted to Claude's GitHub access (see NEEDS-MO).
+  - **Phase 1 — nothing raw in public. BUILT + LIVE 2026-09-22 (`74f8e60`, `ddecb71`); the flip is not done.**
+    Done: every page, `api/auctions`, the generators and the QA harness read `/feed/<file>` (static copy of
+    the three derived files on `main` under `data/feed/`, published by the nightly Action); live check —
+    six pages, all feed reads via `/feed`, zero raw.githubusercontent requests, 0 page errors;
+    `/feed/listings-history.json` and `/feed/ga4-latest.json` 404 by design. The listing store keeps no
+    titles or seller names (scrubbed), 60-day retention. LANE-RULES R19.
+    **Before the repo goes private, in order:** (1) **tomorrow ~09:00 PT check** that the 01:15 nightly
+    run's new "Publish the public feed" step pushed `feed: nightly 2026-09-23` to `main` — if it failed,
+    fix it before anything else (the site keeps yesterday's feed, nothing blanks); (2) the cloud lanes
+    (Integrity Watch, Ideas Desk, X Desk Watch, CoS weekly) clone over anonymous HTTPS and read `ga4-*`
+    from raw URLs — they need read access to a private repo first (**Mo's one click**, asked when 1 is green);
+    (3) flip visibility in GitHub settings (CoS, Mo's Chrome); (4) verify Vercel still builds and the
+    deploy key still pushes.
+    **Found on the way, separate:** the `GITHUB_TOKEN` in Vercel no longer reads the repo — `/api/decisions`
+    answers "store read failed", so dungeon decisions and track-signal writes are failing silently. The
+    Dungeon is secondary (R12); fix only if track-signals turns out to matter to a live surface.
   - **Phase 2 — marks on sold data.** Every published mark, index level and signal moves to non-eBay dated
     solds (SCP/PriceCharting, the path the football shelf and the Sep 22 re-reads already use). BCB26/BOW26
     and the nightly engine signals are the big ones. eBay stays as live listings with buy links only.
@@ -137,11 +149,17 @@ finding only if its cause is not named here.
 
 ## WAITING ON MO — see `NEEDS-MO.md`
 
-One click: grant the repo to Claude's GitHub access before it goes private (Phase 1). Nothing else.
+One click, not yet: read access for the cloud lanes before the repo goes private — asked when the Sep 23 nightly feed publish is verified. Nothing else.
 
 ---
 
 ## RUN LOG (last 7 days; older entries in the archive)
+
+- **Sep 22 ~14:20–15:00 PT (CoS, Mac-linked, Mo: "perfect. start it.")** — compliance Phase 1 built. First cut
+  (`74f8e60`) served the feed through an API function on Vercel's GITHUB_TOKEN; live it fell back to the public
+  URL every time — the token is dead. Re-cut to option (a) (`ddecb71`): the nightly Action copies three derived
+  files onto `main` (`data/feed/`), seeded today. Listing store scrubbed of titles/sellers. Live-verified.
+  Mo ruled no contact with eBay/EPN (`e87980e`). Gates 0/76 · 0/3 · 0/1.
 
 - **Sep 22 ~14:00–15:30 PT (CoS, Mac-linked, Mo in chat: "go ahead and do the wednesday build now")** — see
   NOW above. Compliance brief read by a research agent from the live agreements (API License Agreement
