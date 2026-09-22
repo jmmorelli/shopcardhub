@@ -67,6 +67,23 @@ for (const f of pages) {
   }
 }
 
+/* ---------- 1b. EPN fragment defect (Sep 22 2026) ----------
+   A raw "#" anywhere in an eBay URL is a fragment delimiter: the browser sends everything
+   BEFORE it and drops the rest, so `_nkw=pokemon+Umbreon+ex+#161&LH_BIN=1&...&campid=...`
+   reaches eBay as `_nkw=pokemon+Umbreon+ex+` with no mkevt, no campid, no customid — an
+   uncredited click on a broader query. 254 such links sat on the six Pokemon index pages
+   from launch until today. Check 1 could never see them: they live in `var CARDS = [...]`
+   inside a <script>, and markup() strips script blocks. So this check reads the RAW file.
+   Card numbers belong in _nkw as %23. */
+for (const f of pages) {
+  const raw = read(f);
+  const links = raw.match(/https?:\/\/(?:www\.)?ebay\.com\/[^"'\\ <>]+/g) || [];
+  for (const u of links) {
+    if (!u.includes("/sch/") && !u.includes("/itm/")) continue;
+    if (u.includes("#")) add("FAIL", "epn-fragment", f, `raw "#" truncates the URL — eBay receives only "${u.split("#")[0].slice(-60)}" and no tracking params: ${u.slice(0, 120)}`);
+  }
+}
+
 /* ---------- 2. Amazon link compliance ---------- */
 for (const f of pages) {
   const html = markup(f);
