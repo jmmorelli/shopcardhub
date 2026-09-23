@@ -13,6 +13,26 @@
 
 ---
 
+## NOW — 2026-09-23 (read this block first)
+
+### Gap fixes (Mo in chat, ~10:45 PT: "fix 1-3 right now", fold in the EPN read, weekend cover, "do whatever needs double-checking")
+
+| Item | State |
+|---|---|
+| **R20 — Phase 2 bridge.** Monday lane may not publish a new eBay-derived level; BCB26/BOW26 held with a dated "moving to sold basis" line; Pokémon indices (PriceCharting) re-mark as normal | **In force.** LANE-RULES R20. The Sep 28 Monday run is the first under it. |
+| **Feed titles.** `/feed/prices-*.json` carried 40 eBay listing titles each | **Stripped** on main today + the nightly publish now strips them (`tools/ci/strip-feed-titles.mjs`). |
+| **Repo privacy** | **Closed by Mo ~10:00 PT: "Scrub history, stay public"** (see Phase 1 below). Nothing pending — the lane-access click is withdrawn. |
+| **R21 — Phase 2 owner + dates.** CoS · weekly; build-order #1 | Sep 30 BCB26/BOW26 on solds · Oct 7 every public mark on solds · Oct 14 `ask-basis-mark` gate + Phase 3. Desk checks the date Thursdays. |
+| **R22 — EPN money read** | Desk, **every Wednesday**, Mo's Chrome → STATE *Milestones* line + `claude/cos/epn-read-<date>.md`. **First read: today's 14:00 desk.** Oct 21 read = the `-case`/`-ag` link verdict. |
+| **R23 — weekend cover** | Sunday run acts on X Desk Watch's Sat+Sun filings first. |
+| **R24 — independent checks** | `.github/workflows/site-gates.yml`: three gates on every site push + daily 08:30 PT (weekends too) + live-feed freshness + desk heartbeat → one `gate-watch` issue the desk closes. |
+| "Chief of staff sunday" schedule | **Fixed** — reads Sun 14:00 PT only (verified in the scheduled-task list Sep 23). NEEDS-MO item closed. |
+| Mo not concerned (Sep 23) | COMC sales tracking (side hustle), Card Dungeon + `/api/decisions` token (after the site earns). Do not re-raise. |
+
+### Milestones (R22 — one line per Wednesday read)
+
+- 2026-09-18 (by hand): Sep 4–17 $37.98 on 94 clicks; trailing ~$100/mo → **below M0**.
+
 ## NOW — 2026-09-22
 
 ### The Wednesday build ran a day early (Mo, Sep 22 ~13:45 PT: "go ahead and do the wednesday build now")
@@ -155,11 +175,15 @@ finding only if its cause is not named here.
 
 ## WAITING ON MO — see `NEEDS-MO.md`
 
-One click, not yet: read access for the cloud lanes before the repo goes private — asked when the Sep 23 nightly feed publish is verified. **And one now (desk, Sep 22 15:00 PT): the "Chief of staff sunday" scheduled task still runs Sun/Tue/Thu 17:00 PT — set it to Sunday only.** Nothing else.
+**Nothing (Sep 23).** The repo-access click is withdrawn (repo stays public, Mo) and the Sunday task's schedule is fixed. Only standing item: if EPN is signed out on a Wednesday, R22 files one line.
 
 ---
 
 ## RUN LOG (last 7 days; older entries in the archive)
+
+- **Sep 23 ~10:40–11:00 PT (CoS, Mac-linked, Mo in chat)** — agent/schedule gap analysis → LANE-RULES R20–R24,
+  feed titles stripped, `site-gates.yml` added, STATE/NEEDS-MO updated. Gates on the pushed tree: audit-prices 0 FAIL ·
+  audit-site 0/3 · audit-terminal 0/0 with `--feed data/feed`. Map of every run: `Card Hub/card-hub-agent-map-2026-09-23.pdf`.
 
 - **Sep 23 ~10:05 PT (CoS)** — Phase 1 closed as "scrub, stay public" (Mo): `price-data` history reset to `6cd29fc`; nightly feed publish verified (`d14190b`); cloud-lane repo auth tested and denied (`claude/cos/github-access-test-2026-09-23.md`).
 

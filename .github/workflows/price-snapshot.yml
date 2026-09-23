@@ -91,6 +91,8 @@ jobs:
             for f in prices-latest.json prices-history.json market-latest.json; do
               cp "price-data/data/$f" "data/feed/$f"
             done
+            # R20 (2026-09-23): no eBay listing titles in the public feed.
+            node tools/ci/strip-feed-titles.mjs data/feed/prices-latest.json data/feed/prices-history.json data/feed/market-latest.json
             git add data/feed
             if git diff --cached --quiet; then echo "Feed unchanged."; exit 0; fi
             git commit -q -m "feed: nightly $(date -u +%F)"

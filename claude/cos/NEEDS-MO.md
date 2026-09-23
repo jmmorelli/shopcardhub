@@ -11,7 +11,17 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — one setting, tonight if you can (2026-09-22 15:00 PT, from the desk)
+## Open — nothing (2026-09-23 11:00 PT)
+
+- **✅ CLOSED — the "Chief of staff sunday" schedule.** It now reads Sundays 2:00 PM PT only (checked in the
+  scheduled-task list, Sep 23). Nothing to do.
+- **✅ CLOSED — the repo-access click.** You ruled "scrub history, stay public"; the lanes keep reading the public repo.
+- **One thing that may come up on a Wednesday:** the weekly money read (R22) opens the EPN dashboard in your Chrome.
+  If EPN has signed you out, you'll get one line here asking you to sign back in. Nothing else.
+
+---
+
+## Closed — one setting (2026-09-22 15:00 PT, from the desk)
 
 - **⏰ The "Chief of staff sunday" scheduled task still runs Sunday, Tuesday AND Thursday at 5:00 PM PT**
   (its schedule reads `0 17 * * 0,2,4`; next fire is tonight at 17:00). You set it to Sunday-only on Sep 21

@@ -631,7 +631,7 @@ and the charter points at it. **If you see a day in any other document, this tab
 
 | Task | When (Pacific) | What |
 |---|---|---|
-| **CoS · desk** *(created 2026-09-21, replaces the 06:00 cloud daily — Mo: "shouldn't the CoS be seeing these as they get created and go execute?")* | **weekdays 14:00**, Mac-linked (cloud task bound to Mo's Mac; the Card Hub folder, Chrome and the Grok Bot app are reachable) | **The inbox.** Reads everything filed since the previous desk run — Project docs (ideas, Integrity Watch, X Desk Watch) AND the Mac folder (`weekly-scan-*`, `x-desk/watch-*` + `vendor-brief-*`, `chief-of-staff/brief-*`, `comc-trader/*`) AND `awaiting-cos` proposals — rules on each (applied / queued / declined / needs-Mo), applies the auto-approved fixes from a fresh deploy-key clone behind the three gates, **delivers vendor briefs through the Grok Bot app**, runs the engine/GA4/Mobile-QA instrument checks, rules on ideas (Tue/Fri), verifies NEEDS-MO, writes the STATE run-log entry and mirrors both copies. If the Mac is unreachable it does the cloud half and says "MAC UNREACHABLE" rather than pretending. |
+| **CoS · desk** *(Wednesdays also: the EPN money read, R22; every run: open `gate-watch` issues first, R24)* *(created 2026-09-21, replaces the 06:00 cloud daily — Mo: "shouldn't the CoS be seeing these as they get created and go execute?")* | **weekdays 14:00**, Mac-linked (cloud task bound to Mo's Mac; the Card Hub folder, Chrome and the Grok Bot app are reachable) | **The inbox.** Reads everything filed since the previous desk run — Project docs (ideas, Integrity Watch, X Desk Watch) AND the Mac folder (`weekly-scan-*`, `x-desk/watch-*` + `vendor-brief-*`, `chief-of-staff/brief-*`, `comc-trader/*`) AND `awaiting-cos` proposals — rules on each (applied / queued / declined / needs-Mo), applies the auto-approved fixes from a fresh deploy-key clone behind the three gates, **delivers vendor briefs through the Grok Bot app**, runs the engine/GA4/Mobile-QA instrument checks, rules on ideas (Tue/Fri), verifies NEEDS-MO, writes the STATE run-log entry and mirrors both copies. If the Mac is unreachable it does the cloud half and says "MAC UNREACHABLE" rather than pretending. |
 | **CoS · weekly site audit** | **Wednesday 11:00** *(moved from Monday 04:30 by Mo, 2026-09-16 — "a bigger gap" from the Sunday run, and a working hour rather than pre-dawn)* | §0 Business Read first → Terminal Product read → full §4 audit + full-site sweep → Pricing Integrity weekly → the build order → Tape Recap → adjudicate every `awaiting-cos` filing → fix, commit and push behind the three gates → IndexNow. |
 | ~~Gengar · conversion coverage~~ *(created 2026-09-17; task DELETED 2026-09-21 — it had been disabled since creation and never fired, while STATE assumed it ran)* | — | **Folded into the Wednesday weekly:** the weekly runs `site-auditor §15` + `tools/buy-strip-health.mjs` against production and fixes dead eBay queries in `data/buy-strip.json` as part of its build order. Gengar stays a persona in `pipeline.json`; its Monday coverage line is written by the weekly. |
 | **Integrity Watch — instruments and claims** *(created 2026-09-17; row added to this table 2026-09-18)* | **Monday + Thursday 05:00** *(daily → 2×/week 2026-09-21)* | *Cadence cut 2026-09-21: pages change on the Mon/Tue/Wed pushes, so Thursday reads the week's pushes and Monday reads the weekend; a daily read of unchanged pages was re-filing the same findings.* Cloud, find-and-file only. Part A: feed counts, marks, signals, index cadence, auction closes vs trailing-14 medians; the date of the last recorded GA4 read in STATE (HIGH if > 7 days). Part B: six live pages a run, claims vs data. Files `claude/cos/integrity-watch-<date>.md` + proposals JSON; the CoS adjudicates. |
@@ -643,8 +643,8 @@ and the charter points at it. **If you see a day in any other document, this tab
 
 | Lane | Task-key | What |
 |---|---|---|
-| Sunday Chief of Staff run | `chief-of-staff-sunday` | Weekly planning brief, queue, coach notes, roster. **Sunday only from 2026-09-21** — the Tuesday/Thursday light checkpoints are retired; the cloud daily is that checkpoint. |
-| Monday trend scan (price lane) | `shopcardhub-weekly-trend-scan` | Autonomous price lane — mechanical re-marks and index levels behind the gates |
+| Sunday Chief of Staff run | `chief-of-staff-sunday` | **Sun 14:00.** Weekly planning brief, queue, coach notes, roster. **First: weekend cover (R23)** — act on X Desk Watch's Sat + Sun filings and deliver any vendor correction. **Sunday only from 2026-09-21** — the Tuesday/Thursday light checkpoints are retired; the cloud daily is that checkpoint. |
+| Monday trend scan (price lane) | `shopcardhub-weekly-trend-scan` | Autonomous price lane — mechanical re-marks and index levels behind the gates. **R20 binds it: sold-basis re-marks only; BCB26/BOW26 held until Sep 30.** |
 | Tuesday board update | `bowman-bangers-tuesday-update` | Bowman Bangers re-mark, Tuesday Tape digest, **and publishing the board tape + numbers to the fixed vendor URL**. **The board-tweet queue step is REVOKED (R10) — do not queue it, do not post it, and report the prompt as stale.** |
 | ~~MWF site auditor~~ | `shopcardhub-site-auditor` | **RETIRED 2026-09-21 (CoS ruling under the cadence cut; Mo deletes the desktop task).** Its deterministic sweep already runs inside the Wednesday weekly and its claims check is the Integrity Watch. Three wrong filings on Sep 16 from a stale mount; the probation is moot. Do not re-create. |
 | Thursday trader · Friday release window · Wednesday build session | — | Trader recs; release-day conversion; the build session that lands queued patches |
@@ -775,6 +775,85 @@ raw.githubusercontent.com** — that URL stops working the day the repo goes pri
 (ids, prices, bids and dates only — titles and seller names are no longer stored, 60-day retention) and
 `ga4-*.json` stay on the `price-data` branch: read them from a clone, never a public URL. **Never hand-edit
 `data/feed/`** — the nightly overwrites it.
+
+## R20 · Until Phase 2 lands, no lane publishes a new eBay-listing-derived mark (CoS, 2026-09-23 — Mo: "fix it now")
+
+**Why:** Mo's Sep 22 ruling moves every published mark, index level and signal off eBay listing data
+(Browse / the nightly engine) onto dated sold data. The Monday price lane's and Tuesday board's
+prompts predate the ruling and still re-mark from the engine. The next Monday run (Sep 28) would
+have published fresh ask-derived levels a week after the ruling. This file wins over those prompts.
+
+**What each lane does now:**
+
+| Surface | Source today | Rule until its Phase 2 date (R21) |
+|---|---|---|
+| Pokémon set indices (`tools/remark-indices.mjs`) | PriceCharting dated solds | **Re-mark as normal.** Sold data — already compliant. |
+| **BCB26** (`build-bcb26-index.mjs`) | eBay asks | **Do not publish a new level.** Leave the last level and its date on the page, add one line: *"Held since <date> — this index is moving to a sold-price basis."* Never narrate the held value as a series (R: carried values). |
+| **BOW26** (`build-bow26.mjs`) | mixed (PriceCharting + eBay) | Re-mark only if every constituent it prices has a sold-basis figure; otherwise hold exactly as BCB26. |
+| Tuesday board seats + verdicts | last printed sold price (already the rule) | **Unchanged** — seats rank on sold prints. An ask may appear only as a live listing with a buy link ("asks from $X · N live"), never as a mark, a % change or a signal input. |
+| Engine blocks, card pages, home panels (`prices-latest.json`) | eBay asks, repainted nightly | **No new surface** may start reading engine marks. Existing blocks keep running until their R21 date so nothing on the live site breaks; they are replaced, not extended. |
+
+The nightly engine keeps running: internal processing is accepted (Mo, Sep 22). What changes is only
+what we *publish* as a price. **A lane that finds itself about to write an ask-derived number into a
+level, a mark, a % move or a BUY/HOLD/SELL on a public page stops, holds, and files it for the desk.**
+
+**Feed hygiene (same day):** listing titles were still being published in `/feed/prices-*.json`
+(`image.title`, 40 per file). The nightly publish step now strips `image.title` before the copy to
+`data/feed/`, and today's files were stripped by hand. Live listings with buy links are unaffected.
+
+## R21 · Phase 2 (marks on sold data) — owner and dates (CoS, 2026-09-23)
+
+**Owner: the CoS · weekly (Wednesday 11:00).** Phase 2 is the weekly's **build-order item #1** until it
+is done, ahead of everything except a live FAIL. The desk checks the date every Thursday; a slipped
+date is named in the Sunday brief with the reason — it never slips silently.
+
+| Wednesday | Deliverable | Done means |
+|---|---|---|
+| **Sep 30** | BCB26 and BOW26 rebuilt on SportsCardsPro/PriceCharting dated solds (forward-start, logged divisor adjustment per the sector rulebook). R20's hold on them lifts on the new basis. | Both pages show a sold-basis level with a dated stamp; `audit-prices` 0 FAIL. |
+| **Oct 7** | Card pages, engine blocks and home panels switch their *mark* to sold basis. eBay stays as "live listings from $X · N live" with a buy link. Engine BUY/HOLD/SELL either recomputed on solds or removed from public pages. | No public price figure reads `prices-latest.json` as its basis. |
+| **Oct 14** | New `audit-prices` check `ask-basis-mark` (FAIL): any published mark/level/signal sourced from the engine. Phase 3 (EPN disclosure + privacy notice) ships the same run. | Gate at 0 FAIL on the live tree; Phase 2 declared done in STATE. |
+
+## R22 · The money read — EPN, every Wednesday (CoS, 2026-09-23 — Mo: "fold it in somewhere")
+
+**Why:** the milestones (M0 $300 · M1 $1,000 · M2 $10,000 a month, trailing 30 days, two consecutive
+weekly reads) were the scoreboard and no run read it. Last read: Sep 18, by hand.
+
+**Owner: the CoS · desk, Wednesday runs only** (it is the one run bound to Mo's Mac and his signed-in
+Chrome). Steps: open the EPN dashboard in Mo's Chrome → read earnings, clicks and actions for the
+**trailing 30 days** and the **last 7 days**, plus earnings by `customid` → write one dated line to STATE
+under *Milestones* and the full read to the Project doc `claude/cos/epn-read-<date>.md`. The rung moves
+only on two consecutive weekly reads. No trend is claimed on fewer than ~30 actions.
+If EPN is signed out: the read is skipped, and **one** NEEDS-MO line says so (a sign-in is Mo's).
+
+**Oct 21 (a Wednesday) — the link experiment verdict rides on this read.** On Sep 20 we added
+sealed-case links (`-case`) and eBay Authenticity Guarantee links (`-ag`) to product pages as a test.
+That day's read applies the kill rules already written in STATE: `-case` removed if 0 actions on ≥ 20
+clicks or < 5% of sealed clicks; `-ag` reverted if fewer actions per click than plain links on ≥ 30
+clicks. Fewer clicks than that → the test runs to the Nov 18 read, then decides regardless.
+
+## R23 · Weekend cover (CoS, 2026-09-23 — Mo: busy weekends, "do whatever you want in the cloud")
+
+The desk runs weekdays; Grok Bot posts seven days a week with no approval gate.
+- **The Sunday CoS run (Sun 14:00, Mac) reads X Desk Watch's Saturday and Sunday filings first** and
+  delivers any vendor correction through the Grok Bot app, exactly as the desk would. A Saturday FAIL
+  is corrected Sunday afternoon, not Monday afternoon.
+- **Machines cover the rest (R24):** CI gates on every push, the nightly feed check and the desk
+  heartbeat run in GitHub Actions every day including weekends. Nobody needs Mo on a weekend.
+
+## R24 · The independent checks — nobody grades their own homework (CoS, 2026-09-23)
+
+Every lane that pushes runs the three gates itself. That is self-grading. `.github/workflows/site-gates.yml`
+re-runs them on GitHub's machines, independent of any agent:
+- **On every push to `main` that touches the site:** `audit-prices`, `audit-site`, `audit-terminal`
+  (against the published feed). A FAIL opens or updates one GitHub issue labelled `gate-watch`.
+- **Every day, 08:30 PT (weekends too):** the same gates on `main`, plus **feed freshness** (the live
+  `/feed/prices-latest.json` must be dated today or yesterday PT, ≥ 30 cards, ≥ 25 numeric marks, no
+  `image.title`), plus **the desk heartbeat** (Tue–Sat mornings: `claude/cos/STATE.md` on `main` must carry a RUN LOG
+  line with the previous weekday's date and `CoS · desk` — e.g. `Sep 22 … (CoS · desk`. A miss is an R15 incident).
+- **Who reads it:** the desk's STEP 0 lists open `gate-watch` issues, fixes or rules on each, and closes it
+  with the commit that fixed it. The existing `price-audit.yml` (EPN link + placeholder check) stays.
+- **What is already double-covered and stays that way:** Grok's posts (X Desk Watch, then the desk);
+  pages vs data (Integrity Watch, then the weekly); the engine (Integrity Watch Part A + this check).
 
 ## Changing this file
 

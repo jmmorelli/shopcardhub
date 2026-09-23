@@ -1,0 +1,57 @@
+# R24 (LANE-RULES, 2026-09-23) — independent re-run of the three site gates, on GitHub's machines,
+# so no agent grades its own push. Plus the daily feed-freshness + CoS desk heartbeat checks.
+# A FAIL opens/updates ONE issue labelled gate-watch; the CoS desk reads and closes it (Mo need not act).
+name: site-gates
+
+on:
+  push:
+    branches: [main]
+    paths: ["**/*.html", "js/**", "css/**", "api/**", "data/**", "tools/**", "LANE-RULES.md", "claude/cos/STATE.md"]
+  schedule:
+    - cron: "30 15 * * *" # daily 08:30 PT (PDT), weekends included
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: site-gates
+  cancel-in-progress: true
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run gates
+        id: run
+        run: |
+          set +e
+          fail=0
+          {
+            echo "## audit-prices"; node tools/audit-prices.mjs | tail -25; [ ${PIPESTATUS[0]} -eq 0 ] || fail=1
+            echo; echo "## audit-site"; node tools/site-auditor/audit-site.mjs | tail -25; [ ${PIPESTATUS[0]} -eq 0 ] || fail=1
+            echo; echo "## audit-terminal"; node tools/audit-terminal.mjs --feed data/feed | tail -25; [ ${PIPESTATUS[0]} -eq 0 ] || fail=1
+            if [ "${{ github.event_name }}" != "push" ]; then
+              echo; echo "## watch-checks (feed freshness + desk heartbeat)"; node tools/ci/watch-checks.mjs; [ $? -eq 0 ] || fail=1
+            fi
+          } > gates.txt 2>&1
+          cat gates.txt
+          echo "fail=$fail" >> "$GITHUB_OUTPUT"
+      - name: Open/update gate-watch issue on failure
+        if: steps.run.outputs.fail == '1'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId} (${context.eventName}, ${context.sha.slice(0,7)})\n\n` + '```\n' + fs.readFileSync('gates.txt','utf8').slice(-60000) + '\n```\nFor the CoS desk (R24). Mo: no action needed.';
+            const open = await github.rest.issues.listForRepo({ owner: context.repo.owner, repo: context.repo.repo, state: 'open', labels: 'gate-watch' });
+            if (open.data.length) await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: open.data[0].number, body });
+            else await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title: 'gate-watch: an independent check failed', body, labels: ['gate-watch'] });
+      - name: Fail the job
+        if: steps.run.outputs.fail == '1'
+        run: exit 1
