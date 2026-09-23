@@ -109,11 +109,14 @@ finding only if its cause is not named here.
     ~06:39 PT, GitHub's cron runs late); `/feed/prices-latest.json` day 2026-09-23, 41 cards, 36 numeric marks —
     the engine ran cleanly under the API guard; listing store 1,930 entries, 0 titles, 0 sellers; (2) the cloud lanes
     (Integrity Watch, Ideas Desk, X Desk Watch, CoS weekly) clone over anonymous HTTPS and read `ga4-*`
-    from raw URLs — they need read access to a private repo first (**Mo's one click — asked Sep 23 09:05 PT**: add the repo to
-    the Claude GitHub App's repository access; the CoS verifies by an authenticated `git push --dry-run` over HTTPS
-    from a cloud session before flipping);
-    (3) flip visibility in GitHub settings (CoS, Mo's Chrome); (4) verify Vercel still builds and the
-    deploy key still pushes.
+    from raw URLs — they need read access to a private repo first. **Tested Sep 23: AUTH-DENIED.** Mo installed the
+    Claude GitHub App (all repos) and a fresh scheduled cloud session was still refused — credentials come from a
+    session's repo "sources", which scheduled tasks here do not get.
+    **RULED by Mo Sep 23 ~10:00 PT: "Scrub history, stay public."** Done: `price-data` squashed to one commit
+    (`6cd29fc`, force-with-lease on `089f44f`), today's files byte-identical — the 105 earlier snapshots that held
+    listing titles and seller names are unreachable from any branch. Caveat: GitHub keeps unreachable objects
+    until its own garbage collection, so an old commit is fetchable only by someone holding its exact hash. The
+    repo stays public; going private is off the table unless the lanes move to the Mac.
     **Found on the way, separate:** the `GITHUB_TOKEN` in Vercel no longer reads the repo — `/api/decisions`
     answers "store read failed", so dungeon decisions and track-signal writes are failing silently. The
     Dungeon is secondary (R12); fix only if track-signals turns out to matter to a live surface.
@@ -157,6 +160,8 @@ One click, not yet: read access for the cloud lanes before the repo goes private
 ---
 
 ## RUN LOG (last 7 days; older entries in the archive)
+
+- **Sep 23 ~10:05 PT (CoS)** — Phase 1 closed as "scrub, stay public" (Mo): `price-data` history reset to `6cd29fc`; nightly feed publish verified (`d14190b`); cloud-lane repo auth tested and denied (`claude/cos/github-access-test-2026-09-23.md`).
 
 - **Sep 22 14:08–15:0x PT (CoS · desk, first run, Mac-linked, unattended).** HEAD `e87980e` · origin/main
   `e87980e` at start (another CoS session pushed `74f8e60`, `ddecb71`, `263bf17` during the run — fetch+rebase
