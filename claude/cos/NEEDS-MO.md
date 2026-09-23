@@ -11,7 +11,11 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — one sign-in (2026-09-23 14:50 PT, from the desk)
+## ✅ CLOSED — EPN sign-in (2026-09-23 ~15:30 PT)
+
+- You signed in and sent screenshots; the first weekly money read is done (`claude/cos/epn-read-2026-09-23.md`). **Note for next Wednesday:** Browser 1 still bounced the CoS to the eBay password page after your sign-in, so the read may need screenshots again. Nothing to do now.
+
+## (was) Open — one sign-in (2026-09-23 14:50 PT, from the desk)
 
 - **EPN has signed you out in Browser 1.** The Wednesday money read (R22) opened `partner.ebay.com` and got the login page, so this week's earnings line is blank. **Action: sign in to partner.ebay.com in Browser 1 (the Chrome profile you picked for it today).** Next Wednesday's desk reads it; nothing else waits on it.
 

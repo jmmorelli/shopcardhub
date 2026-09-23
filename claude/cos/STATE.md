@@ -56,7 +56,7 @@ Key-event rate: **organic 11.19% 7d / 7.03% 28d** beside blended 6.32% / 4.74%.
 ### Milestones (R22 — one line per Wednesday read)
 
 - 2026-09-18 (by hand): Sep 4–17 $37.98 on 94 clicks; trailing ~$100/mo → **below M0**.
-- 2026-09-23 (desk, R22): **not read, EPN signed out** in Browser 1 (partner.ebay.com → login). One NEEDS-MO line. Rung unchanged: below M0.
+- **2026-09-23 (desk, R22, first read, from Mo's screenshots):** trailing 30 d (Aug 24–Sep 23) **$106.59 on 204 clicks / 24 actions** (EPC $0.52); last 7 d **$5.66 on 44 clicks / 3 actions** (EPN clicks7 = GA4 clicks7 = 44). **Below M0.** 82% of the 30 d came from two days (Aug 31 $58.50, Sep 9 $29.27); ex-those $18.82. 63% arrived untagged (`No Custom ID`, $66.78). The site emits none today, and the dates fit pre-tagging history (Mo); phone tag-drop (G1) is the other suspect. Test: Custom ID report for Sep 2–23 at the Sep 30 read. Full read: Project `claude/cos/epn-read-2026-09-23.md`.
 
 ## NOW — 2026-09-22
 
