@@ -13,6 +13,23 @@
 
 ---
 
+## TOP 3 PROBLEMS IN THE BUSINESS — weekly read 2026-09-23 (GA4 nightly, window ends Sep 22; bots = SG 141 + CN 23 sessions)
+
+1. **Earnings below M0; thin path into eBay.** ~$100/mo trailing (Sep 18 read) vs M0 $300. 44 outbound clicks/7d (buy-strip 7, buy-box 3) on ~203 clean sessions. Today's 14:00 desk EPN read (R22) writes the first Milestones line. *Doing:* nothing new ships that isn't Phase 2 or a live FAIL; R11 strips hold on every commercial page.
+2. **Traffic is small and 45% bots.** 364 sessions/7d raw → ~203 clean. Organic search 134: Bing 77 · Yahoo 24 · **Google 19** · DDG 11. *Doing:* Bing is the channel; Google stays a links game (PB26 concentration link post drafted for Mo); zero GSC request spend.
+3. **Retention flat; the return-user program is behind.** Returning 7d 3.8% raw / ~7.3% clean vs 7.5% baseline; `newsletter_signup` 0 since Sep 17; `track_card_from_page` **1**/7d (was 5). Return-user scorecard **2/14**, target B+ by Oct 26, and Phase 2 holds the build slot through Oct 14. **RULED by Mo Sep 23 ~11:45 PT: "compliance first"** — Phase 2 stays #1; return-user items (★ Track on Home first) follow the Sep 30 deliverable; the Nov 2 re-audit grades what exists.
+Key-event rate: **organic 11.19% 7d / 7.03% 28d** beside blended 6.32% / 4.74%.
+
+## WEEKLY — 2026-09-23 (CoS weekly, cloud, unattended) — detail `claude/cos/weekly-2026-09-23.md` (Project)
+
+- **Scoreboard:** Img 9 · Mob 8 · Bugs 9 · Mot 8 · Vault 8 · Perf 8 · Id 8 · **Cred 7→8** (on deploy) · **Return-user 2/14**. Gates 0/76 · 0/3 · 0/5 (`--run-tests`; the +4 WARN are `scenario-skipped`).
+- **PATCH WAITING FOR THE 14:00 DESK TO PUSH:** `652523a` (cloud clone), tree `22c2dd1cfcf02fa25bbaf88fe21eb44cd230f0bb`, file `~/Projects/shopcardhub/Claude outputs/weekly-2026-09-23.patch` + Project `claude/handoffs/weekly-2026-09-23.patch.txt`. The weekly had no deploy key (the "Card Hub" folder was not connected). Desk: fresh clone → `git am` → tree hash match → gates → push → curl → IndexNow → **pushLog entry** → close this line. Contents: **R20 breach fixed** (BOW26 page was recomputing a new ask-derived level nightly; now capped at `heldSince` 2026-09-21, BCB26 held line, `indices.json` `heldSince`); **R17: `data/card-images.json` carried 430 raw eBay listing titles + 32 prices, publicly** — stripped, resolvers fixed; og/JSON-LD on 4 pages; release metas (Bowman Football Sep 30, Pristine Sep 24, Museum Oct 7); PF25 wiring on `/indices` + nav colour; "real time" X promises removed; bangers H2/badge.
+- **Desk to rule:** `card-images.json` titles remain in `main`'s public git history (same class as the `price-data` scrub Mo ruled Sep 23; a `main` rewrite is a force-push — not done by the weekly).
+- **Queued to the desk, in order:** Pristine body → release-day state (streets Sep 24); home signup copy; index-page "this board / sold comps only" signup line; `pokemon-tcg-2026` "Verdict: Buy singles" + a dated re-read of its six stale SIR figures; BCB26 "pre-activation" chip on `/bowman-chrome-baseball-2026`; Flagg "advanced buy"; Sep 22 correction's PSA 9 range (R18); Yamal "Buy." over a dispersion-gated card; R9 "1st Bowman" shorthand; home Screens "Signal" header → "Engine (asks)" until Phase 2 Oct 7; resolver keep-if-alive; `audit-comps` sealed false positives.
+- **Not read:** GSC, Bing Webmaster, MailerLite — two Chrome browsers connected and the unattended session cannot pick one. The desk (Mac-bound) reads them. No production browser sweep (no GA4-realtime proof possible); full sweep ran on the offline harness: 104/104, 0 console errors, 0 overflow bar `/set-index-preview`; `/bowman-bangers` ≈51 phone screens.
+- **Recap:** drafted, **not sent** (Tuesday digest went out Sep 22 — LANE-RULES interim rule).
+- **Prompt drift (file wins):** the weekly prompt says SEND the recap, omits Phase 2 as build-order #1 (R21), and still carries the EPN read that R22 gave the desk. Fix the prompt at the Oct 1 roster review.
+
 ## NOW — 2026-09-23 (read this block first)
 
 ### Gap fixes (Mo in chat, ~10:45 PT: "fix 1-3 right now", fold in the EPN read, weekend cover, "do whatever needs double-checking")
@@ -181,6 +198,8 @@ finding only if its cause is not named here.
 ---
 
 ## RUN LOG (last 7 days; older entries in the archive)
+
+- **Sep 23 11:05–~12:45 PT (CoS · weekly, cloud, unattended)** — see WEEKLY above. Patch `652523a` built and gated (0/76 · 0/3 · 0/5), handed to the 14:00 desk to push; recap drafted not sent; 4 roster agents spawned (Terminal Product, Perf & SEO + Release Watch, Content Editor, Photo Keeper + Pricing Integrity); 0 `awaiting-cos` in pipeline.
 
 - **Sep 23 ~10:40–11:00 PT (CoS, Mac-linked, Mo in chat)** — agent/schedule gap analysis → LANE-RULES R20–R24,
   feed titles stripped, `site-gates.yml` added, STATE/NEEDS-MO updated. Gates on the pushed tree: audit-prices 0 FAIL ·

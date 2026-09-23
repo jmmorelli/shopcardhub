@@ -11,6 +11,11 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## ✅ RULED — return-user pace (2026-09-23 ~11:45 PT, Mo in chat: "compliance first")
+
+- The sold-price move (Phase 2, R21: Sep 30 · Oct 7 · Oct 14) stays build-order #1. The return-user items follow it;
+  the Nov 2 outside re-audit grades what exists and is expected to land below B+. Nothing to do.
+
 ## Open — nothing (2026-09-23 11:00 PT)
 
 - **✅ CLOSED — the "Chief of staff sunday" schedule.** It now reads Sundays 2:00 PM PT only (checked in the
