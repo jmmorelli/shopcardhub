@@ -11,6 +11,12 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — one sign-in (2026-09-23 14:50 PT, from the desk)
+
+- **EPN has signed you out in Browser 1.** The Wednesday money read (R22) opened `partner.ebay.com` and got the login page, so this week's earnings line is blank. **Action: sign in to partner.ebay.com in Browser 1 (the Chrome profile you picked for it today).** Next Wednesday's desk reads it; nothing else waits on it.
+
+---
+
 ## ✅ RULED — return-user pace (2026-09-23 ~11:45 PT, Mo in chat: "compliance first")
 
 - The sold-price move (Phase 2, R21: Sep 30 · Oct 7 · Oct 14) stays build-order #1. The return-user items follow it;
