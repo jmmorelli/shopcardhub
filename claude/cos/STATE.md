@@ -105,11 +105,13 @@ finding only if its cause is not named here.
     six pages, all feed reads via `/feed`, zero raw.githubusercontent requests, 0 page errors;
     `/feed/listings-history.json` and `/feed/ga4-latest.json` 404 by design. The listing store keeps no
     titles or seller names (scrubbed), 60-day retention. LANE-RULES R19.
-    **Before the repo goes private, in order:** (1) **tomorrow ~09:00 PT check** that the 01:15 nightly
-    run's new "Publish the public feed" step pushed `feed: nightly 2026-09-23` to `main` — if it failed,
-    fix it before anything else (the site keeps yesterday's feed, nothing blanks); (2) the cloud lanes
+    **Before the repo goes private, in order:** (1) ✅ **GREEN Sep 23 09:00 PT:** `d14190b feed: nightly 2026-09-23` on `main` (the Action ran
+    ~06:39 PT, GitHub's cron runs late); `/feed/prices-latest.json` day 2026-09-23, 41 cards, 36 numeric marks —
+    the engine ran cleanly under the API guard; listing store 1,930 entries, 0 titles, 0 sellers; (2) the cloud lanes
     (Integrity Watch, Ideas Desk, X Desk Watch, CoS weekly) clone over anonymous HTTPS and read `ga4-*`
-    from raw URLs — they need read access to a private repo first (**Mo's one click**, asked when 1 is green);
+    from raw URLs — they need read access to a private repo first (**Mo's one click — asked Sep 23 09:05 PT**: add the repo to
+    the Claude GitHub App's repository access; the CoS verifies by an authenticated `git push --dry-run` over HTTPS
+    from a cloud session before flipping);
     (3) flip visibility in GitHub settings (CoS, Mo's Chrome); (4) verify Vercel still builds and the
     deploy key still pushes.
     **Found on the way, separate:** the `GITHUB_TOKEN` in Vercel no longer reads the repo — `/api/decisions`
