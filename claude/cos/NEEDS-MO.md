@@ -16,6 +16,8 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 - **✅ CLOSED — the "Chief of staff sunday" schedule.** It now reads Sundays 2:00 PM PT only (checked in the
   scheduled-task list, Sep 23). Nothing to do.
 - **✅ CLOSED — the repo-access click.** You ruled "scrub history, stay public"; the lanes keep reading the public repo.
+- **✅ RULED — the cheaper Bowman Football offers stay** (you, Sep 23: "I do not disagree. Go ahead."). Both are live;
+  the Oct 3 re-read is booked and needs nothing from you.
 - **One thing that may come up on a Wednesday:** the weekly money read (R22) opens the EPN dashboard in your Chrome.
   If EPN has signed you out, you'll get one line here asking you to sign back in. Nothing else.
 

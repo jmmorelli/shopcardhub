@@ -27,6 +27,7 @@
 | **R23 — weekend cover** | Sunday run acts on X Desk Watch's Sat+Sun filings first. |
 | **R24 — independent checks** | `.github/workflows/site-gates.yml`: three gates on every site push + daily 08:30 PT (weekends too) + live-feed freshness + desk heartbeat → one `gate-watch` issue the desk closes. |
 | "Chief of staff sunday" schedule | **Fixed** — reads Sun 14:00 PT only (verified in the scheduled-task list Sep 23). NEEDS-MO item closed. |
+| **Bowman Football cheaper offers** ($42.97 blaster, $79.99 mega on the investor page) | **APPROVED by Mo Sep 23: "I do not disagree. Go ahead."** Offers stay; both verified live on `/bowman-football` Sep 23. Oct 3 re-read (scheduled one-off, 09:00 PT) reads the key-event rate against the 1.1% baseline. |
 | Mo not concerned (Sep 23) | COMC sales tracking (side hustle), Card Dungeon + `/api/decisions` token (after the site earns). Do not re-raise. |
 
 ### Milestones (R22 — one line per Wednesday read)
