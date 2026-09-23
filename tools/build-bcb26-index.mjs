@@ -130,6 +130,7 @@ if (SEED) {
 
 /* ---------------- 2. render ---------------- */
 const X = idx[TICKER];
+const fmtHeld = (d) => new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }); // R20 hold line
 if (!X) { console.error(`${TICKER} not in data/indices.json — run with --seed first`); process.exit(1); }
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
 const isPre = X.status !== "live";
@@ -182,7 +183,7 @@ const desc = isPre
 const priced = (X.basket || []).filter((r) => r.price != null).length; // cards actually carrying a mark, not basket slots
 const levelBox = isPre
   ? `<div class="levelbox"><div class="level pre">PRE</div><div class="levelchg">no level yet · base 100.00 at activation · ask basis, labeled · streets ${fmtD(X.releaseDate)}</div></div>`
-  : `<div class="levelbox"><div class="level">${last ? last.level.toFixed(2) : "—"}</div><div class="levelchg"${last ? ` data-prices-updated="${last.date}"` : ""}>base 100.00 · inception ${fmtD(X.inception)} · re-marked ${fmtD(last && last.date)} · ${esc(X.basisLabel || X.basis)}${prev && last ? ` · ${last.level >= prev.level ? "▲" : "▼"} ${((last.level / prev.level - 1) * 100).toFixed(1)}% vs prior mark` : ""}</div></div>`;
+  : `<div class="levelbox"><div class="level">${last ? last.level.toFixed(2) : "—"}</div><div class="levelchg"${last ? ` data-prices-updated="${last.date}"` : ""}>base 100.00 · inception ${fmtD(X.inception)} · re-marked ${fmtD(last && last.date)} · ${esc(X.basisLabel || X.basis)}${prev && last ? ` · ${last.level >= prev.level ? "▲" : "▼"} ${((last.level / prev.level - 1) * 100).toFixed(1)}% vs prior mark` : ""}</div>${X.heldSince ? `<div class="levelchg"><b>Held since ${fmtHeld(X.heldSince)}</b> — this index is moving to a sold-price basis.</div>` : ""}</div>`;
 
 const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="view-transition" content="same-origin">
 <title>${esc(title)}</title>

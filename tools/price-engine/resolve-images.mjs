@@ -33,5 +33,7 @@ for (const card of (wl.cards || []).filter((c) => c && c.source === "ebay" && c.
   } catch (e) { miss++; console.log("err ", key, String(e.message || e)); }
   await sleep(900);
 }
+// R17 (2026-09-23): no raw eBay listing title or listing price is ever written to this public file.
+for (const c of Object.values(out.cards || {})) { if (c) { delete c.title; delete c.price; } }
 fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
 console.log(JSON.stringify({ ok, miss, total: Object.keys(out.cards).length, out: OUT }));

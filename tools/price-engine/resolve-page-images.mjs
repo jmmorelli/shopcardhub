@@ -70,12 +70,14 @@ for (const f of files) {
         const q2 = normNum(q); if (q2 !== q) { await sleep(400); j = await get(q2); best = pick((j && j.listings) || [], q); }
         if (!best) { const q3 = q.replace(/\b\d{1,3}\/\d{1,3}\b/, "").replace(/\s+/g, " ").trim(); await sleep(400); j = await get(q3); best = pick((j && j.listings) || [], q); }
       }
-      if (best) { out.cards[key] = { ...best, label: name, d: new Date().toISOString().slice(0, 10), page: path.basename(f) }; ok++; console.log("ok  ", f, key.slice(0, 48), "->", best.title.slice(0, 60)); }
+      if (best) { out.cards[key] = { ...best, label: name, d: new Date().toISOString().slice(0, 10), page: path.basename(f) }; ok++; console.log("ok  ", f, key.slice(0, 48)); }
       else { miss++; console.log("miss", f, key.slice(0, 48), "(" + ((j && j.count) || 0) + " listings)"); }
     } catch (e) { miss++; console.log("err ", f, key.slice(0, 48), String(e.message || e)); }
     await sleep(500);
   }
 }
 out.generated = new Date().toISOString();
+// R17 (2026-09-23): no raw eBay listing title or listing price is ever written to this public file.
+for (const c of Object.values(out.cards || {})) { if (c) { delete c.title; delete c.price; } }
 fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
 console.log(JSON.stringify({ ok, miss, cached, total: Object.keys(out.cards).length }));

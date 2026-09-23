@@ -325,7 +325,7 @@ td.trk { width:70px; text-align:center; }
           <a href="/ascended-heroes-index" style="color:#f5c800;">AH26 — Ascended Heroes</a>
           <a href="/prismatic-evolutions-index" style="color:#e879f9;">PRIS25 — Prismatic Evolutions</a>
           <a href="/destined-rivals-index" style="color:#ff2e55;">DR25 — Destined Rivals</a>
-          <a href="/phantasmal-flames-index" style="color:#4fa8ff;">PF25 — Phantasmal Flames</a>
+          <a href="/phantasmal-flames-index" style="color:#00ccf5;">PF25 — Phantasmal Flames</a>
           <a href="/indices" class="dd-all">All Indices →</a>
           </div>
         </div>
@@ -431,7 +431,7 @@ td.trk { width:70px; text-align:center; }
         <a href="/ascended-heroes-index" style="color:#f5c800;">AH26 — Ascended Heroes</a>
         <a href="/prismatic-evolutions-index" style="color:#e879f9;">PRIS25 — Prismatic Evolutions</a>
         <a href="/destined-rivals-index" style="color:#ff2e55;">DR25 — Destined Rivals</a>
-        <a href="/phantasmal-flames-index" style="color:#4fa8ff;">PF25 — Phantasmal Flames</a>
+        <a href="/phantasmal-flames-index" style="color:#00ccf5;">PF25 — Phantasmal Flames</a>
         <a href="/indices" class="m-all">All Indices →</a>
         </div>
       </div>
@@ -552,7 +552,7 @@ td.trk { width:70px; text-align:center; }
 <script src="/js/buy-strip.js?v=1" defer></script>
 <!-- BUYSTRIP:END -->
 
-<div class="livebar">BOW26 · LIVE — level recomputed nightly from the engine's verified ask-floor marks</div>
+<div class="livebar">BOW26 · HELD at the Sep 21 level — moving to a sold-price basis</div>
 
 <div class="wrap">
 <div class="crumb" style="padding:14px 0 0;">RESEARCH / <a href="/indices" style="color:var(--dim);">SET INDICES</a> / <b>BOW26</b></div>
@@ -771,6 +771,9 @@ td.trk { width:70px; text-align:center; }
         if (ok) levels.push({ d: d, level: sum / divisor, back: d < inception });
       }
     }
+    /* LANE-RULES R20 (2026-09-23): while the index is held, no level past heldSince is published */
+    var HELD = idx.heldSince || null;
+    if (HELD) levels = levels.filter(function (l) { return l.d <= HELD; });
     if (!levels.length) { /* fallback: the committed history rows (inception 100.00) */
       levels = (idx.history || []).map(function (h) { return { d: h.date, level: h.level, back: false }; });
       live = false;
@@ -797,7 +800,8 @@ td.trk { width:70px; text-align:center; }
       return '<span class="' + (v > 0 ? 'g' : 'r') + '">' + (v > 0 ? '▲ +' : '▼ −') + Math.abs(v).toFixed(2) + '% ' + label + '</span>';
     }
     var chg = [];
-    if (prev) chg.push(pct((cur.level / prev.level - 1) * 100, 'vs last night' + (prev.back ? ' (backcast)' : '')));
+    if (HELD) chg.push('<b>Held since ' + dshort(HELD) + '</b> — this index is moving to a sold-price basis');
+    else if (prev) chg.push(pct((cur.level / prev.level - 1) * 100, 'vs last night' + (prev.back ? ' (backcast)' : '')));
     chg.push(pct((cur.level / 100 - 1) * 100, 'since inception'));
     chg.push('base 100.00 · ' + dshort(inception));
     $('lvchg').innerHTML = chg.join(' · ');

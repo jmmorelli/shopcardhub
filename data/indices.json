@@ -4694,6 +4694,8 @@
     ]
   },
   "BCB26": {
+    "heldSince": "2026-09-22",
+    "_heldNote": "LANE-RULES R20 (2026-09-23): no new eBay-listing-derived level until the sold-basis rebuild (R21, Sep 30). Pages show the last level and this date.",
     "_note": "PRE-ACTIVATION per-set Bowman index #1 (built 2026-09-07 by bcb26-index-prebuild, charter 4.8). Universe rows use {id, number, player, team, tab, first?, board?} (the Pokémon tickers use {num, name, rarity}; /indices reads only .length). basket rows, once STEP 3.6 writes them: {id, number, player, tab, price, basis:'ask (eBay verified, engine)'|'sold (SCP)', asOf, units?, prevPrice?, prevAsOf?}. AUTOS 15% single-card cap = fractional units at (re)constitution, logged in divisorLog. Activation: first re-mark where verified asks cover ≥60% of chase-basket value → divisor = basketValue/100, inception = that date, history[0] = {level 100.00}, status 'live', basis stays 'ask' (labeled on-page) until ≥60% SCP sold coverage → restate to 'sold' via a logged divisor adjustment (level identical before/after). Never blend asks and solds in one basket. Re-marks: every board-touching run (Mon/Tue/Fri) through street+21d, then weekly.",
     "ticker": "BCB26",
     "name": "2026 Bowman Chrome Chase Index",
@@ -6530,6 +6532,8 @@
   },
   "updated": "2026-09-22",
   "BOW26": {
+    "heldSince": "2026-09-21",
+    "_heldNote": "LANE-RULES R20 (2026-09-23): no new eBay-listing-derived level until the sold-basis rebuild (R21, Sep 30). Pages show the last level and this date.",
     "name": "2026 Bowman 1st Chrome Index",
     "page": "/bowman-1st-chrome-index",
     "base": 100,
