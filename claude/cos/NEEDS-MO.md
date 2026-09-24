@@ -11,6 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — nothing (2026-09-24 15:00 PT, from the desk)
+
+- **✅ RULED by you today (~13:30 PT):** the Sep 23 Charizard post stays up (logged as a vendor claims FAIL); the vendor's probation runs to **Wed Sep 30**, bar unchanged. The desk checked every other item on this list against today's state — nothing else needs you.
+- **What the desk did with your "I approve" on the Integrity Watch filing:** both live FAILs fixed and five claim fixes shipped (`80eac88`, verified on the live site); the rest are booked to the Sep 29 board run and the Sep 30 weekly. Nothing to do.
+
+---
+
 ## ✅ CLOSED — EPN sign-in (2026-09-23 ~15:30 PT)
 
 - You signed in and sent screenshots; the first weekly money read is done (`claude/cos/epn-read-2026-09-23.md`). **Note for next Wednesday:** Browser 1 still bounced the CoS to the eBay password page after your sign-in, so the read may need screenshots again. Nothing to do now.
