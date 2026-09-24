@@ -71,8 +71,10 @@
 
   /* ---- portfolio math on a card list (the same on the full store and the slim mirror) ---- */
   function lastP(c) { var ps = (c.prices || []).filter(function (p) { return p && p.p != null && isFinite(p.p); }); return ps.length ? ps[ps.length - 1].p : null; }
-  /* 5D reference: the 5th-previous point; fewer points → the first one */
-  function agoP(c) { var ps = (c.prices || []).filter(function (p) { return p && p.p != null && isFinite(p.p); }); if (ps.length < 2) return null; return ps.length > 5 ? ps[ps.length - 6].p : ps[0].p; }
+  /* 5D reference: the 5th-previous point. Fewer than six points → no 5D at all (changed Sep 24 2026:
+     falling back to the first point labelled a since-import move as "5D" — Mo's Vault showed +22% 5D
+     on a card that was −19.8% on the day). */
+  function agoP(c) { var ps = (c.prices || []).filter(function (p) { return p && p.p != null && isFinite(p.p); }); return ps.length > 5 ? ps[ps.length - 6].p : null; }
   function summary(cards) {
     var val = 0, ago = 0, cost = 0, priced = 0, both = 0;
     cards.forEach(function (c) {
