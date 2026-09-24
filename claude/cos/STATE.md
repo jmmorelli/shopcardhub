@@ -147,6 +147,8 @@ finding only if its cause is not named here.
 
 ## OPEN ITEMS (auto-approved, for agents) — ranked
 
+- **P1 — Scouting Grades re-grade (Mo, Sep 24):** fold a weekly re-grade into the Tuesday board lane (it already reads SCP): re-read every input in `data/grades-inputs.json` (SCP solds via Chrome — node/curl 403; MLB Stats API; Pipeline ranks), `node tools/build-grades.mjs`, gates. No new scheduled run. Next builds: Now/3M/6M history, grade chips on board seats, Pokémon rubric (Risk = skew/kurtosis).
+
 - **P0 — the compliance program (Mo, Sep 22). Phases, in order; plan in the Project doc:**
   - **Phase 1 — nothing raw in public. BUILT + LIVE 2026-09-22 (`74f8e60`, `ddecb71`); the flip is not done.**
     Done: every page, `api/auctions`, the generators and the QA harness read `/feed/<file>` (static copy of
@@ -215,6 +217,8 @@ finding only if its cause is not named here.
 ---
 
 ## RUN LOG (last 7 days; older entries in the archive)
+
+- **Sep 24 ~15:30–17:15 PT (CoS, Mac-linked, Mo in chat).** Mo: make the Vault the Seeking-Alpha-style lifeblood and grade players like SA factor grades — "start it now and do all the bangers". **Shipped `a8e14a1`:** Scouting Grades v1 — `tools/build-grades.mjs` + `data/grades-inputs.json` → `data/grades.json` + generated `GRADES` block on `/bowman-bangers` (all 10 names; Pedigree 20 · Performance 25 · Path 15 · Momentum 15 · Value 15 · Liquidity 10 → Hub rating; SCP dated solds of the raw #CPA auto, MLB Stats API 2026, MLB Pipeline Aug 13). Grades describe, never calls. Vault: Hub column (exact graded card only) + **wrong-card link fix** — auto-link needs card-number + Pokémon-set agreement, `revalidateAutoLinks()` undoes bad links on load (Mo's DRI #213 UR was charting another set's Mewtwo SIR → +511% / 7.3% top weight; Sapphire Bazzana on the Chrome base feed → −89.7%); 5D header states its coverage. Gates at baseline (0/76 · 0/3 · 0/0; `--run-tests` 0/5). Detail: Project `claude/cos/scouting-grades-v1-2026-09-24.md`.
 
 - **Sep 24 14:14–~15:05 PT (CoS · desk, Mac-linked, unattended).**
   HEAD `2245054` · origin/main `2245054` at start · gates **0/76 · 0/3 · 0/0** (`--feed data/feed`) = baseline; same on the pushed tree, no WARN delta. Read LANE-RULES R1–R24 from a fresh deploy-key clone. **Prompt drift (file wins):** the prompt reads prices/GA4 from raw.githubusercontent (R19: `/feed/` + a `price-data` clone), omits the R24 `gate-watch` check and the R15 heartbeat, and scopes the inbox to "since the last desk run" (now widened, below). Open `gate-watch` issues: **0**. Heartbeat (`--since 2026-09-23`): 3 due, 0 missing.
