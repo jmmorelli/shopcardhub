@@ -94,6 +94,13 @@ jobs:
             # R20 (2026-09-23): no eBay listing titles in the public feed.
             node tools/ci/strip-feed-titles.mjs data/feed/prices-latest.json data/feed/prices-history.json data/feed/market-latest.json
             git add data/feed
+            # crawlable-copy-integrity (2026-09-24, CoS-commissioned): / is pre-rendered from this feed for
+            # crawlers and JS-off readers. Publishing the feed without re-baking it left / serving a stale
+            # dashboard (Sep 18: a reversed SELL; Sep 24: stamp Sep 22, Gage Jump SELL vs the feed's HOLD).
+            # Re-bake in the SAME commit so the served copy and the feed move together. A failed bake never
+            # blocks the feed: / keeps its last bake and audit-terminal's home-feed-day FAILs (gate-watch).
+            if FEED_BASE=data/feed node tools/build-home.mjs; then git add index.html
+            else echo "::warning::build-home failed - / keeps its previous bake; home-feed-day will FAIL"; git checkout -- index.html; fi
             if git diff --cached --quiet; then echo "Feed unchanged."; exit 0; fi
             git commit -q -m "feed: nightly $(date -u +%F)"
             if git push -q origin main; then echo "Feed published."; exit 0; fi

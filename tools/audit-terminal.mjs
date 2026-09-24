@@ -742,6 +742,34 @@ try {
   add("FAIL", "home-index-level", "data/indices.json", `home/index cross-check could not run: ${e.message}`);
 }
 
+/* ---------- check: home-feed-day — the baked HOME:stamp must be the feed's day ---------- */
+// crawlable-copy-integrity 2026-09-24 (CoS-commissioned, charter 4.8). audit-2026-09-18 LOW-1: `/` served a
+// two-night-old pre-render — including a SELL the engine had since reversed to HOLD — under an h1 promising
+// "priced every night", while feed-shape and home-index-level both passed (FAIL 0 / WARN 0 with the real
+// feed). A human saw the right page after hydration; a crawler indexed the stale one. It recurred on
+// 2026-09-24 (stamp Sep 22, feed Sep 24, Gage Jump served SELL / live HOLD). The nightly price-snapshot
+// Action re-bakes / right after it publishes the feed; this gate is what notices when that did not happen.
+// Runs only when a feed is present (without one, feed-unavailable already WARNs). Cannot-run = FAIL.
+if (feed && feed.latest && /^\d{4}-\d{2}-\d{2}$/.test(String(feed.latest.day || "")) && exists("index.html")) {
+  try {
+    const fday = feed.latest.day;
+    const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const dstr = (d) => { const p = d.split("-"); return MON[+p[1] - 1] + " " + (+p[2]); }; // = js/engine-stats.js dstr
+    const home = read("index.html");
+    const st = home.match(/<!-- HOME:stamp:START -->([\s\S]*?)<!-- HOME:stamp:END -->/);
+    if (!st) add("FAIL", "home-feed-day", "index.html", "HOME:stamp block not found - cannot tell which feed day / was baked from; re-run tools/build-home.mjs");
+    else {
+      const shown = ((st[1].match(/data-home="day">([^<]*)</) || [])[1] || "").trim();
+      const attr = (home.match(/class="term"[^>]*data-prices-updated="([^"]*)"/) || home.match(/data-prices-updated="([^"]*)"/) || [])[1] || "";
+      const age = attr && /^\d{4}-\d{2}-\d{2}$/.test(attr) ? Math.round((Date.parse(fday) - Date.parse(attr)) / 86400000) : null;
+      if (shown !== dstr(fday) || attr !== fday)
+        add("FAIL", "home-feed-day", "index.html", `HOME:stamp shows feed "${shown || "?"}" (data-prices-updated ${attr || "?"}) but the feed's day is ${fday}${age ? ` - / is serving a ${age}-day-old dashboard to crawlers and JS-off readers` : " - the stamp text and data-prices-updated disagree"}; re-run FEED_BASE=<feed dir> node tools/build-home.mjs`);
+    }
+  } catch (e) {
+    add("FAIL", "home-feed-day", "index.html", `home/feed day cross-check could not run: ${e.message}`);
+  }
+}
+
 /* ---------- check: xboard-honest — the vendor feed may not carry a stale stamp, a decaying claim or a rank its seats deny ---------- */
 // LANE-RULES R10 AMENDMENT 2026-09-20 ("durations decay, dates don't"), gated 2026-09-21 (x-board-feed-integrity).
 // data/x-board.json is the one file on this site a third party quotes verbatim on X. On 2026-09-20 it carried
