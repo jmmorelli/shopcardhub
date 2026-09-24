@@ -560,7 +560,7 @@ ${nav}
   <div class="cp-crumbs"><a href="/">Home</a> <span>/</span> <span>Card Charts</span></div>
   <div class="cp-eyebrow">Card charts · re-priced nightly</div>
   <h1 class="cp-title">Every tracked card,<br>one page each</h1>
-  <p class="sub" style="font-size:14px; color:var(--text-dim); line-height:1.6; max-width:600px; margin:10px 0 6px;">The engine marks each of these cards every night from verified eBay asks. Open a card for its price line, what buyers paid at auction, and the live listings that pass the exact-card filter. ★ Track any of them into your <a href="/watchlist">Vault</a>. Set-level context lives on the <a href="/indices">Set Indices</a>.</p>
+  <p class="sub" style="font-size:14px; color:var(--text-dim); line-height:1.6; max-width:600px; margin:10px 0 6px;">The engine marks each of these cards every night from verified eBay asks. Open a card for its price line, the last bids seen at auction (a floor, not sale prices), and the live listings that pass the exact-card filter. ★ Track any of them into your <a href="/watchlist">Vault</a>. Set-level context lives on the <a href="/indices">Set Indices</a>.</p>
 ${rows}
   <p class="cp-note" style="margin-top:26px;">Marks as of <span data-day>${esc(day)}</span>. Asks, not solds, until hammers accumulate. ShopCardHub earns a commission on eBay purchases made through links on these pages.</p>
 </main>

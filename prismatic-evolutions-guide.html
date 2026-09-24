@@ -958,12 +958,12 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <div class="cp-cell"><div class="l">Kurtosis</div><div class="v" data-k="kurt">—</div><div class="s" data-k="kurt-s">excess</div></div>
       <div class="cp-cell"><div class="l">Supply</div><div class="v" data-k="sup">—</div><div class="s" data-k="sup-s">live listings</div></div>
       <div class="cp-cell"><div class="l">Ask Q1&ndash;Q3</div><div class="v sm" data-k="askq">—</div><div class="s" data-k="n-s"><span data-k="n">—</span> asks in mark</div></div>
-      <div class="cp-cell"><div class="l">Hammer med</div><div class="v" data-k="ham">—</div><div class="s" data-k="ham-s">no watched close yet</div></div>
+      <div class="cp-cell"><div class="l">Median last bid</div><div class="v" data-k="ham">—</div><div class="s" data-k="ham-s">a floor, not the sale price</div></div>
     </div>
     <div class="cp-note cp-why" data-k="why"></div>
 
     <details class="cp-fold" data-fold="chart" open>
-    <summary><span>Nightly price line &middot; distribution &middot; what buyers paid</span><span class="cp-fold-hint"></span></summary>
+    <summary><span>Nightly price line &middot; distribution &middot; auction bid watch</span><span class="cp-fold-hint"></span></summary>
     <div class="cp-grid">
     <section class="cp-sec" id="chart-umbreon-ex-sir-pe">
       <h2 class="cp-h">Nightly price line</h2>
@@ -978,8 +978,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <div class="cp-read" data-k="hist-read"></div>
     </section>
     <section class="cp-sec" id="sold-umbreon-ex-sir-pe">
-      <h2 class="cp-h">What buyers paid</h2>
-      <p class="sub">Auction closes the engine records itself; hammer capture began in early September 2026.</p>
+      <h2 class="cp-h">Auction bid watch</h2>
+      <p class="sub">The last bid the engine saw before each auction ended. It looks once a night, so that look lands a median of about 12 hours before the close. Treat it as a floor, not a sale price; it is never blended into the mark.</p>
       <div data-k="hammers"><div class="cp-empty">No auction close recorded for this card yet.</div></div>
     </section>
     </div>

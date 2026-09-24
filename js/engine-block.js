@@ -144,8 +144,7 @@
       var last = c && c.last != null ? c.last : null;
       if ($('ham') && n && b.hammerMedian != null) {
         set('ham', fmt(b.hammerMedian));
-        set('ham-s', n + ' close' + (n === 1 ? '' : 's') + (last ? ' · ' + pct((b.hammerMedian / last - 1) * 100, 0) + ' vs ask' : ''));
-        if (last) cls('ham-s', b.hammerMedian > last ? 'up' : b.hammerMedian < last ? 'dn' : '');
+        set('ham-s', n + ' last bid' + (n === 1 ? '' : 's') + ' · a floor');
       }
       var box = $('hammers'); if (!box) return;
       if (!n && !b.watching) return;
