@@ -274,6 +274,8 @@
     .vgrid .pos { color:var(--green); } .vgrid .neg { color:var(--red); } .vgrid .dim { color:var(--text-dim); }
     .vgrid .last { color:var(--text-head); font-weight:700; font-size:13.5px; }
     .vgrid .spk svg { width:56px; height:22px; display:block; margin-left:auto; }
+    .hubg { display:inline-block; min-width:28px; text-align:center; font-family:var(--fm, monospace); font-weight:700; font-size:11px; padding:1px 5px; border:1px solid; border-radius:2px; text-decoration:none; }
+    .hubg.hub-a { color:var(--green); border-color:var(--green); } .hubg.hub-b { color:var(--accent); border-color:var(--accent); } .hubg.hub-c { color:var(--gold); border-color:var(--gold); } .hubg.hub-d { color:var(--red); border-color:var(--red); }
     .vgrid .gr { font-size:10px; color:var(--accent); border:1px solid rgba(0,204,245,0.3); padding:1px 6px; border-radius:2px; }
     .vgrid .act { opacity:0; transition:opacity .12s; }
     .vgrid tbody tr:hover .act { opacity:1; }
@@ -1272,7 +1274,7 @@
 
   <div class="toast" id="toast"></div>
   <script src="/js/engine-stats.js?v=1"></script>
-  <script src="/js/vault-schema.js?v=1"></script>
+  <script src="/js/vault-schema.js?v=2"></script>
 
   <footer>
     <div class="container">
@@ -2168,6 +2170,22 @@ const closedGroups = new Set();
 let hiddenCols = new Set();
 try { groupKey = localStorage.getItem('sch_vault_group') || ''; hiddenCols = new Set(JSON.parse(localStorage.getItem('sch_vault_cols') || '[]')); } catch (e) {}
 const sparkMemo = new Map();           // id → { k, svg }
+/* Scouting Grades (Sep 24 2026): a Hub rating shows on a card only when it IS the graded card —
+   the player's 2026 Bowman 1st Bowman Chrome Auto (#CPA-xx), raw. Base cards, parallels named as
+   such, graded slabs and other sets get no letter: a grade on the wrong card is worse than none. */
+let GRADES = null;
+function hubOf(c) {
+  if (!GRADES || !c) return null;
+  const t = ' ' + normToks((c.name || '') + ' ' + (c.set || '')).join(' ') + ' ';
+  if (c.grade && !/^raw$/i.test(c.grade)) return null;
+  if (VARIANT_LEX.test(c.name || '')) return null;             // a parallel is a different card
+  if (!/ (auto|autograph|autographs) /.test(t) && !/ cpa /.test(t)) return null;
+  if (!/ 2026 /.test(t) || !/ bowman /.test(t) || / (sapphire|paper|draft) /.test(t)) return null;
+  return GRADES.find(g => normToks(g.name).every(k => t.indexOf(' ' + k + ' ') >= 0)) || null;
+}
+function loadGrades() {
+  fetch('/data/grades.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(j => { if (j && Array.isArray(j.players)) { GRADES = j.players; render(); } }).catch(() => {});
+}
 function sparkOf(c) {
   const k = c.prices.length + ':' + lastT(c);
   const m = sparkMemo.get(c.id);
@@ -2205,6 +2223,7 @@ const COLS = [
   { key:'name',  label:'Card', left:true, fixed:true, sortv:r => r.c.name.toLowerCase(),
     cell:r => '<div class="nm-wrap"><span data-card-img="' + esc(r.c.feedKey || ('name:' + r.c.name)) + '" data-card-name="' + esc(r.c.name) + '" data-card-sub="' + esc(r.c.cat || '') + '" data-card-size="row" data-card-surface="vault-row" data-card-link="off"></span><div><div class="nm" title="' + esc(r.c.name) + '">' + esc(r.c.name) + '</div><div class="st">' + esc(r.c.set || '') + '</div></div></div>' },
   { key:'grade', label:'Grade', left:true, cell:r => r.c.grade ? '<span class="gr">' + esc(r.c.grade) + '</span>' : '' },
+  { key:'hub',   label:'Hub', sortv:r => { const h = hubOf(r.c); return h ? h.hub.score : null; }, cell:r => { const h = hubOf(r.c); return h ? '<a class="hubg hub-' + (h.hub.grade[0] === 'A' ? 'a' : h.hub.grade[0] === 'B' ? 'b' : h.hub.grade[0] === 'C' ? 'c' : 'd') + '" href="/bowman-bangers#grade-' + esc(h.slug) + '" onclick="event.stopPropagation()" title="Scouting Grade (Hub rating) for ' + esc(h.name) + ' — tap for the six factors">' + esc(h.hub.grade) + '</a>' : '<span class="dim">—</span>'; } },
   { key:'last',  label:'Last', sortv:r => r.lp, cls:r => r.lp != null ? 'last' : 'dim', cell:r => r.lp != null ? '$' + fmt$(r.lp) : '—' },
   { key:'d1',    label:'Δ', sortv:r => r.d1, delta:r => r.d1 },
   { key:'d7',    label:'7D', sortv:r => r.d7, delta:r => r.d7 },
@@ -2969,6 +2988,7 @@ async function loadFeed() {
     cards.forEach(e => { if (e && e.key) FEED.byKey[e.key] = e; });
     fetch(FEED_BASE + 'market-latest.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(m => { FEED_MKT = m && m.cards ? m.cards : null; if (tab === 'own') renderPf(); }).catch(() => {});
     if (pill) pill.innerHTML = ' · <b style="color:var(--green)">\u25CF live price engine on</b>';
+    revalidateAutoLinks();
     autoLinkFeeds();
     feedSync();
     render();
@@ -2995,6 +3015,55 @@ function lineMismatch(cardText, feedLabel) {
   const c = new Set(normToks(cardText)), f = new Set(normToks(feedLabel));
   if (c.has('autograph')) c.add('auto'); if (f.has('autograph')) f.add('auto');
   return LINE_TOKS.filter(t => t !== 'autograph' && c.has(t) !== f.has(t));
+}
+/* card-number + set agreement (added Sep 24 2026 after Mo's Destined Rivals #213 Ultra Rare
+   auto-linked to a different set's Mewtwo SIR feed, and his Sapphire Bazzana to the Chrome base
+   feed). A card number on both sides must agree (COMC's ".1" duplicate suffix ignored); a
+   Pokémon feed must share a set word with the card. Disagreement = suggestion only, never a link. */
+function cardNums(s) {
+  const out = new Set(); (s || '').replace(/#\s*([a-z]{0,6}-?\d{1,4}[a-z]?)(?:\.\d+)?(?:\/\d{1,4})?/gi, (m, n) => { out.add(n.toLowerCase().replace(/-/g, '')); return m; });
+  return out;
+}
+function idMismatch(c, e) {
+  const label = (e && (e.label || e.key)) || '';
+  const cn = cardNums(c.name), fn = cardNums(label);
+  if (cn.size && fn.size && ![...cn].some(n => fn.has(n))) return 'number';
+  if (e && e.cardType === 'tcg-single') {
+    const setPart = label.split('—')[1] || '';
+    const SW = new Set(['pokemon','the','sv','ex','of','and','tcg','scarlet','violet']);
+    const ft = normToks(setPart).filter(t => !SW.has(t) && !/^\d+$/.test(t));
+    const ct = new Set(normToks((c.set || '') + ' ' + (c.name || '')));
+    if (ft.length && !ft.some(t => ct.has(t))) return 'set';
+  }
+  return null;
+}
+/* re-check every engine link against today's rules. An AUTO link the rules would no longer make
+   is undone; a MANUAL link is undone only when it is provably another card (number/set) or another
+   product line. Imported engine points go with it; re-linking re-imports them. */
+function revalidateAutoLinks() {
+  if (!FEED) return;
+  const undone = [];
+  state.cards.forEach(c => {
+    if (!c.feedKey) return;
+    const keep = c.feedKey, fe = FEED.byKey[keep];
+    if (c.feedAuto !== 1) {
+      // a manual link is kept unless it is provably a different card (number/set) or product line
+      if (!fe || (!idMismatch(c, fe) && !lineMismatch((c.name || '') + ' ' + (c.set || ''), fe.label || fe.key).length)) return;
+    } else {
+      delete c.feedKey;
+      const m = feedMatch(c);
+      if (m && !m.variant && !m.partial && m.key === keep) { c.feedKey = keep; return; }
+    }
+    delete c.feedKey;
+    delete c.feedAuto;
+    c.prices = (c.prices || []).filter(p => p.src !== 'feed');
+    undone.push(c);
+  });
+  if (undone.length) {
+    save();
+    toast('↺ ' + undone.length + ' engine link' + (undone.length === 1 ? '' : 's') + ' undone — the engine card was a different set, number or parallel');
+    track('vault_feed_unlink_auto', { n: undone.length });
+  }
 }
 function feedMatch(c) {
   if (!FEED) return null;
@@ -3024,7 +3093,8 @@ function feedMatch(c) {
   const gradeWord = /\b(psa|bgs|sgc|cgc|graded|gem|slab)\b/i.test((c.name || '') + ' ' + (c.grade && c.grade.toLowerCase() !== 'raw' ? c.grade : ''));
   const vm = (c.name || '').match(VARIANT_LEX);
   const parallelWord = !!(vm && (hits[0].label || '').toLowerCase().indexOf(vm[0].toLowerCase()) < 0);
-  const variant = mism.length > 0 || gradeWord || parallelWord;
+  const idMis = idMismatch(c, hits[0]);
+  const variant = mism.length > 0 || gradeWord || parallelWord || !!idMis;
   return { key: hits[0].key, label: hits[0].label, variant: variant, partial: partial, mismatch: mism };
 }
 function autoLinkFeeds() {
@@ -3477,7 +3547,7 @@ function renderPf() {
   const chgCls = sm.chgp == null ? '' : sm.chgp > 0.05 ? 'pos' : sm.chgp < -0.05 ? 'neg' : '';
   head.innerHTML = '<div><div class="pf-name-row"><button type="button" class="pf-name" onclick="togglePfMenu()" aria-haspopup="menu">' + esc(pfName()) + ' <span class="chev">&#9662;</span></button>' + menu + '</div>' +
     '<div class="pf-val"><span class="big">' + (sm.priced ? '$' + fmt$(sm.val, 0) : (sm.n ? sm.n + ' card' + (sm.n === 1 ? '' : 's') + ' · no price yet' : 'empty')) + '</span>' +
-      (sm.chg != null ? '<span class="chg ' + chgCls + '">' + (sm.chg >= 0 ? '↗ +$' : '↘ −$') + fmt$(Math.abs(sm.chg), 0) + ' (' + pctN(sm.chgp, 2) + ') 5D</span>' : '') + '</div>' +
+      (sm.chg != null ? '<span class="chg ' + chgCls + '">' + (sm.chg >= 0 ? '↗ +$' : '↘ −$') + fmt$(Math.abs(sm.chg), 0) + ' (' + pctN(sm.chgp, 2) + ') 5D' + (sm.both != null && sm.both < sm.n ? ' · on ' + sm.both + ' of ' + sm.n + ' cards with history' : '') + '</span>' : '') + '</div>' +
     '<div class="pf-meta">' + (sm.cost > 0 ? 'cost $' + fmt$(sm.cost, 0) + ' · unrealized ' + (sm.unreal >= 0 ? '+$' : '−$') + fmt$(Math.abs(sm.unreal), 0) + ' (' + pctN(sm.val / sm.cost * 100 - 100, 1) + ') · ' : '') + sm.n + ' card' + (sm.n === 1 ? '' : 's') + (FEED && FEED.day ? ' · marks as of ' + FEED.day + ' nightly' : ' · engine marks nightly') + '</div></div>' +
     '<div class="pf-acts"><button class="btn" onclick="document.getElementById(\'importFile\').click()">Import COMC CSV</button><button class="btn" onclick="shareVaultImg()">&#120143; Share</button><button class="btn btn-primary" onclick="openAdd()">+ Add card</button></div>';
   const tile = (l, v, s) => '<div class="kpi"><div class="kpi-label">' + l + '</div><div class="kpi-value">' + v + '</div><div class="kpi-note">' + s + '</div></div>';
@@ -3519,6 +3589,7 @@ load().then(() => {
   render();
   handleDeepLink();
   loadFeed();
+  loadGrades();
 });
 window.addEventListener('hashchange', () => { readPfHash(); render(); });
 document.addEventListener('click', e => { const m = document.getElementById('pfMenu'); if (m && m.classList.contains('open') && !e.target.closest('.pf-name-row')) m.classList.remove('open'); if (e.target.closest && e.target.closest('[data-pf-new]')) { e.preventDefault(); newPortfolio(); } });

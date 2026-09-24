@@ -83,7 +83,7 @@
     });
     var chg = null, chgp = null;
     if (both && ago > 0) { var nowB = 0; cards.forEach(function (c) { var q = c.qty > 0 ? c.qty : 1, lp = lastP(c), ap = agoP(c); if (lp != null && ap != null) nowB += lp * q; }); chg = nowB - ago; chgp = chg / ago * 100; }
-    return { n: cards.length, val: val, cost: cost, priced: priced, chg: chg, chgp: chgp, unreal: cost > 0 ? val - cost : null };
+    return { n: cards.length, val: val, cost: cost, priced: priced, both: both, chg: chg, chgp: chgp, unreal: cost > 0 ? val - cost : null };
   }
   /* rail rows for every portfolio — pure HTML. opts: { hrefFor(id) → href | null (null = in-page button), newHref, vaultHref, active }
      Never writes the store. */
