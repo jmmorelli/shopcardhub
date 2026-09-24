@@ -1788,6 +1788,56 @@
       "decision": "DESK 2026-09-22: ADOPTED and APPLIED 41ce931 (config + one generated block), live-verified 21:36Z: strip renders 'ask from $375.00 · 48 live', customid nfl-rookie-cards-2026-box, req/deny guard (R8: -chrome -jumbo; 'first day' issue is a $1,149 variant). Supply measured on production /api/comps with the guard before the edit: 29 clean single-box asks $375–$500. buy-strip-health: OK, wrong-product 0. -top retires; -hero is the control. Kill: Oct 21 EPN read, -box 0 actions on >= 20 clicks or the page's KE rate under 8% on >= 40 sessions -> restore the singles primary; the rule does not roll to /wnba-cards-2026 or /world-cup-2026-soccer-cards until that read. The Oct 3 /bowman-football re-read (the $371 box at 1.1%) is the counter-evidence and is why the cheaper secondary stays.",
       "decidedBy": "chief-of-staff (desk)",
       "decided": "2026-09-22"
+    },
+    {
+      "area": "public-claims",
+      "filed": "2026-09-24",
+      "by": "crawlable-copy-integrity (CoS-commissioned build session, charter 4.8)",
+      "status": "awaiting-cos",
+      "id": "ccx-2026-09-24-1",
+      "severity": "MED",
+      "title": "RULING NEEDED (R20): the nightly price-snapshot Action now re-bakes / from the feed it just published (8e37b8a), so the served HTML carries the same ask-basis marks and engine signals the page already shows after hydration. This session read R20's home-panels row ('existing blocks keep running until their R21 date') as permitting it; R20's stop-and-file sentence can be read the other way.",
+      "detail": "Why it was done: / served a 2-night-old bake whose Screens showed one board auto as SELL in 3 screens while the feed has read HOLD since 2026-09-23 - a false public claim (R13 test 3), the same class as the Sep 18 finding. Without a nightly bake, the new home-feed-day gate would FAIL in CI every night and block every lane's push. Cause of both incidents: the build-home header's 're-run Mondays' cadence on a page whose h1 says 'priced every night', and Phase 1's feed publish (Sep 22) moving the feed nightly without re-baking. If the CoS rules the other way: delete the 2-line build-home block in .github/workflows/price-snapshot.yml AND strip ask-derived signals from the baked panels (a missing number beats a wrong one) - reverting the bake alone leaves the gate failing nightly. Phase 2 (Oct 7) replaces these panels either way."
+    },
+    {
+      "area": "public-claims",
+      "filed": "2026-09-24",
+      "by": "crawlable-copy-integrity (CoS-commissioned build session, charter 4.8)",
+      "status": "awaiting-cos",
+      "id": "ccx-2026-09-24-2",
+      "severity": "LOW",
+      "title": "Engine blocks on 7 host pages (incl. the #1 28-day lander /pokemon-30th-anniversary-2026) serve a mark stamped 2026-09-18 - 6 nights behind the feed. NOT re-baked by this session: the stamp is dated and no signal is baked (served cell reads '-'), so the served copy is stale-but-true, and re-baking would write new ask-derived marks into card pages, which R20 says to stop and file.",
+      "detail": "Pages: aiva-arquette-1st-bowman, ascended-heroes, chaos-rising, ethan-holliday-rookie-cards, pitch-black-set-guide, pokemon-30th-anniversary-2026 (2 blocks), prismatic-evolutions-guide. The tool's own header says 're-run Mondays'; the Sep 21 Monday run did not. Ask: rule whether the Sep 28 Monday lane re-bakes them under R20 until Oct 7, or the builder bakes '-' for the mark (hydration fills it) so a crawler never indexes an old ask. Not gated: this is a weekly-cadence contract, not the same check as home-feed-day, so the gate stops at home."
+    },
+    {
+      "area": "public-claims",
+      "filed": "2026-09-24",
+      "by": "crawlable-copy-integrity (CoS-commissioned build session, charter 4.8)",
+      "status": "awaiting-cos",
+      "id": "ccx-2026-09-24-3",
+      "severity": "MED",
+      "title": "/bowman-bangers - the board itself (10 seats, verdicts, price bands) exists only after JavaScript. A crawler or JS-off reader gets the hero, method and prose but no board. The board is sold-basis and changes weekly (Tuesday), so a baked copy would not go stale nightly the way the engine panels do.",
+      "detail": "Proposal, not built (hydration-only content is recorded, not baked, per this session's brief): have the Tuesday board lane bake the seat table between markers with its dated stamp, and extend home-feed-day's pattern to a board-stamp check against data/watchlist.json. Existing page, no new surface - inside the freeze. The engine 'asks' table on the same page is also JS-only and should STAY JS-only (ask-basis, nightly)."
+    },
+    {
+      "area": "public-claims",
+      "filed": "2026-09-24",
+      "by": "crawlable-copy-integrity (CoS-commissioned build session, charter 4.8)",
+      "status": "awaiting-cos",
+      "id": "ccx-2026-09-24-4",
+      "severity": "LOW",
+      "title": "/bowman-chrome-baseball-2026 - the full checklist (base 1-100, prospects BCP-151-250, autos, 1st Bowman tags) renders only after JS (js/set-checklist.js). Hydration-only; recorded, not changed.",
+      "detail": "No false claim in either copy; the served page simply omits the table. Worth a bake only if the checklist is meant to rank; it is static data, so a bake would not go stale."
+    },
+    {
+      "area": "public-claims",
+      "filed": "2026-09-24",
+      "by": "crawlable-copy-integrity (CoS-commissioned build session, charter 4.8)",
+      "status": "awaiting-cos",
+      "id": "ccx-2026-09-24-5",
+      "severity": "LOW",
+      "title": "Commissioning-prompt drift (crawlable-copy-integrity, Sep 20): item 5 (robots.txt Disallow /data/pipeline.json) was already live since b50d54c; the claim that feed-key-valid and feed-shape 'have been skipped on every run to date' was stale (the desk has run --feed data/feed since Sep 22 and CI since Sep 23); and the prompt tells the lane to re-run build-home without naming R20 (written 3 days later).",
+      "detail": "Caused nothing here: robots unchanged, both checks negative-tested live this run (a corrupted day and a missing hosted key each FAIL). The R20 omission is the one with teeth - see ccx-2026-09-24-1."
     }
   ],
   "scoreboard": {
