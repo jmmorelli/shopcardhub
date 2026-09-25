@@ -2224,7 +2224,7 @@ const COLS = [
     cell:r => '<div class="nm-wrap"><span data-card-img="' + esc(r.c.feedKey || ('name:' + r.c.name)) + '" data-card-name="' + esc(r.c.name) + '" data-card-sub="' + esc(r.c.cat || '') + '" data-card-size="row" data-card-surface="vault-row" data-card-link="off"></span><div><div class="nm" title="' + esc(r.c.name) + '">' + esc(r.c.name) + '</div><div class="st">' + esc(r.c.set || '') + '</div></div></div>' },
   { key:'grade', label:'Grade', left:true, cell:r => r.c.grade ? '<span class="gr">' + esc(r.c.grade) + '</span>' : '' },
   { key:'hub',   label:'Hub', sortv:r => { const h = hubOf(r.c); return h ? h.hub.score : null; }, cell:r => { const h = hubOf(r.c); return h ? '<a class="hubg hub-' + (h.hub.grade[0] === 'A' ? 'a' : h.hub.grade[0] === 'B' ? 'b' : h.hub.grade[0] === 'C' ? 'c' : 'd') + '" href="/bowman-bangers#grade-' + esc(h.slug) + '" onclick="event.stopPropagation()" title="Scouting Grade (Hub rating) for ' + esc(h.name) + ' — tap for the six factors">' + esc(h.hub.grade) + '</a>' : '<span class="dim">—</span>'; } },
-  { key:'last',  label:'Last', sortv:r => r.lp, cls:r => r.lp != null ? 'last' : 'dim', cell:r => r.lp != null ? '$' + fmt$(r.lp) : '—' },
+  { key:'last',  label:'Last', sortv:r => r.lp, cls:r => r.lp != null ? 'last' : 'dim', cell:r => { if (r.lp == null) return '—'; const fe = r.c.feedSold && FEED ? FEED.byKey[r.c.feedKey] : null; return fe ? '<span title="Sold mark: ' + esc(fe.basis || '') + ' (SportsCardsPro/PriceCharting dated sales, re-read nightly)">$' + fmt$(r.lp) + '<sup style="color:var(--green);font-size:8px;margin-left:2px">S</sup></span>' : '$' + fmt$(r.lp); } },
   { key:'d1',    label:'Δ', sortv:r => r.d1, delta:r => r.d1 },
   { key:'d7',    label:'7D', sortv:r => r.d7, delta:r => r.d7 },
   { key:'d30',   label:'30D', sortv:r => r.d30, delta:r => r.d30 },
@@ -2872,7 +2872,8 @@ function comcImportInto(txt, fname, listId) {
       existing.qty = qty; if (avg != null) existing.cost = Math.round(avg * 100) / 100;
       if (existing.status === 'own' && listId && listId !== VS.DEFAULT_ID) existing.listId = listId;
       existing.private = g.nfs > 0; existing.comc = { key, ids: g.ids, nfs: g.nfs, fs: g.fs, ask: g.ask, lo: g.lo, hi: g.hi, n: g.n, snap };
-      if (pricePt && !existing.prices.some(p => Math.abs(p.t - snap) < 36e5 && p.src === 'comc')) { existing.prices.push(pricePt); existing.prices.sort((a, b) => a.t - b.t); }
+      if (pricePt && existing.feedSold) { existing.priorPrices = existing.priorPrices || []; if (!existing.priorPrices.some(p => Math.abs(p.t - snap) < 36e5 && p.src === 'comc')) existing.priorPrices.push(pricePt); }   // sold-linked: keep the COMC ask out of the sold series
+      else if (pricePt && !existing.prices.some(p => Math.abs(p.t - snap) < 36e5 && p.src === 'comc')) { existing.prices.push(pricePt); existing.prices.sort((a, b) => a.t - b.t); }
       updated++;
     } else {
       state.cards.push({ id: uid(), status: 'own', listId: listId || VS.DEFAULT_ID, cat: comcCat(g.card), name: comcName(g.card), set: comcSet(g.card), grade: comcGrade(g.card),
@@ -2973,6 +2974,7 @@ function supplyHtml(fe) {
 const FEED_BASE = '/feed/';
 let FEED = null;       // { cards:[], byKey:{} } from prices-latest.json
 let FEED_HIST = null;  // prices-history.json cache
+let SOLD_HIST = null;  // sold-history.json cache
 let FEED_MKT = null;   // market-latest.json cards{} — closes per feed key (hammer coverage tile); closes count only, never the hammers
 const dayOf = t => new Date(t).toISOString().slice(0, 10);
 
@@ -2988,12 +2990,16 @@ async function loadFeed() {
     cards.forEach(e => { if (e && e.key) FEED.byKey[e.key] = e; });
     fetch(FEED_BASE + 'market-latest.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(m => { FEED_MKT = m && m.cards ? m.cards : null; if (tab === 'own') renderPf(); }).catch(() => {});
     if (pill) pill.innerHTML = ' · <b style="color:var(--green)">\u25CF live price engine on</b>';
+    await loadSold();
     revalidateAutoLinks();
+    linkSoldExact();
     autoLinkFeeds();
     feedSync();
     render();
   } catch (e) {
     if (pill) pill.textContent = ' · manual mode — live feed warming up';
+    // the sold catalog does not depend on the ask engine: link and mark from it even when the engine feed is down
+    try { FEED = FEED || { cards: [], byKey: {}, day: null }; await loadSold(); if (SOLD) { linkSoldExact(); feedSync(); render(); } } catch (e2) {}
   }
 }
 /* ---------- fuzzy engine matching ----------
@@ -3044,7 +3050,7 @@ function revalidateAutoLinks() {
   if (!FEED) return;
   const undone = [];
   state.cards.forEach(c => {
-    if (!c.feedKey) return;
+    if (!c.feedKey || c.feedSold) return;           // sold links are exact (COMC hash) — never second-guessed here
     const keep = c.feedKey, fe = FEED.byKey[keep];
     if (c.feedAuto !== 1) {
       // a manual link is kept unless it is provably a different card (number/set) or product line
@@ -3097,6 +3103,53 @@ function feedMatch(c) {
   const variant = mism.length > 0 || gradeWord || parallelWord || !!idMis;
   return { key: hits[0].key, label: hits[0].label, variant: variant, partial: partial, mismatch: mism };
 }
+/* ---------- SOLD marks (Sep 24 2026) ----------
+   /feed/sold-marks.json is written nightly by tools/price-engine/sold-marks.mjs: a SOLD mark (30-day
+   median of dated SportsCardsPro/PriceCharting sales, else the last sale within 90 days) for every card
+   in data/price-universe.json. Entries join FEED as source 'sold'. A COMC-imported card links to its
+   sold entry EXACTLY (by a hash of the COMC card string — the catalog never carries the string), and a
+   sold link outranks an ask link. A sold-linked card's series holds sold marks only; its COMC points are
+   parked in priorPrices and come back if the link is undone. */
+let SOLD = null;
+function fnv1a(str) { let h = 0x811c9dc5; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return ('0000000' + h.toString(16)).slice(-8); }
+async function loadSold() {
+  try {
+    const r = await fetch(FEED_BASE + 'sold-marks.json', { cache: 'no-store' });
+    if (!r.ok) return;
+    const j = await r.json();
+    SOLD = { byHash: {}, day: j.day || null };
+    (j.cards || []).forEach(e => {
+      if (!e || !e.key || !(e.last > 0)) return;
+      const fe = Object.assign({}, e, { source: 'sold', cardType: /^pokemon-/.test((e.key || '').slice(5)) ? 'tcg-single' : (e.cardType || 'sold'), signal: null, boardHide: true });
+      if (!FEED.byKey[fe.key]) FEED.cards.push(fe);
+      FEED.byKey[fe.key] = fe;
+      if (e.h) SOLD.byHash[e.h] = fe;
+    });
+  } catch (e) {}
+}
+function soldFor(c) { return SOLD && c && c.comc && c.comc.key ? SOLD.byHash[fnv1a(c.comc.key)] || null : null; }
+function linkSold(c, fe) {
+  if (c.feedKey && FEED.byKey[c.feedKey] && FEED.byKey[c.feedKey].source !== 'sold') c.prices = (c.prices || []).filter(p => p.src !== 'feed');   // drop ask-engine points
+  c.priorPrices = (c.priorPrices || []).concat((c.prices || []).filter(p => p.src !== 'feed' && p.src !== 'sold'));
+  c.prices = (c.prices || []).filter(p => p.src === 'sold');
+  c.feedKey = fe.key; c.feedAuto = 1; c.feedSold = 1;
+}
+function linkSoldExact() {
+  if (!SOLD) return;
+  const linked = [];
+  state.cards.forEach(c => {
+    if (c.feedOptOut) return;
+    const fe = soldFor(c);
+    if (!fe || c.feedKey === fe.key) return;
+    linkSold(c, fe); linked.push(c);
+  });
+  if (linked.length) {
+    save();
+    toast('⚡ ' + linked.length + ' card' + (linked.length === 1 ? '' : 's') + ' now priced on real sales (nightly)');
+    track('vault_sold_link', { n: linked.length });
+    linked.forEach(c => importFeedHistory(c.id));
+  }
+}
 function autoLinkFeeds() {
   const linked = [];
   state.cards.forEach(c => {
@@ -3120,8 +3173,8 @@ function feedSync() {
     const fe = c.feedKey && FEED ? FEED.byKey[c.feedKey] : null;
     if (!fe || !(fe.last > 0)) return;
     const today = dayOf(Date.now());
-    if (c.prices.some(p => dayOf(p.t) === today)) return;   // one engine point per day
-    c.prices.push({ t: Date.now(), p: fe.last, src: 'feed' });
+    if (c.prices.some(p => dayOf(p.t) === today && (p.src === 'feed' || p.src === 'sold'))) return;   // one engine point per day
+    c.prices.push({ t: Date.now(), p: fe.last, src: fe.source === 'sold' ? 'sold' : 'feed' });
     c.prices.sort((a, b) => a.t - b.t);
     changed = true;
   });
@@ -3131,6 +3184,17 @@ async function importFeedHistory(id) {
   const c = state.cards.find(x => x.id === id);
   const fe = c && c.feedKey && FEED ? FEED.byKey[c.feedKey] : null;
   if (!fe) return;
+  if (fe.source === 'sold') {
+    try {
+      if (!SOLD_HIST) { const r = await fetch(FEED_BASE + 'sold-history.json', { cache: 'no-store' }); SOLD_HIST = r.ok ? await r.json() : {}; }
+      const pts = (fe.back || []).concat(((SOLD_HIST[fe.key] || {}).series) || []);
+      const have = new Set(c.prices.map(p => dayOf(p.t)));
+      let added = 0;
+      pts.forEach(pt => { if (!pt || !(pt.p > 0) || !pt.d || have.has(pt.d)) return; have.add(pt.d); c.prices.push({ t: new Date(pt.d + 'T12:00:00Z').getTime(), p: pt.p, src: 'sold' }); added++; });
+      if (added) { c.prices.sort((a, b) => a.t - b.t); save(); render(); }
+    } catch (e) {}
+    return;
+  }
   try {
     if (!FEED_HIST) {
       const r = await fetch(FEED_BASE + 'prices-history.json', { cache: 'no-store' });
@@ -3166,6 +3230,7 @@ function linkFeed(id) {
 }
 function unlinkFeed(id) {
   const c = state.cards.find(x => x.id === id);
+  if (c.feedSold) { c.prices = (c.prices || []).filter(p => p.src !== 'sold').concat(c.priorPrices || []).sort((a, b) => a.t - b.t); delete c.priorPrices; delete c.feedSold; }
   delete c.feedKey; delete c.feedAuto;
   c.feedOptOut = 1;             // user said no — never auto-relink this card
   save(); render();

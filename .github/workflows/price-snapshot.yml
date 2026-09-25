@@ -46,6 +46,15 @@ jobs:
       - name: Run snapshot
         run: node tools/price-engine/snapshot-free.mjs --watchlist data/watchlist.json --out price-data/data
 
+      # Sold marks (2026-09-24, Mo: "fold that into a github automation for all users of the site nightly").
+      # Dated SportsCardsPro / PriceCharting sales for every card in data/price-universe.json -> the Vault's
+      # sold catalog. Never asks (R20); no titles/sellers stored (R17). A failure here never blocks the
+      # ask-engine feed above: the Vault keeps yesterday's sold marks.
+      - name: Sold marks (dated sales, not asks)
+        continue-on-error: true
+        timeout-minutes: 60
+        run: node tools/price-engine/sold-marks.mjs --universe data/price-universe.json --out price-data/data/sold-marks.json --hist price-data/data
+
       - name: Newsletter (flip alerts + Monday recap draft)
         env:
           KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
@@ -90,6 +99,10 @@ jobs:
             mkdir -p data/feed
             for f in prices-latest.json prices-history.json market-latest.json; do
               cp "price-data/data/$f" "data/feed/$f"
+            done
+            # sold catalog (2026-09-24): published only when tonight's run produced it
+            for f in sold-marks.json sold-history.json; do
+              if [ -f "price-data/data/$f" ]; then cp "price-data/data/$f" "data/feed/$f"; fi
             done
             # R20 (2026-09-23): no eBay listing titles in the public feed.
             node tools/ci/strip-feed-titles.mjs data/feed/prices-latest.json data/feed/prices-history.json data/feed/market-latest.json
