@@ -56,6 +56,7 @@ const CONFIG = {
     ebayQuery: (name, num) => `pokemon 30th celebration ${name} ${num}`,
     theme: "#f5c800",
     releaseDate: "2026-09-16",
+    imgSet: "Pokemon 30th Celebration",   // photo name-search: plain "Pokemon"; NO denominator — the Classic Collection reprints keep their original numbering (Charizard 4/102), so "4/128" finds nothing
     sub: { RGB: { name: "Mew RGB trio", nums: ["R/RGB", "G/RGB", "B/RGB"], blurb: "The three secret-rare Mews (R, G, B) — the set's chase, tracked as their own line so the trio's move is never mistaken for the set's." } },
     note: "Includes the Classic Collection reprints (Charizard #4, Lugia #149 …) — they are in the set on PriceCharting's listing and enter the basket the week they clear the screen; the Ultra-Premium Collection that carries them ships Nov 6. Product waves run through Dec 4; the index is inception-forward, so supply arriving later is a market event, never a restatement.",
   },
@@ -72,6 +73,7 @@ const CONFIG = {
     ebayQuery: (name, num) => `pokemon 151 ${name} ${num}`,
     theme: "#ff5a3c",
     releaseDate: "2023-09-22",
+    imgSet: "Pokemon 151", denom: 165,
     skipTitle: /poster collection/i,
     note: "151 is the original 151 Pokémon, #1–#151 in Pokédex order, plus trainers, energies and the illustration-rare and special-illustration-rare tier (#152–#207). A three-year-old set with deep, steady liquidity — most of the 207 slots trade as singles every week, so the basket is close to the whole set from day one. Sealed product (Booster Bundle, ETB, UPC, tins) is not a card and is not in the universe.",
   },
@@ -171,6 +173,10 @@ function subMark(x, date) {
 }
 
 // ---------------- page block (the AH26 mast look, Mo Sep 25: "I prefer the AH26 look") ----------------
+// photo key for js/card-img.js name mode: "<name> <num/denom> <imgSet>". The resolver requires every non-numeric token
+// of the key in the eBay title, so the key carries only words a listing title actually has ("Pokemon", not "Pokémon TCG").
+// (Sep 25 2026 image sweep: 5 of TH26's and 4 of SV151's top-10 photos sat on the placeholder for exactly this reason.)
+function imgKey(b, c) { const num = /^\d+$/.test(String(b.num)) && c.denom ? `${b.num}/${c.denom}` : String(b.num); return `${b.name} ${num} ${c.imgSet || c.set}`; }
 function deskIds(x) {
   try { const d = JSON.parse(fs.readFileSync(path.join(ROOT, "data/auction-desk.json"), "utf8")); const m = {}; for (const c of d.cards || []) if (c.index === x.ticker && c.num) m[(String(c.name || "") + "#" + String(c.num)).toLowerCase()] = c.id; return m; } catch (e) { return {}; }
 }
@@ -191,7 +197,7 @@ function block(x, c) {
     const w = (b.price * b.w) / bv;
     const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
     const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: SACAT_TCG, av: b.price >= 200 });
-    const thumb = i < 10 ? `<span data-card-img="name:${esc(b.name)} ${esc(b.num)} ${esc(c.set)}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
+    const thumb = i < 10 ? `<span data-card-img="name:${esc(imgKey(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
     const dk = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slot = desk[dk] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dk])}"></span>` : "";
     return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><span class="act-w"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="pokemon" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot || '<span class="sidx-auc-slot"></span>'}</span></td></tr>`;
   };
@@ -211,7 +217,7 @@ function block(x, c) {
       <h2><span class="sidx-tk">${x.ticker}</span> <span class="sidx-dot">·</span> ${esc(c.name)}</h2>
       <p class="sidx-sub">All ${x.universe.length} cards of ${esc(c.set)}, priced from dated sold comps and re-marked Monday and Thursday. Base 100.00 at ${mdy(x.inception)}. This block tracks the set; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
     </div>
-    <figure class="sidx-photo"><span data-card-img="name:${esc(hero.name)} ${esc(hero.num)} ${esc(c.set)}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · live eBay listing</figcaption></figure>
+    <figure class="sidx-photo"><span data-card-img="name:${esc(imgKey(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · live eBay listing</figcaption></figure>
     <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div><div class="lvc">base 100.00 · inception ${mdy(x.inception)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</div></div>
   </div>
   <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>

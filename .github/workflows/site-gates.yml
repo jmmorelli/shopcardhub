@@ -27,6 +27,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Install headless Chromium for the image sweep (scheduled runs only)
+        if: github.event_name != 'push'
+        run: npm i -g playwright@1 && npx --yes playwright@1 install --with-deps chromium
       - name: Run gates
         id: run
         run: |
@@ -38,6 +41,10 @@ jobs:
             echo; echo "## audit-terminal"; node tools/audit-terminal.mjs --feed data/feed | tail -25; [ ${PIPESTATUS[0]} -eq 0 ] || fail=1
             if [ "${{ github.event_name }}" != "push" ]; then
               echo; echo "## watch-checks (feed freshness + desk heartbeat)"; node tools/ci/watch-checks.mjs; [ $? -eq 0 ] || fail=1
+              # Rendered image gate (Sep 25 2026, Mo: images must work on every page, checked nightly). Loads every
+              # sitemap page on PRODUCTION in headless Chromium at 1280 and 390 px, scrolls it, and fails on a broken
+              # <img>, a page error, or phone overflow; placeholder card photos are WARN only. ~8 min.
+              echo; echo "## image-sweep (rendered, production)"; node tools/ci/image-sweep.mjs --json image-sweep.json | tail -40; [ ${PIPESTATUS[0]} -eq 0 ] || fail=1
             fi
           } > gates.txt 2>&1
           cat gates.txt
