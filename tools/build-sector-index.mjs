@@ -27,13 +27,13 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { consoleCards } from "./price-engine/pc-console.mjs";
 import { parsePage } from "./price-engine/sold-marks.mjs";
-import { ebaySearchUrl, SACAT_TCG } from "./lib/epn.mjs";
+import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const has = (k) => args.includes(k);
-const TICKER = opt("--ticker", null);
+let TICKER = opt("--ticker", null);
 const DRY = has("--dry");
 const TODAY = process.env.SIDX_TODAY || new Date().toISOString().slice(0, 10);
 const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/128 Safari/537.36";
@@ -77,7 +77,56 @@ const CONFIG = {
     skipTitle: /poster collection/i,
     note: "151 is the original 151 Pokémon, #1–#151 in Pokédex order, plus trainers, energies and the illustration-rare and special-illustration-rare tier (#152–#207). A three-year-old set with deep, steady liquidity — most of the 207 slots trade as singles every week, so the basket is close to the whole set from day one. Sealed product (Booster Bundle, ETB, UPC, tins) is not a card and is not in the universe.",
   },
+  // ---------------- BOWMAN (Sep 25 2026, Mo: "BOW26 = every 1st Bowman Chrome from all 2026 Bowman releases, autos lead,
+  // non-autos the sub-index; each release its own index; BOW27 next year") ----------------
+  // SportsCardsPro lists May's 2026 Bowman and September's 2026 Bowman Chrome prospect autos on ONE console
+  // ("2026 Bowman Chrome Prospect Autograph", 192 base slots) and their Chrome Prospects on another (BCP-1..150 = May,
+  // BCP-151..250 = September). The release is told apart by the September checklist (data/sets/2026-bowman-chrome-
+  // baseball.json: 104 autos, 97 flagged 1st; 100 base, 72 flagged 1st). May's cards carry no flag file yet — every
+  // CPA/BCP slot from May is taken as a 1st (that is what the May product's Chrome Prospect insert is); the Tuesday
+  // lane verifies against a May checklist when one is on file. Bowman Draft (December) joins BOW26 as a third source
+  // the first Monday after its console appears.
+  ...bowmanConfigs(),
 };
+
+// ---- Bowman helpers (release split + 1st flags from the September checklist) ----
+function bowmanConfigs() {
+  let sep = { autos: new Map(), base: new Map() };
+  try {
+    const set = JSON.parse(fs.readFileSync(path.join(ROOT, "data/sets/2026-bowman-chrome-baseball.json"), "utf8"));
+    for (const g of set.groups || []) for (const cd of g.cards || []) (g.key === "cpa" ? sep.autos : sep.base).set(String(cd.player).toLowerCase(), !!cd.first);
+  } catch (e) { console.error("bowman: September checklist unreadable — " + e.message); }
+  const bcpNum = (num) => parseInt(String(num).replace(/^BCP-/i, ""), 10);
+  const isSepAuto = (name) => sep.autos.has(String(name).toLowerCase());
+  const sepFirstAuto = (name) => sep.autos.get(String(name).toLowerCase()) === true;
+  const sepFirstBase = (name) => sep.base.get(String(name).toLowerCase()) === true;
+  const AUTOS = "baseball-cards-2026-bowman-chrome-prospect-autograph", BASE = "baseball-cards-2026-bowman-chrome-prospect";
+  const autoSlot = (t) => /#CPA-/i.test(t), baseSlot = (t) => /#BCP-/i.test(t);
+  const may = { auto: (name, num) => !isSepAuto(name), base: (name, num) => bcpNum(num) <= 150 };
+  const sept = { auto: (name, num) => isSepAuto(name) && sepFirstAuto(name), base: (name, num) => bcpNum(num) > 150 && sepFirstBase(name) };
+  const common = {
+    cat: "baseball", imgSub: "1ST BOWMAN", sacat: SACAT_SPORTS,
+    ebayQuery: (name, num) => `2026 bowman chrome ${name} ${/^CPA/i.test(num) ? "auto" : ""} ${num}`.replace(/\s+/g, " "),
+    imgKey: (b) => `${b.name} 2026 Bowman Chrome ${/^CPA/i.test(b.num) ? "Auto" : ""} ${b.num}`.replace(/\s+/g, " "),
+    theme: "#00ccf5", releaseDate: "2026-05-13",
+    kind: "1st Bowman Chrome Auto", kindPlural: "1st Bowman Chrome Autos",
+  };
+  return {
+    BB26: { ...common, name: "2026 Bowman 1st Auto Index", set: "2026 Bowman", page: "/bowman-2026-index",
+      sources: [{ slug: AUTOS, keep: (t, name, num) => autoSlot(t) && may.auto(name, num) }],
+      subUniverse: { key: "BASE", name: "1st Bowman Chrome (base)", blurb: "the same release's 1st Bowman Chrome base cards, price-weighted, uncapped — the non-auto line under the autos", sources: [{ slug: BASE, keep: (t, name, num) => baseSlot(t) && may.base(name, num) }] },
+      note: "May's 2026 Bowman: the paper flagship whose Chrome Prospect Autograph insert (#CPA-) is where the class's 1st Bowman Chrome Autos live — Holliday, Fischer, Arquette, Kim and the rest of the Bangers board are all here. The Bangers board ranks ten of these by the last printed sale and makes calls; this index prices every one that trades and makes none." },
+    BCB26: { ...common, name: "2026 Bowman Chrome 1st Auto Index", set: "2026 Bowman Chrome", page: "/bowman-chrome-2026-index", releaseDate: "2026-09-09",
+      sources: [{ slug: AUTOS, keep: (t, name, num) => autoSlot(t) && sept.auto(name, num) }],
+      subUniverse: { key: "BASE", name: "1st Bowman Chrome (base)", blurb: "September's 1st Bowman Chrome base cards (BCP-151 up), price-weighted, uncapped", sources: [{ slug: BASE, keep: (t, name, num) => baseSlot(t) && sept.base(name, num) }] },
+      note: "September's 2026 Bowman Chrome: only the autos the published checklist flags as a player's first Bowman autograph are in (97 of 104); returning names (Holliday BCP-209, Kilby, Quintero, Arias …) had their 1sts in May and are excluded here, not double-counted. Release-week supply is heavy, so the first quarter of marks reads the drawdown every Bowman product prints before the class sorts itself." },
+    BOW26: { ...common, name: "2026 1st Bowman Chrome Auto Index", set: "2026 Bowman, Bowman Chrome and Bowman Draft", page: "/bowman-1st-chrome-index",
+      sources: [{ slug: AUTOS, keep: (t, name, num) => autoSlot(t) && (may.auto(name, num) || sept.auto(name, num)) }],
+      subUniverse: { key: "BASE", name: "1st Bowman Chrome (base), all releases", blurb: "every 2026 1st Bowman Chrome base card, price-weighted, uncapped", sources: [{ slug: BASE, keep: (t, name, num) => baseSlot(t) && (may.base(name, num) || sept.base(name, num)) }] },
+      note: "The year cohort: every 1st Bowman Chrome Auto issued across the 2026 Bowman releases — May's Bowman and September's Bowman Chrome now, December's Bowman Draft when its console lists (it enters the first Monday after street, a logged divisor adjustment, level unchanged). BB26 and BCB26 are the same cards by release. Bowman is a spec market held for years; the cohort line is the position, the release line is the entry. BOW27 starts with May 2027." },
+  };
+}
+
 const SCREEN = { enter: 6, stay: 4, window: 30 };
 const CAP = 0.25;          // no single card above 25% …
 const BIG = 0.05, BIG_SUM = 0.50;   // … and positions above 5% may not sum past 50% — the Select Sector SPDR "5/50" rule, adopted Sep 25 2026 (Mo) when the three Mew RGB secrets would otherwise have taken 75% of TH26
@@ -102,28 +151,42 @@ async function get(url) {
 // dropped when a bracketless print exists. Two different cards may share a number in this set (the Classic
 // Collection reprints keep their original numbers: Lugia #149 beside Pikachu ex #149), so the slot key is
 // name + number, never the number alone.
-async function universe(c) {
-  const rows = await consoleCards(c.pcSlug);
+const CONSOLE_CACHE = new Map();   // slug → rows, shared across tickers in one run (the Bowman trio reads the same two consoles)
+async function consoleRows(slug) { if (!CONSOLE_CACHE.has(slug)) CONSOLE_CACHE.set(slug, await consoleCards(slug)); return CONSOLE_CACHE.get(slug); }
+async function universe(c, spec) {
+  // spec = the ticker config (main universe) or a subUniverse block; both carry sources[] (or a legacy pcSlug)
+  const sources = spec.sources || [{ slug: spec.pcSlug, keep: null }];
   const slots = new Map();
+  for (const src of sources) {
+  const rows = await consoleRows(src.slug);
   for (const r of rows) {
     if (c.skipTitle && c.skipTitle.test(r.title)) continue;   // a sealed product wearing a card number (SV151 "Poster Collection #49")
-    const m = r.title.match(/^(.*?)\s+#([A-Za-z0-9\/]+)\s*$/) || r.title.match(/^(.*?)\s+([A-Z]\/RGB)\s*$/); if (!m) continue;   // sealed products carry no number; "B/RGB" is a number (Mo, Sep 25: the RGB Mews are set cards)
+    const m = r.title.match(/^(.*?)\s+#([A-Za-z0-9\/-]+)\s*$/) || r.title.match(/^(.*?)\s+([A-Z]\/RGB)\s*$/); if (!m) continue;   // sealed products carry no number; "B/RGB" is a number (Mo, Sep 25: the RGB Mews are set cards); "CPA-EH" is a number
     const name = m[1].replace(/\s*\[[^\]]*\]\s*/g, " ").replace(/&amp;/g, "&").replace(/&#39;|&#x27;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, " ").trim(), num = m[2];
     // variant rank: bracketless print wins; with none, the plain [Holo] print is the slot (SV151 spec: Machamp #68,
     // Marowak #105, Vaporeon #134, Mewtwo #150, Psychic Energy #207 exist only as holos); Reverse/Cosmos/stamps never win over it
     const rank = !/\[/.test(r.title) ? 0 : /\[holo\]/i.test(r.title) ? 1 : 2;
     const bracket = rank > 0;
     const key = (name + " #" + num).toLowerCase();
+    if (src.keep && !src.keep(r.title, name, num)) continue;
     const cur = slots.get(key);
     if (!cur || rank < cur.rank) slots.set(key, { num, name, title: name + " #" + num, path: r.path, bracket, rank });
   }
+  }
   const out = [...slots.values()].map(({ num, name, title, path: p }) => ({ num, name, title, path: p }));
-  out.sort((a, b) => (parseInt(a.num, 10) || 0) - (parseInt(b.num, 10) || 0) || a.name.localeCompare(b.name));
+  const numOf = (n) => parseInt(String(n).replace(/^[A-Z]+-/i, ""), 10) || 0;
+  out.sort((a, b) => numOf(a.num) - numOf(b.num) || a.name.localeCompare(b.name));
   return out;
 }
 
 // ---------------- screen + mark from one item page read ----------------
+const READ_CACHE = new Map();
 async function readCard(slot) {
+  if (READ_CACHE.has(slot.path)) { READ_CACHE_HIT = true; return READ_CACHE.get(slot.path); }
+  READ_CACHE_HIT = false;
+  const r = await readCardUncached(slot); READ_CACHE.set(slot.path, r); return r;
+}
+async function readCardUncached(slot) {
   const html = await get("https://www.pricecharting.com/game/" + slot.path);
   const pg = parsePage(html, "Raw");
   if (pg.error) return { error: pg.error, clean30: 0, all30: 0, price: null };
@@ -164,21 +227,66 @@ const basketValue = (basket) => basket.reduce((s, b) => s + b.price * (b.w == nu
 const levelOf = (x) => r2(basketValue(x.basket) / x.divisor);
 // sub-index: a named subset of the basket, price-weighted, uncapped, base 100 at the same inception — a second line, never the level
 function subValue(x, nums) { return x.basket.filter((b) => nums.includes(String(b.num))).reduce((s, b) => s + b.price, 0); }
-function subInit(x, c) {
+// screened sub-index (Bowman, Sep 25 2026): its own universe and liquidity screen, price-weighted, uncapped, base 100
+async function readUniverse(uni, label) {
+  const reads = [];
+  for (let i = 0; i < uni.length; i++) {
+    const u = uni[i];
+    try { const r = await readCard(u); reads.push({ ...u, ...r }); console.log(`${String(i + 1).padStart(3)}/${uni.length} ${label} ${u.title.padEnd(34)} clean30 ${String(r.clean30).padStart(2)} ${r.price == null ? "" : "$" + r.price}${r.error ? " " + r.error : ""}`); }
+    catch (e) { reads.push({ ...u, error: e.message, clean30: 0, price: null }); console.log(`${u.title}: ${e.message}`); }
+    if (!READ_CACHE_HIT) await sleep(PAUSE);
+  }
+  return reads;
+}
+let READ_CACHE_HIT = false;
+const toRow = (r) => ({ num: r.num, name: r.name, path: r.path, price: r.price, n30: r.clean30, basis: "sold (PriceCharting ungraded, 30d median)", asOf: TODAY, w: 1 });
+async function subInit(x, c) {
   x.sub = {};
   for (const [k, d] of Object.entries(c.sub || {})) { const v = subValue(x, d.nums); if (!v) continue; x.sub[k] = { name: d.name, nums: d.nums, blurb: d.blurb, divisor: r4(v / 100), history: [{ date: x.inception, level: 100, basketValue: r2(v), note: "inception" }] }; }
+  if (c.subUniverse) {
+    const d = c.subUniverse;
+    const uni = await universe(c, d);
+    console.log(`sub ${d.key}: ${uni.length} slots`);
+    const reads = await readUniverse(uni, d.key);
+    const basket = reads.filter((r) => r.clean30 >= SCREEN.enter && r.price != null).map(toRow);
+    const v = basket.reduce((a, b) => a + b.price, 0);
+    x.sub[d.key] = { kind: "screened", name: d.name, blurb: d.blurb, universe: uni.map((u) => ({ num: u.num, name: u.name, path: u.path })), basket, divisor: r4(v / 100), history: [{ date: x.inception, level: 100, basketValue: r2(v), priced: basket.length, note: "inception" }] };
+    console.log(`sub ${d.key}: basket ${basket.length}/${uni.length} · value $${r2(v)}`);
+  }
 }
-function subMark(x, date) {
-  for (const [k, sx] of Object.entries(x.sub || {})) { const v = subValue(x, sx.nums); if (!v) continue; sx.history.push({ date, level: r2(v / sx.divisor), basketValue: r2(v) }); }
+async function subMark(x, date) {
+  for (const [k, sx] of Object.entries(x.sub || {})) {
+    if (sx.kind === "screened") {
+      let carried = 0;
+      for (const b of sx.basket) { try { const r = await readCard(b); b.prevPrice = b.price; b.prevAsOf = b.asOf; if (r.price != null) { b.price = r.price; b.asOf = date; b.n30 = r.clean30; b.carried = false; } else { b.carried = true; carried++; } } catch (e) { b.carried = true; carried++; } if (!READ_CACHE_HIT) await sleep(PAUSE); }
+      const v = sx.basket.reduce((a, b) => a + b.price, 0);
+      sx.history.push({ date, level: r2(v / sx.divisor), basketValue: r2(v), priced: sx.basket.length - carried, note: carried ? `${carried} carried` : "" });
+      continue;
+    }
+    const v = subValue(x, sx.nums); if (!v) continue; sx.history.push({ date, level: r2(v / sx.divisor), basketValue: r2(v) });
+  }
 }
 
 // ---------------- page block (the AH26 mast look, Mo Sep 25: "I prefer the AH26 look") ----------------
 // photo key for js/card-img.js name mode: "<name> <num/denom> <imgSet>". The resolver requires every non-numeric token
 // of the key in the eBay title, so the key carries only words a listing title actually has ("Pokemon", not "Pokémon TCG").
 // (Sep 25 2026 image sweep: 5 of TH26's and 4 of SV151's top-10 photos sat on the placeholder for exactly this reason.)
-function imgKey(b, c) { const num = /^\d+$/.test(String(b.num)) && c.denom ? `${b.num}/${c.denom}` : String(b.num); return `${b.name} ${num} ${c.imgSet || c.set}`; }
+function imgKey(b, c) { if (c.imgKey) return c.imgKey(b); const num = /^\d+$/.test(String(b.num)) && c.denom ? `${b.num}/${c.denom}` : String(b.num); return `${b.name} ${num} ${c.imgSet || c.set}`; }
 function deskIds(x) {
-  try { const d = JSON.parse(fs.readFileSync(path.join(ROOT, "data/auction-desk.json"), "utf8")); const m = {}; for (const c of d.cards || []) if (c.index === x.ticker && c.num) m[(String(c.name || "") + "#" + String(c.num)).toLowerCase()] = c.id; return m; } catch (e) { return {}; }
+  const m = {};
+  try { const d = JSON.parse(fs.readFileSync(path.join(ROOT, "data/auction-desk.json"), "utf8")); const fam = /^(BOW|BB|BCB|BD)\d/.test(x.ticker) ? /^(BOW|BB|BCB|BD)\d/ : null;   // the Bowman family shares one desk (a card is searched once)
+    for (const c of d.cards || []) if ((c.index === x.ticker || (fam && fam.test(String(c.index)))) && c.num) m[(String(c.name || "") + "#" + String(c.num)).toLowerCase()] = c.id; } catch (e) {}
+  // cards the price engine already tracks (data/watchlist.json) are searched by /api/auctions under their engine id —
+  // reuse it rather than adding a desk entry that would search the same card twice (Bowman, Sep 25 2026)
+  try {
+    const w = JSON.parse(fs.readFileSync(path.join(ROOT, "data/watchlist.json"), "utf8"));
+    for (const c of w.cards || w) {
+      if (!c || !/-auto$|^(ethan-holliday|andrew-fischer|aiva-arquette|wehiwa-aloy|daniel-pierce|marek-houston|gage-jump|justin-gonzalez|edward-florentino|seong-jun-kim)$/.test(c.id) || c.cardType !== "chrome-auto") continue;
+      const nm = String(c.label || "").split(" — ")[0].trim().toLowerCase();
+      for (const b of x.basket) if (String(b.name).toLowerCase() === nm && /^CPA-/i.test(String(b.num)) && !m[(String(b.name) + "#" + String(b.num)).toLowerCase()]) m[(String(b.name) + "#" + String(b.num)).toLowerCase()] = c.id;
+    }
+  } catch (e) {}
+  return m;
 }
 function block(x, c) {
   const h = x.history || [], last = h[h.length - 1] || null, prev = h.length > 1 ? h[h.length - 2] : null;
@@ -196,10 +304,10 @@ function block(x, c) {
   const row = (b, i) => {
     const w = (b.price * b.w) / bv;
     const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
-    const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: SACAT_TCG, av: b.price >= 200 });
-    const thumb = i < 10 ? `<span data-card-img="name:${esc(imgKey(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
+    const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
+    const thumb = i < 10 ? `<span data-card-img="name:${esc(imgKey(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
     const dk = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slot = desk[dk] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dk])}"></span>` : "";
-    return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><span class="act-w"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="pokemon" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot || '<span class="sidx-auc-slot"></span>'}</span></td></tr>`;
+    return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><span class="act-w"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot || '<span class="sidx-auc-slot"></span>'}</span></td></tr>`;
   };
   const top10 = rows.slice(0, 10).map(row).join(""), rest = rows.slice(10).map((b, i) => row(b, i + 10)).join("");
   const unpriced = x.universe.length - x.basket.length;
@@ -207,17 +315,18 @@ function block(x, c) {
   const subs = Object.entries(x.sub || {}).map(([k, sx]) => {
     const sh = sx.history || [], sl = sh[sh.length - 1], sp = sh.length > 1 ? sh[sh.length - 2] : null;
     const sw = sp ? (sl.level / sp.level - 1) * 100 : null;
-    const cards = x.basket.filter((b) => sx.nums.includes(String(b.num)));
-    return `<div class="sidx-subidx"><span class="sidx-subidx-k"><b>${x.ticker}·${esc(k)}</b> ${esc(sx.name)}</span><span class="sidx-subidx-lv">${sl ? sl.level.toFixed(2) : "—"}</span><span class="sidx-subidx-w ${cls(sw == null ? 0 : sw)}">${sw == null ? "first mark" : (sw >= 0 ? "▲ " : "▼ ") + pct(sw)}</span><span class="sidx-subidx-cards">${cards.map((b) => `<i>${esc(b.name)} #${esc(b.num)} <b>${money(b.price, 0)}</b></i>`).join("")}</span>${sh.length > 1 ? `<span class="sidx-subidx-sp">${ST_spark(sh.map((r) => r.level))}</span>` : ""}<span class="sidx-subidx-n">${cards.length} cards · price-weighted · uncapped · base 100 at ${mdy(x.inception)} — ${esc(sx.blurb || "")}</span></div>`;
+    const cards = sx.kind === "screened" ? sx.basket.slice().sort((a, b) => b.price - a.price) : x.basket.filter((b) => sx.nums.includes(String(b.num)));
+    const shown = sx.kind === "screened" ? cards.slice(0, 3) : cards;
+    return `<div class="sidx-subidx"><span class="sidx-subidx-k"><b>${x.ticker}·${esc(k)}</b> ${esc(sx.name)}</span><span class="sidx-subidx-lv">${sl ? sl.level.toFixed(2) : "—"}</span><span class="sidx-subidx-w ${cls(sw == null ? 0 : sw)}">${sw == null ? "first mark" : (sw >= 0 ? "▲ " : "▼ ") + pct(sw)}</span><span class="sidx-subidx-cards">${shown.map((b) => `<i>${esc(b.name)} #${esc(b.num)} <b>${money(b.price, 0)}</b></i>`).join("")}${sx.kind === "screened" && cards.length > 3 ? `<i>+${cards.length - 3} more</i>` : ""}</span>${sh.length > 1 ? `<span class="sidx-subidx-sp">${ST_spark(sh.map((r) => r.level))}</span>` : ""}<span class="sidx-subidx-n">${cards.length} cards${sx.kind === "screened" && sx.universe ? ` of ${sx.universe.length}` : ""} · price-weighted · uncapped · base 100 at ${mdy(x.inception)} — ${esc(sx.blurb || "")}</span></div>`;
   }).join("");
   return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}" style="--sidx:${c.theme};">
   <div class="sidx-mast">
     <div class="sidx-t">
-      <div class="sidx-eyebrow">▮ Set Index · Sector Model · Every Card In The Set</div>
+      <div class="sidx-eyebrow">▮ ${c.kindPlural ? "Class Index · Sector Model · Every " + esc(c.kindPlural.replace(/s$/, "")) : "Set Index · Sector Model · Every Card In The Set"}</div>
       <h2><span class="sidx-tk">${x.ticker}</span> <span class="sidx-dot">·</span> ${esc(c.name)}</h2>
-      <p class="sidx-sub">All ${x.universe.length} cards of ${esc(c.set)}, priced from dated sold comps and re-marked Monday and Thursday. Base 100.00 at ${mdy(x.inception)}. This block tracks the set; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
+      <p class="sidx-sub">${c.kindPlural ? `Every ${esc(c.kindPlural.replace(/s$/, ""))} in ${esc(c.set)} — ${x.universe.length} cards, ${x.basket.length} trading — priced` : `All ${x.universe.length} cards of ${esc(c.set)}, priced`} from dated sold comps and re-marked Monday and Thursday. Base 100.00 at ${mdy(x.inception)}. This block tracks the ${c.kindPlural ? "class" : "set"}; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
     </div>
-    <figure class="sidx-photo"><span data-card-img="name:${esc(imgKey(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · live eBay listing</figcaption></figure>
+    <figure class="sidx-photo"><span data-card-img="name:${esc(imgKey(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · live eBay listing</figcaption></figure>
     <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div><div class="lvc">base 100.00 · inception ${mdy(x.inception)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</div></div>
   </div>
   <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>
@@ -327,31 +436,26 @@ function bake(x, c) {
   console.log(`${DRY ? "would bake" : "baked"} ${c.page} block: ${x.basket.length} rows`);
 }
 
-// ---------------- main ----------------
-const c = cfg();
+// ---------------- main (one or more tickers: --ticker BOW26,BB26,BCB26 share every page read) ----------------
 const idxPath = path.join(ROOT, "data/indices.json");
 const IDX = JSON.parse(fs.readFileSync(idxPath, "utf8"));
 const save = () => { if (DRY) { console.log("--dry: indices.json not written"); return; } IDX.updated = TODAY; fs.writeFileSync(idxPath, JSON.stringify(IDX, null, 1) + "\n"); console.log("wrote data/indices.json"); };
-
+for (const T of String(TICKER || "").split(",").map((t) => t.trim()).filter(Boolean)) { TICKER = T; await runTicker(); }
+async function runTicker() {
+const c = cfg();
 if (has("--init")) {
   if (IDX[TICKER] && IDX[TICKER].status === "live" && !has("--force")) { console.error(`${TICKER} is already live — use --mark / --recon (or --force to rebuild, which is a NEW inception)`); process.exit(2); }
-  console.log(`universe: reading PriceCharting console ${c.pcSlug} …`);
-  const uni = await universe(c);
+  console.log(`universe: reading console(s) ${(c.sources || [{ slug: c.pcSlug }]).map((q) => q.slug).join(", ")} …`);
+  const uni = await universe(c, c);
   console.log(`universe: ${uni.length} slots`);
-  const reads = [];
-  for (let i = 0; i < uni.length; i++) {
-    const s = uni[i];
-    try { const r = await readCard(s); reads.push({ ...s, ...r }); console.log(`${String(i + 1).padStart(3)}/${uni.length} ${s.title.padEnd(34)} clean30 ${String(r.clean30).padStart(2)} ${r.price == null ? "" : "$" + r.price}${r.error ? " " + r.error : ""}`); }
-    catch (e) { reads.push({ ...s, error: e.message, clean30: 0, price: null }); console.log(`${s.title}: ${e.message}`); }
-    await sleep(PAUSE);
-  }
-  const basket = reads.filter((r) => r.clean30 >= SCREEN.enter && r.price != null).map((r) => ({ num: r.num, name: r.name, path: r.path, price: r.price, n30: r.clean30, basis: "sold (PriceCharting ungraded, 30d median)", asOf: TODAY, w: 1 }));
+  const reads = await readUniverse(uni, TICKER);
+  const basket = reads.filter((r) => r.clean30 >= SCREEN.enter && r.price != null).map(toRow);
   applyCap(basket);
   const bv = basketValue(basket), divisor = r4(bv / 100);
   IDX[TICKER] = {
     ticker: TICKER, name: c.name, set: c.set, page: c.page, model: "sector", status: "live", basis: "sold", basisLabel: "sold comps (PriceCharting ungraded) · sector model · twice-weekly re-mark",
     screen: { ...SCREEN, source: "PriceCharting ungraded completed sales, clean single-card rows" }, cap: CAP, capRule: { single: CAP, big: BIG, bigSum: BIG_SUM, name: "25% single-card cap + 5/50 group cap (Select Sector SPDR rule)" }, base: 100, inception: TODAY, releaseDate: c.releaseDate,
-    universeComplete: true, pcSlug: c.pcSlug, divisor,
+    universeComplete: true, pcSlug: c.pcSlug || null, sources: (c.sources || []).map((q) => q.slug), divisor,
     divisorLog: [{ date: TODAY, before: null, after: divisor, why: `inception — basket $${r2(bv)} over ${basket.length} of ${uni.length} slots; ${basket.filter((b) => b.w < 1).length} capped (25% single / 5-50 group)` }],
     capLog: basket.filter((b) => b.w < 1).map((b) => ({ date: TODAY, num: b.num, name: b.name, w: b.w })),
     screenLog: [{ date: TODAY, pass: basket.length, fail: uni.length - basket.length, errors: reads.filter((r) => r.error).length }],
@@ -360,13 +464,13 @@ if (has("--init")) {
     history: [{ date: TODAY, level: 100, basketValue: r2(bv), divisor, priced: basket.length, note: "inception" }],
     reconstitution: { cadence: "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before", next: "2027-01-04" },
   };
-  subInit(IDX[TICKER], c);
+  await subInit(IDX[TICKER], c);
   console.log(`${TICKER}: basket ${basket.length}/${uni.length} · value $${r2(bv)} · divisor ${divisor} · capped ${basket.filter((b) => b.w < 1).length} · top ${basket.slice().sort((a, b) => b.price * b.w - a.price * a.w).slice(0, 3).map((b) => `${b.name} #${b.num} ${(b.price * b.w / bv * 100).toFixed(1)}%`).join(" · ")}`);
   save(); bake(IDX[TICKER], c);
 } else if (has("--mark")) {
   const x = IDX[TICKER]; if (!x || x.status !== "live") { console.error(`${TICKER} is not live`); process.exit(2); }
-  if (has("--if-mark-day")) { const dow = new Date(TODAY + "T12:00:00Z").getUTCDay(); if (dow !== 1 && dow !== 4) { console.log(`${TODAY} is not a mark day (Mon/Thu) — no-op`); process.exit(0); } }
-  if (x.history.some((h) => h.date === TODAY)) { console.log(`${TICKER} already marked ${TODAY} — no-op`); process.exit(0); }
+  if (has("--if-mark-day")) { const dow = new Date(TODAY + "T12:00:00Z").getUTCDay(); if (dow !== 1 && dow !== 4) { console.log(`${TODAY} is not a mark day (Mon/Thu) — no-op`); return; } }
+  if (x.history.some((h) => h.date === TODAY)) { console.log(`${TICKER} already marked ${TODAY} — no-op`); return; }
   let carried = 0;
   for (const b of x.basket) {
     try {
@@ -375,11 +479,11 @@ if (has("--init")) {
       if (r.price != null) { b.price = r.price; b.asOf = TODAY; b.n30 = r.clean30; b.carried = false; }
       else { b.carried = true; carried++; b.n30 = r.clean30; }     // tail rule: no clean sale in the window → carry the last mark, dated
     } catch (e) { b.carried = true; carried++; console.log(`${b.name} #${b.num}: ${e.message} — carried`); }
-    await sleep(PAUSE);
+    if (!READ_CACHE_HIT) await sleep(PAUSE);
   }
   const level = levelOf(x);
   x.history.push({ date: TODAY, level, basketValue: r2(basketValue(x.basket)), divisor: x.divisor, priced: x.basket.length - carried, note: carried ? `${carried} carried` : "" });
-  subMark(x, TODAY);
+  await subMark(x, TODAY);
   console.log(`${TICKER} ${TODAY}: level ${level} (prev ${x.history[x.history.length - 2].level}) · ${carried} carried`);
   save(); bake(x, c);
 } else if (has("--recon")) {
@@ -404,10 +508,11 @@ if (has("--init")) {
   x.screenLog.push({ date: TODAY, pass: next.length, fail: x.universe.length - next.length, entered, exited });
   x.basket = next; x.divisor = divisor;
   x.history.push({ date: TODAY, level: before, basketValue: r2(bvNew), divisor, priced: next.length, note: `reconstitution (+${entered}/−${exited})` });
-  subMark(x, TODAY);
+  await subMark(x, TODAY);
   console.log(`${TICKER} reconstitution ${TODAY}: ${next.length} in basket (+${entered}/−${exited}) · divisor ${x.divisor} · level ${before} unchanged`);
   save(); bake(x, c);
 } else if (has("--bake")) {
   const x = IDX[TICKER]; if (!x) { console.error(`${TICKER} not in indices.json`); process.exit(2); }
   bake(x, c);
 } else { console.error("one of --init | --mark | --recon | --bake"); process.exit(2); }
+}

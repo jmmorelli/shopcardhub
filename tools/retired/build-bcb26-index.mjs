@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// RETIRED 2026-09-25 (Mo: Bowman index reset). The ask-basis BOW26/BCB26 lines this built are in data/indices-retired.json;
+// the live Bowman tickers (BOW26, BB26, BCB26) are sector-model, sold-basis, built by tools/build-sector-index.mjs. Do not run.
 // tools/build-bcb26-index.mjs — BCB26 "2026 Bowman Chrome Chase Index" (per-set Bowman index #1).
 //
 // Two jobs, both idempotent, both driven by data/ — nothing hand-typed:

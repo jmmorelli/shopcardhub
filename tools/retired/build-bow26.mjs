@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// RETIRED 2026-09-25 (Mo: Bowman index reset). The ask-basis BOW26/BCB26 lines this built are in data/indices-retired.json;
+// the live Bowman tickers (BOW26, BB26, BCB26) are sector-model, sold-basis, built by tools/build-sector-index.mjs. Do not run.
 // BOW26 — 2026 Bowman 1st Chrome Index builder (Sep 7 2026, CoS weekly run).
 //
 // AUTOS tab (live): every watchlist card with cardType "chrome-auto" (the 1st

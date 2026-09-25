@@ -91,14 +91,14 @@ const stripHtml = () => {
     const pages = { PB26: "/pitch-black-index", CR26: "/chaos-rising-index", AH26: "/ascended-heroes-index", PRIS25: "/prismatic-evolutions-index", DR25: "/destined-rivals-index" };
     let h = `<div class="strip">`;
     for (const t of POKE) h += chip(t, pages[t], t === active);
-    // Bowman chips follow indices.json status (BCB26 activated 2026-09-14) — never hardcode pre/live here
-    const bow = (t, href, preTxt) => {
-      const x = idx[t] || {}; const live = x.status === "live";
-      return `<a class="chip" href="${href}" style="text-decoration:none;"><b>${t}</b> <span class="${live ? "up" : "soon"}">${live ? "live · ask" : preTxt}</span></a>`;
-    };
-    h += bow("BOW26", "/bowman-1st-chrome-index", "pre");
-    h += bow("BCB26", "/bowman-chrome-2026-index", "pre · streets 09/09");
-    h += `<div class="chip"><b>MEGA26</b> <span class="soon">Mega Evolution base · planned</span></div></div>`;
+    // every other live ticker (sector-model set indices, the Bowman trio …) straight from indices.json — never hardcoded
+    for (const t of Object.keys(idx)) {
+      const x = idx[t]; if (!x || typeof x !== "object" || POKE.includes(t) || x.status !== "live" || !(x.history || []).length) continue;
+      const last = x.history[x.history.length - 1], prev = x.history.length > 1 ? x.history[x.history.length - 2] : null;
+      const w = prev ? (last.level / prev.level - 1) * 100 : null;
+      h += `<a class="chip" href="${x.page}" style="text-decoration:none;"><b>${t}</b> <span style="color:var(--tx)">${last.level.toFixed(2)}</span>${w == null ? "" : ` <span class="soon">${signed(w, 1)} w/w</span>`}</a>`;
+    }
+    h += `</div>`;
     return h;
   };
 };

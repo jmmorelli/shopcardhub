@@ -114,6 +114,9 @@ jobs:
             else echo "::warning::TH26 mark failed - level and page keep the previous mark"; git checkout -- data/indices.json pokemon-30th-anniversary-2026.html; fi
             if node tools/build-sector-index.mjs --ticker SV151 --mark --if-mark-day; then git add data/indices.json scarlet-violet-151-index.html
             else echo "::warning::SV151 mark failed - level and page keep the previous mark"; git checkout -- data/indices.json scarlet-violet-151-index.html; fi
+            # Bowman trio (Sep 25 2026): one call, every page read shared — BOW26 is the union of BB26 + BCB26 (+ BD26 in Dec)
+            if node tools/build-sector-index.mjs --ticker BOW26,BB26,BCB26 --mark --if-mark-day; then git add data/indices.json bowman-1st-chrome-index.html bowman-2026-index.html bowman-chrome-2026-index.html
+            else echo "::warning::Bowman mark failed - levels and pages keep the previous mark"; git checkout -- data/indices.json bowman-1st-chrome-index.html bowman-2026-index.html bowman-chrome-2026-index.html; fi
             # crawlable-copy-integrity (2026-09-24, CoS-commissioned): / is pre-rendered from this feed for
             # crawlers and JS-off readers. Publishing the feed without re-baking it left / serving a stale
             # dashboard (Sep 18: a reversed SELL; Sep 24: stamp Sep 22, Gage Jump SELL vs the feed's HOLD).
