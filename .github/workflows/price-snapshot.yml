@@ -112,6 +112,8 @@ jobs:
             # marked. A failure never blocks the feed: the index keeps its last mark and the page its last bake.
             if node tools/build-sector-index.mjs --ticker TH26 --mark --if-mark-day; then git add data/indices.json pokemon-30th-anniversary-2026.html
             else echo "::warning::TH26 mark failed - level and page keep the previous mark"; git checkout -- data/indices.json pokemon-30th-anniversary-2026.html; fi
+            if node tools/build-sector-index.mjs --ticker SV151 --mark --if-mark-day; then git add data/indices.json scarlet-violet-151-index.html
+            else echo "::warning::SV151 mark failed - level and page keep the previous mark"; git checkout -- data/indices.json scarlet-violet-151-index.html; fi
             # crawlable-copy-integrity (2026-09-24, CoS-commissioned): / is pre-rendered from this feed for
             # crawlers and JS-off readers. Publishing the feed without re-baking it left / serving a stale
             # dashboard (Sep 18: a reversed SELL; Sep 24: stamp Sep 22, Gage Jump SELL vs the feed's HOLD).

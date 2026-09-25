@@ -59,6 +59,22 @@ const CONFIG = {
     sub: { RGB: { name: "Mew RGB trio", nums: ["R/RGB", "G/RGB", "B/RGB"], blurb: "The three secret-rare Mews (R, G, B) — the set's chase, tracked as their own line so the trio's move is never mistaken for the set's." } },
     note: "Includes the Classic Collection reprints (Charizard #4, Lugia #149 …) — they are in the set on PriceCharting's listing and enter the basket the week they clear the screen; the Ultra-Premium Collection that carries them ships Nov 6. Product waves run through Dec 4; the index is inception-forward, so supply arriving later is a market event, never a restatement.",
   },
+  // SV151 (Sep 25 2026, Mo: "SV151 index now"). Path B of claude/cos/sv151-rebuild-spec-2026-09-17.md: inception = the
+  // build date, base 100, never Sep 15. The Sep 17 "authenticated Chrome wall" is gone — item pages carry the ungraded
+  // completed-sales table unauthenticated (the same read TH26 has used since Sep 25). Universe = every numbered slot on
+  // the set's console (207 in the Sep 17 spec); "Poster Collection #49" is a sealed product wearing a card number and is
+  // skipped by title; [Prize Pack] / [Reverse Holo] / [Cosmos Holo] / retailer stamps are variants (bracket rule).
+  SV151: {
+    name: "Scarlet & Violet 151 Set Index",
+    set: "Pokémon TCG Scarlet & Violet 151",
+    page: "/scarlet-violet-151-index",
+    pcSlug: "pokemon-scarlet-&-violet-151",
+    ebayQuery: (name, num) => `pokemon 151 ${name} ${num}`,
+    theme: "#ff5a3c",
+    releaseDate: "2023-09-22",
+    skipTitle: /poster collection/i,
+    note: "151 is the original 151 Pokémon, #1–#151 in Pokédex order, plus trainers, energies and the illustration-rare and special-illustration-rare tier (#152–#207). A three-year-old set with deep, steady liquidity — most of the 207 slots trade as singles every week, so the basket is close to the whole set from day one. Sealed product (Booster Bundle, ETB, UPC, tins) is not a card and is not in the universe.",
+  },
 };
 const SCREEN = { enter: 6, stay: 4, window: 30 };
 const CAP = 0.25;          // no single card above 25% …
@@ -88,12 +104,16 @@ async function universe(c) {
   const rows = await consoleCards(c.pcSlug);
   const slots = new Map();
   for (const r of rows) {
+    if (c.skipTitle && c.skipTitle.test(r.title)) continue;   // a sealed product wearing a card number (SV151 "Poster Collection #49")
     const m = r.title.match(/^(.*?)\s+#([A-Za-z0-9\/]+)\s*$/) || r.title.match(/^(.*?)\s+([A-Z]\/RGB)\s*$/); if (!m) continue;   // sealed products carry no number; "B/RGB" is a number (Mo, Sep 25: the RGB Mews are set cards)
     const name = m[1].replace(/\s*\[[^\]]*\]\s*/g, " ").replace(/&amp;/g, "&").replace(/&#39;|&#x27;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, " ").trim(), num = m[2];
-    const bracket = /\[/.test(r.title);
+    // variant rank: bracketless print wins; with none, the plain [Holo] print is the slot (SV151 spec: Machamp #68,
+    // Marowak #105, Vaporeon #134, Mewtwo #150, Psychic Energy #207 exist only as holos); Reverse/Cosmos/stamps never win over it
+    const rank = !/\[/.test(r.title) ? 0 : /\[holo\]/i.test(r.title) ? 1 : 2;
+    const bracket = rank > 0;
     const key = (name + " #" + num).toLowerCase();
     const cur = slots.get(key);
-    if (!cur || (cur.bracket && !bracket)) slots.set(key, { num, name, title: name + " #" + num, path: r.path, bracket });
+    if (!cur || rank < cur.rank) slots.set(key, { num, name, title: name + " #" + num, path: r.path, bracket, rank });
   }
   const out = [...slots.values()].map(({ num, name, title, path: p }) => ({ num, name, title, path: p }));
   out.sort((a, b) => (parseInt(a.num, 10) || 0) - (parseInt(b.num, 10) || 0) || a.name.localeCompare(b.name));
@@ -296,7 +316,7 @@ function bake(x, c) {
   if (!html.includes('src="/js/index-chart.js')) html = html.replace("</body>", '<script src="/js/index-chart.js?v=1" defer></script>\n</body>');
   if (!html.includes('src="/js/card-img.js')) html = html.replace("</body>", '<script src="/js/card-img.js?v=3" defer></script>\n</body>');
   if (!html.includes('src="/js/index-you.js')) html = html.replace("</body>", '<script src="/js/index-you.js?v=1" defer></script>\n</body>');
-  if (!html.includes('src="/js/sector-auctions.js')) html = html.replace("</body>", '<script src="/js/sector-auctions.js?v=2" defer></script>\n</body>');
+  if (!html.includes('src="/js/sector-auctions.js')) html = html.replace("</body>", '<script src="/js/sector-auctions.js?v=3" defer></script>\n</body>');
   if (!DRY) fs.writeFileSync(file, html);
   console.log(`${DRY ? "would bake" : "baked"} ${c.page} block: ${x.basket.length} rows`);
 }
