@@ -150,7 +150,10 @@ function subMark(x, date) {
   for (const [k, sx] of Object.entries(x.sub || {})) { const v = subValue(x, sx.nums); if (!v) continue; sx.history.push({ date, level: r2(v / sx.divisor), basketValue: r2(v) }); }
 }
 
-// ---------------- page block ----------------
+// ---------------- page block (the AH26 mast look, Mo Sep 25: "I prefer the AH26 look") ----------------
+function deskIds(x) {
+  try { const d = JSON.parse(fs.readFileSync(path.join(ROOT, "data/auction-desk.json"), "utf8")); const m = {}; for (const c of d.cards || []) if (c.index === x.ticker && c.num) m[(String(c.name || "") + "#" + String(c.num)).toLowerCase()] = c.id; return m; } catch (e) { return {}; }
+}
 function block(x, c) {
   const h = x.history || [], last = h[h.length - 1] || null, prev = h.length > 1 ? h[h.length - 2] : null;
   const lvl = last ? last.level : null;
@@ -159,125 +162,120 @@ function block(x, c) {
   const wts = rows.map((b) => (b.price * b.w) / bv);
   const hhi = wts.reduce((s, w) => s + w * w, 0), eff = hhi ? 1 / hhi : 0;
   const top = wts[0] || 0, capped = rows.filter((b) => b.w < 1).length;
-  const pct = (v) => v == null ? "—" : (v > 0 ? "+" : "") + v.toFixed(1) + "%";
+  const pct = (v, d) => v == null ? "—" : (v > 0 ? "+" : "") + v.toFixed(d == null ? 1 : d) + "%";
   const cls = (v) => v > 0 ? "up" : v < 0 ? "dn" : "flat";
+  const money = (n, d) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: d == null ? 2 : d, maximumFractionDigits: d == null ? 2 : d });
+  const desk = deskIds(x);
+  const hero = rows[0];
   const row = (b, i) => {
     const w = (b.price * b.w) / bv;
-    const q = c.ebayQuery(b.name, b.num);
     const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
-    const url = ebaySearchUrl({ q, customid: cid, sacat: SACAT_TCG, av: b.price >= 200 });
+    const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: SACAT_TCG, av: b.price >= 200 });
     const thumb = i < 10 ? `<span data-card-img="name:${esc(b.name)} ${esc(b.num)} ${esc(c.set)}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
-    return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">$${b.price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="at the 25% cap">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="pokemon" data-grade="Raw" data-price="${b.price}">★</button> <a href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated on eBay" : "eBay"} →</a></td></tr>`;
+    const dk = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slot = desk[dk] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dk])}"></span>` : "";
+    return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="pokemon" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot}</td></tr>`;
   };
   const top10 = rows.slice(0, 10).map(row).join(""), rest = rows.slice(10).map((b, i) => row(b, i + 10)).join("");
   const unpriced = x.universe.length - x.basket.length;
-  return `<section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}" style="--sidx:${c.theme};">
-  <div class="sidx-head">
+  // sub-index strips (one line each)
+  const subs = Object.entries(x.sub || {}).map(([k, sx]) => {
+    const sh = sx.history || [], sl = sh[sh.length - 1], sp = sh.length > 1 ? sh[sh.length - 2] : null;
+    const sw = sp ? (sl.level / sp.level - 1) * 100 : null;
+    const cards = x.basket.filter((b) => sx.nums.includes(String(b.num)));
+    return `<div class="sidx-subidx"><span class="sidx-subidx-k"><b>${x.ticker}·${esc(k)}</b> ${esc(sx.name)}</span><span class="sidx-subidx-lv">${sl ? sl.level.toFixed(2) : "—"}</span><span class="sidx-subidx-w ${cls(sw == null ? 0 : sw)}">${sw == null ? "first mark" : (sw >= 0 ? "▲ " : "▼ ") + pct(sw)}</span><span class="sidx-subidx-cards">${cards.map((b) => `<i>${esc(b.name)} #${esc(b.num)} <b>${money(b.price, 0)}</b></i>`).join("")}</span>${sh.length > 1 ? `<span class="sidx-subidx-sp">${ST_spark(sh.map((r) => r.level))}</span>` : ""}<span class="sidx-subidx-n">${cards.length} cards · price-weighted · uncapped · base 100 at ${mdy(x.inception)} — ${esc(sx.blurb || "")}</span></div>`;
+  }).join("");
+  return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}" style="--sidx:${c.theme};">
+  <div class="sidx-mast">
     <div class="sidx-t">
-      <div class="sidx-eyebrow">▮ Set Index · sector model · every card in the set</div>
-      <h2><span class="sidx-tk">${x.ticker}</span> · ${esc(c.name)}</h2>
-      <p class="sidx-sub">One set, one index. The universe is every card in ${esc(c.set)} (${x.universe.length}); the basket is the ${x.basket.length} that trade as ungraded singles — at least ${SCREEN.enter} clean sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay. Price-weighted on PriceCharting's dated sold list with the sector-ETF caps (no card above ${(CAP * 100).toFixed(0)}%, positions above ${(BIG * 100).toFixed(0)}% never past ${(BIG_SUM * 100).toFixed(0)}% together), base 100.00 at inception, re-marked Monday and Thursday. Nobody picks the cards; the set is the set.</p>
+      <div class="sidx-eyebrow">▮ Set Index · Sector Model · Every Card In The Set</div>
+      <h2><span class="sidx-tk">${x.ticker}</span> <span class="sidx-dot">·</span> ${esc(c.name)}</h2>
+      <p class="sidx-sub">All ${x.universe.length} cards of ${esc(c.set)}, priced from dated sold comps and re-marked Monday and Thursday. Base 100.00 at ${mdy(x.inception)}. This block tracks the set; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
     </div>
-    <div class="sidx-level">
-      <div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div>
-      <div class="lvc">base 100.00 · inception ${mdy(x.inception)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} vs prior mark</span>`}</div>
-    </div>
+    <figure class="sidx-photo"><span data-card-img="name:${esc(hero.name)} ${esc(hero.num)} ${esc(c.set)}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · live eBay listing</figcaption></figure>
+    <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div><div class="lvc">base 100.00 · inception ${mdy(x.inception)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</div></div>
   </div>
   <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>
   <div class="sidx-stats">
     <div><span class="k">Basket / Universe</span><span class="v">${x.basket.length} <i>/ ${x.universe.length}</i></span></div>
     <div><span class="k">Top card weight</span><span class="v">${(top * 100).toFixed(1)}%</span></div>
     <div><span class="k">Effective holdings</span><span class="v">${eff.toFixed(1)}</span></div>
-    <div><span class="k">Basket value</span><span class="v">$${bv.toLocaleString("en-US", { maximumFractionDigits: 0 })}</span></div>
-    <div><span class="k">At the cap</span><span class="v">${capped}</span></div>
-    <div><span class="k">Since launch</span><span class="v ${cls(lvl == null ? 0 : lvl - 100)}">${lvl == null ? "—" : pct(lvl - 100)}</span></div>
+    <div><span class="k">Basket value</span><span class="v">${money(bv, 0)}<i> Σpx·w</i></span></div>
+    <div><span class="k">Capped</span><span class="v">${capped}</span></div>
+    <div><span class="k">Since inception</span><span class="v ${cls(lvl == null ? 0 : lvl - 100)}">${lvl == null ? "—" : pct(lvl - 100, 2)}</span></div>
+    <div><span class="k">Divisor</span><span class="v">${x.divisor}</span></div>
+    <div><span class="k">Re-mark</span><span class="v">MON · THU</span></div>
   </div>
-${subPanels(x, c)}
-  <div class="sidx-auc" data-sidx-auctions="${x.ticker.toLowerCase()}-">
-    <div class="sidx-auc-h"><span class="sidx-eyebrow">Ending soon · live eBay auctions on this set's top cards</span><span class="sidx-auc-n">loading…</span></div>
-    <ul class="sidx-auc-l"><li class="sidx-auc-e">Loading the auction desk…</li></ul>
-    <div class="sidx-auc-f">Bids, not prices — the current bid on a verified listing of the exact card, soonest close first, refreshed every 15 minutes. Nothing here is a mark. Full desk: <a href="/auctions">/auctions</a>.</div>
-  </div>
+  ${subs}
   <div class="sidx-tbl"><table>
-    <thead><tr><th>#</th><th>Card</th><th>Sold mark</th><th>Weight</th><th title="clean sold comps in the trailing 30 days — a gate input, not a volume figure">n30</th><th></th></tr></thead>
+    <thead><tr><th>#</th><th>Card</th><th>Sold mark</th><th>Weight</th><th title="clean sold comps in the trailing 30 days — a gate input, not a volume figure">n30</th><th class="th-act">Watch · Buy · <span title="live eBay auction on this exact card, soonest close with bids; refreshed every 15 min">Bid</span></th></tr></thead>
     <tbody>${top10}</tbody>
   </table></div>
   ${rest ? `<details class="sidx-more"><summary>Holdings 11–${rows.length} · every card in the basket</summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
-  <p class="sidx-note"><b>${unpriced} of ${x.universe.length}</b> cards are in the universe but not the basket: they have not cleared ${SCREEN.enter} clean single-card sales in ${SCREEN.window} days on PriceCharting's ungraded list. They are listed, not hidden — how much of a set trades as singles is a fact about the set. ${esc(c.note)} A weight marked * is capped: no card above ${(CAP * 100).toFixed(0)}%, and positions above ${(BIG * 100).toFixed(0)}% may not sum past ${(BIG_SUM * 100).toFixed(0)}% (the Select Sector SPDR 5/50 rule) — every cap is a weight in the divisor math, so applying one never moves the level. n30 is a liquidity gate, never a volume figure (the source caps its table at 60 rows). Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; every entry, exit and cap change is a logged divisor adjustment, so the level only moves on prices. Marks are dated sold comps (PriceCharting ungraded, blended eBay + TCGplayer), never asks. An index is a measurement, not a call. Method: <a href="/how-prices-work">how prices work</a> · every ticker: <a href="/indices">/indices</a>.</p>
-</section>`;
+  <p class="sidx-note" id="${x.ticker.toLowerCase()}-method"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay. Price-weighted on PriceCharting's dated ungraded sold list (blended eBay + TCGplayer), never asks. Caps: no card above ${(CAP * 100).toFixed(0)}% and positions above ${(BIG * 100).toFixed(0)}% never past ${(BIG_SUM * 100).toFixed(0)}% together (the Select Sector SPDR 5/50 rule) — a weight marked * is capped, and every cap is a weight in the divisor math, so applying one never moves the level. Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; entries, exits and cap changes are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before). ${unpriced} of ${x.universe.length} cards are in the universe but not the basket. n30 is a liquidity gate, never a volume figure (the source caps its table at 60 rows). ${esc(c.note)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>
+</section></div>`;
 }
-function subPanels(x, c) {
-  const out = [];
-  for (const [k, sx] of Object.entries(x.sub || {})) {
-    const h = sx.history || [], last = h[h.length - 1], prev = h.length > 1 ? h[h.length - 2] : null;
-    const wow = prev ? (last.level / prev.level - 1) * 100 : null;
-    const cards = x.basket.filter((b) => sx.nums.includes(String(b.num)));
-    const chips = cards.map((b) => `<span class="sidx-subidx-c"><b>${esc(b.name)} #${esc(b.num)}</b> $${b.price.toLocaleString("en-US", { maximumFractionDigits: 0 })}<small>n30 ${b.n30}</small></span>`).join("");
-    out.push(`<div class="sidx-subidx">
-    <div class="sidx-subidx-h"><div><span class="sidx-eyebrow">Sub-index · ${x.ticker}·${esc(k)}</span><h3>${esc(sx.name)} <small>${cards.length} cards · price-weighted · uncapped · base 100 at ${mdy(x.inception)}</small></h3><p>${esc(sx.blurb || "")}</p></div>
-      <div class="sidx-subidx-lv"><div class="lv">${last ? last.level.toFixed(2) : "—"}</div><div class="lvc">${wow == null ? "one mark" : `<span class="${wow > 0 ? "up" : wow < 0 ? "dn" : "flat"}">${wow >= 0 ? "▲" : "▼"} ${(wow > 0 ? "+" : "") + wow.toFixed(1)}%</span> vs prior mark`} · basket $${(last ? last.basketValue : 0).toLocaleString("en-US", { maximumFractionDigits: 0 })}</div></div>
-    </div>
-    <div class="sidx-subidx-chips">${chips}</div>
-    <div class="idx-chart idx-chart-sm" data-ticker="${x.ticker}" data-sub="${esc(k)}" aria-live="polite"></div>
-  </div>`);
-  }
-  return out.join("\n");
+function ST_spark(ys, w, h) {
+  w = w || 72; h = h || 22; var s = ys.filter((v) => v != null && isFinite(v)); if (s.length < 2) return "";
+  var lo = Math.min(...s), hi = Math.max(...s), r = hi - lo || 1;
+  var pts = s.map((v, i) => [(i / (s.length - 1)) * (w - 2) + 1, h - 2 - ((v - lo) / r) * (h - 4)]);
+  var d = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+  return `<svg class="spark ${s[s.length - 1] >= s[0] ? "up" : "dn"}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>`;
 }
 const CSS = `<style id="sidx-css">
-.sidx{margin:22px 0 0;padding:18px 18px 14px;background:var(--bg2,#0c1017);border:1px solid var(--border,rgba(255,255,255,.08));border-top:2px solid var(--sidx);border-radius:4px;font-family:var(--fb,Barlow,system-ui,sans-serif);color:var(--text,#b8cdd4)}
-.sidx-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px 28px;flex-wrap:wrap}
-.sidx-t{flex:1 1 420px;min-width:0}
-.sidx-eyebrow{font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--sidx);margin-bottom:6px}
-.sidx h2{font-family:var(--fd,'Barlow Condensed',sans-serif);font-size:clamp(22px,3vw,32px);font-weight:900;text-transform:uppercase;color:var(--text-head,#e4f0f4);margin:0 0 8px;line-height:1.05}
-.sidx-tk{color:var(--sidx)}
-.sidx-sub{font-size:13px;line-height:1.55;margin:0;color:var(--text-dim,#7a969e);max-width:760px}
-.sidx-level{text-align:right;flex:0 0 auto}
-.sidx-level .lv{font-family:var(--fm,ui-monospace,monospace);font-size:44px;font-weight:700;line-height:1;color:var(--text-head,#e4f0f4)}
-.sidx-level .lvc{font-family:var(--fm,ui-monospace,monospace);font-size:10px;color:var(--text-dim,#7a969e);margin-top:6px;line-height:1.5}
-.sidx .up{color:var(--green,#00e07a)} .sidx .dn{color:var(--red,#ff2e55)} .sidx .flat{color:var(--text-dim,#7a969e)}
-.sidx-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:14px 0 0}
-.sidx-stats>div{background:var(--bg3,#111820);border:1px solid var(--border,rgba(255,255,255,.08));border-radius:3px;padding:8px 10px}
-.sidx-stats .k{display:block;font-family:var(--fm,ui-monospace,monospace);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim,#7a969e)}
-.sidx-stats .v{display:block;font-family:var(--fd,'Barlow Condensed',sans-serif);font-size:22px;font-weight:700;color:var(--text-head,#e4f0f4);margin-top:2px;line-height:1.1}
-.sidx-stats .v i{font-style:normal;font-size:12px;color:var(--text-dim,#7a969e)}
-.sidx-tbl{overflow-x:auto;margin-top:14px}
+.sidx{margin:26px 0 0;padding:0 0 8px;font-family:var(--fb,Barlow,system-ui,sans-serif);color:var(--text,#b8cdd4);--sidx-th:var(--text-head,#e4f0f4);--sidx-dim:var(--text-dim,#7a969e);--sidx-bd:var(--border,rgba(255,255,255,.08));--sidx-bg:var(--bg2,#0c1017);--sidx-bg2:var(--bg3,#111820)}
+.sidx-mast{display:grid;grid-template-columns:minmax(0,1fr) auto 220px;column-gap:40px;align-items:end;padding-bottom:12px}
+.sidx-eyebrow{font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--sidx);margin-bottom:8px}
+.sidx h2{font-family:var(--fd,'Barlow Condensed',sans-serif);font-size:clamp(26px,3.4vw,38px);font-weight:900;text-transform:uppercase;color:var(--sidx-th);margin:0 0 8px;line-height:1.02;letter-spacing:-.3px}
+.sidx-tk{color:var(--sidx-th)} .sidx-dot{color:var(--sidx)}
+.sidx-sub{font-size:13px;line-height:1.55;margin:0;color:var(--sidx-dim);max-width:620px}
+.sidx-sub a{color:var(--sidx)}
+.sidx-photo{margin:0;justify-self:center;text-align:center}
+.sidx-photo .sch-cimg{width:150px!important;height:210px!important}
+.sidx-photo figcaption{font-family:var(--fm,ui-monospace,monospace);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-dim);margin-top:10px;max-width:170px;margin-left:auto;margin-right:auto;line-height:1.5}
+.sidx-photo figcaption b{color:var(--sidx)}
+.sidx-level{text-align:right}
+.sidx-level .lv{font-family:var(--fm,ui-monospace,monospace);font-size:44px;font-weight:700;line-height:1;color:var(--sidx-th)}
+.sidx-level .lvc{font-family:var(--fm,ui-monospace,monospace);font-size:10px;color:var(--sidx-dim);margin-top:8px;line-height:1.6}
+.sidx .up{color:var(--green,#00e07a)} .sidx .dn{color:var(--red,#ff2e55)} .sidx .flat{color:var(--sidx-dim)}
+.sidx .idx-chart{margin-top:10px}
+.sidx-stats{display:grid;grid-template-columns:repeat(8,1fr);gap:0;margin:12px 0 0;border:1px solid var(--sidx-bd);background:var(--sidx-bg)}
+.sidx-stats>div{padding:12px 12px;border-right:1px solid var(--sidx-bd)} .sidx-stats>div:last-child{border-right:0}
+.sidx-stats .k{display:block;font-family:var(--fm,ui-monospace,monospace);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-dim);line-height:1.4}
+.sidx-stats .v{display:block;font-family:var(--fm,ui-monospace,monospace);font-size:17px;font-weight:700;color:var(--sidx-th);margin-top:6px;line-height:1.1}
+.sidx-stats .v i{font-style:normal;font-size:10px;color:var(--sidx-dim)}
+.sidx-subidx{display:flex;align-items:center;gap:8px 16px;flex-wrap:wrap;margin:10px 0 0;padding:10px 14px;border:1px solid var(--sidx-bd);border-left:3px solid var(--sidx);background:var(--sidx-bg);font-family:var(--fm,ui-monospace,monospace);font-size:11.5px;color:var(--text,#b8cdd4)}
+.sidx-subidx-k{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-dim)} .sidx-subidx-k b{color:var(--sidx);letter-spacing:2px}
+.sidx-subidx-lv{font-size:20px;font-weight:700;color:var(--sidx-th)}
+.sidx-subidx-cards{display:flex;gap:6px;flex-wrap:wrap} .sidx-subidx-cards i{font-style:normal;background:var(--sidx-bg2);border:1px solid var(--sidx-bd);border-radius:2px;padding:3px 8px;color:var(--sidx-dim)} .sidx-subidx-cards i b{color:var(--sidx-th);margin-left:4px}
+.sidx-subidx-sp .spark{width:72px;height:22px;display:block} .sidx-subidx-sp .up{color:var(--green,#00e07a)} .sidx-subidx-sp .dn{color:var(--red,#ff2e55)}
+.sidx-subidx-n{flex:1 1 100%;font-size:10px;color:var(--sidx-dim);line-height:1.5}
+.sidx-tbl{overflow-x:auto;margin-top:14px;border:1px solid var(--sidx-bd);background:var(--sidx-bg)}
 .sidx-tbl table{width:100%;border-collapse:collapse;font-family:var(--fm,ui-monospace,monospace);font-size:12.5px}
-.sidx-tbl th{font-family:var(--fd,'Barlow Condensed',sans-serif);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim,#7a969e);text-align:right;padding:8px 8px;border-bottom:1px solid var(--border2,rgba(255,255,255,.14));white-space:nowrap}
+.sidx-tbl th{font-family:var(--fm,ui-monospace,monospace);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--sidx-dim);text-align:right;padding:10px 12px;border-bottom:1px solid var(--sidx-bd);white-space:nowrap;font-weight:400}
 .sidx-tbl th:nth-child(2),.sidx-tbl td.nm{text-align:left}
-.sidx-tbl td{padding:8px;border-bottom:1px solid var(--border,rgba(255,255,255,.08));text-align:right;white-space:nowrap;vertical-align:middle}
-.sidx-tbl td.rk{color:var(--text-dim,#7a969e);width:28px}
-.sidx-tbl td.nm b{font-family:var(--fb,Barlow,sans-serif);font-weight:600;color:var(--text-head,#e4f0f4)}
-.sidx-tbl td.nm small{display:block;font-size:10.5px;color:var(--text-dim,#7a969e)}
-.sidx-tbl td.dim{color:var(--text-dim,#7a969e)}
+.sidx-tbl td{padding:9px 12px;border-bottom:1px solid var(--sidx-bd);text-align:right;white-space:nowrap;vertical-align:middle}
+.sidx-tbl tr:last-child td{border-bottom:0}
+.sidx-tbl td.rk{color:var(--sidx);font-weight:700;width:28px;text-align:left}
+.sidx-tbl td.nm b{font-family:var(--fb,Barlow,sans-serif);font-weight:700;color:var(--sidx-th);font-size:13px}
+.sidx-tbl td.nm small{display:block;font-size:10.5px;color:var(--sidx-dim)}
+.sidx-tbl td.dim{color:var(--sidx-dim)}
 .sidx-tbl td i{color:var(--sidx);font-style:normal}
-.sidx-tbl td.act .sch-track-card{background:transparent;border:1px solid var(--border2,rgba(255,255,255,.14));color:var(--sidx);border-radius:2px;padding:3px 7px;cursor:pointer;font-size:12px}
-.sidx-tbl td.act a{color:var(--accent,#00ccf5);font-size:11px;margin-left:6px}
-.sidx-more{margin-top:8px}
-.sidx-more>summary{cursor:pointer;font-family:var(--fm,ui-monospace,monospace);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim,#7a969e);padding:8px 0}
-.sidx-note{font-size:11.5px;line-height:1.6;color:var(--text-dim,#7a969e);margin:14px 0 0}
-.sidx-note a{color:var(--accent,#00ccf5)}
 .nm-cell{display:flex;align-items:center;gap:10px}.nm-cell [data-card-img]{flex:0 0 auto}
-.sidx-subidx{margin-top:14px;padding:12px 14px;border:1px solid var(--border,rgba(255,255,255,.08));border-left:3px solid var(--sidx);border-radius:3px;background:var(--bg3,#111820)}
-.sidx-subidx-h{display:flex;justify-content:space-between;align-items:flex-end;gap:10px 24px;flex-wrap:wrap}
-.sidx-subidx h3{font-family:var(--fd,'Barlow Condensed',sans-serif);font-size:20px;font-weight:800;text-transform:uppercase;color:var(--text-head,#e4f0f4);margin:4px 0 4px}
-.sidx-subidx h3 small{display:block;font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:1px;color:var(--text-dim,#7a969e);text-transform:none;font-weight:400;margin-top:2px}
-.sidx-subidx p{margin:0;font-size:12.5px;color:var(--text-dim,#7a969e);line-height:1.5;max-width:640px}
-.sidx-subidx-lv{text-align:right}.sidx-subidx-lv .lv{font-family:var(--fm,ui-monospace,monospace);font-size:32px;font-weight:700;color:var(--text-head,#e4f0f4);line-height:1}.sidx-subidx-lv .lvc{font-family:var(--fm,ui-monospace,monospace);font-size:10px;color:var(--text-dim,#7a969e);margin-top:4px}
-.sidx-subidx-chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
-.sidx-subidx-c{font-family:var(--fm,ui-monospace,monospace);font-size:12px;color:var(--text,#b8cdd4);background:var(--bg2,#0c1017);border:1px solid var(--border,rgba(255,255,255,.08));border-radius:3px;padding:6px 10px}
-.sidx-subidx-c b{color:var(--text-head,#e4f0f4);font-weight:600;margin-right:6px}.sidx-subidx-c small{color:var(--text-dim,#7a969e);margin-left:6px}
-.idx-chart-sm svg{max-height:160px}
-.sidx-auc{margin-top:14px;padding:12px 14px;border:1px solid var(--border,rgba(255,255,255,.08));border-radius:3px;background:var(--bg3,#111820)}
-.sidx-auc-h{display:flex;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;align-items:baseline}.sidx-auc-n{font-family:var(--fm,ui-monospace,monospace);font-size:10px;color:var(--text-dim,#7a969e)}
-.sidx-auc-l{list-style:none;margin:8px 0 0;padding:0}
-.sidx-auc-l li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px 14px;align-items:center;padding:7px 0;border-top:1px solid var(--border,rgba(255,255,255,.08));font-family:var(--fm,ui-monospace,monospace);font-size:12px}
-.sidx-auc-l li:first-child{border-top:0}
-.sidx-auc-l .t{color:var(--text-head,#e4f0f4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sidx-auc-l .t small{display:block;color:var(--text-dim,#7a969e);font-size:10.5px}
-.sidx-auc-l .b{text-align:right;white-space:nowrap}.sidx-auc-l .b small{display:block;color:var(--text-dim,#7a969e);font-size:10.5px}
-.sidx-auc-l a.go{color:#000;background:var(--sidx);padding:5px 9px;border-radius:2px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;white-space:nowrap;text-decoration:none}
-.sidx-auc-l li.sidx-auc-e{display:block;color:var(--text-dim,#7a969e);font-size:12px}
-.sidx-auc-f{font-size:10.5px;color:var(--text-dim,#7a969e);margin-top:8px;line-height:1.5}.sidx-auc-f a{color:var(--accent,#00ccf5)}
-@media(max-width:760px){.sidx{padding:14px 12px 12px}.sidx-subidx-lv{text-align:left}.sidx-auc-l li{grid-template-columns:minmax(0,1fr) auto}.sidx-auc-l a.go{grid-column:1/3;justify-self:start}.sidx-stats{grid-template-columns:repeat(3,1fr)}.sidx-level{text-align:left}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}}
+.sidx-tbl td.act{white-space:nowrap}
+.sidx-tbl td.act .sch-track-card{background:transparent;border:1px solid var(--border2,rgba(255,255,255,.14));color:var(--sidx-th);border-radius:2px;padding:5px 9px;cursor:pointer;font-size:12px;vertical-align:middle}
+.sidx-tbl td.act a.ebay{display:inline-block;vertical-align:middle;margin-left:6px;font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#000;background:var(--sidx);padding:6px 11px;border-radius:2px;text-decoration:none}
+.sidx-tbl td.act a.ebay:hover{filter:brightness(1.1)}
+.sidx-auc-slot{display:inline-block;vertical-align:middle;margin-left:6px}
+.sidx-auc-slot a.auc{display:inline-block;font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-th);background:var(--sidx-bg2);border:1px solid var(--sidx);padding:5px 10px;border-radius:2px;text-decoration:none}
+.sidx-auc-slot a.auc small{font-family:var(--fm,ui-monospace,monospace);font-weight:400;letter-spacing:0;text-transform:none;color:var(--sidx-dim);margin-left:6px;font-size:10.5px}
+.sidx-auc-slot a.auc:hover{background:var(--sidx);color:#000} .sidx-auc-slot a.auc:hover small{color:#000}
+.sidx-more{margin-top:8px}
+.sidx-more>summary{cursor:pointer;font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-dim);padding:10px 0}
+.sidx-more .sidx-tbl{margin-top:0}
+.sidx-note{font-size:11px;line-height:1.65;color:var(--sidx-dim);margin:14px 0 0}
+.sidx-note b{color:var(--text,#b8cdd4)} .sidx-note a{color:var(--sidx)}
+@media(max-width:900px){.sidx-stats{grid-template-columns:repeat(4,1fr)}.sidx-stats>div:nth-child(4){border-right:0}.sidx-stats>div:nth-child(-n+4){border-bottom:1px solid var(--sidx-bd)}}
+@media(max-width:760px){.sidx-mast{display:block;position:relative;padding-right:104px}.sidx-photo{position:absolute;right:0;top:0;width:96px}.sidx-photo .sch-cimg{width:90px!important;height:126px!important}.sidx-photo figcaption{display:none}.sidx-level{text-align:left;margin-top:12px}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}.sidx-tbl td.act a.ebay,.sidx-auc-slot a.auc{padding:5px 8px;font-size:10px;letter-spacing:1px}.sidx-auc-slot a.auc small{display:none}}
 </style>`;
 
 function bake(x, c) {
@@ -295,7 +293,7 @@ function bake(x, c) {
   }
   if (!html.includes('src="/js/index-chart.js')) html = html.replace("</body>", '<script src="/js/index-chart.js?v=1" defer></script>\n</body>');
   if (!html.includes('src="/js/card-img.js')) html = html.replace("</body>", '<script src="/js/card-img.js?v=3" defer></script>\n</body>');
-  if (!html.includes('src="/js/sector-auctions.js')) html = html.replace("</body>", '<script src="/js/sector-auctions.js?v=1" defer></script>\n</body>');
+  if (!html.includes('src="/js/sector-auctions.js')) html = html.replace("</body>", '<script src="/js/sector-auctions.js?v=2" defer></script>\n</body>');
   if (!DRY) fs.writeFileSync(file, html);
   console.log(`${DRY ? "would bake" : "baked"} ${c.page} block: ${x.basket.length} rows`);
 }

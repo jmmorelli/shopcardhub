@@ -47,7 +47,7 @@ const EXCL = "-lot -case -proxy -proxies -reprint -digital -custom -diy -skin -m
 const idx = JSON.parse(fs.readFileSync(path.join(REPO, "data/indices.json"), "utf8"));
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-const CSS = 'td.lst{white-space:nowrap;text-align:right;}a.ebay{font-family:var(--fm);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);text-decoration:none;}a.ebay:hover{color:var(--iac);}';
+const CSS = 'td.lst{white-space:nowrap;text-align:right;}a.ebay{display:inline-block;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#000;background:var(--gd);padding:6px 11px;border-radius:2px;text-decoration:none;}a.ebay:hover{filter:brightness(1.1);color:#000;}';
 const FP_STYLE = 'font-family:var(--fm);font-size:9px;color:var(--dim);margin-top:4px;';
 const FINEPRINT = `<div style="${FP_STYLE}">Listings links go to eBay (affiliate). Rows marked &#10003; are filtered to eBay&rsquo;s Authenticity Guarantee &mdash; eBay&rsquo;s program, not ours, offered on singles over $200 (filter verified 09/22/26).</div>`;
 

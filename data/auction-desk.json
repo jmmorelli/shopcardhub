@@ -1,15 +1,145 @@
 {
-  "_comment": "AUCTION DESK ONLY (Sep 25 2026, Mo: 'point to an auction desk for each card with auctions ending soon'). Cards here are searched by /api/auctions for live eBay auctions and appear on the Auction Desk, the home Ending-soon panel and the sector-index block whose prefix they carry. They are NOT in data/watchlist.json on purpose: the nightly ask engine never marks them (R20 — no new Browse-derived mark on a public page), no /card-<id> page is built, no engine block is owed. A row's mark field is null and the desk prints 'no mark'. Same shape as a watchlist card: id, label, query, titleMust, cardType, categoryIds. Prefix convention: <ticker>-.",
+  "_comment": "AUCTION DESK ONLY (Sep 25 2026, Mo: 'point to an auction desk for each card with auctions ending soon'). Cards here are searched by /api/auctions for live eBay auctions and appear on the Auction Desk, the home Ending-soon panel and the sector-index block whose prefix they carry. They are NOT in data/watchlist.json on purpose: the nightly ask engine never marks them (R20 — no new Browse-derived mark on a public page), no /card-<id> page is built, no engine block is owed. A row's mark field is null and the desk prints 'no mark'. Same shape as a watchlist card: id, label, query, titleMust, cardType, categoryIds. Prefix convention: <ticker>-. Each card carries the basket's exact name + num so the index block can find its row (numbers repeat inside this set: two #149s, two #4s).",
   "cards": [
-    { "id": "th26-mew-r-rgb", "index": "TH26", "label": "Mew R/RGB — 30th Celebration", "query": "mew r/rgb 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital", "titleMust": ["mew", "r/rgb"], "cardType": "tcg-single", "categoryIds": "183454" },
-    { "id": "th26-mew-g-rgb", "index": "TH26", "label": "Mew G/RGB — 30th Celebration", "query": "mew g/rgb 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital", "titleMust": ["mew", "g/rgb"], "cardType": "tcg-single", "categoryIds": "183454" },
-    { "id": "th26-mew-b-rgb", "index": "TH26", "label": "Mew B/RGB — 30th Celebration", "query": "mew b/rgb 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital", "titleMust": ["mew", "b/rgb"], "cardType": "tcg-single", "categoryIds": "183454" },
-    { "id": "th26-lugia-149", "index": "TH26", "label": "Lugia #149 Classic Collection — 30th Celebration", "query": "lugia 149 30th celebration classic collection -psa -bgs -cgc -graded -lot -proxy -custom -digital", "titleMust": ["lugia", "149"], "cardType": "tcg-single", "categoryIds": "183454" },
-    { "id": "th26-charizard-4", "index": "TH26", "label": "Charizard #4 Classic Collection — 30th Celebration", "query": "charizard 4/102 30th celebration classic collection -psa -bgs -cgc -graded -lot -proxy -custom -digital", "titleMust": ["charizard", "4/102"], "cardType": "tcg-single", "categoryIds": "183454" },
-    { "id": "th26-mew-ex-152", "index": "TH26", "label": "Mew ex #152/128 SIR — 30th Celebration", "query": "mew ex 152/128 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital", "titleMust": ["mew ex", "152"], "cardType": "tcg-single", "categoryIds": "183454" },
-    { "id": "th26-gengar-ex-154", "index": "TH26", "label": "Gengar ex #154/128 SIR — 30th Celebration", "query": "gengar ex 154/128 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital", "titleMust": ["gengar", "154"], "cardType": "tcg-single", "categoryIds": "183454" },
-    { "id": "th26-magikarp-203", "index": "TH26", "label": "Magikarp #203/128 — 30th Celebration", "query": "magikarp 203/128 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital", "titleMust": ["magikarp", "203"], "cardType": "tcg-single", "categoryIds": "183454" },
-    { "id": "th26-pikachu-ex-150", "index": "TH26", "label": "Pikachu ex #150/128 SIR — 30th Celebration", "query": "pikachu ex 150/128 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital", "titleMust": ["pikachu", "150"], "cardType": "tcg-single", "categoryIds": "183454" },
-    { "id": "th26-gengar-94", "index": "TH26", "label": "Gengar #94 Classic Collection — 30th Celebration", "query": "gengar 94 30th celebration classic collection -psa -bgs -cgc -graded -lot -proxy -custom -digital", "titleMust": ["gengar", "94"], "cardType": "tcg-single", "categoryIds": "183454" }
+    {
+      "id": "th26-mew-r-rgb",
+      "index": "TH26",
+      "label": "Mew R/RGB — 30th Celebration",
+      "query": "mew r/rgb 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital",
+      "titleMust": [
+        "mew",
+        "r/rgb"
+      ],
+      "cardType": "tcg-single",
+      "categoryIds": "183454",
+      "num": "R/RGB",
+      "name": "Mew"
+    },
+    {
+      "id": "th26-mew-g-rgb",
+      "index": "TH26",
+      "label": "Mew G/RGB — 30th Celebration",
+      "query": "mew g/rgb 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital",
+      "titleMust": [
+        "mew",
+        "g/rgb"
+      ],
+      "cardType": "tcg-single",
+      "categoryIds": "183454",
+      "num": "G/RGB",
+      "name": "Mew"
+    },
+    {
+      "id": "th26-mew-b-rgb",
+      "index": "TH26",
+      "label": "Mew B/RGB — 30th Celebration",
+      "query": "mew b/rgb 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital",
+      "titleMust": [
+        "mew",
+        "b/rgb"
+      ],
+      "cardType": "tcg-single",
+      "categoryIds": "183454",
+      "num": "B/RGB",
+      "name": "Mew"
+    },
+    {
+      "id": "th26-lugia-149",
+      "index": "TH26",
+      "label": "Lugia #149 Classic Collection — 30th Celebration",
+      "query": "lugia 149 30th celebration classic collection -psa -bgs -cgc -graded -lot -proxy -custom -digital",
+      "titleMust": [
+        "lugia",
+        "149"
+      ],
+      "cardType": "tcg-single",
+      "categoryIds": "183454",
+      "num": "149",
+      "name": "Lugia"
+    },
+    {
+      "id": "th26-charizard-4",
+      "index": "TH26",
+      "label": "Charizard #4 Classic Collection — 30th Celebration",
+      "query": "charizard 4/102 30th celebration classic collection -psa -bgs -cgc -graded -lot -proxy -custom -digital",
+      "titleMust": [
+        "charizard",
+        "4/102"
+      ],
+      "cardType": "tcg-single",
+      "categoryIds": "183454",
+      "num": "4",
+      "name": "Charizard"
+    },
+    {
+      "id": "th26-mew-ex-152",
+      "index": "TH26",
+      "label": "Mew ex #152/128 SIR — 30th Celebration",
+      "query": "mew ex 152/128 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital",
+      "titleMust": [
+        "mew ex",
+        "152"
+      ],
+      "cardType": "tcg-single",
+      "categoryIds": "183454",
+      "num": "152",
+      "name": "Mew Ex"
+    },
+    {
+      "id": "th26-gengar-ex-154",
+      "index": "TH26",
+      "label": "Gengar ex #154/128 SIR — 30th Celebration",
+      "query": "gengar ex 154/128 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital",
+      "titleMust": [
+        "gengar",
+        "154"
+      ],
+      "cardType": "tcg-single",
+      "categoryIds": "183454",
+      "num": "154",
+      "name": "Gengar Ex"
+    },
+    {
+      "id": "th26-magikarp-203",
+      "index": "TH26",
+      "label": "Magikarp #203/128 — 30th Celebration",
+      "query": "magikarp 203/128 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital",
+      "titleMust": [
+        "magikarp",
+        "203"
+      ],
+      "cardType": "tcg-single",
+      "categoryIds": "183454",
+      "num": "203",
+      "name": "Magikarp"
+    },
+    {
+      "id": "th26-pikachu-ex-150",
+      "index": "TH26",
+      "label": "Pikachu ex #150/128 SIR — 30th Celebration",
+      "query": "pikachu ex 150/128 30th celebration -psa -bgs -cgc -graded -lot -proxy -custom -digital",
+      "titleMust": [
+        "pikachu",
+        "150"
+      ],
+      "cardType": "tcg-single",
+      "categoryIds": "183454",
+      "num": "150",
+      "name": "Pikachu ex"
+    },
+    {
+      "id": "th26-gengar-94",
+      "index": "TH26",
+      "label": "Gengar #94 Classic Collection — 30th Celebration",
+      "query": "gengar 94 30th celebration classic collection -psa -bgs -cgc -graded -lot -proxy -custom -digital",
+      "titleMust": [
+        "gengar",
+        "94"
+      ],
+      "cardType": "tcg-single",
+      "categoryIds": "183454",
+      "num": "94",
+      "name": "Gengar"
+    }
   ]
 }
