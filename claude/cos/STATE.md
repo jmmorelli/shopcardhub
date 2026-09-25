@@ -30,7 +30,44 @@ Key-event rate: **organic 11.19% 7d / 7.03% 28d** beside blended 6.32% / 4.74%.
 - **Recap:** drafted, **not sent** (Tuesday digest went out Sep 22 — LANE-RULES interim rule).
 - **Prompt drift (file wins):** the weekly prompt says SEND the recap, omits Phase 2 as build-order #1 (R21), and still carries the EPN read that R22 gave the desk. Fix the prompt at the Oct 1 roster review.
 
-## NOW — 2026-09-23 (read this block first)
+## NOW — 2026-09-25 (read this block first) — THE STRATEGIC RESET (Mo: "lean HARD into what we know our edge is")
+
+**Read `claude/cos/strategic-review-2026-09-25.md` (Project) once.** Its verdict, in one line: the site's one edge is the
+**per-set chase-basket index** (base 100, sold comps, constituents shown, weekly re-mark log, Pokémon AND Bowman) — nobody else
+publishes one; portfolio tracking is a commodity PSA now gives away free (Sep 23 2026: raw cards + performance chart + eBay
+consignment). Mo approved every recommendation in chat 2026-09-25 ("do and execute all of those things immediately, I fully approve").
+
+**Shipped today (CoS, Mac-linked session), three commits, gates at baseline on every tree:**
+
+| Item | State |
+|---|---|
+| **Home = the index board above the fold.** New `HOME:indexboard` block (one row per index: level · 1W · 1M · since launch · sparkline · re-marked), new H1/deck/title/meta; tape, chart, releases, Bowman movers, auctions below; the engine Screens table folds into a closed `<details>` that rail/chip screen links open. `js/home.js` + `tools/build-home.mjs` render it; `renderIndexBoard`/`idxStats` exported. | **LIVE** |
+| **Vault → Watchlist.** Default = *simple view* (tabs, search, sort, add, share, table); portfolios / grouping / columns / cards view / paste-a-list / imports / analytics behind an **Advanced view** toggle (`sch_vault_mode`, per browser). Empty state + onboarding point at the indices. Nav CTA "Watchlist", nav link, rail heading, ★ button strings renamed; "portfolio" off the public copy. **Nothing deleted.** | **LIVE** |
+| **Level chart on every index page** — `js/index-chart.js`, client-side from `data/indices.json`, under the hero on all 8 live tickers; one mark → one line, never invented history. Also fixed: 6 Pokémon index pages + preview used `var(--accent)` without defining it — the nav CTA had been invisible there. | **LIVE** |
+| **Consolidation, batch 1.** `/blog` (stale duplicate hub) → 301 `/research`; `/set-index-preview` → 301 `/indices`; both out of nav + sitemap. **Batch 2 is a work order for the Sep 30 weekly** (below). | **LIVE** |
+| **Idea #39** — "Retail (Amazon) →" search links on the 30th page (9 anchors, `tag=shopcardhub-20`, no price, Associates line, eBay stays primary). | **LIVE** |
+| **Idea #38** — TCGplayer/Impact on the six Pokémon index tables. | **Needs Mo: the Impact application** (NEEDS-MO). Build follows approval. |
+| **Distribution** — Monday close image (`make.py levels`, Pokémon tickers only until Phase 2 puts Bowman on solds), a Reddit submission, and a feed-offer note to the Pokémon index sites. | Drafts in NEEDS-MO; **Mo posts by hand while the vendor is out of X usage** (Grok Bot down, Mo Sep 25). |
+
+**Standing rule from today (R25, add to LANE-RULES at the Oct 1 roster review): no new feature ships until the clean visitor
+count moves.** ~30 clean visitors/day is too few for any retention feature to register. Work that IS allowed: Phase 2 compliance
+(build-order #1, unchanged), anything that makes the index more citable (chart, methodology, history, feed), consolidation,
+distribution of the Monday close, and live FAILs. Scouting grades, sold catalog, auction desk, engine signals are built — no
+extensions until the Nov 2 re-audit unless Mo asks. The ideas desk keeps filing; the CoS declines anything that adds a surface.
+
+**Consolidation batch 2 — work order for the Sep 30 weekly (needs GA4 per-page landing sessions, which the cloud cannot read):**
+fold a page when ALL of: < 5 landing sessions in 28 d · 0 EPN actions ever on its custom ID · ≤ 2 internal inlinks outside nav/footer.
+Fold = 301 to the set/index/hub page it belongs to, drop from nav.json + sitemap, keep the file out of the repo. Candidates by
+structure (traffic unchecked): the tier-label Topps product pages with no numeric prices (`topps-tribute-baseball`, `topps-tier-one-baseball`,
+`topps-museum-collection-baseball`, `topps-inception-*`, `topps-definitive-basketball`, `topps-pristine-basketball`,
+`topps-chrome-updates-basketball-sapphire-edition`, `topps-finest-baseball`) → `/research`; `adley-rutschman-cards` (0 inlinks) → `/research`.
+**Never fold** a page with an EPN action on record (messi, misiorowski, PCA, bowman-football, 30th, best-hobby-boxes) or a top-20 lander.
+Target ≤ 60 indexable URLs. The 21 `/card-*` pages are noindex already and stay until their engine blocks have a host.
+
+**Watch next:** Monday Sep 28 re-mark → the home board and every index chart update with zero page edits (verify one, `/destined-rivals-index`).
+The Sep 30 EPN read is the first with the new home; do not read anything into one week.
+
+## NOW — 2026-09-23
 
 ### Gap fixes (Mo in chat, ~10:45 PT: "fix 1-3 right now", fold in the EPN read, weekend cover, "do whatever needs double-checking")
 
@@ -214,11 +251,13 @@ finding only if its cause is not named here.
 
 ## WAITING ON MO — see `NEEDS-MO.md`
 
-**Nothing (Sep 24).** Mo ruled the Charizard post (stays) and the vendor probation (to Sep 30) live today. The repo-access click is withdrawn (repo stays public, Mo) and the Sunday task's schedule is fixed. Only standing item: if EPN is signed out on a Wednesday, R22 files one line.
+**Three things (Sep 25), all human-account items — see NEEDS-MO:** the Impact/TCGplayer application (#38, ~10 min), this week's index-close post on X (vendor is out of usage), and one Reddit submission. Before that: **Nothing (Sep 24).** Mo ruled the Charizard post (stays) and the vendor probation (to Sep 30) live today. The repo-access click is withdrawn (repo stays public, Mo) and the Sunday task's schedule is fixed. Only standing item: if EPN is signed out on a Wednesday, R22 files one line.
 
 ---
 
 ## RUN LOG (last 7 days; older entries in the archive)
+
+- **Sep 25 ~05:30–09:30 PT (CoS, Mac-linked, Mo in chat).** Strategic review written and filed (Project `claude/cos/strategic-review-2026-09-25.md`, 25 competitors surveyed, live-site read); Mo approved all of it. Built from a fresh HTTPS clone in the cloud sandbox, pushed from the Mac deploy-key clone: `7b1dbe4` (home index board · Vault→Watchlist · index charts · accent fix), `8ae7a74` (/blog + preview folded · idea #39), + the docs commit. Gates on every tree: audit-prices 0/76 · audit-site 0/3 · audit-terminal 0/0 (`--feed data/feed`). Rendered and checked in headless Chromium at 1280 and 390 px: home (no horizontal scroll, screens fold opens on a rail click), watchlist (simple ↔ advanced toggle), DR25/BOW26/PF25 charts (0 page errors). **Stumbles:** first index-chart cut had a paren slip (caught by `node --check` before render); BOW26's chart landed inside the hero grid on the first insert (moved). Not done today: consolidation batch 2 (needs GA4 per page — work order above), the hub's 30th ETB row Amazon link (30th page only shipped), `make.py levels` still lists Pokémon tickers only (correct under R20 until Phase 2).
 
 - **Sep 24 ~18:00–20:30 PT (CoS, Mo in chat: price his cards on sold data, "fold that into a github automation for all users of the site nightly").** **Sold catalog shipped (see commit):** `tools/price-engine/sold-marks.mjs` reads SportsCardsPro/PriceCharting item pages headless (via `www.pricecharting.com/game/<path>`, which redirects sports to SCP and answers a plain fetch; SCP *search* 403s headless, so resolution needs Chrome or the console listings) → `data/feed/sold-marks.json` + `sold-history.json`. Mark = 30-day median of ≥3 dated sales, else 90-day median of ≥2, else none. Never asks (R20); dates/prices only, no titles/sellers (R17). **Nightly:** new step in `price-snapshot.yml` (continue-on-error, 60 min cap), files copied into `data/feed/` with the rest. **Catalog `data/price-universe.json` = 448:** 10 Bangers autos + 289 Pokémon set-index basket cards (`site:*`) + 149 of Mo's cards (**Mo ruled Sep 24: his card names may sit in the public catalog; no qty/cost/COMC data**). Mo's cards are matched in the Vault by an FNV-1a hash of the lowercased COMC card string (`h`) — the string itself is never published. First read: 346 of 448 priced; of Mo's 162 resolved cards 60 carry a mark (the rest have <2 sales in 90 days — honest blanks). **Vault:** sold link outranks an ask link; a sold-linked card's series is sold-only (COMC asks parked in `priorPrices`, restored on unlink); Last shows a green ˢ with the basis on hover; the sold catalog still loads when the ask feed is down. Resolution tools: `tools/price-engine/universe-pokemon.mjs` (Pokémon, headless), SCP console POST paging for sports (the form POSTs to sportscardspro.com directly; a POST to pricecharting.com is redirected to a GET and loses the cursor). Of Mo's ≥$2 cards 163/220 resolved; 55 unresolved (big-console caps, parallel naming gaps) + 2 dropped as unsafe (Opening Day variations). Gates 0/76 · 0/3 · `--run-tests` 0/5.
 

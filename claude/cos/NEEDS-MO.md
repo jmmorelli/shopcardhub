@@ -11,6 +11,29 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — three human-account items (2026-09-25, CoS, after the strategic reset)
+
+1. **Apply to the TCGplayer affiliate program on Impact (idea #38, ~10 min, $0).** https://docs.tcgplayer.com/docs/tcgplayer-affiliate-program → the Impact application link; use the site and your name. When it's approved, paste the tracking-link template into chat and the build ships the "TCGplayer →" secondary on the six Pokémon index tables. **Kill: Oct 31 with no approval → declined, not re-applied.**
+
+2. **Post this week's index close on X by hand (the vendor is out of usage).** Image: `python3 tools/x-images/make.py levels` from a fresh clone (Pokémon tickers; the Bowman indices stay off the image until Phase 2 puts them on solds). Copy, ready to paste — numbers are the Sep 21 marks, so post before Monday's re-mark or re-run the image after it:
+
+   > Set index close · Sep 21 marks
+   > PRIS25 98.04 (+1.3% w/w) is the only Pokémon chase tier holding near launch.
+   > PB26 84.72 — Pitch Black's chase tier is −15% since Aug 24. DR25 95.75 · AH26 93.88 · CR26 93.17.
+   > Base 100 at launch, sold comps only, every card in the basket shown. shopcardhub.com/indices
+
+3. **One Reddit submission (your account; forums ban bot posting).** r/pkmntcg (market talk is allowed there; r/PokemonTCG removes price posts). Title: **"I built a base-100 index for each Pokémon set's chase tier (SIR/UR/IR/HR) — Pitch Black is −15% in a month, Prismatic flat"**. Body:
+
+   > Every Monday I re-mark a price-weighted basket of one set's secret-tier cards from dated sold comps (PriceCharting), base 100 at launch, divisor-adjusted so only prices move the level. Every card in the basket is listed with its price and date, and the math is on the page.
+   > Since Aug 24: Prismatic Evolutions 98.0, Destined Rivals 95.8, Ascended Heroes 93.9, Chaos Rising 93.2, Pitch Black 84.7. Phantasmal Flames started at 100 on Sep 18.
+   > It's free, no account, no ads. I'd like to know what's wrong with the method — the constituent list and weights are all public: shopcardhub.com/indices
+   
+   *Rule: reply to every comment the first day; no links in replies unless asked. If it gets removed, do not repost — try r/PokeInvesting once, same text.*
+
+**Feed offer (optional, when you have five minutes):** DM or email PokéViews (pokeviews.com/about), TCGIndex (tcgindex.io) and CardTrack (cardtrack.com): *"We publish per-set chase-tier indices, base 100, sold comps, every constituent shown — free JSON at shopcardhub.com/data/indices.json (CORS open). Cite freely; a link back is all we ask."* Being cited by the index sites is the Google lever we have not pulled.
+
+---
+
 ## Open — nothing (2026-09-24 15:00 PT, from the desk)
 
 - **✅ RULED by you today (~13:30 PT):** the Sep 23 Charizard post stays up (logged as a vendor claims FAIL); the vendor's probation runs to **Wed Sep 30**, bar unchanged. The desk checked every other item on this list against today's state — nothing else needs you.
