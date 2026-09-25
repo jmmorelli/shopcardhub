@@ -922,7 +922,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <div class="container">
     <div class="hero-eyebrow">🎉 Pokémon TCG · 30th Anniversary Special Set · Releases Sep 16, 2026</div>
     <h1>Pokémon TCG 30th<br><em>Celebration Guide</em></h1>
-    <p class="hero-sub">The anniversary set: 160+ cards, every card holo, 30 Pikachu variants (one per pack) and a Classic Collection reprinting Base Set icons. Products stagger from September 16 to December 4. Every price on this page is a live eBay ask, not a sale.</p>
+    <p class="hero-sub">The anniversary set: 160+ cards, every card holo, 30 Pikachu variants (one per pack) and a Classic Collection reprinting Base Set icons. Products stagger from September 16 to December 4. Product prices are live eBay asks, not sales; the TH26 set index below is priced from dated sold comps.</p>
     <div class="hero-meta">
       <span>📅 Out Sep 16, 2026 · waves through Dec 4</span>
       <span>🎴 160+ cards, every card holo</span>
@@ -1010,7 +1010,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <a class="btn-secondary" href="#lineup">See the full lineup &darr;</a>
     </div>
 
-    <p class="bb-fine">Asks are the lowest single-unit Buy It Now before shipping, lots and cases excluded, read when this page loads. No sold comps exist for this set yet, so nothing here is a market price. ShopCardHub earns an eBay Partner Network commission on qualifying purchases at no extra cost to you.</p>
+    <p class="bb-fine">Asks are the lowest single-unit Buy It Now before shipping, lots and cases excluded, read when this page loads. An ask is not a market price; sold-comp pricing for the set's singles is in the TH26 index block. ShopCardHub earns an eBay Partner Network commission on qualifying purchases at no extra cost to you.</p>
   </div>
 </div>
 <script>
@@ -1036,6 +1036,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           if (/(^|[^a-z0-9])(x\s?\d{1,2}|\d{1,2}\s?x)([^a-z0-9]|$)/.test(s)) return false;
           if (/\b\d{1,2}\s?(box|boxes|pack lot|etb|etbs)\b/.test(s)) return false;
           if (msrp && l.price > msrp * 8) return false; // lot priced as one line item
+          // accessory tail / loose contents (energy packs, acrylic cases, sleeves, opened boxes) is not the product
+          if (/\benerg(y|ies)\b|\bacrylic\b|\bopened\b|\bempty\b|\bsleeves?\b|\bdice\b|\bprotector\b/.test(s)) return false;
+          if (msrp && l.price < msrp * 0.5) return false; // under half MSRP is a part, not the sealed product
           return true;
         });
         var ps = keep.map(function(l){ return l.price; }).sort(function(a,b){ return a - b; });
@@ -1530,7 +1533,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   </section>
 
   <div class="disclosure" style="margin-bottom:48px;">
-    <strong>Affiliate Disclosure:</strong> ShopCardHub earns commissions when you buy through links on this page (eBay Partner Network). Product prices on this page are official MSRPs as of September 16, 2026 — release day. No sold comps exist for this set yet; since September 18, 2026 the two chase singles carry nightly ask-basis engine marks (verified-listing asks, not sales) in the chart blocks above. Sources: official Pokémon TCG product reveals and lineup coverage. Not financial advice.
+    <strong>Affiliate Disclosure:</strong> ShopCardHub earns commissions when you buy through links on this page (eBay Partner Network). Product prices on this page are official MSRPs as of September 16, 2026 — release day. Since September 18, 2026 the two chase singles carry nightly ask-basis engine marks (verified-listing asks, not sales) in the chart blocks above. The TH26 set index uses PriceCharting's dated sold comps instead. Sources: official Pokémon TCG product reveals and lineup coverage. Not financial advice.
   </div>
 
 </div>
