@@ -44,11 +44,23 @@ jobs:
               # Rendered image gate (Sep 25 2026, Mo: images must work on every page, checked nightly). Loads every
               # sitemap page on PRODUCTION in headless Chromium at 1280 and 390 px, scrolls it, and fails on a broken
               # <img>, a page error, or phone overflow; placeholder card photos are WARN only. ~8 min.
-              echo; echo "## image-sweep (rendered, production)"; node tools/ci/image-sweep.mjs --json image-sweep.json | tail -40; [ ${PIPESTATUS[0]} -eq 0 ] || fail=1
+              # Since Sep 25 it also runs the UI checks (clipped CTA text, invisible text, undefined CSS tokens, phone
+              # overflow = FAIL; small tap targets = WARN) and saves a 390px screenshot per page for the weekly's eyes.
+              echo; echo "## image-sweep (rendered, production: images + UI checks)"; node tools/ci/image-sweep.mjs --json image-sweep.json --shots shots | tail -60; [ ${PIPESTATUS[0]} -eq 0 ] || fail=1
             fi
           } > gates.txt 2>&1
           cat gates.txt
           echo "fail=$fail" >> "$GITHUB_OUTPUT"
+      - name: Keep the sweep's screenshots (7 days) for the weekly's visual review
+        if: github.event_name != 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: image-sweep-${{ github.run_id }}
+          path: |
+            shots/
+            image-sweep.json
+          retention-days: 7
+          if-no-files-found: ignore
       - name: Open/update gate-watch issue on failure
         if: steps.run.outputs.fail == '1'
         uses: actions/github-script@v7

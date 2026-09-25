@@ -232,7 +232,7 @@ body #bb-signup input[type="email"]:focus-visible { outline: 2px solid var(--acc
 /* 2. Hover / pressed feedback (150ms, background + transform only). */
 body .tr-list li { transition: background .15s; }
 body .tr-list li:hover { background: rgba(255,255,255,0.03); }
-body .bb-table tbody tr:hover td { background: var(--bg3); }
+body .bb-table tbody tr:hover td { background: var(--bg3, var(--p2, #111820)); }
 body .ob-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
 body .cp-fold > summary:hover { color: var(--text-head); }
 body .scr-chips a, body .focus .items a, body .rl { transition: background .15s, color .15s, border-color .15s, transform .1s; }
