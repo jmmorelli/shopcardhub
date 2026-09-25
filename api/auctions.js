@@ -96,15 +96,17 @@ export default async function handler(req, res) {
   const only = String(req.query.card || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 80);
 
   try {
-    const [wl, latest, market, token, eng] = await Promise.all([
+    const [wl, desk, latest, market, token, eng] = await Promise.all([
       getJSON(`${SITE_ORIGIN}/data/watchlist.json`),
+      getJSON(`${SITE_ORIGIN}/data/auction-desk.json`).catch(() => null),   // desk-only cards (Sep 25 2026): searched here, never marked
       readFeedJson("prices-latest.json").catch(() => null),
       readFeedJson("market-latest.json").catch(() => null),
       getAppToken(),
       import("../tools/price-engine/snapshot-free.mjs"),
     ]);
 
-    let cards = ((wl && wl.cards) || []).filter((c) => c && c.source === "ebay" && c.id && c.query);
+    let cards = ((wl && wl.cards) || []).filter((c) => c && c.source === "ebay" && c.id && c.query)
+      .concat(((desk && desk.cards) || []).filter((c) => c && c.id && c.query).map((c) => ({ ...c, source: "ebay", deskOnly: true })));
     if (only) cards = cards.filter((c) => c.id === only);
     if (!cards.length) return res.status(404).json({ error: only ? `Unknown card id "${only}".` : "No tracked cards." });
 

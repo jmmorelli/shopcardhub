@@ -7378,30 +7378,76 @@
    "source": "PriceCharting ungraded completed sales, clean single-card rows"
   },
   "cap": 0.25,
+  "capRule": {
+   "single": 0.25,
+   "big": 0.05,
+   "bigSum": 0.5,
+   "name": "25% single-card cap + 5/50 group cap (Select Sector SPDR rule)"
+  },
   "base": 100,
   "inception": "2026-09-25",
   "releaseDate": "2026-09-16",
   "universeComplete": true,
   "pcSlug": "pokemon-30th-celebration",
-  "divisor": 24.6862,
+  "divisor": 47.9623,
   "divisorLog": [
    {
     "date": "2026-09-25",
     "before": null,
-    "after": 24.6862,
-    "why": "inception — basket $2468.62 over 188 of 188 slots; 0 at the 25% cap"
+    "after": 47.9623,
+    "why": "inception — basket $4796.23 over 191 of 191 slots; 4 capped (25% single / 5-50 group)"
    }
   ],
-  "capLog": [],
+  "capLog": [
+   {
+    "date": "2026-09-25",
+    "num": "B/RGB",
+    "name": "Mew",
+    "w": 0.2072
+   },
+   {
+    "date": "2026-09-25",
+    "num": "G/RGB",
+    "name": "Mew",
+    "w": 0.2143
+   },
+   {
+    "date": "2026-09-25",
+    "num": "R/RGB",
+    "name": "Mew",
+    "w": 0.1968
+   },
+   {
+    "date": "2026-09-25",
+    "num": "149",
+    "name": "Lugia",
+    "w": 0.8686
+   }
+  ],
   "screenLog": [
    {
     "date": "2026-09-25",
-    "pass": 188,
+    "pass": 191,
     "fail": 0,
     "errors": 0
    }
   ],
   "universe": [
+   {
+    "num": "B/RGB",
+    "name": "Mew",
+    "path": "pokemon-30th-celebration/mew-brgb"
+   },
+   {
+    "num": "G/RGB",
+    "name": "Mew",
+    "path": "pokemon-30th-celebration/mew-grgb"
+   },
+   {
+    "num": "R/RGB",
+    "name": "Mew",
+    "path": "pokemon-30th-celebration/mew-rrgb"
+   },
    {
     "num": "1",
     "name": "Exeggcute",
@@ -8345,6 +8391,36 @@
   ],
   "basket": [
    {
+    "num": "B/RGB",
+    "name": "Mew",
+    "path": "pokemon-30th-celebration/mew-brgb",
+    "price": 3800,
+    "n30": 31,
+    "basis": "sold (PriceCharting ungraded, 30d median)",
+    "asOf": "2026-09-25",
+    "w": 0.2072
+   },
+   {
+    "num": "G/RGB",
+    "name": "Mew",
+    "path": "pokemon-30th-celebration/mew-grgb",
+    "price": 3674.5,
+    "n30": 28,
+    "basis": "sold (PriceCharting ungraded, 30d median)",
+    "asOf": "2026-09-25",
+    "w": 0.2143
+   },
+   {
+    "num": "R/RGB",
+    "name": "Mew",
+    "path": "pokemon-30th-celebration/mew-rrgb",
+    "price": 4000,
+    "n30": 23,
+    "basis": "sold (PriceCharting ungraded, 30d median)",
+    "asOf": "2026-09-25",
+    "w": 0.1968
+   },
+   {
     "num": "1",
     "name": "Exeggcute",
     "path": "pokemon-30th-celebration/exeggcute-1",
@@ -8838,8 +8914,8 @@
     "num": "41",
     "name": "Pikachu",
     "path": "pokemon-30th-celebration/pikachu-41",
-    "price": 2.27,
-    "n30": 22,
+    "price": 2.05,
+    "n30": 21,
     "basis": "sold (PriceCharting ungraded, 30d median)",
     "asOf": "2026-09-25",
     "w": 1
@@ -9918,8 +9994,8 @@
     "num": "131",
     "name": "Lapras",
     "path": "pokemon-30th-celebration/lapras-131",
-    "price": 14,
-    "n30": 40,
+    "price": 14.99,
+    "n30": 41,
     "basis": "sold (PriceCharting ungraded, 30d median)",
     "asOf": "2026-09-25",
     "w": 1
@@ -10112,7 +10188,7 @@
     "n30": 42,
     "basis": "sold (PriceCharting ungraded, 30d median)",
     "asOf": "2026-09-25",
-    "w": 1
+    "w": 0.8686
    },
    {
     "num": "149",
@@ -10229,15 +10305,35 @@
    {
     "date": "2026-09-25",
     "level": 100,
-    "basketValue": 2468.62,
-    "divisor": 24.6862,
-    "priced": 188,
+    "basketValue": 4796.23,
+    "divisor": 47.9623,
+    "priced": 191,
     "note": "inception"
    }
   ],
   "reconstitution": {
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
+  },
+  "sub": {
+   "RGB": {
+    "name": "Mew RGB trio",
+    "nums": [
+     "R/RGB",
+     "G/RGB",
+     "B/RGB"
+    ],
+    "blurb": "The three secret-rare Mews (R, G, B) — the set's chase, tracked as their own line so the trio's move is never mistaken for the set's.",
+    "divisor": 114.745,
+    "history": [
+     {
+      "date": "2026-09-25",
+      "level": 100,
+      "basketValue": 11474.5,
+      "note": "inception"
+     }
+    ]
+   }
   }
  }
 }

@@ -77,6 +77,32 @@ level = sum(price × w) / divisor
 
 **At SV151's constitution (Sep 15) the cap bound nothing** — the largest constituent, Charizard ex #199, sits at **18.59%**. The cap is live and will bind the first time one card runs far enough ahead of the other 201; it is not decoration for having been slack on day one.
 
+### 3a. Amendment, Sep 25 2026 (Mo): the second leg — the 5/50 rule
+
+The 25% cap was written picturing one big card. TH26 (30th Celebration) produced a case it did not foresee: three
+near-identical secret rares (Mew R/RGB, G/RGB, B/RGB, each ~$3,800 against a $2,469 basket of the other 188 cards),
+which under the single cap alone would each sit at 25% and together take **75%** of the index — a Mew chart with 188
+cards along for the ride. The Select Sector SPDRs this section cites do not run on a single cap: their concentration
+rule is **no position above 25% AND positions above 5% may not sum past 50%** (the RIC "5/50" test). The rulebook
+claimed the precedent and had only written down half of it. **Mo adopted the second leg on Sep 25 2026:**
+
+> No single card above **25%**, and the cards above **5%** may not sum past **50%** of the index, at reconstitution.
+
+Mechanics are unchanged in kind — both legs are weights `w` in the divisor math, iterated to a fixed point, logged in
+`capLog`, level unchanged by construction. TH26 at inception under both legs: the RGB trio at 16.4% each (49.3% with
+Lugia #149, which the group leg pushed to 4.85%), four weights capped, the other 187 cards uncapped. **Applies to every
+sector-model index from this date, SV151 included when it is built.** Tool: `tools/build-sector-index.mjs`.
+
+**Sub-indices (same date).** A named subset of a basket may be published as its own line — price-weighted, uncapped,
+base 100 at the parent's inception, marked with the parent — so a concentrated group's move can be read on its own and
+never mistaken for the set's. First one: **TH26·RGB**, the Mew RGB trio. A sub-index is a second line on the page,
+never the level, and never on the tickers hub as a row.
+
+**Slot rule, corrected the same day.** "Every card in the set" includes cards whose number is letters (`B/RGB`); the
+Sep 17 slot rule's "must end in #<number>" was a regex, not a policy, and it had silently dropped the set's three
+biggest cards. A slot is any product on the set's console that is a single card, numbered however the set numbers it;
+only sealed products and bracketed variants of an existing slot are excluded.
+
 ## 4. Reconstitution
 
 - **Quarterly**, effective the **first Monday of January, April, July and October**.

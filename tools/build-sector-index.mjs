@@ -56,11 +56,13 @@ const CONFIG = {
     ebayQuery: (name, num) => `pokemon 30th celebration ${name} ${num}`,
     theme: "#f5c800",
     releaseDate: "2026-09-16",
+    sub: { RGB: { name: "Mew RGB trio", nums: ["R/RGB", "G/RGB", "B/RGB"], blurb: "The three secret-rare Mews (R, G, B) — the set's chase, tracked as their own line so the trio's move is never mistaken for the set's." } },
     note: "Includes the Classic Collection reprints (Charizard #4, Lugia #149 …) — they are in the set on PriceCharting's listing and enter the basket the week they clear the screen; the Ultra-Premium Collection that carries them ships Nov 6. Product waves run through Dec 4; the index is inception-forward, so supply arriving later is a market event, never a restatement.",
   },
 };
 const SCREEN = { enter: 6, stay: 4, window: 30 };
-const CAP = 0.25;
+const CAP = 0.25;          // no single card above 25% …
+const BIG = 0.05, BIG_SUM = 0.50;   // … and positions above 5% may not sum past 50% — the Select Sector SPDR "5/50" rule, adopted Sep 25 2026 (Mo) when the three Mew RGB secrets would otherwise have taken 75% of TH26
 
 // titles that are not one ungraded single of this card (read in memory only — never stored)
 const TITLE_BAD = /\b(lot|lots|bundle|x\s?\d+|\d+\s*(cards?|pcs?|pack)|set of|complete set|master set|playset|proxy|custom|sealed|booster|etb|elite trainer|box|tin|japanese|japan|korean|chinese|jpn|kor|psa|cgc|bgs|sgc|tag\s*\d|graded|slab|reverse holo|rev holo|cosmos|stamp)\b/i;
@@ -86,7 +88,7 @@ async function universe(c) {
   const rows = await consoleCards(c.pcSlug);
   const slots = new Map();
   for (const r of rows) {
-    const m = r.title.match(/^(.*?)\s+#([A-Za-z0-9]+)\s*$/); if (!m) continue;   // sealed / promos without a number
+    const m = r.title.match(/^(.*?)\s+#([A-Za-z0-9\/]+)\s*$/) || r.title.match(/^(.*?)\s+([A-Z]\/RGB)\s*$/); if (!m) continue;   // sealed products carry no number; "B/RGB" is a number (Mo, Sep 25: the RGB Mews are set cards)
     const name = m[1].replace(/\s*\[[^\]]*\]\s*/g, " ").replace(/&amp;/g, "&").replace(/&#39;|&#x27;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, " ").trim(), num = m[2];
     const bracket = /\[/.test(r.title);
     const key = (name + " #" + num).toLowerCase();
@@ -121,20 +123,32 @@ async function readCard(slot) {
 // ---------------- the 25% cap: weights w so no card exceeds CAP of Σ(price·w); level unchanged by construction ----------------
 function applyCap(basket) {
   basket.forEach((b) => { b.w = 1; });
-  for (let it = 0; it < 50; it++) {
-    const total = basket.reduce((s, b) => s + b.price * b.w, 0);
-    const over = basket.filter((b) => (b.price * b.w) / total > CAP + 1e-9);
-    if (!over.length) break;
-    const capped = basket.filter((b) => b.w < 1 || over.includes(b));
-    const uncappedSum = basket.filter((b) => !capped.includes(b)).reduce((s, b) => s + b.price, 0);
-    // each capped card takes exactly CAP of the total: total = uncappedSum + k·CAP·total → total = uncappedSum / (1 − k·CAP)
-    const k = capped.length, T = uncappedSum / (1 - k * CAP);
-    for (const b of capped) b.w = r4(Math.min(1, (CAP * T) / b.price));
+  for (let it = 0; it < 200; it++) {
+    let changed = false;
+    const T = basket.reduce((s, b) => s + b.price * b.w, 0);
+    // leg 1: no single position above CAP of the total
+    for (const b of basket) { const v = b.price * b.w; if (v / T > CAP + 1e-9) { b.w = r4((CAP * T) / b.price); changed = true; } }
+    // leg 2: positions above BIG may not sum past BIG_SUM of the total (5/50)
+    const T2 = basket.reduce((s, b) => s + b.price * b.w, 0);
+    const big = basket.filter((b) => (b.price * b.w) / T2 > BIG + 1e-9);
+    const bigSum = big.reduce((s, b) => s + b.price * b.w, 0);
+    if (bigSum / T2 > BIG_SUM + 1e-9) { const f = (BIG_SUM * T2) / bigSum; for (const b of big) { b.w = r4(b.w * f); } changed = true; }
+    if (!changed) break;
   }
+  basket.forEach((b) => { if (b.w > 1) b.w = 1; });
   return basket;
 }
 const basketValue = (basket) => basket.reduce((s, b) => s + b.price * (b.w == null ? 1 : b.w), 0);
 const levelOf = (x) => r2(basketValue(x.basket) / x.divisor);
+// sub-index: a named subset of the basket, price-weighted, uncapped, base 100 at the same inception — a second line, never the level
+function subValue(x, nums) { return x.basket.filter((b) => nums.includes(String(b.num))).reduce((s, b) => s + b.price, 0); }
+function subInit(x, c) {
+  x.sub = {};
+  for (const [k, d] of Object.entries(c.sub || {})) { const v = subValue(x, d.nums); if (!v) continue; x.sub[k] = { name: d.name, nums: d.nums, blurb: d.blurb, divisor: r4(v / 100), history: [{ date: x.inception, level: 100, basketValue: r2(v), note: "inception" }] }; }
+}
+function subMark(x, date) {
+  for (const [k, sx] of Object.entries(x.sub || {})) { const v = subValue(x, sx.nums); if (!v) continue; sx.history.push({ date, level: r2(v / sx.divisor), basketValue: r2(v) }); }
+}
 
 // ---------------- page block ----------------
 function block(x, c) {
@@ -150,8 +164,10 @@ function block(x, c) {
   const row = (b, i) => {
     const w = (b.price * b.w) / bv;
     const q = c.ebayQuery(b.name, b.num);
-    const url = ebaySearchUrl({ q, customid: `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase()}`, sacat: SACAT_TCG, av: b.price >= 200 });
-    return `<tr><td class="rk">${i + 1}</td><td class="nm"><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></td><td class="num">$${b.price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="at the 25% cap">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="pokemon" data-grade="Raw" data-price="${b.price}">★</button> <a href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated on eBay" : "eBay"} →</a></td></tr>`;
+    const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+    const url = ebaySearchUrl({ q, customid: cid, sacat: SACAT_TCG, av: b.price >= 200 });
+    const thumb = i < 10 ? `<span data-card-img="name:${esc(b.name)} ${esc(b.num)} ${esc(c.set)}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
+    return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">$${b.price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="at the 25% cap">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="pokemon" data-grade="Raw" data-price="${b.price}">★</button> <a href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated on eBay" : "eBay"} →</a></td></tr>`;
   };
   const top10 = rows.slice(0, 10).map(row).join(""), rest = rows.slice(10).map((b, i) => row(b, i + 10)).join("");
   const unpriced = x.universe.length - x.basket.length;
@@ -160,7 +176,7 @@ function block(x, c) {
     <div class="sidx-t">
       <div class="sidx-eyebrow">▮ Set Index · sector model · every card in the set</div>
       <h2><span class="sidx-tk">${x.ticker}</span> · ${esc(c.name)}</h2>
-      <p class="sidx-sub">One set, one index. The universe is every card in ${esc(c.set)} (${x.universe.length}); the basket is the ${x.basket.length} that trade as ungraded singles — at least ${SCREEN.enter} clean sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay. Price-weighted on PriceCharting's dated sold list, ${(CAP * 100).toFixed(0)}% single-card cap, base 100.00 at inception, re-marked Monday and Thursday. Nobody picks the cards; the set is the set.</p>
+      <p class="sidx-sub">One set, one index. The universe is every card in ${esc(c.set)} (${x.universe.length}); the basket is the ${x.basket.length} that trade as ungraded singles — at least ${SCREEN.enter} clean sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay. Price-weighted on PriceCharting's dated sold list with the sector-ETF caps (no card above ${(CAP * 100).toFixed(0)}%, positions above ${(BIG * 100).toFixed(0)}% never past ${(BIG_SUM * 100).toFixed(0)}% together), base 100.00 at inception, re-marked Monday and Thursday. Nobody picks the cards; the set is the set.</p>
     </div>
     <div class="sidx-level">
       <div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div>
@@ -176,13 +192,36 @@ function block(x, c) {
     <div><span class="k">At the cap</span><span class="v">${capped}</span></div>
     <div><span class="k">Since launch</span><span class="v ${cls(lvl == null ? 0 : lvl - 100)}">${lvl == null ? "—" : pct(lvl - 100)}</span></div>
   </div>
+${subPanels(x, c)}
+  <div class="sidx-auc" data-sidx-auctions="${x.ticker.toLowerCase()}-">
+    <div class="sidx-auc-h"><span class="sidx-eyebrow">Ending soon · live eBay auctions on this set's top cards</span><span class="sidx-auc-n">loading…</span></div>
+    <ul class="sidx-auc-l"><li class="sidx-auc-e">Loading the auction desk…</li></ul>
+    <div class="sidx-auc-f">Bids, not prices — the current bid on a verified listing of the exact card, soonest close first, refreshed every 15 minutes. Nothing here is a mark. Full desk: <a href="/auctions">/auctions</a>.</div>
+  </div>
   <div class="sidx-tbl"><table>
     <thead><tr><th>#</th><th>Card</th><th>Sold mark</th><th>Weight</th><th title="clean sold comps in the trailing 30 days — a gate input, not a volume figure">n30</th><th></th></tr></thead>
     <tbody>${top10}</tbody>
   </table></div>
   ${rest ? `<details class="sidx-more"><summary>Holdings 11–${rows.length} · every card in the basket</summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
-  <p class="sidx-note"><b>${unpriced} of ${x.universe.length}</b> cards are in the universe but not the basket: they have not cleared ${SCREEN.enter} clean single-card sales in ${SCREEN.window} days on PriceCharting's ungraded list. They are listed, not hidden — how much of a set trades as singles is a fact about the set. ${esc(c.note)} A weight marked * sits at the ${(CAP * 100).toFixed(0)}% cap. n30 is a liquidity gate, never a volume figure (the source caps its table at 60 rows). Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; every entry, exit and cap change is a logged divisor adjustment, so the level only moves on prices. Marks are dated sold comps (PriceCharting ungraded, blended eBay + TCGplayer), never asks. An index is a measurement, not a call. Method: <a href="/how-prices-work">how prices work</a> · every ticker: <a href="/indices">/indices</a>.</p>
+  <p class="sidx-note"><b>${unpriced} of ${x.universe.length}</b> cards are in the universe but not the basket: they have not cleared ${SCREEN.enter} clean single-card sales in ${SCREEN.window} days on PriceCharting's ungraded list. They are listed, not hidden — how much of a set trades as singles is a fact about the set. ${esc(c.note)} A weight marked * is capped: no card above ${(CAP * 100).toFixed(0)}%, and positions above ${(BIG * 100).toFixed(0)}% may not sum past ${(BIG_SUM * 100).toFixed(0)}% (the Select Sector SPDR 5/50 rule) — every cap is a weight in the divisor math, so applying one never moves the level. n30 is a liquidity gate, never a volume figure (the source caps its table at 60 rows). Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; every entry, exit and cap change is a logged divisor adjustment, so the level only moves on prices. Marks are dated sold comps (PriceCharting ungraded, blended eBay + TCGplayer), never asks. An index is a measurement, not a call. Method: <a href="/how-prices-work">how prices work</a> · every ticker: <a href="/indices">/indices</a>.</p>
 </section>`;
+}
+function subPanels(x, c) {
+  const out = [];
+  for (const [k, sx] of Object.entries(x.sub || {})) {
+    const h = sx.history || [], last = h[h.length - 1], prev = h.length > 1 ? h[h.length - 2] : null;
+    const wow = prev ? (last.level / prev.level - 1) * 100 : null;
+    const cards = x.basket.filter((b) => sx.nums.includes(String(b.num)));
+    const chips = cards.map((b) => `<span class="sidx-subidx-c"><b>${esc(b.name)} #${esc(b.num)}</b> $${b.price.toLocaleString("en-US", { maximumFractionDigits: 0 })}<small>n30 ${b.n30}</small></span>`).join("");
+    out.push(`<div class="sidx-subidx">
+    <div class="sidx-subidx-h"><div><span class="sidx-eyebrow">Sub-index · ${x.ticker}·${esc(k)}</span><h3>${esc(sx.name)} <small>${cards.length} cards · price-weighted · uncapped · base 100 at ${mdy(x.inception)}</small></h3><p>${esc(sx.blurb || "")}</p></div>
+      <div class="sidx-subidx-lv"><div class="lv">${last ? last.level.toFixed(2) : "—"}</div><div class="lvc">${wow == null ? "one mark" : `<span class="${wow > 0 ? "up" : wow < 0 ? "dn" : "flat"}">${wow >= 0 ? "▲" : "▼"} ${(wow > 0 ? "+" : "") + wow.toFixed(1)}%</span> vs prior mark`} · basket $${(last ? last.basketValue : 0).toLocaleString("en-US", { maximumFractionDigits: 0 })}</div></div>
+    </div>
+    <div class="sidx-subidx-chips">${chips}</div>
+    <div class="idx-chart idx-chart-sm" data-ticker="${x.ticker}" data-sub="${esc(k)}" aria-live="polite"></div>
+  </div>`);
+  }
+  return out.join("\n");
 }
 const CSS = `<style id="sidx-css">
 .sidx{margin:22px 0 0;padding:18px 18px 14px;background:var(--bg2,#0c1017);border:1px solid var(--border,rgba(255,255,255,.08));border-top:2px solid var(--sidx);border-radius:4px;font-family:var(--fb,Barlow,system-ui,sans-serif);color:var(--text,#b8cdd4)}
@@ -217,7 +256,28 @@ const CSS = `<style id="sidx-css">
 .sidx-more>summary{cursor:pointer;font-family:var(--fm,ui-monospace,monospace);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim,#7a969e);padding:8px 0}
 .sidx-note{font-size:11.5px;line-height:1.6;color:var(--text-dim,#7a969e);margin:14px 0 0}
 .sidx-note a{color:var(--accent,#00ccf5)}
-@media(max-width:760px){.sidx{padding:14px 12px 12px}.sidx-stats{grid-template-columns:repeat(3,1fr)}.sidx-level{text-align:left}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}}
+.nm-cell{display:flex;align-items:center;gap:10px}.nm-cell [data-card-img]{flex:0 0 auto}
+.sidx-subidx{margin-top:14px;padding:12px 14px;border:1px solid var(--border,rgba(255,255,255,.08));border-left:3px solid var(--sidx);border-radius:3px;background:var(--bg3,#111820)}
+.sidx-subidx-h{display:flex;justify-content:space-between;align-items:flex-end;gap:10px 24px;flex-wrap:wrap}
+.sidx-subidx h3{font-family:var(--fd,'Barlow Condensed',sans-serif);font-size:20px;font-weight:800;text-transform:uppercase;color:var(--text-head,#e4f0f4);margin:4px 0 4px}
+.sidx-subidx h3 small{display:block;font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:1px;color:var(--text-dim,#7a969e);text-transform:none;font-weight:400;margin-top:2px}
+.sidx-subidx p{margin:0;font-size:12.5px;color:var(--text-dim,#7a969e);line-height:1.5;max-width:640px}
+.sidx-subidx-lv{text-align:right}.sidx-subidx-lv .lv{font-family:var(--fm,ui-monospace,monospace);font-size:32px;font-weight:700;color:var(--text-head,#e4f0f4);line-height:1}.sidx-subidx-lv .lvc{font-family:var(--fm,ui-monospace,monospace);font-size:10px;color:var(--text-dim,#7a969e);margin-top:4px}
+.sidx-subidx-chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
+.sidx-subidx-c{font-family:var(--fm,ui-monospace,monospace);font-size:12px;color:var(--text,#b8cdd4);background:var(--bg2,#0c1017);border:1px solid var(--border,rgba(255,255,255,.08));border-radius:3px;padding:6px 10px}
+.sidx-subidx-c b{color:var(--text-head,#e4f0f4);font-weight:600;margin-right:6px}.sidx-subidx-c small{color:var(--text-dim,#7a969e);margin-left:6px}
+.idx-chart-sm svg{max-height:160px}
+.sidx-auc{margin-top:14px;padding:12px 14px;border:1px solid var(--border,rgba(255,255,255,.08));border-radius:3px;background:var(--bg3,#111820)}
+.sidx-auc-h{display:flex;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;align-items:baseline}.sidx-auc-n{font-family:var(--fm,ui-monospace,monospace);font-size:10px;color:var(--text-dim,#7a969e)}
+.sidx-auc-l{list-style:none;margin:8px 0 0;padding:0}
+.sidx-auc-l li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px 14px;align-items:center;padding:7px 0;border-top:1px solid var(--border,rgba(255,255,255,.08));font-family:var(--fm,ui-monospace,monospace);font-size:12px}
+.sidx-auc-l li:first-child{border-top:0}
+.sidx-auc-l .t{color:var(--text-head,#e4f0f4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sidx-auc-l .t small{display:block;color:var(--text-dim,#7a969e);font-size:10.5px}
+.sidx-auc-l .b{text-align:right;white-space:nowrap}.sidx-auc-l .b small{display:block;color:var(--text-dim,#7a969e);font-size:10.5px}
+.sidx-auc-l a.go{color:#000;background:var(--sidx);padding:5px 9px;border-radius:2px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;white-space:nowrap;text-decoration:none}
+.sidx-auc-l li.sidx-auc-e{display:block;color:var(--text-dim,#7a969e);font-size:12px}
+.sidx-auc-f{font-size:10.5px;color:var(--text-dim,#7a969e);margin-top:8px;line-height:1.5}.sidx-auc-f a{color:var(--accent,#00ccf5)}
+@media(max-width:760px){.sidx{padding:14px 12px 12px}.sidx-subidx-lv{text-align:left}.sidx-auc-l li{grid-template-columns:minmax(0,1fr) auto}.sidx-auc-l a.go{grid-column:1/3;justify-self:start}.sidx-stats{grid-template-columns:repeat(3,1fr)}.sidx-level{text-align:left}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}}
 </style>`;
 
 function bake(x, c) {
@@ -234,6 +294,8 @@ function bake(x, c) {
     html = html.replace(anchor, anchor + "\n" + body);
   }
   if (!html.includes('src="/js/index-chart.js')) html = html.replace("</body>", '<script src="/js/index-chart.js?v=1" defer></script>\n</body>');
+  if (!html.includes('src="/js/card-img.js')) html = html.replace("</body>", '<script src="/js/card-img.js?v=3" defer></script>\n</body>');
+  if (!html.includes('src="/js/sector-auctions.js')) html = html.replace("</body>", '<script src="/js/sector-auctions.js?v=1" defer></script>\n</body>');
   if (!DRY) fs.writeFileSync(file, html);
   console.log(`${DRY ? "would bake" : "baked"} ${c.page} block: ${x.basket.length} rows`);
 }
@@ -261,9 +323,9 @@ if (has("--init")) {
   const bv = basketValue(basket), divisor = r4(bv / 100);
   IDX[TICKER] = {
     ticker: TICKER, name: c.name, set: c.set, page: c.page, model: "sector", status: "live", basis: "sold", basisLabel: "sold comps (PriceCharting ungraded) · sector model · twice-weekly re-mark",
-    screen: { ...SCREEN, source: "PriceCharting ungraded completed sales, clean single-card rows" }, cap: CAP, base: 100, inception: TODAY, releaseDate: c.releaseDate,
+    screen: { ...SCREEN, source: "PriceCharting ungraded completed sales, clean single-card rows" }, cap: CAP, capRule: { single: CAP, big: BIG, bigSum: BIG_SUM, name: "25% single-card cap + 5/50 group cap (Select Sector SPDR rule)" }, base: 100, inception: TODAY, releaseDate: c.releaseDate,
     universeComplete: true, pcSlug: c.pcSlug, divisor,
-    divisorLog: [{ date: TODAY, before: null, after: divisor, why: `inception — basket $${r2(bv)} over ${basket.length} of ${uni.length} slots; ${basket.filter((b) => b.w < 1).length} at the ${CAP * 100}% cap` }],
+    divisorLog: [{ date: TODAY, before: null, after: divisor, why: `inception — basket $${r2(bv)} over ${basket.length} of ${uni.length} slots; ${basket.filter((b) => b.w < 1).length} capped (25% single / 5-50 group)` }],
     capLog: basket.filter((b) => b.w < 1).map((b) => ({ date: TODAY, num: b.num, name: b.name, w: b.w })),
     screenLog: [{ date: TODAY, pass: basket.length, fail: uni.length - basket.length, errors: reads.filter((r) => r.error).length }],
     universe: uni.map((u) => ({ num: u.num, name: u.name, path: u.path })),
@@ -271,6 +333,7 @@ if (has("--init")) {
     history: [{ date: TODAY, level: 100, basketValue: r2(bv), divisor, priced: basket.length, note: "inception" }],
     reconstitution: { cadence: "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before", next: "2027-01-04" },
   };
+  subInit(IDX[TICKER], c);
   console.log(`${TICKER}: basket ${basket.length}/${uni.length} · value $${r2(bv)} · divisor ${divisor} · capped ${basket.filter((b) => b.w < 1).length} · top ${basket.slice().sort((a, b) => b.price * b.w - a.price * a.w).slice(0, 3).map((b) => `${b.name} #${b.num} ${(b.price * b.w / bv * 100).toFixed(1)}%`).join(" · ")}`);
   save(); bake(IDX[TICKER], c);
 } else if (has("--mark")) {
@@ -289,6 +352,7 @@ if (has("--init")) {
   }
   const level = levelOf(x);
   x.history.push({ date: TODAY, level, basketValue: r2(basketValue(x.basket)), divisor: x.divisor, priced: x.basket.length - carried, note: carried ? `${carried} carried` : "" });
+  subMark(x, TODAY);
   console.log(`${TICKER} ${TODAY}: level ${level} (prev ${x.history[x.history.length - 2].level}) · ${carried} carried`);
   save(); bake(x, c);
 } else if (has("--recon")) {
@@ -313,6 +377,7 @@ if (has("--init")) {
   x.screenLog.push({ date: TODAY, pass: next.length, fail: x.universe.length - next.length, entered, exited });
   x.basket = next; x.divisor = divisor;
   x.history.push({ date: TODAY, level: before, basketValue: r2(bvNew), divisor, priced: next.length, note: `reconstitution (+${entered}/−${exited})` });
+  subMark(x, TODAY);
   console.log(`${TICKER} reconstitution ${TODAY}: ${next.length} in basket (+${entered}/−${exited}) · divisor ${x.divisor} · level ${before} unchanged`);
   save(); bake(x, c);
 } else if (has("--bake")) {

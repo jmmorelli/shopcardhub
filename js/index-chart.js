@@ -59,7 +59,7 @@
     var els = document.querySelectorAll('.idx-chart[data-ticker]'); if (!els.length) return;
     var st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
     fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
-      Array.prototype.forEach.call(els, function (el) { var tk = el.getAttribute('data-ticker'); var v = j && j[tk]; if (!v || typeof v !== 'object') { el.remove(); return; } try { paint(el, v, tk); } catch (e) { el.remove(); } });
+      Array.prototype.forEach.call(els, function (el) { var tk = el.getAttribute('data-ticker'), sub = el.getAttribute('data-sub'); var v = j && j[tk]; if (v && sub) { v = v.sub && v.sub[sub]; tk = tk + '·' + sub; } if (!v || typeof v !== 'object') { el.remove(); return; } try { paint(el, v, tk); } catch (e) { el.remove(); } });
     }).catch(function () { Array.prototype.forEach.call(els, function (el) { el.remove(); }); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
