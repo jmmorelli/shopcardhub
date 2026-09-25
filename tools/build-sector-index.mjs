@@ -173,7 +173,7 @@ function block(x, c) {
     const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: SACAT_TCG, av: b.price >= 200 });
     const thumb = i < 10 ? `<span data-card-img="name:${esc(b.name)} ${esc(b.num)} ${esc(c.set)}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
     const dk = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slot = desk[dk] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dk])}"></span>` : "";
-    return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="pokemon" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot}</td></tr>`;
+    return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><span class="act-w"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="pokemon" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot || '<span class="sidx-auc-slot"></span>'}</span></td></tr>`;
   };
   const top10 = rows.slice(0, 10).map(row).join(""), rest = rows.slice(10).map((b, i) => row(b, i + 10)).join("");
   const unpriced = x.universe.length - x.basket.length;
@@ -262,11 +262,13 @@ const CSS = `<style id="sidx-css">
 .sidx-tbl td i{color:var(--sidx);font-style:normal}
 .nm-cell{display:flex;align-items:center;gap:10px}.nm-cell [data-card-img]{flex:0 0 auto}
 .sidx-tbl td.act{white-space:nowrap}
+.sidx-tbl td.act .act-w{display:inline-grid;grid-template-columns:34px 132px 200px;gap:6px;align-items:center;justify-items:stretch;text-align:center}
+.sidx-tbl td.act .act-w>*{margin:0}
 .sidx-tbl td.act .sch-track-card{background:transparent;border:1px solid var(--border2,rgba(255,255,255,.14));color:var(--sidx-th);border-radius:2px;padding:5px 9px;cursor:pointer;font-size:12px;vertical-align:middle}
-.sidx-tbl td.act a.ebay{display:inline-block;vertical-align:middle;margin-left:6px;font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#000;background:var(--sidx);padding:6px 11px;border-radius:2px;text-decoration:none}
+.sidx-tbl td.act a.ebay{display:inline-block;vertical-align:middle;font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#000;background:var(--sidx);padding:6px 11px;border-radius:2px;text-decoration:none}
 .sidx-tbl td.act a.ebay:hover{filter:brightness(1.1)}
-.sidx-auc-slot{display:inline-block;vertical-align:middle;margin-left:6px}
-.sidx-auc-slot a.auc{display:inline-block;font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-th);background:var(--sidx-bg2);border:1px solid var(--sidx);padding:5px 10px;border-radius:2px;text-decoration:none}
+.sidx-auc-slot{display:inline-block;vertical-align:middle;min-height:1px}
+.sidx-auc-slot a.auc{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-th);background:var(--sidx-bg2);border:1px solid var(--sidx);padding:5px 10px;border-radius:2px;text-decoration:none}
 .sidx-auc-slot a.auc small{font-family:var(--fm,ui-monospace,monospace);font-weight:400;letter-spacing:0;text-transform:none;color:var(--sidx-dim);margin-left:6px;font-size:10.5px}
 .sidx-auc-slot a.auc:hover{background:var(--sidx);color:#000} .sidx-auc-slot a.auc:hover small{color:#000}
 .sidx-more{margin-top:8px}
@@ -275,7 +277,7 @@ const CSS = `<style id="sidx-css">
 .sidx-note{font-size:11px;line-height:1.65;color:var(--sidx-dim);margin:14px 0 0}
 .sidx-note b{color:var(--text,#b8cdd4)} .sidx-note a{color:var(--sidx)}
 @media(max-width:900px){.sidx-stats{grid-template-columns:repeat(4,1fr)}.sidx-stats>div:nth-child(4){border-right:0}.sidx-stats>div:nth-child(-n+4){border-bottom:1px solid var(--sidx-bd)}}
-@media(max-width:760px){.sidx-mast{display:block;position:relative;padding-right:104px}.sidx-photo{position:absolute;right:0;top:0;width:96px}.sidx-photo .sch-cimg{width:90px!important;height:126px!important}.sidx-photo figcaption{display:none}.sidx-level{text-align:left;margin-top:12px}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}.sidx-tbl td.act a.ebay,.sidx-auc-slot a.auc{padding:5px 8px;font-size:10px;letter-spacing:1px}.sidx-auc-slot a.auc small{display:none}}
+@media(max-width:760px){.sidx-mast{display:block;position:relative;padding-right:104px}.sidx-photo{position:absolute;right:0;top:0;width:96px}.sidx-photo .sch-cimg{width:90px!important;height:126px!important}.sidx-photo figcaption{display:none}.sidx-level{text-align:left;margin-top:12px}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}.sidx-tbl td.act .act-w{grid-template-columns:32px 96px 92px}.sidx-tbl td.act a.ebay,.sidx-auc-slot a.auc{padding:5px 6px;font-size:10px;letter-spacing:.5px}.sidx-auc-slot a.auc small{display:none}}
 </style>`;
 
 function bake(x, c) {

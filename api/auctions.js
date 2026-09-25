@@ -150,7 +150,7 @@ export default async function handler(req, res) {
 
     const rows = perCard.flatMap((c) => c.rows).sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
 
-    res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=1800");
+    res.setHeader("Cache-Control", "s-maxage=1800, stale-while-revalidate=3600");   // 30 min (was 15) — the desk grew from ~40 to ~80 cards on 2026-09-25 (index-row Bid buttons); one Browse call per card per miss
     return res.status(200).json({
       generated: new Date().toISOString(),
       basis: "mark = engine verified ask floor (ask basis), hammerMedian = median of watched auction closes (sold side); never blended",

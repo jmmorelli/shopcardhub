@@ -39,6 +39,8 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
 const POKE = ["PB26", "CR26", "AH26", "PRIS25", "DR25", "PF25"];
 const AV_FLOOR = 200;
+const AUC_TOP = 5;        // live-auction "Bid" button on each index's five most valuable cards (Sep 25 2026, Mo: "did you do that to all of the pages?")
+const DESK_EXCL = "-psa -bgs -cgc -graded -lot -proxy -custom -digital";
 // Junk shapes seen in the live result sets on 2026-09-22: credit-card skins, metal
 // novelty cards, "art display piece", DIY fan art, proxy sets, stickers.
 // "art" itself is NOT excluded — "Full Art" is the card.
@@ -47,12 +49,21 @@ const EXCL = "-lot -case -proxy -proxies -reprint -digital -custom -diy -skin -m
 const idx = JSON.parse(fs.readFileSync(path.join(REPO, "data/indices.json"), "utf8"));
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-const CSS = 'td.lst{white-space:nowrap;text-align:right;}a.ebay{display:inline-block;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#000;background:var(--gd);padding:6px 11px;border-radius:2px;text-decoration:none;}a.ebay:hover{filter:brightness(1.1);color:#000;}';
+const CSS = 'td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;grid-template-columns:auto 176px;gap:6px;align-items:center;justify-items:stretch;}.sidx-auc-slot a.auc{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}a.ebay{display:inline-block;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#000;background:var(--gd);padding:6px 11px;border-radius:2px;text-decoration:none;}a.ebay:hover{filter:brightness(1.1);color:#000;}.sidx-auc-slot{display:inline-block;min-width:0;}.sidx-auc-slot a.auc{display:inline-block;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--th);background:var(--p2);border:1px solid var(--gd);padding:5px 10px;border-radius:2px;text-decoration:none;}.sidx-auc-slot a.auc small{font-family:var(--fm);font-weight:400;letter-spacing:0;text-transform:none;color:var(--dim);margin-left:6px;font-size:10px;}.sidx-auc-slot a.auc:hover{background:var(--gd);color:#000;}.sidx-auc-slot a.auc:hover small{color:#000;}@media(max-width:700px){td.lst .act-w{grid-template-columns:auto 92px;}.sidx-auc-slot a.auc small{display:none;}}';
 const FP_STYLE = 'font-family:var(--fm);font-size:9px;color:var(--dim);margin-top:4px;';
 const FINEPRINT = `<div style="${FP_STYLE}">Listings links go to eBay (affiliate). Rows marked &#10003; are filtered to eBay&rsquo;s Authenticity Guarantee &mdash; eBay&rsquo;s program, not ours, offered on singles over $200 (filter verified 09/22/26).</div>`;
 
 let total = 0, avTotal = 0;
 const report = [];
+// data/auction-desk.json — desk-only cards /api/auctions searches for live auctions (never marked, R20). This
+// generator owns every entry whose index is one of POKE: it rewrites them each run from the current top-N, so a
+// re-mark that changes the top five changes the desk with it. Entries for other indices (TH26 …) are left alone.
+const DESK_PATH = path.join(REPO, "data/auction-desk.json");
+const desk = JSON.parse(fs.readFileSync(DESK_PATH, "utf8"));
+desk.cards = (desk.cards || []).filter((c) => !POKE.includes(c.index));
+const SETNAME = { PB26: "Pitch Black", CR26: "Chaos Rising", AH26: "Ascended Heroes", PRIS25: "Prismatic Evolutions", DR25: "Destined Rivals", PF25: "Phantasmal Flames" };
+const STOP = new Set(["mega", "ex", "sir", "team", "rocket's", "rockets", "cynthia's", "ethan's", "misty's", "arven's", "marnie's", "steven's", "lillie's", "n's", "iono's", "the", "of"]);
+const mustToken = (name) => { const w = String(name).toLowerCase().replace(/[^a-z0-9' ]/g, " ").split(/\s+/).filter((t) => t && !STOP.has(t)); return (w.sort((a, b) => b.length - a.length)[0] || String(name).toLowerCase().split(" ")[0]); };
 
 for (const tk of POKE) {
   const ix = idx[tk];
@@ -61,6 +72,7 @@ for (const tk of POKE) {
   let html = fs.readFileSync(file, "utf8");
   const byNum = new Map(ix.basket.map((b) => [String(b.num), b]));
   const slug = tk.toLowerCase();
+  const aucNums = new Set(ix.basket.filter((b) => b.price != null).sort((a, b) => b.price - a.price).slice(0, AUC_TOP).map((b) => String(b.num)));
   const urlByNum = new Map();
   let n = 0, av = 0;
 
@@ -82,8 +94,14 @@ for (const tk of POKE) {
     }));
     urlByNum.set(num, url);
     n++; if (useAv) av++;
-    const td = `<td class="lst"><a class="ebay" data-cid="${cid}"${useAv ? ' data-av="1" title="Authenticity Guarantee listings on eBay"' : ""}`
-      + ` href="${esc(url)}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">Listings ${useAv ? "&#10003;" : "&rarr;"}</a></td>`;
+    let slot = '<span class="sidx-auc-slot"></span>';   // empty slot keeps the Listings button in one column on every row
+    if (aucNums.has(num)) {
+      const deskId = `${slug}-${num}`;
+      desk.cards.push({ id: deskId, index: tk, name: b.name, num: String(b.num), label: `${b.name} #${cn} — ${SETNAME[tk] || tk}`, query: `${b.name} ${cn} ${DESK_EXCL}`, titleMust: [mustToken(b.name), num], cardType: "tcg-single", categoryIds: "183454" });
+      slot = `<span class="sidx-auc-slot" data-auc-card="${deskId}" data-auc-tk="${slug}"></span>`;
+    }
+    const td = `<td class="lst"><span class="act-w"><a class="ebay" data-cid="${cid}"${useAv ? ' data-av="1" title="Authenticity Guarantee listings on eBay"' : ""}`
+      + ` href="${esc(url)}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">Listings ${useAv ? "&#10003;" : "&rarr;"}</a>${slot}</span></td>`;
     return blk.replace(/<td class="lst">[\s\S]*?<\/td>/, "").replace(/<\/tr>$/, td + "</tr>");
   });
 
@@ -109,7 +127,10 @@ for (const tk of POKE) {
   html = html.replace(cm[0], `var CARDS = ${JSON.stringify(cards)};\n`);
 
   // ---- 4. CSS + fine print --------------------------------------------------
-  if (!/a\.ebay\s*\{/.test(html)) html = html.replace("</style>", CSS + "</style>");
+  // CSS: replace our own block if present (it starts with td.lst{ and ends at a.ebay:hover / the auc rules), else add it
+  if (/td\.lst\{white-space:nowrap;text-align:right;\}/.test(html)) html = html.replace(/td\.lst\{white-space:nowrap;text-align:right;\}[^\n<]*?(?=<\/style>|\n)/, CSS);
+  else html = html.replace("</style>", CSS + "</style>");
+  if (!html.includes('src="/js/sector-auctions.js')) html = html.replace("</body>", '<script src="/js/sector-auctions.js?v=2" defer></script>\n</body>');
   if (av && !html.includes("Authenticity Guarantee &mdash; eBay")) {
     const stamp = /(<div style="font-family:var\(--fm\)[^"]*">\*Holdings as of[\s\S]*?<\/div>)/;
     if (!stamp.test(html)) throw new Error(`${tk}: holdings stamp not found for the fine print`);
@@ -121,5 +142,7 @@ for (const tk of POKE) {
   report.push(`${tk}: ${n} links (${av} AG) -> ${path.basename(file)}`);
 }
 
+if (!DRY) fs.writeFileSync(DESK_PATH, JSON.stringify(desk, null, 2) + "\n");
 report.forEach((r) => console.log(r));
+console.log(`auction desk: ${desk.cards.filter((c) => POKE.includes(c.index)).length} Pokémon-index cards (top ${AUC_TOP} per index) → data/auction-desk.json`);
 console.log(`${DRY ? "(dry run — nothing written) " : ""}total ${total} per-card links, ${avTotal} Authenticity-Guarantee filtered`);

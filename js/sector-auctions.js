@@ -20,11 +20,11 @@
   fetch('/api/auctions').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (d) {
     var rows = (d && d.rows) || [];
     Array.prototype.forEach.call(slots, function (el) {
-      var id = el.getAttribute('data-auc-card'), sec = el.closest('.sidx'), tk = sec ? (sec.id || 'sidx') : 'sidx';
+      var id = el.getAttribute('data-auc-card'), sec = el.closest('.sidx'), tk = el.getAttribute('data-auc-tk') || (sec ? (sec.id || 'sidx') : 'sidx');
       var mine = rows.filter(function (r) { return r.id === id && r.endDate && r.url && Date.parse(r.endDate) > Date.now(); })
         .sort(function (a, b) { return (b.bidCount > 0) - (a.bidCount > 0) || Date.parse(a.endDate) - Date.parse(b.endDate); });
       var r = mine[0]; if (!r) { el.remove(); return; }
-      el.innerHTML = '<a class="auc" href="' + esc(retag(r.url, tk + '-auctions')) + '" target="_blank" rel="sponsored nofollow noopener" data-kind="auction" data-card="' + esc(r.id) + '" title="' + esc(String(r.title || '').slice(0, 120)) + '">Bid ' + money(r.total) + '<small>' + (r.bidCount > 0 ? r.bidCount + ' bid' + (r.bidCount === 1 ? '' : 's') + ' · ' : 'no bids · ') + 'ends ' + esc(ends(r.endDate)) + (mine.length > 1 ? ' · +' + (mine.length - 1) + ' more' : '') + '</small></a>';
+      el.innerHTML = '<a class="auc" onclick="event.stopPropagation()" href="' + esc(retag(r.url, tk + '-auctions')) + '" target="_blank" rel="sponsored nofollow noopener" data-kind="auction" data-card="' + esc(r.id) + '" title="' + esc(String(r.title || '').slice(0, 120)) + '">Bid ' + money(r.total) + '<small>' + (r.bidCount > 0 ? r.bidCount + ' bid' + (r.bidCount === 1 ? '' : 's') + ' · ' : 'no bids · ') + 'ends ' + esc(ends(r.endDate)) + (mine.length > 1 ? ' · +' + (mine.length - 1) + ' more' : '') + '</small></a>';
     });
   }).catch(function () { Array.prototype.forEach.call(slots, function (el) { el.remove(); }); });
   document.addEventListener('click', function (e) {
