@@ -280,7 +280,10 @@ def card_bangers(out):
     # sentence would publish a methodology the page no longer uses. First <p class="section-intro"> is the rule.
     rule_m = re.search(r'<p class="section-intro">(.*?)</p>', page, re.S)
     rule = strip(rule_m.group(1)) if rule_m else ""
-    sub = (rule + "  Engine = the same night's eBay ask, labeled, never blended into a sold figure.").strip()
+    # R20 (Sep 25 2026): the page no longer prints an ask-derived "engine $" mark, so the column and the sentence
+    # about it only appear when at least one row still carries one. An empty column is not honesty, it is a hole.
+    has_eng = any(r[3] for r in rows)
+    sub = (rule + ("  Engine = the same night's eBay ask, labeled, never blended into a sold figure." if has_eng else "")).strip()
     im, d = canvas("the tuesday board · 1st bowman chrome autos", f"The Tuesday Board — {dt.strftime('%b %-d')}",
                    None, tag="//  BOWMAN BANGERS · SOLD COMPS + LABELED ASKS")
     _sw, _sl, _sc = sub.split(), [], ""
@@ -297,9 +300,14 @@ def card_bangers(out):
         while txt and d.textlength(txt + "…", font=font) > width: txt = txt[:-1]
         return (txt.rstrip() + "…") if txt else ""
 
-    cols = ["#", "PLAYER", "RAW SOLD", "PSA 10", "ENGINE ASK", "THIS WEEK"]
-    xs   = [64, 110, 430, 548, 792, 900]
-    wid  = [40, 306, 106, 232, 96, 252]
+    if has_eng:
+        cols = ["#", "PLAYER", "RAW SOLD", "PSA 10", "ENGINE ASK", "THIS WEEK"]
+        xs   = [64, 110, 430, 548, 792, 900]
+        wid  = [40, 306, 106, 232, 96, 252]
+    else:
+        cols = ["#", "PLAYER", "RAW SOLD", "PSA 10", "THIS WEEK"]
+        xs   = [64, 110, 430, 548, 900]
+        wid  = [40, 306, 106, 336, 252]
     y = 236; d.rounded_rectangle([48, y, W - 48, y + 44 + 50 * len(rows)], 8, fill=PANEL, outline="#16303a")
     for c, x in zip(cols, xs): d.text((x, y + 14), c, font=MONO(12), fill=DIM)
     for j, (rk, nm, raw, eng, psa, ctx) in enumerate(rows):
@@ -318,9 +326,9 @@ def card_bangers(out):
             d.text((xs[3], yy + 14), fit(psa, MONO(13), wid[3]), font=MONO(13), fill=DIM)
         else:
             d.text((xs[3], yy + 12), fit(psa, MONO(17), wid[3]), font=MONO(17), fill=TXT)
-        d.text((xs[4], yy + 12), fit(eng, MONO(17), wid[4]), font=MONO(17), fill=DIM)
+        if has_eng: d.text((xs[4], yy + 12), fit(eng, MONO(17), wid[4]), font=MONO(17), fill=DIM)
         col = GREEN if ctx.startswith("+") else RED if ctx.startswith("-") or ctx.startswith("−") else DIM
-        d.text((xs[5], yy + 14), fit(ctx, MONO(13), wid[5]), font=MONO(13), fill=col)
+        d.text((xs[-1], yy + 14), fit(ctx, MONO(13), wid[-1]), font=MONO(13), fill=col)
     # headline = the page's own market-check callout, wrapped
     words, lines, cur = head.split(), [], ""
     for w_ in words:

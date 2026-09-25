@@ -11,17 +11,11 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — three human-account items (2026-09-25, CoS, after the strategic reset)
+## Open — two human-account items (2026-09-25, CoS, after the strategic reset; updated 13:00 PT)
 
 1. **Apply to the TCGplayer affiliate program on Impact (idea #38, ~10 min, $0).** https://docs.tcgplayer.com/docs/tcgplayer-affiliate-program → the Impact application link; use the site and your name. When it's approved, paste the tracking-link template into chat and the build ships the "TCGplayer →" secondary on the six Pokémon index tables. **Kill: Oct 31 with no approval → declined, not re-applied.**
 
-2. **Post this week's index close on X by hand (the vendor is out of usage).** Image: `python3 tools/x-images/make.py levels` from a fresh clone (Pokémon tickers; the Bowman indices stay off the image until Phase 2 puts them on solds). Copy, ready to paste — numbers are the Sep 21 marks, so post before Monday's re-mark or re-run the image after it:
-
-   > Set index close · Sep 21 marks
-   > PRIS25 98.04 (+1.3% w/w) is the only Pokémon chase tier holding near launch.
-   > PB26 84.72 — Pitch Black's chase tier is −15% since Aug 24. DR25 95.75 · AH26 93.88 · CR26 93.17.
-   > New today: TH26, the 30th Celebration set index — all 188 cards, base 100 at Sep 25, marks Mon + Thu. shopcardhub.com/pokemon-30th-anniversary-2026#th26
-   > Base 100 at launch, sold comps only, every card in the basket shown. shopcardhub.com/indices
+2. ~~Post this week's index close on X by hand~~ **✅ DONE by the CoS (Sep 25 12:40 PT):** the weekend batch (9 posts, Fri–Sun, 3/day) is in your X scheduler — Sat 9:00 am carries the index close with the levels image, Fri 12:45 pm the TH26 launch. **Your part: replies and interactions, and delete anything you don't want at x.com → Drafts → Scheduled.** Text + fact trail: Project `claude/cos/x-weekend-2026-09-25.md`.
 
 3. **One Reddit submission (your account; forums ban bot posting).** r/pkmntcg (market talk is allowed there; r/PokemonTCG removes price posts). Title: **"I built a base-100 index for each Pokémon set's chase tier (SIR/UR/IR/HR) — Pitch Black is −15% in a month, Prismatic flat"**. Body:
 
