@@ -44,6 +44,12 @@ td.nm .desc { display:block; font-size:10.5px; color:var(--dim); font-family:var
 td.lv { color:var(--th); font-weight:700; font-size:13px; }
 .up { color:var(--gn); } .dn { color:var(--rd); } .fl { color:var(--dim); }
 tr.idx:hover td { background:rgba(0,204,245,0.04); cursor:pointer; }
+/* Open button (Sep 25 2026, Mo: the call to action on every row must be visible) */
+td.go { text-align:right; white-space:nowrap; width:1%; }
+.go-btn { display:inline-block; font-family:var(--fd); font-weight:700; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:#000; background:var(--gd,#f5c800); padding:6px 11px; border-radius:2px; text-decoration:none; white-space:nowrap; }
+.go-btn:hover { filter:brightness(1.1); color:#000; }
+.go-btn.dim { background:transparent; color:var(--dim); border:1px solid var(--bd2); }
+@media (max-width:800px) { .go-btn { padding:6px 8px; font-size:10px; letter-spacing:1px; } td.go { padding-left:4px; } }
 tr.soon td { opacity:0.55; }
 .pre { font-family:var(--fm); font-size:8.5px; font-weight:700; letter-spacing:1.5px; color:#ff9f1c; border:1px solid rgba(255,159,28,0.5); border-radius:2px; padding:1px 5px; margin-left:6px; vertical-align:middle; }
 .rng { display:inline-flex; align-items:center; gap:6px; font-size:9px; color:var(--dim); }
@@ -89,6 +95,8 @@ tr.soon td { opacity:0.55; }
       .nav-hamburger { display:flex !important; } 
       .mobile-nav { display:block !important; } }
 @media (max-width:800px) { .hidem { display:none; } td.nm .desc { max-width:170px; } h1 { font-size:28px; } }
+/* phone tidy (Sep 25 2026): one line per ticker — level, since inception, Open; 1 Wk and the blurb live on the index page */
+@media (max-width:640px) { .hides { display:none; } td.nm .desc { display:block; max-width:112px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } td, thead th { padding-left:5px; padding-right:5px; } thead th { font-size:8px; letter-spacing:1px; } td.nm .roi-cell > .sch-cimg { width:28px !important; height:39px !important; } .go-btn { padding:6px 7px; } }
 
     /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
     .hero .container, .hero.hero-grid, .rh-head .container, .mast.hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 240px; column-gap:56px; align-items:start; }
@@ -650,7 +658,8 @@ fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(
         '<td class="nm"><div class="roi-cell">' + faceThumb(t) + '<div><a href="' + x.page + '">' + t + '</a> <span class="pre">PRE</span><span class="desc">' + pmeta.d + '</span></div></div></td>' +
         '<td class="hidem fl">' + (x.basket ? x.basket.length : 0) + ' / ' + (x.universe ? x.universe.length : '?') + (x.universeComplete === false ? '+' : '') + '</td>' +
         '<td class="lv fl" style="font-size:10px;font-weight:400;">' + street + '<br><span style="font-size:9px;">' + (x.basis ? x.basis + ' basis, labeled' : '') + '</span></td>' +
-        '<td class="fl">—</td><td class="hidem fl">—</td><td class="fl">—</td><td class="hidem fl">—</td></tr>');
+        '<td class="fl hides">—</td><td class="hidem fl">—</td><td class="fl">—</td><td class="hidem fl">—</td>' +
+        '<td class="go"><a class="go-btn" href="' + x.page + '">Open &rarr;</a></td></tr>');
       return;
     }
     var lvl = last ? last.level.toFixed(2) : '—';
@@ -666,18 +675,19 @@ fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(
       '<td class="nm"><div class="roi-cell">' + faceThumb(t) + '<div><a href="' + x.page + '">' + t + '</a><span class="desc">' + meta.d + '</span></div></div></td>' +
       '<td class="hidem fl">' + (x.basket ? x.basket.length : 0) + ' / ' + (x.universe ? x.universe.length : '?') + (x.universeComplete === false ? '+' : '') + '</td>' +
       '<td class="lv">' + lvl + '</td>' +
-      '<td>' + pctCell(wow) + '</td>' +
+      '<td class="hides">' + pctCell(wow) + '</td>' +
       '<td class="hidem">' + pctCell(mo) + '</td>' +
       '<td>' + pctCell(si) + '</td>' +
-      '<td class="hidem">' + rng + '</td></tr>');
+      '<td class="hidem">' + rng + '</td>' +
+      '<td class="go"><a class="go-btn" href="' + x.page + '">Open &rarr;</a></td></tr>');
   });
   COMING.forEach(function(c) {
     if (D[c.t]) return; // ticker now lives in indices.json (pre or live) — its real row already rendered
     var link = c.href ? '<a href="' + c.href + '">' + c.t + '</a>' : '<span style="color:var(--th);font-weight:700;letter-spacing:1px;">' + c.t + '</span>';
     rowsBySec[c.s].push('<tr class="soon"><td class="nm">' + (FACE[c.t] ? '<div class="roi-cell">' + faceThumb(c.t) + '<div>' + link + '<span class="desc">' + c.d + '</span></div></div>' : link + '<span class="desc">' + c.d + '</span>') + '</td>' +
-      '<td class="hidem fl">—</td><td class="lv fl">' + c.note + '</td><td class="fl">—</td><td class="hidem fl">—</td><td class="fl">—</td><td class="hidem fl">—</td></tr>');
+      '<td class="hidem fl">—</td><td class="lv fl">' + c.note + '</td><td class="fl hides">—</td><td class="hidem fl">—</td><td class="fl">—</td><td class="hidem fl">—</td><td class="go">' + (c.href ? '<a class="go-btn dim" href="' + c.href + '">Guide &rarr;</a>' : '') + '</td></tr>');
   });
-  var head = '<thead><tr><th>Ticker</th><th class="hidem">Priced / Universe</th><th>Level</th><th>1 Wk</th><th class="hidem">1 Mo</th><th>Since Inception</th><th class="hidem">Range</th></tr></thead>';
+  var head = '<thead><tr><th>Ticker</th><th class="hidem">Priced / Universe</th><th>Level</th><th class="hides">1 Wk</th><th class="hidem">1 Mo</th><th>Since launch</th><th class="hidem">Range</th><th class="go"></th></tr></thead>';
   var out = '';
   ['pokemon','baseball'].forEach(function(sec) {
     out += '<div class="panel"><h2>' + META[sec].label + '</h2><div class="tbl-scroll"><table>' + head + '<tbody>' + rowsBySec[sec].join('') + '</tbody></table></div></div>';

@@ -430,6 +430,15 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
 /* Bid slot beside Buy (Sep 25 2026) — filled by js/sector-auctions.js; a live listing, never a mark */
 .entry-ctas .sidx-auc-slot a.auc{display:inline-flex;align-items:center;font-family:var(--fd);font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--th,#e4f0f4);background:var(--p2,#111820);border:1px solid var(--gd,#f5c800);padding:10px 16px;border-radius:2px;text-decoration:none;white-space:nowrap;}.entry-ctas .sidx-auc-slot a.auc small{font-family:var(--fm);font-weight:400;letter-spacing:0;text-transform:none;color:var(--dim,#7a969e);margin-left:8px;font-size:11px;}.entry-ctas .sidx-auc-slot a.auc:hover{background:var(--gd,#f5c800);color:#000;}.entry-ctas .sidx-auc-slot a.auc:hover small{color:#000;}.entry-ctas .sidx-auc-slot:empty{display:none;}
+/* Phone fold (Sep 25 2026, Mo: the board is 42k px on a phone). JS adds .is-folded on phones only; no-JS and desktop see everything. */
+.fold-btn { display:none; }
+@media (max-width:700px) {
+  .is-folded > .entry-body, .is-folded > .prospect-quote, .is-folded > .entry-break, .is-folded .fold-rest { display:none !important; }
+  .fold-btn { display:block; width:100%; margin:10px 0 4px; background:transparent; border:1px solid var(--bd2,rgba(255,255,255,0.14)); color:var(--iac,#00ccf5); font-family:var(--fm,ui-monospace,monospace); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; padding:10px 12px; border-radius:2px; cursor:pointer; text-align:left; }
+  .fold-btn:after { content:'\25BE'; float:right; }
+  .fold-btn.open:after { content:'\25B4'; }
+  .entry-verdict .fold-rest { display:inline; }
+}
 </style>
   <!-- Bowman Bangers — ballpark motion v2 (this page only; outside NAV markers so build-nav can't touch it) -->
   <style id="bangers-diamond">
@@ -2753,6 +2762,50 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </script>
 <script src="/js/vault-schema.js?v=3"></script>
 <script src="/js/rail-hydrate.js?v=1" defer></script>
+<script>
+/* board-fold: on a phone each seat folds to header · stats · verdict line · CTAs, each correction to its first line, the
+   week's tape to its opening; a tap opens the rest in place (Sep 25 2026). Desktop and no-JS readers see everything. */
+(function () {
+  if (!window.matchMedia || !matchMedia('(max-width:700px)').matches) return;
+  function wrapAfterFirst(el, sel) {
+    var first = el.querySelector(':scope > ' + sel); if (!first) return false;
+    var rest = document.createElement('span'); rest.className = 'fold-rest';
+    var n = first.nextSibling, moved = 0;
+    while (n) { var nx = n.nextSibling; rest.appendChild(n); moved++; n = nx; }
+    if (!moved) return false;
+    el.appendChild(rest); return true;
+  }
+  function btn(label, host, before) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'fold-btn'; b.textContent = label;
+    b.addEventListener('click', function () {
+      var open = host.classList.toggle('is-folded') === false;
+      b.classList.toggle('open', open); b.textContent = open ? 'Show less' : label;
+      if (window.gtag) gtag('event', 'board_fold', { open: open ? 1 : 0, what: label, page: location.pathname });
+    });
+    if (before && before.parentNode === host) host.insertBefore(b, before); else host.appendChild(b);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.card-entry'), function (e) {
+    var v = e.querySelector(':scope > .entry-verdict'); if (v) wrapAfterFirst(v, 'strong');
+    e.classList.add('is-folded');
+    btn('Read the full case', e, e.querySelector(':scope > .entry-ctas'));
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.alert-bar'), function (a) {
+    if (a.closest('.card-entry') || a.closest('#tape')) return;
+    if (a.textContent.replace(/\s+/g, ' ').length < 420) return;
+    if (!wrapAfterFirst(a, 'strong')) return;
+    a.classList.add('is-folded'); btn('Read the full note', a);
+  });
+  var t = document.getElementById('tape');
+  if (t) {
+    var kids = Array.prototype.slice.call(t.children); if (kids.length > 2) {
+      var rest = document.createElement('div'); rest.className = 'fold-rest';
+      kids.slice(2).forEach(function (k) { rest.appendChild(k); });
+      var first = t.children[1]; if (first) wrapAfterFirst(first, 'strong');
+      t.appendChild(rest); t.classList.add('is-folded'); btn("Read this week's tape", t);
+    }
+  }
+})();
+</script>
 <script src="/js/sector-auctions.js?v=3" defer></script>
 </body>
 </html>
