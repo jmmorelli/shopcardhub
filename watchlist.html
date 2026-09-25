@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <title>The Vault — Free Card Watchlist & Portfolio Tracker | ShopCardHub</title>
-  <meta name="description" content="Track the cards you're hunting and the cards you own. Log prices or link the live price engine, watch the candles, set buy-zone targets, and see real stats. Free — no account, your data stays on your device.">
+  <title>Watchlist — Track the Cards You’re Chasing, Free, No Account | ShopCardHub</title>
+  <meta name="description" content="Star any card on a ShopCardHub set index or board and it lands here with its dated sold price, weekly re-mark and live listings. Free, no account, nothing leaves your browser.">
   <link rel="canonical" href="https://www.shopcardhub.com/watchlist">
   <meta name="robots" content="noindex,follow">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="The Vault — Free Card Watchlist & Portfolio Tracker">
-  <meta property="og:description" content="Log prices, watch the candles, set buy-zone targets. Free card tracker — no account needed.">
+  <meta property="og:title" content="Watchlist — the cards you’re chasing, priced weekly">
+  <meta property="og:description" content="★ a card on any set index and it lands here with its dated sold price and live listings. Free, no account, stays on your device.">
   <meta property="og:url" content="https://shopcardhub.com/watchlist">
   <meta property="og:site_name" content="ShopCardHub">
   <meta name="twitter:card" content="summary_large_image">
@@ -21,7 +21,7 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:image" content="https://www.shopcardhub.com/og/vault.png">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"The Vault — Card Watchlist & Portfolio Tracker","url":"https://shopcardhub.com/watchlist","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://shopcardhub.com"}}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"ShopCardHub Watchlist","url":"https://shopcardhub.com/watchlist","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://shopcardhub.com"}}
   </script>
   <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -458,6 +458,14 @@
     .sheet-body #colWrap .btn { width:100%; text-align:left; }
     .sheet-body .col-menu { position:static; margin-top:6px; }
     .sheet-body .col-menu label { padding:9px 14px; font-size:13px; }
+
+    /* SIMPLE / ADVANCED (Sep 25 2026 — Mo: the Vault had too much on it; default is the one job, a watchlist off the indices) */
+    .mode-btn { margin-left:auto; font-family:var(--fm); font-size:10.5px; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); background:transparent; border:1px solid var(--border2); border-radius:2px; padding:5px 10px; cursor:pointer; }
+    .mode-btn:hover { color:var(--text-head); border-color:var(--accent); }
+    body.v-simple #groupWrap, body.v-simple #colWrap, body.v-simple .vview, body.v-simple #toolMore2 .btn[title^="Paste"], body.v-simple #sheetBtn,
+    body.v-simple #analytics, body.v-simple #pfHead, body.v-simple #pfTiles, body.v-simple #pfTape, body.v-simple #kpiStrip,
+    body.v-simple #importBtn { display:none !important; }
+    @media (max-width:640px) { .mode-btn { margin-left:0; margin-top:6px; } }
     @media (max-width:640px) {
       .vault-hero { padding:14px 0 0; }
       .vault-h1row { gap:2px 12px; }
@@ -667,7 +675,7 @@
           <div class="dd-label">Trackers & Tools</div>
           <a href="/bowman-bangers">Bowman Bangers ⭐</a>
           <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Ranked by ROI</a>
-          <a href="/watchlist">My Vault — Watchlist & Portfolio</a>
+          <a href="/watchlist">Watchlist — the cards you're chasing</a>
           <a href="/indices" style="color:#00ccf5;">Set Indices — All Tickers</a>
           <a href="/cards" style="color:#00ccf5;">Card Charts — Every Tracked Card</a>
           <a href="/auctions" style="color:#00e07a;">Auction Desk — Ending Under the Mark</a>
@@ -764,7 +772,7 @@
           <div class="nav-search-results" id="nav-search-results-d" role="listbox"></div>
         </div>
         <a href="/#newsletter" class="nav-cta nav-cta2" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent);">📬 Tuesday Tape</a>
-        <a href="/watchlist" class="nav-cta">My Vault</a>
+        <a href="/watchlist" class="nav-cta">Watchlist</a>
       </div>
       <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -785,7 +793,7 @@
         <div class="m-sublabel">Trackers & Tools</div>
         <a href="/bowman-bangers">Bowman Bangers ⭐</a>
         <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Ranked by ROI</a>
-        <a href="/watchlist">My Vault — Watchlist & Portfolio</a>
+        <a href="/watchlist">Watchlist — the cards you're chasing</a>
         <a href="/indices" style="color:#00ccf5;">Set Indices — All Tickers</a>
         <a href="/cards" style="color:#00ccf5;">Card Charts — Every Tracked Card</a>
         <a href="/auctions" style="color:#00e07a;">Auction Desk — Ending Under the Mark</a>
@@ -865,7 +873,7 @@
         </div>
       </div>
   <a href="/#newsletter" class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
-  <a href="/watchlist" class="m-cta">My Vault →</a>
+  <a href="/watchlist" class="m-cta">My Watchlist →</a>
 </div>
 <script>
 /* === NAV controller (generated) — hamburger toggle + accordion + search + active page === */
@@ -890,7 +898,7 @@
       });
     });
   }
-  var INDEX = [{"t":"Home","u":"/","n":"home"},{"t":"Tools + Research","u":"/research","n":"tools research research"},{"t":"Bowman Bangers ⭐","u":"/bowman-bangers","n":"bowman bangers bowman bangers"},{"t":"Best Boxes 2026 — Ranked by ROI","u":"/best-hobby-boxes-2026","n":"best boxes 2026 ranked by roi best hobby boxes 2026"},{"t":"My Vault — Watchlist & Portfolio","u":"/watchlist","n":"my vault watchlist portfolio watchlist"},{"t":"Set Indices — All Tickers","u":"/indices","n":"set indices all tickers indices"},{"t":"Card Charts — Every Tracked Card","u":"/cards","n":"card charts every tracked card cards"},{"t":"Auction Desk — Ending Under the Mark","u":"/auctions","n":"auction desk ending under the mark auctions"},{"t":"How Prices Work","u":"/how-prices-work","n":"how prices work how prices work"},{"t":"ROY Watch 2026","u":"/roy-watch-2026","n":"roy watch 2026 roy watch 2026"},{"t":"Track Record — Calls Graded","u":"/track-record","n":"track record calls graded track record"},{"t":"All Posts (Blog)","u":"/blog","n":"all posts blog blog"},{"t":"BOW26 — 1st Chrome Index ⭐","u":"/bowman-1st-chrome-index","n":"bow26 1st chrome index bowman 1st chrome index"},{"t":"BCB26 — Bowman Chrome Index","u":"/bowman-chrome-2026-index","n":"bcb26 bowman chrome index bowman chrome 2026 index"},{"t":"Ethan Holliday 1st Bowman","u":"/ethan-holliday-rookie-cards","n":"ethan holliday 1st bowman ethan holliday rookie cards"},{"t":"Bowman Chrome — Sep 9 ⭐","u":"/bowman-chrome-baseball-2026","n":"bowman chrome sep 9 bowman chrome baseball 2026"},{"t":"Bowman Sapphire","u":"/bowman-sapphire-2026","n":"bowman sapphire bowman sapphire 2026"},{"t":"Topps Tribute — Jul 29","u":"/topps-tribute-baseball","n":"topps tribute jul 29 topps tribute baseball"},{"t":"Cooper Flagg Rookie Cards","u":"/cooper-flagg-rookie-cards","n":"cooper flagg rookie cards cooper flagg rookie cards"},{"t":"Victor Wembanyama","u":"/victor-wembanyama-rookie-cards","n":"victor wembanyama victor wembanyama rookie cards"},{"t":"Topps Chrome Basketball","u":"/topps-chrome-basketball-2026","n":"topps chrome basketball topps chrome basketball 2026"},{"t":"Chrome Black — Jul 28","u":"/topps-chrome-black-basketball","n":"chrome black jul 28 topps chrome black basketball"},{"t":"Best Cards Under $50","u":"/best-basketball-cards-under-50","n":"best cards under 50 best basketball cards under 50"},{"t":"2026 NFL Rookie Guide","u":"/nfl-rookie-cards-2026","n":"2026 nfl rookie guide nfl rookie cards 2026"},{"t":"Cosmic Chrome","u":"/topps-cosmic-chrome-football","n":"cosmic chrome topps cosmic chrome football"},{"t":"Chrome Black — Jul 10","u":"/topps-chrome-black-football","n":"chrome black jul 10 topps chrome black football"},{"t":"Best Cards Under $50","u":"/best-football-cards-under-50","n":"best cards under 50 best football cards under 50"},{"t":"Flagship Football — Aug 21","u":"/topps-flagship-football","n":"flagship football aug 21 topps flagship football"},{"t":"Bowman Football — Pre-Order","u":"/bowman-football","n":"bowman football pre order bowman football"},{"t":"World Cup 2026 Cards","u":"/world-cup-2026-soccer-cards","n":"world cup 2026 cards world cup 2026 soccer cards"},{"t":"Lamine Yamal","u":"/lamine-yamal-rookie-cards","n":"lamine yamal lamine yamal rookie cards"},{"t":"Erling Haaland","u":"/erling-haaland-rookie-cards","n":"erling haaland erling haaland rookie cards"},{"t":"Lionel Messi","u":"/lionel-messi-cards","n":"lionel messi lionel messi cards"},{"t":"Pokémon","u":"/pokemon-tcg-2026","n":"pok mon pokemon tcg 2026"},{"t":"30th Celebration — Sep 16 ★","u":"/pokemon-30th-anniversary-2026","n":"30th celebration sep 16 pokemon 30th anniversary 2026"},{"t":"Pitch Black — Jul 17","u":"/pitch-black-set-guide","n":"pitch black jul 17 pitch black set guide"},{"t":"Chaos Rising","u":"/chaos-rising","n":"chaos rising chaos rising"},{"t":"Ascended Heroes","u":"/ascended-heroes","n":"ascended heroes ascended heroes"},{"t":"Prismatic Evolutions","u":"/prismatic-evolutions-guide","n":"prismatic evolutions prismatic evolutions guide"},{"t":"PB26 — Pitch Black","u":"/pitch-black-index","n":"pb26 pitch black pitch black index"},{"t":"CR26 — Chaos Rising","u":"/chaos-rising-index","n":"cr26 chaos rising chaos rising index"},{"t":"AH26 — Ascended Heroes","u":"/ascended-heroes-index","n":"ah26 ascended heroes ascended heroes index"},{"t":"PRIS25 — Prismatic Evolutions","u":"/prismatic-evolutions-index","n":"pris25 prismatic evolutions prismatic evolutions index"},{"t":"DR25 — Destined Rivals","u":"/destined-rivals-index","n":"dr25 destined rivals destined rivals index"},{"t":"PF25 — Phantasmal Flames","u":"/phantasmal-flames-index","n":"pf25 phantasmal flames phantasmal flames index"},{"t":"Grading + Supplies","u":"/psa-grading-guide","n":"grading supplies psa grading guide"},{"t":"TAG Grading Guide — AI Slabs","u":"/tag-grading-guide","n":"tag grading guide ai slabs tag grading guide"},{"t":"Best Card Supplies","u":"/best-card-supplies","n":"best card supplies best card supplies"},{"t":"About","u":"/about","n":"about about"},{"t":"Affiliate Disclosure","u":"/affiliate-disclosure","n":"affiliate disclosure affiliate disclosure"},{"t":"Privacy Policy","u":"/privacy","n":"privacy policy privacy"},{"t":"Shohei Ohtani Cards","u":"/shohei-ohtani-cards","n":"shohei ohtani cards shohei ohtani cards"},{"t":"Munetaka Murakami","u":"/munetaka-murakami-rookie-cards","n":"munetaka murakami munetaka murakami rookie cards"},{"t":"Jacob Misiorowski","u":"/jacob-misiorowski-rookie-cards","n":"jacob misiorowski jacob misiorowski rookie cards"},{"t":"Pete Crow-Armstrong","u":"/pete-crow-armstrong-cards","n":"pete crow armstrong pete crow armstrong cards"},{"t":"Chase DeLauter","u":"/chase-delauter-rookie-cards","n":"chase delauter chase delauter rookie cards"},{"t":"Roman Anthony Rookie Cards","u":"/roman-anthony-rookie-cards","n":"roman anthony rookie cards roman anthony rookie cards"},{"t":"Topps Series 1","u":"/topps-series-1-2026","n":"topps series 1 topps series 1 2026"},{"t":"Topps Chrome Baseball","u":"/topps-chrome-baseball-2026","n":"topps chrome baseball topps chrome baseball 2026"},{"t":"Topps Finest Baseball","u":"/topps-finest-baseball","n":"topps finest baseball topps finest baseball"},{"t":"Topps Inception Baseball","u":"/topps-inception-baseball","n":"topps inception baseball topps inception baseball"},{"t":"Topps Tier One","u":"/topps-tier-one-baseball","n":"topps tier one topps tier one baseball"},{"t":"Best Baseball Cards Under $50","u":"/best-baseball-cards-under-50","n":"best baseball cards under 50 best baseball cards under 50"},{"t":"Chrome Updates Basketball","u":"/topps-chrome-updates-basketball","n":"chrome updates basketball topps chrome updates basketball"},{"t":"Chrome Updates Sapphire (BKB)","u":"/topps-chrome-updates-basketball-sapphire-edition","n":"chrome updates sapphire bkb topps chrome updates basketball sapphire edition"},{"t":"Chrome Cactus Jack","u":"/topps-chrome-cactus-jack-basketball","n":"chrome cactus jack topps chrome cactus jack basketball"},{"t":"Topps Inception Basketball","u":"/topps-inception-basketball","n":"topps inception basketball topps inception basketball"},{"t":"WNBA Cards 2026","u":"/wnba-cards-2026","n":"wnba cards 2026 wnba cards 2026"},{"t":"Kylian Mbappé","u":"/kylian-mbappe-rookie-cards","n":"kylian mbapp kylian mbappe rookie cards"},{"t":"Harry Kane","u":"/harry-kane-cards","n":"harry kane harry kane cards"},{"t":"Cristiano Ronaldo","u":"/cristiano-ronaldo-cards","n":"cristiano ronaldo cristiano ronaldo cards"},{"t":"Topps Pristine Baseball","u":"/topps-pristine-baseball","n":"topps pristine baseball topps pristine baseball"},{"t":"Topps Series 2 2026","u":"/topps-series-2-2026","n":"topps series 2 2026 topps series 2 2026"},{"t":"Topps Museum Collection Baseball","u":"/topps-museum-collection-baseball","n":"topps museum collection baseball topps museum collection baseball"},{"t":"Topps Definitive Basketball","u":"/topps-definitive-basketball","n":"topps definitive basketball topps definitive basketball"},{"t":"LeBron James Cards","u":"/lebron-james-cards","n":"lebron james cards lebron james cards"},{"t":"Adley Rutschman Cards","u":"/adley-rutschman-cards","n":"adley rutschman cards adley rutschman cards"},{"t":"Cameron Boozer Rookie Cards","u":"/cameron-boozer-rookie-cards","n":"cameron boozer rookie cards cameron boozer rookie cards"},{"t":"Fernando Mendoza Rookie Cards","u":"/fernando-mendoza-rookie-cards","n":"fernando mendoza rookie cards fernando mendoza rookie cards"},{"t":"2026 Topps Chrome Sapphire Baseball","u":"/topps-chrome-sapphire-2026","n":"2026 topps chrome sapphire baseball topps chrome sapphire 2026"},{"t":"2025-26 Topps Pristine Basketball","u":"/topps-pristine-basketball","n":"2025 26 topps pristine basketball topps pristine basketball"},{"t":"Hobby Box ROI Calculator","u":"/hobby-box-roi-calculator","n":"hobby box roi calculator hobby box roi calculator"},{"t":"Card chart: Aiva Arquette","u":"/aiva-arquette-1st-bowman#engine-aiva-arquette","n":"card chart aiva arquette aiva arquette 1st bowman engine aiva arquette"},{"t":"Card chart: Andrew Fischer","u":"/card-andrew-fischer","n":"card chart andrew fischer card andrew fischer"},{"t":"Card chart: Daniel Pierce","u":"/card-daniel-pierce","n":"card chart daniel pierce card daniel pierce"},{"t":"Card chart: Edward Florentino","u":"/card-edward-florentino","n":"card chart edward florentino card edward florentino"},{"t":"Card chart: Ethan Holliday Sapphire","u":"/ethan-holliday-rookie-cards#engine-ethan-holliday-sapphire","n":"card chart ethan holliday sapphire ethan holliday rookie cards engine ethan holliday sapphire"},{"t":"Card chart: Ethan Holliday","u":"/ethan-holliday-rookie-cards#engine-ethan-holliday","n":"card chart ethan holliday ethan holliday rookie cards engine ethan holliday"},{"t":"Card chart: Gage Jump","u":"/card-gage-jump","n":"card chart gage jump card gage jump"},{"t":"Card chart: Justin Gonzalez","u":"/card-justin-gonzalez","n":"card chart justin gonzalez card justin gonzalez"},{"t":"Card chart: Kevin Mcgonigle Sapphire","u":"/card-kevin-mcgonigle-sapphire","n":"card chart kevin mcgonigle sapphire card kevin mcgonigle sapphire"},{"t":"Card chart: Konnor Griffin Sapphire","u":"/card-konnor-griffin-sapphire","n":"card chart konnor griffin sapphire card konnor griffin sapphire"},{"t":"Card chart: Marek Houston","u":"/card-marek-houston","n":"card chart marek houston card marek houston"},{"t":"Card chart: Mega Darkrai Ex Sir","u":"/pitch-black-set-guide#engine-mega-darkrai-ex-sir","n":"card chart mega darkrai ex sir pitch black set guide engine mega darkrai ex sir"},{"t":"Card chart: Mega Greninja Ex Sir","u":"/chaos-rising#engine-mega-greninja-ex-sir","n":"card chart mega greninja ex sir chaos rising engine mega greninja ex sir"},{"t":"Card chart: Mega Lucario Ex Sir","u":"/ascended-heroes#engine-mega-lucario-ex-sir","n":"card chart mega lucario ex sir ascended heroes engine mega lucario ex sir"},{"t":"Card chart: Roman Anthony Sapphire","u":"/roman-anthony-rookie-cards#engine-roman-anthony-sapphire","n":"card chart roman anthony sapphire roman anthony rookie cards engine roman anthony sapphire"},{"t":"Card chart: Seong Jun Kim","u":"/card-seong-jun-kim","n":"card chart seong jun kim card seong jun kim"},{"t":"Card chart: Tr Mewtwo Ex Sir","u":"/ascended-heroes#engine-tr-mewtwo-ex-sir","n":"card chart tr mewtwo ex sir ascended heroes engine tr mewtwo ex sir"},{"t":"Card chart: Travis Bazzana","u":"/card-travis-bazzana","n":"card chart travis bazzana card travis bazzana"},{"t":"Card chart: Umbreon Ex Sir Pe","u":"/prismatic-evolutions-guide#engine-umbreon-ex-sir-pe","n":"card chart umbreon ex sir pe prismatic evolutions guide engine umbreon ex sir pe"},{"t":"Card chart: Wehiwa Aloy","u":"/card-wehiwa-aloy","n":"card chart wehiwa aloy card wehiwa aloy"},{"t":"Card chart: Mewtwo Ex Sir Th26","u":"/pokemon-30th-anniversary-2026#engine-mewtwo-ex-sir-th26","n":"card chart mewtwo ex sir th26 pokemon 30th anniversary 2026 engine mewtwo ex sir th26"},{"t":"Card chart: Mew Ex Sir Th26","u":"/pokemon-30th-anniversary-2026#engine-mew-ex-sir-th26","n":"card chart mew ex sir th26 pokemon 30th anniversary 2026 engine mew ex sir th26"}];
+  var INDEX = [{"t":"Home","u":"/","n":"home"},{"t":"Tools + Research","u":"/research","n":"tools research research"},{"t":"Bowman Bangers ⭐","u":"/bowman-bangers","n":"bowman bangers bowman bangers"},{"t":"Best Boxes 2026 — Ranked by ROI","u":"/best-hobby-boxes-2026","n":"best boxes 2026 ranked by roi best hobby boxes 2026"},{"t":"Watchlist — the cards you're chasing","u":"/watchlist","n":"watchlist the cards you re chasing watchlist"},{"t":"Set Indices — All Tickers","u":"/indices","n":"set indices all tickers indices"},{"t":"Card Charts — Every Tracked Card","u":"/cards","n":"card charts every tracked card cards"},{"t":"Auction Desk — Ending Under the Mark","u":"/auctions","n":"auction desk ending under the mark auctions"},{"t":"How Prices Work","u":"/how-prices-work","n":"how prices work how prices work"},{"t":"ROY Watch 2026","u":"/roy-watch-2026","n":"roy watch 2026 roy watch 2026"},{"t":"Track Record — Calls Graded","u":"/track-record","n":"track record calls graded track record"},{"t":"All Posts (Blog)","u":"/blog","n":"all posts blog blog"},{"t":"BOW26 — 1st Chrome Index ⭐","u":"/bowman-1st-chrome-index","n":"bow26 1st chrome index bowman 1st chrome index"},{"t":"BCB26 — Bowman Chrome Index","u":"/bowman-chrome-2026-index","n":"bcb26 bowman chrome index bowman chrome 2026 index"},{"t":"Ethan Holliday 1st Bowman","u":"/ethan-holliday-rookie-cards","n":"ethan holliday 1st bowman ethan holliday rookie cards"},{"t":"Bowman Chrome — Sep 9 ⭐","u":"/bowman-chrome-baseball-2026","n":"bowman chrome sep 9 bowman chrome baseball 2026"},{"t":"Bowman Sapphire","u":"/bowman-sapphire-2026","n":"bowman sapphire bowman sapphire 2026"},{"t":"Topps Tribute — Jul 29","u":"/topps-tribute-baseball","n":"topps tribute jul 29 topps tribute baseball"},{"t":"Cooper Flagg Rookie Cards","u":"/cooper-flagg-rookie-cards","n":"cooper flagg rookie cards cooper flagg rookie cards"},{"t":"Victor Wembanyama","u":"/victor-wembanyama-rookie-cards","n":"victor wembanyama victor wembanyama rookie cards"},{"t":"Topps Chrome Basketball","u":"/topps-chrome-basketball-2026","n":"topps chrome basketball topps chrome basketball 2026"},{"t":"Chrome Black — Jul 28","u":"/topps-chrome-black-basketball","n":"chrome black jul 28 topps chrome black basketball"},{"t":"Best Cards Under $50","u":"/best-basketball-cards-under-50","n":"best cards under 50 best basketball cards under 50"},{"t":"2026 NFL Rookie Guide","u":"/nfl-rookie-cards-2026","n":"2026 nfl rookie guide nfl rookie cards 2026"},{"t":"Cosmic Chrome","u":"/topps-cosmic-chrome-football","n":"cosmic chrome topps cosmic chrome football"},{"t":"Chrome Black — Jul 10","u":"/topps-chrome-black-football","n":"chrome black jul 10 topps chrome black football"},{"t":"Best Cards Under $50","u":"/best-football-cards-under-50","n":"best cards under 50 best football cards under 50"},{"t":"Flagship Football — Aug 21","u":"/topps-flagship-football","n":"flagship football aug 21 topps flagship football"},{"t":"Bowman Football — Pre-Order","u":"/bowman-football","n":"bowman football pre order bowman football"},{"t":"World Cup 2026 Cards","u":"/world-cup-2026-soccer-cards","n":"world cup 2026 cards world cup 2026 soccer cards"},{"t":"Lamine Yamal","u":"/lamine-yamal-rookie-cards","n":"lamine yamal lamine yamal rookie cards"},{"t":"Erling Haaland","u":"/erling-haaland-rookie-cards","n":"erling haaland erling haaland rookie cards"},{"t":"Lionel Messi","u":"/lionel-messi-cards","n":"lionel messi lionel messi cards"},{"t":"Pokémon","u":"/pokemon-tcg-2026","n":"pok mon pokemon tcg 2026"},{"t":"30th Celebration — Sep 16 ★","u":"/pokemon-30th-anniversary-2026","n":"30th celebration sep 16 pokemon 30th anniversary 2026"},{"t":"Pitch Black — Jul 17","u":"/pitch-black-set-guide","n":"pitch black jul 17 pitch black set guide"},{"t":"Chaos Rising","u":"/chaos-rising","n":"chaos rising chaos rising"},{"t":"Ascended Heroes","u":"/ascended-heroes","n":"ascended heroes ascended heroes"},{"t":"Prismatic Evolutions","u":"/prismatic-evolutions-guide","n":"prismatic evolutions prismatic evolutions guide"},{"t":"PB26 — Pitch Black","u":"/pitch-black-index","n":"pb26 pitch black pitch black index"},{"t":"CR26 — Chaos Rising","u":"/chaos-rising-index","n":"cr26 chaos rising chaos rising index"},{"t":"AH26 — Ascended Heroes","u":"/ascended-heroes-index","n":"ah26 ascended heroes ascended heroes index"},{"t":"PRIS25 — Prismatic Evolutions","u":"/prismatic-evolutions-index","n":"pris25 prismatic evolutions prismatic evolutions index"},{"t":"DR25 — Destined Rivals","u":"/destined-rivals-index","n":"dr25 destined rivals destined rivals index"},{"t":"PF25 — Phantasmal Flames","u":"/phantasmal-flames-index","n":"pf25 phantasmal flames phantasmal flames index"},{"t":"Grading + Supplies","u":"/psa-grading-guide","n":"grading supplies psa grading guide"},{"t":"TAG Grading Guide — AI Slabs","u":"/tag-grading-guide","n":"tag grading guide ai slabs tag grading guide"},{"t":"Best Card Supplies","u":"/best-card-supplies","n":"best card supplies best card supplies"},{"t":"About","u":"/about","n":"about about"},{"t":"Affiliate Disclosure","u":"/affiliate-disclosure","n":"affiliate disclosure affiliate disclosure"},{"t":"Privacy Policy","u":"/privacy","n":"privacy policy privacy"},{"t":"Shohei Ohtani Cards","u":"/shohei-ohtani-cards","n":"shohei ohtani cards shohei ohtani cards"},{"t":"Munetaka Murakami","u":"/munetaka-murakami-rookie-cards","n":"munetaka murakami munetaka murakami rookie cards"},{"t":"Jacob Misiorowski","u":"/jacob-misiorowski-rookie-cards","n":"jacob misiorowski jacob misiorowski rookie cards"},{"t":"Pete Crow-Armstrong","u":"/pete-crow-armstrong-cards","n":"pete crow armstrong pete crow armstrong cards"},{"t":"Chase DeLauter","u":"/chase-delauter-rookie-cards","n":"chase delauter chase delauter rookie cards"},{"t":"Roman Anthony Rookie Cards","u":"/roman-anthony-rookie-cards","n":"roman anthony rookie cards roman anthony rookie cards"},{"t":"Topps Series 1","u":"/topps-series-1-2026","n":"topps series 1 topps series 1 2026"},{"t":"Topps Chrome Baseball","u":"/topps-chrome-baseball-2026","n":"topps chrome baseball topps chrome baseball 2026"},{"t":"Topps Finest Baseball","u":"/topps-finest-baseball","n":"topps finest baseball topps finest baseball"},{"t":"Topps Inception Baseball","u":"/topps-inception-baseball","n":"topps inception baseball topps inception baseball"},{"t":"Topps Tier One","u":"/topps-tier-one-baseball","n":"topps tier one topps tier one baseball"},{"t":"Best Baseball Cards Under $50","u":"/best-baseball-cards-under-50","n":"best baseball cards under 50 best baseball cards under 50"},{"t":"Chrome Updates Basketball","u":"/topps-chrome-updates-basketball","n":"chrome updates basketball topps chrome updates basketball"},{"t":"Chrome Updates Sapphire (BKB)","u":"/topps-chrome-updates-basketball-sapphire-edition","n":"chrome updates sapphire bkb topps chrome updates basketball sapphire edition"},{"t":"Chrome Cactus Jack","u":"/topps-chrome-cactus-jack-basketball","n":"chrome cactus jack topps chrome cactus jack basketball"},{"t":"Topps Inception Basketball","u":"/topps-inception-basketball","n":"topps inception basketball topps inception basketball"},{"t":"WNBA Cards 2026","u":"/wnba-cards-2026","n":"wnba cards 2026 wnba cards 2026"},{"t":"Kylian Mbappé","u":"/kylian-mbappe-rookie-cards","n":"kylian mbapp kylian mbappe rookie cards"},{"t":"Harry Kane","u":"/harry-kane-cards","n":"harry kane harry kane cards"},{"t":"Cristiano Ronaldo","u":"/cristiano-ronaldo-cards","n":"cristiano ronaldo cristiano ronaldo cards"},{"t":"Topps Pristine Baseball","u":"/topps-pristine-baseball","n":"topps pristine baseball topps pristine baseball"},{"t":"Topps Series 2 2026","u":"/topps-series-2-2026","n":"topps series 2 2026 topps series 2 2026"},{"t":"Topps Museum Collection Baseball","u":"/topps-museum-collection-baseball","n":"topps museum collection baseball topps museum collection baseball"},{"t":"Topps Definitive Basketball","u":"/topps-definitive-basketball","n":"topps definitive basketball topps definitive basketball"},{"t":"LeBron James Cards","u":"/lebron-james-cards","n":"lebron james cards lebron james cards"},{"t":"Adley Rutschman Cards","u":"/adley-rutschman-cards","n":"adley rutschman cards adley rutschman cards"},{"t":"Cameron Boozer Rookie Cards","u":"/cameron-boozer-rookie-cards","n":"cameron boozer rookie cards cameron boozer rookie cards"},{"t":"Fernando Mendoza Rookie Cards","u":"/fernando-mendoza-rookie-cards","n":"fernando mendoza rookie cards fernando mendoza rookie cards"},{"t":"2026 Topps Chrome Sapphire Baseball","u":"/topps-chrome-sapphire-2026","n":"2026 topps chrome sapphire baseball topps chrome sapphire 2026"},{"t":"2025-26 Topps Pristine Basketball","u":"/topps-pristine-basketball","n":"2025 26 topps pristine basketball topps pristine basketball"},{"t":"Hobby Box ROI Calculator","u":"/hobby-box-roi-calculator","n":"hobby box roi calculator hobby box roi calculator"},{"t":"Card chart: Aiva Arquette","u":"/aiva-arquette-1st-bowman#engine-aiva-arquette","n":"card chart aiva arquette aiva arquette 1st bowman engine aiva arquette"},{"t":"Card chart: Andrew Fischer","u":"/card-andrew-fischer","n":"card chart andrew fischer card andrew fischer"},{"t":"Card chart: Daniel Pierce","u":"/card-daniel-pierce","n":"card chart daniel pierce card daniel pierce"},{"t":"Card chart: Edward Florentino","u":"/card-edward-florentino","n":"card chart edward florentino card edward florentino"},{"t":"Card chart: Ethan Holliday Sapphire","u":"/ethan-holliday-rookie-cards#engine-ethan-holliday-sapphire","n":"card chart ethan holliday sapphire ethan holliday rookie cards engine ethan holliday sapphire"},{"t":"Card chart: Ethan Holliday","u":"/ethan-holliday-rookie-cards#engine-ethan-holliday","n":"card chart ethan holliday ethan holliday rookie cards engine ethan holliday"},{"t":"Card chart: Gage Jump","u":"/card-gage-jump","n":"card chart gage jump card gage jump"},{"t":"Card chart: Justin Gonzalez","u":"/card-justin-gonzalez","n":"card chart justin gonzalez card justin gonzalez"},{"t":"Card chart: Kevin Mcgonigle Sapphire","u":"/card-kevin-mcgonigle-sapphire","n":"card chart kevin mcgonigle sapphire card kevin mcgonigle sapphire"},{"t":"Card chart: Konnor Griffin Sapphire","u":"/card-konnor-griffin-sapphire","n":"card chart konnor griffin sapphire card konnor griffin sapphire"},{"t":"Card chart: Marek Houston","u":"/card-marek-houston","n":"card chart marek houston card marek houston"},{"t":"Card chart: Mega Darkrai Ex Sir","u":"/pitch-black-set-guide#engine-mega-darkrai-ex-sir","n":"card chart mega darkrai ex sir pitch black set guide engine mega darkrai ex sir"},{"t":"Card chart: Mega Greninja Ex Sir","u":"/chaos-rising#engine-mega-greninja-ex-sir","n":"card chart mega greninja ex sir chaos rising engine mega greninja ex sir"},{"t":"Card chart: Mega Lucario Ex Sir","u":"/ascended-heroes#engine-mega-lucario-ex-sir","n":"card chart mega lucario ex sir ascended heroes engine mega lucario ex sir"},{"t":"Card chart: Roman Anthony Sapphire","u":"/roman-anthony-rookie-cards#engine-roman-anthony-sapphire","n":"card chart roman anthony sapphire roman anthony rookie cards engine roman anthony sapphire"},{"t":"Card chart: Seong Jun Kim","u":"/card-seong-jun-kim","n":"card chart seong jun kim card seong jun kim"},{"t":"Card chart: Tr Mewtwo Ex Sir","u":"/ascended-heroes#engine-tr-mewtwo-ex-sir","n":"card chart tr mewtwo ex sir ascended heroes engine tr mewtwo ex sir"},{"t":"Card chart: Travis Bazzana","u":"/card-travis-bazzana","n":"card chart travis bazzana card travis bazzana"},{"t":"Card chart: Umbreon Ex Sir Pe","u":"/prismatic-evolutions-guide#engine-umbreon-ex-sir-pe","n":"card chart umbreon ex sir pe prismatic evolutions guide engine umbreon ex sir pe"},{"t":"Card chart: Wehiwa Aloy","u":"/card-wehiwa-aloy","n":"card chart wehiwa aloy card wehiwa aloy"},{"t":"Card chart: Mewtwo Ex Sir Th26","u":"/pokemon-30th-anniversary-2026#engine-mewtwo-ex-sir-th26","n":"card chart mewtwo ex sir th26 pokemon 30th anniversary 2026 engine mewtwo ex sir th26"},{"t":"Card chart: Mew Ex Sir Th26","u":"/pokemon-30th-anniversary-2026#engine-mew-ex-sir-th26","n":"card chart mew ex sir th26 pokemon 30th anniversary 2026 engine mew ex sir th26"}];
   function nk(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); }
   function setup(input, results){
     if (!input || !results) return;
@@ -936,7 +944,7 @@
   <nav class="rl-sec" aria-label="Terminal">
       <a class="rl" href="/"><span class="ico">α</span><span class="lbl">Home</span></a>
       <a class="rl" href="/bowman-bangers"><span class="ico">▤</span><span class="lbl">Bowman Bangers board</span><span class="pill">10</span></a>
-      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span><span class="pill">7</span></a>
+      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span><span class="pill">8</span></a>
       <a class="rl" href="/auctions"><span class="ico">⚒</span><span class="lbl">Auction Desk</span></a>
       <a class="rl" href="/#tape"><span class="ico">✉</span><span class="lbl">The Tuesday Tape</span><span class="pill">Tue</span></a>
   </nav>
@@ -974,7 +982,7 @@
         <a class="rl sub all" href="/research"><span class="lbl">All Sports →</span></a>
       </details>
       <details class="rl-grp">
-        <summary class="rl"><span class="ico">▸</span><span class="lbl">Pokémon</span><span class="pill">11</span></summary>
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Pokémon</span><span class="pill">12</span></summary>
         <div class="rl-glabel">Sets &amp; Guides</div>
         <a class="rl sub" href="/pokemon-30th-anniversary-2026"><span class="lbl">30th Celebration — Sep 16 ★</span></a>
         <a class="rl sub" href="/pitch-black-set-guide"><span class="lbl">Pitch Black — Jul 17</span></a>
@@ -988,6 +996,7 @@
         <a class="rl sub" href="/ascended-heroes-index"><span class="lbl">AH26 — Ascended Heroes</span></a>
         <a class="rl sub" href="/prismatic-evolutions-index"><span class="lbl">PRIS25 — Prismatic Evolutions</span></a>
         <a class="rl sub" href="/destined-rivals-index"><span class="lbl">DR25 — Destined Rivals</span></a>
+        <a class="rl sub" href="/phantasmal-flames-index"><span class="lbl">PF25 — Phantasmal Flames</span></a>
         <a class="rl sub all" href="/pokemon-tcg-2026"><span class="lbl">All Pokémon →</span></a>
       </details>
       <details class="rl-grp">
@@ -1001,11 +1010,11 @@
       </details>
   </div>
   <div class="rl-sec">
-    <h4>Portfolios <a href="/watchlist">Vault →</a></h4>
-    <div data-rail="portfolios" data-cfg="{&quot;rows&quot;:[{&quot;status&quot;:&quot;own&quot;,&quot;label&quot;:&quot;My cards&quot;,&quot;ico&quot;:&quot;◆&quot;},{&quot;status&quot;:&quot;watch&quot;,&quot;label&quot;:&quot;Hunting&quot;,&quot;ico&quot;:&quot;◇&quot;}],&quot;vaultHref&quot;:&quot;/watchlist&quot;,&quot;empty&quot;:&quot;Start in the Vault →&quot;}">
+    <h4>Watchlist <a href="/watchlist">open →</a></h4>
+    <div data-rail="portfolios" data-cfg="{&quot;rows&quot;:[{&quot;status&quot;:&quot;own&quot;,&quot;label&quot;:&quot;My cards&quot;,&quot;ico&quot;:&quot;◆&quot;},{&quot;status&quot;:&quot;watch&quot;,&quot;label&quot;:&quot;Hunting&quot;,&quot;ico&quot;:&quot;◇&quot;}],&quot;vaultHref&quot;:&quot;/watchlist&quot;,&quot;empty&quot;:&quot;★ a card on any index →&quot;}">
       <a class="rl pf" href="/watchlist" data-status="own"><span class="ico">◆</span><span class="lbl">My cards</span><span class="pill">—</span></a>
       <a class="rl pf" href="/watchlist" data-status="watch"><span class="ico">◇</span><span class="lbl">Hunting</span><span class="pill">—</span></a>
-      <a class="rl pf-empty" href="/watchlist"><span class="ico">→</span><span class="lbl">Start in the Vault →</span></a>
+      <a class="rl pf-empty" href="/watchlist"><span class="ico">→</span><span class="lbl">★ a card on any index →</span></a>
     </div>
   </div>
   <div class="rl-sec">
@@ -1016,7 +1025,7 @@
       <a class="rl sc" href="/#screen=z2" data-screen="z2"><span class="ico">⌁</span><span class="lbl">|z| beyond 2</span></a>
       <a class="rl sc" href="/#screen=fat" data-screen="fat"><span class="ico">⌁</span><span class="lbl">Fat tails</span></a>
   </div>
-  <div class="rail-foot">Free · no account · your Vault stays on your device</div>
+  <div class="rail-foot">Free · no account · your watchlist stays on your device</div>
 </aside>
 <script>
 /* rail: mark the row for THIS page (the block is byte-identical on every page, so the active state is read from the URL) */
@@ -1035,8 +1044,9 @@
   <div class="container">
     <div class="vault-hero">
       <div class="vault-h1row">
-        <h1>The <span class="accent">Vault</span></h1>
-        <div class="vault-eyebrow">Free · No Account<span class="eb-long"> · Data Stays On Your Device</span><span id="feedPill"></span></div>
+        <h1>Your <span class="accent">Watchlist</span></h1>
+        <div class="vault-eyebrow">Free · No Account<span class="eb-long"> · Stays On Your Device</span><span id="feedPill"></span></div>
+        <button type="button" class="mode-btn" id="modeBtn" onclick="toggleMode()" title="Show the full toolset: portfolios, imports, analytics, columns">Advanced view</button>
       </div>
     </div>
 
@@ -1098,13 +1108,13 @@
     <!-- Onboarding checklist — replaces the old yellow Demo banner; visible only while the vault is demo or empty -->
     <div id="onboard" class="onboard">
       <div class="ob-head">
-        <span class="ob-title" id="obTitle">◈ Demo cards — here's how the Vault fills up</span>
+        <span class="ob-title" id="obTitle">◈ Demo cards — here's how a watchlist fills up</span>
         <button class="ob-link" id="obFresh" onclick="clearDemo()">Start fresh</button>
       </div>
       <ol class="ob-steps">
-        <li class="ob-step" id="ob1" onclick="openAdd()"><span class="ob-n"><span>1</span></span><div><b>Track a card</b><small>★ on any guide, or + Add here</small></div></li>
-        <li class="ob-step" id="ob2" onclick="openAdd()"><span class="ob-n"><span>2</span></span><div><b>Set a target price</b><small>the row lights up in the buy zone</small></div></li>
-        <li class="ob-step" id="ob3" onclick="document.getElementById('importFile').click()"><span class="ob-n"><span>3</span></span><div><b>Import your COMC CSV</b><small>your book — cost basis and all</small></div></li>
+        <li class="ob-step" id="ob1" onclick="location.href='/indices'"><span class="ob-n"><span>1</span></span><div><b>Open a set index</b><small>every card in the set, priced from sold comps</small></div></li>
+        <li class="ob-step" id="ob2" onclick="location.href='/indices'"><span class="ob-n"><span>2</span></span><div><b>★ the cards you’re chasing</b><small>they land here with the weekly mark and live listings</small></div></li>
+        <li class="ob-step" id="ob3" onclick="openAdd()"><span class="ob-n"><span>3</span></span><div><b>Set a target price</b><small>the row lights up when a listing hits your buy zone</small></div></li>
       </ol>
     </div>
 
@@ -1114,13 +1124,13 @@
     <div class="pf-tape" id="pfTape" hidden></div>
 
     <details class="vault-how" id="vaultHow">
-      <summary>How the Vault works</summary>
+      <summary>How the watchlist works</summary>
       <p class="vault-sub">Track the cards you're hunting and the cards you own. Prices log themselves — the nightly engine covers tracked cards, and opening any other card auto-logs the live ask median (always labeled asks, never solds). The Vault builds your <strong>candle charts</strong>, flags cards that hit your <strong>buy zone</strong>, and runs the <strong>stats</strong> on every card. The chart doesn't lie: green candle means more buyers than sellers.</p>
       <p class="vault-sub" style="font-size:12px;"><strong>Supply:</strong> engine-linked cards show <strong>supply</strong> — how many verified listings the engine counted last night, and how that count has moved over 30 days. Almost every card site shows you a price and never tells you how many are for sale. This is a count of what's listed, nothing more: <em>not</em> a price, <em>not</em> a sold figure, and <em>not</em> a buy signal. We're publishing the number because it's real and hard to get; we'll tell you what it predicts when we've measured it and graded it on <a href="/track-record">the Track Record</a>, not before.</p>
     </details>
 
     <div id="analytics" class="collapsed">
-      <div class="an-toggle" onclick="toggleAnalytics()" style="display:flex;"><span class="car">▾</span> Portfolio analytics — value curve, allocation, style, risk</div>
+      <div class="an-toggle" onclick="toggleAnalytics()" style="display:flex;"><span class="car">▾</span> Analytics — value curve, allocation, style, risk</div>
       <div id="pvWrap"></div>
       <div id="allocWrap"></div>
       <div id="styleBoxWrap"></div>
@@ -1128,12 +1138,12 @@
     </div>
 
     <div class="data-bar">
-      <span>◈ Your Vault lives in this browser only — nothing is uploaded anywhere. Back it up:</span>
+      <span>◈ Your watchlist lives in this browser only — nothing is uploaded anywhere. Back it up:</span>
       <span class="spacer"></span>
       <button class="btn btn-sm" onclick="exportData()">Export JSON</button>
-      <button class="btn btn-sm" onclick="document.getElementById('importFile').click()" title="Vault JSON backup or a COMC inventory CSV">Import (JSON / COMC CSV)</button>
+      <button class="btn btn-sm" id="importBtn" onclick="document.getElementById('importFile').click()" title="Watchlist JSON backup or a COMC inventory CSV">Import (JSON / COMC CSV)</button>
       <input type="file" id="importFile" accept=".json,.csv,application/json,text/csv" style="display:none" onchange="importData(event)">
-      <button class="btn btn-sm btn-ghost" onclick="wipeAll()">Wipe Vault</button>
+      <button class="btn btn-sm btn-ghost" onclick="wipeAll()">Wipe everything</button>
     </div>
   </div>
   </main>
@@ -1292,6 +1302,21 @@
 <script>
 'use strict';
 /* ============ THE VAULT — ShopCardHub watchlist + portfolio ============ */
+/* Simple (default) vs Advanced view — a body class, remembered per browser. Simple = tabs, search, sort, add, share, the table.
+   Advanced = portfolios, grouping, columns, cards view, paste-a-list, imports, analytics. Nothing is deleted; it is folded. */
+function applyMode() {
+  var adv = false; try { adv = localStorage.getItem('sch_vault_mode') === 'advanced'; } catch (e) {}
+  document.body.classList.toggle('v-simple', !adv);
+  var b = document.getElementById('modeBtn'); if (b) { b.textContent = adv ? 'Simple view' : 'Advanced view'; b.setAttribute('aria-pressed', adv ? 'true' : 'false'); }
+}
+function toggleMode() {
+  var adv = document.body.classList.contains('v-simple');
+  try { localStorage.setItem('sch_vault_mode', adv ? 'advanced' : 'simple'); } catch (e) {}
+  applyMode();
+  if (typeof toast === 'function') toast(adv ? 'Advanced view — portfolios, imports and analytics are back' : 'Simple view — just the watchlist');
+}
+applyMode();
+
 const LS_KEY = 'sch_vault_v1';
 const EPN = 'mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=vault';
 let state = { cards: [], demo: false, lists: [] };
@@ -1670,7 +1695,7 @@ function renderOnboard() {
   document.getElementById('ob2').classList.toggle('done', real && state.cards.some(c => c.target != null));
   document.getElementById('ob3').classList.toggle('done', imported);
   document.getElementById('obFresh').style.display = state.demo && state.cards.length ? '' : 'none';
-  document.getElementById('obTitle').textContent = state.demo && state.cards.length ? '◈ Demo cards — here\'s how the Vault fills up' : '◈ Empty vault — three steps to a real one';
+  document.getElementById('obTitle').textContent = state.demo && state.cards.length ? '◈ Demo cards — here\'s how a watchlist fills up' : '◈ Empty watchlist — three steps to a real one';
 }
 
 /* ---------- allocation (portfolio tab) ---------- */
@@ -2141,9 +2166,9 @@ function renderList() {       // cheap: just the grid / cards (search, sort, gro
   const el = document.getElementById('vlist');
   if (!list.length) {
     const msg = tab === 'watch'
-      ? { big: 'Nothing on the radar', p: 'Add the cards you\'re hunting, set a target price, and the Vault will tell you the moment your logged comps hit the buy zone.' }
-      : (pf !== 'all' && state.cards.some(c => c.status === 'own') ? { big: 'Nothing in ' + VS.listName(state, pf) + ' yet', p: 'Move a card here from its Edit dialog (Portfolio ▾), or add one — this portfolio starts empty.' } : { big: 'No cards in the vault yet', p: 'Add cards you own with your cost basis. Every price you log updates your P&L and portfolio value.' });
-    el.innerHTML = '<div class="empty-state"><div class="big">' + msg.big + '</div><p>' + msg.p + '</p><button class="btn btn-primary" onclick="openAdd()">+ Add Your First Card</button></div>';
+      ? { big: 'Nothing on the radar yet', p: 'Open a <a href="/indices">set index</a> and ★ the cards you\'re chasing — each lands here with its dated sold price, the Monday re-mark and live listings. Set a target and the row lights up when a listing hits it.' }
+      : (pf !== 'all' && state.cards.some(c => c.status === 'own') ? { big: 'Nothing in ' + VS.listName(state, pf) + ' yet', p: 'Move a card here from its Edit dialog (Portfolio ▾), or add one — this portfolio starts empty.' } : { big: 'No cards marked as owned yet', p: 'Add a card you own with what you paid and the weekly mark does the rest. Advanced view adds portfolios, a COMC import and analytics.' });
+    el.innerHTML = '<div class="empty-state"><div class="big">' + msg.big + '</div><p>' + msg.p + '</p>' + (tab === 'watch' ? '<a class="btn btn-primary" href="/indices">Pick a set index →</a> <button class="btn" onclick="openAdd()">+ Add a card by name</button>' : '<button class="btn btn-primary" onclick="openAdd()">+ Add a card you own</button>') + '</div>';
     return;
   }
   if (view === 'table') {

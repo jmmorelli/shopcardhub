@@ -250,11 +250,11 @@
       markButton(btn, status);
       syncCta();
       snack(status === 'own'
-        ? '&#9733; Added to My Cards <a href="' + VAULT_URL + '">Open Vault &rarr;</a>'
-        : '&#127919; Added to your Hunting list <a href="' + VAULT_URL + '">Open Vault &rarr;</a>');
+        ? '&#9733; Added to My Cards <a href="' + VAULT_URL + '">Open watchlist &rarr;</a>'
+        : '&#127919; Added to your Hunting list <a href="' + VAULT_URL + '">Open watchlist &rarr;</a>');
     } else if (res === 'exists') {
       markButton(btn, status === 'own' ? 'own' : 'watch');
-      snack('Already in your Vault <a href="' + VAULT_URL + '">Open Vault &rarr;</a>');
+      snack('Already on your watchlist <a href="' + VAULT_URL + '">Open watchlist &rarr;</a>');
     }
   }
   function openPop(btn) {
@@ -351,17 +351,17 @@
     }
     if (btns.length > 1) {
       el.innerHTML = '&#9733; Track a card';
-      el.setAttribute('aria-label', 'Track a card from this page in your Vault');
+      el.setAttribute('aria-label', 'Watch a card from this page');
       return;
     }
     if (btns.length === 1) {
       var b = btns[0], nm = shortName(b.dataset.name);
       if (b.classList.contains('sch-tracked')) {
-        el.innerHTML = '&#10003; In your Vault &rarr;';
-        el.setAttribute('aria-label', 'This card is in your Vault — open it');
+        el.innerHTML = '&#10003; On your watchlist &rarr;';
+        el.setAttribute('aria-label', 'This card is on your watchlist — open it');
       } else {
         el.innerHTML = '&#9733; Track ' + nm.replace(/</g, '&lt;');
-        el.setAttribute('aria-label', 'Track ' + nm + ' in your Vault');
+        el.setAttribute('aria-label', 'Track ' + nm + ' on your watchlist');
       }
     }
     // marker-only (no buttons): the page's own href/label stand

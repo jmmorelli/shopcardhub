@@ -122,6 +122,40 @@
     return '<svg class="mchart ' + (up ? 'up' : 'dn') + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(opts.label || 'chart') + '">' + ticks + '<path class="area" d="' + area + '"/>' + ref + '<path class="line" d="' + d + '"/><circle class="dot" cx="' + e[0].toFixed(1) + '" cy="' + e[1].toFixed(1) + '" r="3"/>' + xl + '</svg>';
   }
 
+  /* ---------- the index board (home, above the fold — Sep 25 2026, Mo: "lean HARD into the edge") ----------
+   * One row per set index, nothing else. Level · 1W (vs the prior mark) · 1M (vs the newest mark at least 28 days
+   * back; "—" until the series is that old) · since launch (level − 100) · sparkline over every mark · marked date.
+   * Never the BOARD composite (that is ask-basis and not an index — it lives in the Bowman panel below). Pre-activation
+   * rows show PRE. Every figure is one already in data/indices.json; nothing is derived that a reader can't re-check. */
+  function idxStats(r) {
+    var h = r.history || [], n = h.length, level = n ? h[n - 1].level : null;
+    var wk = n > 1 ? ST.pctChange(h[n - 2].level, level) : null;
+    var mo = null;
+    if (n > 1 && r.date) {
+      var cut = new Date(String(r.date).slice(0, 10) + 'T00:00:00Z'); cut.setUTCDate(cut.getUTCDate() - 28);
+      var base = null;
+      for (var i = n - 1; i >= 0; i--) { var d = new Date(String(h[i].date).slice(0, 10) + 'T00:00:00Z'); if (d <= cut) { base = h[i].level; break; } }
+      mo = base != null ? ST.pctChange(base, level) : null;
+    }
+    var since = level != null ? level - 100 : null;
+    return { level: level, wk: wk, mo: mo, since: since, marks: n, spark: h.map(function (x) { return x.level; }) };
+  }
+  function renderIndexBoard(model) {
+    var rows = (model.indices || []).slice().sort(function (a, b) { return (a.status === 'pre') - (b.status === 'pre'); });
+    if (!rows.length) return '<tr><td class="empty" colspan="7">No index yet.</td></tr>';
+    return rows.map(function (r) {
+      var href = r.page || '/indices', game = /^(BOW|BCB|SAPH|DRAFT)/.test(r.k) ? 'Bowman' : 'Pokémon';
+      if (r.status === 'pre') return '<tr class="ib-pre"><td class="ib-k"><a href="' + esc(href) + '"><b>' + esc(r.k) + '</b><small>' + esc(r.name) + '</small></a></td><td class="ib-pre-t" colspan="6">PRE · activates on the first verified sold reads</td></tr>';
+      var s = idxStats(r);
+      var cell = function (v, d) { return '<td class="num ' + cls(v) + '">' + pct(v, d == null ? 1 : d) + '</td>'; };
+      return '<tr><td class="ib-k"><a href="' + esc(href) + '"><b>' + esc(r.k) + '</b><small>' + esc(r.name) + ' · ' + game + '</small></a></td>' +
+        '<td class="num ib-lvl">' + num(s.level, 2) + '</td>' + cell(s.wk) + cell(s.mo) +
+        cell(s.since, 2) +
+        '<td class="ib-sp">' + ST.sparkSVG(s.spark, 96, 24) + '</td>' +
+        '<td class="ib-when">' + esc(dstr(r.date)) + ' · ' + s.marks + ' mark' + (s.marks === 1 ? '' : 's') + '</td></tr>';
+    }).join('');
+  }
+
   /* ---------- panels ---------- */
   function marketRows(model) {
     var rows = []; if (model.composite) rows.push(model.composite); return rows.concat(model.indices);
@@ -332,6 +366,7 @@
     /* bring the Screens panel to the user and flash its header — the response has to be visible where they clicked */
     function revealScreens() {
       var p = $('#screens'); if (!p) return;
+      var fold = p.closest && p.closest('details'); if (fold && !fold.open) fold.open = true;   /* the screens sit folded since Sep 25 2026 — a click on a screen link opens them */
       try { p.scrollIntoView({ block: 'start', behavior: REDUCED ? 'auto' : 'smooth' }); } catch (e) { p.scrollIntoView(); }
       var h = p.querySelector('.scr-head'); if (!h) return;
       h.classList.remove('flash'); void h.offsetWidth; h.classList.add('flash');
@@ -384,12 +419,13 @@
         /* each panel paints on its own — one bad panel never blanks the others (the pre-render stays) */
         var safe = function (f) { try { f(); } catch (e) { if (window.console) console.warn('home panel skipped:', e && e.message); } };
         safe(function () { var m = panel('markets'); var on = m && m.querySelector('.mrow.on'); sel = on ? on.getAttribute('data-k') : null; paintMarkets(); });
+        safe(function () { var ib = panel('indexboard'); if (ib) ib.innerHTML = renderIndexBoard(model); });
         safe(function () { var tp = panel('tape'); if (tp) tp.innerHTML = renderTape(model, a[3] || {}); });
         safe(function () { var mv = panel('movers'); if (mv) mv.innerHTML = renderMovers(model); });
         safe(function () { paintScreen(false); });
         safe(function () { var dy = $('[data-home="day"]'); if (dy) dy.textContent = dstr(model.day); var st = $('[data-home="stamp"]'); if (st) st.textContent = model.marked + '/' + model.total + ' marked · ' + model.gatedN + ' gated'; });
       }).catch(function () { /* pre-rendered numbers stay */
-        get('/data/indices.json?t=' + Date.now()).then(function (idx) { idxModel = buildModel({ day: '', cards: [] }, {}, null, idx || {}); }).catch(function () {});
+        get('/data/indices.json?t=' + Date.now()).then(function (idx) { idxModel = buildModel({ day: '', cards: [] }, {}, null, idx || {}); try { var ib = panel('indexboard'); if (ib) ib.innerHTML = renderIndexBoard(idxModel); } catch (e5) {} }).catch(function () {});
       });
     /* upcoming releases: the bake is Monday's; drop rows whose date has passed since (the <li> keeps data-date) */
     try {
@@ -410,5 +446,5 @@
   }
   if (typeof document !== 'undefined') { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot(); }
 
-  return { SCREENS: SCREENS, buildModel: buildModel, renderMarkets: renderMarkets, renderChart: renderChart, renderEngine: renderEngine, renderTape: renderTape, tapeItems: tapeItems, renderReleases: renderReleases, upcoming: upcoming, renderMovers: renderMovers, renderScreen: renderScreen, renderScreens: renderScreens, screenMeta: screenMeta, renderAuctions: renderAuctions, renderPortfolios: renderPortfolios, lineChart: lineChart };
+  return { SCREENS: SCREENS, buildModel: buildModel, renderIndexBoard: renderIndexBoard, idxStats: idxStats, renderMarkets: renderMarkets, renderChart: renderChart, renderEngine: renderEngine, renderTape: renderTape, tapeItems: tapeItems, renderReleases: renderReleases, upcoming: upcoming, renderMovers: renderMovers, renderScreen: renderScreen, renderScreens: renderScreens, screenMeta: screenMeta, renderAuctions: renderAuctions, renderPortfolios: renderPortfolios, lineChart: lineChart };
 });

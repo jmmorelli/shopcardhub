@@ -3,6 +3,7 @@
 //
 // Runs js/home.js (the same renderer the browser uses) in Node against the nightly feed and
 // writes real numbers into index.html between the markers
+//   <!-- HOME:indexboard:START/END --> the index board (one row per set index — the front door since Sep 25 2026)
 //   <!-- HOME:tape:START/END -->     the ticker tape (every live index + the top 5 cards of each, data/indices.json)
 //   <!-- HOME:markets:START/END -->  Markets rows (Bangers board 30D composite + every index)
 //   <!-- HOME:chart:START/END -->    the default chart (board composite, 100 reference)
@@ -76,6 +77,7 @@ const put = (key, body) => {
 if (latest && history) {
   const model = HOME.buildModel(latest, history, market, indices);
   const sel = model.composite ? "BOARD" : (model.indices.find((i) => i.status !== "pre") || {}).k;
+  put("indexboard", HOME.renderIndexBoard(model));
   put("markets", HOME.renderMarkets(model, sel));
   put("chart", HOME.renderChart(model, sel));
   put("tape", HOME.renderTape(model, indices));

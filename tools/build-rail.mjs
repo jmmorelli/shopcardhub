@@ -56,7 +56,7 @@ ${navRows.join("\n")}
 ${guides.join("\n")}
   </div>
   <div class="rl-sec">
-    <h4>${esc(rail.portfolios.label)} <a href="${esc(pfCfg.vaultHref)}">Vault →</a></h4>
+    <h4>${esc(rail.portfolios.label)} <a href="${esc(pfCfg.vaultHref)}">open →</a></h4>
     <div data-rail="portfolios" data-cfg="${esc(JSON.stringify(pfCfg))}">
 ${pfRows}
     </div>
