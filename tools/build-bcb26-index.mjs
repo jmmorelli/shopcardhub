@@ -150,6 +150,17 @@ function ebayUrl(u) {
   const q = `2026 Bowman Chrome ${u.player} ${u.number}`;
   return `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(q).replace(/%20/g, "+")}&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=${CUSTOMID}`;
 }
+// Live-auction "Bid" slot (Sep 25 2026, Mo: bids beside the buy button on the Bowman pages too). A row gets a slot
+// only when the engine already tracks that exact card (data/watchlist.json, matched by BCP number) — /api/auctions
+// searches those cards nightly; js/sector-auctions.js fills the slot with the soonest-closing verified auction, bids
+// first, customid=bcb26-auctions. Nothing here is a mark (R20): the slot is a live listing with a link.
+const WL = JSON.parse(fs.readFileSync(path.join(REPO, "data/watchlist.json"), "utf8"));
+const wlByNum = new Map();
+for (const c of WL.cards || WL) { const m = /#(BCP-\d+)/.exec(c.label || ""); if (m && /-bcb26-/.test(c.id)) wlByNum.set(m[1], c.id); }
+function aucSlot(u) {
+  const id = wlByNum.get(String(u.number));
+  return id ? `<span class="sidx-auc-slot" data-auc-card="${esc(id)}" data-auc-tk="bcb26"></span>` : '<span class="sidx-auc-slot"></span>';
+}
 function trackName(u) {
   // identical to js/set-checklist.js naming so the Vault dedupes across the checklist and this page
   const kind = u.tab === "autos" ? "Prospect Auto" : "Prospects";
@@ -164,7 +175,7 @@ function row(u, i) {
     : `<td class="num dim2">— <span class="basis">no verified ask yet</span></td><td class="num dim2">—</td>`;
   return `<tr${u.board ? ' class="boardrow"' : ""}><td class="rk">${i + 1}</td><td class="cn">${esc(u.number)}</td><td class="card"><b>${esc(u.player)}</b>${tag}</td><td class="team">${esc(u.team)}</td>${mark}` +
     `<td class="trk"><button class="sch-track-card" data-name="${esc(trackName(u))}" data-set="2026 Bowman Chrome Baseball" data-cat="baseball" data-grade="Raw">&#9733; Track</button></td>` +
-    `<td class="trk"><a class="ebay" href="${ebayUrl(u)}" target="_blank" rel="noopener sponsored">Listings &rarr;</a></td></tr>`;
+    `<td class="lst"><span class="act-w">${aucSlot(u)}<a class="ebay" href="${ebayUrl(u)}" target="_blank" rel="noopener sponsored">Listings &rarr;</a></span></td></tr>`;
 }
 function table(rows) {
   if (!rows.length) return "";
@@ -238,7 +249,7 @@ tr.boardrow td { background:color-mix(in srgb, var(--gd) 4%, transparent); }
 tbody tr:hover td { background:color-mix(in srgb, var(--iac) 5%, transparent); }
 .sch-track-card { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; background:none; border:1px solid var(--bd2); color:var(--tx); padding:4px 9px; border-radius:2px; cursor:pointer; }
 .sch-track-card:hover { border-color:var(--gd); color:var(--gd); }
-a.ebay { font-family:var(--fm); font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--dim); } a.ebay:hover { color:var(--iac); }
+td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;grid-template-columns:minmax(150px,max-content) 176px;gap:6px;align-items:center;justify-items:stretch;}.sidx-auc-slot a.auc{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}a.ebay{display:inline-block;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#000;background:var(--gd);padding:6px 11px;border-radius:2px;text-decoration:none;}a.ebay:hover{filter:brightness(1.1);color:#000;}.sidx-auc-slot{display:block;min-width:0;overflow:hidden;}.sidx-auc-slot a.auc{display:inline-block;max-width:100%;box-sizing:border-box;vertical-align:middle;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--th);background:var(--p2);border:1px solid var(--gd);padding:5px 10px;border-radius:2px;text-decoration:none;}.sidx-auc-slot a.auc small{font-family:var(--fm);font-weight:400;letter-spacing:0;text-transform:none;color:var(--dim);margin-left:6px;font-size:10px;}.sidx-auc-slot a.auc:hover{background:var(--gd);color:#000;}.sidx-auc-slot a.auc:hover small{color:#000;}@media(max-width:700px){td.lst .act-w{grid-template-columns:minmax(96px,max-content) 92px;}.sidx-auc-slot a.auc small{display:none;}}
 .placeholder { background:var(--p1); border:1px dashed var(--bd2); border-radius:4px; padding:26px 20px; text-align:center; font-family:var(--fm); font-size:11px; color:var(--dim); line-height:1.8; margin-top:12px; } .placeholder b { color:var(--th); letter-spacing:1px; }
 .block { background:var(--p1); border:1px solid var(--bd); border-radius:4px; padding:14px 16px; margin:18px 0; }
 .block h3 { font-family:var(--fd); font-weight:900; font-size:14px; letter-spacing:2px; text-transform:uppercase; color:var(--th); margin-bottom:8px; }
@@ -286,8 +297,38 @@ ${navBlock}
 <div class="livebar${isPre ? "" : " live"}">${isPre
   ? `Pre-activation · streets Wed Sep 9, 2026 · ask basis, labeled · no level until &ge;60% of the basket has verified asks · no calls, just the tape`
   : `Live index · ${esc(X.basisLabel || X.basis)} · every mark dated per row · re-marked every board-touching run through street +21d, then weekly · no calls, just the tape`}</div>
-<!-- Tuesday Tape capture (newsletter-visibility-aug30, approved Aug 31) -->
-<div id="tapecap" style="background:rgba(255,255,255,0.02); border-bottom:1px solid rgba(255,255,255,0.08); padding:10px 16px;">
+<div class="wrap">
+<div class="crumb" style="padding:14px 0 0;">RESEARCH / <a href="/indices" style="color:var(--dim);">SET INDICES</a> / <b>${TICKER}</b></div>
+
+<div class="strip" id="strip"><a class="chip on" href="/${SLUG}"><b>${TICKER}</b> <span class="soon">${isPre ? "pre · streets 09/09" : "live"}</span></a></div>
+
+<div class="mast">
+<div>
+<div class="eyebrow">&#9646; Set Index &middot; Per-Set &middot; Price-Weighted &middot; ${isPre ? "Pre-Activation" : esc(X.basis === "sold" ? "Sold Basis" : "Ask Basis (labeled)")}</div>
+<h1>${TICKER} <span class="tick">&middot;</span> 2026 Bowman Chrome Chase Index</h1>
+<div class="subline">2026 Bowman Chrome Baseball — streets ${fmtD(X.releaseDate)}. One fixed database for this set only: the ${byTab.base.length} Chrome Prospects (BASE) and the ${byTab.autos.length} published Chrome Prospect Autographs (AUTOS, 15% single-card cap). ${firstCount.base} of the ${byTab.base.length} Chrome Prospects are <b>1st Bowman Chrome</b> cards and ${firstCount.autos} of the ${byTab.autos.length} autos are <b>1st Bowman Autos</b> — verified card by card, not assumed. Not a cross-set 1st Bowman index — that market is the <a href="/bowman-bangers" style="color:var(--iac);">Bangers board</a>. This page tracks the set; it does not recommend cards. <a href="/bowman-chrome-baseball-2026" style="color:var(--iac);">Set guide &rarr;</a></div>
+</div>
+${levelBox}
+</div>
+
+${isPre ? `<div class="activate"><h3>Pre-activation &middot; what happens next</h3>
+<p><b>Activates when &ge;60% of the chase basket (by value) has verified asks</b> — expected within days of Sep 9. The first mark sets the divisor so the index opens at <b>100.00</b>; from then on the level IS the cumulative move. Marks are on an <b>ask basis, labeled on every row</b>, until SCP sold coverage reaches &ge;60% of basket value — then the index restates to hammer basis through a logged divisor adjustment (the level does not move on a basis change). Asks are never called solds, and the two are never blended in one basket. Re-marked on every board-touching run (Mon / Tue / Fri) through street +21 days, then weekly. No level, no sparkline and no history are shown until they exist.</p></div>` : ""}
+
+<div class="idx-chart" data-ticker="BCB26" aria-live="polite"></div>
+<script src="/js/index-chart.js?v=1" defer></script>
+<div class="stats">
+<div class="stat"><div class="k">Universe</div><div class="v">${uni.length}<i style="font-size:9px;color:var(--dim);font-style:normal"> ${byTab.base.length} base + ${byTab.autos.length} autos</i></div></div>
+<div class="stat"><div class="k">Priced / Universe</div><div class="v${priced ? "" : " dim"}">${priced} <i style="font-size:10px;color:var(--dim);font-style:normal">/ ${uni.length}</i></div></div>
+<div class="stat"><div class="k">Level</div><div class="v${isPre ? " or" : ""}">${isPre ? "PRE" : last ? last.level.toFixed(2) : "—"}</div></div>
+<div class="stat"><div class="k">Basis</div><div class="v acc">${esc((X.basis || "ask").toUpperCase())}<i style="font-size:9px;color:var(--dim);font-style:normal"> labeled</i></div></div>
+<div class="stat"><div class="k">Board names in set</div><div class="v gold">${boardInSet.length} <i style="font-size:10px;color:var(--dim);font-style:normal">/ ${BOARD_NAMES.length}</i></div></div>
+<div class="stat"><div class="k">Divisor</div><div class="v${X.divisor ? "" : " dim"}">${X.divisor ? X.divisor : "—"}</div></div>
+<div class="stat"><div class="k">Street</div><div class="v">${esc(fmtD(X.releaseDate))}</div></div>
+<div class="stat"><div class="k">Re-mark</div><div class="v" style="font-size:11px;line-height:1.3;">MON&middot;TUE&middot;FRI<br><span style="color:var(--dim);font-weight:400;">street +21d</span></div></div>
+</div>
+<div class="statnote">UNIVERSE = every card on the published checklist (as of ${esc(set.asof)}; the autograph list was still filling in — new cards enter via logged divisor adjustments). Unpriced cards carry zero weight until their first verified mark. ${isPre ? "No number on this page is a price: none exists yet that the site can attribute." : "Every mark is dated per row and labeled by basis."}</div>
+<div style="margin:14px 0 0;border:1px solid var(--bd);border-radius:3px;overflow:hidden;"><!-- Tuesday Tape capture (newsletter-visibility-aug30, approved Aug 31) -->
+<div id="tapecap" style="background:rgba(255,255,255,0.02); padding:10px 16px;">
   <div style="max-width:1080px; margin:0 auto; display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:center;">
     <span style="font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--iac); text-transform:uppercase; font-weight:700;">&#128236; The Tuesday Tape</span>
     <span style="font-size:12px; color:var(--dim,#5a7880);">Bowman Chrome's first marks and the board's weekly moves, in your inbox. One email, Tuesdays.</span>
@@ -316,35 +357,7 @@ ${navBlock}
   });
 })();
 </script>
-
-<div class="wrap">
-<div class="crumb" style="padding:14px 0 0;">RESEARCH / <a href="/indices" style="color:var(--dim);">SET INDICES</a> / <b>${TICKER}</b></div>
-
-<div class="strip" id="strip"><a class="chip on" href="/${SLUG}"><b>${TICKER}</b> <span class="soon">${isPre ? "pre · streets 09/09" : "live"}</span></a></div>
-
-<div class="mast">
-<div>
-<div class="eyebrow">&#9646; Set Index &middot; Per-Set &middot; Price-Weighted &middot; ${isPre ? "Pre-Activation" : esc(X.basis === "sold" ? "Sold Basis" : "Ask Basis (labeled)")}</div>
-<h1>${TICKER} <span class="tick">&middot;</span> 2026 Bowman Chrome Chase Index</h1>
-<div class="subline">2026 Bowman Chrome Baseball — streets ${fmtD(X.releaseDate)}. One fixed database for this set only: the ${byTab.base.length} Chrome Prospects (BASE) and the ${byTab.autos.length} published Chrome Prospect Autographs (AUTOS, 15% single-card cap). ${firstCount.base} of the ${byTab.base.length} Chrome Prospects are <b>1st Bowman Chrome</b> cards and ${firstCount.autos} of the ${byTab.autos.length} autos are <b>1st Bowman Autos</b> — verified card by card, not assumed. Not a cross-set 1st Bowman index — that market is the <a href="/bowman-bangers" style="color:var(--iac);">Bangers board</a>. This page tracks the set; it does not recommend cards. <a href="/bowman-chrome-baseball-2026" style="color:var(--iac);">Set guide &rarr;</a></div>
 </div>
-${levelBox}
-</div>
-
-${isPre ? `<div class="activate"><h3>Pre-activation &middot; what happens next</h3>
-<p><b>Activates when &ge;60% of the chase basket (by value) has verified asks</b> — expected within days of Sep 9. The first mark sets the divisor so the index opens at <b>100.00</b>; from then on the level IS the cumulative move. Marks are on an <b>ask basis, labeled on every row</b>, until SCP sold coverage reaches &ge;60% of basket value — then the index restates to hammer basis through a logged divisor adjustment (the level does not move on a basis change). Asks are never called solds, and the two are never blended in one basket. Re-marked on every board-touching run (Mon / Tue / Fri) through street +21 days, then weekly. No level, no sparkline and no history are shown until they exist.</p></div>` : ""}
-
-<div class="stats">
-<div class="stat"><div class="k">Universe</div><div class="v">${uni.length}<i style="font-size:9px;color:var(--dim);font-style:normal"> ${byTab.base.length} base + ${byTab.autos.length} autos</i></div></div>
-<div class="stat"><div class="k">Priced / Universe</div><div class="v${priced ? "" : " dim"}">${priced} <i style="font-size:10px;color:var(--dim);font-style:normal">/ ${uni.length}</i></div></div>
-<div class="stat"><div class="k">Level</div><div class="v${isPre ? " or" : ""}">${isPre ? "PRE" : last ? last.level.toFixed(2) : "—"}</div></div>
-<div class="stat"><div class="k">Basis</div><div class="v acc">${esc((X.basis || "ask").toUpperCase())}<i style="font-size:9px;color:var(--dim);font-style:normal"> labeled</i></div></div>
-<div class="stat"><div class="k">Board names in set</div><div class="v gold">${boardInSet.length} <i style="font-size:10px;color:var(--dim);font-style:normal">/ ${BOARD_NAMES.length}</i></div></div>
-<div class="stat"><div class="k">Divisor</div><div class="v${X.divisor ? "" : " dim"}">${X.divisor ? X.divisor : "—"}</div></div>
-<div class="stat"><div class="k">Street</div><div class="v">${esc(fmtD(X.releaseDate))}</div></div>
-<div class="stat"><div class="k">Re-mark</div><div class="v" style="font-size:11px;line-height:1.3;">MON&middot;TUE&middot;FRI<br><span style="color:var(--dim);font-weight:400;">street +21d</span></div></div>
-</div>
-<div class="statnote">UNIVERSE = every card on the published checklist (as of ${esc(set.asof)}; the autograph list was still filling in — new cards enter via logged divisor adjustments). Unpriced cards carry zero weight until their first verified mark. ${isPre ? "No number on this page is a price: none exists yet that the site can attribute." : "Every mark is dated per row and labeled by basis."}</div>
 
 <div class="bench"><span class="lbl">Board vs Index &middot; benchmark line</span>
 <b>${boardInSet.length} of ${BOARD_NAMES.length} Bangers board names have a card in this set:</b> ${boardInSet.map((u) => `${esc(u.player)} (${esc(u.number)})`).join(", ") || "none"}.${boardMissing.length ? ` <b>Not on the published checklist as of ${esc(set.asof)}:</b> ${boardMissing.map(esc).join(", ")} — their 1st Bowman Chrome and 1st Bowman Chrome Autos were in May's 2026 Bowman; if the final Chrome checklist adds them they enter at the next re-mark (as returning names, not 1sts).` : ""} ${boardInSet.length ? `Board names in this set are <b>returning</b> cards: their 1st Bowman Chrome and 1st Bowman Autos were May's 2026 Bowman, so the September cards carry no 1st logo.` : ""} ${isPre ? "Once BCB26 activates, this line carries the board's move vs the index's move over the same window — the board is the cross-set instrument, this index is the set." : "This line compares the board's move to the index's move over the same window."} <a href="/bowman-bangers">The board &rarr;</a></div>
@@ -411,6 +424,8 @@ ${table(byTab.autos)}
   }).catch(function(){});
 })();
 </script>
+<script src="/js/index-you.js?v=1" defer></script>
+<script src="/js/sector-auctions.js?v=3" defer></script>
 </body></html>
 `;
 

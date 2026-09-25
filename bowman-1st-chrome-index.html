@@ -54,6 +54,7 @@ td.card .cn { font-family:var(--fm); font-size:11px; color:var(--dim); }
 td.num { text-align:right; white-space:nowrap; color:var(--tx); }
 td.wt { color:var(--th); font-weight:700; }
 td.trk { width:70px; text-align:center; }
+td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;grid-template-columns:minmax(150px,max-content) 176px;gap:6px;align-items:center;justify-items:stretch;}.sidx-auc-slot a.auc{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}a.ebay{display:inline-block;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#000;background:var(--gd);padding:6px 11px;border-radius:2px;text-decoration:none;}a.ebay:hover{filter:brightness(1.1);color:#000;}.sidx-auc-slot{display:block;min-width:0;overflow:hidden;}.sidx-auc-slot a.auc{display:inline-block;max-width:100%;box-sizing:border-box;vertical-align:middle;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--th);background:var(--p2);border:1px solid var(--gd);padding:5px 10px;border-radius:2px;text-decoration:none;}.sidx-auc-slot a.auc small{font-family:var(--fm);font-weight:400;letter-spacing:0;text-transform:none;color:var(--dim);margin-left:6px;font-size:10px;}.sidx-auc-slot a.auc:hover{background:var(--gd);color:#000;}.sidx-auc-slot a.auc:hover small{color:#000;}@media(max-width:700px){td.lst .act-w{grid-template-columns:minmax(96px,max-content) 92px;}.sidx-auc-slot a.auc small{display:none;}}
 .dim2 { color:var(--dim); }
 .cpa { font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--gd); border:1px solid rgba(245,200,0,0.35); border-radius:2px; padding:1px 6px; white-space:nowrap; }
 .sig { display:inline-block; font-family:var(--fm); font-size:11px; letter-spacing:1px; border:1px solid var(--bd2); border-radius:2px; padding:2px 7px; color:var(--dim); white-space:nowrap; }
@@ -622,7 +623,7 @@ td.trk { width:70px; text-align:center; }
 
 <div class="tbl-scroll">
 <table>
-<thead><tr><th>RK</th><th>Card</th><th>CPA</th><th>Mark</th><th>Weight</th><th>Units</th><th>7D</th><th>★</th></tr></thead>
+<thead><tr><th>RK</th><th>Card</th><th>CPA</th><th>Mark</th><th>Weight</th><th>Units</th><th>7D</th><th>★</th><th>eBay</th></tr></thead>
 <tbody id="autos-rows">
 <tr><td colspan="8" style="text-align:center;color:var(--dim);font-family:var(--fm);font-size:11px;padding:18px;">Loading the basket…</td></tr>
 </tbody>
@@ -721,7 +722,7 @@ td.trk { width:70px; text-align:center; }
     render(idx, res[1], res[2]);
   }).catch(function () {
     $('lvchg').textContent = 'index data is unavailable right now — check back tonight';
-    $('autos-rows').innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--dim);font-family:var(--fm);font-size:11px;padding:18px;">Index data is unavailable right now.</td></tr>';
+    $('autos-rows').innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--dim);font-family:var(--fm);font-size:11px;padding:18px;">Index data is unavailable right now.</td></tr>';
     $('lv-chart').innerHTML = '<div style="font-family:var(--fm);font-size:11px;color:var(--dim);padding:30px 0;text-align:center;">Chart unavailable — data did not load.</div>';
   });
 
@@ -877,9 +878,13 @@ td.trk { width:70px; text-align:center; }
         '<td class="num wt">' + (r.w * 100).toFixed(1) + '%</td>' +
         '<td class="num dim2">' + b.units.toFixed(4) + '</td>' +
         '<td class="num">' + sevTxt + '</td>' +
-        '<td class="trk" data-trk-i="' + i + '"></td></tr>';
+        '<td class="trk" data-trk-i="' + i + '"></td>' +
+        /* Sep 25 2026 (Mo): the buy button and the soonest-closing verified auction sit on the row, beside the mark.
+           The Bid slot is filled by js/sector-auctions.js from /api/auctions (engine id = b.key minus "ebay:"); a bid
+           is a live listing, never a mark (R20). */
+        '<td class="lst"><span class="act-w"><span class="sidx-auc-slot" data-auc-card="' + esc(id) + '" data-auc-tk="bow26"></span><a class="ebay" href="' + ebayUrl(b.name) + '" target="_blank" rel="noopener sponsored">Listings &rarr;</a></span></td></tr>';
     }).join('');
-    html += '<tr class="sumrow"><td></td><td class="card" style="color:var(--th);font-weight:700;">TOTAL — 10 AUTOS</td><td></td><td class="num">$' + Math.round(bv).toLocaleString('en-US') + '</td><td class="num wt" style="color:var(--iac);">100.0%</td><td></td><td></td><td></td></tr>';
+    html += '<tr class="sumrow"><td></td><td class="card" style="color:var(--th);font-weight:700;">TOTAL — 10 AUTOS</td><td></td><td class="num">$' + Math.round(bv).toLocaleString('en-US') + '</td><td class="num wt" style="color:var(--iac);">100.0%</td><td></td><td></td><td></td><td></td></tr>';
     var tb = $('autos-rows');
     tb.innerHTML = html;
     /* ★ Track buttons built via DOM (vault-track contract: feed-linked buttons
@@ -900,6 +905,7 @@ td.trk { width:70px; text-align:center; }
     $('autos-note').textContent = 'Marks as of ' + dstr(today) + ' — the engine’s nightly verified ask-floor medians for the exact card, dated and sourced, never hand-typed. Units fixed at constitution ' + dshort(inception) + '; only prices move the level.';
     if (window.SCHVault && window.SCHVault.mark) window.SCHVault.mark(tb);
     if (window.SCH_IMG) window.SCH_IMG.enhance(tb);
+    if (window.SCH_AUC) window.SCH_AUC.run();
 
     /* ------- base top-100 (pre-activation, no prices) ------- */
     var uni = (idx.baseTab && idx.baseTab.universe) || [];
@@ -913,6 +919,10 @@ td.trk { width:70px; text-align:center; }
     }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--dim);font-family:var(--fm);font-size:11px;padding:18px;">Universe unavailable.</td></tr>';
   }
 
+  function ebayUrl(name) {
+    var q = '2026 Bowman ' + name + ' chrome auto prospect';
+    return 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(q).replace(/%20/g, '+') + '&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bowman-1st-chrome-index';
+  }
   function drawChart(levels, inception, live) {
     var box = $('lv-chart');
     if (!levels.length) { box.innerHTML = ''; return; }
@@ -1001,4 +1011,5 @@ td.trk { width:70px; text-align:center; }
 </script>
 <script src="/js/card-img.js?v=3" defer></script>
 <script src="/js/index-you.js?v=1" defer></script>
+<script src="/js/sector-auctions.js?v=3" defer></script>
 </body></html>
