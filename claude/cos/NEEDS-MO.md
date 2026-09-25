@@ -11,7 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — two human-account items (2026-09-25, CoS, after the strategic reset; updated 13:00 PT)
+## Open — from the desk (2026-09-25 ~15:00 PT). Mo, these are the only things waiting on you
+
+1. **Two posts in your X scheduler are wrong as written. Fix them before they go out** (x.com → Drafts → Scheduled). The desk runs unattended, and editing the scheduler writes to your account, so it didn't touch them. X Desk Watch caught both against the live site at 13:20 PT.
+   - **Sat 1:00 pm (Bowman Football):** it says *"street Tuesday"*, but Sep 30 is a **Wednesday**. It also says *"asks sitting $375 to $400 right now"*, and our page shows only a lowest ask ($389.99 · 44 live at 13:20 Fri), never a range. **Edit:** "streets Wednesday Sep 30"; drop the range or write "lowest ask $389.99 as of Sep 25".
+   - **Sun 9:00 am (30th ETB):** *"$180 on eBay against a $49.99 MSRP … 3.6x"* is a Sep 22 read with no date on it. The page's lowest ETB ask right now is **$160.99** (12 asks). That's after the desk fixed a $19.99 non-product that was showing there. **Edit:** date it ("$161 lowest ask on Sep 25, 3.2× MSRP") or drop the number. Deleting the post also works.
+2. **Bowman index reset: yes or no** (Project `claude/cos/bowman-index-reset-2026-09-25.md` §4). BOW26 would become the 2026 year cohort of every 1st Bowman Chrome Auto, with release indices BB26/BCB26 under it, on sold comps and the sector tool, and the two ask-basis lines would be retired. Skip this if you already answered it in chat.
+3. **TAG affiliate registration** (partner.taggrading.com/tag/register, ~10 min, needs a W-9 and your social handles). It's your account. Once it's approved, paste the link format into chat. Same doc, §3.
+
+## Open — human-account items (2026-09-25, CoS, after the strategic reset; updated 13:00 PT)
 
 1. **Apply to the TCGplayer affiliate program on Impact (idea #38, ~10 min, $0).** https://docs.tcgplayer.com/docs/tcgplayer-affiliate-program → the Impact application link; use the site and your name. When it's approved, paste the tracking-link template into chat and the build ships the "TCGplayer →" secondary on the six Pokémon index tables. **Kill: Oct 31 with no approval → declined, not re-applied.**
 

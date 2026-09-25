@@ -256,6 +256,16 @@ Three bounds on that channel, and they are what keep R10 from being undone by it
   rules on it.
 
 
+## R10 · AMENDMENT 2 — the vendor is off; the CoS queues, Mo replies (Mo, 2026-09-25)
+
+**Mo, ~12:00 PT Sep 25:** the Grok Bot vendor is switched off ("kind of a disaster, cost a lot almost"). From that point:
+- **The CoS drafts posts and queues them in X's native scheduler, from Mo's Chrome, only with Mo's yes on the batch and Mo present.** Nothing posts live from an unattended run. Editing or deleting a scheduled post counts as a write, so an unattended run routes that edit to NEEDS-MO and does not make it.
+- **Mo handles replies and interactions himself.** No lane replies, likes, follows or DMs.
+- **X Desk Watch stays the independent auditor** (R24: nobody grades their own homework). It reads the live feed and pre-reads the CoS's scheduled queue against the live site. A queued post that fails the claims check goes to the desk the same day.
+- Everything else in R10 and its Sep 20 amendment still holds: durations decay and dates don't, we supersede rather than delete, and a number on X needs a source on our site.
+
+*(Written into this file by the Sep 25 desk. STATE had carried "R10 (amended Sep 25)" since noon, but the rulebook text had not changed. X Desk Watch flagged the gap.)*
+
 ## R11 · Every commercial page sells its product above the fold (Mo, 2026-09-17)
 
 **The incident:** `/pokemon-30th-anniversary-2026` is one of the site's top landing pages and it

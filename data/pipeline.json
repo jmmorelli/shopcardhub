@@ -423,6 +423,30 @@
         {
           "ts": "2026-09-23",
           "msg": "Replies: reply-back policy followed. Wednesday outbound batch graded by the desk after the vendor's cutoff (4 post, 1 change); none had shipped. Reply targeting rule delivered and acknowledged."
+        },
+        {
+          "ts": "2026-09-25",
+          "msg": "X Desk Watch: 1 original (owner-side, queued) and the vendor's final 5 replies read; 0 FAILs on the live feed. Vendor switched off at noon; this is his last scored day."
+        },
+        {
+          "ts": "2026-09-25",
+          "msg": "Vendor MED: one reply read a single pull as two items and the poster corrected it publicly (read-the-post, 1 of 3); three of four text replies shared one sentence shape (2 of 3); one same-day reply-back missed and one opener from two days ago still unanswered (2 of 3). Banned dashes gone in all five."
+        },
+        {
+          "ts": "2026-09-25",
+          "msg": "Vendor cadence: no original and no outbounds before the switch-off; recorded, not escalated."
+        },
+        {
+          "ts": "2026-09-25",
+          "msg": "Queue pre-read: 8 scheduled owner-side posts checked against live pages before posting; 2 would fail the claims check as written (a wrong weekday on a release date; an undated ask figure that the linked page contradicts). Routed to the desk to edit in the scheduler before their slots."
+        },
+        {
+          "ts": "2026-09-25",
+          "msg": "Side: the page the day's post links carries pre-index copy saying no sold comps exist, beside the new sold-basis index block. Filed for the desk."
+        },
+        {
+          "ts": "2026-09-25",
+          "msg": "Desk: the page side finding fixed the same day (site commit bfeb3b6, verified live). The two queued posts are routed to the owner: editing the scheduler is a write to the account and the desk runs unattended."
         }
       ]
     }
@@ -2363,7 +2387,7 @@
     ],
     "approvalsNote": "Sunday Sep 13 pass plus the Tue Sep 15 checkpoint. The checkpoint decided or routed 10 sitting items: 4 approved, 1 part-approved and routed, 1 ratified on precedent, 1 declined for now, 1 held, 1 deferred to Sunday, 2 approved but blocked on a read-only prompt path. Two open items stay with Mo; both are on his own machine and neither is an agent's to touch.",
     "cadenceChange": "none this run (4.4): every enabled task's last/next run is ordered and current; the Friday release-window task is correctly ON through ~Sep 29; the one-week reply-paster self-disabled after its Sep 13 slot as designed.",
-    "lastCheckpoint": "2026-09-22T14:45:00-07:00",
+    "lastCheckpoint": "2026-09-25T15:00:00-07:00",
     "pushLog": {
       "_comment": "Added by CoS light checkpoint 2026-09-03 (janitorial state, charter 4.8 visible-delegation). Pushes outside the Monday STEP 3.98 lane; gates = read-only re-run on the pushed tree by the checkpoint unless the pushing run reported them. | Schema (CoS 2026-09-13, one shape from here): {date, commits[], by, gates, liveVerified, note}.",
       "entries": [
@@ -3092,6 +3116,15 @@
           "gates": "audit-prices FAIL 0 / WARN 76 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 0 (--feed data/feed); --run-tests 141 scenarios FAIL 0 / WARN 5 (scenario-skipped) = baseline; tree 69a7993 matched cloud and Mac",
           "liveVerified": "2026-09-24: /bowman-bangers carries #scouting-grades, /data/grades.json serves 10 players, /watchlist carries revalidateAutoLinks; Hub column renders on a live Vault",
           "note": "Scouting Grades v1 (tools/build-grades.mjs, generated GRADES block) + Vault wrong-card link fix. Detail: Project claude/cos/scouting-grades-v1-2026-09-24.md"
+        },
+        {
+          "date": "2026-09-25",
+          "commits": [
+            "bfeb3b6"
+          ],
+          "by": "CoS · desk (weekdays 14:00, Mac-linked, unattended)",
+          "gates": "audit-prices FAIL 0 / WARN 76 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 0 (--feed data/feed) = baseline, no WARN delta",
+          "liveVerified": "2026-09-25 ~14:55 PT: /bowman-bangers title + og:image (og/x/board-latest.png) live; /pokemon-30th-anniversary-2026 carries no 'No sold comps exist' and the buy-box accessory filter; IndexNow 2 URLs -> 200"
         }
       ]
     },
