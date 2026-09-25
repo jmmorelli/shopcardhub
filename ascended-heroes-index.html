@@ -504,41 +504,16 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
     var hn = h.replace(/\.html$/,''); if (hn.length > 1 && hn.charAt(hn.length-1) === '/') hn = hn.slice(0,-1);
     if (hn === path){ a.classList.add('nav-active'); a.setAttribute('aria-current','page'); }
   });
+  // watchlist count on the CTA (return-user program, Sep 25 2026): reads the Watchlist mirror, never writes it
+  try {
+    var st = JSON.parse(localStorage.getItem('sch_vault_v1') || 'null'), n = st && st.cards ? st.cards.length : 0;
+    if (n > 0) document.querySelectorAll('a.nav-cta[href="/watchlist"], a.m-cta[href="/watchlist"]').forEach(function(a){ if (!a.querySelector('.nav-wl-n')) a.insertAdjacentHTML('beforeend', ' <span class="nav-wl-n" style="display:inline-block;min-width:18px;padding:0 5px;margin-left:6px;border-radius:9px;background:rgba(0,0,0,0.28);font-size:11px;line-height:18px;text-align:center;font-weight:800;">' + n + '</span>'); });
+  } catch (e5) {}
 })();
 </script>
 <!-- NAV:END -->
 
-<div class="livebar">Live index · inception Aug 24 2026 · all prices real sold reads, dated per row · re-marked weekly · no calls, just the tape</div>
-<!-- Tuesday Tape capture (newsletter-visibility-aug30, approved Aug 31) -->
-<div id="tapecap" style="background:rgba(255,255,255,0.02); border-bottom:1px solid rgba(255,255,255,0.08); padding:10px 16px;">
-  <div style="max-width:1080px; margin:0 auto; display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:center;">
-    <span style="font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--iac); text-transform:uppercase; font-weight:700;">&#128236; The Tuesday Tape</span>
-    <span style="font-size:12px; color:var(--dim,#5a7880);">This board's weekly moves in your inbox. Sold comps only, one email, Tuesdays.</span>
-    <form id="tapecap-form" style="display:flex; gap:8px; flex-wrap:wrap;" novalidate>
-      <input type="email" required placeholder="your@email.com" aria-label="Email address" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#e4f0f4; font-size:12px; padding:7px 12px; border-radius:2px; min-width:190px;">
-      <button type="submit" style="background:var(--iac); color:#000; border:none; font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:7px 16px; border-radius:2px; cursor:pointer;">Get it</button>
-    </form>
-    <span id="tapecap-ok" style="display:none; font-size:12px; color:#00e07a;">&#10003; You're in — see you Tuesday.</span>
-    <span id="tapecap-err" style="display:none; font-size:12px; color:#ff2e55;">That email didn't take — try again.</span>
-  </div>
-</div>
-<script>
-(function(){
-  var f=document.getElementById('tapecap-form'); if(!f) return;
-  f.addEventListener('submit',function(e){
-    e.preventDefault();
-    var em=(f.querySelector('input[type=email]')||{}).value||'';
-    var ok=document.getElementById('tapecap-ok'), er=document.getElementById('tapecap-err');
-    if(er) er.style.display='none';
-    fetch('/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:em,source:'ah26-index'})})
-      .then(function(r){
-        if(r.ok){ f.style.display='none'; if(ok) ok.style.display='inline'; if(window.gtag) gtag('event','newsletter_signup',{method:'mailerlite',location:'ah26-index'}); }
-        else { if(er) er.style.display='inline'; }
-      })
-      .catch(function(){ if(er) er.style.display='inline'; });
-  });
-})();
-</script>
+<div class="livebar">Live index · sold comps, dated per row · re-marked weekly · no calls, just the tape</div>
 
 <div class="wrap">
 <div class="crumb" style="padding:14px 0 0;">RESEARCH / <a href="/indices" style="color:var(--dim);">SET INDICES</a> / <b>AH26</b></div>
@@ -574,6 +549,37 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
 <div class="stat"><div class="k">Re-mark</div><div class="v">MON</div></div>
 </div>
 <div class="statnote">EFFECTIVE HOLDINGS = 1/HHI — the index behaves like an equal-weight basket of this many cards. Unpriced universe cards carry zero weight until their first sourced sold read; each enters via a logged divisor adjustment so inclusion never moves the level.</div>
+<div style="margin:14px 0 0;border:1px solid var(--bd);border-radius:3px;overflow:hidden;"><!-- Tuesday Tape capture (newsletter-visibility-aug30, approved Aug 31) -->
+<div id="tapecap" style="background:rgba(255,255,255,0.02); padding:10px 16px;">
+  <div style="max-width:1080px; margin:0 auto; display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:center;">
+    <span style="font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--iac); text-transform:uppercase; font-weight:700;">&#128236; The Tuesday Tape</span>
+    <span style="font-size:12px; color:var(--dim,#5a7880);">This board's weekly moves in your inbox. Sold comps only, one email, Tuesdays.</span>
+    <form id="tapecap-form" style="display:flex; gap:8px; flex-wrap:wrap;" novalidate>
+      <input type="email" required placeholder="your@email.com" aria-label="Email address" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#e4f0f4; font-size:12px; padding:7px 12px; border-radius:2px; min-width:190px;">
+      <button type="submit" style="background:var(--iac); color:#000; border:none; font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:7px 16px; border-radius:2px; cursor:pointer;">Get it</button>
+    </form>
+    <span id="tapecap-ok" style="display:none; font-size:12px; color:#00e07a;">&#10003; You're in — see you Tuesday.</span>
+    <span id="tapecap-err" style="display:none; font-size:12px; color:#ff2e55;">That email didn't take — try again.</span>
+  </div>
+</div>
+<script>
+(function(){
+  var f=document.getElementById('tapecap-form'); if(!f) return;
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var em=(f.querySelector('input[type=email]')||{}).value||'';
+    var ok=document.getElementById('tapecap-ok'), er=document.getElementById('tapecap-err');
+    if(er) er.style.display='none';
+    fetch('/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:em,source:'ah26-index'})})
+      .then(function(r){
+        if(r.ok){ f.style.display='none'; if(ok) ok.style.display='inline'; if(window.gtag) gtag('event','newsletter_signup',{method:'mailerlite',location:'ah26-index'}); }
+        else { if(er) er.style.display='inline'; }
+      })
+      .catch(function(){ if(er) er.style.display='inline'; });
+  });
+})();
+</script>
+</div>
 <!-- SEALED:START ebay:ascended-heroes-etb -->
 <style>
 .sealed{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 18px;align-items:center;margin:12px 0 0;padding:10px 14px;border:1px solid var(--bd);border-left:2px solid var(--gd);background:var(--p1);font-family:var(--fm);font-size:11px;color:var(--tx);}
@@ -1098,4 +1104,5 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
 </script>
 <script src="/js/card-img.js?v=3" defer></script>
 <script src="/js/sector-auctions.js?v=2" defer></script>
+<script src="/js/index-you.js?v=1" defer></script>
 </body></html>

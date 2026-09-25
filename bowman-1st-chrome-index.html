@@ -505,6 +505,11 @@ td.trk { width:70px; text-align:center; }
     var hn = h.replace(/\.html$/,''); if (hn.length > 1 && hn.charAt(hn.length-1) === '/') hn = hn.slice(0,-1);
     if (hn === path){ a.classList.add('nav-active'); a.setAttribute('aria-current','page'); }
   });
+  // watchlist count on the CTA (return-user program, Sep 25 2026): reads the Watchlist mirror, never writes it
+  try {
+    var st = JSON.parse(localStorage.getItem('sch_vault_v1') || 'null'), n = st && st.cards ? st.cards.length : 0;
+    if (n > 0) document.querySelectorAll('a.nav-cta[href="/watchlist"], a.m-cta[href="/watchlist"]').forEach(function(a){ if (!a.querySelector('.nav-wl-n')) a.insertAdjacentHTML('beforeend', ' <span class="nav-wl-n" style="display:inline-block;min-width:18px;padding:0 5px;margin-left:6px;border-radius:9px;background:rgba(0,0,0,0.28);font-size:11px;line-height:18px;text-align:center;font-weight:800;">' + n + '</span>'); });
+  } catch (e5) {}
 })();
 </script>
 <!-- NAV:END -->
@@ -995,4 +1000,5 @@ td.trk { width:70px; text-align:center; }
   })();
 </script>
 <script src="/js/card-img.js?v=3" defer></script>
+<script src="/js/index-you.js?v=1" defer></script>
 </body></html>
