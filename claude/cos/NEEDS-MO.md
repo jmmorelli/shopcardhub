@@ -20,6 +20,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
    > Set index close · Sep 21 marks
    > PRIS25 98.04 (+1.3% w/w) is the only Pokémon chase tier holding near launch.
    > PB26 84.72 — Pitch Black's chase tier is −15% since Aug 24. DR25 95.75 · AH26 93.88 · CR26 93.17.
+   > New today: TH26, the 30th Celebration set index — all 188 cards, base 100 at Sep 25, marks Mon + Thu. shopcardhub.com/pokemon-30th-anniversary-2026#th26
    > Base 100 at launch, sold comps only, every card in the basket shown. shopcardhub.com/indices
 
 3. **One Reddit submission (your account; forums ban bot posting).** r/pkmntcg (market talk is allowed there; r/PokemonTCG removes price posts). Title: **"I built a base-100 index for each Pokémon set's chase tier (SIR/UR/IR/HR) — Pitch Black is −15% in a month, Prismatic flat"**. Body:

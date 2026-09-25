@@ -107,6 +107,11 @@ jobs:
             # R20 (2026-09-23): no eBay listing titles in the public feed.
             node tools/ci/strip-feed-titles.mjs data/feed/prices-latest.json data/feed/prices-history.json data/feed/market-latest.json
             git add data/feed
+            # Sector-model set indices (2026-09-25, TH26 first): twice-weekly marks, Monday and Thursday (UTC date),
+            # from PriceCharting dated solds — rulebook §5. The tool is a no-op on other days and on a day already
+            # marked. A failure never blocks the feed: the index keeps its last mark and the page its last bake.
+            if node tools/build-sector-index.mjs --ticker TH26 --mark --if-mark-day; then git add data/indices.json pokemon-30th-anniversary-2026.html
+            else echo "::warning::TH26 mark failed - level and page keep the previous mark"; git checkout -- data/indices.json pokemon-30th-anniversary-2026.html; fi
             # crawlable-copy-integrity (2026-09-24, CoS-commissioned): / is pre-rendered from this feed for
             # crawlers and JS-off readers. Publishing the feed without re-baking it left / serving a stale
             # dashboard (Sep 18: a reversed SELL; Sep 24: stamp Sep 22, Gage Jump SELL vs the feed's HOLD).
