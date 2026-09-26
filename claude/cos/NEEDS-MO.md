@@ -25,15 +25,24 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 2. ~~Post this week's index close on X by hand~~ **✅ DONE by the CoS (Sep 25 12:40 PT):** the weekend batch (9 posts, Fri–Sun, 3/day) is in your X scheduler — Sat 9:00 am carries the index close with the levels image, Fri 12:45 pm the TH26 launch. **Your part: replies and interactions, and delete anything you don't want at x.com → Drafts → Scheduled.** Text + fact trail: Project `claude/cos/x-weekend-2026-09-25.md`.
 
-3. *(Mo, Sep 25 ~15:00: "still balking — maybe next week; UI/UX dialed first, Twitter and organic for now." Parked, not dropped; nobody re-raises it before Oct 2.)* **One Reddit submission (your account; forums ban bot posting) — SV151 is live now (Sep 25), so the 151 angle is the stronger post: swap the title to "I built a base-100 index for Scarlet & Violet 151 — all 207 cards, sold comps, every constituent public" and link shopcardhub.com/scarlet-violet-151-index; the body below still holds.** r/pkmntcg (market talk is allowed there; r/PokemonTCG removes price posts). Title: **"I built a base-100 index for each Pokémon set's chase tier (SIR/UR/IR/HR) — Pitch Black is −15% in a month, Prismatic flat"**. Body:
+3. **One Reddit submission — ready to paste (your account; forums ban bot posting).** *(Sep 25 you said "maybe next week"; Sep 26 you approved distribution as part of the retention loop — so it sits here ready, no nagging.)* Sub: **r/pkmntcg** (market talk allowed; r/PokemonTCG removes price posts). If removed, try r/PokeInvesting once, same text; never repost to the same sub.
 
-   > Every Monday I re-mark a price-weighted basket of one set's secret-tier cards from dated sold comps (PriceCharting), base 100 at launch, divisor-adjusted so only prices move the level. Every card in the basket is listed with its price and date, and the math is on the page.
-   > Since Aug 24: Prismatic Evolutions 98.0, Destined Rivals 95.8, Ascended Heroes 93.9, Chaos Rising 93.2, Pitch Black 84.7. Phantasmal Flames started at 100 on Sep 18.
-   > It's free, no account, no ads. I'd like to know what's wrong with the method — the constituent list and weights are all public: shopcardhub.com/indices
-   
-   *Rule: reply to every comment the first day; no links in replies unless asked. If it gets removed, do not repost — try r/PokeInvesting once, same text.*
+   **Title:** `I built a base-100 price index for Scarlet & Violet 151 — all 207 cards, sold comps only, every constituent and weight public`
 
-**Feed offer (optional, when you have five minutes):** DM or email PokéViews (pokeviews.com/about), TCGIndex (tcgindex.io) and CardTrack (cardtrack.com): *"We publish per-set chase-tier indices, base 100, sold comps, every constituent shown — free JSON at shopcardhub.com/data/indices.json (CORS open). Cite freely; a link back is all we ask."* Being cited by the index sites is the Google lever we have not pulled.
+   **Body (paste as-is):**
+   > Every card in 151 (207 slots on PriceCharting's console) priced from dated sold comps of ungraded singles, weighted by price, base 100 at launch, divisor-adjusted so only prices move the level — same mechanics as a sector ETF. It re-marks Monday and Thursday. Charizard ex #199 is 18.8% of the basket; Blastoise ex 7.0%; Venusaur ex 5.8%. Every constituent is listed with its last sold price and date, and the method is on the page.
+   >
+   > I run the same thing for the newer sets' chase tiers (SIR/UR/IR/HR), base 100 on Aug 24: Prismatic Evolutions 98.0, Destined Rivals 95.8, Ascended Heroes 93.9, Chaos Rising 93.2, Pitch Black 84.7. Phantasmal Flames and the 30th Celebration set started at 100 in September.
+   >
+   > Free, no account, no ads. I'd like to know what's wrong with the method — the constituent lists and weights are all there: shopcardhub.com/scarlet-violet-151-index (the rest at shopcardhub.com/indices)
+
+   *Rule: reply to every comment the first day; no links in replies unless asked.*
+
+**Feed offer (five minutes, your name on it):** DM or email PokéViews (pokeviews.com/about), TCGIndex (tcgindex.io) and CardTrack (cardtrack.com):
+
+   > We publish per-set Pokémon price indices — base 100, sold comps only, every constituent and weight shown, re-marked Monday/Thursday. The data is free JSON at shopcardhub.com/data/indices.json (CORS open). Cite it freely; a link back is all we ask.
+
+   Being cited by the index sites is the Google lever we have not pulled (3 of 76 pages indexed; Bing's own recommendation this morning was "more inbound links from quality domains").
 
 ---
 

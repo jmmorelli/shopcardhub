@@ -46,6 +46,20 @@ Key-event rate: **organic 11.19% 7d / 7.03% 28d** beside blended 6.32% / 4.74%.
 
 **Mo's target, stated Sep 26: a couple hundred to $1,000+/month from the site, reinvested in cards or safe yielding assets.** The math from the read: M0 ($300) needs ~1,000 eBay clicks/month at the all-time $0.30 EPC vs ~150–200 now, OR a higher basket — which is what the chase strips are for. Next levers, in order: links/distribution (Reddit post, feed offers — Mo's accounts), a page for every dated release built before the date (Bowman Football Sep 30 is next; freeze amendment proposed), and reading `-chase` + `home-*` custom IDs at the Sep 30 desk.
 
+## NOW — 2026-09-26, afternoon — RETENTION IS THE LIST (Mo: "go, I approve all") — LANE-RULES R26
+
+**The finding:** the MailerLite list has **4 subscribers** (Sep 22 digest footer: delivered 4, opens 0; Sep 15 opens 1). The five biggest landing pages carried **no signup form at all**; `newsletter_signup` 0/7d; 69 returning users/28d. The return-user program was aimed at an audience (index-watchers) that is not who lands here (Bing release-date searchers). **The retention KPI is now active subscribers + last open rate**, quoted by the Tuesday footer and the CoS weekly. GA4 returning share is context only.
+
+| Item | State |
+|---|---|
+| **One capture, one promise** — `js/signup.js` + `tools/build-signup.mjs`: under the buy strip on all 61 strip pages + the 30th page's buy box (60 new), under the index board on the home (`home-board`), pitch rewritten on the 6 index pages / bangers / home. Source = page slug. Gate 15c fails a strip page without one. | **LIVE `71d3e06`** |
+| **Watchlist's way home** — `watchlist` variant at the top of `/watchlist` (`#email`, source `watchlist-<n>`; the address is all we keep); the first ★ in a browser offers "Email me when it re-marks →" once (gold link in the snackbar, 9 s). | **LIVE** |
+| **Tuesday Tape = the Monday close** from the Sep 29 send — shape in `tools/tuesday-tape-format.md` (board → movers → chase cards with `-chase` links → Bangers → dated watch; `utm_source=tape` on every link; watchlist-* segment gets the "open your list" line). **Tuesday lane: read R26 + the format file at STEP 0; the prompt is stale on this.** | **Sep 29** |
+| **Distribution** — Monday close on X in the CoS weekly batch (R10, Mo's yes); Reddit + feed-offer drafts refreshed and ready to paste in NEEDS-MO (Mo's accounts). | **NEEDS-MO** |
+| **Not doing** (R26): a second list, pop-ups, gates, accounts, any subscriber data beyond address + source. | — |
+
+**Watch next:** Sep 29 digest footer = first read of the number under the new forms (baseline 4). Sep 30 desk: `home-*`, `-chase` EPN rows; GA4 `newsletter_signup` by `location`. If signups stay at 0 for two weeks with the forms on the top landers, the copy is not the problem — the visitors are, and distribution is the only lever left.
+
 ## NOW — 2026-09-25 (read this block first) — THE STRATEGIC RESET (Mo: "lean HARD into what we know our edge is")
 
 **Read `claude/cos/strategic-review-2026-09-25.md` (Project) once.** Its verdict, in one line: the site's one edge is the
@@ -288,6 +302,7 @@ finding only if its cause is not named here.
 
 ## RUN LOG (last 7 days; older entries in the archive)
 
+- **Sep 26 ~10:30–12:15 PT (CoS, Mac-linked, Mo in chat: retention).** MailerLite read from the digest footers in `Card Hub/digests/` (4 active, opens 0–3 per send) — no API call needed. Built and pushed `71d3e06` (signup component on 62 pages, watchlist hook, R25/R26 in LANE-RULES, gate 15c). Gates 0/77 · 0/3 · 0/0. Rendered locally + live at 1280/390; mocked submit flips the form and sets `sch_subscribed`; production `/api/subscribe` answers 400 to junk (alive, nothing added). NEEDS-MO drafts refreshed; `tools/tuesday-tape-format.md` written for the Sep 29 lane.
 - **Sep 26 ~09:20–10:30 PT (CoS, Mac-linked, Mo in chat).** Bing Webmaster read (Google SSO, no password), filed in the read doc. Chase strips built and pushed `33ed846` (six chase pages via the new builder, TH26/SV151 via the sector template `--bake`; only the strip changed on the sector pages). Gates 0/77 · 0/3 · 0/0. Rendered locally at 1280/390 on all eight, live-verified on three with photos resolved. Mo's rulings today: no COMC links on the site (passive); target $200–$1,000+/mo from the site.
 - **Sep 26 ~08:45–09:20 PT (CoS, Mac-linked, Mo: "can you fix what's left to fix?").** Phone-fold scan (80 pages, 390 px, headless) → buy-strip dock shipped `44a61ea` (js/buy-strip.js + css/site-fixes.css §8; both assets are must-revalidate so no cache bust). Gates 0/77 · 0/3 · 0/0. Live-verified on four pages at 390. Pushed from the Mac deploy-key clone after `reset --hard origin/main` (the clone had the docs commit already).
 - **Sep 26 ~07:30–08:40 PT (CoS, Mac-linked, Mo in chat).** EPN read from Mo's exports (Browser 1 signed out; eBay OAuth wanted a password — not typed). Production render 19 pages × 2 widths from the cloud sandbox (Playwright); GA4 from the nightly snapshot + history. Pushed `357c950` from a fresh deploy-key clone on the Mac (`git am`, tree `668858b`, fast-forward, live 11 `home-*` links + Bangers strip verified at 1280/390, 0 errors). Gates 0/77 · 0/3 · 0/0 (77 = HEAD baseline). **Stumbles:** first `/api/comps` probe used `cat=` (wrong param) and read `total: 0` — the page uses `category_ids=`; `/tmp` on the Mac VM is not writable, keys copied under `$HOME/k` instead; the strip builder inserted the Bangers block above the rail (NAV:END anchor, hero > 9000 chars away) — moved under the hero by hand, builder `--check` clean.
