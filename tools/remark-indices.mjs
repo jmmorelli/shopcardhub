@@ -156,19 +156,21 @@ for (const k of POKE) {
     let blk = mm[0];
     const numM = blk.match(/<span class="cn">#(\w+)\//); if (!numM) throw new Error(`${k}: row without #num`);
     const b = byNum.get(numM[1]); if (!b) throw new Error(`${k}: page row #${numM[1]} not in basket`);
-    const cell = blk.match(/<td class="num">\$([\d,.]+)<\/td><td class="num wt">[\d.]+%<\/td><td class="num">(<span[^>]*>[^<]*<\/span>)<\/td>/);
+    const cell = blk.match(/<td class="num">\$([\d,.]+)<\/td><td class="num wt">[\d.]+%<\/td><td class="num"(?: data-launch="([\d.]+)")?>(<span[^>]*>[^<]*<\/span>)<\/td>/);
     if (!cell) throw new Error(`${k}: price cells not found for #${b.num}`);
     const oldPx = +cell[1].replace(/,/g, "");
-    let launch = cell[2];
-    const lm = launch.match(/([▲▼]) ([\d.]+)%/);
-    if (lm) {
-      const oldPct = (lm[1] === "▲" ? 1 : -1) * +lm[2] / 100;
-      const base = oldPx / (1 + oldPct);
+    // Since Launch = vs the card's INCEPTION sold mark, carried on the cell as data-launch (Sep 26 2026 fix: the
+    // old cell-chained method drifted with rounding and, on PB26/CR26, inherited a pre-launch ask base — Darkrai
+    // #116 read ▼57.7% against a $456 ask while the launch sold read was $257). No attribute → leave the cell.
+    let launch = cell[3], launchAttr = "";
+    const base = cell[2] ? +cell[2] : null;
+    if (base && base > 0) {
       const np = (b.price / base - 1) * 100;
-      launch = `<span style="color:${clr(np)}">${pctTxt(np)}</span>`;
+      launch = Math.abs(np) < 0.05 ? `<span style="color:var(--dim)">0.0%</span>` : `<span style="color:${clr(np)}">${pctTxt(np)}</span>`;
+      launchAttr = ` data-launch="${base.toFixed(2)}"`;
     }
     const wt = (b.price / s.bv) * 100;
-    blk = blk.replace(cell[0], `<td class="num">${money(b.price)}</td><td class="num wt">${wt.toFixed(1)}%</td><td class="num">${launch}</td>`);
+    blk = blk.replace(cell[0], `<td class="num">${money(b.price)}</td><td class="num wt">${wt.toFixed(1)}%</td><td class="num"${launchAttr}>${launch}</td>`);
     if (b.asOf === DATE) blk = blk.replace(/<td class="num dim2">\d\d-\d\d<\/td>/, `<td class="num dim2">${mmdd(DATE)}</td>`);
     return { b, blk };
   });
