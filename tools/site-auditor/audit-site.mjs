@@ -373,8 +373,10 @@ const CONVERSION_EXEMPT = new Set([
   "psa-grading-guide", "tag-grading-guide", "hobby-box-roi-calculator",
   // Amazon lane (supplies) — the Associates account needs the volume, see epn-mkevt-fix notes
   "best-card-supplies",
-  // the Bowman Bangers board spans every release; it has no single sealed product to sell
-  "bowman-bangers",
+  // "index" (the home) stays exempt from the strip check only because it carries the SEALED column on the
+  // index board instead (js/home.js sealedCell, Sep 26 2026) — check 15b below verifies that directly.
+  // bowman-bangers left this list on Sep 26 2026: it is a top-10 lander and the board is the 1st Bowman
+  // Chrome Auto class, so the Chrome hobby box is its sealed product (data/buy-strip.json).
 ]);
 {
   let stripCfg = null;
@@ -397,6 +399,15 @@ const CONVERSION_EXEMPT = new Set([
     const h2 = (before.match(/<h2\b/g) || []).length;
     if (sections > 1 || h2 > 1)
       add("FAIL", "conversion-below-fold", f, `first eBay link sits ${sections} section(s) / ${h2} h2(s) deep — a reader who lands here sees no way to buy. Fix: add the page to data/buy-strip.json and run tools/build-buy-strip.mjs`);
+  }
+
+  // 15b. The home is exempt from the strip because its conversion surface is the SEALED column on the
+  // index board (one gold eBay button per ticker, customid=home-<ticker>). If the board bake ever drops it,
+  // the front door has no way to buy again — the exact gap the Sep 26 2026 EPN read found.
+  {
+    const home = markup("index.html");
+    const n = (home.match(/customid=home-[a-z0-9]+/g) || []).length;
+    if (n < 8) add("FAIL", "home-sealed-column", "index.html", `index board carries ${n} sealed-product eBay links (expected one per live ticker, >= 8) — run tools/build-home.mjs`);
   }
 
   // The strip is machine-owned: a page in the config must actually carry the block.

@@ -40,6 +40,11 @@ const results = [];
 let fails = 0, warns = 0;
 for (const w of WIDTHS) {
   const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/128 Safari/537.36 ShopCardHubImageSweep" });
+  // Never send analytics from the sweep. Until 2026-09-26 every nightly run registered ~158 page views
+  // (79 pages x 2 widths) in GA4 as "" country / Unassigned sessions with 10+ minute durations, which
+  // inflated sessionsYesterday and skewed the bot-clean numbers the desk reads (same host list as
+  // tools/qa/harness.cjs ABORT_HOSTS).
+  await ctx.route(/(googletagmanager\.com|google-analytics\.com|analytics\.google\.com|doubleclick\.net)/, (r) => r.abort());
   for (const p of pages) {
     const pg = await ctx.newPage();
     const errs = [];

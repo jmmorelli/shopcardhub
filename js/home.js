@@ -140,19 +140,45 @@
     var since = level != null ? level - 100 : null;
     return { level: level, wk: wk, mo: mo, since: since, marks: n, spark: h.map(function (x) { return x.level; }) };
   }
+  /* The SEALED column (Sep 26 2026). The home is the front door and a top-5 lander, and the EPN read that day showed it
+   * carried no eBay link above the fold — R11 (Mo, Sep 17: the set's sealed product "should be easy money for us,
+   * always"). One gold button per row → an eBay search for that set's flagship sealed product, the same product the
+   * ticker's own page sells in its strip / SEALED row. Search links only: no price, no mark, no claim. customid is
+   * home-<ticker> so the EPN Custom ID report separates the board from the index pages. */
+  var EPN_Q = 'LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001';
+  var SEALED = {
+    PB26:  { l: 'Box',       q: 'pokemon pitch black booster box' },
+    CR26:  { l: 'Box',       q: 'pokemon chaos rising booster box' },
+    AH26:  { l: 'ETB',       q: 'pokemon ascended heroes elite trainer box' },
+    PRIS25:{ l: 'ETB',       q: 'pokemon prismatic evolutions elite trainer box' },
+    DR25:  { l: 'Box',       q: 'pokemon destined rivals booster box' },
+    PF25:  { l: 'Box',       q: 'pokemon phantasmal flames booster box' },
+    TH26:  { l: 'ETB',       q: 'pokemon 30th celebration elite trainer box' },
+    SV151: { l: 'ETB',       q: 'pokemon 151 elite trainer box' },
+    BOW26: { l: 'Hobby box', q: '2026 bowman chrome baseball hobby box' },
+    BB26:  { l: 'Hobby box', q: '2026 bowman baseball hobby box' },
+    BCB26: { l: 'Hobby box', q: '2026 bowman chrome baseball hobby box' }
+  };
+  function sealedCell(k) {
+    var s = SEALED[k];
+    if (!s) return '<td class="ib-buy"></td>';
+    var href = 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(s.q).replace(/%20/g, '+') + '&' + EPN_Q + '&customid=home-' + String(k).toLowerCase();
+    return '<td class="ib-buy"><a class="go-btn ib-go" href="' + href + '" target="_blank" rel="noopener sponsored" aria-label="' + esc(s.q) + ' on eBay" onclick="if(typeof gtag===\'function\')gtag(\'event\',\'buystrip_click\',{item:\'home-' + esc(String(k).toLowerCase()) + '\',page:location.pathname})">' + esc(s.l) + ' <span class="ib-eb">eBay</span> &rarr;</a></td>';
+  }
   function renderIndexBoard(model) {
     var rows = (model.indices || []).slice().sort(function (a, b) { return (a.status === 'pre') - (b.status === 'pre'); });
-    if (!rows.length) return '<tr><td class="empty" colspan="7">No index yet.</td></tr>';
+    if (!rows.length) return '<tr><td class="empty" colspan="8">No index yet.</td></tr>';
     return rows.map(function (r) {
-      var href = r.page || '/indices', game = /^(BOW|BCB|SAPH|DRAFT)/.test(r.k) ? 'Bowman' : 'Pokémon';
-      if (r.status === 'pre') return '<tr class="ib-pre"><td class="ib-k"><a href="' + esc(href) + '"><b>' + esc(r.k) + '</b><small>' + esc(r.name) + '</small></a></td><td class="ib-pre-t" colspan="6">PRE · activates on the first verified sold reads</td></tr>';
+      var href = r.page || '/indices', game = /^(BOW|BCB|SAPH|DRAFT|BB)/.test(r.k) ? 'Bowman' : 'Pokémon';
+      if (r.status === 'pre') return '<tr class="ib-pre"><td class="ib-k"><a href="' + esc(href) + '"><b>' + esc(r.k) + '</b><small>' + esc(r.name) + '</small></a></td><td class="ib-pre-t" colspan="6">PRE · activates on the first verified sold reads</td>' + sealedCell(r.k) + '</tr>';
       var s = idxStats(r);
       var cell = function (v, d) { return '<td class="num ' + cls(v) + '">' + pct(v, d == null ? 1 : d) + '</td>'; };
       return '<tr><td class="ib-k"><a href="' + esc(href) + '"><b>' + esc(r.k) + '</b><small>' + esc(r.name) + ' · ' + game + '</small></a></td>' +
         '<td class="num ib-lvl">' + num(s.level, 2) + '</td>' + cell(s.wk) + cell(s.mo) +
         cell(s.since, 2) +
         '<td class="ib-sp">' + ST.sparkSVG(s.spark, 96, 24) + '</td>' +
-        '<td class="ib-when">' + esc(dstr(r.date)) + ' · ' + s.marks + ' mark' + (s.marks === 1 ? '' : 's') + '</td></tr>';
+        '<td class="ib-when">' + esc(dstr(r.date)) + ' · ' + s.marks + ' mark' + (s.marks === 1 ? '' : 's') + '</td>' +
+        sealedCell(r.k) + '</tr>';
     }).join('');
   }
 
