@@ -310,6 +310,21 @@ function block(x, c) {
     return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><span class="act-w"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot || '<span class="sidx-auc-slot"></span>'}</span></td></tr>`;
   };
   const top10 = rows.slice(0, 10).map(row).join(""), rest = rows.slice(10).map((b, i) => row(b, i + 10)).join("");
+  // CHASE strip (Sep 26 2026, Mo: high-ticket cards in the first buy position — eBay pays ~3% of the sale, so the
+  // $700 card is worth twenty ETB clicks). Top 3 constituents by their own dated sold mark, one tagged link each
+  // (customid <tk>-<num>-chase). States the mark the table already publishes; not a call.
+  const chaseTop = rows.filter((b) => typeof b.price === "number" && b.price >= 50).sort((a, b) => b.price - a.price).slice(0, 3);
+  const MONS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const mdShort = (d) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d || "")); return m ? `${MONS[+m[2] - 1]} ${+m[3]}` : ""; };
+  const chase = chaseTop.length < 2 ? "" : `<div class="chase" id="${x.ticker.toLowerCase()}-chase" data-chase="${x.ticker}">
+    <div class="ck"><b>Chase</b> · top ${chaseTop.length} by last sold · dated · the cards that carry this set</div>
+    <div class="cg">${chaseTop.map((b, i) => {
+      const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}-chase`;
+      const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
+      return `<a class="cc" href="${url}" target="_blank" rel="noopener sponsored" title="${esc(b.name)} #${esc(b.num)} — live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(cid)}',page:location.pathname})"><span class="ci" data-card-img="name:${esc(imgKey(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="row" data-card-surface="${x.ticker.toLowerCase()}-chase" data-card-link="off"></span><span class="cn">${esc(b.name)} #${esc(b.num)}</span><span class="cp"><b>${b.price >= 100 ? "$" + Math.round(b.price).toLocaleString("en-US") : money(b.price)}</b><small>sold · ${mdShort(b.asOf || (last && last.date))}</small></span><span class="cgo">${b.price >= 200 ? "Authenticated on eBay" : "Listings on eBay"} &rarr;</span></a>`;
+    }).join("")}</div>
+    <div class="cf">Last sold price per card, dated, from the table below — not a call. Links open live eBay listings (affiliate; ShopCardHub earns a commission at no cost to you).</div>
+  </div>`;
   const unpriced = x.universe.length - x.basket.length;
   // sub-index strips (one line each)
   const subs = Object.entries(x.sub || {}).map(([k, sx]) => {
@@ -341,6 +356,7 @@ function block(x, c) {
     <div><span class="k">Re-mark</span><span class="v">MON · THU</span></div>
   </div>
   ${subs}
+  ${chase}
   <div class="sidx-tbl"><table>
     <thead><tr><th>#</th><th>Card</th><th>Sold mark</th><th>Weight</th><th title="clean sold comps in the trailing 30 days — a gate input, not a volume figure">n30</th><th class="th-act">Watch · Buy · <span title="live eBay auction on this exact card, soonest close with bids; refreshed every 15 min">Bid</span></th></tr></thead>
     <tbody>${top10}</tbody>
@@ -378,6 +394,21 @@ const CSS = `<style id="sidx-css">
 .sidx-stats .k{display:block;font-family:var(--fm,ui-monospace,monospace);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-dim);line-height:1.4}
 .sidx-stats .v{display:block;font-family:var(--fm,ui-monospace,monospace);font-size:17px;font-weight:700;color:var(--sidx-th);margin-top:6px;line-height:1.1}
 .sidx-stats .v i{font-style:normal;font-size:10px;color:var(--sidx-dim)}
+.sidx .chase{margin:10px 0 0;padding:12px 14px 10px;border:1px solid var(--sidx-bd);border-left:3px solid var(--sidx);background:var(--sidx-bg);border-radius:3px}
+.sidx .chase .ck{font-family:var(--fm,ui-monospace,monospace);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim,#7a969e);margin-bottom:10px}
+.sidx .chase .ck b{color:var(--sidx);font-weight:700}
+.sidx .chase .cg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sidx .chase a.cc{display:grid;grid-template-columns:44px minmax(0,1fr);grid-template-rows:auto auto auto;column-gap:10px;row-gap:2px;align-items:center;padding:9px 10px;border:1px solid var(--sidx-bd);border-radius:3px;background:rgba(255,255,255,.02);text-decoration:none;color:var(--text,#b8cdd4);min-height:64px;transition:border-color .15s,background .15s}
+.sidx .chase a.cc:hover{border-color:var(--sidx);background:rgba(255,255,255,.05)}
+.sidx .chase .ci{grid-row:1/4;width:44px;height:62px;display:block;overflow:hidden;border-radius:2px;background:rgba(255,255,255,.04)}
+.sidx .chase .ci img{width:44px;height:62px;object-fit:cover;display:block}
+.sidx .chase .cn{font-family:var(--fd,sans-serif);font-size:13px;line-height:1.15;color:var(--text-head,#e4f0f4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidx .chase .cp{font-family:var(--fm,ui-monospace,monospace);font-size:12px;color:var(--text-head,#e4f0f4)}
+.sidx .chase .cp b{font-family:var(--fd,sans-serif);font-size:16px;color:var(--sidx);font-weight:700;margin-right:6px}
+.sidx .chase .cp small{font-size:9.5px;color:var(--text-dim,#7a969e)}
+.sidx .chase .cgo{font-family:var(--fm,ui-monospace,monospace);font-size:9.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#000;background:var(--gold,#f5c800);padding:5px 9px;border-radius:2px;justify-self:start;white-space:nowrap}
+.sidx .chase .cf{font-family:var(--fm,ui-monospace,monospace);font-size:9.5px;color:var(--text-dim,#7a969e);margin-top:8px;line-height:1.5}
+@media(max-width:760px){.sidx .chase .cg{grid-template-columns:1fr;gap:7px}.sidx .chase a.cc{min-height:0}}
 .sidx-subidx{display:flex;align-items:center;gap:8px 16px;flex-wrap:wrap;margin:10px 0 0;padding:10px 14px;border:1px solid var(--sidx-bd);border-left:3px solid var(--sidx);background:var(--sidx-bg);font-family:var(--fm,ui-monospace,monospace);font-size:11.5px;color:var(--text,#b8cdd4)}
 .sidx-subidx-k{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-dim)} .sidx-subidx-k b{color:var(--sidx);letter-spacing:2px}
 .sidx-subidx-lv{font-size:20px;font-weight:700;color:var(--sidx-th)}

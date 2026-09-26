@@ -229,3 +229,6 @@ if (DRY) { console.log("(dry run — nothing written)"); process.exit(0); }
 fs.writeFileSync(idxPath, JSON.stringify(idx, null, 1));
 for (const [f, h] of Object.entries(pageEdits)) fs.writeFileSync(f, h);
 console.log(`written: data/indices.json + ${Object.keys(pageEdits).length} pages (${DATE})`);
+// The CHASE strip (tools/build-chase-strip.mjs, Sep 26 2026) is baked from each page's CARDS array — re-bake it so the
+// served HTML matches the new marks (the strip's inline script also re-reads CARDS on load, so this is for crawlers).
+try { const { execFileSync } = await import("node:child_process"); console.log(execFileSync("node", [path.join(REPO, "tools/build-chase-strip.mjs")], { encoding: "utf8" }).trim()); } catch (e) { console.warn("chase strip re-bake failed: " + (e.message || e)); }
