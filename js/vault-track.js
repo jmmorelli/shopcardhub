@@ -200,7 +200,8 @@
     'font-size:12px;padding:12px 18px;border-radius:2px;z-index:10400;opacity:0;pointer-events:none;' +
     'transition:opacity .25s,transform .25s;box-shadow:0 8px 30px rgba(0,0,0,0.5);}' +
     '#sch-track-snack.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;}' +
-    '#sch-track-snack a{color:#00ccf5;text-decoration:none;font-weight:700;margin-left:10px;}';
+    '#sch-track-snack a{color:#00ccf5;text-decoration:none;font-weight:700;margin-left:10px;}' +
+    '#sch-track-snack a.sch-snack-mail{color:#f5c800;}';
 
   var snackTimer = null;
   function snack(html) {
@@ -213,7 +214,7 @@
     el.innerHTML = html;
     requestAnimationFrame(function () { el.classList.add('show'); });
     clearTimeout(snackTimer);
-    snackTimer = setTimeout(function () { el.classList.remove('show'); }, 5000);
+    snackTimer = setTimeout(function () { el.classList.remove('show'); }, /sch-snack-mail/.test(html) ? 9000 : 5000);
   }
 
   function markButton(btn, status) {
@@ -249,9 +250,12 @@
     if (res === 'added') {
       markButton(btn, status);
       syncCta();
-      snack(status === 'own'
+      /* the way home (Sep 26 2026): once per browser, the first ★ offers the Tuesday email that links back to this list */
+      var askMail = false; try { askMail = localStorage.getItem('sch_subscribed') !== '1' && !localStorage.getItem('sch_wl_email_asked'); if (askMail) localStorage.setItem('sch_wl_email_asked', '1'); } catch (e) {}
+      snack((status === 'own'
         ? '&#9733; Added to My Cards <a href="' + VAULT_URL + '">Open watchlist &rarr;</a>'
-        : '&#127919; Added to your Hunting list <a href="' + VAULT_URL + '">Open watchlist &rarr;</a>');
+        : '&#127919; Added to your Hunting list <a href="' + VAULT_URL + '">Open watchlist &rarr;</a>') +
+        (askMail ? ' <a href="' + VAULT_URL + '#email" class="sch-snack-mail">Email me when it re-marks &rarr;</a>' : ''));
     } else if (res === 'exists') {
       markButton(btn, status === 'own' ? 'own' : 'watch');
       snack('Already on your watchlist <a href="' + VAULT_URL + '">Open watchlist &rarr;</a>');

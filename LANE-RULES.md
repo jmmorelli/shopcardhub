@@ -865,6 +865,43 @@ re-runs them on GitHub's machines, independent of any agent:
 - **What is already double-covered and stays that way:** Grok's posts (X Desk Watch, then the desk);
   pages vs data (Integrity Watch, then the weekly); the engine (Integrity Watch Part A + this check).
 
+## R25 · No new surface until the clean visitor count moves (Mo, 2026-09-25)
+
+~30 clean visitors a day is too few for any retention feature to register. Allowed: Phase 2 compliance, anything
+that makes an index more citable (chart, method, history, feed), consolidation, distribution of the Monday close,
+live FAILs, and the list (R26). Scouting grades, sold catalog, auction desk and engine signals are built — no
+extensions before the Nov 2 re-audit unless Mo asks. The ideas desk keeps filing; the CoS declines anything that
+adds a surface.
+
+## R26 · Retention is the list, not GA4 (Mo, 2026-09-26 — "go, I approve all")
+
+The read behind it (`claude/cos/epn-read-2026-09-26.md`): 69 returning users in 28 days; the top five landing pages
+carried no signup form; the list had **4 subscribers**; `newsletter_signup` was 0 for the week. A data site retains
+people the way a newsletter does — something new on a schedule, delivered to them — so the list is the retention
+number and every lane treats it that way.
+
+- **The number.** Active subscribers and the previous send's open rate, read from MailerLite. The Tuesday lane
+  writes both into its digest footer (it already does) and the CoS weekly quotes them in the scoreboard beside
+  the return-user row. GA4 "returning" is context, not the KPI.
+- **One capture, one promise.** `js/signup.js` + `tools/build-signup.mjs` put the same one-line form under the buy
+  strip on every commercial page (`source` = page slug), under the index board on the home, and on the watchlist as
+  the `watchlist` variant. The promise is fixed: *the Monday close of every set index, the week's movers, the chase
+  cards' last sold — one email, Tuesdays, free.* No lane writes a different pitch. A page added to
+  `data/buy-strip.json` gets the form on the next `build-signup.mjs` run (the desk runs it after `build-buy-strip`).
+- **The Tuesday Tape becomes the Monday close.** From the Sep 29 send, the digest opens with the index board (every
+  live ticker: level · 1W · since launch), then the movers, then the chase cards (each with its dated sold mark and
+  its `-chase` eBay link), then the Bangers board note. Same shape every week; the writing stays the lane's. Every
+  link in it carries `utm_source=tape` so GA4 can see the email bring people back.
+- **The watchlist's way home.** A subscriber whose `source` starts with `watchlist-` (the number is their card count
+  at signup; nothing else is stored) gets one extra block at the top of the digest: *"Your watchlist re-marked
+  Monday — open it →"* linking to `/watchlist`. The list itself never leaves their device; the email is the
+  reminder. MailerLite segment on the `source` field; the Tuesday lane sends the digest to everyone and the
+  variant to that segment, or one send with the block for all if the segment is empty.
+- **Distribution is part of the loop.** The Monday close goes out on X in the CoS's weekly batch (image from
+  `make.py levels`, Mo's yes on the batch, R10) and once per index launch on Reddit (Mo's account, NEEDS-MO).
+- **Not allowed:** a second list, a pop-up, a gate on any page, an account, or storing anything about a subscriber
+  beyond the address and `source`.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.

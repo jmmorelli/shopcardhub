@@ -410,6 +410,16 @@ const CONVERSION_EXEMPT = new Set([
     if (n < 8) add("FAIL", "home-sealed-column", "index.html", `index board carries ${n} sealed-product eBay links (expected one per live ticker, >= 8) — run tools/build-home.mjs`);
   }
 
+  // 15c. R26 (Sep 26 2026): every commercial page carries the email capture — the list is the retention number,
+  // and the top landers had no form at all until today. Fix: node tools/build-signup.mjs
+  if (stripCfg) for (const slug of Object.keys(stripCfg.pages || {})) {
+    const f = slug + ".html";
+    if (!fs.existsSync(path.join(REPO, f))) continue;
+    const raw = read(f);
+    if (!/class="sch-signup"/.test(raw) && !/api\/subscribe/.test(raw))
+      add("FAIL", "signup-missing", f, "commercial page carries no email capture (R26) — run tools/build-signup.mjs");
+  }
+
   // The strip is machine-owned: a page in the config must actually carry the block.
   if (stripCfg) for (const slug of Object.keys(stripCfg.pages || {})) {
     const f = slug + ".html";
