@@ -9,6 +9,30 @@
   var strips = document.querySelectorAll('.bstrip[data-bs-q]');
   if (!strips.length) return;
 
+  // Phone dock (Sep 26 2026): while the strip's own slot is still below the viewport
+  // (long hero on a phone), pin it to the bottom edge in the compact .bs-dock layout
+  // (css/site-fixes.css §8); once its slot is fully in view it returns to the flow.
+  // A sentinel after the strip marks the slot: 0px tall while the strip is in the flow
+  // (so it sits at the strip's bottom edge), the strip's own height while docked (so
+  // the page does not jump). Desktop: no-op.
+  try {
+    if (window.matchMedia && window.matchMedia('(max-width:760px)').matches && 'IntersectionObserver' in window) {
+      var s0 = strips[0], hold = document.createElement('div');
+      hold.className = 'bs-hold';
+      s0.parentNode.insertBefore(hold, s0.nextSibling);
+      var io = new IntersectionObserver(function (en) {
+        var e = en[en.length - 1], r = e.boundingClientRect, docked = s0.classList.contains('bs-dock');
+        if (!docked) {
+          if (!e.isIntersecting && r.top > 0) { hold.style.height = s0.offsetHeight + 'px'; s0.classList.add('bs-dock'); }
+        } else {
+          var slotVisible = e.intersectionRatio >= 0.98, scrolledPast = !e.isIntersecting && r.bottom <= 0;
+          if (slotVisible || scrolledPast) { s0.classList.remove('bs-dock'); hold.style.height = '0px'; }
+        }
+      }, { threshold: [0, 0.5, 0.98, 1] });
+      io.observe(hold);
+    }
+  } catch (e) {}
+
   // A listing that is a case / lot / multi-box is not this product's unit ask.
   var LOT = /\bcase\b|\blot\b|\bbundle of\b|\bpallet\b|\bbreak\b|\brandom\b/;
   var XN = /(^|[^a-z0-9])(x\s?\d{1,2}|\d{1,2}\s?x)([^a-z0-9]|$)/;
