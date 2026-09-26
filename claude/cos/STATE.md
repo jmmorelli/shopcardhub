@@ -30,6 +30,19 @@ Key-event rate: **organic 11.19% 7d / 7.03% 28d** beside blended 6.32% / 4.74%.
 - **Recap:** drafted, **not sent** (Tuesday digest went out Sep 22 — LANE-RULES interim rule).
 - **Prompt drift (file wins):** the weekly prompt says SEND the recap, omits Phase 2 as build-order #1 (R21), and still carries the EPN read that R22 gave the desk. Fix the prompt at the Oct 1 roster review.
 
+## NOW — 2026-09-26 (Sat, CoS with Mo in chat — the "0 EPN earnings" read)
+
+**Mo's worry (Sat ~07:30 PT): zero EPN earnings for a few days since the rework.** Answer, with evidence in Project `claude/cos/epn-read-2026-09-26.md`: **nothing is broken** — every rendered eBay link tagged, guard passes real browsers, GA4 clicks = EPN clicks; the week is traffic (release spike over, ~16 US sessions/day) × small numbers (28 clicks, 0 actions). Transaction Detail settles the `No Custom ID` question for good: **seven phone/tablet clicks made 44 of the 58 all-time transactions** — the eBay app drops `customid` and keeps `campid`; money credited, page unattributed. Nothing to build for it.
+
+| Item | State |
+|---|---|
+| **Home SEALED column** — gold eBay button per ticker on the index board (`customid=home-<ticker>`), R11 on the front door; BB26 "Pokémon" label fixed; phone drops Since-launch to fit | **LIVE `357c950`** |
+| **/bowman-bangers buy strip** (Chrome hobby box · May box · case), off the R11 exempt list | **LIVE** |
+| **site-auditor 15b** — home board must carry ≥ 8 `home-*` links | **LIVE** |
+| **image-sweep no longer sends GA4** — the nightly render gate logged ~158 fake page views/night since Sep 25 ("" country / Unassigned, 10-min sessions). `sessionsYesterday` for Sep 25 (58) and Sep 26 are polluted; **the Sep 30 weekly quotes clean days from Sep 27** | **LIVE** |
+| Phone fold on `/bowman-football` and `/bowman-bangers` — 0 eBay links in the first 844 px (long hero paragraph above the strip) | page-polish item, not a break; noted |
+| Bing Webmaster — did impressions step down Sep 19 with sessions? | Mo's account; unread |
+
 ## NOW — 2026-09-25 (read this block first) — THE STRATEGIC RESET (Mo: "lean HARD into what we know our edge is")
 
 **Read `claude/cos/strategic-review-2026-09-25.md` (Project) once.** Its verdict, in one line: the site's one edge is the
@@ -106,6 +119,7 @@ The Sep 30 EPN read is the first with the new home; do not read anything into on
 ### Milestones (R22 — one line per Wednesday read)
 
 - 2026-09-18 (by hand): Sep 4–17 $37.98 on 94 clicks; trailing ~$100/mo → **below M0**.
+- **2026-09-26 (CoS, Mo in chat, from Mo's three exports — Project `claude/cos/epn-read-2026-09-26.md`):** Sep 12–25 **$12.44 on 92 clicks / 11 actions**; Sep 19–25 $3.80 on 40 clicks / 1 action; Sep 21–25 0 actions on 28 clicks (P≈27% at the 4.5%/click tagged rate). **Below M0.** Plumbing verified intact on 19 rendered pages (0 untagged, guard passes browsers, GA4 clicks = EPN clicks). Traffic is the driver: US sessions back to ~16/day since Sep 19 (release spike over). **`No Custom ID` resolved by Transaction Detail: 44 of 58 all-time tx / $71.40 = seven phone/tablet clicks (eBay app drops customid, keeps campid) — credited, unattributed, G1 confirmed.** Shipped `357c950`: home SEALED column (`home-<ticker>`), Bangers strip, gate 15b, image-sweep no longer pollutes GA4 (~158 fake views/night since Sep 25). Read `home-*` at the Sep 30 desk.
 - **2026-09-23 (desk, R22, first read, from Mo's screenshots):** trailing 30 d (Aug 24–Sep 23) **$106.59 on 204 clicks / 24 actions** (EPC $0.52); last 7 d **$5.66 on 44 clicks / 3 actions** (EPN clicks7 = GA4 clicks7 = 44). **Below M0.** 82% of the 30 d came from two days (Aug 31 $58.50, Sep 9 $29.27); ex-those $18.82. 63% arrived untagged (`No Custom ID`, $66.78). The site emits none today, and the dates fit pre-tagging history (Mo); phone tag-drop (G1) is the other suspect. Test: Custom ID report for Sep 2–23 at the Sep 30 read. Full read: Project `claude/cos/epn-read-2026-09-23.md`.
 
 ## NOW — 2026-09-22
@@ -271,6 +285,7 @@ finding only if its cause is not named here.
 
 ## RUN LOG (last 7 days; older entries in the archive)
 
+- **Sep 26 ~07:30–08:40 PT (CoS, Mac-linked, Mo in chat).** EPN read from Mo's exports (Browser 1 signed out; eBay OAuth wanted a password — not typed). Production render 19 pages × 2 widths from the cloud sandbox (Playwright); GA4 from the nightly snapshot + history. Pushed `357c950` from a fresh deploy-key clone on the Mac (`git am`, tree `668858b`, fast-forward, live 11 `home-*` links + Bangers strip verified at 1280/390, 0 errors). Gates 0/77 · 0/3 · 0/0 (77 = HEAD baseline). **Stumbles:** first `/api/comps` probe used `cat=` (wrong param) and read `total: 0` — the page uses `category_ids=`; `/tmp` on the Mac VM is not writable, keys copied under `$HOME/k` instead; the strip builder inserted the Bangers block above the rail (NAV:END anchor, hero > 9000 chars away) — moved under the hero by hand, builder `--check` clean.
 - **Sep 25 14:14–~15:10 PT (CoS · desk, Mac-linked, unattended).**
   HEAD `a264101` · origin/main `a264101` at start · gates **0/76 · 0/3 · 0/0** (`--feed data/feed`) = baseline; same on the pushed tree, no WARN delta (a first footer rewording tripped `stale-prose-stamp`, +1, and was reworded back to baseline before commit). Read LANE-RULES R1–R24 from a fresh deploy-key clone. **Prompt drift (file wins), same as Sep 23/24:** the prompt reads the feed from raw.githubusercontent (R19), leaves out R24 `gate-watch` and the R15 heartbeat, and still says to deliver vendor briefs. The vendor has been off since noon, so no delivery is owed. Open `gate-watch` issues: **0**. Heartbeat (`--since 2026-09-24`): 4 due, 1 "missing". It was **X Desk Watch Sep 25**, and it isn't a silent lane: the CoS disabled the task at 09:25 PT (Grok usage exhausted) and the lane still filed Mac-side at 13:18 PT (`x-desk/watch-2026-09-25.md`, no Project copy). Diagnosed as a pause, not an incident.
   **Inbox (since Sep 24 14:14 PT), 17 items, all ruled.** Most of the day was ruled live by the CoS+Mo sessions (see the two entries below), so the desk did not redo them.
