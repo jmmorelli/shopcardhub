@@ -124,6 +124,9 @@ jobs:
             # blocks the feed: / keeps its last bake and audit-terminal's home-feed-day FAILs (gate-watch).
             if FEED_BASE=data/feed node tools/build-home.mjs; then git add index.html
             else echo "::warning::build-home failed - / keeps its previous bake; home-feed-day will FAIL"; git checkout -- index.html; fi
+            # /release-calendar (Sep 26 2026): the "This week / Just released" buckets move with the date, so re-bake nightly.
+            if node tools/build-release-calendar.mjs; then git add release-calendar.html
+            else echo "::warning::build-release-calendar failed - page keeps its previous bake"; git checkout -- release-calendar.html; fi
             if git diff --cached --quiet; then echo "Feed unchanged."; exit 0; fi
             git commit -q -m "feed: nightly $(date -u +%F)"
             if git push -q origin main; then echo "Feed published."; exit 0; fi
