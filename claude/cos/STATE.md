@@ -70,6 +70,15 @@ Key-event rate: **organic 11.19% 7d / 7.03% 28d** beside blended 6.32% / 4.74%.
 | **Content Editor queue** (`1afd854`): Pokémon hub's six SIR figures re-read on dated CR26/AH26 sold marks (HR "BUY" → NO CALL at $166.50; Lucario → No sold read; "$307 sold" box → labelled ask); BCB26 chip → live; Flagg "advanced buy" → "Hold". **Still open:** stale-date sweep, the Sep 22 correction's PSA 9 range on Bangers (R18 — needs the SCP graded tab), the hidden stale block. R9 shorthand: the "Ethan Holliday 1st Bowman" strings on Bangers are link labels to the player page, not card claims — no change. | **LIVE / partial** |
 | Gate baseline after today: **audit-prices 0/76 · audit-site 0/3 · audit-terminal 0/0.** (76 = 77 − the Pristine stamp.) | — |
 
+## NOW — 2026-09-26, evening — Mo: "Any other ideas you can execute now, I approve. Let's go"
+
+| Item | State |
+|---|---|
+| **`/release-calendar` — the release-date traffic engine** (`e3300e2`). Bing's demand is release-date queries that die two weeks after each street date; one sourced page now answers all of them: This week · Next 30 days · Later · Just released, every row dated to the maker's calendar (or shown as "reported"/"expected"), our guide when it exists, and a gold **Sealed on eBay →** search (`customid=release-<slug>`) beside each. Baked nightly after build-home (`tools/build-release-calendar.mjs`); `data/releases.json` gains `q`/`cat` per row and keeps 30 days of past rows. Nav (Tools + Research), sitemap (daily), home panel "full calendar »". 13 rows, 13 tagged links live. **The desk's Monday `releases.json` re-bake is now the page's content lane: add every dated release from the maker calendars (Pokémon waves, Topps/Bowman/Chrome, Panini if dated) with `q`; the page only ever shows what that file holds.** | **LIVE** |
+| Chase strips on BOW26 / BB26 (`--bake`): Fischer $145 · Lombard $122 · Hartman $110. BCB26: one card over $50, no strip (honest). | **LIVE** |
+| IndexNow: all 81 sitemap URLs pinged after today's pushes (HTTP 200). | done |
+| **Watch next:** Bing impressions on `release-calendar` at the Sep 30 desk (Bing Webmaster → Pages); `release-*` rows in the EPN Custom ID report; the Sep 30 Bowman Football street date is the first release the page rides. | Sep 30 |
+
 ## NOW — 2026-09-25 (read this block first) — THE STRATEGIC RESET (Mo: "lean HARD into what we know our edge is")
 
 **Read `claude/cos/strategic-review-2026-09-25.md` (Project) once.** Its verdict, in one line: the site's one edge is the
@@ -295,7 +304,7 @@ finding only if its cause is not named here.
   offers are the test); decide a cadence for `tools/football-solds.mjs`; a football index only once 2026
   Bowman Football prints solds mid-October.
 - **P1 — `aiva-arquette-1st-bowman` prose re-read** (its stale-prose-stamp WARN).
-- **P2 — `data/releases.json` every Monday re-bake:** prune past rows, add dated rows only from a named source.
+- **P1 (was P2) — `data/releases.json` every Monday re-bake:** it now feeds `/release-calendar` as well as the home panel. Add every dated release from the maker calendars with its `q` (sealed search) and `cat` (183456 for Pokémon sealed); keep past rows 30 days; dated rows only from a named source, `status: reported` when the day is read off presales.
 - **P2:** phase 2 of the index/guide merge; `/set-index-preview`
   overflow; retire `tools/price-engine/newsletter.mjs`; Vault `prompt()` → modal; the unattributed
   "Chrome #251 PSA 10 at $2,075" in the Flagg blurb (now caught by check 10).
@@ -312,6 +321,7 @@ finding only if its cause is not named here.
 
 ## RUN LOG (last 7 days; older entries in the archive)
 
+- **Sep 26 ~14:30–16:00 PT (CoS, Mac-linked, Mo: "any other ideas … I approve").** Built and pushed `e3300e2` (/release-calendar + builder + nightly step + nav/sitemap; BOW26/BB26 chase strips). Gates 0/76 · 0/3 (105 pages) · 0/0. Live-verified (200, 13 tagged links). IndexNow 81 → 200. Docs commit follows.
 - **Sep 26 ~12:30–14:30 PT (CoS, Mac-linked, Mo: "do anything else scheduled for later").** X Desk Watch 13:02 read and acted on (two scheduler edits with Mo present, verified). Pushed `bb9d290` (since-launch bases), `1962061` (Pristine flip), `1afd854` (Content Editor batch); gates 0/76 · 0/3 · 0/0; live-verified (PB26 `data-launch="257.00"`, Pristine "Released Sep 24, 2026", hub "CR26 sold mark · 09-21" ×3, BCB26 chip). **Sunday CoS run (14:00) has less to do:** the Sat/Sun X filings are handled; the Monday lane still owns the PF25 "first Monday re-mark (09/21)" line and the first re-mark of the `data-launch` cells.
 - **Sep 26 ~10:30–12:15 PT (CoS, Mac-linked, Mo in chat: retention).** MailerLite read from the digest footers in `Card Hub/digests/` (4 active, opens 0–3 per send) — no API call needed. Built and pushed `71d3e06` (signup component on 62 pages, watchlist hook, R25/R26 in LANE-RULES, gate 15c). Gates 0/77 · 0/3 · 0/0. Rendered locally + live at 1280/390; mocked submit flips the form and sets `sch_subscribed`; production `/api/subscribe` answers 400 to junk (alive, nothing added). NEEDS-MO drafts refreshed; `tools/tuesday-tape-format.md` written for the Sep 29 lane.
 - **Sep 26 ~09:20–10:30 PT (CoS, Mac-linked, Mo in chat).** Bing Webmaster read (Google SSO, no password), filed in the read doc. Chase strips built and pushed `33ed846` (six chase pages via the new builder, TH26/SV151 via the sector template `--bake`; only the strip changed on the sector pages). Gates 0/77 · 0/3 · 0/0. Rendered locally at 1280/390 on all eight, live-verified on three with photos resolved. Mo's rulings today: no COMC links on the site (passive); target $200–$1,000+/mo from the site.
