@@ -190,7 +190,7 @@ ${footer}
   var HREFS = ${JSON.stringify(HREFS)};
   var IDX = ${JSON.stringify(IDX)}, STEMS = ${JSON.stringify(STEMS)};
   function hrefFor(id){ if (HREFS[id]) return HREFS[id]; var p = String(id).split('-')[0]; if (IDX[p]) return IDX[p]; for (var i = 0; i < STEMS.length; i++) if (String(id).indexOf(STEMS[i][0]) === 0) return STEMS[i][1]; return null; }
-  var state = { f:'all', card:'', rows:[], gen:null, day:null };
+  var state = { f:'all', card:'', rows:[], gen:null, day:null, limit:50 };
   var list = document.getElementById('au-list');
   var fmt = function(n){ if (n==null || !isFinite(n)) return '\\u2014'; return '$' + (n>=1000 ? Math.round(n).toLocaleString('en-US') : n>=100 ? String(Math.round(n)) : n.toFixed(2)); };
   var pct = function(x){ if (x==null || !isFinite(x)) return null; var p = Math.round(x*100); return (p>0?'+':'') + p + '%'; };
@@ -203,8 +203,9 @@ ${footer}
   function render(){
     var rows = state.rows.filter(function(r){ var l = left(r.endDate); if (l.over) return false; if (state.card && r.id !== state.card) return false; if (state.f==='under') return r.vsMark!=null && r.vsMark < 0; if (state.f==='bids') return (r.bidCount||0) >= 1; if (state.f==='soon') return l.soon; return true; });
     if (!rows.length) { list.innerHTML = '<div class="au-empty"><b>Nothing here right now.</b> ' + (state.f==='under' ? 'No verified auction is under its card\\u2019s mark at the moment \\u2014 that happens; the desk refreshes every 15 minutes and most of the action is in the last hour.' : state.f==='soon' ? 'No verified auction closes in the next six hours.' : 'No verified live auctions for ' + (state.card ? 'this card' : 'the tracked cards') + ' at the moment.') + ' <a href="/cards">Card charts \\u2192</a></div>'; return; }
+    var total = rows.length; rows = rows.slice(0, state.limit);
     list.innerHTML = rows.map(function(r){ var l = left(r.endDate); var under = r.vsMark!=null && r.vsMark < 0; var opening = under && !(r.bidCount>=1); var href = hrefFor(r.id);
-      var vsM = r.mark ? (opening ? '<b class="o" title="Opening price, no bids yet">opening ' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>' : '<b class="' + (under?'g':'r') + '">' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>') : '<b>no price yet</b>';
+      var vsM = r.mark ? (opening ? '<b class="o" title="Opening price, no bids yet">opening ' + pct(r.vsMark) + ' vs our price ' + fmt(r.mark) + '</b>' : '<b class="' + (under?'g':'r') + '">' + pct(r.vsMark) + ' vs our price ' + fmt(r.mark) + '</b>') : '<b>no price yet</b>';
       var vsH = r.hammerMedian ? '<span>' + pct(r.vsHammer) + ' vs last bids ' + fmt(r.hammerMedian) + ' (' + r.closes + ' closes)</span>' : '<span>no closed auctions yet</span>';
       return '<div class="au-row' + (opening?' opening':under?' under':'') + (l.soon?' soon':'') + '">' +
         (href ? '<a class="ph" href="' + esc(href) + '">' : '<span class="ph">') + (r.image ? '<img src="' + esc(r.image) + '" alt="" loading="lazy">' : '') + (href ? '</a>' : '</span>') +
@@ -213,7 +214,8 @@ ${footer}
         '<div class="au-num au-end"><b>' + l.t + '</b><span>' + esc(endsAt(r.endDate)) + '</span></div>' +
         '<div class="au-vs">' + vsM + vsH + '</div>' +
         '<a class="au-bid" href="' + esc(r.url) + '" target="_blank" rel="nofollow sponsored noopener" data-card="' + esc(r.id) + '">Bid on eBay \\u2192</a>' +
-      '</div>'; }).join('');
+      '</div>'; }).join('') + (total > rows.length ? '<button type="button" class="au-chip au-more" style="display:block;margin:14px auto 0;">Show ' + Math.min(50, total - rows.length) + ' more \u00b7 ' + (total - rows.length) + ' left</button>' : '');
+    var more = list.querySelector('.au-more'); if (more) more.addEventListener('click', function(){ state.limit += 50; render(); });
     list.querySelectorAll('a.au-bid').forEach(function(a){ a.addEventListener('click', function(){ if (window.gtag) gtag('event', 'click', { link_url:'ebay', card:a.getAttribute('data-card'), kind:'auction', page:location.pathname }); }); });
   }
   function kpis(){ var live = state.rows.filter(function(r){ return !left(r.endDate).over; });
@@ -226,8 +228,8 @@ ${footer}
     document.getElementById('k-gen').textContent = state.gen ? 'feed ' + new Date(state.gen).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) : 'feed \\u2014'; }
   function load(){ fetch('/api/auctions', {cache:'default'}).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); }).then(function(d){ state.rows = d.rows || []; state.gen = d.generated; state.day = d.markDay; kpis(); render(); })
     .catch(function(){ list.innerHTML = '<div class="au-empty"><b>The feed didn\\u2019t answer.</b> eBay or the engine is not responding right now; this page shows nothing rather than a stale number. Try again in a minute.</div>'; }); }
-  document.querySelectorAll('.au-chip').forEach(function(b){ b.addEventListener('click', function(){ document.querySelectorAll('.au-chip').forEach(function(x){ x.setAttribute('aria-pressed','false'); }); b.setAttribute('aria-pressed','true'); state.f = b.getAttribute('data-f'); render(); }); });
-  document.getElementById('au-card').addEventListener('change', function(e){ state.card = e.target.value; render(); });
+  document.querySelectorAll('.au-chip').forEach(function(b){ b.addEventListener('click', function(){ document.querySelectorAll('.au-chip').forEach(function(x){ x.setAttribute('aria-pressed','false'); }); b.setAttribute('aria-pressed','true'); state.f = b.getAttribute('data-f'); state.limit = 50; render(); }); });
+  document.getElementById('au-card').addEventListener('change', function(e){ state.card = e.target.value; state.limit = 50; render(); });
   load();
   setInterval(function(){ kpis(); render(); }, 60000);
   setInterval(load, 15*60000);

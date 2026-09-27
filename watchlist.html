@@ -343,6 +343,8 @@
 
     /* Toast */
     .toast { position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--bg3); border:1px solid var(--green); color:var(--green); font-family:var(--fm); font-size:12px; letter-spacing:1px; padding:10px 20px; border-radius:2px; z-index:600; opacity:0; pointer-events:none; transition:all 0.3s ease; box-shadow:0 0 20px rgba(0,224,122,0.2); }
+.vg-mhint { font-family:var(--fm); font-size:11px; color:var(--text-dim); margin:0 0 6px; } .vg-mhint b { color:var(--text); }
+    @media (max-width:640px) { .toast { bottom:92px; max-width:90vw; text-align:center; } }
     .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
     /* Footer */
@@ -1063,7 +1065,7 @@
     </div>
     <!-- SIGNUP:START — the watchlist's way home (Sep 26 2026, Mo approved: optional email, no account; the address is all we keep — the list itself stays on the device, the email links back to it). Rendered by /js/signup.js. -->
     <div class="sch-signup" id="email" data-signup="watchlist" data-variant="watchlist" style="padding:0; margin:12px 0 0; scroll-margin-top:80px;"></div>
-    <script src="/js/signup.js?v=1" defer></script>
+    <script src="/js/signup.js?v=2" defer></script>
     <!-- SIGNUP:END -->
 
     <!-- PORTFOLIO HEADER (own tab) — name ▾ menu, value, 5D change, meta, tiles, warnings: renderPf() -->
@@ -2457,7 +2459,8 @@ function tableView(list) {
     foot += '<span class="moved" title="Compared with the prices stored at your previous visit">since your last visit: <b>' + moved + '</b> moved' + (moved ? ' · <span class="pos">' + up + ' ▲</span> <span class="neg">' + down + ' ▼</span>' : '') + '</span>';
   }
   const more = shown < total ? '<button class="vgrid-more" id="vgridMore" onclick="showMore()">Show ' + Math.min(CHUNK, total - shown) + ' more · ' + (total - shown) + ' remaining</button>' : '';
-  return '<div class="vgrid-wrap"><table class="vgrid"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table>' + more + '</div><div class="vgrid-foot">' + foot + '</div>' + newPillHtml();
+  const mhint = MQ_MOBILE.matches ? '<div class="vg-mhint">Phone view shows the key columns. Open this page on a computer for all of them (1D, 30D, target and more).</div>' : '';
+  return mhint + '<div class="vgrid-wrap"><table class="vgrid"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table>' + more + '</div><div class="vgrid-foot">' + foot + '</div>' + newPillHtml();
 }
 function showMore() { shown += CHUNK; renderList(); }
 const moreObs = ('IntersectionObserver' in window) ? new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) showMore(); }); }, { rootMargin:'400px' }) : null;

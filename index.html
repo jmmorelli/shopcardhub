@@ -805,7 +805,7 @@ body::before{
         <div class="panel-b ib-foot">An index is a measurement, not a call. Open a ticker to see every card in the basket with its dated sold price and live listings — ★ any card to watch it in <a href="/watchlist">your watchlist</a>.</div>
         <!-- SIGNUP:START — email capture under the index board (Sep 26 2026). Rendered by /js/signup.js. -->
         <div class="sch-signup" data-signup="home-board" data-variant="tape" style="padding:0 12px 12px;"></div>
-        <script src="/js/signup.js?v=1" defer></script>
+        <script src="/js/signup.js?v=2" defer></script>
         <!-- SIGNUP:END -->
       </div>
 
@@ -913,7 +913,7 @@ feed <b data-home="day">Sep 27</b> · <span data-home="stamp">36/41 marked · 8 
         <input type="email" name="fields[email]" required placeholder="you@email.com" autocomplete="email" style="flex:1; min-width:220px; background:var(--bg3); border:1px solid var(--border2); color:var(--text-head); font-family:var(--fb); font-size:15px; padding:14px 16px; border-radius:2px; outline:none;">
         <input type="hidden" name="ml-submit" value="1">
         <input type="hidden" name="anticsrf" value="true">
-        <button type="submit" style="background:var(--accent); color:#000; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; border:none; border-radius:2px; cursor:pointer; white-space:nowrap;">Get Card Alerts &rarr;</button>
+        <button type="submit" style="background:var(--accent); color:#000; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; border:none; border-radius:2px; cursor:pointer; white-space:nowrap;">Get the Tuesday Tape &rarr;</button>
       </form>
       <p id="sch-signup-success" style="display:none; max-width:520px; margin:0 auto; color:var(--green); font-family:var(--fm); font-size:14px; letter-spacing:0.5px; line-height:1.6;">&#10003; Almost there — <strong>check your inbox and click the confirmation link</strong> (it's a one-time step; look in spam/promotions if you don't see it). You're not subscribed until you confirm.</p>
       <p id="sch-signup-error" style="display:none; max-width:520px; margin:0 auto; color:var(--red,#ff5555); font-family:var(--fm); font-size:13px; letter-spacing:0.5px; line-height:1.6;">Something went wrong on our end — please try again, or email <a href="mailto:shopcardhub@gmail.com" style="color:inherit;">shopcardhub@gmail.com</a> and I'll add you manually.</p>
@@ -954,7 +954,7 @@ feed <b data-home="day">Sep 27</b> · <span data-home="stamp">36/41 marked · 8 
             }
             function fail(){
               if(er) er.style.display='block';
-              if(btn){ btn.disabled=false; btn.textContent='Get Card Alerts →'; }
+              if(btn){ btn.disabled=false; btn.textContent='Get the Tuesday Tape →'; }
             }
             fetch('/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:email,source:'home'})})
               .then(function(r){

@@ -358,7 +358,7 @@ function block(x, c) {
   ${subs}
   ${chase}
   <div class="sidx-tbl"><table>
-    <thead><tr><th>#</th><th>Card</th><th>Sold mark</th><th>Weight</th><th title="clean sold comps in the trailing 30 days — a gate input, not a volume figure">n30</th><th class="th-act">Watch · Buy · <span title="live eBay auction on this exact card, soonest close with bids; refreshed every 15 min">Bid</span></th></tr></thead>
+    <thead><tr><th>#</th><th>Card</th><th>Last sold</th><th>Weight</th><th title="clean sold comps in the trailing 30 days — a gate input, not a volume figure">Sales 30D</th><th class="th-act">Watch · Buy · <span title="live eBay auction on this exact card, soonest close with bids; refreshed every 15 min">Bid</span></th></tr></thead>
     <tbody>${top10}</tbody>
   </table></div>
   ${rest ? `<details class="sidx-more"><summary>Holdings 11–${rows.length} · every card in the basket</summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
