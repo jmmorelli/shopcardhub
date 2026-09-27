@@ -1,24 +1,37 @@
 {
  "_comment": "UPCOMING RELEASES panel on / (homepage rework, Sep 19 2026). Rendered by tools/build-home.mjs (HOME:releases) and re-filtered client-side by js/home.js so a past date drops off between Monday re-bakes. Hand-curated: only dates read from the named source, never guessed. status = confirmed (a dated line on the maker's calendar) | expected (a window a calendar publishes without a day — shown with its window text, no fake day). href only to a page that exists (build-home refuses otherwise). Keep ~10 upcoming; keep past rows for 30 days (the /release-calendar page shows them under 'Just released' — the 'X release date' searches keep coming for weeks after the date), prune older. `q` = the eBay search for the sealed product (used by tools/build-release-calendar.mjs; falls back to the label); `cat` = eBay category id when not sports cards (183456 = CCG sealed).",
- "asOf": "2026-09-22",
+ "asOf": "2026-09-26",
  "sources": {
-  "topps": "https://www.topps.com/release-calendar (read 2026-09-19)",
+  "topps": "https://www.topps.com/release-calendar (read 2026-09-26)",
   "bowman-chrome-mega": "https://www.topps.com/pages/bowman-chrome-baseball (Mega boxes available September 23 at 12pm ET)",
   "pokemon-30th-waves": "https://tcgradar.eu/guides/pokemon-tcg-set-release-calendar-2026 + the product waves on /pokemon-30th-anniversary-2026",
   "delta-reign": "https://pokecottage.com/pokemon-set-release-calendar and https://www.cardrake.com/guides/upcoming-sets (name and date reported, not yet on pokemon.com)",
   "baseball-windows": "https://baseball.cards/release-calendar/ (expected windows, no day)",
-  "bowman-football": "/bowman-football presale read 2026-09-19 (13 of 18 dated presale titles say Sep 30) — reported, not a Topps calendar line"
+  "bowman-football": "https://www.topps.com/release-calendar (read 2026-09-26: Wednesday, Sep 30) — was presale-only on 2026-09-19"
  },
  "items": [
   {
-   "date": "2026-09-22",
+   "date": "2026-09-09",
    "family": "sports",
-   "sport": "NBA",
-   "label": "2026-27 Topps Flagship Basketball",
-   "note": "pre-order opens",
+   "sport": "MLB",
+   "label": "2026 Bowman Chrome Baseball — hobby",
+   "note": "wide release; mega boxes followed Sep 23",
    "status": "confirmed",
-   "href": null,
-   "q": "2026-27 Topps Basketball hobby box"
+   "href": "/bowman-chrome-baseball-2026",
+   "q": "2026 Bowman Chrome Baseball hobby box",
+   "source": "https://www.topps.com/pages/bowman-chrome-baseball (read 2026-09-26; the existing Sep 23 mega row cites it)"
+  },
+  {
+   "date": "2026-09-16",
+   "family": "pokemon",
+   "sport": "PKMN",
+   "label": "Pokémon TCG 30th Celebration — set launch",
+   "note": "first global same-day release",
+   "status": "confirmed",
+   "href": "/pokemon-30th-anniversary-2026",
+   "q": "pokemon 30th celebration elite trainer box",
+   "cat": "183456",
+   "source": "https://tcgradar.eu/guides/pokemon-tcg-set-release-calendar-2026 (read 2026-09-26; same source as the existing wave rows)"
   },
   {
    "date": "2026-09-23",
@@ -41,14 +54,48 @@
    "q": "2025-26 Topps Pristine Basketball hobby box"
   },
   {
+   "date": "2026-09-28",
+   "family": "sports",
+   "sport": "NFL",
+   "label": "2026 Topps Holiday Football",
+   "note": "pre-order opens (Topps calendar)",
+   "status": "confirmed",
+   "href": null,
+   "q": "2026 Topps Holiday Football mega box",
+   "source": "https://www.topps.com/release-calendar (read 2026-09-26: 'Monday, Sep 28 at 5:00 PM UTC')"
+  },
+  {
    "date": "2026-09-30",
    "family": "sports",
    "sport": "NFL",
    "label": "2026 Bowman Football",
-   "note": "date read off presale listings, not a Topps calendar",
-   "status": "reported",
+   "note": "on the Topps calendar (Wed Sep 30, 4:00 PM UTC)",
+   "status": "confirmed",
    "href": "/bowman-football",
-   "q": "2026 Bowman Football hobby box"
+   "q": "2026 Bowman Football hobby box",
+   "source": "https://www.topps.com/release-calendar (read 2026-09-26: 'Wednesday, Sep 30 at 4:00 PM UTC')"
+  },
+  {
+   "date": "2026-09-30",
+   "family": "sports",
+   "sport": "TEN",
+   "label": "2026 Topps Chrome Tennis",
+   "note": "",
+   "status": "confirmed",
+   "href": null,
+   "q": "2026 Topps Chrome Tennis hobby box",
+   "source": "https://www.topps.com/release-calendar (read 2026-09-26: 'Wednesday, Sep 30 at 3:00 PM UTC'); Steel City lists hobby box Sep 30"
+  },
+  {
+   "date": "2026-09-30",
+   "family": "sports",
+   "sport": "WNBA",
+   "label": "2026 Panini Prizm WNBA Basketball",
+   "note": "distributor date",
+   "status": "reported",
+   "href": null,
+   "q": "2026 Panini Prizm WNBA hobby box",
+   "source": "https://www.steelcitycollectibles.com/product-release-calendar (read 2026-09-26: SEPTEMBER 30, 2026 · PREORDER NOW)"
   },
   {
    "date": "2026-10-02",
@@ -60,6 +107,39 @@
    "href": "/pokemon-30th-anniversary-2026",
    "q": "pokemon 30th celebration booster bundle",
    "cat": 183456
+  },
+  {
+   "date": "2026-10-05",
+   "family": "sports",
+   "sport": "NFL",
+   "label": "2026 Bowman U Best Football",
+   "note": "pre-order opens (Topps calendar); street date not published",
+   "status": "confirmed",
+   "href": null,
+   "q": "2026 Bowman University Best Football hobby box",
+   "source": "https://www.topps.com/release-calendar (read 2026-09-26: 'Monday, Oct 5 2026 · Pre-order')"
+  },
+  {
+   "date": "2026-10-05",
+   "family": "sports",
+   "sport": "NFL",
+   "label": "2026 Topps Inception Football",
+   "note": "pre-order opens (Topps calendar); street date not published",
+   "status": "confirmed",
+   "href": null,
+   "q": "2026 Topps Inception Football hobby box",
+   "source": "https://www.topps.com/release-calendar (read 2026-09-26: 'Monday, Oct 5 2026 · Pre-order')"
+  },
+  {
+   "date": "2026-10-06",
+   "family": "sports",
+   "sport": "NBA",
+   "label": "2026-27 Topps Flagship Basketball",
+   "note": "pre-order, moved from Sep 22 (Topps delayed it Sep 21); street date not published",
+   "status": "confirmed",
+   "href": null,
+   "q": "2026-27 Topps Basketball hobby box",
+   "source": "https://www.topps.com/release-calendar (read 2026-09-26: 'Tuesday, Oct 6 · Pre-order'); delay: https://www.soleretriever.com/news/articles/2026-27-topps-flagship-basketball-preorder-gets-new-date (Sep 22)"
   },
   {
    "date": "2026-10-07",
@@ -82,6 +162,61 @@
    "q": "2026 Topps Allen Ginter Baseball hobby box"
   },
   {
+   "date": "2026-10-07",
+   "family": "sports",
+   "sport": "NHL",
+   "label": "2026-27 Upper Deck Series 1 Hockey",
+   "note": "distributor date",
+   "status": "reported",
+   "href": null,
+   "q": "2026-27 Upper Deck Series 1 Hockey hobby box",
+   "source": "https://www.steelcitycollectibles.com/product-release-calendar (read 2026-09-26: OCTOBER 07, 2026 · PREORDER NOW)"
+  },
+  {
+   "date": "2026-10-14",
+   "family": "sports",
+   "sport": "MLB",
+   "label": "2026 Topps Update Series Baseball",
+   "note": "hobby 20×12, 1 auto or relic · jumbo 10×40, 1 auto + 1 relic",
+   "status": "confirmed",
+   "href": "/topps-update-series-2026",
+   "q": "2026 Topps Update Series Baseball hobby box",
+   "source": "https://www.topps.com/products/2026-topps-update-series-baseball-hobby-box (read 2026-09-26: 'October 14, 2026')"
+  },
+  {
+   "date": "2026-10-14",
+   "family": "sports",
+   "sport": "NBA",
+   "label": "2025-26 Panini Select Basketball",
+   "note": "distributor date",
+   "status": "reported",
+   "href": null,
+   "q": "2025-26 Panini Select Basketball hobby box",
+   "source": "https://www.steelcitycollectibles.com/product-release-calendar (read 2026-09-26: OCTOBER 14, 2026 · PREORDER NOW)"
+  },
+  {
+   "date": "2026-10-15",
+   "family": "sports",
+   "sport": "F1",
+   "label": "2026 Topps Chrome Formula 1",
+   "note": "",
+   "status": "confirmed",
+   "href": null,
+   "q": "2026 Topps Chrome Formula 1 hobby box",
+   "source": "https://www.topps.com/release-calendar (read 2026-09-26: 'Thursday, Oct 15 2026')"
+  },
+  {
+   "date": "2026-10-21",
+   "family": "sports",
+   "sport": "NFL",
+   "label": "2026 Topps Heritage Football",
+   "note": "distributor date",
+   "status": "reported",
+   "href": null,
+   "q": "2026 Topps Heritage Football hobby box",
+   "source": "https://www.steelcitycollectibles.com/product-release-calendar (read 2026-09-26: OCTOBER 21, 2026 · PREORDER NOW)"
+  },
+  {
    "date": "2026-10-30",
    "family": "pokemon",
    "sport": "PKMN",
@@ -93,15 +228,27 @@
    "cat": 183456
   },
   {
+   "date": "2026-10-31",
+   "family": "sports",
+   "sport": "MLB",
+   "label": "2026 Topps Cosmic Chrome Baseball",
+   "note": "distributor expected street date; Topps pre-order opens Oct 5",
+   "status": "reported",
+   "href": null,
+   "q": "2026 Topps Cosmic Chrome Baseball hobby box",
+   "source": "https://www.midwestcards.com/baseball-cards/2026-topps-cosmic-chrome-baseball-hobby-box/ ('Expected release date is Oct 31st 2026', read 2026-09-26); pre-order: https://www.topps.com/pages/topps-cosmic-chrome-baseball ('Available for pre-order October 5')"
+  },
+  {
    "date": "2026-11-06",
    "family": "pokemon",
    "sport": "PKMN",
    "label": "Delta Reign (Mega Evolution set 6, Mega Rayquaza ex)",
-   "note": "not yet on pokemon.com",
-   "status": "reported",
-   "href": "/pokemon-tcg-2026",
+   "note": "now on pokemon.com — replaces the Sep 22 'reported' row",
+   "status": "confirmed",
+   "href": "/pokemon-delta-reign-2026",
    "q": "pokemon delta reign booster box",
-   "cat": 183456
+   "cat": "183456",
+   "source": "https://www.pokemon.com/us/news/the-pokemon-tcg-mega-evolution-delta-reign-expansion-arrives-november-6-2026 (title/date confirmed 2026-09-26); Steel City lists booster box/bundle/ETB under NOVEMBER 06, 2026"
   },
   {
    "date": "2026-11-06",

@@ -29,8 +29,10 @@ const html = await get("https://www.pricecharting.com/game/" + p.replace(/^\/+/,
 let cls = "used";
 if (grade) {
   // find the tab whose label matches the grade ("PSA 10", "Grade 9", "SGC 9.5")
-  const tabs = [...html.matchAll(/data-show-tab="completed-auctions-([a-z0-9-]+)">[\s\S]*?<a href="#">([^<]+)<\/a>/g)].map((m) => ({ cls: m[1], label: m[2].trim() }));
-  const hit = tabs.find((t) => t.label.toLowerCase().startsWith(grade.toLowerCase()));
+  // the condition <select> is the reliable label map: <option value="completed-auctions-manual-only">PSA 10 (30)
+  // (the tab links are not — "Grade 9" and "sales per day" both sit near data-show-tab; Sep 26 2026, agent B)
+  const tabs = [...html.matchAll(/<option[^>]*value="completed-auctions-([a-z0-9-]+)"[^>]*>([^<(]+)/g)].map((m) => ({ cls: m[1], label: m[2].trim() }));
+  const hit = tabs.find((t) => t.label.toLowerCase() === grade.toLowerCase()) || tabs.find((t) => t.label.toLowerCase().startsWith(grade.toLowerCase()));
   if (!hit) { console.error("no tab for grade " + grade + "; tabs: " + tabs.map((t) => t.label).join(" | ")); process.exit(1); }
   cls = hit.cls;
 }
