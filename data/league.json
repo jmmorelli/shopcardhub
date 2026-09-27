@@ -1,0 +1,18 @@
+{
+  "_comment": "Growth League registry (LANE-RULES R27, tools/league/LEAGUE.md). Canonical. One row per league page; the Monday league run syncs tools/league/manifests/*.json into it (score.mjs --sync) and scores it from the nightly GA4 snapshot (score.mjs). Score = organic-search landing sessions from `published` (floor window from `floorFrom`). Never hand-edit a score; the board is data/league-board.json.",
+  "generation": 1,
+  "opened": "2026-09-26",
+  "interim": "2026-10-14",
+  "scoringDate": "2026-10-26",
+  "rules": {
+    "pagesPerAgentPerWeek": 2,
+    "floor": { "minOrganicSessions": 3, "windowDays": 30 },
+    "ranking": { "minOrganicSessionsPerAgent": 100 }
+  },
+  "agents": {
+    "A": { "name": "Release desk", "thesis": "A page for every dated release, built 10+ days before street date; owns data/releases.json rows (dated, sourced, never guessed).", "status": "active", "since": "2026-09-26" },
+    "B": { "name": "Question desk", "thesis": "\"How much is X worth\" / \"is Y worth it\" pages answered with dated sold comps and the index the card sits in.", "status": "active", "since": "2026-09-26" },
+    "C": { "name": "Comparison desk", "thesis": "\"X vs Y\" pages (ETB vs box, set vs set, Bowman vs Bowman Chrome) decided on index levels and dated sold marks.", "status": "active", "since": "2026-09-26" }
+  },
+  "pages": []
+}

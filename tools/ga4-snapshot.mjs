@@ -56,6 +56,12 @@ const REPORTS = {
   // carried no country-by-day report, so it could not test whether the burst landed on one day. It can now.
   countriesDaily7: { dateRanges: RANGES.d7, dimensions: d("country", "date"), metrics: m("sessions", "keyEvents", "averageSessionDuration"), orderBys: [{ dimension: { dimensionName: "date" } }], limit: 400 },
   devices28: { dateRanges: RANGES.d28, dimensions: d("deviceCategory"), metrics: m("sessions", "keyEvents", "sessionKeyEventRate"), limit: 5 },
+  // Growth League (LANE-RULES R27, 2026-09-26): the scorer needs every page's ORGANIC landing sessions by day —
+  // the top-40 landing lists above cut off exactly the new pages the league is measuring, and organic-only is
+  // the bot filter (the Singapore/China clusters land Direct). 28 days so a full generation is readable from
+  // one night's file. tools/league/score.mjs reads these two.
+  landingOrganicDaily28: { dateRanges: RANGES.d28, dimensions: d("landingPage", "date"), metrics: m("sessions", "keyEvents"), dimensionFilter: { filter: { fieldName: "sessionDefaultChannelGroup", stringFilter: { value: "Organic Search" } } }, orderBys: [{ dimension: { dimensionName: "date" } }], limit: 5000 },
+  pageClicks28: { dateRanges: RANGES.d28, dimensions: d("pagePath", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["click", "buystrip_click", "buybox_click", "newsletter_signup"] } } }, limit: 2000 },
   // No dimension → one totals row. sessionKeyEventRate here is GA4's own "sessions with a key event ÷ sessions",
   // which is what the UI's Traffic-acquisition total shows (5.59% on 2026-09-18), not key events ÷ sessions.
   totals28: { dateRanges: RANGES.d28, metrics: m("sessions", "activeUsers", "keyEvents", "sessionKeyEventRate", "engagementRate"), limit: 1 },
