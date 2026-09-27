@@ -48,6 +48,17 @@ const epn = (q, customid, extra) =>
 // unfiltered one (measured: the Holliday #CPA-EH PSA 10 query went 1 result -> 0).
 const AG_FILTER = "&LH_AV=1";
 
+// Fanatics (fanatics.com via Impact, partner 7388044 / campaign 9663) — Sep 27 2026, Mo: "add them back".
+// The Aug 14 "Check Fanatics" buttons converted a $225 Topps order the day they shipped; the Aug 31
+// batch removed them by conflating the Fanatics STORE (live, 8%, 7-day cookie) with the retired
+// Fanatics Collect program. topps.com is NOT a valid landing domain for this program (Impact rejects
+// it), so every link lands on a fanatics.com search. subId1 = page slug, readable in Impact reports.
+// A LINK ONLY: no Fanatics price or stock claim is ever rendered.
+const FAN_BASE = "https://fanatics.93n6tx.net/c/7388044/4029520/9663";
+const fan = (q, sub) =>
+  FAN_BASE + "?u=" + encodeURIComponent("https://www.fanatics.com/?query=" + encodeURIComponent(q)) +
+  "&subId1=" + encodeURIComponent(sub);
+
 const attr = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 const text = s => String(s).replace(/&(?!(?:[a-zA-Z]+|#\d+);)/g, "&amp;").replace(/</g, "&lt;");
 
@@ -66,6 +77,8 @@ const CSS = `<style>
   .bstrip .bs-go2 { background:transparent; color:var(--text-dim,#5a7880) !important; border:1px solid var(--border2,rgba(255,255,255,0.12)); }
   .bstrip .bs-go2:hover { color:var(--text-head,#e4f0f4) !important; border-color:var(--accent,#00ccf5); text-decoration:none; }
   .bstrip .bs-case { font-family:var(--fm,monospace); font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text-dim,#5a7880) !important; white-space:nowrap; padding:10px 4px; border-bottom:1px dotted var(--border2,rgba(255,255,255,0.22)); }
+  .bstrip .bs-fan { display:inline-flex; align-items:center; gap:7px; font-family:var(--fm,monospace); font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; padding:10px 16px; border-radius:2px; white-space:nowrap; background:transparent; color:var(--text-head,#e4f0f4) !important; border:1px solid var(--gold,#f5c800); }
+  .bstrip .bs-fan:hover { background:var(--gold,#f5c800); color:#000 !important; text-decoration:none; }
   .bstrip .bs-case:hover { color:var(--gold,#f5c800) !important; border-bottom-color:var(--gold,#f5c800); text-decoration:none; }
   .bs-fine { max-width:1060px; margin:8px auto 0; font-size:11px; line-height:1.55; color:var(--text-dim,#5a7880); }
   @media (max-width:760px) {
@@ -75,6 +88,7 @@ const CSS = `<style>
     .bstrip .bs-cta { margin-left:0; width:100%; }
     .bstrip .bs-go, .bstrip .bs-go2 { flex:1 1 auto; justify-content:center; }
     .bstrip .bs-case { flex:0 0 auto; padding:6px 2px; }
+    .bstrip .bs-fan { flex:1 1 auto; justify-content:center; }
   }
 </style>`;
 
@@ -96,9 +110,12 @@ function block(slug, e) {
   // because a case would corrupt a per-box mark. This is a LINK, never a mark: no
   // figure is rendered from it and nothing it returns reaches the engine or an index.
   if (c) lines.push(`      <a class="bs-case" href="${attr(epn(c.q, c.customid))}" target="_blank" rel="noopener sponsored" title="Sealed cases of ${attr(e.product)} on eBay &mdash; a search, not a price" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'case',page:location.pathname})">Sealed cases &rarr;</a>`);
+  const fz = e.fanatics;
+  if (fz) lines.push(`      <a class="bs-fan" href="${attr(fan(fz.q, slug))}" target="_blank" rel="noopener sponsored" title="${attr(fz.title || "Search fanatics.com")}" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}',page:location.pathname})">${text(fz.label || "At Fanatics &rarr;")}</a>`);
   lines.push(`    </span>`);
   lines.push(`  </div>`);
   const fine = [`Affiliate links &mdash; ShopCardHub earns an eBay Partner Network commission on qualifying purchases at no extra cost to you. Any figure shown is the lowest live single-unit <em>ask</em>, not a sold comp.`];
+  if (fz) fine.push(`The Fanatics link is a fanatics.com search (Fanatics sells factory-sealed Topps retail boxes) &mdash; ShopCardHub earns a Fanatics affiliate commission on qualifying purchases; no Fanatics price is shown here.`);
   if (c) fine.push(`The sealed-cases link is a search, not a price &mdash; case and multi-box listings are excluded from every figure on this site.`);
   if (s && s.ag) fine.push(`&ldquo;Authenticated&rdquo; is eBay&rsquo;s Authenticity Guarantee: eBay authenticates eligible single cards $200+ before delivery, at no cost to the buyer (eBay, August 2026). It is eBay&rsquo;s program, not our assessment.`);
   lines.push(`  <p class="bs-fine">${fine.join(" ")}</p>`);

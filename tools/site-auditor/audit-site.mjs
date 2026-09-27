@@ -355,8 +355,8 @@ for (const f of pages) {
 /* ---------- 15. Above-the-fold conversion coverage (Mo's directive, Sep 17 2026) ----------
    /pokemon-30th-anniversary-2026 is a top landing page and shipped with no way to buy the ETB
    above the fold — the only eBay links sat ~150 lines down, under the lineup table. A sweep found
-   58 pages with the same shape. eBay is the only monetization lane on this site (Topps and
-   Fanatics are both retired), so a commercial page that does not offer its product where the
+   58 pages with the same shape. eBay is the primary monetization lane on this site (Topps direct is
+   retired; the Fanatics store link was restored Sep 27 2026 as a secondary CTA), so a commercial page that does not offer its product where the
    reader lands is giving away the one reliable line of income.
 
    Contract: every commercial page carries at least one EPN-tagged eBay link above the fold —

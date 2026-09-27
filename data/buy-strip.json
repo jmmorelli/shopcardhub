@@ -1,6 +1,6 @@
 {
-  "_comment": "Above-the-fold eBay conversion strip, one entry per page. Consumed by tools/build-buy-strip.mjs, which writes the BUYSTRIP block into each page; enforced by site-auditor §15 (conversion-coverage). q = eBay _nkw for the strip's primary CTA; customid = EPN Custom ID so per-product earnings are readable in the EPN 'Performance by Custom ID' report. live=true shows the lowest live single-unit ask from /api/comps beside the product; it is only set where the primary query names ONE sealed product, because the cheapest listing on a broad player search is a $0.99 common and tells the reader nothing. Pages deliberately outside the contract are listed in the auditor's CONVERSION_EXEMPT set, not here. case = the sealed-CASE link rendered beside the box link (Idea #32, adopted 2026-09-20): a LINK ONLY — no figure is ever rendered from it, it never reaches the price engine and it is never an index input, because a case would corrupt a per-box mark. It is present only where tools/buy-strip-health.mjs measured at least CASE_MIN clean case listings (tools/case-shelf.mjs); `must` is a contiguous-phrase guard so a Bowman Chrome case link cannot land on a plain Bowman case (LANE-RULES R8). secondary.ag = true adds eBay's Authenticity Guarantee filter (LH_AV=1, read off eBay's own 'Show only' sidebar 2026-09-20) and routes the click to its own -ag custom ID, so the trust-copy effect is readable against the plain IDs. Set only where the link's own /api/comps median ask is >= $200 (eBay's Aug 2026 AG threshold for single cards) AND the AG-filtered search still has real depth — a narrow query plus AG is how you send a reader to an empty page.",
-  "generated": "2026-09-22",
+  "_comment": "Above-the-fold eBay conversion strip, one entry per page. Consumed by tools/build-buy-strip.mjs, which writes the BUYSTRIP block into each page; enforced by site-auditor §15 (conversion-coverage). q = eBay _nkw for the strip's primary CTA; customid = EPN Custom ID so per-product earnings are readable in the EPN 'Performance by Custom ID' report. live=true shows the lowest live single-unit ask from /api/comps beside the product; it is only set where the primary query names ONE sealed product, because the cheapest listing on a broad player search is a $0.99 common and tells the reader nothing. Pages deliberately outside the contract are listed in the auditor's CONVERSION_EXEMPT set, not here. case = the sealed-CASE link rendered beside the box link (Idea #32, adopted 2026-09-20): a LINK ONLY — no figure is ever rendered from it, it never reaches the price engine and it is never an index input, because a case would corrupt a per-box mark. It is present only where tools/buy-strip-health.mjs measured at least CASE_MIN clean case listings (tools/case-shelf.mjs); `must` is a contiguous-phrase guard so a Bowman Chrome case link cannot land on a plain Bowman case (LANE-RULES R8). secondary.ag = true adds eBay's Authenticity Guarantee filter (LH_AV=1, read off eBay's own 'Show only' sidebar 2026-09-20) and routes the click to its own -ag custom ID, so the trust-copy effect is readable against the plain IDs. Set only where the link's own /api/comps median ask is >= $200 (eBay's Aug 2026 AG threshold for single cards) AND the AG-filtered search still has real depth — a narrow query plus AG is how you send a reader to an empty page. fanatics = optional {q,label,title}: a fanatics.com search link (Impact, subId1 = page slug) rendered beside the eBay CTAs (Sep 27 2026, Mo: restore the Fanatics links). Link only, never a price.",
+  "generated": "2026-09-27",
   "pages": {
     "adley-rutschman-cards": {
       "product": "Adley Rutschman cards",
@@ -111,6 +111,11 @@
         "q": "Hobby Box Bowman Baseball 2026 Case -chrome -sapphire -draft -mega -break -pyp -pick -rip -random -slot -spot",
         "customid": "best-hobby-boxes-2026-case",
         "must": "bowman baseball"
+      },
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "bowman-1st-chrome-index": {
@@ -127,6 +132,11 @@
         "q": "Hobby Box Bowman Chrome Baseball 2026 Case -sapphire -draft -break -pyp -pick -rip -random -slot -spot",
         "customid": "bowman-1st-chrome-index-case",
         "must": "bowman chrome"
+      },
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "bowman-chrome-baseball-2026": {
@@ -148,6 +158,11 @@
         "q": "Hobby Box Bowman Chrome Baseball 2026 Case -sapphire -draft -break -pyp -pick -rip -random -slot -spot",
         "customid": "bowman-chrome-baseball-2026-case",
         "must": "bowman chrome"
+      },
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "bowman-football": {
@@ -168,6 +183,11 @@
         "q": "2026 Bowman Football Hobby Box Case -break -pyp -pick -rip -random -slot -spot",
         "customid": "bowman-football-case",
         "must": "bowman football"
+      },
+      "fanatics": {
+        "q": "topps football",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "bowman-sapphire-2026": {
@@ -183,7 +203,12 @@
         "customid": "bowman-sapphire-2026-singles",
         "title": "2026 Bowman Sapphire Edition Baseball singles"
       },
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "cameron-boozer-rookie-cards": {
       "product": "Cameron Boozer rookie cards",
@@ -429,7 +454,12 @@
       },
       "live": true,
       "req": "bowman|football|hobby",
-      "deny": "chrome|jumbo|first day|mega|blaster|case|lot|break"
+      "deny": "chrome|jumbo|first day|mega|blaster|case|lot|break",
+      "fanatics": {
+        "q": "topps football",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "pete-crow-armstrong-cards": {
       "product": "Pete Crow-Armstrong cards",
@@ -551,7 +581,12 @@
         "customid": "topps-chrome-baseball-2026-case",
         "must": "topps chrome baseball"
       },
-      "deny": "finest"
+      "deny": "finest",
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-chrome-basketball-2026": {
       "product": "2025-26 Topps Chrome Basketball Hobby Box",
@@ -566,7 +601,12 @@
         "customid": "topps-chrome-basketball-2026-singles",
         "title": "2025-26 Topps Chrome Basketball singles"
       },
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps basketball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-chrome-black-basketball": {
       "product": "2025-26 Topps Chrome Black Basketball Hobby Box",
@@ -586,6 +626,11 @@
         "q": "Hobby Box Topps Chrome Black Basketball 2025-26 Case -break -pyp -pick -rip -random -slot -spot",
         "customid": "topps-chrome-black-basketball-case",
         "must": "chrome black basketball"
+      },
+      "fanatics": {
+        "q": "topps basketball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "topps-chrome-black-football": {
@@ -601,7 +646,12 @@
         "customid": "topps-chrome-black-football-singles",
         "title": "2025 Topps Chrome Black Football singles"
       },
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps football",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-chrome-cactus-jack-basketball": {
       "product": "2025-26 Topps Chrome Cactus Jack Basketball Hobby Box",
@@ -616,7 +666,12 @@
         "customid": "topps-chrome-cactus-jack-basketball-singles",
         "title": "2025-26 Topps Chrome Cactus Jack Basketball singles"
       },
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps basketball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-chrome-sapphire-2026": {
       "product": "2026 Topps Chrome Sapphire Baseball Box",
@@ -631,7 +686,12 @@
         "customid": "topps-chrome-sapphire-2026-singles",
         "title": "2026 Topps Chrome Sapphire Baseball singles"
       },
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-chrome-updates-basketball-sapphire-edition": {
       "product": "2025-26 Topps Chrome Updates Basketball Sapphire Edition Box",
@@ -646,7 +706,12 @@
         "customid": "topps-chrome-updates-basketball-sapphire-edition-singles",
         "title": "2025-26 Topps Chrome Updates Basketball Sapphire Edition singles"
       },
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps basketball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-chrome-updates-basketball": {
       "product": "2025-26 Topps Chrome Updates Basketball Hobby Box",
@@ -661,7 +726,12 @@
         "customid": "topps-chrome-updates-basketball-singles",
         "title": "2025-26 Topps Chrome Updates Basketball singles"
       },
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps basketball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-cosmic-chrome-football": {
       "product": "2025 Topps Cosmic Chrome Football Hobby Box",
@@ -676,7 +746,12 @@
         "customid": "topps-cosmic-chrome-football-singles",
         "title": "2025 Topps Cosmic Chrome Football singles"
       },
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps football",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-definitive-basketball": {
       "product": "2025-26 Topps Definitive Basketball Hobby Box",
@@ -691,7 +766,12 @@
         "customid": "topps-definitive-basketball-singles",
         "title": "2025-26 Topps Definitive Basketball singles"
       },
-      "live": false
+      "live": false,
+      "fanatics": {
+        "q": "topps basketball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-finest-baseball": {
       "product": "2026 Topps Finest Baseball Hobby Box",
@@ -706,7 +786,12 @@
         "customid": "topps-finest-baseball-singles",
         "title": "2026 Topps Finest Baseball singles"
       },
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-flagship-football": {
       "product": "2026 Topps Flagship Football Hobby Box",
@@ -728,7 +813,12 @@
         "must": "topps football|topps flagship"
       },
       "req": "topps|football",
-      "deny": "heritage|chrome|cosmic|inception|bowman|finest|stadium club|gallery"
+      "deny": "heritage|chrome|cosmic|inception|bowman|finest|stadium club|gallery",
+      "fanatics": {
+        "q": "2026 topps flagship football",
+        "label": "Flagship boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-inception-baseball": {
       "product": "2025 Topps Inception Baseball Hobby Box",
@@ -748,6 +838,11 @@
         "q": "Hobby Box Topps Inception Baseball 2025 Case -break -pyp -pick -rip -random -slot -spot",
         "customid": "topps-inception-baseball-case",
         "must": "inception baseball"
+      },
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "topps-inception-basketball": {
@@ -763,7 +858,12 @@
         "customid": "topps-inception-basketball-singles",
         "title": "2025-26 Topps Inception Basketball singles"
       },
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps basketball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-museum-collection-baseball": {
       "product": "Museum Collection hobby box",
@@ -773,7 +873,12 @@
         "customid": "topps-museum-collection-baseball-top"
       },
       "secondary": null,
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-pristine-baseball": {
       "product": "2026 Topps Pristine Baseball Hobby Box",
@@ -793,6 +898,11 @@
         "q": "Hobby Box Topps Pristine Baseball 2026 Case -break -pyp -pick -rip -random -slot -spot",
         "customid": "topps-pristine-baseball-case",
         "must": "pristine baseball"
+      },
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "topps-pristine-basketball": {
@@ -808,7 +918,12 @@
         "customid": "topps-pristine-basketball-singles",
         "title": "2025-26 Topps Pristine Basketball singles"
       },
-      "live": true
+      "live": true,
+      "fanatics": {
+        "q": "topps basketball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-series-1-2026": {
       "product": "2026 Topps Series 1 Baseball Hobby Box",
@@ -829,7 +944,12 @@
         "customid": "topps-series-1-2026-case",
         "must": "series 1"
       },
-      "deny": "update"
+      "deny": "update",
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "topps-series-2-2026": {
       "product": "2026 Topps Series 2 Baseball Hobby Box",
@@ -849,6 +969,11 @@
         "q": "Hobby Box Topps Series 2 Baseball 2026 Case -chrome -heritage -mega -japan -break -pyp -pick -rip -random -slot -spot",
         "customid": "topps-series-2-2026-case",
         "must": "series 2"
+      },
+      "fanatics": {
+        "q": "2026 topps series 2",
+        "label": "Series 2 at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "topps-tier-one-baseball": {
@@ -869,6 +994,11 @@
         "q": "Hobby Box Topps Tier One Baseball 2026 Case -break -pyp -pick -rip -random -slot -spot",
         "customid": "topps-tier-one-baseball-case",
         "must": "tier one"
+      },
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "topps-tribute-baseball": {
@@ -889,6 +1019,11 @@
         "q": "Hobby Box Topps Tribute Baseball 2026 Case -break -pyp -pick -rip -random -slot -spot",
         "customid": "topps-tribute-baseball-case",
         "must": "tribute baseball"
+      },
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "victor-wembanyama-rookie-cards": {
@@ -951,6 +1086,11 @@
         "q": "Hobby Box Bowman Chrome Baseball 2026 Case -sapphire -draft -break -pyp -pick -rip -random -slot -spot",
         "customid": "bowman-chrome-2026-index-case",
         "must": "bowman chrome"
+      },
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "bowman-2026-index": {
@@ -967,6 +1107,11 @@
         "q": "Hobby Box Bowman Baseball 2026 Case -chrome -sapphire -draft -mega -break -pyp -pick -rip -random -slot -spot",
         "customid": "bowman-2026-index-case",
         "must": "bowman baseball"
+      },
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
     "bowman-bangers": {
@@ -989,7 +1134,12 @@
         "customid": "bowman-bangers-case",
         "must": "bowman chrome"
       },
-      "_why": "Sep 26 2026 EPN read: /bowman-bangers is a top-10 lander with no eBay link above the fold (exempt since Sep 17 as 'no single product'). The board is the 1st Bowman Chrome Auto class; its sealed product is the Chrome hobby box, May's box second. R11."
+      "_why": "Sep 26 2026 EPN read: /bowman-bangers is a top-10 lander with no eBay link above the fold (exempt since Sep 17 as 'no single product'). The board is the 1st Bowman Chrome Auto class; its sealed product is the Chrome hobby box, May's box second. R11.",
+      "fanatics": {
+        "q": "topps baseball",
+        "label": "Topps boxes at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "is-pokemon-151-worth-it": {
       "product": "Pokémon 151 Booster Bundle",
@@ -1079,7 +1229,12 @@
       },
       "live": true,
       "req": "update",
-      "_why": "Growth League A page (2026-09-26); query \"2026 topps update series release date\". R11."
+      "_why": "Growth League A page (2026-09-26); query \"2026 topps update series release date\". R11.",
+      "fanatics": {
+        "q": "2026 topps update series",
+        "label": "Update Series at Fanatics &rarr;",
+        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
+      }
     },
     "umbreon-ex-worth": {
       "product": "Prismatic Evolutions Elite Trainer Box",
