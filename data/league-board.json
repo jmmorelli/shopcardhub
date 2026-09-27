@@ -1,9 +1,9 @@
 {
- "_comment": "Growth League registry (LANE-RULES R27, tools/league/LEAGUE.md). Canonical. One row per league page; the Monday league run syncs tools/league/manifests/*.json into it (score.mjs --sync) and scores it from the nightly GA4 snapshot (score.mjs). Score = organic-search landing sessions from `published` (floor window from `floorFrom`). Never hand-edit a score; the board is data/league-board.json.",
  "generation": 1,
  "opened": "2026-09-26",
- "interim": "2026-10-14",
  "scoringDate": "2026-10-26",
+ "ga4Day": "2026-09-26",
+ "readAt": "2026-09-27T21:32:20.575Z",
  "rules": {
   "pagesPerAgentPerWeek": 5,
   "floor": {
@@ -20,21 +20,30 @@
  "agents": {
   "A": {
    "name": "Release desk",
-   "thesis": "A page for every dated release, built 10+ days before street date; owns data/releases.json rows (dated, sourced, never guessed).",
    "status": "active",
-   "since": "2026-09-26"
+   "pages": 3,
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "rankable": false
   },
   "B": {
    "name": "Question desk",
-   "thesis": "\"How much is X worth\" / \"is Y worth it\" pages answered with dated sold comps and the index the card sits in.",
    "status": "active",
-   "since": "2026-09-26"
+   "pages": 3,
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "rankable": false
   },
   "C": {
    "name": "Comparison desk",
-   "thesis": "\"X vs Y\" pages (ETB vs box, set vs set, Bowman vs Bowman Chrome) decided on index levels and dated sold marks.",
    "status": "active",
-   "since": "2026-09-26"
+   "pages": 3,
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "rankable": false
   }
  },
  "pages": [
@@ -46,7 +55,13 @@
    "floorFrom": "2026-09-26",
    "hub": "/scarlet-violet-151-index",
    "week": 1,
-   "status": "live"
+   "status": "live",
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "floorSessions": 0,
+   "floor": "open (0/30d)",
+   "days": 0
   },
   {
    "slug": "pitch-black-vs-chaos-rising",
@@ -56,7 +71,13 @@
    "floorFrom": "2026-09-26",
    "hub": "/chaos-rising-index",
    "week": 1,
-   "status": "live"
+   "status": "live",
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "floorSessions": 0,
+   "floor": "open (0/30d)",
+   "days": 0
   },
   {
    "slug": "pokemon-delta-reign-2026",
@@ -66,7 +87,13 @@
    "floorFrom": "2026-11-06",
    "hub": "/release-calendar",
    "week": 1,
-   "status": "live"
+   "status": "live",
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "floorSessions": 0,
+   "floor": "open (-41/30d)",
+   "days": 0
   },
   {
    "slug": "prismatic-evolutions-vs-destined-rivals",
@@ -76,7 +103,13 @@
    "floorFrom": "2026-09-26",
    "hub": "/prismatic-evolutions-index",
    "week": 1,
-   "status": "live"
+   "status": "live",
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "floorSessions": 0,
+   "floor": "open (0/30d)",
+   "days": 0
   },
   {
    "slug": "topps-update-series-2026",
@@ -86,7 +119,13 @@
    "floorFrom": "2026-10-14",
    "hub": "/release-calendar",
    "week": 1,
-   "status": "live"
+   "status": "live",
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "floorSessions": 0,
+   "floor": "open (-18/30d)",
+   "days": 0
   },
   {
    "slug": "umbreon-ex-worth",
@@ -96,7 +135,13 @@
    "floorFrom": "2026-09-26",
    "hub": "/prismatic-evolutions-index",
    "week": 1,
-   "status": "live"
+   "status": "live",
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "floorSessions": 0,
+   "floor": "open (0/30d)",
+   "days": 0
   },
   {
    "slug": "gengar-ex-worth",
@@ -106,7 +151,13 @@
    "floorFrom": "2026-09-27",
    "hub": "/ascended-heroes-index",
    "week": 1,
-   "status": "live"
+   "status": "live",
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "floorSessions": 0,
+   "floor": "open (-1/30d)",
+   "days": -1
   },
   {
    "slug": "prismatic-evolutions-vs-ascended-heroes",
@@ -116,7 +167,13 @@
    "floorFrom": "2026-09-27",
    "hub": "/ascended-heroes-index",
    "week": 1,
-   "status": "live"
+   "status": "live",
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "floorSessions": 0,
+   "floor": "open (-1/30d)",
+   "days": -1
   },
   {
    "slug": "topps-chrome-formula-1-2026",
@@ -126,7 +183,13 @@
    "floorFrom": "2026-10-15",
    "hub": "/release-calendar",
    "week": 1,
-   "status": "live"
+   "status": "live",
+   "sessions": 0,
+   "clicks": 0,
+   "signups": 0,
+   "floorSessions": 0,
+   "floor": "open (-19/30d)",
+   "days": -1
   }
  ]
 }
