@@ -32,7 +32,7 @@ Key-event rate: **organic 11.19% 7d / 7.03% 28d** beside blended 6.32% / 4.74%.
 
 ## NOW — 2026-09-26, night — THE GROWTH LEAGUE (Mo: "build it and let's roll!") — LANE-RULES R27
 
-**Mo's ask:** a team of bots that find growth avenues on their own, compete, get culled and cloned on results, with the CoS overseeing — "I don't want to spend too much time on my own." **Built the same evening.** Charter `tools/league/LEAGUE.md`; registry `data/league.json`; scorer `tools/league/score.mjs`; agents' brief `tools/league/BRIEF.md`; commissioner's integrator `tools/league/integrate.mjs`; sold-comps helper `tools/league/solds.mjs`. Scheduled task **"Growth League — Monday" (`trig_01F6N6SU4JorSYdboAuhHjoW`, Mondays 05:56 PT, Mac-bound, auto)** — first fire Mon Sep 28.
+**Mo's ask:** a team of bots that find growth avenues on their own, compete, get culled and cloned on results, with the CoS overseeing — "I don't want to spend too much time on my own." **Built the same evening.** Charter `tools/league/LEAGUE.md`; registry `data/league.json`; scorer `tools/league/score.mjs`; agents' brief `tools/league/BRIEF.md`; commissioner's integrator `tools/league/integrate.mjs`; sold-comps helper `tools/league/solds.mjs`. Scheduled task **"Growth League" (`trig_01F6N6SU4JorSYdboAuhHjoW`, Mondays + Thursdays 05:56 PT, Mac-bound, auto)** — first fire Mon Sep 28. *(Mo ~18:10 PT: "3 times/week?" → CoS: two, not three — pages are the constraint and the score lags 14–28 d; Mo: "ok do it". Cap 2 → 3 pages/agent/week; Thursday may improve instead of build; third day decided at the Oct 14 interim board.)*
 
 | Item | State |
 |---|---|

@@ -1,7 +1,7 @@
 # Growth League — the agent's standing brief (read whole before building anything)
 
 You are one of three agents in ShopCardHub's Growth League (`tools/league/LEAGUE.md`). You have a thesis, a
-budget of **two pages this week**, and a score: organic-search landing sessions on the pages you build,
+budget (**the page count in your prompt — never more**), and a score: organic-search landing sessions on the pages you build,
 read from GA4 fourteen and twenty-eight days later. You are not competing on words, features or dollars —
 on **visitors search sends to pages you built**. The commissioner (the Chief of Staff) integrates, gates and
 ships; you research, build, verify, and hand over a manifest.
@@ -19,8 +19,10 @@ Demand evidence, cheapest first, and record it in the manifest (`evidence[]`, wi
 2. Bing Webmaster's Sep 26 read (in `claude/cos/epn-read-2026-09-26.md` addendum 2): demand here is release-date and worth-it queries; `2026 bowman football` is rising; positions 5–7 are ours to move.
 3. `WebSearch` for the phrase: who ranks, whether the top results are thin (forum threads, undated price guides) — that is the opening.
 
-Skip anything the site already has a page for (105 pages; `ls *.html`). Two pages max. One excellent page
-beats two thin ones — if only one query has evidence, build one.
+Skip anything the site already has a page for (`ls *.html`). Never exceed your budget. One excellent page beats
+two thin ones — if only one query has evidence, build one. On a Thursday run you may spend one slot improving a
+league page you built earlier (a fresh sold read, a comparable that was missing, a sharper answer) — say so in the
+manifest's `notes` and bump the page's `data-prices-updated` stamp.
 
 ## 2. Every number is a dated sold comp, or it is labelled as an ask
 

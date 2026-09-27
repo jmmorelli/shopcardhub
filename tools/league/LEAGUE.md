@@ -22,11 +22,15 @@ Clones of one idea only measure luck; three theses measure three ideas.
 
 ## Budget
 
-- **2 pages per agent per league week, max** (a league week runs Sat→Fri from the generation's open date).
-  The site was "getting clunky" in July (Mo); the league is not a page mill. `score.mjs --check` FAILs over it.
+- **3 pages per agent per league week, max** (a league week runs Sat→Fri from the generation's open date; was 2 —
+  raised with the second weekly run, Mo 2026-09-26 "ok do it"). The site was "getting clunky" in July (Mo); the league
+  is not a page mill. `score.mjs --check` FAILs over it. Thursday's run may spend one of an agent's slots **improving an
+  existing league page** (re-mark, sharper answer, a missing comparable) instead of building.
 - **No new nav item.** Pages are reachable by sitemap, IndexNow, the release calendar (A), the `searchExtra`
   site search list, and one link from the hub the manifest names.
-- **No new agents, no new scheduled runs beyond the one Monday league run** (cadence cut, 2026-09-21).
+- **No new agents, no scheduled runs beyond the two league runs — Monday and Thursday 05:56 PT** (cadence cut,
+  2026-09-21; the Thursday run added 2026-09-26 for release dates that land mid-week and for the fix pass; a third day
+  is decided at the Oct 14 interim board on the floor-read results, not before).
 
 ## The score — fixed here so the commissioner cannot fudge it
 
@@ -61,7 +65,7 @@ No page is scored in a way that pays for shading a number. A page that would sco
 sold comp, dropping a dated stamp, or publishing a figure it cannot point at is disqualified at design time.
 A gate FAIL does not ship. An agent that ships a shaded figure is out for the generation; its slot stays empty.
 
-## What the commissioner does every Monday (the league run)
+## What the commissioner does every Monday and Thursday (the league run)
 
 1. Fresh clone; `node tools/league/score.mjs` → print the board, write `data/league-board.json`.
 2. Floor read: 301 + de-sitemap any dead page (a `<meta http-equiv="refresh">` + canonical to the hub, as the

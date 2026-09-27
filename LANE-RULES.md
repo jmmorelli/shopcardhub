@@ -649,7 +649,7 @@ and the charter points at it. **If you see a day in any other document, this tab
 | CoS · monthly roster & rooms review | 1st of the month 05:00 | Re-read Mo's direction, retire/create agents and rooms, rewrite CHARTER §2, prune rooms. |
 | **X Desk Watch — audit Grok Bot** *(created 2026-09-17, R10; cadence set 2026-09-18)* | **every day 13:00** *(Mo moved it 2026-09-21 so the 14:00 CoS desk acts on a vendor FAIL the same hour; the 17:00 reply sweep is read the next day)* | *Cadence cut 2026-09-21: one run a day sees the 09:00 post and both reply sweeps; the 13:30 run was grading posts with 26–33 views twice.* Reads @shopcardhub in Mo's Chrome (the X-signed-in profile — select by deviceId, never by the display name "Browser 1/2", which is assigned per session) — the 13:30 run sees the vendor's 09:00 post + 12:00 reply sweep, the 17:30 run sees the 17:00 sweep — and checks every number and claim against our own pages **as rendered in a browser** (never baked HTML or curl: the home/terminal pages repaint client-side from the nightly feed). Monday's run is the weekly grade against Grok's own 10:00 audit + GA4. Find-and-file only: it never posts, replies, or fixes. Device-bound: it needs the Mac awake, so it reports "could not read" rather than guessing. Spec: `claude/cos/x-desk-watch-2026-09-17.md`. |
 
-| **Growth League — Monday** *(created 2026-09-26, R27; Mo: "build it and let's roll!")* | **Monday 06:00** (cloud; pushes with the deploy key on the Mac when reachable, else stages a patch for the desk) | Prints the board (`tools/league/score.mjs`), 301s dead pages on the floor read, spawns agents A/B/C in parallel against `tools/league/BRIEF.md` (≤ 2 pages each), integrates manifests (buy strips, signup, releases.json → release calendar + home, sitemap, searchExtra, hub link), three gates, push, live 200s, IndexNow, pushLog, STATE. Only the scoring date (Oct 26 for gen 1) culls or breeds. |
+| **Growth League — Mon + Thu** *(created 2026-09-26, R27; Mo: "build it and let's roll!"; Thursday added the same evening, Mo: "ok do it")* | **Monday + Thursday 05:56** (cloud; pushes with the deploy key on the Mac when reachable, else stages a patch for the desk) | Prints the board (`tools/league/score.mjs`), 301s dead pages on the floor read, spawns agents A/B/C in parallel against `tools/league/BRIEF.md` (≤ 3 pages each per week; Thursday may improve instead of build), integrates manifests (buy strips, signup, releases.json → release calendar + home, sitemap, searchExtra, hub link), three gates, push, live 200s, IndexNow, pushLog, STATE. Only the scoring date (Oct 26 for gen 1) culls or breeds. |
 
 ### Desktop-local lanes (in the Claude desktop app — NOT in the scheduled-task API; only Mo edits these prompts)
 
@@ -911,7 +911,7 @@ with the CoS overseeing. Charter: `tools/league/LEAGUE.md`; registry `data/leagu
 `tools/league/score.mjs`; the agents' brief `tools/league/BRIEF.md`. What binds every lane:
 
 - **The league is the one exception to R25 and to the page freeze.** Three agents (A release pages, B question
-  pages, C comparison pages) may each ship **two pages per league week**, and nothing else may. No new nav item;
+  pages, C comparison pages) may each ship **three pages per league week** (two until the Thursday run was added the same evening — Mo: "ok do it"), and nothing else may. No new nav item;
   pages reach readers by sitemap, IndexNow, the release calendar, site search and one hub link.
 - **Score = organic-search landing sessions** on the agent's pages (GA4 `landingOrganicDaily28`). Clicks and signups
   are reported beside it, never ranked on; dollars never appear (R14).
@@ -921,8 +921,9 @@ with the CoS overseeing. Charter: `tools/league/LEAGUE.md`; registry `data/leagu
 - **R14's integrity clause is unchanged.** A page that would score better by shading a number is disqualified at
   design time. Every figure on a league page is a dated sold comp or a labelled, dated ask (R18, R20); a gate FAIL
   does not ship.
-- **One Monday cloud run** ("Growth League — Monday") scores, floors, spawns the three agents, integrates their
-  manifests, gates and pushes. It is the lane the release-calendar re-bake moved into; no other run builds league
+- **Two cloud runs — Monday and Thursday 05:56 PT** ("Growth League") score, floor, spawn the three agents, integrate their
+  manifests, gate and push; Thursday may spend a slot improving an existing league page. A third day is decided at the
+  Oct 14 interim board, not before. It is the lane the release-calendar re-bake moved into; no other run builds league
   pages. The desk and the weekly read `data/league-board.json` and do not second-guess it.
 - **What the agents never do:** post, email, DM, sign in, touch shared data files, or write to a page they did not
   create. Distribution stays Mo's (NEEDS-MO).
