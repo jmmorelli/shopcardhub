@@ -954,7 +954,7 @@
   <nav class="rl-sec" aria-label="Terminal">
       <a class="rl" href="/"><span class="ico">α</span><span class="lbl">Home</span></a>
       <a class="rl" href="/bowman-bangers"><span class="ico">▤</span><span class="lbl">Bowman Bangers board</span><span class="pill">10</span></a>
-      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span><span class="pill">8</span></a>
+      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span><span class="pill">11</span></a>
       <a class="rl" href="/auctions"><span class="ico">⚒</span><span class="lbl">Auction Desk</span></a>
       <a class="rl" href="/#tape"><span class="ico">✉</span><span class="lbl">The Tuesday Tape</span><span class="pill">Tue</span></a>
   </nav>
@@ -962,11 +962,12 @@
     <h4>Guides <a href="/research">all →</a></h4>
     <a class="rl rl-guides-chip" href="/research"><span class="ico">✎</span><span class="lbl">Guides</span></a>
       <details class="rl-grp">
-        <summary class="rl"><span class="ico">▸</span><span class="lbl">Sports</span><span class="pill">22</span></summary>
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Sports</span><span class="pill">23</span></summary>
         <div class="rl-glabel">⚾ Baseball</div>
         <a class="rl sub" href="/bowman-bangers"><span class="lbl">2026 Bowman Bangers ⭐</span></a>
-        <a class="rl sub" href="/bowman-1st-chrome-index"><span class="lbl">BOW26 — 1st Chrome Index ⭐</span></a>
-        <a class="rl sub" href="/bowman-chrome-2026-index"><span class="lbl">BCB26 — Bowman Chrome Index</span></a>
+        <a class="rl sub" href="/bowman-1st-chrome-index"><span class="lbl">BOW26 — 2026 1st Bowman Autos ⭐</span></a>
+        <a class="rl sub" href="/bowman-2026-index"><span class="lbl">BB26 — Bowman (May) 1st Autos</span></a>
+        <a class="rl sub" href="/bowman-chrome-2026-index"><span class="lbl">BCB26 — Bowman Chrome (Sep) 1st Autos</span></a>
         <a class="rl sub" href="/ethan-holliday-rookie-cards"><span class="lbl">Ethan Holliday 1st Bowman</span></a>
         <a class="rl sub" href="/bowman-chrome-baseball-2026"><span class="lbl">Bowman Chrome — Sep 9 ⭐</span></a>
         <a class="rl sub" href="/bowman-sapphire-2026"><span class="lbl">Bowman Sapphire</span></a>
@@ -992,7 +993,7 @@
         <a class="rl sub all" href="/research"><span class="lbl">All Sports →</span></a>
       </details>
       <details class="rl-grp">
-        <summary class="rl"><span class="ico">▸</span><span class="lbl">Pokémon</span><span class="pill">12</span></summary>
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">Pokémon</span><span class="pill">13</span></summary>
         <div class="rl-glabel">Sets &amp; Guides</div>
         <a class="rl sub" href="/pokemon-30th-anniversary-2026"><span class="lbl">30th Celebration — Sep 16 ★</span></a>
         <a class="rl sub" href="/pitch-black-set-guide"><span class="lbl">Pitch Black — Jul 17</span></a>
@@ -1007,6 +1008,7 @@
         <a class="rl sub" href="/prismatic-evolutions-index"><span class="lbl">PRIS25 — Prismatic Evolutions</span></a>
         <a class="rl sub" href="/destined-rivals-index"><span class="lbl">DR25 — Destined Rivals</span></a>
         <a class="rl sub" href="/phantasmal-flames-index"><span class="lbl">PF25 — Phantasmal Flames</span></a>
+        <a class="rl sub" href="/scarlet-violet-151-index"><span class="lbl">SV151 — Scarlet &amp; Violet 151</span></a>
         <a class="rl sub all" href="/pokemon-tcg-2026"><span class="lbl">All Pokémon →</span></a>
       </details>
       <details class="rl-grp">
@@ -1032,8 +1034,8 @@
       <a class="rl sc" href="/#screen=board" data-screen="board"><span class="ico">⌁</span><span class="lbl">Bowman Bangers board</span></a>
       <a class="rl sc" href="/#screen=under100" data-screen="under100"><span class="ico">⌁</span><span class="lbl">Autos under $100</span></a>
       <a class="rl sc" href="/#screen=drying" data-screen="drying"><span class="ico">⌁</span><span class="lbl">Supply drying up</span></a>
-      <a class="rl sc" href="/#screen=z2" data-screen="z2"><span class="ico">⌁</span><span class="lbl">|z| beyond 2</span></a>
-      <a class="rl sc" href="/#screen=fat" data-screen="fat"><span class="ico">⌁</span><span class="lbl">Fat tails</span></a>
+      <a class="rl sc" href="/#screen=z2" data-screen="z2"><span class="ico">⌁</span><span class="lbl">Unusual swings</span></a>
+      <a class="rl sc" href="/#screen=fat" data-screen="fat"><span class="ico">⌁</span><span class="lbl">Extreme movers</span></a>
   </div>
   <div class="rail-foot">Free · no account · your watchlist stays on your device</div>
 </aside>
@@ -2264,7 +2266,7 @@ const COLS = [
   { key:'grade', label:'Grade', left:true, cell:r => r.c.grade ? '<span class="gr">' + esc(r.c.grade) + '</span>' : '' },
   { key:'hub',   label:'Hub', sortv:r => { const h = hubOf(r.c); return h ? h.hub.score : null; }, cell:r => { const h = hubOf(r.c); return h ? '<a class="hubg hub-' + (h.hub.grade[0] === 'A' ? 'a' : h.hub.grade[0] === 'B' ? 'b' : h.hub.grade[0] === 'C' ? 'c' : 'd') + '" href="/bowman-bangers#grade-' + esc(h.slug) + '" onclick="event.stopPropagation()" title="Scouting Grade (Hub rating) for ' + esc(h.name) + ' — tap for the six factors">' + esc(h.hub.grade) + '</a>' : '<span class="dim">—</span>'; } },
   { key:'last',  label:'Last', sortv:r => r.lp, cls:r => r.lp != null ? 'last' : 'dim', cell:r => { if (r.lp == null) return '—'; const fe = r.c.feedSold && FEED ? FEED.byKey[r.c.feedKey] : null; return fe ? '<span title="Sold mark: ' + esc(fe.basis || '') + ' (SportsCardsPro/PriceCharting dated sales, re-read nightly)">$' + fmt$(r.lp) + '<sup style="color:var(--green);font-size:8px;margin-left:2px">S</sup></span>' : '$' + fmt$(r.lp); } },
-  { key:'d1',    label:'Δ', sortv:r => r.d1, delta:r => r.d1 },
+  { key:'d1',    label:'1D', sortv:r => r.d1, delta:r => r.d1 },
   { key:'d7',    label:'7D', sortv:r => r.d7, delta:r => r.d7 },
   { key:'d30',   label:'30D', sortv:r => r.d30, delta:r => r.d30 },
   { key:'all',   label:'All', watch:true, sortv:r => r.dAll, delta:r => r.dAll },

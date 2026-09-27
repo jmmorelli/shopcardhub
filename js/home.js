@@ -29,8 +29,8 @@
     board: { n: 'Bowman Bangers board', meta: 'the tracked 1st Bowman Chrome autos · raw · ask-basis', f: function (c) { return c.board; } },
     under100: { n: 'Autos under $100', meta: '1st Bowman Chrome autos with a verified ask floor below $100', f: function (c) { return c.type === 'auto' && c.last != null && c.last < 100; } },
     drying: { n: 'Supply drying up', meta: 'verified asks down 20% or more vs 30 nights ago', f: function (c) { return c.supd != null && c.supd <= -20; } },
-    z2: { n: '|z| beyond 2', meta: 'mark more than two σ from its 30-night mean — stretched either way', f: function (c) { return c.z != null && Math.abs(c.z) >= 2; } },
-    fat: { n: 'Fat tails', meta: 'excess kurtosis above 3 — jump-driven series, treat the ROC with care', f: function (c) { return c.kurt != null && c.kurt > 3; } },
+    z2: { n: 'Unusual swings', meta: 'mark more than two σ from its 30-night mean — stretched either way', f: function (c) { return c.z != null && Math.abs(c.z) >= 2; } },
+    fat: { n: 'Extreme movers', meta: 'excess kurtosis above 3 — jump-driven series, treat the ROC with care', f: function (c) { return c.kurt != null && c.kurt > 3; } },
     all: { n: 'Every tracked card', meta: 'everything the engine marks nightly', f: function () { return true; } }
   };
 
@@ -289,7 +289,7 @@
     var rows = model.cards.filter(function (c) { return c.board && c.roc != null; }).sort(function (a, b) { return Math.abs(b.roc) - Math.abs(a.roc); }).slice(0, 7);
     if (!rows.length) return '<li class="empty">No board mark yet tonight.</li>';
     return rows.map(function (c, i) {
-      return '<li><span class="rk">' + (i + 1) + '</span><span class="nm">' + (c.href ? '<a href="' + esc(c.href) + '">' + esc(c.name) + '</a>' : esc(c.name)) + '<small>' + fmt(c.last) + ' · supply ' + (c.sup == null ? '—' : c.sup) + ' · z ' + num(c.z, 2) + (c.gated ? ' · gated' : '') + '</small></span>' + ST.sparkSVG(c.spark) + '<span class="num ' + cls(c.roc) + '">' + pct(c.roc, 1) + '</span></li>';
+      return '<li><span class="rk">' + (i + 1) + '</span><span class="nm">' + (c.href ? '<a href="' + esc(c.href) + '">' + esc(c.name) + '</a>' : esc(c.name)) + '<small>' + fmt(c.last) + (c.sup == null ? '' : ' · ' + c.sup + ' for sale') + '</small></span>' + ST.sparkSVG(c.spark) + '<span class="num ' + cls(c.roc) + '">' + pct(c.roc, 1) + '</span></li>';
     }).join('');
   }
   function sigCell(c) {

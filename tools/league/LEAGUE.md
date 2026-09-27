@@ -22,13 +22,14 @@ Clones of one idea only measure luck; three theses measure three ideas.
 
 ## Budget
 
-- **3 pages per agent per league week, max** (a league week runs Sat→Fri from the generation's open date; was 2 —
+- **DAILY since 2026-09-27 (Mo: "I want everyone to work daily… it's go time!").** The league run fires every day at 05:56 PT. Per run: **at most 1 new page per agent**, and an agent with no evidenced query that day spends its run **improving** one of its live pages (re-mark, sharper answer, missing comparable) or ships nothing. Weekly cap raised to **5 pages per agent per league week** (`data/league.json` rules). Commit only when a public file changed; docs ride with the next public commit (the Sep 21 lesson: doc-only commits each queued a Vercel deploy).
+- *(superseded 2026-09-27)* **3 pages per agent per league week, max** (a league week runs Sat→Fri from the generation's open date; was 2 —
   raised with the second weekly run, Mo 2026-09-26 "ok do it"). The site was "getting clunky" in July (Mo); the league
   is not a page mill. `score.mjs --check` FAILs over it. Thursday's run may spend one of an agent's slots **improving an
   existing league page** (re-mark, sharper answer, a missing comparable) instead of building.
 - **No new nav item.** Pages are reachable by sitemap, IndexNow, the release calendar (A), the `searchExtra`
   site search list, and one link from the hub the manifest names.
-- **No new agents, no scheduled runs beyond the two league runs — Monday and Thursday 05:56 PT** (cadence cut,
+- *(superseded 2026-09-27 — daily run, see above)* **No new agents, no scheduled runs beyond the two league runs — Monday and Thursday 05:56 PT** (cadence cut,
   2026-09-21; the Thursday run added 2026-09-26 for release dates that land mid-week and for the fix pass; a third day
   is decided at the Oct 14 interim board on the floor-read results, not before).
 

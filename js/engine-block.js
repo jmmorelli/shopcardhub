@@ -216,3 +216,6 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
+
+/* Sep 27 2026: progressive disclosure for the stat band (js/fold-dense.js) */
+(function(){if(document.querySelector('script[src*="fold-dense"]'))return;var s=document.createElement("script");s.src="/js/fold-dense.js?v=1";s.defer=true;document.head.appendChild(s);})();

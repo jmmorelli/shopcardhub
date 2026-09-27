@@ -373,7 +373,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </style>
   <style>
 .au-wrap { max-width:1060px; margin:0 auto; padding:28px 20px 60px; }
-.term .au-wrap { padding:8px 0 40px; }
 .au-wrap section { padding:0; border-top:0; animation:none; }
 .au-crumbs { font-family:var(--fm); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
 .au-crumbs a { color:var(--text-dim); } .au-crumbs a:hover { color:var(--accent); }
@@ -460,7 +459,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     })();
   </script>
   <link rel="stylesheet" href="/css/site-fixes.css">
-  <link rel="stylesheet" href="/css/terminal-shell.css?v=2">
 </head>
 <body>
 
@@ -793,130 +791,25 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </script>
 <!-- NAV:END -->
 
-
-  <!-- ═══ TERMINAL SHELL (Terminal step 4, Sep 11 2026): the same rail as / and /watchlist (tools/build-rail.mjs) + this page in the main column ═══ -->
-  <div class="term">
-<!-- RAIL:START -->
-<aside class="rail" id="rail" aria-label="Terminal rail">
-  <nav class="rl-sec" aria-label="Terminal">
-      <a class="rl" href="/"><span class="ico">α</span><span class="lbl">Home</span></a>
-      <a class="rl" href="/bowman-bangers"><span class="ico">▤</span><span class="lbl">Bowman Bangers board</span><span class="pill">10</span></a>
-      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span><span class="pill">8</span></a>
-      <a class="rl" href="/auctions"><span class="ico">⚒</span><span class="lbl">Auction Desk</span></a>
-      <a class="rl" href="/#tape"><span class="ico">✉</span><span class="lbl">The Tuesday Tape</span><span class="pill">Tue</span></a>
-  </nav>
-  <div class="rl-sec rl-guides">
-    <h4>Guides <a href="/research">all →</a></h4>
-    <a class="rl rl-guides-chip" href="/research"><span class="ico">✎</span><span class="lbl">Guides</span></a>
-      <details class="rl-grp">
-        <summary class="rl"><span class="ico">▸</span><span class="lbl">Sports</span><span class="pill">22</span></summary>
-        <div class="rl-glabel">⚾ Baseball</div>
-        <a class="rl sub" href="/bowman-bangers"><span class="lbl">2026 Bowman Bangers ⭐</span></a>
-        <a class="rl sub" href="/bowman-1st-chrome-index"><span class="lbl">BOW26 — 1st Chrome Index ⭐</span></a>
-        <a class="rl sub" href="/bowman-chrome-2026-index"><span class="lbl">BCB26 — Bowman Chrome Index</span></a>
-        <a class="rl sub" href="/ethan-holliday-rookie-cards"><span class="lbl">Ethan Holliday 1st Bowman</span></a>
-        <a class="rl sub" href="/bowman-chrome-baseball-2026"><span class="lbl">Bowman Chrome — Sep 9 ⭐</span></a>
-        <a class="rl sub" href="/bowman-sapphire-2026"><span class="lbl">Bowman Sapphire</span></a>
-        <a class="rl sub" href="/topps-tribute-baseball"><span class="lbl">Topps Tribute — Jul 29</span></a>
-        <div class="rl-glabel">🏀 Basketball</div>
-        <a class="rl sub" href="/cooper-flagg-rookie-cards"><span class="lbl">Cooper Flagg Rookie Cards</span></a>
-        <a class="rl sub" href="/victor-wembanyama-rookie-cards"><span class="lbl">Victor Wembanyama</span></a>
-        <a class="rl sub" href="/topps-chrome-basketball-2026"><span class="lbl">Topps Chrome Basketball</span></a>
-        <a class="rl sub" href="/topps-chrome-black-basketball"><span class="lbl">Chrome Black — Jul 28</span></a>
-        <a class="rl sub" href="/best-basketball-cards-under-50"><span class="lbl">Best Cards Under $50</span></a>
-        <div class="rl-glabel">🏈 Football</div>
-        <a class="rl sub" href="/nfl-rookie-cards-2026"><span class="lbl">2026 NFL Rookie Guide</span></a>
-        <a class="rl sub" href="/topps-cosmic-chrome-football"><span class="lbl">Cosmic Chrome</span></a>
-        <a class="rl sub" href="/topps-chrome-black-football"><span class="lbl">Chrome Black — Jul 10</span></a>
-        <a class="rl sub" href="/best-football-cards-under-50"><span class="lbl">Best Cards Under $50</span></a>
-        <a class="rl sub" href="/topps-flagship-football"><span class="lbl">Flagship Football — Aug 21</span></a>
-        <a class="rl sub" href="/bowman-football"><span class="lbl">Bowman Football — Pre-Order</span></a>
-        <div class="rl-glabel">⚽ Soccer</div>
-        <a class="rl sub" href="/world-cup-2026-soccer-cards"><span class="lbl">World Cup 2026 Cards</span></a>
-        <a class="rl sub" href="/lamine-yamal-rookie-cards"><span class="lbl">Lamine Yamal</span></a>
-        <a class="rl sub" href="/erling-haaland-rookie-cards"><span class="lbl">Erling Haaland</span></a>
-        <a class="rl sub" href="/lionel-messi-cards"><span class="lbl">Lionel Messi</span></a>
-        <a class="rl sub all" href="/research"><span class="lbl">All Sports →</span></a>
-      </details>
-      <details class="rl-grp">
-        <summary class="rl"><span class="ico">▸</span><span class="lbl">Pokémon</span><span class="pill">12</span></summary>
-        <div class="rl-glabel">Sets &amp; Guides</div>
-        <a class="rl sub" href="/pokemon-30th-anniversary-2026"><span class="lbl">30th Celebration — Sep 16 ★</span></a>
-        <a class="rl sub" href="/pitch-black-set-guide"><span class="lbl">Pitch Black — Jul 17</span></a>
-        <a class="rl sub" href="/chaos-rising"><span class="lbl">Chaos Rising</span></a>
-        <a class="rl sub" href="/ascended-heroes"><span class="lbl">Ascended Heroes</span></a>
-        <a class="rl sub" href="/prismatic-evolutions-guide"><span class="lbl">Prismatic Evolutions</span></a>
-        <a class="rl sub" href="/pokemon-tcg-2026"><span class="lbl">2026 Pokémon TCG Guide</span></a>
-        <div class="rl-glabel">Set Indices — Live Trackers</div>
-        <a class="rl sub" href="/pitch-black-index"><span class="lbl">PB26 — Pitch Black</span></a>
-        <a class="rl sub" href="/chaos-rising-index"><span class="lbl">CR26 — Chaos Rising</span></a>
-        <a class="rl sub" href="/ascended-heroes-index"><span class="lbl">AH26 — Ascended Heroes</span></a>
-        <a class="rl sub" href="/prismatic-evolutions-index"><span class="lbl">PRIS25 — Prismatic Evolutions</span></a>
-        <a class="rl sub" href="/destined-rivals-index"><span class="lbl">DR25 — Destined Rivals</span></a>
-        <a class="rl sub" href="/phantasmal-flames-index"><span class="lbl">PF25 — Phantasmal Flames</span></a>
-        <a class="rl sub all" href="/pokemon-tcg-2026"><span class="lbl">All Pokémon →</span></a>
-      </details>
-      <details class="rl-grp">
-        <summary class="rl"><span class="ico">▸</span><span class="lbl">Grading + Supplies</span><span class="pill">3</span></summary>
-        <div class="rl-glabel">Grading</div>
-        <a class="rl sub" href="/psa-grading-guide"><span class="lbl">PSA Grading Guide</span></a>
-        <a class="rl sub" href="/tag-grading-guide"><span class="lbl">TAG Grading Guide — AI Slabs</span></a>
-        <div class="rl-glabel">Supplies</div>
-        <a class="rl sub" href="/best-card-supplies"><span class="lbl">Best Card Supplies</span></a>
-        <a class="rl sub all" href="/psa-grading-guide"><span class="lbl">All Grading + Supplies →</span></a>
-      </details>
-  </div>
-  <div class="rl-sec">
-    <h4>Watchlist <a href="/watchlist">open →</a></h4>
-    <div data-rail="portfolios" data-cfg="{&quot;rows&quot;:[{&quot;status&quot;:&quot;own&quot;,&quot;label&quot;:&quot;My cards&quot;,&quot;ico&quot;:&quot;◆&quot;},{&quot;status&quot;:&quot;watch&quot;,&quot;label&quot;:&quot;Hunting&quot;,&quot;ico&quot;:&quot;◇&quot;}],&quot;vaultHref&quot;:&quot;/watchlist&quot;,&quot;empty&quot;:&quot;★ a card on any index →&quot;}">
-      <a class="rl pf" href="/watchlist" data-status="own"><span class="ico">◆</span><span class="lbl">My cards</span><span class="pill">—</span></a>
-      <a class="rl pf" href="/watchlist" data-status="watch"><span class="ico">◇</span><span class="lbl">Hunting</span><span class="pill">—</span></a>
-      <a class="rl pf-empty" href="/watchlist"><span class="ico">→</span><span class="lbl">★ a card on any index →</span></a>
-    </div>
-  </div>
-  <div class="rl-sec">
-    <h4>Saved screens</h4>
-      <a class="rl sc" href="/#screen=board" data-screen="board"><span class="ico">⌁</span><span class="lbl">Bowman Bangers board</span></a>
-      <a class="rl sc" href="/#screen=under100" data-screen="under100"><span class="ico">⌁</span><span class="lbl">Autos under $100</span></a>
-      <a class="rl sc" href="/#screen=drying" data-screen="drying"><span class="ico">⌁</span><span class="lbl">Supply drying up</span></a>
-      <a class="rl sc" href="/#screen=z2" data-screen="z2"><span class="ico">⌁</span><span class="lbl">|z| beyond 2</span></a>
-      <a class="rl sc" href="/#screen=fat" data-screen="fat"><span class="ico">⌁</span><span class="lbl">Fat tails</span></a>
-  </div>
-  <div class="rail-foot">Free · no account · your watchlist stays on your device</div>
-</aside>
-<script>
-/* rail: mark the row for THIS page (the block is byte-identical on every page, so the active state is read from the URL) */
-(function () {
-  var here = location.pathname; if (here.slice(-5) === ".html") here = here.slice(0, -5); if (here.length > 1 && here.slice(-1) === "/") here = here.slice(0, -1); if (here === "/index") here = "/";
-  var rows = document.querySelectorAll('#rail .rl-sec a.rl');
-  for (var i = 0; i < rows.length; i++) {
-    var h = rows[i].getAttribute("href") || ""; if (h.indexOf("#") > 0 || h.charAt(0) === "#") continue;
-    var p = h; if (p.length > 1 && p.slice(-1) === "/") p = p.slice(0, -1);
-    if (p === here) rows[i].classList.add("on");
-  }
-})();
-</script>
-<!-- RAIL:END -->
-  <div class="tmain" id="main">
 <main class="au-wrap">
   <div class="au-crumbs"><a href="/">Home</a> <span>/</span> <a href="/cards">Card Charts</a> <span>/</span> <span>Auction Desk</span></div>
   <div class="au-eyebrow"><span class="au-live" aria-hidden="true"></span> Auction desk · live · refreshes every 15 min</div>
   <h1 class="au-title">Auctions ending <em>under the mark</em></h1>
-  <p class="au-sub">Every live eBay auction that passes the exact-card filter for the 20 cards the engine tracks, with the card's nightly mark and a floor, not the sale price at recent auctions beside the current bid. Sorted by time to close. A bid under the mark is the one thing on eBay you can act on today; whether it stays under is up to the last ten seconds. Opening prices with no bids are shown, but marked as exactly that.</p>
+  <p class="au-sub">Every live eBay auction that passes the exact-card filter for the 41 cards the engine tracks, with the card's nightly mark and a floor, not the sale price at recent auctions beside the current bid. Sorted by time to close. A bid under the mark is the one thing on eBay you can act on today; whether it stays under is up to the last ten seconds. Opening prices with no bids are shown, but marked as exactly that.</p>
 
   <div class="au-strip" id="au-strip">
-    <div class="au-cell"><div class="l">Live auctions</div><div class="v" id="k-count">—</div><div class="s">verified, 20 cards</div></div>
-    <div class="au-cell"><div class="l">Under the mark · with bids</div><div class="v g" id="k-under">—</div><div class="s" id="k-under-s">bid + ship below the ask floor</div></div>
+    <div class="au-cell"><div class="l">Live auctions</div><div class="v" id="k-count">—</div><div class="s">verified, 41 cards</div></div>
+    <div class="au-cell"><div class="l">Under our price · with bids</div><div class="v g" id="k-under">—</div><div class="s" id="k-under-s">bid + ship below the ask floor</div></div>
     <div class="au-cell"><div class="l">Closing in 6h</div><div class="v" id="k-soon">—</div><div class="s">act-now window</div></div>
     <div class="au-cell"><div class="l">Marks as of</div><div class="v" id="k-day" style="font-size:20px;">—</div><div class="s" id="k-gen">feed —</div></div>
   </div>
 
   <div class="au-ctl" role="group" aria-label="Filter auctions">
     <button class="au-chip" data-f="all" aria-pressed="true">All verified</button>
-    <button class="au-chip" data-f="under" aria-pressed="false">Under the mark</button>
+    <button class="au-chip" data-f="under" aria-pressed="false">Under our price</button>
     <button class="au-chip" data-f="bids" aria-pressed="false">Has bids</button>
     <button class="au-chip" data-f="soon" aria-pressed="false">Closing in 6h</button>
-    <select class="au-sel" id="au-card" aria-label="Card"><option value="">Every card</option><option value="ethan-holliday">Ethan Holliday — 1st Bowman Chrome Auto</option><option value="andrew-fischer">Andrew Fischer — 1st Bowman Chrome Auto</option><option value="aiva-arquette">Aiva Arquette — 1st Bowman Chrome Auto</option><option value="wehiwa-aloy">Wehiwa Aloy — 1st Bowman Chrome Auto</option><option value="daniel-pierce">Daniel Pierce — 1st Bowman Chrome Auto</option><option value="marek-houston">Marek Houston — 1st Bowman Chrome Auto</option><option value="gage-jump">Gage Jump — 1st Bowman Chrome Auto</option><option value="justin-gonzalez">Justin Gonzalez — 1st Bowman Chrome Auto</option><option value="edward-florentino">Edward Florentino — 1st Bowman Chrome Auto</option><option value="seong-jun-kim">Seong-Jun Kim — 1st Bowman Chrome Auto</option><option value="travis-bazzana">Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1</option><option value="umbreon-ex-sir-pe">Umbreon ex SIR #161 — Prismatic Evolutions</option><option value="mega-darkrai-ex-sir">Mega Darkrai ex SIR #116/084 — Pitch Black</option><option value="mega-greninja-ex-sir">Mega Greninja ex SIR #116/086 — Chaos Rising</option><option value="tr-mewtwo-ex-sir">T.R.'s Mewtwo ex SIR — Ascended Heroes</option><option value="mega-lucario-ex-sir">Mega Lucario ex SIR #179/132 — Mega Evolution</option><option value="konnor-griffin-sapphire">Konnor Griffin — 2026 Bowman Sapphire</option><option value="ethan-holliday-sapphire">Ethan Holliday — 2026 Bowman Sapphire</option><option value="roman-anthony-sapphire">Roman Anthony — 2026 Bowman Sapphire</option><option value="kevin-mcgonigle-sapphire">Kevin McGonigle — 2026 Bowman Sapphire</option></select>
+    <select class="au-sel" id="au-card" aria-label="Card"><option value="">Every card</option><option value="ethan-holliday">Ethan Holliday — 1st Bowman Chrome Auto</option><option value="andrew-fischer">Andrew Fischer — 1st Bowman Chrome Auto</option><option value="aiva-arquette">Aiva Arquette — 1st Bowman Chrome Auto</option><option value="wehiwa-aloy">Wehiwa Aloy — 1st Bowman Chrome Auto</option><option value="daniel-pierce">Daniel Pierce — 1st Bowman Chrome Auto</option><option value="marek-houston">Marek Houston — 1st Bowman Chrome Auto</option><option value="gage-jump">Gage Jump — 1st Bowman Chrome Auto</option><option value="justin-gonzalez">Justin Gonzales — 1st Bowman Chrome Auto</option><option value="edward-florentino">Edward Florentino — 1st Bowman Chrome Auto</option><option value="seong-jun-kim">Seong-Jun Kim — 1st Bowman Chrome Auto</option><option value="travis-bazzana">Travis Bazzana — 2024 Bowman Draft Chrome #BDC-1</option><option value="umbreon-ex-sir-pe">Umbreon ex SIR #161 — Prismatic Evolutions</option><option value="mega-darkrai-ex-sir">Mega Darkrai ex SIR #116/084 — Pitch Black</option><option value="mega-greninja-ex-sir">Mega Greninja ex SIR #116/086 — Chaos Rising</option><option value="tr-mewtwo-ex-sir">T.R.'s Mewtwo ex SIR — Ascended Heroes</option><option value="mega-lucario-ex-sir">Mega Lucario ex SIR #179/132 — Mega Evolution</option><option value="konnor-griffin-sapphire">Konnor Griffin — 2026 Bowman Sapphire</option><option value="ethan-holliday-sapphire">Ethan Holliday — 2026 Bowman Sapphire</option><option value="roman-anthony-sapphire">Roman Anthony — 2026 Bowman Sapphire</option><option value="kevin-mcgonigle-sapphire">Kevin McGonigle — 2026 Bowman Sapphire</option><option value="ethan-holliday-bcb26-base">Ethan Holliday — 2026 Bowman Chrome Prospect #BCP-209</option><option value="luis-hernandez-bcb26-auto">Luis Hernandez — 2026 Bowman Chrome 1st Bowman Auto CPA-LH</option><option value="wandy-asigen-bcb26-auto">Wandy Asigen — 2026 Bowman Chrome 1st Bowman Auto CPA-WA</option><option value="francisco-renteria-bcb26-auto">Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR</option><option value="angeibel-gomez-bcb26-auto">Angeibel Gomez — 2026 Bowman Chrome 1st Bowman Auto CPA-AG</option><option value="luis-hernandez-bcb26-base">Luis Hernandez — 2026 Bowman Chrome 1st Bowman #BCP-200</option><option value="wandy-asigen-bcb26-base">Wandy Asigen — 2026 Bowman Chrome 1st Bowman #BCP-152</option><option value="francisco-renteria-bcb26-base">Francisco Renteria — 2026 Bowman Chrome 1st Bowman #BCP-163</option><option value="angeibel-gomez-bcb26-base">Angeibel Gomez — 2026 Bowman Chrome 1st Bowman #BCP-194</option><option value="pitch-black-booster-box">Pitch Black Booster Box (ME05) — sealed</option><option value="chaos-rising-booster-box">Chaos Rising Booster Box (ME04) — sealed</option><option value="ascended-heroes-etb">Ascended Heroes Elite Trainer Box — sealed</option><option value="prismatic-evolutions-etb">Prismatic Evolutions Elite Trainer Box — sealed</option><option value="destined-rivals-booster-box">Destined Rivals Booster Box (SV10) — sealed</option><option value="phantasmal-flames-booster-box">Phantasmal Flames Booster Box (ME02) — sealed</option><option value="mewtwo-ex-sir-th26">Mewtwo ex SIR #157/128 — 30th Celebration</option><option value="mew-ex-sir-th26">Mew ex SIR #158/128 — 30th Celebration</option><option value="th26-etb">30th Celebration Elite Trainer Box — sealed</option><option value="shohei-ohtani-2018-topps-update-us285">Shohei Ohtani — 2018 Topps Update #US285 Rookie Debut</option><option value="victor-wembanyama-2023-prizm-136">Victor Wembanyama — 2023-24 Panini Prizm #136 RC (base)</option><option value="lamine-yamal-2023-topps-chrome-ucc-64">Lamine Yamal — 2023-24 Topps Chrome UCC #64 RC</option></select>
   </div>
 
   <div class="au-list" id="au-list"><div class="au-skel"></div><div class="au-skel"></div><div class="au-skel"></div><div class="au-skel"></div></div>
@@ -930,9 +823,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <div><b>What we don't know</b>The reserve, the snipes queued for the last ten seconds, and whether the seller's photo matches the title. Read the listing.</div>
   </div>
 </main>
-  </div>
-  </div><!-- /.term -->
-
 
 <footer>
   <div class="footer-inner">
@@ -956,7 +846,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 
 <script>
 (function(){
-  var HREFS = {"ethan-holliday":"/ethan-holliday-rookie-cards#engine-ethan-holliday","andrew-fischer":"/card-andrew-fischer","aiva-arquette":"/aiva-arquette-1st-bowman#engine-aiva-arquette","wehiwa-aloy":"/card-wehiwa-aloy","daniel-pierce":"/card-daniel-pierce","marek-houston":"/card-marek-houston","gage-jump":"/card-gage-jump","justin-gonzalez":"/card-justin-gonzalez","edward-florentino":"/card-edward-florentino","seong-jun-kim":"/card-seong-jun-kim","travis-bazzana":"/card-travis-bazzana","umbreon-ex-sir-pe":"/prismatic-evolutions-guide#engine-umbreon-ex-sir-pe","mega-darkrai-ex-sir":"/pitch-black-set-guide#engine-mega-darkrai-ex-sir","mega-greninja-ex-sir":"/chaos-rising#engine-mega-greninja-ex-sir","tr-mewtwo-ex-sir":"/ascended-heroes#engine-tr-mewtwo-ex-sir","mega-lucario-ex-sir":"/ascended-heroes#engine-mega-lucario-ex-sir","konnor-griffin-sapphire":"/card-konnor-griffin-sapphire","ethan-holliday-sapphire":"/ethan-holliday-rookie-cards#engine-ethan-holliday-sapphire","roman-anthony-sapphire":"/roman-anthony-rookie-cards#engine-roman-anthony-sapphire","kevin-mcgonigle-sapphire":"/card-kevin-mcgonigle-sapphire"};
+  var HREFS = {"ethan-holliday":"/ethan-holliday-rookie-cards#engine-ethan-holliday","andrew-fischer":"/card-andrew-fischer","aiva-arquette":"/aiva-arquette-1st-bowman#engine-aiva-arquette","wehiwa-aloy":"/card-wehiwa-aloy","daniel-pierce":"/card-daniel-pierce","marek-houston":"/card-marek-houston","gage-jump":"/card-gage-jump","justin-gonzalez":"/card-justin-gonzalez","edward-florentino":"/card-edward-florentino","seong-jun-kim":"/card-seong-jun-kim","travis-bazzana":"/card-travis-bazzana","umbreon-ex-sir-pe":"/prismatic-evolutions-guide#engine-umbreon-ex-sir-pe","mega-darkrai-ex-sir":"/pitch-black-set-guide#engine-mega-darkrai-ex-sir","mega-greninja-ex-sir":"/chaos-rising#engine-mega-greninja-ex-sir","tr-mewtwo-ex-sir":"/ascended-heroes#engine-tr-mewtwo-ex-sir","mega-lucario-ex-sir":"/ascended-heroes#engine-mega-lucario-ex-sir","konnor-griffin-sapphire":"/card-konnor-griffin-sapphire","ethan-holliday-sapphire":"/ethan-holliday-rookie-cards#engine-ethan-holliday-sapphire","roman-anthony-sapphire":"/roman-anthony-rookie-cards#engine-roman-anthony-sapphire","kevin-mcgonigle-sapphire":"/card-kevin-mcgonigle-sapphire","ethan-holliday-bcb26-base":"/card-ethan-holliday-bcb26-base","luis-hernandez-bcb26-auto":"/card-luis-hernandez-bcb26-auto","wandy-asigen-bcb26-auto":"/card-wandy-asigen-bcb26-auto","francisco-renteria-bcb26-auto":"/card-francisco-renteria-bcb26-auto","angeibel-gomez-bcb26-auto":"/card-angeibel-gomez-bcb26-auto","luis-hernandez-bcb26-base":"/card-luis-hernandez-bcb26-base","wandy-asigen-bcb26-base":"/card-wandy-asigen-bcb26-base","francisco-renteria-bcb26-base":"/card-francisco-renteria-bcb26-base","angeibel-gomez-bcb26-base":"/card-angeibel-gomez-bcb26-base","mewtwo-ex-sir-th26":"/pokemon-30th-anniversary-2026#engine-mewtwo-ex-sir-th26","mew-ex-sir-th26":"/pokemon-30th-anniversary-2026#engine-mew-ex-sir-th26"};
+  var IDX = {"pb26":"/pitch-black-index","cr26":"/chaos-rising-index","ah26":"/ascended-heroes-index","pris25":"/prismatic-evolutions-index","dr25":"/destined-rivals-index","pf25":"/phantasmal-flames-index","th26":"/pokemon-30th-anniversary-2026","sv151":"/scarlet-violet-151-index","bow26":"/bowman-1st-chrome-index","bb26":"/bowman-2026-index","bcb26":"/bowman-chrome-2026-index"}, STEMS = [["topps-chrome-updates-basketball-sapphire-edition","/topps-chrome-updates-basketball-sapphire-edition"],["prismatic-evolutions-vs-destined-rivals","/prismatic-evolutions-vs-destined-rivals"],["topps-chrome-cactus-jack-basketball","/topps-chrome-cactus-jack-basketball"],["card-francisco-renteria-bcb26-auto","/card-francisco-renteria-bcb26-auto"],["card-francisco-renteria-bcb26-base","/card-francisco-renteria-bcb26-base"],["topps-museum-collection-baseball","/topps-museum-collection-baseball"],["topps-chrome-updates-basketball","/topps-chrome-updates-basketball"],["best-basketball-cards-under-50","/best-basketball-cards-under-50"],["card-angeibel-gomez-bcb26-auto","/card-angeibel-gomez-bcb26-auto"],["card-angeibel-gomez-bcb26-base","/card-angeibel-gomez-bcb26-base"],["card-ethan-holliday-bcb26-base","/card-ethan-holliday-bcb26-base"],["card-luis-hernandez-bcb26-auto","/card-luis-hernandez-bcb26-auto"],["card-luis-hernandez-bcb26-base","/card-luis-hernandez-bcb26-base"],["card-kevin-mcgonigle-sapphire","/card-kevin-mcgonigle-sapphire"],["pokemon-30th-anniversary-2026","/pokemon-30th-anniversary-2026"],["topps-chrome-black-basketball","/topps-chrome-black-basketball"],["best-baseball-cards-under-50","/best-baseball-cards-under-50"],["best-football-cards-under-50","/best-football-cards-under-50"],["card-konnor-griffin-sapphire","/card-konnor-griffin-sapphire"],["card-wandy-asigen-bcb26-auto","/card-wandy-asigen-bcb26-auto"],["card-wandy-asigen-bcb26-base","/card-wandy-asigen-bcb26-base"],["topps-chrome-basketball-2026","/topps-chrome-basketball-2026"],["topps-cosmic-chrome-football","/topps-cosmic-chrome-football"],["bowman-chrome-baseball-2026","/bowman-chrome-baseball-2026"],["pitch-black-vs-chaos-rising","/pitch-black-vs-chaos-rising"],["topps-chrome-black-football","/topps-chrome-black-football"],["topps-definitive-basketball","/topps-definitive-basketball"],["topps-chrome-baseball-2026","/topps-chrome-baseball-2026"],["topps-chrome-sapphire-2026","/topps-chrome-sapphire-2026"],["topps-inception-basketball","/topps-inception-basketball"],["topps-pristine-basketball","/topps-pristine-basketball"],["hobby-box-roi-calculator","/hobby-box-roi-calculator"],["pokemon-delta-reign-2026","/pokemon-delta-reign-2026"],["topps-inception-baseball","/topps-inception-baseball"],["topps-update-series-2026","/topps-update-series-2026"],["is-pokemon-151-worth-it","/is-pokemon-151-worth-it"],["topps-flagship-football","/topps-flagship-football"],["topps-pristine-baseball","/topps-pristine-baseball"],["topps-tier-one-baseball","/topps-tier-one-baseball"],["card-edward-florentino","/card-edward-florentino"],["topps-tribute-baseball","/topps-tribute-baseball"],["best-hobby-boxes-2026","/best-hobby-boxes-2026"],["nfl-rookie-cards-2026","/nfl-rookie-cards-2026"],["topps-finest-baseball","/topps-finest-baseball"],["world-cup-2026-soccer","/world-cup-2026-soccer-cards"],["affiliate-disclosure","/affiliate-disclosure"],["bowman-sapphire-2026","/bowman-sapphire-2026"],["card-justin-gonzalez","/card-justin-gonzalez"],["prismatic-evolutions","/prismatic-evolutions-guide"],["prismatic-evolutions","/prismatic-evolutions-index"],["card-andrew-fischer","/card-andrew-fischer"],["card-travis-bazzana","/card-travis-bazzana"],["pete-crow-armstrong","/pete-crow-armstrong-cards"],["topps-series-1-2026","/topps-series-1-2026"],["topps-series-2-2026","/topps-series-2-2026"],["best-card-supplies","/best-card-supplies"],["bowman-chrome-2026","/bowman-chrome-2026-index"],["card-daniel-pierce","/card-daniel-pierce"],["card-marek-houston","/card-marek-houston"],["card-seong-jun-kim","/card-seong-jun-kim"],["scarlet-violet-151","/scarlet-violet-151-index"],["bowman-1st-chrome","/bowman-1st-chrome-index"],["cristiano-ronaldo","/cristiano-ronaldo-cards"],["jacob-misiorowski","/jacob-misiorowski-rookie-cards"],["munetaka-murakami","/munetaka-murakami-rookie-cards"],["phantasmal-flames","/phantasmal-flames-index"],["victor-wembanyama","/victor-wembanyama-rookie-cards"],["card-wehiwa-aloy","/card-wehiwa-aloy"],["fernando-mendoza","/fernando-mendoza-rookie-cards"],["pokemon-tcg-2026","/pokemon-tcg-2026"],["release-calendar","/release-calendar"],["umbreon-ex-worth","/umbreon-ex-worth"],["adley-rutschman","/adley-rutschman-cards"],["ascended-heroes","/ascended-heroes-index"],["ascended-heroes","/ascended-heroes"],["bowman-football","/bowman-football"],["destined-rivals","/destined-rivals-index"],["how-prices-work","/how-prices-work"],["wnba-cards-2026","/wnba-cards-2026"],["bowman-bangers","/bowman-bangers"],["cameron-boozer","/cameron-boozer-rookie-cards"],["card-gage-jump","/card-gage-jump"],["chase-delauter","/chase-delauter-rookie-cards"],["erling-haaland","/erling-haaland-rookie-cards"],["ethan-holliday","/ethan-holliday-rookie-cards"],["roy-watch-2026","/roy-watch-2026"],["aiva-arquette","/aiva-arquette-1st-bowman"],["kylian-mbappe","/kylian-mbappe-rookie-cards"],["roman-anthony","/roman-anthony-rookie-cards"],["shohei-ohtani","/shohei-ohtani-cards"],["chaos-rising","/chaos-rising-index"],["chaos-rising","/chaos-rising"],["cooper-flagg","/cooper-flagg-rookie-cards"],["lamine-yamal","/lamine-yamal-rookie-cards"],["lebron-james","/lebron-james-cards"],["lionel-messi","/lionel-messi-cards"],["track-record","/track-record"],["bowman-2026","/bowman-2026-index"],["pitch-black","/pitch-black-index"],["pitch-black","/pitch-black-set-guide"],["psa-grading","/psa-grading-guide"],["tag-grading","/tag-grading-guide"],["harry-kane","/harry-kane-cards"]];
+  function hrefFor(id){ if (HREFS[id]) return HREFS[id]; var p = String(id).split('-')[0]; if (IDX[p]) return IDX[p]; for (var i = 0; i < STEMS.length; i++) if (String(id).indexOf(STEMS[i][0]) === 0) return STEMS[i][1]; return null; }
   var state = { f:'all', card:'', rows:[], gen:null, day:null };
   var list = document.getElementById('au-list');
   var fmt = function(n){ if (n==null || !isFinite(n)) return '\u2014'; return '$' + (n>=1000 ? Math.round(n).toLocaleString('en-US') : n>=100 ? String(Math.round(n)) : n.toFixed(2)); };
@@ -970,12 +862,12 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   function render(){
     var rows = state.rows.filter(function(r){ var l = left(r.endDate); if (l.over) return false; if (state.card && r.id !== state.card) return false; if (state.f==='under') return r.vsMark!=null && r.vsMark < 0; if (state.f==='bids') return (r.bidCount||0) >= 1; if (state.f==='soon') return l.soon; return true; });
     if (!rows.length) { list.innerHTML = '<div class="au-empty"><b>Nothing here right now.</b> ' + (state.f==='under' ? 'No verified auction is under its card\u2019s mark at the moment \u2014 that happens; the desk refreshes every 15 minutes and most of the action is in the last hour.' : state.f==='soon' ? 'No verified auction closes in the next six hours.' : 'No verified live auctions for ' + (state.card ? 'this card' : 'the tracked cards') + ' at the moment.') + ' <a href="/cards">Card charts \u2192</a></div>'; return; }
-    list.innerHTML = rows.map(function(r){ var l = left(r.endDate); var under = r.vsMark!=null && r.vsMark < 0; var opening = under && !(r.bidCount>=1); var href = HREFS[r.id] || ('/card-' + r.id);
-      var vsM = r.mark ? (opening ? '<b class="o" title="Opening price, no bids yet">opening ' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>' : '<b class="' + (under?'g':'r') + '">' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>') : '<b>no mark</b>';
+    list.innerHTML = rows.map(function(r){ var l = left(r.endDate); var under = r.vsMark!=null && r.vsMark < 0; var opening = under && !(r.bidCount>=1); var href = hrefFor(r.id);
+      var vsM = r.mark ? (opening ? '<b class="o" title="Opening price, no bids yet">opening ' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>' : '<b class="' + (under?'g':'r') + '">' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>') : '<b>no price yet</b>';
       var vsH = r.hammerMedian ? '<span>' + pct(r.vsHammer) + ' vs last bids ' + fmt(r.hammerMedian) + ' (' + r.closes + ' closes)</span>' : '<span>no closed auctions yet</span>';
       return '<div class="au-row' + (opening?' opening':under?' under':'') + (l.soon?' soon':'') + '">' +
-        '<a class="ph" href="' + esc(href) + '">' + (r.image ? '<img src="' + esc(r.image) + '" alt="" loading="lazy">' : '') + '</a>' +
-        '<div class="nm"><a class="c" href="' + esc(href) + '">' + esc(r.label.split(/\s[\u2014\u2013]\s/)[0]) + '</a><span class="t" title="' + esc(r.title) + '">' + esc(r.title) + '</span><span class="sl">' + (r.seller ? esc(r.seller.username) + ' \u00b7 ' + esc(r.seller.feedbackPct) + '% (' + esc(r.seller.feedbackScore) + ')' : '') + '</span></div>' +
+        (href ? '<a class="ph" href="' + esc(href) + '">' : '<span class="ph">') + (r.image ? '<img src="' + esc(r.image) + '" alt="" loading="lazy">' : '') + (href ? '</a>' : '</span>') +
+        '<div class="nm">' + (href ? '<a class="c" href="' + esc(href) + '">' : '<span class="c">') + esc(r.label.split(/\s[\u2014\u2013]\s/)[0]) + (href ? '</a>' : '</span>') + '<span class="t" title="' + esc(r.title) + '">' + esc(r.title) + '</span><span class="sl">' + (r.seller ? esc(r.seller.username) + ' \u00b7 ' + esc(r.seller.feedbackPct) + '% (' + esc(r.seller.feedbackScore) + ')' : '') + '</span></div>' +
         '<div class="au-num price"><b>' + fmt(r.total) + '</b><span>' + fmt(r.bid) + ' + ' + (r.shipping==null ? 'ship ?' : r.shipping===0 ? 'free ship' : fmt(r.shipping) + ' ship') + ' \u00b7 ' + (r.bidCount==null ? '' : r.bidCount + ' bid' + (r.bidCount===1?'':'s')) + '</span></div>' +
         '<div class="au-num au-end"><b>' + l.t + '</b><span>' + esc(endsAt(r.endDate)) + '</span></div>' +
         '<div class="au-vs">' + vsM + vsH + '</div>' +
@@ -1000,7 +892,5 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   setInterval(load, 15*60000);
 })();
 </script>
-<script src="/js/vault-schema.js?v=3"></script>
-<script src="/js/rail-hydrate.js?v=1" defer></script>
 </body>
 </html>

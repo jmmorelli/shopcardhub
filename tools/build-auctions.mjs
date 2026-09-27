@@ -34,8 +34,15 @@ if (!pageCss || !gtag || !nav || !footer) throw new Error("shell pieces not foun
 const wl = JSON.parse(read("data/watchlist.json"));
 const cards = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.id && c.query);
 const hostOf = (c) => (c.slug && exists(c.slug + ".html") ? c.slug : null);
-const cardHref = (c) => (hostOf(c) ? "/" + hostOf(c) + "#engine-" + c.id : "/card-" + c.id);
-const HREFS = Object.fromEntries(cards.map((c) => [c.id, cardHref(c)]));
+// Sep 27 2026 QA sweep: 65 auction rows linked to /card-<id> pages that were never built (404).
+// A row now links to its host page, else its own built /card-<id> page, else the set index / player
+// page its id starts with (resolved client-side from STEMS), else it renders unlinked.
+const cardHref = (c) => (hostOf(c) ? "/" + hostOf(c) + "#engine-" + c.id : exists("card-" + c.id + ".html") ? "/card-" + c.id : null);
+const IDX = (() => { try { const j = JSON.parse(read("data/indices.json")); const o = {}; for (const [k, v] of Object.entries(j)) if (v && v.page) o[k.toLowerCase()] = v.page; return o; } catch (e) { return {}; } })();
+const STEMS = fs.readdirSync(REPO).filter((f) => /\.html$/.test(f)).map((f) => f.slice(0, -5))
+  .map((slug) => [slug.replace(/-(rookie-cards|cards|index|1st-bowman|guide|set-guide)$/, ""), "/" + slug])
+  .filter(([stem]) => stem.length >= 6 && stem.includes("-")).sort((a, b) => b[0].length - a[0].length);
+const HREFS = Object.fromEntries(cards.map((c) => [c.id, cardHref(c)]).filter(([, h]) => h));
 
 const CSS = `
 .au-wrap { max-width:1060px; margin:0 auto; padding:28px 20px 60px; }
@@ -151,14 +158,14 @@ ${nav}
 
   <div class="au-strip" id="au-strip">
     <div class="au-cell"><div class="l">Live auctions</div><div class="v" id="k-count">—</div><div class="s">verified, ${cards.length} cards</div></div>
-    <div class="au-cell"><div class="l">Under the mark · with bids</div><div class="v g" id="k-under">—</div><div class="s" id="k-under-s">bid + ship below the ask floor</div></div>
+    <div class="au-cell"><div class="l">Under our price · with bids</div><div class="v g" id="k-under">—</div><div class="s" id="k-under-s">bid + ship below the ask floor</div></div>
     <div class="au-cell"><div class="l">Closing in 6h</div><div class="v" id="k-soon">—</div><div class="s">act-now window</div></div>
     <div class="au-cell"><div class="l">Marks as of</div><div class="v" id="k-day" style="font-size:20px;">—</div><div class="s" id="k-gen">feed —</div></div>
   </div>
 
   <div class="au-ctl" role="group" aria-label="Filter auctions">
     <button class="au-chip" data-f="all" aria-pressed="true">All verified</button>
-    <button class="au-chip" data-f="under" aria-pressed="false">Under the mark</button>
+    <button class="au-chip" data-f="under" aria-pressed="false">Under our price</button>
     <button class="au-chip" data-f="bids" aria-pressed="false">Has bids</button>
     <button class="au-chip" data-f="soon" aria-pressed="false">Closing in 6h</button>
     <select class="au-sel" id="au-card" aria-label="Card"><option value="">Every card</option>${cards.map((c) => `<option value="${esc(c.id)}">${esc(c.label)}</option>`).join("")}</select>
@@ -181,6 +188,8 @@ ${footer}
 <script>
 (function(){
   var HREFS = ${JSON.stringify(HREFS)};
+  var IDX = ${JSON.stringify(IDX)}, STEMS = ${JSON.stringify(STEMS)};
+  function hrefFor(id){ if (HREFS[id]) return HREFS[id]; var p = String(id).split('-')[0]; if (IDX[p]) return IDX[p]; for (var i = 0; i < STEMS.length; i++) if (String(id).indexOf(STEMS[i][0]) === 0) return STEMS[i][1]; return null; }
   var state = { f:'all', card:'', rows:[], gen:null, day:null };
   var list = document.getElementById('au-list');
   var fmt = function(n){ if (n==null || !isFinite(n)) return '\\u2014'; return '$' + (n>=1000 ? Math.round(n).toLocaleString('en-US') : n>=100 ? String(Math.round(n)) : n.toFixed(2)); };
@@ -194,12 +203,12 @@ ${footer}
   function render(){
     var rows = state.rows.filter(function(r){ var l = left(r.endDate); if (l.over) return false; if (state.card && r.id !== state.card) return false; if (state.f==='under') return r.vsMark!=null && r.vsMark < 0; if (state.f==='bids') return (r.bidCount||0) >= 1; if (state.f==='soon') return l.soon; return true; });
     if (!rows.length) { list.innerHTML = '<div class="au-empty"><b>Nothing here right now.</b> ' + (state.f==='under' ? 'No verified auction is under its card\\u2019s mark at the moment \\u2014 that happens; the desk refreshes every 15 minutes and most of the action is in the last hour.' : state.f==='soon' ? 'No verified auction closes in the next six hours.' : 'No verified live auctions for ' + (state.card ? 'this card' : 'the tracked cards') + ' at the moment.') + ' <a href="/cards">Card charts \\u2192</a></div>'; return; }
-    list.innerHTML = rows.map(function(r){ var l = left(r.endDate); var under = r.vsMark!=null && r.vsMark < 0; var opening = under && !(r.bidCount>=1); var href = HREFS[r.id] || ('/card-' + r.id);
-      var vsM = r.mark ? (opening ? '<b class="o" title="Opening price, no bids yet">opening ' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>' : '<b class="' + (under?'g':'r') + '">' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>') : '<b>no mark</b>';
+    list.innerHTML = rows.map(function(r){ var l = left(r.endDate); var under = r.vsMark!=null && r.vsMark < 0; var opening = under && !(r.bidCount>=1); var href = hrefFor(r.id);
+      var vsM = r.mark ? (opening ? '<b class="o" title="Opening price, no bids yet">opening ' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>' : '<b class="' + (under?'g':'r') + '">' + pct(r.vsMark) + ' vs mark ' + fmt(r.mark) + '</b>') : '<b>no price yet</b>';
       var vsH = r.hammerMedian ? '<span>' + pct(r.vsHammer) + ' vs last bids ' + fmt(r.hammerMedian) + ' (' + r.closes + ' closes)</span>' : '<span>no closed auctions yet</span>';
       return '<div class="au-row' + (opening?' opening':under?' under':'') + (l.soon?' soon':'') + '">' +
-        '<a class="ph" href="' + esc(href) + '">' + (r.image ? '<img src="' + esc(r.image) + '" alt="" loading="lazy">' : '') + '</a>' +
-        '<div class="nm"><a class="c" href="' + esc(href) + '">' + esc(r.label.split(/\\s[\\u2014\\u2013]\\s/)[0]) + '</a><span class="t" title="' + esc(r.title) + '">' + esc(r.title) + '</span><span class="sl">' + (r.seller ? esc(r.seller.username) + ' \\u00b7 ' + esc(r.seller.feedbackPct) + '% (' + esc(r.seller.feedbackScore) + ')' : '') + '</span></div>' +
+        (href ? '<a class="ph" href="' + esc(href) + '">' : '<span class="ph">') + (r.image ? '<img src="' + esc(r.image) + '" alt="" loading="lazy">' : '') + (href ? '</a>' : '</span>') +
+        '<div class="nm">' + (href ? '<a class="c" href="' + esc(href) + '">' : '<span class="c">') + esc(r.label.split(/\\s[\\u2014\\u2013]\\s/)[0]) + (href ? '</a>' : '</span>') + '<span class="t" title="' + esc(r.title) + '">' + esc(r.title) + '</span><span class="sl">' + (r.seller ? esc(r.seller.username) + ' \\u00b7 ' + esc(r.seller.feedbackPct) + '% (' + esc(r.seller.feedbackScore) + ')' : '') + '</span></div>' +
         '<div class="au-num price"><b>' + fmt(r.total) + '</b><span>' + fmt(r.bid) + ' + ' + (r.shipping==null ? 'ship ?' : r.shipping===0 ? 'free ship' : fmt(r.shipping) + ' ship') + ' \\u00b7 ' + (r.bidCount==null ? '' : r.bidCount + ' bid' + (r.bidCount===1?'':'s')) + '</span></div>' +
         '<div class="au-num au-end"><b>' + l.t + '</b><span>' + esc(endsAt(r.endDate)) + '</span></div>' +
         '<div class="au-vs">' + vsM + vsH + '</div>' +

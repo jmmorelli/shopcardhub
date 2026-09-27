@@ -79,6 +79,8 @@ const CSS = `<style>
   .bstrip .bs-case { font-family:var(--fm,monospace); font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text-dim,#5a7880) !important; white-space:nowrap; padding:10px 4px; border-bottom:1px dotted var(--border2,rgba(255,255,255,0.22)); }
   .bstrip .bs-fan { display:inline-flex; align-items:center; gap:7px; font-family:var(--fm,monospace); font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; padding:10px 16px; border-radius:2px; white-space:nowrap; background:transparent; color:var(--text-head,#e4f0f4) !important; border:1px solid var(--gold,#f5c800); }
   .bstrip .bs-fan:hover { background:var(--gold,#f5c800); color:#000 !important; text-decoration:none; }
+  .bstrip .bs-rep { font-family:var(--fm,monospace); font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--gold,#f5c800) !important; white-space:nowrap; padding:10px 4px; border-bottom:1px dotted var(--gold,#f5c800); }
+  .bstrip .bs-rep:hover { color:#fff !important; border-bottom-color:#fff; text-decoration:none; }
   .bstrip .bs-case:hover { color:var(--gold,#f5c800) !important; border-bottom-color:var(--gold,#f5c800); text-decoration:none; }
   .bs-fine { max-width:1060px; margin:8px auto 0; font-size:11px; line-height:1.55; color:var(--text-dim,#5a7880); }
   @media (max-width:760px) {
@@ -112,9 +114,14 @@ function block(slug, e) {
   if (c) lines.push(`      <a class="bs-case" href="${attr(epn(c.q, c.customid))}" target="_blank" rel="noopener sponsored" title="Sealed cases of ${attr(e.product)} on eBay &mdash; a search, not a price" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'case',page:location.pathname})">Sealed cases &rarr;</a>`);
   const fz = e.fanatics;
   if (fz) lines.push(`      <a class="bs-fan" href="${attr(fan(fz.q, slug))}" target="_blank" rel="noopener sponsored" title="${attr(fz.title || "Search fanatics.com")}" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}',page:location.pathname})">${text(fz.label || "At Fanatics &rarr;")}</a>`);
+  // Rep-the-player TEST (Sep 27 2026, Mo: "add some test rep the player links… give people options and see").
+  // Fanatics gear search for the player; subId1 = <slug>-rep so Impact separates gear from box clicks.
+  const rp = e.rep;
+  if (rp) lines.push(`      <a class="bs-rep" href="${attr(fan(rp.q, slug + "-rep"))}" target="_blank" rel="noopener sponsored" title="${attr(rp.q)} jerseys and gear on fanatics.com" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}-rep',page:location.pathname})">${text(rp.label)}</a>`);
   lines.push(`    </span>`);
   lines.push(`  </div>`);
   const fine = [`Affiliate links &mdash; ShopCardHub earns an eBay Partner Network commission on qualifying purchases at no extra cost to you. Any figure shown is the lowest live single-unit <em>ask</em>, not a sold comp.`];
+  if (rp && !fz) fine.push(`The gear link is a fanatics.com search &mdash; ShopCardHub earns a Fanatics affiliate commission on qualifying purchases.`);
   if (fz) fine.push(`The Fanatics link is a fanatics.com search (Fanatics sells factory-sealed Topps retail boxes) &mdash; ShopCardHub earns a Fanatics affiliate commission on qualifying purchases; no Fanatics price is shown here.`);
   if (c) fine.push(`The sealed-cases link is a search, not a price &mdash; case and multi-box listings are excluded from every figure on this site.`);
   if (s && s.ag) fine.push(`&ldquo;Authenticated&rdquo; is eBay&rsquo;s Authenticity Guarantee: eBay authenticates eligible single cards $200+ before delivery, at no cost to the buyer (eBay, August 2026). It is eBay&rsquo;s program, not our assessment.`);

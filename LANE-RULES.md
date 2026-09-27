@@ -627,6 +627,17 @@ and the charter points at it. **If you see a day in any other document, this tab
 
 > **WHO READS THE FILINGS (2026-09-21, later the same day).** Until today no run read the Mac-side filings: the desktop lanes (Monday scan, Tuesday board, Thursday trader, Sunday brief, the X Desk Watch's vendor brief) wrote into `Card Hub/` on Mo's Mac, and the only CoS runs were cloud tasks with no Mac — so those reports reached the CoS only when Mo pasted them into a chat. **Fixed: the CoS · desk (weekdays 14:00, Mac-linked) is the single reader of every inbox, the executor of what is auto-approved, and the deliverer of vendor briefs.** A lane that writes a report writes it for the desk, not for Mo. The 06:00 cloud daily is retired into it.
 
+> **GO-TIME CADENCE — 2026-09-27 (Mo: "I want everyone to work daily to get the site better and find us more opportunities. No sense in waiting for weekly things imo, it's go time!").**
+> Supersedes the Sep 21 cut for the lanes below. Daily, staggered so pushes never overlap:
+> 04:15 Earnings Ideas Desk · 05:00 Integrity Watch · 05:56 Growth League (1 new page/agent/run, 5/agent/week) ·
+> 10:10 **Site Sweep — bugs + UX** (new: Playwright sweep of every sitemap page at desktop + phone, plus a
+> new-collector UX read of 3 rotating pages; fixes S-size issues itself, gates, pushes; M-size goes to STATE) ·
+> 13:00 X Desk Watch · 14:00 CoS desk (now 7 days). Weekly lanes unchanged (Wed site audit, Sun CoS, Thu trader, Sat keeper).
+> Guard rails that keep the Sep 21 problem from coming back: **commit only when a public file changed** (docs ride
+> along with the next public commit), fetch + rebase before every push, and if the three gates are not FAIL 0, stage a
+> patch for the 14:00 desk instead of pushing. Progressive disclosure is the house UX rule (plain read on top,
+> "Show the numbers" for depth; js/plain-read.js, js/fold-dense.js) — no run adds jargon above a fold.
+
 > **CADENCE CUT — 2026-09-21 (Mo: "we are running too many scheduled runs… causing issues with the site").**
 > Before: ~36 cloud fires + ~10 desktop fires a week, every one reading a 95 KB STATE.md and a 24 KB rulebook,
 > and 110 commits in the week to Sep 21 of which **68 touched no public file yet each queued a Vercel production

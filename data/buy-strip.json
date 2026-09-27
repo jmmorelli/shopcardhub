@@ -1,5 +1,5 @@
 {
-  "_comment": "Above-the-fold eBay conversion strip, one entry per page. Consumed by tools/build-buy-strip.mjs, which writes the BUYSTRIP block into each page; enforced by site-auditor §15 (conversion-coverage). q = eBay _nkw for the strip's primary CTA; customid = EPN Custom ID so per-product earnings are readable in the EPN 'Performance by Custom ID' report. live=true shows the lowest live single-unit ask from /api/comps beside the product; it is only set where the primary query names ONE sealed product, because the cheapest listing on a broad player search is a $0.99 common and tells the reader nothing. Pages deliberately outside the contract are listed in the auditor's CONVERSION_EXEMPT set, not here. case = the sealed-CASE link rendered beside the box link (Idea #32, adopted 2026-09-20): a LINK ONLY — no figure is ever rendered from it, it never reaches the price engine and it is never an index input, because a case would corrupt a per-box mark. It is present only where tools/buy-strip-health.mjs measured at least CASE_MIN clean case listings (tools/case-shelf.mjs); `must` is a contiguous-phrase guard so a Bowman Chrome case link cannot land on a plain Bowman case (LANE-RULES R8). secondary.ag = true adds eBay's Authenticity Guarantee filter (LH_AV=1, read off eBay's own 'Show only' sidebar 2026-09-20) and routes the click to its own -ag custom ID, so the trust-copy effect is readable against the plain IDs. Set only where the link's own /api/comps median ask is >= $200 (eBay's Aug 2026 AG threshold for single cards) AND the AG-filtered search still has real depth — a narrow query plus AG is how you send a reader to an empty page. fanatics = optional {q,label,title}: a fanatics.com search link (Impact, subId1 = page slug) rendered beside the eBay CTAs (Sep 27 2026, Mo: restore the Fanatics links). Link only, never a price.",
+  "_comment": "Above-the-fold eBay conversion strip, one entry per page. Consumed by tools/build-buy-strip.mjs, which writes the BUYSTRIP block into each page; enforced by site-auditor §15 (conversion-coverage). q = eBay _nkw for the strip's primary CTA; customid = EPN Custom ID so per-product earnings are readable in the EPN 'Performance by Custom ID' report. live=true shows the lowest live single-unit ask from /api/comps beside the product; it is only set where the primary query names ONE sealed product, because the cheapest listing on a broad player search is a $0.99 common and tells the reader nothing. Pages deliberately outside the contract are listed in the auditor's CONVERSION_EXEMPT set, not here. case = the sealed-CASE link rendered beside the box link (Idea #32, adopted 2026-09-20): a LINK ONLY — no figure is ever rendered from it, it never reaches the price engine and it is never an index input, because a case would corrupt a per-box mark. It is present only where tools/buy-strip-health.mjs measured at least CASE_MIN clean case listings (tools/case-shelf.mjs); `must` is a contiguous-phrase guard so a Bowman Chrome case link cannot land on a plain Bowman case (LANE-RULES R8). secondary.ag = true adds eBay's Authenticity Guarantee filter (LH_AV=1, read off eBay's own 'Show only' sidebar 2026-09-20) and routes the click to its own -ag custom ID, so the trust-copy effect is readable against the plain IDs. Set only where the link's own /api/comps median ask is >= $200 (eBay's Aug 2026 AG threshold for single cards) AND the AG-filtered search still has real depth — a narrow query plus AG is how you send a reader to an empty page. fanatics = optional {q,label,title}: a fanatics.com search link (Impact, subId1 = page slug) rendered beside the eBay CTAs (Sep 27 2026, Mo: restore the Fanatics links). Link only, never a price. rep = optional {q,label}: TEST 'rep the player' Fanatics gear search (subId1 <slug>-rep), Sep 27 2026.",
   "generated": "2026-09-27",
   "pages": {
     "adley-rutschman-cards": {
@@ -15,7 +15,11 @@
         "customid": "adley-rutschman-cards-hero",
         "title": "Adley Rutschman 2023 Topps Chrome Rookie Auto"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Adley Rutschman",
+        "label": "Rep Rutschman &mdash; gear &rarr;"
+      }
     },
     "aiva-arquette-1st-bowman": {
       "product": "Aiva Arquette 1st Bowman",
@@ -224,7 +228,11 @@
         "title": "Cameron Boozer 2025-26 Bowman U Chrome Prospect Auto",
         "ag": true
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Cameron Boozer",
+        "label": "Rep Boozer &mdash; gear &rarr;"
+      }
     },
     "chaos-rising": {
       "product": "Pokémon TCG Chaos Rising Elite Trainer Box",
@@ -255,7 +263,11 @@
         "customid": "chase-delauter-rookie-cards-hero",
         "title": "Chase DeLauter 2026 Bowman #37 RC"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Chase DeLauter",
+        "label": "Rep DeLauter &mdash; gear &rarr;"
+      }
     },
     "cooper-flagg-rookie-cards": {
       "product": "Cooper Flagg rookie cards",
@@ -270,7 +282,11 @@
         "customid": "cooper-flagg-rookie-cards-hero",
         "title": "Cooper Flagg 2025-26 Topps Chrome #251 Silver Refractor"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Cooper Flagg",
+        "label": "Rep Flagg &mdash; gear &rarr;"
+      }
     },
     "cristiano-ronaldo-cards": {
       "product": "Cristiano Ronaldo cards",
@@ -285,7 +301,11 @@
         "customid": "cristiano-ronaldo-cards-hero",
         "title": "Cristiano Ronaldo 2002-03 Panini Mega Craques #137 RC"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Cristiano Ronaldo",
+        "label": "Rep Ronaldo &mdash; gear &rarr;"
+      }
     },
     "erling-haaland-rookie-cards": {
       "product": "Erling Haaland rookie cards",
@@ -300,7 +320,11 @@
         "customid": "erling-haaland-rookie-cards-hero",
         "title": "Erling Haaland 2019-20 Topps Chrome UCL #74 RC"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Erling Haaland",
+        "label": "Rep Haaland &mdash; gear &rarr;"
+      }
     },
     "ethan-holliday-rookie-cards": {
       "product": "Ethan Holliday rookie cards",
@@ -330,7 +354,11 @@
         "customid": "fernando-mendoza-rookie-cards-hero",
         "title": "Fernando Mendoza 2026 Topps NOW Draft RC"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Fernando Mendoza",
+        "label": "Rep Mendoza &mdash; gear &rarr;"
+      }
     },
     "harry-kane-cards": {
       "product": "Harry Kane cards",
@@ -345,7 +373,11 @@
         "customid": "harry-kane-cards-hero",
         "title": "Harry Kane 2014-15 Topps Merlin #492 Rookie"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Harry Kane",
+        "label": "Rep Kane &mdash; gear &rarr;"
+      }
     },
     "jacob-misiorowski-rookie-cards": {
       "product": "Jacob Misiorowski rookie cards",
@@ -360,7 +392,11 @@
         "customid": "jacob-misiorowski-rookie-cards-hero",
         "title": "Jacob Misiorowski 2022 Bowman Chrome 1st Auto"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Jacob Misiorowski",
+        "label": "Rep Misiorowski &mdash; gear &rarr;"
+      }
     },
     "kylian-mbappe-rookie-cards": {
       "product": "Kylian Mbappe rookie cards",
@@ -375,7 +411,11 @@
         "customid": "kylian-mbappe-rookie-cards-hero",
         "title": "Kylian Mbappé 2017-18 Topps Chrome UCL RC"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Kylian Mbappe",
+        "label": "Rep Mbappe &mdash; gear &rarr;"
+      }
     },
     "lamine-yamal-rookie-cards": {
       "product": "Lamine Yamal rookie cards",
@@ -390,7 +430,11 @@
         "customid": "lamine-yamal-rookie-cards-hero",
         "title": "Lamine Yamal 2023-24 Topps Chrome UCC #64 RC"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Lamine Yamal",
+        "label": "Rep Yamal &mdash; gear &rarr;"
+      }
     },
     "lebron-james-cards": {
       "product": "LeBron James cards",
@@ -406,7 +450,11 @@
         "title": "LeBron James 2003-04 Topps #221 RC",
         "ag": true
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "LeBron James",
+        "label": "Rep James &mdash; gear &rarr;"
+      }
     },
     "lionel-messi-cards": {
       "product": "Lionel Messi cards",
@@ -422,7 +470,11 @@
         "title": "Lionel Messi 2004-05 Panini Megacracks #71 RC",
         "ag": true
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Lionel Messi",
+        "label": "Rep Messi &mdash; gear &rarr;"
+      }
     },
     "munetaka-murakami-rookie-cards": {
       "product": "Munetaka Murakami rookie cards",
@@ -437,7 +489,11 @@
         "customid": "munetaka-murakami-rookie-cards-hero",
         "title": "Munetaka Murakami 2026 Bowman #9 RC"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Munetaka Murakami",
+        "label": "Rep Murakami &mdash; gear &rarr;"
+      }
     },
     "nfl-rookie-cards-2026": {
       "product": "2026 Bowman Football hobby box",
@@ -474,7 +530,11 @@
         "customid": "pete-crow-armstrong-cards-hero",
         "title": "Pete Crow-Armstrong 2020 Bowman Chrome Draft 1st Auto"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Pete Crow-Armstrong",
+        "label": "Rep PCA &mdash; gear &rarr;"
+      }
     },
     "pitch-black-set-guide": {
       "product": "Pokémon TCG Pitch Black Booster Bundle",
@@ -530,7 +590,11 @@
         "customid": "roman-anthony-rookie-cards-hero",
         "title": "Roman Anthony 2023 Bowman Chrome 1st Prospect"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Roman Anthony",
+        "label": "Rep Anthony &mdash; gear &rarr;"
+      }
     },
     "roy-watch-2026": {
       "product": "2026 ROY-watch rookie autos",
@@ -560,7 +624,11 @@
         "customid": "shohei-ohtani-cards-hero",
         "title": "Shohei Ohtani 2018 Topps Update #US285 Rookie Debut"
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Shohei Ohtani",
+        "label": "Rep Ohtani &mdash; gear &rarr;"
+      }
     },
     "topps-chrome-baseball-2026": {
       "product": "2026 Topps Chrome Baseball Hobby Box",
@@ -1040,7 +1108,11 @@
         "title": "Victor Wembanyama 2023-24 Panini Prizm #136 Silver",
         "ag": true
       },
-      "live": false
+      "live": false,
+      "rep": {
+        "q": "Victor Wembanyama",
+        "label": "Rep Wemby &mdash; gear &rarr;"
+      }
     },
     "wnba-cards-2026": {
       "product": "2026 WNBA cards",
