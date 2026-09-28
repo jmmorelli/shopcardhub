@@ -357,11 +357,12 @@ function block(x, c) {
   </div>
   ${subs}
   ${chase}
+  ${rest ? `<div class="sidx-cap">Top 10 of ${rows.length} cards by weight · the full basket is one tap below the table</div>` : ""}
   <div class="sidx-tbl"><table>
     <thead><tr><th>#</th><th>Card</th><th>Sold mark</th><th>Weight</th><th title="clean sold comps in the trailing 30 days — a gate input, not a volume figure">Sales 30D</th><th class="th-act">Watch · Buy · <span title="live eBay auction on this exact card, soonest close with bids; refreshed every 15 min">Bid</span></th></tr></thead>
     <tbody>${top10}</tbody>
   </table></div>
-  ${rest ? `<details class="sidx-more"><summary>Holdings 11–${rows.length} · every card in the basket</summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
+  ${rest ? `<details class="sidx-more"><summary><span class="sm-open">Show all ${rows.length} cards ▾</span><span class="sm-close">Hide cards 11–${rows.length} ▴</span></summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
   <p class="sidx-note" id="${x.ticker.toLowerCase()}-method"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay. Price-weighted on PriceCharting's dated ungraded sold list (blended eBay + TCGplayer), never asks. Caps: no card above ${(CAP * 100).toFixed(0)}% and positions above ${(BIG * 100).toFixed(0)}% never past ${(BIG_SUM * 100).toFixed(0)}% together (the Select Sector SPDR 5/50 rule) — a weight marked * is capped, and every cap is a weight in the divisor math, so applying one never moves the level. Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; entries, exits and cap changes are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before). ${unpriced} of ${x.universe.length} cards are in the universe but not the basket. n30 is a liquidity gate, never a volume figure (the source caps its table at 60 rows). ${esc(c.note)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>
 </section></div>`;
 }
@@ -438,7 +439,11 @@ const CSS = `<style id="sidx-css">
 .sidx-auc-slot a.auc small{font-family:var(--fm,ui-monospace,monospace);font-weight:400;letter-spacing:0;text-transform:none;color:var(--sidx-dim);margin-left:6px;font-size:10.5px}
 .sidx-auc-slot a.auc:hover{background:var(--sidx);color:#000} .sidx-auc-slot a.auc:hover small{color:#000}
 .sidx-more{margin-top:8px}
-.sidx-more>summary{cursor:pointer;font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-dim);padding:10px 0}
+.sidx-more>summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;min-height:40px;font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:14px;letter-spacing:1.2px;text-transform:uppercase;color:var(--sidx);border:1px solid var(--sidx);border-radius:2px;padding:8px 18px;margin:6px 0 4px}
+.sidx-more>summary::-webkit-details-marker{display:none}
+.sidx-more>summary:hover{background:var(--sidx);color:#000}
+.sidx-more .sm-close{display:none}.sidx-more[open] .sm-open{display:none}.sidx-more[open] .sm-close{display:inline}
+.sidx-cap{font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--sidx-dim);margin:14px 0 6px}
 .sidx-more .sidx-tbl{margin-top:0}
 .sidx-note{font-size:11px;line-height:1.65;color:var(--sidx-dim);margin:14px 0 0}
 .sidx-note b{color:var(--text,#b8cdd4)} .sidx-note a{color:var(--sidx)}
