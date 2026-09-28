@@ -11,6 +11,20 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the desk (2026-09-28, money-build run, ~22:30 PT Sep 27). Mo, these are the only things waiting on you
+
+Checked against live state this run; everything else below this block is closed or still stands as written.
+
+1. **Idea 40 (Fanatics in-stock deep links) is stuck on two things only you can unblock — or say "drop it".**
+   - **(a) Impact sign-in.** Fanatics' product catalog (price + stock per box) sits inside Impact (Content → Product Catalogs, Fanatics program). The desk's browser is signed out, and a sign-in is yours. fanatics.com itself blocks every automated read (403 on 11 of 11 product pages from three machines), so the catalog is the only way. If you export the Fanatics catalog CSV once into `Card Hub/deploy/`, `tools/fanatics-stock.mjs --catalog` reads it.
+   - **(b) A yes to run it nightly.** Adding one step to the nightly price Action (log only, renders nothing, 14 days, decided Oct 12) was held for your say-so. It's a new standing job.
+   Until then nothing renders, and the search links (live on 31 strips, the release calendar and the calculator) keep earning as they are.
+2. **TCGplayer on Impact (idea #38)** — unchanged, below. It's the same Impact account Fanatics runs on, so it's "apply to the TCGplayer program inside Impact", not a new sign-up. Kill Oct 31.
+3. **Reddit post + feed-offer note** — unchanged, below, ready to paste.
+4. **TAG** — payment info + the affiliate link when the approval email lands. Unchanged.
+
+---
+
 ## Open — from the desk (2026-09-25 ~15:00 PT). Mo, these are the only things waiting on you
 
 1. ~~Two posts in your X scheduler are wrong as written~~ **✅ fixed by the CoS at ~16:10 PT with Mo in chat** (Sat 1:00 pm → "street Wednesday Sep 30 … lowest ask $389.99 as of Friday"; Sun 9:00 am → "$161 lowest ask on Friday, 3.2×"). Nothing for you here. *(was:)* **Two posts in your X scheduler are wrong as written. Fix them before they go out** (x.com → Drafts → Scheduled). The desk runs unattended, and editing the scheduler writes to your account, so it didn't touch them. X Desk Watch caught both against the live site at 13:20 PT.

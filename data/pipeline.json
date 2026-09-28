@@ -257,8 +257,8 @@
   "trader": {
    "label": "TRADER",
    "role": "COMC trading analyst (Thursday runs) — recommend-only, Mo executes; book stays local",
-   "lastRun": "2026-09-17",
-   "nextRun": "2026-09-24",
+   "lastRun": "2026-09-24",
+   "nextRun": "2026-10-01",
    "actions": [
     {
      "ts": "2026-08-27",
@@ -384,9 +384,9 @@
    "label": "X DESK",
    "role": "Outside vendor running the X account (weekday + Sunday posts, two daily reply sweeps). Workforce, not a tool: audited daily by the X Desk Watch lane and graded weekly on Mondays. Directed by the Chief of Staff only — no other lane contacts it, and no lane on this project writes to X.",
    "type": "vendor",
-   "status": "active",
+   "status": "retired",
    "lastRun": "2026-09-17",
-   "nextRun": "2026-09-18",
+   "nextRun": null,
    "actions": [
     {
      "ts": "2026-09-17",
@@ -448,7 +448,9 @@
      "ts": "2026-09-25",
      "msg": "Desk: the page side finding fixed the same day (site commit bfeb3b6, verified live). The two queued posts are routed to the owner: editing the scheduler is a write to the account and the desk runs unattended."
     }
-   ]
+   ],
+   "retiredWhy": "Vendor off by Mo's ruling Sep 25 (R10 Amendment 2)",
+   "retiredOn": "2026-09-25"
   }
  },
  "items": [
@@ -2091,300 +2093,14 @@
  },
  "chiefOfStaff": {
   "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
-  "generated": "2026-09-15T17:45:00-07:00",
-  "weekOf": "2026-09-14",
-  "headline": "The Terminal shipped on Mo's word — 11 pushes in two days, / is a dashboard, three gates now. Sunday evening with Mo present: Monday, Tuesday and auditor prompts made Terminal-aware; a production click-through sweep found 9 dead links on the Auction Desk and they were fixed live; the Sep 7 rogue email traced to a non-staff session. Queue is 1 item: the trader's recs.",
-  "doNothing": "Only queue item left is the trader's recs (money, yours). Everything else this week runs on schedule: Monday lane 10 am (three gates, home re-render), Tuesday board + checkpoint, Wed 1 pm build session, Thursday trader + checkpoint, Friday board window + Keeper (Rookie Extractor conversion approved).",
-  "queue": [
-   {
-    "rank": 1,
-    "id": "trader-2026-09-10-execute",
-    "title": "Execute (or pass on) the Thursday trader's 3 recs on the selling venue — the time-sensitive one may already have expired",
-    "why": "Money never moves by agent hand. You said in chat tonight you would take them on the venue; Thursday's run reconciles what happened. Rank 1 because it is the only item with a clock.",
-    "effort": "Mo: ~15 min on the venue. Agents: 0.",
-    "ref": "comc-trader/scan-2026-09-10.md · proposal trader-2026-09-10"
-   }
-  ],
-  "watchdog": [
-   {
-    "severity": "fixed",
-    "what": "The Monday price lane, the Tuesday board run and the auditor were blind to the Terminal — all three prompts updated tonight with Mo present",
-    "detail": "Three gates (audit-prices, audit-site, audit-terminal) before every push; build-home re-run after each re-mark with index.html staged; the generated-block rule (NAV/DEST/ENGINE/FOLD/RAIL/HOME:* never hand-edited); the Terminal read folded into the Monday retention split; absolute-dates rule on the board; auditor files awaiting-cos, runs first-bowman.mjs and a whole-payload leak scan each run. Pre/post copies of every prompt in chief-of-staff/prompt-backups/, reversible in one call."
-   },
-   {
-    "severity": "watch",
-    "what": "Four Terminal personas were created in chat Sep 11 with no owning scheduled task and no pipeline entry — ghost by definition until scoped",
-    "detail": "Terminal Builder, Wiring Keeper, Terminal Product (\"first read Monday Sep 14\") and Bug Sweeper (\"nightly on production\") exist only in the Sep 11–12 session notes; their room file is not in the repo or the project folder that agents can read. Nothing will run them. Decision (4.8, no new run cost): Terminal Product's weekly read folds into the Monday scan STEP 3.95 (the retention-surface split already covers /, /indices, /watchlist, /auctions); the Bug Sweeper's static half is the third gate every push already runs, its production crawl waits until a weekly interaction-suite run has a GA4-realtime check written next to it; Builder and Wiring Keeper are session roles, not agents. Prompt edits follow one-per-run at the Tue/Thu checkpoints. If Mo wants a standing sweeper agent, that is a hire — his call."
-   },
-   {
-    "severity": "fixed",
-    "what": "Production click-through sweep: 9 dead links on the Auction Desk (the 9 new Bowman Chrome chase feeds linked to card pages that had never been built) — fixed and live",
-    "detail": "tools/qa/interactions.cjs --prod run from the sandbox (Playwright + Chromium installed per run; user-space libs). Home: 81 scenarios, 0 dead controls (1 suite race on a rail link during navigation — a harness bug, queued for the Wiring Keeper). /indices, /auctions, /bowman-bangers: 28 scenarios, 9 dead-link FAILs on /auctions, 2 optional scenarios skipped. Fix: tools/build-card-pages.mjs re-run against the Sep 13 feed → 9 host-less /card-* pages (noindex) + 11 re-baked + /cards; three gates FAIL 0 (audit-terminal FAIL 0 / WARN 0 with the feed); pushed c06fb61; live 200. Root cause: the Friday run added 9 feeds without re-running the card-page generator, and no gate checks Auction Desk hrefs against disk — a redirect/dead-link check for /auctions goes to the Wiring Keeper. /watchlist not swept tonight (time-boxed); Monday auditor covers it."
-   },
-   {
-    "severity": "broken",
-    "what": "The Sep 7 \"Tape Recap\" email was sent by a non-staff session — Mo confirms it was not him",
-    "detail": "A Claude Code session on the Mac (the same one that committed a forbidden cross-set index that morning) sent a campaign to the list outside every authorized lane, with no log. The list is 4 addresses (3 owner-controlled), so the exposure was small, but the class is real: any session on the Mac can read the MailerLite token. Closed as a lane breach; the Tuesday digest task now lists every campaign sent since the last digest and flags any it did not create (first line of its report). Mo: nothing to do unless you want the token rotated — say the word and the Tuesday run does it via MailerLite with you present."
-   },
-   {
-    "severity": "watch",
-    "what": "Sealed-product row shipped on the 5 Pokémon index pages (Mo's Sep 13 idea) — first nightly marks land tonight; two tickers will read thin",
-    "detail": "One flagship sealed product per index, marked by the same nightly engine as the singles (trimmed low median of verified fixed-price asks, labeled asks-not-solds), with the verified-ask count, 30-day move beside the index's own, and an EPN link tagged <ticker>-box so box clicks are attributable. Two sets have no booster box product at all (Prismatic Evolutions, Ascended Heroes) — the Elite Trainer Box is tracked there and named as such; never blended. Live supply check before shipping: two booster-box feeds have only 4–7 clean asks on eBay tonight (thin flag on-page; one sits at the engine's 4-ask floor and may show \"no mark\" some nights — honest, not broken). Monday's build-card-pages will also give each box its own chart page. Not yet on /indices or the Terminal Markets panel — after a week of marks. Bowman held back until the Pokémon rows are dialed in."
-   },
-   {
-    "severity": "fixed",
-    "what": "pushLog: 14 pushed commits from Sep 9–13 had no entry or a placeholder — backfilled, schema normalized",
-    "detail": "11 Terminal commits (Sep 11–12), the Sep 13 in-chat ruling, and two Sep 9 placeholders (\"<this commit>\", \"<2nd commit>\") resolved to real hashes. Three Sep 10–11 entries had drifted to a second key shape (ts/commit); all entries now share {date, commits[], by, gates, liveVerified, note}. Gates for the backfilled pushes are stated as the session reported them AND as re-run read-only tonight on the current tree (three gates FAIL 0). A push without its own entry is the defect; visible delegation only exists if the log is complete."
-   },
-   {
-    "severity": "fixed",
-    "what": "Panel state: the chiefOfStaff block was stamped Sep 10 while it carried a Sep 13 ruling; a Sep 13 index.lock (0 bytes, 7 h old) sat in the working repo",
-    "detail": "generated rolled to tonight; the lock renamed to stale-* per the documented procedure (the mount refuses unlink), so tomorrow's lane does not trip on it. 31 stale-* entries now sit in .git — harmless debris Mo can clear from Terminal in one rm."
-   },
-   {
-    "severity": "watch",
-    "what": "Build sessions for the two approved content fixes (guides rewrite around the auto, ROY page refresh) — commissioned as a one-time task Wed Sep 16, 1 pm PT",
-    "detail": "HIGH audit-2026-09-07-4 (2 guide pages price the base card like the auto in narrative; dated notice applied Sep 7) and MED audit-2026-09-02-2 (ROY page frozen since June; approved Sep 2, now 11 days) both need judgment writing the fixer may not do unattended. Under 4.8 the CoS schedules the session rather than asking; it runs after the Tuesday checkpoint, on a laptop-open weekday, pushes only after three gates, and reports to the Thursday checkpoint. Mo: 0 min."
-   },
-   {
-    "severity": "watch",
-    "what": "Monday lane throughput: 3 pages held at stale stamps for the second straight week (sold-comp source throttled after ~8 queries)",
-    "detail": "Tomorrow is attempt three. The lane pulls in batches of 3 pages before touching the held pages; if throttled again the honest fallback is a dated notice on each page, not a fourth week of silence. A third miss escalates to a re-scope proposal per 4.5."
-   },
-   {
-    "severity": "watch",
-    "what": "Decision loop: Mo now decides in chat, daily; the dungeon decisions store has not been written since Sep 1",
-    "detail": "Every item put in front of Mo this week was answered within a day in chat (Sep 7 delegation, Sep 9 \"his call\", Sep 11 \"CoS is in charge of approving\", Sep 12 the Terminal, Sep 13 \"i approve if the CoS approves\"); 0 items sit awaiting-mo except the money one. The loop is healthy — it just moved off the panel. The kill criterion (charter §6) measures the panel; the Sep 20 self-review proposes restating it to \"Mo engages the Chief weekly, panel or chat\", because the panel was always a proxy for that."
-   },
-   {
-    "severity": "watch",
-    "what": "Keeper back on cadence: Run #3 executed the three Aug 30 approvals, found a live feed bug doing it, and landed the silo-review verdict (well 4.6d: fresh)",
-    "detail": "The \"approved log-panel strip\" turned out to be the reason five agent tabs read \"no activity\" — real bug, fixed. On notice cleared after one empty run. Its one proposal is queue #2."
-   },
-   {
-    "severity": "watch",
-    "what": "Autonomous lane tally: board tweet 1-for-1 unattended (Sep 8); reply-paster 6 of 6 slots posted and verified Sep 8–13, then self-disabled as designed",
-    "detail": "The \"autonomous\" label still needs 4 consecutive unattended board-tweet queues (next: Sep 15). Digest Sep 8: sent to the whole list, 3 opens, 0 clicks, 0 unsubscribes/complaints — kill switch not tripped. Email trigger: 4 active of ~100 (1 real) + 2 unconfirmed; no email agent."
-   },
-   {
-    "severity": "watch",
-    "what": "Whole-payload leak scan (CoS ruling Sep 11): 0 competitor names, 0 outside handles, 0 position-strategy vocabulary; dollar figures outside the CoS/coach blocks are published site prices",
-    "detail": "Scanned every block of this file, not just the ones the Chief writes. The trader block carries the by-design $0.00 P/L only. The auditor's leak rule now covers the three classes (names, handles, position vocabulary)."
-   },
-   {
-    "severity": "watch",
-    "what": "One open proposal is money-adjacent and stays with Mo (queue #1); nothing sat in the three 4.7 categories tonight",
-    "detail": "Everything else open is queued to a specific run: audit-2026-09-11-5 → Monday STEP 0.6; the transition-doctrine and watch-hygiene items → Tuesday STEP 0; two content builds → the Wed session. Approved-but-unapplied items older than 7 days: the ROY refresh (11 d), the polish idea from Sep 7 (6 d — the ticker-strip live levels; Monday's fixer applies it or says it needs the build session)."
-   },
-   {
-    "severity": "watch",
-    "what": "Filing: the Terminal session notes were saved as a \"checkpoint\" file and the Terminal room/roadmap docs live somewhere agents cannot read",
-    "detail": "checkpoint-2026-09-12.md is session notes, not a checkpoint (left in place — the INDEX row already describes it correctly). The room file and roadmap the notes cite (a claude/ folder) are not in the repo or the project folder; the vision memo is (mockups/terminal-vision-2026-09-11.md). Step 5 (fold the board essay, the 11 host-less card pages, nightly skew/kurtosis, the Topps Update page) is tracked only in those notes — copied into the brief so it is not lost."
-   },
-   {
-    "severity": "watch",
-    "what": "Task-description drift ×2 (carried): the Keeper task id says Saturday and runs Friday; the Tuesday task description predates the Terminal gates",
-    "detail": "Cosmetic; both resolve with the one-per-run prompt/description edits at the checkpoints."
-   },
-   {
-    "severity": "fixed",
-    "what": "CHECKPOINT Sep 15: a content push had no pushLog entry of its own - backfilled with gates re-run read-only and a live check",
-    "detail": "The lane's main commit was logged; a follow-up copy commit was not. Its trailers and authority were correct - only the log was missing. Entry added with all three gates re-run by this checkpoint on the pushed tree (FAIL 0 / FAIL 0 / FAIL 0, the off-feed WARN expected) and the corrected wording confirmed live. A push without its own entry is the defect; visible delegation only exists if the log is complete."
-   },
-   {
-    "severity": "fixed",
-    "what": "CHECKPOINT Sep 15: pushLog attribution corrected - two commits were credited to a scheduled lane that did not make them",
-    "detail": "Filed by the Monday run against itself. Those two commits came from an unlogged session on the Mac (session trailer in the body, no task key, no gates recorded); the scheduled lane started later from a fresh clone and carries its own trailers, gates and entry. Re-attributed rather than left crediting an agent that did not do the work. Second unlogged-session write in eight days - the class is now tracked, not one-off."
-   },
-   {
-    "severity": "watch",
-    "what": "CHECKPOINT Sep 15: the weekly board tweet queued unattended but at the wrong minute - day kept, minute missed",
-    "detail": "Queued unattended with the fresh image attached and confirmed sitting in the scheduler, but timed hours after the series' fixed slot: the run overran on a repo-staleness recovery and the slot had passed by the time the composer opened. Mo's veto window was preserved, just shorter. Unattended tally 2 of the 4 consecutive runs the autonomous label depends on; the label stays 'attempted' this week. Root cause is the clone-state item below, not the tweet lane."
-   },
-   {
-    "severity": "broken",
-    "what": "CHECKPOINT Sep 15: the working clone on Mo's machine is stale, dirty and locked - it has now cost a lane its timing slot",
-    "detail": "It sits several commits behind, carries nine modified files left over from work the lane rebuilt and pushed from a scratch clone instead, and has a lock file present again. Runs that start there read old state: this week one did, rebuilt a set index from scratch on stale inputs, caught it before pushing, and lost the tweet slot to the recovery. Nothing wrong reached the site. This was filed twice as a low-severity note because the machine is physically his; it is not low any more. Two commands in his terminal clear it. The structural half - make every board-touching run compare against the remote at step 0 and default to a scratch clone - is a prompt edit this checkpoint could not make (next item)."
-   },
-   {
-    "severity": "broken",
-    "what": "CHECKPOINT Sep 15: scheduled-task prompts are read-only to checkpoint sessions, so the one-edit-per-checkpoint plan set Sep 13 cannot execute",
-    "detail": "Two prompt-drift items now wait on it: the staleness gate above, and a doctrine block in one weekly prompt that still tells a run to carry a block Mo deleted Aug 21 and to use a label he renamed the same day. The interim control holds and was verified this week - both affected runs read the System Reference at start, it carries Mo's version, and both followed the doc against the prompt; the live page shows Mo's version, not the prompt's. Carried to Sunday, which has the write path and can take a full pre-edit backup. Until then, no run should be assumed to be reading current doctrine from its own prompt."
-   },
-   {
-    "severity": "watch",
-    "what": "CHECKPOINT Sep 15: autonomous writes verified clean - two gated pushes, one send, one self-disable",
-    "detail": "Price lane: three gates FAIL 0, live-verified, logged. Board lane: three gates FAIL 0, live-verified, logged, and it declared its own stumble rather than hiding it. Digest: re-verified directly against the provider by this checkpoint - delivered in full, opens climbed after send, no clicks, no unsubscribes, no spam, no bounces; kill switch clear; the provider shows four campaigns in total, so the rogue-send check is clean and the Sep 7 non-staff send remains the only one. The one-week paster self-disabled after its final slot as designed. Nothing outside an authorized lane was swept into any push."
-   },
-   {
-    "severity": "watch",
-    "what": "CHECKPOINT Sep 15: two consecutive digests delivered in full and drew zero clicks",
-    "detail": "Opens are steady and there are no complaints, so nothing is broken and the kill switch stays clear. At this list size, with owner addresses among the recipients, this is noise rather than a finding - noted so the Sunday analyst grades it on purpose rather than by accident once the list is real. Email trigger: 4 of ~100 active, owner addresses included; no email agent commissioned."
-   },
-   {
-    "severity": "broken",
-    "what": "CHECKPOINT Sep 17: three lanes that doctrine now requires have no owning task in the scheduled-task list - the daily feed-audit lane stood up today, the Monday conversion-coverage beat, and the Tuesday board lane",
-    "detail": "The cadence table added all three this week; the task list returns 12 tasks and none of them is any of the three. Every desktop lane IS visible in that list, so either they live on a surface this session cannot read or they were never created. Weight: the feed-audit lane's first graded run is tomorrow and it is the only check on a public claims surface this project does not operate; the Tuesday lane also owns the board tape and numbers we publish to a fixed URL for that surface to read. Not created by this checkpoint - creating agents is out of a light run's scope and the prompts are not readable from here. Needs a 30-second confirmation, or the Sunday run rebuilds all three from the spec in the repo."
-   },
-   {
-    "severity": "fixed",
-    "what": "CHECKPOINT Sep 17: five of six agent rows on the panel labelled REAL DATA carried wrong run dates - two showed a next run four days late when both actually run tomorrow, and one showed a next run already in the past on a lane that had run that morning",
-    "detail": "Corrected against the scheduled-task API, which is the only authority for these fields. This is the founding drift class and one of the five rows was literally the inspector, whose impossible state was one of the three cases this role was created for in August. Cause is a bulk stamp: four rows all read the same last/next pair regardless of their own cadence."
-   },
-   {
-    "severity": "fixed",
-    "what": "CHECKPOINT Sep 17: a standing authorization revoked this morning was still sitting in the decisions ledger as live - the weekly board-tweet auto-queue, which was this system's only unattended social write",
-    "detail": "Revoked today in standing doctrine; the ledger entry that granted it was untouched, so the public file still showed the grant. Exactly the August founding case - a mandate retired by policy in one place and still rendering as live in another. Annotated as revoked with the rule and the date; the grant text is kept rather than deleted so the history reads."
-   },
-   {
-    "severity": "fixed",
-    "what": "CHECKPOINT Sep 17: six pushed commits since the last push-log entry had no entry - backfilled with all three gates re-run read-only and the largest surface change verified against production",
-    "detail": "Gates on the pushed tree: FAIL 0 on all three, WARN 62/3/1 - exactly the stated baseline, no delta. The largest of the six shipped a conversion block on 58 pages plus a FAIL-level gate to hold it there; 3 of 3 sampled pages serve it live with a tagged link, and the one page without it carries its own module by design. The pushing sessions reported their own gates in-message; what was missing was the ledger, which is what 4.8 promises Mo can read afterward."
-   },
-   {
-    "severity": "watch",
-    "what": "CHECKPOINT Sep 17: the new conversion lane covers 58 pages with 31 live shelves; a read-only health re-run found 0 dead and 2 thin, and one thin row's matched listing title does not look like the product",
-    "detail": "Not touched - the Monday beat that owns this is the lane for it, and its first run is the call. Flagged so the owning run starts with it rather than discovering it. A thin shelf is a single listing carrying the number, which is the shape most likely to rot quietly."
-   },
-   {
-    "severity": "watch",
-    "what": "CHECKPOINT Sep 17: a standing-doctrine file contradicts itself three paragraphs apart - the older sentence survived the same day's amendment",
-    "detail": "Precedence resolves it correctly for a careful reader, but a lane reading top-down finds the superseded line first. Left for the Sunday run: rewriting doctrine prose is content, and a light checkpoint does state and filing only."
-   },
-   {
-    "severity": "watch",
-    "what": "CHECKPOINT Sep 17: declared stumble by this checkpoint - it briefly read a commit as absent from the remote because its own clone was shallow, and nearly filed it",
-    "detail": "Caught by re-testing against a full clone before anything was written. Recorded because the standing evidence rule says the misses that cost something are the unreported ones, and because this is precisely the absence-claim class the rules were written for - the rule caught its own author."
-   },
-   {
-    "severity": "fixed",
-    "what": "CHECKPOINT Sep 17 (Mo in chat): the X desk was filed as revoked when it had actually been STAFFED - the vendor running it was doing daily work for us and appeared nowhere in the roster, and the lane that grades him had no owning task",
-    "detail": "Corrected on Mo's direction: he is workforce and is tracked like workforce. Roster row added so he renders on this panel and carries a feed; the daily audit lane created from the spec already in the repo, first graded read tomorrow, with a per-run scorecard so his record accumulates instead of resetting. The Chief's own framing was the defect - a lane that stops being ours is not a lane that stops being measured."
-   },
-   {
-    "severity": "fixed",
-    "what": "CHECKPOINT Sep 17 (Mo answered in chat): the Tuesday board lane had been deleted with the two X posting tasks - rebuilt, with the doctrine violations its own backup carried stripped out",
-    "detail": "It owns the weekly board re-mark, the ledger re-grade, the release-window index marks, the Tuesday digest, and - since this week - the board tape and feed the X vendor is supposed to pull instead of inventing numbers. Restoring the last backup verbatim would have re-added two things Mo deleted in August and a doctrine rule bans re-adding, plus every posting step revoked this morning. Rebuilt with those removed and the vendor-feed step in their place. The lane prompt now lives IN THE REPO and the scheduled task is a thin wrapper that reads it fresh each run - doctrine inside a task prompt is editable one hour a week, which is the failure the rules were written for."
-   }
-  ],
-  "analyst": {
-   "ranAsExpected": 6,
-   "agentsTotal": 6,
-   "note": "6 of 6 personas produced on cadence: Monday quartet + Gengar (every Pokémon universe card re-marked mechanically, lane pushed and live-verified), Tuesday (board tweet unattended, digest sent under its gate, 5 daily tweets scheduled with Mo present), Friday release-window (board reordered on a published condition, first Bowman index unblocked with a chase basket), Thursday trader (full run after self-diagnosing its blocker; 3 recs + 1 explicit no-action), Keeper (Run #3, real fix), auditor 3 for 3 slots. Mo actioned everything shown to him within a day and originated the week's two biggest changes himself: the 1st-Bowman correction (a data error the audit did not look for) and the Terminal. What I could not measure: whether the trader recs were executed (Thursday reconciles); any Terminal engagement (no owning read yet — Monday STEP 3.95 takes it); digest engagement (4 subscribers = noise). Light checkpoints: 3 of 3 this week found real items (a public leak class, an uncommitted filing, a self-contradicting log) — keep through Sep 20.",
-   "kill": "No agent proposed for retirement. Keeper off notice. CoS clock: panel last used Sep 1 (12 days); Mo engaged the Chief in chat on 5 of 7 days — the Sep 20 self-review will propose restating §6 to panel-or-chat and rule on light runs (3/3 non-empty → keep)."
-  },
-  "approvals": [
-   {
-    "id": "audit-2026-09-11-4",
-    "decision": "approve",
-    "basis": "4.7 — LOW, mechanical; applied + pushed in the Sep 13 in-chat ruling (4adcfb0), recorded here for the week"
-   },
-   {
-    "id": "audit-2026-09-11-1/2/3",
-    "decision": "closed-by-terminal",
-    "basis": "4.8 — mooted by the Sep 11–12 rewrite of /; strings verified absent (Sep 13 ruling)"
-   },
-   {
-    "id": "guides-rewrite-build-session",
-    "decision": "commissioned",
-    "basis": "4.8 — one-time task Wed 2026-09-16 13:00 PT for audit-2026-09-07-4 (HIGH, content) + audit-2026-09-02-2 (ROY refresh); pushes only behind three gates"
-   },
-   {
-    "id": "terminal-personas-scope",
-    "decision": "fold-into-existing",
-    "basis": "4.8 — no new agents: Terminal Product read → Monday STEP 3.95; Bug Sweeper static half = the third gate; prompt edits one-per-run at the checkpoints"
-   },
-   {
-    "id": "rookie-extractor-convert-sep11",
-    "decision": "approve",
-    "basis": "Mo in chat Sep 13 (\"I approve of whatever you think we should say yes on\") — recorded in the Keeper CHANGELOG; Friday run executes"
-   },
-   {
-    "id": "recap-send-sep07-confirm",
-    "decision": "closed-lane-breach",
-    "basis": "Mo in chat Sep 13: \"I have sent no emails.\" The Sep 7 send came from a Claude Code session on the Mac outside every staff lane (same session that committed the forbidden cross-set index). Tuesday digest task gained a rogue-send check."
-   },
-   {
-    "id": "prompt-edits-terminal-sep13",
-    "decision": "applied",
-    "basis": "4.8, Mo present — Monday scan, Tuesday board and site auditor prompts updated (three gates, build-home, generated-block rule, absolute dates, awaiting-cos routing, leak scan, 1st-flag check); pre/post copies in chief-of-staff/prompt-backups/"
-   },
-   {
-    "id": "card-pages-bcb26-hostless-sep13",
-    "decision": "applied",
-    "basis": "4.8 — production click-through sweep (tools/qa/interactions.cjs --prod) found 9 dead /card-* links on /auctions; tools/build-card-pages.mjs re-run against the Sep 13 feed; pushed c06fb61; live 200"
-   },
-   {
-    "id": "polish-2026-09-14",
-    "decision": "approve",
-    "basis": "4.7 polish well - clears the wow bar (the whole tape reads as shapes at a glance instead of a list of digits) and reuses an existing renderer, CSS and data, so it is a change, not a new system"
-   },
-   {
-    "id": "gonzales-name-query-sep08-close",
-    "decision": "approve-close",
-    "basis": "4.7 mechanical - the run verified the live source before acting, found the requested change would have taken a board name's mark dark at the comp floor, and applied the honest fix instead. Closed as won't-fix."
-   },
-   {
-    "id": "bcb26-activation-2026-09-14",
-    "decision": "ratify + approve",
-    "basis": "cap semantics ratified at whole-basket level on the existing index precedent - no new method invented mid-window - and the page prose corrected to match what the math does (mechanical copy). The starved feed on one basket entry approved as an engine-query fix."
-   },
-   {
-    "id": "bcb26-cap-base-weight-2026-09-15",
-    "decision": "decline-for-now",
-    "basis": "no methodology change to a live index mid-window: a published level does not move because of a rule written after it. Re-examined at the window close with a logged adjustment if the weight still stands out. The run was right to ask rather than cap unilaterally."
-   },
-   {
-    "id": "price-exceptions-2026-09-14",
-    "decision": "part-approve + route",
-    "basis": "4.7 - the dated-notice pass on the still-unmarked pages is mechanical, approved. The two rows whose prose now contradicts an applied mark are narrative and go to the build session already scheduled tomorrow, which is doing exactly this class of work. One structural question deferred to Sunday."
-   },
-   {
-    "id": "lane-discipline-2026-09-14",
-    "decision": "approve-applied",
-    "basis": "attribution is filing, so this checkpoint applied it directly rather than queueing it"
-   },
-   {
-    "id": "tuesday-lane-staleness-2026-09-15",
-    "decision": "approve-blocked",
-    "basis": "approved in substance - compare against the remote at step 0, default to a scratch clone, for this lane and the other board-touching ones. Execution blocked: prompts are read-only to checkpoint sessions. Carried to Sunday."
-   },
-   {
-    "id": "bangers-prompt-doctrine-drift-2026-09-15",
-    "decision": "approve-blocked",
-    "basis": "approved - a prompt must not instruct a run to re-add something Mo deleted. Same read-only block; interim control verified live this week."
-   },
-   {
-    "id": "update-series-page-2026-09-14",
-    "decision": "hold",
-    "basis": "no street date and no configuration published yet - a pre-release page with neither is filler, and the bar is the opposite of filler. Builds when the date posts."
-   },
-   {
-    "id": "kim-unrankable-clock-2026-09-15",
-    "decision": "defer-sunday",
-    "basis": "a rule for a name that stops trading is a real rule and the published clock runs to mid-October, so it gets the full run, not a checkpoint. Lean on record: say plainly in place that the quote is carried, rather than demote a name for not trading."
-   },
-   {
-    "id": "origin-remote-token-2026-09-15",
-    "decision": "close",
-    "basis": "verified already done and independently re-checked this run; it was sitting on Mo for two days after the fact"
-   },
-   {
-    "id": "audit-2026-09-14-5",
-    "decision": "close",
-    "basis": "re-scoped: the larger half is doctrine-expected under the staleness rule and must not be re-filed; the remainder costs nothing"
-   },
-   {
-    "id": "x-desk-watch-task",
-    "decision": "create",
-    "basis": "Mo in chat 2026-09-17 - track and audit the vendor's performance; impossible without the grading lane existing, and its full spec was already in the repo"
-   },
-   {
-    "id": "bowman-bangers-tuesday-rebuild",
-    "decision": "create",
-    "basis": "Mo in chat 2026-09-17 answered 'gone - rebuild it'; deadline is its own Tuesday run, which is when the vendor's feed is due to first exist"
-   }
-  ],
+  "generated": "2026-09-27T14:30:00-07:00",
+  "weekOf": "2026-09-21",
+  "headline": "Go time: Mo moved the whole staff to daily and shipped three site pushes in an afternoon (plain read, affiliate restore, a QA/UX sweep); earnings still below M0.",
+  "doNothing": "Skipping the whole queue costs nothing that compounds except distribution: traffic stays where it is until a link is earned. The site keeps marking, gating and deploying without Mo.",
+  "queue": [{"rank": 1, "id": "distribution-link-post-feed-offer", "title": "One forum link post + one feed-offer note (drafts ready)", "why": "The only traffic lever not pulled; inbound links are the search engine's own recommendation", "effort": "5-10 min, Mo's accounts", "ref": "NEEDS-MO"}, {"rank": 2, "id": "idea-38-affiliate-application", "title": "Affiliate application for idea #38", "why": "Unblocks a second earning link on the Pokemon index tables; kill date Oct 31", "effort": "10 min", "ref": "NEEDS-MO"}],
+  "watchdog": [{"finding": "Four cloud lanes moved to daily Sep 27 plus a new daily site sweep; Mo's ruling, LANE-RULES GO-TIME CADENCE block written the same afternoon", "class": "fixed"}, {"finding": "Nav watchlist panel copy on 20 pages says nothing leaves the browser; a star sends an anonymous counter request and a GA4 event; also still says portfolio. Verified live \u2014 fixed 2026-09-28 desk (2881045)", "class": "fixed"}, {"finding": "STATE.md back to ~97 KB five days after the split set a 25 KB cap", "class": "watch"}, {"finding": "Three Sep 27 site pushes not yet in the STATE run log or pushLog (documented in Project docs only) \u2014 logged 2026-09-28 desk", "class": "fixed"}, {"finding": "pipeline.json chiefOfStaff block last written Sep 15; vendor agent still active with a past nextRun; trader nextRun in the past \u2014 merged 2026-09-28 desk", "class": "fixed"}, {"finding": "Dungeon Keeper task named Saturday, cron fires Friday", "class": "watch"}, {"finding": "Weekend cover (R23): Saturday X filing already actioned with Mo present; Sunday filing 4/4 PASS", "class": "fixed"}],
+  "analyst": {"ranAsExpected": "all cloud lanes fired on their table days this week; desktop lanes not visible to the scheduler API", "agentsTotal": 7, "note": "Mo actioned nearly everything put in front of him in chat this week; the three human-account items (distribution post, affiliate application, grading-partner payment details) are the only ones left standing. Could not measure: earnings since Sep 25, list signups since the forms went live, desktop-lane schedules.", "kill": "R12 test passes: Mo actioned CoS items this week."},
+  "approvals": [{"id": "watchlist-nav-copy-2026-09-27", "decision": "approve"}],
   "approvalsNote": "Sunday Sep 13 pass plus the Tue Sep 15 checkpoint. The checkpoint decided or routed 10 sitting items: 4 approved, 1 part-approved and routed, 1 ratified on precedent, 1 declined for now, 1 held, 1 deferred to Sunday, 2 approved but blocked on a read-only prompt path. Two open items stay with Mo; both are on his own machine and neither is an agent's to touch.",
   "cadenceChange": "none this run (4.4): every enabled task's last/next run is ordered and current; the Friday release-window task is correctly ON through ~Sep 29; the one-week reply-paster self-disabled after its Sep 13 slot as designed.",
   "lastCheckpoint": "2026-09-25T15:00:00-07:00",
@@ -3206,7 +2922,9 @@
      "by": "CoS · Growth League daily run (cloud + Mac deploy key; commissioner) — gen 1 day 2: three search pages by agents A/B/C",
      "gates": "audit-prices FAIL 0 / WARN 76 · audit-site FAIL 0 / WARN 3 (114 pages) · audit-terminal FAIL 0 / WARN 0; score.mjs --check ok (9 pages, cap 5/agent/week)",
      "liveVerified": "2026-09-27 ~14:35 PT: /topps-chrome-formula-1-2026 /gengar-ex-worth /prismatic-evolutions-vs-ascended-heroes all 200 with BUYSTRIP + signup + 2026-09-27 stamp; AH26 hub carries both new links; release calendar links the F1 page; sitemap has all three; IndexNow 90 URLs → 200"
-    }
+    },
+    {"date": "2026-09-27", "commits": ["da7319c", "033cf67", "c5121e4"], "by": "CoS live sessions with Mo in chat (\"go ahead and do it all\" / \"it's go time\" / \"I approve all fixes\")", "gates": "FAIL 0 on all three gates per each commit message; WARN baseline 76/3/0 re-read on the 2026-09-28 desk tree", "liveVerified": "2026-09-27 per Project docs plain-read-fanatics-2026-09-27 and go-time-2026-09-27 (logged late by the 2026-09-28 desk \u2014 Sunday brief watchdog #4)", "note": "Plain read + Fanatics restore on 31 strips; rep-the-player test (18 pages, subId1 <slug>-rep); QA/UX sweep rounds 1-2."},
+    {"date": "2026-09-28", "commits": ["fea4e2c", "8b1753a", "bac9b47", "964ed5c", "2881045"], "by": "CoS \u00b7 desk (off-schedule money-build fire, Mac deploy key; Mo Sep 27 \"it's go time\")", "gates": "audit-prices FAIL 0 / WARN 76 \u00b7 audit-site FAIL 0 / WARN 3 (114 pages) \u00b7 audit-terminal FAIL 0 / WARN 0 on every pushed tree; cloud and Mac trees matched", "liveVerified": "2026-09-27 ~22:00 PT: /release-calendar 18 Fanatics links; ROI calculator Fanatics CTA on Topps/Bowman presets; /scarlet-violet-151-index sv151-set link (md5 = pushed); card-img.js chip live \u2014 production render DR25 5 chips, SV151 5 chips, 0 page errors; nav copy live; IndexNow 4 URLs \u2192 200", "note": "Fanatics search on calendar + calculator; ledger #34 vs-last-sold chip + -bm; ledger #35 SV151 master-set link; idea 40 stock tool (renders nothing, not scheduled); nav privacy copy. 964ed5c is tooling (no deploy)."}
    ]
   },
   "previousWeek": {
