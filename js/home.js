@@ -84,7 +84,7 @@
       var h = (v.history || []).filter(function (r) { return r && r.level != null; }).map(function (r) { return { date: r.date, level: r.level, note: r.note || '' }; });
       var pre = v.status === 'pre' || v.status === 'pre-activation' || !h.length;
       idx.push({ k: k, name: v.name || k, page: v.page || null, status: pre ? 'pre' : 'live', basis: v.basisLabel || (v.basis === 'ask' ? 'ask-basis · nightly marks' : 'sold comps only · weekly re-mark'), history: h,
-        level: h.length ? h[h.length - 1].level : null, prev: h.length > 1 ? h[h.length - 2].level : null, date: h.length ? h[h.length - 1].date : null, inception: v.inception || null });
+        level: h.length ? h[h.length - 1].level : null, prev: h.length > 1 ? h[h.length - 2].level : null, date: h.length ? h[h.length - 1].date : null, inception: v.inception || null, rd: v.releaseDate || null });
     }
     return { day: day, cards: cards, marked: marked, total: cards.length, gatedN: gatedN, closes: closes, indices: idx, composite: composite(cards, history) };
   }
@@ -165,9 +165,23 @@
     var href = 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(s.q).replace(/%20/g, '+') + '&' + EPN_Q + '&customid=home-' + String(k).toLowerCase();
     return '<td class="ib-buy"><a class="go-btn ib-go" href="' + href + '" target="_blank" rel="noopener sponsored" aria-label="' + esc(s.q) + ' on eBay" onclick="if(typeof gtag===\'function\')gtag(\'event\',\'buystrip_click\',{item:\'home-' + esc(String(k).toLowerCase()) + '\',page:location.pathname})">' + esc(s.l) + ' <span class="ib-eb">eBay</span> &rarr;</a></td>';
   }
+  // Board groups (Sep 28 2026, Mo: "split the pokemon and sports cards more rather than mingling them"). Pokémon first,
+  // new sets then classic sets (released before mid-2023), then sports; one labelled header row per group.
+  function ibGroup(r) {
+    if (/^(BOW|BCB|SAPH|DRAFT|BB|BD)/.test(r.k)) return 'sports';
+    return r.rd && r.rd < '2023-06-01' ? 'classic' : 'pokemon';
+  }
+  var IB_GROUPS = [['pokemon', 'Pokémon · new sets'], ['classic', 'Pokémon · classic sets'], ['sports', 'Sports · Bowman baseball']];
   function renderIndexBoard(model) {
-    var rows = (model.indices || []).slice().sort(function (a, b) { return (a.status === 'pre') - (b.status === 'pre'); });
-    if (!rows.length) return '<tr><td class="empty" colspan="8">No index yet.</td></tr>';
+    var all = (model.indices || []).slice().sort(function (a, b) { return (a.status === 'pre') - (b.status === 'pre'); });
+    if (!all.length) return '<tr><td class="empty" colspan="8">No index yet.</td></tr>';
+    return IB_GROUPS.map(function (g) {
+      var rows = all.filter(function (r) { return ibGroup(r) === g[0]; });
+      if (!rows.length) return '';
+      return '<tr class="ib-grp ib-grp-' + g[0] + '"><th colspan="8" scope="colgroup">' + esc(g[1]) + ' <small>' + rows.length + (rows.length === 1 ? ' index' : ' indices') + '</small></th></tr>' + renderIbRows(rows);
+    }).join('');
+  }
+  function renderIbRows(rows) {
     return rows.map(function (r) {
       var href = r.page || '/indices', game = /^(BOW|BCB|SAPH|DRAFT|BB)/.test(r.k) ? 'Bowman' : 'Pokémon';
       if (r.status === 'pre') return '<tr class="ib-pre"><td class="ib-k"><a href="' + esc(href) + '"><b>' + esc(r.k) + '</b><small>' + esc(r.name) + '</small></a></td><td class="ib-pre-t" colspan="6">PRE · activates on the first verified sold reads</td>' + sealedCell(r.k) + '</tr>';

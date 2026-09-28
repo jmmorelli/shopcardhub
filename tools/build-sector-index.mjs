@@ -77,6 +77,13 @@ const CONFIG = {
     skipTitle: /poster collection/i,
     note: "151 is the original 151 Pokémon, #1–#151 in Pokédex order, plus trainers, energies and the illustration-rare and special-illustration-rare tier (#152–#207). A three-year-old set with deep, steady liquidity — most of the 207 slots trade as singles every week, so the basket is close to the whole set from day one. Sealed product (Booster Bundle, ETB, UPC, tins) is not a card and is not in the universe.",
   },
+  // ---------------- CLASSIC POKÉMON SETS (Sep 28 2026, Mo: "add at least 10+ more indices for pokemon, specifically the popular
+  // sets from the past. The Pokemon Skyridge comes to mind"). Same model, same parameters, one ticker per set. The slot is the
+  // BRACKETLESS print on PriceCharting's console (bracket rule above): for the WOTC sets that is the UNLIMITED print —
+  // [1st Edition], [Shadowless], [1999-2000] and error/stamp variants are separate items and are not in these indices. The
+  // e-Card sets' [Reverse Holo] prints drop the same way. Vintage "ungraded" is any raw copy, so the mark is a raw-condition
+  // median, not a near-mint price — the note says so on every page.
+  ...classicConfigs(),
   // ---------------- BOWMAN (Sep 25 2026, Mo: "BOW26 = every 1st Bowman Chrome from all 2026 Bowman releases, autos lead,
   // non-autos the sub-index; each release its own index; BOW27 next year") ----------------
   // SportsCardsPro lists May's 2026 Bowman and September's 2026 Bowman Chrome prospect autos on ONE console
@@ -90,6 +97,26 @@ const CONFIG = {
 };
 
 // ---- Bowman helpers (release split + 1st flags from the September checklist) ----
+function classicConfigs() {
+  const W = "Unlimited print only: 1st Edition, Shadowless and stamped or error variants are separate PriceCharting items and are not in this index. A vintage raw copy can be any condition, so the mark is the median raw sale, not a near-mint price.";
+  const E = "Reverse holo prints are separate items and are not in this index. A raw copy can be any condition, so the mark is the median raw sale, not a near-mint price.";
+  const M = "Reverse holo, Prize Pack and stamped prints are separate items and are not in this index.";
+  const mk = (tk, o) => [tk, { imgSub: "pokemon", classic: true, imgNot: "-celebrations -25th -reprint -japanese", ...o, ebayQuery: (name, num) => `pokemon ${o.q} ${name} ${num}` }];
+  return Object.fromEntries([
+    mk("BS99", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base1/" + b.num + ".png" : null, name: "Base Set Index", set: "Pokémon TCG Base Set (Unlimited)", page: "/pokemon-base-set-index", pcSlug: "pokemon-base-set", q: "base set unlimited", theme: "#e8b93a", releaseDate: "1999-01-09", imgSet: "Pokemon Base Set", denom: 102, note: "The first English set (1999): Charizard, Blastoise and Venusaur lead a 102-card set. " + W }),
+    mk("JU99", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base2/" + b.num + ".png" : null, name: "Jungle Set Index", set: "Pokémon TCG Jungle (Unlimited)", page: "/pokemon-jungle-index", pcSlug: "pokemon-jungle", q: "jungle unlimited", theme: "#4caf50", releaseDate: "1999-06-16", imgSet: "Pokemon Jungle", denom: 64, note: "The second English set (1999), 64 cards; the holo Eeveelutions and Snorlax are the chase. " + W }),
+    mk("FO99", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base3/" + b.num + ".png" : null, name: "Fossil Set Index", set: "Pokémon TCG Fossil (Unlimited)", page: "/pokemon-fossil-index", pcSlug: "pokemon-fossil", q: "fossil unlimited", theme: "#b0a089", releaseDate: "1999-10-10", imgSet: "Pokemon Fossil", denom: 62, note: "The third English set (1999), 62 cards; Gengar, Dragonite and the legendary birds lead it. " + W }),
+    mk("TR00", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base5/" + b.num + ".png" : null, name: "Team Rocket Set Index", set: "Pokémon TCG Team Rocket (Unlimited)", page: "/team-rocket-index", pcSlug: "pokemon-team-rocket", q: "team rocket unlimited", theme: "#d23c3c", releaseDate: "2000-04-24", imgSet: "Pokemon Team Rocket", denom: 82, note: "The 2000 Dark Pokémon set; Dark Charizard, Dark Blastoise and the secret Dark Raichu #83 lead it. " + W }),
+    mk("NG00", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/neo1/" + b.num + ".png" : null, name: "Neo Genesis Set Index", set: "Pokémon TCG Neo Genesis (Unlimited)", page: "/neo-genesis-index", pcSlug: "pokemon-neo-genesis", q: "neo genesis unlimited", theme: "#f0a830", releaseDate: "2000-12-16", imgSet: "Pokemon Neo Genesis", denom: 111, note: "The first Neo set (2000), 111 cards; Lugia is the chase, with the two Typhlosion prints and Pichu behind it. " + W }),
+    mk("ND02", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/neo4/" + b.num + ".png" : null, name: "Neo Destiny Set Index", set: "Pokémon TCG Neo Destiny (Unlimited)", page: "/neo-destiny-index", pcSlug: "pokemon-neo-destiny", q: "neo destiny unlimited", theme: "#6a5acd", releaseDate: "2002-02-28", imgSet: "Pokemon Neo Destiny", denom: 105, note: "The last Neo set (2002); the Shining Pokémon (#106–#113, Shining Charizard first) are the chase. " + W }),
+    mk("AQ03", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/ecard2/" + b.num + ".png" : null, name: "Aquapolis Set Index", set: "Pokémon TCG Aquapolis", page: "/aquapolis-index", pcSlug: "pokemon-aquapolis", q: "aquapolis", theme: "#2fa4d8", releaseDate: "2003-01-15", imgSet: "Pokemon Aquapolis", denom: 147, note: "An e-Card set (2003); the Crystal Lugia #149 leads, with Crystal Nidoking #150 and the H-numbered holos behind it. " + E }),
+    mk("SK03", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/ecard3/" + b.num + ".png" : null, name: "Skyridge Set Index", set: "Pokémon TCG Skyridge", page: "/skyridge-index", pcSlug: "pokemon-skyridge", q: "skyridge", theme: "#8fb6e8", releaseDate: "2003-05-12", imgSet: "Pokemon Skyridge", denom: 144, note: "The last WOTC set (2003) and the scarcest e-Card print run. The H-numbered holos lead the basket; the Crystal cards (#146–#150) sell too rarely to clear the liquidity screen, so they sit in the universe until they do. " + E }),
+    mk("HF19", { imgSrc: (b) => /^SV\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/sma/" + b.num + ".png" : /^\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/sm115/" + b.num + ".png" : null, name: "Hidden Fates Set Index", set: "Pokémon TCG Hidden Fates", page: "/hidden-fates-index", pcSlug: "pokemon-hidden-fates", q: "hidden fates", theme: "#e0503c", releaseDate: "2019-08-23", imgSet: "Pokemon Hidden Fates", denom: 68, note: "The 2019 special set with the Shiny Vault (SV1–SV94); Charizard-GX SV49 is the chase. " + M }),
+    mk("EVS21", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/swsh7/" + b.num + ".png" : null, name: "Evolving Skies Set Index", set: "Pokémon TCG Evolving Skies", page: "/evolving-skies-index", pcSlug: "pokemon-evolving-skies", q: "evolving skies", theme: "#3c7fd8", releaseDate: "2021-08-27", imgSet: "Pokemon Evolving Skies", denom: 203, note: "The 2021 Eeveelution set; Umbreon VMAX alt art #215 (\"Moonbreon\") is the chase, with Rayquaza VMAX alt #218. " + M }),
+    mk("CEL21", { imgNot: "-japanese", name: "Celebrations Set Index", set: "Pokémon TCG Celebrations", page: "/celebrations-index", pcSlug: "pokemon-celebrations", q: "celebrations", theme: "#d4af37", releaseDate: "2021-10-08", imgSet: "Pokemon Celebrations", note: "The 25th-anniversary set (2021): 25 main cards, the Classic Collection reprints (which keep their original numbers, so Charizard is #4) and the Celebrations promos PriceCharting files with the set. " + M }),
+    mk("CZ23", { imgSrc: (b) => /^GG\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/swsh12pt5gg/" + b.num + ".png" : /^\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/swsh12pt5/" + b.num + ".png" : null, name: "Crown Zenith Set Index", set: "Pokémon TCG Crown Zenith", page: "/crown-zenith-index", pcSlug: "pokemon-crown-zenith", q: "crown zenith", theme: "#c9a227", releaseDate: "2023-01-20", imgSet: "Pokemon Crown Zenith", denom: 159, note: "The 2023 special set with the Galarian Gallery (GG01–GG70); the Giratina, Mewtwo and Arceus VSTAR gallery cards lead it. " + M }),
+  ]);
+}
 function bowmanConfigs() {
   let sep = { autos: new Map(), base: new Map() };
   try {
@@ -181,10 +208,15 @@ async function universe(c, spec) {
 
 // ---------------- screen + mark from one item page read ----------------
 const READ_CACHE = new Map();
+// SIDX_CACHE=<file> (Sep 28 2026): persist item reads so an --init interrupted by a shell time limit resumes where it
+// stopped. Same-day reads only (the file is keyed by TODAY); dates and prices only, never titles (R17).
+const DISK = process.env.SIDX_CACHE || null;
+if (DISK && fs.existsSync(DISK)) { try { const j = JSON.parse(fs.readFileSync(DISK, "utf8")); if (j.day === TODAY) for (const [k, v] of Object.entries(j.reads || {})) READ_CACHE.set(k, v); } catch (e) {} }
+function saveDisk() { if (!DISK) return; fs.writeFileSync(DISK, JSON.stringify({ day: TODAY, reads: Object.fromEntries(READ_CACHE) })); }
 async function readCard(slot) {
   if (READ_CACHE.has(slot.path)) { READ_CACHE_HIT = true; return READ_CACHE.get(slot.path); }
   READ_CACHE_HIT = false;
-  const r = await readCardUncached(slot); READ_CACHE.set(slot.path, r); return r;
+  const r = await readCardUncached(slot); READ_CACHE.set(slot.path, r); saveDisk(); return r;
 }
 async function readCardUncached(slot) {
   const html = await get("https://www.pricecharting.com/game/" + slot.path);
@@ -271,7 +303,9 @@ async function subMark(x, date) {
 // photo key for js/card-img.js name mode: "<name> <num/denom> <imgSet>". The resolver requires every non-numeric token
 // of the key in the eBay title, so the key carries only words a listing title actually has ("Pokemon", not "Pokémon TCG").
 // (Sep 25 2026 image sweep: 5 of TH26's and 4 of SV151's top-10 photos sat on the placeholder for exactly this reason.)
-function imgKey(b, c) { if (c.imgKey) return c.imgKey(b); const num = /^\d+$/.test(String(b.num)) && c.denom ? `${b.num}/${c.denom}` : String(b.num); return `${b.name} ${num} ${c.imgSet || c.set}`; }
+function imgAttr(b, c) { const u = c.imgSrc && c.imgSrc(b); return u ? "src:" + u : "name:" + imgKey(b, c); }
+function imgKey(b, c) { if (c.imgKey) return c.imgKey(b); if (c.imgNot) return imgKeyBase(b, c) + ' ' + c.imgNot; return imgKeyBase(b, c); }
+function imgKeyBase(b, c) { const num = /^\d+$/.test(String(b.num)) && c.denom ? `${b.num}/${c.denom}` : String(b.num); return `${b.name} ${num} ${c.imgSet || c.set}`; }
 function deskIds(x) {
   const m = {};
   try { const d = JSON.parse(fs.readFileSync(path.join(ROOT, "data/auction-desk.json"), "utf8")); const fam = /^(BOW|BB|BCB|BD)\d/.test(x.ticker) ? /^(BOW|BB|BCB|BD)\d/ : null;   // the Bowman family shares one desk (a card is searched once)
@@ -305,7 +339,7 @@ function block(x, c) {
     const w = (b.price * b.w) / bv;
     const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
     const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
-    const thumb = i < 10 ? `<span data-card-img="name:${esc(imgKey(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
+    const thumb = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
     const dk = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slot = desk[dk] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dk])}"></span>` : "";
     return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><span class="act-w"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot || '<span class="sidx-auc-slot"></span>'}</span></td></tr>`;
   };
@@ -321,7 +355,7 @@ function block(x, c) {
     <div class="cg">${chaseTop.map((b, i) => {
       const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}-chase`;
       const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
-      return `<a class="cc" href="${url}" target="_blank" rel="noopener sponsored" title="${esc(b.name)} #${esc(b.num)} — live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(cid)}',page:location.pathname})"><span class="ci" data-card-img="name:${esc(imgKey(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="row" data-card-surface="${x.ticker.toLowerCase()}-chase" data-card-link="off"></span><span class="cn">${esc(b.name)} #${esc(b.num)}</span><span class="cp"><b>${b.price >= 100 ? "$" + Math.round(b.price).toLocaleString("en-US") : money(b.price)}</b><small>sold mark · ${mdShort(b.asOf || (last && last.date))}</small></span><span class="cgo">${b.price >= 200 ? "Authenticated on eBay" : "Listings on eBay"} &rarr;</span></a>`;
+      return `<a class="cc" href="${url}" target="_blank" rel="noopener sponsored" title="${esc(b.name)} #${esc(b.num)} — live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(cid)}',page:location.pathname})"><span class="ci" data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="row" data-card-surface="${x.ticker.toLowerCase()}-chase" data-card-link="off"></span><span class="cn">${esc(b.name)} #${esc(b.num)}</span><span class="cp"><b>${b.price >= 100 ? "$" + Math.round(b.price).toLocaleString("en-US") : money(b.price)}</b><small>sold mark · ${mdShort(b.asOf || (last && last.date))}</small></span><span class="cgo">${b.price >= 200 ? "Authenticated on eBay" : "Listings on eBay"} &rarr;</span></a>`;
     }).join("")}</div>
     <div class="cf">Sold mark per card, from the table below: a median of recent dated sales (not one sale), dated to the read — not a call. Links open live eBay listings (affiliate; ShopCardHub earns a commission at no cost to you).</div>
   </div>`;
@@ -334,14 +368,14 @@ function block(x, c) {
     const shown = sx.kind === "screened" ? cards.slice(0, 3) : cards;
     return `<div class="sidx-subidx"><span class="sidx-subidx-k"><b>${x.ticker}·${esc(k)}</b> ${esc(sx.name)}</span><span class="sidx-subidx-lv">${sl ? sl.level.toFixed(2) : "—"}</span><span class="sidx-subidx-w ${cls(sw == null ? 0 : sw)}">${sw == null ? "first mark" : (sw >= 0 ? "▲ " : "▼ ") + pct(sw)}</span><span class="sidx-subidx-cards">${shown.map((b) => `<i>${esc(b.name)} #${esc(b.num)} <b>${money(b.price, 0)}</b></i>`).join("")}${sx.kind === "screened" && cards.length > 3 ? `<i>+${cards.length - 3} more</i>` : ""}</span>${sh.length > 1 ? `<span class="sidx-subidx-sp">${ST_spark(sh.map((r) => r.level))}</span>` : ""}<span class="sidx-subidx-n">${cards.length} cards${sx.kind === "screened" && sx.universe ? ` of ${sx.universe.length}` : ""} · price-weighted · uncapped · base 100 at ${mdy(x.inception)} — ${esc(sx.blurb || "")}</span></div>`;
   }).join("");
-  return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}" style="--sidx:${c.theme};">
+  return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}"${c.classic ? " data-no-repoint" : ""} style="--sidx:${c.theme};">
   <div class="sidx-mast">
     <div class="sidx-t">
       <div class="sidx-eyebrow">▮ ${c.kindPlural ? "Class Index · Sector Model · Every " + esc(c.kindPlural.replace(/s$/, "")) : "Set Index · Sector Model · Every Card In The Set"}</div>
       <h2><span class="sidx-tk">${x.ticker}</span> <span class="sidx-dot">·</span> ${esc(c.name)}</h2>
       <p class="sidx-sub">${c.kindPlural ? `Every ${esc(c.kindPlural.replace(/s$/, ""))} in ${esc(c.set)} — ${x.universe.length} cards, ${x.basket.length} trading — priced` : `All ${x.universe.length} cards of ${esc(c.set)}, priced`} from dated sold comps and re-marked Monday and Thursday. Base 100.00 at ${mdy(x.inception)}. This block tracks the ${c.kindPlural ? "class" : "set"}; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
     </div>
-    <figure class="sidx-photo"><span data-card-img="name:${esc(imgKey(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · live eBay listing</figcaption></figure>
+    <figure class="sidx-photo"><span data-card-img="${esc(imgAttr(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · ${c.imgSrc && c.imgSrc(hero) ? "card image" : "live eBay listing"}</figcaption></figure>
     <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div><div class="lvc">base 100.00 · inception ${mdy(x.inception)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</div></div>
   </div>
   <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>

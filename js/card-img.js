@@ -69,6 +69,10 @@
   var inflight = {};
   // cat: eBay category to search — 212 = sports trading cards (the endpoint default), 183454 = CCG/TCG singles (Pokémon).
   function byName(name, cat) {
+    // "-word" tokens in a name key are exclusions (Sep 28 2026, classic sets: "-celebrations" keeps the 2021 Classic
+    // Collection reprint of Charizard 4/102 from standing in for the 1999 card). Stripped from the query, applied to titles.
+    var nots = (String(name || '').match(/(^|\s)-[a-z0-9]+/gi) || []).map(function (x) { return x.trim().slice(1).toLowerCase(); });
+    name = String(name || '').replace(/(^|\s)-[a-z0-9]+/gi, ' ');
     var q = String(name || '').replace(/[—–].*$/, '').replace(/#/g, '').replace(/\b(IR|SIR|UR|HR|AR|SAR|DR|ACE|RR|SR)\b/g, '').replace(/\s+/g, ' ').trim(); // '#231/182' -> '231/182'; rarity codes and a bare '#' kill eBay search
     var normNum = function (x) { return x.replace(/\b0*(\d+)\/0*(\d+)\b/g, '$1/$2'); };
     if (q.length < 4) return Promise.resolve(null);
@@ -88,6 +92,7 @@
         if (num && t.indexOf(num) < 0) continue;
         var ok = toks.every(function (k) { return t.indexOf(k) > -1; });
         if (!ok) continue;
+        if (nots.some(function (k) { return t.indexOf(k) > -1; })) continue;
         if (/(lot of|reprint|digital|custom|proxy|you pick|choose|\bcase\b|cases|frame|display|magnetic|toploader|top loader|sleeve|binder|stand|holder|acrylic|protector|playmat|deck box|storage)/.test(t)) continue;
         best = { url: l.image.replace(/s-l\d+\./, 's-l500.'), item: l.url || null, title: l.title || null,
                  fp: l.buyingOption === 'FIXED_PRICE', px: (typeof l.price === 'number' && l.price > 0) ? l.price + (typeof l.shipping === 'number' ? l.shipping : 0) : null };
@@ -160,6 +165,8 @@
       // engine-keyed cards without a verified photo stay on the placeholder (a name search
       // could return the wrong variant); visitor-added cards are looked up by their full name.
       var cat = el.getAttribute('data-card-catid') || (/pok[eé]mon|tcg/i.test(el.getAttribute('data-card-sub') || '') ? '183454' : null);
+      // src: keys (Sep 28 2026, classic sets) name the official card scan directly — no listing lookup, no eBay tag.
+      if (key && key.indexOf('src:https://images.pokemontcg.io/') === 0) return { url: key.slice(4) };
       if (key && key.indexOf('name:') === 0) return byName(key.slice(5), cat);
       // ph: keys are page-list placeholders that still carry the card's full name — try it before settling for the tile.
       if (key && key.indexOf('ph:') === 0 && name && name !== key) return byName(name, cat);
@@ -179,7 +186,10 @@
         var rowA = row && (row.querySelector('a.ebay[data-cid]') || row.querySelector('td.act a.ebay'));
         var rowCid = rowA && (rowA.getAttribute('data-cid') || ((rowA.getAttribute('href') || '').match(/[?&]customid=([^&]+)/) || [])[1]);
         var rowAv = rowA && (rowA.getAttribute('data-av') || /[?&]LH_AV=1/.test(rowA.getAttribute('href') || ''));
-        if (rowA && rowCid && hit.item && !rowAv && !rowA.getAttribute('data-listing')) {
+        // Classic-set indices (Sep 28 2026): a raw vintage copy can be any condition and a name search can land on a
+        // modern reprint (Celebrations' Charizard is also 4/102), so their rows keep the search link and get no chip.
+        var noRepoint = row && row.closest && row.closest('[data-no-repoint]');
+        if (rowA && rowCid && hit.item && !rowAv && !noRepoint && !rowA.getAttribute('data-listing')) {
           rowA.setAttribute('data-listing', '1');
           // Hits from the nightly photo map carry no price. The top ten rows of a table (most of
           // its weight) re-read the cheapest verified listing live so the chip has a price; the
