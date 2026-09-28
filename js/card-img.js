@@ -107,7 +107,7 @@
                                    : u + (u.indexOf('?') > -1 ? '&' : '?') + 'customid=' + cid;
   }
 
-  // "vs last sold" chip — sold-basis tables only (a header named "Price" beside "As Of", or "Last sold").
+  // "vs sold mark" chip — sold-basis tables only (a header named "Price" beside "As Of", or "Sold mark"/"Last sold").
   function soldChip(row, hit) {
     try {
       if (!hit || !hit.fp || !(hit.px > 0)) return null;
@@ -116,7 +116,7 @@
       var pi = -1, ai = -1;
       for (var i = 0; i < ths.length; i++) {
         var t = (ths[i].textContent || '').trim().toLowerCase();
-        if (t === 'last sold' || t === 'price') pi = i;
+        if (t === 'last sold' || t === 'sold mark' || t === 'price') pi = i;
         if (t === 'as of') ai = i;
       }
       if (pi < 0) return null;
@@ -131,7 +131,7 @@
       var d = (hit.px - mark) / mark * 100;
       if (Math.abs(d) > 50) return null;
       var r = Math.round(d);
-      return { under: d < 0, txt: (r === 0 ? '\u00b10%' : (r < 0 ? '\u2212' + (-r) : '+' + r) + '%') + ' vs last sold ' + md };
+      return { under: d < 0, txt: (r === 0 ? '\u00b10%' : (r < 0 ? '\u2212' + (-r) : '+' + r) + '%') + ' vs sold mark ' + md };
     } catch (e) { return null; }
   }
 

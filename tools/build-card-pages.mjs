@@ -422,7 +422,7 @@ ${nav}
     </div>
   </section>
 
-  <p class="cp-note" style="margin-top:26px;">Prices are the engine's nightly marks from verified eBay asking prices and, where recorded, auction closes; they are dated, sourced, and never hand-typed. Nothing here is investment advice — cards are illiquid, think in 6–12 month holds. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
+  <p class="cp-note" style="margin-top:26px;">Prices are the engine's nightly marks from verified eBay asking prices (asks, not sales); they are dated, sourced, and never hand-typed. Nothing here is investment advice — cards are illiquid, think in 6–12 month holds. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
 </main>
 
 ${footer}

@@ -268,7 +268,7 @@ for (const [host, list] of byHost) {
 <link rel="stylesheet" href="/css/engine-block.css">
 <section class="cp-embed-wrap cp-t1-wrap" id="engine" aria-label="Engine-tracked cards on this page">
 ${list.map((c, i) => renderBlock(c, i)).join("\n")}
-  <p class="cp-note" style="margin:6px 2px 0;">Marks are the engine's nightly reads from verified eBay asking prices and, where recorded, auction closes; dated, sourced, never hand-typed. Cards are illiquid — think in 6–12 month holds. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
+  <p class="cp-note" style="margin:6px 2px 0;">Marks are the engine's nightly reads from verified eBay asking prices (asks, not sales); dated, sourced, never hand-typed. Cards are illiquid — think in 6–12 month holds. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
 </section>
 <script src="/js/engine-stats.js?v=${STATS_V}"></script>
 <script src="/js/engine-block.js?v=${JS_V}" defer></script>
