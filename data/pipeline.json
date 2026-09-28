@@ -2123,6 +2123,14 @@
       "area": "ledger",
       "by": "monday-scan (dm)",
       "title": "LEDGER (local, unpushed - calls.json is not in the price lane): three Pitch Black verdicts were 6-21 days past finalizeAfter on a Sep 7 read and are now final on today's PriceCharting ungraded sold index. v-pb-darkrai-wait PASS entry $455 -> $184.01 (-59.6%, legacy right); v-pb-zeraora-buy BUY entry $70 -> $51.22 (-26.8%, legacy wrong); v-pb-gladion-buy BUY entry $30 -> $25.98 (-13.4%, legacy wrong - it crossed out of flat since Sep 7). readBasis 'sold' on all three, projections untouched. Under GRADING CLOCK v3 none of these is a public grade: all three stay EARLY until their 6/12-month thesis checks, and none may be quoted as right or wrong. Scoreboard now 19 final / 4 trending / 0 open. Needs the CoS to push data/calls.json."
+    },
+    {
+      "id": "audit-2026-09-28-3",
+      "status": "awaiting-cos",
+      "date": "2026-09-28",
+      "area": "tooling",
+      "by": "monday-scan (inspector, self-reported)",
+      "title": "LOW / SELF-REPORTED, already fixed: this run's own push shipped a broken link on all six Pokemon index pages and the post-publish live check is what caught it. tools/remark-indices.mjs builds the ticker strip from a HARDCODED five-entry page map; PF25 was added to its POKE list on Sep 21 (2378ba7) but never to that map, so every strip rendered href=\"undefined\" on the PF25 chip and /undefined was live on www for ~4 minutes. Fixed in the same run: PF25 added to the map (so it cannot recur) and the six pages repaired, re-gated FAIL 0 on all three, pushed as a follow-up. THE REAL FINDING IS THE GATE: all three gates passed the broken tree, because nothing checks a hand-built href. Recommend a site-auditor check that FAILs on href=\"undefined\", href=\"null\", href=\"\" and href=\"#undefined\" in any page - one regex, catches this whole class, and it is the second time a hardcoded map inside remark-indices.mjs has outlived the data it mirrors. Second recommendation: that page map should read x.page from data/indices.json like the sector loop ten lines below it already does, instead of duplicating it."
     }
   ],
   "scoreboard": {
@@ -3069,11 +3077,12 @@
         {
           "date": "2026-09-28",
           "commits": [
-            "PENDING"
+            "a2d5494",
+            "follow-up (strip fix)"
           ],
           "by": "monday-scan STEP 3.98 (price lane)",
           "gates": "audit-prices FAIL 0 / WARN 76 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected) — WARN counts identical to the pre-run baseline",
-          "liveVerified": "PENDING"
+          "liveVerified": "2026-09-28 — verified, and the verification caught a self-inflicted broken link that was fixed in the same run"
         }
       ]
     },
@@ -3234,7 +3243,7 @@
   "publish": {
     "date": "2026-09-28",
     "by": "monday-scan STEP 3.98",
-    "commit": "PENDING",
+    "commit": "a2d5494 + follow-up",
     "lane": [
       "data/indices.json (PB26/CR26/AH26/PRIS25/DR25/PF25 re-marked on sold comps)",
       "pitch-black-index.html",
@@ -3251,7 +3260,7 @@
     ],
     "gates": "audit-prices FAIL 0 / WARN 76 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected in sandbox) — identical WARN counts to the pre-run baseline on the same tree",
     "notPublished": "data/calls.json (three finalizations — not in the lane); the home-page basis correction (audit-2026-09-28-1 — filed, not approved, lane does not self-approve copy); three Topps pre-release scaffolds (on disk)",
-    "liveVerified": "PENDING",
+    "liveVerified": "2026-09-28 ~11:0x PT - /pitch-black-index serves 82.75, 're-marked 09/28/26', all 36 rows dated 09-28, and the strip carries all 11 tickers including the nightly's sector marks (TH26 99.73 / SV151 99.29 / BOW26 98.58 / BB26 99.14 / BCB26 97.15). Deploy propagated in ~2.5 min. The same check caught a broken PF25 link the gates had passed - see audit-2026-09-28-3; fixed and re-pushed.",
     "rebase": "Started from a fresh clone at bbb58b7; origin/main advanced 2 commits mid-run (0550a67 nightly + b9af82f site-sweep, both touching data/indices.json and index.html). Hard-reset onto b9af82f and re-ran the whole re-mark + derived assets on that tree rather than merging — no stale-tree push (LANE-RULES R2)."
   },
   "decisions": [

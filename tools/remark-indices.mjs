@@ -88,7 +88,7 @@ const stripHtml = () => {
     return `<a class="chip${on ? " on" : ""}" href="${href}" style="text-decoration:none;"><b>${t}</b> <span style="color:var(--tx)">${s.level.toFixed(2)}</span> <span class="soon">${signed(s.wow, 1)} w/w</span></a>`;
   };
   return (active) => {
-    const pages = { PB26: "/pitch-black-index", CR26: "/chaos-rising-index", AH26: "/ascended-heroes-index", PRIS25: "/prismatic-evolutions-index", DR25: "/destined-rivals-index" };
+    const pages = { PB26: "/pitch-black-index", CR26: "/chaos-rising-index", AH26: "/ascended-heroes-index", PRIS25: "/prismatic-evolutions-index", DR25: "/destined-rivals-index", PF25: "/phantasmal-flames-index" };
     let h = `<div class="strip">`;
     for (const t of POKE) h += chip(t, pages[t], t === active);
     // every other live ticker (sector-model set indices, the Bowman trio …) straight from indices.json — never hardcoded
