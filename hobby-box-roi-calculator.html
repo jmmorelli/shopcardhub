@@ -1052,6 +1052,11 @@ let curQ = PRESETS.custom.q;
 const fmtUSD = n => (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString(undefined,{maximumFractionDigits:2});
 const ebayURL = q => "https://www.ebay.com/sch/i.html?_nkw="+encodeURIComponent(q)+"&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=hobby-box-roi-calculator";
 const FAN = ebayURL("sealed hobby box 2026");
+/* Fanatics (Impact) search link, Sep 28 2026: Topps/Bowman presets only (Fanatics sells Topps sealed; no Panini claim).
+   A LINK ONLY: no Fanatics price or stock claim is rendered. subId1 = page slug. eBay stays the primary button (R11). */
+const FAN_BASE = "https://fanatics.93n6tx.net/c/7388044/4029520/9663";
+const fanURL = q => FAN_BASE + "?u=" + encodeURIComponent("https://www.fanatics.com/?query=" + encodeURIComponent(q)) + "&subId1=hobby-box-roi-calculator";
+const fanQ = q => /\b(topps|bowman)\b/i.test(q) ? q.replace(/^20\d\d(-\d\d)?\s+/, "") : null;
 
 function rowHTML(r){
   return `<tr>
@@ -1113,7 +1118,9 @@ function recalc(){
   } else if(roi >= 10){
     label="Rip — Positive EV"; klass="buy";
     plain=`After ${fee}% fees, the contents are worth about ${fmtUSD(evNet)} versus ${fmtUSD(totalCost)} all-in — the sealed box is underpriced versus its math. Ripping is +EV over many boxes (single-box variance is still brutal).`;
-    cta=`<a href="${boxLink}" target="_blank" rel="noopener sponsored" class="btn-primary">Buy this box on eBay →</a><a href="${FAN}" target="_blank" rel="noopener sponsored" class="btn-secondary btn-fanatics">Check new sealed on eBay</a>`;
+    cta=`<a href="${boxLink}" target="_blank" rel="noopener sponsored" class="btn-primary">Buy this box on eBay →</a>` + (fanQ(curQ)
+      ? `<a href="${fanURL(fanQ(curQ))}" target="_blank" rel="noopener sponsored" class="btn-secondary btn-fanatics" title="A fanatics.com search, not a price" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'hobby-box-roi-calculator',page:location.pathname})">Topps boxes at Fanatics &rarr;</a><span style="flex-basis:100%;font-size:11px;color:var(--text-dim);">The Fanatics link is a fanatics.com search; ShopCardHub earns an affiliate commission on qualifying purchases. No Fanatics price is shown here.</span>`
+      : `<a href="${FAN}" target="_blank" rel="noopener sponsored" class="btn-secondary">Check new sealed on eBay</a>`);
   } else if(roi >= -10){
     label="Marginal — Near Break-Even"; klass="watch";
     plain=`After ${fee}% fees, EV (${fmtUSD(evNet)}) is roughly equal to your ${fmtUSD(totalCost)} all-in cost — close to a coin flip. Only rip if you want the experience; check live prices before committing.`;

@@ -29,6 +29,13 @@ const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const days = (a, b) => Math.round((Date.parse(b + "T12:00:00Z") - Date.parse(a + "T12:00:00Z")) / 864e5);
 const slug = (s) => String(s).toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
 
+// Fanatics (Impact) search link on Topps/Bowman rows — Sep 28 2026 (Mo, Sep 27 "go time"; ideas 2026-09-27 note 3).
+// Same program + deep-link shape as build-buy-strip.mjs. A LINK ONLY: no Fanatics price or stock claim is rendered.
+// eBay stays the gold primary button (R11); subId1 = the row's own id (release-<slug>), as on the strips.
+const FAN_BASE = "https://fanatics.93n6tx.net/c/7388044/4029520/9663";
+const fan = (q, sub) => FAN_BASE + "?u=" + encodeURIComponent("https://www.fanatics.com/?query=" + encodeURIComponent(q)) + "&subId1=" + encodeURIComponent(sub);
+const fanQ = (r) => (r.family !== "pokemon" && /\b(topps|bowman)\b/i.test(r.label || "")) ? String(r.label).split(" — ")[0].replace(/^20\d\d(-\d\d)?\s+/, "").trim() : null;
+
 const data = JSON.parse(fs.readFileSync(path.join(REPO, "data/releases.json"), "utf8"));
 const pageFile = path.join(REPO, "release-calendar.html");
 const html = fs.readFileSync(pageFile, "utf8");
@@ -45,7 +52,7 @@ const row = (r) => {
   const lab = href ? `<a href="${esc(href)}">${esc(r.label)}</a>` : esc(r.label);
   const st = r.status === "confirmed" ? "" : r.status === "reported" ? `<span class="st">reported, not yet on the maker's calendar</span>` : r.status === "expected" ? `<span class="st">expected window, no day</span>` : "";
   const note = [st, r.note ? esc(r.note) : ""].filter(Boolean).join(" · ");
-  return `<div class="rc-row" data-date="${esc(r.date)}">${dt}<div><div class="rc-lab"><span class="rc-fam ${esc(r.family || "")}">${esc(r.sport || (r.family === "pokemon" ? "PKMN" : ""))}</span>${lab}</div>${note ? `<div class="rc-note">${note}</div>` : ""}</div><div class="rc-act">${href ? `<a class="rc-guide" href="${esc(href)}">Guide &rarr;</a>` : ""}<a class="rc-buy" href="${buy}" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'${esc(cid)}',page:location.pathname})">Sealed on eBay &rarr;</a></div></div>`;
+  return `<div class="rc-row" data-date="${esc(r.date)}">${dt}<div><div class="rc-lab"><span class="rc-fam ${esc(r.family || "")}">${esc(r.sport || (r.family === "pokemon" ? "PKMN" : ""))}</span>${lab}</div>${note ? `<div class="rc-note">${note}</div>` : ""}</div><div class="rc-act">${href ? `<a class="rc-guide" href="${esc(href)}">Guide &rarr;</a>` : ""}<a class="rc-buy" href="${buy}" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'${esc(cid)}',page:location.pathname})">Sealed on eBay &rarr;</a>${fanQ(r) ? `<a class="rc-fan" href="${esc(fan(fanQ(r), cid))}" target="_blank" rel="noopener sponsored" title="A fanatics.com search, not a price" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${esc(cid)}',page:location.pathname})">At Fanatics &rarr;</a>` : ""}</div></div>`;
 };
 const sec = (title, sub, rows, empty) => `<section class="rc-sec"><h2>${title}${sub ? ` <b>·</b> <span style="letter-spacing:1px;text-transform:none;font-family:var(--fm);font-size:11px;">${sub}</span>` : ""}</h2>${rows.length ? rows.map(row).join("\n") : `<div class="rc-empty">${empty}</div>`}</section>`;
 
@@ -59,6 +66,7 @@ ${sec("This week", `${TODAY} → +7 days`, week, "Nothing dated in the next seve
 ${sec("Next 30 days", "", month, "Nothing further dated inside 30 days.")}
 ${sec("Later in 2026", "", later, "Nothing dated beyond 30 days yet.")}
 ${sec("Just released", "last 30 days — the singles are printing, the sealed asks are settling", past, "No release in the last 30 days.")}
+<p class="rc-src">"Sealed on eBay" is a live eBay search; "At Fanatics" (Topps and Bowman rows) is a fanatics.com search. ShopCardHub earns an affiliate commission on qualifying purchases from either. No Fanatics price or stock is shown here.</p>
 <p class="rc-src"><b>Sources</b> (as of ${esc(data.asOf || TODAY)}; page baked ${esc(TODAY)}):<br>${src}</p>
 ${END}`;
 const a = html.indexOf(START), b = html.indexOf(END);
