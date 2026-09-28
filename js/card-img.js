@@ -198,8 +198,14 @@
               var c = document.createElement('span');
               c.className = 'sch-vs-sold';
               c.textContent = chip.txt;
-              c.title = 'This listing (price + shipping) against the row\u2019s last dated sold price. An ask, not a price.';
+              c.title = 'This listing (price + shipping) against the row\u2019s sold mark (a median of recent dated sales). An ask, not a price.';
               c.style.cssText = 'display:inline-block;margin-left:6px;font:600 10px/1.4 var(--fm,monospace);color:var(--text-dim,#9aa);border:1px solid var(--border2,#333);border-radius:2px;padding:1px 5px;white-space:nowrap;';
+              // Sector tables lay the action cell out as a fixed 3-column grid (Watch · Listing · Bid).
+              // Dropped in as a 4th grid item, the chip pushed the Bid button into the 32px Watch column
+              // on the next grid row and clipped it (site-gates image-sweep, Sep 28). Give it its own row.
+              if (rowA.parentNode && rowA.parentNode.classList && rowA.parentNode.classList.contains('act-w')) {
+                c.style.cssText += 'order:9;grid-column:1/-1;justify-self:center;margin-left:0;';
+              }
               rowA.parentNode.insertBefore(c, rowA.nextSibling);
             }
           });
