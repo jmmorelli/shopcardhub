@@ -300,4 +300,18 @@ body .focus .items a { min-height: 44px; }
   body .bstrip.bs-dock .bs-go { flex: 0 0 auto; display: block; padding: 11px 14px; font-size: 0; letter-spacing: 0; white-space: nowrap; }
   body .bstrip.bs-dock .bs-go::before { content: "Buy on eBay \2192"; font-size: 10.5px; letter-spacing: 1.2px; }
   body .bs-hold { height: 0; }
+  /* 8b (Site Sweep, Sep 28 2026). A strip with a second store link (.bs-fan, Fanatics) or a
+     gear link (.bs-rep) made the docked CTA row wider than the phone: the title and live ask
+     collapsed to 0 px and the Fanatics button ran off the right edge (28 pages). Those docks
+     stack instead — title, live ask, then the buttons sharing one row. */
+  body .bstrip.bs-dock:has(.bs-fan), body .bstrip.bs-dock:has(.bs-rep) {
+    grid-template-columns: minmax(0, 1fr); grid-template-areas: "t" "live" "go"; row-gap: 3px; }
+  body .bstrip.bs-dock:has(.bs-fan) .bs-cta, body .bstrip.bs-dock:has(.bs-rep) .bs-cta { width: 100%; gap: 8px; margin-top: 4px; }
+  body .bstrip.bs-dock:has(.bs-fan) .bs-go, body .bstrip.bs-dock:has(.bs-rep) .bs-go { flex: 1 1 0; text-align: center; padding: 10px 8px; }
+  body .bstrip.bs-dock .bs-fan { flex: 1 1 0; min-width: 0; padding: 9px 8px; font-size: 0; letter-spacing: 0; justify-content: center; }
+  body .bstrip.bs-dock .bs-fan::before { content: "At Fanatics \2192"; font-size: 10.5px; letter-spacing: 1.2px; }
+  body .bstrip.bs-dock .bs-rep { flex: 1 1 0; min-width: 0; text-align: center; overflow: hidden; text-overflow: ellipsis; }
+  /* In the flow, a long primary label ("Shop 2026 Chrome F1 hobby boxes on eBay") may wrap
+     rather than push past the strip's edge. */
+  body .bstrip:not(.bs-dock) .bs-go { white-space: normal; min-width: 0; text-align: center; line-height: 1.35; }
 }
