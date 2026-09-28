@@ -729,6 +729,22 @@ fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(
       html += 'Card movers (w/w, marks &ge;$5): ' + cards.slice(0,5).map(function(c){
         return '<a href="' + c.page + '">' + c.nm + '</a> <span style="color:var(--dim,#5a7880)">(' + c.t + ')</span> ' + pc(c.pct);
       }).join(' &middot; ');
+      /* Chase tier vs whole set (comp-2026-09-28, CoS Sep 28). Pokémon only, and only on MATCHED windows: each
+         ticker's move from the mark 6–8 days before its latest, latest marks within 3 days of each other. On Sep 28
+         the whole-set tickers (TH26/SV151) were 3 days old, so the line stays hidden until the windows match. */
+      try {
+        var DAY = 864e5, wk = function (x) { var h = x.history || []; if (h.length < 2) return null; var L = h[h.length-1], d1 = Date.parse(L.date);
+          for (var i = h.length - 2; i >= 0; i--) { var g = (d1 - Date.parse(h[i].date)) / DAY; if (g >= 6 && g <= 8) return { w: (L.level / h[i].level - 1) * 100, d: L.date }; if (g > 8) break; } return null; };
+        var ch = [], ws = [];
+        Object.keys(D).forEach(function (t) { var x = D[t]; if (!x || typeof x !== 'object' || x.status !== 'live') return;
+          var pk = /pok/i.test((x.set || '') + ' ' + (x.name || '')) || ['PB26','CR26','AH26','PRIS25','DR25','PF25'].indexOf(t) > -1; if (!pk) return;
+          var r = wk(x); if (!r) return; r.t = t; (x.model === 'sector' ? ws : ch).push(r); });
+        var ds = ch.concat(ws).map(function (r) { return Date.parse(r.d); });
+        if (ch.length >= 2 && ws.length >= 1 && Math.max.apply(null, ds) - Math.min.apply(null, ds) <= 3 * DAY) {
+          var av = function (a) { return a.reduce(function (s, r) { return s + r.w; }, 0) / a.length; };
+          html += '<br>Chase tier vs whole set (Pokémon, 1 week to ' + ch.concat(ws).map(function (r) { return r.d; }).sort().pop() + '): ' + ch.length + ' chase-tier indices averaged ' + pc(av(ch)) + '; whole-set ' + ws.map(function (r) { return r.t; }).join(', ') + ' ' + pc(av(ws)) + '.';
+        }
+      } catch (e2) {}
       html += '</div>';
       var el = document.getElementById('tape');
       if (el) { el.innerHTML = html; el.style.display = 'block'; }

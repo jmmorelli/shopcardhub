@@ -62,6 +62,12 @@ const REPORTS = {
   // one night's file. tools/league/score.mjs reads these two.
   landingOrganicDaily28: { dateRanges: RANGES.d28, dimensions: d("landingPage", "date"), metrics: m("sessions", "keyEvents"), dimensionFilter: { filter: { fieldName: "sessionDefaultChannelGroup", stringFilter: { value: "Organic Search" } } }, orderBys: [{ dimension: { dimensionName: "date" } }], limit: 5000 },
   pageClicks28: { dateRanges: RANGES.d28, dimensions: d("pagePath", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["click", "buystrip_click", "buybox_click", "newsletter_signup"] } } }, limit: 2000 },
+  // Retention split (retention-split-exploration-sep07, built 2026-09-28 by the CoS on the Monday scan's 4th ask):
+  // the surfaces-vs-guides split GA4's standard reports cannot show. Page views and returning-visitor page views per
+  // path, and returning sessions by landing page, 28 days; derive() folds them into summary.retentionSplit28.
+  pages7: { dateRanges: RANGES.d7, dimensions: d("pagePath"), metrics: m("screenPageViews", "activeUsers", "userEngagementDuration", "keyEvents"), orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }], limit: 150 },
+  pagesReturning28: { dateRanges: RANGES.d28, dimensions: d("pagePath", "newVsReturning"), metrics: m("screenPageViews", "activeUsers", "keyEvents"), limit: 1000 },
+  landingReturning28: { dateRanges: RANGES.d28, dimensions: d("landingPage", "newVsReturning"), metrics: m("sessions", "keyEvents"), limit: 1000 },
   // No dimension → one totals row. sessionKeyEventRate here is GA4's own "sessions with a key event ÷ sessions",
   // which is what the UI's Traffic-acquisition total shows (5.59% on 2026-09-18), not key events ÷ sessions.
   totals28: { dateRanges: RANGES.d28, metrics: m("sessions", "activeUsers", "keyEvents", "sessionKeyEventRate", "engagementRate"), limit: 1 },
@@ -140,6 +146,26 @@ function botFilter(rep) {
   };
 }
 
+// "Surfaces" = the return-visit product (Terminal home, /indices, the index pages, /watchlist, the Bangers board);
+// "guides" = everything else. Shares are of page views / landing sessions, 28 days. Engagement per view is 7 days.
+const SURFACE = /^\/(?:$|index(?:\.html)?$|indices(?:\.html)?$|watchlist|bowman-bangers|[a-z0-9-]*-index(?:\.html)?$)/;
+function retentionSplit(rep) {
+  const g = () => ({ views: 0, returningViews: 0, keyEvents: 0, landings: 0, returningLandings: 0, views7: 0, engagementSec7: 0 });
+  const out = { surfaces: g(), guides: g() };
+  const bucket = (p) => (SURFACE.test(String(p || "").replace(/\?.*$/, "")) ? out.surfaces : out.guides);
+  for (const r of (rep.pagesReturning28 || {}).rows || []) { const b = bucket(r.pagePath); b.views += r.screenPageViews || 0; b.keyEvents += r.keyEvents || 0; if (r.newVsReturning === "returning") b.returningViews += r.screenPageViews || 0; }
+  for (const r of (rep.landingReturning28 || {}).rows || []) { const b = bucket(r.landingPage); b.landings += r.sessions || 0; if (r.newVsReturning === "returning") b.returningLandings += r.sessions || 0; }
+  for (const r of (rep.pages7 || {}).rows || []) { const b = bucket(r.pagePath); b.views7 += r.screenPageViews || 0; b.engagementSec7 += r.userEngagementDuration || 0; }
+  for (const b of Object.values(out)) {
+    b.returningViewShare = b.views ? +(b.returningViews / b.views * 100).toFixed(2) : null;
+    b.returningLandingShare = b.landings ? +(b.returningLandings / b.landings * 100).toFixed(2) : null;
+    b.engagementSecPerView7 = b.views7 ? +(b.engagementSec7 / b.views7).toFixed(1) : null;
+    b.keyEventsPer100Views = b.views ? +(b.keyEvents / b.views * 100).toFixed(2) : null;
+  }
+  out.rule = "surfaces = / · /indices · *-index · /watchlist · /bowman-bangers; guides = every other path; 28d unless noted";
+  return out;
+}
+
 function derive(rep) {
   const ch28 = rep.channels28.rows, ch7 = rep.channels7.rows;
   const pick = (rows, name) => rows.find((r) => r.sessionDefaultChannelGroup === name) || {};
@@ -168,6 +194,7 @@ function derive(rep) {
     topCountry7: (rep.countries7.rows[0] || {}).country || null, nonUSTopCountry7: (rep.countries7.rows.find((r) => r.country !== "United States") || {}),
     // Raw figures stay above, unchanged. The bot-adjusted pair sits beside them, never instead of them.
     bots: botFilter(rep),
+    retentionSplit28: retentionSplit(rep),
   };
 }
 

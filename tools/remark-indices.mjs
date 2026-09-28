@@ -88,7 +88,9 @@ const stripHtml = () => {
     return `<a class="chip${on ? " on" : ""}" href="${href}" style="text-decoration:none;"><b>${t}</b> <span style="color:var(--tx)">${s.level.toFixed(2)}</span> <span class="soon">${signed(s.wow, 1)} w/w</span></a>`;
   };
   return (active) => {
-    const pages = { PB26: "/pitch-black-index", CR26: "/chaos-rising-index", AH26: "/ascended-heroes-index", PRIS25: "/prismatic-evolutions-index", DR25: "/destined-rivals-index", PF25: "/phantasmal-flames-index" };
+    // Page paths come from indices.json (x.page), like the sector loop below — the hardcoded map missed PF25 and
+    // shipped href="undefined" on Sep 28 (audit-2026-09-28-3). A ticker with no page throws instead of linking /undefined.
+    const pages = Object.fromEntries(POKE.map((t) => { const pg = idx[t] && idx[t].page; if (!pg) throw new Error(`indices.json: ${t} has no page`); return [t, pg]; }));
     let h = `<div class="strip">`;
     for (const t of POKE) h += chip(t, pages[t], t === active);
     // every other live ticker (sector-model set indices, the Bowman trio …) straight from indices.json — never hardcoded

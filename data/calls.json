@@ -1,6 +1,6 @@
 {
  "_comment": "CALLS LEDGER \u2014 single source for /track-record. Two call types. TYPE=RANGE (price projection): projLow/projHigh vs market read. Grading: state=open (no reliable read) \u2192 trending (ask-side or thin sold data; provisional) \u2192 final (SOLD comps ~4 wks post-release; final grades never change). grade: hit = read inside range; miss_high = we projected too high; miss_low = too low. Signed miss% is computed on-page from the nearest range bound. TYPE=VERDICT (BUY/PASS/SELL call; legacy rows say WAIT): entry = market price at call date (for pre-release calls with no market, entry = first reliable read, noted); move = entry \u2192 read. The 8-week read is recorded at state=final (sold-based where possible) but is NOT a public grade -- see GRADING CLOCK v3 below; the public grade is the thesis[] check at 6/12 months: right if the move agrees with the action by \u226510% (BUY wants up, PASS/SELL wants down), wrong if it disagrees by \u226510%, flat inside \u00b110%. HOLD/WATCH verdicts are not ledger material. IMMUTABILITY: never edit projLow/projHigh, action, entry, or callDate after publication. Weekly scheduled run updates read/readDate/state/grade and appends new calls. POKEMON RETIREMENT (2026-08-18, Mo's decision): do NOT issue NEW Pokemon calls (cat 183454) -- the finals showed a one-directional miss_high bias = no edge in a single-driver (supply-only) market. Existing Pokemon calls still grade to FINAL on their original schedule and are NEVER deleted; /track-record renders them in a separate 'Retired' section. Sports calls (cat 212) are the active book. GRADING CLOCK v3 (2026-08-21, Mo's decision -- cards are illiquid, long-hold assets; 8 weeks is a trading clock and cards don't trade well on one): a verdict's ONLY public grade is its thesis[] check at +6 and +12 months from callDate, sold basis, +/-10% vs the ORIGINAL entry per the action (right / wrong / flat), immutable once set. The 8-week read (read/readDate/basis/state=final) is STILL recorded by the weekly run so the early tape is visible, and the legacy 8-week `grade` field may still be set for continuity -- but /track-record does NOT display it as a grade, and it must never be tweeted, quoted, or described as RIGHT/WRONG. Until a thesis check is graded, a call's public state is EARLY. VOCABULARY: new verdict calls use action BUY / PASS / SELL (PASS replaces WAIT -- 'pass at this price', not 'time the market'); existing WAIT actions are immutable in data and display as PASS. Public copy says 'scorecard' and 'call', never 'ledger', 'paper trade', 'entry', or 'trade grade'. RE-ENTRY: to say 'buy the dip' after a wrong trade grade, never edit the old call -- append a NEW call (id '<orig>-2') at the current price once the tape confirms (e.g. second consecutive green week). SKEW/KURT: engine emits retSkew/retKurtosis only at n>=60 return observations (below that, sample moments are outlier noise).",
- "updated": "2026-09-25",
+ "updated": "2026-09-28",
  "calls": [
   {
    "id": "pb-darkrai-sir",
@@ -286,10 +286,10 @@
    "entryLabel": "PriceCharting raw sold at call date",
    "entryDate": "2026-07-20",
    "basis": "sold",
-   "read": 230.82,
-   "readLabel": "PriceCharting ungraded solds $230.82 (entry 455 -> 230.82, -49.3%)",
-   "readDate": "2026-09-07",
-   "state": "trending",
+   "read": 184.01,
+   "readLabel": "PriceCharting ungraded solds $184.01 (entry 455 -> 184.01, -59.6%) \u2014 8-wk read, not graded",
+   "readDate": "2026-09-28",
+   "state": "final",
    "grade": "right",
    "finalizeAfter": "2026-09-14",
    "note": "\"Don't catch the knife\" \u2014 PASS at $455 -- graded at the thesis checks like every call; the 8-week read below is context, not a grade.",
@@ -297,7 +297,21 @@
    "cat": "183454",
    "req": "darkrai,pitch",
    "deny": "japanese,jpn,korean,psa,bgs,cgc,sealed,box,etb,bundle,pack,120,gold,101",
-   "readBasis": "sold"
+   "readBasis": "sold",
+   "thesis": [
+    {
+     "horizon": "6-mo",
+     "due": "2027-01-20",
+     "read": null,
+     "grade": null
+    },
+    {
+     "horizon": "12-mo",
+     "due": "2027-07-20",
+     "read": null,
+     "grade": null
+    }
+   ]
   },
   {
    "id": "v-pb-zeraora-buy",
@@ -311,10 +325,10 @@
    "entryLabel": "pre-release call had no market; entry = first reliable read (ask median, Jul 28)",
    "entryDate": "2026-07-28",
    "basis": "ask",
-   "read": 60,
-   "readLabel": "PriceCharting ungraded solds $60.00 (entry 70 -> 60.00, -14.3%)",
-   "readDate": "2026-09-07",
-   "state": "trending",
+   "read": 51.22,
+   "readLabel": "PriceCharting ungraded solds $51.22 (entry 70 -> 51.22, -26.8%) \u2014 8-wk read, not graded",
+   "readDate": "2026-09-28",
+   "state": "final",
    "grade": "wrong",
    "finalizeAfter": "2026-09-22",
    "note": "The range call already missed high; the BUY now grades from $70 forward. Two separate questions.",
@@ -322,7 +336,21 @@
    "cat": "183454",
    "req": "zeraora,pitch",
    "deny": "japanese,jpn,korean,psa,bgs,cgc,sealed,box,etb,bundle,pack",
-   "readBasis": "sold"
+   "readBasis": "sold",
+   "thesis": [
+    {
+     "horizon": "6-mo",
+     "due": "2027-01-04",
+     "read": null,
+     "grade": null
+    },
+    {
+     "horizon": "12-mo",
+     "due": "2027-07-04",
+     "read": null,
+     "grade": null
+    }
+   ]
   },
   {
    "id": "v-pb-gladion-buy",
@@ -336,18 +364,32 @@
    "entryLabel": "pre-release call had no market; entry = first reliable read (ask median, Jul 28)",
    "entryDate": "2026-07-28",
    "basis": "sold",
-   "read": 29.48,
-   "readLabel": "PriceCharting ungraded solds $29.48 (entry 30 -> 29.48, -1.7%, inside +/-10%)",
-   "readDate": "2026-09-07",
-   "state": "trending",
-   "grade": null,
+   "read": 25.98,
+   "readLabel": "PriceCharting ungraded solds $25.98 (entry 30 -> 25.98, -13.4%) \u2014 8-wk read, not graded",
+   "readDate": "2026-09-28",
+   "state": "final",
+   "grade": "wrong",
    "finalizeAfter": "2026-09-22",
    "note": "Story-art trainer SIR buy, graded from $30 forward.",
    "q": "gladion final battle pitch black 118",
    "cat": "183454",
    "req": "gladion,pitch",
    "deny": "japanese,jpn,korean,psa,bgs,cgc,sealed,box,etb,bundle,pack",
-   "readBasis": "sold"
+   "readBasis": "sold",
+   "thesis": [
+    {
+     "horizon": "6-mo",
+     "due": "2027-01-04",
+     "read": null,
+     "grade": null
+    },
+    {
+     "horizon": "12-mo",
+     "due": "2027-07-04",
+     "read": null,
+     "grade": null
+    }
+   ]
   },
   {
    "id": "v-bb-fischer-buy",

@@ -84,6 +84,17 @@ for (const f of pages) {
   }
 }
 
+/* ---------- 1c. Dead hand-built href (Sep 28 2026, audit-2026-09-28-3) ----------
+   remark-indices.mjs built the ticker strip from a hardcoded page map that never got PF25, so
+   every index page shipped href="undefined" and all three gates passed it. Any rendered
+   href/src that is undefined, null, NaN or empty is a FAIL. Reads markup() (scripts stripped):
+   a template literal inside a <script> is not a rendered link. */
+for (const f of pages) {
+  const html = markup(f);
+  const bad = html.match(/\s(?:href|src)\s*=\s*(["'])\s*(?:#?\/?(?:undefined|null|NaN))?\s*\1/g) || [];
+  for (const b of bad) add("FAIL", "dead-href", f, `rendered link with no target: ${b.trim().slice(0, 60)}`);
+}
+
 /* ---------- 2. Amazon link compliance ---------- */
 for (const f of pages) {
   const html = markup(f);
