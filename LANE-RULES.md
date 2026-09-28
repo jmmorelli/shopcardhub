@@ -899,7 +899,7 @@ number and every lane treats it that way.
 - **One capture, one promise.** `js/signup.js` + `tools/build-signup.mjs` put the same one-line form under the buy
   strip on every commercial page (`source` = page slug), under the index board on the home, and on the watchlist as
   the `watchlist` variant. The promise is fixed: *the Monday close of every set index, the week's movers, the chase
-  cards' last sold — one email, Tuesdays, free.* No lane writes a different pitch. A page added to
+  cards' sold marks — one email, Tuesdays, free.* *(Wording changed from "last sold" by the Sep 28 desk: a chase figure is a median of recent dated sales, not one sale — Integrity Watch `iw-2026-09-28-1`.)* No lane writes a different pitch. A page added to
   `data/buy-strip.json` gets the form on the next `build-signup.mjs` run (the desk runs it after `build-buy-strip`).
 - **The Tuesday Tape becomes the Monday close.** From the Sep 29 send, the digest opens with the index board (every
   live ticker: level · 1W · since launch), then the movers, then the chase cards (each with its dated sold mark and

@@ -11,7 +11,21 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — from the desk (2026-09-28, money-build run, ~22:30 PT Sep 27). Mo, these are the only things waiting on you
+## Open — from the desk (2026-09-28, 14:00 run). Mo, these are the only things waiting on you
+
+Verified against live state this run (the nightly price Action still has no Fanatics step; no TAG link or TCGplayer approval has reached the project). Nothing new is urgent.
+
+1. **Idea 40 (Fanatics in-stock links):** still your Impact sign-in (or a one-time catalog CSV into `Card Hub/deploy/`) plus a yes to run the read nightly. Or say "drop it".
+2. **TCGplayer on Impact (idea #38):** apply inside the same Impact account. Kill Oct 31.
+3. **Reddit post + feed-offer note:** unchanged, ready to paste (below).
+4. **TAG:** payment info, then the affiliate link when the approval email lands.
+5. **New, when you have ten minutes with the CoS: the next X batch.** Your scheduler has been empty since Sunday night, and posting needs your yes with you present (R10 Am. 2). Waiting in it: the Monday close (every Pokémon index down on the week; Prismatic 93.61 after Sunday's "watching whether it holds 98"), the Darkrai supersede line, and one supersede line for the Sep 26 "every row" auction-button post (the desk ruled it stays up). Say "let's do the X batch" in a chat.
+
+*Housekeeping, no action:* the 30th page's link preview (it showed a Pitch Black card under your Lugia post) is fixed; nothing to delete.
+
+---
+
+## Open — from the desk (2026-09-28, money-build run, ~22:30 PT Sep 27). (superseded by the 14:00 block above)
 
 Checked against live state this run; everything else below this block is closed or still stands as written.
 

@@ -22,8 +22,8 @@ moved; "no reason on the tape" is a valid sentence). Link: `shopcardhub.com/indi
 
 ## 2. Movers
 
-Three to five cards, largest absolute move first, across every index — name, set, last sold with
-date, the move. Each links to its index page (`?utm_source=tape…`). Nothing without a dated sale.
+Three to five cards, largest absolute move first, across every index — name, set, sold mark (a median of recent dated sales — never call it "last sold") with
+its read date, the move. Each links to its index page (`?utm_source=tape…`). Nothing without a dated sale.
 
 ## 3. The chase cards
 

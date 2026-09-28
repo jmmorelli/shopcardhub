@@ -20,7 +20,7 @@
   var COPY = {
     tape: {
       k: 'The Tuesday Tape',
-      p: 'The Monday close of every set index, the week’s movers, and the chase cards’ last sold. One email, Tuesdays. Free.',
+      p: 'The Monday close of every set index, the week’s movers, and the chase cards’ sold marks. One email, Tuesdays. Free.',
       b: 'Get the Tuesday Tape',
       ok: '✓ You’re on it — the next close lands Tuesday.'
     },
