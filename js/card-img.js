@@ -63,7 +63,7 @@
 
   // Cards the engine doesn't track (anything a visitor adds to the Vault) still get a
   // photo: one Browse call by name through the site's own comps endpoint, cached a week.
-  var LS = 'sch_cimg_v1';
+  var LS = 'sch_cimg_v2'; // v2 (Sep 28): cached hits carry fp/px for the vs-last-sold chip
   function lsGet() { try { return JSON.parse(localStorage.getItem(LS) || '{}'); } catch (e) { return {}; } }
   function lsSet(m) { try { localStorage.setItem(LS, JSON.stringify(m)); } catch (e) {} }
   var inflight = {};
@@ -89,7 +89,8 @@
         var ok = toks.every(function (k) { return t.indexOf(k) > -1; });
         if (!ok) continue;
         if (/(lot of|reprint|digital|custom|proxy|you pick|choose|\bcase\b|cases|frame|display|magnetic|toploader|top loader|sleeve|binder|stand|holder|acrylic|protector|playmat|deck box|storage)/.test(t)) continue;
-        best = { url: l.image.replace(/s-l\d+\./, 's-l500.'), item: l.url || null, title: l.title || null };
+        best = { url: l.image.replace(/s-l\d+\./, 's-l500.'), item: l.url || null, title: l.title || null,
+                 fp: l.buyingOption === 'FIXED_PRICE', px: (typeof l.price === 'number' && l.price > 0) ? l.price + (typeof l.shipping === 'number' ? l.shipping : 0) : null };
         if (l.buyingOption === 'FIXED_PRICE') break;
       }
       var mm = lsGet(); mm[ck] = { t: Date.now(), v: best }; lsSet(mm);
@@ -104,6 +105,34 @@
     var u = String(url);
     return /[?&]customid=/.test(u) ? u.replace(/customid=[^&]*/, 'customid=' + cid)
                                    : u + (u.indexOf('?') > -1 ? '&' : '?') + 'customid=' + cid;
+  }
+
+  // "vs last sold" chip — sold-basis tables only (a header named "Price" beside "As Of", or "Last sold").
+  function soldChip(row, hit) {
+    try {
+      if (!hit || !hit.fp || !(hit.px > 0)) return null;
+      var tbl = row.closest('table'); if (!tbl) return null;
+      var ths = tbl.querySelectorAll('thead th'); if (!ths.length) return null;
+      var pi = -1, ai = -1;
+      for (var i = 0; i < ths.length; i++) {
+        var t = (ths[i].textContent || '').trim().toLowerCase();
+        if (t === 'last sold' || t === 'price') pi = i;
+        if (t === 'as of') ai = i;
+      }
+      if (pi < 0) return null;
+      var sec = row.closest('[data-prices-updated]');
+      var md = null;
+      if (ai >= 0 && row.cells[ai]) { var m1 = (row.cells[ai].textContent || '').match(/(\d{2})-(\d{2})/); if (m1) md = m1[1] + '/' + m1[2]; }
+      else if (sec) { var m2 = sec.getAttribute('data-prices-updated').match(/\d{4}-(\d{2})-(\d{2})/); if (m2) md = m2[1] + '/' + m2[2]; }
+      if (!md) return null; // an undated mark gets no chip
+      if (/^price$/i.test((ths[pi].textContent || '').trim()) && ai < 0) return null;
+      var mark = parseFloat(((row.cells[pi] && row.cells[pi].textContent) || '').replace(/[^0-9.]/g, ''));
+      if (!(mark > 0)) return null;
+      var d = (hit.px - mark) / mark * 100;
+      if (Math.abs(d) > 50) return null;
+      var r = Math.round(d);
+      return { under: d < 0, txt: (r === 0 ? '\u00b10%' : (r < 0 ? '\u2212' + (-r) : '+' + r) + '%') + ' vs last sold ' + md };
+    } catch (e) { return null; }
   }
 
   function tagLink(item, surface) {
@@ -145,12 +174,35 @@
       // Authenticity Guarantee, and one cheapest listing is not a guaranteed one.
       try {
         var row = el.closest && el.closest('tr');
-        var rowA = row && row.querySelector('a.ebay[data-cid]');
-        if (rowA && hit.item && !rowA.getAttribute('data-av') && !rowA.getAttribute('data-listing')) {
-          rowA.href = withCid(hit.item, rowA.getAttribute('data-cid'));
+        // Six Pokémon index tables carry data-cid; the TH26/SV151 sector tables (top-10 rows) carry
+        // the id only in the link's customid — same link, same rule. AG-filtered links are skipped.
+        var rowA = row && (row.querySelector('a.ebay[data-cid]') || row.querySelector('td.act a.ebay'));
+        var rowCid = rowA && (rowA.getAttribute('data-cid') || ((rowA.getAttribute('href') || '').match(/[?&]customid=([^&]+)/) || [])[1]);
+        var rowAv = rowA && (rowA.getAttribute('data-av') || /[?&]LH_AV=1/.test(rowA.getAttribute('href') || ''));
+        if (rowA && rowCid && hit.item && !rowAv && !rowA.getAttribute('data-listing')) {
           rowA.setAttribute('data-listing', '1');
-          rowA.title = 'The cheapest verified listing for this card on eBay';
-          rowA.innerHTML = 'Listing &rarr;';
+          // Hits from the nightly photo map carry no price. The top ten rows of a table (most of
+          // its weight) re-read the cheapest verified listing live so the chip has a price; the
+          // lookup is the same cached /api/comps call name-mode rows already make (7-day cache).
+          var needLive = hit.fp === undefined && row.rowIndex > 0 && row.rowIndex <= 10;
+          (needLive ? byName(name, '183454').then(function (h2) { return (h2 && h2.item) ? h2 : hit; }, function () { return hit; }) : Promise.resolve(hit)).then(function (h) {
+            // Ledger #34 on sold-basis tables (Sep 28): a fixed-price listing gets a neutral
+            // "−12% vs last sold 09/21" chip — (price + shipping − the row's dated sold mark) / mark.
+            // Auction rows get nothing (a bid is not a price). Under-mark rows route to <cid>-bm so
+            // EPN can split them from plain <cid>. |Δ| > 50% shows no chip (likely a variant).
+            var chip = soldChip(row, h);
+            rowA.href = withCid(h.item, chip && chip.under ? rowCid + '-bm' : rowCid);
+            rowA.title = 'The cheapest verified listing for this card on eBay';
+            rowA.innerHTML = 'Listing &rarr;';
+            if (chip) {
+              var c = document.createElement('span');
+              c.className = 'sch-vs-sold';
+              c.textContent = chip.txt;
+              c.title = 'This listing (price + shipping) against the row\u2019s last dated sold price. An ask, not a price.';
+              c.style.cssText = 'display:inline-block;margin-left:6px;font:600 10px/1.4 var(--fm,monospace);color:var(--text-dim,#9aa);border:1px solid var(--border2,#333);border-radius:2px;padding:1px 5px;white-space:nowrap;';
+              rowA.parentNode.insertBefore(c, rowA.nextSibling);
+            }
+          });
         }
       } catch (e) {}
       // eBay serves the same photo at several widths; fetch only what the slot needs
