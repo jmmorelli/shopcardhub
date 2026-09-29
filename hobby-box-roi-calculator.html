@@ -1191,7 +1191,7 @@ function recalc(){
     label="Rip — Positive EV"; klass="buy";
     plain=`After ${fee}% fees, the contents are worth about ${fmtUSD(evNet)} versus ${fmtUSD(totalCost)} all-in — the sealed box is underpriced versus its math. Ripping is +EV over many boxes (single-box variance is still brutal).`;
     cta=`<a href="${boxLink}" target="_blank" rel="noopener sponsored" class="btn-primary">Buy this box on eBay →</a>` + (fanQ(curQ)
-      ? `<a href="${fanURL(fanQ(curQ))}" target="_blank" rel="noopener sponsored" class="btn-secondary btn-fanatics" title="A fanatics.com search, not a price" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'hobby-box-roi-calculator',page:location.pathname})">Topps boxes at Fanatics &rarr;</a><span style="flex-basis:100%;font-size:11px;color:var(--text-dim);">The Fanatics link is a fanatics.com search; ShopCardHub earns an affiliate commission on qualifying purchases. No Fanatics price is shown here.</span>`
+      ? `<a href="${fanURL(fanQ(curQ))}" target="_blank" rel="sponsored nofollow noopener" class="btn-secondary btn-fanatics" title="A fanatics.com search, not a price" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'hobby-box-roi-calculator',page:location.pathname})">Topps boxes at Fanatics &rarr;</a><span style="flex-basis:100%;font-size:11px;color:var(--text-dim);">The Fanatics link is a fanatics.com search; ShopCardHub earns an affiliate commission on qualifying purchases. No Fanatics price is shown here.</span>`
       : `<a href="${FAN}" target="_blank" rel="noopener sponsored" class="btn-secondary">Check new sealed on eBay</a>`);
   } else if(roi >= -10){
     label="Marginal — Near Break-Even"; klass="watch";

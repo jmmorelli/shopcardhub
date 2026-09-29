@@ -113,11 +113,11 @@ function block(slug, e) {
   // figure is rendered from it and nothing it returns reaches the engine or an index.
   if (c) lines.push(`      <a class="bs-case" href="${attr(epn(c.q, c.customid))}" target="_blank" rel="noopener sponsored" title="Sealed cases of ${attr(e.product)} on eBay &mdash; a search, not a price" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'case',page:location.pathname})">Sealed cases &rarr;</a>`);
   const fz = e.fanatics;
-  if (fz) lines.push(`      <a class="bs-fan" href="${attr(fan(fz.q, slug))}" target="_blank" rel="noopener sponsored" title="${attr(fz.title || "Search fanatics.com")}" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}',page:location.pathname})">${text(fz.label || "At Fanatics &rarr;")}</a>`);
+  if (fz) lines.push(`      <a class="bs-fan" href="${attr(fan(fz.q, slug))}" target="_blank" rel="sponsored nofollow noopener" title="${attr(fz.title || "Search fanatics.com")}" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}',page:location.pathname})">${text(fz.label || "At Fanatics &rarr;")}</a>`);
   // Rep-the-player TEST (Sep 27 2026, Mo: "add some test rep the player links… give people options and see").
   // Fanatics gear search for the player; subId1 = <slug>-rep so Impact separates gear from box clicks.
   const rp = e.rep;
-  if (rp) lines.push(`      <a class="bs-rep" href="${attr(fan(rp.q, slug + "-rep"))}" target="_blank" rel="noopener sponsored" title="${attr(rp.q)} jerseys and gear on fanatics.com" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}-rep',page:location.pathname})">${text(rp.label)}</a>`);
+  if (rp) lines.push(`      <a class="bs-rep" href="${attr(fan(rp.q, slug + "-rep"))}" target="_blank" rel="sponsored nofollow noopener" title="${attr(rp.q)} jerseys and gear on fanatics.com" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}-rep',page:location.pathname})">${text(rp.label)}</a>`);
   lines.push(`    </span>`);
   lines.push(`  </div>`);
   const fine = [`Affiliate links &mdash; ShopCardHub earns an eBay Partner Network commission on qualifying purchases at no extra cost to you. Any figure shown is the lowest live single-unit <em>ask</em>, not a sold comp.`];
