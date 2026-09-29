@@ -278,6 +278,12 @@ body .focus .items a { min-height: 44px; }
 }
 /* 7. Sticky rail height in dynamic-viewport units. */
 @supports (height: 100dvh) { body .rail { max-height: calc(100dvh - 58px); } }
+/* 7b (Site Sweep, Sep 29 2026). The DEST strip (Watchlist / Bangers tiles, tools/dest.py) has no bottom
+   margin, so where the next section opens straight on its eyebrow ("THE THESIS", "RANKED BY ROI") the
+   eyebrow sat flush against the tiles (15 pages on desktop). Only that case gets 24px; pages whose next
+   block brings its own spacing (alert bars, the ROI calculator) do not move. */
+body .dest-strip:has(+ .container > section:first-child:not(#calc) > .section-eyebrow:first-child),
+body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 24px; }
 /* 8. Phone dock for the above-the-fold buy strip (Sep 26 2026, EPN read).
    On a phone the hero paragraph alone runs 700-1000px, so on ~40 pages the BUYSTRIP — the
    one thing R11 puts "above the fold" — is the first thing BELOW it. js/buy-strip.js adds
@@ -299,6 +305,11 @@ body .focus .items a { min-height: 44px; }
   /* the docked button says one thing; the page's full label stays in the anchor for screen readers */
   body .bstrip.bs-dock .bs-go { flex: 0 0 auto; display: block; padding: 11px 14px; font-size: 0; letter-spacing: 0; white-space: nowrap; }
   body .bstrip.bs-dock .bs-go::before { content: "Buy on eBay \2192"; font-size: 10.5px; letter-spacing: 1.2px; }
+  /* 8c (Site Sweep, Sep 29 2026). The strip's buttons carry `transition: all .15s`, so on re-docking
+     (scroll back up past the strip) the label font-size animated 11px -> 0 and, for ~150ms, the full
+     nowrap label ("Shop Lamine Yamal rookie cards on eBay") pushed the gear/Fanatics button off the
+     right edge. The dock state switches instantly instead. */
+  body .bstrip.bs-dock, body .bstrip.bs-dock .bs-go, body .bstrip.bs-dock .bs-fan, body .bstrip.bs-dock .bs-rep { transition: none; }
   body .bs-hold { height: 0; }
   /* 8b (Site Sweep, Sep 28 2026). A strip with a second store link (.bs-fan, Fanatics) or a
      gear link (.bs-rep) made the docked CTA row wider than the phone: the title and live ask
