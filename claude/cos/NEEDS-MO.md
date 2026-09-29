@@ -16,7 +16,8 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 Checked against live state this run. Nothing new; one item came off.
 
 - **#7 ✅ closed Sep 29 ~14:55 PT:** Card Hub is attached to Growth League, Night Crew deploy, Site Sweep and the Wednesday weekly (verified in the scheduled-task list). Every pushing lane can ship on its own again.
-- **#1 Fanatics catalog/Impact, #2 TCGplayer, #4 TAG:** unchanged, as written below.
+- **#1 Fanatics catalog/Impact: ✅ off the list — Mo parked idea 40 (Sep 29).** Revives if real Fanatics clicks show up (GA4 ≥ 20/week).
+- **#2 TCGplayer, #4 TAG:** unchanged, as written below.
 - **#3 Reddit: ✅ off the list.** You posted Sep 29, automod removed it, and you parked Reddit ("reddit is weak"). The **feed-offer note** is no longer waiting on you: it now follows the Wednesday X poll, and the emails go out as Gmail drafts for your yes after you settle the start-date rule.
 
 ---
