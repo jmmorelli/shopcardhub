@@ -13,7 +13,7 @@ Usage:
   python3 tools/x-images/make.py levels                   # all five tickers, level vs 100
   python3 tools/x-images/make.py movers AH26              # top/bottom movers vs prevPrice
   python3 tools/x-images/make.py vault                    # Vault pitch card (public data only)
-  python3 tools/x-images/make.py og --out og              # og/indices.png link preview (1200x630), re-run each Monday
+  python3 tools/x-images/make.py og --out og              # og/indices.png link preview (1200x630), re-run each Monday; also stamps ?v=<mark date> on every page's og:image so X/Discord refetch
   python3 tools/x-images/make.py bangers                  # THE TUESDAY BOARD tape: top-5 parsed straight off bowman-bangers.html (added Sep 8 2026)
   python3 tools/x-images/make.py bcb26                    # BCB26 pre-activation / release-window card from indices.json (added Sep 8 2026; shows the level once live)
   python3 tools/x-images/make.py call v-bb-florentino-buy # accountability card for ONE published call, straight from data/calls.json (added Sep 15 2026)
@@ -236,7 +236,18 @@ def card_og(idx, out):
     d.text((px + 20, py + 66 * len(keys) + 30), "since inception 2026-08-24 · arrow = week over week", font=MONO(12), fill=DIM)
     d.line([(48, OH - 52), (W - 48, OH - 52)], fill="#0e3a45", width=1)
     d.text((48, OH - 40), f"marks as of {asof} · shopcardhub.com/indices", font=MONO(13), fill=DIM)
-    p = out / "indices.png"; im.save(p); return p
+    p = out / "indices.png"; im.save(p)
+    # Cache-bust (Sep 29 2026): X, Discord and iMessage cache a preview image by URL for days,
+    # so a re-marked og/indices.png kept showing old levels under new posts. When the image is
+    # written into the site's og/ folder, stamp every page's reference with ?v=<mark date>.
+    if out.resolve() == (ROOT / "og").resolve():
+        import re
+        v = asof.replace("-", "")
+        for f in ROOT.glob("*.html"):
+            t = f.read_text(encoding="utf-8")
+            n = re.sub(r"og/indices\.png(\?v=\d+)?", "og/indices.png?v=" + v, t)
+            if n != t: f.write_text(n, encoding="utf-8")
+    return p
 
 def card_bangers(out):
     """The Tuesday Board tape (STEP 4.25). Every number is parsed off bowman-bangers.html itself —
