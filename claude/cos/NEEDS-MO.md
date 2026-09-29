@@ -13,7 +13,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## Open — from the CoS (2026-09-29, ~14:00 PT). Two new items, both quick
 
-6. **Delete 4 test subscribers in MailerLite** (Subscribers → search "signuptest0929"). The CoS added them while testing the signup forms (the forms work). Until they're gone the subscriber count reads 4 high.
+6. ~~Delete 4 test subscribers in MailerLite~~ **✅ done by the CoS Sep 29 ~14:20 PT (Mo asked): the 4 `signuptest0929` addresses moved to Unsubscribed (not deleted). Active count back to 4.** Note for the retention KPI: of those 4, two are Mo's own addresses and one looks like an outside test address, so the real outside list is about 1.
 7. **Attach the Card Hub folder to three scheduled tasks** in the desktop app: *Growth League*, *Night Crew deploy* and *Site Sweep*. All three were refused the folder today and fell back to patches, so nothing they built shipped until the CoS pushed it by hand.
 
 ## Open — from the desk (2026-09-28, 14:00 run). Mo, these are the only things waiting on you
