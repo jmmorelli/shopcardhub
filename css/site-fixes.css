@@ -359,3 +359,14 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body .sidx-tbl .sidx-auc-slot { display: block; flex: 1 1 0; min-width: 0; }
   body .sidx-tbl .sidx-auc-slot:empty { display: none; }
 }
+
+/* 10b (CoS, Sep 29 2026). §10's phone row put ★ · Listing · the "vs sold mark" chip · the Bid slot on one
+   flex line; on rows with a live auction the chip took the room and the Bid button shrank to 18 px wide
+   (site-gates image-sweep, run 36624474019: clipped Bid CTAs on 5 sector pages). The row now wraps:
+   ★ · Listing · Bid on the first line, the chip on its own line under them — the order b797907 set. */
+@media (max-width: 560px) {
+  body .sidx-tbl td.act .act-w { flex-wrap: wrap; row-gap: 6px; }
+  body .sidx-tbl .sidx-auc-slot { flex: 1 1 120px; min-width: 120px; }
+  body .sidx-tbl .sidx-auc-slot a.auc { width: 100%; }
+  body .sidx-tbl td.act .sch-vs-sold { flex: 1 0 100%; order: 9; }
+}
