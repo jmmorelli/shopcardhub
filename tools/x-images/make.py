@@ -273,10 +273,17 @@ def card_bangers(out):
         nm = strip(re.search(r'<div class="entry-title">(.*?)<br>', blk, re.S).group(1))
         sub = strip(re.search(r'<div class="price-sub">(.*?)</div>', blk, re.S).group(1))
         parts = [x.strip() for x in sub.split("\u00b7")]
-        raw = next((x for x in parts if x.startswith("SCP raw")), "").replace("SCP raw ", "")
+        # Sep 29 2026: seats print "Sold mark $X" (30-day median of dated sales) — the cell takes the figure only;
+        # the basis sits in the column header and the rule line. Legacy "SCP raw" lines still parse.
+        raw = next((x for x in parts if x.startswith("Sold mark") or x.startswith("SCP raw")), "")
+        raw = re.sub(r"^(Sold mark|SCP raw)\s*", "", raw)
+        # A mark that is not the 30-day median (Kim: a 90-day median, no sale inside 30 days) says so under the figure.
+        rawnote = "90-day median" if "90-day" in raw else ""
+        raw = raw.split(" (")[0].strip()
+        if rawnote: raw = raw + "|" + rawnote
         eng = next((x for x in parts if x.startswith("engine")), "").replace("engine ", "")
         psa = next((x for x in parts if x.startswith("PSA 10")), "").replace("PSA 10 ", "")
-        ctx = parts[3] if len(parts) > 4 else ""
+        ctx = next((x for x in parts[2:] if re.match(r"^[+\-\u2212]\d|^no sale|^unchanged", x)), parts[3] if len(parts) > 4 else "")
         ctx = re.split(r"[;,]|\s-\s", ctx)[0].strip()  # first clause only (em-dash already normalised to "-") — the rest is on the page
         rows.append((rk, nm, raw, eng, psa, ctx))
     rows = rows[:5]
@@ -296,7 +303,7 @@ def card_bangers(out):
     has_eng = any(r[3] for r in rows)
     sub = (rule + ("  Engine = the same night's eBay ask, labeled, never blended into a sold figure." if has_eng else "")).strip()
     im, d = canvas("the tuesday board · 1st bowman chrome autos", f"The Tuesday Board — {dt.strftime('%b %-d')}",
-                   None, tag="//  BOWMAN BANGERS · SOLD COMPS + LABELED ASKS")
+                   None, tag="//  BOWMAN BANGERS · " + ("SOLD COMPS + LABELED ASKS" if has_eng else "SOLD COMPS ONLY"))
     _sw, _sl, _sc = sub.split(), [], ""
     for _w in _sw:
         _t = (_sc + " " + _w).strip()
@@ -312,11 +319,11 @@ def card_bangers(out):
         return (txt.rstrip() + "…") if txt else ""
 
     if has_eng:
-        cols = ["#", "PLAYER", "RAW SOLD", "PSA 10", "ENGINE ASK", "THIS WEEK"]
+        cols = ["#", "PLAYER", "SOLD MARK", "PSA 10", "ENGINE ASK", "THIS WEEK"]
         xs   = [64, 110, 430, 548, 792, 900]
         wid  = [40, 306, 106, 232, 96, 252]
     else:
-        cols = ["#", "PLAYER", "RAW SOLD", "PSA 10", "THIS WEEK"]
+        cols = ["#", "PLAYER", "SOLD MARK", "PSA 10", "THIS WEEK"]
         xs   = [64, 110, 430, 548, 900]
         wid  = [40, 306, 106, 336, 252]
     y = 236; d.rounded_rectangle([48, y, W - 48, y + 44 + 50 * len(rows)], 8, fill=PANEL, outline="#16303a")
@@ -326,7 +333,12 @@ def card_bangers(out):
         d.line([(60, yy - 6), (W - 60, yy - 6)], fill="#122028")
         d.text((xs[0], yy + 6), rk, font=COND9(30), fill=CYAN)
         d.text((xs[1], yy + 10), fit(nm, BAR6(22), wid[1]), font=BAR6(22), fill=TXT)
-        d.text((xs[2], yy + 12), fit(raw, MONO(17), wid[2]), font=MONO(17), fill=TXT)
+        if "|" in raw:
+            _r, _n = raw.split("|", 1)
+            d.text((xs[2], yy + 4), fit(_r, MONO(16), wid[2]), font=MONO(16), fill=TXT)
+            d.text((xs[2], yy + 26), fit(_n, MONO(11), wid[2] + 10), font=MONO(11), fill=DIM)
+        else:
+            d.text((xs[2], yy + 12), fit(raw, MONO(17), wid[2]), font=MONO(17), fill=TXT)
         # The PSA 10 cell carries its own sale count ("$720.00 (1 dated sale, Aug 6 2026)") or says there
         # is none. That count IS the honesty of the figure, so it is never dropped - it wraps to line two.
         if "(" in psa:

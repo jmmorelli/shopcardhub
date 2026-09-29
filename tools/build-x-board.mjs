@@ -132,6 +132,8 @@ function datedForm(text) {
   t = t.replace(/\b\d+\s*days?\s+since\s+the\s+last\s+printed\s+sale\s*\(([A-Z][a-z]{2})\s+(\d{1,2})\)/g, (m, mon, d) => { lastPrintedSale = isoNear(mon, Number(d)); return `last printed sale ${mon} ${d}`; });
   // "last printed sale (Aug 5)" / "last printed sale Aug 5" → structured date, text kept
   t.replace(/last\s+printed\s+sale\s*\(?([A-Z][a-z]{2})\s+(\d{1,2})\)?/g, (m, mon, d) => { lastPrintedSale ||= isoNear(mon, Number(d)); return m; });
+  // "last sale $153.19 on Sep 29" (the Sep 29 2026 sold-mark line) → structured date, text kept
+  t.replace(/last\s+sale\s+\$[\d.,]+\s+on\s+([A-Z][a-z]{2})\s+(\d{1,2})/g, (m, mon, d) => { lastPrintedSale ||= isoNear(mon, Number(d)); return m; });
   // "last print $92.00 read Sep 11" / "last print read Sep 11" → structured read date, text kept
   t.replace(/last\s+print\s+(?:\$[\d.,]+\s+)?read\s+([A-Z][a-z]{2})\s+(\d{1,2})/g, (m, mon, d) => { lastPrintReadOn ||= isoNear(mon, Number(d)); return m; });
   // "carried at $131.25 an 8th week" / "flat at $70.00 a third week" → "carried at $131.25" / "flat at $70.00"
@@ -193,7 +195,10 @@ for (const [mi, m] of seatMatches.entries()) {
     tag: strip((blk.match(/<div class="entry-sport-tag[^"]*">([\s\S]*?)<\/div>/) || [])[1] || ""),
     marks: {
       // Each mark carries its own label. The desk must never blend a sold figure with an ask.
-      rawSold: pick("SCP raw") || null,
+      // Sep 29 2026 (iw-2026-09-24-2): the board ranks on the SOLD MARK — the 30-day median of dated SportsCardsPro
+      // sales from the nightly sold catalog. The old rawSold field carried SCP's guide value under a "sold" label.
+      soldMark: pick("Sold mark") || null,
+      lastSale: pick("last sale") || null,
       psa10: pick("PSA 10") || null,          // includes its own sale count, or says there is none
       engineAsk: pick("engine") || null,      // eBay ask, labeled, never a sold price
       headlineRange: strip((blk.match(/<div class="price-main">([\s\S]*?)<\/div>/) || [])[1] || "") || null,

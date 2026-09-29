@@ -1,18 +1,14 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-09-28",
-  "generator": "shopcardhub-weekly-trend-scan (Monday 2026-09-07, STEP 3.9)",
+  "generated": "2026-09-29",
+  "generator": "bowman-bangers-tuesday-update (Tuesday 2026-09-29, STEP 3.5)",
   "agents": {
     "seeker": {
       "label": "SEEKER",
       "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
-      "lastRun": "2026-09-28",
+      "lastRun": "2026-09-29",
       "nextRun": "2026-10-05",
       "actions": [
-        {
-          "ts": "2026-09-14",
-          "msg": "Topps calendar: 18 releases captured; 8 new slugs, all skipped under main-releases-only (F1, WWE Stadium Club, Heritage FB, Holiday BB, Collector Kit, Royalty PL, Chrome Tennis; Neon Marvel re-keyed to its Sep 7 skip). Update Series: full checklist posted (Checklist Insider Sep 11) but release date TBA, no box config/pricing — build deferred to the CoS (Wed build session or when the date posts)."
-        },
         {
           "ts": "2026-09-14",
           "msg": "Trends: Bowman Chrome hobby $400–450 (Cardlines); 30th Celebration Sep 16 first global same-day launch, Mew ex Futuristic Rare pre-sold >$2,000 / Mewtwo ex FR ~$650 (TCGplayer/CardGrader, pre-launch — sold-verify before touching); PCA rookie auto +400% YTD, Cal Raleigh refractor −60% YTD (Hobby Wire); Update Series checklist live, date TBA."
@@ -56,6 +52,10 @@
         {
           "ts": "2026-09-28",
           "msg": "Hobby-press price claim on the 30th Celebration chase FAILED sold verification (third failure since Aug 31) - nothing reached the site"
+        },
+        {
+          "ts": "2026-09-29",
+          "msg": "Signal harvest Sep 29 (track-signals read from a price-data clone, R19): 30 cards, none at count 5 or more (top: Misiorowski 2022 Bowman Chrome 1st auto, 3, last seen Sep 11); nothing auto-added. Newest signal on file: Sep 16."
         }
       ],
       "log": [
@@ -67,21 +67,9 @@
     "curator": {
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-09-28",
-      "nextRun": "2026-10-05",
+      "lastRun": "2026-09-29",
+      "nextRun": "2026-10-06",
       "actions": [
-        {
-          "ts": "2026-09-14",
-          "msg": "Engine blocks + 24 /card-* pages + /cards + home + sealed rows re-baked on the 09-14 nightly feed (31/34 marked, 8 gated)."
-        },
-        {
-          "ts": "2026-09-15",
-          "msg": "Board re-marked Sep 15: Gonzales #4 / Florentino #5 on the two-week crossover clock the page published Sep 11 (second reorder in two runs to resolve on a pre-published condition). Benchmark transition CLOSED as not-applicable — the published 2026 Bowman Chrome checklist has 104 prospect autos and none belongs to a board name, so May's paper CPA is this class's permanent benchmark; Holliday/Fischer/Kim/Gonzales/Florentino break-conditions rewritten off it. Fischer verdict softened Buy→Hold (Fischer rule)."
-        },
-        {
-          "ts": "2026-09-15",
-          "msg": "BCB26 re-mark (release window, street +6): 100.00 → 95.67, −4.33%; divisor 0.8296 and all units unchanged from Monday's inception. Autos led it down — CPA-AG −10.0%, CPA-FR −4.6%, BCP-200 −12.9%, against CPA-WA +1.8%. CPA-LH still has zero verified asks and stays out of the basket."
-        },
         {
           "ts": "2026-09-21",
           "msg": "BOW26 re-mark (ask basis, nightly feed Sep 21): 99.21→98.29, basket $1,087.09."
@@ -117,6 +105,18 @@
         {
           "ts": "2026-09-28",
           "msg": "Bowman tickers not re-marked by this lane: the Sep 25 reset moved them onto the nightly sector tool (Mon/Thu Action)"
+        },
+        {
+          "ts": "2026-09-29",
+          "msg": "Board re-marked Sep 29 on the new basis: the sold mark (30-day median of dated SportsCardsPro sales, nightly sold catalog) replaces the SCP guide value the page had called the last printed sale (iw-2026-09-24-2). Dated Method Change block published; no seat moved (Fischer, Holliday, Gonzales, Florentino, Kim gated)."
+        },
+        {
+          "ts": "2026-09-29",
+          "msg": "Tape column Sep 29: top Fischer +2.8% ($144.63 to $148.75), bottom Gonzales -1.3% ($80.52 to $79.44), both vs the same measure Sep 25. Gonzales keeps #3 over Florentino ($79.44 vs $69.50); board benchmark line now cites BB26."
+        },
+        {
+          "ts": "2026-09-29",
+          "msg": "Friday release-window task disabled (Bowman Chrome street Sep 9 + 21 days). BCB26 not marked by this lane: the Sep 25 reset put it on the nightly sector tool."
         }
       ],
       "log": [
@@ -129,13 +129,9 @@
     "inspector": {
       "label": "INSPECTOR",
       "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-      "lastRun": "2026-09-28",
+      "lastRun": "2026-09-29",
       "nextRun": "2026-10-05",
       "actions": [
-        {
-          "ts": "2026-09-15",
-          "msg": "SCP comp pull for the 5 board names via Chrome (sandbox curl 403'd on Cloudflare again). Flat tape: Holliday $106→$104.00 (−1.9%, the board's biggest move either way), Fischer $146.80→$148.32 (+1.0%), Kim carried $131.25 an 8th week (last printed sale Aug 5 — 41 days), Gonzales $92.00 and Florentino $70.00 both flat to the cent. PSA 10s: $720 / $537.50 / $626.08 / $425 / $492. Engine asks 37–63% above last sold on Fischer, Kim and Gonzales, 4 verified asks each."
-        },
         {
           "ts": "2026-09-21",
           "msg": "Three gates green on the pushed tree: audit-prices 0 FAIL/60 WARN · audit-site 0/3 · audit-terminal 0/0 (with the live price-data feed). Baseline 63/3/1."
@@ -179,6 +175,10 @@
         {
           "ts": "2026-09-28",
           "msg": "Filed: home page publishes a false index basis in three places after the Sep 25 Bowman reset (R5-verified live)"
+        },
+        {
+          "ts": "2026-09-29",
+          "msg": "Comps Sep 29 from the nightly sold catalog (data/feed/sold-marks.json, generated 15:08Z): 10 board + watch-tier autos marked; SCP pages not re-read by hand this run (fetch restricted in the lane sandbox)."
         }
       ],
       "log": [
@@ -193,17 +193,9 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-09-28",
+      "lastRun": "2026-09-29",
       "nextRun": "2026-10-05",
       "actions": [
-        {
-          "ts": "2026-09-14",
-          "msg": "GA4 28d: 977 active / 968 new / 1,174 sessions / 576 engaged / 110 key events (6.2% rate, was 12.1–14.5%) / organic 61.2% / AI Assistant 4 sessions @ 0%. 7d: 274 active / 268 new → returning ≈6 (13→13→8→10→6). Retention surfaces 28d: / 48 users, bangers 28, DR25 7, /indices 7, watchlist 11, other index pages 1–5; split by new/returning still NA (no exploration)."
-        },
-        {
-          "ts": "2026-09-15",
-          "msg": "Calls re-graded on the Sep 15 SCP reads: v-bb-fischer-buy-2 $148.32 (+1.0% on the Sep 11 re-entry, ungraded in band), v-bb-florentino-buy $70.00 (−11.7%, legacy 8-wk grade wrong), v-bb-gonzales-pass $92.00, v-bb-kim-wait carried $131.25. Aug 10 finals untouched. calls.json stays local for the CoS."
-        },
         {
           "ts": "2026-09-15",
           "msg": "Tuesday Board tweet QUEUED UNATTENDED (week 2 of the 4-in-a-row test the label depends on) with the fresh bangers-tape-2026-09-15.png attached, confirmed sitting in Scheduled. Fire time 4:30 PM PT, NOT the series' 2:00 PM — the run overran past 2pm on a repo-staleness recovery, so 2pm was already gone when the composer opened. Day kept, minute missed; Mo's veto window preserved (x.com -> unsent posts)."
@@ -243,6 +235,14 @@
         {
           "ts": "2026-09-28",
           "msg": "Coach note is two weeks stale (weekOf 2026-09-14) - the Sunday end of the loop did not refresh it"
+        },
+        {
+          "ts": "2026-09-29",
+          "msg": "Ledger re-read Sep 29 on sold marks (calls.json local, unpushed): Florentino BUY -12.4% (wrong band), Fischer re-entry +1.3%, Gonzales PASS read $79.44, Kim WAIT read $130.00 (90-day median)."
+        },
+        {
+          "ts": "2026-09-29",
+          "msg": "Board tape og/x/board-latest.png and data/x-board.json regenerated at publish time (asOf 2026-09-29; soldMark + lastSale fields replace rawSold)."
         }
       ],
       "log": [
@@ -1984,13 +1984,14 @@
       "area": "bowman-bangers",
       "filed": "2026-09-24",
       "by": "integrity-watch",
-      "status": "queued",
+      "status": "applied",
       "severity": "HIGH",
       "title": "/bowman-bangers says 'ranked by the last printed sale' but ranks on SportsCardsPro's raw guide value; x-board.json labels it rawSold.",
       "decision": "DESK 2026-09-24: QUEUED to the Tuesday board lane Sep 29 (owner per Mo's approval). Either rename the rule everywhere (hero, bb-board-note JS, legend, x-board.json rawSold -> rawGuide) or rank on the dated last print the page already quotes. Must not re-rank on engine asks (R20). The desk will not tell the vendor 'last printed sale' until it is fixed - flagged in the STATE vendor block.",
       "moApproval": "Mo, in chat 2026-09-24 (relayed by the Integrity Watch session, claude/cos/mo-approval-2026-09-24-integrity-watch.md): \"pss all of these to the chief of staff for review on his next run and tell him I approve\"",
       "decidedBy": "mo",
-      "decided": "2026-09-24"
+      "decided": "2026-09-24",
+      "appliedNote": "TUESDAY BOARD 2026-09-29: applied in the rank-on-dated-sales direction, not the rename. The board ranks on the sold mark (30-day median of dated SCP sales from the nightly sold catalog); hero, section intro, bb-board-note (static + JS), legend and meta descriptions say so; each seat prints its last sale with its date; dated 'Method Change · Sep 29' block on the page; x-board.json rawSold -> soldMark + lastSale; tape column header SOLD MARK. Same seat order on both measures. Kim's $131.25 'RAW SOLD' (grok-site-fixes #2) is gone: his line reads a 90-day median of 5 sales with the last sale $122.50 Aug 5."
     },
     {
       "id": "iw-2026-09-24-3",
@@ -2069,7 +2070,10 @@
     {"id": "iw-2026-09-28-2", "status": "applied", "date": "2026-09-28", "area": "engine-blocks", "by": "integrity-watch", "severity": "HIGH", "title": "28 pages say engine marks come from 'verified eBay asking prices and, where recorded, auction closes'; marks are asks only.", "decision": "DESK 2026-09-28: APPLIED. String swap at both generators (build-engine-blocks.mjs, build-card-pages.mjs) and in the 28 baked pages \u2192 'verified eBay asking prices (asks, not sales)'. No block re-generated (ccx-2 hold stands), so no new ask mark (R20).", "decidedBy": "cos", "decidedOn": "2026-09-28"},
     {"id": "iw-2026-09-28-3", "status": "applied", "date": "2026-09-28", "area": "indices", "by": "integrity-watch", "severity": "MED", "title": "Home, /indices and /how-prices-work still describe the retired Bowman lines (ask-basis, held, six sold / two ask).", "decision": "DESK 2026-09-28: PARTLY APPLIED. Home basis strings were already fixed by the Sep 28 PM session (5990782; verified live: 'on asks until' gone; the remaining 'ask-basis' on home is the Bangers 30D composite, which is ask-basis). /indices meta + JSON-LD + og and /how-prices-work now say all eleven tickers are sold-basis, six weekly, five Mon+Thu. QUEUED to the Sep 30 weekly: write the basis/cadence sentence from indices.json (generator) and sweep 're-marked weekly' where a Mon+Thu ticker is meant.", "decidedBy": "cos", "decidedOn": "2026-09-28"},
     {"id": "iw-2026-09-28-4", "status": "applied", "date": "2026-09-28", "area": "content", "by": "integrity-watch", "severity": "MED", "title": "/pokemon-30th-anniversary-2026 says nothing in the set has a verified sold comp, above its own 191-card sold-basis TH26 index.", "decision": "DESK 2026-09-28: APPLIED. Clause dated: 'As of Sep 18 nothing in this set had a verified sold comp. Since Sep 25 every card is priced on dated sold comps in the TH26 index on this page.' Same commit fixes X Desk Watch's inward P1: og:image/twitter:image on this page pointed at og/pitch-black.png (a 'Pitch Black \u00b7 $550\u2013750 Darkrai' card under 30th posts) \u2192 og/pokemon.png.", "decidedBy": "cos", "decidedOn": "2026-09-28"},
-    {"id": "iw-2026-09-28-5", "status": "applied", "date": "2026-09-28", "area": "league", "by": "integrity-watch", "severity": "LOW", "title": "/is-pokemon-151-worth-it reads PriceCharting's 30-row cap as monthly volume.", "decision": "DESK 2026-09-28: APPLIED by the desk (R27: agents do not edit pages they did not create; the desk may). 'trades 29 or 30 times a month raw' \u2192 'shows 29 or 30 raw sales inside the last one to four weeks (the tab caps at 30)'.", "decidedBy": "cos", "decidedOn": "2026-09-28"}
+    {"id": "iw-2026-09-28-5", "status": "applied", "date": "2026-09-28", "area": "league", "by": "integrity-watch", "severity": "LOW", "title": "/is-pokemon-151-worth-it reads PriceCharting's 30-row cap as monthly volume.", "decision": "DESK 2026-09-28: APPLIED by the desk (R27: agents do not edit pages they did not create; the desk may). 'trades 29 or 30 times a month raw' \u2192 'shows 29 or 30 raw sales inside the last one to four weeks (the tab caps at 30)'.", "decidedBy": "cos", "decidedOn": "2026-09-28"},
+    {"id": "bb-2026-09-29-kim-gate", "status": "awaiting-cos", "date": "2026-09-29", "area": "bowman-bangers", "by": "tuesday-board", "severity": "MED", "title": "Kim holds seat #5 with no sale since Aug 5 while two watch-tier autos trade: Arquette sold mark $64.36 (5 sales, last $40.00 Sep 28) and Aloy $60.00 (last $45.00 Sep 25). Read literally, the 30-day gate says a card with no sale cannot outrank one that has, which would put both above Kim if they were seated.", "detail": "Question for the CoS: does the gate only order the five seats, or does it also decide who holds a seat? If the second, Kim departs (reason: demoted, recorded in departures[] with his Pass call) and the higher of Arquette/Aloy is promoted with a new dated verdict. Not done unattended: a promotion creates a new call and a departure is permanent."},
+    {"id": "bb-2026-09-29-florentino-verdict", "status": "awaiting-cos", "date": "2026-09-29", "area": "bowman-bangers", "by": "tuesday-board", "severity": "LOW", "title": "Florentino's published verdict is still 'Buy — the volume says that is a floor' while the Aug 18 call reads -12.4% on the sold mark ($79.32 to $69.50) and no sale has printed since Sep 17.", "detail": "This run kept the Buy (the price did not move this week, -0.7%) and appended a dated Sep 29 line saying the volume half of the thesis is not showing and naming the gate date, Oct 17. The CoS may prefer a Hold. The gate decides the seat on Oct 17 either way."},
+    {"id": "bb-2026-09-29-lane-prompt-drift", "status": "awaiting-cos", "date": "2026-09-29", "area": "lanes", "by": "tuesday-board", "severity": "LOW", "title": "claude/lanes/bowman-bangers-tuesday.md is stale on five points; LANE-RULES and STATE won this run.", "detail": "(1) STEP 1/2 price-sub format still reads 'SCP raw $X · engine $E' — the board now ranks on the sold mark (Method Change Sep 29) and R20 forbids an engine mark beside a seat. (2) STEP 2.7 BCB26 re-mark by this lane is obsolete: the Sep 25 reset rebuilt BCB26 as a sector index marked Mon/Thu by the nightly Action. (3) STEP 4.5 digest body shape predates R26 / tools/tuesday-tape-format.md. (4) STEP 4 still frames the tape as the vendor's feed; the vendor is off (R10 Am. 2). (5) STEP 0.75 fetches track-signals from raw.githubusercontent (R19: read from a price-data clone). Lane file is in the repo; the CoS edits it."}
   ],
   "scoreboard": {
     "updated": "2026-09-28",
