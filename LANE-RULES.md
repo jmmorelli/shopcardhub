@@ -939,6 +939,28 @@ with the CoS overseeing. Charter: `tools/league/LEAGUE.md`; registry `data/leagu
 - **What the agents never do:** post, email, DM, sign in, touch shared data files, or write to a page they did not
   create. Distribution stays Mo's (NEEDS-MO).
 
+## R28 · The Night Crew — the site's UI/UX is honed every night (Mo, 2026-09-28 — "make a team to hone it in every night while I sleep … I approve of all you would probably ask me")
+
+Mo asked for a standing team that fixes bugs, polishes the interface and makes the site a place people are curious
+to visit and come back to — without overwhelming them. Charter and backlog: Project `claude/night-crew/CHARTER.md`
+and `claude/night-crew/BACKLOG.md`.
+
+- **Two runs.** *Night Crew* (cloud, nightly 00:47 PT) — a lead plus up to three sub-agents (Bug Hunter, First-Time
+  Visitor, Design Scout) audit, pick at most five changes, build them in a fresh clone, verify before/after at 390 and
+  1440 px, run all three gates, and file one patch. *Night Crew deploy* (Mac-linked, 07:52 PT) applies it to a fresh
+  clone, re-runs gates, pushes, live-checks the changed pages, and reverts its own commit on any live regression.
+- **Scope — the exception it makes.** This lifts R25 and the page-polish freeze for **on-page** UI/UX: layout,
+  hierarchy, motion, states, readability, interaction, and small new features on existing pages that make a return
+  visit worth it. It does **not** add pages or nav items (the crew proposes those to the desk), and it never touches a
+  price, level, stamp, verdict, data file, EPN link or `customid`, the signup promise (R26), league pages' content (R27)
+  or anything inside a generated marker block except by re-running its generator.
+- **Calm is the design rule.** Bugs first, every night. On the top landing pages a night's diff may not add to what a
+  phone visitor sees above the fold unless something is removed or collapsed in the same diff. No new third-party
+  scripts or fonts; motion is CSS or rAF, finite, and off under `prefers-reduced-motion`.
+- **Independent check (R24).** The daytime Site Sweep keeps inspecting and files what it finds; the Night Crew's first
+  duty each night is that queue. The crew never grades its own work: the morning deploy's live check and the next
+  Site Sweep do.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
