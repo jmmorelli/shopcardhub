@@ -29,7 +29,7 @@ ${END}`;
 
 // the new promise, for pages that keep their own #tapecap block
 const OLD_PITCH = /This board(?:&#x27;|&#39;|')s weekly moves in your inbox\. Sold comps only, one email, Tuesdays\./g;
-const NEW_PITCH = "The Monday close of every set index, the week&rsquo;s movers, and the chase cards&rsquo; last sold. One email, Tuesdays. Free.";
+const NEW_PITCH = "The Monday close of every set index, the week&rsquo;s movers, and the chase cards&rsquo; sold marks. One email, Tuesdays. Free.";
 
 const strip = JSON.parse(fs.readFileSync(path.join(REPO, "data/buy-strip.json"), "utf8"));
 const targets = new Set(Object.keys(strip.pages || {}));
