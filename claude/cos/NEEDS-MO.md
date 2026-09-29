@@ -11,6 +11,11 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the CoS (2026-09-29, ~14:00 PT). Two new items, both quick
+
+6. **Delete 4 test subscribers in MailerLite** (Subscribers → search "signuptest0929"). The CoS added them while testing the signup forms (the forms work). Until they're gone the subscriber count reads 4 high.
+7. **Attach the Card Hub folder to three scheduled tasks** in the desktop app: *Growth League*, *Night Crew deploy* and *Site Sweep*. All three were refused the folder today and fell back to patches, so nothing they built shipped until the CoS pushed it by hand.
+
 ## Open — from the desk (2026-09-28, 14:00 run). Mo, these are the only things waiting on you
 
 Verified against live state this run (the nightly price Action still has no Fanatics step; no TAG link or TCGplayer approval has reached the project). Nothing new is urgent.
@@ -19,7 +24,7 @@ Verified against live state this run (the nightly price Action still has no Fana
 2. **TCGplayer on Impact (idea #38):** apply inside the same Impact account. Kill Oct 31.
 3. **Reddit post + feed-offer note:** unchanged, ready to paste (below).
 4. **TAG:** payment info, then the affiliate link when the approval email lands.
-5. **New, when you have ten minutes with the CoS: the next X batch.** Your scheduler has been empty since Sunday night, and posting needs your yes with you present (R10 Am. 2). Waiting in it: the Monday close (every Pokémon index down on the week; Prismatic 93.61 after Sunday's "watching whether it holds 98"), the Darkrai supersede line, and one supersede line for the Sep 26 "every row" auction-button post (the desk ruled it stays up). Say "let's do the X batch" in a chat.
+5. ~~The next X batch~~ **✅ closed Sep 29:** the scheduler holds posts again (X Daily lane + the Sep 28 batch), and the three items waiting here went out or were fixed: the Monday close posted, the Darkrai post posted and got a supersede reply for its stale preview card, and the auction-button correction is queued for 6:30 pm (edited with you present, 13:25–13:32 PT).
 
 *Housekeeping, no action:* the 30th page's link preview (it showed a Pitch Black card under your Lugia post) is fixed; nothing to delete.
 

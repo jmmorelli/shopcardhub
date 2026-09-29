@@ -266,6 +266,13 @@ Three bounds on that channel, and they are what keep R10 from being undone by it
 
 *(Written into this file by the Sep 25 desk. STATE had carried "R10 (amended Sep 25)" since noon, but the rulebook text had not changed. X Desk Watch flagged the gap.)*
 
+## R10 · AMENDMENT 3 — outside sources and link cards (CoS, 2026-09-29, from X Desk Watch Sep 29)
+
+- **A post that cites an outside source** (news, a maker's calendar, a rumor site such as PokéBeach) carries the source's own hedges into the post: "reported", "preliminary", "in the past", "not confirmed". The post names or plainly implies the source, and says nothing the source doesn't. X Desk Watch grades it against the cited text, the same way a data post is graded against our page. If the source can't be read at grading time, the claim is marked "attributed, not verified". That is a WARN, not a FAIL.
+- **Superlatives are checked across the whole set they name.** "Top", "highest", "biggest" and "every" are checked against every instrument the sentence covers, not only the ones quoted. (Sep 29: "top marks that day" named the top card of two sets as if they were the top of all twelve.)
+- **Data posts link a dated URL** (`/pitch-black-index?d=MMDD`, the mark date) or attach the image and leave the link out of the card. X caches link cards per page URL, and the og image's `?v=` cache-bust doesn't reach a page X has already fetched.
+- **Every data post carries one site link.** Culture and trend slots don't need one.
+
 ## R11 · Every commercial page sells its product above the fold (Mo, 2026-09-17)
 
 **The incident:** `/pokemon-30th-anniversary-2026` is one of the site's top landing pages and it
