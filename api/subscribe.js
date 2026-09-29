@@ -75,7 +75,7 @@ export default async function handler(req, res) {
 
   const payload = {
     email,
-    fields: { source },              // which page converted them — useful for the retention KPI
+    fields: { signup_page: source }, // which page converted them — MailerLite reserves "source", so the custom field is signup_page (created Sep 29 2026)
     status: "active",                // explicit: API double opt-in is OFF, so this sticks
     subscribed_at: new Date().toISOString().slice(0, 19).replace("T", " "),
   };

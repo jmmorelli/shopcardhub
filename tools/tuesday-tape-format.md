@@ -40,7 +40,7 @@ Link to `/bowman-bangers`.
 
 One thing that resolves on a date (a break condition, a street date, a re-mark that decides a seat).
 
-## The watchlist block (segment `source` starts with `watchlist-`)
+## The watchlist block (segment: MailerLite field `signup_page` starts with `watchlist-`; "source" is a reserved name there — field created Sep 29 2026, so only signups from Sep 29 on carry it)
 
 One line at the very top, above §1, for that segment only:
 
