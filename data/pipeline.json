@@ -198,10 +198,6 @@
       "actions": [
         {
           "ts": "2026-09-15",
-          "msg": "Tuesday Board tweet QUEUED UNATTENDED (week 2 of the 4-in-a-row test the label depends on) with the fresh bangers-tape-2026-09-15.png attached, confirmed sitting in Scheduled. Fire time 4:30 PM PT, NOT the series' 2:00 PM — the run overran past 2pm on a repo-staleness recovery, so 2pm was already gone when the composer opened. Day kept, minute missed; Mo's veto window preserved (x.com -> unsent posts)."
-        },
-        {
-          "ts": "2026-09-15",
           "msg": "Tuesday Tape digest SENT (campaign 198713671720896385, 'Digest 2026-09-15'), gate satisfied: board re-mark live-verified, push 0b66612 landed, every figure matched the live page. Kill switch clear (0 unsubscribes, 0 spam since the Sep 8 send); rogue-send check clear (no non-lane campaign since Digest 2026-09-08 — the Sep 7 'Tape Recap' remains the only one and was already reported). Delivered 4/4, 1 open, 0 clicks, 0 unsub, 0 spam, 0 bounces. 2 of the 4 recipients are owner addresses."
         },
         {
@@ -243,6 +239,10 @@
         {
           "ts": "2026-09-29",
           "msg": "Board tape og/x/board-latest.png and data/x-board.json regenerated at publish time (asOf 2026-09-29; soldMark + lastSale fields replace rawSold)."
+        },
+        {
+          "ts": "2026-09-29",
+          "msg": "Digest 2026-09-29 SENT (MailerLite campaign 199969838099072348, finished 18:23 UTC) after the push verified; rogue-send check clean, kill switch clean; 4 active subscribers; stats not yet populated at read. First send in the R26 Monday-close shape."
         }
       ],
       "log": [
@@ -2073,7 +2073,8 @@
     {"id": "iw-2026-09-28-5", "status": "applied", "date": "2026-09-28", "area": "league", "by": "integrity-watch", "severity": "LOW", "title": "/is-pokemon-151-worth-it reads PriceCharting's 30-row cap as monthly volume.", "decision": "DESK 2026-09-28: APPLIED by the desk (R27: agents do not edit pages they did not create; the desk may). 'trades 29 or 30 times a month raw' \u2192 'shows 29 or 30 raw sales inside the last one to four weeks (the tab caps at 30)'.", "decidedBy": "cos", "decidedOn": "2026-09-28"},
     {"id": "bb-2026-09-29-kim-gate", "status": "awaiting-cos", "date": "2026-09-29", "area": "bowman-bangers", "by": "tuesday-board", "severity": "MED", "title": "Kim holds seat #5 with no sale since Aug 5 while two watch-tier autos trade: Arquette sold mark $64.36 (5 sales, last $40.00 Sep 28) and Aloy $60.00 (last $45.00 Sep 25). Read literally, the 30-day gate says a card with no sale cannot outrank one that has, which would put both above Kim if they were seated.", "detail": "Question for the CoS: does the gate only order the five seats, or does it also decide who holds a seat? If the second, Kim departs (reason: demoted, recorded in departures[] with his Pass call) and the higher of Arquette/Aloy is promoted with a new dated verdict. Not done unattended: a promotion creates a new call and a departure is permanent."},
     {"id": "bb-2026-09-29-florentino-verdict", "status": "awaiting-cos", "date": "2026-09-29", "area": "bowman-bangers", "by": "tuesday-board", "severity": "LOW", "title": "Florentino's published verdict is still 'Buy — the volume says that is a floor' while the Aug 18 call reads -12.4% on the sold mark ($79.32 to $69.50) and no sale has printed since Sep 17.", "detail": "This run kept the Buy (the price did not move this week, -0.7%) and appended a dated Sep 29 line saying the volume half of the thesis is not showing and naming the gate date, Oct 17. The CoS may prefer a Hold. The gate decides the seat on Oct 17 either way."},
-    {"id": "bb-2026-09-29-lane-prompt-drift", "status": "awaiting-cos", "date": "2026-09-29", "area": "lanes", "by": "tuesday-board", "severity": "LOW", "title": "claude/lanes/bowman-bangers-tuesday.md is stale on five points; LANE-RULES and STATE won this run.", "detail": "(1) STEP 1/2 price-sub format still reads 'SCP raw $X · engine $E' — the board now ranks on the sold mark (Method Change Sep 29) and R20 forbids an engine mark beside a seat. (2) STEP 2.7 BCB26 re-mark by this lane is obsolete: the Sep 25 reset rebuilt BCB26 as a sector index marked Mon/Thu by the nightly Action. (3) STEP 4.5 digest body shape predates R26 / tools/tuesday-tape-format.md. (4) STEP 4 still frames the tape as the vendor's feed; the vendor is off (R10 Am. 2). (5) STEP 0.75 fetches track-signals from raw.githubusercontent (R19: read from a price-data clone). Lane file is in the repo; the CoS edits it."}
+    {"id": "bb-2026-09-29-lane-prompt-drift", "status": "awaiting-cos", "date": "2026-09-29", "area": "lanes", "by": "tuesday-board", "severity": "LOW", "title": "claude/lanes/bowman-bangers-tuesday.md is stale on five points; LANE-RULES and STATE won this run.", "detail": "(1) STEP 1/2 price-sub format still reads 'SCP raw $X · engine $E' — the board now ranks on the sold mark (Method Change Sep 29) and R20 forbids an engine mark beside a seat. (2) STEP 2.7 BCB26 re-mark by this lane is obsolete: the Sep 25 reset rebuilt BCB26 as a sector index marked Mon/Thu by the nightly Action. (3) STEP 4.5 digest body shape predates R26 / tools/tuesday-tape-format.md. (4) STEP 4 still frames the tape as the vendor's feed; the vendor is off (R10 Am. 2). (5) STEP 0.75 fetches track-signals from raw.githubusercontent (R19: read from a price-data clone). Lane file is in the repo; the CoS edits it."},
+    {"id": "bb-2026-09-29-mailerlite-source-field", "status": "awaiting-cos", "date": "2026-09-29", "area": "retention", "by": "tuesday-board", "severity": "MED", "title": "MailerLite has no 'source' custom field (fields API lists only city, company, country, last_name, name, phone, state, z_i_p), but api/subscribe.js sends fields.source on every signup and R26 builds the watchlist segment on it.", "detail": "So either MailerLite drops the value silently (no attribution, and no watchlist-* segment can ever exist), or it rejects unknown fields with a 422, which api/subscribe.js reports to the visitor as 'invalid email'. Signups have been 0 since the forms went up Sep 26, so test the second case first. Fix: create a text field with key 'source' in MailerLite (an account setting, so the CoS decides), then run one test signup. Not touched by this lane."}
   ],
   "scoreboard": {
     "updated": "2026-09-28",
@@ -3032,9 +3033,9 @@
             "962d017",
             "(desk follow-up: signup promise + docs)"
           ],
-          "by": "CoS \u00b7 desk (14:00, Mac-linked, unattended) \u2014 Integrity Watch 2026-09-28 x5 + X Desk Watch P1",
-          "gates": "audit-prices FAIL 0 / WARN 75 \u00b7 audit-site FAIL 0 / WARN 3 (117 pages) \u00b7 audit-terminal FAIL 0 / WARN 0 = baseline, no WARN delta",
-          "liveVerified": "2026-09-28 ~14:35 PT \u2014 every changed string read back on production (chase 'by sold mark', 'Sold mark' column, 'vs sold mark' chip in card-img.js, asks-only footnote, /indices + /how-prices-work basis lines, 151 cap line, 30th clause, 30th og:image og/pokemon.png); iPhone-13 QA 6 pages 200, no overflow, 0 console errors; IndexNow 41 URLs 200",
+          "by": "CoS · desk (14:00, Mac-linked, unattended) — Integrity Watch 2026-09-28 x5 + X Desk Watch P1",
+          "gates": "audit-prices FAIL 0 / WARN 75 · audit-site FAIL 0 / WARN 3 (117 pages) · audit-terminal FAIL 0 / WARN 0 = baseline, no WARN delta",
+          "liveVerified": "2026-09-28 ~14:35 PT — every changed string read back on production (chase 'by sold mark', 'Sold mark' column, 'vs sold mark' chip in card-img.js, asks-only footnote, /indices + /how-prices-work basis lines, 151 cap line, 30th clause, 30th og:image og/pokemon.png); iPhone-13 QA 6 pages 200, no overflow, 0 console errors; IndexNow 41 URLs 200",
           "note": "Labels and prose only; no figure, mark or method changed. Engine blocks not re-generated (ccx-2 hold)."
         },
         {
@@ -3044,9 +3045,19 @@
             "67cdfb3",
             "9d9f7b8"
           ],
-          "by": "CoS, Mo in chat (gate-watch #1 fix; Show-all button; 12 classic Pok\u00e9mon indices + home board split)",
-          "gates": "audit-prices FAIL 0 / WARN 75 \u00b7 audit-site FAIL 0 / WARN 3 (129 pages) \u00b7 audit-terminal FAIL 0 / WARN 0 = baseline on every tree",
-          "liveVerified": "2026-09-28 \u2014 390/1280 render on production: 0 clipped CTAs, 0 page errors, all 12 new pages + / + /indices 200; IndexNow 15 URLs 200"
+          "by": "CoS, Mo in chat (gate-watch #1 fix; Show-all button; 12 classic Pokémon indices + home board split)",
+          "gates": "audit-prices FAIL 0 / WARN 75 · audit-site FAIL 0 / WARN 3 (129 pages) · audit-terminal FAIL 0 / WARN 0 = baseline on every tree",
+          "liveVerified": "2026-09-28 — 390/1280 render on production: 0 clipped CTAs, 0 page errors, all 12 new pages + / + /indices 200; IndexNow 15 URLs 200"
+        },
+        {
+          "date": "2026-09-29",
+          "commits": [
+            "c137d2b"
+          ],
+          "by": "tuesday-board (4.8)",
+          "gates": "audit-prices 0/75 · audit-site 0/3 (129 pages) · audit-terminal 0/0 (--feed data/feed) = baseline",
+          "liveVerified": true,
+          "note": "Sep 29 board on the new sold-mark basis (Method Change block); no seat moved; og/x/board-latest.png + data/x-board.json regenerated and live (asOf 2026-09-29). calls.json re-graded locally, NOT pushed (Card Hub/calls-2026-09-29-tuesday-regrade.json). Digest 2026-09-29 sent via MailerLite after the push verified."
         }
       ]
     },
