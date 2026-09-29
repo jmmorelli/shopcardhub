@@ -1,5 +1,5 @@
 {
- "_comment": "What each lane owes, and when. Read by tools/lane-heartbeat.mjs, which the CoS desk runs every weekday. Written 2026-09-22 after the Sep 21 X Desk Watch filing went missing and nobody noticed until Mo asked a question that depended on it — the CoS desk's own condition (2) says a stalled loop must be visible in minutes, not days, and nothing was actually checking. NOTE the filings live in the claude.ai PROJECT, not the repo: these lanes hold no push credential by design, so a repo-side check can never see them. The heartbeat takes the Project's doc list and diffs it against what was due.",
+ "_comment": "What each lane owes, and when. Read by tools/lane-heartbeat.mjs, which the CoS desk runs every weekday. Written 2026-09-22 after the Sep 21 X Desk Watch filing went missing and nobody noticed until Mo asked a question that depended on it — the CoS desk's own condition (2) says a stalled loop must be visible in minutes, not days, and nothing was actually checking. NOTE the filings live in the claude.ai PROJECT, not the repo: these lanes hold no push credential by design, so a repo-side check can never see them. The heartbeat takes the Project's doc list and diffs it against what was due. | 2026-09-29 desk: R15 rule 4 — Site Sweep, Growth League and X Daily added (they started Sep 27-29 and were never entered); Integrity Watch and the Ideas Desk moved to daily per GO-TIME. The Night Crew files log-<night date>.md after midnight, which this tool's same-day date arithmetic cannot express; it is checked by hand in the desk entry until the tool learns an offset.",
  "timezone": "America/Los_Angeles",
  "lanes": [
   {
@@ -15,26 +15,49 @@
   {
    "id": "integrity-watch",
    "name": "Integrity Watch (instruments and claims)",
-   "days": [
-    1,
-    4
-   ],
+   "days": "daily",
    "hourPT": 5,
    "path": "claude/cos/integrity-watch-{date}.md",
    "why": "catches a published number drifting from its source",
-   "startedOn": "2026-09-17"
+   "startedOn": "2026-09-17",
+   "cadenceNote": "daily since the GO-TIME cadence (LANE-RULES, 2026-09-27); was Mon+Thu. Run --since no earlier than 2026-09-27 or pre-GO-TIME non-days read as misses."
   },
   {
    "id": "ideas-desk",
    "name": "Earnings Ideas Desk",
-   "days": [
-    2,
-    5
-   ],
+   "days": "daily",
    "hourPT": 4,
    "path": "claude/ideas/{date}.md",
    "why": "the only lane whose job is finding money",
-   "startedOn": "2026-09-19"
+   "startedOn": "2026-09-19",
+   "cadenceNote": "daily since the GO-TIME cadence (LANE-RULES, 2026-09-27); was Tue+Fri. Run --since no earlier than 2026-09-27 or pre-GO-TIME non-days read as misses."
+  },
+  {
+   "id": "site-sweep",
+   "name": "Site Sweep — bugs + UX",
+   "days": "daily",
+   "hourPT": 10,
+   "path": "claude/cos/site-sweep-{date}.md",
+   "why": "the daytime independent check on every sitemap page (R24/R28); a silent day is a day no one looked",
+   "startedOn": "2026-09-28"
+  },
+  {
+   "id": "growth-league",
+   "name": "Growth League (board + builds)",
+   "days": "daily",
+   "hourPT": 6,
+   "path": "claude/cos/league-board-{date}.md",
+   "why": "R27's scoring lane; the board is the only read of the league pages",
+   "startedOn": "2026-09-27"
+  },
+  {
+   "id": "x-daily",
+   "name": "X Daily Posts (CoS-approved)",
+   "days": "daily",
+   "hourPT": 8,
+   "path": "claude/cos/x-daily-{date}.md",
+   "why": "the X queue's fact trail; X Desk Watch grades posts against it",
+   "startedOn": "2026-09-29"
   }
  ]
 }

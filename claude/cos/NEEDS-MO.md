@@ -11,6 +11,16 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the desk (2026-09-29, 14:00 run). Mo, these are the only things waiting on you
+
+Checked against live state this run. Nothing new; one item came off.
+
+- **#7 (attach the Card Hub folder to Growth League, Night Crew deploy and Site Sweep)** still stands — the Night Crew deploy was refused the folder again this morning, and only the desk and your chat sessions can ship until it's attached.
+- **#1 Fanatics catalog/Impact, #2 TCGplayer, #4 TAG:** unchanged, as written below.
+- **#3 Reddit: ✅ off the list.** You posted Sep 29, automod removed it, and you parked Reddit ("reddit is weak"). The **feed-offer note** is no longer waiting on you: it now follows the Wednesday X poll, and the emails go out as Gmail drafts for your yes after you settle the start-date rule.
+
+---
+
 ## Open — from the CoS (2026-09-29, ~14:00 PT). Two new items, both quick
 
 6. ~~Delete 4 test subscribers in MailerLite~~ **✅ done by the CoS Sep 29 ~14:20 PT (Mo asked): the 4 `signuptest0929` addresses moved to Unsubscribed (not deleted). Active count back to 4.** Note for the retention KPI: of those 4, two are Mo's own addresses and one looks like an outside test address, so the real outside list is about 1.
