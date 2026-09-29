@@ -38,6 +38,16 @@ if (args.includes("--sync")) {
     reg.pages.push({ slug: m.slug, agent: m.agent, query: m.query || "", published: m.published, floorFrom: m.floorFrom || m.published, hub: m.hub || "/research", week: isoWeekOf(reg.opened, m.published), status: "live" });
     added++;
   }
+  // Distribution division items (Mo, 2026-09-29): tools/league/dist/<id>.json, one per pitch batch / forum draft / shareable.
+  const DIST = path.join(REPO, "tools/league/dist");
+  reg.items = reg.items || [];
+  for (const f of fs.existsSync(DIST) ? fs.readdirSync(DIST).filter((n) => n.endsWith(".json")) : []) {
+    const it = JSON.parse(fs.readFileSync(path.join(DIST, f), "utf8"));
+    if (!it.id || !it.agent || !it.date || !it.campaign) throw new Error(`${f}: id, agent, date, campaign are required`);
+    const i = reg.items.findIndex((x) => x.id === it.id);
+    const row = { id: it.id, agent: it.agent, date: it.date, kind: it.kind || "", campaign: it.campaign, target: it.target || "", domains: it.domains || [], status: it.status || "drafted", week: isoWeekOf(reg.divisions.distribution.opened, it.date) };
+    if (i < 0) { reg.items.push(row); added++; } else reg.items[i] = { ...reg.items[i], status: row.status, domains: row.domains };
+  }
   reg.pages.sort((a, b) => a.published.localeCompare(b.published) || a.slug.localeCompare(b.slug));
   fs.writeFileSync(REG, JSON.stringify(reg, null, 1) + "\n");
   console.log(`sync: ${added} page(s) added · ${reg.pages.length} registered`);
@@ -59,6 +69,8 @@ if (args.includes("--check")) {
     const html = fs.existsSync(path.join(REPO, m.slug + ".html")) ? fs.readFileSync(path.join(REPO, m.slug + ".html"), "utf8") : "";
     if (html && !html.includes(`customid=${m.slug}`)) bad.push(`${m.slug}.html: no eBay link tagged customid=${m.slug}-… (the page's clicks would be unattributable)`);
   }
+  const dcap = (reg.divisions && reg.divisions.distribution.itemsPerAgentPerWeek) || 1, dcount = {};
+  for (const it of reg.items || []) { const k = `${it.agent}/w${it.week}`; dcount[k] = (dcount[k] || 0) + 1; if (dcount[k] > dcap) bad.push(`${k}: ${dcount[k]} distribution items > cap ${dcap}`); if (!/^[a-z]-/.test(it.campaign) || it.campaign[0] !== it.agent.toLowerCase()) bad.push(`${it.id}: campaign must start with "${it.agent.toLowerCase()}-"`); }
   console.log(bad.length ? "check: FAIL\n  " + bad.join("\n  ") : `check: ok (${reg.pages.length} pages, cap ${cap}/agent/week)`);
   if (bad.length) process.exit(1);
 }
@@ -83,16 +95,46 @@ if (!args.includes("--sync") && !args.includes("--check")) {
     byPage[p.slug] = { ...p, sessions, clicks, signups, floorSessions, floor, days: days(p.published, ga.day) };
   }
   const agents = {};
-  for (const [id, a] of Object.entries(reg.agents)) {
+  for (const [id, a] of Object.entries(reg.agents).filter(([, a]) => (a.division || "search") === "search")) {
     const pages = Object.values(byPage).filter((p) => p.agent === id);
     const sessions = pages.reduce((s, p) => s + p.sessions, 0), clicks = pages.reduce((s, p) => s + p.clicks, 0), signups = pages.reduce((s, p) => s + p.signups, 0);
     agents[id] = { name: a.name, status: a.status, pages: pages.length, sessions, clicks, signups, rankable: sessions >= reg.rules.ranking.minOrganicSessionsPerAgent };
   }
   const order = Object.entries(agents).sort((x, y) => y[1].sessions - x[1].sessions);
-  const board = { generation: reg.generation, opened: reg.opened, scoringDate: reg.scoringDate, ga4Day: ga.day, readAt: new Date().toISOString(), rules: reg.rules, agents, pages: Object.values(byPage) };
+  // Distribution division: tagged-link sessions + referral sessions from registered domains, each from the item's date.
+  const camp = (ga.reports.leagueCampaignDaily28 || {}).rows || [], refr = (ga.reports.referralDaily28 || {}).rows || [];
+  if (!ga.reports.leagueCampaignDaily28) console.log("note: this snapshot predates the distribution reports — distribution scores 0 until the next nightly run");
+  const dist = {};
+  for (const [id, a] of Object.entries(reg.agents).filter(([, a]) => a.division === "distribution")) {
+    const items = (reg.items || []).filter((it) => it.agent === id);
+    let tagged = 0, referral = 0;
+    for (const it of items) {
+      const from = it.date.replace(/-/g, "");
+      tagged += camp.filter((r) => (r.sessionCampaignName || "").toLowerCase().startsWith(it.campaign.toLowerCase()) && r.date >= from).reduce((t, r) => t + (+r.sessions || 0), 0);
+      referral += refr.filter((r) => it.domains.some((dm) => (r.sessionSource || "").toLowerCase().includes(dm.toLowerCase())) && r.date >= from).reduce((t, r) => t + (+r.sessions || 0), 0);
+    }
+    dist[id] = { name: a.name, status: a.status, items: items.length, sent: items.filter((i) => ["sent", "posted", "live"].includes(i.status)).length, tagged, referral, sessions: tagged + referral };
+  }
+  // Selection verdict (reg.selection): bottom cut only on an exact binomial test vs the winner, p < 0.05.
+  const binomLE = (k, n) => { if (n > 1000) { const z = (k + 0.5 - n / 2) / Math.sqrt(n / 4); return 0.5 * (1 + Math.tanh(z * 0.7978845608 * (1 + 0.044715 * z * z))); } let p = 0, c = 1; for (let i = 0; i <= k; i++) { if (i > 0) c = (c * (n - i + 1)) / i; p += c; } return p / 2 ** n; };
+  const verdict = (tbl, min) => {
+    const o = Object.entries(tbl).sort((x, y) => y[1].sessions - x[1].sessions);
+    if (o.length < 2) return "fewer than 2 agents";
+    const [tid, top] = o[0], [bid, bot] = o[o.length - 1];
+    if (o.some(([, a]) => a.sessions < min)) return `not rankable: every agent needs >= ${min} sessions (low ${bot.sessions})`;
+    const p = binomLE(bot.sessions, top.sessions + bot.sessions);
+    return p < 0.05 ? `CUT ${bid} (${bot.sessions} vs ${top.sessions}, p=${p.toFixed(4)}); CLONE ${tid} with a new niche` : `draw: ${bid} ${bot.sessions} vs ${tid} ${top.sessions}, p=${p.toFixed(3)} >= 0.05, nobody cut`;
+  };
+  const sel = reg.selection || { minSessionsToRank: { search: 100, distribution: 25 } };
+  const verdicts = { search: verdict(agents, sel.minSessionsToRank.search), distribution: verdict(dist, sel.minSessionsToRank.distribution) };
+  const board = { generation: reg.generation, opened: reg.opened, scoringDate: reg.scoringDate, ga4Day: ga.day, readAt: new Date().toISOString(), rules: reg.rules, agents, pages: Object.values(byPage), distribution: dist, items: reg.items || [], verdicts };
   fs.writeFileSync(path.join(REPO, "data/league-board.json"), JSON.stringify(board, null, 1) + "\n");
   console.log(`GROWTH LEAGUE · generation ${reg.generation} · GA4 day ${ga.day} · scoring ${reg.scoringDate} (organic landing sessions; clicks reported, not ranked)`);
   for (const [id, a] of order) console.log(`  ${id} ${a.name.padEnd(16)} pages ${a.pages}  sessions ${String(a.sessions).padStart(4)}  clicks ${String(a.clicks).padStart(3)}  signups ${a.signups}  ${a.rankable ? "RANKABLE" : `not rankable (< ${reg.rules.ranking.minOrganicSessionsPerAgent})`}`);
   for (const p of Object.values(byPage)) console.log(`     ${p.agent} /${p.slug.padEnd(44)} d${String(p.days).padStart(2)}  sess ${String(p.sessions).padStart(3)}  clicks ${String(p.clicks).padStart(3)}  floor ${p.floor}`);
   if (!reg.pages.length) console.log("  (no pages registered)");
+  console.log(`  search verdict (binding only on ${reg.divisions?.search?.scoringDate || reg.scoringDate}): ${verdicts.search}`);
+  console.log(`DISTRIBUTION · opened ${reg.divisions?.distribution?.opened} · scoring ${reg.divisions?.distribution?.scoringDate} (tagged-link + referral sessions)`);
+  for (const [id, a] of Object.entries(dist).sort((x, y) => y[1].sessions - x[1].sessions)) console.log(`  ${id} ${a.name.padEnd(16)} items ${a.items} (out ${a.sent})  tagged ${String(a.tagged).padStart(3)}  referral ${String(a.referral).padStart(3)}  total ${a.sessions}`);
+  console.log(`  distribution verdict: ${verdicts.distribution}`);
 }

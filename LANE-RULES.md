@@ -946,6 +946,13 @@ with the CoS overseeing. Charter: `tools/league/LEAGUE.md`; registry `data/leagu
 - **What the agents never do:** post, email, DM, sign in, touch shared data files, or write to a page they did not
   create. Distribution stays Mo's (NEEDS-MO).
 
+
+**R27 Amendment 1 (Mo, 2026-09-29):** the league has two divisions: Search (A/B/C) and Distribution (D Outreach, E Forum,
+F Shareables; `tools/league/BRIEF-DISTRIBUTION.md`). Distribution agents draft only: the CoS sends outreach email on Mo's
+per-batch yes, Mo pastes forum posts, X goes through the X daily lane (R10). No Reddit. One item per agent per week, on
+the Wednesday league run; no new scheduled run. Cuts and clones follow `data/league.json` → `selection`: 4-week seasons,
+a minimum score to rank, the bottom agent cut only on an exact binomial test (p < 0.05) against the winner, the winner
+cloned into the slot with a mandatory new niche, and a division grows by one slot at ≥ 300 sessions a season (max 5).
 ## R28 · The Night Crew — the site's UI/UX is honed every night (Mo, 2026-09-28 — "make a team to hone it in every night while I sleep … I approve of all you would probably ask me")
 
 Mo asked for a standing team that fixes bugs, polishes the interface and makes the site a place people are curious

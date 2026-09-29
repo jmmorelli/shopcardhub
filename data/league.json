@@ -15,26 +15,51 @@
   },
   "runs": "Mon + Thu 05:56 PT (Mo, 2026-09-26: 'ok do it' — Thursday may spend one slot improving an existing league page)",
   "pagesPerAgentPerRun": 1,
-  "cadence": "daily 05:56 PT (Mo 2026-09-27: \"it's go time\" — everyone works daily)"
+  "cadence": "daily 05:56 PT (Mo 2026-09-27: \"it's go time\" — everyone works daily)",
+  "distributionItemsPerAgentPerWeek": 1
  },
  "agents": {
   "A": {
    "name": "Release desk",
    "thesis": "A page for every dated release, built 10+ days before street date; owns data/releases.json rows (dated, sourced, never guessed).",
    "status": "active",
-   "since": "2026-09-26"
+   "since": "2026-09-26",
+   "division": "search"
   },
   "B": {
    "name": "Question desk",
    "thesis": "\"How much is X worth\" / \"is Y worth it\" pages answered with dated sold comps and the index the card sits in.",
    "status": "active",
-   "since": "2026-09-26"
+   "since": "2026-09-26",
+   "division": "search"
   },
   "C": {
    "name": "Comparison desk",
    "thesis": "\"X vs Y\" pages (ETB vs box, set vs set, Bowman vs Bowman Chrome) decided on index levels and dated sold marks.",
    "status": "active",
-   "since": "2026-09-26"
+   "since": "2026-09-26",
+   "division": "search"
+  },
+  "D": {
+   "name": "Outreach desk",
+   "division": "distribution",
+   "thesis": "Earn citations and links: pitch the index data (free, dated, sold-basis) to hobby writers, newsletters, podcasts and YouTubers. One pitch batch a week (≤3 emails), each personal and specific to that writer's recent piece. The CoS sends from shopcardhub@gmail.com only on Mo's one-word yes in chat.",
+   "status": "active",
+   "since": "2026-09-30"
+  },
+  "E": {
+   "name": "Forum desk",
+   "division": "distribution",
+   "thesis": "Answer a real, open collector question on a hobby forum (Blowout Forums, Elite Fourum, PokéBeach forums, Quora) with the dated sold data, framed as a genuine answer or question (Mo: 'somewhat sly'), link only where the forum allows and the link is the answer. One draft a week; Mo pastes it from his account. No Reddit (Mo, Sep 29: 'reddit is weak').",
+   "status": "active",
+   "since": "2026-09-30"
+  },
+  "F": {
+   "name": "Shareables desk",
+   "division": "distribution",
+   "thesis": "One shareable data card a week (chart or table image on the site at a dated URL) built to be reposted or embedded by hobby accounts; it rides the X daily lane's site/data slot with a tagged link. No extra Mo time.",
+   "status": "active",
+   "since": "2026-09-30"
   }
  },
  "pages": [
@@ -178,5 +203,36 @@
    "week": 1,
    "status": "live"
   }
- ]
+ ],
+ "divisions": {
+  "search": {
+   "name": "Search",
+   "score": "organic-search landing sessions on the agent's pages (landingOrganicDaily28)",
+   "opened": "2026-09-26",
+   "scoringDate": "2026-10-26",
+   "slots": 3
+  },
+  "distribution": {
+   "name": "Distribution",
+   "score": "sessions on the agent's tagged links (utm_medium=league, utm_campaign=<agent>-…) + referral sessions from the domains its manifests register",
+   "opened": "2026-09-30",
+   "scoringDate": "2026-10-26",
+   "slots": 3,
+   "itemsPerAgentPerWeek": 1,
+   "runDay": "Wednesday (inside the daily 05:56 PT league run)"
+  }
+ },
+ "selection": {
+  "_comment": "Mo 2026-09-29: bottom agents fired, the top one cloned, the competition restarts; clones must differentiate. CoS set the safeguards (approved by Mo the same day).",
+  "season": "4 weeks per division; the scoring date is the only day anyone is cut or cloned",
+  "minSessionsToRank": {
+   "search": 100,
+   "distribution": 25
+  },
+  "relegation": "The bottom agent is cut only if its count is significantly below the winner's: exact binomial test, P(X <= bottom | n = top + bottom, p = 0.5) < 0.05. Otherwise nobody is cut (a draw).",
+  "clone": "The winner is cloned into the freed slot. The clone keeps the winner's method and MUST take a different adjacent niche, written into its thesis at birth (parent + mutation recorded here). A clone that duplicates its parent's targets is disqualified at design time.",
+  "growth": "A division gains one slot (the winner cloned twice) when its total score for the season is >= 300 sessions, up to 5 slots per division (10 agents in all).",
+  "approvalLoad": "Distribution drafts that need Mo: at most 2 a week across the division (D's pitch batch = 1, E's forum draft = 1; F needs none)."
+ },
+ "items": []
 }

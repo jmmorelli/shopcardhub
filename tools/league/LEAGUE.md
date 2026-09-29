@@ -76,6 +76,40 @@ A gate FAIL does not ship. An agent that ships a shaded figure is out for the ge
    `releases.json` rows → `build-release-calendar`, `build-home`, sitemap, `searchExtra`, hub link.
 5. Three gates at baseline, commit, push (deploy key on the Mac), live 200s, IndexNow, pushLog, STATE.
 6. On the scoring date only: cull/breed per the rules above; rewrite the losing brief; open the next generation.
+7. **Wednesdays (from 2026-09-30): the Distribution division.** Spawn D, E, F in parallel with
+   `tools/league/BRIEF-DISTRIBUTION.md` + their thesis row + the board. Each hands over one `tools/league/dist/<id>.json`
+   and its section of the Project doc `claude/league/drafts-<date>.md`. `score.mjs --sync --check`, commit the manifests
+   (docs ride with the next public commit), then send Mo **one** short message: the drafts doc link and what each needs
+   ("D: 3 emails, reply 'send D' · E: 1 forum post to paste · F: queued into the X daily slot"). Record his answers as
+   `status` changes. A pitch is sent only in a session where Mo said yes to that batch (R10 spirit; sending email is a
+   per-action approval). Prompt note: this step lives here, not in the task prompt; the file wins (R-precedence).
 
 Files: `data/league.json` (registry, canonical) · `tools/league/manifests/<slug>.json` (one per page, written
 by the agent) · `data/league-board.json` (last board) · `tools/league/BRIEF.md` (the agents' standing brief).
+
+## Divisions and the season rule (Mo, 2026-09-29: "we really need some traffic")
+
+Mo: *"The bottom agents/bots … would just get fired/deleted and the top performing #1 bot would get cloned twice …
+Then the competition starts over again … At some point, the agents would recognize the need to differentiate from
+their original cloned state to survive."* Mo approved the CoS's safeguards the same day: *"I approve of your way of
+setting it up."*
+
+**Two divisions, one league.**
+- **Search** (A, B, C, above): scored on organic-search landing sessions.
+- **Distribution** (D, E, F; brief `tools/league/BRIEF-DISTRIBUTION.md`): scored on sessions from their tagged links
+  (`utm_medium=league`) plus referral sessions from the domains their manifests register. D = Outreach (pitches the
+  CoS sends on Mo's yes), E = Forum answers (Mo pastes; no Reddit), F = Shareables (data cards through the X daily
+  lane). One item per agent per week, drafted on the Wednesday league run; at most 2 items a week need Mo.
+
+**The season rule** (`data/league.json` → `selection`; `score.mjs` prints the verdict every run, binding only on a
+scoring date):
+1. A season is 4 weeks. Only the scoring date cuts or clones.
+2. Nobody is ranked until every agent in the division has the minimum (Search 100 sessions, Distribution 25).
+3. **The bottom agent is cut only if it is significantly behind the winner**: exact binomial test, P(X ≤ bottom |
+   n = top + bottom, p = ½) < 0.05. Otherwise it's a draw and nobody is cut. At ~200 clean sessions a week, most
+   early seasons will be draws, and that is the honest result, not a failure.
+4. **The winner is cloned into the freed slot, and the clone must take a new adjacent niche**, written into its
+   thesis at birth (`parent`, `mutation`). An agent doesn't remember surviving, so differentiation is built in, not
+   hoped for. A clone that duplicates its parent's targets is disqualified at design time.
+5. **Growth:** a division gains a slot (the winner cloned twice, as Mo described) when its season total is ≥ 300
+   sessions, up to 5 slots per division, 10 agents in all. The page cap and the floor read keep the site from bloating.

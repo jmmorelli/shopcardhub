@@ -62,6 +62,11 @@ const REPORTS = {
   // one night's file. tools/league/score.mjs reads these two.
   landingOrganicDaily28: { dateRanges: RANGES.d28, dimensions: d("landingPage", "date"), metrics: m("sessions", "keyEvents"), dimensionFilter: { filter: { fieldName: "sessionDefaultChannelGroup", stringFilter: { value: "Organic Search" } } }, orderBys: [{ dimension: { dimensionName: "date" } }], limit: 5000 },
   pageClicks28: { dateRanges: RANGES.d28, dimensions: d("pagePath", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["click", "buystrip_click", "buybox_click", "newsletter_signup"] } } }, limit: 2000 },
+  // Growth League Distribution division (Mo, 2026-09-29): sessions that arrive on a league agent's tagged link
+  // (utm_medium=league, utm_campaign=<agent>-<item>) and referral sessions by source domain (an outreach win is a
+  // link another site writes, so it carries no UTM). tools/league/score.mjs reads both.
+  leagueCampaignDaily28: { dateRanges: RANGES.d28, dimensions: d("sessionCampaignName", "sessionSource", "date"), metrics: m("sessions", "keyEvents"), dimensionFilter: { filter: { fieldName: "sessionMedium", stringFilter: { value: "league" } } }, limit: 2000 },
+  referralDaily28: { dateRanges: RANGES.d28, dimensions: d("sessionSource", "date"), metrics: m("sessions", "keyEvents"), dimensionFilter: { filter: { fieldName: "sessionDefaultChannelGroup", stringFilter: { value: "Referral" } } }, limit: 2000 },
   // Retention split (retention-split-exploration-sep07, built 2026-09-28 by the CoS on the Monday scan's 4th ask):
   // the surfaces-vs-guides split GA4's standard reports cannot show. Page views and returning-visitor page views per
   // path, and returning sessions by landing page, 28 days; derive() folds them into summary.retentionSplit28.
@@ -207,7 +212,12 @@ async function main() {
     token = await accessToken(JSON.parse(keyRaw));
   }
   const rep = {};
-  for (const [name, body] of Object.entries(REPORTS)) rep[name] = await runReport(token, body);
+  // The two distribution reports (added 2026-09-29) are optional: if GA4 rejects one, the snapshot still ships.
+  const OPTIONAL = new Set(["leagueCampaignDaily28", "referralDaily28"]);
+  for (const [name, body] of Object.entries(REPORTS)) {
+    if (!OPTIONAL.has(name)) { rep[name] = await runReport(token, body); continue; }
+    try { rep[name] = await runReport(token, body); } catch (e) { console.error(`optional report ${name} skipped: ${String(e.message || e).slice(0, 200)}`); }
+  }
   const generatedAt = new Date().toISOString();
   const day = new Date(Date.now() - 864e5).toISOString().slice(0, 10); // the "yesterday" the ranges end on
   const summary = derive(rep);
