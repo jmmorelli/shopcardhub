@@ -1,5 +1,5 @@
 {
-  "_comment": "SINGLE SOURCE OF TRUTH for the site nav (desktop dropdowns + mobile accordion drawer). Edit this file, then run `node tools/build-nav.js` from the repo root to regenerate the nav region (between <!-- NAV:START --> / <!-- NAV:END -->) on every *.html page. See tools/build-nav-README.md. ITERATION 2 of the mega-menu rework (Jul 7 2026): 5 top-level — Tools + Research / Sports (mega, 4 columns) / Pokémon / Grading + Supplies / My Vault CTA. Panels capped at ~5 links per column; overflow routes to 'All →' hub anchors (allLink:true). Pages cut from dropdowns are listed in searchExtra so site search still finds them. Sports panel carries a COMC inventory footer link (money path).",
+  "_comment": "SINGLE SOURCE OF TRUTH for the site nav (desktop dropdowns + mobile accordion drawer). Edit this file, then run `node tools/build-nav.js` from the repo root to regenerate the nav region (between <!-- NAV:START --> / <!-- NAV:END -->) on every *.html page. See tools/build-nav-README.md. ITERATION 3 (Sep 29 2026, Mo: \"go\"): Indices (mega: Pokémon new · Pokémon classic · Sports, matching the home board split) / Sports (mega, guides only) / Pokémon (sets + \"worth it\" pages) / Tools & Guides (mega: trackers · research · grading & supplies) / Watchlist CTA. Iteration 2 (Jul 7): Tools + Research / Sports / Pokémon / Grading + Supplies. Panels capped at ~5 links per column; overflow routes to 'All →' hub anchors (allLink:true). Pages cut from dropdowns are listed in searchExtra so site search still finds them. Sports panel carries a COMC inventory footer link (money path).",
   "brand": {
     "href": "/",
     "html": "Shop<span>Card</span>Hub"
@@ -15,63 +15,120 @@
   },
   "categories": [
     {
-      "label": "Tools + Research",
-      "href": "/research",
+      "label": "Indices",
+      "href": "/indices",
+      "mega": true,
       "groups": [
         {
-          "label": "Trackers & Tools",
+          "label": "Pokémon — New Sets",
           "links": [
             {
-              "href": "/bowman-bangers",
-              "label": "Bowman Bangers ⭐"
+              "href": "/pokemon-30th-anniversary-2026",
+              "label": "TH26 — 30th Celebration",
+              "style": "color:#f5c800;"
             },
             {
-              "href": "/best-hobby-boxes-2026",
-              "label": "Best Boxes 2026 — Ranked by ROI"
+              "href": "/pitch-black-index",
+              "label": "PB26 — Pitch Black",
+              "style": "color:#a78bfa;"
             },
             {
-              "href": "/watchlist",
-              "label": "Watchlist — the cards you're chasing"
+              "href": "/chaos-rising-index",
+              "label": "CR26 — Chaos Rising",
+              "style": "color:#00e0c0;"
             },
             {
-              "href": "/indices",
-              "label": "Set Indices — All Tickers",
+              "href": "/ascended-heroes-index",
+              "label": "AH26 — Ascended Heroes",
+              "style": "color:#f5c800;"
+            },
+            {
+              "href": "/prismatic-evolutions-index",
+              "label": "PRIS25 — Prismatic Evolutions",
+              "style": "color:#e879f9;"
+            },
+            {
+              "href": "/destined-rivals-index",
+              "label": "DR25 — Destined Rivals",
+              "style": "color:#ff2e55;"
+            },
+            {
+              "href": "/phantasmal-flames-index",
+              "label": "PF25 — Phantasmal Flames",
               "style": "color:#00ccf5;"
             },
             {
-              "href": "/cards",
-              "label": "Card Charts — Every Tracked Card",
-              "style": "color:#00ccf5;"
+              "href": "/scarlet-violet-151-index",
+              "label": "SV151 — Scarlet & Violet 151",
+              "style": "color:#ff5a3c;"
             },
             {
-              "href": "/auctions",
-              "label": "Auction Desk — Ending Under the Mark",
-              "style": "color:#00e07a;"
+              "href": "/indices#pokemon",
+              "label": "All Pokémon indices →",
+              "allLink": true
             }
           ]
         },
         {
-          "label": "Research",
+          "label": "Pokémon — Classic Sets",
           "links": [
             {
-              "href": "/research",
-              "label": "Research Hub — All Guides"
+              "href": "/pokemon-base-set-index",
+              "label": "BS99 — Base Set"
             },
             {
-              "href": "/release-calendar",
-              "label": "Release Calendar 2026"
+              "href": "/evolving-skies-index",
+              "label": "EVS21 — Evolving Skies"
+            },
+            {
+              "href": "/skyridge-index",
+              "label": "SK03 — Skyridge"
+            },
+            {
+              "href": "/neo-genesis-index",
+              "label": "NG00 — Neo Genesis"
+            },
+            {
+              "href": "/team-rocket-index",
+              "label": "TR00 — Team Rocket"
+            },
+            {
+              "href": "/hidden-fates-index",
+              "label": "HF19 — Hidden Fates"
+            },
+            {
+              "href": "/indices#classic",
+              "label": "All 12 classic sets →",
+              "allLink": true
+            }
+          ]
+        },
+        {
+          "label": "Sports — 1st Bowman Autos",
+          "links": [
+            {
+              "href": "/bowman-1st-chrome-index",
+              "label": "BOW26 — 2026 1st Bowman Autos ⭐",
+              "style": "color:#00ccf5;"
+            },
+            {
+              "href": "/bowman-2026-index",
+              "label": "BB26 — Bowman (May) 1st Autos",
+              "style": "color:#00ccf5;"
+            },
+            {
+              "href": "/bowman-chrome-2026-index",
+              "label": "BCB26 — Bowman Chrome (Sep) 1st Autos",
+              "style": "color:#00ccf5;"
             },
             {
               "href": "/how-prices-work",
-              "label": "How Prices Work"
+              "label": "How the indices are priced"
             },
             {
-              "href": "/roy-watch-2026",
-              "label": "ROY Watch 2026"
-            },
-            {
-              "href": "/track-record",
-              "label": "Track Record — Calls Graded"
+              "href": "/indices",
+              "label": "All 23 tickers →",
+              "allLink": true
             }
           ]
         }
@@ -88,21 +145,6 @@
             {
               "href": "/bowman-bangers",
               "label": "2026 Bowman Bangers ⭐"
-            },
-            {
-              "href": "/bowman-1st-chrome-index",
-              "label": "BOW26 — 2026 1st Bowman Autos ⭐",
-              "style": "color:#00ccf5;"
-            },
-            {
-              "href": "/bowman-2026-index",
-              "label": "BB26 — Bowman (May) 1st Autos",
-              "style": "color:#00ccf5;"
-            },
-            {
-              "href": "/bowman-chrome-2026-index",
-              "label": "BCB26 — Bowman Chrome (Sep) 1st Autos",
-              "style": "color:#00ccf5;"
             },
             {
               "href": "/ethan-holliday-rookie-cards",
@@ -260,58 +302,93 @@
           ]
         },
         {
-          "label": "Set Indices — Live Trackers",
+          "label": "Is It Worth It?",
           "links": [
             {
-              "href": "/pitch-black-index",
-              "label": "PB26 — Pitch Black",
-              "style": "color:#a78bfa;"
+              "href": "/moonbreon-worth",
+              "label": "How much is Moonbreon worth?"
             },
             {
-              "href": "/chaos-rising-index",
-              "label": "CR26 — Chaos Rising",
-              "style": "color:#00e0c0;"
+              "href": "/umbreon-ex-worth",
+              "label": "How much is Umbreon ex worth?"
             },
             {
-              "href": "/ascended-heroes-index",
-              "label": "AH26 — Ascended Heroes",
-              "style": "color:#f5c800;"
+              "href": "/gengar-ex-worth",
+              "label": "How much is Gengar ex worth?"
             },
             {
-              "href": "/prismatic-evolutions-index",
-              "label": "PRIS25 — Prismatic Evolutions",
-              "style": "color:#e879f9;"
+              "href": "/is-pokemon-151-worth-it",
+              "label": "Is Pokémon 151 worth it?"
             },
             {
-              "href": "/destined-rivals-index",
-              "label": "DR25 — Destined Rivals",
-              "style": "color:#ff2e55;"
+              "href": "/pitch-black-vs-chaos-rising",
+              "label": "Pitch Black vs Chaos Rising"
             },
             {
-              "href": "/phantasmal-flames-index",
-              "label": "PF25 — Phantasmal Flames",
-              "style": "color:#00ccf5;"
-            },
-            {
-              "href": "/scarlet-violet-151-index",
-              "label": "SV151 — Scarlet & Violet 151",
-              "style": "color:#ff5a3c;"
-            },
-            {
-              "href": "/indices",
-              "label": "All Indices →",
+              "href": "/indices#pokemon",
+              "label": "Pokémon set indices →",
               "allLink": true
             }
           ]
         }
-      ]
+      ],
+      "mega": true
     },
     {
-      "label": "Grading + Supplies",
-      "href": "/psa-grading-guide",
+      "label": "Tools & Guides",
+      "href": "/research",
+      "mega": true,
       "groups": [
         {
-          "label": "Grading",
+          "label": "Trackers & Tools",
+          "links": [
+            {
+              "href": "/bowman-bangers",
+              "label": "Bowman Bangers ⭐"
+            },
+            {
+              "href": "/best-hobby-boxes-2026",
+              "label": "Best Boxes 2026 — Ranked by ROI"
+            },
+            {
+              "href": "/cards",
+              "label": "Card Charts — Every Tracked Card",
+              "style": "color:#00ccf5;"
+            },
+            {
+              "href": "/auctions",
+              "label": "Auction Desk — Ending Under the Mark",
+              "style": "color:#00e07a;"
+            },
+            {
+              "href": "/release-calendar",
+              "label": "Release Calendar 2026"
+            }
+          ]
+        },
+        {
+          "label": "Research",
+          "links": [
+            {
+              "href": "/research",
+              "label": "Research Hub — All Guides"
+            },
+            {
+              "href": "/how-prices-work",
+              "label": "How Prices Work"
+            },
+            {
+              "href": "/track-record",
+              "label": "Track Record — Calls Graded"
+            },
+            {
+              "href": "/roy-watch-2026",
+              "label": "ROY Watch 2026"
+            }
+          ]
+        },
+        {
+          "label": "Grading & Supplies",
           "links": [
             {
               "href": "/psa-grading-guide",
@@ -320,12 +397,7 @@
             {
               "href": "/tag-grading-guide",
               "label": "TAG Grading Guide — AI Slabs"
-            }
-          ]
-        },
-        {
-          "label": "Supplies",
-          "links": [
+            },
             {
               "href": "/best-card-supplies",
               "label": "Best Card Supplies"

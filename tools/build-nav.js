@@ -227,6 +227,14 @@ function buildScript(index) {
   return `<script>
 /* === NAV controller (generated) — hamburger toggle + accordion + search + active page === */
 (function(){
+  /* keep wide mega panels on screen (Sep 29: the Indices / Tools & Guides panels ran past the right edge at 1024-1280px) */
+  document.querySelectorAll('.nav-dropdown.nav-mega').forEach(function(dd){
+    var host = dd.parentElement; if (!host) return;
+    var fit = function(){ dd.style.marginLeft = ''; var r = dd.getBoundingClientRect(), vw = document.documentElement.clientWidth;
+      var shift = 0; if (r.right > vw - 16) shift = (vw - 16) - r.right; if (r.left + shift < 16) shift = 16 - r.left;
+      if (shift) dd.style.marginLeft = shift + 'px'; };
+    host.addEventListener('mouseenter', fit); host.addEventListener('focusin', fit);
+  });
   var btn = document.getElementById('hamburger');
   var drawer = document.getElementById('mobile-nav');
   if (btn && drawer) {
