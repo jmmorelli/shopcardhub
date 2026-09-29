@@ -315,3 +315,36 @@ body .focus .items a { min-height: 44px; }
      rather than push past the strip's edge. */
   body .bstrip:not(.bs-dock) .bs-go { white-space: normal; min-width: 0; text-align: center; line-height: 1.35; }
 }
+
+/* 9 (Night Crew, Sep 29 2026). "Also shipping now" is a line of TEXT links, but .sch-ebay-tag is an
+   absolutely-positioned image badge, so on the 30th Celebration page the three "eBay" labels sat on
+   top of the MSRP figures and hid them. In a text line the label sits inline after the price. */
+.bb-also .sch-ebay-tag { position: static; display: inline-block; margin-left: 4px; vertical-align: 1px;
+  font-size: 10px; padding: 0 4px; line-height: 1.4; }
+
+/* 10 (Night Crew, Sep 29 2026). Set-index card tables on a phone (17 pages built by
+   tools/build-sector-index.mjs, incl. the 30th Celebration page). The table was ~600 px wide in a
+   340 px box: the Buy/Watch buttons started off-screen with nothing saying the table scrolls, and
+   the buttons were 25 px tall. Under 560 px each row becomes two lines — rank · card · sold mark,
+   then Watch · Buy · Bid across the card's width — and Weight joins Sales 30D in the desktop-only
+   columns. Same cells, same links, same order; nothing is added. */
+@media (max-width: 560px) {
+  body .sidx-tbl { overflow-x: visible; }
+  body .sidx-tbl table, body .sidx-tbl thead, body .sidx-tbl tbody { display: block; width: 100%; }
+  body .sidx-tbl tr { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; column-gap: 10px;
+    align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--sidx-bd, rgba(255,255,255,.08)); }
+  body .sidx-tbl tr:last-child { border-bottom: 0; }
+  body .sidx-tbl th, body .sidx-tbl td { padding: 0; border-bottom: 0; }
+  body .sidx-tbl th:nth-child(4), body .sidx-tbl td:nth-child(4),
+  body .sidx-tbl th:nth-child(5), body .sidx-tbl td:nth-child(5), body .sidx-tbl th.th-act { display: none; }
+  body .sidx-tbl td.nm { white-space: normal; }
+  body .sidx-tbl td.nm b { display: block; line-height: 1.2; }
+  body .sidx-tbl td.act { grid-column: 2 / -1; text-align: left; padding-top: 8px; }
+  body .sidx-tbl td.act .act-w { display: flex; gap: 6px; width: 100%; }
+  body .sidx-tbl td.act .sch-track-card { flex: 0 0 40px; min-height: 40px; padding: 0; display: flex; align-items: center; justify-content: center; }
+  body .sidx-tbl td.act a.ebay, body .sidx-tbl .sidx-auc-slot a.auc { display: flex; align-items: center; justify-content: center;
+    min-height: 40px; padding: 4px 8px; font-size: 11px; letter-spacing: 1px; }
+  body .sidx-tbl td.act a.ebay { flex: 0 0 auto; padding: 4px 16px; }
+  body .sidx-tbl .sidx-auc-slot { display: block; flex: 1 1 0; min-width: 0; }
+  body .sidx-tbl .sidx-auc-slot:empty { display: none; }
+}

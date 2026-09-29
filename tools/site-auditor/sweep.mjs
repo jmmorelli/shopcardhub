@@ -121,7 +121,11 @@ async function metrics(page, deep) {
         if (BLOCK.test(url)) { abortedBeacons++; return route.abort(); }
         for (let attempt = 0; attempt < 3; attempt++) {
           try {
-            const resp = await req.get(url, { timeout: 25000, failOnStatusCode: false });
+            /* forward the page's own request headers (Sec-Fetch-Site, Referer…) so api/_lib/guard.js sees a
+               same-origin browser call, not a bare script — without them every /api/* call 403'd and
+               read as a console error on ~70 pages (Night Crew, Sep 29 2026) */
+            const fwd = { ...route.request().headers() }; delete fwd.host; delete fwd["content-length"];
+            const resp = await req.get(url, { timeout: 25000, failOnStatusCode: false, headers: fwd });
             const headers = { ...resp.headers() };
             delete headers["content-encoding"]; delete headers["content-length"];
             const body = await resp.body();

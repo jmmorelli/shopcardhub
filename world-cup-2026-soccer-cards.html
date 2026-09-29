@@ -410,6 +410,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   .m-group-panel a { font-size:15px; padding:12px 0 12px 14px; border-bottom:1px solid var(--border); }
   .m-group-panel a:last-child { border-bottom:none; }
   .m-group-panel .m-sublabel { font-family:var(--fm); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); opacity:.55; padding:12px 0 2px 14px; }
+  /* keyboard: a focused menu opens like a hovered one; Escape closes it (Night Crew, Sep 29) */
+  .nav-item:focus-within .nav-dropdown { opacity:1; visibility:visible; transform:translateY(0); }
+  .nav-item:focus-within > a .chevron { transform:rotate(180deg); }
+  .nav-item.dd-shut .nav-dropdown { opacity:0; visibility:hidden; }
+  .nav-item.dd-shut > a .chevron { transform:none; }
   </style>
   <nav class="nav">
     <div class="nav-inner">
@@ -687,6 +692,13 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       if (shift) dd.style.marginLeft = shift + 'px'; };
     host.addEventListener('mouseenter', fit); host.addEventListener('focusin', fit);
   });
+  /* Escape closes an open menu and returns focus to its top link; the menu re-arms when the pointer or focus leaves */
+  document.querySelectorAll('.nav-links .nav-item').forEach(function(it){
+    var top = it.querySelector(':scope > a'); if (!it.querySelector('.nav-dropdown')) return;
+    it.addEventListener('keydown', function(e){ if (e.key === 'Escape'){ it.classList.add('dd-shut'); if (top) top.focus(); } });
+    it.addEventListener('mouseenter', function(){ it.classList.remove('dd-shut'); });
+    it.addEventListener('focusout', function(e){ if (!it.contains(e.relatedTarget)) it.classList.remove('dd-shut'); });
+  });
   var btn = document.getElementById('hamburger');
   var drawer = document.getElementById('mobile-nav');
   if (btn && drawer) {
@@ -698,6 +710,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       document.body.style.overflow = open ? 'hidden' : '';
     });
     drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && drawer.classList.contains('open')){ closeDrawer(); btn.focus(); } });
     drawer.querySelectorAll('.m-group-btn').forEach(function(b){
       b.addEventListener('click', function(){
         var exp = b.getAttribute('aria-expanded') === 'true';
