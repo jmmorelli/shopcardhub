@@ -26,13 +26,18 @@ const RARITY = /\b(IR|SIR|UR|HR|AR|SAR|DR|ACE|RR|SR)\b/g; // rarity codes are ou
 const normNum = (s) => s.replace(/\b0*(\d+)\/0*(\d+)\b/g, "$1/$2"); // 090/084 and 90/84 are the same card
 function pick(listings, q) {
   const num = (normNum(q).match(/\b\d{1,3}\/\d{1,3}\b/) || [])[0];
-  const toks = q.toLowerCase().replace(RARITY, "").split(" ").filter((t) => t.length > 2 && !/[#\d]/.test(t)).slice(0, num ? 2 : 4);
+  // Sep 30 2026 (Photo Keeper): an eBay exclusion in the key ("… Celebrations -japanese", the classic-set imgKey) is a
+  // negative term, not a word the title must contain — as a required token it failed every listing (7 CEL21 rows never resolved).
+  const words = q.toLowerCase().replace(RARITY, "").split(" ");
+  const negs = words.filter((t) => /^-[a-z]{3,}$/.test(t)).map((t) => t.slice(1));
+  const toks = words.filter((t) => t.length > 2 && !t.startsWith("-") && !/[#\d]/.test(t)).slice(0, num ? 2 : 4);
   let best = null;
   for (const l of listings) {
     const t = normNum(String(l.title || "").toLowerCase());
     if (!l.image || !/^https:\/\/i\.ebayimg\.com\//.test(l.image)) continue;
     if (num && !t.includes(num)) continue;
     if (!toks.every((k) => t.includes(k))) continue;
+    if (negs.some((k) => t.includes(k))) continue;
     // Sep 13 2026 (Mo: a DR25 hero was a card CASE, not the card): accessories and
     // display products never picture the card; graded slabs are allowed but a raw
     // listing wins when one exists (the loop keeps the first raw fixed-price hit).

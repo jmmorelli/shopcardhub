@@ -178,6 +178,23 @@
     return r.rd && r.rd < '2023-06-01' ? 'classic' : 'pokemon';
   }
   var IB_GROUPS = [['pokemon', 'Pokémon · new sets'], ['classic', 'Pokémon · classic sets'], ['sports', 'Sports · Bowman baseball']];
+  /* re-mark cadence, derived from data/indices.json (iw-2026-09-28-3 / iw-2026-09-29-6, weekly Sep 30): sector-model tickers
+     mark Monday and Thursday (build-sector-index.mjs --mark --if-mark-day), the chase indices once a week on Monday
+     (remark-indices.mjs). Live tickers only. build-home.mjs writes these phrases into the home copy and metas. */
+  function cadence(indices) {
+    var ix = indices || {};
+    var live = Object.keys(ix).filter(function (k) { var v = ix[k]; return v && typeof v === 'object' && v.status === 'live'; });
+    var twice = live.filter(function (k) { return ix[k].model === 'sector'; });
+    var bow = twice.filter(function (k) { return /bowman/i.test(ix[k].set || ix[k].name || ''); });
+    var n = live.length, t = twice.length, groups = [];
+    if (t - bow.length) groups.push('the whole-set Pok\u00e9mon indices');
+    if (bow.length) groups.push('the Bowman indices');
+    return {
+      n: n, twice: t, weekly: n - t,
+      clause: !t ? 'every Monday' : t === n ? 'every Monday and Thursday' : 'every Monday \u2014 ' + t + ' of the ' + n + ' (' + groups.join(' and ') + ') again on Thursday',
+      short: !t ? 'Mondays' : t === n ? 'Mondays and Thursdays' : 'Mondays, ' + (t * 2 > n ? 'most' : 'some') + ' also Thursdays'
+    };
+  }
   function renderIndexBoard(model) {
     var all = (model.indices || []).slice().sort(function (a, b) { return (a.status === 'pre') - (b.status === 'pre'); });
     if (!all.length) return '<tr><td class="empty" colspan="8">No index yet.</td></tr>';
@@ -247,11 +264,11 @@
       var byDate = {}; live.forEach(function (i) { (byDate[i.date] = byDate[i.date] || []).push(i); });
       var dates = Object.keys(byDate).sort().reverse().slice(0, 1);
       dates.forEach(function (d) {
-        line(dstr(d), 'INDEX', 'Weekly re-mark — ' + byDate[d].map(function (i) { return '<a href="' + esc(i.page || '/indices') + '">' + esc(i.k) + '</a> ' + num(i.level, 2) + (i.prev != null ? ' (' + pct(ST.pctChange(i.prev, i.level), 1) + ')' : ' (inception)'); }).join(', ') + '. Sold comps only.');
+        line(dstr(d), 'INDEX', 'Re-mark — ' + byDate[d].map(function (i) { return '<a href="' + esc(i.page || '/indices') + '">' + esc(i.k) + '</a> ' + num(i.level, 2) + (i.prev != null ? ' (' + pct(ST.pctChange(i.prev, i.level), 1) + ')' : ' (inception)'); }).join(', ') + '. Sold comps only.');
       });
     }
     model.indices.filter(function (i) { return i.status === 'pre'; }).forEach(function (i) {
-      line('pre', 'INDEX', '<a href="' + esc(i.page || '/indices') + '">' + esc(i.k) + '</a> is scaffolded, not live — activates once the weekly re-mark sources its first sold reads.');
+      line('pre', 'INDEX', '<a href="' + esc(i.page || '/indices') + '">' + esc(i.k) + '</a> is scaffolded, not live — activates once its re-mark sources its first sold reads.');
     });
     return li.slice(0, 8).join(''); /* eight lines at rest; the rest lives on the board page ("All signals »") */
   }
@@ -496,5 +513,5 @@
   }
   if (typeof document !== 'undefined') { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot(); }
 
-  return { SCREENS: SCREENS, buildModel: buildModel, renderIndexBoard: renderIndexBoard, idxStats: idxStats, renderMarkets: renderMarkets, renderChart: renderChart, renderEngine: renderEngine, renderTape: renderTape, tapeItems: tapeItems, renderReleases: renderReleases, upcoming: upcoming, renderMovers: renderMovers, renderScreen: renderScreen, renderScreens: renderScreens, screenMeta: screenMeta, renderAuctions: renderAuctions, renderPortfolios: renderPortfolios, lineChart: lineChart };
+  return { SCREENS: SCREENS, cadence: cadence, buildModel: buildModel, renderIndexBoard: renderIndexBoard, idxStats: idxStats, renderMarkets: renderMarkets, renderChart: renderChart, renderEngine: renderEngine, renderTape: renderTape, tapeItems: tapeItems, renderReleases: renderReleases, upcoming: upcoming, renderMovers: renderMovers, renderScreen: renderScreen, renderScreens: renderScreens, screenMeta: screenMeta, renderAuctions: renderAuctions, renderPortfolios: renderPortfolios, lineChart: lineChart };
 });

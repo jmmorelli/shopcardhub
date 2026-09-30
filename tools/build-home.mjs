@@ -89,6 +89,18 @@ if (latest && history) {
   html = html.replace(/data-prices-updated="\d{4}-\d{2}-\d{2}"/, `data-prices-updated="${model.day}"`);
   console.log(`feed day ${model.day}: ${model.marked}/${model.total} marked · ${model.gatedN} gated · ${model.closes} closes · composite ${model.composite ? ST.num(model.composite.level, 2) + " (" + model.composite.n + " autos)" : "n/a"} · ${model.indices.length} indices`);
 } else console.log("--releases-only: tape/markets/movers/screen panels deliberately left as previously rendered (no feed read)");
+// Re-mark cadence in the copy and the metas is derived from data/indices.json (iw-2026-09-28-3 / iw-2026-09-29-6, weekly
+// Sep 30): the home said "re-marked weekly" while 17 of 23 tickers mark Monday and Thursday. Missing hooks fail the build.
+{
+  const cad = HOME.cadence(indices);
+  const sub = (re, to, what) => { if (!re.test(html)) throw new Error(`index.html: cadence hook missing (${what})`); html = html.replace(re, to); };
+  sub(/(<span data-home="cadence">)[^<]*(<\/span>)/, `$1${cad.clause}$2`, "tm-foot");
+  sub(/(<span data-home="cadence-chart">)[^<]*(<\/span>)/, `$1indices ${cad.short}$2`, "chart caption");
+  sub(/(<span data-home="cadence-short">)[^<]*(<\/span>)/g, `$1${cad.short}$2`, "disclosure/footer");
+  sub(/(<meta name="description" content="[^"]*?built from sold comps, )re-marked [^,"]*(, every card)/, `$1re-marked ${cad.short}$2`, "meta description");
+  sub(/(<meta property="og:description" content="[^"]*?sold comps, )re-marked [^,"]*(, every card)/, `$1re-marked ${cad.short}$2`, "og:description");
+  console.log(`cadence: ${cad.twice} of ${cad.n} live tickers Mon + Thu, ${cad.weekly} Monday only`);
+}
 put("releases", HOME.renderReleases(releases, TODAY, 9));
 console.log(`releases: ${upcomingN} upcoming from ${TODAY} (asOf ${releases.asOf}) · tape ${latest && history ? HOME.tapeItems(HOME.buildModel(latest, history, market, indices), indices).length : "?"} items`);
 
