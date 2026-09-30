@@ -11,6 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the weekly (2026-09-30). One item
+
+- **Which Chrome do scheduled runs use?** Two Chrome browsers are connected, and an unattended run is not allowed to pick one, so the weekly could not open Search Console, Bing Webmaster or GA4 live for the **second week running** (the in-app browser is signed out of Google and Bing). **Action, one time, next time you're in a CoS chat:** answer the browser prompt with the browser that holds GA4/Search Console, or disconnect the Claude extension in the Chrome profile you don't use. Nothing else waits on it; the weekly works from the nightly GA4 snapshot meanwhile.
+- *FYI, no action:* MailerLite shows 3 active subscribers and all three are your own addresses. The forms have only been up 4 days, so it's too early to call. The CoS re-reads it Oct 14.
+
+---
+
 ## Open — from the desk (2026-09-29, 14:00 run). Mo, these are the only things waiting on you
 
 Checked against live state this run. Nothing new; one item came off.

@@ -2096,7 +2096,12 @@
     {"id": "iw-2026-09-29-3", "status": "applied", "date": "2026-09-29", "area": "retention", "by": "integrity-watch", "severity": "MED", "title": "iw-2026-09-28-1 follow-up was incomplete: the signup pitch 'the chase cards\u2019 last sold' was still baked into 8 live pages and re-emitted by tools/build-signup.mjs NEW_PITCH.", "decision": "DESK 2026-09-29: APPLIED (reproduced live, R5). NEW_PITCH now carries the R26 wording ('sold marks'); the 8 pages re-stamped; build-signup re-run writes 0 pages (idempotent). Home ib-foot 'dated sold price' \u2192 'dated sold mark'.", "decidedBy": "cos", "decidedOn": "2026-09-29"},
     {"id": "iw-2026-09-29-4", "status": "applied", "date": "2026-09-29", "area": "site-wide", "by": "integrity-watch", "severity": "MED", "title": "44 page footers said 'PSA pricing sourced from psacard.com, updated February 10, 2026' while their graded figures come from PriceCharting/SportsCardsPro dated sales.", "decision": "DESK 2026-09-29: APPLIED (reproduced live on /moonbreon-worth, R5). The clause is deleted from all 44 pages (the watch counted 42; 2 league pages landed since); no generator emits it. /psa-grading-guide keeps its own correct line ('psacard.com/pricing, read September 25, 2026').", "decidedBy": "cos", "decidedOn": "2026-09-29"},
     {"id": "iw-2026-09-29-5", "status": "queued", "date": "2026-09-29", "area": "indices", "by": "integrity-watch", "severity": "LOW", "title": "The three Bowman index pages' method note says 'blended eBay + TCGplayer' and 'caps at 60 rows'; for Bowman items the source list is eBay-only and caps at 30.", "decision": "DESK 2026-09-29: QUEUED to the Sep 30 weekly (generator text in tools/build-sector-index.mjs:400 \u2192 per-config source sentence and row cap; it rides with the BCB26/BOW26 Phase 2 rebuild on the same generator). LOW: the page's 'liquidity gate, never a volume figure' line keeps it honest until then.", "decidedBy": "cos", "decidedOn": "2026-09-29"},
-    {"id": "iw-2026-09-29-6", "status": "queued", "date": "2026-09-29", "area": "home", "by": "integrity-watch", "severity": "LOW", "title": "Home still says set indices are 're-marked weekly' (body x2, footer, og:description, chart caption); 17 of 23 tickers mark Mon + Thu.", "decision": "DESK 2026-09-29: QUEUED \u2014 folded into the Sep 30 weekly's generated basis/cadence sentence (iw-2026-09-28-3 scope now includes /). No separate work.", "decidedBy": "cos", "decidedOn": "2026-09-29"}
+    {"id": "iw-2026-09-29-6", "status": "queued", "date": "2026-09-29", "area": "home", "by": "integrity-watch", "severity": "LOW", "title": "Home still says set indices are 're-marked weekly' (body x2, footer, og:description, chart caption); 17 of 23 tickers mark Mon + Thu.", "decision": "DESK 2026-09-29: QUEUED \u2014 folded into the Sep 30 weekly's generated basis/cadence sentence (iw-2026-09-28-3 scope now includes /). No separate work.", "decidedBy": "cos", "decidedOn": "2026-09-29"},
+    {"id": "iw-2026-09-30-1", "status": "applied", "date": "2026-09-30", "area": "bangers", "by": "integrity-watch", "severity": "HIGH", "title": "/bowman-bangers buy strip led with the September Bowman Chrome box; the board's ten autos are 2026 Bowman (May) CPAs (R8).", "decision": "WEEKLY 2026-09-30: APPLIED 18efc25 - May box primary (customid -top), Chrome box secondary (-chrome), May case; screened on production /api/comps (13 clean asks, 7 cases).", "decidedBy": "cos", "decidedOn": "2026-09-30"},
+    {"id": "iw-2026-09-30-2", "status": "queued", "date": "2026-09-30", "area": "indices", "by": "integrity-watch", "severity": "MED", "title": "bowmanConfigs() matches names without folding accents - Linan in BB26 not BCB26, Munoz, Pena as a false 1st; BCB26 universe 95 vs 97.", "decision": "WEEKLY 2026-09-30: ACCEPTED - desk before Mon Oct 5: fold diacritics, re-run BB26/BCB26/BOW26 as a logged divisor adjustment (level unchanged), assert BCB26 universe = checklist first CPAs.", "decidedBy": "cos", "decidedOn": "2026-09-30"},
+    {"id": "iw-2026-09-30-3", "status": "queued", "date": "2026-09-30", "area": "indices", "by": "integrity-watch", "severity": "MED", "title": "BCB26 break math says non-auto 1st Bowman Chromes come in every case; 34 of 104 CPA players have no 1st BCP in September Chrome.", "decision": "WEEKLY 2026-09-30: ACCEPTED - folded into the Thu Oct 1 Chrome floor build (per-player floor from the BCP group; 'none in this product' where absent). No paid link carries it today.", "decidedBy": "cos", "decidedOn": "2026-09-30"},
+    {"id": "iw-2026-09-30-4", "status": "applied", "date": "2026-09-30", "area": "indices", "by": "integrity-watch", "severity": "LOW", "title": "BCB26 method note named returning names as having their 1sts in May; they were 2025 products.", "decision": "WEEKLY 2026-09-30: APPLIED 929afa5 - generator string + --bake (note line only); names checked against data/sets 2025 files.", "decidedBy": "cos", "decidedOn": "2026-09-30"},
+    {"id": "iw-2026-09-30-5", "status": "queued", "date": "2026-09-30", "area": "league", "by": "integrity-watch", "severity": "LOW", "title": "/topps-holiday-baseball-2026: Hidden Elf is 25 cards, one per player, not five variations of five players.", "decision": "WEEKLY 2026-09-30: ROUTED to League agent A's next improve run (R27: agent-owned page).", "decidedBy": "cos", "decidedOn": "2026-09-30"}
   ],
   "scoreboard": {
     "updated": "2026-09-28",
@@ -3099,6 +3104,25 @@
           "by": "CoS · Growth League daily 05:56 (cloud + Mac deploy key, unattended) — C built /ascended-heroes-vs-chaos-rising; A improved /topps-allen-ginter-2026; B improved /umbreon-ex-worth; Distribution D/E/F first items (drafts only) + F's shareable PNG",
           "gates": "audit-prices 0/75 · audit-site 0/3 (133 pages) · audit-terminal 0/0 (--feed data/feed) = baseline, no WARN delta",
           "liveVerified": "2026-09-30 ~20:10Z — 3 league URLs 200 with BUYSTRIP:START + sch-signup + data-prices-updated 2026-09-30; /og/league/f-20260930.png 200 image/png; sitemap carries the new slug. IndexNow 6 URLs 200."
+        },
+        {
+          "date": "2026-09-30",
+          "commits": [
+            "c60d129",
+            "f15c56e",
+            "ec4d9ef",
+            "d335f93",
+            "c6a6697",
+            "6d47a3d",
+            "18efc25",
+            "929afa5"
+          ],
+          "by": "CoS weekly site audit (cloud build, Mac deploy-key push; Task-key cos-weekly-2026-09-30)",
+          "gates": "audit-prices 0/74 · audit-site 0/3 (133) · audit-terminal --feed 0/0 (static; --run-tests crashes in the cloud container on unchanged main too)",
+          "tree": "19fbacf5bcf443daa2613851e6a0760cbb03c2f0",
+          "liveVerified": "2026-09-30 ~12:15 PT curl: bowman-football released + strip query, bangers -chrome slot, best-hobby-boxes $1,669.00, baseball under-50 re-read stamp, BCB26 note, home cadence, site-fixes §12, card-img v3",
+          "indexNow": "7 URLs -> 200",
+          "rollback": "git revert --no-edit c60d129^..929afa5"
         }
       ]
     },
