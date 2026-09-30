@@ -1355,7 +1355,7 @@ renderRows(DEFAULTS);
       var dur=900,t0=performance.now();
       (function tick(now){
         var p=Math.min((now-t0)/dur,1),ease=1-Math.pow(1-p,3),v=num*ease;
-        el.textContent=pre+(dec?v.toFixed(1):Math.round(v))+suf;
+        el.textContent=p<1?pre+(dec?v.toFixed(1):Math.round(v))+suf:raw; /* Site Sweep Sep 30: land on the source text ($84.99 was ending as $85.0) */
         if(p<1) requestAnimationFrame(tick);
       })(t0);
     }

@@ -1,7 +1,8 @@
 /* fold-dense.js — Sep 27 2026 UX sweep (new-collector lens). Same rule as plain-read.js: simple on top,
  * depth one click away, nothing deleted. Two targets:
  *  1. Engine stat bands (.cp-strip): Signal + Supply stay visible; ROC, z-score, σ/day, skew, kurtosis,
- *     ask quartiles and median last bid fold behind "Show the numbers" (shared pref with plain-read.js).
+ *     ask quartiles and median last bid fold behind "Show the numbers" (shared pref with plain-read.js);
+ *     so does the "Distribution · daily returns" section of the chart fold (Site Sweep, Sep 30 2026).
  *  2. Long verdict boxes (.entry-verdict): the bold verdict line stays; the reasoning and the
  *     "What would change our mind" block (.entry-break) fold behind "Read the full case".
  * Loaded by js/engine-block.js and directly on pages with verdict boxes. Idempotent. */
@@ -25,6 +26,8 @@
     function paint(on) {
       Array.prototype.forEach.call(document.querySelectorAll('.cp-strip .fd-adv'), function (c) { c.classList.toggle('fd-hid', !on); });
       btns.forEach(function (b) { b.textContent = on ? 'Hide the numbers ▴' : 'Show the numbers ▾'; b.setAttribute('aria-expanded', on ? 'true' : 'false'); });
+      /* Site Sweep Sep 30: the returns histogram (skew/kurtosis prose) folds with the numbers it explains */
+      Array.prototype.forEach.call(document.querySelectorAll('.cp-embed .cp-sec[id^="dist-"]'), function (x) { x.classList.toggle('fd-hid', !on); });
     }
     Array.prototype.forEach.call(strips, function (strip) {
       if (strip.getAttribute('data-fd')) return; strip.setAttribute('data-fd', '1');
