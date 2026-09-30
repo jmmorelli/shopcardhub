@@ -483,6 +483,81 @@ def card_drawdown(idx, out):
     d.text((48, H - 40), f"marks as of {asof} · source: sold comps, PriceCharting ungraded · WK PTS = change vs {fmt(ser[keys[0]][-2]['date'])} mark · shopcardhub.com/indices", font=MONO(12), fill=DIM)
     p = out / "drawdown.png"; im.save(p); return p
 
+
+# ---------- release-base cards (Sep 30 2026, the rebase: 100 = each set's release month) ----------
+def _bm(ix): return datetime.date.fromisoformat(ix["baseDate"] + "-01").strftime("%b %Y")
+def _levels_rows(idx, keys, out, name, eyebrow, title, sub, note):
+    asof = max(idx[k]["history"][-1]["date"] for k in keys)
+    keys = sorted(keys, key=lambda k: idx[k]["history"][-1]["level"])
+    im, d = canvas(eyebrow, title, sub)
+    y, rh = 232, min(62, (H - 300) // len(keys))
+    hi = max(idx[k]["history"][-1]["level"] for k in keys + []) ; hi = max(hi, 100)
+    for k in keys:
+        ix = idx[k]; lv = ix["history"][-1]["level"]; col = GREEN if lv >= 100 else RED
+        d.rounded_rectangle([48, y, W - 48, y + rh - 8], 6, fill=PANEL, outline="#16303a")
+        d.text((66, y + (rh - 8) / 2 - 16), k, font=COND9(30), fill=CYAN)
+        d.text((190, y + (rh - 8) / 2 - 12), ix["name"].replace(" Chase Index", "").replace(" Set Index", ""), font=BAR6(20), fill=TXT)
+        d.text((500, y + (rh - 8) / 2 - 8), "100 = " + _bm(ix), font=MONO(13), fill=DIM)
+        x0, x1 = 700, 1010; bx = x0 + (x1 - x0) * min(lv, hi) / hi; x100 = x0 + (x1 - x0) * 100 / hi
+        d.rectangle([x0, y + (rh - 8) / 2 - 7, bx, y + (rh - 8) / 2 + 7], fill=col)
+        d.line([(x100, y + 6), (x100, y + rh - 14)], fill=DIM, width=2)
+        s = f"{lv:.1f}"; d.text((W - 66 - d.textlength(s, font=COND7(32)), y + (rh - 8) / 2 - 18), s, font=COND7(32), fill=TXT)
+        y += rh
+    footer(d, asof, note)
+    p = out / name; im.save(p); return p
+
+def card_vintage(idx, out):
+    keys = [k for k in ("BS99", "JU99", "FO99", "TR00", "NG00", "ND02", "AQ03", "SK03") if k in idx]
+    return _levels_rows(idx, keys, out, "vintage.png", "wotc + e-card sets · every card · sold comps",
+        "Vintage, from the first reliable month",
+        "100 = the first month PriceCharting's ungraded sold history reliably covers each set (2021-22). Line = 100.",
+        "· 100 = first reliable month")
+
+def card_chase_release(idx, out):
+    keys = [k for k in ("PB26", "CR26", "AH26", "PRIS25", "DR25", "PF25") if k in idx]
+    return _levels_rows(idx, keys, out, "chase-release.png", "pokemon chase tiers · sold comps · 100 = release",
+        "Every new chase tier is under 100",
+        "Each index = the set's chase cards (SIR/IR/UR tier), 100 = its first month of sold data after release. Line = 100.",
+        "· 100 = release month")
+
+def card_release_log(idx, out):
+    """Whole-set indices from their release month, log scale: reconstructed months dashed, live marks solid."""
+    import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
+    from matplotlib import font_manager as fm
+    from matplotlib.ticker import FixedLocator, NullLocator
+    keys = [k for k in ("EVS21", "SV151", "CZ23", "CEL21") if k in idx]
+    asof = max(idx[k]["history"][-1]["date"] for k in keys)
+    im, d = canvas("whole-set indices · every card · log scale", "From release day to now",
+                   "100 = each set's first month of sold data after release. Dashed = rebuilt from monthly sold history; solid = live.")
+    COLS = ["#00ccf5", "#ffb020", "#ff5fa2", "#9b8cff"]
+    fp_m = fm.FontProperties(fname=_ttf("jetbrains-mono-var"))
+    fig = plt.figure(figsize=(7.4, 3.95), dpi=100, facecolor=PANEL); ax = fig.add_axes([0.08, 0.11, 0.9, 0.85]); ax.set_facecolor(PANEL)
+    for i, k in enumerate(keys):
+        ix = idx[k]
+        rc = [(datetime.date.fromisoformat(r["month"] + "-15"), r["level"]) for r in ix.get("recon", [])]
+        lv = [(datetime.date.fromisoformat(r["date"]), r["level"]) for r in ix["history"]]
+        ax.plot([a for a, _ in rc + lv[:1]], [b for _, b in rc + lv[:1]], color=COLS[i], lw=2, ls=(0, (4, 2)))
+        ax.plot([a for a, _ in lv], [b for _, b in lv], color=COLS[i], lw=2.6)
+    ax.set_yscale("log"); ax.yaxis.set_major_locator(FixedLocator([25, 50, 100, 200, 400])); ax.yaxis.set_minor_locator(NullLocator())
+    ax.set_yticklabels(["25", "50", "100", "200", "400"], fontproperties=fp_m, color=DIM, fontsize=9); ax.set_ylim(28, 300)
+    ax.axhline(100, color=DIM, lw=1, ls=(0, (4, 3)))
+    for t in ax.get_xticklabels(): t.set_fontproperties(fp_m); t.set_color(DIM); t.set_fontsize(9)
+    ax.tick_params(length=0, colors=DIM); ax.grid(axis="y", color=GRID, lw=0.6)
+    for sp in ax.spines.values(): sp.set_color(GRID)
+    import io; buf = io.BytesIO(); fig.savefig(buf, format="png", facecolor=PANEL); plt.close(fig); buf.seek(0)
+    im.paste(Image.open(buf), (48, 228))
+    x, y = 810, 228; d.rounded_rectangle([x, y, W - 48, y + 395], 8, fill=PANEL, outline="#16303a")
+    d.text((x + 20, y + 14), "SEP 28 LEVEL · LOW", font=MONO(12), fill=DIM)
+    for i, k in enumerate(sorted(keys, key=lambda k: -idx[k]["history"][-1]["level"])):
+        ix = idx[k]; lv = ix["history"][-1]["level"]; lo = min(ix["recon"], key=lambda r: r["level"]); yy = y + 44 + i * 86
+        c = COLS[keys.index(k)]; d.rectangle([x + 20, yy + 6, x + 26, yy + 66], fill=c)
+        d.text((x + 38, yy), k, font=COND9(26), fill=TXT)
+        d.text((x + 38, yy + 30), ix["name"].replace(" Set Index", "") + " · 100 = " + _bm(ix), font=BAR4(14), fill=DIM)
+        d.text((x + 38, yy + 50), f"low {lo['level']:.0f} ({datetime.date.fromisoformat(lo['month'] + '-01').strftime('%b %Y')})", font=MONO(12), fill=DIM)
+        s = f"{lv:.1f}"; d.text((W - 66 - d.textlength(s, font=COND7(30)), yy), s, font=COND7(30), fill=GREEN if lv >= 100 else RED)
+    footer(d, asof, "· 100 = release month · log scale")
+    p = out / "release-log.png"; im.save(p); return p
+
 # ---------- main ----------
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("kind"); ap.add_argument("ticker", nargs="?"); ap.add_argument("--out")
@@ -497,6 +572,9 @@ if __name__ == "__main__":
     if a.kind in ("movers", "all"): done.append(card_movers(ix, k, out))
     if a.kind in ("vault", "all"): done.append(card_vault(out))
     if a.kind == "og": done.append(card_og(idx, out))
+    if a.kind in ("vintage", "release"): done.append(card_vintage(idx, out))
+    if a.kind in ("chase-release", "release"): done.append(card_chase_release(idx, out))
+    if a.kind in ("release-log", "release"): done.append(card_release_log(idx, out))
     if a.kind == "bangers": done.append(card_bangers(out))
     if a.kind == "bcb26": done.append(card_bcb26(idx, out))
     if a.kind == "call": done.append(card_call(a.ticker, out))
