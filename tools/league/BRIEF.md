@@ -111,3 +111,12 @@ status, href, q, cat`) with a `source` URL each; the release calendar and the ho
 the page that links to yours (one line, added by the commissioner) and the page yours redirects to if the
 floor read kills it. Commit your page + manifest on your branch with a message that names the query and the
 evidence; report the branch, the slugs, the gate lines and anything you could not verify. Then stop.
+
+## Index levels after the Sep 30, 2026 rebase (Mo's ruling — binds every agent)
+Every Pokémon index is now based at **100 = the set's release month** (`baseDate`/`baseRule`/`baseNote` in
+`data/indices.json`; vintage sets and Hidden Fates use the first month PriceCharting's sold history reliably covers
+and say so). Months before the live marks are a labelled monthly reconstruction (`recon`). When you quote a level:
+quote it from `history`, say "100 = <Mon YYYY> (release)" or the page's own base wording, and never write "launched
+at 100.00 on Aug 24" or "since inception" for a Pokémon ticker. **Improve runs, Oct 1 onward:** the ten Pokémon
+league pages carrying a `data-rebase-note` paragraph quote old-base levels; rewrite their index claims on the new
+base (titles and H1s included where they carry a level), then delete the note. Moves between marks are unchanged.

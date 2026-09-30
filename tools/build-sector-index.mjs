@@ -5,7 +5,7 @@
 // The model, in one line: one set is one sector; the universe is EVERY card in the set (nobody selects
 // constituents); a card is in the basket when it clears the liquidity screen (>= 6 clean single-card sold
 // comps in the trailing 30 days, stays until < 4); price-weighted with a 25% single-card cap applied at
-// reconstitution; base 100 at inception; divisor-continuous, so only prices move the level. Quarterly
+// reconstitution; base 100 at inception (Pokémon: at the release month since the Sep 30 2026 rebase — see baseLine()); divisor-continuous, so only prices move the level. Quarterly
 // reconstitution (first Monday of Jan/Apr/Jul/Oct), announced the Monday before.
 //
 // DATA: PriceCharting — the set's console page for the universe (one product per slot) and each item's
@@ -45,6 +45,15 @@ const median = (a) => { const s = [...a].sort((x, y) => x - y), n = s.length; re
 const days = (d) => (Date.parse(TODAY) - Date.parse(d)) / 864e5;
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const mdy = (d) => { const p = String(d).slice(0, 10).split("-"); return `${p[1]}/${p[2]}/${p[0].slice(2)}`; };
+// Sep 30 2026 (Mo: rebase every Pokémon index to its release date). A ticker with baseDate is based at its release month
+// (baseRule "release") or at the first month PriceCharting's history covers the basket ("first-reliable"); months before
+// inception are the labelled monthly reconstruction in .recon. Tickers without baseDate (Bowman) keep inception wording.
+const MONS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const baseMon = (x) => `${MONS[+x.baseDate.slice(5, 7) - 1]} ${x.baseDate.slice(0, 4)}`;
+const baseKind = (x) => x.baseRule !== "release" ? "first reliable month" : String(x.releaseDate || "").slice(0, 7) === x.baseDate ? "release month" : "first month after release";
+const baseLine = (x) => x.baseDate ? `100 = ${baseMon(x)} (${baseKind(x)}) · live since ${mdy(x.inception)}` : `base 100.00 · inception ${mdy(x.inception)}`;
+const baseSentence = (x) => x.baseDate ? (x.baseRule === "release" ? `100 = ${baseMon(x)}, the set's ${baseKind(x)}` : `100 = ${baseMon(x)}, the first month the sold history reliably covers (the set predates it)`) + `; ${x.recon && x.recon.length ? `months before ${mdy(x.inception)} are reconstructed from monthly price history, ` : ""}live marks since ${mdy(x.inception)}.` : `Base 100.00 at ${mdy(x.inception)}.`;
+const sinceLbl = (x) => x.baseDate ? (x.baseRule === "release" ? "Since release" : "Since base") : "Since inception";
 
 // ---------------- per-ticker config (the parameters are Mo's, Sep 15 2026; do not tune) ----------------
 const CONFIG = {
@@ -58,7 +67,7 @@ const CONFIG = {
     releaseDate: "2026-09-16",
     imgSet: "Pokemon 30th Celebration",   // photo name-search: plain "Pokemon"; NO denominator — the Classic Collection reprints keep their original numbering (Charizard 4/102), so "4/128" finds nothing
     sub: { RGB: { name: "Mew RGB trio", nums: ["R/RGB", "G/RGB", "B/RGB"], blurb: "The three secret-rare Mews (R, G, B) — the set's chase, tracked as their own line so the trio's move is never mistaken for the set's." } },
-    note: "Includes the Classic Collection reprints (Charizard #4, Lugia #149 …) — they are in the set on PriceCharting's listing and enter the basket the week they clear the screen; the Ultra-Premium Collection that carries them ships Nov 6. Product waves run through Dec 4; the index is inception-forward, so supply arriving later is a market event, never a restatement.",
+    note: "Includes the Classic Collection reprints (Charizard #4, Lugia #149 …) — they are in the set on PriceCharting's listing and enter the basket the week they clear the screen; the Ultra-Premium Collection that carries them ships Nov 6. Product waves run through Dec 4; the index runs forward from its release-month base, so supply arriving later is a market event, never a restatement.",
   },
   // SV151 (Sep 25 2026, Mo: "SV151 index now"). Path B of claude/cos/sv151-rebuild-spec-2026-09-17.md: inception = the
   // build date, base 100, never Sep 15. The Sep 17 "authenticated Chrome wall" is gone — item pages carry the ungraded
@@ -373,10 +382,10 @@ function block(x, c) {
     <div class="sidx-t">
       <div class="sidx-eyebrow">▮ ${c.kindPlural ? "Class Index · Sector Model · Every " + esc(c.kindPlural.replace(/s$/, "")) : "Set Index · Sector Model · Every Card In The Set"}</div>
       <h2><span class="sidx-tk">${x.ticker}</span> <span class="sidx-dot">·</span> ${esc(c.name)}</h2>
-      <p class="sidx-sub">${c.kindPlural ? `Every ${esc(c.kindPlural.replace(/s$/, ""))} in ${esc(c.set)} — ${x.universe.length} cards, ${x.basket.length} trading — priced` : `All ${x.universe.length} cards of ${esc(c.set)}, priced`} from dated sold comps and re-marked Monday and Thursday. Base 100.00 at ${mdy(x.inception)}. This block tracks the ${c.kindPlural ? "class" : "set"}; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
+      <p class="sidx-sub">${c.kindPlural ? `Every ${esc(c.kindPlural.replace(/s$/, ""))} in ${esc(c.set)} — ${x.universe.length} cards, ${x.basket.length} trading — priced` : `All ${x.universe.length} cards of ${esc(c.set)}, priced`} from dated sold comps and re-marked Monday and Thursday. ${baseSentence(x)} This block tracks the ${c.kindPlural ? "class" : "set"}; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
     </div>
     <figure class="sidx-photo"><span data-card-img="${esc(imgAttr(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · ${c.imgSrc && c.imgSrc(hero) ? "card image" : "live eBay listing"}</figcaption></figure>
-    <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div><div class="lvc">base 100.00 · inception ${mdy(x.inception)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</div></div>
+    <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div><div class="lvc">${baseLine(x)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</div></div>
   </div>
   <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>
   <div class="sidx-stats">
@@ -385,7 +394,7 @@ function block(x, c) {
     <div><span class="k">Effective holdings</span><span class="v">${eff.toFixed(1)}</span></div>
     <div><span class="k">Basket value</span><span class="v">${money(bv, 0)}<i> Σpx·w</i></span></div>
     <div><span class="k">Capped</span><span class="v">${capped}</span></div>
-    <div><span class="k">Since inception</span><span class="v ${cls(lvl == null ? 0 : lvl - 100)}">${lvl == null ? "—" : pct(lvl - 100, 2)}</span></div>
+    <div><span class="k">${sinceLbl(x)}</span><span class="v ${cls(lvl == null ? 0 : lvl - 100)}">${lvl == null ? "—" : pct(lvl - 100, 2)}</span></div>
     <div><span class="k">Divisor</span><span class="v">${x.divisor}</span></div>
     <div><span class="k">Re-mark</span><span class="v">MON · THU</span></div>
   </div>
@@ -498,7 +507,7 @@ function bake(x, c) {
     if (!html.includes(anchor)) throw new Error(`${c.page}: no ${anchor} anchor to place the index block after`);
     html = html.replace(anchor, anchor + "\n" + body);
   }
-  if (!html.includes('src="/js/index-chart.js')) html = html.replace("</body>", '<script src="/js/index-chart.js?v=1" defer></script>\n</body>');
+  if (!html.includes('src="/js/index-chart.js')) html = html.replace("</body>", '<script src="/js/index-chart.js?v=2" defer></script>\n</body>');
   if (!html.includes('src="/js/card-img.js')) html = html.replace("</body>", '<script src="/js/card-img.js?v=3" defer></script>\n</body>');
   if (!html.includes('src="/js/index-you.js')) html = html.replace("</body>", '<script src="/js/index-you.js?v=1" defer></script>\n</body>');
   if (!html.includes('src="/js/sector-auctions.js')) html = html.replace("</body>", '<script src="/js/sector-auctions.js?v=3" defer></script>\n</body>');

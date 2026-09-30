@@ -1,18 +1,24 @@
 {
- "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ACTIVATION RULE: a pre-activation index (status=pre-activation, divisor null) activates when the weekly re-mark sources its first point sold reads — set divisor = basketValue/100 on that date, set inception, write history row level 100.00, flip status to live. DR25 also needs its universe enumerated (sv10 was down at build). MOVERS ADDENDUM (Aug 31 2026): basket entries carry prevPrice/prevAsOf = the prior weekly mark, so /indices renders card-level movers client-side; STEP 3.6 must roll these forward each re-mark (prevPrice <- old price) before writing new marks. New inclusions have no prevPrice until their second mark.",
+ "_comment": "SET INDICES source of truth. Written at inception by the build session (Aug 24 2026); appended weekly by the Monday trend-scan STEP 3.6 re-mark. SCHEMA per index: base (always 100.00), inception, divisor (current), divisorLog[{date, before, after, why}], universe[{num, name, rarity}] (ALL slots in scope, priced or not), basket[{num, name, rarity, price, basis, asOf}] (only cards with sourced SOLD reads), history[{date, level, basketValue, divisor, priced, note}]. MATH: level = sum(basket prices) / divisor. INCLUSION (a universe card gets its first sourced sold comp): newDivisor = oldDivisor * (basketValueAfter / basketValueBefore) -- the level MUST be identical before and after; log it in divisorLog. RULES: sold comps only, dated + attributed, never asks, never estimated; base/inception/history rows are immutable; an index is a measurement, not a call. ADDENDUM Aug 24: universeComplete=false means the secret-tier enumeration is partial (API down at build) — STEP 3.6 must complete the universe list from pokemontcg.io before or during the next re-mark. ACTIVATION RULE: a pre-activation index (status=pre-activation, divisor null) activates when the weekly re-mark sources its first point sold reads — set divisor = basketValue/100 on that date, set inception, write history row level 100.00, flip status to live. DR25 also needs its universe enumerated (sv10 was down at build). MOVERS ADDENDUM (Aug 31 2026): basket entries carry prevPrice/prevAsOf = the prior weekly mark, so /indices renders card-level movers client-side; STEP 3.6 must roll these forward each re-mark (prevPrice <- old price) before writing new marks. New inclusions have no prevPrice until their second mark. REBASE ADDENDUM (Sep 30 2026, Mo in chat: 'rebase it' — every Pokémon index is based at its RELEASE date, not our inception). Pokémon tickers carry releaseDate, baseDate (YYYY-MM), baseRule ('release' = the release month or the first month of sold data after it; 'first-reliable' = the set predates PriceCharting's history, so 100 = the first month its ungraded history covers >= 90% of the basket by value), baseNote (the sentence pages print), recon[{month, level}] (monthly, RECONSTRUCTED from PriceCharting item-page chart_data 'used' = ungraded, current basket and weights, chain-linked on cards priced in both months; never a live mark, always drawn dashed and labelled), and rebase{date, factor, ruling, inceptionLevel}. The one-time rebase multiplied every history level by factor and divided every divisor by it (logged in divisorLog), so shape and every % move are unchanged; 'history rows are immutable' holds from here on. Live marks continue to append to history exactly as before (level = sum / divisor). Bowman tickers (BOW26, BB26, BCB26, BF26) are NOT rebased: 100 at inception.",
  "PB26": {
   "name": "Pitch Black Chase Index",
   "page": "/pitch-black-index",
   "base": 100,
   "status": "live",
   "inception": "2026-08-24",
-  "divisor": 8.7603,
+  "divisor": 10.640652,
   "divisorLog": [
    {
     "date": "2026-08-24",
     "before": null,
     "after": 8.7603,
     "why": "inception: basket $876.03 / base 100.00 (PB26 restated same-day with Aug 24 marks from the Monday scan before any level was consumed)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 8.7603,
+    "after": 10.640652,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Jul 2026, the first month of sold data after the Jul 17, 2026 release. Every level × 0.823286; shape and % moves unchanged."
    }
   ],
   "universeComplete": true,
@@ -563,53 +569,70 @@
   "history": [
    {
     "date": "2026-08-24",
-    "level": 100,
+    "level": 82.33,
     "basketValue": 876.03,
-    "divisor": 8.7603,
+    "divisor": 10.640652,
     "priced": 36,
     "note": "inception"
    },
    {
     "date": "2026-08-31",
-    "level": 93.19,
+    "level": 76.72,
     "basketValue": 816.4,
-    "divisor": 8.7603,
+    "divisor": 10.640652,
     "priced": 36,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-07",
-    "level": 93.51,
+    "level": 76.99,
     "basketValue": 819.2,
-    "divisor": 8.7603,
+    "divisor": 10.640652,
     "priced": 36,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-14",
-    "level": 90.52,
+    "level": 74.52,
     "basketValue": 792.99,
-    "divisor": 8.7603,
+    "divisor": 10.640652,
     "priced": 36,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-21",
-    "level": 84.72,
+    "level": 69.75,
     "basketValue": 742.15,
-    "divisor": 8.7603,
+    "divisor": 10.640652,
     "priced": 36,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-28",
-    "level": 82.75,
+    "level": 68.13,
     "basketValue": 724.88,
-    "divisor": 8.7603,
+    "divisor": 10.640652,
     "priced": 36,
     "note": "weekly re-mark"
    }
-  ]
+  ],
+  "releaseDate": "2026-07-17",
+  "baseDate": "2026-07",
+  "baseRule": "release",
+  "baseNote": "100 = Jul 2026, the first month of sold data after the Jul 17, 2026 release",
+  "recon": [
+   {
+    "month": "2026-07",
+    "level": 100.0
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 0.823286,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 82.33
+  }
  },
  "CR26": {
   "name": "Chaos Rising Chase Index",
@@ -617,13 +640,19 @@
   "base": 100,
   "status": "live",
   "inception": "2026-08-24",
-  "divisor": 6.7812,
+  "divisor": 13.875572,
   "divisorLog": [
    {
     "date": "2026-08-24",
     "before": null,
     "after": 6.7812,
     "why": "inception: basket $678.12 / base 100.00"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 6.7812,
+    "after": 13.875572,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = May 2026, the first month of sold data after the May 22, 2026 release. Every level × 0.488715; shape and % moves unchanged."
    }
   ],
   "universeComplete": true,
@@ -1174,53 +1203,78 @@
   "history": [
    {
     "date": "2026-08-24",
-    "level": 100,
+    "level": 48.87,
     "basketValue": 678.12,
-    "divisor": 6.7812,
+    "divisor": 13.875572,
     "priced": 36,
     "note": "inception"
    },
    {
     "date": "2026-08-31",
-    "level": 95.35,
+    "level": 46.6,
     "basketValue": 646.57,
-    "divisor": 6.7812,
+    "divisor": 13.875572,
     "priced": 36,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-07",
-    "level": 93.71,
+    "level": 45.8,
     "basketValue": 635.47,
-    "divisor": 6.7812,
+    "divisor": 13.875572,
     "priced": 36,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-14",
-    "level": 94.89,
+    "level": 46.37,
     "basketValue": 643.46,
-    "divisor": 6.7812,
+    "divisor": 13.875572,
     "priced": 36,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-21",
-    "level": 93.17,
+    "level": 45.53,
     "basketValue": 631.82,
-    "divisor": 6.7812,
+    "divisor": 13.875572,
     "priced": 36,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-28",
-    "level": 85.28,
+    "level": 41.68,
     "basketValue": 578.29,
-    "divisor": 6.7812,
+    "divisor": 13.875572,
     "priced": 36,
     "note": "weekly re-mark"
    }
-  ]
+  ],
+  "releaseDate": "2026-05-22",
+  "baseDate": "2026-05",
+  "baseRule": "release",
+  "baseNote": "100 = May 2026, the first month of sold data after the May 22, 2026 release",
+  "recon": [
+   {
+    "month": "2026-05",
+    "level": 100.0
+   },
+   {
+    "month": "2026-06",
+    "level": 76.57
+   },
+   {
+    "month": "2026-07",
+    "level": 56.97
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 0.488715,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 48.87
+  }
  },
  "AH26": {
   "name": "Ascended Heroes Chase Index",
@@ -1228,7 +1282,7 @@
   "base": 100,
   "status": "live",
   "inception": "2026-08-24",
-  "divisor": 54.1102,
+  "divisor": 59.082204,
   "divisorLog": [
    {
     "date": "2026-08-24",
@@ -1241,6 +1295,12 @@
     "before": 28.4249,
     "after": 54.1102,
     "why": "inclusion of 32 universe cards with first sold comps (PriceCharting 2026-08-31); basket $2851.26 -> $5427.71; level held at 100.31"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 54.1102,
+    "after": 59.082204,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Feb 2026, the first month of sold data after the Jan 30, 2026 release. Every level × 0.915846; shape and % moves unchanged."
    }
   ],
   "universeComplete": true,
@@ -2301,53 +2361,90 @@
   "history": [
    {
     "date": "2026-08-24",
-    "level": 100,
+    "level": 91.58,
     "basketValue": 2842.49,
-    "divisor": 28.4249,
+    "divisor": 31.036768,
     "priced": 38,
     "note": "inception"
    },
    {
     "date": "2026-08-31",
-    "level": 100.31,
+    "level": 91.87,
     "basketValue": 5427.71,
-    "divisor": 54.1102,
+    "divisor": 59.082204,
     "priced": 70,
     "note": "weekly re-mark + 32 basket entries via divisor adj"
    },
    {
     "date": "2026-09-07",
-    "level": 97.97,
+    "level": 89.73,
     "basketValue": 5301.38,
-    "divisor": 54.1102,
+    "divisor": 59.082204,
     "priced": 70,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-14",
-    "level": 96.89,
+    "level": 88.74,
     "basketValue": 5242.8,
-    "divisor": 54.1102,
+    "divisor": 59.082204,
     "priced": 70,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-21",
-    "level": 93.88,
+    "level": 85.98,
     "basketValue": 5080.02,
-    "divisor": 54.1102,
+    "divisor": 59.082204,
     "priced": 70,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-28",
-    "level": 88.45,
+    "level": 81.01,
     "basketValue": 4786.01,
-    "divisor": 54.1102,
+    "divisor": 59.082204,
     "priced": 70,
     "note": "weekly re-mark"
    }
-  ]
+  ],
+  "releaseDate": "2026-01-30",
+  "baseDate": "2026-02",
+  "baseRule": "release",
+  "baseNote": "100 = Feb 2026, the first month of sold data after the Jan 30, 2026 release",
+  "recon": [
+   {
+    "month": "2026-02",
+    "level": 100.0
+   },
+   {
+    "month": "2026-03",
+    "level": 101.06
+   },
+   {
+    "month": "2026-04",
+    "level": 127.26
+   },
+   {
+    "month": "2026-05",
+    "level": 124.58
+   },
+   {
+    "month": "2026-06",
+    "level": 119.09
+   },
+   {
+    "month": "2026-07",
+    "level": 109.26
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 0.915846,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 91.58
+  }
  },
  "PRIS25": {
   "name": "Prismatic Evolutions Chase Index",
@@ -2355,13 +2452,19 @@
   "base": 100,
   "status": "live",
   "inception": "2026-08-24",
-  "divisor": 44.7686,
+  "divisor": 59.175613,
   "divisorLog": [
    {
     "date": "2026-08-24",
     "before": null,
     "after": 44.7686,
     "why": "inception: basket $4,476.86 / base 100.00"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 44.7686,
+    "after": 59.175613,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Jan 2025, the first month of sold data after the Jan 17, 2025 release. Every level × 0.756538; shape and % moves unchanged."
    }
   ],
   "universeComplete": true,
@@ -3107,53 +3210,142 @@
   "history": [
    {
     "date": "2026-08-24",
-    "level": 100,
+    "level": 75.65,
     "basketValue": 4476.86,
-    "divisor": 44.7686,
+    "divisor": 59.175613,
     "priced": 49,
     "note": "inception"
    },
    {
     "date": "2026-08-31",
-    "level": 101.76,
+    "level": 76.99,
     "basketValue": 4555.45,
-    "divisor": 44.7686,
+    "divisor": 59.175613,
     "priced": 49,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-07",
-    "level": 97.44,
+    "level": 73.72,
     "basketValue": 4362.31,
-    "divisor": 44.7686,
+    "divisor": 59.175613,
     "priced": 49,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-14",
-    "level": 96.79,
+    "level": 73.23,
     "basketValue": 4332.95,
-    "divisor": 44.7686,
+    "divisor": 59.175613,
     "priced": 49,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-21",
-    "level": 98.04,
+    "level": 74.17,
     "basketValue": 4389.23,
-    "divisor": 44.7686,
+    "divisor": 59.175613,
     "priced": 49,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-28",
-    "level": 93.61,
+    "level": 70.82,
     "basketValue": 4191.01,
-    "divisor": 44.7686,
+    "divisor": 59.175613,
     "priced": 49,
     "note": "weekly re-mark"
    }
-  ]
+  ],
+  "releaseDate": "2025-01-17",
+  "baseDate": "2025-01",
+  "baseRule": "release",
+  "baseNote": "100 = Jan 2025, the first month of sold data after the Jan 17, 2025 release",
+  "recon": [
+   {
+    "month": "2025-01",
+    "level": 100.0
+   },
+   {
+    "month": "2025-02",
+    "level": 93.91
+   },
+   {
+    "month": "2025-03",
+    "level": 94.71
+   },
+   {
+    "month": "2025-04",
+    "level": 92.41
+   },
+   {
+    "month": "2025-05",
+    "level": 82.24
+   },
+   {
+    "month": "2025-06",
+    "level": 70.01
+   },
+   {
+    "month": "2025-07",
+    "level": 61.71
+   },
+   {
+    "month": "2025-08",
+    "level": 58.8
+   },
+   {
+    "month": "2025-09",
+    "level": 61.28
+   },
+   {
+    "month": "2025-10",
+    "level": 67.25
+   },
+   {
+    "month": "2025-11",
+    "level": 62.36
+   },
+   {
+    "month": "2025-12",
+    "level": 59.16
+   },
+   {
+    "month": "2026-01",
+    "level": 59.02
+   },
+   {
+    "month": "2026-02",
+    "level": 59.33
+   },
+   {
+    "month": "2026-03",
+    "level": 66.51
+   },
+   {
+    "month": "2026-04",
+    "level": 71.61
+   },
+   {
+    "month": "2026-05",
+    "level": 75.89
+   },
+   {
+    "month": "2026-06",
+    "level": 78.67
+   },
+   {
+    "month": "2026-07",
+    "level": 80.94
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 0.756538,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 75.65
+  }
  },
  "DR25": {
   "name": "Destined Rivals Chase Index",
@@ -3161,7 +3353,7 @@
   "base": 100,
   "status": "live",
   "inception": "2026-08-24",
-  "divisor": 17.7884,
+  "divisor": 26.821104,
   "divisorLog": [
    {
     "date": "2026-08-24",
@@ -3174,6 +3366,12 @@
     "before": 16.5126,
     "after": 17.7884,
     "why": "inclusion of 3 universe cards with first sold comps (PriceCharting 2026-08-31); basket $1611.42 -> $1735.92; level held at 97.59"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 17.7884,
+    "after": 26.821104,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = May 2025, the first month of sold data after the May 30, 2025 release. Every level × 0.663224; shape and % moves unchanged."
    }
   ],
   "universeComplete": true,
@@ -4114,53 +4312,126 @@
   "history": [
    {
     "date": "2026-08-24",
-    "level": 100,
+    "level": 66.32,
     "basketValue": 1651.26,
-    "divisor": 16.5126,
+    "divisor": 24.897471,
     "priced": 59,
     "note": "inception"
    },
    {
     "date": "2026-08-31",
-    "level": 97.59,
+    "level": 64.72,
     "basketValue": 1735.92,
-    "divisor": 17.7884,
+    "divisor": 26.821104,
     "priced": 62,
     "note": "weekly re-mark + 3 basket entries via divisor adj"
    },
    {
     "date": "2026-09-07",
-    "level": 96.25,
+    "level": 63.84,
     "basketValue": 1712.21,
-    "divisor": 17.7884,
+    "divisor": 26.821104,
     "priced": 62,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-14",
-    "level": 97.71,
+    "level": 64.8,
     "basketValue": 1738.07,
-    "divisor": 17.7884,
+    "divisor": 26.821104,
     "priced": 62,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-21",
-    "level": 95.75,
+    "level": 63.5,
     "basketValue": 1703.2,
-    "divisor": 17.7884,
+    "divisor": 26.821104,
     "priced": 62,
     "note": "weekly re-mark"
    },
    {
     "date": "2026-09-28",
-    "level": 87.68,
+    "level": 58.15,
     "basketValue": 1559.76,
-    "divisor": 17.7884,
+    "divisor": 26.821104,
     "priced": 62,
     "note": "weekly re-mark"
    }
-  ]
+  ],
+  "releaseDate": "2025-05-30",
+  "baseDate": "2025-05",
+  "baseRule": "release",
+  "baseNote": "100 = May 2025, the first month of sold data after the May 30, 2025 release",
+  "recon": [
+   {
+    "month": "2025-05",
+    "level": 100.0
+   },
+   {
+    "month": "2025-06",
+    "level": 71.99
+   },
+   {
+    "month": "2025-07",
+    "level": 75.57
+   },
+   {
+    "month": "2025-08",
+    "level": 72.85
+   },
+   {
+    "month": "2025-09",
+    "level": 85.83
+   },
+   {
+    "month": "2025-10",
+    "level": 86.74
+   },
+   {
+    "month": "2025-11",
+    "level": 71.87
+   },
+   {
+    "month": "2025-12",
+    "level": 64.13
+   },
+   {
+    "month": "2026-01",
+    "level": 63.07
+   },
+   {
+    "month": "2026-02",
+    "level": 62.54
+   },
+   {
+    "month": "2026-03",
+    "level": 66.73
+   },
+   {
+    "month": "2026-04",
+    "level": 71.72
+   },
+   {
+    "month": "2026-05",
+    "level": 75.75
+   },
+   {
+    "month": "2026-06",
+    "level": 75.3
+   },
+   {
+    "month": "2026-07",
+    "level": 71.3
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 0.663224,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 66.32
+  }
  },
  "PF25": {
   "name": "Phantasmal Flames Chase Index",
@@ -4168,13 +4439,19 @@
   "base": 100,
   "status": "live",
   "inception": "2026-09-18",
-  "divisor": 12.0317,
+  "divisor": 15.93875,
   "divisorLog": [
    {
     "date": "2026-09-18",
     "before": null,
     "after": 12.0317,
     "why": "inception: basket $1203.17 / base 100.00"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 12.0317,
+    "after": 15.93875,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Nov 2025, the first month of sold data after the Nov 14, 2025 release. Every level × 0.754871; shape and % moves unchanged."
    }
   ],
   "universeComplete": true,
@@ -4725,21 +5002,74 @@
   "history": [
    {
     "date": "2026-09-18",
-    "level": 100,
+    "level": 75.49,
     "basketValue": 1203.17,
-    "divisor": 12.0317,
+    "divisor": 15.93875,
     "priced": 36,
     "note": "inception"
    },
    {
     "date": "2026-09-28",
-    "level": 92.6,
+    "level": 69.9,
     "basketValue": 1114.13,
-    "divisor": 12.0317,
+    "divisor": 15.93875,
     "priced": 36,
     "note": "weekly re-mark"
    }
-  ]
+  ],
+  "releaseDate": "2025-11-14",
+  "baseDate": "2025-11",
+  "baseRule": "release",
+  "baseNote": "100 = Nov 2025, the first month of sold data after the Nov 14, 2025 release",
+  "recon": [
+   {
+    "month": "2025-11",
+    "level": 100.0
+   },
+   {
+    "month": "2025-12",
+    "level": 84.25
+   },
+   {
+    "month": "2026-01",
+    "level": 101.2
+   },
+   {
+    "month": "2026-02",
+    "level": 102.46
+   },
+   {
+    "month": "2026-03",
+    "level": 94.18
+   },
+   {
+    "month": "2026-04",
+    "level": 102.34
+   },
+   {
+    "month": "2026-05",
+    "level": 97.01
+   },
+   {
+    "month": "2026-06",
+    "level": 92.04
+   },
+   {
+    "month": "2026-07",
+    "level": 86.75
+   },
+   {
+    "month": "2026-08",
+    "level": 79.14
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 0.754871,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 75.49
+  }
  },
  "updated": "2026-09-28",
  "TH26": {
@@ -4776,6 +5106,12 @@
     "before": null,
     "after": 47.9623,
     "why": "inception — basket $4796.23 over 191 of 191 slots; 4 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 47.9623,
+    "after": 47.9623,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Sep 2026, the first month of sold data after the Sep 16, 2026 release. Every level × 1.000000; shape and % moves unchanged."
    }
   ],
   "capLog": [
@@ -8257,7 +8593,7 @@
   "history": [
    {
     "date": "2026-09-25",
-    "level": 100,
+    "level": 100.0,
     "basketValue": 4796.23,
     "divisor": 47.9623,
     "priced": 191,
@@ -8300,6 +8636,17 @@
      }
     ]
    }
+  },
+  "baseDate": "2026-09",
+  "baseRule": "release",
+  "baseNote": "100 = Sep 2026, the first month of sold data after the Sep 16, 2026 release",
+  "recon": [],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 1.0,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 100.0
   }
  },
  "SV151": {
@@ -8329,13 +8676,19 @@
   "releaseDate": "2023-09-22",
   "universeComplete": true,
   "pcSlug": "pokemon-scarlet-&-violet-151",
-  "divisor": 18.602,
+  "divisor": 10.805912,
   "divisorLog": [
    {
     "date": "2026-09-25",
     "before": null,
     "after": 18.602,
     "why": "inception — basket $1860.2 over 207 of 207 slots; 0 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 18.602,
+    "after": 10.805912,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Sep 2023, the first month of sold data after the Sep 22, 2023 release. Every level × 1.721465; shape and % moves unchanged."
    }
   ],
   "capLog": [],
@@ -12080,17 +12433,17 @@
   "history": [
    {
     "date": "2026-09-25",
-    "level": 100,
+    "level": 172.15,
     "basketValue": 1860.2,
-    "divisor": 18.602,
+    "divisor": 10.805912,
     "priced": 207,
     "note": "inception"
    },
    {
     "date": "2026-09-28",
-    "level": 99.29,
+    "level": 170.92,
     "basketValue": 1846.99,
-    "divisor": 18.602,
+    "divisor": 10.805912,
     "priced": 207,
     "note": ""
    }
@@ -12099,7 +12452,163 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2023-09",
+  "baseRule": "release",
+  "baseNote": "100 = Sep 2023, the first month of sold data after the Sep 22, 2023 release",
+  "recon": [
+   {
+    "month": "2023-09",
+    "level": 100.0
+   },
+   {
+    "month": "2023-10",
+    "level": 96.64
+   },
+   {
+    "month": "2023-11",
+    "level": 96.55
+   },
+   {
+    "month": "2023-12",
+    "level": 89.16
+   },
+   {
+    "month": "2024-01",
+    "level": 90.66
+   },
+   {
+    "month": "2024-02",
+    "level": 86.67
+   },
+   {
+    "month": "2024-03",
+    "level": 86.66
+   },
+   {
+    "month": "2024-04",
+    "level": 83.39
+   },
+   {
+    "month": "2024-05",
+    "level": 85.96
+   },
+   {
+    "month": "2024-06",
+    "level": 85.62
+   },
+   {
+    "month": "2024-07",
+    "level": 85.85
+   },
+   {
+    "month": "2024-08",
+    "level": 83.66
+   },
+   {
+    "month": "2024-09",
+    "level": 88.38
+   },
+   {
+    "month": "2024-10",
+    "level": 111.48
+   },
+   {
+    "month": "2024-11",
+    "level": 114.01
+   },
+   {
+    "month": "2024-12",
+    "level": 116.42
+   },
+   {
+    "month": "2025-01",
+    "level": 127.41
+   },
+   {
+    "month": "2025-02",
+    "level": 136.23
+   },
+   {
+    "month": "2025-03",
+    "level": 129.92
+   },
+   {
+    "month": "2025-04",
+    "level": 120.96
+   },
+   {
+    "month": "2025-05",
+    "level": 115.9
+   },
+   {
+    "month": "2025-06",
+    "level": 106.55
+   },
+   {
+    "month": "2025-07",
+    "level": 109.0
+   },
+   {
+    "month": "2025-08",
+    "level": 113.96
+   },
+   {
+    "month": "2025-09",
+    "level": 139.0
+   },
+   {
+    "month": "2025-10",
+    "level": 135.26
+   },
+   {
+    "month": "2025-11",
+    "level": 112.36
+   },
+   {
+    "month": "2025-12",
+    "level": 111.47
+   },
+   {
+    "month": "2026-01",
+    "level": 118.85
+   },
+   {
+    "month": "2026-02",
+    "level": 139.36
+   },
+   {
+    "month": "2026-03",
+    "level": 191.96
+   },
+   {
+    "month": "2026-04",
+    "level": 194.52
+   },
+   {
+    "month": "2026-05",
+    "level": 203.19
+   },
+   {
+    "month": "2026-06",
+    "level": 200.53
+   },
+   {
+    "month": "2026-07",
+    "level": 188.18
+   },
+   {
+    "month": "2026-08",
+    "level": 179.12
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 1.721465,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 172.15
+  }
  },
  "BOW26": {
   "ticker": "BOW26",
@@ -19180,13 +19689,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-base-set",
   "sources": [],
-  "divisor": 8.5559,
+  "divisor": 7.558783,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 8.5559,
     "why": "inception — basket $855.59 over 101 of 102 slots; 1 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 8.5559,
+    "after": 7.558783,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Jan 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Jan 9, 1999 release predates the data, so no release-day level is claimed. Every level × 1.131915; shape and % moves unchanged."
    }
   ],
   "capLog": [
@@ -20732,9 +21247,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 113.19,
     "basketValue": 855.59,
-    "divisor": 8.5559,
+    "divisor": 7.558783,
     "priced": 101,
     "note": "inception"
    }
@@ -20743,7 +21258,291 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2021-01",
+  "baseRule": "first-reliable",
+  "baseNote": "100 = Jan 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Jan 9, 1999 release predates the data, so no release-day level is claimed",
+  "recon": [
+   {
+    "month": "2021-01",
+    "level": 100.0
+   },
+   {
+    "month": "2021-02",
+    "level": 96.49
+   },
+   {
+    "month": "2021-03",
+    "level": 99.5
+   },
+   {
+    "month": "2021-04",
+    "level": 87.24
+   },
+   {
+    "month": "2021-05",
+    "level": 74.68
+   },
+   {
+    "month": "2021-06",
+    "level": 76.88
+   },
+   {
+    "month": "2021-07",
+    "level": 71.68
+   },
+   {
+    "month": "2021-08",
+    "level": 76.64
+   },
+   {
+    "month": "2021-09",
+    "level": 66.94
+   },
+   {
+    "month": "2021-10",
+    "level": 63.72
+   },
+   {
+    "month": "2021-11",
+    "level": 57.99
+   },
+   {
+    "month": "2021-12",
+    "level": 59.46
+   },
+   {
+    "month": "2022-01",
+    "level": 60.32
+   },
+   {
+    "month": "2022-02",
+    "level": 63.62
+   },
+   {
+    "month": "2022-03",
+    "level": 64.63
+   },
+   {
+    "month": "2022-04",
+    "level": 64.0
+   },
+   {
+    "month": "2022-05",
+    "level": 65.67
+   },
+   {
+    "month": "2022-06",
+    "level": 69.4
+   },
+   {
+    "month": "2022-07",
+    "level": 67.19
+   },
+   {
+    "month": "2022-08",
+    "level": 67.39
+   },
+   {
+    "month": "2022-09",
+    "level": 63.46
+   },
+   {
+    "month": "2022-10",
+    "level": 68.23
+   },
+   {
+    "month": "2022-11",
+    "level": 64.76
+   },
+   {
+    "month": "2022-12",
+    "level": 69.18
+   },
+   {
+    "month": "2023-01",
+    "level": 73.26
+   },
+   {
+    "month": "2023-02",
+    "level": 66.09
+   },
+   {
+    "month": "2023-03",
+    "level": 64.03
+   },
+   {
+    "month": "2023-04",
+    "level": 64.0
+   },
+   {
+    "month": "2023-05",
+    "level": 66.9
+   },
+   {
+    "month": "2023-06",
+    "level": 65.08
+   },
+   {
+    "month": "2023-07",
+    "level": 60.1
+   },
+   {
+    "month": "2023-08",
+    "level": 62.48
+   },
+   {
+    "month": "2023-09",
+    "level": 61.54
+   },
+   {
+    "month": "2023-10",
+    "level": 63.16
+   },
+   {
+    "month": "2023-11",
+    "level": 64.11
+   },
+   {
+    "month": "2023-12",
+    "level": 64.93
+   },
+   {
+    "month": "2024-01",
+    "level": 73.09
+   },
+   {
+    "month": "2024-02",
+    "level": 71.86
+   },
+   {
+    "month": "2024-03",
+    "level": 69.98
+   },
+   {
+    "month": "2024-04",
+    "level": 75.56
+   },
+   {
+    "month": "2024-05",
+    "level": 72.85
+   },
+   {
+    "month": "2024-06",
+    "level": 71.43
+   },
+   {
+    "month": "2024-07",
+    "level": 71.01
+   },
+   {
+    "month": "2024-08",
+    "level": 68.26
+   },
+   {
+    "month": "2024-09",
+    "level": 79.32
+   },
+   {
+    "month": "2024-10",
+    "level": 78.54
+   },
+   {
+    "month": "2024-11",
+    "level": 83.29
+   },
+   {
+    "month": "2024-12",
+    "level": 84.98
+   },
+   {
+    "month": "2025-01",
+    "level": 83.98
+   },
+   {
+    "month": "2025-02",
+    "level": 84.23
+   },
+   {
+    "month": "2025-03",
+    "level": 88.34
+   },
+   {
+    "month": "2025-04",
+    "level": 91.66
+   },
+   {
+    "month": "2025-05",
+    "level": 90.28
+   },
+   {
+    "month": "2025-06",
+    "level": 85.97
+   },
+   {
+    "month": "2025-07",
+    "level": 86.0
+   },
+   {
+    "month": "2025-08",
+    "level": 87.3
+   },
+   {
+    "month": "2025-09",
+    "level": 88.43
+   },
+   {
+    "month": "2025-10",
+    "level": 83.34
+   },
+   {
+    "month": "2025-11",
+    "level": 85.21
+   },
+   {
+    "month": "2025-12",
+    "level": 92.63
+   },
+   {
+    "month": "2026-01",
+    "level": 94.45
+   },
+   {
+    "month": "2026-02",
+    "level": 103.39
+   },
+   {
+    "month": "2026-03",
+    "level": 105.28
+   },
+   {
+    "month": "2026-04",
+    "level": 110.01
+   },
+   {
+    "month": "2026-05",
+    "level": 102.95
+   },
+   {
+    "month": "2026-06",
+    "level": 112.36
+   },
+   {
+    "month": "2026-07",
+    "level": 117.98
+   },
+   {
+    "month": "2026-08",
+    "level": 113.72
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 1.131915,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 113.19
+  }
  },
  "JU99": {
   "ticker": "JU99",
@@ -20773,13 +21572,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-jungle",
   "sources": [],
-  "divisor": 5.4436,
+  "divisor": 3.33299,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 5.4436,
     "why": "inception — basket $544.36 over 64 of 65 slots; 0 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 5.4436,
+    "after": 3.33299,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Feb 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Jun 16, 1999 release predates the data, so no release-day level is claimed. Every level × 1.633248; shape and % moves unchanged."
    }
   ],
   "capLog": [],
@@ -21763,9 +22568,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 163.32,
     "basketValue": 544.36,
-    "divisor": 5.4436,
+    "divisor": 3.33299,
     "priced": 64,
     "note": "inception"
    }
@@ -21774,7 +22579,287 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2021-02",
+  "baseRule": "first-reliable",
+  "baseNote": "100 = Feb 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Jun 16, 1999 release predates the data, so no release-day level is claimed",
+  "recon": [
+   {
+    "month": "2021-02",
+    "level": 100.0
+   },
+   {
+    "month": "2021-03",
+    "level": 96.45
+   },
+   {
+    "month": "2021-04",
+    "level": 95.35
+   },
+   {
+    "month": "2021-05",
+    "level": 95.77
+   },
+   {
+    "month": "2021-06",
+    "level": 83.57
+   },
+   {
+    "month": "2021-07",
+    "level": 91.81
+   },
+   {
+    "month": "2021-08",
+    "level": 85.22
+   },
+   {
+    "month": "2021-09",
+    "level": 79.61
+   },
+   {
+    "month": "2021-10",
+    "level": 81.34
+   },
+   {
+    "month": "2021-11",
+    "level": 80.1
+   },
+   {
+    "month": "2021-12",
+    "level": 80.3
+   },
+   {
+    "month": "2022-01",
+    "level": 84.56
+   },
+   {
+    "month": "2022-02",
+    "level": 76.31
+   },
+   {
+    "month": "2022-03",
+    "level": 80.48
+   },
+   {
+    "month": "2022-04",
+    "level": 80.01
+   },
+   {
+    "month": "2022-05",
+    "level": 82.93
+   },
+   {
+    "month": "2022-06",
+    "level": 80.18
+   },
+   {
+    "month": "2022-07",
+    "level": 78.39
+   },
+   {
+    "month": "2022-08",
+    "level": 79.23
+   },
+   {
+    "month": "2022-09",
+    "level": 76.67
+   },
+   {
+    "month": "2022-10",
+    "level": 82.11
+   },
+   {
+    "month": "2022-11",
+    "level": 77.68
+   },
+   {
+    "month": "2022-12",
+    "level": 83.23
+   },
+   {
+    "month": "2023-01",
+    "level": 87.62
+   },
+   {
+    "month": "2023-02",
+    "level": 83.5
+   },
+   {
+    "month": "2023-03",
+    "level": 84.47
+   },
+   {
+    "month": "2023-04",
+    "level": 87.38
+   },
+   {
+    "month": "2023-05",
+    "level": 89.83
+   },
+   {
+    "month": "2023-06",
+    "level": 84.96
+   },
+   {
+    "month": "2023-07",
+    "level": 83.47
+   },
+   {
+    "month": "2023-08",
+    "level": 81.01
+   },
+   {
+    "month": "2023-09",
+    "level": 84.26
+   },
+   {
+    "month": "2023-10",
+    "level": 89.24
+   },
+   {
+    "month": "2023-11",
+    "level": 83.14
+   },
+   {
+    "month": "2023-12",
+    "level": 83.99
+   },
+   {
+    "month": "2024-01",
+    "level": 88.65
+   },
+   {
+    "month": "2024-02",
+    "level": 83.14
+   },
+   {
+    "month": "2024-03",
+    "level": 84.88
+   },
+   {
+    "month": "2024-04",
+    "level": 86.03
+   },
+   {
+    "month": "2024-05",
+    "level": 91.63
+   },
+   {
+    "month": "2024-06",
+    "level": 91.52
+   },
+   {
+    "month": "2024-07",
+    "level": 90.89
+   },
+   {
+    "month": "2024-08",
+    "level": 91.75
+   },
+   {
+    "month": "2024-09",
+    "level": 89.37
+   },
+   {
+    "month": "2024-10",
+    "level": 98.35
+   },
+   {
+    "month": "2024-11",
+    "level": 92.22
+   },
+   {
+    "month": "2024-12",
+    "level": 100.6
+   },
+   {
+    "month": "2025-01",
+    "level": 106.97
+   },
+   {
+    "month": "2025-02",
+    "level": 102.8
+   },
+   {
+    "month": "2025-03",
+    "level": 107.44
+   },
+   {
+    "month": "2025-04",
+    "level": 118.13
+   },
+   {
+    "month": "2025-05",
+    "level": 118.44
+   },
+   {
+    "month": "2025-06",
+    "level": 108.47
+   },
+   {
+    "month": "2025-07",
+    "level": 113.79
+   },
+   {
+    "month": "2025-08",
+    "level": 103.55
+   },
+   {
+    "month": "2025-09",
+    "level": 115.02
+   },
+   {
+    "month": "2025-10",
+    "level": 110.56
+   },
+   {
+    "month": "2025-11",
+    "level": 115.41
+   },
+   {
+    "month": "2025-12",
+    "level": 123.32
+   },
+   {
+    "month": "2026-01",
+    "level": 125.99
+   },
+   {
+    "month": "2026-02",
+    "level": 134.84
+   },
+   {
+    "month": "2026-03",
+    "level": 150.37
+   },
+   {
+    "month": "2026-04",
+    "level": 150.29
+   },
+   {
+    "month": "2026-05",
+    "level": 152.98
+   },
+   {
+    "month": "2026-06",
+    "level": 152.4
+   },
+   {
+    "month": "2026-07",
+    "level": 150.28
+   },
+   {
+    "month": "2026-08",
+    "level": 132.56
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 1.633248,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 163.32
+  }
  },
  "FO99": {
   "ticker": "FO99",
@@ -21804,13 +22889,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-fossil",
   "sources": [],
-  "divisor": 6.1221,
+  "divisor": 3.663826,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 6.1221,
     "why": "inception — basket $612.21 over 62 of 62 slots; 0 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 6.1221,
+    "after": 3.663826,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Feb 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Oct 10, 1999 release predates the data, so no release-day level is claimed. Every level × 1.670958; shape and % moves unchanged."
    }
   ],
   "capLog": [],
@@ -22759,9 +23850,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 167.1,
     "basketValue": 612.21,
-    "divisor": 6.1221,
+    "divisor": 3.663826,
     "priced": 62,
     "note": "inception"
    }
@@ -22770,7 +23861,287 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2021-02",
+  "baseRule": "first-reliable",
+  "baseNote": "100 = Feb 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Oct 10, 1999 release predates the data, so no release-day level is claimed",
+  "recon": [
+   {
+    "month": "2021-02",
+    "level": 100.0
+   },
+   {
+    "month": "2021-03",
+    "level": 97.15
+   },
+   {
+    "month": "2021-04",
+    "level": 96.6
+   },
+   {
+    "month": "2021-05",
+    "level": 85.43
+   },
+   {
+    "month": "2021-06",
+    "level": 79.31
+   },
+   {
+    "month": "2021-07",
+    "level": 74.75
+   },
+   {
+    "month": "2021-08",
+    "level": 67.12
+   },
+   {
+    "month": "2021-09",
+    "level": 73.1
+   },
+   {
+    "month": "2021-10",
+    "level": 77.81
+   },
+   {
+    "month": "2021-11",
+    "level": 76.21
+   },
+   {
+    "month": "2021-12",
+    "level": 77.56
+   },
+   {
+    "month": "2022-01",
+    "level": 76.25
+   },
+   {
+    "month": "2022-02",
+    "level": 78.75
+   },
+   {
+    "month": "2022-03",
+    "level": 86.27
+   },
+   {
+    "month": "2022-04",
+    "level": 85.53
+   },
+   {
+    "month": "2022-05",
+    "level": 89.11
+   },
+   {
+    "month": "2022-06",
+    "level": 87.67
+   },
+   {
+    "month": "2022-07",
+    "level": 81.54
+   },
+   {
+    "month": "2022-08",
+    "level": 87.19
+   },
+   {
+    "month": "2022-09",
+    "level": 80.02
+   },
+   {
+    "month": "2022-10",
+    "level": 93.16
+   },
+   {
+    "month": "2022-11",
+    "level": 85.58
+   },
+   {
+    "month": "2022-12",
+    "level": 91.5
+   },
+   {
+    "month": "2023-01",
+    "level": 96.11
+   },
+   {
+    "month": "2023-02",
+    "level": 90.46
+   },
+   {
+    "month": "2023-03",
+    "level": 88.9
+   },
+   {
+    "month": "2023-04",
+    "level": 95.3
+   },
+   {
+    "month": "2023-05",
+    "level": 91.09
+   },
+   {
+    "month": "2023-06",
+    "level": 86.17
+   },
+   {
+    "month": "2023-07",
+    "level": 87.89
+   },
+   {
+    "month": "2023-08",
+    "level": 88.01
+   },
+   {
+    "month": "2023-09",
+    "level": 86.59
+   },
+   {
+    "month": "2023-10",
+    "level": 85.24
+   },
+   {
+    "month": "2023-11",
+    "level": 93.07
+   },
+   {
+    "month": "2023-12",
+    "level": 87.74
+   },
+   {
+    "month": "2024-01",
+    "level": 98.02
+   },
+   {
+    "month": "2024-02",
+    "level": 89.2
+   },
+   {
+    "month": "2024-03",
+    "level": 89.37
+   },
+   {
+    "month": "2024-04",
+    "level": 82.36
+   },
+   {
+    "month": "2024-05",
+    "level": 92.02
+   },
+   {
+    "month": "2024-06",
+    "level": 85.95
+   },
+   {
+    "month": "2024-07",
+    "level": 87.85
+   },
+   {
+    "month": "2024-08",
+    "level": 87.69
+   },
+   {
+    "month": "2024-09",
+    "level": 84.82
+   },
+   {
+    "month": "2024-10",
+    "level": 98.56
+   },
+   {
+    "month": "2024-11",
+    "level": 94.1
+   },
+   {
+    "month": "2024-12",
+    "level": 98.81
+   },
+   {
+    "month": "2025-01",
+    "level": 110.71
+   },
+   {
+    "month": "2025-02",
+    "level": 108.23
+   },
+   {
+    "month": "2025-03",
+    "level": 110.22
+   },
+   {
+    "month": "2025-04",
+    "level": 118.42
+   },
+   {
+    "month": "2025-05",
+    "level": 116.64
+   },
+   {
+    "month": "2025-06",
+    "level": 111.11
+   },
+   {
+    "month": "2025-07",
+    "level": 111.31
+   },
+   {
+    "month": "2025-08",
+    "level": 115.98
+   },
+   {
+    "month": "2025-09",
+    "level": 116.02
+   },
+   {
+    "month": "2025-10",
+    "level": 107.41
+   },
+   {
+    "month": "2025-11",
+    "level": 115.5
+   },
+   {
+    "month": "2025-12",
+    "level": 129.81
+   },
+   {
+    "month": "2026-01",
+    "level": 134.8
+   },
+   {
+    "month": "2026-02",
+    "level": 136.01
+   },
+   {
+    "month": "2026-03",
+    "level": 155.58
+   },
+   {
+    "month": "2026-04",
+    "level": 151.8
+   },
+   {
+    "month": "2026-05",
+    "level": 160.16
+   },
+   {
+    "month": "2026-06",
+    "level": 159.67
+   },
+   {
+    "month": "2026-07",
+    "level": 164.75
+   },
+   {
+    "month": "2026-08",
+    "level": 157.29
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 1.670958,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 167.1
+  }
  },
  "TR00": {
   "ticker": "TR00",
@@ -22800,13 +24171,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-team-rocket",
   "sources": [],
-  "divisor": 11.1397,
+  "divisor": 6.303584,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 11.1397,
     "why": "inception — basket $1113.97 over 82 of 83 slots; 0 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 11.1397,
+    "after": 6.303584,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Feb 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Apr 24, 2000 release predates the data, so no release-day level is claimed. Every level × 1.767201; shape and % moves unchanged."
    }
   ],
   "capLog": [],
@@ -24060,9 +25437,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 176.72,
     "basketValue": 1113.97,
-    "divisor": 11.1397,
+    "divisor": 6.303584,
     "priced": 82,
     "note": "inception"
    }
@@ -24071,7 +25448,287 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2021-02",
+  "baseRule": "first-reliable",
+  "baseNote": "100 = Feb 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Apr 24, 2000 release predates the data, so no release-day level is claimed",
+  "recon": [
+   {
+    "month": "2021-02",
+    "level": 100.0
+   },
+   {
+    "month": "2021-03",
+    "level": 91.28
+   },
+   {
+    "month": "2021-04",
+    "level": 89.64
+   },
+   {
+    "month": "2021-05",
+    "level": 89.94
+   },
+   {
+    "month": "2021-06",
+    "level": 78.99
+   },
+   {
+    "month": "2021-07",
+    "level": 87.91
+   },
+   {
+    "month": "2021-08",
+    "level": 77.03
+   },
+   {
+    "month": "2021-09",
+    "level": 79.62
+   },
+   {
+    "month": "2021-10",
+    "level": 77.41
+   },
+   {
+    "month": "2021-11",
+    "level": 76.22
+   },
+   {
+    "month": "2021-12",
+    "level": 75.43
+   },
+   {
+    "month": "2022-01",
+    "level": 78.16
+   },
+   {
+    "month": "2022-02",
+    "level": 78.41
+   },
+   {
+    "month": "2022-03",
+    "level": 72.97
+   },
+   {
+    "month": "2022-04",
+    "level": 74.64
+   },
+   {
+    "month": "2022-05",
+    "level": 85.48
+   },
+   {
+    "month": "2022-06",
+    "level": 76.72
+   },
+   {
+    "month": "2022-07",
+    "level": 78.9
+   },
+   {
+    "month": "2022-08",
+    "level": 78.83
+   },
+   {
+    "month": "2022-09",
+    "level": 75.75
+   },
+   {
+    "month": "2022-10",
+    "level": 75.38
+   },
+   {
+    "month": "2022-11",
+    "level": 70.86
+   },
+   {
+    "month": "2022-12",
+    "level": 76.57
+   },
+   {
+    "month": "2023-01",
+    "level": 85.94
+   },
+   {
+    "month": "2023-02",
+    "level": 80.62
+   },
+   {
+    "month": "2023-03",
+    "level": 76.61
+   },
+   {
+    "month": "2023-04",
+    "level": 79.83
+   },
+   {
+    "month": "2023-05",
+    "level": 79.31
+   },
+   {
+    "month": "2023-06",
+    "level": 75.51
+   },
+   {
+    "month": "2023-07",
+    "level": 75.59
+   },
+   {
+    "month": "2023-08",
+    "level": 74.5
+   },
+   {
+    "month": "2023-09",
+    "level": 75.37
+   },
+   {
+    "month": "2023-10",
+    "level": 75.19
+   },
+   {
+    "month": "2023-11",
+    "level": 74.22
+   },
+   {
+    "month": "2023-12",
+    "level": 77.11
+   },
+   {
+    "month": "2024-01",
+    "level": 80.58
+   },
+   {
+    "month": "2024-02",
+    "level": 76.04
+   },
+   {
+    "month": "2024-03",
+    "level": 78.86
+   },
+   {
+    "month": "2024-04",
+    "level": 85.29
+   },
+   {
+    "month": "2024-05",
+    "level": 86.38
+   },
+   {
+    "month": "2024-06",
+    "level": 85.11
+   },
+   {
+    "month": "2024-07",
+    "level": 85.42
+   },
+   {
+    "month": "2024-08",
+    "level": 79.95
+   },
+   {
+    "month": "2024-09",
+    "level": 86.85
+   },
+   {
+    "month": "2024-10",
+    "level": 90.2
+   },
+   {
+    "month": "2024-11",
+    "level": 85.85
+   },
+   {
+    "month": "2024-12",
+    "level": 93.48
+   },
+   {
+    "month": "2025-01",
+    "level": 103.45
+   },
+   {
+    "month": "2025-02",
+    "level": 101.0
+   },
+   {
+    "month": "2025-03",
+    "level": 113.69
+   },
+   {
+    "month": "2025-04",
+    "level": 114.86
+   },
+   {
+    "month": "2025-05",
+    "level": 126.69
+   },
+   {
+    "month": "2025-06",
+    "level": 124.24
+   },
+   {
+    "month": "2025-07",
+    "level": 117.03
+   },
+   {
+    "month": "2025-08",
+    "level": 115.92
+   },
+   {
+    "month": "2025-09",
+    "level": 112.63
+   },
+   {
+    "month": "2025-10",
+    "level": 120.44
+   },
+   {
+    "month": "2025-11",
+    "level": 133.36
+   },
+   {
+    "month": "2025-12",
+    "level": 132.12
+   },
+   {
+    "month": "2026-01",
+    "level": 130.36
+   },
+   {
+    "month": "2026-02",
+    "level": 143.48
+   },
+   {
+    "month": "2026-03",
+    "level": 162.47
+   },
+   {
+    "month": "2026-04",
+    "level": 157.92
+   },
+   {
+    "month": "2026-05",
+    "level": 153.67
+   },
+   {
+    "month": "2026-06",
+    "level": 161.42
+   },
+   {
+    "month": "2026-07",
+    "level": 164.34
+   },
+   {
+    "month": "2026-08",
+    "level": 162.96
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 1.767201,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 176.72
+  }
  },
  "NG00": {
   "ticker": "NG00",
@@ -24101,13 +25758,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-neo-genesis",
   "sources": [],
-  "divisor": 14.5703,
+  "divisor": 8.780669,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 14.5703,
     "why": "inception — basket $1457.03 over 111 of 112 slots; 1 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 14.5703,
+    "after": 8.780669,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Jul 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Dec 16, 2000 release predates the data, so no release-day level is claimed. Every level × 1.659361; shape and % moves unchanged."
    }
   ],
   "capLog": [
@@ -25803,9 +27466,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 165.94,
     "basketValue": 1457.03,
-    "divisor": 14.5703,
+    "divisor": 8.780669,
     "priced": 111,
     "note": "inception"
    }
@@ -25814,7 +27477,267 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2021-07",
+  "baseRule": "first-reliable",
+  "baseNote": "100 = Jul 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Dec 16, 2000 release predates the data, so no release-day level is claimed",
+  "recon": [
+   {
+    "month": "2021-07",
+    "level": 100.0
+   },
+   {
+    "month": "2021-08",
+    "level": 82.15
+   },
+   {
+    "month": "2021-09",
+    "level": 76.57
+   },
+   {
+    "month": "2021-10",
+    "level": 76.48
+   },
+   {
+    "month": "2021-11",
+    "level": 74.05
+   },
+   {
+    "month": "2021-12",
+    "level": 77.56
+   },
+   {
+    "month": "2022-01",
+    "level": 75.55
+   },
+   {
+    "month": "2022-02",
+    "level": 79.72
+   },
+   {
+    "month": "2022-03",
+    "level": 78.62
+   },
+   {
+    "month": "2022-04",
+    "level": 75.41
+   },
+   {
+    "month": "2022-05",
+    "level": 75.74
+   },
+   {
+    "month": "2022-06",
+    "level": 73.15
+   },
+   {
+    "month": "2022-07",
+    "level": 73.53
+   },
+   {
+    "month": "2022-08",
+    "level": 76.52
+   },
+   {
+    "month": "2022-09",
+    "level": 78.08
+   },
+   {
+    "month": "2022-10",
+    "level": 73.75
+   },
+   {
+    "month": "2022-11",
+    "level": 70.02
+   },
+   {
+    "month": "2022-12",
+    "level": 69.91
+   },
+   {
+    "month": "2023-01",
+    "level": 85.46
+   },
+   {
+    "month": "2023-02",
+    "level": 72.02
+   },
+   {
+    "month": "2023-03",
+    "level": 79.92
+   },
+   {
+    "month": "2023-04",
+    "level": 78.94
+   },
+   {
+    "month": "2023-05",
+    "level": 78.99
+   },
+   {
+    "month": "2023-06",
+    "level": 76.41
+   },
+   {
+    "month": "2023-07",
+    "level": 77.38
+   },
+   {
+    "month": "2023-08",
+    "level": 78.61
+   },
+   {
+    "month": "2023-09",
+    "level": 77.35
+   },
+   {
+    "month": "2023-10",
+    "level": 74.61
+   },
+   {
+    "month": "2023-11",
+    "level": 76.75
+   },
+   {
+    "month": "2023-12",
+    "level": 81.92
+   },
+   {
+    "month": "2024-01",
+    "level": 85.88
+   },
+   {
+    "month": "2024-02",
+    "level": 82.98
+   },
+   {
+    "month": "2024-03",
+    "level": 80.72
+   },
+   {
+    "month": "2024-04",
+    "level": 79.16
+   },
+   {
+    "month": "2024-05",
+    "level": 84.86
+   },
+   {
+    "month": "2024-06",
+    "level": 79.29
+   },
+   {
+    "month": "2024-07",
+    "level": 79.79
+   },
+   {
+    "month": "2024-08",
+    "level": 76.3
+   },
+   {
+    "month": "2024-09",
+    "level": 79.68
+   },
+   {
+    "month": "2024-10",
+    "level": 82.32
+   },
+   {
+    "month": "2024-11",
+    "level": 79.24
+   },
+   {
+    "month": "2024-12",
+    "level": 85.75
+   },
+   {
+    "month": "2025-01",
+    "level": 96.27
+   },
+   {
+    "month": "2025-02",
+    "level": 96.39
+   },
+   {
+    "month": "2025-03",
+    "level": 95.3
+   },
+   {
+    "month": "2025-04",
+    "level": 104.62
+   },
+   {
+    "month": "2025-05",
+    "level": 101.09
+   },
+   {
+    "month": "2025-06",
+    "level": 102.26
+   },
+   {
+    "month": "2025-07",
+    "level": 98.04
+   },
+   {
+    "month": "2025-08",
+    "level": 99.62
+   },
+   {
+    "month": "2025-09",
+    "level": 103.63
+   },
+   {
+    "month": "2025-10",
+    "level": 100.31
+   },
+   {
+    "month": "2025-11",
+    "level": 116.87
+   },
+   {
+    "month": "2025-12",
+    "level": 110.52
+   },
+   {
+    "month": "2026-01",
+    "level": 111.52
+   },
+   {
+    "month": "2026-02",
+    "level": 121.3
+   },
+   {
+    "month": "2026-03",
+    "level": 124.62
+   },
+   {
+    "month": "2026-04",
+    "level": 141.88
+   },
+   {
+    "month": "2026-05",
+    "level": 147.86
+   },
+   {
+    "month": "2026-06",
+    "level": 153.84
+   },
+   {
+    "month": "2026-07",
+    "level": 168.45
+   },
+   {
+    "month": "2026-08",
+    "level": 148.51
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 1.659361,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 165.94
+  }
  },
  "ND02": {
   "ticker": "ND02",
@@ -25844,13 +27767,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-neo-destiny",
   "sources": [],
-  "divisor": 68.956,
+  "divisor": 31.210622,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 68.956,
     "why": "inception — basket $6895.6 over 109 of 114 slots; 7 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 68.956,
+    "after": 31.210622,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Jan 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Feb 28, 2002 release predates the data, so no release-day level is claimed. Every level × 2.209376; shape and % moves unchanged."
    }
   ],
   "capLog": [
@@ -27572,9 +29501,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 220.94,
     "basketValue": 6895.6,
-    "divisor": 68.956,
+    "divisor": 31.210622,
     "priced": 109,
     "note": "inception"
    }
@@ -27583,7 +29512,291 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2021-01",
+  "baseRule": "first-reliable",
+  "baseNote": "100 = Jan 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Feb 28, 2002 release predates the data, so no release-day level is claimed",
+  "recon": [
+   {
+    "month": "2021-01",
+    "level": 100.0
+   },
+   {
+    "month": "2021-02",
+    "level": 103.81
+   },
+   {
+    "month": "2021-03",
+    "level": 110.44
+   },
+   {
+    "month": "2021-04",
+    "level": 107.65
+   },
+   {
+    "month": "2021-05",
+    "level": 104.68
+   },
+   {
+    "month": "2021-06",
+    "level": 97.1
+   },
+   {
+    "month": "2021-07",
+    "level": 95.18
+   },
+   {
+    "month": "2021-08",
+    "level": 86.32
+   },
+   {
+    "month": "2021-09",
+    "level": 80.24
+   },
+   {
+    "month": "2021-10",
+    "level": 80.21
+   },
+   {
+    "month": "2021-11",
+    "level": 78.65
+   },
+   {
+    "month": "2021-12",
+    "level": 81.43
+   },
+   {
+    "month": "2022-01",
+    "level": 81.68
+   },
+   {
+    "month": "2022-02",
+    "level": 80.9
+   },
+   {
+    "month": "2022-03",
+    "level": 75.49
+   },
+   {
+    "month": "2022-04",
+    "level": 78.83
+   },
+   {
+    "month": "2022-05",
+    "level": 80.89
+   },
+   {
+    "month": "2022-06",
+    "level": 80.96
+   },
+   {
+    "month": "2022-07",
+    "level": 73.53
+   },
+   {
+    "month": "2022-08",
+    "level": 83.82
+   },
+   {
+    "month": "2022-09",
+    "level": 79.23
+   },
+   {
+    "month": "2022-10",
+    "level": 77.01
+   },
+   {
+    "month": "2022-11",
+    "level": 85.22
+   },
+   {
+    "month": "2022-12",
+    "level": 77.6
+   },
+   {
+    "month": "2023-01",
+    "level": 76.27
+   },
+   {
+    "month": "2023-02",
+    "level": 80.93
+   },
+   {
+    "month": "2023-03",
+    "level": 78.75
+   },
+   {
+    "month": "2023-04",
+    "level": 85.88
+   },
+   {
+    "month": "2023-05",
+    "level": 83.92
+   },
+   {
+    "month": "2023-06",
+    "level": 82.67
+   },
+   {
+    "month": "2023-07",
+    "level": 82.86
+   },
+   {
+    "month": "2023-08",
+    "level": 82.26
+   },
+   {
+    "month": "2023-09",
+    "level": 76.89
+   },
+   {
+    "month": "2023-10",
+    "level": 77.81
+   },
+   {
+    "month": "2023-11",
+    "level": 78.34
+   },
+   {
+    "month": "2023-12",
+    "level": 79.26
+   },
+   {
+    "month": "2024-01",
+    "level": 81.76
+   },
+   {
+    "month": "2024-02",
+    "level": 84.95
+   },
+   {
+    "month": "2024-03",
+    "level": 87.86
+   },
+   {
+    "month": "2024-04",
+    "level": 93.95
+   },
+   {
+    "month": "2024-05",
+    "level": 88.27
+   },
+   {
+    "month": "2024-06",
+    "level": 88.9
+   },
+   {
+    "month": "2024-07",
+    "level": 86.59
+   },
+   {
+    "month": "2024-08",
+    "level": 82.8
+   },
+   {
+    "month": "2024-09",
+    "level": 85.36
+   },
+   {
+    "month": "2024-10",
+    "level": 94.2
+   },
+   {
+    "month": "2024-11",
+    "level": 96.04
+   },
+   {
+    "month": "2024-12",
+    "level": 95.23
+   },
+   {
+    "month": "2025-01",
+    "level": 104.63
+   },
+   {
+    "month": "2025-02",
+    "level": 103.89
+   },
+   {
+    "month": "2025-03",
+    "level": 113.73
+   },
+   {
+    "month": "2025-04",
+    "level": 112.01
+   },
+   {
+    "month": "2025-05",
+    "level": 123.23
+   },
+   {
+    "month": "2025-06",
+    "level": 130.28
+   },
+   {
+    "month": "2025-07",
+    "level": 129.68
+   },
+   {
+    "month": "2025-08",
+    "level": 135.78
+   },
+   {
+    "month": "2025-09",
+    "level": 137.41
+   },
+   {
+    "month": "2025-10",
+    "level": 133.49
+   },
+   {
+    "month": "2025-11",
+    "level": 147.99
+   },
+   {
+    "month": "2025-12",
+    "level": 153.51
+   },
+   {
+    "month": "2026-01",
+    "level": 164.99
+   },
+   {
+    "month": "2026-02",
+    "level": 156.0
+   },
+   {
+    "month": "2026-03",
+    "level": 175.56
+   },
+   {
+    "month": "2026-04",
+    "level": 190.97
+   },
+   {
+    "month": "2026-05",
+    "level": 194.79
+   },
+   {
+    "month": "2026-06",
+    "level": 199.17
+   },
+   {
+    "month": "2026-07",
+    "level": 206.42
+   },
+   {
+    "month": "2026-08",
+    "level": 212.35
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 2.209376,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 220.94
+  }
  },
  "AQ03": {
   "ticker": "AQ03",
@@ -27613,13 +29826,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-aquapolis",
   "sources": [],
-  "divisor": 103.2093,
+  "divisor": 28.784355,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 103.2093,
     "why": "inception — basket $10320.93 over 126 of 192 slots; 4 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 103.2093,
+    "after": 28.784355,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Oct 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Jan 15, 2003 release predates the data, so no release-day level is claimed. Every level × 3.585604; shape and % moves unchanged."
    }
   ],
   "capLog": [
@@ -29883,9 +32102,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 358.56,
     "basketValue": 10320.93,
-    "divisor": 103.2093,
+    "divisor": 28.784355,
     "priced": 126,
     "note": "inception"
    }
@@ -29894,7 +32113,255 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2021-10",
+  "baseRule": "first-reliable",
+  "baseNote": "100 = Oct 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Jan 15, 2003 release predates the data, so no release-day level is claimed",
+  "recon": [
+   {
+    "month": "2021-10",
+    "level": 100.0
+   },
+   {
+    "month": "2021-11",
+    "level": 97.91
+   },
+   {
+    "month": "2021-12",
+    "level": 90.32
+   },
+   {
+    "month": "2022-01",
+    "level": 105.44
+   },
+   {
+    "month": "2022-02",
+    "level": 105.49
+   },
+   {
+    "month": "2022-03",
+    "level": 113.5
+   },
+   {
+    "month": "2022-04",
+    "level": 107.32
+   },
+   {
+    "month": "2022-05",
+    "level": 110.65
+   },
+   {
+    "month": "2022-06",
+    "level": 110.74
+   },
+   {
+    "month": "2022-07",
+    "level": 106.64
+   },
+   {
+    "month": "2022-08",
+    "level": 107.33
+   },
+   {
+    "month": "2022-09",
+    "level": 101.86
+   },
+   {
+    "month": "2022-10",
+    "level": 91.06
+   },
+   {
+    "month": "2022-11",
+    "level": 88.55
+   },
+   {
+    "month": "2022-12",
+    "level": 78.02
+   },
+   {
+    "month": "2023-01",
+    "level": 82.79
+   },
+   {
+    "month": "2023-02",
+    "level": 79.47
+   },
+   {
+    "month": "2023-03",
+    "level": 91.16
+   },
+   {
+    "month": "2023-04",
+    "level": 89.22
+   },
+   {
+    "month": "2023-05",
+    "level": 91.2
+   },
+   {
+    "month": "2023-06",
+    "level": 90.32
+   },
+   {
+    "month": "2023-07",
+    "level": 92.05
+   },
+   {
+    "month": "2023-08",
+    "level": 90.92
+   },
+   {
+    "month": "2023-09",
+    "level": 83.39
+   },
+   {
+    "month": "2023-10",
+    "level": 84.33
+   },
+   {
+    "month": "2023-11",
+    "level": 83.13
+   },
+   {
+    "month": "2023-12",
+    "level": 82.95
+   },
+   {
+    "month": "2024-01",
+    "level": 92.45
+   },
+   {
+    "month": "2024-02",
+    "level": 97.56
+   },
+   {
+    "month": "2024-03",
+    "level": 89.58
+   },
+   {
+    "month": "2024-04",
+    "level": 95.17
+   },
+   {
+    "month": "2024-05",
+    "level": 100.45
+   },
+   {
+    "month": "2024-06",
+    "level": 98.43
+   },
+   {
+    "month": "2024-07",
+    "level": 95.46
+   },
+   {
+    "month": "2024-08",
+    "level": 102.8
+   },
+   {
+    "month": "2024-09",
+    "level": 99.01
+   },
+   {
+    "month": "2024-10",
+    "level": 103.29
+   },
+   {
+    "month": "2024-11",
+    "level": 107.6
+   },
+   {
+    "month": "2024-12",
+    "level": 111.31
+   },
+   {
+    "month": "2025-01",
+    "level": 114.42
+   },
+   {
+    "month": "2025-02",
+    "level": 114.21
+   },
+   {
+    "month": "2025-03",
+    "level": 116.51
+   },
+   {
+    "month": "2025-04",
+    "level": 122.16
+   },
+   {
+    "month": "2025-05",
+    "level": 155.21
+   },
+   {
+    "month": "2025-06",
+    "level": 161.02
+   },
+   {
+    "month": "2025-07",
+    "level": 155.54
+   },
+   {
+    "month": "2025-08",
+    "level": 161.32
+   },
+   {
+    "month": "2025-09",
+    "level": 174.81
+   },
+   {
+    "month": "2025-10",
+    "level": 192.85
+   },
+   {
+    "month": "2025-11",
+    "level": 185.52
+   },
+   {
+    "month": "2025-12",
+    "level": 199.2
+   },
+   {
+    "month": "2026-01",
+    "level": 212.38
+   },
+   {
+    "month": "2026-02",
+    "level": 220.61
+   },
+   {
+    "month": "2026-03",
+    "level": 228.97
+   },
+   {
+    "month": "2026-04",
+    "level": 259.65
+   },
+   {
+    "month": "2026-05",
+    "level": 300.07
+   },
+   {
+    "month": "2026-06",
+    "level": 318.01
+   },
+   {
+    "month": "2026-07",
+    "level": 336.34
+   },
+   {
+    "month": "2026-08",
+    "level": 366.33
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 3.585604,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 358.56
+  }
  },
  "SK03": {
   "ticker": "SK03",
@@ -29924,13 +32391,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-skyridge",
   "sources": [],
-  "divisor": 34.6805,
+  "divisor": 10.076579,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 34.6805,
     "why": "inception — basket $3468.05 over 70 of 186 slots; 0 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 34.6805,
+    "after": 10.076579,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Jan 2022, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the May 12, 2003 release predates the data, so no release-day level is claimed. Every level × 3.441694; shape and % moves unchanged."
    }
   ],
   "capLog": [],
@@ -31579,9 +34052,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 344.17,
     "basketValue": 3468.05,
-    "divisor": 34.6805,
+    "divisor": 10.076579,
     "priced": 70,
     "note": "inception"
    }
@@ -31590,7 +34063,243 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2022-01",
+  "baseRule": "first-reliable",
+  "baseNote": "100 = Jan 2022, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the May 12, 2003 release predates the data, so no release-day level is claimed",
+  "recon": [
+   {
+    "month": "2022-01",
+    "level": 100.0
+   },
+   {
+    "month": "2022-02",
+    "level": 101.35
+   },
+   {
+    "month": "2022-03",
+    "level": 100.66
+   },
+   {
+    "month": "2022-04",
+    "level": 105.93
+   },
+   {
+    "month": "2022-05",
+    "level": 98.49
+   },
+   {
+    "month": "2022-06",
+    "level": 98.97
+   },
+   {
+    "month": "2022-07",
+    "level": 99.54
+   },
+   {
+    "month": "2022-08",
+    "level": 95.8
+   },
+   {
+    "month": "2022-09",
+    "level": 97.96
+   },
+   {
+    "month": "2022-10",
+    "level": 100.88
+   },
+   {
+    "month": "2022-11",
+    "level": 95.26
+   },
+   {
+    "month": "2022-12",
+    "level": 88.01
+   },
+   {
+    "month": "2023-01",
+    "level": 96.0
+   },
+   {
+    "month": "2023-02",
+    "level": 89.94
+   },
+   {
+    "month": "2023-03",
+    "level": 95.48
+   },
+   {
+    "month": "2023-04",
+    "level": 99.71
+   },
+   {
+    "month": "2023-05",
+    "level": 96.88
+   },
+   {
+    "month": "2023-06",
+    "level": 90.72
+   },
+   {
+    "month": "2023-07",
+    "level": 90.72
+   },
+   {
+    "month": "2023-08",
+    "level": 93.64
+   },
+   {
+    "month": "2023-09",
+    "level": 90.53
+   },
+   {
+    "month": "2023-10",
+    "level": 89.01
+   },
+   {
+    "month": "2023-11",
+    "level": 97.14
+   },
+   {
+    "month": "2023-12",
+    "level": 91.6
+   },
+   {
+    "month": "2024-01",
+    "level": 96.58
+   },
+   {
+    "month": "2024-02",
+    "level": 97.9
+   },
+   {
+    "month": "2024-03",
+    "level": 102.81
+   },
+   {
+    "month": "2024-04",
+    "level": 104.71
+   },
+   {
+    "month": "2024-05",
+    "level": 104.85
+   },
+   {
+    "month": "2024-06",
+    "level": 99.54
+   },
+   {
+    "month": "2024-07",
+    "level": 101.21
+   },
+   {
+    "month": "2024-08",
+    "level": 97.77
+   },
+   {
+    "month": "2024-09",
+    "level": 95.93
+   },
+   {
+    "month": "2024-10",
+    "level": 94.41
+   },
+   {
+    "month": "2024-11",
+    "level": 99.21
+   },
+   {
+    "month": "2024-12",
+    "level": 104.18
+   },
+   {
+    "month": "2025-01",
+    "level": 112.66
+   },
+   {
+    "month": "2025-02",
+    "level": 112.72
+   },
+   {
+    "month": "2025-03",
+    "level": 120.9
+   },
+   {
+    "month": "2025-04",
+    "level": 126.53
+   },
+   {
+    "month": "2025-05",
+    "level": 139.52
+   },
+   {
+    "month": "2025-06",
+    "level": 140.59
+   },
+   {
+    "month": "2025-07",
+    "level": 144.76
+   },
+   {
+    "month": "2025-08",
+    "level": 142.0
+   },
+   {
+    "month": "2025-09",
+    "level": 157.83
+   },
+   {
+    "month": "2025-10",
+    "level": 159.08
+   },
+   {
+    "month": "2025-11",
+    "level": 173.38
+   },
+   {
+    "month": "2025-12",
+    "level": 201.32
+   },
+   {
+    "month": "2026-01",
+    "level": 207.25
+   },
+   {
+    "month": "2026-02",
+    "level": 214.91
+   },
+   {
+    "month": "2026-03",
+    "level": 227.51
+   },
+   {
+    "month": "2026-04",
+    "level": 256.8
+   },
+   {
+    "month": "2026-05",
+    "level": 271.61
+   },
+   {
+    "month": "2026-06",
+    "level": 311.72
+   },
+   {
+    "month": "2026-07",
+    "level": 323.79
+   },
+   {
+    "month": "2026-08",
+    "level": 334.88
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 3.441694,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 344.17
+  }
  },
  "HF19": {
   "ticker": "HF19",
@@ -31620,13 +34329,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-hidden-fates",
   "sources": [],
-  "divisor": 32.5857,
+  "divisor": 22.398503,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 32.5857,
     "why": "inception — basket $3258.57 over 164 of 164 slots; 0 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 32.5857,
+    "after": 22.398503,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Feb 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Aug 23, 2019 release predates the data, so no release-day level is claimed. Every level × 1.454816; shape and % moves unchanged."
    }
   ],
   "capLog": [],
@@ -34105,9 +36820,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 145.48,
     "basketValue": 3258.57,
-    "divisor": 32.5857,
+    "divisor": 22.398503,
     "priced": 164,
     "note": "inception"
    }
@@ -34116,7 +36831,287 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2021-02",
+  "baseRule": "first-reliable",
+  "baseNote": "100 = Feb 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Aug 23, 2019 release predates the data, so no release-day level is claimed",
+  "recon": [
+   {
+    "month": "2021-02",
+    "level": 100.0
+   },
+   {
+    "month": "2021-03",
+    "level": 111.2
+   },
+   {
+    "month": "2021-04",
+    "level": 104.24
+   },
+   {
+    "month": "2021-05",
+    "level": 95.87
+   },
+   {
+    "month": "2021-06",
+    "level": 85.21
+   },
+   {
+    "month": "2021-07",
+    "level": 83.59
+   },
+   {
+    "month": "2021-08",
+    "level": 78.04
+   },
+   {
+    "month": "2021-09",
+    "level": 73.25
+   },
+   {
+    "month": "2021-10",
+    "level": 70.19
+   },
+   {
+    "month": "2021-11",
+    "level": 69.52
+   },
+   {
+    "month": "2021-12",
+    "level": 68.34
+   },
+   {
+    "month": "2022-01",
+    "level": 69.56
+   },
+   {
+    "month": "2022-02",
+    "level": 69.68
+   },
+   {
+    "month": "2022-03",
+    "level": 67.21
+   },
+   {
+    "month": "2022-04",
+    "level": 69.25
+   },
+   {
+    "month": "2022-05",
+    "level": 70.69
+   },
+   {
+    "month": "2022-06",
+    "level": 66.69
+   },
+   {
+    "month": "2022-07",
+    "level": 64.15
+   },
+   {
+    "month": "2022-08",
+    "level": 62.85
+   },
+   {
+    "month": "2022-09",
+    "level": 64.17
+   },
+   {
+    "month": "2022-10",
+    "level": 63.65
+   },
+   {
+    "month": "2022-11",
+    "level": 62.43
+   },
+   {
+    "month": "2022-12",
+    "level": 63.66
+   },
+   {
+    "month": "2023-01",
+    "level": 67.26
+   },
+   {
+    "month": "2023-02",
+    "level": 65.64
+   },
+   {
+    "month": "2023-03",
+    "level": 66.31
+   },
+   {
+    "month": "2023-04",
+    "level": 67.93
+   },
+   {
+    "month": "2023-05",
+    "level": 71.42
+   },
+   {
+    "month": "2023-06",
+    "level": 67.84
+   },
+   {
+    "month": "2023-07",
+    "level": 67.3
+   },
+   {
+    "month": "2023-08",
+    "level": 68.45
+   },
+   {
+    "month": "2023-09",
+    "level": 65.87
+   },
+   {
+    "month": "2023-10",
+    "level": 62.12
+   },
+   {
+    "month": "2023-11",
+    "level": 62.87
+   },
+   {
+    "month": "2023-12",
+    "level": 64.07
+   },
+   {
+    "month": "2024-01",
+    "level": 67.21
+   },
+   {
+    "month": "2024-02",
+    "level": 64.77
+   },
+   {
+    "month": "2024-03",
+    "level": 65.39
+   },
+   {
+    "month": "2024-04",
+    "level": 63.93
+   },
+   {
+    "month": "2024-05",
+    "level": 64.99
+   },
+   {
+    "month": "2024-06",
+    "level": 62.38
+   },
+   {
+    "month": "2024-07",
+    "level": 66.04
+   },
+   {
+    "month": "2024-08",
+    "level": 65.36
+   },
+   {
+    "month": "2024-09",
+    "level": 65.71
+   },
+   {
+    "month": "2024-10",
+    "level": 68.64
+   },
+   {
+    "month": "2024-11",
+    "level": 70.31
+   },
+   {
+    "month": "2024-12",
+    "level": 72.13
+   },
+   {
+    "month": "2025-01",
+    "level": 82.42
+   },
+   {
+    "month": "2025-02",
+    "level": 86.17
+   },
+   {
+    "month": "2025-03",
+    "level": 89.64
+   },
+   {
+    "month": "2025-04",
+    "level": 101.43
+   },
+   {
+    "month": "2025-05",
+    "level": 104.12
+   },
+   {
+    "month": "2025-06",
+    "level": 102.61
+   },
+   {
+    "month": "2025-07",
+    "level": 105.96
+   },
+   {
+    "month": "2025-08",
+    "level": 109.99
+   },
+   {
+    "month": "2025-09",
+    "level": 116.36
+   },
+   {
+    "month": "2025-10",
+    "level": 116.34
+   },
+   {
+    "month": "2025-11",
+    "level": 109.06
+   },
+   {
+    "month": "2025-12",
+    "level": 110.95
+   },
+   {
+    "month": "2026-01",
+    "level": 111.09
+   },
+   {
+    "month": "2026-02",
+    "level": 117.16
+   },
+   {
+    "month": "2026-03",
+    "level": 122.82
+   },
+   {
+    "month": "2026-04",
+    "level": 129.73
+   },
+   {
+    "month": "2026-05",
+    "level": 140.24
+   },
+   {
+    "month": "2026-06",
+    "level": 147.17
+   },
+   {
+    "month": "2026-07",
+    "level": 150.23
+   },
+   {
+    "month": "2026-08",
+    "level": 151.28
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 1.454816,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 145.48
+  }
  },
  "EVS21": {
   "ticker": "EVS21",
@@ -34146,13 +37141,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-evolving-skies",
   "sources": [],
-  "divisor": 50.9769,
+  "divisor": 22.602977,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 50.9769,
     "why": "inception — basket $5097.69 over 235 of 238 slots; 8 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 50.9769,
+    "after": 22.602977,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Sep 2021, the first month of sold data after the Aug 27, 2021 release. Every level × 2.255318; shape and % moves unchanged."
    }
   ],
   "capLog": [
@@ -37760,9 +40761,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 225.53,
     "basketValue": 5097.69,
-    "divisor": 50.9769,
+    "divisor": 22.602977,
     "priced": 235,
     "note": "inception"
    }
@@ -37771,7 +40772,259 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2021-09",
+  "baseRule": "release",
+  "baseNote": "100 = Sep 2021, the first month of sold data after the Aug 27, 2021 release",
+  "recon": [
+   {
+    "month": "2021-09",
+    "level": 100.0
+   },
+   {
+    "month": "2021-10",
+    "level": 94.98
+   },
+   {
+    "month": "2021-11",
+    "level": 86.38
+   },
+   {
+    "month": "2021-12",
+    "level": 83.65
+   },
+   {
+    "month": "2022-01",
+    "level": 86.09
+   },
+   {
+    "month": "2022-02",
+    "level": 88.1
+   },
+   {
+    "month": "2022-03",
+    "level": 89.89
+   },
+   {
+    "month": "2022-04",
+    "level": 97.8
+   },
+   {
+    "month": "2022-05",
+    "level": 95.45
+   },
+   {
+    "month": "2022-06",
+    "level": 88.38
+   },
+   {
+    "month": "2022-07",
+    "level": 84.17
+   },
+   {
+    "month": "2022-08",
+    "level": 85.28
+   },
+   {
+    "month": "2022-09",
+    "level": 88.7
+   },
+   {
+    "month": "2022-10",
+    "level": 100.88
+   },
+   {
+    "month": "2022-11",
+    "level": 93.21
+   },
+   {
+    "month": "2022-12",
+    "level": 91.94
+   },
+   {
+    "month": "2023-01",
+    "level": 94.7
+   },
+   {
+    "month": "2023-02",
+    "level": 90.93
+   },
+   {
+    "month": "2023-03",
+    "level": 92.08
+   },
+   {
+    "month": "2023-04",
+    "level": 89.72
+   },
+   {
+    "month": "2023-05",
+    "level": 90.65
+   },
+   {
+    "month": "2023-06",
+    "level": 88.73
+   },
+   {
+    "month": "2023-07",
+    "level": 86.18
+   },
+   {
+    "month": "2023-08",
+    "level": 81.34
+   },
+   {
+    "month": "2023-09",
+    "level": 79.79
+   },
+   {
+    "month": "2023-10",
+    "level": 77.11
+   },
+   {
+    "month": "2023-11",
+    "level": 75.47
+   },
+   {
+    "month": "2023-12",
+    "level": 79.05
+   },
+   {
+    "month": "2024-01",
+    "level": 80.71
+   },
+   {
+    "month": "2024-02",
+    "level": 80.89
+   },
+   {
+    "month": "2024-03",
+    "level": 85.86
+   },
+   {
+    "month": "2024-04",
+    "level": 102.43
+   },
+   {
+    "month": "2024-05",
+    "level": 125.7
+   },
+   {
+    "month": "2024-06",
+    "level": 120.46
+   },
+   {
+    "month": "2024-07",
+    "level": 114.05
+   },
+   {
+    "month": "2024-08",
+    "level": 107.41
+   },
+   {
+    "month": "2024-09",
+    "level": 106.15
+   },
+   {
+    "month": "2024-10",
+    "level": 110.5
+   },
+   {
+    "month": "2024-11",
+    "level": 119.66
+   },
+   {
+    "month": "2024-12",
+    "level": 133.91
+   },
+   {
+    "month": "2025-01",
+    "level": 159.55
+   },
+   {
+    "month": "2025-02",
+    "level": 169.55
+   },
+   {
+    "month": "2025-03",
+    "level": 172.31
+   },
+   {
+    "month": "2025-04",
+    "level": 164.42
+   },
+   {
+    "month": "2025-05",
+    "level": 165.17
+   },
+   {
+    "month": "2025-06",
+    "level": 158.65
+   },
+   {
+    "month": "2025-07",
+    "level": 157.9
+   },
+   {
+    "month": "2025-08",
+    "level": 162.28
+   },
+   {
+    "month": "2025-09",
+    "level": 190.8
+   },
+   {
+    "month": "2025-10",
+    "level": 201.02
+   },
+   {
+    "month": "2025-11",
+    "level": 181.9
+   },
+   {
+    "month": "2025-12",
+    "level": 179.53
+   },
+   {
+    "month": "2026-01",
+    "level": 179.92
+   },
+   {
+    "month": "2026-02",
+    "level": 180.29
+   },
+   {
+    "month": "2026-03",
+    "level": 191.91
+   },
+   {
+    "month": "2026-04",
+    "level": 200.21
+   },
+   {
+    "month": "2026-05",
+    "level": 226.24
+   },
+   {
+    "month": "2026-06",
+    "level": 234.86
+   },
+   {
+    "month": "2026-07",
+    "level": 243.66
+   },
+   {
+    "month": "2026-08",
+    "level": 237.13
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 2.255318,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 225.53
+  }
  },
  "CEL21": {
   "ticker": "CEL21",
@@ -37801,13 +41054,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-celebrations",
   "sources": [],
-  "divisor": 9.1696,
+  "divisor": 9.397605,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 9.1696,
     "why": "inception — basket $916.96 over 71 of 92 slots; 0 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 9.1696,
+    "after": 9.397605,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Oct 2021, the first month of sold data after the Oct 8, 2021 release. Every level × 0.975738; shape and % moves unchanged."
    }
   ],
   "capLog": [],
@@ -38996,9 +42255,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 97.57,
     "basketValue": 916.96,
-    "divisor": 9.1696,
+    "divisor": 9.397605,
     "priced": 71,
     "note": "inception"
    }
@@ -39007,7 +42266,255 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2021-10",
+  "baseRule": "release",
+  "baseNote": "100 = Oct 2021, the first month of sold data after the Oct 8, 2021 release",
+  "recon": [
+   {
+    "month": "2021-10",
+    "level": 100.0
+   },
+   {
+    "month": "2021-11",
+    "level": 58.55
+   },
+   {
+    "month": "2021-12",
+    "level": 51.19
+   },
+   {
+    "month": "2022-01",
+    "level": 51.8
+   },
+   {
+    "month": "2022-02",
+    "level": 50.1
+   },
+   {
+    "month": "2022-03",
+    "level": 44.59
+   },
+   {
+    "month": "2022-04",
+    "level": 44.73
+   },
+   {
+    "month": "2022-05",
+    "level": 46.86
+   },
+   {
+    "month": "2022-06",
+    "level": 44.33
+   },
+   {
+    "month": "2022-07",
+    "level": 41.44
+   },
+   {
+    "month": "2022-08",
+    "level": 41.8
+   },
+   {
+    "month": "2022-09",
+    "level": 40.55
+   },
+   {
+    "month": "2022-10",
+    "level": 43.35
+   },
+   {
+    "month": "2022-11",
+    "level": 42.38
+   },
+   {
+    "month": "2022-12",
+    "level": 41.13
+   },
+   {
+    "month": "2023-01",
+    "level": 46.82
+   },
+   {
+    "month": "2023-02",
+    "level": 43.39
+   },
+   {
+    "month": "2023-03",
+    "level": 42.51
+   },
+   {
+    "month": "2023-04",
+    "level": 41.38
+   },
+   {
+    "month": "2023-05",
+    "level": 42.66
+   },
+   {
+    "month": "2023-06",
+    "level": 39.75
+   },
+   {
+    "month": "2023-07",
+    "level": 37.08
+   },
+   {
+    "month": "2023-08",
+    "level": 34.64
+   },
+   {
+    "month": "2023-09",
+    "level": 35.88
+   },
+   {
+    "month": "2023-10",
+    "level": 35.62
+   },
+   {
+    "month": "2023-11",
+    "level": 35.35
+   },
+   {
+    "month": "2023-12",
+    "level": 35.02
+   },
+   {
+    "month": "2024-01",
+    "level": 37.2
+   },
+   {
+    "month": "2024-02",
+    "level": 34.43
+   },
+   {
+    "month": "2024-03",
+    "level": 35.51
+   },
+   {
+    "month": "2024-04",
+    "level": 36.54
+   },
+   {
+    "month": "2024-05",
+    "level": 36.7
+   },
+   {
+    "month": "2024-06",
+    "level": 36.49
+   },
+   {
+    "month": "2024-07",
+    "level": 35.34
+   },
+   {
+    "month": "2024-08",
+    "level": 35.49
+   },
+   {
+    "month": "2024-09",
+    "level": 36.11
+   },
+   {
+    "month": "2024-10",
+    "level": 36.34
+   },
+   {
+    "month": "2024-11",
+    "level": 36.55
+   },
+   {
+    "month": "2024-12",
+    "level": 38.09
+   },
+   {
+    "month": "2025-01",
+    "level": 46.59
+   },
+   {
+    "month": "2025-02",
+    "level": 49.01
+   },
+   {
+    "month": "2025-03",
+    "level": 50.86
+   },
+   {
+    "month": "2025-04",
+    "level": 52.93
+   },
+   {
+    "month": "2025-05",
+    "level": 52.24
+   },
+   {
+    "month": "2025-06",
+    "level": 54.34
+   },
+   {
+    "month": "2025-07",
+    "level": 66.05
+   },
+   {
+    "month": "2025-08",
+    "level": 75.46
+   },
+   {
+    "month": "2025-09",
+    "level": 92.86
+   },
+   {
+    "month": "2025-10",
+    "level": 87.82
+   },
+   {
+    "month": "2025-11",
+    "level": 72.47
+   },
+   {
+    "month": "2025-12",
+    "level": 69.65
+   },
+   {
+    "month": "2026-01",
+    "level": 76.93
+   },
+   {
+    "month": "2026-02",
+    "level": 82.72
+   },
+   {
+    "month": "2026-03",
+    "level": 90.01
+   },
+   {
+    "month": "2026-04",
+    "level": 98.16
+   },
+   {
+    "month": "2026-05",
+    "level": 102.72
+   },
+   {
+    "month": "2026-06",
+    "level": 109.6
+   },
+   {
+    "month": "2026-07",
+    "level": 97.85
+   },
+   {
+    "month": "2026-08",
+    "level": 94.94
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 0.975738,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 97.57
+  }
  },
  "CZ23": {
   "ticker": "CZ23",
@@ -39037,13 +42544,19 @@
   "universeComplete": true,
   "pcSlug": "pokemon-crown-zenith",
   "sources": [],
-  "divisor": 24.8211,
+  "divisor": 17.710394,
   "divisorLog": [
    {
     "date": "2026-09-28",
     "before": null,
     "after": 24.8211,
     "why": "inception — basket $2482.11 over 230 of 232 slots; 0 capped (25% single / 5-50 group)"
+   },
+   {
+    "date": "2026-09-30",
+    "before": 24.8211,
+    "after": 17.710394,
+    "why": "REBASE (Mo 2026-09-30: base = release date). 100 = Jan 2023, the first month of sold data after the Jan 20, 2023 release. Every level × 1.401499; shape and % moves unchanged."
    }
   ],
   "capLog": [],
@@ -42522,9 +46035,9 @@
   "history": [
    {
     "date": "2026-09-28",
-    "level": 100,
+    "level": 140.15,
     "basketValue": 2482.11,
-    "divisor": 24.8211,
+    "divisor": 17.710394,
     "priced": 230,
     "note": "inception"
    }
@@ -42533,7 +46046,195 @@
    "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
    "next": "2027-01-04"
   },
-  "sub": {}
+  "sub": {},
+  "baseDate": "2023-01",
+  "baseRule": "release",
+  "baseNote": "100 = Jan 2023, the first month of sold data after the Jan 20, 2023 release",
+  "recon": [
+   {
+    "month": "2023-01",
+    "level": 100.0
+   },
+   {
+    "month": "2023-02",
+    "level": 79.04
+   },
+   {
+    "month": "2023-03",
+    "level": 70.88
+   },
+   {
+    "month": "2023-04",
+    "level": 61.05
+   },
+   {
+    "month": "2023-05",
+    "level": 60.64
+   },
+   {
+    "month": "2023-06",
+    "level": 57.98
+   },
+   {
+    "month": "2023-07",
+    "level": 54.28
+   },
+   {
+    "month": "2023-08",
+    "level": 54.31
+   },
+   {
+    "month": "2023-09",
+    "level": 54.01
+   },
+   {
+    "month": "2023-10",
+    "level": 51.58
+   },
+   {
+    "month": "2023-11",
+    "level": 49.34
+   },
+   {
+    "month": "2023-12",
+    "level": 49.61
+   },
+   {
+    "month": "2024-01",
+    "level": 50.5
+   },
+   {
+    "month": "2024-02",
+    "level": 48.81
+   },
+   {
+    "month": "2024-03",
+    "level": 49.47
+   },
+   {
+    "month": "2024-04",
+    "level": 50.32
+   },
+   {
+    "month": "2024-05",
+    "level": 63.57
+   },
+   {
+    "month": "2024-06",
+    "level": 61.75
+   },
+   {
+    "month": "2024-07",
+    "level": 57.02
+   },
+   {
+    "month": "2024-08",
+    "level": 55.17
+   },
+   {
+    "month": "2024-09",
+    "level": 54.79
+   },
+   {
+    "month": "2024-10",
+    "level": 55.04
+   },
+   {
+    "month": "2024-11",
+    "level": 57.51
+   },
+   {
+    "month": "2024-12",
+    "level": 61.97
+   },
+   {
+    "month": "2025-01",
+    "level": 83.14
+   },
+   {
+    "month": "2025-02",
+    "level": 89.43
+   },
+   {
+    "month": "2025-03",
+    "level": 87.95
+   },
+   {
+    "month": "2025-04",
+    "level": 84.13
+   },
+   {
+    "month": "2025-05",
+    "level": 83.93
+   },
+   {
+    "month": "2025-06",
+    "level": 78.93
+   },
+   {
+    "month": "2025-07",
+    "level": 81.94
+   },
+   {
+    "month": "2025-08",
+    "level": 87.03
+   },
+   {
+    "month": "2025-09",
+    "level": 103.75
+   },
+   {
+    "month": "2025-10",
+    "level": 108.41
+   },
+   {
+    "month": "2025-11",
+    "level": 92.67
+   },
+   {
+    "month": "2025-12",
+    "level": 90.83
+   },
+   {
+    "month": "2026-01",
+    "level": 95.96
+   },
+   {
+    "month": "2026-02",
+    "level": 95.99
+   },
+   {
+    "month": "2026-03",
+    "level": 108.59
+   },
+   {
+    "month": "2026-04",
+    "level": 130.97
+   },
+   {
+    "month": "2026-05",
+    "level": 147.78
+   },
+   {
+    "month": "2026-06",
+    "level": 158.52
+   },
+   {
+    "month": "2026-07",
+    "level": 152.15
+   },
+   {
+    "month": "2026-08",
+    "level": 143.88
+   }
+  ],
+  "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+  "rebase": {
+   "date": "2026-09-30",
+   "factor": 1.401499,
+   "ruling": "Mo 2026-09-30 in chat: rebase every Pokémon index to its release date",
+   "inceptionLevel": 140.15
+  }
  },
  "BF26": {
   "ticker": "BF26",

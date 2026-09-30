@@ -84,7 +84,7 @@
       var h = (v.history || []).filter(function (r) { return r && r.level != null; }).map(function (r) { return { date: r.date, level: r.level, note: r.note || '' }; });
       var pre = v.status === 'pre' || v.status === 'pre-activation' || !h.length;
       idx.push({ k: k, name: v.name || k, page: v.page || null, status: pre ? 'pre' : 'live', basis: v.basisLabel || (v.basis === 'ask' ? 'ask-basis · nightly marks' : 'sold comps only · weekly re-mark'), history: h,
-        level: h.length ? h[h.length - 1].level : null, prev: h.length > 1 ? h[h.length - 2].level : null, date: h.length ? h[h.length - 1].date : null, inception: v.inception || null, rd: v.releaseDate || null });
+        level: h.length ? h[h.length - 1].level : null, prev: h.length > 1 ? h[h.length - 2].level : null, date: h.length ? h[h.length - 1].date : null, inception: v.inception || null, rd: v.releaseDate || null, baseDate: v.baseDate || null, baseRule: v.baseRule || null, recon: (v.recon || []).filter(function (r) { return r && r.level > 0; }) });
     }
     return { day: day, cards: cards, marked: marked, total: cards.length, gatedN: gatedN, closes: closes, indices: idx, composite: composite(cards, history) };
   }
@@ -105,15 +105,21 @@
     opts = opts || {};
     var W = 560, H = opts.h || 300, pl = 8, pr = 52, pt = 14, pb = 26; /* H: the browser fits it to the panel (fitChart); the pre-render uses 300 */
     if (!series || series.length < 2) return '<div class="chart-empty">One mark so far — the line starts at the next re-mark.</div>';
+    /* opts.log (Sep 30 2026, Mo: log charts on the indices): the axis is ln(level), so equal % moves are equal heights;
+     * ticks become round levels (50 · 100 · 200 …) instead of evenly spaced decimals. */
+    var L = opts.log ? Math.log : function (v) { return v; };
     var lo = Math.min.apply(null, series), hi = Math.max.apply(null, series);
     if (opts.ref != null) { lo = Math.min(lo, opts.ref); hi = Math.max(hi, opts.ref); }
-    var pad = (hi - lo || 1) * 0.12, y0 = lo - pad, y1 = hi + pad;
-    var X = function (i) { return pl + (i / (series.length - 1)) * (W - pl - pr); }, Y = function (v) { return pt + (1 - (v - y0) / (y1 - y0)) * (H - pt - pb); };
+    lo = L(lo); hi = L(hi);
+    var pad = opts.log ? Math.max((hi - lo) * 0.12, 0.03) : (hi - lo || 1) * 0.12, y0 = lo - pad, y1 = hi + pad;
+    var X = function (i) { return pl + (i / (series.length - 1)) * (W - pl - pr); }, Y = function (v) { return pt + (1 - (L(v) - y0) / (y1 - y0)) * (H - pt - pb); };
     var up = series[series.length - 1] >= series[0];
     var d = series.map(function (v, i) { return (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1); }).join(' ');
     var area = d + ' L' + X(series.length - 1).toFixed(1) + ' ' + (H - pb).toFixed(1) + ' L' + X(0).toFixed(1) + ' ' + (H - pb).toFixed(1) + ' Z';
     var refY = opts.ref != null ? Y(opts.ref) : null;
-    var ticks = [y0 + pad * 0.3, (y0 + y1) / 2, y1 - pad * 0.3].map(function (v) { var ty = Y(v); var hit = refY != null && Math.abs(ty - refY) < 12; return '<line class="grid" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + ty.toFixed(1) + '" y2="' + ty.toFixed(1) + '"/>' + (hit ? '' : '<text class="axis" x="' + (W - pr + 6) + '" y="' + (ty + 4).toFixed(1) + '">' + num(v, opts.dec == null ? 2 : opts.dec) + '</text>'); }).join('');
+    var tickVals = opts.log ? [10, 20, 25, 30, 40, 50, 60, 75, 125, 150, 200, 250, 300, 400, 500, 750, 1000].filter(function (v) { return L(v) > y0 && L(v) < y1; }) : [y0 + pad * 0.3, (y0 + y1) / 2, y1 - pad * 0.3];
+    while (tickVals.length > 4) tickVals = tickVals.filter(function (_, i) { return i % 2 === 0; });
+    var ticks = tickVals.map(function (v) { var ty = Y(v); var hit = refY != null && Math.abs(ty - refY) < 12; return '<line class="grid" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + ty.toFixed(1) + '" y2="' + ty.toFixed(1) + '"/>' + (hit ? '' : '<text class="axis" x="' + (W - pr + 6) + '" y="' + (ty + 4).toFixed(1) + '">' + num(v, opts.log ? 0 : opts.dec == null ? 2 : opts.dec) + '</text>'); }).join('');
     var n = labels.length, step = Math.max(1, Math.ceil(n / 5));
     var xl = labels.map(function (l, i) { return (i % step === 0 || i === n - 1) ? '<text class="axis" x="' + X(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + (i === n - 1 ? 'end' : i === 0 ? 'start' : 'middle') + '">' + esc(l) + '</text>' : ''; }).join('');
     var e = [X(series.length - 1), Y(series[series.length - 1])];
@@ -124,7 +130,7 @@
 
   /* ---------- the index board (home, above the fold — Sep 25 2026, Mo: "lean HARD into the edge") ----------
    * One row per set index, nothing else. Level · 1W (vs the prior mark) · 1M (vs the newest mark at least 28 days
-   * back; "—" until the series is that old) · since launch (level − 100) · sparkline over every mark · marked date.
+   * back; "—" until the series is that old) · since base (level − 100; base = release month for Pokémon since Sep 30 2026, inception for Bowman) · sparkline over every mark · marked date.
    * Never the BOARD composite (that is ask-basis and not an index — it lives in the Bowman panel below). Pre-activation
    * rows show PRE. Every figure is one already in data/indices.json; nothing is derived that a reader can't re-check. */
   function idxStats(r) {
@@ -215,9 +221,13 @@
     var rows = marketRows(model);
     var r = rows.filter(function (x) { return x.k === sel; })[0] || rows[0];
     if (!r || r.status === 'pre') return '<div class="chart-empty">' + (r ? esc(r.k) + ' is pre-activation — no level yet.' : 'No index yet.') + '</div>';
-    var levels = r.history.map(function (h) { return h.level; }), labels = r.history.map(function (h) { return dstr(h.date); });
-    return lineChart(levels, labels, { ref: 100, refLabel: '100 = ' + (r.k === 'BOARD' ? '30 nights ago' : 'inception'), label: r.name, dec: 2, h: h }) +
-      '<div class="chart-cap"><b>' + esc(r.k) + '</b> · ' + esc(r.basis) + ' · ' + r.history.length + ' mark' + (r.history.length === 1 ? '' : 's') + (r.date ? ' · last ' + esc(dstr(r.date)) : '') + (r.page ? ' · <a href="' + esc(r.page) + '">open ' + esc(r.k) + ' »</a>' : '') + '</div>';
+    /* an index with a release base (Sep 30 2026 rebase) draws its monthly reconstruction first, then the live marks, on a log axis */
+    var rc = r.recon || [], MN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var mlab = function (m) { return MN[+m.slice(5, 7) - 1] + ' \u2019' + m.slice(2, 4); };
+    var levels = rc.map(function (x) { return x.level; }).concat(r.history.map(function (h) { return h.level; })), labels = rc.map(function (x) { return mlab(x.month); }).concat(r.history.map(function (h) { return dstr(h.date); }));
+    var refLabel = r.k === 'BOARD' ? '30 nights ago' : r.baseDate ? mlab(r.baseDate) + (r.baseRule !== 'release' ? ' (first reliable month)' : String(r.rd || '').slice(0, 7) === r.baseDate ? ' (release)' : ' (1st month after release)') : 'inception';
+    return lineChart(levels, labels, { ref: 100, refLabel: '100 = ' + refLabel, label: r.name, dec: 2, h: h, log: r.k !== 'BOARD' }) +
+      '<div class="chart-cap"><b>' + esc(r.k) + '</b> · ' + esc(r.basis) + ' · ' + (rc.length ? rc.length + ' months reconstructed + ' : '') + r.history.length + ' live mark' + (r.history.length === 1 ? '' : 's') + (r.k !== 'BOARD' ? ' · log scale' : '') + (r.date ? ' · last ' + esc(dstr(r.date)) : '') + (r.page ? ' · <a href="' + esc(r.page) + '">open ' + esc(r.k) + ' »</a>' : '') + '</div>';
   }
   function renderEngine(model) {
     var li = [], t = dstr(model.day);

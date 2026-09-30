@@ -215,7 +215,7 @@ def card_og(idx, out):
     d.text((240, 42), "//  SPORTS CARD INTELLIGENCE", font=MONO(12), fill=DIM)
     d.line([(48, 76), (W - 48, 76)], fill="#0e3a45", width=1)
     d.line([(48, 106), (80, 106)], fill=CYAN, width=2)
-    d.text((94, 96), "LIVE TAPE · RE-MARKED WEEKLY · 100.00 BASE", font=MONO(13), fill=CYAN)
+    d.text((94, 96), "LIVE TAPE · SOLD-BASIS · 100 = RELEASE MONTH", font=MONO(13), fill=CYAN)
     d.text((48, 118), "SET", font=COND9(120), fill=TXT)
     d.text((48, 222), "INDICES", font=COND9(120), fill=CYAN)
     d.text((48, 352), "Every set as a ticker. Price-weighted,", font=BAR4(22), fill=DIM)
@@ -234,7 +234,7 @@ def card_og(idx, out):
         d.text((px + 160, yy + 16), nm, font=BAR6(17), fill=TXT)
         s = f"{lv:.2f}"; d.text((px + pw - 110 - d.textlength(s, font=COND7(34)), yy + 6), s, font=COND7(34), fill=TXT)
         d.text((px + pw - 98, yy + 16), f"{chg:+.1f}%", font=MONO(16), fill=col)
-    d.text((px + 20, py + 66 * len(keys) + 30), "since inception 2026-08-24 · arrow = week over week", font=MONO(12), fill=DIM)
+    d.text((px + 20, py + 66 * len(keys) + 30), "% since each set's release month · arrow = week over week", font=MONO(12), fill=DIM)
     d.line([(48, OH - 52), (W - 48, OH - 52)], fill="#0e3a45", width=1)
     d.text((48, OH - 40), f"marks as of {asof} · shopcardhub.com/indices", font=MONO(13), fill=DIM)
     p = out / "indices.png"; im.save(p)
@@ -243,7 +243,9 @@ def card_og(idx, out):
     # written into the site's og/ folder, stamp every page's reference with ?v=<mark date>.
     if out.resolve() == (ROOT / "og").resolve():
         import re
-        v = asof.replace("-", "")
+        # v = the day the image was drawn, not the mark date: the Sep 30 2026 rebase redrew it with no new mark
+        import datetime as _dt
+        v = _dt.date.today().strftime("%Y%m%d")
         for f in ROOT.glob("*.html"):
             t = f.read_text(encoding="utf-8")
             n = re.sub(r"og/indices\.png(\?v=\d+)?", "og/indices.png?v=" + v, t)

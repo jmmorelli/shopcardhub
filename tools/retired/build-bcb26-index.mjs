@@ -317,7 +317,7 @@ ${isPre ? `<div class="activate"><h3>Pre-activation &middot; what happens next</
 <p><b>Activates when &ge;60% of the chase basket (by value) has verified asks</b> — expected within days of Sep 9. The first mark sets the divisor so the index opens at <b>100.00</b>; from then on the level IS the cumulative move. Marks are on an <b>ask basis, labeled on every row</b>, until SCP sold coverage reaches &ge;60% of basket value — then the index restates to hammer basis through a logged divisor adjustment (the level does not move on a basis change). Asks are never called solds, and the two are never blended in one basket. Re-marked on every board-touching run (Mon / Tue / Fri) through street +21 days, then weekly. No level, no sparkline and no history are shown until they exist.</p></div>` : ""}
 
 <div class="idx-chart" data-ticker="BCB26" aria-live="polite"></div>
-<script src="/js/index-chart.js?v=1" defer></script>
+<script src="/js/index-chart.js?v=2" defer></script>
 <div class="stats">
 <div class="stat"><div class="k">Universe</div><div class="v">${uni.length}<i style="font-size:9px;color:var(--dim);font-style:normal"> ${byTab.base.length} base + ${byTab.autos.length} autos</i></div></div>
 <div class="stat"><div class="k">Priced / Universe</div><div class="v${priced ? "" : " dim"}">${priced} <i style="font-size:10px;color:var(--dim);font-style:normal">/ ${uni.length}</i></div></div>

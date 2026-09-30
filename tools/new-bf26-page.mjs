@@ -100,7 +100,7 @@ const html = `${head}
   }).catch(function(){});
 })();
 </script>
-<script src="/js/plain-read.js?v=1" defer></script>
+<script src="/js/plain-read.js?v=2" defer></script>
 <script src="/js/vault-track.js?v=6" defer></script>
 </body></html>
 `;

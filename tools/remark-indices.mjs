@@ -32,7 +32,10 @@ const REPO = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const DRY = args.includes("--dry");
-const marksFile = opt("--marks", null);
+// --bake (Sep 30 2026, the release-date rebase): re-bake every chase page from data/indices.json as it stands — no marks,
+// no history row, indices.json untouched. The strip, level, levelchg, stats, table and CARDS all follow the file.
+const BAKE = args.includes("--bake");
+const marksFile = opt("--marks", BAKE ? "/dev/null" : null);
 const DATE = opt("--date", new Date().toLocaleDateString("en-CA"));
 if (!marksFile) { console.error("usage: node tools/remark-indices.mjs --marks marks.txt [--date YYYY-MM-DD] [--dry]"); process.exit(2); }
 
@@ -62,6 +65,12 @@ const summary = {};
 // ---- 1) indices.json ----
 for (const k of POKE) {
   const ix = idx[k]; const m = marks[k] || {};
+  if (BAKE) {
+    const h = ix.history, L = h[h.length - 1], P = h.length > 1 ? h[h.length - 2] : L;
+    const bv = +ix.basket.reduce((a, b) => a + b.price, 0).toFixed(2);
+    summary[k] = { level: L.level, prevLevel: P.level, wow: (L.level / P.level - 1) * 100, bv, remarked: 0, n: ix.basket.length, universe: ix.universe.length, date: L.date };
+    continue;
+  }
   const prevRow = ix.history[ix.history.length - 1];
   let bv = 0, remarked = 0;
   for (const b of ix.basket) {
@@ -79,7 +88,7 @@ for (const k of POKE) {
   ix.history.push({ date: DATE, level, basketValue: bv, divisor: ix.divisor, priced: ix.basket.length, note: "weekly re-mark" });
   summary[k] = { level, prevLevel: prevRow.level, wow, bv, remarked, n: ix.basket.length, universe: ix.universe.length };
 }
-idx.updated = DATE;
+if (!BAKE) idx.updated = DATE;
 
 // ---- 2) pages ----
 const stripHtml = () => {
@@ -116,8 +125,11 @@ for (const k of POKE) {
   const byNum = new Map(ix.basket.map((b) => [String(b.num), b]));
 
   // strip
-  must(/<div class="strip">[\s\S]*?<\/div><\/div>/, "strip");
-  html = html.replace(/<div class="strip">[\s\S]*?<\/div><\/div>/, strip(k));
+  // The strip holds only <a> chips, so it ends at its FIRST </div>. (Sep 30 2026: the old /…?<\/div><\/div>/ ran past the
+  // strip once the page's strip stopped sitting flush against its wrapper's close, and swallowed the hero + level block.)
+  const STRIP = /<div class="strip">(?:(?!<\/div>)[\s\S])*<\/div>/;
+  must(STRIP, "strip");
+  html = html.replace(STRIP, () => strip(k));
 
   // level + levelchg
   must(/<div class="level">[\d.]+<\/div>/, "level");
@@ -125,10 +137,14 @@ for (const k of POKE) {
   // Two shapes: a page that has been re-marked before ("re-marked <date> · ▲ +x% w/w") and a page still at
   // inception ("marked <date> · w/w accrues from first re-mark" — PF25 shipped Sep 18 2026 in that shape and the
   // Monday lane could not mark it for a week because only the first shape was accepted).
-  const LEVELCHG = /<div class="levelchg"[^>]*>base 100\.00 · inception ([\d/]+) · (?:re-marked [\d/]+ · [▲▼] [+−-][\d.]+% w\/w|marked [\d/]+ · w\/w accrues from first re-mark)<\/div>/;
+  // Sep 30 2026 rebase: base 100 is the set's RELEASE month (or first reliable month), live marks since inception.
+  // Accepts the old inception shapes and the new one; always writes the new one.
+  const LEVELCHG = /<div class="levelchg"[^>]*>(?:base 100\.00 · inception|100 = [^·<]+ · live since) ([\d/]+) · (?:re-marked [\d/]+ · [▲▼] [+−-][\d.]+% w\/w|marked [\d/]+ · w\/w accrues from first re-mark)<\/div>/;
   must(LEVELCHG, "levelchg");
-  html = html.replace(LEVELCHG,
-    `<div class="levelchg" data-prices-updated="${DATE}">base 100.00 · inception $1 · re-marked ${mdy(DATE)} · ${s.wow >= 0 ? "▲" : "▼"} ${signed(s.wow, 1)} w/w</div>`);
+  const MD = s.date || DATE;
+  const baseLbl = ix.baseDate ? `${["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+ix.baseDate.slice(5, 7) - 1]} ${ix.baseDate.slice(0, 4)} (${ix.baseRule !== "release" ? "first reliable month" : String(ix.releaseDate || "").slice(0, 7) === ix.baseDate ? "release month" : "first month after release"})` : "inception";
+  html = html.replace(LEVELCHG, (all, inc) =>
+    `<div class="levelchg" data-prices-updated="${MD}">100 = ${baseLbl} · live since ${inc} · re-marked ${mdy(MD)} · ${s.wow >= 0 ? "▲" : "▼"} ${signed(s.wow, 1)} w/w</div>`);
 
   // stats
   const prices = ix.basket.map((b) => b.price);
@@ -148,7 +164,7 @@ for (const k of POKE) {
   rep(/<div class="k">Basket Value<\/div><div class="v">\$[\d,]+/, `<div class="k">Basket Value</div><div class="v">$${Math.round(s.bv).toLocaleString("en-US")}`, "bv");
   rep(/<div class="k">Weight Skew<\/div><div class="v gold">[+−-][\d.]+/, `<div class="k">Weight Skew</div><div class="v gold">${skew >= 0 ? "+" : "−"}${Math.abs(skew).toFixed(2)}`, "skew");
   // At inception the cell is class "v" with a bare "0.00%" (PF25's Sep 18 template); after the first re-mark it is grn/rd.
-  rep(/<div class="k">Since Inception<\/div><div class="v(?: (?:grn|rd))?">[+−-]?[\d.]+%/, `<div class="k">Since Inception</div><div class="v ${sinceInc >= 0 ? "grn" : "rd"}">${signed(sinceInc, 2)}`, "sinceInc");
+  rep(/<div class="k">Since (?:Inception|Release|Base)<\/div><div class="v(?: (?:grn|rd))?">[+−-]?[\d.]+%/, `<div class="k">Since ${ix.baseRule === "release" ? "Release" : "Base"}</div><div class="v ${sinceInc >= 0 ? "grn" : "rd"}">${signed(sinceInc, 2)}`, "sinceInc");
 
   // holdings table rows
   const rowRe = /<tr class="hrow" data-i="(\d+)"[^>]*>[\s\S]*?<\/tr>\n?/g;
@@ -173,7 +189,7 @@ for (const k of POKE) {
     }
     const wt = (b.price / s.bv) * 100;
     blk = blk.replace(cell[0], `<td class="num">${money(b.price)}</td><td class="num wt">${wt.toFixed(1)}%</td><td class="num"${launchAttr}>${launch}</td>`);
-    if (b.asOf === DATE) blk = blk.replace(/<td class="num dim2">\d\d-\d\d<\/td>/, `<td class="num dim2">${mmdd(DATE)}</td>`);
+    if (!BAKE && b.asOf === DATE) blk = blk.replace(/<td class="num dim2">\d\d-\d\d<\/td>/, `<td class="num dim2">${mmdd(DATE)}</td>`);
     return { b, blk };
   });
   rows.sort((a, c) => c.b.price - a.b.price);
@@ -189,7 +205,7 @@ for (const k of POKE) {
 
   // TOTAL row + holdings stamp
   rep(/(<td class="card" style="color:var\(--th\);font-weight:700;">TOTAL — ALL HOLDINGS<\/td><td><\/td><td class="num">)\$[\d,.]+/, `$1${money(s.bv)}`, "total row");
-  rep(/\*Holdings as of \d\d\/\d\d\/\d\d/, `*Holdings as of ${mdy(DATE)}`, "holdings stamp");
+  rep(/\*Holdings as of \d\d\/\d\d\/\d\d/, `*Holdings as of ${mdy(s.date || DATE)}`, "holdings stamp");
 
   // ROC block: ($from → $to) per listed card; from stays, to = current
   const rocRe = /<span style="color:var\(--th\)">([^<]+)<\/span><span style="color:var\(--(?:grn|gn|rd)\)">[▲▼] [\d.]+% <span style="color:var\(--dim\);font-size:9px">\(\$([\d,.]+) → \$[\d,.]+\)<\/span><\/span>/g;
@@ -230,7 +246,7 @@ for (const k of POKE) {
   console.log(`${k}: ${s.prevLevel.toFixed(2)} -> ${s.level.toFixed(2)} (${signed(s.wow, 2)} w/w) basket $${s.bv.toFixed(2)} re-marked ${s.remarked}/${s.n} (universe ${s.universe}) top2 ${s.top2.toFixed(1)}% eff ${s.eff.toFixed(1)} skew ${s.skew.toFixed(2)} ROC rows ${s.rocRows} | #1 ${s.top}${s.hero && !s.hero.startsWith(s.top.split(" #")[0]) ? "  ** HERO IMAGE IS " + s.hero + " — check **" : ""}`);
 }
 if (DRY) { console.log("(dry run — nothing written)"); process.exit(0); }
-fs.writeFileSync(idxPath, JSON.stringify(idx, null, 1));
+if (!BAKE) fs.writeFileSync(idxPath, JSON.stringify(idx, null, 1));
 for (const [f, h] of Object.entries(pageEdits)) fs.writeFileSync(f, h);
 console.log(`written: data/indices.json + ${Object.keys(pageEdits).length} pages (${DATE})`);
 // The CHASE strip (tools/build-chase-strip.mjs, Sep 26 2026) is baked from each page's CARDS array — re-bake it so the

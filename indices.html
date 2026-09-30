@@ -10,12 +10,12 @@
 <meta property="og:site_name" content="ShopCardHub">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@shopcardhub">
-<meta property="og:image" content="https://www.shopcardhub.com/og/indices.png?v=20260928">
+<meta property="og:image" content="https://www.shopcardhub.com/og/indices.png?v=20260930">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta name="twitter:image" content="https://www.shopcardhub.com/og/indices.png?v=20260928">
+<meta name="twitter:image" content="https://www.shopcardhub.com/og/indices.png?v=20260930">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Set Indices — every set as a ticker","url":"https://www.shopcardhub.com/indices","description":"Live set indices for sports cards and Pokémon: price-weighted, re-marked from a 100.00 base. All 23 tickers mark on sold comps — the six Pokémon chase indices weekly; the whole-set indices (TH26, SV151, twelve classic Pokémon sets from Base Set to Crown Zenith) and the three Bowman indices Monday and Thursday. PB26, CR26, AH26, PRIS25, DR25 and more.","image":"https://www.shopcardhub.com/og/indices.png?v=20260928","isPartOf":{"@type":"WebSite","name":"ShopCardHub","url":"https://www.shopcardhub.com"},"publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://www.shopcardhub.com"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"Set Indices — every set as a ticker","url":"https://www.shopcardhub.com/indices","description":"Live set indices for sports cards and Pokémon: price-weighted, re-marked from a 100.00 base. All 23 tickers mark on sold comps — the six Pokémon chase indices weekly; the whole-set indices (TH26, SV151, twelve classic Pokémon sets from Base Set to Crown Zenith) and the three Bowman indices Monday and Thursday. PB26, CR26, AH26, PRIS25, DR25 and more.","image":"https://www.shopcardhub.com/og/indices.png?v=20260930","isPartOf":{"@type":"WebSite","name":"ShopCardHub","url":"https://www.shopcardhub.com"},"publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://www.shopcardhub.com"}}
 </script>
 <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/css/fonts.css"><style>
 :root { --bg:#07090c; --p1:#0c1017; --p2:#111820; --bg2:#0c1017; --bg3:#111820; --bg4:#161f28; --green-dim:rgba(0,224,122,0.1); --bd:rgba(255,255,255,0.07); --bd2:rgba(255,255,255,0.12); --tx:#b8cdd4; --th:#e4f0f4; --dim:#5a7880; --ac:#00ccf5; --gn:#00e07a; --gd:#f5c800; --rd:#ff2e55;
@@ -719,7 +719,7 @@ tr.soon td { opacity:0.55; }
 </div>
 <div id="tape" style="display:none; background:var(--p2,rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.08); padding:14px 18px; margin-bottom:18px;"></div>
 <div id="sections"></div>
-<div class="foot">Methodology on every index page: price-weighted over sourced sold reads (PriceCharting for Pokémon, SportsCardsPro/eBay solds for sports) · unpriced universe cards carry zero weight and enter via logged divisor adjustments · base 100.00 at inception · weekly re-mark, Mondays. Affiliate disclosure: listing links on index pages are EPN-tracked; prices and index math are independent of them.</div>
+<div class="foot">Methodology on every index page: price-weighted over sourced sold reads (PriceCharting for Pokémon, SportsCardsPro/eBay solds for sports) · unpriced universe cards carry zero weight and enter via logged divisor adjustments · Pokémon: 100 = the set's release month, or for vintage sets the first month PriceCharting's sold history reliably covers (rebased Sep 30, 2026; months before our live marks are reconstructed monthly from that history and drawn dashed) · Bowman: 100 at inception · charts on a log scale · re-marked Monday (chase tiers) or Monday and Thursday. Affiliate disclosure: listing links on index pages are EPN-tracked; prices and index math are independent of them.</div>
 </div>
   </main>
   </div><!-- /.term -->
@@ -824,7 +824,7 @@ fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(
     rowsBySec[c.s].push('<tr class="soon"><td class="nm">' + (FACE[c.t] ? '<div class="roi-cell">' + faceThumb(c.t) + '<div>' + link + '<span class="desc">' + c.d + '</span></div></div>' : link + '<span class="desc">' + c.d + '</span>') + '</td>' +
       '<td class="hidem fl">—</td><td class="lv fl">' + c.note + '</td><td class="fl hides">—</td><td class="hidem fl">—</td><td class="fl">—</td><td class="hidem fl">—</td><td class="go">' + (c.href ? '<a class="go-btn dim" href="' + c.href + '">Guide &rarr;</a>' : '') + '</td></tr>');
   });
-  var head = '<thead><tr><th>Ticker</th><th class="hidem">Tracked / Total</th><th>Level</th><th class="hides">Week</th><th class="hidem">Month</th><th>Since start</th><th class="hidem">Range</th><th class="go"></th></tr></thead>';
+  var head = '<thead><tr><th>Ticker</th><th class="hidem">Tracked / Total</th><th>Level</th><th class="hides">Week</th><th class="hidem">Month</th><th title="level − 100: since the release month (Bowman: inception)">Since release</th><th class="hidem">Range</th><th class="go"></th></tr></thead>';
   var out = '';
   ['pokemon','classic','baseball'].forEach(function(sec) {
     out += '<div class="panel" id="' + sec + '" style="scroll-margin-top:80px;"><h2>' + META[sec].label + '</h2><div class="tbl-scroll"><table>' + head + '<tbody>' + rowsBySec[sec].join('') + '</tbody></table></div></div>';

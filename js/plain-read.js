@@ -55,13 +55,18 @@
     var since = level - 100;
     var basket = (r.basket || []).filter(function (c) { return typeof c.price === 'number' && c.price > 0; });
     var name = setName(r), started = day(r.inception || h[0].date);
+    // Sep 30 2026 rebase: 100 = the set's release month (or first reliable month), so "since" reads against that, not our start.
+    var MN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var baseTxt = r.baseDate ? (r.baseRule === 'release' ? 'in ' + MN[+r.baseDate.slice(5, 7) - 1] + ' ' + r.baseDate.slice(0, 4) + ', when the set came out' : 'in ' + MN[+r.baseDate.slice(5, 7) - 1] + ' ' + r.baseDate.slice(0, 4) + ', the earliest month with reliable sales data') : null;
     var v = verdict(wk);
     var out = [];
 
     // sentence 1 — where the set is vs day one
     var s1;
-    if (n < 2) {
+    if (n < 2 && !baseTxt) {
       s1 = 'We started tracking the <b>' + basket.length + ' most-traded cards</b> in ' + esc(name) + ' on ' + started + '. There is no trend yet — the first weekly move posts after the next price update.';
+    } else if (baseTxt) {
+      s1 = 'The <b>' + basket.length + ' cards</b> we track in ' + esc(name) + ' are worth <b>' + (Math.abs(since) < 0.5 ? 'about the same' : Math.abs(since).toFixed(1) + '% ' + (since < 0 ? 'less' : 'more')) + '</b> together than ' + baseTxt + '.';
     } else if (Math.abs(since) < 0.5) {
       s1 = 'The <b>' + basket.length + ' cards</b> we track in ' + esc(name) + ' are worth <b>about the same</b> as when we started on ' + started + '.';
     } else {

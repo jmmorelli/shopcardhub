@@ -13,6 +13,19 @@
 
 ---
 
+
+## 2026-09-30 AM — POKÉMON INDICES REBASED TO RELEASE DATE + LOG CHARTS (Mo in chat, CoS executed)
+
+**Ruling (Mo, ~07:45 PT):** "I say we rebase … going from inception is dumb compared to going from release date … pull the X poll." Also: charts on a **log** scale. Both decided before any outreach (D batch stays held until this is live; then its drafts are rewritten on the new levels).
+
+- **What changed:** all 20 Pokémon tickers. 100 = release month (PRIS25 Jan 2025, DR25 May 2025, PF25 Nov 2025, AH26 Feb 2026 = first month after the Jan 30 release, CR26 May 2026, PB26 Jul 2026, TH26 Sep 2026, SV151 Sep 2023, EVS21 Sep 2021, CEL21 Oct 2021, CZ23 Jan 2023) or, for sets older than PriceCharting's history, the first month it covers ≥ 90% of the basket by value (BS99 Jan 2021; JU99/FO99/TR00/HF19 Feb 2021; ND02 Jan 2021; NG00 Jul 2021; AQ03 Oct 2021; SK03 Jan 2022), labelled "first reliable month". Bowman untouched (100 at inception).
+- **Sep 28 levels on the new base:** PB26 68.13 · CR26 41.68 · AH26 81.01 · PRIS25 70.82 · DR25 58.15 · PF25 69.90 · TH26 99.73 · SV151 170.92 · BS99 113.19 · JU99 163.32 · FO99 167.10 · TR00 176.72 · NG00 165.94 · ND02 220.94 · AQ03 358.56 · SK03 344.17 · HF19 145.48 · EVS21 225.53 · CEL21 97.57 · CZ23 140.15.
+- **How:** PriceCharting item pages embed `VGPC.chart_data.used` (monthly ungraded history; same basis as our marks). 2,112 basket cards pulled; chain-linked monthly on cards priced in both months with current weights → `recon[]`; one factor per ticker rescales `history` + divisor (logged in `divisorLog`, `rebase{}` block). % moves unchanged. Chase tickers' PC paths resolved from the console pages (all 289 matched).
+- **Tools:** `remark-indices.mjs` gains `--bake` and writes the new levelchg ("100 = Jul 2026 (release month) · live since 08/24/26 · …") and "Since Release/Base"; **its strip regex was also fixed** — the old `…?</div></div>` ran past the strip on every chase page and would have eaten the hero + level block at the next Monday re-mark. `build-sector-index.mjs` prints base wording from `baseDate`. `js/index-chart.js` v2 = log axis, time-scaled X, dashed reconstruction + solid live marks, base note under the chart. `js/home.js` v8 chart = recon + live on log. `plain-read.js` v2 reads "vs <release month>". og/indices.png redrawn ("100 = release month").
+- **League pages:** ten Pokémon league pages quote old-base levels; each carries a dated `data-rebase-note` with the new levels. `tools/league/BRIEF.md` now tells improve runs (Thu Oct 1 onward) to rewrite their index claims on the new base and delete the note.
+- **Pulled:** the Sep 30 X start-date poll (Project `claude/cos/x-poll-2026-09-30.md` marked PULLED). Feed-offer emails + D pitches: rewrite on the new levels before any send.
+- **Known limits (on the pages):** reconstruction is monthly and uses today's basket/weights; PriceCharting's first months of history are thin (BS99's Dec 2020 → Jan 2021 −43% is why the 90%-coverage rule exists).
+
 ## TOP 3 PROBLEMS IN THE BUSINESS — weekly read 2026-09-23 (GA4 nightly, window ends Sep 22; bots = SG 141 + CN 23 sessions)
 
 1. **Earnings below M0; thin path into eBay.** ~$100/mo trailing (Sep 18 read) vs M0 $300. 44 outbound clicks/7d (buy-strip 7, buy-box 3) on ~203 clean sessions. Today's 14:00 desk EPN read (R22) writes the first Milestones line. *Doing:* nothing new ships that isn't Phase 2 or a live FAIL; R11 strips hold on every commercial page.

@@ -37,7 +37,7 @@ let h = fs.readFileSync(path.join(ROOT, "scarlet-violet-151-index.html"), "utf8"
 const esc = (x) => String(x).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const setE = esc(s.set);
 const title = `${TK} · ${s.set} Set Index — every card, sold comps, base 100 | ShopCardHub`;
-const desc = `${TK}: a set index for Pokémon ${s.set} (${s.year})${vintage && s.q.includes("unlimited") ? ", Unlimited print" : ""} — every card in the set, priced from dated sold comps of raw singles, base 100 at launch, re-marked Monday and Thursday. Every constituent shown. No calls, just the tape.`;
+const desc = `${TK}: a set index for Pokémon ${s.set} (${s.year})${vintage && s.q.includes("unlimited") ? ", Unlimited print" : ""} — every card in the set, priced from dated sold comps of raw singles, base 100 at release, re-marked Monday and Thursday. Every constituent shown. No calls, just the tape.`;
 const ogd = `Every card in Pokémon ${s.set}, priced from dated sold comps. Base 100, re-marked twice a week, every constituent shown.`;
 const rep = (a, b) => { if (!h.includes(a)) throw new Error("anchor missing: " + a.slice(0, 60)); h = h.split(a).join(b); };
 h = h.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(title)}</title>`);

@@ -122,7 +122,11 @@ The standard error on skewness is about `√(6/n)`; on kurtosis about `√(24/n)
 
 *Operationally: `node tools/build-sv151.mjs --mark`, twice a week, owned by Pricing Integrity / Engine Watch. A missed mark is a permanent hole in the distribution this cadence exists to measure — it cannot be filled in later without becoming the backfill this section refuses.*
 
-## 6. Why forward-start, not retroactive
+## 6. Why forward-start, not retroactive — SUPERSEDED FOR POKÉMON, Sep 30 2026
+
+> **Amendment (Mo, Sep 30 2026, in chat: "I say we rebase … going from inception is dumb compared to going from release date").** Every Pokémon index is now based at **100 = its release month** (or, for sets older than PriceCharting's sold history — the 1999–2003 WOTC/e-card sets and Hidden Fates — the first month that history covers ≥ 90% of the basket by value, labelled "first reliable month"). The months between the base and our live inception are a **monthly reconstruction** from PriceCharting's item-page price history (`used` = ungraded, the same source and basis as the live marks), current basket and weights, chain-linked; stored as `recon` in `data/indices.json`, drawn dashed and labelled on every chart, never presented as a live mark. The live series was multiplied by one factor per ticker (logged divisor adjustment), so every % move is unchanged. Reason 2 below (survivorship) does not bite here: a set index's universe is the set's fixed checklist, so nothing is selected on outcome. The known limits, disclosed on the pages: the reconstruction uses today's basket and cap weights, and it is monthly. The Bowman indices keep inception bases. X poll on the question pulled the same day. Proposal and prototype: Project `claude/cos/index-base-date-proposal-2026-09-30.md`.
+
+*(Original Sep 15 text follows, kept for the record.)*
 
 Mo's call, Sep 15, and the right one:
 
