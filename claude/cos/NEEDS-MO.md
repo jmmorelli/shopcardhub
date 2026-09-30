@@ -14,7 +14,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 ## Open — from the desk (2026-09-30, 14:00 run). Mo, these are the only things waiting on you
 
 - **Today before 4:00 pm PT: one word in your queued X post** (sent to your phone ~14:15 PT). In the 4:00 pm Evolving Skies / Crown Zenith post, change "Every card in each **set**" to "Every card in each **basket**". Our indices hold 235 of 238 Evolving Skies cards and 230 of 232 Crown Zenith. In the 6:30 pm post, change "Crown Zenith's **whole set**" to "Crown Zenith's **index**". Every level in both posts checks against the site. Unattended runs can't edit your scheduled posts. *(If the time has passed: a one-line reply under the post saying "every card in the index basket" covers it. Don't delete.)*
-- **The Chrome choice (weekly item below) now also blocks the Wednesday EPN money read**, and this is the second week it has been missed (last full read Sep 23). Same one-time fix: answer the browser prompt in a CoS chat, or disconnect the extension in the Chrome profile you don't use.
+- **EPN is signed out** (checked ~15:30 PT in Browser 1, the Chrome you picked today). The Wednesday money read has now been missed two weeks running; the last full read was Sep 23. **Action:** sign in at partner.ebay.com in Browser 1, then tell the CoS "read EPN". *(The Chrome choice is settled for this session: Browser 1.)*
 - TCGplayer (#2) and TAG (#4): unchanged. Nothing else.
 
 ---
