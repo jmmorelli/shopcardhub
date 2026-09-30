@@ -409,3 +409,44 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body table.roi-table.rt-stack td .sch-track-card { min-height: 40px; }
   body table.roi-table.rt-stack .roi-price, body table.roi-table.rt-stack td { font-variant-numeric: tabular-nums; }
 }
+
+/* 12 (UX Auditor / Mobile QA, Sep 30 2026). The phone floors again (brief-to-green: no text < 11 px, nav/CTA taps
+   >= 40 px). Blocks added since the Sep 14 audit shipped their own sub-11px labels and short buttons: the home index
+   board's Sealed buttons (10 px text in a 22 px button), the chase strip, sealed rows and chart caption on the set
+   indices, the sector-index labels, the card-page Terminal band, the buy strip's text links, the nav logo (30-33 px).
+   Same technique as section 4: phones only, sizes and heights only - no colour, copy, link or layout change. */
+@media (max-width:540px) {
+  body table.ib .ib-go, body .mrow .pre, body .chart-cap, body .chart-cap b, body .chart-cap a, body .tape-tag,
+  body .scr-chips a, body table.scr td .sub,
+  body .idx-chart .ic-cap, body .idx-chart .ic-cap b,
+  body .chase .ck, body .chase .ck b, body .chase .cgo, body .chase .cf,
+  body .sealed .sk, body .sealed .sk b, body .sealed .sc, body .sealed .sc i, body .sealed .buy, body .sealed .sr,
+  body .sealed .sr .srk, body .sealed .sr .srs,
+  body .sidx-eyebrow, body .sidx-level .lvc, body .sidx-level .lvc span, body .sidx-cap, body .sidx-tbl th,
+  body .sidx-subidx-k, body .sidx-subidx-k b, body .sidx-subidx-n,
+  body .bstrip .bs-k, body .bstrip .bs-rep, body .bstrip .bs-case, body .bs .n,
+  body .cp-t1 .cp-eyebrow, body .cp-t1 .cp-mark-d, body .cp-t1 .cp-actions .cp-jump, body .cp-t1 .cp-band .cp-cell .l,
+  body .cp-t1 .cp-band .cp-cell .s, body .cp-t1 .cp-closes .m,
+  body .hero-meta span, body .dt-k, body .gf-stamp, body .side-card .lbl, body .win .sub, body .win .sub a, body .win .buy,
+  body .gr-f i, body .go-btn, body .pre, body .mode-btn, body .notify-btn
+  { font-size: 11px !important; }
+  /* the long tail (1-8 pages each): comparison pages, card-page photo badge, sealed rows, Bowman board/timeline
+     blocks, the 30th Celebration tiles, the release calendar, auctions, the 151 guide's ask note */
+  body .cmp thead th, body .cmp thead th.side small, body .cmp a.buy, body .cmp .sub, body .cmp .sub a,
+  body .cp-photo .sch-ebay-tag, body .sr, body .sr .srk, body .sr .srs, body .sr a,
+  body .bm th, body .bm .bm-eyebrow, body .bm .bm-f, body .bm .bm-f a, body .tl .tl-eyebrow, body .tl-st, body .tl .tl-f,
+  body .bb-k, body .bb-badge, body .bb-retail-k, body .bb-retail-s, body .product-alt, body .product-alt a,
+  body .rc-eyebrow, body .rc-fam, body .rc-act a, body .au-cell .l, body .ask-note
+  { font-size: 11px !important; }
+  body .nav-logo a.logo, body nav a.logo, body header a.logo { display: inline-flex; align-items: center; min-height: 40px; }
+  body .bstrip .bs-go, body .bstrip .bs-go2, body .bstrip .bs-fan { min-height: 40px; }
+  body .bstrip .bs-rep, body .bstrip .bs-case { display: inline-flex; align-items: center; min-height: 40px; }
+  body a.sch-track-cta, body .go-btn:not(.ib-go) { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; }
+  /* the home board's Sealed button holds "Box <span>eBay</span>": a flex box would drop the space between them */
+  body table.ib .ib-go { display: inline-block; box-sizing: border-box; min-height: 40px; padding-top: 14px; padding-bottom: 14px; }
+  /* in-page controls under 40 px on the key pages: Vault tabs and toggles, the guide fold buttons, ★ Track, the index
+     "Show the numbers" toggle (all <button>s: min-height only, display untouched) */
+  body .vtab, body .mode-btn, body .notify-btn, body .ob-link, body .fold-btn, body .fd-btn, body .pr-tg, body button.sch-track-card { min-height: 40px; }
+  body #newPill span { font-size: 11px !important; }
+  body a.btn, body a.btn-primary, body a.btn-secondary { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+}

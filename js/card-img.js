@@ -63,7 +63,7 @@
 
   // Cards the engine doesn't track (anything a visitor adds to the Vault) still get a
   // photo: one Browse call by name through the site's own comps endpoint, cached a week.
-  var LS = 'sch_cimg_v2'; // v2 (Sep 28): cached hits carry fp/px for the vs-last-sold chip
+  var LS = 'sch_cimg_v3'; // v2 (Sep 28): cached hits carry fp/px for the vs-last-sold chip; v3 (Sep 30): accent-folded matching + skin/sticker filter re-resolves stale hits
   function lsGet() { try { return JSON.parse(localStorage.getItem(LS) || '{}'); } catch (e) { return {}; } }
   function lsSet(m) { try { localStorage.setItem(LS, JSON.stringify(m)); } catch (e) {} }
   var inflight = {};
@@ -74,14 +74,17 @@
     var nots = (String(name || '').match(/(^|\s)-[a-z0-9]+/gi) || []).map(function (x) { return x.trim().slice(1).toLowerCase(); });
     name = String(name || '').replace(/(^|\s)-[a-z0-9]+/gi, ' ');
     var q = String(name || '').replace(/[—–].*$/, '').replace(/#/g, '').replace(/\b(IR|SIR|UR|HR|AR|SAR|DR|ACE|RR|SR)\b/g, '').replace(/\s+/g, ' ').trim(); // '#231/182' -> '231/182'; rarity codes and a bare '#' kill eBay search
-    var normNum = function (x) { return x.replace(/\b0*(\d+)\/0*(\d+)\b/g, '$1/$2'); };
+    // "Pokémon" in a title must match a "pokemon" token (Sep 30 2026 UX audit: Celebrations Charizard 4/102 listings all
+    // spell it with the accent, so 3 of 14 index thumbs fell back to the tile). Fold accents on both sides.
+    var fold = function (x) { try { return x.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch (e) { return x; } };
+    var normNum = function (x) { return fold(x).replace(/\b0*(\d+)\/0*(\d+)\b/g, '$1/$2'); };
     if (q.length < 4) return Promise.resolve(null);
     var ck = (cat ? cat + ':' : '') + q;
     var m = lsGet(), hit = m[ck];
     if (hit && hit.t && Date.now() - hit.t < 7 * 864e5) return Promise.resolve(hit.v);
     if (inflight[ck]) return inflight[ck];
     var num = (normNum(q).match(/\b\d{1,3}\/\d{1,3}\b/) || [])[0]; // TCG number like 231/182 — the strongest identifier
-    var toks = q.toLowerCase().split(' ').filter(function (t) { return t.length > 2 && !/[#\d]/.test(t); }).slice(0, num ? 2 : 4);
+    var toks = fold(q).toLowerCase().split(' ').filter(function (t) { return t.length > 2 && !/[#\d]/.test(t); }).slice(0, num ? 2 : 4);
     var url = '/api/comps?q=' + encodeURIComponent(q) + '&sort=price&limit=20&customid=img-' + (cat === '183454' ? 'tcg' : 'vault') + (cat ? '&category_ids=' + cat : '');
     inflight[ck] = fetch(url).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
       var ls = (j && j.listings) || [];
@@ -93,7 +96,8 @@
         var ok = toks.every(function (k) { return t.indexOf(k) > -1; });
         if (!ok) continue;
         if (nots.some(function (k) { return t.indexOf(k) > -1; })) continue;
-        if (/(lot of|reprint|digital|custom|proxy|you pick|choose|\bcase\b|cases|frame|display|magnetic|toploader|top loader|sleeve|binder|stand|holder|acrylic|protector|playmat|deck box|storage)/.test(t)) continue;
+        // skin/sticker/decal: a "CREDIT CARD SKIN" printed with the card art was standing in for Umbreon ex 161/131 (Sep 30 audit).
+        if (/(lot of|reprint|digital|custom|proxy|you pick|choose|\bcase\b|cases|frame|display|magnetic|toploader|top loader|sleeve|binder|stand|holder|acrylic|protector|playmat|deck box|storage|\bskins?\b|sticker|decal)/.test(t)) continue;
         best = { url: l.image.replace(/s-l\d+\./, 's-l500.'), item: l.url || null, title: l.title || null,
                  fp: l.buyingOption === 'FIXED_PRICE', px: (typeof l.price === 'number' && l.price > 0) ? l.price + (typeof l.shipping === 'number' ? l.shipping : 0) : null };
         if (l.buyingOption === 'FIXED_PRICE') break;
