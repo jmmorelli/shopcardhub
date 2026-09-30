@@ -17,15 +17,37 @@
   "hubLinkText": "2026 Topps Allen & Ginter — releases Oct 7, configuration and what 2025 A&G sold for →",
   "buyStrip": {
     "product": "2026 Topps Allen & Ginter Baseball hobby box",
-    "primary": { "label": "Shop 2026 A&G hobby boxes on eBay", "q": "2026 Topps Allen Ginter Baseball Hobby Box -lot -case -break -blaster -2025", "customid": "topps-allen-ginter-2026-top" },
-    "secondary": { "label": "Blaster →", "q": "2026 Topps Allen Ginter Baseball Blaster Box -lot -case -2025", "customid": "topps-allen-ginter-2026-blaster", "title": "2026 Topps Allen & Ginter Baseball value blaster" },
+    "primary": {
+      "label": "Shop 2026 A&G hobby boxes on eBay",
+      "q": "2026 Topps Allen Ginter Baseball Hobby Box -lot -case -break -blaster -2025",
+      "customid": "topps-allen-ginter-2026-top"
+    },
+    "secondary": {
+      "label": "Blaster →",
+      "q": "2026 Topps Allen Ginter Baseball Blaster Box -lot -case -2025",
+      "customid": "topps-allen-ginter-2026-blaster",
+      "title": "2026 Topps Allen & Ginter Baseball value blaster"
+    },
     "live": true,
     "req": "ginter"
   },
   "releases": [
-    { "date": "2026-10-07", "family": "sports", "sport": "MLB", "label": "2026 Topps Allen & Ginter Baseball", "note": "hobby 18×8, 2 hits · replaces the existing Oct 7 A&G row (adds href; street date now read on the Topps product page)", "status": "confirmed", "href": "/topps-allen-ginter-2026", "q": "2026 Topps Allen & Ginter Baseball hobby box", "source": "https://www.topps.com/products/2026-topps-allen-ginter-baseball-hobby-box (read 2026-09-28: 'October 7, 2026'); https://www.topps.com/pages/topps-allen-ginter-baseball ('Available October 7'); https://www.topps.com/release-calendar (read 2026-09-28: Oct 7)" }
+    {
+      "date": "2026-10-07",
+      "family": "sports",
+      "sport": "MLB",
+      "label": "2026 Topps Allen & Ginter Baseball",
+      "note": "hobby 18×8, 2 hits · replaces the existing Oct 7 A&G row (adds href; street date now read on the Topps product page)",
+      "status": "confirmed",
+      "href": "/topps-allen-ginter-2026",
+      "q": "2026 Topps Allen & Ginter Baseball hobby box",
+      "source": "https://www.topps.com/products/2026-topps-allen-ginter-baseball-hobby-box (read 2026-09-28: 'October 7, 2026'); https://www.topps.com/pages/topps-allen-ginter-baseball ('Available October 7'); https://www.topps.com/release-calendar (read 2026-09-28: Oct 7)"
+    }
   ],
-  "searchExtra": { "href": "/topps-allen-ginter-2026", "label": "2026 Topps Allen & Ginter — release date Oct 7" },
+  "searchExtra": {
+    "href": "/topps-allen-ginter-2026",
+    "label": "2026 Topps Allen & Ginter — release date Oct 7"
+  },
   "warnsAdded": [],
-  "notes": "Sold comps: SportsCardsPro rendered in headless Chromium (Cloudflare blocks curl), parsed with tools/league/lib.mjs soldRows — same maths as solds.mjs; 2025 hobby box $220.00 median of 5 sales Sep 3–17 (30-day), Kurtz #296 raw $1.80 (14, Aug 31–Sep 26), Kurtz PSA 10 $33.00 (3, Aug 30–Sep 14; latest row Sep 14 $42.00), Sasaki #92 raw $1.00 (5, Aug 31–Sep 17), Ohtani #132 raw $3.00 (30 most recent, Sep 11–27). 2026 lowest single-box ask $194.95 (Sep 28, /api/comps, cases/lots/2025 X removed by eye). Commissioner: the Topps release calendar (read Sep 28) still shows Cosmic Chrome Baseball, Bowman U Best and Inception Football on Oct 5 and Flagship Basketball Oct 6 with no street dates beyond Oct 15. Next run: 2026-27 Upper Deck Series 1 Hockey (autocomplete 'release date' 2nd of 10 for '2026-27 upper deck series 1', Sep 28) once upperdeck.com dates it — Steel City's Oct 7 is distributor-only; then Topps Heritage Football (Steel City Oct 21) if Topps dates it. Render: the only console error at 1280/390 is the aborted googletagmanager request (analytics hosts aborted per BRIEF §4)."
+  "notes": "2026-09-30 improve run (0 new pages; weekly cap 5/5): re-read every figure 7 days before street date, stamp bumped to 2026-09-30. Changes: (1) Nick Kurtz #296 PSA 10 — the $33.00 30-day median (3 sales Aug 30–Sep 14) had gone stale: on Sep 30 only 2 PSA 10 sales fall in 30 days, so the page now shows the labelled 90-day median $36.40 of 11 sales, Jul 3–Sep 14 (latest $42.00 Sep 14). (2) Kurtz raw $1.75, 15 sales Aug 31–Sep 29 (was $1.80/14). (3) Ohtani #132 raw $3.33, 30 most recent sales Sep 22–30 (was $3.00, Sep 11–27). (4) Unchanged on re-read: 2025 hobby box $220.00 median of 5 sales Sep 3–17 (no new sale since Sep 17; 90d $225.00, 30 sales Jul 9–Sep 17); Sasaki #92 $1.00, 5 sales Aug 31–Sep 17. (5) 2026 lowest single-box ask $194.95 on Sep 30 (same as Sep 28), 41 single-box listings, middle ask $215.00 — /api/comps q='2026 topps allen & ginter baseball hobby box -break', cases/multi-box lots/team-break spots removed by eye; labelled as asks. (6) topps.com product page re-read Sep 30 via WebFetch: Oct 7, 18x8, 2 hits, still sold out; no blaster price or new configuration on the maker's pages, so blaster cells stay 'not stated'. Sold comps: SportsCardsPro in headless Chromium parsed with tools/league/lib.mjs soldRows (PriceCharting via solds.mjs was rate-limited). Render: 1280 has a 6px overflow from the shared nav's .nav-mega dropdown (same on how-prices-work.html, pre-existing, not this page's markup); 390 clean. Only request errors are aborted gtag and /api/comps 404 on the local static server. Previous notes (Sep 28): next run candidates — 2026-27 Upper Deck Series 1 Hockey once upperdeck.com dates it (Steel City Oct 7 is distributor-only); Topps Heritage Football if Topps dates it."
 }

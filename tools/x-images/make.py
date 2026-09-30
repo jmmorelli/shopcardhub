@@ -17,6 +17,7 @@ Usage:
   python3 tools/x-images/make.py bangers                  # THE TUESDAY BOARD tape: top-5 parsed straight off bowman-bangers.html (added Sep 8 2026)
   python3 tools/x-images/make.py bcb26                    # BCB26 pre-activation / release-window card from indices.json (added Sep 8 2026; shows the level once live)
   python3 tools/x-images/make.py call v-bb-florentino-buy # accountability card for ONE published call, straight from data/calls.json (added Sep 15 2026)
+  python3 tools/x-images/make.py drawdown               # chase-tier drawdown, Aug-24-inception indices only (matched window), levels + w/w (added Sep 30 2026)
   python3 tools/x-images/make.py all AH26
 
 Output: --out DIR (default: ../Card Hub/x-images/<YYYY-MM-DD>/). Prints paths.
@@ -434,6 +435,52 @@ def card_bcb26(idx, out):
     footer(d, ix["history"][-1]["date"] if live else idx.get("updated", ""), "· shopcardhub.com/bowman-chrome-2026-index")
     p = out / "bcb26.png"; im.save(p); return p
 
+def card_drawdown(idx, out):
+    """Chase-tier drawdown, matched window only (added Sep 30 2026, league F shareable).
+    Plots only the chase indices that share the Aug 24 inception, so every line covers the same
+    dates. Levels straight from data/indices.json history; all baskets are sold comps
+    (PriceCharting ungraded). Later-inception indices (e.g. PF25) are left off, never stitched in."""
+    import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
+    from matplotlib import font_manager as fm
+    keys = [k for k in ("PB26", "CR26", "AH26", "DR25", "PRIS25") if k in idx]
+    start = min(idx[k]["history"][0]["date"] for k in keys)
+    keys = [k for k in keys if idx[k]["history"][0]["date"] == start]
+    asof = min(idx[k]["history"][-1]["date"] for k in keys)
+    ser = {k: [r for r in idx[k]["history"] if r["date"] <= asof] for k in keys}
+    keys.sort(key=lambda k: ser[k][-1]["level"])
+    under = sum(1 for k in keys if ser[k][-1]["level"] < 100)
+    fmt = lambda s: datetime.date.fromisoformat(s).strftime("%b %-d")
+    im, d = canvas(f"pokemon chase indices · {fmt(start)} to {fmt(asof)}, same window",
+                   f"{under} of {len(keys)} under 100", f"Every line starts at 100.00 on {fmt(start)}, 2026. Level = basket of sold comps / divisor. A measurement, not a call.")
+    COLS = ["#00ccf5", "#ffb020", "#ff5fa2", "#9b8cff", "#7ee0c3"]
+    fp_m = fm.FontProperties(fname=_ttf("jetbrains-mono-var"))
+    fig = plt.figure(figsize=(6.9, 3.95), dpi=100, facecolor=PANEL); ax = fig.add_axes([0.09, 0.12, 0.88, 0.84]); ax.set_facecolor(PANEL)
+    dates = [r["date"] for r in ser[keys[0]]]
+    for i, k in enumerate(keys):
+        ys = [r["level"] for r in ser[k]]
+        ax.plot(range(len(ys)), ys, color=COLS[i], lw=2.6 if i == 0 else 2, marker="o", ms=3.5)
+    ax.axhline(100, color=DIM, lw=1, ls=(0, (4, 3)))
+    ax.set_xticks(range(len(dates))); ax.set_xticklabels([fmt(x) for x in dates], fontproperties=fp_m, color=DIM, fontsize=9)
+    ax.set_yticks([80, 85, 90, 95, 100]); ax.set_yticklabels(["80", "85", "90", "95", "100"], fontproperties=fp_m, color=DIM, fontsize=9)
+    ax.set_ylim(79, 103); ax.tick_params(length=0); ax.grid(axis="y", color=GRID, lw=0.6)
+    for sp in ax.spines.values(): sp.set_color(GRID)
+    import io; buf = io.BytesIO(); fig.savefig(buf, format="png", facecolor=PANEL); plt.close(fig); buf.seek(0)
+    im.paste(Image.open(buf), (48, 228))
+    x, y = 760, 228; d.rounded_rectangle([x, y, W - 48, y + 395], 8, fill=PANEL, outline="#16303a")
+    d.text((x + 20, y + 14), f"LEVEL {fmt(asof).upper()}", font=MONO(12), fill=DIM)
+    d.text((x + 220, y + 14), "VS 100", font=MONO(12), fill=DIM); d.text((x + 310, y + 14), "WK PTS", font=MONO(12), fill=DIM)
+    for i, k in enumerate(keys):
+        h = ser[k]; lv = h[-1]["level"]; wk = lv - h[-2]["level"]; yy = y + 42 + i * 70
+        d.rectangle([x + 20, yy + 8, x + 26, yy + 50], fill=COLS[i])
+        d.text((x + 38, yy + 2), k, font=COND9(26), fill=TXT)
+        d.text((x + 38, yy + 34), idx[k]["name"].replace(" Chase Index", ""), font=BAR4(15), fill=DIM)
+        s = f"{lv:.2f}"; d.text((x + 205 - d.textlength(s, font=COND7(28)), yy), s, font=COND7(28), fill=TXT)
+        d.text((x + 220, yy + 12), f"{lv - 100:+.1f}%", font=MONO(15), fill=RED if lv < 100 else GREEN)
+        d.text((x + 310, yy + 12), f"{wk:+.2f}", font=MONO(15), fill=RED if wk < 0 else GREEN)
+    d.line([(48, H - 52), (W - 48, H - 52)], fill="#0e3a45", width=1)
+    d.text((48, H - 40), f"marks as of {asof} · source: sold comps, PriceCharting ungraded · WK PTS = change vs {fmt(ser[keys[0]][-2]['date'])} mark · shopcardhub.com/indices", font=MONO(12), fill=DIM)
+    p = out / "drawdown.png"; im.save(p); return p
+
 # ---------- main ----------
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("kind"); ap.add_argument("ticker", nargs="?"); ap.add_argument("--out")
@@ -451,4 +498,5 @@ if __name__ == "__main__":
     if a.kind == "bangers": done.append(card_bangers(out))
     if a.kind == "bcb26": done.append(card_bcb26(idx, out))
     if a.kind == "call": done.append(card_call(a.ticker, out))
+    if a.kind == "drawdown": done.append(card_drawdown(idx, out))
     for p in done: print(p)
