@@ -975,6 +975,15 @@ and `claude/night-crew/BACKLOG.md`.
   duty each night is that queue. The crew never grades its own work: the morning deploy's live check and the next
   Site Sweep do.
 
+## R29 · Break links follow the release window and the checklist (Mo, 2026-09-30 — "yep build it, approve")
+
+Player breaks (one prospect's slot in a 1–3 case break, winner takes every card of his) cluster in the weeks after a release, and they only pay an investor when the product being broken contains the player's 1st Bowman auto.
+- **A player gets a "Break spots →" link only when** (1) he is on the auto checklist of the product in that link, (2) today is inside that product's break window (release date → +30 days, `data/break-odds.json`), and (3) production `/api/comps` shows ≥ 3 spot listings naming him. The link's query names the product (R8): a September Bowman Chrome spot is never linked under a May Bowman 1st auto.
+- **The math rides with the link, never hype:** expected autos per case (published pack odds ÷ checklist, equal seeding stated), the chance of no auto in a 1- and 3-case break (Poisson), the /50-or-scarcer tail, and value at the player's sold mark with tier multiples. No spot price is shown (R20).
+- **Tool:** `tools/build-break-math.mjs --ticker <TK>` (BCB26 live). A product joins by adding its odds sheet, checklist size and release date to `data/break-odds.json`. Links carry `data-break-until` and hide themselves after the window.
+- **The Bangers board** gets break links only under this rule — today its seats' autos are 2026 Bowman (May), whose window closed, so it gets none.
+- **Kill:** Dec 2 EPN read, `*-break-*` 0 actions on ≥ 20 clicks → links out, math stays (ledger #45).
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.

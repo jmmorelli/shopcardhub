@@ -1,35 +1,132 @@
 {
- "_comment": "Pack odds for Chrome Prospect Autographs, 2026 Bowman Chrome Baseball HOBBY, as printed on Topps' odds sheet (read 2026-09-30 via Checklist Insider). Read by tools/build-break-math.mjs. 'n' = print run (null = unnumbered or not tiered); odds are 1 in N packs. Edit only from a published odds sheet, with its source and read date.",
+ "_comment": "Pack odds for Chrome Prospect Autographs, 2026 Bowman Chrome Baseball HOBBY, as printed on Topps' odds sheet (read 2026-09-30 via Checklist Insider). Read by tools/build-break-math.mjs. 'n' = print run (null = unnumbered or not tiered); odds are 1 in N packs. Edit only from a published odds sheet, with its source and read date. releaseDate + windowDays = the break window (Mo, Sep 30: breaks cluster at release): break-spot links show only inside it; the math stays after it closes. breakQuery names the product so a spot in a different release is never linked (R8).",
  "BCB26": {
   "product": "2026 Bowman Chrome Baseball Hobby",
-  "packsPerBox": 6, "boxesPerCase": 12, "autosPerBox": 2,
+  "packsPerBox": 6,
+  "boxesPerCase": 12,
+  "autosPerBox": 2,
   "checklist": 104,
   "source": "https://www.checklistinsider.com/2026-bowman-chrome-baseball",
   "read": "2026-09-30",
   "odds": [
-   {"name": "Chrome Prospect Autograph (base)", "tier": "base", "packs": 6},
-   {"name": "Refractor /499", "tier": "numbered-high", "packs": 41},
-   {"name": "Speckle Refractor /299", "tier": "numbered-high", "packs": 65},
-   {"name": "Purple Refractor /250", "tier": "numbered-high", "packs": 76},
-   {"name": "Blue Refractor /150", "tier": "numbered-high", "packs": 127},
-   {"name": "Blue RayWave Refractor /150", "tier": "numbered-high", "packs": 188},
-   {"name": "Reptilian Blue Refractor /150", "tier": "numbered-high", "packs": 91},
-   {"name": "Mini-Diamond Refractor /100", "tier": "numbered-high", "packs": 183},
-   {"name": "Yellow Refractor /75", "tier": "numbered-high", "packs": 249},
-   {"name": "Bowman Logofractor /35", "tier": "numbered-high", "packs": 1614},
-   {"name": "Black & White Shimmer Refractor", "tier": "numbered-high", "packs": 1573},
-   {"name": "Green Refractor /99", "tier": "99", "packs": 190},
-   {"name": "Reptilian Green Refractor /99", "tier": "99", "packs": 92},
-   {"name": "Gold Refractor /50", "tier": "50", "packs": 374},
-   {"name": "Gold Mini-Diamond Refractor /50", "tier": "50", "packs": 275},
-   {"name": "Orange Refractor /25", "tier": "25", "packs": 358},
-   {"name": "Orange Shimmer Refractor /25", "tier": "25", "packs": 356},
-   {"name": "Black Refractor /10", "tier": "10", "packs": 1828},
-   {"name": "Black X-Fractor Refractor /10", "tier": "10", "packs": 1802},
-   {"name": "Red Refractor /5", "tier": "5", "packs": 3560},
-   {"name": "Red Shimmer Refractor /5", "tier": "5", "packs": 5428},
-   {"name": "Reptilian Red Refractor /5", "tier": "5", "packs": 2633},
-   {"name": "SuperFractor 1/1", "tier": "1", "packs": 17584}
-  ]
+   {
+    "name": "Chrome Prospect Autograph (base)",
+    "tier": "base",
+    "packs": 6
+   },
+   {
+    "name": "Refractor /499",
+    "tier": "numbered-high",
+    "packs": 41
+   },
+   {
+    "name": "Speckle Refractor /299",
+    "tier": "numbered-high",
+    "packs": 65
+   },
+   {
+    "name": "Purple Refractor /250",
+    "tier": "numbered-high",
+    "packs": 76
+   },
+   {
+    "name": "Blue Refractor /150",
+    "tier": "numbered-high",
+    "packs": 127
+   },
+   {
+    "name": "Blue RayWave Refractor /150",
+    "tier": "numbered-high",
+    "packs": 188
+   },
+   {
+    "name": "Reptilian Blue Refractor /150",
+    "tier": "numbered-high",
+    "packs": 91
+   },
+   {
+    "name": "Mini-Diamond Refractor /100",
+    "tier": "numbered-high",
+    "packs": 183
+   },
+   {
+    "name": "Yellow Refractor /75",
+    "tier": "numbered-high",
+    "packs": 249
+   },
+   {
+    "name": "Bowman Logofractor /35",
+    "tier": "numbered-high",
+    "packs": 1614
+   },
+   {
+    "name": "Black & White Shimmer Refractor",
+    "tier": "numbered-high",
+    "packs": 1573
+   },
+   {
+    "name": "Green Refractor /99",
+    "tier": "99",
+    "packs": 190
+   },
+   {
+    "name": "Reptilian Green Refractor /99",
+    "tier": "99",
+    "packs": 92
+   },
+   {
+    "name": "Gold Refractor /50",
+    "tier": "50",
+    "packs": 374
+   },
+   {
+    "name": "Gold Mini-Diamond Refractor /50",
+    "tier": "50",
+    "packs": 275
+   },
+   {
+    "name": "Orange Refractor /25",
+    "tier": "25",
+    "packs": 358
+   },
+   {
+    "name": "Orange Shimmer Refractor /25",
+    "tier": "25",
+    "packs": 356
+   },
+   {
+    "name": "Black Refractor /10",
+    "tier": "10",
+    "packs": 1828
+   },
+   {
+    "name": "Black X-Fractor Refractor /10",
+    "tier": "10",
+    "packs": 1802
+   },
+   {
+    "name": "Red Refractor /5",
+    "tier": "5",
+    "packs": 3560
+   },
+   {
+    "name": "Red Shimmer Refractor /5",
+    "tier": "5",
+    "packs": 5428
+   },
+   {
+    "name": "Reptilian Red Refractor /5",
+    "tier": "5",
+    "packs": 2633
+   },
+   {
+    "name": "SuperFractor 1/1",
+    "tier": "1",
+    "packs": 17584
+   }
+  ],
+  "releaseDate": "2026-09-09",
+  "windowDays": 30,
+  "breakQuery": "2026 bowman chrome break"
  }
 }
