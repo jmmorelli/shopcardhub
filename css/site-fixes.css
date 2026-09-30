@@ -309,8 +309,18 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
      (scroll back up past the strip) the label font-size animated 11px -> 0 and, for ~150ms, the full
      nowrap label ("Shop Lamine Yamal rookie cards on eBay") pushed the gear/Fanatics button off the
      right edge. The dock state switches instantly instead. */
-  body .bstrip.bs-dock, body .bstrip.bs-dock .bs-go, body .bstrip.bs-dock .bs-fan, body .bstrip.bs-dock .bs-rep { transition: none; }
+  body .bstrip.bs-dock .bs-go, body .bstrip.bs-dock .bs-fan, body .bstrip.bs-dock .bs-rep { transition: none; }
   body .bs-hold { height: 0; }
+  /* 8d (Night Crew, Sep 30 2026). The dock is now a fixed copy of the strip (js/buy-strip.js), so the
+     real strip never leaves the flow and nothing on the page shifts when it comes back into view
+     (was CLS 0.30-0.38 per scroll on /bowman-football, /best-hobby-boxes-2026, ...). The copy slides
+     off the bottom edge instead of being removed: transform + visibility only, 200ms, none under
+     reduced motion. */
+  body .bstrip.bs-dock { transform: translateY(0); visibility: visible;
+    transition: transform .2s ease, visibility 0s linear 0s; }
+  body .bstrip.bs-dock.bs-dock-off { transform: translateY(115%); visibility: hidden;
+    transition: transform .2s ease, visibility 0s linear .2s; }
+  body .bstrip.bs-slot { visibility: hidden; }
   /* 8b (Site Sweep, Sep 28 2026). A strip with a second store link (.bs-fan, Fanatics) or a
      gear link (.bs-rep) made the docked CTA row wider than the phone: the title and live ask
      collapsed to 0 px and the Fanatics button ran off the right edge (28 pages). Those docks
@@ -369,4 +379,33 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body .sidx-tbl .sidx-auc-slot { flex: 1 1 120px; min-width: 120px; }
   body .sidx-tbl .sidx-auc-slot a.auc { width: 100%; }
   body .sidx-tbl td.act .sch-vs-sold { flex: 1 0 100%; order: 9; }
+}
+
+/* 11 (Night Crew, Sep 30 2026). Guide tables on phones. 57 of 58 pages with a .roi-table put the Verdict, the eBay
+   button and sometimes the price past the edge of an overflow box with no cue (Site Sweep F1, Bug Hunter B12: 589 px
+   of table in a 342 px box on most guides). The NAV controller (tools/build-nav.js) marks only tables wider than
+   their box with .rt-stack and copies each column's header into its cells as data-label; here each row becomes one
+   card: rank and name on the first line, then the short label/value pairs side by side (price, verdict), then the
+   long "why" text full width, then the links at 40 px. Same cells, same links; nothing is hidden. Tables that fit
+   stay tables. */
+@media (max-width: 600px) {
+  body .roi-table-wrap:has(> table.rt-stack) { overflow-x: visible; }
+  body table.roi-table.rt-stack { display: block; width: 100%; min-width: 0 !important; }
+  body table.roi-table.rt-stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  body table.roi-table.rt-stack tbody { display: block; }
+  body table.roi-table.rt-stack tbody tr { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 10px 14px; padding: 16px 2px; }
+  body table.roi-table.rt-stack tbody td { display: block; flex: 1 1 30%; min-width: 92px; width: auto !important; padding: 0 !important; text-align: left; }
+  body table.roi-table.rt-stack td[data-label]::before { content: attr(data-label); display: block; margin-bottom: 3px;
+    font-family: var(--fm, monospace); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--text-dim, #7a969e); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  body table.roi-table.rt-stack td.rt-rank { flex: 0 0 auto; min-width: 0; }
+  body table.roi-table.rt-stack td.rt-lead { flex: 1 1 70%; min-width: 0; }
+  body table.roi-table.rt-stack td.rt-lead .roi-name { font-size: 16px; }
+  body table.roi-table.rt-stack td.rt-long { flex: 1 1 100%; order: 5; }
+  body table.roi-table.rt-stack td.rt-act { flex: 1 1 100%; order: 9; }
+  body table.roi-table.rt-stack td.rt-act::before { display: none; }
+  body table.roi-table.rt-stack td.rt-act a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px;
+    border: 1px solid var(--border2, rgba(255,255,255,.18)); border-radius: 2px; margin: 0 8px 0 0; white-space: nowrap; }
+  body table.roi-table.rt-stack td .sch-track-card { min-height: 40px; }
+  body table.roi-table.rt-stack .roi-price, body table.roi-table.rt-stack td { font-variant-numeric: tabular-nums; }
 }

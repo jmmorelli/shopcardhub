@@ -9,27 +9,30 @@
   var strips = document.querySelectorAll('.bstrip[data-bs-q]');
   if (!strips.length) return;
 
-  // Phone dock (Sep 26 2026): while the strip's own slot is still below the viewport
-  // (long hero on a phone), pin it to the bottom edge in the compact .bs-dock layout
-  // (css/site-fixes.css §8); once its slot is fully in view it returns to the flow.
-  // A sentinel after the strip marks the slot: 0px tall while the strip is in the flow
-  // (so it sits at the strip's bottom edge), the strip's own height while docked (so
-  // the page does not jump). Desktop: no-op.
+  // Phone dock (Sep 26 2026; reworked Sep 30 2026, Night Crew). While the strip's own slot is still
+  // below the viewport (long hero on a phone), a compact copy of it rides the bottom edge
+  // (.bs-dock, css/site-fixes.css §8). The strip itself never leaves the flow: until Sep 30 it
+  // was lifted out and dropped back in, and every drop-back counted as a 0.30-0.38 layout shift
+  // (Bug Hunter, Sep 30). The copy is fixed-position and only slides (transform), so nothing on
+  // the page moves. While the copy is up, the strip's own slot is kept but not painted (visibility
+  // only, as before), and the copy goes once the whole strip is on screen. Its links are the
+  // strip's own (same href, same onclick). Exactly one of the two is visible at a time, and
+  // visibility:hidden takes the other out of the tab order and the accessibility tree. Desktop: no-op.
+  var dockLive = null;
   try {
     if (window.matchMedia && window.matchMedia('(max-width:760px)').matches && 'IntersectionObserver' in window) {
-      var s0 = strips[0], hold = document.createElement('div');
-      hold.className = 'bs-hold';
-      s0.parentNode.insertBefore(hold, s0.nextSibling);
+      var s0 = strips[0], dock = s0.cloneNode(true);
+      dock.classList.add('bs-dock', 'bs-dock-off');
+      dock.removeAttribute('data-bs-q'); dock.removeAttribute('id');
+      Array.prototype.forEach.call(dock.querySelectorAll('[id]'), function (n) { n.removeAttribute('id'); });
+      dockLive = dock.querySelector('[data-bs-live]');
+      s0.parentNode.insertBefore(dock, s0.nextSibling);
       var io = new IntersectionObserver(function (en) {
-        var e = en[en.length - 1], r = e.boundingClientRect, docked = s0.classList.contains('bs-dock');
-        if (!docked) {
-          if (!e.isIntersecting && r.top > 0) { hold.style.height = s0.offsetHeight + 'px'; s0.classList.add('bs-dock'); }
-        } else {
-          var slotVisible = e.intersectionRatio >= 0.98, scrolledPast = !e.isIntersecting && r.bottom <= 0;
-          if (slotVisible || scrolledPast) { s0.classList.remove('bs-dock'); hold.style.height = '0px'; }
-        }
-      }, { threshold: [0, 0.5, 0.98, 1] });
-      io.observe(hold);
+        var e = en[en.length - 1], on = e.boundingClientRect.top > 0 && e.intersectionRatio < 0.98;
+        dock.classList.toggle('bs-dock-off', !on);
+        s0.classList.toggle('bs-slot', on);
+      }, { threshold: [0, 0.25, 0.5, 0.75, 0.98, 1] });
+      io.observe(s0);
     }
   } catch (e) {}
 
@@ -72,11 +75,12 @@
           var mid = ps.length % 2 ? ps[(ps.length - 1) / 2] : (ps[ps.length / 2 - 1] + ps[ps.length / 2]) / 2;
           ps = ps.filter(function (p) { return p >= mid / 5; });
         }
-        if (!ps.length) { el.textContent = ''; return; }
+        if (!ps.length) { el.textContent = ''; if (dockLive && s === strips[0]) dockLive.textContent = ''; return; }
         var lo = ps[0];
         var txt = 'ask from $' + (lo >= 1000 ? Math.round(lo).toLocaleString() : lo.toFixed(2));
         if (msrp) txt += ' · ' + (lo / msrp).toFixed(1) + '× MSRP';
         el.innerHTML = '<b>' + txt + '</b> <span class="bs-n">' + ps.length + ' live</span>';
+        if (dockLive && s === strips[0]) dockLive.innerHTML = el.innerHTML;
       })
       .catch(function () { el.textContent = ''; });
   });

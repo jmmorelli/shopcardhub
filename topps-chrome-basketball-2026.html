@@ -840,14 +840,50 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <script>
 /* === NAV controller (generated) — hamburger toggle + accordion + search + active page === */
 (function(){
-  /* keep wide mega panels on screen (Sep 29: the Indices / Tools & Guides panels ran past the right edge at 1024-1280px) */
-  document.querySelectorAll('.nav-dropdown.nav-mega').forEach(function(dd){
+  /* keep wide menu panels on screen (Sep 29: the Indices / Tools & Guides panels ran past the right edge at 1024-1280px).
+     Sep 30 (Night Crew): a closed panel is only invisible, not removed, so fitting on hover alone left the closed panels
+     sticking out 101px at 1024 and the page scrolled sideways on 24 index pages. Every panel is fitted on load and resize too. */
+  var fits = [];
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd){
     var host = dd.parentElement; if (!host) return;
     var fit = function(){ dd.style.marginLeft = ''; var r = dd.getBoundingClientRect(), vw = document.documentElement.clientWidth;
+      if (!r.width) return;
       var shift = 0; if (r.right > vw - 16) shift = (vw - 16) - r.right; if (r.left + shift < 16) shift = 16 - r.left;
       if (shift) dd.style.marginLeft = shift + 'px'; };
+    fits.push(fit); fit();
     host.addEventListener('mouseenter', fit); host.addEventListener('focusin', fit);
   });
+  var fitT; window.addEventListener('resize', function(){ clearTimeout(fitT); fitT = setTimeout(function(){ fits.forEach(function(f){ f(); }); }, 150); });
+  /* guide tables on phones (Night Crew, Sep 30): each cell carries its column name, so css/site-fixes.css §11 can stack a
+     .roi-table that is wider than its box into one card per row (rank · name, then label/value pairs, then the links).
+     Tables that fit stay tables. Same cells, same links, same order; nothing is hidden. */
+  function roiStack(){
+    if (!window.matchMedia || !window.matchMedia('(max-width:600px)').matches) return;
+    document.querySelectorAll('table.roi-table').forEach(function(t){
+      var w = t.parentElement; if (!w || t.classList.contains('rt-stack') || t.scrollWidth <= w.clientWidth + 1) return;
+      var hs = Array.prototype.map.call(t.querySelectorAll('thead th'), function(th){ return th.textContent.replace(/\s+/g,' ').trim(); });
+      var lead = -1;
+      hs.forEach(function(h, i){ if (lead < 0 && h && h !== '#') lead = i; });
+      var mark = function(tr){
+        if (tr.getAttribute('data-rt')) return; tr.setAttribute('data-rt', '1');
+        Array.prototype.forEach.call(tr.children, function(td, i){
+          var h = hs[i] || '', txt = td.textContent.replace(/\s+/g,' ').trim();
+          if (td.colSpan > 1 || i === lead) { td.classList.add('rt-lead'); return; }
+          if (i < lead && txt.length <= 3) { td.classList.add('rt-rank'); return; }
+          if (h) td.setAttribute('data-label', h);
+          if (td.querySelector('a[href]') && txt.length < 60 && !td.querySelector('.verdict-tag')) td.classList.add('rt-act');
+          else if (txt.length > 34) td.classList.add('rt-long');
+        });
+      };
+      t.querySelectorAll('tbody tr').forEach(mark);
+      /* rows that a page script fills in later (the track record's scorecard) are marked as they arrive */
+      if (window.MutationObserver) t.querySelectorAll('tbody').forEach(function(tb){
+        new MutationObserver(function(){ tb.querySelectorAll('tr').forEach(mark); }).observe(tb, { childList: true });
+      });
+      t.classList.add('rt-stack');
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', roiStack); else roiStack();
   /* Escape closes an open menu and returns focus to its top link; the menu re-arms when the pointer or focus leaves */
   document.querySelectorAll('.nav-links .nav-item').forEach(function(it){
     var top = it.querySelector(':scope > a'); if (!it.querySelector('.nav-dropdown')) return;
