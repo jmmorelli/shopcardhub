@@ -780,7 +780,7 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
     var html = '';
     Object.keys(D).forEach(function(t){
       var x = D[t]; if (!x || typeof x !== 'object' || !x.page) return;
-      var on = (t === 'BCB26');
+      var on = (t === 'BB26');
       var hist = x.history || [], last = hist.length ? hist[hist.length-1] : null, prev = hist.length > 1 ? hist[hist.length-2] : null;
       var pre = (x.status === 'pre' || x.status === 'pre-activation' || !last);
       var body = pre ? '<span class="soon">' + (x.releaseDate ? 'pre · streets ' + x.releaseDate.slice(5).replace('-', '/') : 'pre') + '</span>'
