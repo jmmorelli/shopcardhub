@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the desk (2026-09-30, 14:00 run). Mo, these are the only things waiting on you
+
+- **Today before 4:00 pm PT: one word in your queued X post** (sent to your phone ~14:15 PT). In the 4:00 pm Evolving Skies / Crown Zenith post, change "Every card in each **set**" to "Every card in each **basket**". Our indices hold 235 of 238 Evolving Skies cards and 230 of 232 Crown Zenith. In the 6:30 pm post, change "Crown Zenith's **whole set**" to "Crown Zenith's **index**". Every level in both posts checks against the site. Unattended runs can't edit your scheduled posts. *(If the time has passed: a one-line reply under the post saying "every card in the index basket" covers it. Don't delete.)*
+- **The Chrome choice (weekly item below) now also blocks the Wednesday EPN money read**, and this is the second week it has been missed (last full read Sep 23). Same one-time fix: answer the browser prompt in a CoS chat, or disconnect the extension in the Chrome profile you don't use.
+- TCGplayer (#2) and TAG (#4): unchanged. Nothing else.
+
+---
+
 ## Open — from the weekly (2026-09-30). One item
 
 - **Which Chrome do scheduled runs use?** Two Chrome browsers are connected, and an unattended run is not allowed to pick one, so the weekly could not open Search Console, Bing Webmaster or GA4 live for the **second week running** (the in-app browser is signed out of Google and Bing). **Action, one time, next time you're in a CoS chat:** answer the browser prompt with the browser that holds GA4/Search Console, or disconnect the Claude extension in the Chrome profile you don't use. Nothing else waits on it; the weekly works from the nightly GA4 snapshot meanwhile.
