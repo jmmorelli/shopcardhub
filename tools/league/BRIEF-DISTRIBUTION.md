@@ -37,6 +37,12 @@ the sites your manifests name. Nothing else counts: not words, not replies, not 
 | **E · Forum** | Answer a real, open collector question on a hobby forum (Blowout Forums, Elite Fourum, PokéBeach forums, Quora) with the dated sold data. | Link to the thread, the question, your answer (≤ 150 words, data first), and whether the forum allows a link (if not, no link, and the answer builds the name). |
 | **F · Shareables** | One shareable data card a week, built to be reposted or embedded by hobby accounts. | A PNG made with `tools/x-images/make.py` (or a new kind added there), hosted on the site at a dated URL, plus a one-line X caption for the X daily lane's site/data slot with a tagged link. |
 
+## HOLD — D (Mo, 2026-09-30)
+
+Mo: *"I think we should wait until we have some more data marks and have defined whether we want to start from
+release date for each set or from inception."* **D sends and drafts no new pitch until Mo lifts this.** The Sep 30
+batch (`d-20260930`) stays `held`. D's Wednesday slot ships nothing and says so. E and F are not affected.
+
 ## Find the opening first
 
 - D: who wrote about Pokémon or card prices in the last 14 days (WebSearch, newsletters, YouTube titles)? A pitch
