@@ -27,9 +27,14 @@ its read date, the move. Each links to its index page (`?utm_source=tape…`). N
 
 ## 3. The chase cards
 
-The set's most valuable card for each index that moved this week, with its dated sold mark and its
-**`-chase` eBay link** (the same link the page's CHASE strip carries — `customid=<tk>-<num>-chase`,
-so the Custom ID report can see what the email earns). No "buy"; the price and the link.
+The set's most valuable card for each index that moved this week, with its dated sold mark and a link
+to **our page for it**: its card page (`shopcardhub.com/card?id=<tk>-<num>&utm_source=tape…`) where one
+exists, otherwise its index page, whose chase strip carries the `-chase` eBay link (the six modern chase
+tickers and Bowman have no card pages yet). No "buy"; the price and the link.
+
+**No link in the email points at ebay.com (CoS desk, 2026-10-01).** EPN's Special Business Models page
+lists "Messaging (Email/IM/Chat/Text …)" among promotion methods subject to EPN's prior written approval,
+and we hold none (Mo, Sep 22: no contact with eBay/EPN). Every eBay click starts on one of our pages.
 
 ## 4. Bangers board
 

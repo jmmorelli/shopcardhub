@@ -929,7 +929,7 @@ number and every lane treats it that way.
   `data/buy-strip.json` gets the form on the next `build-signup.mjs` run (the desk runs it after `build-buy-strip`).
 - **The Tuesday Tape becomes the Monday close.** From the Sep 29 send, the digest opens with the index board (every
   live ticker: level · 1W · since launch), then the movers, then the chase cards (each with its dated sold mark and
-  its `-chase` eBay link), then the Bangers board note. Same shape every week; the writing stays the lane's. Every
+  a link to its card page or index page on our site — **never a direct eBay link: EPN lists email as a promotion method that needs its prior written approval, which we do not hold; CoS desk, 2026-10-01**), then the Bangers board note. Same shape every week; the writing stays the lane's. Every
   link in it carries `utm_source=tape` so GA4 can see the email bring people back.
 - **The watchlist's way home.** A subscriber whose `source` starts with `watchlist-` (the number is their card count
   at signup; nothing else is stored) gets one extra block at the top of the digest: *"Your watchlist re-marked
