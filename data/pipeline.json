@@ -3146,6 +3146,16 @@
           "tree": "642b723971f16674a52fba7d91dfd3715f91b422",
           "liveVerified": "after push: curl of the 3 improved URLs (200 + BUYSTRIP:START + sch-signup) recorded in claude/cos/league-board-2026-10-01.md",
           "rollback": "git revert --no-edit 2258f2b"
+        },
+        {
+          "date": "2026-10-01",
+          "commits": [
+            "4b3eee2"
+          ],
+          "by": "CoS in chat (Mo: Bowman KB build; \"Start at release date and let's fix everything on the site that contradicts what you found\"; paper never the chase). Cloud build, Mac deploy-key push, rebuilt on b6d31fa",
+          "gates": "audit-prices FAIL 0 / WARN 77 · audit-site FAIL 0 / WARN 4 (141) · audit-terminal --feed 0/0 · first-bowman clean (659 INFO)",
+          "liveVerified": "2026-10-01 ~11:00 PT curl: /bowman-2026-index + /bowman-1st-chrome-index '100 = May 2026 (release month)', /bowman-chrome-2026-index '100 = Sep 2026', /bowman-bangers Orange /25 ladder, /card-ethan-holliday-bcb26-base no '1st', indices.json baseDate live (BB26 76.88 · BOW26 73.84 · BCB26 85.87 on Oct 1), /js/index-chart.js?v=3 200",
+          "rollback": "git revert --no-edit 4b3eee2"
         }
       ]
     },

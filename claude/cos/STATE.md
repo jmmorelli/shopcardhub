@@ -14,6 +14,14 @@
 ---
 
 
+## 2026-10-01 PM — BOWMAN KNOWLEDGE BASE · BOWMAN INDICES ON THE RELEASE-DATE BASE · 64 SITE FIXES · CHROME-ONLY RULING (Mo in chat, LIVE `4b3eee2`)
+
+- **Bowman KB (new, Mo: "learn, log, and create a knowledge base … make an agent to check for mistakes"):** Project `claude/kb/bowman/` (README primer + doctrine, 01 history, 02 products & 1st rules, 03 parallels/autos/grading, 04 market math, GAPS, AUDIT-LOG, VERIFIER charter). Built by 4 research agents; the verifier failed run 1 (87.5%) and passed the re-run (93.9%, 0 HIGH). Re-run the verifier per VERIFIER.md at each Bowman release (May/Sep/Dec), folded into the run that touches that release — no new scheduled task.
+- **Rulings (Mo, Oct 1):** (1) **Bowman indices start at the release date** — BB26/BOW26 100 = May 2026, BCB26 100 = Sep 2026 (first sold mark inside the release month, factor 1). Oct 1 levels: BB26 76.88 · BOW26 73.84 · BCB26 85.87; BASE sub-indices rebased too; charts shade the first 30 days after release (`releaseWindowDays`). (2) **Paper is never the chase** — Chrome, Sapphire Chrome and Chrome autos only (LANE-RULES R9.6; R9.7 = facts come from the KB).
+- **Tools:** `tools/build-recon-bowman.mjs` (cohort coverage, inception link; idempotent). `data/tiers.json` cohLevel ×0.77105 (tier levels unchanged). `build-card-pages` / `build-engine-blocks` honor `first:false` in `data/watchlist.json`. `js/index-chart.js` **v3** (band). **BF26 follows the Bowman rule when it goes live:** after `--init`, add it to `build-recon-bowman.mjs` (base Sep 2026).
+- **Fixes (find-pass list in Project `claude/kb/bowman/site-fixlist-2026-10-01.md`, 64 items, all applied):** Holliday BCP-209 + Griffin/McGonigle/Anthony Sapphire no longer labelled 1st; "May paper CPA" → Chrome Prospect Auto (Bangers ×6 + board-history + pipeline); Bangers paper rainbow → Chrome ladders with Orange /25; Roman Anthony 1st ≠ RC (years stripped until verified); DeLauter CDA-CD = Draft Chrome; PCA/DeLauter paper verdicts → Watch / PC only; ROY BD-96 → BDC-96; unsourced 3–8× / 5–10× / 2–5× multipliers removed; stale Bangers blurbs ×6; 2026 Bowman hobby MSRP $239.99; Holliday = left-handed hitter, left-foot stress fracture (May).
+- **Open (GAPS):** G2 Dungeon multiplier table (secondary); G4 Chrome Sapphire ingest needs `parallelOf`; G5 1st-flag audit of 2025 sets (verify from card images/Topps PDFs — Checklist Insider never marks auto 1sts); G12 Anthony/DeLauter years; G13 jumbo MSRP second source.
+
 ## 2026-09-30 late — WOTC 1st EDITION + SHADOWLESS INDICES, SEGMENTED BUTTONS, CARD PRICE CHART (Mo in chat, LIVE `3b1e3aa`)
 
 - **Mo's ruling:** 1st Edition and Shadowless are their own sets to a collector, so each gets its own index. **Screen for these 7 = 6 clean raw sales in 90 days to enter, 4 to stay, 90-day median mark** (Mo picked this over the 30-day rule: under 30 days, Base 1st Ed = 22 commons, no holos). **Scope: all WOTC 1st Editions** (Mo).
