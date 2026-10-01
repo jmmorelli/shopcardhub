@@ -3156,6 +3156,16 @@
           "gates": "audit-prices FAIL 0 / WARN 77 · audit-site FAIL 0 / WARN 4 (141) · audit-terminal --feed 0/0 · first-bowman clean (659 INFO)",
           "liveVerified": "2026-10-01 ~11:00 PT curl: /bowman-2026-index + /bowman-1st-chrome-index '100 = May 2026 (release month)', /bowman-chrome-2026-index '100 = Sep 2026', /bowman-bangers Orange /25 ladder, /card-ethan-holliday-bcb26-base no '1st', indices.json baseDate live (BB26 76.88 · BOW26 73.84 · BCB26 85.87 on Oct 1), /js/index-chart.js?v=3 200",
           "rollback": "git revert --no-edit 4b3eee2"
+        },
+        {
+          "date": "2026-10-01",
+          "commits": [
+            "31f3d7a"
+          ],
+          "by": "CoS in chat, pass 2 after an independent live re-check of 4b3eee2 (May 2026 universe correction + 18 copy fixes)",
+          "gates": "audit-prices FAIL 0 / WARN 77 · audit-site FAIL 0 / WARN 4 · audit-terminal FAIL 0 / WARN 1 (feed prices the dropped roman-anthony-sapphire until the nightly) · first-bowman clean",
+          "liveVerified": "2026-10-01 curl: /bowman-2026-index '80 cards, 66 trading', Holliday left-foot stress fracture, Anthony debut Jun 9 2025, DeLauter #CDA-CD, PSA guide 'Varies', /card-andrew-fischer '2026 Bowman'; indices.json BB26 80/66 · BOW26 175/107 with UNIVERSE CORRECTION divisorLog",
+          "rollback": "git revert --no-edit 31f3d7a"
         }
       ]
     },
