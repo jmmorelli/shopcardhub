@@ -100,9 +100,8 @@ const CONFIG = {
   // SportsCardsPro lists May's 2026 Bowman and September's 2026 Bowman Chrome prospect autos on ONE console
   // ("2026 Bowman Chrome Prospect Autograph", 192 base slots) and their Chrome Prospects on another (BCP-1..150 = May,
   // BCP-151..250 = September). The release is told apart by the September checklist (data/sets/2026-bowman-chrome-
-  // baseball.json: 104 autos, 97 flagged 1st; 100 base, 72 flagged 1st). May's cards carry no flag file yet — every
-  // CPA/BCP slot from May is taken as a 1st (that is what the May product's Chrome Prospect insert is); the Tuesday
-  // lane verifies against a May checklist when one is on file. Bowman Draft (December) joins BOW26 as a third source
+  // baseball.json: 104 autos, 97 flagged 1st; 100 base, 72 flagged 1st). May's cards carry no flag file yet — a May
+  // CPA/BCP slot is taken as a 1st unless the player had a same-kind card in a 2025 release (Oct 1 2026 correction). Bowman Draft (December) joins BOW26 as a third source
   // the first Monday after its console appears.
   ...bowmanConfigs(),
 };
@@ -165,7 +164,20 @@ function bowmanConfigs() {
   const sepFirstBase = (name) => sep.base.get(String(name).toLowerCase()) === true;
   const AUTOS = "baseball-cards-2026-bowman-chrome-prospect-autograph", BASE = "baseball-cards-2026-bowman-chrome-prospect";
   const autoSlot = (t) => /#CPA-/i.test(t), baseSlot = (t) => /#BCP-/i.test(t);
-  const may = { auto: (name, num) => !isSepAuto(name), base: (name, num) => bcpNum(num) <= 150 };
+  // Oct 1 2026 (Bowman KB + Mo: "fix everything that contradicts"): May's 2026 Bowman has no 1st-flag file, and the old
+  // "every May CPA/BCP slot is a 1st" assumption was wrong — 11 of the May autos (CI: "87 signers, 76 of these 1st Bowman
+  // autographs") and 39 May BCP cards are RETURNING players who already had that kind of Bowman card in a 2025 release.
+  // A May slot is a 1st only if the player has no same-kind card in the 2025 sets in data/sets (players whose prior card is
+  // older than 2025 are not caught here — KB GAPS G5).
+  const norm = (s) => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z ]/g, "").replace(/ jr$/, "").trim();
+  const prior = { auto: new Set(), base: new Set() };
+  for (const f of ["bowman-baseball-2025.json", "bowman-chrome-baseball-2025.json", "bowman-draft-baseball-2025.json"]) {
+    try { const d = JSON.parse(fs.readFileSync(path.join(ROOT, "data/sets", f), "utf8"));
+      for (const g of d.groups || []) { const t = (g.key || "") + " " + (g.title || g.name || ""); if (/^base set$/i.test(g.title || g.name || "")) continue;
+        for (const cd of g.cards || []) (/auto|cpa/i.test(t) ? prior.auto : prior.base).add(norm(cd.player)); } }
+    catch (e) { console.error("bowman: 2025 prior set unreadable — " + f + " " + e.message); }
+  }
+  const may = { auto: (name, num) => !isSepAuto(name) && !prior.auto.has(norm(name)), base: (name, num) => bcpNum(num) <= 150 && !prior.base.has(norm(name)) };
   const sept = { auto: (name, num) => isSepAuto(name) && sepFirstAuto(name), base: (name, num) => bcpNum(num) > 150 && sepFirstBase(name) };
   const common = {
     cat: "baseball", imgSub: "1ST BOWMAN", sacat: SACAT_SPORTS,

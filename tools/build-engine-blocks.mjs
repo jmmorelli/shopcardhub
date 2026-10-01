@@ -166,7 +166,10 @@ function facts(c) {
   let set = "Pokémon TCG", cat = "pokemon", lane = "SIR single · raw";
   if (!isTcg) {
     cat = "baseball";
-    set = `${year} Bowman${/sapphire/.test(q) ? " Sapphire" : /chrome/.test(q) ? " Chrome" : ""}`.trim();
+    // Oct 1 2026 (LANE-RULES R8): name the PRODUCT. A 2026 card with no set key is May's 2026 Bowman (its Chrome Prospect
+    // cards are not "2026 Bowman Chrome", which is September's product); "draft" in the query is Bowman Draft.
+    const draft = /\bdraft\b/.test(q), may26 = year === "2026" && !c.set && !/sapphire/.test(q) && !draft;
+    set = may26 ? "2026 Bowman" : `${year} Bowman${draft ? " Draft" : ""}${/sapphire/.test(q) ? " Sapphire" : /chrome/.test(q) ? " Chrome" : ""}`.trim();
     // Oct 1 2026 (Bowman KB / R9.2): a watchlist card with first:false is a returning card (no 1st logo) and is never labelled 1st.
     const pre = c.first === false ? "" : "1st ";
     lane = type === "chrome-auto" ? pre + "Bowman Chrome Auto · raw" : type === "sapphire-base" ? pre + "Bowman Sapphire · raw base" : pre + "Bowman Chrome · raw base";
