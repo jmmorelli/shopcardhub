@@ -14,6 +14,16 @@
 ---
 
 
+## 2026-09-30 late — WOTC 1st EDITION + SHADOWLESS INDICES, SEGMENTED BUTTONS, CARD PRICE CHART (Mo in chat, LIVE `3b1e3aa`)
+
+- **Mo's ruling:** 1st Edition and Shadowless are their own sets to a collector, so each gets its own index. **Screen for these 7 = 6 clean raw sales in 90 days to enter, 4 to stay, 90-day median mark** (Mo picked this over the 30-day rule: under 30 days, Base 1st Ed = 22 commons, no holos). **Scope: all WOTC 1st Editions** (Mo).
+- **Tickers (inception 09/30/26, release-date base via `tools/build-recon.mjs`):** BS1E 102/102 (179.65, base Jan 2021) · BSSL 102/102 (129.43) · JU1E 64/64 (163.24) · FO1E 62/62 (145.47) · TR1E 83/83 (154.00) · NG1E 111/111 (192.71, base Sep 2021) · ND1E 105/113 (246.40, base Jun 2021; 1st Ed Shining Charizard too thin raw). Pages `/pokemon-base-set-1st-edition-index` etc.; /indices "WOTC 1st Edition & Shadowless" section; sitemap/searchExtra +7; nightly Mon/Thu marks (classic step). **Not on the home index board** (phone length); in Markets. Sibling-print links on every WOTC index.
+- **Recon link note for the weekly:** `build-recon.mjs` links live marks to the last full recon month (L[Aug] × Σw·mark / Σw·chart[Aug]). Its check on JU99 reproduces every recon month exactly but puts JU99's inception at 153.7, not the 163.32 the Sep 30 rebase used. Same chain, different live link. Decide which link is canonical and re-state JU99… if needed. Not changed tonight.
+- **Buttons (Mo: "not slammed on the left … like a bug"):** Raw · PSA 9 · PSA 10 · TAG now one segmented control, centered with ★; empty Bid slot collapses.
+- **/card chart (Mo: "doesn't PriceCharting show a chart we can use"):** "Price history by grade": PriceCharting monthly series (ungraded / Grade 9 any grader / PSA 10), log, 1Y/3Y/All, 1Y % per line, labelled as theirs, never a mark. `data/cards/h-<tk>.json` (~3.9 MB across 21 files; one per card page load). Graded ladder now 2,412 cards (PSA 9 1,223 · PSA 10 996 · TAG 10 333).
+- **Latent nightly bug fixed:** `build-home.mjs` meta/og cadence regex broke once the phrase carried a comma ("Mondays, most also Thursdays"); the next home re-bake would have thrown.
+- Gates 0/74 · 0/4 (141) · 0/0.
+
 ## 2026-09-30 PM — CARD PAGES + CARD SEARCH + RAW / PSA 9 / PSA 10 / TAG LINKS (Mo in chat, CoS built, LIVE `192532f` + `f66a70a`)
 
 **Mo's ask (~21:00 PT):** an eBay link per card on the classic indices, PSA 9 + PSA 10 links (vintage graded is where the money is), a raw/PSA 10 auctions option, TAG as its own link, and a Seeking-Alpha-style search that opens a card page with raw vs 9 vs 10 — "I just don't want it to get too clunky."
