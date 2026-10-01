@@ -11,10 +11,19 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the monthly roster review (2026-10-01). Ruled the same morning
+
+- ~~Retire the weekly Tape Recap email?~~ **✅ RULED by Mo Oct 1 (~09:00 PT): "retire it until we get some real subs."** Applied to CHARTER §3 and LANE-RULES; the Tuesday Tape is the one weekly email.
+- ~~EPN signed out~~ **✅ Mo signed back in Oct 1 ~09:10 PT** and sent the dashboard: Jul 4–Oct 1 $111.46 on 398 clicks / 58 actions; 0 new actions since ~Sep 25 (STATE MILESTONES). It was an expired session, not a block. The 14:00 desk reads the exact 30-day figure while the session holds. Nothing waits on Mo.
+- *FYI, probably off your list soon:* the Chrome tool has listed one browser since Sep 30 (Browser 1, the one you picked), so unattended runs can select it again. The Oct 7 weekly confirms GA4 / Search Console / Bing read live; then the "Which Chrome" item below comes off.
+- *FYI:* the Sep 30 4:00 pm X wording fix ("set" → "basket") is past its time. Today's 13:00 X Desk Watch reads the posted text. If it went out unedited, a one-line reply under it, "every card in the index basket", covers it; don't delete it.
+
+---
+
 ## Open — from the desk (2026-09-30, 14:00 run). Mo, these are the only things waiting on you
 
 - **Today before 4:00 pm PT: one word in your queued X post** (sent to your phone ~14:15 PT). In the 4:00 pm Evolving Skies / Crown Zenith post, change "Every card in each **set**" to "Every card in each **basket**". Our indices hold 235 of 238 Evolving Skies cards and 230 of 232 Crown Zenith. In the 6:30 pm post, change "Crown Zenith's **whole set**" to "Crown Zenith's **index**". Every level in both posts checks against the site. Unattended runs can't edit your scheduled posts. *(If the time has passed: a one-line reply under the post saying "every card in the index basket" covers it. Don't delete.)*
-- **EPN is signed out** (checked ~15:30 PT in Browser 1, the Chrome you picked today). The Wednesday money read has now been missed two weeks running; the last full read was Sep 23. **Action:** sign in at partner.ebay.com in Browser 1, then tell the CoS "read EPN". *(The Chrome choice is settled for this session: Browser 1.)*
+- ~~**EPN is signed out**~~ *(✅ closed Oct 1 — Mo signed back in)* (checked ~15:30 PT in Browser 1, the Chrome you picked today). The Wednesday money read has now been missed two weeks running; the last full read was Sep 23. **Action:** sign in at partner.ebay.com in Browser 1, then tell the CoS "read EPN". *(The Chrome choice is settled for this session: Browser 1.)*
 - TCGplayer (#2) and TAG (#4): unchanged. Nothing else.
 
 ---

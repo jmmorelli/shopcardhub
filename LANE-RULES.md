@@ -667,29 +667,41 @@ and the charter points at it. **If you see a day in any other document, this tab
 > lane it replaces; find-and-file lanes are capped at two (Integrity Watch, X Desk Watch). Task prompts that
 > still say "daily" or "13:30" are stale by this table — the table wins.
 
-### Cloud scheduled tasks (editable from any session via the scheduled-task API)
+### The schedule (rewritten 2026-10-01 by the monthly roster review from the live scheduled-task list — every lane below is a task in the scheduled-task API; times Pacific)
 
-| Task | When (Pacific) | What |
-|---|---|---|
-| **CoS · desk** *(Wednesdays also: the EPN money read, R22; every run: open `gate-watch` issues first, R24)* *(created 2026-09-21, replaces the 06:00 cloud daily — Mo: "shouldn't the CoS be seeing these as they get created and go execute?")* | **weekdays 14:00**, Mac-linked (cloud task bound to Mo's Mac; the Card Hub folder, Chrome and the Grok Bot app are reachable) | **The inbox.** Reads everything filed since the previous desk run — Project docs (ideas, Integrity Watch, X Desk Watch) AND the Mac folder (`weekly-scan-*`, `x-desk/watch-*` + `vendor-brief-*`, `chief-of-staff/brief-*`, `comc-trader/*`) AND `awaiting-cos` proposals — rules on each (applied / queued / declined / needs-Mo), applies the auto-approved fixes from a fresh deploy-key clone behind the three gates, **delivers vendor briefs through the Grok Bot app**, runs the engine/GA4/Mobile-QA instrument checks, rules on ideas (Tue/Fri), verifies NEEDS-MO, writes the STATE run-log entry and mirrors both copies. If the Mac is unreachable it does the cloud half and says "MAC UNREACHABLE" rather than pretending. |
-| **CoS · weekly site audit** | **Wednesday 11:00** *(moved from Monday 04:30 by Mo, 2026-09-16 — "a bigger gap" from the Sunday run, and a working hour rather than pre-dawn)* | §0 Business Read first → Terminal Product read → full §4 audit + full-site sweep → Pricing Integrity weekly → the build order → Tape Recap → adjudicate every `awaiting-cos` filing → fix, commit and push behind the three gates → IndexNow. |
-| ~~Gengar · conversion coverage~~ *(created 2026-09-17; task DELETED 2026-09-21 — it had been disabled since creation and never fired, while STATE assumed it ran)* | — | **Folded into the Wednesday weekly:** the weekly runs `site-auditor §15` + `tools/buy-strip-health.mjs` against production and fixes dead eBay queries in `data/buy-strip.json` as part of its build order. Gengar stays a persona in `pipeline.json`; its Monday coverage line is written by the weekly. |
-| **Integrity Watch — instruments and claims** *(created 2026-09-17; row added to this table 2026-09-18)* | **Monday + Thursday 05:00** *(daily → 2×/week 2026-09-21)* | *Cadence cut 2026-09-21: pages change on the Mon/Tue/Wed pushes, so Thursday reads the week's pushes and Monday reads the weekend; a daily read of unchanged pages was re-filing the same findings.* Cloud, find-and-file only. Part A: feed counts, marks, signals, index cadence, auction closes vs trailing-14 medians; the date of the last recorded GA4 read in STATE (HIGH if > 7 days). Part B: six live pages a run, claims vs data. Files `claude/cos/integrity-watch-<date>.md` + proposals JSON; the CoS adjudicates. |
-| **Earnings Ideas Desk** *(created 2026-09-18, Mo's instruction)* | **Tuesday + Friday 04:15** *(daily → 2×/week 2026-09-21)* | *Cadence cut 2026-09-21: 35 ideas filed in four days against one Wednesday build a week — ideas without build capacity are inventory. Mo can restore daily with one word.* Cloud, find-and-file only. 1–3 new earnings ideas per run in the nine-line format of `claude/ideas/README.md`, filtered by its ethics/fit list, never repeating `claude/ideas/LEDGER.md`. Writes `claude/ideas/<date>.md` + ledger rows (Project copies canonical; the weekly mirrors them into the repo). **The CoS daily rules on every idea** (adopt/park/decline). Milestones: M0 $300 · M1 $1,000 · M2 $10,000 per month, trailing-30-day EPN. |
-| CoS · monthly roster & rooms review | 1st of the month 05:00 | Re-read Mo's direction, retire/create agents and rooms, rewrite CHARTER §2, prune rooms. |
-| **X Desk Watch — audit Grok Bot** *(created 2026-09-17, R10; cadence set 2026-09-18)* | **every day 13:00** *(Mo moved it 2026-09-21 so the 14:00 CoS desk acts on a vendor FAIL the same hour; the 17:00 reply sweep is read the next day)* | *Cadence cut 2026-09-21: one run a day sees the 09:00 post and both reply sweeps; the 13:30 run was grading posts with 26–33 views twice.* Reads @shopcardhub in Mo's Chrome (the X-signed-in profile — select by deviceId, never by the display name "Browser 1/2", which is assigned per session) — the 13:30 run sees the vendor's 09:00 post + 12:00 reply sweep, the 17:30 run sees the 17:00 sweep — and checks every number and claim against our own pages **as rendered in a browser** (never baked HTML or curl: the home/terminal pages repaint client-side from the nightly feed). Monday's run is the weekly grade against Grok's own 10:00 audit + GA4. Find-and-file only: it never posts, replies, or fixes. Device-bound: it needs the Mac awake, so it reports "could not read" rather than guessing. Spec: `claude/cos/x-desk-watch-2026-09-17.md`. |
+*Why rewritten:* the previous two tables still listed Integrity Watch and the Ideas Desk as twice weekly, the desk as weekdays, Growth League as Mon + Thu, X Desk Watch as a Grok-vendor audit, had no rows for Night Crew, Night Crew deploy, Site Sweep or X Daily Posts, and called the Monday/Tuesday/Thursday/Sunday/Dungeon lanes desktop-only. The monthly review compares this table with `list_triggers` every month (CHARTER §6). Owners and the number each lane moves: CHARTER §2A.
 
-| **Growth League — Mon + Thu** *(created 2026-09-26, R27; Mo: "build it and let's roll!"; Thursday added the same evening, Mo: "ok do it")* | **Monday + Thursday 05:56** (cloud; pushes with the deploy key on the Mac when reachable, else stages a patch for the desk) | Prints the board (`tools/league/score.mjs`), 301s dead pages on the floor read, spawns agents A/B/C in parallel against `tools/league/BRIEF.md` (≤ 3 pages each per week; Thursday may improve instead of build), integrates manifests (buy strips, signup, releases.json → release calendar + home, sitemap, searchExtra, hub link), three gates, push, live 200s, IndexNow, pushLog, STATE. Only the scoring date (Oct 26 for gen 1) culls or breeds. |
+| Lane | When | Where | What |
+|---|---|---|---|
+| **Night Crew** | daily 00:47 | cloud | ≤ 5 on-page fixes, bugs first, net-calm → `claude/night-crew/pending.patch.txt` (R28). |
+| **Earnings Ideas Desk** | daily 04:15 | cloud | Find-and-file only: 1–3 earnings ideas in the nine-line format of `claude/ideas/README.md`, never repeating `claude/ideas/LEDGER.md`; the desk rules on each (adopt/park/decline). |
+| **Integrity Watch** | daily 05:00 | cloud | Find-and-file only (R24). Part A: feed counts, marks, signals, index cadence, auction closes vs trailing-14 medians, the age of the last GA4 read in STATE (HIGH if > 7 days). Part B: six live pages a run, claims vs data. Files `claude/cos/integrity-watch-<date>.md` + proposals JSON; the desk adjudicates. |
+| **Growth League** | daily 05:56 | cloud + Mac deploy key | Search A/B/C: 1 new page per agent per run, 5 per agent per league week (GO-TIME); Distribution D/E/F on the Wednesday run (R27 Am. 1). |
+| **Night Crew deploy** | daily 07:52 | Mac-linked | Applies the night's patch, gates, push, live check, reverts on regression. |
+| **X Daily Posts (CoS-approved)** | daily 08:17 | cloud + Mo's Chrome | 3 posts drafted and approved by the CoS; queued on Mo's "go" (R10 Am. 2/3). |
+| **Site Sweep — bugs + UX** | daily 10:10 | Mac-linked | Full sitemap sweep + new-collector read; fixes S-size; the independent inspector (R24). |
+| **X Desk Watch — @shopcardhub feed + CoS queue** | daily 13:00 | Mo's Chrome | Grades live posts and the queue against our pages **as rendered in a browser** (never baked HTML or curl — home and index pages repaint from the nightly feed); find-and-file only, never posts, replies or edits. Select the Chrome by the deviceId the tool lists (one browser, `9ead4791`, since Sep 30); "could not read" beats guessing. Spec: `claude/cos/x-desk-watch-2026-09-17.md`. |
+| **CoS · desk** | **daily** 14:00 | Mac-linked | The inbox and executor (unchanged job); Wednesdays also the EPN read (R22); every run opens `gate-watch` issues first (R24). |
+| **CoS · weekly site audit** | Wed 11:00 | cloud + Card Hub folder | §0 Business Read → CHARTER §2B agents → §4 audit + full-site sweep → adjudicate every `awaiting-cos` filing → build order → push → IndexNow. Also carries the retired Gengar duty: `site-auditor §15` + `tools/buy-strip-health.mjs` against production, dead eBay queries in `data/buy-strip.json` fixed. |
+| **CoS · Sunday brief** | Sun 14:00 | cloud | Planning brief + watchdog for the desk. **Files documents only; never commits** — the desk runs the same hour and does the weekend cover (R23). |
+| **CoS · monthly roster & rooms review** | 1st of the month 05:00 | cloud | Roster, rooms, and this table vs `list_triggers`. |
+| **Monday trend scan** (`shopcardhub-weekly-trend-scan`) | Mon 10:00 | — | Price lane; sold-basis re-marks only (R20). |
+| **Tuesday board update** (`bowman-bangers-tuesday-update`) | Tue 11:00 | — | Bangers re-mark + the Tuesday Tape digest, the one weekly email (R26). The board-tweet queue step stays REVOKED (R10). |
+| **COMC trader** | Thu 10:00 | — | Secondary (R13). |
+| **Dungeon keeper** | Fri 11:00 (task is named "saturday") | — | Hands-off (R12; CHARTER). |
+| **Nightly price Action** (GitHub, not a task) | ~01:15 | GitHub runner | Feed, sold marks, Mon/Thu index marks, Monday card ladder. `site-gates.yml` 08:30 checks gates + feed freshness + the desk heartbeat (R24). |
 
-### Desktop-local lanes (in the Claude desktop app — NOT in the scheduled-task API; only Mo edits these prompts)
+One-shots on the list (Oct 1): *Grok usage reset — restart plan* (Oct 1; restarts nothing — Mo paused the Grok bots Sep 30) and *Football conversion re-read* (Oct 3). **Off:** *X Desk Watch — audit Grok Bot* (disabled Sep 30). **Retired, do not re-create:** MWF site auditor, Gengar coverage task, 06:00 cloud daily, Tue/Thu checkpoints (all Sep 21); Friday release window (its job is Release Watch's, CHARTER §2B); the Wednesday build session (absorbed by the desk and the Night Crew).
 
-| Lane | Task-key | What |
-|---|---|---|
-| Sunday Chief of Staff run | `chief-of-staff-sunday` | **Sun 14:00.** Weekly planning brief, queue, coach notes, roster. **First: weekend cover (R23)** — act on X Desk Watch's Sat + Sun filings and deliver any vendor correction. **Sunday only from 2026-09-21** — the Tuesday/Thursday light checkpoints are retired; the cloud daily is that checkpoint. |
-| Monday trend scan (price lane) | `shopcardhub-weekly-trend-scan` | Autonomous price lane — mechanical re-marks and index levels behind the gates. **R20 binds it: sold-basis re-marks only; BCB26/BOW26 held until Sep 30.** |
-| Tuesday board update | `bowman-bangers-tuesday-update` | Bowman Bangers re-mark, Tuesday Tape digest, **and publishing the board tape + numbers to the fixed vendor URL**. **The board-tweet queue step is REVOKED (R10) — do not queue it, do not post it, and report the prompt as stale.** |
-| ~~MWF site auditor~~ | `shopcardhub-site-auditor` | **RETIRED 2026-09-21 (CoS ruling under the cadence cut; Mo deletes the desktop task).** Its deterministic sweep already runs inside the Wednesday weekly and its claims check is the Integrity Watch. Three wrong filings on Sep 16 from a stale mount; the probation is moot. Do not re-create. |
-| Thursday trader · Friday release window · Wednesday build session | — | Trader recs; release-day conversion; the build session that lands queued patches |
+#### Known prompt drift (Oct 1) — the file wins; a lane reading its prompt follows these lines
+
+- **Desk:** reads the feed from `/feed/` and GA4 from a `price-data` clone, never raw.githubusercontent (R19); delivers nothing to Grok Bot (vendor off, R10 Am. 2); runs 7 days; the inbox lookback diffs the last three Integrity Watch `*-proposals.json` files against `data/pipeline.json` (Sep 24 rule).
+- **Weekly:** no Tape Recap at all — retired by Mo Oct 1 (CHARTER §3); the Tuesday Tape is the one weekly email; Phase 2 (sold-basis card pages, engine blocks and home panels, Oct 7) is build-order #1 (R21); when no GA4-realtime proof is possible unattended, it sweeps on the offline harness (`tools/qa/render-local.cjs`) and says so, rather than skipping or loading production.
+- **X Desk Watch:** there is no vendor; one run a day at 13:00; select the Chrome by the listed deviceId.
+- **Growth League:** daily per the GO-TIME block, not Mon + Thu; distribution agents never write a contact address into a repo file.
+- **Monday trend scan:** drop STEP 3.6's ask-basis Bowman doctrine and its "never build a cross-set 1st Bowman index" line (superseded by the Sep 25 Bowman reset); STEP 3.6 covers the divisor-model Pokémon chase tickers only; delete STEP 3.98's lock sweep (R1).
+- **Tuesday board:** the digest is the Monday close (R26, `tools/tuesday-tape-format.md`); never queue a tweet.
+- **Sunday brief:** the Tue/Thu light runs, coach's notes, the Grok vendor and the MWF auditor are gone; the charter is the Project/repo `claude/cos/CHARTER.md`; never commit.
 
 **Overlap to watch (2026-09-16):** the weekly now starts at 11:00 PT Wednesday and the last full
 audit took about 3.5 hours, so it can still be running when the **Wednesday 1 PM build session**
@@ -697,12 +709,7 @@ starts. Two sessions pushing the same tree is exactly the collision R2 exists fo
 second fetches and rebases rather than forcing, and neither works in a reused clone. If they keep
 colliding, the build session is the one to move.
 
-**Open question for Mo (raised 2026-09-16, not yet answered):** the weekly run's Tape Recap send
-now falls on Wednesday, one day after the Tuesday lane's own digest. Email ownership was decided
-on 2026-09-06 as *"Tuesday owns the digest, no email agent"*, which reads as though the weekly's
-separate recap send is leftover doctrine. Until Mo rules, **the weekly does not send a recap in a
-week where the Tuesday digest already went out** — it drafts and says so. One list, four active
-subscribers; two sends in 24 hours is the wrong side of the line.
+**RULED by Mo, 2026-10-01 — the weekly Tape Recap is retired "until we get some real subs".** The Tuesday Tape (the Monday close, R26) is the one weekly email. No run drafts or sends a separate recap; it returns only on Mo's word (the CoS raises it at ≥ 25 outside active subscribers). *(History: raised 2026-09-16; the interim rule had the weekly draft and not send.)*
 
 ## R16 · The reply gate — graded before the post, and it comes off (CoS, 2026-09-22, on Mo's go-ahead)
 
@@ -951,9 +958,9 @@ with the CoS overseeing. Charter: `tools/league/LEAGUE.md`; registry `data/leagu
 - **R14's integrity clause is unchanged.** A page that would score better by shading a number is disqualified at
   design time. Every figure on a league page is a dated sold comp or a labelled, dated ask (R18, R20); a gate FAIL
   does not ship.
-- **Two cloud runs — Monday and Thursday 05:56 PT** ("Growth League") score, floor, spawn the three agents, integrate their
-  manifests, gate and push; Thursday may spend a slot improving an existing league page. A third day is decided at the
-  Oct 14 interim board, not before. It is the lane the release-calendar re-bake moved into; no other run builds league
+- **One cloud run, daily 05:56 PT** ("Growth League"; Mon + Thu until the Sep 27 GO-TIME ruling made it daily — 1 new page
+  per agent per run, 5 per agent per league week; folded in here by the Oct 1 roster review) scores, floors, spawns the
+  agents, integrates their manifests, gates and pushes; a run may spend an agent's slot improving one of its own pages. It is the lane the release-calendar re-bake moved into; no other run builds league
   pages. The desk and the weekly read `data/league-board.json` and do not second-guess it.
 - **What the agents never do:** post, email, DM, sign in, touch shared data files, or write to a page they did not
   create. Distribution stays Mo's (NEEDS-MO).
