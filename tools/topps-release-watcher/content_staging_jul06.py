@@ -123,7 +123,6 @@ def misiorowski():
         related_card("/bowman-bangers", "Tracker", "Bowman Bangers"),
         related_card("/roman-anthony-rookie-cards", "Fellow Riser", "Roman Anthony Rookie Cards"),
         related_card("/best-baseball-cards-under-50", "Budget Buys", "Best Baseball Cards Under $50"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -224,7 +223,6 @@ def crow_armstrong():
         related_card("/roman-anthony-rookie-cards", "Fellow Riser", "Roman Anthony Rookie Cards"),
         related_card("/bowman-bangers", "Tracker", "Bowman Bangers"),
         related_card("/best-baseball-cards-under-50", "Budget Buys", "Best Baseball Cards Under $50"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -330,7 +328,6 @@ def delauter():
         related_card("/jacob-misiorowski-rookie-cards", "Fellow Riser", "Jacob Misiorowski Rookie Cards"),
         related_card("/bowman-bangers", "Tracker", "Bowman Bangers"),
         related_card("/best-baseball-cards-under-50", "Budget Buys", "Best Baseball Cards Under $50"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -450,7 +447,6 @@ def tribute_baseball():
         related_card("/topps-chrome-baseball-2026", "Jul 22 Release", "2026 Topps Chrome Baseball"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
         related_card("/best-baseball-cards-under-50", "Budget Buys", "Best Baseball Cards Under $50"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''

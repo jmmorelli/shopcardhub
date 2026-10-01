@@ -189,7 +189,6 @@ def flagship_football():
         related_card("/topps-cosmic-chrome-football", "Chrome Family", "Topps Cosmic Chrome Football"),
         related_card("/best-football-cards-under-50", "Budget Buys", "Best Football Cards Under $50"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -331,7 +330,6 @@ def pristine_baseball():
         related_card("/topps-chrome-baseball-2026", "Flagship Chrome", "2026 Topps Chrome Baseball"),
         related_card("/topps-tier-one-baseball", "Hit-Forward Cousin", "Topps Tier One Baseball"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''

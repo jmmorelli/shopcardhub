@@ -174,7 +174,6 @@ def bowman_chrome_baseball_2026():
         related_card("/bowman-sapphire-2026", "Companion", "2026 Bowman Sapphire"),
         related_card("/topps-chrome-baseball-2026", "MLB Chrome", "2026 Topps Chrome Baseball"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''

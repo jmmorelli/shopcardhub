@@ -187,7 +187,6 @@ def chrome_sapphire_baseball():
         related_card("/bowman-chrome-baseball-2026", "Prospecting", "2026 Bowman Chrome"),
         related_card("/topps-pristine-baseball", "Premium", "2026 Topps Pristine Baseball"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -348,7 +347,6 @@ def pristine_basketball():
         related_card("/topps-chrome-black-basketball", "High-End", "2026 Chrome Black Basketball"),
         related_card("/topps-pristine-baseball", "Same Brand", "2026 Topps Pristine Baseball"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''

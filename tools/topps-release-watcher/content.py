@@ -218,7 +218,6 @@ def inception_baseball():
         related_card("/roy-watch-2026", "Rookies", "ROY Watch 2026"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
         related_card("/best-baseball-cards-under-50", "Budget Buys", "Best Baseball Cards Under $50"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -375,7 +374,6 @@ def cosmic_chrome_football():
         related_card("/topps-chrome-cactus-jack-basketball", "Chrome Cousin", "Chrome Cactus Jack Basketball"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
         related_card("/psa-grading-guide", "Grading", "PSA Grading Guide 2026"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -532,7 +530,6 @@ def cactus_jack_basketball():
         related_card("/best-basketball-cards-under-50", "Budget Buys", "Best Basketball Cards Under $50"),
         related_card("/topps-cosmic-chrome-football", "Chrome Cousin", "Cosmic Chrome Football"),
         related_card("/psa-grading-guide", "Grading", "PSA Grading Guide 2026"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -684,7 +681,6 @@ def chrome_baseball():
         related_card("/topps-inception-baseball", "Premium Autos", "2025 Topps Inception Baseball"),
         related_card("/roy-watch-2026", "Rookies", "ROY Watch 2026"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''

@@ -155,7 +155,6 @@ def lebron_james():
         related_card("/cameron-boozer-rookie-cards", "New Class", "Cameron Boozer"),
         related_card("/topps-chrome-basketball-2026", "Set Guide", "Topps Chrome Basketball"),
         related_card("/psa-grading-guide", "Guide", "PSA Grading Guide"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -279,7 +278,6 @@ def adley_rutschman():
         related_card("/jacob-misiorowski-rookie-cards", "Arms Race", "Jacob Misiorowski"),
         related_card("/bowman-bangers", "Live Tracker", "2026 Bowman Bangers"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -403,7 +401,6 @@ def cameron_boozer():
         related_card("/topps-chrome-basketball-2026", "Set Guide", "Topps Chrome Basketball"),
         related_card("/lebron-james-cards", "The Standard", "LeBron James Cards"),
         related_card("/best-basketball-cards-under-50", "Budget", "Best Cards Under $50"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -522,7 +519,6 @@ def fernando_mendoza():
         related_card("/topps-chrome-black-football", "Premium", "Chrome Black Football"),
         related_card("/best-football-cards-under-50", "Budget", "Best Cards Under $50"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''

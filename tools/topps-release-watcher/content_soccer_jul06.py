@@ -99,12 +99,6 @@ def _related(first_name):
         <div class="related-desc">Centering makes or breaks the grade. Whether to submit {first_name} cards and which service tier makes sense.</div>
         <a href="/psa-grading-guide" class="related-link">Read Guide &rarr;</a>
       </div>
-      <div class="related-card">
-        <div class="related-tag">Inventory</div>
-        <div class="related-title">Browse Our COMC Store</div>
-        <div class="related-desc">Hand-picked soccer singles, rookies, and parallels &mdash; no box variance, just the cards you want.</div>
-        <a href="https://comc.com/Users/DBCooper" class="related-link" target="_blank" rel="noopener sponsored">Read Guide &rarr;</a>
-      </div>
     </div>
   </section>
 '''

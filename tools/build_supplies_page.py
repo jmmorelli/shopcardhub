@@ -122,7 +122,6 @@ body = f'''<section class="hero" style="border-top:none; padding-bottom:0;">
       {pb.related_card("/best-hobby-boxes-2026", "What to Rip", "Best Hobby Boxes 2026")}
       {pb.related_card("/best-baseball-cards-under-50", "Budget Buys", "Best Baseball Cards Under $50")}
       {pb.related_card("/blog", "All Guides", "The Hub")}
-      {pb.related_card(pb.COMC, "Inventory", "Browse Our COMC Store", sponsored=True)}
     </div>
   </section>
   </div>

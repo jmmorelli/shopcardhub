@@ -180,7 +180,6 @@ def museum_collection_baseball():
         related_card("/topps-pristine-baseball", "Premium", "2026 Topps Pristine"),
         related_card("/bowman-chrome-baseball-2026", "Prospecting", "2026 Bowman Chrome"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
@@ -322,7 +321,6 @@ def definitive_basketball():
         related_card("/topps-chrome-updates-basketball", "Just Dropped", "Chrome Updates Basketball"),
         related_card("/topps-inception-basketball", "Premium", "Topps Inception Basketball"),
         related_card("/hobby-box-roi-calculator", "Free Tool", "Hobby Box ROI Calculator"),
-        related_card(COMC, "Inventory", "Browse Our COMC Store", sponsored=True),
     ]) + DISCLOSURE_BOTTOM + '''
   </div>
 '''
