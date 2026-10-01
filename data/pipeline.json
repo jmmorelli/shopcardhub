@@ -2101,7 +2101,12 @@
     {"id": "iw-2026-09-30-2", "status": "queued", "date": "2026-09-30", "area": "indices", "by": "integrity-watch", "severity": "MED", "title": "bowmanConfigs() matches names without folding accents - Linan in BB26 not BCB26, Munoz, Pena as a false 1st; BCB26 universe 95 vs 97.", "decision": "WEEKLY 2026-09-30: ACCEPTED - desk before Mon Oct 5: fold diacritics, re-run BB26/BCB26/BOW26 as a logged divisor adjustment (level unchanged), assert BCB26 universe = checklist first CPAs.", "decidedBy": "cos", "decidedOn": "2026-09-30"},
     {"id": "iw-2026-09-30-3", "status": "queued", "date": "2026-09-30", "area": "indices", "by": "integrity-watch", "severity": "MED", "title": "BCB26 break math says non-auto 1st Bowman Chromes come in every case; 34 of 104 CPA players have no 1st BCP in September Chrome.", "decision": "WEEKLY 2026-09-30: ACCEPTED - folded into the Thu Oct 1 Chrome floor build (per-player floor from the BCP group; 'none in this product' where absent). No paid link carries it today.", "decidedBy": "cos", "decidedOn": "2026-09-30"},
     {"id": "iw-2026-09-30-4", "status": "applied", "date": "2026-09-30", "area": "indices", "by": "integrity-watch", "severity": "LOW", "title": "BCB26 method note named returning names as having their 1sts in May; they were 2025 products.", "decision": "WEEKLY 2026-09-30: APPLIED 929afa5 - generator string + --bake (note line only); names checked against data/sets 2025 files.", "decidedBy": "cos", "decidedOn": "2026-09-30"},
-    {"id": "iw-2026-09-30-5", "status": "queued", "date": "2026-09-30", "area": "league", "by": "integrity-watch", "severity": "LOW", "title": "/topps-holiday-baseball-2026: Hidden Elf is 25 cards, one per player, not five variations of five players.", "decision": "WEEKLY 2026-09-30: ROUTED to League agent A's next improve run (R27: agent-owned page).", "decidedBy": "cos", "decidedOn": "2026-09-30"}
+    {"id": "iw-2026-09-30-5", "status": "queued", "date": "2026-09-30", "area": "league", "by": "integrity-watch", "severity": "LOW", "title": "/topps-holiday-baseball-2026: Hidden Elf is 25 cards, one per player, not five variations of five players.", "decision": "WEEKLY 2026-09-30: ROUTED to League agent A's next improve run (R27: agent-owned page).", "decidedBy": "cos", "decidedOn": "2026-09-30"},
+    {"id": "iw-2026-10-01-1", "status": "applied", "date": "2026-10-01", "area": "indices", "by": "integrity-watch", "severity": "HIGH", "title": "BB26/BOW26 'every 1st Bowman Chrome Auto' held returning May autos and base (no May 1st-flag file).", "decision": "DESK 2026-10-01: APPLIED by the CoS chat session the same day (31f3d7a, Bowman pass 2: 11 returning autos + 39 returning base out of BB26/BOW26 as logged divisor adjustments, May filters exclude 2025 priors). Verified live: none of the four proven names on /bowman-2026-index. Builder assert vs the May first-CPA count and the accent fold (iw-2026-09-30-2) stay with the desk before Mon Oct 5.", "decidedBy": "cos", "decidedOn": "2026-10-01"},
+    {"id": "iw-2026-10-01-2", "status": "queued", "date": "2026-10-01", "area": "indices", "by": "integrity-watch", "severity": "MED", "title": "11 whole-set index pages say 'All N cards … priced from dated sold comps' when only the basket is priced (SK03 70/186 …).", "decision": "DESK 2026-10-01: ACCEPTED, QUEUED to the Oct 7 weekly (Index Keeper): generator change in build-sector-index.mjs + new-sector-page.mjs, then --bake, level unchanged. Rides with the pitch-ready work order (/indices is one of the three outreach pages). Verified live on /skyridge-index.", "decidedBy": "cos", "decidedOn": "2026-10-01"},
+    {"id": "iw-2026-10-01-3", "status": "applied", "date": "2026-10-01", "area": "guides", "by": "integrity-watch", "severity": "MED", "title": "/best-hobby-boxes-2026 + /psa-grading-guide described the Bangers board with players it does not hold and 'PSA 10 estimates'.", "decision": "DESK 2026-10-01: ALREADY FIXED by 4b3eee2 (Bowman KB fix list): both related cards now read 'The 2026 Bowman (May) class's 1st Bowman Chrome Autos, ranked on the 30-day median of dated raw sales'; 'Holliday and Anthony in the pool' gone. Verified live.", "decidedBy": "cos", "decidedOn": "2026-10-01"},
+    {"id": "iw-2026-10-01-4", "status": "applied", "date": "2026-10-01", "area": "guides", "by": "integrity-watch", "severity": "LOW", "title": "/best-hobby-boxes-2026: 'aren't out yet' for released boxes; 'no affiliate link' above its own Fanatics strip; X 'in real time'.", "decision": "DESK 2026-10-01: APPLIED a3c03dc (copy only), live-verified.", "decidedBy": "cos", "decidedOn": "2026-10-01"},
+    {"id": "iw-2026-10-01-5", "status": "applied", "date": "2026-10-01", "area": "nav", "by": "integrity-watch", "severity": "LOW", "title": "Nav 'All 23 tickers' vs 30 live; rail 'Bowman Football — Pre-Order' on 4 pages.", "decision": "DESK 2026-10-01: ALREADY DONE: nav + /indices meta by Site Sweep a7eb852; build-rail --dry on main says all 4 rail pages unchanged.", "decidedBy": "cos", "decidedOn": "2026-10-01"}
   ],
   "scoreboard": {
     "updated": "2026-09-28",
@@ -3166,6 +3171,26 @@
           "gates": "audit-prices FAIL 0 / WARN 77 · audit-site FAIL 0 / WARN 4 · audit-terminal FAIL 0 / WARN 1 (feed prices the dropped roman-anthony-sapphire until the nightly) · first-bowman clean",
           "liveVerified": "2026-10-01 curl: /bowman-2026-index '80 cards, 66 trading', Holliday left-foot stress fracture, Anthony debut Jun 9 2025, DeLauter #CDA-CD, PSA guide 'Varies', /card-andrew-fischer '2026 Bowman'; indices.json BB26 80/66 · BOW26 175/107 with UNIVERSE CORRECTION divisorLog",
           "rollback": "git revert --no-edit 31f3d7a"
+        },
+        {
+          "date": "2026-10-01",
+          "commits": [
+            "764e23a"
+          ],
+          "by": "CoS · desk (14:00, unattended): Oct 1 monthly roster review docs patch (roster-2026-10-01.patch.txt), git am'd in the cloud on a7eb852 (tree 5d3348b0 matched the review's), rebased onto 7e947cd (STATE conflict kept both sides), applied on the Mac (tree a8b90e87 matched)",
+          "gates": "docs only (LANE-RULES, CHARTER.md first commit, STATE, NEEDS-MO); no deploy",
+          "liveVerified": "n/a (docs)",
+          "rollback": "git revert --no-edit 764e23a"
+        },
+        {
+          "date": "2026-10-01",
+          "commits": [
+            "a3c03dc"
+          ],
+          "by": "CoS · desk (14:00, unattended): iw-2026-10-01-4 best-hobby-boxes copy; Museum Collection meta Nov 11; Tuesday Tape links our pages only (EPN email rule, ideas note 1) + LANE-RULES R26",
+          "gates": "audit-prices FAIL 0 / WARN 77 · audit-site FAIL 0 / WARN 4 (141) · audit-terminal --feed 0/1 = the 31f3d7a tree's figures",
+          "liveVerified": "2026-10-01 ~14:30 PT curl: /best-hobby-boxes-2026 3/3 new strings, /topps-museum-collection-baseball 'Releases Nov 11' ×2",
+          "rollback": "git revert --no-edit a3c03dc"
         }
       ]
     },

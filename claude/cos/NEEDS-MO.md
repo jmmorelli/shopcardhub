@@ -11,6 +11,16 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the desk (2026-10-01, 14:00 run). Mo, these are the only things waiting on you
+
+- **EPN signed you out again.** Your 9:10 am sign-in didn't last to the afternoon: at ~2:25 pm partner.ebay.com showed the login page in Browser 1, so the 30-day money read is still missing (last full read Sep 23). **Action:** next time you're in a CoS chat, sign in at partner.ebay.com in Browser 1 and say "read EPN" in the same sitting, so the read runs while the session is fresh.
+- *FYI:* the Sep 30 10:00 am Ruggie / 1952 Topps post is no longer on the account. If you didn't delete it, tell the CoS.
+- ✅ *Closed:* the Sep 30 4:00 pm post went out with "basket", so nothing to reply to. The 6:30 pm "whole set" wording posted as-is and was ruled a wording point, not an error. No action.
+- ✅ *Closed:* **Which Chrome.** Only Browser 1 is connected now, and this unattended run selected it without asking. The Oct 7 weekly confirms GA4, Search Console and Bing read live.
+- TCGplayer (#2) and TAG (#4): unchanged.
+
+---
+
 ## Open — from the monthly roster review (2026-10-01). Ruled the same morning
 
 - ~~Retire the weekly Tape Recap email?~~ **✅ RULED by Mo Oct 1 (~09:00 PT): "retire it until we get some real subs."** Applied to CHARTER §3 and LANE-RULES; the Tuesday Tape is the one weekly email.
