@@ -14,6 +14,18 @@
 ---
 
 
+## 2026-09-30 PM — CARD PAGES + CARD SEARCH + RAW / PSA 9 / PSA 10 / TAG LINKS (Mo in chat, CoS built, LIVE `192532f` + `f66a70a`)
+
+**Mo's ask (~21:00 PT):** an eBay link per card on the classic indices, PSA 9 + PSA 10 links (vintage graded is where the money is), a raw/PSA 10 auctions option, TAG as its own link, and a Seeking-Alpha-style search that opens a card page with raw vs 9 vs 10 — "I just don't want it to get too clunky."
+
+- **Index rows (14 Pokémon sector tickers: 12 classic + SV151 + TH26):** Raw (baked, now excludes graded words; WOTC also -1st -shadowless) + PSA 9 · PSA 10 · TAG (built client-side by `js/grade-links.js` from `data-q`, keeps HTML light). **One switch per table: Buy It Now ↔ Auctions · ending soon** (`LH_Auction=1&_sop=1`, remembered per browser). Card name → `/card?id=<tk>-<num>`. customids `<tk>-<num>[-psa9|-psa10|-tag][-auc]`; card page `card-<tk>-<num>…`. GA4 events `grade_click`, `grade_mode`, `card_page_view`. Chase 6 (PB26/CR26/AH26/PRIS25/DR25/PF25) and Bowman NOT covered (different templates) — next if the clicks come.
+- **Graded ladder:** `tools/build-card-ladder.mjs` → `data/cards/g-<tk>.json`. One PriceCharting item page per card (all grade tabs on one page). R18: a row counts only if its own title names the grade (PSA 9 picked out of the all-grader "Grade 9" tab by title); WOTC drops 1st Ed/Shadowless titles; mark = 3+/30d else 2+/90d median; one sale = "last sale <date>", never a mark. First read Sep 30: **1,783 cards · PSA 9 marks 750 · PSA 10 618 · TAG 10 283 · 0 errors.** Spot checks matched league reads (Moonbreon PSA 10 $3,901 / 30 sales). Nightly Action: re-read **Mondays (UTC), 50-min timeout, never blocks the feed**; mark steps now also commit `data/cards` + `data/card-search.json`.
+- **/card** (`card.html` from `tools/build-card-template.mjs`, `js/card-page.js`): ladder tiles (×raw), log-scale bar, grading premium line (PSA 9×, PSA 10×, 9→10 step, TAG 10 as % of PSA 10), buy buttons per grade with the same BIN/auction switch, ★ watch, "more from the basket", method. **noindex** (one URL, ~1,800 variants). Follow-up for the weekly: static indexable pages for the top vintage cards IF `/card` + `grade_click` show demand.
+- **Nav search** finds cards (lazy `data/card-search.json`, 90 KB raw, on first focus), dearest first; input widened 118 → 150 px (240 focused). 134 pages re-baked.
+- **Gates** 0/74 · 0/3 (134) · 0/0 = baseline. image-sweep on production 7 pages × 1280/390: FAIL 0 after `f66a70a` (first push put the #34 "vs sold mark" chip inside the new link group → 550 px at 390 on SV151/TH26; fixed by wrapping). IndexNow 14 → 200.
+- **Data points for Mo's TAG thesis (first read):** SV151 Charizard ex 199 TAG 10 = 77% of PSA 10; Base Set Charizard TAG 10 = 62%; Moonbreon TAG 10 $4,844 vs PSA 10 $3,901 (4 TAG sales — thin).
+- **Read at the Oct 7 desk:** EPN custom IDs `*-psa9|-psa10|-tag|-auc` and `card-*`; GA4 `grade_click` by grade/mode.
+
 ## 2026-09-30 AM — POKÉMON INDICES REBASED TO RELEASE DATE + LOG CHARTS (Mo in chat, CoS executed)
 
 **Ruling (Mo, ~07:45 PT):** "I say we rebase … going from inception is dumb compared to going from release date … pull the X poll." Also: charts on a **log** scale. Both decided before any outreach (D batch stays held until this is live; then its drafts are rewritten on the new levels).
