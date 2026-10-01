@@ -220,7 +220,10 @@
               if (rowA.parentNode && rowA.parentNode.classList && rowA.parentNode.classList.contains('act-w')) {
                 c.style.cssText += 'order:9;grid-column:1/-1;justify-self:center;margin-left:0;';
               }
-              rowA.parentNode.insertBefore(c, rowA.nextSibling);
+              // grade-link rows (Sep 30 2026): the Raw link sits in a segmented control — the chip goes under the whole action row
+              var glk = rowA.closest && rowA.closest('.glk'), td = glk && glk.closest('td');
+              if (td) { c.style.cssText += 'display:block;width:fit-content;margin:5px auto 0;'; td.appendChild(c); }
+              else rowA.parentNode.insertBefore(c, rowA.nextSibling);
             }
           });
         }
