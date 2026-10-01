@@ -1,0 +1,91 @@
+/* grade-links.js — Raw · PSA 9 · PSA 10 · TAG eBay links for Pokémon index rows and card pages (Sep 30 2026, Mo:
+ * "link to PSA 9 and PSA 10 … a 'raw auctions' or 'PSA 10 auctions' option … promo TAG graded as its own link …
+ * I just don't want it to get too clunky").
+ *
+ * One switch per table (Buy It Now ↔ Auctions ending soon) instead of more buttons per row. The Raw link is baked in
+ * the page (crawlable, audited); the graded links are built here from the row's eBay phrase (data-q) so the HTML stays
+ * light (a full EVS21 table would carry ~600 KB of URLs otherwise). Every URL carries the full EPN param set; only
+ * customid varies: <ticker>-<num>[-psa9|-psa10|-tag][-auc] (card pages prefix "card-").
+ * Searches only — never a price (R20). TAG first-class beside PSA (Mo, Sep 25: promote TAG).
+ */
+(function () {
+  var P = 'mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001';
+  var RAW_NOT = ' -psa -cgc -bgs -sgc -tag -beckett -graded -slab';
+  var KEY = 'sch_glk_mode';
+  var G = [
+    { g: 'raw', lbl: 'Raw', short: 'Raw', tip: 'Raw (ungraded) copies of this card on eBay' },
+    { g: 'psa9', lbl: 'PSA 9', short: '9', tip: 'PSA 9 copies of this card on eBay' },
+    { g: 'psa10', lbl: 'PSA 10', short: '10', tip: 'PSA 10 copies of this card on eBay' },
+    { g: 'tag', lbl: 'TAG', short: 'TAG', tip: 'TAG-graded copies (AI-graded slabs) of this card on eBay' }
+  ];
+  function nkw(q) { return encodeURIComponent(String(q).replace(/\s+/g, ' ').trim()).replace(/%20/g, '+').replace(/'/g, '%27').replace(/[!()*]/g, function (c) { return '%' + c.charCodeAt(0).toString(16).toUpperCase(); }); }
+  function phrase(q, g, wotc) {
+    q = String(q || '');
+    if (g === 'raw') return q + RAW_NOT + (wotc ? ' -1st -shadowless' : '');
+    // graded labels on WOTC Unlimited slabs don't say "Unlimited" — searching for the word hides most of them
+    var b = (wotc ? q.replace(/\bunlimited\b/i, '') + ' -1st -shadowless -celebrations' : q);
+    if (g === 'psa9') return b + ' psa 9 -"psa 10"';
+    if (g === 'psa10') return b + ' psa 10';
+    if (g === 'tag') return b + ' tag -psa -cgc -bgs -sgc';
+    return q;
+  }
+  function url(o) {
+    var p = ['_nkw=' + nkw(phrase(o.q, o.g, o.wotc)), '_sacat=183454'];
+    if (o.mode === 'auc') p.push('LH_Auction=1', '_sop=1'); else p.push('LH_BIN=1');
+    if (o.av && o.g === 'raw') p.push('LH_AV=1');
+    p.push(P, 'customid=' + o.cid + (o.g === 'raw' ? '' : '-' + o.g) + (o.mode === 'auc' ? '-auc' : ''));
+    return 'https://www.ebay.com/sch/i.html?' + p.join('&');
+  }
+  function getMode() { try { return localStorage.getItem(KEY) === 'auc' ? 'auc' : 'bin'; } catch (e) { return 'bin'; } }
+  function setMode(m) { try { localStorage.setItem(KEY, m); } catch (e) {} }
+  function track(a) {
+    a.addEventListener('click', function () {
+      try { if (typeof gtag === 'function') gtag('event', 'grade_click', { grade: a.getAttribute('data-g'), mode: a.getAttribute('data-mode') || 'bin', item: a.getAttribute('data-cid') || '', page: location.pathname }); } catch (e) {}
+    });
+  }
+  // fill one row's link group (index tables)
+  function fillRow(tr, wotc, mode) {
+    var box = tr.querySelector('.glk'); if (!box || box.getAttribute('data-filled')) return;
+    var q = tr.getAttribute('data-q'), cid = tr.getAttribute('data-cid'), av = tr.getAttribute('data-av') === '1';
+    var raw = box.querySelector('a[data-g="raw"]');
+    if (raw) { raw.setAttribute('data-bin', raw.getAttribute('href')); raw.setAttribute('data-cid', cid); track(raw); }
+    G.slice(1).forEach(function (d) {
+      var a = document.createElement('a');
+      a.className = 'ebay g-' + d.g; a.setAttribute('data-g', d.g); a.setAttribute('data-cid', cid);
+      a.target = '_blank'; a.rel = 'sponsored nofollow noopener'; a.title = d.tip;
+      a.innerHTML = d.g === 'psa9' || d.g === 'psa10' ? '<span class="gl">PSA&nbsp;</span>' + d.short : d.short;
+      a.href = url({ q: q, g: d.g, wotc: wotc, cid: cid, mode: 'bin' });
+      track(a); box.appendChild(a);
+    });
+    box.setAttribute('data-filled', '1');
+    if (mode === 'auc') apply(tr, wotc, mode);
+  }
+  function apply(scope, wotc, mode) {
+    scope.querySelectorAll('tr[data-q]').forEach(function (tr) {
+      var q = tr.getAttribute('data-q'), cid = tr.getAttribute('data-cid'), av = tr.getAttribute('data-av') === '1';
+      tr.querySelectorAll('.glk a[data-g]').forEach(function (a) {
+        var g = a.getAttribute('data-g');
+        a.setAttribute('data-mode', mode);
+        if (g === 'raw' && mode === 'bin' && a.getAttribute('data-bin')) { a.href = a.getAttribute('data-bin'); return; }
+        a.href = url({ q: q, g: g, wotc: wotc, cid: cid, mode: mode, av: av });
+      });
+    });
+  }
+  function initTables() {
+    document.querySelectorAll('.sidx[data-glk]').forEach(function (sec) {
+      var wotc = sec.hasAttribute('data-wotc'), mode = getMode();
+      sec.querySelectorAll('tr[data-q]').forEach(function (tr) { fillRow(tr, wotc, mode); });
+      var bar = sec.querySelector('.glk-bar');
+      function paint(m) { if (bar) bar.querySelectorAll('button[data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === m)); }); sec.classList.toggle('glk-auc', m === 'auc'); }
+      paint(mode);
+      if (bar) bar.addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-mode]'); if (!b) return;
+        var m = b.getAttribute('data-mode'); setMode(m); paint(m);
+        document.querySelectorAll('.sidx[data-glk]').forEach(function (s2) { apply(s2, s2.hasAttribute('data-wotc'), m); });
+        try { if (typeof gtag === 'function') gtag('event', 'grade_mode', { mode: m, page: location.pathname }); } catch (err) {}
+      });
+    });
+  }
+  window.SCH_GLK = { url: url, phrase: phrase, grades: G, getMode: getMode, setMode: setMode, track: track };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initTables); else initTables();
+})();

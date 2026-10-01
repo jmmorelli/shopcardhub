@@ -28,6 +28,7 @@ import { fileURLToPath } from "node:url";
 import { consoleCards } from "./price-engine/pc-console.mjs";
 import { parsePage } from "./price-engine/sold-marks.mjs";
 import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
+import { cardId, RAW_NOT, WOTC, writeCardFile } from "./lib/card-files.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -348,10 +349,19 @@ function block(x, c) {
   const money = (n, d) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: d == null ? 2 : d, maximumFractionDigits: d == null ? 2 : d });
   const desk = deskIds(x);
   const hero = rows[0];
+  // Pokémon tickers get the grade-link group (Sep 30 2026, Mo): Raw baked + PSA 9 · PSA 10 · TAG built by js/grade-links.js
+  // from data-q, one Buy-It-Now/Auctions switch per table, and the card name opens /card?id=… (the ladder page).
+  const GL = (c.imgSub || "pokemon") === "pokemon" && !c.kindPlural, wotc = WOTC.has(x.ticker);
   const row = (b, i) => {
     const w = (b.price * b.w) / bv;
     const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
-    const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
+    const q0 = c.ebayQuery(b.name, b.num);
+    const url = ebaySearchUrl({ q: GL ? q0 + " " + RAW_NOT + (wotc ? " -1st -shadowless" : "") : q0, customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
+    if (GL) {
+      const thumbG = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
+      const dkG = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slotG = desk[dkG] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dkG])}"></span>` : '<span class="sidx-auc-slot"></span>';
+      return `<tr data-q="${esc(q0)}" data-cid="${cid}"${b.price >= 200 ? ' data-av="1"' : ""}><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumbG}<div><b><a class="cardlk" href="/card?id=${cardId(x.ticker, b.num)}" title="Raw vs PSA 9 vs PSA 10 vs TAG — the card's price ladder">${esc(b.name)}</a></b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><span class="act-w g"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><span class="glk"><a class="ebay g-raw" data-g="raw" href="${url}" target="_blank" rel="sponsored nofollow noopener" title="Raw (ungraded) copies on eBay${b.price >= 200 ? " — Authenticity Guarantee filter on" : ""}">Raw</a></span>${slotG}</span></td></tr>`;
+    }
     const thumb = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
     const dk = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slot = desk[dk] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dk])}"></span>` : "";
     return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><span class="act-w"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot || '<span class="sidx-auc-slot"></span>'}</span></td></tr>`;
@@ -381,7 +391,7 @@ function block(x, c) {
     const shown = sx.kind === "screened" ? cards.slice(0, 3) : cards;
     return `<div class="sidx-subidx"><span class="sidx-subidx-k"><b>${x.ticker}·${esc(k)}</b> ${esc(sx.name)}</span><span class="sidx-subidx-lv">${sl ? sl.level.toFixed(2) : "—"}</span><span class="sidx-subidx-w ${cls(sw == null ? 0 : sw)}">${sw == null ? "first mark" : (sw >= 0 ? "▲ " : "▼ ") + pct(sw)}</span><span class="sidx-subidx-cards">${shown.map((b) => `<i>${esc(b.name)} #${esc(b.num)} <b>${money(b.price, 0)}</b></i>`).join("")}${sx.kind === "screened" && cards.length > 3 ? `<i>+${cards.length - 3} more</i>` : ""}</span>${sh.length > 1 ? `<span class="sidx-subidx-sp">${ST_spark(sh.map((r) => r.level))}</span>` : ""}<span class="sidx-subidx-n">${cards.length} cards${sx.kind === "screened" && sx.universe ? ` of ${sx.universe.length}` : ""} · price-weighted · uncapped · base 100 at ${mdy(x.inception)} — ${esc(sx.blurb || "")}</span></div>`;
   }).join("");
-  return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}"${c.classic ? " data-no-repoint" : ""} style="--sidx:${c.theme};">
+  return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}"${c.classic ? " data-no-repoint" : ""}${GL ? " data-glk" : ""}${GL && wotc ? " data-wotc" : ""} style="--sidx:${c.theme};">
   <div class="sidx-mast">
     <div class="sidx-t">
       <div class="sidx-eyebrow">▮ ${c.kindPlural ? "Class Index · Sector Model · Every " + esc(c.kindPlural.replace(/s$/, "")) : "Set Index · Sector Model · Every Card In The Set"}</div>
@@ -404,9 +414,10 @@ function block(x, c) {
   </div>
   ${subs}
   ${chase}
+  ${GL ? `<div class="glk-bar" role="group" aria-label="Which eBay listings the buttons open"><span class="glk-k">Buy buttons open</span><button type="button" data-mode="bin" aria-pressed="true">Buy It Now</button><button type="button" data-mode="auc" aria-pressed="false">Auctions · ending soon</button><span class="glk-n">Raw · PSA 9 · PSA 10 · TAG on every row · tap a card name for its raw-to-PSA&nbsp;10 price ladder</span></div>` : ""}
   ${rest ? `<div class="sidx-cap">Top 10 of ${rows.length} cards by weight · the full basket is one tap below the table</div>` : ""}
   <div class="sidx-tbl"><table>
-    <thead><tr><th>#</th><th>Card</th><th>Sold mark</th><th>Weight</th><th title="clean sold comps in the trailing 30 days — a gate input, not a volume figure">Sales 30D</th><th class="th-act">Watch · Buy · <span title="live eBay auction on this exact card, soonest close with bids; refreshed every 15 min">Bid</span></th></tr></thead>
+    <thead><tr><th>#</th><th>Card</th><th>Sold mark</th><th>Weight</th><th title="clean sold comps in the trailing 30 days — a gate input, not a volume figure">Sales 30D</th><th class="th-act">Watch · ${GL ? "Buy raw / graded" : "Buy"} · <span title="live eBay auction on this exact card, soonest close with bids; refreshed every 15 min">Bid</span></th></tr></thead>
     <tbody>${top10}</tbody>
   </table></div>
   ${rest ? `<details class="sidx-more"><summary><span class="sm-open">Show all ${rows.length} cards ▾</span><span class="sm-close">Hide cards 11–${rows.length} ▴</span></summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
@@ -478,6 +489,19 @@ const CSS = `<style id="sidx-css">
 .sidx-tbl td.act{white-space:nowrap}
 .sidx-tbl td.act .act-w{display:inline-grid;grid-template-columns:34px 132px 200px;gap:6px;align-items:center;justify-items:stretch;text-align:center}
 .sidx-tbl td.act .act-w>*{margin:0}
+.sidx-tbl td.act .act-w.g{grid-template-columns:34px 212px 200px}
+.sidx-tbl td.nm a.cardlk{color:inherit;text-decoration:none;border-bottom:1px dotted var(--sidx)}.sidx-tbl td.nm a.cardlk:hover{color:var(--sidx)}
+.glk{display:inline-flex;gap:3px;justify-content:flex-start}
+.sidx-tbl td.act .glk a.ebay{padding:6px 8px;letter-spacing:1px;min-width:0}
+.sidx-tbl td.act .glk a.g-psa9,.sidx-tbl td.act .glk a.g-psa10{background:transparent;color:var(--sidx-th);border:1px solid var(--sidx);padding:5px 7px}
+.sidx-tbl td.act .glk a.g-tag{background:transparent;color:#00e07a;border:1px solid #00e07a;padding:5px 7px}
+.sidx-tbl td.act .glk a.g-psa9:hover,.sidx-tbl td.act .glk a.g-psa10:hover{background:var(--sidx);color:#000}.sidx-tbl td.act .glk a.g-tag:hover{background:#00e07a;color:#000}
+.glk-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:14px 0 0;font-family:var(--fm,ui-monospace,monospace);font-size:10px;color:var(--sidx-dim)}
+.glk-bar .glk-k{letter-spacing:1.5px;text-transform:uppercase}
+.glk-bar button{font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;min-height:36px;padding:6px 14px;border:1px solid var(--sidx);background:transparent;color:var(--sidx-th);border-radius:2px;cursor:pointer}
+.glk-bar button[aria-pressed="true"]{background:var(--sidx);color:#000}
+.glk-bar .glk-n{flex:1 1 260px;line-height:1.5}
+.sidx.glk-auc .glk a.ebay::after{content:" ⏱";font-size:9px}
 .sidx-tbl td.act .sch-track-card{background:transparent;border:1px solid var(--border2,rgba(255,255,255,.14));color:var(--sidx-th);border-radius:2px;padding:5px 9px;cursor:pointer;font-size:12px;vertical-align:middle}
 .sidx-tbl td.act a.ebay{display:inline-block;vertical-align:middle;text-align:center;font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#000;background:var(--sidx);padding:6px 11px;border-radius:2px;text-decoration:none}
 .sidx-tbl td.act a.ebay:hover{filter:brightness(1.1)}
@@ -496,6 +520,7 @@ const CSS = `<style id="sidx-css">
 .sidx-note b{color:var(--text,#b8cdd4)} .sidx-note a{color:var(--sidx)}
 @media(max-width:900px){.sidx-stats{grid-template-columns:repeat(4,1fr)}.sidx-stats>div:nth-child(4){border-right:0}.sidx-stats>div:nth-child(-n+4){border-bottom:1px solid var(--sidx-bd)}}
 @media(max-width:760px){.sidx-mast{display:block;position:relative;padding-right:104px}.sidx-photo{position:absolute;right:0;top:0;width:96px}.sidx-photo .sch-cimg{width:90px!important;height:126px!important}.sidx-photo figcaption{display:none}.sidx-level{text-align:left;margin-top:12px}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}.sidx-tbl td.act .act-w{grid-template-columns:32px 96px 92px}.sidx-tbl td.act a.ebay,.sidx-auc-slot a.auc{padding:5px 6px;font-size:10px;letter-spacing:.5px}.sidx-auc-slot a.auc small{display:none}}
+@media(max-width:760px){.sidx-tbl td.act .act-w.g{grid-template-columns:32px auto auto}.sidx-tbl td.act .glk a.ebay{padding:7px 7px;font-size:10.5px;letter-spacing:.5px;min-height:32px}.glk-bar .glk-n{display:none}}
 </style>`;
 
 function bake(x, c) {
@@ -515,6 +540,11 @@ function bake(x, c) {
   if (!html.includes('src="/js/card-img.js')) html = html.replace("</body>", '<script src="/js/card-img.js?v=3" defer></script>\n</body>');
   if (!html.includes('src="/js/index-you.js')) html = html.replace("</body>", '<script src="/js/index-you.js?v=1" defer></script>\n</body>');
   if (!html.includes('src="/js/sector-auctions.js')) html = html.replace("</body>", '<script src="/js/sector-auctions.js?v=3" defer></script>\n</body>');
+  if ((c.imgSub || "pokemon") === "pokemon" && !c.kindPlural) {
+    if (!html.includes('src="/js/grade-links.js')) html = html.replace("</body>", '<script src="/js/grade-links.js?v=1" defer></script>\n</body>');
+    const bv = x.basket.reduce((a, b) => a + b.price * b.w, 0);
+    writeCardFile(ROOT, x, c, x.basket.slice().sort((a, b) => b.price * b.w - a.price * a.w), imgAttr, DRY);
+  }
   if (!DRY) fs.writeFileSync(file, html);
   console.log(`${DRY ? "would bake" : "baked"} ${c.page} block: ${x.basket.length} rows`);
 }

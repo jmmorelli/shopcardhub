@@ -207,7 +207,7 @@
             var chip = soldChip(row, h);
             rowA.href = withCid(h.item, chip && chip.under ? rowCid + '-bm' : rowCid);
             rowA.title = 'The cheapest verified listing for this card on eBay';
-            rowA.innerHTML = 'Listing &rarr;';
+            if (!rowA.getAttribute('data-g')) rowA.innerHTML = 'Listing &rarr;'; // grade-link rows keep "Raw" (Sep 30 2026)
             if (chip) {
               var c = document.createElement('span');
               c.className = 'sch-vs-sold';
