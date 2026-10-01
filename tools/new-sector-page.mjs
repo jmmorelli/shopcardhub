@@ -26,9 +26,17 @@ const SPEC = {
   EVS21: { set: "Evolving Skies", q: "evolving skies", year: 2021 },
   CEL21: { set: "Celebrations", q: "celebrations", year: 2021 },
   CZ23:  { set: "Crown Zenith", q: "crown zenith", year: 2023 },
+  // edition indices (Sep 30 2026)
+  BS1E:  { set: "Base Set 1st Edition", q: "base set 1st edition", year: 1999 },
+  BSSL:  { set: "Base Set Shadowless", q: "base set shadowless -1st", year: 1999 },
+  JU1E:  { set: "Jungle 1st Edition", q: "jungle 1st edition", year: 1999 },
+  FO1E:  { set: "Fossil 1st Edition", q: "fossil 1st edition", year: 1999 },
+  TR1E:  { set: "Team Rocket 1st Edition", q: "team rocket 1st edition", year: 2000 },
+  NG1E:  { set: "Neo Genesis 1st Edition", q: "neo genesis 1st edition", year: 2000 },
+  ND1E:  { set: "Neo Destiny 1st Edition", q: "neo destiny 1st edition", year: 2002 },
 };
-const PAGES = { BS99: "pokemon-base-set-index", JU99: "pokemon-jungle-index", FO99: "pokemon-fossil-index", TR00: "team-rocket-index", NG00: "neo-genesis-index", ND02: "neo-destiny-index", AQ03: "aquapolis-index", SK03: "skyridge-index", HF19: "hidden-fates-index", EVS21: "evolving-skies-index", CEL21: "celebrations-index", CZ23: "crown-zenith-index" };
-const THEME = { BS99: "#e8b93a", JU99: "#4caf50", FO99: "#b0a089", TR00: "#d23c3c", NG00: "#f0a830", ND02: "#6a5acd", AQ03: "#2fa4d8", SK03: "#8fb6e8", HF19: "#e0503c", EVS21: "#3c7fd8", CEL21: "#d4af37", CZ23: "#c9a227" };
+const PAGES = { BS99: "pokemon-base-set-index", JU99: "pokemon-jungle-index", FO99: "pokemon-fossil-index", TR00: "team-rocket-index", NG00: "neo-genesis-index", ND02: "neo-destiny-index", AQ03: "aquapolis-index", SK03: "skyridge-index", HF19: "hidden-fates-index", EVS21: "evolving-skies-index", CEL21: "celebrations-index", CZ23: "crown-zenith-index" , BS1E: "pokemon-base-set-1st-edition-index", BSSL: "pokemon-base-set-shadowless-index", JU1E: "pokemon-jungle-1st-edition-index", FO1E: "pokemon-fossil-1st-edition-index", TR1E: "team-rocket-1st-edition-index", NG1E: "neo-genesis-1st-edition-index", ND1E: "neo-destiny-1st-edition-index" };
+const THEME = { BS99: "#e8b93a", JU99: "#4caf50", FO99: "#b0a089", TR00: "#d23c3c", NG00: "#f0a830", ND02: "#6a5acd", AQ03: "#2fa4d8", SK03: "#8fb6e8", HF19: "#e0503c", EVS21: "#3c7fd8", CEL21: "#d4af37", CZ23: "#c9a227" , BS1E: "#c0392b", BSSL: "#7f8c8d", JU1E: "#2e7d32", FO1E: "#8d7b5f", TR1E: "#a32020", NG1E: "#c98a1c", ND1E: "#4b3fa8" };
 const s = SPEC[TK]; if (!s) { console.error("unknown ticker " + TK); process.exit(2); }
 const slug = PAGES[TK], out = path.join(ROOT, slug + ".html"), theme = THEME[TK];
 if (fs.existsSync(out) && !args.includes("--force")) { console.log("exists: " + slug); process.exit(0); }

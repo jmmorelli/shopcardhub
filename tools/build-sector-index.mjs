@@ -28,7 +28,7 @@ import { fileURLToPath } from "node:url";
 import { consoleCards } from "./price-engine/pc-console.mjs";
 import { parsePage } from "./price-engine/sold-marks.mjs";
 import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
-import { cardId, RAW_NOT, WOTC, writeCardFile } from "./lib/card-files.mjs";
+import { cardId, RAW_NOT, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -118,6 +118,31 @@ function classicConfigs() {
     mk("FO99", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base3/" + b.num + ".png" : null, name: "Fossil Set Index", set: "Pokémon TCG Fossil (Unlimited)", page: "/pokemon-fossil-index", pcSlug: "pokemon-fossil", q: "fossil unlimited", theme: "#b0a089", releaseDate: "1999-10-10", imgSet: "Pokemon Fossil", denom: 62, note: "The third English set (1999), 62 cards; Gengar, Dragonite and the legendary birds lead it. " + W }),
     mk("TR00", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base5/" + b.num + ".png" : null, name: "Team Rocket Set Index", set: "Pokémon TCG Team Rocket (Unlimited)", page: "/team-rocket-index", pcSlug: "pokemon-team-rocket", q: "team rocket unlimited", theme: "#d23c3c", releaseDate: "2000-04-24", imgSet: "Pokemon Team Rocket", denom: 82, note: "The 2000 Dark Pokémon set; Dark Charizard, Dark Blastoise and the secret Dark Raichu #83 lead it. " + W }),
     mk("NG00", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/neo1/" + b.num + ".png" : null, name: "Neo Genesis Set Index", set: "Pokémon TCG Neo Genesis (Unlimited)", page: "/neo-genesis-index", pcSlug: "pokemon-neo-genesis", q: "neo genesis unlimited", theme: "#f0a830", releaseDate: "2000-12-16", imgSet: "Pokemon Neo Genesis", denom: 111, note: "The first Neo set (2000), 111 cards; Lugia is the chase, with the two Typhlosion prints and Pichu behind it. " + W }),
+    // ---- WOTC EDITION INDICES (Sep 30 2026, Mo: "1st edition and shadowless … make a respective index for those two with their
+    // specific cards"). Same set, different print = a different collectible. Universe = the console's "[1st Edition]" (or
+    // "[Shadowless]") items only; Base Set 1st Edition copies are also shadowless by print, and PriceCharting lists them as
+    // [1st Edition] — the Shadowless index is the NON-1st shadowless print. Screen: 6 clean raw sales in 90 days to enter, 4 to
+    // stay, 90-day median mark (Mo's choice: the 30-day screen would leave Base 1st Ed with 22 commons and no holos).
+    ...[["BS1E", "pokemon-base-set", "Base Set", "base1", 102, "1999-01-09", "#c0392b", "/pokemon-base-set-1st-edition-index", "The 1999 Base Set 1st Edition print — the black \"Edition 1\" stamp, shadowless frame, the first Charizard. "],
+        ["JU1E", "pokemon-jungle", "Jungle", "base2", 64, "1999-06-16", "#2e7d32", "/pokemon-jungle-1st-edition-index", "The 1999 Jungle 1st Edition print (stamped). "],
+        ["FO1E", "pokemon-fossil", "Fossil", "base3", 62, "1999-10-10", "#8d7b5f", "/pokemon-fossil-1st-edition-index", "The 1999 Fossil 1st Edition print (stamped). "],
+        ["TR1E", "pokemon-team-rocket", "Team Rocket", "base5", 82, "2000-04-24", "#a32020", "/team-rocket-1st-edition-index", "The 2000 Team Rocket 1st Edition print (stamped). "],
+        ["NG1E", "pokemon-neo-genesis", "Neo Genesis", "neo1", 111, "2000-12-16", "#c98a1c", "/neo-genesis-1st-edition-index", "The 2000 Neo Genesis 1st Edition print (stamped). "],
+        ["ND1E", "pokemon-neo-destiny", "Neo Destiny", "neo4", 105, "2002-02-28", "#4b3fa8", "/neo-destiny-1st-edition-index", "The 2002 Neo Destiny 1st Edition print (stamped); the Shining Pokémon lead it. "],
+    ].map(([tk, slug, set, img, denom, rel, theme, page, note]) => [tk, { imgSub: "pokemon", classic: true, imgNot: "-celebrations -25th -reprint -japanese",
+      imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? `https://images.pokemontcg.io/${img}/${b.num}.png` : null,
+      name: `${set} 1st Edition Index`, set: `Pokémon TCG ${set} (1st Edition)`, page, pcSlug: slug,
+      sources: [{ slug, keep: (title) => /\[1st Edition\]/.test(title) }],
+      screen: { window: 90 }, theme, releaseDate: rel, imgSet: `Pokemon ${set} 1st Edition`, denom,
+      ebayQuery: (name, num) => `pokemon ${set.toLowerCase()} 1st edition ${name} ${num}`,
+      note: note + "1st Edition print only: Unlimited, Shadowless and stamped promos are separate items with their own indices. Raw 1st Edition holos sell a few times a month, so this index screens and marks on 90 days of sales (enter at 6, stay at 4). A raw copy can be any condition, so the mark is the median raw sale, not a near-mint price." }]),
+    ["BSSL", { imgSub: "pokemon", classic: true, imgNot: "-celebrations -25th -reprint -japanese",
+      imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base1/" + b.num + ".png" : null,
+      name: "Base Set Shadowless Index", set: "Pokémon TCG Base Set (Shadowless)", page: "/pokemon-base-set-shadowless-index", pcSlug: "pokemon-base-set",
+      sources: [{ slug: "pokemon-base-set", keep: (title) => /\[Shadowless\]/.test(title) }],
+      screen: { window: 90 }, theme: "#7f8c8d", releaseDate: "1999-01-09", imgSet: "Pokemon Base Set Shadowless", denom: 102,
+      ebayQuery: (name, num) => `pokemon base set shadowless ${name} ${num}`,
+      note: "The early-1999 Base Set print without the drop shadow on the art box and without the 1st Edition stamp. Shadowless print only: 1st Edition (also shadowless, stamped) and Unlimited are separate items with their own indices. Screens and marks on 90 days of raw sales (enter at 6, stay at 4). A raw copy can be any condition, so the mark is the median raw sale, not a near-mint price." }],
     mk("ND02", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/neo4/" + b.num + ".png" : null, name: "Neo Destiny Set Index", set: "Pokémon TCG Neo Destiny (Unlimited)", page: "/neo-destiny-index", pcSlug: "pokemon-neo-destiny", q: "neo destiny unlimited", theme: "#6a5acd", releaseDate: "2002-02-28", imgSet: "Pokemon Neo Destiny", denom: 105, note: "The last Neo set (2002); the Shining Pokémon (#106–#113, Shining Charizard first) are the chase. " + W }),
     mk("AQ03", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/ecard2/" + b.num + ".png" : null, name: "Aquapolis Set Index", set: "Pokémon TCG Aquapolis", page: "/aquapolis-index", pcSlug: "pokemon-aquapolis", q: "aquapolis", theme: "#2fa4d8", releaseDate: "2003-01-15", imgSet: "Pokemon Aquapolis", denom: 147, note: "An e-Card set (2003); the Crystal Lugia #149 leads, with Crystal Nidoking #150 and the H-numbered holos behind it. " + E }),
     mk("SK03", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/ecard3/" + b.num + ".png" : null, name: "Skyridge Set Index", set: "Pokémon TCG Skyridge", page: "/skyridge-index", pcSlug: "pokemon-skyridge", q: "skyridge", theme: "#8fb6e8", releaseDate: "2003-05-12", imgSet: "Pokemon Skyridge", denom: 144, note: "The last WOTC set (2003) and the scarcest e-Card print run. The H-numbered holos lead the basket; the Crystal cards (#146–#150) sell too rarely to clear the liquidity screen, so they sit in the universe until they do. " + E }),
@@ -168,7 +193,9 @@ function bowmanConfigs() {
   };
 }
 
-const SCREEN = { enter: 6, stay: 4, window: 30 };
+const BASE_SCREEN = { enter: 6, stay: 4, window: 30 };
+// per-ticker override (Sep 30 2026, Mo chose the 90-day window for the WOTC 1st Edition / Shadowless indices: raw 1st Ed holos sell 2–5×/month)
+let SCREEN = BASE_SCREEN;
 const CAP = 0.25;          // no single card above 25% …
 const BIG = 0.05, BIG_SUM = 0.50;   // … and positions above 5% may not sum past 50% — the Select Sector SPDR "5/50" rule, adopted Sep 25 2026 (Mo) when the three Mew RGB secrets would otherwise have taken 75% of TH26
 
@@ -285,7 +312,7 @@ async function readUniverse(uni, label) {
   return reads;
 }
 let READ_CACHE_HIT = false;
-const toRow = (r) => ({ num: r.num, name: r.name, path: r.path, price: r.price, n30: r.clean30, basis: "sold (PriceCharting ungraded, 30d median)", asOf: TODAY, w: 1 });
+const toRow = (r) => ({ num: r.num, name: r.name, path: r.path, price: r.price, n30: r.clean30, basis: `sold (PriceCharting ungraded, ${SCREEN.window}d median)`, asOf: TODAY, w: 1 });
 async function subInit(x, c) {
   x.sub = {};
   for (const [k, d] of Object.entries(c.sub || {})) { const v = subValue(x, d.nums); if (!v) continue; x.sub[k] = { name: d.name, nums: d.nums, blurb: d.blurb, divisor: r4(v / 100), history: [{ date: x.inception, level: 100, basketValue: r2(v), note: "inception" }] }; }
@@ -336,6 +363,10 @@ function deskIds(x) {
   } catch (e) {}
   return m;
 }
+// WOTC print families (Sep 30 2026): 1st Edition, Shadowless and Unlimited are different collectibles — each index links its siblings
+const FAMILIES = [["BS1E", "BSSL", "BS99"], ["JU1E", "JU99"], ["FO1E", "FO99"], ["TR1E", "TR00"], ["NG1E", "NG00"], ["ND1E", "ND02"]];
+const PRINTS = Object.fromEntries(FAMILIES.flatMap((f) => f.map((t) => [t, f])));
+const PRINT_LBL = { BS1E: "1st Edition", BSSL: "Shadowless", BS99: "Unlimited", JU1E: "1st Edition", JU99: "Unlimited", FO1E: "1st Edition", FO99: "Unlimited", TR1E: "1st Edition", TR00: "Unlimited", NG1E: "1st Edition", NG00: "Unlimited", ND1E: "1st Edition", ND02: "Unlimited" };
 function block(x, c) {
   const h = x.history || [], last = h[h.length - 1] || null, prev = h.length > 1 ? h[h.length - 2] : null;
   const lvl = last ? last.level : null;
@@ -351,16 +382,16 @@ function block(x, c) {
   const hero = rows[0];
   // Pokémon tickers get the grade-link group (Sep 30 2026, Mo): Raw baked + PSA 9 · PSA 10 · TAG built by js/grade-links.js
   // from data-q, one Buy-It-Now/Auctions switch per table, and the card name opens /card?id=… (the ladder page).
-  const GL = (c.imgSub || "pokemon") === "pokemon" && !c.kindPlural, wotc = WOTC.has(x.ticker);
+  const GL = (c.imgSub || "pokemon") === "pokemon" && !c.kindPlural, wotc = WOTC.has(x.ticker), ed = EDITION[x.ticker] || null;
   const row = (b, i) => {
     const w = (b.price * b.w) / bv;
     const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
     const q0 = c.ebayQuery(b.name, b.num);
-    const url = ebaySearchUrl({ q: GL ? q0 + " " + RAW_NOT + (wotc ? " -1st -shadowless" : "") : q0, customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
+    const url = ebaySearchUrl({ q: GL ? q0 + " " + RAW_NOT + (wotc ? " -1st -shadowless" : ed === "shadowless" ? " -1st" : "") : q0, customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
     if (GL) {
       const thumbG = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
       const dkG = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slotG = desk[dkG] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dkG])}"></span>` : '<span class="sidx-auc-slot"></span>';
-      return `<tr data-q="${esc(q0)}" data-cid="${cid}"${b.price >= 200 ? ' data-av="1"' : ""}><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumbG}<div><b><a class="cardlk" href="/card?id=${cardId(x.ticker, b.num)}" title="Raw vs PSA 9 vs PSA 10 vs TAG — the card's price ladder">${esc(b.name)}</a></b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><span class="act-w g"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><span class="glk"><a class="ebay g-raw" data-g="raw" href="${url}" target="_blank" rel="sponsored nofollow noopener" title="Raw (ungraded) copies on eBay${b.price >= 200 ? " — Authenticity Guarantee filter on" : ""}">Raw</a></span>${slotG}</span></td></tr>`;
+      return `<tr data-q="${esc(q0)}" data-cid="${cid}"${b.price >= 200 ? ' data-av="1"' : ""}><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumbG}<div><b><a class="cardlk" href="/card?id=${cardId(x.ticker, b.num)}" title="Raw vs PSA 9 vs PSA 10 vs TAG — the card's price ladder">${esc(b.name)}</a></b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act g"><span class="act-w g"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><span class="glk"><a class="ebay g-raw" data-g="raw" href="${url}" target="_blank" rel="sponsored nofollow noopener" title="Raw (ungraded) copies on eBay${b.price >= 200 ? " — Authenticity Guarantee filter on" : ""}">Raw</a></span>${slotG}</span></td></tr>`;
     }
     const thumb = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
     const dk = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slot = desk[dk] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dk])}"></span>` : "";
@@ -391,7 +422,7 @@ function block(x, c) {
     const shown = sx.kind === "screened" ? cards.slice(0, 3) : cards;
     return `<div class="sidx-subidx"><span class="sidx-subidx-k"><b>${x.ticker}·${esc(k)}</b> ${esc(sx.name)}</span><span class="sidx-subidx-lv">${sl ? sl.level.toFixed(2) : "—"}</span><span class="sidx-subidx-w ${cls(sw == null ? 0 : sw)}">${sw == null ? "first mark" : (sw >= 0 ? "▲ " : "▼ ") + pct(sw)}</span><span class="sidx-subidx-cards">${shown.map((b) => `<i>${esc(b.name)} #${esc(b.num)} <b>${money(b.price, 0)}</b></i>`).join("")}${sx.kind === "screened" && cards.length > 3 ? `<i>+${cards.length - 3} more</i>` : ""}</span>${sh.length > 1 ? `<span class="sidx-subidx-sp">${ST_spark(sh.map((r) => r.level))}</span>` : ""}<span class="sidx-subidx-n">${cards.length} cards${sx.kind === "screened" && sx.universe ? ` of ${sx.universe.length}` : ""} · price-weighted · uncapped · base 100 at ${mdy(x.inception)} — ${esc(sx.blurb || "")}</span></div>`;
   }).join("");
-  return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}"${c.classic ? " data-no-repoint" : ""}${GL ? " data-glk" : ""}${GL && wotc ? " data-wotc" : ""} style="--sidx:${c.theme};">
+  return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}"${c.classic ? " data-no-repoint" : ""}${GL ? " data-glk" : ""}${GL && wotc ? " data-wotc" : ""}${GL && ed ? ` data-wotc="${ed}"` : ""} style="--sidx:${c.theme};">
   <div class="sidx-mast">
     <div class="sidx-t">
       <div class="sidx-eyebrow">▮ ${c.kindPlural ? "Class Index · Sector Model · Every " + esc(c.kindPlural.replace(/s$/, "")) : "Set Index · Sector Model · Every Card In The Set"}</div>
@@ -412,12 +443,13 @@ function block(x, c) {
     <div><span class="k">Divisor</span><span class="v">${x.divisor}</span></div>
     <div><span class="k">Re-mark</span><span class="v">MON · THU</span></div>
   </div>
+  ${PRINTS[x.ticker] ? `<p class="sidx-sib">Same set, other prints — each its own index: ${PRINTS[x.ticker].filter((t) => t !== x.ticker && CONFIG[t]).map((t) => `<a href="${CONFIG[t].page}">${t} · ${esc(PRINT_LBL[t])}</a>`).join(" · ")}</p>` : ""}
   ${subs}
   ${chase}
   ${GL ? `<div class="glk-bar" role="group" aria-label="Which eBay listings the buttons open"><span class="glk-k">Buy buttons open</span><button type="button" data-mode="bin" aria-pressed="true">Buy It Now</button><button type="button" data-mode="auc" aria-pressed="false">Auctions · ending soon</button><span class="glk-n">Raw · PSA 9 · PSA 10 · TAG on every row · tap a card name for its raw-to-PSA&nbsp;10 price ladder</span></div>` : ""}
   ${rest ? `<div class="sidx-cap">Top 10 of ${rows.length} cards by weight · the full basket is one tap below the table</div>` : ""}
   <div class="sidx-tbl"><table>
-    <thead><tr><th>#</th><th>Card</th><th>Sold mark</th><th>Weight</th><th title="clean sold comps in the trailing 30 days — a gate input, not a volume figure">Sales 30D</th><th class="th-act">Watch · ${GL ? "Buy raw / graded" : "Buy"} · <span title="live eBay auction on this exact card, soonest close with bids; refreshed every 15 min">Bid</span></th></tr></thead>
+    <thead><tr><th>#</th><th>Card</th><th>Sold mark</th><th>Weight</th><th title="clean sold comps in the trailing ${SCREEN.window} days — a gate input, not a volume figure">Sales ${SCREEN.window}D</th><th class="th-act${GL ? " g" : ""}">Watch · ${GL ? "Buy raw / graded" : "Buy"} · <span title="live eBay auction on this exact card, soonest close with bids; refreshed every 15 min">Bid</span></th></tr></thead>
     <tbody>${top10}</tbody>
   </table></div>
   ${rest ? `<details class="sidx-more"><summary><span class="sm-open">Show all ${rows.length} cards ▾</span><span class="sm-close">Hide cards 11–${rows.length} ▴</span></summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
@@ -489,14 +521,20 @@ const CSS = `<style id="sidx-css">
 .sidx-tbl td.act{white-space:nowrap}
 .sidx-tbl td.act .act-w{display:inline-grid;grid-template-columns:34px 132px 200px;gap:6px;align-items:center;justify-items:stretch;text-align:center}
 .sidx-tbl td.act .act-w>*{margin:0}
-.sidx-tbl td.act .act-w.g{grid-template-columns:34px 212px 200px}
+.sidx-tbl td.act.g,.sidx-tbl th.th-act.g{text-align:center}
+.sidx-tbl td.act .act-w.g{display:inline-flex;align-items:center;justify-content:center;gap:10px}
+.sidx-tbl td.act .act-w.g .sidx-auc-slot:empty{display:none}
+.sidx-tbl td.act .act-w.g .sch-track-card{display:inline-flex;align-items:center;justify-content:center;height:34px;width:34px;padding:0;font-size:13px;line-height:1}
 .sidx-tbl td.nm a.cardlk{color:inherit;text-decoration:none;border-bottom:1px dotted var(--sidx)}.sidx-tbl td.nm a.cardlk:hover{color:var(--sidx)}
-.glk{display:inline-flex;flex-wrap:wrap;gap:3px;justify-content:flex-start;max-width:100%}
-.glk .sch-vs-sold{flex:1 1 100%;order:9;margin:2px 0 0;text-align:left}
-.sidx-tbl td.act .glk a.ebay{padding:6px 8px;letter-spacing:1px;min-width:0}
-.sidx-tbl td.act .glk a.g-psa9,.sidx-tbl td.act .glk a.g-psa10{background:transparent;color:var(--sidx-th);border:1px solid var(--sidx);padding:5px 7px}
-.sidx-tbl td.act .glk a.g-tag{background:transparent;color:#00e07a;border:1px solid #00e07a;padding:5px 7px}
-.sidx-tbl td.act .glk a.g-psa9:hover,.sidx-tbl td.act .glk a.g-psa10:hover{background:var(--sidx);color:#000}.sidx-tbl td.act .glk a.g-tag:hover{background:#00e07a;color:#000}
+/* the four grade links read as ONE segmented control (Mo, Sep 30: "not slammed on the left … not like it's a bug") */
+.glk{display:inline-flex;flex-wrap:wrap;align-items:stretch;max-width:100%}
+.sidx-tbl td.act .glk a.ebay{display:inline-flex;align-items:center;justify-content:center;min-width:58px;height:34px;box-sizing:border-box;padding:0 12px;margin:0 0 0 -1px;border:1px solid rgba(255,255,255,.18);border-radius:0;background:rgba(255,255,255,.02);color:var(--sidx-th);font-size:11px;letter-spacing:1px;position:relative}
+.sidx-tbl td.act .glk a.ebay:first-of-type{margin-left:0;border-radius:3px 0 0 3px;background:var(--sidx);border-color:var(--sidx);color:#000}
+.sidx-tbl td.act .glk a.ebay:last-of-type{border-radius:0 3px 3px 0}
+.sidx-tbl td.act .glk a.g-tag{color:#00e07a}
+.sidx-tbl td.act .glk a.ebay:hover{background:rgba(255,255,255,.1);border-color:var(--sidx);z-index:1}
+.sidx-tbl td.act .glk a.ebay:first-of-type:hover{filter:brightness(1.1);background:var(--sidx)}
+.sidx-tbl td.act .glk a.g-tag:hover{background:rgba(0,224,122,.12);border-color:#00e07a}
 .glk-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:14px 0 0;font-family:var(--fm,ui-monospace,monospace);font-size:10px;color:var(--sidx-dim)}
 .glk-bar .glk-k{letter-spacing:1.5px;text-transform:uppercase}
 .glk-bar button{font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;min-height:36px;padding:6px 14px;border:1px solid var(--sidx);background:transparent;color:var(--sidx-th);border-radius:2px;cursor:pointer}
@@ -515,13 +553,14 @@ const CSS = `<style id="sidx-css">
 .sidx-more>summary::-webkit-details-marker{display:none}
 .sidx-more>summary:hover{background:var(--sidx);color:#000}
 .sidx-more .sm-close{display:none}.sidx-more[open] .sm-open{display:none}.sidx-more[open] .sm-close{display:inline}
+.sidx-sib{margin:10px 0 0;font-family:var(--fm,ui-monospace,monospace);font-size:11px;color:var(--sidx-dim)}.sidx-sib a{color:var(--sidx);font-weight:700;text-decoration:none;border-bottom:1px solid var(--sidx);margin:0 2px}
 .sidx-cap{font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--sidx-dim);margin:14px 0 6px}
 .sidx-more .sidx-tbl{margin-top:0}
 .sidx-note{font-size:11px;line-height:1.65;color:var(--sidx-dim);margin:14px 0 0}
 .sidx-note b{color:var(--text,#b8cdd4)} .sidx-note a{color:var(--sidx)}
 @media(max-width:900px){.sidx-stats{grid-template-columns:repeat(4,1fr)}.sidx-stats>div:nth-child(4){border-right:0}.sidx-stats>div:nth-child(-n+4){border-bottom:1px solid var(--sidx-bd)}}
 @media(max-width:760px){.sidx-mast{display:block;position:relative;padding-right:104px}.sidx-photo{position:absolute;right:0;top:0;width:96px}.sidx-photo .sch-cimg{width:90px!important;height:126px!important}.sidx-photo figcaption{display:none}.sidx-level{text-align:left;margin-top:12px}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}.sidx-tbl td.act .act-w{grid-template-columns:32px 96px 92px}.sidx-tbl td.act a.ebay,.sidx-auc-slot a.auc{padding:5px 6px;font-size:10px;letter-spacing:.5px}.sidx-auc-slot a.auc small{display:none}}
-@media(max-width:760px){.sidx-tbl td.act .act-w.g{grid-template-columns:32px auto auto}.sidx-tbl td.act .glk a.ebay{padding:7px 7px;font-size:10.5px;letter-spacing:.5px;min-height:32px}.glk-bar .glk-n{display:none}}
+@media(max-width:760px){body .sidx-tbl td.act.g{text-align:center}body .sidx-tbl td.act .act-w.g{display:inline-flex;width:auto;justify-content:center}body .sidx-tbl td.act .glk a.ebay{flex:0 0 auto;min-width:0;height:36px;padding:0 10px;font-size:10.5px;letter-spacing:.5px}.glk-bar .glk-n{display:none}}
 </style>`;
 
 function bake(x, c) {
@@ -557,6 +596,7 @@ const save = () => { if (DRY) { console.log("--dry: indices.json not written"); 
 for (const T of String(TICKER || "").split(",").map((t) => t.trim()).filter(Boolean)) { TICKER = T; await runTicker(); }
 async function runTicker() {
 const c = cfg();
+SCREEN = { ...BASE_SCREEN, ...(c.screen || {}) };
 if (has("--init")) {
   if (IDX[TICKER] && IDX[TICKER].status === "live" && !has("--force")) { console.error(`${TICKER} is already live — use --mark / --recon (or --force to rebuild, which is a NEW inception)`); process.exit(2); }
   console.log(`universe: reading console(s) ${(c.sources || [{ slug: c.pcSlug }]).map((q) => q.slug).join(", ")} …`);

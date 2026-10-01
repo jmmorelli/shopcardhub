@@ -25,7 +25,7 @@
     main.style.setProperty('--ac', d.theme || '#00ccf5');
     var raw = c.raw;
     var R = [
-      { k: 'raw', lbl: 'Raw', m: raw, sub: 'index sold mark · median of ' + c.n30 + ' sales, 30 days', last: null },
+      { k: 'raw', lbl: 'Raw', m: raw, sub: 'index sold mark · median of ' + c.n30 + ' sales, ' + (d.window || 30) + ' days', last: null },
     ];
     [['psa9', 'PSA 9'], ['psa10', 'PSA 10'], ['tag10', 'TAG 10']].forEach(function (p) {
       var x = g ? g[p[0]] : undefined;
@@ -58,7 +58,7 @@
       if (!window.SCH_GLK) return '';
       var av = raw >= 200;
       return [['raw', 'Raw', R[0]], ['psa9', 'PSA 9', R[1]], ['psa10', 'PSA 10', R[2]], ['tag', 'TAG', R[3]]].map(function (b) {
-        var u = SCH_GLK.url({ q: c.q, g: b[0], wotc: !!d.wotc, cid: cid, mode: m, av: av });
+        var u = SCH_GLK.url({ q: c.q, g: b[0], wotc: d.ed === '1st' || d.ed === 'shadowless' ? d.ed : !!d.wotc, cid: cid, mode: m, av: av });
         var note = b[2].m ? 'sold mark ' + money(b[2].m) : b[0] === 'tag' ? 'AI-graded slabs' : 'live listings';
         return '<a class="' + (b[0] === 'tag' ? 'tag' : '') + '" data-g="' + b[0] + '" data-cid="' + cid + '" data-mode="' + m + '" href="' + u + '" target="_blank" rel="sponsored nofollow noopener">' + b[1] + ' on eBay<small>' + (m === 'auc' ? 'auctions, ending soonest · ' : '') + note + '</small></a>';
       }).join('');
@@ -72,13 +72,13 @@
       '<div class="cdp-eyebrow">▮ Card price ladder · raw to PSA 10</div><h1>' + esc(c.name) + ' #' + esc(c.num) + '</h1>' +
       '<p class="cdp-set">' + esc(d.set) + ' · in the <a href="' + esc(d.page) + '#' + esc(d.ticker.toLowerCase()) + '">' + esc(d.ticker) + ' ' + esc(d.name) + '</a></p>' +
       '<div class="cdp-idx"><a href="' + esc(d.page) + '">' + esc(d.ticker) + (d.level != null ? ' ' + Number(d.level).toFixed(2) : '') + ' →</a><span>#' + c.rank + ' by weight</span>' + (c.w != null ? '<span>' + c.w.toFixed(1) + '% of the index</span>' : '') + '<span>raw marked ' + md(c.rawAsOf) + '</span>' + (gd && gd.day ? '<span>graded read ' + md(gd.day) + '</span>' : '') + '</div>' +
-      '<div class="cdp-ladder">' + R.map(rung).join('') + '</div></div></div>' + bars +
+      '<div class="cdp-ladder">' + R.map(rung).join('') + '</div></div></div>' + '<div class="cdp-chart" id="cdp-chart" hidden></div>' + bars +
       '<div class="cdp-buy"><div class="h"><b>Get this card</b><span class="cdp-mode" role="group" aria-label="Which eBay listings the buttons open"><button type="button" data-mode="bin" aria-pressed="' + (mode === 'bin') + '">Buy It Now</button><button type="button" data-mode="auc" aria-pressed="' + (mode === 'auc') + '">Auctions · ending soon</button></span></div>' +
       '<div class="cdp-btns" id="cdp-btns">' + btns(mode) + '</div>' +
-      '<div class="f">eBay searches for this exact card in each grade, with our affiliate tag (ShopCardHub earns a commission at no cost to you) — live listings, not prices. ' + (d.wotc ? 'Searches exclude 1st Edition and Shadowless copies: this index tracks the Unlimited print. ' : '') + '<b>TAG</b> grades with an AI scan of every card — our pick for new submissions. <a href="/tag-grading-guide">How TAG grading works →</a></div>' +
+      '<div class="f">eBay searches for this exact card in each grade, with our affiliate tag (ShopCardHub earns a commission at no cost to you) — live listings, not prices. ' + (d.ed === '1st' ? 'Searches are for the 1st Edition print this index tracks. ' : d.ed === 'shadowless' ? 'Searches are for Shadowless copies and exclude 1st Edition. ' : d.wotc ? 'Searches exclude 1st Edition and Shadowless copies: this index tracks the Unlimited print. ' : '') + '<b>TAG</b> grades with an AI scan of every card — our pick for new submissions. <a href="/tag-grading-guide">How TAG grading works →</a></div>' +
       '<div class="cdp-row"><button type="button" class="sch-track-card" data-name="' + esc(c.name) + ' #' + esc(c.num) + ' — ' + esc(d.set) + '" data-set="' + esc(d.set) + '" data-cat="pokemon" data-grade="Raw" data-price="' + raw + '">★ Watch this card</button></div></div>' +
       (more ? '<div class="cdp-more"><h2>More from the ' + esc(d.ticker) + ' basket</h2><div class="g">' + more + '</div></div>' : '') +
-      '<p class="cdp-method"><b>Method.</b> <b>Raw</b> is the card’s sold mark in its set index: the median of its clean ungraded sold comps over the trailing 30 days (PriceCharting), re-marked Monday and Thursday — the same number as the index table. <b>PSA 9, PSA 10, TAG 10</b> come from PriceCharting’s dated completed sales for this card, counting only sales whose own listing title names that grade' + (d.wotc ? ' (and dropping any titled 1st Edition or Shadowless)' : '') + ': the median of 3+ sales in 30 days, else 2+ in 90 days. Fewer than that is <b>no mark</b>; a single sale is shown as one dated sale, never as a price. Medians of recent sales, not calls. Raw vintage copies can be in any condition, so the raw mark is a typical raw sale, not a near-mint price.</p>';
+      '<p class="cdp-method"><b>Method.</b> <b>Raw</b> is the card’s sold mark in its set index: the median of its clean ungraded sold comps over the trailing ' + (d.window || 30) + ' days (PriceCharting), re-marked Monday and Thursday — the same number as the index table. <b>PSA 9, PSA 10, TAG 10</b> come from PriceCharting’s dated completed sales for this card, counting only sales whose own listing title names that grade' + (d.ed === '1st' ? ' (and only sales whose title says 1st Edition)' : d.ed === 'shadowless' ? ' (and only sales titled Shadowless, never 1st Edition)' : d.wotc ? ' (and dropping any titled 1st Edition or Shadowless)' : '') + ': the median of 3+ sales in 30 days, else 2+ in 90 days. Fewer than that is <b>no mark</b>; a single sale is shown as one dated sale, never as a price. Medians of recent sales, not calls. Raw vintage copies can be in any condition, so the raw mark is a typical raw sale, not a near-mint price.</p>';
     var box = document.getElementById('cdp-btns');
     function wire() { box.querySelectorAll('a[data-g]').forEach(function (a) { if (window.SCH_GLK) SCH_GLK.track(a); }); }
     wire();
@@ -90,6 +90,53 @@
       try { if (typeof gtag === 'function') gtag('event', 'grade_mode', { mode: m, page: '/card' }); } catch (err) {}
     });
     if (window.SCHVault && SCHVault.mark) SCHVault.mark(main);
+    chart(d, c);
     try { if (typeof gtag === 'function') gtag('event', 'card_page_view', { item: c.id }); } catch (e) {}
+  }
+  /* Price history chart (Sep 30 2026, Mo: "doesn't price charting show a chart we can use for individual cards?").
+   * PriceCharting's monthly value estimate per grade — their series, labelled as theirs; the ladder above stays our marks. */
+  function chart(d, c) {
+    var box = document.getElementById('cdp-chart'); if (!box) return;
+    get('/data/cards/h-' + d.ticker.toLowerCase() + '.json').then(function (h) {
+      var rows = h && h.cards ? h.cards[c.num] : null; if (!rows || rows.length < 3) return;
+      var S = [{ k: 1, lbl: 'Ungraded', col: d.theme || '#00ccf5' }, { k: 2, lbl: 'Grade 9 (any grader)', col: '#a9bccf' }, { k: 3, lbl: 'PSA 10', col: '#f5c800' }]
+        .filter(function (s) { return rows.filter(function (r) { return r[s.k]; }).length >= 3; });
+      if (!S.length) return;
+      var range = 'all';
+      box.hidden = false;
+      function chg(s, n) { var v = rows.filter(function (r) { return r[s.k]; }); if (v.length < n + 1) return null; var a = v[v.length - 1 - n][s.k], b = v[v.length - 1][s.k]; return (b / a - 1) * 100; }
+      function draw() {
+        var R = range === 'all' ? rows : rows.slice(-(range === '1y' ? 13 : 37));
+        var W = Math.max(300, box.clientWidth - 2), H = W < 560 ? 210 : 260, padL = 54, padR = 26, padT = 12, padB = 26;
+        var vals = []; R.forEach(function (r) { S.forEach(function (s) { if (r[s.k]) vals.push(r[s.k]); }); });
+        var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals); if (hi <= lo) hi = lo * 1.1;
+        var L0 = Math.log(lo * 0.9), L1 = Math.log(hi * 1.1);
+        var x = function (i) { return padL + (R.length < 2 ? 0 : i / (R.length - 1) * (W - padL - padR)); };
+        var y = function (v) { return padT + (1 - (Math.log(v) - L0) / (L1 - L0)) * (H - padT - padB); };
+        var svg = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Monthly price history by grade, log scale">';
+        // log gridlines at 1-2-5 steps
+        var ticks = []; for (var e = Math.floor(Math.log10(lo * 0.9)); e <= Math.ceil(Math.log10(hi * 1.1)); e++) [1, 2, 5].forEach(function (m) { var v = m * Math.pow(10, e); if (v >= lo * 0.9 && v <= hi * 1.1) ticks.push(v); });
+        if (ticks.length > 7) ticks = ticks.filter(function (v, i) { return i % 2 === 0; });
+        ticks.forEach(function (v) { var yy = y(v).toFixed(1); svg += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + yy + '" y2="' + yy + '" stroke="rgba(255,255,255,.07)"/><text x="' + (padL - 6) + '" y="' + (+yy + 3) + '" text-anchor="end" font-size="10" fill="#7a969e" font-family="ui-monospace,monospace">' + money(v) + '</text>'; });
+        var step = Math.max(1, Math.round(R.length / (W < 560 ? 4 : 7)));
+        R.forEach(function (r, i) { if (i % step === 0 || i === R.length - 1) { var mo = r[0]; svg += '<text x="' + x(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10" fill="#7a969e" font-family="ui-monospace,monospace">' + MON[+mo.slice(5, 7) - 1] + ' ’' + mo.slice(2, 4) + '</text>'; } });
+        S.forEach(function (s) {
+          var dd = '', pen = false;
+          R.forEach(function (r, i) { var v = r[s.k]; if (!v) { pen = false; return; } dd += (pen ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1) + ' '; pen = true; });
+          svg += '<path d="' + dd + '" fill="none" stroke="' + s.col + '" stroke-width="2" stroke-linejoin="round"/>';
+        });
+        svg += '</svg>';
+        var leg = S.map(function (s) {
+          var v = rows.filter(function (r) { return r[s.k]; }), last = v[v.length - 1][s.k], c1 = chg(s, 12);
+          return '<span><i style="background:' + s.col + '"></i>' + s.lbl + ' <b>' + money(last) + '</b>' + (c1 == null ? '' : ' <em class="' + (c1 >= 0 ? 'up' : 'dn') + '">' + (c1 >= 0 ? '+' : '') + c1.toFixed(0) + '% 1Y</em>') + '</span>';
+        }).join('');
+        box.innerHTML = '<div class="h"><b>Price history by grade</b><span class="rg" role="group">' + ['1y', '3y', 'all'].map(function (k) { return '<button type="button" data-r="' + k + '" aria-pressed="' + (k === range) + '">' + (k === 'all' ? 'All' : k.toUpperCase()) + '</button>'; }).join('') + '</span></div>' +
+          '<div class="leg">' + leg + '</div>' + svg +
+          '<div class="src">Monthly value estimates from <a href="https://www.pricecharting.com/game/' + esc(c.path || '') + '" rel="nofollow noopener" target="_blank">PriceCharting</a>, built from their tracked sales; log scale. Their series, not our marks — the ladder above is ours. Grade 9 mixes graders (PSA, BGS, CGC…).</div>';
+      }
+      draw();
+      box.addEventListener('click', function (e) { var b = e.target.closest('button[data-r]'); if (!b) return; range = b.getAttribute('data-r'); draw(); });
+      var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(draw, 150); });
+    }).catch(function () {});
   }
 })();

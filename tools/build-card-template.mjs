@@ -40,6 +40,17 @@ const CSS = `
 .cdp-rung .v.na{font-size:15px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;padding-top:10px}
 .cdp-rung .x{font-family:var(--fm);font-size:12px;color:var(--ac);margin-top:4px;min-height:16px}
 .cdp-rung .n{font-family:var(--fm);font-size:10px;color:var(--text-dim);margin-top:6px;line-height:1.5}
+.cdp-chart{margin:14px 0 0;padding:14px;border:1px solid var(--border,rgba(255,255,255,.08));background:var(--bg2,#0c1017)}
+.cdp-chart .h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.cdp-chart .h b{font-family:var(--fd);font-size:18px;font-weight:900;text-transform:uppercase;color:var(--text-head)}
+.cdp-chart .rg{display:inline-flex;gap:4px}
+.cdp-chart .rg button{font-family:var(--fm);font-size:10.5px;letter-spacing:1px;min-height:32px;min-width:44px;padding:4px 10px;border:1px solid var(--border2,rgba(255,255,255,.14));background:transparent;color:var(--text);border-radius:2px;cursor:pointer}
+.cdp-chart .rg button[aria-pressed="true"]{border-color:var(--ac);color:var(--ac)}
+.cdp-chart .leg{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--fm);font-size:11px;color:var(--text-dim);margin-bottom:6px}
+.cdp-chart .leg i{display:inline-block;width:12px;height:3px;margin-right:6px;vertical-align:middle}
+.cdp-chart .leg b{color:var(--text-head)} .cdp-chart .leg em{font-style:normal} .cdp-chart .leg .up{color:var(--green,#00e07a)} .cdp-chart .leg .dn{color:var(--red,#ff2e55)}
+.cdp-chart svg{display:block;max-width:100%}
+.cdp-chart .src{font-family:var(--fm);font-size:10px;color:var(--text-dim);margin-top:6px;line-height:1.5} .cdp-chart .src a{color:var(--ac)}
 .cdp-bars{margin:14px 0 0;padding:14px;border:1px solid var(--border,rgba(255,255,255,.08));background:var(--bg2,#0c1017)}
 .cdp-bars .h{font-family:var(--fm);font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px}
 .cdp-bar{display:grid;grid-template-columns:64px minmax(0,1fr) 90px;gap:10px;align-items:center;margin:6px 0;font-family:var(--fm);font-size:11px}

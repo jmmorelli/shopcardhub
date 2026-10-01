@@ -175,6 +175,7 @@
   // new sets then classic sets (released before mid-2023), then sports; one labelled header row per group.
   function ibGroup(r) {
     if (/^(BOW|BCB|SAPH|DRAFT|BB|BD)/.test(r.k)) return 'sports';
+    if (/1E$|^BSSL$/.test(r.k)) return 'editions';   // WOTC 1st Edition / Shadowless (Sep 30 2026): on /indices#editions and their set pages, not the home board (phone length)
     return r.rd && r.rd < '2023-06-01' ? 'classic' : 'pokemon';
   }
   var IB_GROUPS = [['pokemon', 'Pokémon · new sets'], ['classic', 'Pokémon · classic sets'], ['sports', 'Sports · Bowman baseball']];

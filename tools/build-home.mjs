@@ -97,8 +97,8 @@ if (latest && history) {
   sub(/(<span data-home="cadence">)[^<]*(<\/span>)/, `$1${cad.clause}$2`, "tm-foot");
   sub(/(<span data-home="cadence-chart">)[^<]*(<\/span>)/, `$1indices ${cad.short}$2`, "chart caption");
   sub(/(<span data-home="cadence-short">)[^<]*(<\/span>)/g, `$1${cad.short}$2`, "disclosure/footer");
-  sub(/(<meta name="description" content="[^"]*?built from sold comps, )re-marked [^,"]*(, every card)/, `$1re-marked ${cad.short}$2`, "meta description");
-  sub(/(<meta property="og:description" content="[^"]*?sold comps, )re-marked [^,"]*(, every card)/, `$1re-marked ${cad.short}$2`, "og:description");
+  sub(/(<meta name="description" content="[^"]*?built from sold comps, )re-marked [^"]*?(, every card)/, `$1re-marked ${cad.short}$2`, "meta description");
+  sub(/(<meta property="og:description" content="[^"]*?sold comps, )re-marked [^"]*?(, every card)/, `$1re-marked ${cad.short}$2`, "og:description");
   console.log(`cadence: ${cad.twice} of ${cad.n} live tickers Mon + Thu, ${cad.weekly} Monday only`);
 }
 put("releases", HOME.renderReleases(releases, TODAY, 9));

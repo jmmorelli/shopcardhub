@@ -19,16 +19,20 @@
     { g: 'tag', lbl: 'TAG', short: 'TAG', tip: 'TAG-graded copies (AI-graded slabs) of this card on eBay' }
   ];
   function nkw(q) { return encodeURIComponent(String(q).replace(/\s+/g, ' ').trim()).replace(/%20/g, '+').replace(/'/g, '%27').replace(/[!()*]/g, function (c) { return '%' + c.charCodeAt(0).toString(16).toUpperCase(); }); }
-  function phrase(q, g, wotc) {
+  // ed: false (modern) · true / "unl" (WOTC Unlimited) · "1st" (1st Edition index) · "shadowless" (Base Set Shadowless index)
+  function phrase(q, g, ed) {
     q = String(q || '');
-    if (g === 'raw') return q + RAW_NOT + (wotc ? ' -1st -shadowless' : '');
+    if (ed === '1st') return g === 'raw' ? q + RAW_NOT : g === 'psa9' ? q + ' psa 9 -"psa 10"' : g === 'psa10' ? q + ' psa 10' : q + ' tag -psa -cgc -bgs -sgc';
+    if (ed === 'shadowless') return (g === 'raw' ? q + RAW_NOT : g === 'psa9' ? q + ' psa 9 -"psa 10"' : g === 'psa10' ? q + ' psa 10' : q + ' tag -psa -cgc -bgs -sgc') + ' -1st';
+    if (g === 'raw') return q + RAW_NOT + (ed ? ' -1st -shadowless' : '');
     // graded labels on WOTC Unlimited slabs don't say "Unlimited" — searching for the word hides most of them
-    var b = (wotc ? q.replace(/\bunlimited\b/i, '') + ' -1st -shadowless -celebrations' : q);
+    var b = (ed ? q.replace(/\bunlimited\b/i, '') + ' -1st -shadowless -celebrations' : q);
     if (g === 'psa9') return b + ' psa 9 -"psa 10"';
     if (g === 'psa10') return b + ' psa 10';
     if (g === 'tag') return b + ' tag -psa -cgc -bgs -sgc';
     return q;
   }
+  function edOf(sec) { if (!sec.hasAttribute('data-wotc')) return false; var v = sec.getAttribute('data-wotc'); return v === '1st' || v === 'shadowless' ? v : true; }
   function url(o) {
     var p = ['_nkw=' + nkw(phrase(o.q, o.g, o.wotc)), '_sacat=183454'];
     if (o.mode === 'auc') p.push('LH_Auction=1', '_sop=1'); else p.push('LH_BIN=1');
@@ -73,7 +77,7 @@
   }
   function initTables() {
     document.querySelectorAll('.sidx[data-glk]').forEach(function (sec) {
-      var wotc = sec.hasAttribute('data-wotc'), mode = getMode();
+      var wotc = edOf(sec), mode = getMode();
       sec.querySelectorAll('tr[data-q]').forEach(function (tr) { fillRow(tr, wotc, mode); });
       var bar = sec.querySelector('.glk-bar');
       function paint(m) { if (bar) bar.querySelectorAll('button[data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === m)); }); sec.classList.toggle('glk-auc', m === 'auc'); }
@@ -81,7 +85,7 @@
       if (bar) bar.addEventListener('click', function (e) {
         var b = e.target.closest('button[data-mode]'); if (!b) return;
         var m = b.getAttribute('data-mode'); setMode(m); paint(m);
-        document.querySelectorAll('.sidx[data-glk]').forEach(function (s2) { apply(s2, s2.hasAttribute('data-wotc'), m); });
+        document.querySelectorAll('.sidx[data-glk]').forEach(function (s2) { apply(s2, edOf(s2), m); });
         try { if (typeof gtag === 'function') gtag('event', 'grade_mode', { mode: m, page: location.pathname }); } catch (err) {}
       });
     });
