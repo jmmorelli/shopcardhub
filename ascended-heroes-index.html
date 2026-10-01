@@ -196,6 +196,11 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
   .nav-search { position:relative; margin-left:8px; }
   .nav-search-input { font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--text); background:rgba(255,255,255,0.04); border:1px solid var(--border2); border-radius:2px; padding:7px 10px; width:150px; transition:width .2s, border-color .2s; outline:none; }
   .nav-search-input:focus { width:240px; border-color:var(--accent); }
+  /* Night Crew Oct 1 (B22/B25): desktop nav labels never wrap, so the bar keeps one height while Barlow swaps in (a
+     2-line → 1-line nav moved every page by 20 px at 1024), and the search box grows less on narrow desktops so the
+     two buttons never squeeze */
+  @media (min-width:1024px) { .nav-links .nav-item > a, .nav-links .nav-cta { white-space:nowrap; } .nav-links .nav-cta { flex-shrink:0; } }
+  @media (max-width:1180px) { .nav-search-input:focus { width:190px; } }
   .nav-search-input::placeholder { color:var(--text-dim); opacity:.7; }
   .nav-search-results { position:absolute; top:calc(100% + 6px); right:0; min-width:240px; background:rgba(7,9,12,0.98); backdrop-filter:blur(20px); border:1px solid var(--border2); border-top:2px solid var(--accent); padding:6px 0; display:none; z-index:320; max-height:340px; overflow-y:auto; }
   .nav-search-results.show { display:block; }

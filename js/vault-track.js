@@ -165,7 +165,12 @@
   }
 
   /* ---- UI: css, snackbar, chooser popover, button states ---- */
-  var css = '.sch-track-card{display:inline-flex;align-items:center;gap:5px;background:transparent;' +
+  var css = /* Night Crew Oct 1: the floating pill waits until the visitor scrolls half a screen, so it never sits on the
+       first screen's numbers (FTV: it covered the ETB ask row on /pokemon-30th-anniversary-2026) */
+    'a#sch-track-cta{transition:background .15s,color .15s,opacity .2s,transform .2s,visibility .2s}' +
+    'a#sch-track-cta.sch-cta-wait{opacity:0;visibility:hidden;transform:translateY(8px);pointer-events:none}' +
+    '@media (prefers-reduced-motion:reduce){a#sch-track-cta{transition:none}}' +
+    '.sch-track-card{display:inline-flex;align-items:center;gap:5px;background:transparent;' +
     'border:1px solid rgba(0,204,245,0.35);color:#00ccf5;font-family:"JetBrains Mono",monospace;' +
     'font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;' +
     'border-radius:2px;cursor:pointer;transition:background .15s,color .15s;margin-top:6px;}' +
@@ -333,7 +338,7 @@
     if (w.length > 4) n = w.slice(0, 4).join(' ');
     return n.length > 26 ? n.slice(0, 25).replace(/\s+\S*$/, '') + '…' : n;
   }
-  var ctaBound = false;
+  var ctaBound = false, ctaShown = false;
   function syncCta() {
     var el = document.getElementById('sch-track-cta');
     if (!el) return;
@@ -341,6 +346,20 @@
     var marker = document.querySelector('[data-sch-card]');
     if (!btns.length && !marker) { el.hidden = true; el.style.display = 'none'; return; }
     el.hidden = false; el.style.display = '';
+    if (!ctaShown) {
+      var past = function () { return (window.scrollY || window.pageYOffset || 0) > window.innerHeight * 0.5; };
+      if (past()) ctaShown = true;
+      else {
+        el.classList.add('sch-cta-wait');
+        var onScroll = function () {
+          if (!past()) return;
+          ctaShown = true; el.classList.remove('sch-cta-wait');
+          window.removeEventListener('scroll', onScroll);
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        ctaShown = 'waiting';
+      }
+    }
     if (!ctaBound) {
       ctaBound = true;
       el.addEventListener('click', function (e) {
@@ -349,7 +368,8 @@
         e.preventDefault();
         var target = all[0];
         if (all.length === 1 && target.classList.contains('sch-tracked')) { location.href = VAULT_URL; return; }
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        target.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'center' });
         if (all.length === 1) setTimeout(function () { openPop(target); }, 380);
       });
     }

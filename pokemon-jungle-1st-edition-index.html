@@ -196,6 +196,11 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
   .nav-search { position:relative; margin-left:8px; }
   .nav-search-input { font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--text); background:rgba(255,255,255,0.04); border:1px solid var(--border2); border-radius:2px; padding:7px 10px; width:150px; transition:width .2s, border-color .2s; outline:none; }
   .nav-search-input:focus { width:240px; border-color:var(--accent); }
+  /* Night Crew Oct 1 (B22/B25): desktop nav labels never wrap, so the bar keeps one height while Barlow swaps in (a
+     2-line → 1-line nav moved every page by 20 px at 1024), and the search box grows less on narrow desktops so the
+     two buttons never squeeze */
+  @media (min-width:1024px) { .nav-links .nav-item > a, .nav-links .nav-cta { white-space:nowrap; } .nav-links .nav-cta { flex-shrink:0; } }
+  @media (max-width:1180px) { .nav-search-input:focus { width:190px; } }
   .nav-search-input::placeholder { color:var(--text-dim); opacity:.7; }
   .nav-search-results { position:absolute; top:calc(100% + 6px); right:0; min-width:240px; background:rgba(7,9,12,0.98); backdrop-filter:blur(20px); border:1px solid var(--border2); border-top:2px solid var(--accent); padding:6px 0; display:none; z-index:320; max-height:340px; overflow-y:auto; }
   .nav-search-results.show { display:block; }
@@ -677,6 +682,8 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
 .sidx-sub a{color:var(--sidx)}
 .sidx-photo{margin:0;justify-self:center;text-align:center}
 .sidx-photo .sch-cimg{width:150px!important;height:210px!important}
+/* Night Crew Oct 1 (B20): the photo slot holds its final size before js/card-img.js fills it, so the mast does not jump */
+.sidx-photo>[data-card-img]{display:block;width:150px;height:210px;margin:0 auto}
 .sidx-photo figcaption{font-family:var(--fm,ui-monospace,monospace);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-dim);margin-top:10px;max-width:170px;margin-left:auto;margin-right:auto;line-height:1.5}
 .sidx-photo figcaption b{color:var(--sidx)}
 .sidx-level{text-align:right}
@@ -736,10 +743,8 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
 .sidx-tbl td.act .glk a.ebay{display:inline-flex;align-items:center;justify-content:center;min-width:58px;height:34px;box-sizing:border-box;padding:0 12px;margin:0 0 0 -1px;border:1px solid rgba(255,255,255,.18);border-radius:0;background:rgba(255,255,255,.02);color:var(--sidx-th);font-size:11px;letter-spacing:1px;position:relative}
 .sidx-tbl td.act .glk a.ebay:first-of-type{margin-left:0;border-radius:3px 0 0 3px;background:var(--sidx);border-color:var(--sidx);color:#000}
 .sidx-tbl td.act .glk a.ebay:last-of-type{border-radius:0 3px 3px 0}
-.sidx-tbl td.act .glk a.g-tag{color:#00e07a}
 .sidx-tbl td.act .glk a.ebay:hover{background:rgba(255,255,255,.1);border-color:var(--sidx);z-index:1}
 .sidx-tbl td.act .glk a.ebay:first-of-type:hover{filter:brightness(1.1);background:var(--sidx)}
-.sidx-tbl td.act .glk a.g-tag:hover{background:rgba(0,224,122,.12);border-color:#00e07a}
 .glk-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:14px 0 0;font-family:var(--fm,ui-monospace,monospace);font-size:10px;color:var(--sidx-dim)}
 .glk-bar .glk-k{letter-spacing:1.5px;text-transform:uppercase}
 .glk-bar button{font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;min-height:36px;padding:6px 14px;border:1px solid var(--sidx);background:transparent;color:var(--sidx-th);border-radius:2px;cursor:pointer}
@@ -764,7 +769,7 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
 .sidx-note{font-size:11px;line-height:1.65;color:var(--sidx-dim);margin:14px 0 0}
 .sidx-note b{color:var(--text,#b8cdd4)} .sidx-note a{color:var(--sidx)}
 @media(max-width:900px){.sidx-stats{grid-template-columns:repeat(4,1fr)}.sidx-stats>div:nth-child(4){border-right:0}.sidx-stats>div:nth-child(-n+4){border-bottom:1px solid var(--sidx-bd)}}
-@media(max-width:760px){.sidx-mast{display:block;position:relative;padding-right:104px}.sidx-photo{position:absolute;right:0;top:0;width:96px}.sidx-photo .sch-cimg{width:90px!important;height:126px!important}.sidx-photo figcaption{display:none}.sidx-level{text-align:left;margin-top:12px}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}.sidx-tbl td.act .act-w{grid-template-columns:32px 96px 92px}.sidx-tbl td.act a.ebay,.sidx-auc-slot a.auc{padding:5px 6px;font-size:10px;letter-spacing:.5px}.sidx-auc-slot a.auc small{display:none}}
+@media(max-width:760px){.sidx-mast{display:block;position:relative;padding-right:104px}.sidx-photo{position:absolute;right:0;top:0;width:96px}.sidx-photo .sch-cimg{width:90px!important;height:126px!important}.sidx-photo>[data-card-img]{width:90px;height:126px}.sidx-photo figcaption{display:none}.sidx-level{text-align:left;margin-top:12px}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}.sidx-tbl td.act .act-w{grid-template-columns:32px 96px 92px}.sidx-tbl td.act a.ebay,.sidx-auc-slot a.auc{padding:5px 6px;font-size:10px;letter-spacing:.5px}.sidx-auc-slot a.auc small{display:none}}
 @media(max-width:760px){body .sidx-tbl td.act.g{text-align:center}body .sidx-tbl td.act .act-w.g{display:inline-flex;width:auto;justify-content:center}body .sidx-tbl td.act .glk a.ebay{flex:0 0 auto;min-width:0;height:36px;padding:0 10px;font-size:10.5px;letter-spacing:.5px}.glk-bar .glk-n{display:none}}
 </style>
 <div class="container"><section class="sidx" id="ju1e" data-prices-updated="2026-09-30" data-no-repoint data-glk data-wotc="1st" style="--sidx:#2e7d32;">

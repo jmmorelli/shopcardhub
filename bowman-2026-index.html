@@ -196,6 +196,11 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
   .nav-search { position:relative; margin-left:8px; }
   .nav-search-input { font-family:var(--fm); font-size:11px; letter-spacing:1px; color:var(--text); background:rgba(255,255,255,0.04); border:1px solid var(--border2); border-radius:2px; padding:7px 10px; width:150px; transition:width .2s, border-color .2s; outline:none; }
   .nav-search-input:focus { width:240px; border-color:var(--accent); }
+  /* Night Crew Oct 1 (B22/B25): desktop nav labels never wrap, so the bar keeps one height while Barlow swaps in (a
+     2-line → 1-line nav moved every page by 20 px at 1024), and the search box grows less on narrow desktops so the
+     two buttons never squeeze */
+  @media (min-width:1024px) { .nav-links .nav-item > a, .nav-links .nav-cta { white-space:nowrap; } .nav-links .nav-cta { flex-shrink:0; } }
+  @media (max-width:1180px) { .nav-search-input:focus { width:190px; } }
   .nav-search-input::placeholder { color:var(--text-dim); opacity:.7; }
   .nav-search-results { position:absolute; top:calc(100% + 6px); right:0; min-width:240px; background:rgba(7,9,12,0.98); backdrop-filter:blur(20px); border:1px solid var(--border2); border-top:2px solid var(--accent); padding:6px 0; display:none; z-index:320; max-height:340px; overflow-y:auto; }
   .nav-search-results.show { display:block; }
@@ -711,6 +716,8 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
 .sidx-sub a{color:var(--sidx)}
 .sidx-photo{margin:0;justify-self:center;text-align:center}
 .sidx-photo .sch-cimg{width:150px!important;height:210px!important}
+/* Night Crew Oct 1 (B20): the photo slot holds its final size before js/card-img.js fills it, so the mast does not jump */
+.sidx-photo>[data-card-img]{display:block;width:150px;height:210px;margin:0 auto}
 .sidx-photo figcaption{font-family:var(--fm,ui-monospace,monospace);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-dim);margin-top:10px;max-width:170px;margin-left:auto;margin-right:auto;line-height:1.5}
 .sidx-photo figcaption b{color:var(--sidx)}
 .sidx-level{text-align:right}
@@ -759,6 +766,25 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
 .sidx-tbl td.act{white-space:nowrap}
 .sidx-tbl td.act .act-w{display:inline-grid;grid-template-columns:34px 132px 200px;gap:6px;align-items:center;justify-items:stretch;text-align:center}
 .sidx-tbl td.act .act-w>*{margin:0}
+.sidx-tbl td.act.g,.sidx-tbl th.th-act.g{text-align:center}
+.sidx-tbl td.act .act-w.g{display:inline-flex;align-items:center;justify-content:center;gap:10px}
+.sidx-tbl td.act .act-w.g .sidx-auc-slot:empty{display:none}
+@media(min-width:761px){.sidx-tbl td.act .act-w.g .sidx-auc-slot{flex:0 0 auto;min-width:176px}.sidx-tbl td.act .act-w.g .sidx-auc-slot a.auc{overflow:visible;text-overflow:clip}}
+.sidx-tbl td.act .act-w.g .sch-track-card{display:inline-flex;align-items:center;justify-content:center;height:34px;width:34px;padding:0;font-size:13px;line-height:1}
+.sidx-tbl td.nm a.cardlk{color:inherit;text-decoration:none;border-bottom:1px dotted var(--sidx)}.sidx-tbl td.nm a.cardlk:hover{color:var(--sidx)}
+/* the four grade links read as ONE segmented control (Mo, Sep 30: "not slammed on the left … not like it's a bug") */
+.glk{display:inline-flex;flex-wrap:wrap;align-items:stretch;max-width:100%}
+.sidx-tbl td.act .glk a.ebay{display:inline-flex;align-items:center;justify-content:center;min-width:58px;height:34px;box-sizing:border-box;padding:0 12px;margin:0 0 0 -1px;border:1px solid rgba(255,255,255,.18);border-radius:0;background:rgba(255,255,255,.02);color:var(--sidx-th);font-size:11px;letter-spacing:1px;position:relative}
+.sidx-tbl td.act .glk a.ebay:first-of-type{margin-left:0;border-radius:3px 0 0 3px;background:var(--sidx);border-color:var(--sidx);color:#000}
+.sidx-tbl td.act .glk a.ebay:last-of-type{border-radius:0 3px 3px 0}
+.sidx-tbl td.act .glk a.ebay:hover{background:rgba(255,255,255,.1);border-color:var(--sidx);z-index:1}
+.sidx-tbl td.act .glk a.ebay:first-of-type:hover{filter:brightness(1.1);background:var(--sidx)}
+.glk-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:14px 0 0;font-family:var(--fm,ui-monospace,monospace);font-size:10px;color:var(--sidx-dim)}
+.glk-bar .glk-k{letter-spacing:1.5px;text-transform:uppercase}
+.glk-bar button{font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;min-height:36px;padding:6px 14px;border:1px solid var(--sidx);background:transparent;color:var(--sidx-th);border-radius:2px;cursor:pointer}
+.glk-bar button[aria-pressed="true"]{background:var(--sidx);color:#000}
+.glk-bar .glk-n{flex:1 1 260px;line-height:1.5}
+.sidx.glk-auc .glk a.ebay::after{content:" ⏱";font-size:9px}
 .sidx-tbl td.act .sch-track-card{background:transparent;border:1px solid var(--border2,rgba(255,255,255,.14));color:var(--sidx-th);border-radius:2px;padding:5px 9px;cursor:pointer;font-size:12px;vertical-align:middle}
 .sidx-tbl td.act a.ebay{display:inline-block;vertical-align:middle;text-align:center;font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#000;background:var(--sidx);padding:6px 11px;border-radius:2px;text-decoration:none}
 .sidx-tbl td.act a.ebay:hover{filter:brightness(1.1)}
@@ -771,12 +797,14 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
 .sidx-more>summary::-webkit-details-marker{display:none}
 .sidx-more>summary:hover{background:var(--sidx);color:#000}
 .sidx-more .sm-close{display:none}.sidx-more[open] .sm-open{display:none}.sidx-more[open] .sm-close{display:inline}
+.sidx-sib{margin:10px 0 0;font-family:var(--fm,ui-monospace,monospace);font-size:11px;color:var(--sidx-dim)}.sidx-sib a{color:var(--sidx);font-weight:700;text-decoration:none;border-bottom:1px solid var(--sidx);margin:0 2px}
 .sidx-cap{font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--sidx-dim);margin:14px 0 6px}
 .sidx-more .sidx-tbl{margin-top:0}
 .sidx-note{font-size:11px;line-height:1.65;color:var(--sidx-dim);margin:14px 0 0}
 .sidx-note b{color:var(--text,#b8cdd4)} .sidx-note a{color:var(--sidx)}
 @media(max-width:900px){.sidx-stats{grid-template-columns:repeat(4,1fr)}.sidx-stats>div:nth-child(4){border-right:0}.sidx-stats>div:nth-child(-n+4){border-bottom:1px solid var(--sidx-bd)}}
-@media(max-width:760px){.sidx-mast{display:block;position:relative;padding-right:104px}.sidx-photo{position:absolute;right:0;top:0;width:96px}.sidx-photo .sch-cimg{width:90px!important;height:126px!important}.sidx-photo figcaption{display:none}.sidx-level{text-align:left;margin-top:12px}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}.sidx-tbl td.act .act-w{grid-template-columns:32px 96px 92px}.sidx-tbl td.act a.ebay,.sidx-auc-slot a.auc{padding:5px 6px;font-size:10px;letter-spacing:.5px}.sidx-auc-slot a.auc small{display:none}}
+@media(max-width:760px){.sidx-mast{display:block;position:relative;padding-right:104px}.sidx-photo{position:absolute;right:0;top:0;width:96px}.sidx-photo .sch-cimg{width:90px!important;height:126px!important}.sidx-photo>[data-card-img]{width:90px;height:126px}.sidx-photo figcaption{display:none}.sidx-level{text-align:left;margin-top:12px}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}.sidx-tbl td.act .act-w{grid-template-columns:32px 96px 92px}.sidx-tbl td.act a.ebay,.sidx-auc-slot a.auc{padding:5px 6px;font-size:10px;letter-spacing:.5px}.sidx-auc-slot a.auc small{display:none}}
+@media(max-width:760px){body .sidx-tbl td.act.g{text-align:center}body .sidx-tbl td.act .act-w.g{display:inline-flex;width:auto;justify-content:center}body .sidx-tbl td.act .glk a.ebay{flex:0 0 auto;min-width:0;height:36px;padding:0 10px;font-size:10.5px;letter-spacing:.5px}.glk-bar .glk-n{display:none}}
 </style>
 <div class="container"><section class="sidx" id="bb26" data-prices-updated="2026-09-28" style="--sidx:#00ccf5;">
   <div class="sidx-mast">
@@ -799,12 +827,14 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
     <div><span class="k">Divisor</span><span class="v">16.7069</span></div>
     <div><span class="k">Re-mark</span><span class="v">MON · THU</span></div>
   </div>
+  
   <div class="sidx-subidx"><span class="sidx-subidx-k"><b>BB26·BASE</b> 1st Bowman Chrome (base)</span><span class="sidx-subidx-lv">105.89</span><span class="sidx-subidx-w up">▲ +5.9%</span><span class="sidx-subidx-cards"><i>Andrew Fischer #BCP-149 <b>$3</b></i><i>Kevin McGonigle #BCP-145 <b>$2</b></i><i>Enddy Azocar #BCP-23 <b>$2</b></i><i>+15 more</i></span><span class="sidx-subidx-sp"><svg class="spark up" viewBox="0 0 72 22" aria-hidden="true"><path d="M1.0 20.0 L71.0 2.0" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span><span class="sidx-subidx-n">18 cards of 102 · price-weighted · uncapped · base 100 at 09/25/26 — the same release's 1st Bowman Chrome base cards, price-weighted, uncapped — the non-auto line under the autos</span></div>
   <div class="chase" id="bb26-chase" data-chase="BB26">
     <div class="ck"><b>Chase</b> · top 3 by sold mark · dated · the cards that carry this set</div>
     <div class="cg"><a class="cc" href="https://www.ebay.com/sch/i.html?_nkw=2026+bowman+chrome+Andrew+Fischer+auto+CPA-AF&_sacat=212&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bb26-cpa-af-chase" target="_blank" rel="noopener sponsored" title="Andrew Fischer #CPA-AF — live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'bb26-cpa-af-chase',page:location.pathname})"><span class="ci" data-card-img="name:Andrew Fischer 2026 Bowman Chrome Auto CPA-AF" data-card-name="Andrew Fischer #CPA-AF 2026 Bowman" data-card-sub="1ST BOWMAN" data-card-size="row" data-card-surface="bb26-chase" data-card-link="off"></span><span class="cn">Andrew Fischer #CPA-AF</span><span class="cp"><b>$148</b><small>sold mark · Sep 28</small></span><span class="cgo">Listings on eBay &rarr;</span></a><a class="cc" href="https://www.ebay.com/sch/i.html?_nkw=2026+bowman+chrome+Eric+Hartman+auto+CPA-EHA&_sacat=212&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bb26-cpa-eha-chase" target="_blank" rel="noopener sponsored" title="Eric Hartman #CPA-EHA — live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'bb26-cpa-eha-chase',page:location.pathname})"><span class="ci" data-card-img="name:Eric Hartman 2026 Bowman Chrome Auto CPA-EHA" data-card-name="Eric Hartman #CPA-EHA 2026 Bowman" data-card-sub="1ST BOWMAN" data-card-size="row" data-card-surface="bb26-chase" data-card-link="off"></span><span class="cn">Eric Hartman #CPA-EHA</span><span class="cp"><b>$113</b><small>sold mark · Sep 28</small></span><span class="cgo">Listings on eBay &rarr;</span></a><a class="cc" href="https://www.ebay.com/sch/i.html?_nkw=2026+bowman+chrome+George+Lombard+Jr.+auto+CPA-GL&_sacat=212&LH_BIN=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001&customid=bb26-cpa-gl-chase" target="_blank" rel="noopener sponsored" title="George Lombard Jr. #CPA-GL — live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'bb26-cpa-gl-chase',page:location.pathname})"><span class="ci" data-card-img="name:George Lombard Jr. 2026 Bowman Chrome Auto CPA-GL" data-card-name="George Lombard Jr. #CPA-GL 2026 Bowman" data-card-sub="1ST BOWMAN" data-card-size="row" data-card-surface="bb26-chase" data-card-link="off"></span><span class="cn">George Lombard Jr. #CPA-GL</span><span class="cp"><b>$110</b><small>sold mark · Sep 28</small></span><span class="cgo">Listings on eBay &rarr;</span></a></div>
     <div class="cf">Sold mark per card, from the table below: a median of recent dated sales (not one sale), dated to the read — not a call. Links open live eBay listings (affiliate; ShopCardHub earns a commission at no cost to you).</div>
   </div>
+  
   <div class="sidx-cap">Top 10 of 70 cards by weight · the full basket is one tap below the table</div>
   <div class="sidx-tbl"><table>
     <thead><tr><th>#</th><th>Card</th><th>Sold mark</th><th>Weight</th><th title="clean sold comps in the trailing 30 days — a gate input, not a volume figure">Sales 30D</th><th class="th-act">Watch · Buy · <span title="live eBay auction on this exact card, soonest close with bids; refreshed every 15 min">Bid</span></th></tr></thead>
