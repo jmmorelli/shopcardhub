@@ -13,7 +13,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## Open — from the desk (2026-10-01, 14:00 run). Mo, these are the only things waiting on you
 
-- **EPN signed you out again.** Your 9:10 am sign-in didn't last to the afternoon: at ~2:25 pm partner.ebay.com showed the login page in Browser 1, so the 30-day money read is still missing (last full read Sep 23). **Action:** next time you're in a CoS chat, sign in at partner.ebay.com in Browser 1 and say "read EPN" in the same sitting, so the read runs while the session is fresh.
+- ~~**EPN signed you out again.**~~ **✅ closed Oct 1 ~15:00 PT — you signed in and the read is done** (30 d $42.14 on 187 clicks / 17 actions; 7 d $0 on 32 clicks). Your 9:10 am sign-in didn't last to the afternoon: at ~2:25 pm partner.ebay.com showed the login page in Browser 1, so the 30-day money read is still missing (last full read Sep 23). **Action:** next time you're in a CoS chat, sign in at partner.ebay.com in Browser 1 and say "read EPN" in the same sitting, so the read runs while the session is fresh.
 - *FYI:* the Sep 30 10:00 am Ruggie / 1952 Topps post is no longer on the account. If you didn't delete it, tell the CoS.
 - ✅ *Closed:* the Sep 30 4:00 pm post went out with "basket", so nothing to reply to. The 6:30 pm "whole set" wording posted as-is and was ruled a wording point, not an error. No action.
 - ✅ *Closed:* **Which Chrome.** Only Browser 1 is connected now, and this unattended run selected it without asking. The Oct 7 weekly confirms GA4, Search Console and Bing read live.
