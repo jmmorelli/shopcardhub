@@ -188,6 +188,18 @@ None of the three was a data error. All three were the same naming collision.*
    "fix" an index by removing non-autos.
 5. **The autograph is the investor play; the non-auto is the retail value pick.** Both can appear on
    the site, but they are labelled for different buyers and never ranked against each other.
+6. **Paper is never the chase (Mo, 2026-10-01: "The bowman paper firsts are of no value. Chrome and
+   sapphire Chrome only are the ones worth looking at (and autos that are chrome)… no paper is worth
+   the chase, it's only chromes").** A paper prospect card (BP- / BD-) carries the 1st logo in its
+   release, and that fact may be stated, but no page ranks, rates (Chase / Buy / Hold), recommends,
+   rainbows or buy-links a paper Bowman card. Paper parallel ladders are never shown as chase tiers.
+   The only Bowman cards the site chases are Chrome (BCP / BDC), Sapphire Chrome, and Chrome autos
+   (CPA / CDA — every Bowman prospect auto is Chrome; there is no "paper CPA"). An index never holds
+   a paper card.
+7. **Facts about Bowman come from the Bowman KB** (Project `claude/kb/bowman/`, verifier-audited):
+   [HIGH] facts may be stated, [MED] facts carry their source, [LOW]/UNVERIFIED facts never reach a
+   page. A card is called a 1st only from its logo (card image or Topps checklist), never from a
+   missing Checklist Insider mark — CI does not mark auto 1sts at all.
 
 **Who we are building for, and why it decides these calls.** Mo: *"We want to push the investors,
 not the retail… We want retention from investors (hence Seeking Alpha) looking for high end cards.

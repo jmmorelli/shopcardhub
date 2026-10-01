@@ -27,6 +27,7 @@
     '.idx-chart .ic-rc{stroke-dasharray:5 4;opacity:.6}.idx-chart .ic-inc{stroke:var(--dim,#5a7880);stroke-width:1;stroke-dasharray:2 3;opacity:.6}' +
     '.idx-chart .ic-k{display:inline-block;width:14px;height:0;border-top:2px dashed var(--dim,#5a7880);vertical-align:middle;margin:0 3px}.idx-chart .ic-kl{border-top-style:solid;border-color:var(--th,#e4f0f4)}' +
     '.idx-chart .ic-note{font-size:11px;line-height:1.45;color:var(--dim,#5a7880);margin-top:6px;text-transform:none;letter-spacing:0}' +
+    '.idx-chart .ic-rw{fill:var(--dim,#5a7880);opacity:.13}.idx-chart text.ic-rwl{font-size:9px;letter-spacing:1px;text-transform:uppercase}' +
     '.idx-chart .ic-one{font-family:var(--fm,ui-monospace,monospace);font-size:11px;color:var(--dim,#5a7880);padding:6px 0}';
   /* Sep 30 2026 (Mo): LOG scale, and the index runs from its RELEASE base (or the first reliable month for sets older than
    * PriceCharting's history), not from our inception. The reconstructed months (data/indices.json .recon, monthly,
@@ -35,7 +36,10 @@
   var NICE = [5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 100, 125, 150, 200, 250, 300, 400, 500, 750, 1000, 1500, 2000];
   function t(d) { return Date.parse(String(d).length === 7 ? d + '-15T00:00:00Z' : String(d).slice(0, 10) + 'T00:00:00Z'); }
   function mlabel(d) { var p = String(d).split('-'); return MON[+p[1] - 1] + (String(d).length === 7 ? ' ’' + p[0].slice(2) : ' ' + (+p[2])); }
-  function chart(rc, h, tk) {
+  /* Oct 1 2026 (Mo, Bowman on the release-date base): a ticker with releaseWindowDays shades the first N days after street —
+   * the release-premium window, when most 1st Bowman autos print their high and slide as supply posts (Bowman KB 04 §2).
+   * A band only; it never changes a level. */
+  function chart(rc, h, tk, v) {
     var W = 720, H = 220, pl = 10, pr = 58, pt = 16, pb = 24;
     var pts = rc.map(function (r) { return { t: t(r.month), v: r.level, rc: 1, d: r.month }; })
       .concat(h.map(function (r) { return { t: t(r.date), v: r.level, rc: 0, d: r.date }; }));
@@ -62,8 +66,11 @@
     var marks = live.length <= 40 ? live.map(function (p) { return '<circle class="ic-mk" cx="' + X(p.t).toFixed(1) + '" cy="' + Y(p.v).toFixed(1) + '" r="2"/>'; }).join('') : '';
     var e = pts[pts.length - 1], ex = X(e.t), ey = Y(e.v);
     var lastLbl = '<text class="ic-last" x="' + (ex - 6).toFixed(1) + '" y="' + (ey < pt + 16 ? ey + 16 : ey - 8).toFixed(1) + '" text-anchor="end">' + num(e.v, 2) + '</text>';
+    var band = '';
+    if (v && v.releaseWindowDays && v.releaseDate) { var r0 = Math.max(t(v.releaseDate), t0), r1 = Math.min(t(v.releaseDate) + v.releaseWindowDays * 864e5, t1);
+      if (r1 > r0) band = '<rect class="ic-rw" x="' + X(r0).toFixed(1) + '" y="' + pt + '" width="' + Math.max(X(r1) - X(r0), 2).toFixed(1) + '" height="' + (H - pt - pb) + '"/><text class="ic-rwl" x="' + (X(r0) + 4).toFixed(1) + '" y="' + (pt + 10) + '">release window</text>'; }
     var incep = rec.length && live.length ? '<line class="ic-inc" x1="' + X(live[0].t).toFixed(1) + '" x2="' + X(live[0].t).toFixed(1) + '" y1="' + pt + '" y2="' + (H - pb) + '"/>' : '';
-    return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(tk) + ' level on a log scale, 100 = base month">' + tk_ + '<path class="ic-area" d="' + area + '"/>' + ref + incep +
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(tk) + ' level on a log scale, 100 = base month">' + band + tk_ + '<path class="ic-area" d="' + area + '"/>' + ref + incep +
       (rec.length ? '<path class="ic-line ic-rc" d="' + path(rec) + '"/>' : '') + (live.length > 1 ? '<path class="ic-line" d="' + path(live) + '"/>' : '') + marks +
       '<circle class="ic-dot" cx="' + ex.toFixed(1) + '" cy="' + ey.toFixed(1) + '" r="3.5"/>' + lastLbl + xl.join('') + '</svg>';
   }
@@ -76,9 +83,9 @@
     var since = last.level - 100, wk = h.length > 1 ? (last.level / h[h.length - 2].level - 1) * 100 : null;
     var base = v.baseDate ? mlabel(v.baseDate).replace('’', '20') : dstr(h[0].date);
     el.classList.toggle('dn', last.level < 100);
-    el.innerHTML = chart(rc, h, tk) + '<div class="ic-cap"><span><b>' + esc(tk) + '</b> · 100 = ' + esc(base) + (v.baseRule === 'release' ? (String(v.releaseDate || '').slice(0, 7) === v.baseDate ? ' (release month)' : ' (first month after release)') : v.baseRule ? ' (first reliable month)' : '') + ' · log scale' +
+    el.innerHTML = chart(rc, h, tk, v) + '<div class="ic-cap"><span><b>' + esc(tk) + '</b> · 100 = ' + esc(base) + (v.baseRule === 'release' ? (String(v.releaseDate || '').slice(0, 7) === v.baseDate ? ' (release month)' : ' (first month after release)') : v.baseRule ? ' (first reliable month)' : '') + ' · log scale' +
       (rc.length ? ' · <i class="ic-k"></i> monthly, reconstructed · <i class="ic-k ic-kl"></i> live marks since ' + esc(dstr(h[0].date)) : '') + '</span><span>since ' + (v.baseRule === 'release' ? 'release' : 'base') + ' <b>' + (since > 0 ? '+' : '') + num(since, 2) + '%</b> · w/w <b>' + (wk == null ? '—' : (wk > 0 ? '+' : '') + num(wk, 1) + '%') + '</b> · last ' + esc(dstr(last.date)) + '</span></div>' +
-      (v.baseNote ? '<div class="ic-note">' + esc(v.baseNote) + '. Months before ' + esc(dstr(h[0].date)) + ' are reconstructed from PriceCharting’s monthly ungraded price history with today’s basket; live marks since.</div>' : '');
+      (v.baseNote ? '<div class="ic-note">' + esc(v.baseNote) + '.' + (rc.length ? ' Months before ' + esc(dstr(h[0].date)) + ' are reconstructed from PriceCharting’s monthly ungraded price history with today’s basket; live marks since.' : '') + (v.releaseWindowDays ? ' Shaded: the first ' + v.releaseWindowDays + ' days after release, when most new Bowman cards print their high before supply catches up.' : '') + '</div>' : '');
   }
   function boot() {
     var els = document.querySelectorAll('.idx-chart[data-ticker]'); if (!els.length) return;

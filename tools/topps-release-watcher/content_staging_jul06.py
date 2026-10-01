@@ -31,13 +31,13 @@ def misiorowski():
     slug = "jacob-misiorowski-rookie-cards"; cid = slug
     m = meta(
         "Jacob Misiorowski Rookie Cards — Best Cards, 1st Bowman Auto & Current Prices",
-        "Jacob Misiorowski rookie card guide: the 2022 Bowman Chrome 1st autos (+149% in PSA 10), 2026 Topps Series 1 rookie autos, the $45.6K Anime Superfractor sale, and which cards to buy vs avoid. Live eBay sold comps, July 2026.",
+        "Jacob Misiorowski rookie card guide: the 2022 Bowman Draft Chrome 1st autos (+149% in PSA 10), 2026 Topps Series 1 rookie autos, the $45.6K Anime Superfractor sale, and which cards to buy vs avoid. Live eBay sold comps, July 2026.",
         slug,
         "Jacob Misiorowski rookie cards, Misiorowski 1st Bowman auto, Misiorowski 2026 Topps rookie, Misiorowski PSA 10, Brewers pitcher cards")
     b = hero(
         "Player Guide &middot; Baseball &middot; Milwaukee Brewers",
         "Jacob Misiorowski", "Rookie Cards",
-        "The hardest riser in the hobby right now. Misiorowski leads MLB in strikeouts, ERA, and WHIP &mdash; and his 1st Bowman Auto in PSA 10 has jumped <strong>+149%</strong> on the run. Here's the card map: the 2022 Bowman Chrome 1st autos, the 2026 rookie-year cards, the trophy sales, and where the entry points still are.",
+        "The hardest riser in the hobby right now. Misiorowski leads MLB in strikeouts, ERA, and WHIP &mdash; and his 1st Bowman Auto in PSA 10 has jumped <strong>+149%</strong> on the run. Here's the card map: the 2022 Bowman Draft Chrome 1st autos, the 2026 rookie-year cards, the trophy sales, and where the entry points still are.",
         ["&#9918; 8-3 &middot; 1.45 ERA &middot; 138 K in 93 IP", "1st Bowman Auto PSA 10: +149%", "Record sale $52.8K", "Prices as of Jul 6, 2026"])
     body = b + '''
   <div class="container">
@@ -49,14 +49,14 @@ def misiorowski():
     <div class="set-banner">
       <div class="entry-tag cyan" style="margin-bottom:8px;">&#9918; Milwaukee Brewers &middot; RHP</div>
       <h2 style="margin-bottom:4px;">Jacob Misiorowski — At a Glance</h2>
-      <p style="font-size:15px; color:var(--text-dim); margin-bottom:0;">Drafted 2022, debuted June 2025, and now the most dominant arm in baseball. His card market splits cleanly: <strong>2022 Bowman Chrome 1st autos</strong> (the prospecting grail) and the <strong>2026 rookie-year RCs</strong> (the liquid, accessible tier).</p>
+      <p style="font-size:15px; color:var(--text-dim); margin-bottom:0;">Drafted 2022, debuted June 2025, and now the most dominant arm in baseball. His card market splits cleanly: <strong>2022 Bowman Draft Chrome 1st autos</strong> (the prospecting grail) and the <strong>2026 rookie-year RCs</strong> (the liquid, accessible tier).</p>
       <div class="set-banner-grid">
         ''' + "".join([
         banner_stat("Team", "Brewers"),
         banner_stat("Position", "RHP"),
         banner_stat("2026 Line", "8-3 &middot; 1.45 ERA", "green"),
         banner_stat("Strikeouts", "138 in 93 IP", "green"),
-        banner_stat("Key Card", "2022 Bowman Chrome 1st Auto", "gold"),
+        banner_stat("Key Card", "2022 Bowman Draft Chrome 1st Auto", "gold"),
         banner_stat("PSA 10 Trend", "&#9650; +149%", "green"),
         banner_stat("Record Sale", "$52,800 (Superfractor Auto)", "gold"),
         banner_stat("RC Year", "2026"),
@@ -78,7 +78,7 @@ def misiorowski():
         <thead><tr><th>Card</th><th>Tier</th><th>Why It Matters</th><th>Verdict</th><th>Find</th></tr></thead>
         <tbody>
         ''' + "".join([
-        chase_row("2022 Bowman Chrome 1st Auto", "The prospecting grail", "Top card", "His true 1st Bowman autograph. PSA 10s are up ~149% on the season surge; the 1/1 Superfractor auto holds his record at $52,800. The color rainbow scales from there.", "Chase", "v-buy", "2022 bowman chrome jacob misiorowski auto", cid),
+        chase_row("2022 Bowman Draft Chrome 1st Auto", "The prospecting grail", "Top card", "His true 1st Bowman autograph. PSA 10s are up ~149% on the season surge; the 1/1 Superfractor auto holds his record at $52,800. The color rainbow scales from there.", "Chase", "v-buy", "2022 bowman chrome jacob misiorowski auto", cid),
         chase_row("2022 Bowman Chrome 1st (base)", "Non-auto 1st Bowman", "Core", "The affordable piece of the same rainbow. Graded 10s ride the same wave as the autos at a fraction of the price — the classic second-best entry.", "Chase", "v-buy", "2022 bowman chrome jacob misiorowski 1st", cid),
         chase_row("2026 Topps Series 1 RC + Autos", "Rookie year flagship", "RC", "His official RC. The Orange Chrome auto /25 hit $550 in release week, then cooled as supply got pulled and graded — typical S1 pattern. Base RCs stay cheap and liquid.", "Watch", "v-watch", "2026 topps series 1 jacob misiorowski rookie", cid),
         chase_row("2026 Topps Chrome RC Autos", "Releases Jul 22", "Upcoming", "The rookie-auto tier the market is waiting for — first on-card Chrome RC signatures land July 22. Expect launch-week froth; comps take 2-3 weeks to mean anything.", "Watch", "v-watch", "2026 topps chrome jacob misiorowski auto", cid),
@@ -186,7 +186,7 @@ def crow_armstrong():
         ''' + "".join([
         chase_row("2020 Bowman Chrome Draft 1st Auto", "The grail tier", "Top card", "His true 1st autos. The /5 sold for $50K+ in June 2025 and a Red /5 (BGS 9.5) went $35,400 — the trophy tier is already established. Lower colors scale down from there.", "Chase", "v-buy", "2020 bowman chrome draft pete crow-armstrong auto", cid),
         chase_row("2020 Bowman Draft Sapphire 1st", "The momentum card", "Runner", "+121% in 30 days — the single hottest PCA chart. Sapphire's blue-chrome look plus 1st Bowman status makes it the card the volume wave is chasing. Graded 10s lead.", "Chase", "v-buy", "2020 bowman draft sapphire pete crow-armstrong", cid),
-        chase_row("2020 Bowman Draft 1st (paper/chrome)", "Accessible 1st", "Core", "The affordable 1st Bowman tier. When Sapphire runs +121%, the base 1sts historically close part of the gap — the catch-up trade.", "Chase", "v-buy", "2020 bowman draft pete crow-armstrong 1st", cid),
+        chase_row("2020 Bowman Draft Chrome 1st (BDC)", "Accessible 1st", "Core", "The affordable Chrome 1st. Paper BD versions are not the chase.", "Chase", "v-buy", "2020 bowman draft pete crow-armstrong 1st", cid),
         chase_row("2024 Topps Flagship / Chrome RC", "Rookie year", "RC", "His official RCs — cheap, deep, and the most liquid PCA lane. The play for volume traders; graded 10s only if you're holding.", "Watch", "v-watch", "2024 topps pete crow-armstrong rookie", cid),
         chase_row("2024 Bowman Spotlights + parallels", "Insert tier", "Budget", "Orange /25 in PSA 9 traded ~$180 in May; base Spotlights ~$30. Collector candy with occasional pop — not the ROI lane.", "Hold", "v-hold", "2024 bowman spotlights pete crow-armstrong", cid),
         ]) + '''
@@ -286,10 +286,10 @@ def delauter():
         <tbody>
         ''' + "".join([
         chase_row("2024 Bowman Chrome Auto", "The repriced tier", "Top card", "The card the market already voted on — $185 to $260 in one surge. Color parallels scale up from the base auto; this is where his trophy tier will form.", "Chase", "v-buy", "2024 bowman chrome chase delauter auto", cid),
-        chase_row("2026 Bowman #37 RC", "Flagship rookie", "RC", "His official Bowman RC (paper — the Chrome standalone lands later with the Mojo /150 ladder). Cheap, liquid, and the natural catch-up lane if production holds.", "Chase", "v-buy", "2026 bowman chase delauter rookie 37", cid),
+        chase_row("2026 Bowman #37 RC", "Flagship rookie", "RC", "His paper Bowman RC: cheap PC, not the chase. The Chrome version is the card to track.", "Chase", "v-buy", "2026 bowman chase delauter rookie 37", cid),
         chase_row("2026 Bowman Chrome RC Mojo /150", "Numbered rookie chrome", "Numbered", "The numbered rookie-chrome tier with a full color ladder above it. Thin supply plus an early market = the asymmetric lane, but also the illiquid one.", "Watch", "v-watch", "2026 bowman chrome chase delauter mojo", cid),
         chase_row("2026 Rookie Autos (Donruss / Topps Chrome)", "Budget autos", "Budget", "Signature Series and Gold Mojo rookie autos still listing at $25&ndash;$35 — rookie-year ink priced like base. If the 2024 auto move is right, this tier is mispriced.", "Watch", "v-watch", "2026 chase delauter rookie auto", cid),
-        chase_row("2023 Bowman / 1st cards", "Prospect base", "Core", "His earliest Bowman paper. Cheap PC territory — fine to own, unlikely to lead any move.", "Hold", "v-hold", "chase delauter bowman 1st", cid),
+        chase_row("2023 Bowman / 1st cards", "Prospect base", "Core", "His paper Bowman prospect cards are not the chase; no call on paper.", "Hold", "v-hold", "chase delauter bowman 1st", cid),
         ]) + '''
         </tbody>
       </table>

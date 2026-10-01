@@ -93,7 +93,9 @@ function facts(c) {
     cat = "baseball";
     set = `${year} Bowman${/sapphire/.test(q) ? " Sapphire" : /chrome/.test(q) ? " Chrome" : ""}`.trim();
     setHref = "/bowman-bangers";
-    lane = type === "chrome-auto" ? "1st Bowman Chrome Auto · raw" : type === "sapphire-base" ? "1st Bowman Sapphire · raw base" : "1st Bowman Chrome · raw base";
+    // Oct 1 2026 (Bowman KB / R9.2): a watchlist card with first:false is a returning card (no 1st logo) and is never labelled 1st.
+    const pre = c.first === false ? "" : "1st ";
+    lane = type === "chrome-auto" ? pre + "Bowman Chrome Auto · raw" : type === "sapphire-base" ? pre + "Bowman Sapphire · raw base" : pre + "Bowman Chrome · raw base";
     // BOW26 (Sep 7 2026): 1st Chrome autos are constituents of the live index.
     if (type === "chrome-auto") { indexHref = "/bowman-1st-chrome-index"; ticker = "BOW26"; }
   } else {

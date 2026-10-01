@@ -618,7 +618,7 @@ tr.soon td { opacity:0.55; }
   <nav class="rl-sec" aria-label="Terminal">
       <a class="rl" href="/"><span class="ico">α</span><span class="lbl">Home</span></a>
       <a class="rl" href="/bowman-bangers"><span class="ico">▤</span><span class="lbl">Bowman Bangers board</span><span class="pill">10</span></a>
-      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span><span class="pill">23</span></a>
+      <a class="rl" href="/indices"><span class="ico">≋</span><span class="lbl">Set indices</span><span class="pill">31</span></a>
       <a class="rl" href="/auctions"><span class="ico">⚒</span><span class="lbl">Auction Desk</span></a>
       <a class="rl" href="/#tape"><span class="ico">✉</span><span class="lbl">The Tuesday Tape</span><span class="pill">Tue</span></a>
   </nav>
@@ -645,7 +645,7 @@ tr.soon td { opacity:0.55; }
         <a class="rl sub" href="/topps-chrome-black-football"><span class="lbl">Chrome Black — Jul 10</span></a>
         <a class="rl sub" href="/best-football-cards-under-50"><span class="lbl">Best Cards Under $50</span></a>
         <a class="rl sub" href="/topps-flagship-football"><span class="lbl">Flagship Football — Aug 21</span></a>
-        <a class="rl sub" href="/bowman-football"><span class="lbl">Bowman Football — Pre-Order</span></a>
+        <a class="rl sub" href="/bowman-football"><span class="lbl">Bowman Football — Sep 30</span></a>
         <div class="rl-glabel">⚽ Soccer</div>
         <a class="rl sub" href="/world-cup-2026-soccer-cards"><span class="lbl">World Cup 2026 Cards</span></a>
         <a class="rl sub" href="/lamine-yamal-rookie-cards"><span class="lbl">Lamine Yamal</span></a>
@@ -738,7 +738,7 @@ tr.soon td { opacity:0.55; }
 </div>
 <div id="tape" style="display:none; background:var(--p2,rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.08); padding:14px 18px; margin-bottom:18px;"></div>
 <div id="sections"></div>
-<div class="foot">Methodology on every index page: price-weighted over sourced sold reads (PriceCharting for Pokémon, SportsCardsPro/eBay solds for sports) · unpriced universe cards carry zero weight and enter via logged divisor adjustments · Pokémon: 100 = the set's release month, or for vintage sets the first month PriceCharting's sold history reliably covers (rebased Sep 30, 2026; months before our live marks are reconstructed monthly from that history and drawn dashed) · Bowman: 100 at inception · charts on a log scale · re-marked Monday (chase tiers) or Monday and Thursday. Affiliate disclosure: listing links on index pages are EPN-tracked; prices and index math are independent of them.</div>
+<div class="foot">Methodology on every index page: price-weighted over sourced sold reads (PriceCharting for Pokémon, SportsCardsPro/eBay solds for sports) · unpriced universe cards carry zero weight and enter via logged divisor adjustments · Pokémon: 100 = the set's release month, or for vintage sets the first month PriceCharting's sold history reliably covers (rebased Sep 30, 2026; months before our live marks are reconstructed monthly from that history and drawn dashed) · charts on a log scale · re-marked Monday (chase tiers) or Monday and Thursday. Affiliate disclosure: listing links on index pages are EPN-tracked; prices and index math are independent of them.</div>
 </div>
   </main>
   </div><!-- /.term -->
@@ -781,7 +781,7 @@ var META = {
     "ND1E": { d: "Neo Destiny 1st Edition (2002) — the stamped Shining set. Marked on 90 days of raw sales." }
   }},
   "baseball": { label: "BASEBALL — BOWMAN · 1ST BOWMAN CHROME AUTOS", tickers: {
-    "BOW26":  { d: "2026 cohort — every 1st Bowman Chrome Auto across May's Bowman, September's Chrome and December's Draft. Sold comps, every card in the basket. The class as a position." },
+    "BOW26":  { d: "2026 cohort — every 1st Bowman Chrome Auto across May's Bowman and September's Chrome; Bowman Draft joins when it releases (Dec–Jan). Sold comps, every card in the basket. The class as a position." },
     "BB26":   { d: "2026 Bowman (May) — that release's 1st Bowman Chrome Autos: Holliday, Fischer, Arquette, Kim and the rest of the board's class." },
     "BCB26":  { d: "2026 Bowman Chrome (September) — that release's 1st Bowman Chrome Autos, the IFA class. Base cards as the sub-index." }
   }}
@@ -852,7 +852,7 @@ fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(
     rowsBySec[c.s].push('<tr class="soon"><td class="nm">' + (FACE[c.t] ? '<div class="roi-cell">' + faceThumb(c.t) + '<div>' + link + '<span class="desc">' + c.d + '</span></div></div>' : link + '<span class="desc">' + c.d + '</span>') + '</td>' +
       '<td class="hidem fl">—</td><td class="lv fl">' + c.note + '</td><td class="fl hides">—</td><td class="hidem fl">—</td><td class="fl">—</td><td class="hidem fl">—</td><td class="go">' + (c.href ? '<a class="go-btn dim" href="' + c.href + '">Guide &rarr;</a>' : '') + '</td></tr>');
   });
-  var head = '<thead><tr><th>Ticker</th><th class="hidem">Tracked / Total</th><th>Level</th><th class="hides">Week</th><th class="hidem">Month</th><th title="level − 100: since the release month (Bowman: inception)">Since release</th><th class="hidem">Range</th><th class="go"></th></tr></thead>';
+  var head = '<thead><tr><th>Ticker</th><th class="hidem">Tracked / Total</th><th>Level</th><th class="hides">Week</th><th class="hidem">Month</th><th title="level − 100: since the release month">Since release</th><th class="hidem">Range</th><th class="go"></th></tr></thead>';
   var out = '';
   ['pokemon','classic','editions','baseball'].forEach(function(sec) {
     out += '<div class="panel" id="' + sec + '" style="scroll-margin-top:80px;"><h2>' + META[sec].label + '</h2><div class="tbl-scroll"><table>' + head + '<tbody>' + rowsBySec[sec].join('') + '</tbody></table></div></div>';

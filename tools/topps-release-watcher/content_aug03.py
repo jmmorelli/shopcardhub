@@ -128,7 +128,7 @@ def bowman_chrome_baseball_2026():
     <div class="product-grid">
       ''' + "".join([
         product_item("Best for Value", "Snipe the Auto, Skip the Box", "Varies", "green",
-            "The paper 1st autos on our Bangers board already rank this class by real sold prices. When Chrome singles post, target the exact name and color &mdash; don't pay the release-week rip tax.",
+            "The May 1st Bowman Chrome autos on our Bangers board already rank that class by real sold prices. When Chrome singles post, target the exact name and color &mdash; don't pay the release-week rip tax.",
             "Shop Singles on eBay", ebay("2026 bowman chrome prospect autograph", cid), "best"),
         product_item("Buy Direct &middot; Official", "Topps.com Pre-Order (Aug 10)", "TBA", "",
             "Direct from Topps when pre-orders open Aug 10. 2025 hobby boxes ran ~$300 with 2 autos; 2026 pricing and configs are TBA &mdash; confirm before committing. " + TOPPS,
@@ -160,8 +160,8 @@ def bowman_chrome_baseball_2026():
     <h2>What to Skip</h2>
     <div class="avoid-list">
       ''' + "".join([
-        avoid_item("<strong>Release-week auto premiums</strong> &mdash; Chrome 1st autos historically open hot and bleed for weeks as supply posts. The paper class already shows which names hold; let Chrome comps form."),
-        avoid_item("<strong>Confusing paper and Chrome</strong> &mdash; a 2026 Bowman (paper) 1st auto and a Chrome 1st auto are different cards with different markets. Verify which one the listing actually is."),
+        avoid_item("<strong>Release-week auto premiums</strong> &mdash; Chrome 1st autos historically open hot and bleed for weeks as supply posts. May's Chrome autos already show which names hold; let September's comps form."),
+        avoid_item("<strong>Confusing May and September</strong> &mdash; CPA autos come in both 2026 Bowman (May) and Bowman Chrome (Sep); only a player's first one is his 1st Bowman auto. Paper BP base cards are never the chase. Read the set and number on the listing."),
         avoid_item("<strong>Mega/Choice gambling before configs are announced</strong> &mdash; format EV differs wildly. No config, no math, no buy."),
         avoid_item("<strong>Color on the wrong name</strong> &mdash; a /25 of a non-prospect is still a non-prospect. Serial numbers don't fix scouting reports."),
     ]) + '''

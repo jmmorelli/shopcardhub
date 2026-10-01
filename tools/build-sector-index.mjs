@@ -48,7 +48,8 @@ const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": 
 const mdy = (d) => { const p = String(d).slice(0, 10).split("-"); return `${p[1]}/${p[2]}/${p[0].slice(2)}`; };
 // Sep 30 2026 (Mo: rebase every Pokémon index to its release date). A ticker with baseDate is based at its release month
 // (baseRule "release") or at the first month PriceCharting's history covers the basket ("first-reliable"); months before
-// inception are the labelled monthly reconstruction in .recon. Tickers without baseDate (Bowman) keep inception wording.
+// inception are the labelled monthly reconstruction in .recon. Bowman joined the release-month base Oct 1 2026 (Mo: "start at
+// release date"; tools/build-recon-bowman.mjs). A ticker without baseDate still prints inception wording.
 const MONS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const baseMon = (x) => `${MONS[+x.baseDate.slice(5, 7) - 1]} ${x.baseDate.slice(0, 4)}`;
 const baseKind = (x) => x.baseRule !== "release" ? "first reliable month" : String(x.releaseDate || "").slice(0, 7) === x.baseDate ? "release month" : "first month after release";
@@ -181,15 +182,15 @@ function bowmanConfigs() {
     BB26: { ...common, name: "2026 Bowman 1st Auto Index", set: "2026 Bowman", page: "/bowman-2026-index",
       sources: [{ slug: AUTOS, keep: (t, name, num) => autoSlot(t) && may.auto(name, num) }],
       subUniverse: { key: "BASE", name: "1st Bowman Chrome (base)", blurb: "the same release's 1st Bowman Chrome base cards, price-weighted, uncapped — the non-auto line under the autos", sources: [{ slug: BASE, keep: (t, name, num) => baseSlot(t) && may.base(name, num) }] },
-      note: "May's 2026 Bowman: the paper flagship whose Chrome Prospect Autograph insert (#CPA-) is where the class's 1st Bowman Chrome Autos live — Holliday, Fischer, Arquette, Kim and the rest of the Bangers board are all here. The Bangers board ranks ten of these by the last printed sale and makes calls; this index prices every one that trades and makes none." },
+      note: "May's 2026 Bowman: the flagship whose on-card Chrome Prospect Autograph insert (#CPA-) is where the class's 1st Bowman Chrome Autos live — Holliday, Fischer, Kim and the rest of the Bangers board are all here. Paper prospect cards (BP-) are left out on purpose: the chase is Chrome. The Bangers board ranks five of these on the 30-day median of dated sales and makes calls; this index prices every one that trades and makes none." },
     BCB26: { ...common, name: "2026 Bowman Chrome 1st Auto Index", set: "2026 Bowman Chrome", page: "/bowman-chrome-2026-index", releaseDate: "2026-09-09",
       sources: [{ slug: AUTOS, keep: (t, name, num) => autoSlot(t) && sept.auto(name, num) }],
       subUniverse: { key: "BASE", name: "1st Bowman Chrome (base)", blurb: "September's 1st Bowman Chrome base cards (BCP-151 up), price-weighted, uncapped", sources: [{ slug: BASE, keep: (t, name, num) => baseSlot(t) && sept.base(name, num) }] },
-      note: "September's 2026 Bowman Chrome: only the autos the published checklist flags as a player's first Bowman autograph are in (97 of 104); returning autos (Kilby, Quintero, F. Arias, J. Gonzalez, Parker, Doyle, Peña) had their 1st Bowman autos in 2025 products and are excluded here, not double-counted. Release-week supply is heavy, so the first quarter of marks reads the drawdown every Bowman product prints before the class sorts itself." },
-    BOW26: { ...common, name: "2026 1st Bowman Chrome Auto Index", set: "2026 Bowman, Bowman Chrome and Bowman Draft", page: "/bowman-1st-chrome-index",
+      note: "September's 2026 Bowman Chrome: only the autos our Sep 9 per-card audit tags as a player's first Bowman autograph are in (97 of 104; no published checklist marks 1sts on auto lines); returning autos (Kilby, Quintero, F. Arias, J. Gonzalez, Parker, Doyle, Peña) had their 1st Bowman autos in 2025 products and are excluded here, not double-counted. Release-week supply is heavy, so the first quarter of marks reads the drawdown every Bowman product prints before the class sorts itself." },
+    BOW26: { ...common, name: "2026 1st Bowman Chrome Auto Index", set: "2026 Bowman and Bowman Chrome", page: "/bowman-1st-chrome-index",
       sources: [{ slug: AUTOS, keep: (t, name, num) => autoSlot(t) && (may.auto(name, num) || sept.auto(name, num)) }],
       subUniverse: { key: "BASE", name: "1st Bowman Chrome (base), all releases", blurb: "every 2026 1st Bowman Chrome base card, price-weighted, uncapped", sources: [{ slug: BASE, keep: (t, name, num) => baseSlot(t) && (may.base(name, num) || sept.base(name, num)) }] },
-      note: "The year cohort: every 1st Bowman Chrome Auto issued across the 2026 Bowman releases — May's Bowman and September's Bowman Chrome now, December's Bowman Draft when its console lists (it enters the first Monday after street, a logged divisor adjustment, level unchanged). BB26 and BCB26 are the same cards by release. Bowman is a spec market held for years; the cohort line is the position, the release line is the entry. BOW27 starts with May 2027." },
+      note: "The year cohort: every 1st Bowman Chrome Auto issued across the 2026 Bowman releases — May's Bowman and September's Bowman Chrome now, Bowman Draft (Dec–Jan) when its console lists (it enters the first Monday after street, a logged divisor adjustment, level unchanged). BB26 and BCB26 are the same cards by release. Bowman is a spec market held for years; the cohort line is the position, the release line is the entry. BOW27 starts with May 2027." },
   };
 }
 
@@ -420,7 +421,7 @@ function block(x, c) {
     const sw = sp ? (sl.level / sp.level - 1) * 100 : null;
     const cards = sx.kind === "screened" ? sx.basket.slice().sort((a, b) => b.price - a.price) : x.basket.filter((b) => sx.nums.includes(String(b.num)));
     const shown = sx.kind === "screened" ? cards.slice(0, 3) : cards;
-    return `<div class="sidx-subidx"><span class="sidx-subidx-k"><b>${x.ticker}·${esc(k)}</b> ${esc(sx.name)}</span><span class="sidx-subidx-lv">${sl ? sl.level.toFixed(2) : "—"}</span><span class="sidx-subidx-w ${cls(sw == null ? 0 : sw)}">${sw == null ? "first mark" : (sw >= 0 ? "▲ " : "▼ ") + pct(sw)}</span><span class="sidx-subidx-cards">${shown.map((b) => `<i>${esc(b.name)} #${esc(b.num)} <b>${money(b.price, 0)}</b></i>`).join("")}${sx.kind === "screened" && cards.length > 3 ? `<i>+${cards.length - 3} more</i>` : ""}</span>${sh.length > 1 ? `<span class="sidx-subidx-sp">${ST_spark(sh.map((r) => r.level))}</span>` : ""}<span class="sidx-subidx-n">${cards.length} cards${sx.kind === "screened" && sx.universe ? ` of ${sx.universe.length}` : ""} · price-weighted · uncapped · base 100 at ${mdy(x.inception)} — ${esc(sx.blurb || "")}</span></div>`;
+    return `<div class="sidx-subidx"><span class="sidx-subidx-k"><b>${x.ticker}·${esc(k)}</b> ${esc(sx.name)}</span><span class="sidx-subidx-lv">${sl ? sl.level.toFixed(2) : "—"}</span><span class="sidx-subidx-w ${cls(sw == null ? 0 : sw)}">${sw == null ? "first mark" : (sw >= 0 ? "▲ " : "▼ ") + pct(sw)}</span><span class="sidx-subidx-cards">${shown.map((b) => `<i>${esc(b.name)} #${esc(b.num)} <b>${money(b.price, 0)}</b></i>`).join("")}${sx.kind === "screened" && cards.length > 3 ? `<i>+${cards.length - 3} more</i>` : ""}</span>${sh.length > 1 ? `<span class="sidx-subidx-sp">${ST_spark(sh.map((r) => r.level))}</span>` : ""}<span class="sidx-subidx-n">${cards.length} cards${sx.kind === "screened" && sx.universe ? ` of ${sx.universe.length}` : ""} · price-weighted · uncapped · ${sx.baseDate ? `100 = ${baseMon(sx)} (release month)` : `base 100 at ${mdy(x.inception)}`} — ${esc(sx.blurb || "")}</span></div>`;
   }).join("");
   return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}"${c.classic ? " data-no-repoint" : ""}${GL ? " data-glk" : ""}${GL && wotc ? " data-wotc" : ""}${GL && ed ? ` data-wotc="${ed}"` : ""} style="--sidx:${c.theme};">
   <div class="sidx-mast">
@@ -577,7 +578,7 @@ function bake(x, c) {
     if (!html.includes(anchor)) throw new Error(`${c.page}: no ${anchor} anchor to place the index block after`);
     html = html.replace(anchor, anchor + "\n" + body);
   }
-  if (!html.includes('src="/js/index-chart.js')) html = html.replace("</body>", '<script src="/js/index-chart.js?v=2" defer></script>\n</body>');
+  if (!html.includes('src="/js/index-chart.js')) html = html.replace("</body>", '<script src="/js/index-chart.js?v=3" defer></script>\n</body>');
   if (!html.includes('src="/js/card-img.js')) html = html.replace("</body>", '<script src="/js/card-img.js?v=3" defer></script>\n</body>');
   if (!html.includes('src="/js/index-you.js')) html = html.replace("</body>", '<script src="/js/index-you.js?v=1" defer></script>\n</body>');
   if (!html.includes('src="/js/sector-auctions.js')) html = html.replace("</body>", '<script src="/js/sector-auctions.js?v=3" defer></script>\n</body>');

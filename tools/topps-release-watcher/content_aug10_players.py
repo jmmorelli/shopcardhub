@@ -334,7 +334,7 @@ def cameron_boozer():
         <tbody>
         ''' + "".join([
         chase_row("Bowman U Chrome Prospect Autos", "The pre-NBA benchmark", "Black /10: $4,138",
-            "The closest thing to a '1st Bowman' in basketball. June's /10 sale at $4,138 and the $10,500 'Brotherhood' inscription Red show real conviction money, not hype asks.", "Watch", "v-watch",
+            "His 1st Bowman auto: Bowman U Chrome carries the 1st Bowman logo in basketball (per Topps Ripped). June's /10 sale at $4,138 and the $10,500 'Brotherhood' inscription Red show real conviction money, not hype asks.", "Watch", "v-watch",
             "cameron boozer bowman u chrome auto", cid),
         chase_row("Bowman U Chrome Sapphire Autos", "Scarce parallel tier", "Red /5: $3,550",
             "The color-and-serial game on his pre-NBA ink. Thin pop, event-style sales &mdash; comp each serial tier individually.", "Hold", "v-hold",

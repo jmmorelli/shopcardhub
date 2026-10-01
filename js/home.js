@@ -130,7 +130,7 @@
 
   /* ---------- the index board (home, above the fold — Sep 25 2026, Mo: "lean HARD into the edge") ----------
    * One row per set index, nothing else. Level · 1W (vs the prior mark) · 1M (vs the newest mark at least 28 days
-   * back; "—" until the series is that old) · since base (level − 100; base = release month for Pokémon since Sep 30 2026, inception for Bowman) · sparkline over every mark · marked date.
+   * back; "—" until the series is that old) · since base (level − 100; base = release month: Pokémon since Sep 30 2026, Bowman since Oct 1 2026) · sparkline over every mark · marked date.
    * Never the BOARD composite (that is ask-basis and not an index — it lives in the Bowman panel below). Pre-activation
    * rows show PRE. Every figure is one already in data/indices.json; nothing is derived that a reader can't re-check. */
   function idxStats(r) {

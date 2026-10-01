@@ -167,7 +167,9 @@ function facts(c) {
   if (!isTcg) {
     cat = "baseball";
     set = `${year} Bowman${/sapphire/.test(q) ? " Sapphire" : /chrome/.test(q) ? " Chrome" : ""}`.trim();
-    lane = type === "chrome-auto" ? "1st Bowman Chrome Auto · raw" : type === "sapphire-base" ? "1st Bowman Sapphire · raw base" : "1st Bowman Chrome · raw base";
+    // Oct 1 2026 (Bowman KB / R9.2): a watchlist card with first:false is a returning card (no 1st logo) and is never labelled 1st.
+    const pre = c.first === false ? "" : "1st ";
+    lane = type === "chrome-auto" ? pre + "Bowman Chrome Auto · raw" : type === "sapphire-base" ? pre + "Bowman Sapphire · raw base" : pre + "Bowman Chrome · raw base";
   } else if (c.label.includes("—")) set = c.label.split(/\s[—–]\s/)[1] || set;
   const positive = c.query.split(/\s+/).filter((t) => t && !t.startsWith("-")).join(" ");
   const ebaySearch = `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(positive)}&LH_BIN=1&${EPN}&customid=card-${c.id}`;
