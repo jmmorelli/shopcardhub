@@ -26,14 +26,24 @@ const nav = JSON.parse(read("data/nav.json"));
 let boardN = null, indicesN = null;
 try { const wl = JSON.parse(read("data/watchlist.json")); boardN = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.cardType === "chrome-auto" && !c.boardHide).length; } catch {}
 try { const idx = JSON.parse(read("data/indices.json")); indicesN = Object.keys(idx).filter((k) => k !== "_comment" && k !== "updated" && idx[k] && typeof idx[k] === "object").length; } catch {}
-const PILLS = { board: boardN == null ? null : String(boardN), indices: indicesN == null ? null : String(indicesN) };
+// record (CoS, Oct 2 2026 — outside brief: the scorecard is the trust signal, put it in the rail): "R–W" once any
+// 6/12-month thesis leg is graded; until then the first due date, so the pill never claims a grade that does not exist.
+let recordPill = null;
+try {
+  const calls = (JSON.parse(read("data/calls.json")).calls || []).filter((c) => c && c.type === "verdict");
+  let r = 0, w = 0; const due = [];
+  for (const c of calls) for (const t of c.thesis || []) { if (t.grade === "right") r++; else if (t.grade === "wrong") w++; else if (!t.grade && t.due) due.push(t.due); }
+  if (r + w) recordPill = `${r}–${w}`;
+  else if (due.length) { const d = due.sort()[0]; const [, m, dd] = d.split("-"); recordPill = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+m - 1] + " " + +dd; }
+} catch {}
+const PILLS = { board: boardN == null ? null : String(boardN), indices: indicesN == null ? null : String(indicesN), record: recordPill };
 const allowed = new Set(["/", "/watchlist", "/indices", "/auctions"]);
 for (const m of JSON.stringify(nav).matchAll(/"href"\s*:\s*"([^"]+)"/g)) allowed.add(m[1].split("#")[0]);
 const check = (h) => { const p = h.split("#")[0].split("?")[0].replace(/\/$/, "") || "/"; if (!p.startsWith("/") || !allowed.has(p)) throw new Error(`rail href ${h} is not a nav.json path`); return h; };
 
 const item = (href, label, ico, pill, extra) => `      <a class="rl${extra ? " " + extra : ""}" href="${esc(check(href))}"${extra === "sc" ? ` data-screen="${esc(href.split("screen=")[1] || "")}"` : ""}><span class="ico">${esc(ico || "")}</span><span class="lbl">${esc(label)}</span>${pill ? `<span class="pill">${esc(pill)}</span>` : ""}</a>`;
 
-const navRows = rail.nav.map((n) => item(n.href, n.label, n.ico, n.pill === "board" || n.pill === "indices" ? PILLS[n.pill] : n.pill));
+const navRows = rail.nav.map((n) => item(n.href, n.label, n.ico, n.pill in PILLS ? PILLS[n.pill] : n.pill));
 const cats = nav.categories.filter((c) => rail.guides.guideCategories.includes(c.label));
 const guides = cats.map((c, i) => `      <details class="rl-grp"${i === 0 ? "" : ""}>
         <summary class="rl"><span class="ico">▸</span><span class="lbl">${esc(c.label)}</span><span class="pill">${c.groups.reduce((n, g) => n + g.links.filter((l) => !l.allLink).length, 0)}</span></summary>

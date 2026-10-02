@@ -486,3 +486,64 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   .set-banner-grid .banner-stat { padding:12px 10px; min-width:0; overflow-wrap:anywhere; }
   .set-banner-grid .banner-stat-value { font-size:18px; line-height:1.2; }
 }
+
+/* 16 (CoS, Oct 2 2026 — outside UI/UX + distribution brief, "mobile board pattern"). The six chase-index
+   tables (Pitch Black, Chaos Rising, Ascended Heroes, Prismatic Evolutions, Destined Rivals, Phantasmal
+   Flames — the top Pokémon landers) were a nine-column table inside a .tbl-scroll box: on a 390 px phone a
+   visitor saw rank · card · rarity and nothing else — the sold mark, the Since Launch move, the ★ and the
+   Listings button all sat past the right edge with no cue that the row scrolls (Oct 2 production render).
+   Under 560 px each row is three lines: rank · card · price, then rarity · since launch, then ★ · Listings ·
+   Bid across the row. Weight and As Of are desktop-only. Same cells, same links, same order; nothing added.
+   The wrapper carries .chase-tbl on exactly those six pages; sector pages (§10) are untouched. */
+@media (max-width: 560px) {
+  body .chase-tbl { overflow-x: visible; }
+  body .chase-tbl table, body .chase-tbl thead, body .chase-tbl tbody { display: block; width: 100%; }
+  body .chase-tbl tr { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; column-gap: 10px;
+    grid-template-areas: "rk card price" "rk rar since" "star act act"; align-items: center; padding: 10px 10px;
+    border-bottom: 1px solid var(--border, rgba(255,255,255,.08)); }
+  body .chase-tbl thead tr { grid-template-areas: "rk card price"; padding: 6px 10px; }
+  body .chase-tbl th, body .chase-tbl td { padding: 0; border-bottom: 0; min-width: 0; }
+  body .chase-tbl th:nth-child(1), body .chase-tbl td:nth-child(1) { grid-area: rk; }
+  body .chase-tbl th:nth-child(2), body .chase-tbl td:nth-child(2) { grid-area: card; }
+  body .chase-tbl td:nth-child(3) { grid-area: rar; text-align: left; padding-top: 10px; }
+  body .chase-tbl th:nth-child(4), body .chase-tbl td:nth-child(4) { grid-area: price; text-align: right; font-weight: 700; }
+  body .chase-tbl td:nth-child(6) { grid-area: since; text-align: right; }
+  body .chase-tbl td:nth-child(8) { grid-area: star; }
+  body .chase-tbl td:nth-child(9) { grid-area: act; text-align: right; white-space: normal; min-width: 0; }
+  body .chase-tbl th:nth-child(3), body .chase-tbl th:nth-child(5), body .chase-tbl th:nth-child(6), body .chase-tbl th:nth-child(7),
+  body .chase-tbl th:nth-child(8), body .chase-tbl th:nth-child(9),
+  body .chase-tbl td:nth-child(5), body .chase-tbl td:nth-child(7) { display: none; }
+  body .chase-tbl td.card { min-height: 48px; display: flex; align-items: center; }
+  body .chase-tbl td.card .roi-cell { min-width: 0; align-items: center; }
+  body .chase-tbl td.card .roi-cell > div { white-space: normal; }
+  body .chase-tbl td.lst .act-w { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; row-gap: 6px; }
+  body .chase-tbl td.lst .act-w a.ebay { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 4px 14px; flex: 0 1 auto; }
+  body .chase-tbl .sidx-auc-slot { flex: 1 1 120px; min-width: 120px; }
+  body .chase-tbl .sidx-auc-slot:empty { display: none; }
+  body .chase-tbl td.lst .sch-vs-sold { flex: 1 0 100%; order: 9; text-align: right; }
+  body .chase-tbl td.trk .star { width: 34px; min-height: 40px; padding: 0; }
+}
+
+/* 17 (CoS, Oct 2 2026 — same brief, "freeze the signal column"). The Bangers board on a phone scrolled
+   sideways and the Signal chip — the one column a collector opens the page for — was clipped to "HOL" /
+   "PAS" at the right edge (Oct 2 production render at 390). Under 700 px each seat is one block: rank ·
+   photo · name over price · signal chip, no sideways scroll. The sortable header is desktop-only (the
+   board is already in rank order). The deep-dive links were hidden on phones already (page CSS). */
+@media (max-width: 700px) {
+  body .bb-board .tbl-scroll { overflow-x: visible; }
+  body .bb-table, body .bb-table tbody { display: block; width: 100%; }
+  body .bb-table thead { display: none; }
+  body .bb-table tbody tr { display: grid; grid-template-columns: 34px 44px minmax(0, 1fr) auto; column-gap: 10px;
+    grid-template-areas: "rk ph name sig" "rk ph price sig"; align-items: center; padding: 10px 12px;
+    border-bottom: 1px solid var(--border, rgba(255,255,255,.08)); background: var(--bg2); }
+  body .bb-table tbody td { display: block; padding: 0; border-bottom: 0; min-width: 0; background: transparent; }
+  body .bb-table td.bb-rk { grid-area: rk; }
+  body .bb-table td.bb-ph { grid-area: ph; width: auto; }
+  body .bb-table td:nth-child(3) { grid-area: name; }
+  body .bb-table td:nth-child(4) { grid-area: price; }
+  body .bb-table td:nth-child(5) { grid-area: sig; text-align: right; }
+  body .bb-table td.bb-dd { display: none; }
+  body .bb-table .bb-name { white-space: normal; line-height: 1.2; }
+  body .bb-table .bb-pr { font-size: 16px; }
+  body .bb-table .bb-pr small { white-space: normal; max-width: none; }
+}
