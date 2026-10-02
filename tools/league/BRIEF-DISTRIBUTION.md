@@ -37,6 +37,14 @@ the sites your manifests name. Nothing else counts: not words, not replies, not 
 | **E · Forum** | Answer a real, open collector question on a hobby forum (Blowout Forums, Elite Fourum, PokéBeach forums, Quora) with the dated sold data. | Link to the thread, the question, your answer (≤ 150 words, data first), and whether the forum allows a link (if not, no link, and the answer builds the name). |
 | **F · Shareables** | One shareable data card a week, built to be reposted or embedded by hobby accounts. | A PNG made with `tools/x-images/make.py` (or a new kind added there), hosted on the site at a dated URL, plus a one-line X caption for the X daily lane's site/data slot with a tagged link. |
 
+## D — second pitch type: the newsletter swap (CoS, Oct 2 2026, from the outside brief)
+
+Beside the feed offer, D may pitch a **swap** to mid-size hobby newsletters and breakers: a free weekly index paragraph
+(three tickers, the week's levels and Δ, "sold comps only", a dated link to `/indices`) written for their issue, in
+exchange for one line crediting the Tuesday Tape. No revenue share, no exclusivity, no number we don't publish on the
+site. One swap pitch per batch at most; same manifest, same per-batch yes from Mo; the paragraph is drafted by D and
+read by the CoS before it leaves. Target list: newsletters that ran a price or "worth it" piece in the last 14 days.
+
 ## HOLD — D (Mo, 2026-09-30)
 
 Mo: *"I think we should wait until we have some more data marks and have defined whether we want to start from
