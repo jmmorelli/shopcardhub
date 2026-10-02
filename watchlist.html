@@ -537,6 +537,12 @@
       .vc-chart .cl-ring { display:none; }
       .chip-zone, .vgrid tr.in-zone .dot { animation:none; }
     }
+    /* B9 load CLS (Night Crew, Oct 2): the warnings, toolbar and list fill in after the feed and the fonts land, and each
+       fill pushed the rows below it (0.49 at 1024 locally, 0.51 live). Below the signup, the vault stays invisible but laid
+       out until the first full render, then appears in one piece; never longer than 2 s if a fetch hangs. The reduced-motion
+       rule in site-fixes.css zeroes the delay, so those visitors see it at once. */
+    .vault-pending > #pfWarns, .vault-pending > #pfWarns ~ * { visibility:hidden; animation:vault-show 0s 2s forwards; }
+    @keyframes vault-show { to { visibility:visible; } }
   </style>
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
   <script data-gtag-deferred="G-2Q52C5EKG7">
@@ -1187,7 +1193,7 @@
 </script>
 <!-- RAIL:END -->
   <main class="tmain" id="main">
-  <div class="container">
+  <div class="container vault-pending">
     <div class="vault-hero">
       <div class="vault-h1row">
         <h1>Your <span class="accent">Watchlist</span></h1>
@@ -3829,7 +3835,8 @@ load().then(() => {
   readPfHash();
   render();
   handleDeepLink();
-  loadFeed();
+  // B9: reveal the vault once, after the feed's render and the web fonts (see .vault-pending)
+  Promise.all([loadFeed(), document.fonts ? document.fonts.ready : null]).catch(() => {}).then(() => requestAnimationFrame(() => document.querySelector('.vault-pending')?.classList.remove('vault-pending')));
   loadGrades();
 });
 window.addEventListener('hashchange', () => { readPfHash(); render(); });

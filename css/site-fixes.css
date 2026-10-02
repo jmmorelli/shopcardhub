@@ -464,3 +464,25 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body .sidx-stats > div { padding: 10px 8px; }
   body .sidx-stats .v { font-size: 12px; }
 }
+
+/* 14. Hero card photo: hold its box before js/card-img.js runs (Night Crew, Oct 2 — B26 load CLS).
+   The loader only sizes the span when it runs, so on desktop the hero column grew 0 → 336 px after first
+   paint and pushed the headline, buy strip and meta down (BCB26 guide 0.23 at 1024/1440, /indices 0.28).
+   These mirror the pages' own .sch-cimg sizes; once the loader adds .sch-cimg, the page rules take over.
+   css/terminal-page.css and indices.html carry their own sizes the same way. */
+.hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { display:block; margin:0 auto; width:240px; height:336px; }
+.mast.hero-grid .hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { width:150px; height:210px; }
+@media (max-width:700px) {
+  .hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { width:120px; height:168px; }
+  .mast.hero-grid .hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { width:90px; height:126px; }
+}
+
+/* 15. Set "at a glance" tiles two to a row on phones (Night Crew, Oct 2 — backlog P10, First-Time Visitor Oct 1/2).
+   minmax(140px) fit one tile per row in the 268 px column, so twelve tiles ran 1,289 px on the Bowman Chrome guide
+   (587 px now) and the four on /bowman-football 422 px (177). Values step down to 18 px so a date stays on one line.
+   The guide-fold variant in terminal-page.css keeps its own grid. */
+@media (max-width:480px) {
+  .set-banner-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .set-banner-grid .banner-stat { padding:12px 10px; min-width:0; overflow-wrap:anywhere; }
+  .set-banner-grid .banner-stat-value { font-size:18px; line-height:1.2; }
+}

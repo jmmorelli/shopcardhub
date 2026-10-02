@@ -126,6 +126,12 @@ tr.soon td { opacity:0.55; }
     td.nm .roi-cell { min-width:0; }
     td.nm .roi-cell > .sch-cimg { margin-top:0; }
     @media(max-width:700px) { .mast.hero-grid > .hero-card-photo { width:96px; margin:0 0 8px 14px; } .mast.hero-grid .hero-card-photo .sch-cimg { width:96px !important; height:134px !important; } }
+    /* Night Crew Oct 2 (load CLS 0.28 at 1024): hold the hero photo's box before card-img.js runs (site-fixes §14 holds 150 px for
+       the index pages' mast; this page's mast photo is 240 / 96), and keep the methodology footer below the fold until the
+       index tables render into #sections */
+    .wrap > .mast.hero-grid .hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { width:240px; height:336px; }
+    @media(max-width:700px) { .wrap > .mast.hero-grid .hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { width:96px; height:134px; } }
+    #sections:empty { min-height:100vh; }
     @media(max-width:800px) { td.nm .roi-cell { gap:8px; } td.nm .roi-cell > .sch-cimg { width:32px !important; height:45px !important; } td.nm .desc { min-width:118px; } }
 </style>  <!-- GA4 — added Aug 25, 2026: the set-index pages shipped without the tag, so every
        visit to the indices (the current priority surface) was going unmeasured. -->

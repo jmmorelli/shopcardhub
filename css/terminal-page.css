@@ -10,6 +10,7 @@
 .hero .container > * { grid-column:2; min-width:0; }
 .hero .container > .hero-card-photo { grid-column:1; grid-row:1 / span 6; align-self:center; justify-self:start; margin:0; text-align:left; }
 .hero-card-photo .sch-cimg { width:100px !important; height:140px !important; }
+.hero .container > .hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { width:100px; height:140px; } /* pre-JS box (Night Crew Oct 2, see site-fixes §14) */
 .hero-card-cap { display:none; }
 .hero-eyebrow { margin-bottom:6px; font-size:10px; letter-spacing:2.5px; }
 .hero-eyebrow::before { width:18px; }
@@ -150,6 +151,7 @@ footer { padding:28px 0 20px; }
   .hero-eyebrow { font-size:9px; letter-spacing:1.5px; margin-bottom:4px; }
   .hero-eyebrow::before { display:none; }
   .hero-card-photo .sch-cimg { width:72px !important; height:101px !important; }
+  .hero .container > .hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { width:72px; height:101px; }
   .hero-sub { clear:none; font-size:13px; }
   .hero-meta { gap:10px; }
   .guide-wrap { padding:0 16px; }

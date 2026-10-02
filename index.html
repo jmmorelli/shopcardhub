@@ -138,14 +138,18 @@
       table.ib { min-width:0; }
       /* phone: Index · Level · 1W · Sealed — 1M, Since launch, Trend and Re-marked live on /indices and each ticker page */
       table.ib th:nth-child(4), table.ib td:nth-child(4), table.ib th:nth-child(5), table.ib td:nth-child(5), table.ib th:nth-child(6), table.ib td:nth-child(6), table.ib th:nth-child(7), table.ib td:nth-child(7) { display:none; }
-      table.ib th, table.ib td { padding:9px 6px; font-size:12px; }
+      table.ib th, table.ib td { padding:9px 5px; font-size:12px; }
       table.ib td.ib-lvl { font-size:14px; }
-      table.ib td.ib-k { max-width:132px; }
+      /* Night Crew Oct 2: the board ran 379 px in a 356 px box on an iPhone 13 and clipped the Sealed column ("SEALEI");
+         a narrower name cell and tighter buttons fit it, and under 380 px the long "Hobby box eBay →" wraps to two lines */
+      table.ib td.ib-k { max-width:108px; }
       table.ib td.ib-k small { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
       table.ib td.ib-pre-t { white-space:normal; }
-      table.ib .ib-go { padding:6px 7px; font-size:10px; letter-spacing:0.8px; }
-      table.ib .ib-go .ib-lbl { display:none; }
+      table.ib .ib-go { padding:6px 6px; font-size:10px; letter-spacing:0.4px; }
       .tm-deck { font-size:13px; }
+    }
+    @media (max-width:380px) {
+      body table.ib td .ib-go { white-space:normal; line-height:1.2; width:66px; padding-top:4px; padding-bottom:4px; text-align:center; vertical-align:middle; }
     }
 
     /* DISCLOSURE */
@@ -153,7 +157,7 @@
 
     /* FOOTER */
     footer { background:var(--bg2); border-top:1px solid var(--border2); padding:48px 0 32px; }
-    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; margin-bottom:40px; }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:40px; margin-bottom:40px; } /* 3 columns since the COMC column left (252f996) */
     .footer-logo-block .logo { font-size:18px; margin-bottom:14px; }
     .footer-tagline { font-size:14px; color:var(--text-dim); line-height:1.65; max-width:240px; }
     .footer-col h4 { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:16px; }
