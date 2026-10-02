@@ -11,6 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the desk (2026-10-02, 14:00 run). Mo, these are the only things waiting on you
+
+- Nothing new. Checked against live state: TCGplayer (#2) and TAG (#4) unchanged (no Impact approval or TAG link in the project); the Ruggie FYI below stands.
+- *FYI, not a to-do:* today's three X posts are with you from the X daily lane (sent ~08:30 PT); they only go out on your "go".
+
+---
+
 ## Open — from the desk (2026-10-01, 14:00 run). Mo, these are the only things waiting on you
 
 - ~~**EPN signed you out again.**~~ **✅ closed Oct 1 ~15:00 PT — you signed in and the read is done** (30 d $42.14 on 187 clicks / 17 actions; 7 d $0 on 32 clicks). Your 9:10 am sign-in didn't last to the afternoon: at ~2:25 pm partner.ebay.com showed the login page in Browser 1, so the 30-day money read is still missing (last full read Sep 23). **Action:** next time you're in a CoS chat, sign in at partner.ebay.com in Browser 1 and say "read EPN" in the same sitting, so the read runs while the session is fresh.
