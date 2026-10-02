@@ -285,6 +285,14 @@ Three bounds on that channel, and they are what keep R10 from being undone by it
 - **Data posts link a dated URL** (`/pitch-black-index?d=MMDD`, the mark date) or attach the image and leave the link out of the card. X caches link cards per page URL, and the og image's `?v=` cache-bust doesn't reach a page X has already fetched.
 - **Every data post carries one site link.** Culture and trend slots don't need one.
 
+## R10 · AMENDMENT 4 — the Grok bots are back for likes and replies only; the CoS stays the poster (Mo, 2026-10-02)
+
+**Mo, ~13:20 PT Oct 2, in chat:** the Grok usage reset switched the bots back on. Four replies went out Oct 2 between 11:08 and 11:24 am PT. Mo didn't write them, and that day's X Desk Watch logged them as his (that log was wrong). Mo: "Let's keep them on … they did a decent job. Only deleted one of their posts … let's not cancel them yet, but I do NOT want to pay for them. Maybe you can be the poster … and they can just do likes and replies."
+- **Split of the account:** the CoS writes every original post (the X Daily lane, Mo's "go", Am. 2/3). **Grok does likes and replies only — no original posts, no quote posts, no reposts of its own.** No lane of ours posts, replies, likes or deletes; that is still Grok's or Mo's.
+- **No money, ever.** Grok runs on its free/included usage. When the usage runs out it stops, and nobody upgrades, buys credits or enters payment, in Grok or on X. A prompt to pay is a NEEDS-MO FYI, and the answer is no. The bots stay switched on; cancelling them is Mo's call.
+- **X Desk Watch grades Grok's replies again** (R16's reply gate, from its spec): a reply on @shopcardhub is Grok's unless the x-daily log or Mo says it is his. "Mo's own (Am. 2), not graded" is only for posts and replies Mo has claimed.
+- **The desk directs the vendor** through the Grok Bot app (STEP 3 delivery pattern), replies-only brief first. Amendment 2's "Mo handles replies himself" is now "Mo and Grok".
+
 ## R11 · Every commercial page sells its product above the fold (Mo, 2026-09-17)
 
 **The incident:** `/pokemon-30th-anniversary-2026` is one of the site's top landing pages and it
@@ -695,9 +703,9 @@ One-shots on the list (Oct 1): *Grok usage reset — restart plan* (Oct 1; resta
 
 #### Known prompt drift (Oct 1) — the file wins; a lane reading its prompt follows these lines
 
-- **Desk:** reads the feed from `/feed/` and GA4 from a `price-data` clone, never raw.githubusercontent (R19); delivers nothing to Grok Bot (vendor off, R10 Am. 2); runs 7 days; the inbox lookback diffs the last three Integrity Watch `*-proposals.json` files against `data/pipeline.json` (Sep 24 rule).
+- **Desk:** reads the feed from `/feed/` and GA4 from a `price-data` clone, never raw.githubusercontent (R19); delivers vendor briefs to Grok Bot again, replies-only (R10 Am. 4, Oct 2); runs 7 days; the inbox lookback diffs the last three Integrity Watch `*-proposals.json` files against `data/pipeline.json` (Sep 24 rule).
 - **Weekly:** no Tape Recap at all — retired by Mo Oct 1 (CHARTER §3); the Tuesday Tape is the one weekly email; Phase 2 (sold-basis card pages, engine blocks and home panels, Oct 7) is build-order #1 (R21); when no GA4-realtime proof is possible unattended, it sweeps on the offline harness (`tools/qa/render-local.cjs`) and says so, rather than skipping or loading production.
-- **X Desk Watch:** there is no vendor; one run a day at 13:00; select the Chrome by the listed deviceId.
+- **X Desk Watch:** the vendor is back for likes and replies only (R10 Am. 4, Oct 2), so grade Grok's replies; one run a day at 13:00; select the Chrome by the listed deviceId.
 - **Growth League:** daily per the GO-TIME block, not Mon + Thu; distribution agents never write a contact address into a repo file.
 - **Monday trend scan:** drop STEP 3.6's ask-basis Bowman doctrine and its "never build a cross-set 1st Bowman index" line (superseded by the Sep 25 Bowman reset); STEP 3.6 covers the divisor-model Pokémon chase tickers only; delete STEP 3.98's lock sweep (R1).
 - **Tuesday board:** the digest is the Monday close (R26, `tools/tuesday-tape-format.md`); never queue a tweet.

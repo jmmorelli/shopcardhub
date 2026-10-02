@@ -13,6 +13,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## Open — from the desk (2026-10-02, 14:00 run). Mo, these are the only things waiting on you
 
+- *Ruled with you ~1:20 pm:* the Grok bots stay on, for likes and replies only. I write the posts and you approve them. You pay nothing, ever: if Grok or X asks for money, the answer is no, and it just stops when the free usage runs out. I check in on them tonight.
 - Nothing new. Checked against live state: TCGplayer (#2) and TAG (#4) unchanged (no Impact approval or TAG link in the project); the Ruggie FYI below stands.
 - *FYI, not a to-do:* today's three X posts are with you from the X daily lane (sent ~08:30 PT); they only go out on your "go".
 
