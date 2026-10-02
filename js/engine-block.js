@@ -173,7 +173,7 @@
       var html = top.map(function (l) {
         return '<a class="cp-item" href="' + esc(l.url) + '" target="_blank" rel="noopener sponsored" data-kind="fixed">' +
           '<span class="ph">' + (l.image ? '<img src="' + esc(l.image) + '" alt="" loading="lazy">' : '') + '</span>' +
-          '<span><span class="t">' + esc(l.title) + '</span><span class="m">' + esc(l.condition || '') + (l.seller && l.seller.feedbackPct ? ' · seller ' + esc(l.seller.feedbackPct) + '%' : '') + '</span></span>' +
+          '<span><span class="t">' + esc(l.title) + '</span><span class="m">' + esc(l.condition || '') + (l.seller && parseFloat(l.seller.feedbackPct) > 0 ? ' · seller ' + esc(l.seller.feedbackPct) + '%' : '') + '</span></span>' +
           '<span class="p"><b>' + fmt(l.price) + '</b><span>' + (l.shipping > 0 ? '+' + fmt(l.shipping) + ' ship' : l.shipping === 0 ? 'free ship' : 'ship n/a') + '</span><span class="ebay">Buy on eBay →</span></span></a>';
       }).join('');
       auct.slice(0, 4).forEach(function (l) {

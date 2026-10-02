@@ -450,3 +450,17 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body #newPill span { font-size: 11px !important; }
   body a.btn, body a.btn-primary, body a.btn-secondary { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
 }
+
+/* 13 (Site Sweep, Oct 2 2026). Set-index stats grid on a phone. Under 900 px .sidx-stats is 4 × 1fr, and 1fr won't
+   shrink below its widest word ("$10,399 Σpx·w", "28.784355"), so 16 sector pages painted 3–35 px wider than a
+   390 px phone until fold-dense.js folded the grid (a sideways wobble at load, longer on slow phones). Columns may
+   now shrink; on a phone the values drop to 12 px so they fit their cell. No content or order change. */
+@media (max-width: 900px) {
+  body .sidx-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  body .sidx-stats > div { min-width: 0; }
+  body .sidx-stats .v { overflow-wrap: break-word; }
+}
+@media (max-width: 480px) {
+  body .sidx-stats > div { padding: 10px 8px; }
+  body .sidx-stats .v { font-size: 12px; }
+}
