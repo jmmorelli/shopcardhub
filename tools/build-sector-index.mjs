@@ -177,6 +177,9 @@ function bowmanConfigs() {
         for (const cd of g.cards || []) (/auto|cpa/i.test(t) ? prior.auto : prior.base).add(norm(cd.player)); } }
     catch (e) { console.error("bowman: 2025 prior set unreadable — " + f + " " + e.message); }
   }
+  // Oct 2 2026 (desk, iw-2026-10-02-1): returning May autos whose prior auto predates the 2025 sets above, each sourced.
+  // George Lombard Jr. — 1st Bowman Chrome is 2024 Bowman BCP-79; CPA in 2024 Bowman (#CPA-GLO).
+  for (const n of ["George Lombard Jr."]) prior.auto.add(norm(n));
   const may = { auto: (name, num) => !isSepAuto(name) && !prior.auto.has(norm(name)), base: (name, num) => bcpNum(num) <= 150 && !prior.base.has(norm(name)) };
   const sept = { auto: (name, num) => isSepAuto(name) && sepFirstAuto(name), base: (name, num) => bcpNum(num) > 150 && sepFirstBase(name) };
   const common = {
