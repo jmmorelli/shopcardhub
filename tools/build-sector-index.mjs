@@ -29,6 +29,9 @@ import { consoleCards } from "./price-engine/pc-console.mjs";
 import { parsePage } from "./price-engine/sold-marks.mjs";
 import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
 import { cardId, RAW_NOT, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
+import { createRequire } from "node:module";
+// The plain read is baked, not injected after paint (Night Crew Oct 3 2026, B29: load CLS 0.1-0.24 at 1024). Same renderer as the browser.
+const PR = createRequire(import.meta.url)("../js/plain-read.js");
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -384,6 +387,7 @@ const FAMILIES = [["BS1E", "BSSL", "BS99"], ["JU1E", "JU99"], ["FO1E", "FO99"], 
 const PRINTS = Object.fromEntries(FAMILIES.flatMap((f) => f.map((t) => [t, f])));
 const PRINT_LBL = { BS1E: "1st Edition", BSSL: "Shadowless", BS99: "Unlimited", JU1E: "1st Edition", JU99: "Unlimited", FO1E: "1st Edition", FO99: "Unlimited", TR1E: "1st Edition", TR00: "Unlimited", NG1E: "1st Edition", NG00: "Unlimited", ND1E: "1st Edition", ND02: "Unlimited" };
 function block(x, c) {
+  const prBox = PR.bakeBox(x.ticker, x, "var(--sidx)");   // "" for a pre-activation ticker: then nothing is folded (as before)
   const h = x.history || [], last = h[h.length - 1] || null, prev = h.length > 1 ? h[h.length - 2] : null;
   const lvl = last ? last.level : null;
   const wow = prev && last ? (last.level / prev.level - 1) * 100 : null;
@@ -448,8 +452,9 @@ function block(x, c) {
     <figure class="sidx-photo"><span data-card-img="${esc(imgAttr(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · ${c.imgSrc && c.imgSrc(hero) ? "card image" : "live eBay listing"}</figcaption></figure>
     <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div><div class="lvc">${baseLine(x)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</div></div>
   </div>
+  ${prBox}
   <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>
-  <div class="sidx-stats">
+  ${prBox ? `<div class="pr-fold" id="pr-fold-${x.ticker.toLowerCase()}" hidden>` : ""}<div class="sidx-stats">
     <div><span class="k">Basket / Universe</span><span class="v">${x.basket.length} <i>/ ${x.universe.length}</i></span></div>
     <div><span class="k">Top card weight</span><span class="v">${(top * 100).toFixed(1)}%</span></div>
     <div><span class="k">Effective holdings</span><span class="v">${eff.toFixed(1)}</span></div>
@@ -458,7 +463,7 @@ function block(x, c) {
     <div><span class="k">${sinceLbl(x)}</span><span class="v ${cls(lvl == null ? 0 : lvl - 100)}">${lvl == null ? "—" : pct(lvl - 100, 2)}</span></div>
     <div><span class="k">Divisor</span><span class="v">${x.divisor}</span></div>
     <div><span class="k">Re-mark</span><span class="v">MON · THU</span></div>
-  </div>
+  </div>${prBox ? "</div>" : ""}
   ${PRINTS[x.ticker] ? `<p class="sidx-sib">Same set, other prints — each its own index: ${PRINTS[x.ticker].filter((t) => t !== x.ticker && CONFIG[t]).map((t) => `<a href="${CONFIG[t].page}">${t} · ${esc(PRINT_LBL[t])}</a>`).join(" · ")}</p>` : ""}
   ${subs}
   ${chase}
@@ -480,6 +485,7 @@ function ST_spark(ys, w, h) {
   return `<svg class="spark ${s[s.length - 1] >= s[0] ? "up" : "dn"}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>`;
 }
 const CSS = `<style id="sidx-css">
+${PR.PR_CSS}
 .sidx{margin:26px 0 0;padding:0 0 8px;font-family:var(--fb,Barlow,system-ui,sans-serif);color:var(--text,#b8cdd4);--sidx-th:var(--text-head,#e4f0f4);--sidx-dim:var(--text-dim,#7a969e);--sidx-bd:var(--border,rgba(255,255,255,.08));--sidx-bg:var(--bg2,#0c1017);--sidx-bg2:var(--bg3,#111820)}
 .sidx-mast{display:grid;grid-template-columns:minmax(0,1fr) auto 220px;column-gap:40px;align-items:end;padding-bottom:12px}
 .sidx-eyebrow{font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--sidx);margin-bottom:8px}

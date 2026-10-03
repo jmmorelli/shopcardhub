@@ -75,7 +75,7 @@ const SCENARIOS = {
     { name: "rail Portfolios Vault →", sel: '#rail h4 a[href^="/watchlist"]', expect: "nav" },
     { name: "rail saved screen", sel: "#rail a[data-screen]", all: true, expect: "screen", panel: "#screens" },
     { name: "screens chip", sel: ".scr-chips a[data-screen]", all: true, expect: "screen", panel: "#screens" },
-    { name: "markets row (chart swaps)", sel: "a.mrow[data-k]:not(.pre-row):not(.on)", all: true, expect: "dom", panel: '[data-home="chart"]' },
+    { name: "markets row (chart swaps)", sel: "a.mrow[data-k]:not(.pre-row):not(.on)", all: true, expect: "dom", panel: '[data-home="chart"]', optional: true },   /* Oct 3 (B32): only the selected row is baked; the <select data-home-pick> swaps the chart */
     { name: "markets PRE row (n-a, must link)", sel: "a.mrow.pre-row", all: true, expect: "nav", optional: true },
     { name: "chart caption link", sel: ".chart-cap a", expect: "nav", optional: true },
     { name: "Release guides »", sel: 'a:text-is("Release guides »")', expect: "nav" },

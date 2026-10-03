@@ -673,6 +673,7 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
 <!-- BUYBOX:END -->
 <!-- FO1E:START -->
 <style id="sidx-css">
+.pr{margin:16px 0 14px;border:1px solid var(--bd,#23303d);border-left:3px solid var(--pr-acc,#00ccf5);border-radius:3px;background:var(--p2,#0e151c);padding:14px 16px;}.pr-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 6px;}.pr-eb{font-family:var(--fd,inherit);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim,#8a97a5);}.pr-v{font-family:var(--fd,inherit);font-weight:700;font-size:20px;letter-spacing:.5px;color:var(--th,#fff);}.pr-v.up{color:var(--gn,#2bd17e);}.pr-v.dn{color:var(--rd,#ff4d6a);}.pr p{margin:4px 0;font-size:15px;line-height:1.55;color:var(--tx,#d6dde4);max-width:78ch;}.pr p b{color:var(--th,#fff);}.pr .pr-key{font-size:13px;color:var(--dim,#8a97a5);}.pr .pr-key b{color:var(--tx,#d6dde4);}.pr-foot{margin-top:8px;font-size:12px;color:var(--dim,#8a97a5);}.pr-tg{display:inline-block;margin:10px 0 0;background:none;border:1px solid var(--bd,#23303d);color:var(--tx,#d6dde4);font:600 12px/1 var(--fd,inherit);letter-spacing:1.2px;text-transform:uppercase;padding:8px 12px;border-radius:2px;cursor:pointer;}.pr-tg:hover{border-color:var(--pr-acc,#00ccf5);color:var(--th,#fff);}.pr-fold[hidden]{display:none!important;}@media(max-width:700px){.pr{padding:12px;}.pr p{font-size:14px;}.pr-v{font-size:18px;}}
 .sidx{margin:26px 0 0;padding:0 0 8px;font-family:var(--fb,Barlow,system-ui,sans-serif);color:var(--text,#b8cdd4);--sidx-th:var(--text-head,#e4f0f4);--sidx-dim:var(--text-dim,#7a969e);--sidx-bd:var(--border,rgba(255,255,255,.08));--sidx-bg:var(--bg2,#0c1017);--sidx-bg2:var(--bg3,#111820)}
 .sidx-mast{display:grid;grid-template-columns:minmax(0,1fr) auto 220px;column-gap:40px;align-items:end;padding-bottom:12px}
 .sidx-eyebrow{font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--sidx);margin-bottom:8px}
@@ -782,8 +783,9 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
     <figure class="sidx-photo"><span data-card-img="src:https://images.pokemontcg.io/base3/5.png" data-card-name="Gengar #5 Pokémon TCG Fossil (1st Edition)" data-card-sub="pokemon" data-card-size="hero" data-card-surface="fo1e-hero"></span><figcaption>#1 constituent · <b>Gengar #5</b> · card image</figcaption></figure>
     <div class="sidx-level"><div class="lv">145.04</div><div class="lvc">100 = Feb 2021 (first reliable month) · live since 09/30/26 · re-marked 10/01/26 · <span class="dn">▼ -0.3% w/w</span></div></div>
   </div>
+  <div class="pr" data-plain="FO1E" style="--pr-acc:var(--sidx)"><div class="pr-in"><div class="pr-top"><span class="pr-eb">The plain read</span><span class="pr-v ">Holding steady</span></div><p>The <b>62 cards</b> we track in Pokémon TCG Fossil (1st Edition) are worth <b>45.0% more</b> together than in February 2021, the earliest month with reliable sales data. Last week: <b>down 0.3%</b>.</p><p>Priciest card: <b>Gengar</b> (#5), about $371 on recent sales. Biggest move last week: <b>Articuno</b>, down 3%.</p><p class="pr-key">How to read the big number: it started at <b>100</b>. <b>145.04</b> means these cards cost about 45% more than on day one.</p><div class="pr-foot">This tracks prices — it doesn’t tell you to buy or sell. Cards are long holds, so the 6–12 month picture matters more than any one week.</div></div><button type="button" class="pr-tg" aria-controls="pr-fold-fo1e" aria-expanded="false">Show the numbers ▾</button></div>
   <div class="idx-chart" data-ticker="FO1E" aria-live="polite"></div>
-  <div class="sidx-stats">
+  <div class="pr-fold" id="pr-fold-fo1e" hidden><div class="sidx-stats">
     <div><span class="k">Basket / Universe</span><span class="v">62 <i>/ 62</i></span></div>
     <div><span class="k">Top card weight</span><span class="v">16.3%</span></div>
     <div><span class="k">Effective holdings</span><span class="v">16.2</span></div>
@@ -792,7 +794,7 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
     <div><span class="k">Since base</span><span class="v up">+45.04%</span></div>
     <div><span class="k">Divisor</span><span class="v">15.7168</span></div>
     <div><span class="k">Re-mark</span><span class="v">MON · THU</span></div>
-  </div>
+  </div></div>
   <p class="sidx-sib">Same set, other prints — each its own index: <a href="/pokemon-fossil-index">FO99 · Unlimited</a></p>
   
   <div class="chase" id="fo1e-chase" data-chase="FO1E">

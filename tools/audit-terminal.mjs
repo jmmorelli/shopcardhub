@@ -715,18 +715,29 @@ try {
   if (fs.existsSync(idxPath) && exists("index.html")) {
     const idx = JSON.parse(fs.readFileSync(idxPath, "utf8"));
     const home = read("index.html");
+    // Night Crew Oct 3 2026 (B32, CoS/Mo-approved "the board is the one list"): the CHART panel no longer repeats every
+    // ticker — it bakes a picker plus the selected row. A live level is now checked where / prints it: the index board
+    // (HOME:indexboard), or a HOME:markets row. Tickers the board deliberately keeps off / (WOTC 1st Edition / Shadowless,
+    // Sep 30 ruling — same test as ibGroup() in js/home.js) must still be reachable from the CHART picker.
     const mk = home.match(/<!-- HOME:markets:START -->([\s\S]*?)<!-- HOME:markets:END -->/);
-    if (!mk) add("WARN", "home-index-level", "index.html", "HOME:markets block not found - cannot cross-check index levels");
+    const ib = home.match(/<!-- HOME:indexboard:START -->([\s\S]*?)<!-- HOME:indexboard:END -->/);
+    if (!mk || !ib) add("WARN", "home-index-level", "index.html", "HOME:markets or HOME:indexboard block not found - cannot cross-check index levels");
     else {
       for (const [tk, v] of Object.entries(idx)) {
         if (!v || typeof v !== "object" || Array.isArray(v) || v.status !== "live" || !Array.isArray(v.history)) continue;
         const last = [...v.history].reverse().find((h) => h && typeof h.level === "number");
         if (!last) continue;
-        const row = mk[1].match(new RegExp('data-k="' + esc(tk) + '"[\\s\\S]{0,400}?<span class="num">([-\\d.,]+)</span>'));
-        if (!row) { add("FAIL", "home-index-level", "index.html", `${tk} is live (${last.level} on ${last.date}) but has no row in HOME:markets`); continue; }
-        const shown = Number(String(row[1]).replace(/,/g, ""));
-        if (!Number.isFinite(shown) || Math.abs(shown - last.level) > 0.005)
-          add("FAIL", "home-index-level", "index.html", `${tk}: HOME:markets shows ${row[1]} but data/indices.json marks ${last.level} on ${last.date} - re-run tools/build-home.mjs after any re-mark`);
+        const offBoard = /1E$|^BSSL$/.test(tk);
+        const row = ib[1].match(new RegExp('<b>' + esc(tk) + '</b>[\\s\\S]{0,400}?<td class="num ib-lvl">([-\\d.,]+)</td>')) ||
+          mk[1].match(new RegExp('data-k="' + esc(tk) + '"[\\s\\S]{0,400}?<span class="num">([-\\d.,]+)</span>'));
+        if (!row && offBoard) {
+          if (!new RegExp('<option value="' + esc(tk) + '"').test(mk[1])) add("FAIL", "home-index-level", "index.html", `${tk} is live (${last.level} on ${last.date}) but is neither on the board nor in the HOME:markets CHART picker`);
+        } else if (!row) { add("FAIL", "home-index-level", "index.html", `${tk} is live (${last.level} on ${last.date}) but has no row in HOME:indexboard or HOME:markets`); continue; }
+        else {
+          const shown = Number(String(row[1]).replace(/,/g, ""));
+          if (!Number.isFinite(shown) || Math.abs(shown - last.level) > 0.005)
+            add("FAIL", "home-index-level", "index.html", `${tk}: / shows ${row[1]} but data/indices.json marks ${last.level} on ${last.date} - re-run tools/build-home.mjs after any re-mark`);
+        }
         // an activated ticker must not still be labelled "(pre)" anywhere in the generated chrome
         for (const f of pages) {
           const src = read(f);

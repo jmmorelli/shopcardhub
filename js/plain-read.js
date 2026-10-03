@@ -7,8 +7,14 @@
  * inserts the read just above the chart, and folds the stats block that follows it (.stats + .statnote on the
  * Pokémon chase pages, .sidx-stats on sector-model blocks). Every figure comes from /data/indices.json — the same
  * file the level box renders from. Descriptive only: an index is a measurement, not a call.
+ *
+ * Night Crew Oct 3 2026 (B29): the read used to arrive ~1 s after paint (it waits on indices.json) and pushed the chart
+ * and everything below ~190-390 px — load CLS 0.1-0.24 at 1024 on the set-index pages. tools/build-sector-index.mjs now
+ * bakes the read, its button and the folded stats into the page (it require()s build() and PR_CSS from this file), so
+ * on those pages mount() only refreshes the text if the data moved and wires the button. Other pages work as before.
  */
 (function () {
+  var HAS_DOM = typeof document !== 'undefined';
   var KEY = 'sch-show-numbers';
   function getPref() { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; } }
   function setPref(v) { try { localStorage.setItem(KEY, v ? '1' : '0'); } catch (e) {} }
@@ -28,7 +34,7 @@
     '.pr-tg:hover{border-color:var(--pr-acc,#00ccf5);color:var(--th,#fff);}' +
     '.pr-fold[hidden]{display:none!important;}' +
     '@media(max-width:700px){.pr{padding:12px;}.pr p{font-size:14px;}.pr-v{font-size:18px;}}';
-  var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+  if (HAS_DOM && !document.getElementById('pr-css')) { var st = document.createElement('style'); st.id = 'pr-css'; st.textContent = css; document.head.appendChild(st); }
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); }
   function money(v) { return '$' + (v >= 100 ? Math.round(v).toLocaleString('en-US') : v.toFixed(2)); }
@@ -106,39 +112,62 @@
     return t;
   }
 
+  function label(on) { return on ? 'Hide the numbers ▴' : 'Show the numbers ▾'; }
   function mount(data) {
     var charts = document.querySelectorAll('.idx-chart[data-ticker]');
     var show = getPref();
     Array.prototype.forEach.call(charts, function (chart) {
       var k = chart.getAttribute('data-ticker'), r = data[k];
-      if (!r || typeof r !== 'object' || chart.previousElementSibling && chart.previousElementSibling.classList.contains('pr')) return;
-      var html = build(k, r); if (!html) return;
-      var box = document.createElement('div'); box.className = 'pr'; box.setAttribute('data-plain', k);
-      var sec = chart.closest('section.sidx'); if (sec) box.style.setProperty('--pr-acc', 'var(--sidx)');
-      box.innerHTML = html;
-      chart.parentNode.insertBefore(box, chart);
+      if (!r || typeof r !== 'object') return;
+      var prev = chart.previousElementSibling, box = prev && prev.classList.contains('pr') ? prev : null;
+      if (box && box.getAttribute('data-wired')) return;
+      var html = build(k, r); if (!html && !box) return;
+      var inner;
+      if (box) {                                          /* baked by the generator: refresh only if the data moved since the bake */
+        inner = box.querySelector('.pr-in');
+        if (html && inner && inner.innerHTML !== html) inner.innerHTML = html;
+      } else {
+        box = document.createElement('div'); box.className = 'pr'; box.setAttribute('data-plain', k);
+        var sec = chart.closest('section.sidx'); if (sec) box.style.setProperty('--pr-acc', 'var(--sidx)');
+        box.innerHTML = '<div class="pr-in">' + html + '</div>';
+        chart.parentNode.insertBefore(box, chart);
+      }
+      box.setAttribute('data-wired', '1');
 
-      var targets = foldTargets(chart);
-      if (!targets.length) return;
-      var fold = document.createElement('div'); fold.className = 'pr-fold'; fold.id = 'pr-fold-' + k.toLowerCase();
-      targets[0].parentNode.insertBefore(fold, targets[0]);
-      targets.forEach(function (t) { fold.appendChild(t); });
-      var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'pr-tg'; btn.setAttribute('aria-controls', fold.id);
-      function paint(on) { fold.hidden = !on; btn.setAttribute('aria-expanded', on ? 'true' : 'false'); btn.textContent = on ? 'Hide the numbers ▴' : 'Show the numbers ▾'; }
+      var fold = document.getElementById('pr-fold-' + k.toLowerCase());
+      if (!fold) {
+        var targets = foldTargets(chart);
+        if (!targets.length) return;
+        fold = document.createElement('div'); fold.className = 'pr-fold'; fold.id = 'pr-fold-' + k.toLowerCase();
+        targets[0].parentNode.insertBefore(fold, targets[0]);
+        targets.forEach(function (t) { fold.appendChild(t); });
+      }
+      var btn = box.querySelector('.pr-tg');
+      if (!btn) { btn = document.createElement('button'); btn.type = 'button'; btn.className = 'pr-tg'; btn.setAttribute('aria-controls', fold.id); box.appendChild(btn); }
+      function paint(on) { fold.hidden = !on; btn.setAttribute('aria-expanded', on ? 'true' : 'false'); btn.textContent = label(on); }
       btn.addEventListener('click', function () {
         var on = fold.hidden; setPref(on);
         Array.prototype.forEach.call(document.querySelectorAll('.pr-fold'), function (f) { f.hidden = !on; });
-        Array.prototype.forEach.call(document.querySelectorAll('.pr-tg'), function (b) { b.setAttribute('aria-expanded', on ? 'true' : 'false'); b.textContent = on ? 'Hide the numbers ▴' : 'Show the numbers ▾'; });
+        Array.prototype.forEach.call(document.querySelectorAll('.pr-tg'), function (b) { b.setAttribute('aria-expanded', on ? 'true' : 'false'); b.textContent = label(on); });
         if (typeof gtag === 'function') gtag('event', 'show_numbers', { on: on ? 1 : 0, page: location.pathname });
       });
-      box.appendChild(btn);
       paint(show);
     });
+  }
+
+  /* the baked form (tools/build-sector-index.mjs): the same box mount() builds, with the stats folded by default */
+  function bakeBox(k, r, accent) {
+    var html = build(k, r); if (!html) return '';
+    var id = 'pr-fold-' + String(k).toLowerCase();
+    return '<div class="pr" data-plain="' + esc(k) + '"' + (accent ? ' style="--pr-acc:' + esc(accent) + '"' : '') + '><div class="pr-in">' + html + '</div>' +
+      '<button type="button" class="pr-tg" aria-controls="' + id + '" aria-expanded="false">' + label(false) + '</button></div>';
   }
 
   function go() {
     if (!document.querySelector('.idx-chart[data-ticker]')) return;
     fetch('/data/indices.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(mount).catch(function () {});
   }
+  if (typeof module !== 'undefined' && module.exports) module.exports = { build: build, bakeBox: bakeBox, PR_CSS: css };
+  if (!HAS_DOM) return;
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
 })();

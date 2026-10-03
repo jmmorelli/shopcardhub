@@ -550,3 +550,30 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body .bb-table .bb-pr { font-size: 16px; }
   body .bb-table .bb-pr small { white-space: normal; max-width: none; }
 }
+
+/* 18 (Night Crew, Oct 3 2026 — B29 + guide buy strip). Space reserved for boxes that fill after first paint, so
+   nothing below them jumps. Measured on the clone at 360/390/768/1024/1440 (filled heights):
+   - .idx-chart (index-chart.js waits on indices.json): 344 px at >= 768, 300-332 px on phones. Reserved while empty.
+     The plain read above it is now baked by build-sector-index.mjs (js/plain-read.js), so on set-index pages the
+     chart is the only late box left; the chase pages still get the read from JS.
+   - .sch-signup (signup.js, deferred) rendered 62 px + 10 px margin at >= 1000, 106 at 768, 131 at 390 (tape copy).
+     Reserved while empty. The home board's copy sits in a padded panel below the fold and is left alone.
+   - .bs-live in the guide buy strip ("ask from $X · N live", buy-strip.js after /api/comps): when it filled on
+     production at 1440 the CTA row wrapped and the strip grew 103 -> 161 px (BCB guide CLS 0.228). The empty slot now
+     takes the text's width on desktop and its line on phones, so the row wraps the same way before and after. */
+.idx-chart[data-ticker]:empty { min-height: 344px; }
+@media (max-width: 767px) { .idx-chart[data-ticker]:empty { min-height: 300px; } }
+.sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { display: block; margin-top: 10px; min-height: 62px; }
+@media (max-width: 999px) { .sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { min-height: 106px; } }
+@media (max-width: 760px) { .sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { min-height: 131px; } }
+.bstrip .bs-live:empty { display: inline-block; min-height: 17px; }
+@media (min-width: 761px) {
+  .bstrip .bs-live:empty { min-width: 180px; }
+  .bstrip[data-bs-msrp] .bs-live:empty { min-width: 260px; }
+}
+
+/* 19 (Night Crew, Oct 3 2026 — First-Time Visitor). The "dungeon effects" script on ~100 guide pages injects a 1 px
+   cyan line that sweeps down the hero for 3.5 s at load, across the headline a first-time visitor is reading. It
+   animates `top`, so it also logs a layout-shift entry every frame. terminal-page.css already hid it on the card
+   pages; now it is hidden everywhere. The blink cursor was stopped Sep 1 (above). */
+body .hero-scan-line { display: none !important; }

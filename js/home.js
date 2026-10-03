@@ -196,9 +196,20 @@
       short: !t ? 'Mondays' : t === n ? 'Mondays and Thursdays' : 'Mondays, ' + (t * 2 > n ? 'most' : 'some') + ' also Thursdays'
     };
   }
+  /* NEW (Night Crew Oct 3, backlog P19): a ticker launched in the last 14 days on a product released in the last 60 —
+     release weeks are the traffic spikes, so the new set leads its group with a small tag. A new ticker on an old set
+     (the classic and WOTC launches) is not "new" to a collector and stays in place. Falls off on its own. */
+  var DAY = 864e5;
+  function isNew(r, today) {
+    if (!r || r.status === 'pre' || !r.inception || !r.rd || !today) return false;
+    var t = Date.parse(String(today).slice(0, 10) + 'T00:00:00Z'), i = Date.parse(String(r.inception).slice(0, 10) + 'T00:00:00Z'), d = Date.parse(String(r.rd).slice(0, 10) + 'T00:00:00Z');
+    return isFinite(t) && isFinite(i) && isFinite(d) && t - i >= 0 && t - i < 14 * DAY && t - d >= 0 && t - d < 60 * DAY;
+  }
   function renderIndexBoard(model) {
-    var all = (model.indices || []).slice().sort(function (a, b) { return (a.status === 'pre') - (b.status === 'pre'); });
+    var today = model.day || (model.indices || []).reduce(function (m, r) { return r.date && r.date > m ? r.date : m; }, '');
+    var all = (model.indices || []).slice().sort(function (a, b) { return (a.status === 'pre') - (b.status === 'pre') || isNew(b, today) - isNew(a, today); });
     if (!all.length) return '<tr><td class="empty" colspan="8">No index yet.</td></tr>';
+    all.forEach(function (r) { r._new = isNew(r, today); });
     return IB_GROUPS.map(function (g) {
       var rows = all.filter(function (r) { return ibGroup(r) === g[0]; });
       if (!rows.length) return '';
@@ -211,7 +222,7 @@
       if (r.status === 'pre') return '<tr class="ib-pre"><td class="ib-k"><a href="' + esc(href) + '"><b>' + esc(r.k) + '</b><small>' + esc(r.name) + '</small></a></td><td class="ib-pre-t" colspan="6">PRE · activates on the first verified sold reads</td>' + sealedCell(r.k) + '</tr>';
       var s = idxStats(r);
       var cell = function (v, d) { return '<td class="num ' + cls(v) + '">' + pct(v, d == null ? 1 : d) + '</td>'; };
-      return '<tr><td class="ib-k"><a href="' + esc(href) + '"><b>' + esc(r.k) + '</b><small>' + esc(r.name) + ' · ' + game + '</small></a></td>' +
+      return '<tr' + (r._new ? ' class="ib-new"' : '') + '><td class="ib-k"><a href="' + esc(href) + '"' + (r._new ? ' title="New index"' : '') + '><b>' + esc(r.k) + '</b><small>' + esc(r.name) + ' · ' + game + '</small></a></td>' +
         '<td class="num ib-lvl">' + num(s.level, 2) + '</td>' + cell(s.wk) + cell(s.mo) +
         cell(s.since, 2) +
         '<td class="ib-sp">' + ST.sparkSVG(s.spark, 96, 24) + '</td>' +
@@ -224,16 +235,20 @@
   function marketRows(model) {
     var rows = []; if (model.composite) rows.push(model.composite); return rows.concat(model.indices);
   }
+  /* CHART panel (Night Crew Oct 3, B32): the index board above is the one list of tickers, so this panel no longer
+     repeats all 31 rows. It shows a picker plus the selected ticker's row (level · last change · %), and the chart. */
   function renderMarkets(model, sel) {
     var rows = marketRows(model);
     sel = rows.some(function (r) { return r.k === sel && r.status !== 'pre'; }) ? sel : (rows[0] ? rows[0].k : null);
-    var list = rows.map(function (r) {
-      var href = r.page || '/indices';
-      if (r.status === 'pre') return '<a class="mrow pre-row" href="' + esc(href) + '" data-k="' + esc(r.k) + '"><span><span class="k">' + esc(r.k) + '</span><span class="name">' + esc(r.name) + '</span></span><span class="pre">PRE · activates on verified sold reads</span></a>';
+    var live = rows.filter(function (r) { return r.status !== 'pre'; });
+    var opts = live.map(function (r) { return '<option value="' + esc(r.k) + '"' + (r.k === sel ? ' selected' : '') + '>' + esc(r.k) + ' · ' + esc(r.name) + '</option>'; }).join('');
+    var r = live.filter(function (x) { return x.k === sel; })[0];
+    var row = '';
+    if (r) {
       var d = r.level != null && r.prev != null ? r.level - r.prev : null, p = ST.pctChange(r.prev, r.level);
-      return '<a class="mrow' + (r.k === sel ? ' on' : '') + '" href="' + esc(href) + '" data-k="' + esc(r.k) + '"><span><span class="k">' + esc(r.k) + '</span><span class="name">' + esc(r.name) + '</span></span><span class="num">' + num(r.level, 2) + '</span><span class="num ' + cls(d) + '">' + (d == null ? '—' : (d > 0 ? '+' : '') + num(d, 2)) + '</span><span class="num ' + cls(p) + '">' + pct(p, 2) + '</span></a>';
-    }).join('');
-    return list;
+      row = '<a class="mrow on" href="' + esc(r.page || '/indices') + '" data-k="' + esc(r.k) + '"><span><span class="k">' + esc(r.k) + '</span><span class="name">' + esc(r.name) + '</span></span><span class="num">' + num(r.level, 2) + '</span><span class="num ' + cls(d) + '">' + (d == null ? '—' : (d > 0 ? '+' : '') + num(d, 2)) + '</span><span class="num ' + cls(p) + '">' + pct(p, 2) + '</span></a>';
+    }
+    return '<label class="mk-pick"><span class="mk-pick-l">Chart</span><select data-home-pick aria-label="Choose the index to chart">' + opts + '</select></label>' + row;
   }
   function renderChart(model, sel, h) {
     var rows = marketRows(model);
@@ -455,10 +470,10 @@
     var rt = null; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(paintMarkets, 150); });
     /* markets rows swap the chart even when the nightly feed is unreachable: indices.json is same-origin, so an
        indices-only model draws every index chart; only the BOARD composite needs the feed (its row then navigates) */
-    var idxModel = null;
+    var idxModel = null, pendingSel = null;
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('a.mrow[data-k]'); if (!a) return;
-      if (a.classList.contains('pre-row')) return;
+      if (a.classList.contains('pre-row') || a.classList.contains('on')) return;   /* the selected row (B32) opens its page */
       var k = a.getAttribute('data-k');
       if (!model && !(idxModel && k !== 'BOARD')) return;
       e.preventDefault(); sel = k;
@@ -467,6 +482,15 @@
         var c = panel('chart'); if (c) c.innerHTML = renderChart(idxModel, sel, chartH(c));
         Array.prototype.forEach.call(document.querySelectorAll('a.mrow[data-k]'), function (r) { r.classList.toggle('on', r.getAttribute('data-k') === sel); });
       } catch (er) {}
+    });
+    /* the CHART picker (B32): same swap as a row click, from a <select> */
+    document.addEventListener('change', function (e) {
+      var s = e.target; if (!s || !s.matches || !s.matches('select[data-home-pick]')) return;
+      var k = s.value; if (!k) return;
+      if (model) { sel = k; paintMarkets(); var n = panel('markets'); var ns = n && n.querySelector('select[data-home-pick]'); if (ns) ns.focus(); return; }
+      if (!(idxModel && k !== 'BOARD')) { pendingSel = k; return; }   /* feed still loading: the choice is applied when it lands */
+      sel = k;
+      try { var l = panel('markets'), c = panel('chart'); if (l) l.innerHTML = renderMarkets(idxModel, sel); if (c) c.innerHTML = renderChart(idxModel, sel, chartH(c)); var ns2 = l && l.querySelector('select[data-home-pick]'); if (ns2) ns2.focus(); } catch (er) {}
     });
     window.addEventListener('hashchange', function () { paintScreen(true); });
     document.addEventListener('click', function (e) {
@@ -486,7 +510,7 @@
         model = buildModel(a[0], a[1], a[2], a[3] || {});
         /* each panel paints on its own — one bad panel never blanks the others (the pre-render stays) */
         var safe = function (f) { try { f(); } catch (e) { if (window.console) console.warn('home panel skipped:', e && e.message); } };
-        safe(function () { var m = panel('markets'); var on = m && m.querySelector('.mrow.on'); sel = on ? on.getAttribute('data-k') : null; paintMarkets(); });
+        safe(function () { var m = panel('markets'); var on = m && m.querySelector('.mrow.on'); sel = pendingSel || (on ? on.getAttribute('data-k') : null); paintMarkets(); });
         safe(function () { var ib = panel('indexboard'); if (ib) ib.innerHTML = renderIndexBoard(model); });
         safe(function () { var tp = panel('tape'); if (tp) tp.innerHTML = renderTape(model, a[3] || {}); });
         safe(function () { var mv = panel('movers'); if (mv) mv.innerHTML = renderMovers(model); });
