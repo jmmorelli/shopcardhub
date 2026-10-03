@@ -95,6 +95,13 @@
       ]
     },
     {
+      "source": "/badge/(.*)\\.svg",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
       "source": "/fonts/(.*)\\.woff2",
       "headers": [
         {

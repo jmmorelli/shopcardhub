@@ -138,6 +138,9 @@ jobs:
             # /release-calendar (Sep 26 2026): the "This week / Just released" buckets move with the date, so re-bake nightly.
             if node tools/build-release-calendar.mjs; then git add release-calendar.html
             else echo "::warning::build-release-calendar failed - page keeps its previous bake"; git checkout -- release-calendar.html; fi
+            # /badge/<TICKER>.svg (Oct 2 2026, Ledger #52): embeddable index badges drawn from indices.json; redraw after each re-mark.
+            if node tools/build-badges.mjs; then git add badge
+            else echo "::warning::build-badges failed - badges keep their previous draw"; git checkout -- badge 2>/dev/null || true; fi
             if git diff --cached --quiet; then echo "Feed unchanged."; exit 0; fi
             git commit -q -m "feed: nightly $(date -u +%F)"
             if git push -q origin main; then echo "Feed published."; exit 0; fi
