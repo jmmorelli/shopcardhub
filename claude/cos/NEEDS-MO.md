@@ -13,6 +13,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## Open — from the desk (2026-10-02, 14:00 run). Mo, these are the only things waiting on you
 
+- *FYI, Oct 2 evening check-in:* Grok replied about 11 times on Oct 2. The replies were clean, but 3 of them went out about 2 minutes apart, and their plan includes a daily quote post. Your Mac was locked, so the "slow down, likes and replies only" brief goes to them at Saturday's 2 pm desk run. Nothing needed from you unless you want it sooner: leave the Mac unlocked and say "send the Grok brief".
 - *Ruled with you ~1:20 pm:* the Grok bots stay on, for likes and replies only. I write the posts and you approve them. You pay nothing, ever: if Grok or X asks for money, the answer is no, and it just stops when the free usage runs out. I check in on them tonight.
 - Nothing new. Checked against live state: TCGplayer (#2) and TAG (#4) unchanged (no Impact approval or TAG link in the project); the Ruggie FYI below stands.
 - *FYI, not a to-do:* today's three X posts are with you from the X daily lane (sent ~08:30 PT); they only go out on your "go".
