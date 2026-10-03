@@ -386,9 +386,17 @@ function deskIds(x) {
 const FAMILIES = [["BS1E", "BSSL", "BS99"], ["JU1E", "JU99"], ["FO1E", "FO99"], ["TR1E", "TR00"], ["NG1E", "NG00"], ["ND1E", "ND02"]];
 const PRINTS = Object.fromEntries(FAMILIES.flatMap((f) => f.map((t) => [t, f])));
 const PRINT_LBL = { BS1E: "1st Edition", BSSL: "Shadowless", BS99: "Unlimited", JU1E: "1st Edition", JU99: "Unlimited", FO1E: "1st Edition", FO99: "Unlimited", TR1E: "1st Edition", TR00: "Unlimited", NG1E: "1st Edition", NG00: "Unlimited", ND1E: "1st Edition", ND02: "Unlimited" };
+// iw-2026-10-03-1 (desk Oct 3): "w/w" is the move vs the newest mark at least 5 days before the latest — the badge rule
+// (tools/build-badges.mjs weekMove). On Mon/Thu tickers the previous mark is 3–4 days back, so "w/w" against it was not a week.
+function weekBase(h) {
+  if (!Array.isArray(h) || h.length < 2) return null;
+  const last = h[h.length - 1];
+  for (let i = h.length - 2; i >= 0; i--) if ((new Date(last.date) - new Date(h[i].date)) / 86400000 >= 5 && h[i].level > 0) return h[i];
+  return null;
+}
 function block(x, c) {
   const prBox = PR.bakeBox(x.ticker, x, "var(--sidx)");   // "" for a pre-activation ticker: then nothing is folded (as before)
-  const h = x.history || [], last = h[h.length - 1] || null, prev = h.length > 1 ? h[h.length - 2] : null;
+  const h = x.history || [], last = h[h.length - 1] || null, prev = weekBase(h);
   const lvl = last ? last.level : null;
   const wow = prev && last ? (last.level / prev.level - 1) * 100 : null;
   const bv = basketValue(x.basket), rows = x.basket.slice().sort((a, b) => b.price * b.w - a.price * a.w);

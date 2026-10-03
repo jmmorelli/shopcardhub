@@ -129,13 +129,15 @@
   }
 
   /* ---------- the index board (home, above the fold — Sep 25 2026, Mo: "lean HARD into the edge") ----------
-   * One row per set index, nothing else. Level · 1W (vs the prior mark) · 1M (vs the newest mark at least 28 days
+   * One row per set index, nothing else. Level · 1W (vs the newest mark at least 5 days back) · 1M (vs the newest mark at least 28 days
    * back; "—" until the series is that old) · since base (level − 100; base = release month: Pokémon since Sep 30 2026, Bowman since Oct 1 2026) · sparkline over every mark · marked date.
    * Never the BOARD composite (that is ask-basis and not an index — it lives in the Bowman panel below). Pre-activation
    * rows show PRE. Every figure is one already in data/indices.json; nothing is derived that a reader can't re-check. */
   function idxStats(r) {
     var h = r.history || [], n = h.length, level = n ? h[n - 1].level : null;
-    var wk = n > 1 ? ST.pctChange(h[n - 2].level, level) : null;
+    // 1W = vs the newest mark at least 5 days back (iw-2026-10-03-1, the badge rule) — Mon/Thu tickers' prior mark is 3–4 days old
+    var wk = null;
+    for (var j = n - 2; j >= 0; j--) { if ((new Date(String(h[n - 1].date).slice(0, 10)) - new Date(String(h[j].date).slice(0, 10))) / 86400000 >= 5) { wk = ST.pctChange(h[j].level, level); break; } }
     var mo = null;
     if (n > 1 && r.date) {
       var cut = new Date(String(r.date).slice(0, 10) + 'T00:00:00Z'); cut.setUTCDate(cut.getUTCDate() - 28);
