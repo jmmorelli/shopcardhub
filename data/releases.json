@@ -1,6 +1,6 @@
 {
  "_comment": "UPCOMING RELEASES panel on / (homepage rework, Sep 19 2026). Rendered by tools/build-home.mjs (HOME:releases) and re-filtered client-side by js/home.js so a past date drops off between Monday re-bakes. Hand-curated: only dates read from the named source, never guessed. status = confirmed (a dated line on the maker's calendar) | expected (a window a calendar publishes without a day — shown with its window text, no fake day). href only to a page that exists (build-home refuses otherwise). Keep ~10 upcoming; keep past rows for 30 days (the /release-calendar page shows them under 'Just released' — the 'X release date' searches keep coming for weeks after the date), prune older. `q` = the eBay search for the sealed product (used by tools/build-release-calendar.mjs; falls back to the label); `cat` = eBay category id when not sports cards (183456 = CCG sealed).",
- "asOf": "2026-10-02",
+ "asOf": "2026-10-03",
  "sources": {
   "topps": "https://www.topps.com/release-calendar (read 2026-09-26)",
   "bowman-chrome-mega": "https://www.topps.com/pages/bowman-chrome-baseball (Mega boxes available September 23 at 12pm ET)",
@@ -131,6 +131,17 @@
    "source": "https://www.topps.com/release-calendar (read 2026-09-26: 'Monday, Oct 5 2026 · Pre-order')"
   },
   {
+   "date": "2026-10-05",
+   "family": "sports",
+   "sport": "MLB",
+   "label": "2026 Topps Cosmic Chrome Baseball",
+   "note": "pre-order opens (Topps calendar); street date not published",
+   "status": "confirmed",
+   "href": null,
+   "q": "2026 Topps Cosmic Chrome Baseball hobby box",
+   "source": "https://www.topps.com/release-calendar (read 2026-10-03: 'Monday, Oct 5 at 4:00 PM UTC 2026 Topps Cosmic Chrome® Baseball' · Pre-order); https://www.topps.com/pages/topps-cosmic-chrome-baseball ('Available for pre-order October 5'). Replaces the 2026-10-31 'reported' row: the Midwest Cards product page no longer shows 'Expected release date is Oct 31st 2026' (read Oct 3) and Steel City shows 'Release Date TBD' (read Oct 3)."
+  },
+  {
    "date": "2026-10-06",
    "family": "sports",
    "sport": "NBA",
@@ -146,11 +157,11 @@
    "family": "sports",
    "sport": "MLB",
    "label": "2026 Topps Allen & Ginter Baseball",
-   "note": "Topps calendar shows Oct 7 as a pre-order entry; Steel City lists hobby/blaster/fat pack under Oct 7",
+   "note": "hobby 18×8, 2 hits · replaces the existing Oct 7 A&G row (adds href; street date now read on the Topps product page)",
    "status": "confirmed",
    "href": "/topps-allen-ginter-2026",
    "q": "2026 Topps Allen & Ginter Baseball hobby box",
-   "source": "https://www.topps.com/release-calendar (read 2026-09-27: 'Wednesday, Oct 7 2026 Topps Allen & Ginter Baseball', pre-order); https://www.steelcitycollectibles.com/product-release-calendar (read 2026-09-27: OCTOBER 7, 2026)"
+   "source": "https://www.topps.com/products/2026-topps-allen-ginter-baseball-hobby-box (read 2026-09-28: 'October 7, 2026'); https://www.topps.com/pages/topps-allen-ginter-baseball ('Available October 7'); https://www.topps.com/release-calendar (read 2026-09-28: Oct 7)"
   },
   {
    "date": "2026-10-07",
@@ -223,22 +234,22 @@
    "family": "sports",
    "sport": "F1",
    "label": "2026 Topps Chrome Formula 1",
-   "note": "",
+   "note": "hobby 20×4, 1 auto · Topps list $469.99 · eBay presale lowest ask $899.99 (Sep 27)",
    "status": "confirmed",
    "href": "/topps-chrome-formula-1-2026",
    "q": "2026 Topps Chrome Formula 1 hobby box",
-   "source": "https://www.topps.com/release-calendar (read 2026-09-26: 'Thursday, Oct 15 2026')"
+   "source": "https://www.topps.com/release-calendar (read 2026-09-27: 'Thursday, Oct 15 2026 Topps Chrome Formula 1'); https://www.topps.com/products/2026-topps-chrome-formula-1%C2%AE-value-box ('October 15, 2026'); Steel City lists hobby/blaster/mega under OCTOBER 15, 2026"
   },
   {
    "date": "2026-10-21",
    "family": "sports",
    "sport": "NFL",
    "label": "2026 Topps Heritage Football",
-   "note": "distributor date",
-   "status": "reported",
-   "href": null,
+   "note": "hobby 20×8, 1 auto or relic on average · mega · value blaster · 1976 design",
+   "status": "confirmed",
+   "href": "/topps-heritage-football-2026",
    "q": "2026 Topps Heritage Football hobby box",
-   "source": "https://www.steelcitycollectibles.com/product-release-calendar (read 2026-09-26: OCTOBER 21, 2026 · PREORDER NOW)"
+   "source": "https://www.topps.com/pages/topps-heritage-football (read 2026-10-03: 'Available October 21'); https://www.steelcitycollectibles.com/i/2026-topps-heritage-football-hobby-box ('Releases 10/21/26'); https://www.diamondcardsonline.com/2026-topps-heritage-football-hobby-box/ ('Expected release date is Oct 21, 2026'). Replaces the 'reported' row (now on the maker's product page; not on topps.com/release-calendar as of Oct 3)."
   },
   {
    "date": "2026-10-21",
@@ -261,17 +272,6 @@
    "href": "/pokemon-30th-anniversary-2026",
    "q": "pokemon 30th celebration",
    "cat": 183456
-  },
-  {
-   "date": "2026-10-31",
-   "family": "sports",
-   "sport": "MLB",
-   "label": "2026 Topps Cosmic Chrome Baseball",
-   "note": "distributor expected street date; Topps pre-order opens Oct 5",
-   "status": "reported",
-   "href": null,
-   "q": "2026 Topps Cosmic Chrome Baseball hobby box",
-   "source": "https://www.midwestcards.com/baseball-cards/2026-topps-cosmic-chrome-baseball-hobby-box/ ('Expected release date is Oct 31st 2026', read 2026-09-26); pre-order: https://www.topps.com/pages/topps-cosmic-chrome-baseball ('Available for pre-order October 5')"
   },
   {
    "date": "2026-11-06",

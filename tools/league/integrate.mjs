@@ -54,7 +54,9 @@ wr("data/buy-strip.json", JSON.stringify(bs, null, 2) + "\n");
 // 3. releases.json
 const rel = JSON.parse(rd("data/releases.json"));
 let relChanged = 0;
-for (const m of manifests) for (const r of m.releases || []) {
+// newest read wins: apply manifests oldest-published first (Oct 3: an older manifest re-applied a stale Heritage/Cosmic row over a newer one)
+const byPublished = [...manifests].sort((a, b) => String(a.published || "").localeCompare(String(b.published || "")) || a.slug.localeCompare(b.slug));
+for (const m of byPublished) for (const r of m.releases || []) {
   if (!r.date || !r.label) continue;
   const key = norm(r.label);
   const row = { date: r.date, family: r.family, sport: r.sport, label: r.label, note: r.note || "", status: r.status || "reported", href: r.href || null, q: r.q || undefined, cat: r.cat ? String(r.cat) : undefined, source: r.source || undefined };
