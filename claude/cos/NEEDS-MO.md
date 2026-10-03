@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the desk (2026-10-03, 14:00 run). Mo, these are the only things waiting on you
+
+- **One "go", next time you're in a CoS chat (no sign-in, no money):** two Bowman prospects are filed under the wrong release because SportsCardsPro drops the accents in their names (Liñan, Muñoz). Moving them from the May index (BB26) to the September one (BCB26) changes no index level, but this unattended run's permission check refused to write index data. Say "go on the Liñan/Muñoz move" in a CoS chat and it's done in minutes.
+- *FYI:* your Mac went offline at ~4:00 pm PT mid-run (X Desk Watch hit the same at 3:45), so today's fixes (one "week" figure sitewide, the /indices headline, the Bowman Football sold-comps line) are built and checked but not live. The next Mac-linked run pushes them. Nothing to do unless you want them out tonight — then just open the Mac.
+- TCGplayer (#2) and TAG (#4): unchanged.
+
+---
+
 ## Open — from the desk (2026-10-02, 14:00 run). Mo, these are the only things waiting on you
 
 - *FYI, Oct 2 ~8:26 pm:* Grok brief delivered, and Grok Bot confirmed: the Monday quote-post path, the weekday 10:00 original and their alarms are off; max 8 replies a day at 10:46 / 1:46 / 4:46, 20+ min apart; likes ≤ 2 an hour. X balance $51.98 included, $0 prepaid. Nothing needed from you.

@@ -112,6 +112,26 @@ the page that links to yours (one line, added by the commissioner) and the page 
 floor read kills it. Commit your page + manifest on your branch with a message that names the query and the
 evidence; report the branch, the slugs, the gate lines and anything you could not verify. Then stop.
 
+## Oct 3, 2026 focus — where a high-dollar buyer's last click lands (CoS, Mo approved "yes do both" Oct 3)
+
+R27, the scoring, the budgets and the page cap are unchanged. This section only steers **which** page you pick inside them.
+Read: Project `claude/handoffs/growth-high-dollar-landers-2026-10-03.md`.
+
+- **Why.** Revenue since Aug 20 is two tail sales, both one expensive card bought on a phone (a $1,950 PCA Orange /25 PSA 10;
+  an $860 Messi). Organic search fell 380 → 194 sessions per 14 days, almost all of it release pages fading after street date
+  (`/bowman-chrome-baseball-2026` 105 → 27 views). On-page click-through held (24% → 33%), so the problem is arrivals.
+- **Search A/B/C — weight new pages toward high-dollar single-card intent.** A player or card page whose top live eBay
+  listings or dated sold comps sit at **$500+**, with the live listing and the dated sold number above the fold. Evergreen
+  stars hold search after release hype fades (Yamal, Messi, Flagg, PCA, Wembanyama, Ohtani, Haaland). Main/popular players
+  and releases only. Every price numeric and dated (§2, R18 for graded); no COMC links.
+- **A — release pages before street date.** Ranking before street is the whole value; the spike decays in two weeks. Start
+  with the dated releases ≤ Oct 21 that have no page, after resolving the calendar mismatches already on your list.
+- **Distribution D/E/F** — shareables built around one big dated sale over set overviews. Reddit stays parked; outreach still
+  waits on Mo's per-batch yes.
+- **Read date:** Wed Oct 21 (organic sessions + EPN by `customid`). Success = organic back above 150/week and at least one
+  $300+ sale attributed to a League page or a card page. The Oct 14 interim board gets an EPN-by-agent column for
+  information only — no cut or clone uses it this generation.
+
 ## Index levels after the Sep 30, 2026 rebase (Mo's ruling — binds every agent)
 Every Pokémon index is now based at **100 = the set's release month** (`baseDate`/`baseRule`/`baseNote` in
 `data/indices.json`; vintage sets and Hidden Fates use the first month PriceCharting's sold history reliably covers
