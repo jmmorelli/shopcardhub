@@ -7,7 +7,27 @@ reach. If something here no longer needs you, say so and it comes off.
 *(Housekeeping for the agents, not for Mo: this file lives in the repo beside `STATE.md`; that copy
 is canonical and the Project copy is a mirror written in the same run. Standing grants — Sep 4 "anything
 that needs Mo, I approve"; Sep 8 "I don't want to sign into anything"; Sep 16 "I'd prefer you guys just
-talk to each other so I don't have to be involved" and "I agree with all your vetos".)*
+talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy.)*
+
+---
+
+## Open — from the desk (2026-10-04, 14:00 run). Mo, these are the only things waiting on you
+
+- Nothing new needs a sign-in or money. Still waiting on a word from you: the Liñan/Muñoz "go" (below; it will now miss Monday's reconstitution and lands the next mark after you say go) and the four Pokémon calls just below.
+- *FYI, one question:* @shopcardhub followed 15 accounts between Saturday and Sunday afternoon, all of them follow-backs (two are card-price accounts). If that wasn't you, say so and Grok is told follows are out of its lane.
+- *FYI:* Grok's replies stopped after Oct 2 ~5:45 pm, which fits its free usage running out. Nothing to do: no one pays for more.
+
+---
+
+## Open — from the Pokémon KB build (2026-10-04, Sunday afternoon). Four quick calls, none urgent today
+
+The Pokémon brain is built and verified: `claude/kb/pokemon/` (README first). The site audit it produced has 15 🔴 items the CoS fixes without you (pull rates / EV / verdicts on seven pages, wrong Ascended Heroes facts, stale 2026 overview, TAG guide prices, TAG and Unlimited eBay links pulling the wrong cards). These four are methodology, so they are yours — one word each:
+
+1. **Celebrations index (G19):** the basket is 31.5% Celebrations-era promos (Dark Sylveon V, Lance's Charizard V, the Pikachu V-UNIONs…) that aren't set cards. Keep them and retitle the index "Celebrations + 25th promos", or strip to the 50 set cards? CoS leans keep + retitle.
+2. **30th Celebration index (G20):** the three RGB Mews are ~50% of the "whole-set" index on thin prices. Move them to the chase strip only (index then reads as the set)? CoS leans move.
+3. **Delta Reign (G21):** Nov 6 release, prereleases Oct 24, booster box, Mega Rayquaza ex chase. Playbook default is **go** as DLR26 (shell by Oct 10, base 100 on Nov 6). Say stop if you disagree; silence = go.
+4. **TAG wording (G22):** research says PSA is the reference and TAG slabs sell below PSA at the same grade today; TAG's edge is transparency (8 subgrades, public defect report), not price. Proposed site line: "We link TAG because it publishes its measurements. PSA is the reference grade. Our view: machine grading wins over time." Your AI thesis stays, labelled as your view. OK?
+   *(Also for later, G23: untracked sets worth adding — CoS recommends Surging Sparks + the Mega Evolution base set only; Neo Discovery/Revelation would each need a 1st Ed + Unlimited pair.)*
 
 ---
 

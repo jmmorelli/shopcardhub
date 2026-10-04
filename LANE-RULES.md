@@ -709,6 +709,7 @@ One-shots on the list (Oct 1): *Grok usage reset — restart plan* (Oct 1; resta
 - **Growth League:** daily per the GO-TIME block, not Mon + Thu; distribution agents never write a contact address into a repo file.
 - **Monday trend scan:** drop STEP 3.6's ask-basis Bowman doctrine and its "never build a cross-set 1st Bowman index" line (superseded by the Sep 25 Bowman reset); STEP 3.6 covers the divisor-model Pokémon chase tickers only; delete STEP 3.98's lock sweep (R1).
 - **Tuesday board:** the digest is the Monday close (R26, `tools/tuesday-tape-format.md`); never queue a tweet.
+- **Integrity Watch (desk, Oct 4, iw-2026-10-04-rule):** the −60%-vs-trailing-median FAIL test reads `keyEvents7` (and `cleanSessions7`), not `keyEventsYesterday` when that day's trailing median is under 5; the daily "zero key events on ≥ 30 sessions" FAIL is unchanged.
 - **Sunday brief:** the Tue/Thu light runs, coach's notes, the Grok vendor and the MWF auditor are gone; the charter is the Project/repo `claude/cos/CHARTER.md`; never commit.
 
 **Overlap to watch (2026-09-16):** the weekly now starts at 11:00 PT Wednesday and the last full
