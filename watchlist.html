@@ -605,7 +605,7 @@
     .pf-warn.cyan { background:rgba(0,204,245,0.1); border-color:rgba(0,204,245,0.3); color:#c9f3ff; }
     .pf-warn b { font-family:var(--fm); font-weight:700; }
     .pf-warn a { white-space:nowrap; font-family:var(--fm); font-size:11px; }
-    .pf-warn .x { color:inherit; opacity:0.6; font-family:var(--fm); background:none; border:0; cursor:pointer; font-size:12px; }
+    .pf-warn .x { color:inherit; opacity:0.6; font-family:var(--fm); background:none; border:0; cursor:pointer; font-size:12px; flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; min-width:40px; min-height:40px; margin:-12px -10px -12px 0; }   /* B39 (Night Crew Oct 4): the dismiss was a 7×16 tap; 40×40 now, negative margin keeps the bar's height */
     .pf-tape { display:grid; grid-template-columns:1.15fr 1fr; gap:12px; margin:14px 0 6px; }
     .pf-panel { background:var(--bg2); border:1px solid var(--border); border-radius:4px; min-width:0; }
     .pf-panel-h { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; border-bottom:1px solid var(--border); }

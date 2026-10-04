@@ -135,3 +135,5 @@ for (const slug of PAGES) {
 console.log(`${CHECK ? "check" : "write"}: ${changed.length} page(s) ${CHECK ? "stale" : "updated"}${changed.length ? " — " + changed.join(", ") : ""}`);
 for (const s of skipped) console.log("  skip " + s);
 if (CHECK && changed.length) process.exit(1);
+// The plain read above the chart is baked from the same re-mark (Night Crew Oct 4 2026, B36 — load CLS on these pages).
+if (!CHECK) { try { const { execFileSync } = await import("node:child_process"); console.log(execFileSync("node", [path.join(REPO, "tools/bake-plain-read.mjs")], { encoding: "utf8" }).trim()); } catch (e) { console.warn("plain-read bake failed: " + (e.message || e)); } }

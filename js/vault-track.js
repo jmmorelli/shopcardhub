@@ -168,7 +168,10 @@
   var css = /* Night Crew Oct 1: the floating pill waits until the visitor scrolls half a screen, so it never sits on the
        first screen's numbers (FTV: it covered the ETB ask row on /pokemon-30th-anniversary-2026) */
     'a#sch-track-cta{transition:background .15s,color .15s,opacity .2s,transform .2s,visibility .2s}' +
-    'a#sch-track-cta.sch-cta-wait{opacity:0;visibility:hidden;transform:translateY(8px);pointer-events:none}' +
+    'a#sch-track-cta.sch-cta-wait,a#sch-track-cta.sch-cta-away{opacity:0;visibility:hidden;transform:translateY(8px);pointer-events:none}' +
+    /* Night Crew Oct 4: on a phone the pill covered the last ~40 px of whatever scrolled under it (the BCB checklist search
+       box, the Vault tile, footer links) — the page gets that much room at the bottom while the pill is live */
+    '@media (max-width:540px){body.sch-cta-live{padding-bottom:60px}}' +
     '@media (prefers-reduced-motion:reduce){a#sch-track-cta{transition:none}}' +
     '.sch-track-card{display:inline-flex;align-items:center;gap:5px;background:transparent;' +
     'border:1px solid rgba(0,204,245,0.35);color:#00ccf5;font-family:"JetBrains Mono",monospace;' +
@@ -362,6 +365,19 @@
     }
     if (!ctaBound) {
       ctaBound = true;
+      document.body.classList.add('sch-cta-live');
+      /* Night Crew Oct 4: step aside while the reader types (it sat on the checklist search box) and while the page's own
+         "track any card" Vault tile is on screen (the pill repeated it and covered its arrow) */
+      var typing = false, tileOn = false, away = function () { el.classList.toggle('sch-cta-away', typing || tileOn); };
+      var isField = function (t) { return t && t.matches && t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]),textarea,select'); };
+      document.addEventListener('focusin', function (e) { if (isField(e.target)) { typing = true; away(); } });
+      document.addEventListener('focusout', function (e) { if (isField(e.target)) { typing = false; away(); } });
+      var tiles = document.querySelectorAll('.dest-tile[href*="watchlist"],.dest-tile[href*="vault"]');
+      if (tiles.length && 'IntersectionObserver' in window) {
+        var seen = new Set();
+        var io = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) seen.add(x.target); else seen.delete(x.target); }); tileOn = seen.size > 0; away(); });
+        Array.prototype.forEach.call(tiles, function (t) { io.observe(t); });
+      }
       el.addEventListener('click', function (e) {
         var all = document.querySelectorAll('.sch-track-card');
         if (!all.length) return;                                  // marker-only page: plain deep link

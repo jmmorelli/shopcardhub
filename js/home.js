@@ -218,6 +218,24 @@
       return '<tr class="ib-grp ib-grp-' + g[0] + '"><th colspan="8" scope="colgroup">' + esc(g[1]) + ' <small>' + rows.length + (rows.length === 1 ? ' index' : ' indices') + '</small></th></tr>' + renderIbRows(rows);
     }).join('');
   }
+  /* Board sparkline (Night Crew Oct 4, Design Scout — Koyfin's watchlist): ST.sparkSVG stretches every series to the full
+     box, so JU99 at −0.2% drew the same full-height slash as CR26 at −8.5% and the board read as a wall of steep red and
+     green. Here the vertical scale never spans less than SPARK_MIN index points (centred on the series), so a small move
+     draws nearly flat and a big one still fills the box; a dashed line marks 100 when it is in range, and a ticker with
+     fewer than 3 marks draws faint. Same points, same colours, same up/dn rule — only the scale. */
+  var SPARK_MIN = 6;
+  function sparkIdx(ys, w, h) {
+    var s = (ys || []).filter(function (v) { return v != null && isFinite(v); });
+    if (s.length < 2) return '<svg class="spark" viewBox="0 0 ' + w + ' ' + h + '" aria-hidden="true"></svg>';
+    var lo = Math.min.apply(null, s), hi = Math.max.apply(null, s);
+    if (hi - lo < SPARK_MIN) { var mid = (hi + lo) / 2; lo = mid - SPARK_MIN / 2; hi = mid + SPARK_MIN / 2; }
+    var y = function (v) { return h - 2 - ((v - lo) / (hi - lo)) * (h - 4); };
+    var pts = s.map(function (v, i) { return [(i / (s.length - 1)) * (w - 2) + 1, y(v)]; });
+    var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
+    var e = pts[pts.length - 1];
+    var ref = (100 >= lo && 100 <= hi) ? '<line class="ref" x1="1" x2="' + (w - 1) + '" y1="' + y(100).toFixed(1) + '" y2="' + y(100).toFixed(1) + '"/>' : '';
+    return '<svg class="spark ' + (s[s.length - 1] >= s[0] ? 'up' : 'dn') + (s.length < 3 ? ' thin' : '') + '" viewBox="0 0 ' + w + ' ' + h + '" aria-hidden="true">' + ref + '<path d="' + d + '"/><circle cx="' + e[0].toFixed(1) + '" cy="' + e[1].toFixed(1) + '" r="1.8"/></svg>';
+  }
   function renderIbRows(rows) {
     return rows.map(function (r) {
       var href = r.page || '/indices', game = /^(BOW|BCB|SAPH|DRAFT|BB)/.test(r.k) ? 'Bowman' : 'Pokémon';
@@ -227,7 +245,7 @@
       return '<tr' + (r._new ? ' class="ib-new"' : '') + '><td class="ib-k"><a href="' + esc(href) + '"' + (r._new ? ' title="New index"' : '') + '><b>' + esc(r.k) + '</b><small>' + esc(r.name) + ' · ' + game + '</small></a></td>' +
         '<td class="num ib-lvl">' + num(s.level, 2) + '</td>' + cell(s.wk) + cell(s.mo) +
         cell(s.since, 2) +
-        '<td class="ib-sp">' + ST.sparkSVG(s.spark, 96, 24) + '</td>' +
+        '<td class="ib-sp">' + sparkIdx(s.spark, 96, 24) + '</td>' +
         '<td class="ib-when">' + esc(dstr(r.date)) + ' · ' + s.marks + ' mark' + (s.marks === 1 ? '' : 's') + '</td>' +
         sealedCell(r.k) + '</tr>';
     }).join('');
@@ -494,7 +512,9 @@
       sel = k;
       try { var l = panel('markets'), c = panel('chart'); if (l) l.innerHTML = renderMarkets(idxModel, sel); if (c) c.innerHTML = renderChart(idxModel, sel, chartH(c)); var ns2 = l && l.querySelector('select[data-home-pick]'); if (ns2) ns2.focus(); } catch (er) {}
     });
-    window.addEventListener('hashchange', function () { paintScreen(true); });
+    /* B40 (Night Crew Oct 4): only a #screen=<id> hash is a screen. The nav "Tuesday Tape" (/#newsletter) and rail
+       /#tape links are same-page anchors on /, and used to fire this too and scroll the reader past the signup. */
+    window.addEventListener('hashchange', function () { var m = (location.hash || '').match(/screen=([a-z0-9]+)/); if (m && SCREENS[m[1]]) paintScreen(true); else if (!location.hash) paintScreen(false); });
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('[data-screen]'); if (!a) return;
       var id = a.getAttribute('data-screen'); if (!SCREENS[id]) return;
