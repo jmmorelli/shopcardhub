@@ -320,20 +320,28 @@ function buildScript(index) {
     function render(items){
       sel = -1;
       if (!input.value.trim()){ results.classList.remove('show'); results.innerHTML=''; return; }
-      if (!items.length){ results.innerHTML='<div class="ns-empty">Not in an index yet — <a href="/indices">see what we track</a></div>'; results.classList.add('show'); return; }
+      if (!items.length){ var mq = input.value.trim().slice(0,80); results.innerHTML='<div class="ns-empty">Not in an index yet — <a href="'+missUrl(mq)+'" target="_blank" rel="sponsored nofollow noopener" data-miss="1">see it on eBay ›</a> · <a href="/indices">what we track</a></div>'; results.classList.add('show'); var ml = results.querySelector('a[data-miss]'); if (ml) ml.addEventListener('click', function(){ ga('search_miss_click', { query: mq }); }); if (CARDS) missEvent(mq); return; }
       results.innerHTML = items.map(function(it){ return it.h ? '<div class="ns-h">'+it.h+'</div>' : '<a href="'+it.u+'">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</a>'; }).join('');
       results.classList.add('show');
     }
     // card search (Sep 30 2026, Mo: search a card, land on its page with raw / PSA 9 / PSA 10 / TAG): /data/card-search.json
     // is loaded on first focus (~90 KB raw, ~20 KB gzip), never on page load. Every token must match; dearest card first.
     var CARDS = null, cardsP = null;
+    // empty state → affiliate click (Oct 4 2026, Coverage Scout report, build E): a query that finds no page and no card opens
+    // an EPN-tagged eBay search for the typed text in the Pokémon TCG singles category (customid search-miss), and GA4 gets a
+    // search_miss event once per query, 1.2 s after typing stops and only once the card list has loaded (no false misses).
+    var EPN = 'mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001';
+    function missUrl(q){ var t = /pok[eé]mon/i.test(q) ? q : 'pokemon ' + q; return 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(t.replace(/\\s+/g,' ').trim()).replace(/%20/g,'+').replace(/'/g,'%27').replace(/[!()*]/g, function(c){ return '%' + c.charCodeAt(0).toString(16).toUpperCase(); }) + '&_sacat=183454&LH_BIN=1&' + EPN + '&customid=search-miss'; }
+    function ga(ev, p){ try { if (typeof gtag === 'function') gtag('event', ev, Object.assign({ page: location.pathname }, p)); } catch (e) {} }
+    var missT = null, missSent = {};
+    function missEvent(q){ clearTimeout(missT); missT = setTimeout(function(){ var k = nk(q); if (!k || missSent[k] || nk(input.value) !== k) return; missSent[k] = 1; ga('search_miss', { query: q }); }, 1200); }
     function loadCards(){ if (cardsP) return cardsP; cardsP = fetch('/data/card-search.json').then(function(r){ return r.json(); }).then(function(d){ CARDS = (d.cards||[]).map(function(c){ return { id:c[0], t:c[1], s:c[2], p:c[3], n:nk(c[1]+' '+c[2]) }; }); }).catch(function(){ CARDS = []; }); return cardsP; }
     function money(n){ return n == null ? '' : '$'+Number(n).toLocaleString('en-US', n >= 100 ? {maximumFractionDigits:0} : {minimumFractionDigits:2, maximumFractionDigits:2}); }
     function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
     function findCards(q){ q = nk(q); if (!CARDS || q.length < 2) return []; var tk = q.split(' ');
       return CARDS.filter(function(c){ for (var i=0;i<tk.length;i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
         .sort(function(a,b){ var sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1; return sa - sb || (b.p||0) - (a.p||0); }).slice(0,8)
-        .map(function(c){ return { u:'/card?id='+c.id, t:esc(c.t), s:esc(c.s)+' · raw '+money(c.p) }; }); }
+        .map(function(c){ return { u:'/card?id='+c.id, t:esc(c.t), s:esc(c.s)+(c.p == null ? '' : ' · raw '+money(c.p)) }; }); }
     function find(q){ q = nk(q); if(!q) return []; return INDEX.filter(function(it){ return it.n.indexOf(q) > -1; }).slice(0,8); }
     function all(q){ var pg = find(q), cd = findCards(q); if (!cd.length) return pg; return pg.slice(0,4).concat([{h:'Cards · raw to PSA 10'}], cd); }
     input.addEventListener('focus', loadCards);

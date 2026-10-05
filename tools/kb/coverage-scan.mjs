@@ -9,7 +9,7 @@
 //   D  the set is not tracked (grouped by set; sets ranked by Σ demand raw $ × card count)
 //   P  the set is being built (ticker listed in the demand file's "pending" and not yet in indices.json)
 // plus a SEARCH-MISS list: demand cards whose name has no substring hit in card-search.json (the "shining gyarados" case),
-// and NOT-SEARCHABLE: cards that are tracked but have no row in card-search.json (chase indices are not in the search).
+// and NOT-SEARCHABLE: cards that are tracked but have no row in card-search.json (0 expected since build E, Oct 4 2026: universe rows and the six chase indices write card files).
 //
 // Usage:  node tools/kb/coverage-scan.mjs [--json] [--root <repo>] [--demand <file>] [--out <md>] [--no-write]
 //   --json      print the full result as JSON on stdout instead of the table
@@ -178,7 +178,7 @@ function md() {
   dSets.forEach((s, i) => L.push(`| ${i + 1} | ${s.set} | ${s.n} | ${money(s.sum)} | ${s.score.toLocaleString("en-US")} | ${s.cards.map((r) => `${label(r)} ${money(r.rawUSD)}`).join("; ")} |`));
   L.push("", `#### Search-miss (${c.searchMiss}) — typed into our search, nothing with that name comes back`, "", "| Card | Set | Bucket | Raw (demand) |", "|---|---|---|---|");
   for (const r of misses) L.push(`| ${label(r)} | ${r.set} | ${r.bucket}${r.ticker ? " " + r.ticker : ""} | ${money(r.rawUSD)} |`);
-  L.push("", `#### Tracked but not searchable (${c.notSearchable}) — in an index, no card-search row (chase indices are not in data/cards)`, "", "| Card | Set | Ticker | Bucket | Raw (demand) |", "|---|---|---|---|---|");
+  L.push("", `#### Tracked but not searchable (${c.notSearchable}) — in an index, no card-search row (should be 0 since Oct 4 2026: universe + chase cards have card files)`, "", "| Card | Set | Ticker | Bucket | Raw (demand) |", "|---|---|---|---|---|");
   for (const r of notSearchable) L.push(`| ${label(r)} | ${r.set} | ${r.ticker} | ${r.bucket} | ${money(r.rawUSD)} |`);
   L.push("<!-- coverage-scan:end -->");
   return L.join("\n");

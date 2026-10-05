@@ -25,6 +25,11 @@
   var FIRST_NOT = ' -unlimited -celebration -celebrations';
   // keep in step with RAW_EXTRA in tools/lib/card-files.mjs (the baked raw links)
   var EXTRA = { ju99: ' -"no symbol"', aq03: ' -reverse', sk03: ' -reverse' };
+  // TAG TEAM sets (Oct 4 2026, TU19): titles say "Tag Team", so raw drops only TAG slabs and TAG searches keep the word "team"
+  // (keep in step with TAG_TEAM in tools/lib/card-files.mjs)
+  var TT = { tu19: 1 };
+  var RAW_NOT_TT = ' -psa -cgc -bgs -sgc -"tag 10" -"tag 9" -beckett -graded -slab';
+  var TAG_Q_TT = ' "TAG 10" -psa -cgc -bgs -sgc';
   function tkOf(cid) { var m = String(cid || '').replace(/^card-/, '').match(/^([a-z0-9]+)-/); return m ? m[1] : ''; }
   var G = [
     { g: 'raw', lbl: 'Raw', short: 'Raw', tip: 'Raw (ungraded) copies of this card on eBay' },
@@ -38,6 +43,7 @@
   function phrase(q, g, ed, tk) {
     q = String(q || '');
     var x = EXTRA[tk] || '';
+    if (TT[tk]) return (g === 'raw' ? q + RAW_NOT_TT : g === 'psa9' ? q + ' psa 9 -"psa 10"' : g === 'psa10' ? q + ' psa 10' : g === 'tag' ? q + TAG_Q_TT : q) + x;
     if (ed === '1st') return (g === 'raw' ? q + RAW_NOT : g === 'psa9' ? q + ' psa 9 -"psa 10"' + FIRST_NOT : g === 'psa10' ? q + ' psa 10' + FIRST_NOT : q + TAG_Q + FIRST_NOT) + x;
     if (ed === 'shadowless') return (g === 'raw' ? q + RAW_NOT : g === 'psa9' ? q + ' psa 9 -"psa 10"' : g === 'psa10' ? q + ' psa 10' : q + TAG_Q) + ' -1st' + x;
     if (g === 'raw') return q + RAW_NOT + (ed ? ' -1st -shadowless' : '') + x;

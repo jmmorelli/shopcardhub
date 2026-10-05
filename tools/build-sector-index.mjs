@@ -30,7 +30,7 @@ import { fileURLToPath } from "node:url";
 import { consoleCards } from "./price-engine/pc-console.mjs";
 import { parsePage } from "./price-engine/sold-marks.mjs";
 import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
-import { cardId, RAW_NOT, RAW_EXTRA, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
+import { cardId, rawNot, RAW_EXTRA, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
 import { createRequire } from "node:module";
 // The plain read is baked, not injected after paint (Night Crew Oct 3 2026, B29: load CLS 0.1-0.24 at 1024). Same renderer as the browser.
 const PR = createRequire(import.meta.url)("../js/plain-read.js");
@@ -234,6 +234,13 @@ function classicConfigs() {
         return `The 25th-anniversary set (2021) is 50 cards: 25 main cards and 25 Classic Collection reprints (which keep their original numbers, so Charizard is #4). This index also holds the ${pr.length} Celebrations-era promos PriceCharting files with the set — ${pr.length - jumbo} SWSH Black Star promos and ${jumbo} oversized jumbo cards from the Celebrations collections. They are not set cards, but they came in the Celebrations products and collectors file them with the set; ${x.basket.filter(celPromo).length} of them trade often enough to be in the basket, and they are ${bv ? Math.round((pv / bv) * 100) : 0}% of basket value. ` + M;
       } }),
     mk("CZ23", { exclude: [{ path: /-tin-none$/, label: "the two tin rows (Galarian Moltres, Galarian Zapdos) — sealed products, not cards" }], imgSrc: (b) => /^GG\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/swsh12pt5gg/" + b.num + ".png" : /^\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/swsh12pt5/" + b.num + ".png" : null, name: "Crown Zenith Set Index", set: "Pokémon TCG Crown Zenith", page: "/crown-zenith-index", pcSlug: "pokemon-crown-zenith", q: "crown zenith", theme: "#c9a227", releaseDate: "2023-01-20", imgSet: "Pokemon Crown Zenith", denom: 159, note: "The 2023 special set with the Galarian Gallery (GG01–GG70); the Giratina, Mewtwo and Arceus VSTAR gallery cards lead it. " + M }),
+    // TU19 — Team Up (Oct 4 2026, Coverage Scout #7 "best set index"; CoS build E, Mo: "resolve the issues as you see fit").
+    // Bulbapedia (fetched Oct 4): English release February 1, 2019; 196 cards (181 + 15 secret rares; card text reads "/181").
+    // PriceCharting console pokemon-team-up: 197 numbered slots — the extra is "Pokemon Communication #152b", a second item
+    // filed under #152; excluded and named. Photos: pokemontcg.io sm9 (Latias & Latios GX #170 and #196 verified 200, Oct 4).
+    // TAG TEAM cards: listing titles say "Tag Team", so this ticker's eBay searches never drop the word "tag" (TAG_TEAM in
+    // tools/lib/card-files.mjs + js/grade-links.js); TAG slabs are found by "TAG 10" only.
+    mk("TU19", { exclude: [{ num: "152b", label: "the “Pokemon Communication #152b” row — a second PriceCharting item filed under #152; Pokémon Communication #152 itself is in" }], universeCount: 196, universeCountWhy: "Team Up's 196 English cards (181 + 15 secret rares, Bulbapedia)", imgSrc: (b) => /^\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/sm9/" + b.num + ".png" : null, name: "Team Up Set Index", set: "Pokémon TCG Team Up", page: "/team-up-index", pcSlug: "pokemon-team-up", q: "team up", theme: "#e0607e", releaseDate: "2019-02-01", imgSet: "Pokemon Team Up", denom: 181, note: "The February 2019 Sun & Moon set (SM9) that introduced TAG TEAM GX cards: 181 cards plus 15 secret rares (196). The full-art TAG TEAM GX cards lead it, Latias & Latios GX #170 first. " + M }),
   ]);
 }
 function bowmanConfigs() {
@@ -523,7 +530,7 @@ function block(x, c) {
     const w = (b.price * b.w) / bv;
     const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
     const q0 = c.ebayQuery(b.name, b.num);
-    const url = ebaySearchUrl({ q: GL ? q0 + " " + RAW_NOT + (wotc ? " -1st -shadowless" : ed === "shadowless" ? " -1st" : "") + (RAW_EXTRA[x.ticker] || "") : q0, customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
+    const url = ebaySearchUrl({ q: GL ? q0 + " " + rawNot(x.ticker) + (wotc ? " -1st -shadowless" : ed === "shadowless" ? " -1st" : "") + (RAW_EXTRA[x.ticker] || "") : q0, customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
     if (GL) {
       const thumbG = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
       const dkG = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slotG = desk[dkG] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dkG])}"></span>` : '<span class="sidx-auc-slot"></span>';

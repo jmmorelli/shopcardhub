@@ -14,7 +14,10 @@
 //   · WOTC Unlimited tickers drop rows whose title says 1st Edition / Shadowless (separate items, mislisted rows).
 //
 // Writes data/cards/g-<tk>.json  { ticker, day, cards: { "<num>": { psa9, psa10, tag10, asOf } } }  (read by /card)
-// Usage: node tools/build-card-ladder.mjs [--ticker BS99,JU99] [--limit N] [--cache DIR]
+// Usage: node tools/build-card-ladder.mjs [--ticker BS99,JU99] [--limit N] [--cache DIR] [--missing]
+//   Cards come from data/cards/<tk>.json — every card with a /card page, i.e. the basket AND (Oct 4 2026) the universe rows
+//   outside the level, which trade graded more than raw (Skyridge Crystal Charizard, 1st Ed Shining Charizard) — falling back
+//   to the indices.json basket when a ticker has no card file yet. --missing reads only cards with no row in g-<tk>.json yet.
 //   --cache DIR keeps each page's parsed result so an interrupted run resumes (no HTML is cached, only the numbers).
 import fs from "node:fs";
 import path from "node:path";
@@ -31,7 +34,9 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const days = (d) => (Date.parse(TODAY) - Date.parse(d)) / 864e5;
 const r2 = (x) => (x == null ? null : Math.round(x * 100) / 100);
 
-export const POKEMON_SECTOR = ["TH26", "SV151", "BS99", "JU99", "FO99", "TR00", "NG00", "ND02", "AQ03", "SK03", "HF19", "EVS21", "CEL21", "CZ23", "BS1E", "BSSL", "JU1E", "FO1E", "TR1E", "NG1E", "ND1E", "SSP24", "MEG25", "NDC01", "NR01", "NDC1E", "NR1E"];   // SSP24 + MEG25 joined Oct 4 2026; Neo Discovery + Neo Revelation pairs the same night
+export const POKEMON_SECTOR = ["TH26", "SV151", "BS99", "JU99", "FO99", "TR00", "NG00", "ND02", "AQ03", "SK03", "HF19", "EVS21", "CEL21", "CZ23", "BS1E", "BSSL", "JU1E", "FO1E", "TR1E", "NG1E", "ND1E", "SSP24", "MEG25", "NDC01", "NR01", "NDC1E", "NR1E", "TU19"];   // SSP24 + MEG25 joined Oct 4 2026; Neo Discovery + Neo Revelation pairs the same night
+// the six chase indices joined Oct 4 2026 (build E): their cards have /card pages now (tools/build-chase-cards.mjs)
+export const POKEMON_CHASE = ["PB26", "CR26", "AH26", "PRIS25", "DR25", "PF25"];
 const FIRST = new Set(["BS1E", "JU1E", "FO1E", "TR1E", "NG1E", "NDC1E", "NR1E", "ND1E"]), SHADOWLESS = new Set(["BSSL"]);
 const WOTC = new Set(["BS99", "JU99", "FO99", "TR00", "NG00", "NDC01", "NR01", "ND02"]);
 const GRADES = {
@@ -92,10 +97,18 @@ async function get(url) {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const IDX = JSON.parse(fs.readFileSync(path.join(ROOT, "data/indices.json"), "utf8"));
-  const tks = (opt("--ticker", null) || POKEMON_SECTOR.join(",")).split(",").map((s) => s.trim()).filter(Boolean);
+  const tks = (opt("--ticker", null) || POKEMON_SECTOR.concat(POKEMON_CHASE).join(",")).split(",").map((s) => s.trim()).filter(Boolean);
   const CACHE = opt("--cache", null); if (CACHE) fs.mkdirSync(CACHE, { recursive: true });
   const jobs = [];
-  for (const tk of tks) for (const b of (IDX[tk] && IDX[tk].basket) || []) if (b.path) jobs.push({ tk, num: String(b.num), path: b.path });
+  const MISSING = args.includes("--missing");
+  for (const tk of tks) {
+    let src = null; try { src = JSON.parse(fs.readFileSync(path.join(ROOT, `data/cards/${tk.toLowerCase()}.json`), "utf8")).cards; } catch (e) {}
+    if (!src) src = (IDX[tk] && IDX[tk].basket) || [];
+    let have = {}; if (MISSING) try { have = JSON.parse(fs.readFileSync(path.join(ROOT, `data/cards/g-${tk.toLowerCase()}.json`), "utf8")).cards || {}; } catch (e) {}
+    const seen = new Set();
+    for (const b of src) { const num = String(b.num); if (!b.path || seen.has(num) || (MISSING && have[num])) continue; seen.add(num); jobs.push({ tk, num, path: b.path }); }
+  }
+  console.log(`ladder: ${jobs.length} card pages to read`);
   const LIMIT = +opt("--limit", 0); if (LIMIT) jobs.splice(LIMIT);
   const cards = {}, hist = {}; let done = 0, errs = 0; const NOHIST = args.includes("--no-hist");
   async function worker() {
@@ -118,15 +131,23 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // one small file per ticker (a card page loads its own set only); a card that failed to read keeps its previous ladder
   for (const tk of tks) {
     const f = path.join(ROOT, `data/cards/g-${tk.toLowerCase()}.json`);
-    let prev = {}; try { prev = JSON.parse(fs.readFileSync(f, "utf8")).cards || {}; } catch (e) {}
+    let prevDoc = null; try { prevDoc = JSON.parse(fs.readFileSync(f, "utf8")); } catch (e) {}
+    const prev = (prevDoc && prevDoc.cards) || {};
     const mine = { ...prev };
-    for (const [k, v] of Object.entries(cards)) if (k.startsWith(tk + ":")) mine[k.slice(tk.length + 1)] = v;
+    let fresh = 0;
+    for (const [k, v] of Object.entries(cards)) if (k.startsWith(tk + ":")) { mine[k.slice(tk.length + 1)] = v; fresh++; }
+    if (!fresh) continue;   // nothing read for this ticker: leave its file (and its read date) alone
     fs.mkdirSync(path.dirname(f), { recursive: true });
-    fs.writeFileSync(f, JSON.stringify({ _comment: "GENERATED by tools/build-card-ladder.mjs — graded SOLD marks (PSA 9 / PSA 10 / TAG 10) per card. A row counts only when the sale's own title names the grade; mark = median of >=3 sales in 30d else >=2 in 90d; `last` is one dated sale, never a mark. No titles, sellers or item ids stored.", ticker: tk, day: TODAY, cards: mine }) + "\n");
+    // `day` is the ticker's last FULL read; a --missing run adds rows (each with its own asOf) without claiming one
+    const day = MISSING && prevDoc && prevDoc.day ? prevDoc.day : TODAY;
+    fs.writeFileSync(f, JSON.stringify({ _comment: "GENERATED by tools/build-card-ladder.mjs — graded SOLD marks (PSA 9 / PSA 10 / TAG 10) per card. A row counts only when the sale's own title names the grade; mark = median of >=3 sales in 30d else >=2 in 90d; `last` is one dated sale, never a mark. No titles, sellers or item ids stored. day = the last full read; each card's asOf = its own read.", ticker: tk, day, cards: mine }) + "\n");
   }
   for (const tk of tks) {
-    const mine = {}; for (const [k, v] of Object.entries(hist)) if (k.startsWith(tk + ":")) mine[k.slice(tk.length + 1)] = v;
-    if (!Object.keys(mine).length) continue;
+    const fresh = {}; for (const [k, v] of Object.entries(hist)) if (k.startsWith(tk + ":")) fresh[k.slice(tk.length + 1)] = v;
+    if (!Object.keys(fresh).length) continue;
+    // merge onto the previous file: a --missing (or partly failed) run must not drop the histories it did not re-read
+    let prevH = {}; try { prevH = JSON.parse(fs.readFileSync(path.join(ROOT, `data/cards/h-${tk.toLowerCase()}.json`), "utf8")).cards || {}; } catch (e) {}
+    const mine = { ...prevH, ...fresh };
     fs.writeFileSync(path.join(ROOT, `data/cards/h-${tk.toLowerCase()}.json`), JSON.stringify({ _comment: "GENERATED by tools/build-card-ladder.mjs — PriceCharting's monthly price history per card (their value estimate, built from sales): [month, ungraded, Grade 9 any grader, PSA 10]. Chart context on /card, labelled as theirs; never a mark.", ticker: tk, day: TODAY, cards: mine }) + "\n");
   }
   const v = Object.values(cards);
