@@ -112,6 +112,12 @@ function block(slug, e) {
   // because a case would corrupt a per-box mark. This is a LINK, never a mark: no
   // figure is rendered from it and nothing it returns reaches the engine or an index.
   if (c) lines.push(`      <a class="bs-case" href="${attr(epn(c.q, c.customid))}" target="_blank" rel="noopener sponsored" title="Sealed cases of ${attr(e.product)} on eBay &mdash; a search, not a price" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'case',page:location.pathname})">Sealed cases &rarr;</a>`);
+  // Release-window line (Ledger #54, Oct 5 2026). A product that streets soon gets ONE extra link on
+  // the pages that already carry the traffic. It ships HIDDEN: js/release-link.js shows it only between
+  // release.from and release.until, and only while production /api/comps holds >= 3 clean single-unit
+  // listings of the exact product (req/deny, the same guard as the strip). A LINK ONLY: no figure (R20).
+  const rl = e.release;
+  if (rl) lines.push(`      <a class="bs-case bs-rel" hidden href="${attr(epn(rl.q, rl.customid))}" target="_blank" rel="noopener sponsored" data-rel-q="${attr(rl.q)}" data-rel-cid="${attr(rl.customid)}" data-rel-from="${attr(rl.from)}" data-rel-until="${attr(rl.until)}"${rl.req ? ` data-rel-req="${attr(rl.req)}"` : ""}${rl.deny ? ` data-rel-deny="${attr(rl.deny)}"` : ""}${rl.cat ? ` data-rel-cat="${attr(rl.cat)}"` : ""} title="${attr(rl.title || rl.label)} &mdash; a search, not a price" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'release',page:location.pathname})">${text(rl.label)}</a>`);
   const fz = e.fanatics;
   if (fz) lines.push(`      <a class="bs-fan" href="${attr(fan(fz.q, slug))}" target="_blank" rel="sponsored nofollow noopener" title="${attr(fz.title || "Search fanatics.com")}" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}',page:location.pathname})">${text(fz.label || "At Fanatics &rarr;")}</a>`);
   // Rep-the-player TEST (Sep 27 2026, Mo: "add some test rep the player links… give people options and see").
@@ -124,10 +130,12 @@ function block(slug, e) {
   if (rp && !fz) fine.push(`The gear link is a fanatics.com search &mdash; ShopCardHub earns a Fanatics affiliate commission on qualifying purchases.`);
   if (fz) fine.push(`The Fanatics link is a fanatics.com search (Fanatics sells factory-sealed Topps retail boxes) &mdash; ShopCardHub earns a Fanatics affiliate commission on qualifying purchases; no Fanatics price is shown here.`);
   if (c) fine.push(`The sealed-cases link is a search, not a price &mdash; case and multi-box listings are excluded from every figure on this site.`);
+  if (rl) fine.push(`A &ldquo;New&rdquo; link appears only in a product&rsquo;s first 30 days and only while eBay lists at least three single sealed units of it &mdash; a search, not a price.`);
   if (s && s.ag) fine.push(`&ldquo;Authenticated&rdquo; is eBay&rsquo;s Authenticity Guarantee: eBay authenticates eligible single cards $200+ before delivery, at no cost to the buyer (eBay, August 2026). It is eBay&rsquo;s program, not our assessment.`);
   lines.push(`  <p class="bs-fine">${fine.join(" ")}</p>`);
   lines.push(`</div>`);
   lines.push(`<script src="/js/buy-strip.js?v=1" defer></script>`);
+  if (rl) lines.push(`<script src="/js/release-link.js?v=1" defer></script>`);
   lines.push(END);
   return lines.join("\n");
 }

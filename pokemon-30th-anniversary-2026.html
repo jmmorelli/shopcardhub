@@ -1146,7 +1146,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <span class="bb-cta">Cheapest pack in the set <span>&rarr;</span></span>
       </a>
 
-      <a data-cid="pokemon-30th-upc" data-cat="183456" class="bb-tile pre" data-q="pokemon 30th celebration ultra premium collection" data-msrp="179.99" data-req="30th|ultra" href="https://www.ebay.com/sch/i.html?_nkw=pokemon+30th+celebration+ultra+premium+collection&LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=pokemon-30th-upc" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buybox_click',{item:'upc',page:location.pathname})">
+      <a data-cid="pokemon-30th-upc" data-cat="183456|261044" class="bb-tile pre" data-q="pokemon 30th celebration ultra premium collection" data-msrp="179.99" data-req="30th|ultra" href="https://www.ebay.com/sch/i.html?_nkw=pokemon+30th+celebration+ultra+premium+collection&LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001&customid=pokemon-30th-upc" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buybox_click',{item:'upc',page:location.pathname})">
         <span class="bb-badge pre">Wave 4 &middot; Nov 6 &middot; presale</span>
         <span class="bb-name">Ultra-Premium Collection</span>
         <span class="bb-rows"><span>MSRP <b>$179.99</b> &middot; 29+1 packs</span><br><span class="bb-live">Checking live asks&hellip;</span></span>
@@ -1185,7 +1185,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           if (!req.every(function(w){ return s.indexOf(w) !== -1; })) return false;
           if (typeof l.price !== 'number' || !(l.price > 0)) return false;
           // single units only — a case or a multi-box lot is not this product's ask
-          if (/\bcase\b|\blot\b|\bbundle of\b|\bpallet\b|\bsealed case\b/.test(s)) return false;
+          if (/\bcase\b|\blot\b|\bbundle of\b|\bpallet\b|\bsealed case\b|\bset of\b|\bboth\b/.test(s)) return false; // 'set of 2' / 'both': a two-pack is not the unit (Oct 5 2026, idea #56)
           if (/(^|[^a-z0-9])(x\s?\d{1,2}|\d{1,2}\s?x)([^a-z0-9]|$)/.test(s)) return false;
           if (/\b\d{1,2}\s?(box|boxes|pack lot|etb|etbs)\b/.test(s)) return false;
           if (msrp && l.price > msrp * 8) return false; // lot priced as one line item

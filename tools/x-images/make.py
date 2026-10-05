@@ -112,7 +112,9 @@ def card_skew(ix, key, out):
     # histogram on log-x
     fp_m = fm.FontProperties(fname=_ttf("jetbrains-mono-var"))
     fig = plt.figure(figsize=(7.6, 3.6), dpi=100, facecolor=PANEL); ax = fig.add_axes([0.07, 0.2, 0.9, 0.74]); ax.set_facecolor(PANEL)
-    bins = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
+    # powers of two spanning every mark (Oct 5 2026: fixed $1-$2,048 bins dropped TU19's 92 sub-$1 cards and its $2,750 top card)
+    import math; lo = 2.0 ** math.floor(math.log2(max(min(prices), 0.01))); hi = 2.0 ** (math.floor(math.log2(max(prices))) + 1)
+    bins = [lo * 2 ** i for i in range(int(round(math.log2(hi / lo))) + 1)]
     ax.hist(prices, bins=bins, color=CYAN, alpha=0.85, edgecolor=BG)
     ax.set_xscale("log"); ax.set_xticks([1, 10, 100, 1000]); ax.set_xticklabels(["$1", "$10", "$100", "$1,000"], fontproperties=fp_m, color=DIM, fontsize=9)
     ax.tick_params(axis="y", colors=DIM, labelsize=8); ax.grid(axis="y", color=GRID, lw=0.6)
