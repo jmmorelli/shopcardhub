@@ -156,15 +156,18 @@ function classicConfigs() {
   ]);
 }
 function bowmanConfigs() {
+  // Oct 4 2026 (iw-2026-09-30-2, Mo: "go"): SportsCardsPro drops diacritics ("Sean Paul Linan") while the checklist keeps
+  // them ("Liñan"), so the September lookup folds accents on both sides — the miss left Liñan and Muñoz in BB26.
+  const fold = (s) => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
   let sep = { autos: new Map(), base: new Map() };
   try {
     const set = JSON.parse(fs.readFileSync(path.join(ROOT, "data/sets/2026-bowman-chrome-baseball.json"), "utf8"));
-    for (const g of set.groups || []) for (const cd of g.cards || []) (g.key === "cpa" ? sep.autos : sep.base).set(String(cd.player).toLowerCase(), !!cd.first);
+    for (const g of set.groups || []) for (const cd of g.cards || []) (g.key === "cpa" ? sep.autos : sep.base).set(fold(cd.player), !!cd.first);
   } catch (e) { console.error("bowman: September checklist unreadable — " + e.message); }
   const bcpNum = (num) => parseInt(String(num).replace(/^BCP-/i, ""), 10);
-  const isSepAuto = (name) => sep.autos.has(String(name).toLowerCase());
-  const sepFirstAuto = (name) => sep.autos.get(String(name).toLowerCase()) === true;
-  const sepFirstBase = (name) => sep.base.get(String(name).toLowerCase()) === true;
+  const isSepAuto = (name) => sep.autos.has(fold(name));
+  const sepFirstAuto = (name) => sep.autos.get(fold(name)) === true;
+  const sepFirstBase = (name) => sep.base.get(fold(name)) === true;
   const AUTOS = "baseball-cards-2026-bowman-chrome-prospect-autograph", BASE = "baseball-cards-2026-bowman-chrome-prospect";
   const autoSlot = (t) => /#CPA-/i.test(t), baseSlot = (t) => /#BCP-/i.test(t);
   // Oct 1 2026 (Bowman KB + Mo: "fix everything that contradicts"): May's 2026 Bowman has no 1st-flag file, and the old
