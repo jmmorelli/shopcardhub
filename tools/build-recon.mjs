@@ -42,6 +42,18 @@ const IDX = JSON.parse(fs.readFileSync(idxPath, "utf8"));
 for (const tk of TKS) {
   const x = IDX[tk]; if (!x) { console.error("no ticker " + tk); continue; }
   if (x.baseDate && !args.includes("--check")) { console.log(`${tk}: already based (${x.baseDate}) — skip`); continue; }
+  // Oct 4 2026 (DLR26 pre): a ticker whose live inception falls inside its own release month has no month to reconstruct —
+  // the first live mark IS the release-month base (factor 1, the BCB26 case of Oct 1). Without this the link month below
+  // is undefined and the factor is NaN.
+  if (!args.includes("--check") && x.releaseDate && String(x.inception).slice(0, 7) === String(x.releaseDate).slice(0, 7)) {
+    const rel0 = String(x.releaseDate).slice(0, 7);
+    x.recon = []; x.baseDate = rel0; x.baseRule = "release";
+    x.baseNote = `100 = ${monName(rel0)}, the set's release month`;
+    x.rebase = { date: TODAY, factor: 1, ruling: "Mo 2026-09-30 in chat: every Pokémon index is based at its release date — this ticker launched inside its release month, so its first live mark is the base", inceptionLevel: x.history[0].level };
+    (x.divisorLog = x.divisorLog || []).push({ date: TODAY, before: x.divisor, after: x.divisor, why: `BASE (release-date rule). ${x.baseNote}; inception ${x.inception} is inside the release month, so no reconstruction and factor 1.` });
+    console.log(`${tk}: inception inside the release month — base ${rel0}, factor 1, no reconstruction`);
+    continue;
+  }
   const cards = [];
   for (const b of x.basket) { try { cards.push({ b, s: await series(b.path) }); } catch (e) { console.error(tk, b.path, e.message); } await sleep(900); }
   const total = cards.reduce((a, c) => a + c.b.price * c.b.w, 0);

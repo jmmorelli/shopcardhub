@@ -31,7 +31,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const days = (d) => (Date.parse(TODAY) - Date.parse(d)) / 864e5;
 const r2 = (x) => (x == null ? null : Math.round(x * 100) / 100);
 
-export const POKEMON_SECTOR = ["TH26", "SV151", "BS99", "JU99", "FO99", "TR00", "NG00", "ND02", "AQ03", "SK03", "HF19", "EVS21", "CEL21", "CZ23", "BS1E", "BSSL", "JU1E", "FO1E", "TR1E", "NG1E", "ND1E"];
+export const POKEMON_SECTOR = ["TH26", "SV151", "BS99", "JU99", "FO99", "TR00", "NG00", "ND02", "AQ03", "SK03", "HF19", "EVS21", "CEL21", "CZ23", "BS1E", "BSSL", "JU1E", "FO1E", "TR1E", "NG1E", "ND1E", "SSP24", "MEG25"];   // SSP24 + MEG25 joined Oct 4 2026
 const FIRST = new Set(["BS1E", "JU1E", "FO1E", "TR1E", "NG1E", "ND1E"]), SHADOWLESS = new Set(["BSSL"]);
 const WOTC = new Set(["BS99", "JU99", "FO99", "TR00", "NG00", "ND02"]);
 const GRADES = {

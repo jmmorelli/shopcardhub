@@ -81,6 +81,8 @@
     for (var k in indices || {}) {
       if (k === '_comment' || k === 'updated' || !indices[k] || typeof indices[k] !== 'object') continue;
       var v = indices[k];
+      /* board:false (Oct 4 2026, DLR26): a pre shell kept off the home board, the Markets picker and the tape until it goes live */
+      if (v.board === false) continue;
       var h = (v.history || []).filter(function (r) { return r && r.level != null; }).map(function (r) { return { date: r.date, level: r.level, note: r.note || '' }; });
       var pre = v.status === 'pre' || v.status === 'pre-activation' || !h.length;
       idx.push({ k: k, name: v.name || k, page: v.page || null, status: pre ? 'pre' : 'live', basis: v.basisLabel || (v.basis === 'ask' ? 'ask-basis · nightly marks' : 'sold comps only · weekly re-mark'), history: h,
@@ -163,6 +165,8 @@
     PF25:  { l: 'Box',       q: 'pokemon phantasmal flames booster box' },
     TH26:  { l: 'ETB',       q: 'pokemon 30th celebration elite trainer box' },
     SV151: { l: 'ETB',       q: 'pokemon 151 elite trainer box' },
+    SSP24: { l: 'Box',       q: 'pokemon surging sparks booster box -japanese -lot' },
+    MEG25: { l: 'Box',       q: 'pokemon mega evolution booster box -japanese -lot -phantasmal -ascended -perfect -chaos -pitch -delta' },
     BOW26: { l: 'Hobby box', q: '2026 bowman chrome baseball hobby box' },
     BB26:  { l: 'Hobby box', q: '2026 bowman baseball hobby box' },
     BCB26: { l: 'Hobby box', q: '2026 bowman chrome baseball hobby box' }

@@ -59,11 +59,15 @@
     var level = h[n - 1].level, prev = n > 1 ? h[n - 2].level : null;
     var wk = prev ? (level / prev - 1) * 100 : null;
     var since = level - 100;
-    var basket = (r.basket || []).filter(function (c) { return typeof c.price === 'number' && c.price > 0; });
+    var basket = (r.basket || []).filter(function (c) { return typeof c.price === 'number' && c.price > 0 && c.w !== 0; });   // w 0 = tracked on its own line, not in the level (TH26 RGB Mews, Oct 4 2026)
     var name = setName(r), started = day(r.inception || h[0].date);
     // Sep 30 2026 rebase: 100 = the set's release month (or first reliable month), so "since" reads against that, not our start.
     var MN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    var baseTxt = r.baseDate ? (r.baseRule === 'release' ? 'in ' + MN[+r.baseDate.slice(5, 7) - 1] + ' ' + r.baseDate.slice(0, 4) + ', when the set came out' : 'in ' + MN[+r.baseDate.slice(5, 7) - 1] + ' ' + r.baseDate.slice(0, 4) + ', the earliest month with reliable sales data') : null;
+    // Oct 4 2026 (Pokémon KB G9): a release base month that is not the street-date month (AH26: Jan 30 release, 100 = Feb)
+    // says so instead of "when the set came out".
+    var relLate = r.baseRule === 'release' && r.releaseDate && r.releaseDate.slice(0, 7) !== r.baseDate;
+    var relTxt = relLate ? ', the first full month of sales after the ' + MN[+r.releaseDate.slice(5, 7) - 1] + ' ' + (+r.releaseDate.slice(8, 10)) + ', ' + r.releaseDate.slice(0, 4) + ' release' : ', when the set came out';
+    var baseTxt = r.baseDate ? (r.baseRule === 'release' ? 'in ' + MN[+r.baseDate.slice(5, 7) - 1] + ' ' + r.baseDate.slice(0, 4) + relTxt : 'in ' + MN[+r.baseDate.slice(5, 7) - 1] + ' ' + r.baseDate.slice(0, 4) + ', the earliest month with reliable sales data') : null;
     var v = verdict(wk);
     var out = [];
 

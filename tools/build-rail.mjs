@@ -25,7 +25,7 @@ const nav = JSON.parse(read("data/nav.json"));
 // pills from the data files (Terminal step 4): board = the tracked 1st Bowman Chrome autos, indices = every ticker in indices.json
 let boardN = null, indicesN = null;
 try { const wl = JSON.parse(read("data/watchlist.json")); boardN = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.cardType === "chrome-auto" && !c.boardHide).length; } catch {}
-try { const idx = JSON.parse(read("data/indices.json")); indicesN = Object.keys(idx).filter((k) => k !== "_comment" && k !== "updated" && idx[k] && typeof idx[k] === "object").length; } catch {}
+try { const idx = JSON.parse(read("data/indices.json")); indicesN = Object.keys(idx).filter((k) => k !== "_comment" && k !== "updated" && idx[k] && typeof idx[k] === "object" && idx[k].board !== false).length; } catch {}   // board:false = a pre shell kept off the board (DLR26, Oct 4 2026)
 // record (CoS, Oct 2 2026 — outside brief: the scorecard is the trust signal, put it in the rail): "R–W" once any
 // 6/12-month thesis leg is graded; until then the first due date, so the pill never claims a grade that does not exist.
 let recordPill = null;

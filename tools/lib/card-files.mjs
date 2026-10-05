@@ -12,6 +12,10 @@ export const cardId = (tk, num) => `${tk.toLowerCase()}-${cardSlug(num)}`;
 // raw = an ungraded copy; graded words out so the Raw button opens raw listings only
 export const RAW_NOT = "-psa -cgc -bgs -sgc -tag -beckett -graded -slab";
 export const WOTC = new Set(["BS99", "JU99", "FO99", "TR00", "NG00", "ND02"]);
+// per-ticker words every eBay search for that index drops (Oct 4 2026, Pokémon KB G6 / audit S33, S40): Jungle "No Symbol"
+// error holos are a separate variant; Aquapolis / Skyridge reverse holos are separate items the index does not hold.
+// js/grade-links.js carries the same table (EXTRA) for the graded and auction links it builds.
+export const RAW_EXTRA = { JU99: ' -"no symbol"', AQ03: " -reverse", SK03: " -reverse" };
 // edition indices (Sep 30 2026, Mo: "make a respective index for those two" — 1st Edition and Shadowless are their own sets)
 export const EDITION = { BS1E: "1st", JU1E: "1st", FO1E: "1st", TR1E: "1st", NG1E: "1st", ND1E: "1st", BSSL: "shadowless" };
 

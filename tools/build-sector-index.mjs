@@ -18,6 +18,8 @@
 //   node tools/build-sector-index.mjs --ticker TH26 --mark [--dry]      twice weekly (Mon/Thu): re-read the basket's sales, append a history row, re-bake the block
 //   node tools/build-sector-index.mjs --ticker TH26 --recon [--dry]     quarterly: re-run the screen on the universe, enter/exit, re-cap, divisor-adjust (level unchanged)
 //   node tools/build-sector-index.mjs --ticker TH26 --bake              re-bake the page block from data/indices.json only (no network)
+//   node tools/build-sector-index.mjs --ticker TH26 --rescope [--why "<reason>"]   apply CONFIG scope (exclude / basketExclude / Bowman
+//                                                                       keep predicates) to the stored ticker, offline: logged divisor adjustment, level unchanged
 // Add --if-mark-day to --mark to make it a no-op except on Monday/Thursday (for the nightly Action).
 //
 // Writes: data/indices.json (the ticker's key), <page>.html between <!-- <TICKER>:START --> … <!-- <TICKER>:END -->.
@@ -28,7 +30,7 @@ import { fileURLToPath } from "node:url";
 import { consoleCards } from "./price-engine/pc-console.mjs";
 import { parsePage } from "./price-engine/sold-marks.mjs";
 import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
-import { cardId, RAW_NOT, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
+import { cardId, RAW_NOT, RAW_EXTRA, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
 import { createRequire } from "node:module";
 // The plain read is baked, not injected after paint (Night Crew Oct 3 2026, B29: load CLS 0.1-0.24 at 1024). Same renderer as the browser.
 const PR = createRequire(import.meta.url)("../js/plain-read.js");
@@ -72,7 +74,12 @@ const CONFIG = {
     releaseDate: "2026-09-16",
     imgSet: "Pokemon 30th Celebration",   // photo name-search: plain "Pokemon"; NO denominator — the Classic Collection reprints keep their original numbering (Charizard 4/102), so "4/128" finds nothing
     sub: { RGB: { name: "Mew RGB trio", nums: ["R/RGB", "G/RGB", "B/RGB"], blurb: "The three secret-rare Mews (R, G, B) — the set's chase, tracked as their own line so the trio's move is never mistaken for the set's." } },
-    note: "Includes the Classic Collection reprints (Charizard #4, Lugia #149 …) — they are in the set on PriceCharting's listing and enter the basket the week they clear the screen; the Ultra-Premium Collection that carries them ships Nov 6. Product waves run through Dec 4; the index runs forward from its release-month base, so supply arriving later is a market event, never a restatement.",
+    // G20 (Pokémon KB, Oct 4 2026 — Mo: "do whatever the CoS says"; CoS: move them out of the weighted basket). The three
+    // RGB Mews stay in the universe, stay marked Mon/Thu, carry the RGB sub-index line and the chase strip, but weigh 0 in
+    // the basket: at ~$3,500–$4,000 each they sat pinned at the 5/50 group cap as half the level. Honoured by --init,
+    // --recon (applyCap), --mark (weights untouched) and --bake (table, stats, plain read).
+    basketExclude: ["R/RGB", "G/RGB", "B/RGB"],
+    note: "Includes the Classic Collection reprints (Charizard #4, Lugia #149 …) — they are in the set on PriceCharting's listing and enter the basket the week they clear the screen; the Ultra-Premium Collection that carries them ships Nov 6. The three RGB Mews are the set's chase and are tracked as their own line below; since Oct 4 2026 they are not in the weighted basket (weight 0, still marked twice a week) — at several thousand dollars each they sat at the 5/50 group cap as half of the index, so the level read the Mew trio rather than the set. Product waves run through Dec 4; the index runs forward from its release-month base, so supply arriving later is a market event, never a restatement.",
   },
   // SV151 (Sep 25 2026, Mo: "SV151 index now"). Path B of claude/cos/sv151-rebuild-spec-2026-09-17.md: inception = the
   // build date, base 100, never Sep 15. The Sep 17 "authenticated Chrome wall" is gone — item pages carry the ungraded
@@ -89,7 +96,54 @@ const CONFIG = {
     releaseDate: "2023-09-22",
     imgSet: "Pokemon 151", denom: 165,
     skipTitle: /poster collection/i,
-    note: "151 is the original 151 Pokémon, #1–#151 in Pokédex order, plus trainers, energies and the illustration-rare and special-illustration-rare tier (#152–#207). A three-year-old set with deep, steady liquidity — most of the 207 slots trade as singles every week, so the basket is close to the whole set from day one. Sealed product (Booster Bundle, ETB, UPC, tins) is not a card and is not in the universe.",
+    note: "151 is the original 151 Pokémon, #1–#151 in Pokédex order, plus trainers, energies and the illustration-rare and special-illustration-rare tier (#166–#207). A three-year-old set with deep, steady liquidity — most of the 207 slots trade as singles every week, so the basket is close to the whole set from day one. Sealed product (Booster Bundle, ETB, UPC, tins) is not a card and is not in the universe.",
+  },
+  // ---------------- MODERN WHOLE-SET ADDS (Oct 4 2026, Mo: "add Surging Sparks and the Mega Evolution base set as indices,
+  // and Delta Reign is a go"). Same model and parameters as SV151; base = the release month via tools/build-recon.mjs.
+  // Photos: official scans from images.pokemontcg.io (set codes sv8 / me1 verified 200 on Oct 4 — Pikachu ex #238,
+  // Mega Lucario ex #188); sealed product is not a card and is not in the universe (sealed products carry no number).
+  SSP24: {
+    name: "Surging Sparks Set Index",
+    set: "Pokémon TCG Surging Sparks",
+    page: "/surging-sparks-index",
+    pcSlug: "pokemon-surging-sparks",
+    ebayQuery: (name, num) => `pokemon surging sparks ${name} ${num}`,
+    theme: "#f7d02c",
+    releaseDate: "2024-11-08",
+    imgSrc: (b) => /^\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/sv8/" + b.num + ".png" : null,
+    imgSet: "Pokemon Surging Sparks", denom: 191,
+    note: "Surging Sparks is the November 2024 Scarlet & Violet main set (SV8); Pikachu ex #238 is the chase. The universe is the 252 numbered slots on PriceCharting's console. Reverse holo, Prize Pack and stamped prints are separate items and are not in this index; sealed product (booster box, ETB, bundles, blisters) is not a card and is not in the universe.",
+  },
+  MEG25: {
+    name: "Mega Evolution Set Index",
+    set: "Pokémon TCG Mega Evolution",
+    page: "/mega-evolution-index",
+    pcSlug: "pokemon-mega-evolution",
+    ebayQuery: (name, num) => `pokemon mega evolution ${name} ${num}`,
+    theme: "#5b8cff",
+    releaseDate: "2025-09-26",
+    imgSrc: (b) => /^\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/me1/" + b.num + ".png" : null,
+    imgSet: "Pokemon Mega Evolution", denom: 132,
+    // two console rows are promo variants filed under a set number with no plain print of the same name: an International
+    // Championship Ultra Ball (#13 is Seedot in this set) and a Prize Pack Boss's Orders (#114 is Boss's Orders: Ghetsis)
+    skipTitle: /\[(International Championship|Prize Pack[^\]]*)\]/i,
+    note: "Mega Evolution is the September 2025 base set of the Mega Evolution series (ME01) and the first with gold Mega Hyper Rares — Mega Lucario ex #188 and Mega Gardevoir ex #187 lead it. The universe is the 188 numbered slots on PriceCharting's console; published set sizes disagree, so this index makes no set-size claim beyond that. Reverse holo, Prize Pack and stamped prints are separate items and are not in this index; sealed product is not a card and is not in the universe.",
+  },
+  // DLR26 — Delta Reign, PRE (playbook Phase 2, Oct 4 2026). English release Fri 2026-11-06 (TPCi set 110, card code DLR;
+  // "DR26" would collide with DR25 Destined Rivals). The page /delta-reign-index is a pre shell with the DLR26:START/END
+  // markers, so `--init` needs no code change once PriceCharting lists the console (404 on Oct 4) and enough cards clear
+  // the 6-in-30 screen. `status: "pre"` is informational here; data/indices.json carries the live status.
+  DLR26: {
+    name: "Delta Reign Set Index",
+    set: "Pokémon TCG Delta Reign",
+    page: "/delta-reign-index",
+    pcSlug: "pokemon-delta-reign",
+    status: "pre",
+    ebayQuery: (name, num) => `pokemon delta reign ${name} ${num}`,
+    theme: "#2fbf71",
+    releaseDate: "2026-11-06",
+    imgSet: "Pokemon Delta Reign",
+    note: "Delta Reign is the November 2026 Mega Evolution main set (ME06, card code DLR); Mega Rayquaza ex is the chase. The universe is the numbered slots on PriceCharting's console. Reverse holo, Prize Pack and stamped prints are separate items and are not in this index; sealed product is not a card and is not in the universe.",
   },
   // ---------------- CLASSIC POKÉMON SETS (Sep 28 2026, Mo: "add at least 10+ more indices for pokemon, specifically the popular
   // sets from the past. The Pokemon Skyridge comes to mind"). Same model, same parameters, one ticker per set. The slot is the
@@ -109,18 +163,26 @@ const CONFIG = {
   ...bowmanConfigs(),
 };
 
+// CEL21: a promo is a jumbo (oversized) card or a row numbered outside the set's 1–25 / Classic Collection numbering (SWSH…, BW…)
+const celPromo = (u) => /jumbo/.test(String(u.path)) || !/^\d+$/.test(String(u.num));
 // ---- Bowman helpers (release split + 1st flags from the September checklist) ----
 function classicConfigs() {
   const W = "Unlimited print only: 1st Edition, Shadowless and stamped or error variants are separate PriceCharting items and are not in this index. A vintage raw copy can be any condition, so the mark is the median raw sale, not a near-mint price.";
   const E = "Reverse holo prints are separate items and are not in this index. A raw copy can be any condition, so the mark is the median raw sale, not a near-mint price.";
   const M = "Reverse holo, Prize Pack and stamped prints are separate items and are not in this index.";
   const mk = (tk, o) => [tk, { imgSub: "pokemon", classic: true, imgNot: "-celebrations -25th -reprint -japanese", ...o, ebayQuery: (name, num) => `pokemon ${o.q} ${name} ${num}` }];
+  // ---- universe exclusions (Pokémon KB fix list G12/G15, Oct 4 2026 — Mo: "do whatever the CoS says"). A rule matches a
+  // console row by num and/or a name/path pattern; the row never enters the universe (--init), is skipped by --recon, and
+  // --rescope/--mark drop it from stored data as a logged divisor adjustment (level unchanged). `label` is printed on the
+  // page's method note so the exclusion is named, never a silent count.
+  const MACHAMP_BSSL = { num: "8", name: /^Machamp$/, label: "Machamp #8 — the only shadowless Machamp carries the 1st Edition stamp (Machamp came only in the 2-Player Starter, always stamped), so it is a 1st Edition card and is priced in BS1E" };
+  const MACHAMP_BS99 = { num: "8", name: /^Machamp$/, label: "Machamp #8 — no unstamped Unlimited Machamp was released (it came only in the 2-Player Starter, with the 1st Edition stamp); the only Machamp row on PriceCharting's Unlimited listing is the separate “1999-2000” print, so this index holds 101 cards" };
   return Object.fromEntries([
-    mk("BS99", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base1/" + b.num + ".png" : null, name: "Base Set Index", set: "Pokémon TCG Base Set (Unlimited)", page: "/pokemon-base-set-index", pcSlug: "pokemon-base-set", q: "base set unlimited", theme: "#e8b93a", releaseDate: "1999-01-09", imgSet: "Pokemon Base Set", denom: 102, note: "The first English set (1999): Charizard, Blastoise and Venusaur lead a 102-card set. " + W }),
-    mk("JU99", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base2/" + b.num + ".png" : null, name: "Jungle Set Index", set: "Pokémon TCG Jungle (Unlimited)", page: "/pokemon-jungle-index", pcSlug: "pokemon-jungle", q: "jungle unlimited", theme: "#4caf50", releaseDate: "1999-06-16", imgSet: "Pokemon Jungle", denom: 64, note: "The second English set (1999), 64 cards; the holo Eeveelutions and Snorlax are the chase. " + W }),
+    mk("BS99", { exclude: [MACHAMP_BS99], imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base1/" + b.num + ".png" : null, name: "Base Set Index", set: "Pokémon TCG Base Set (Unlimited)", page: "/pokemon-base-set-index", pcSlug: "pokemon-base-set", q: "base set unlimited", theme: "#e8b93a", releaseDate: "1999-01-09", imgSet: "Pokemon Base Set", denom: 102, note: "The first English set (1999): Charizard, Blastoise and Venusaur lead a 102-card set. " + W }),
+    mk("JU99", { exclude: [{ num: "63", name: /line error/i, label: "the “Venonat 1st Edition Line Error” row — an error variant, not a set slot (Venonat #63 itself is in)" }], imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base2/" + b.num + ".png" : null, name: "Jungle Set Index", set: "Pokémon TCG Jungle (Unlimited)", page: "/pokemon-jungle-index", pcSlug: "pokemon-jungle", q: "jungle unlimited", theme: "#4caf50", releaseDate: "1999-06-16", imgSet: "Pokemon Jungle", denom: 64, note: "The second English set (1999), 64 cards; the holo Eeveelutions and Snorlax are the chase. " + W }),
     mk("FO99", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base3/" + b.num + ".png" : null, name: "Fossil Set Index", set: "Pokémon TCG Fossil (Unlimited)", page: "/pokemon-fossil-index", pcSlug: "pokemon-fossil", q: "fossil unlimited", theme: "#b0a089", releaseDate: "1999-10-10", imgSet: "Pokemon Fossil", denom: 62, note: "The third English set (1999), 62 cards; Gengar, Dragonite and the legendary birds lead it. " + W }),
     mk("TR00", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base5/" + b.num + ".png" : null, name: "Team Rocket Set Index", set: "Pokémon TCG Team Rocket (Unlimited)", page: "/team-rocket-index", pcSlug: "pokemon-team-rocket", q: "team rocket unlimited", theme: "#d23c3c", releaseDate: "2000-04-24", imgSet: "Pokemon Team Rocket", denom: 82, note: "The 2000 Dark Pokémon set; Dark Charizard, Dark Blastoise and the secret Dark Raichu #83 lead it. " + W }),
-    mk("NG00", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/neo1/" + b.num + ".png" : null, name: "Neo Genesis Set Index", set: "Pokémon TCG Neo Genesis (Unlimited)", page: "/neo-genesis-index", pcSlug: "pokemon-neo-genesis", q: "neo genesis unlimited", theme: "#f0a830", releaseDate: "2000-12-16", imgSet: "Pokemon Neo Genesis", denom: 111, note: "The first Neo set (2000), 111 cards; Lugia is the chase, with the two Typhlosion prints and Pichu behind it. " + W }),
+    mk("NG00", { exclude: [{ num: "159", name: /^Aligates$/, label: "the “Aligates #159” row — not a Neo Genesis card (the set has 111)" }], imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/neo1/" + b.num + ".png" : null, name: "Neo Genesis Set Index", set: "Pokémon TCG Neo Genesis (Unlimited)", page: "/neo-genesis-index", pcSlug: "pokemon-neo-genesis", q: "neo genesis unlimited", theme: "#f0a830", releaseDate: "2000-12-16", imgSet: "Pokemon Neo Genesis", denom: 111, note: "The first Neo set (2000), 111 cards; Lugia is the chase, with the two Typhlosion prints and Pichu behind it. " + W }),
     // ---- WOTC EDITION INDICES (Sep 30 2026, Mo: "1st edition and shadowless … make a respective index for those two with their
     // specific cards"). Same set, different print = a different collectible. Universe = the console's "[1st Edition]" (or
     // "[Shadowless]") items only; Base Set 1st Edition copies are also shadowless by print, and PriceCharting lists them as
@@ -131,7 +193,7 @@ function classicConfigs() {
         ["FO1E", "pokemon-fossil", "Fossil", "base3", 62, "1999-10-10", "#8d7b5f", "/pokemon-fossil-1st-edition-index", "The 1999 Fossil 1st Edition print (stamped). "],
         ["TR1E", "pokemon-team-rocket", "Team Rocket", "base5", 82, "2000-04-24", "#a32020", "/team-rocket-1st-edition-index", "The 2000 Team Rocket 1st Edition print (stamped). "],
         ["NG1E", "pokemon-neo-genesis", "Neo Genesis", "neo1", 111, "2000-12-16", "#c98a1c", "/neo-genesis-1st-edition-index", "The 2000 Neo Genesis 1st Edition print (stamped). "],
-        ["ND1E", "pokemon-neo-destiny", "Neo Destiny", "neo4", 105, "2002-02-28", "#4b3fa8", "/neo-destiny-1st-edition-index", "The 2002 Neo Destiny 1st Edition print (stamped); the Shining Pokémon lead it. "],
+        ["ND1E", "pokemon-neo-destiny", "Neo Destiny", "neo4", 105, "2002-02-28", "#4b3fa8", "/neo-destiny-1st-edition-index", "The 2002 Neo Destiny 1st Edition print (stamped); the Shining Pokémon are its chase, and most of them sell too rarely raw to clear the screen (named above). "],
     ].map(([tk, slug, set, img, denom, rel, theme, page, note]) => [tk, { imgSub: "pokemon", classic: true, imgNot: "-celebrations -25th -reprint -japanese",
       imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? `https://images.pokemontcg.io/${img}/${b.num}.png` : null,
       name: `${set} 1st Edition Index`, set: `Pokémon TCG ${set} (1st Edition)`, page, pcSlug: slug,
@@ -139,30 +201,40 @@ function classicConfigs() {
       screen: { window: 90 }, theme, releaseDate: rel, imgSet: `Pokemon ${set} 1st Edition`, denom,
       ebayQuery: (name, num) => `pokemon ${set.toLowerCase()} 1st edition ${name} ${num}`,
       note: note + "1st Edition print only: Unlimited, Shadowless and stamped promos are separate items with their own indices. Raw 1st Edition holos sell a few times a month, so this index screens and marks on 90 days of sales (enter at 6, stay at 4). A raw copy can be any condition, so the mark is the median raw sale, not a near-mint price." }]),
-    ["BSSL", { imgSub: "pokemon", classic: true, imgNot: "-celebrations -25th -reprint -japanese",
+    ["BSSL", { exclude: [MACHAMP_BSSL], imgSub: "pokemon", classic: true, imgNot: "-celebrations -25th -reprint -japanese",
       imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base1/" + b.num + ".png" : null,
       name: "Base Set Shadowless Index", set: "Pokémon TCG Base Set (Shadowless)", page: "/pokemon-base-set-shadowless-index", pcSlug: "pokemon-base-set",
       sources: [{ slug: "pokemon-base-set", keep: (title) => /\[Shadowless\]/.test(title) }],
       screen: { window: 90 }, theme: "#7f8c8d", releaseDate: "1999-01-09", imgSet: "Pokemon Base Set Shadowless", denom: 102,
       ebayQuery: (name, num) => `pokemon base set shadowless ${name} ${num}`,
       note: "The early-1999 Base Set print without the drop shadow on the art box and without the 1st Edition stamp. Shadowless print only: 1st Edition (also shadowless, stamped) and Unlimited are separate items with their own indices. Screens and marks on 90 days of raw sales (enter at 6, stay at 4). A raw copy can be any condition, so the mark is the median raw sale, not a near-mint price." }],
-    mk("ND02", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/neo4/" + b.num + ".png" : null, name: "Neo Destiny Set Index", set: "Pokémon TCG Neo Destiny (Unlimited)", page: "/neo-destiny-index", pcSlug: "pokemon-neo-destiny", q: "neo destiny unlimited", theme: "#6a5acd", releaseDate: "2002-02-28", imgSet: "Pokemon Neo Destiny", denom: 105, note: "The last Neo set (2002); the Shining Pokémon (#106–#113, Shining Charizard first) are the chase. " + W }),
-    mk("AQ03", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/ecard2/" + b.num + ".png" : null, name: "Aquapolis Set Index", set: "Pokémon TCG Aquapolis", page: "/aquapolis-index", pcSlug: "pokemon-aquapolis", q: "aquapolis", theme: "#2fa4d8", releaseDate: "2003-01-15", imgSet: "Pokemon Aquapolis", denom: 147, note: "An e-Card set (2003); the Crystal Lugia #149 leads, with Crystal Nidoking #150 and the H-numbered holos behind it. " + E }),
-    mk("SK03", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/ecard3/" + b.num + ".png" : null, name: "Skyridge Set Index", set: "Pokémon TCG Skyridge", page: "/skyridge-index", pcSlug: "pokemon-skyridge", q: "skyridge", theme: "#8fb6e8", releaseDate: "2003-05-12", imgSet: "Pokemon Skyridge", denom: 144, note: "The last WOTC set (2003) and the scarcest e-Card print run. The H-numbered holos lead the basket; the Crystal cards (#146–#150) sell too rarely to clear the liquidity screen, so they sit in the universe until they do. " + E }),
-    mk("HF19", { imgSrc: (b) => /^SV\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/sma/" + b.num + ".png" : /^\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/sm115/" + b.num + ".png" : null, name: "Hidden Fates Set Index", set: "Pokémon TCG Hidden Fates", page: "/hidden-fates-index", pcSlug: "pokemon-hidden-fates", q: "hidden fates", theme: "#e0503c", releaseDate: "2019-08-23", imgSet: "Pokemon Hidden Fates", denom: 68, note: "The 2019 special set with the Shiny Vault (SV1–SV94); Charizard-GX SV49 is the chase. " + M }),
-    mk("EVS21", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/swsh7/" + b.num + ".png" : null, name: "Evolving Skies Set Index", set: "Pokémon TCG Evolving Skies", page: "/evolving-skies-index", pcSlug: "pokemon-evolving-skies", q: "evolving skies", theme: "#3c7fd8", releaseDate: "2021-08-27", imgSet: "Pokemon Evolving Skies", denom: 203, note: "The 2021 Eeveelution set; Umbreon VMAX alt art #215 (\"Moonbreon\") is the chase, with Rayquaza VMAX alt #218. " + M }),
-    mk("CEL21", { imgNot: "-japanese", name: "Celebrations Set Index", set: "Pokémon TCG Celebrations", page: "/celebrations-index", pcSlug: "pokemon-celebrations", q: "celebrations", theme: "#d4af37", releaseDate: "2021-10-08", imgSet: "Pokemon Celebrations", note: "The 25th-anniversary set (2021): 25 main cards, the Classic Collection reprints (which keep their original numbers, so Charizard is #4) and the Celebrations promos PriceCharting files with the set. " + M }),
-    mk("CZ23", { imgSrc: (b) => /^GG\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/swsh12pt5gg/" + b.num + ".png" : /^\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/swsh12pt5/" + b.num + ".png" : null, name: "Crown Zenith Set Index", set: "Pokémon TCG Crown Zenith", page: "/crown-zenith-index", pcSlug: "pokemon-crown-zenith", q: "crown zenith", theme: "#c9a227", releaseDate: "2023-01-20", imgSet: "Pokemon Crown Zenith", denom: 159, note: "The 2023 special set with the Galarian Gallery (GG01–GG70); the Giratina, Mewtwo and Arceus VSTAR gallery cards lead it. " + M }),
+    mk("ND02", { exclude: [{ name: /lumineux/i, label: "the French-language “Dracolosse Lumineux” row — not an English Neo Destiny card" }], imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/neo4/" + b.num + ".png" : null, name: "Neo Destiny Set Index", set: "Pokémon TCG Neo Destiny (Unlimited)", page: "/neo-destiny-index", pcSlug: "pokemon-neo-destiny", q: "neo destiny unlimited", theme: "#6a5acd", releaseDate: "2002-02-28", imgSet: "Pokemon Neo Destiny", denom: 105, note: "The last Neo set (2002); the Shining Pokémon (#106–#113, Shining Charizard first) are the chase. " + W }),
+    mk("AQ03", { exclude: [{ path: /-box-topper-/, label: "the four box toppers (Entei, Espeon, Scizor, Suicune) — oversized promos sold with the box, not set slots" }, { path: /-reverse-holo-/, label: "two reverse-holo rows (Drowzee #74, Mr. Mime #95) — reverse holos are separate items" }], imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/ecard2/" + b.num + ".png" : null, name: "Aquapolis Set Index", set: "Pokémon TCG Aquapolis", page: "/aquapolis-index", pcSlug: "pokemon-aquapolis", q: "aquapolis", theme: "#2fa4d8", releaseDate: "2003-01-15", imgSet: "Pokemon Aquapolis", denom: 147, note: "An e-Card set (2003); the Crystal Lugia #149 leads, with Crystal Nidoking #150 and the H-numbered holos behind it. " + E }),
+    mk("SK03", { exclude: [{ path: /-box-topper-/, label: "the four box toppers (Charizard, Crobat, Ho-Oh, Kabutops) — oversized promos sold with the box, not set slots" }], imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/ecard3/" + b.num + ".png" : null, name: "Skyridge Set Index", set: "Pokémon TCG Skyridge", page: "/skyridge-index", pcSlug: "pokemon-skyridge", q: "skyridge", theme: "#8fb6e8", releaseDate: "2003-05-12", imgSet: "Pokemon Skyridge", denom: 144, note: "The last WOTC set (2003). The H-numbered holos lead the basket; the six Crystal cards (#145–#150: Celebi, Charizard, Crobat, Golem, Ho-Oh, Kabutops) sell too rarely to clear the liquidity screen, so they sit in the universe until they do. " + E }),
+    mk("HF19", { exclude: [{ num: "157a", name: /^Metagross GX$/, label: "“Metagross GX #157a” — not a Hidden Fates card (68 main + the secret + SV1–SV94 = 163)" }], imgSrc: (b) => /^SV\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/sma/" + b.num + ".png" : /^\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/sm115/" + b.num + ".png" : null, name: "Hidden Fates Set Index", set: "Pokémon TCG Hidden Fates", page: "/hidden-fates-index", pcSlug: "pokemon-hidden-fates", q: "hidden fates", theme: "#e0503c", releaseDate: "2019-08-23", imgSet: "Pokemon Hidden Fates", denom: 68, note: "The 2019 special set with the Shiny Vault (SV1–SV94); Charizard-GX SV49 is the chase. " + M }),
+    mk("EVS21", { exclude: [{ num: "16", path: /\/eldgoss-holo-16$/, label: "the “Eldgoss” #16 row — a duplicate of Eldegoss #16, which is in" }], imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/swsh7/" + b.num + ".png" : null, name: "Evolving Skies Set Index", set: "Pokémon TCG Evolving Skies", page: "/evolving-skies-index", pcSlug: "pokemon-evolving-skies", q: "evolving skies", theme: "#3c7fd8", releaseDate: "2021-08-27", imgSet: "Pokemon Evolving Skies", denom: 203, note: "The 2021 Eeveelution set; Umbreon VMAX alt art #215 (\"Moonbreon\") is the chase, with Rayquaza VMAX alt #218. " + M }),
+    // G19 (Pokémon KB, Oct 4 2026 — Mo: "do whatever the CoS says"; CoS option (a)): the promos stay, the title says so. The set
+    // is 50 cards (25 main + 25 Classic Collection); PriceCharting files the Celebrations-era promos (SWSH Black Star and the
+    // oversized jumbo cards) on the same console, and they were a third of basket value under a "92 cards of Celebrations" label.
+    mk("CEL21", { syncLabels: true, imgNot: "-japanese", name: "Celebrations + 25th Promos Index", set: "Pokémon TCG Celebrations (set + 25th-anniversary promos)", page: "/celebrations-index", pcSlug: "pokemon-celebrations", q: "celebrations", theme: "#d4af37", releaseDate: "2021-10-08", imgSet: "Pokemon Celebrations",
+      countLine: (x) => { const p = x.universe.filter(celPromo).length; return `All ${x.universe.length} cards of the 50-card Celebrations set plus ${p} anniversary promos`; },
+      note: (x) => {
+        const pr = x.universe.filter(celPromo), jumbo = pr.filter((u) => /jumbo/.test(u.path)).length, bv = basketValue(x.basket), pv = basketValue(x.basket.filter(celPromo));
+        return `The 25th-anniversary set (2021) is 50 cards: 25 main cards and 25 Classic Collection reprints (which keep their original numbers, so Charizard is #4). This index also holds the ${pr.length} Celebrations-era promos PriceCharting files with the set — ${pr.length - jumbo} SWSH Black Star promos and ${jumbo} oversized jumbo cards from the Celebrations collections. They are not set cards, but they came in the Celebrations products and collectors file them with the set; ${x.basket.filter(celPromo).length} of them trade often enough to be in the basket, and they are ${bv ? Math.round((pv / bv) * 100) : 0}% of basket value. ` + M;
+      } }),
+    mk("CZ23", { exclude: [{ path: /-tin-none$/, label: "the two tin rows (Galarian Moltres, Galarian Zapdos) — sealed products, not cards" }], imgSrc: (b) => /^GG\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/swsh12pt5gg/" + b.num + ".png" : /^\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/swsh12pt5/" + b.num + ".png" : null, name: "Crown Zenith Set Index", set: "Pokémon TCG Crown Zenith", page: "/crown-zenith-index", pcSlug: "pokemon-crown-zenith", q: "crown zenith", theme: "#c9a227", releaseDate: "2023-01-20", imgSet: "Pokemon Crown Zenith", denom: 159, note: "The 2023 special set with the Galarian Gallery (GG01–GG70); the Giratina, Mewtwo and Arceus VSTAR gallery cards lead it. " + M }),
   ]);
 }
 function bowmanConfigs() {
-  // Oct 4 2026 (iw-2026-09-30-2, Mo: "go"): SportsCardsPro drops diacritics ("Sean Paul Linan") while the checklist keeps
-  // them ("Liñan"), so the September lookup folds accents on both sides — the miss left Liñan and Muñoz in BB26.
-  const fold = (s) => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-  let sep = { autos: new Map(), base: new Map() };
+  // iw-2026-09-30-2 (accent fold, Mo's go Oct 4 2026): the checklist spells players with diacritics (Sean Paul Liñan, Yadier
+  // Muñoz, Luis Peña) and SportsCardsPro's console without them (Linan, Munoz, Pena), so an exact-case match missed them and
+  // two September 1st autos sat in May's BB26. Names are compared case- and accent-folded on both sides.
+  const fold = (s) => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+  let sep = { autos: new Map(), base: new Map(), firstAutos: null };
   try {
     const set = JSON.parse(fs.readFileSync(path.join(ROOT, "data/sets/2026-bowman-chrome-baseball.json"), "utf8"));
     for (const g of set.groups || []) for (const cd of g.cards || []) (g.key === "cpa" ? sep.autos : sep.base).set(fold(cd.player), !!cd.first);
+    sep.firstAutos = (set.groups || []).filter((g) => g.key === "cpa").reduce((n, g) => n + (g.cards || []).filter((cd) => cd.first).length, 0);
   } catch (e) { console.error("bowman: September checklist unreadable — " + e.message); }
   const bcpNum = (num) => parseInt(String(num).replace(/^BCP-/i, ""), 10);
   const isSepAuto = (name) => sep.autos.has(fold(name));
@@ -190,6 +262,7 @@ function bowmanConfigs() {
   const sept = { auto: (name, num) => isSepAuto(name) && sepFirstAuto(name), base: (name, num) => bcpNum(num) > 150 && sepFirstBase(name) };
   const common = {
     cat: "baseball", imgSub: "1ST BOWMAN", sacat: SACAT_SPORTS,
+    offlineKeep: true,   // the sources[].keep predicates read (title, name, num) only, so --rescope can re-apply them to stored rows without a console read
     ebayQuery: (name, num) => `2026 bowman chrome ${name} ${/^CPA/i.test(num) ? "auto" : ""} ${num}`.replace(/\s+/g, " "),
     imgKey: (b) => `${b.name} 2026 Bowman Chrome ${/^CPA/i.test(b.num) ? "Auto" : ""} ${b.num}`.replace(/\s+/g, " "),
     theme: "#00ccf5", releaseDate: "2026-05-13",
@@ -205,6 +278,8 @@ function bowmanConfigs() {
       subUniverse: { key: "BASE", name: "1st Bowman Chrome (base)", blurb: "the same release's 1st Bowman Chrome base cards, price-weighted, uncapped — the non-auto line under the autos", sources: [{ slug: BASE, keep: (t, name, num) => baseSlot(t) && may.base(name, num) }] },
       note: "May's 2026 Bowman: the flagship whose on-card Chrome Prospect Autograph insert (#CPA-) is where the class's 1st Bowman Chrome Autos live — Holliday, Fischer, Kim and the rest of the Bangers board are all here. Paper prospect cards (BP-) are left out on purpose: the chase is Chrome. The Bangers board ranks five of these on the 30-day median of dated sales and makes calls; this index prices every one that trades and makes none." },
     BCB26: { ...common, name: "2026 Bowman Chrome 1st Auto Index", set: "2026 Bowman Chrome", page: "/bowman-chrome-2026-index", releaseDate: "2026-09-09",
+      // assert (iw-2026-09-30-2): the universe is exactly the checklist's first-flagged Chrome Prospect Autographs (97 of 104)
+      universeCount: sep.firstAutos, universeCountWhy: "the September checklist's first-flagged CPAs (data/sets/2026-bowman-chrome-baseball.json)",
       sources: [{ slug: AUTOS, keep: (t, name, num) => autoSlot(t) && sept.auto(name, num) }],
       subUniverse: { key: "BASE", name: "1st Bowman Chrome (base)", blurb: "September's 1st Bowman Chrome base cards (BCP-151 up), price-weighted, uncapped", sources: [{ slug: BASE, keep: (t, name, num) => baseSlot(t) && sept.base(name, num) }] },
       note: "September's 2026 Bowman Chrome: only the autos our Sep 9 per-card audit tags as a player's first Bowman autograph are in (97 of 104; no published checklist marks 1sts on auto lines); returning autos (Kilby, Quintero, F. Arias, J. Gonzalez, Parker, Doyle, Peña) had their 1st Bowman autos in 2025 products and are excluded here, not double-counted. Release-week supply is heavy, so the first quarter of marks reads the drawdown every Bowman product prints before the class sorts itself." },
@@ -259,15 +334,31 @@ async function universe(c, spec) {
     const bracket = rank > 0;
     const key = (name + " #" + num).toLowerCase();
     if (src.keep && !src.keep(r.title, name, num)) continue;
+    if (exRule(c, { num, name, path: r.path })) continue;   // CONFIG exclusion (G12/G15, Oct 4 2026): never enters the universe
     const cur = slots.get(key);
     if (!cur || rank < cur.rank) slots.set(key, { num, name, title: name + " #" + num, path: r.path, bracket, rank });
   }
   }
   const out = [...slots.values()].map(({ num, name, title, path: p }) => ({ num, name, title, path: p }));
-  const numOf = (n) => parseInt(String(n).replace(/^[A-Z]+-/i, ""), 10) || 0;
-  out.sort((a, b) => numOf(a.num) - numOf(b.num) || a.name.localeCompare(b.name));
-  return out;
+  return sortUni(out);
 }
+const numOf = (n) => parseInt(String(n).replace(/^[A-Z]+-/i, ""), 10) || 0;
+function sortUni(out) { out.sort((a, b) => numOf(a.num) - numOf(b.num) || a.name.localeCompare(b.name)); return out; }
+// CONFIG scope (Oct 4 2026): a universe row is excluded by a ticker's `exclude` rules (num and/or name/path pattern, all given
+// fields must match); a basket row whose num is in `basketExclude` stays in the basket at weight 0 (tracked, marked, drawn on
+// the chase strip and its sub-index line, but not in the level).
+function exRule(c, u) {
+  for (const r of c.exclude || []) {
+    if (r.num == null && !r.name && !r.path) continue;
+    if (r.num != null && String(u.num) !== String(r.num)) continue;
+    if (r.name && !r.name.test(String(u.name))) continue;
+    if (r.path && !r.path.test(String(u.path))) continue;
+    return r;
+  }
+  return null;
+}
+const exW = (c) => new Set((c.basketExclude || []).map(String));
+const lineOnly = (b) => b.w === 0;   // a basketExclude row: in the basket table and strips, weight 0 in the level
 
 // ---------------- screen + mark from one item page read ----------------
 const READ_CACHE = new Map();
@@ -301,8 +392,9 @@ async function readCardUncached(slot) {
 }
 
 // ---------------- the 25% cap: weights w so no card exceeds CAP of Σ(price·w); level unchanged by construction ----------------
-function applyCap(basket) {
-  basket.forEach((b) => { b.w = 1; });
+function applyCap(basket, ex) {
+  ex = ex || new Set();
+  basket.forEach((b) => { b.w = ex.has(String(b.num)) ? 0 : 1; });   // basketExclude rows weigh 0 and take no part in either cap leg
   for (let it = 0; it < 200; it++) {
     let changed = false;
     const T = basket.reduce((s, b) => s + b.price * b.w, 0);
@@ -405,7 +497,7 @@ function block(x, c) {
   const bv = basketValue(x.basket), rows = x.basket.slice().sort((a, b) => b.price * b.w - a.price * a.w);
   const wts = rows.map((b) => (b.price * b.w) / bv);
   const hhi = wts.reduce((s, w) => s + w * w, 0), eff = hhi ? 1 / hhi : 0;
-  const top = wts[0] || 0, capped = rows.filter((b) => b.w < 1).length;
+  const top = wts[0] || 0, capped = rows.filter((b) => b.w < 1 && !lineOnly(b)).length, weighted = rows.filter((b) => !lineOnly(b)).length;
   const pct = (v, d) => v == null ? "—" : (v > 0 ? "+" : "") + v.toFixed(d == null ? 1 : d) + "%";
   const cls = (v) => v > 0 ? "up" : v < 0 ? "dn" : "flat";
   const money = (n, d) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: d == null ? 2 : d, maximumFractionDigits: d == null ? 2 : d });
@@ -414,25 +506,30 @@ function block(x, c) {
   // Pokémon tickers get the grade-link group (Sep 30 2026, Mo): Raw baked + PSA 9 · PSA 10 · TAG built by js/grade-links.js
   // from data-q, one Buy-It-Now/Auctions switch per table, and the card name opens /card?id=… (the ladder page).
   const GL = (c.imgSub || "pokemon") === "pokemon" && !c.kindPlural, wotc = WOTC.has(x.ticker), ed = EDITION[x.ticker] || null;
+  // weight cell: capped rows carry *, line-only rows (basketExclude) read "line" — tracked and marked, weight 0 in the level
+  const wCell = (b, w) => lineOnly(b) ? '<span title="tracked as its own line, not in the weighted basket — see the method note">line</span><i title="not in the weighted basket">‡</i>' : `${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}`;
   const row = (b, i) => {
     const w = (b.price * b.w) / bv;
     const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
     const q0 = c.ebayQuery(b.name, b.num);
-    const url = ebaySearchUrl({ q: GL ? q0 + " " + RAW_NOT + (wotc ? " -1st -shadowless" : ed === "shadowless" ? " -1st" : "") : q0, customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
+    const url = ebaySearchUrl({ q: GL ? q0 + " " + RAW_NOT + (wotc ? " -1st -shadowless" : ed === "shadowless" ? " -1st" : "") + (RAW_EXTRA[x.ticker] || "") : q0, customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
     if (GL) {
       const thumbG = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
       const dkG = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slotG = desk[dkG] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dkG])}"></span>` : '<span class="sidx-auc-slot"></span>';
-      return `<tr data-q="${esc(q0)}" data-cid="${cid}"${b.price >= 200 ? ' data-av="1"' : ""}><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumbG}<div><b><a class="cardlk" href="/card?id=${cardId(x.ticker, b.num)}" title="Raw vs PSA 9 vs PSA 10 vs TAG — the card's price ladder">${esc(b.name)}</a></b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act g"><span class="act-w g"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><span class="glk"><a class="ebay g-raw" data-g="raw" href="${url}" target="_blank" rel="sponsored nofollow noopener" title="Raw (ungraded) copies on eBay${b.price >= 200 ? " — Authenticity Guarantee filter on" : ""}">Raw</a></span>${slotG}</span></td></tr>`;
+      return `<tr data-q="${esc(q0)}" data-cid="${cid}"${b.price >= 200 ? ' data-av="1"' : ""}><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumbG}<div><b><a class="cardlk" href="/card?id=${cardId(x.ticker, b.num)}" title="Raw vs PSA 9 vs PSA 10 vs TAG — the card's price ladder">${esc(b.name)}</a></b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${wCell(b, w)}</td><td class="num dim">${b.n30}</td><td class="act g"><span class="act-w g"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><span class="glk"><a class="ebay g-raw" data-g="raw" href="${url}" target="_blank" rel="sponsored nofollow noopener" title="Raw (ungraded) copies on eBay${b.price >= 200 ? " — Authenticity Guarantee filter on" : ""}">Raw</a></span>${slotG}</span></td></tr>`;
     }
     const thumb = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
     const dk = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slot = desk[dk] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dk])}"></span>` : "";
-    return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}</td><td class="num dim">${b.n30}</td><td class="act"><span class="act-w"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot || '<span class="sidx-auc-slot"></span>'}</span></td></tr>`;
+    return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${esc(b.name)}</b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${wCell(b, w)}</td><td class="num dim">${b.n30}</td><td class="act"><span class="act-w"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot || '<span class="sidx-auc-slot"></span>'}</span></td></tr>`;
   };
   const top10 = rows.slice(0, 10).map(row).join(""), rest = rows.slice(10).map((b, i) => row(b, i + 10)).join("");
   // CHASE strip (Sep 26 2026, Mo: high-ticket cards in the first buy position — eBay pays ~3% of the sale, so the
   // $700 card is worth twenty ETB clicks). Top 3 constituents by their own dated sold mark, one tagged link each
   // (customid <tk>-<num>-chase). States the mark the table already publishes; not a call.
-  const chaseTop = rows.filter((b) => typeof b.price === "number" && b.price >= 50).sort((a, b) => b.price - a.price).slice(0, 3);
+  // The pool is every marked basket row INCLUDING line-only rows (G20, Oct 4 2026): the chase strip is about the cards that
+  // carry the set for a buyer, not about index weights — TH26's RGB Mews left the weighted basket but stay on the strip.
+  const chasePool = rows.concat(Object.values(x.sub || {}).filter((sx) => sx.kind !== "screened" && Array.isArray(sx.nums)).flatMap((sx) => x.basket.filter((b) => sx.nums.includes(String(b.num)) && !rows.includes(b))));
+  const chaseTop = chasePool.filter((b) => typeof b.price === "number" && b.price >= 50).sort((a, b) => b.price - a.price).slice(0, 3);
   const MONS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const mdShort = (d) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d || "")); return m ? `${MONS[+m[2] - 1]} ${+m[3]}` : ""; };
   const chase = chaseTop.length < 2 ? "" : `<div class="chase" id="${x.ticker.toLowerCase()}-chase" data-chase="${x.ticker}">
@@ -444,7 +541,19 @@ function block(x, c) {
     }).join("")}</div>
     <div class="cf">Sold mark per card, from the table below: a median of recent dated sales (not one sale), dated to the read — not a call. Links open live eBay listings (affiliate; ShopCardHub earns a commission at no cost to you).</div>
   </div>`;
-  const unpriced = x.universe.length - x.basket.length;
+  // Name what is out (Pokémon KB G12/G13/G14, Oct 4 2026): up to 12 cards out of the basket are listed by name, not counted;
+  // CONFIG exclusions are named with their reason; line-only rows are explained by the ticker's note.
+  const inB = new Set(x.basket.map((b) => b.path));
+  const outRows = x.universe.filter((u) => !inB.has(u.path));
+  const outTxt = !outRows.length ? (weighted < x.basket.length ? `Every card in the universe is in the basket; ${x.basket.length - weighted} of them weigh 0 in the level (explained below).` : "Every card in the universe is in the basket.")
+    : outRows.length <= 12 ? `${outRows.length} of ${x.universe.length} cards ${outRows.length === 1 ? "is" : "are"} in the universe but not the basket — too few clean sales in the trailing ${SCREEN.window} days at the last screen: ${outRows.map((u) => `${u.name} #${u.num}`).join(", ")}.`
+    : `${outRows.length} of ${x.universe.length} cards ${outRows.length === 1 ? "is" : "are"} in the universe but not the basket.`;
+  const exTxt = (c.exclude || []).filter((r) => r.label).length ? `Left out of the universe on purpose: ${(c.exclude || []).filter((r) => r.label).map((r) => r.label).join("; ")}.` : "";
+  const noteTxt = typeof c.note === "function" ? c.note(x) : c.note;
+  // "All N cards" — a/b-numbered printings share a slot number, so the numbered count is stated beside the row count
+  const abNums = [...new Set(x.universe.filter((u) => /\d[ab]$/i.test(String(u.num))).map((u) => String(u.num).replace(/[ab]$/i, "")))];
+  const slotN = new Set(x.universe.map((u) => String(u.num).replace(/(\d)[ab]$/i, "$1"))).size;
+  const countLine = c.countLine ? c.countLine(x) : `All ${x.universe.length} cards of ${c.set}${abNums.length ? ` (${slotN} numbered slots; #${abNums.join(", #")} were printed in a and b versions)` : ""}`;
   // sub-index strips (one line each)
   const subs = Object.entries(x.sub || {}).map(([k, sx]) => {
     const sh = sx.history || [], sl = sh[sh.length - 1], sp = sh.length > 1 ? sh[sh.length - 2] : null;
@@ -458,7 +567,7 @@ function block(x, c) {
     <div class="sidx-t">
       <div class="sidx-eyebrow">▮ ${c.kindPlural ? "Class Index · Sector Model · Every " + esc(c.kindPlural.replace(/s$/, "")) : "Set Index · Sector Model · Every Card In The Set"}</div>
       <h2><span class="sidx-tk">${x.ticker}</span> <span class="sidx-dot">·</span> ${esc(c.name)}</h2>
-      <p class="sidx-sub">${c.kindPlural ? `Every ${esc(c.kindPlural.replace(/s$/, ""))} in ${esc(c.set)} — ${x.universe.length} cards, ${x.basket.length} trading — priced` : `All ${x.universe.length} cards of ${esc(c.set)}, priced`} from dated sold comps and re-marked Monday and Thursday. ${baseSentence(x)} This block tracks the ${c.kindPlural ? "class" : "set"}; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
+      <p class="sidx-sub">${c.kindPlural ? `Every ${esc(c.kindPlural.replace(/s$/, ""))} in ${esc(c.set)} — ${x.universe.length} cards, ${weighted} trading — priced` : `${esc(countLine)}, priced`} from dated sold comps and re-marked Monday and Thursday. ${baseSentence(x)} This block tracks the ${c.kindPlural ? "class" : "set"}; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
     </div>
     <figure class="sidx-photo"><span data-card-img="${esc(imgAttr(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · ${c.imgSrc && c.imgSrc(hero) ? "card image" : "live eBay listing"}</figcaption></figure>
     <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div><div class="lvc">${baseLine(x)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</div></div>
@@ -466,7 +575,7 @@ function block(x, c) {
   ${prBox}
   <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>
   ${prBox ? `<div class="pr-fold" id="pr-fold-${x.ticker.toLowerCase()}" hidden>` : ""}<div class="sidx-stats">
-    <div><span class="k">Basket / Universe</span><span class="v">${x.basket.length} <i>/ ${x.universe.length}</i></span></div>
+    <div><span class="k">Basket / Universe</span><span class="v">${weighted} <i>/ ${x.universe.length}</i></span></div>
     <div><span class="k">Top card weight</span><span class="v">${(top * 100).toFixed(1)}%</span></div>
     <div><span class="k">Effective holdings</span><span class="v">${eff.toFixed(1)}</span></div>
     <div><span class="k">Basket value</span><span class="v">${money(bv, 0)}<i> Σpx·w</i></span></div>
@@ -485,7 +594,7 @@ function block(x, c) {
     <tbody>${top10}</tbody>
   </table></div>
   ${rest ? `<details class="sidx-more"><summary><span class="sm-open">Show all ${rows.length} cards ▾</span><span class="sm-close">Hide cards 11–${rows.length} ▴</span></summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
-  <p class="sidx-note" id="${x.ticker.toLowerCase()}-method"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay. Price-weighted on ${c.srcNote || "PriceCharting's dated ungraded sold list (blended eBay + TCGplayer)"}, never asks. Caps: no card above ${(CAP * 100).toFixed(0)}% and positions above ${(BIG * 100).toFixed(0)}% never past ${(BIG_SUM * 100).toFixed(0)}% together (the Select Sector SPDR 5/50 rule) — a weight marked * is capped, and every cap is a weight in the divisor math, so applying one never moves the level. Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; entries, exits and cap changes are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before). ${unpriced} of ${x.universe.length} cards are in the universe but not the basket. n30 is a liquidity gate, never a volume figure (the source caps its table at ${c.rowCap || 60} rows${c.rowCapNote || ""}). ${esc(c.note)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>
+  <p class="sidx-note" id="${x.ticker.toLowerCase()}-method"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay. Price-weighted on ${c.srcNote || "PriceCharting's dated ungraded sold list (blended eBay + TCGplayer)"}, never asks. Caps: no card above ${(CAP * 100).toFixed(0)}% and positions above ${(BIG * 100).toFixed(0)}% never past ${(BIG_SUM * 100).toFixed(0)}% together (the Select Sector SPDR 5/50 rule) — a weight marked * is capped, and every cap is a weight in the divisor math, so applying one never moves the level. Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; entries, exits and cap changes are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before). ${esc(outTxt)} ${exTxt ? esc(exTxt) + " " : ""}n30 is a liquidity gate, never a volume figure (the source caps its table at ${c.rowCap || 60} rows${c.rowCapNote || ""}). ${esc(noteTxt)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>
 </section></div>`;
 }
 function ST_spark(ys, w, h) {
@@ -615,7 +724,7 @@ function bake(x, c) {
   if (!html.includes('src="/js/index-you.js')) html = html.replace("</body>", '<script src="/js/index-you.js?v=1" defer></script>\n</body>');
   if (!html.includes('src="/js/sector-auctions.js')) html = html.replace("</body>", '<script src="/js/sector-auctions.js?v=3" defer></script>\n</body>');
   if ((c.imgSub || "pokemon") === "pokemon" && !c.kindPlural) {
-    if (!html.includes('src="/js/grade-links.js')) html = html.replace("</body>", '<script src="/js/grade-links.js?v=1" defer></script>\n</body>');
+    if (!html.includes('src="/js/grade-links.js')) html = html.replace("</body>", '<script src="/js/grade-links.js?v=2" defer></script>\n</body>');
     const bv = x.basket.reduce((a, b) => a + b.price * b.w, 0);
     writeCardFile(ROOT, x, c, x.basket.slice().sort((a, b) => b.price * b.w - a.price * a.w), imgAttr, DRY);
   }
@@ -627,6 +736,79 @@ function bake(x, c) {
 const idxPath = path.join(ROOT, "data/indices.json");
 const IDX = JSON.parse(fs.readFileSync(idxPath, "utf8"));
 const save = () => { if (DRY) { console.log("--dry: indices.json not written"); return; } IDX.updated = TODAY; fs.writeFileSync(idxPath, JSON.stringify(IDX, null, 1) + "\n"); console.log("wrote data/indices.json"); };
+const ORIG = JSON.parse(JSON.stringify(IDX));   // pre-run snapshot: --rescope draws sibling rows from it, so ticker order in one run never matters
+const r6 = (v) => Math.round(v * 1e6) / 1e6;
+
+// ---------------- scope assert (iw-2026-09-30-2): a ticker with universeCount must hold exactly that many slots ----------------
+function assertScope(x, c) {
+  if (c.universeCount == null) return;
+  if (x.universe.length !== c.universeCount) { console.error(`${x.ticker}: ASSERT FAILED — universe ${x.universe.length} ≠ ${c.universeCount} (${c.universeCountWhy || "universeCount"}); nothing written`); process.exit(3); }
+  console.log(`${x.ticker}: assert ok — universe ${x.universe.length} = ${c.universeCountWhy || "universeCount"}`);
+}
+
+// ---------------- --rescope: apply CONFIG scope to the stored ticker offline (no network) ----------------
+// Universe = stored rows (plus, for offlineKeep tickers, rows the same console feeds to sibling tickers) that pass the
+// ticker's keep predicates and are not excluded. Basket = stored rows still in the universe, plus newly in-scope rows that a
+// sibling's basket already marks at or above the entry screen (same dated sold mark — nothing is re-read). Caps re-applied the
+// way --recon does (25% + 5/50, basketExclude at weight 0) when the basket changes; divisor = new Σ(mark × w) ÷ the current
+// level, so the level is unchanged. Logged in divisorLog / capLog / screenLog. A no-op when nothing differs (idempotent).
+function scopeKeep(c, u) {
+  if (exRule(c, u)) return false;
+  if (!c.offlineKeep) return true;
+  return (c.sources || []).some((src) => String(u.path).startsWith(src.slug + "/") && (!src.keep || src.keep(`${u.name} #${u.num}`, u.name, u.num)));
+}
+function rescope(x, c, why) {
+  if (x.status !== "live") { console.log(`${x.ticker}: ${x.status || "not live"} — nothing to rescope`); return false; }
+  const h = x.history || [], level = h.length ? h[h.length - 1].level : null;
+  if (level == null) { console.error(`${x.ticker}: no history — nothing to rescope`); return false; }
+  const pool = new Map(x.universe.map((u) => [u.path, { num: u.num, name: u.name, path: u.path }]));
+  const bpool = new Map();
+  if (c.offlineKeep) for (const [t, y] of Object.entries(ORIG)) {
+    if (t === x.ticker || !y || !Array.isArray(y.universe)) continue;
+    const mine = (u) => (c.sources || []).some((src) => String(u.path).startsWith(src.slug + "/"));
+    for (const u of y.universe) if (mine(u) && !pool.has(u.path)) pool.set(u.path, { num: u.num, name: u.name, path: u.path });
+    for (const b of y.basket || []) if (mine(b) && !bpool.has(b.path)) bpool.set(b.path, b);
+  }
+  const uni = sortUni([...pool.values()].filter((u) => scopeKeep(c, u)));
+  const uniSet = new Set(uni.map((u) => u.path)), oldUni = new Set(x.universe.map((u) => u.path));
+  const uniIn = uni.filter((u) => !oldUni.has(u.path)), uniOut = x.universe.filter((u) => !uniSet.has(u.path));
+  const exits = x.basket.filter((b) => !uniSet.has(b.path));
+  const entrants = uniIn.filter((u) => bpool.has(u.path)).map((u) => bpool.get(u.path)).filter((b) => b.price != null && b.n30 >= SCREEN.enter).map((b) => ({ ...JSON.parse(JSON.stringify(b)), w: 1 }));
+  const ex = exW(c);
+  const wrongW = x.basket.filter((b) => uniSet.has(b.path) && (ex.has(String(b.num)) ? b.w !== 0 : b.w === 0));
+  const subDiff = c.subUniverse && x.sub && x.sub[c.subUniverse.key] && x.sub[c.subUniverse.key].universe ? x.sub[c.subUniverse.key].universe.filter((u) => c.offlineKeep && !c.subUniverse.sources.some((src) => String(u.path).startsWith(src.slug + "/") && src.keep(`${u.name} #${u.num}`, u.name, u.num))) : [];
+  if (subDiff.length) console.warn(`${x.ticker}: WARNING — ${subDiff.length} sub ${c.subUniverse.key} rows fall out of scope (${subDiff.map((u) => u.num).join(", ")}); --rescope does not adjust sub-indices — run --recon`);
+  if (c.syncLabels) { x.name = c.name; x.set = c.set; }   // opt-in: a retitled ticker's stored labels follow CONFIG (the hub, the home board and card search read them)
+  if (!uniIn.length && !uniOut.length && !entrants.length && !exits.length && !wrongW.length) { console.log(`${x.ticker}: scope already matches CONFIG — no change`); return false; }
+  const before = x.divisor, bvBefore = basketValue(x.basket), lvlNow = r2(bvBefore / before);
+  if (Math.abs(lvlNow - level) > 0.005) { console.error(`${x.ticker}: stored level ${level} ≠ Σ/divisor ${lvlNow} — refusing to rescope an inconsistent ticker`); process.exit(3); }
+  const basket = x.basket.filter((b) => uniSet.has(b.path)).concat(entrants);
+  const basketChanged = exits.length || entrants.length || wrongW.length;
+  const wBefore = new Map(x.basket.map((b) => [b.path, b.w])), weightedBefore = x.basket.filter((b) => b.w !== 0).length;
+  if (basketChanged) applyCap(basket, ex);
+  const bv = basketValue(basket), divisor = basketChanged ? r6(bv / level) : before;
+  const lvlAfter = r2(bv / divisor);
+  if (Math.abs(lvlAfter - level) > 0.005) { console.error(`${x.ticker}: level would move ${level} → ${lvlAfter} — refusing`); process.exit(3); }
+  const lbl = (u) => `${u.name} #${u.num}`;
+  const reasons = [...new Set(uniOut.map((u) => exRule(c, u)).filter((r) => r && r.label).map((r) => r.label))];
+  const wChanged = basket.filter((b) => wBefore.has(b.path) && wBefore.get(b.path) !== b.w);
+  const capped = basket.filter((b) => b.w > 0 && b.w < 1);
+  const nW = (bk) => bk.filter((b) => !lineOnly(b)).length;
+  const parts = [why || "SCOPE CORRECTION (CONFIG)"];
+  if (uniOut.length) parts.push(`out of the universe: ${uniOut.map(lbl).join("; ")}${reasons.length ? ` (${reasons.join("; ")})` : ""} — ${exits.length ? exits.map((b) => `${b.name} #${b.num} was in the basket at $${b.price}`).join(", ") : "none was in the basket"}`);
+  if (uniIn.length) parts.push(`into the universe: ${uniIn.map((u) => `${u.name} #${u.num}`).join("; ")}${entrants.length ? ` — entered the basket at the sibling's dated mark: ${entrants.map((b) => `${b.name} #${b.num} $${b.price} (n30 ${b.n30}, marked ${b.asOf})`).join(", ")}` : " — universe only"}`);
+  const zero = wChanged.filter((b) => b.w === 0);
+  if (zero.length) parts.push(`weight 0, kept in the universe and on their own line: ${zero.map((b) => `${b.name} #${b.num}`).join(", ")}`);
+  if (basketChanged) parts.push(`caps re-applied (25% single / 5-50 group): ${capped.length ? capped.map((b) => `${b.name} #${b.num} w ${b.w}`).join(", ") : "none binds"}${wChanged.filter((b) => b.w !== 0).length ? ` (weights changed: ${wChanged.filter((b) => b.w !== 0).map((b) => `${b.name} #${b.num} ${wBefore.get(b.path)}→${b.w}`).join(", ")})` : ""}`);
+  parts.push(`universe ${x.universe.length}→${uni.length}, weighted basket ${weightedBefore}→${nW(basket)}, basket value Σpx·w $${r2(bvBefore)}→$${r2(bv)}; ${basketChanged ? "logged divisor adjustment" : "basket unchanged, divisor unchanged"}, level ${level} unchanged`);
+  x.divisorLog.push({ date: TODAY, before, after: divisor, why: parts.join(". ") + "." });
+  if (basketChanged) x.capLog.push(...wChanged.map((b) => ({ date: TODAY, num: b.num, name: b.name, w: b.w })));
+  x.screenLog = x.screenLog || [];
+  x.screenLog.push({ date: TODAY, pass: basket.length, fail: uni.length - basket.length, ...(basket.length > nW(basket) ? { lineOnly: basket.length - nW(basket) } : {}), entered: entrants.length, exited: exits.length, note: "rescope (CONFIG scope, no re-read)" });
+  x.universe = uni; x.basket = basket; x.divisor = divisor;
+  console.log(`${x.ticker} rescope ${TODAY}: universe ${oldUni.size}→${uni.length} · basket ${wBefore.size}→${basket.length} (weighted ${nW(basket)}) · divisor ${before}→${divisor} · level ${level} → ${lvlAfter}`);
+  return true;
+}
 for (const T of String(TICKER || "").split(",").map((t) => t.trim()).filter(Boolean)) { TICKER = T; await runTicker(); }
 async function runTicker() {
 const c = cfg();
@@ -638,7 +820,7 @@ if (has("--init")) {
   console.log(`universe: ${uni.length} slots`);
   const reads = await readUniverse(uni, TICKER);
   const basket = reads.filter((r) => r.clean30 >= SCREEN.enter && r.price != null).map(toRow);
-  applyCap(basket);
+  applyCap(basket, exW(c));
   const bv = basketValue(basket), divisor = r4(bv / 100);
   IDX[TICKER] = {
     ticker: TICKER, name: c.name, set: c.set, page: c.page, model: "sector", status: "live", basis: "sold", basisLabel: "sold comps (PriceCharting ungraded) · sector model · twice-weekly re-mark",
@@ -653,12 +835,15 @@ if (has("--init")) {
     reconstitution: { cadence: "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before", next: "2027-01-04" },
   };
   await subInit(IDX[TICKER], c);
+  assertScope(IDX[TICKER], c);
   console.log(`${TICKER}: basket ${basket.length}/${uni.length} · value $${r2(bv)} · divisor ${divisor} · capped ${basket.filter((b) => b.w < 1).length} · top ${basket.slice().sort((a, b) => b.price * b.w - a.price * a.w).slice(0, 3).map((b) => `${b.name} #${b.num} ${(b.price * b.w / bv * 100).toFixed(1)}%`).join(" · ")}`);
   save(); bake(IDX[TICKER], c);
 } else if (has("--mark")) {
   const x = IDX[TICKER]; if (!x || x.status !== "live") { console.error(`${TICKER} is not live`); process.exit(2); }
   if (has("--if-mark-day")) { const dow = new Date(TODAY + "T12:00:00Z").getUTCDay(); if (dow !== 1 && dow !== 4) { console.log(`${TODAY} is not a mark day (Mon/Thu) — no-op`); return; } }
   if (x.history.some((h) => h.date === TODAY)) { console.log(`${TICKER} already marked ${TODAY} — no-op`); return; }
+  rescope(x, c, "SCOPE CORRECTION (CONFIG scope applied before the mark)");   // no-op unless CONFIG changed since the last write
+  assertScope(x, c);
   let carried = 0;
   for (const b of x.basket) {
     try {
@@ -676,9 +861,12 @@ if (has("--init")) {
   save(); bake(x, c);
 } else if (has("--recon")) {
   const x = IDX[TICKER]; if (!x || x.status !== "live") { console.error(`${TICKER} is not live`); process.exit(2); }
+  rescope(x, c, "SCOPE CORRECTION (CONFIG scope applied before the reconstitution)");   // excluded rows leave first, logged
+  assertScope(x, c);
   const before = levelOf(x), inBasket = new Map(x.basket.map((b) => [b.path, b]));
   const next = [];
   for (const u of x.universe) {
+    if (exRule(c, u)) continue;
     const cur = inBasket.get(u.path);
     try {
       const r = await readCard(u);
@@ -688,7 +876,7 @@ if (has("--init")) {
     } catch (e) { if (cur) next.push({ ...cur, carried: true }); console.log(`${u.name} #${u.num}: ${e.message}`); }
     await sleep(PAUSE);
   }
-  applyCap(next);
+  applyCap(next, exW(c));
   const bvNew = basketValue(next), divisor = r4(bvNew / before);          // level identical before and after
   const entered = next.filter((b) => !inBasket.has(b.path)).length, exited = x.basket.filter((b) => !next.some((n) => n.path === b.path)).length;
   x.divisorLog.push({ date: TODAY, before: x.divisor, after: divisor, why: `reconstitution — ${entered} entered, ${exited} exited, ${next.filter((b) => b.w < 1).length} at the cap; level ${before} unchanged` });
@@ -699,8 +887,16 @@ if (has("--init")) {
   await subMark(x, TODAY);
   console.log(`${TICKER} reconstitution ${TODAY}: ${next.length} in basket (+${entered}/−${exited}) · divisor ${x.divisor} · level ${before} unchanged`);
   save(); bake(x, c);
+} else if (has("--rescope")) {
+  const x = IDX[TICKER]; if (!x || x.status !== "live") { console.error(`${TICKER} is not live`); process.exit(2); }
+  const nm = x.name, st = x.set;
+  const changed = rescope(x, c, opt("--why", null));
+  assertScope(x, c);
+  if (changed || nm !== x.name || st !== x.set) save();
+  bake(x, c);
 } else if (has("--bake")) {
   const x = IDX[TICKER]; if (!x) { console.error(`${TICKER} not in indices.json`); process.exit(2); }
-  bake(x, c);
-} else { console.error("one of --init | --mark | --recon | --bake"); process.exit(2); }
+  if (x.status !== "live") { console.log(`${TICKER} is ${x.status || "not live"} — nothing to bake (the pre shell is hand-built; --init makes it live)`); }
+  else { assertScope(x, c); bake(x, c); }
+} else { console.error("one of --init | --mark | --recon | --rescope | --bake"); process.exit(2); }
 }

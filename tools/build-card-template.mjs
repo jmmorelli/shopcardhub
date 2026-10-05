@@ -123,8 +123,8 @@ ${nav}
 
 ${footer}
 
-<script src="/js/grade-links.js?v=1" defer></script>
-<script src="/js/card-page.js?v=1" defer></script>
+<script src="/js/grade-links.js?v=2" defer></script>
+<script src="/js/card-page.js?v=3" defer></script>
 <script src="/js/card-img.js?v=3" defer></script>
 <script src="/js/vault-track.js?v=6" defer></script>
 </body>
