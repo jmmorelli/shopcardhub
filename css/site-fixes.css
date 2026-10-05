@@ -397,7 +397,8 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body table.roi-table.rt-stack tbody td { display: block; flex: 1 1 30%; min-width: 92px; width: auto !important; padding: 0 !important; text-align: left; }
   body table.roi-table.rt-stack td[data-label]::before { content: attr(data-label); display: block; margin-bottom: 3px;
     font-family: var(--fm, monospace); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
-    color: var(--text-dim, #7a969e); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    color: var(--text-dim, #7a969e); white-space: normal; overflow-wrap: anywhere; }
+  /* Site Sweep Oct 5: labels wrap instead of truncating ("MAX DECLARED…" on /psa-grading-guide). */
   body table.roi-table.rt-stack td.rt-rank { flex: 0 0 auto; min-width: 0; }
   body table.roi-table.rt-stack td.rt-lead { flex: 1 1 70%; min-width: 0; }
   body table.roi-table.rt-stack td.rt-lead .roi-name { font-size: 16px; }
@@ -589,4 +590,12 @@ body .hero-scan-line { display: none !important; }
   div.ci-buy .bs a { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; flex: 1 1 40%; }
   div.ci-buy .bs a:not(.alt) { flex-basis: 100%; }
   div.ci-buy .bs .n { font-size: 11px; }
+}
+
+/* Site Sweep, Oct 5 2026. Email capture on narrow phones: the nowrap "GET THE TUESDAY TAPE" button left the
+   input ~106 px wide, so the placeholder read "your@emai" (home, 390 px). At 420 px and under the field and the
+   button each take a full row. js/signup.js injects its own styles after this file, hence the body prefix. */
+@media (max-width: 420px) {
+  body .sch-signup .ss-f { flex-wrap: wrap; }
+  body .sch-signup .ss-f input, body .sch-signup .ss-f button { flex: 1 1 100%; width: 100%; }
 }
