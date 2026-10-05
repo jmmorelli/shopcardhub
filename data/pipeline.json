@@ -3903,6 +3903,15 @@
           "gates": "audit-prices FAIL 0 / WARN 70 · audit-site FAIL 0 / WARN 5 (158) · audit-terminal --feed 0/1 = baseline",
           "liveVerified": "~100 s after push: 3 new URLs 200 + BUYSTRIP:START + sch-signup; sitemap 132 locs; IndexNow 7 → 200",
           "note": "Deploys. Rollback: git revert --no-edit a153e72."
+        },
+        {
+          "date": "2026-10-05",
+          "commits": [
+            "8c3a986"
+          ],
+          "by": "monday-scan STEP 3.98 (price lane, charter 4.8) — fresh deploy-key clone, 80 files",
+          "gates": "audit-prices FAIL 0 / WARN 70 · audit-site FAIL 0 / WARN 5 (158 pages) · audit-terminal FAIL 0 / WARN 1 (--feed data/feed) — re-run on the exact rebased tree that was pushed; no WARN added by this run (prices 70 vs the stated Oct 2 baseline of 77, site 5 vs 4 at 141 pages — the +1 is delta-reign-index missing from sitemap.xml, pre-existing, filed sitemap-delta-reign-2026-10-05)",
+          "liveVerified": "pending at write time — see the Oct 5 report"
         }
       ]
     },
@@ -4063,7 +4072,7 @@
   "publish": {
     "date": "2026-10-05",
     "by": "monday-scan STEP 3.98",
-    "commit": "PENDING",
+    "commit": "8c3a986",
     "lane": [
       "data/indices.json (PB26/CR26/AH26/PRIS25/DR25/PF25 re-marked on PriceCharting ungraded sold comps)",
       "the 6 chase index pages (levels, stats, holdings, ROC, stamps)",
@@ -4078,7 +4087,8 @@
     "notPushed": [
       "data/calls.json - not in the price lane; four trending reads refreshed in the report only",
       "sitemap entry for /delta-reign-index - outside the lane, filed for the CoS"
-    ]
+    ],
+    "rebasedOnto": "1e7c5b0 (Site Sweep Oct 5 landed mid-run; fetched + rebased, no file overlap)"
   },
   "decisions": [
     {
