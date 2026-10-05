@@ -2696,6 +2696,22 @@
       "id": "prompt-drift-2026-10-05",
       "status": "awaiting-cos",
       "title": "The Monday price-lane prompt is stale in 6 places and LANE-RULES wins in every one (reported per the precedence rule). Already on the LANE-RULES known-drift list: (1) STEP 3.6's Bowman ask-basis doctrine and (2) its 'never build a cross-set 1st Bowman index' line - both superseded by the Sep 25 Bowman reset, and /bowman-1st-chrome-index now exists and marks on sold basis; (3) STEP 3.6 should be scoped to the divisor-model Pokemon chase tickers only, which is what this run did; (4) STEP 3.98's lock sweep is deleted by R1. Found this run and NOT yet on that list: (5) the prompt names five chase tickers and 'live tickers as of Aug 24' - there are now 38 tickers in indices.json, 31 of them marked twice weekly by the nightly Action, so the prompt's STEP 3.6 reads as though this lane owns all of them when it owns six; (6) the prompt's COACH'S NOTE step reads data/pipeline.json coachNotes['monday-scan'], which is pinned at weekOf 2026-09-14 (3 weeks stale) because the Sunday brief's coach notes were retired by the cadence table - so that step can never be satisfied as written and should be dropped. Also stale but harmless: STEP 0.6 GSC hygiene, STEP 1.5's Tue/Thu CoS checkpoints (Sunday-only now), STEP 3.65's X intel (X Desk Watch's lane under R10), and STEP 3.95's GA4 read (R26 made the list the retention KPI, and the nightly ga4-snapshot owns the read)."
+    },
+    {
+      "area": "monday-scan",
+      "filed": "2026-10-05",
+      "by": "monday-scan",
+      "id": "signup-missing-on-index-pages-2026-10-05",
+      "status": "awaiting-cos",
+      "title": "HIGH (retention, R26): the email capture is absent from every set-index page — the exact surface that retains — and newsletter_signup has read 0 for 17 straight days. VERIFIED LIVE Oct 5: /pitch-black-index, /chaos-rising-index and /indices serve no 'sch-signup' block and do not even load js/signup.js, while /pokemon-30th-anniversary-2026, /umbreon-ex-worth and /watchlist all carry both. MECHANISM (not a mystery, a coupling bug): tools/build-signup.mjs line 34-35 derives its target set from Object.keys(data/buy-strip.json .pages), so a page only gets the form if it has a BUY STRIP. The chase index pages never needed a buy strip — they carry 42 EPN eBay links each in the holdings table instead (R11 is satisfied, income is NOT affected) — so they have never once received the capture. WHY IT MATTERS: R26 made the list THE retention KPI, and the Oct 3 GA4 retention split says the index/terminal surfaces return at 37.12% of views (32% of landings) against 6.64% on the guides. So the capture is deployed on the pages that do not retain and missing from the pages that do, which is a far better explanation of 17 days of zero than a broken chain. The chain is NOT broken: POST /api/subscribe with a bad address returns 400 'invalid email', so the endpoint is alive and validating. NOT FIXED HERE: the remedy is a tooling/config decision (decouple build-signup.mjs from buy-strip.json and give it its own target list including the 38 index pages and /indices, or add the index pages to buy-strip.json as strip-less signup targets) plus a view on whether the index-page variant should be the 'tape' or a watchlist-style variant. ASK: this is the cheapest retention work available and it is pure plumbing — recommend it leads the Oct 7 weekly's build order."
+    },
+    {
+      "area": "monday-scan",
+      "filed": "2026-10-05",
+      "by": "monday-scan",
+      "id": "retention-read-2026-10-05",
+      "status": "awaiting-cos",
+      "title": "Retention + traffic read Oct 5 (GA4 snapshot day 2026-10-03, read from a price-data clone per R19 — the GA4 UI was not opened and R26 makes the list the KPI anyway). THE SPLIT, which is the headline number the CoS set: retention surfaces return at 37.12% of views and 32% of landings; guides return at 6.64% / 6.46%. The ≥20%-by-Oct-31 target on the surfaces is ALREADY MET, three weeks early, and the honest reading is the one the prompt names — the surfaces retain, the rest does not, so the strategy is working and the traffic mix is the problem. Two counterweights worth stating in the same breath: (a) the surfaces are only 493 of 2,074 views (24%), so the good number sits on a quarter of the traffic; (b) the surfaces CONVERT worse — 3.25 key events per 100 views vs 4.49 on the guides — so the page that brings people back is not the page that earns, and the buy-side of the index pages deserves a look (they do carry 42 EPN links each). TRAFFIC QUALITY: botShare7 is 50.96% — Singapore 146 sessions at 0.202s average and China 13 at 0.114s — so 'topCountry7 = Singapore' is bots, not a market. Clean sessions are 153 in 7 days, about 22/day, which is BELOW the ~30 clean visitors a day R25 set as the gate for new surfaces: the freeze stays on, and the bot share has roughly doubled since Sep 28 (21.79% → 50.96%). Blended returningShare7 (3.55%) remains the wrong number to judge anything by, exactly as the CoS ruled on Sep 6."
     }
   ],
   "scoreboard": {
@@ -3911,7 +3927,7 @@
           ],
           "by": "monday-scan STEP 3.98 (price lane, charter 4.8) — fresh deploy-key clone, 80 files",
           "gates": "audit-prices FAIL 0 / WARN 70 · audit-site FAIL 0 / WARN 5 (158 pages) · audit-terminal FAIL 0 / WARN 1 (--feed data/feed) — re-run on the exact rebased tree that was pushed; no WARN added by this run (prices 70 vs the stated Oct 2 baseline of 77, site 5 vs 4 at 141 pages — the +1 is delta-reign-index missing from sitemap.xml, pre-existing, filed sitemap-delta-reign-2026-10-05)",
-          "liveVerified": "pending at write time — see the Oct 5 report"
+          "liveVerified": "2026-10-05 17:26-17:28Z: /pitch-black-index serves 64.74 with data-prices-updated=2026-10-05 (old 68.13 gone), /phantasmal-flames-index serves 72.40, /badge/PB26.svg 200 image/svg+xml"
         }
       ]
     },
