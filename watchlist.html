@@ -1211,7 +1211,7 @@
     <div class="vault-hero">
       <div class="vault-h1row">
         <h1>Your <span class="accent">Watchlist</span></h1>
-        <div class="vault-eyebrow">Free · No Account<span class="eb-long"> · Stays On Your Device</span><span id="feedPill"></span></div>
+        <div class="vault-eyebrow">Free · No Account<span class="eb-long"> · Stays On Your Device</span><span id="feedPill" style="visibility:hidden"> · <b style="color:var(--green)">● live price engine on</b></span></div>
         <button type="button" class="mode-btn" id="modeBtn" onclick="toggleMode()" title="Show the full toolset: portfolios, imports, analytics, columns">Advanced view</button>
       </div>
     </div>
@@ -3185,7 +3185,7 @@ async function loadFeed() {
     FEED = { cards: cards, byKey: {}, day: j.day || null };
     cards.forEach(e => { if (e && e.key) FEED.byKey[e.key] = e; });
     fetch(FEED_BASE + 'market-latest.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(m => { FEED_MKT = m && m.cards ? m.cards : null; if (tab === 'own') renderPf(); }).catch(() => {});
-    if (pill) pill.innerHTML = ' · <b style="color:var(--green)">\u25CF live price engine on</b>';
+    if (pill) { pill.innerHTML = ' · <b style="color:var(--green)">\u25CF live price engine on</b>'; pill.style.visibility = ''; }
     await loadSold();
     revalidateAutoLinks();
     linkSoldExact();
@@ -3193,7 +3193,7 @@ async function loadFeed() {
     feedSync();
     render();
   } catch (e) {
-    if (pill) pill.textContent = ' · manual mode — live feed warming up';
+    if (pill) { pill.textContent = ' · manual mode — live feed warming up'; pill.style.visibility = ''; }
     // the sold catalog does not depend on the ask engine: link and mark from it even when the engine feed is down
     try { FEED = FEED || { cards: [], byKey: {}, day: null }; await loadSold(); if (SOLD) { linkSoldExact(); feedSync(); render(); } } catch (e2) {}
   }

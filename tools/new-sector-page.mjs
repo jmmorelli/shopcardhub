@@ -83,6 +83,7 @@ const box = `<!-- BUYBOX:START — ${esc(s.set)} on eBay, above the fold (R11). 
 .ci-buy .bs a.alt{background:transparent;color:var(--th);border:1px solid var(--bd2)}
 .ci-buy .bs a:hover{filter:brightness(1.1)}
 .ci-buy .bs .n{flex:1 1 100%;font-size:10px;line-height:1.6}
+@media(max-width:640px){.ci-buy .bs b{flex:1 1 100%}.ci-buy .bs a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;flex:1 1 40%}.ci-buy .bs a:not(.alt){flex-basis:100%}.ci-buy .bs .n{font-size:11px}}
 </style>
 <div class="ci-buy"><div class="bs">
   <b>${setE} on eBay</b>
@@ -121,6 +122,7 @@ if (s.pre) {
 .ci-buy .bs a.alt{background:transparent;color:var(--th);border:1px solid var(--bd2)}
 .ci-buy .bs a:hover{filter:brightness(1.1)}
 .ci-buy .bs .n{flex:1 1 100%;font-size:10px;line-height:1.6}
+@media(max-width:640px){.ci-buy .bs b{flex:1 1 100%}.ci-buy .bs a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;flex:1 1 40%}.ci-buy .bs a:not(.alt){flex-basis:100%}.ci-buy .bs .n{font-size:11px}}
 </style>
 <div class="ci-buy"><div class="bs" data-sealed-state="pre-order">
   <b>Sealed · pre-order asks</b>

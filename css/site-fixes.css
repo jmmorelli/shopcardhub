@@ -577,3 +577,16 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
    animates `top`, so it also logs a layout-shift entry every frame. terminal-page.css already hid it on the card
    pages; now it is hidden everywhere. The blink cursor was stopped Sep 1 (above). */
 body .hero-scan-line { display: none !important; }
+
+/* 20 (Night Crew, Oct 5 2026 — B46). The eBay box on the 27 sector-index pages (BUYBOX, from new-sector-page.mjs)
+   puts its title and three buttons on one flex row. On a phone the title is wider in the fallback font, so the
+   first button wraps to a second row; when Barlow lands the row collapses and the page jumps ~31 px (phone CLS
+   0.13–0.17). On phones the box now has fixed rows in either font: title, the main button full width, then the
+   other buttons two to a row. The buttons get a 40 px tap height, and the footnote clears the 11 px text floor.
+   Desktop is unchanged. */
+@media (max-width: 640px) {
+  div.ci-buy .bs b { flex: 1 1 100%; }
+  div.ci-buy .bs a { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; flex: 1 1 40%; }
+  div.ci-buy .bs a:not(.alt) { flex-basis: 100%; }
+  div.ci-buy .bs .n { font-size: 11px; }
+}
