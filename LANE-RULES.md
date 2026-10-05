@@ -293,6 +293,16 @@ Three bounds on that channel, and they are what keep R10 from being undone by it
 - **X Desk Watch grades Grok's replies again** (R16's reply gate, from its spec): a reply on @shopcardhub is Grok's unless the x-daily log or Mo says it is his. "Mo's own (Am. 2), not graded" is only for posts and replies Mo has claimed.
 - **The desk directs the vendor** through the Grok Bot app (STEP 3 delivery pattern), replies-only brief first. Amendment 2's "Mo handles replies himself" is now "Mo and Grok".
 
+## R10 · AMENDMENT 5 — the Grok bots work for the site, inside the free usage (Mo, 2026-10-04 ~22:30 PT: "You are in charge of the grok bots")
+
+Mo, Oct 4: the bots hit **75% of their weekly free usage in ~3 days**, mostly on hourly status posts that woke all five agents. He put the CoS in charge: "do what you think is best for our site growth/retention … Whatever you come up with, I agree." Plan v2 was sent in the Grok Bot app and Grok Bot answered "OK." Full record: Project `claude/cos/grok-lean-plan-2026-10-04.md`.
+- **Cadence.** One wake a day, weekdays only, at 1:46 PM PT. No hourly checks, no status posts, no weekend runs. At **90% of the weekly meter everyone stops until it resets**, and nobody buys usage (Am. 4).
+- **Seeker files a daily DEMAND LIST:** the top 10 collector questions on X, each with the post URL and the page that answers it or **GAP**, plus release/checklist/pull-rate news and viral sale-price posts with their sources. **The desk reads it daily.** GAPs go to the Growth League as page topics. News goes to Release Watch / League A. Viral prices go to the X Daily lane (CoS writes, Mo says go).
+- **Grok Bot: 3–5 answer-replies a day**, only to real collector questions that one of our pages answers. One or two plain sentences, at most one figure, and only one the page shows with a date (the date is stated). **The reply links that shopcardhub.com page.** This lifts Am. 4's no-link default for these replies only. No eBay or other links. One reply per thread, not the same account twice a week, 20+ min apart. **Likes: zero, except the replied-to post.** Still no follows, reposts, quote posts or originals.
+- **Checks.** Creator drafts, `lint_reply.py` runs the mechanics, and the Auditor grades before posting. **X Desk Watch grades every reply against the linked page** (R16 gate, Am. 3 claims rules), and a reply whose page doesn't answer the question is a FAIL.
+- **Never touch our eBay links.** No bot opens, fetches or previews an affiliate URL; non-human clicks put the EPN account at risk. This comes from Oct 3, when EPN logged 89 clicks with no GA4 trace.
+- **Kill / extend: Oct 19 desk.** If t.co sessions to linked pages are under 10 across the two weeks and no Growth League page has come from the demand list, cut back to the demand list alone.
+
 ## R11 · Every commercial page sells its product above the fold (Mo, 2026-09-17)
 
 **The incident:** `/pokemon-30th-anniversary-2026` is one of the site's top landing pages and it
