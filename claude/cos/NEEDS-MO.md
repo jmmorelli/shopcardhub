@@ -13,6 +13,8 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## ✅ RULED by Mo in chat (2026-10-04 ~21:20 PT): "i say go/approve to all, but maybe wait until the pokemon KB gets finished first - your call"
 
+**✅ ALL BUILT AND LIVE the same night (`dc8531d`, ~22:05 PT) — the KB was finished at ~15:00, so the sequence below was pulled forward:** Pass 1 fixes on 16 pages, G19 Celebrations retitle, G20 RGB Mews to their own line, G21 Delta Reign pre page, G22 TAG wording, G23 Surging Sparks (SSP24) + Mega Evolution (MEG25) indices. Nothing on this list needs you. Still physically yours, unchanged: TCGplayer on Impact (#2), TAG payment info + affiliate link (#4), and the follow-back question.
+
 - **Liñan/Muñoz:** done the same evening, before the Monday mark (`4b4b543`, levels unchanged).
 - **Pokémon calls, all approved — CoS sequencing:** the KB fix list (Pass 1) ships first at the Oct 7 weekly; G19 (keep the promos, retitle "Celebrations + 25th promos") and G22 (TAG line) ship in that same pass; G20 (RGB Mews to the chase strip, divisor-logged) right after it, once the 30th page copy is corrected; G21 Delta Reign shell by Oct 10 (base 100 on Nov 6); G23 Surging Sparks + Mega Evolution base set after Delta Reign, week of Oct 12. Nothing here waits on you.
 - Still unanswered, low stakes: the 15 X follow-backs, and whether you were clicking card links on Saturday (the 89-click day).
