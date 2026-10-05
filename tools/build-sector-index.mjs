@@ -30,7 +30,7 @@ import { fileURLToPath } from "node:url";
 import { consoleCards } from "./price-engine/pc-console.mjs";
 import { parsePage } from "./price-engine/sold-marks.mjs";
 import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
-import { cardId, rawNot, RAW_EXTRA, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
+import { cardId, cardKey, rawNot, RAW_EXTRA, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
 import { createRequire } from "node:module";
 // The plain read is baked, not injected after paint (Night Crew Oct 3 2026, B29: load CLS 0.1-0.24 at 1024). Same renderer as the browser.
 const PR = createRequire(import.meta.url)("../js/plain-read.js");
@@ -526,15 +526,18 @@ function block(x, c) {
   const GL = (c.imgSub || "pokemon") === "pokemon" && !c.kindPlural, wotc = WOTC.has(x.ticker), ed = EDITION[x.ticker] || null;
   // weight cell: capped rows carry *, line-only rows (basketExclude) read "line" — tracked and marked, weight 0 in the level
   const wCell = (b, w) => lineOnly(b) ? '<span title="tracked as its own line, not in the weighted basket — see the method note">line</span><i title="not in the weighted basket">‡</i>' : `${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}`;
+  // card keys in table order (= data/cards order): a second card on the same number gets "<num>-<name>" (Classic Collection
+  // reprints in CEL21 / TH26), so its customid and /card link never collide with the first (Oct 5 2026)
+  const seenK = new Set(); rows.forEach((b) => { b.key = cardKey(b.num, b.name, seenK); });
   const row = (b, i) => {
     const w = (b.price * b.w) / bv;
-    const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+    const cid = cardId(x.ticker, b.key || b.num);
     const q0 = c.ebayQuery(b.name, b.num);
     const url = ebaySearchUrl({ q: GL ? q0 + " " + rawNot(x.ticker) + (wotc ? " -1st -shadowless" : ed === "shadowless" ? " -1st" : "") + (RAW_EXTRA[x.ticker] || "") : q0, customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
     if (GL) {
       const thumbG = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
       const dkG = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slotG = desk[dkG] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dkG])}"></span>` : '<span class="sidx-auc-slot"></span>';
-      return `<tr data-q="${esc(q0)}" data-cid="${cid}"${b.price >= 200 ? ' data-av="1"' : ""}><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumbG}<div><b><a class="cardlk" href="/card?id=${cardId(x.ticker, b.num)}" title="Raw vs PSA 9 vs PSA 10 vs TAG — the card's price ladder">${esc(b.name)}</a></b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${wCell(b, w)}</td><td class="num dim">${b.n30}</td><td class="act g"><span class="act-w g"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><span class="glk"><a class="ebay g-raw" data-g="raw" href="${url}" target="_blank" rel="sponsored nofollow noopener" title="Raw (ungraded) copies on eBay${b.price >= 200 ? " — Authenticity Guarantee filter on" : ""}">Raw</a></span>${slotG}</span></td></tr>`;
+      return `<tr data-q="${esc(q0)}" data-cid="${cid}"${b.price >= 200 ? ' data-av="1"' : ""}><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumbG}<div><b><a class="cardlk" href="/card?id=${cardId(x.ticker, b.key || b.num)}" title="Raw vs PSA 9 vs PSA 10 vs TAG — the card's price ladder">${esc(b.name)}</a></b><small>#${esc(b.num)}${b.carried ? " · carried " + mdy(b.asOf) : ""}</small></div></div></td><td class="num">${money(b.price)}</td><td class="num">${wCell(b, w)}</td><td class="num dim">${b.n30}</td><td class="act g"><span class="act-w g"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><span class="glk"><a class="ebay g-raw" data-g="raw" href="${url}" target="_blank" rel="sponsored nofollow noopener" title="Raw (ungraded) copies on eBay${b.price >= 200 ? " — Authenticity Guarantee filter on" : ""}">Raw</a></span>${slotG}</span></td></tr>`;
     }
     const thumb = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
     const dk = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slot = desk[dk] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dk])}"></span>` : "";

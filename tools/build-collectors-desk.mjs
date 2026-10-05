@@ -64,7 +64,7 @@ function card(id) {
   const { meta, cards, g } = loadSet(tk);
   const c = cards.find((x) => x.id === id);
   if (!c) throw new Error(`card ${id} not in data/cards/${tk}.json`);
-  const gr = (g.cards && g.cards[c.num]) || {};
+  const gr = (g.cards && g.cards[c.key || c.num]) || {};
   const ed = meta.ed === "1st" ? "1st" : meta.ed === "shadowless" ? "shadowless" : meta.wotc ? true : false;
   return { ...c, tk, set: meta.set, setName: meta.name, page: meta.page, ticker: meta.ticker, theme: meta.theme, ed, window: meta.window || 30, gr, gAsOf: g.day || gr.asOf || null, nCards: cards.length };
 }

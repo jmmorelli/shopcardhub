@@ -16,7 +16,7 @@
     var d = res[0], gd = res[1], c = null;
     for (var i = 0; i < d.cards.length; i++) if (d.cards[i].id === id) { c = d.cards[i]; break; }
     if (!c) { miss('That card isn’t in the <a href="' + esc(d.page) + '">' + esc(d.name) + '</a> right now — it may have dropped out of the basket. Search another card in the bar at the top.'); return; }
-    render(d, c, gd && gd.cards ? gd.cards[c.num] : null, gd);
+    render(d, c, gd && gd.cards ? (gd.cards[c.key || c.num] || null) : null, gd);
   }).catch(function () { miss('This card isn’t on file. Search a card name in the bar at the top, or <a href="/indices">open an index</a>.'); });
 
   function render(d, c, g, gd) {
@@ -104,7 +104,7 @@
   function chart(d, c) {
     var box = document.getElementById('cdp-chart'); if (!box) return;
     get('/data/cards/h-' + d.ticker.toLowerCase() + '.json').then(function (h) {
-      var rows = h && h.cards ? h.cards[c.num] : null; if (!rows || rows.length < 3) { box.hidden = true; return; }
+      var rows = h && h.cards ? h.cards[c.key || c.num] : null; if (!rows || rows.length < 3) { box.hidden = true; return; }
       var S = [{ k: 1, lbl: 'Ungraded', col: d.theme || '#00ccf5' }, { k: 2, lbl: 'Grade 9 (any grader)', col: '#a9bccf' }, { k: 3, lbl: 'PSA 10', col: '#f5c800' }]
         .filter(function (s) { return rows.filter(function (r) { return r[s.k]; }).length >= 3; });
       if (!S.length) { box.hidden = true; return; }

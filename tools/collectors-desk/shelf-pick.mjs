@@ -41,7 +41,7 @@ const tk = pick.print.id.split("-")[0];
 const set = rd(`data/cards/${tk}.json`);
 const cards = Array.isArray(set.cards) ? set.cards : Object.values(set.cards || {});
 const c = cards.find((x) => x.id === pick.print.id);
-let g = null; try { g = rd(`data/cards/g-${tk}.json`).cards[c.num] || null; } catch { g = null; }
+let g = null; try { g = rd(`data/cards/g-${tk}.json`).cards[c.key || c.num] || null; } catch { g = null; }
 const money = (x) => x == null ? null : x >= 1000 ? "$" + Math.round(x).toLocaleString("en-US") : "$" + x.toFixed(2);
 const dateLong = (d) => { const [y, m, dd] = d.split("-").map(Number); return new Date(Date.UTC(y, m - 1, dd)).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }); };
 const p10 = g && g.psa10 && g.psa10.m != null ? g.psa10 : null;

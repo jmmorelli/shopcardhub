@@ -106,7 +106,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     if (!src) src = (IDX[tk] && IDX[tk].basket) || [];
     let have = {}; if (MISSING) try { have = JSON.parse(fs.readFileSync(path.join(ROOT, `data/cards/g-${tk.toLowerCase()}.json`), "utf8")).cards || {}; } catch (e) {}
     const seen = new Set();
-    for (const b of src) { const num = String(b.num); if (!b.path || seen.has(num) || (MISSING && have[num])) continue; seen.add(num); jobs.push({ tk, num, path: b.path }); }
+    // key = the card's key (num, or "<num>-<name>" for a second card on the same number — Classic Collection reprints), so two
+    // cards never share one ladder (Oct 5 2026)
+    for (const b of src) { const num = String(b.key || b.num); if (!b.path || seen.has(num) || (MISSING && have[num])) continue; seen.add(num); jobs.push({ tk, num, path: b.path }); }
   }
   console.log(`ladder: ${jobs.length} card pages to read`);
   const LIMIT = +opt("--limit", 0); if (LIMIT) jobs.splice(LIMIT);
