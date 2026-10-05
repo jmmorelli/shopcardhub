@@ -51,7 +51,7 @@
         },
         {
           "ts": "2026-10-05",
-          "msg": "Competitor sweep Oct 5 (first since Sep 7): TCGIndex now publishes a quantified track record - 54.9% hit rate, +17.4% avg return, 346 resolved picks, 259,680 indexed cards. Cardboard Terminal shipped an iOS app (Android in dev) and a <3-sales/30d volume filter; still NO set-level index. Filed comp-2026-10-05."
+          "msg": "Competitor sweep Oct 5 (first since Sep 7): the HIGH-overlap index competitor now publishes a quantified track record - 54.9% hit rate, +17.4% avg return, 346 resolved picks, 259,680 indexed cards. Cardboard Terminal shipped an iOS app (Android in dev) and a <3-sales/30d volume filter; still NO set-level index. Filed comp-2026-10-05."
         },
         {
           "ts": "2026-10-05",
@@ -2654,64 +2654,108 @@
       "filed": "2026-10-05",
       "by": "monday-scan",
       "id": "price-exceptions-2026-10-05",
-      "status": "awaiting-cos",
-      "title": "Price-sweep exceptions Oct 5 - 5 chase cards HELD at their prior marks by the >40% statistical gate (thin per-card history, so the fallback applied). All five are sub-$3 URs where one sale swings the percentage: PF25 #122 Sacred Charm $1.23->$2.11 (+71.5%), PRIS25 #134 Atticus $1.00->$1.54 (+54.0%), PF25 #121 Punk Helmet $0.85->$1.30 (+52.9%), PRIS25 #133 Atticus $1.00->$1.50 (+50.0%), DR25 #212 Electivire ex $1.65->$2.38 (+44.2%). Both comps shown; same PriceCharting ungraded source as the other 284 cards, so this is a magnitude gate, not a source dispute. Holding them cost 0.11% on PF25, 0.03% on PRIS25, 0.05% on DR25 - levels shipped are the conservative ones. ASK: bless the gate's fallback at this dollar level or set a floor (e.g. exempt cards under $5 from the %-gate and screen on absolute move instead), because at $1 marks the 40% test will fire most weeks on noise."
+      "status": "ruled",
+      "title": "Price-sweep exceptions Oct 5 - 5 chase cards HELD at their prior marks by the >40% statistical gate (thin per-card history, so the fallback applied). All five are sub-$3 URs where one sale swings the percentage: PF25 #122 Sacred Charm $1.23->$2.11 (+71.5%), PRIS25 #134 Atticus $1.00->$1.54 (+54.0%), PF25 #121 Punk Helmet $0.85->$1.30 (+52.9%), PRIS25 #133 Atticus $1.00->$1.50 (+50.0%), DR25 #212 Electivire ex $1.65->$2.38 (+44.2%). Both comps shown; same PriceCharting ungraded source as the other 284 cards, so this is a magnitude gate, not a source dispute. Holding them cost 0.11% on PF25, 0.03% on PRIS25, 0.05% on DR25 - levels shipped are the conservative ones. ASK: bless the gate's fallback at this dollar level or set a floor (e.g. exempt cards under $5 from the %-gate and screen on absolute move instead), because at $1 marks the 40% test will fire most weeks on noise.",
+      "decision": "DESK 2026-10-05: HOLDS BLESSED for Oct 5 (conservative levels shipped; cost 0.03-0.11%). The sub-$5 absolute-move floor is a methodology change to the divisor-model remark gate -> QUEUED to the Oct 7 weekly (CoS), not changed by the desk; until then the >40% fallback stands.",
+      "decidedBy": "cos-desk",
+      "resolvedOn": "2026-10-05"
     },
     {
       "area": "monday-scan",
       "filed": "2026-10-05",
       "by": "monday-scan",
       "id": "sitemap-delta-reign-2026-10-05",
-      "status": "awaiting-cos",
-      "title": "LOW: /delta-reign-index (DLR26, status 'pre') is the only one of 38 index pages missing from sitemap.xml - site-auditor WARN 'sitemap-missing-page', reproduced in a fresh clone this run. Its guide page /pokemon-delta-reign-2026 IS in both nav.json and the sitemap, so this is an omission, not a policy. Not fixed here: sitemap/nav are outside the price lane and nav is single-source (data/nav.json + build-nav.js). Fix is one sitemap entry in the next build; decide whether a 'pre' index with no level should be crawlable before activation (the other 'pre' ticker, BF26, has no page at all)."
+      "status": "declined",
+      "title": "LOW: /delta-reign-index (DLR26, status 'pre') is the only one of 38 index pages missing from sitemap.xml - site-auditor WARN 'sitemap-missing-page', reproduced in a fresh clone this run. Its guide page /pokemon-delta-reign-2026 IS in both nav.json and the sitemap, so this is an omission, not a policy. Not fixed here: sitemap/nav are outside the price lane and nav is single-source (data/nav.json + build-nav.js). Fix is one sitemap entry in the next build; decide whether a 'pre' index with no level should be crawlable before activation (the other 'pre' ticker, BF26, has no page at all).",
+      "decision": "DESK 2026-10-05: DECLINED as a defect - DLR26 is a noindex 'pre' shell, kept out of sitemap on purpose (Oct 4 night build: 'DLR26 not in sitemap, intended'; the +1 site WARN is that). Sitemap + nav + noindex removal happen together at --init after Nov 6 (STATE OPEN ITEMS).",
+      "decidedBy": "cos-desk",
+      "resolvedOn": "2026-10-05"
     },
     {
       "area": "monday-scan",
       "filed": "2026-10-05",
       "by": "monday-scan",
       "id": "chase-hero-image-2026-10-05",
-      "status": "awaiting-cos",
-      "title": "LOW (content, not price): remark-indices.mjs flagged two chase pages whose hero image is no longer the index's #1 holding - /chaos-rising-index hero is Mega Greninja ex SIR #116 while #1 by price is now Mega Greninja ex MHR #122, and /ascended-heroes-index hero is Pikachu ex SIR #276 while #1 is now Mega Gengar ex SIR #284. Same character on CR26, a different card on AH26. Prices and levels are correct; this is the picture disagreeing with the table. Left unapplied: choosing a hero image is a judgment call the proposal cannot contain (R9 - the investor reads the top holding, so the image should probably follow it, but AH26 would swap Pikachu for Gengar on the set's most recognisable face)."
+      "status": "queued",
+      "title": "LOW (content, not price): remark-indices.mjs flagged two chase pages whose hero image is no longer the index's #1 holding - /chaos-rising-index hero is Mega Greninja ex SIR #116 while #1 by price is now Mega Greninja ex MHR #122, and /ascended-heroes-index hero is Pikachu ex SIR #276 while #1 is now Mega Gengar ex SIR #284. Same character on CR26, a different card on AH26. Prices and levels are correct; this is the picture disagreeing with the table. Left unapplied: choosing a hero image is a judgment call the proposal cannot contain (R9 - the investor reads the top holding, so the image should probably follow it, but AH26 would swap Pikachu for Gengar on the set's most recognisable face).",
+      "decision": "DESK 2026-10-05: QUEUED Oct 7 weekly, Photo Keeper. Ruling: the hero follows the #1 holding and its caption names the card (CR26 -> Mega Greninja ex MHR #122; AH26 -> Mega Gengar ex SIR #284). R9: the reader reads the top holding.",
+      "decidedBy": "cos-desk",
+      "resolvedOn": "2026-10-05"
     },
     {
       "area": "monday-scan",
       "filed": "2026-10-05",
       "by": "monday-scan",
       "id": "comp-2026-10-05",
-      "status": "awaiting-cos",
-      "title": "COMP: the accountability lane we position on is being out-scaled - the HIGH-overlap index competitor now publishes a quantified track record (54.9% hit rate, +17.4% avg return, 346 resolved picks, 259,680 indexed cards) against our /track-record's 19 finals, of which the only finalised cohort reads 1 hit / 9. RECOMMENDED POSTURE: RESPOND, on the difference rather than the volume - their resolved picks are self-reported model signals on an ask-aggregate basis that can be restated, ours are immutable published projections on dated sold comps that cannot. That contrast is only worth making if we say it on the page, so: (a) put the immutability + sold-basis claim on /track-record where the number is, (b) ship the already-drafted 'calls we got wrong' piece (claude/handoffs/x-calls-we-got-wrong-2026-10-02.md) - owning 1/9 in public is the asset here, and (c) do NOT chase pick volume (R25, and volume is their basis advantage, not ours). STEAL (unchanged, still unshipped since Aug 31): their set screener's 7d/30d/90d momentum ranking on /indices. IGNORE: the Pokemon deal-finder's new iOS app + tightened account wall - mobile is no capacity under R25 and a gate on best deals is forbidden for us anyway (R26); worth noting it added a <3-sales/30d volume filter, i.e. it has arrived at our liquidity screen, and it still has NO set-level index. First sweep since Sep 7 - the watchlist Log had gone 4 weeks unswept."
+      "status": "ruled",
+      "title": "COMP: the accountability lane we position on is being out-scaled - the HIGH-overlap index competitor now publishes a quantified track record (54.9% hit rate, +17.4% avg return, 346 resolved picks, 259,680 indexed cards) against our /track-record's 19 finals, of which the only finalised cohort reads 1 hit / 9. RECOMMENDED POSTURE: RESPOND, on the difference rather than the volume - their resolved picks are self-reported model signals on an ask-aggregate basis that can be restated, ours are immutable published projections on dated sold comps that cannot. That contrast is only worth making if we say it on the page, so: (a) put the immutability + sold-basis claim on /track-record where the number is, (b) ship the already-drafted 'calls we got wrong' piece (claude/handoffs/x-calls-we-got-wrong-2026-10-02.md) - owning 1/9 in public is the asset here, and (c) do NOT chase pick volume (R25, and volume is their basis advantage, not ours). STEAL (unchanged, still unshipped since Aug 31): their set screener's 7d/30d/90d momentum ranking on /indices. IGNORE: the Pokemon deal-finder's new iOS app + tightened account wall - mobile is no capacity under R25 and a gate on best deals is forbidden for us anyway (R26); worth noting it added a <3-sales/30d volume filter, i.e. it has arrived at our liquidity screen, and it still has NO set-level index. First sweep since Sep 7 - the watchlist Log had gone 4 weeks unswept.",
+      "decision": "DESK 2026-10-05: RESPOND on the difference, not the volume. (a) one dated line on /track-record (projections immutable, graded on dated sold comps) -> QUEUED Oct 7 weekly, Content Editor; calls.json untouched. (b) the 'calls we got wrong' post stays with the X Daily lane (assigned Oct 2). (c) no chase of pick volume (R25). STEAL (momentum ranking on /indices) stays parked under R25.",
+      "decidedBy": "cos-desk",
+      "resolvedOn": "2026-10-05"
     },
     {
       "area": "monday-scan",
       "filed": "2026-10-05",
       "by": "monday-scan",
       "id": "monday-nightly-2026-10-05",
-      "status": "awaiting-cos",
-      "title": "MED (confirm, do not assume): the Monday nightly price Action had not published at 17:22Z / 10:22 PT - the live /feed/prices-latest.json still serves day 2026-10-04 and there is no 'feed: nightly 2026-10-05' commit on main. Monday is the long run (the graded card ladder has a 50-minute timeout and Sep 28's Monday feed landed 17:28Z, the latest of any recent day), so it may simply have been in flight at run time and this is NOT filed as a break. What it would cost if it did fail: the Mon/Thu marks for the 31 sector tickers, the Monday graded ladder, the home re-bake and the badge redraw all ride that job, and the 08:30 PT site-gates feed-freshness check FAILs when the served feed is older than yesterday. ASK: the desk confirms the run's outcome in the Actions log; if it failed, the 31 sector tickers are a mark behind and the ladder is a week behind."
+      "status": "ruled",
+      "title": "MED (confirm, do not assume): the Monday nightly price Action had not published at 17:22Z / 10:22 PT - the live /feed/prices-latest.json still serves day 2026-10-04 and there is no 'feed: nightly 2026-10-05' commit on main. Monday is the long run (the graded card ladder has a 50-minute timeout and Sep 28's Monday feed landed 17:28Z, the latest of any recent day), so it may simply have been in flight at run time and this is NOT filed as a break. What it would cost if it did fail: the Mon/Thu marks for the 31 sector tickers, the Monday graded ladder, the home re-bake and the badge redraw all ride that job, and the 08:30 PT site-gates feed-freshness check FAILs when the served feed is older than yesterday. ASK: the desk confirms the run's outcome in the Actions log; if it failed, the 31 sector tickers are a mark behind and the ladder is a week behind.",
+      "decision": "DESK 2026-10-05 ~14:30 PT: CONFIRMED NOT FAILED, LATE. GitHub queued the 08:15Z cron until 17:07Z; run 37346124426 is still in step 10 'Publish the public feed' (started 17:26Z) - Monday is the long run (31 sector marks on ~3,550 cards at ~2.3 s each + the 50-min ladder). Root risk filed in STATE OPEN ITEMS: step 10 has no step timeout and build-sector-index fetch() has no AbortSignal; a hung read would sit until the 6 h job limit (~23:08Z) and publish nothing.",
+      "decidedBy": "cos-desk",
+      "resolvedOn": "2026-10-05"
     },
     {
       "area": "monday-scan",
       "filed": "2026-10-05",
       "by": "monday-scan",
       "id": "prompt-drift-2026-10-05",
-      "status": "awaiting-cos",
-      "title": "The Monday price-lane prompt is stale in 6 places and LANE-RULES wins in every one (reported per the precedence rule). Already on the LANE-RULES known-drift list: (1) STEP 3.6's Bowman ask-basis doctrine and (2) its 'never build a cross-set 1st Bowman index' line - both superseded by the Sep 25 Bowman reset, and /bowman-1st-chrome-index now exists and marks on sold basis; (3) STEP 3.6 should be scoped to the divisor-model Pokemon chase tickers only, which is what this run did; (4) STEP 3.98's lock sweep is deleted by R1. Found this run and NOT yet on that list: (5) the prompt names five chase tickers and 'live tickers as of Aug 24' - there are now 38 tickers in indices.json, 31 of them marked twice weekly by the nightly Action, so the prompt's STEP 3.6 reads as though this lane owns all of them when it owns six; (6) the prompt's COACH'S NOTE step reads data/pipeline.json coachNotes['monday-scan'], which is pinned at weekOf 2026-09-14 (3 weeks stale) because the Sunday brief's coach notes were retired by the cadence table - so that step can never be satisfied as written and should be dropped. Also stale but harmless: STEP 0.6 GSC hygiene, STEP 1.5's Tue/Thu CoS checkpoints (Sunday-only now), STEP 3.65's X intel (X Desk Watch's lane under R10), and STEP 3.95's GA4 read (R26 made the list the retention KPI, and the nightly ga4-snapshot owns the read)."
+      "status": "applied",
+      "title": "The Monday price-lane prompt is stale in 6 places and LANE-RULES wins in every one (reported per the precedence rule). Already on the LANE-RULES known-drift list: (1) STEP 3.6's Bowman ask-basis doctrine and (2) its 'never build a cross-set 1st Bowman index' line - both superseded by the Sep 25 Bowman reset, and /bowman-1st-chrome-index now exists and marks on sold basis; (3) STEP 3.6 should be scoped to the divisor-model Pokemon chase tickers only, which is what this run did; (4) STEP 3.98's lock sweep is deleted by R1. Found this run and NOT yet on that list: (5) the prompt names five chase tickers and 'live tickers as of Aug 24' - there are now 38 tickers in indices.json, 31 of them marked twice weekly by the nightly Action, so the prompt's STEP 3.6 reads as though this lane owns all of them when it owns six; (6) the prompt's COACH'S NOTE step reads data/pipeline.json coachNotes['monday-scan'], which is pinned at weekOf 2026-09-14 (3 weeks stale) because the Sunday brief's coach notes were retired by the cadence table - so that step can never be satisfied as written and should be dropped. Also stale but harmless: STEP 0.6 GSC hygiene, STEP 1.5's Tue/Thu CoS checkpoints (Sunday-only now), STEP 3.65's X intel (X Desk Watch's lane under R10), and STEP 3.95's GA4 read (R26 made the list the retention KPI, and the nightly ga4-snapshot owns the read).",
+      "decision": "DESK 2026-10-05: APPLIED to LANE-RULES 'Known prompt drift' (Monday trend scan): items 5-6, the stale steps listed, and 'set a git identity on the fresh clone before committing'.",
+      "decidedBy": "cos-desk",
+      "resolvedOn": "2026-10-05"
     },
     {
       "area": "monday-scan",
       "filed": "2026-10-05",
       "by": "monday-scan",
       "id": "signup-missing-on-index-pages-2026-10-05",
-      "status": "awaiting-cos",
-      "title": "HIGH (retention, R26): the email capture is absent from every set-index page — the exact surface that retains — and newsletter_signup has read 0 for 17 straight days. VERIFIED LIVE Oct 5: /pitch-black-index, /chaos-rising-index and /indices serve no 'sch-signup' block and do not even load js/signup.js, while /pokemon-30th-anniversary-2026, /umbreon-ex-worth and /watchlist all carry both. MECHANISM (not a mystery, a coupling bug): tools/build-signup.mjs line 34-35 derives its target set from Object.keys(data/buy-strip.json .pages), so a page only gets the form if it has a BUY STRIP. The chase index pages never needed a buy strip — they carry 42 EPN eBay links each in the holdings table instead (R11 is satisfied, income is NOT affected) — so they have never once received the capture. WHY IT MATTERS: R26 made the list THE retention KPI, and the Oct 3 GA4 retention split says the index/terminal surfaces return at 37.12% of views (32% of landings) against 6.64% on the guides. So the capture is deployed on the pages that do not retain and missing from the pages that do, which is a far better explanation of 17 days of zero than a broken chain. The chain is NOT broken: POST /api/subscribe with a bad address returns 400 'invalid email', so the endpoint is alive and validating. NOT FIXED HERE: the remedy is a tooling/config decision (decouple build-signup.mjs from buy-strip.json and give it its own target list including the 38 index pages and /indices, or add the index pages to buy-strip.json as strip-less signup targets) plus a view on whether the index-page variant should be the 'tape' or a watchlist-style variant. ASK: this is the cheapest retention work available and it is pure plumbing — recommend it leads the Oct 7 weekly's build order."
+      "status": "queued",
+      "title": "HIGH (retention, R26): the email capture is absent from every set-index page — the exact surface that retains — and newsletter_signup has read 0 for 17 straight days. VERIFIED LIVE Oct 5: /pitch-black-index, /chaos-rising-index and /indices serve no 'sch-signup' block and do not even load js/signup.js, while /pokemon-30th-anniversary-2026, /umbreon-ex-worth and /watchlist all carry both. MECHANISM (not a mystery, a coupling bug): tools/build-signup.mjs line 34-35 derives its target set from Object.keys(data/buy-strip.json .pages), so a page only gets the form if it has a BUY STRIP. The chase index pages never needed a buy strip — they carry 42 EPN eBay links each in the holdings table instead (R11 is satisfied, income is NOT affected) — so they have never once received the capture. WHY IT MATTERS: R26 made the list THE retention KPI, and the Oct 3 GA4 retention split says the index/terminal surfaces return at 37.12% of views (32% of landings) against 6.64% on the guides. So the capture is deployed on the pages that do not retain and missing from the pages that do, which is a far better explanation of 17 days of zero than a broken chain. The chain is NOT broken: POST /api/subscribe with a bad address returns 400 'invalid email', so the endpoint is alive and validating. NOT FIXED HERE: the remedy is a tooling/config decision (decouple build-signup.mjs from buy-strip.json and give it its own target list including the 38 index pages and /indices, or add the index pages to buy-strip.json as strip-less signup targets) plus a view on whether the index-page variant should be the 'tape' or a watchlist-style variant. ASK: this is the cheapest retention work available and it is pure plumbing — recommend it leads the Oct 7 weekly's build order.",
+      "decision": "DESK 2026-10-05: VERIFIED LIVE (R5) - /pitch-black-index, /chaos-rising-index, /indices: 0 sch-signup, 0 js/signup.js; /pokemon-30th-anniversary-2026 + /umbreon-ex-worth carry both. ACCEPTED, QUEUED Oct 7 weekly as build-order #2 behind Phase 2: decouple tools/build-signup.mjs from buy-strip.json (own target list: every *-index page + /indices), 'tape' variant, one capture per page (R26). Generator + ~40 pages, so not a desk build.",
+      "decidedBy": "cos-desk",
+      "resolvedOn": "2026-10-05"
     },
     {
       "area": "monday-scan",
       "filed": "2026-10-05",
       "by": "monday-scan",
       "id": "retention-read-2026-10-05",
-      "status": "awaiting-cos",
-      "title": "Retention + traffic read Oct 5 (GA4 snapshot day 2026-10-03, read from a price-data clone per R19 — the GA4 UI was not opened and R26 makes the list the KPI anyway). THE SPLIT, which is the headline number the CoS set: retention surfaces return at 37.12% of views and 32% of landings; guides return at 6.64% / 6.46%. The ≥20%-by-Oct-31 target on the surfaces is ALREADY MET, three weeks early, and the honest reading is the one the prompt names — the surfaces retain, the rest does not, so the strategy is working and the traffic mix is the problem. Two counterweights worth stating in the same breath: (a) the surfaces are only 493 of 2,074 views (24%), so the good number sits on a quarter of the traffic; (b) the surfaces CONVERT worse — 3.25 key events per 100 views vs 4.49 on the guides — so the page that brings people back is not the page that earns, and the buy-side of the index pages deserves a look (they do carry 42 EPN links each). TRAFFIC QUALITY: botShare7 is 50.96% — Singapore 146 sessions at 0.202s average and China 13 at 0.114s — so 'topCountry7 = Singapore' is bots, not a market. Clean sessions are 153 in 7 days, about 22/day, which is BELOW the ~30 clean visitors a day R25 set as the gate for new surfaces: the freeze stays on, and the bot share has roughly doubled since Sep 28 (21.79% → 50.96%). Blended returningShare7 (3.55%) remains the wrong number to judge anything by, exactly as the CoS ruled on Sep 6."
+      "status": "noted",
+      "title": "Retention + traffic read Oct 5 (GA4 snapshot day 2026-10-03, read from a price-data clone per R19 — the GA4 UI was not opened and R26 makes the list the KPI anyway). THE SPLIT, which is the headline number the CoS set: retention surfaces return at 37.12% of views and 32% of landings; guides return at 6.64% / 6.46%. The ≥20%-by-Oct-31 target on the surfaces is ALREADY MET, three weeks early, and the honest reading is the one the prompt names — the surfaces retain, the rest does not, so the strategy is working and the traffic mix is the problem. Two counterweights worth stating in the same breath: (a) the surfaces are only 493 of 2,074 views (24%), so the good number sits on a quarter of the traffic; (b) the surfaces CONVERT worse — 3.25 key events per 100 views vs 4.49 on the guides — so the page that brings people back is not the page that earns, and the buy-side of the index pages deserves a look (they do carry 42 EPN links each). TRAFFIC QUALITY: botShare7 is 50.96% — Singapore 146 sessions at 0.202s average and China 13 at 0.114s — so 'topCountry7 = Singapore' is bots, not a market. Clean sessions are 153 in 7 days, about 22/day, which is BELOW the ~30 clean visitors a day R25 set as the gate for new surfaces: the freeze stays on, and the bot share has roughly doubled since Sep 28 (21.79% → 50.96%). Blended returningShare7 (3.55%) remains the wrong number to judge anything by, exactly as the CoS ruled on Sep 6.",
+      "decision": "DESK 2026-10-05: NOTED. Freeze stays on (R25). Note: the Oct 5 GA4 snapshot's bot filter missed Singapore (163 sessions, 0 KE, avg 4.3 s > the 2 s rule) - botShare7 printed 4.53%, real ~54%; quote clean = sessions7 minus the SG/CN/NL cluster until tools/ga4-snapshot.mjs is fixed (Oct 7 weekly).",
+      "decidedBy": "cos-desk",
+      "resolvedOn": "2026-10-05"
+    },
+    {
+      "id": "iw-2026-10-05-1",
+      "status": "queued",
+      "date": "2026-10-05",
+      "area": "indices",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "14 WOTC index pages name a 'Shadowless' print that does not exist for their set; 8 1st Edition pages say stamped promos have 'their own indices' (none exist).",
+      "decision": "DESK 2026-10-05: ACCEPTED, QUEUED Oct 7 weekly with iw-2026-10-01-2 (same generator, tools/build-sector-index.mjs:170 + :214; --bake, no level change). Copy as the filing proposes; Shadowless mention only on the Base Set tickers."
+    },
+    {
+      "id": "iw-2026-10-05-note-1",
+      "status": "applied",
+      "date": "2026-10-05",
+      "area": "indices",
+      "by": "integrity-watch",
+      "severity": "NOTE",
+      "title": "iw-2026-10-01-2 ('All N cards ... priced') now also covers TU19 175/196, SSP24 249/252, MEG25 185/188, NR1E 65/66, NDC1E 74/75.",
+      "decision": "DESK 2026-10-05: page list on the queued Oct 7 item extended (STATE OPEN ITEMS); the generator fix covers them."
     }
   ],
   "scoreboard": {
@@ -3928,6 +3972,16 @@
           "by": "monday-scan STEP 3.98 (price lane, charter 4.8) — fresh deploy-key clone, 80 files",
           "gates": "audit-prices FAIL 0 / WARN 70 · audit-site FAIL 0 / WARN 5 (158 pages) · audit-terminal FAIL 0 / WARN 1 (--feed data/feed) — re-run on the exact rebased tree that was pushed; no WARN added by this run (prices 70 vs the stated Oct 2 baseline of 77, site 5 vs 4 at 141 pages — the +1 is delta-reign-index missing from sitemap.xml, pre-existing, filed sitemap-delta-reign-2026-10-05)",
           "liveVerified": "2026-10-05 17:26-17:28Z: /pitch-black-index serves 64.74 with data-prices-updated=2026-10-05 (old 68.13 gone), /phantasmal-flames-index serves 72.40, /badge/PB26.svg 200 image/svg+xml"
+        },
+        {
+          "date": "2026-10-05",
+          "commits": [
+            "ae1a260"
+          ],
+          "by": "CoS desk (14:00, Mac deploy key, unattended): Ledger #54 Chrome Sapphire release line (ships dark, js/release-link.js gate) on 2 Bowman Chrome pages; idea #56(a) 30th UPC tile category union + 'set of'/'both' filter, SV151 UPC button without _sacat; x-images skew bins",
+          "gates": "audit-prices FAIL 0 / WARN 70 · audit-site FAIL 0 / WARN 5 (158) · audit-terminal --feed 0/1 = baseline",
+          "liveVerified": "~2 min after push, Playwright iPhone 13: 30th UPC tile data-cat 183456|261044, 'Ask from $498.95 · 2.8× · 27 asks' (was $1,249.95 two-pack); a.bs-rel present + hidden on both Bowman Chrome pages (gate 0 clean listings); SV151 sv151-upc href has no _sacat; 0 console errors, scrollWidth 390",
+          "note": "Deploys. Rollback: git revert --no-edit ae1a260."
         }
       ]
     },

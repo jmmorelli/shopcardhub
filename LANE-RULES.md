@@ -200,6 +200,10 @@ None of the three was a data error. All three were the same naming collision.*
    [HIGH] facts may be stated, [MED] facts carry their source, [LOW]/UNVERIFIED facts never reach a
    page. A card is called a 1st only from its logo (card image or Topps checklist), never from a
    missing Checklist Insider mark — CI does not mark auto 1sts at all.
+8. **Facts about Pokémon come from the Pokémon KB** (Project `claude/kb/pokemon/`, README first; verifier-audited,
+   same [HIGH]/[MED]/[LOW] rule as item 7). A page and the KB disagreeing is a `claude/kb/pokemon/GAPS.md` filing,
+   not a silent edit either way. KB prices are dated research reads, never site numbers. Pull rates and pack EV are a
+   no-publish class (KB doctrine 6) — never listed as a gap. *(CoS, Oct 5, with Mo: the KB caught errors no gate did.)*
 
 **Who we are building for, and why it decides these calls.** Mo: *"We want to push the investors,
 not the retail… We want retention from investors (hence Seeking Alpha) looking for high end cards.
@@ -715,9 +719,9 @@ One-shots on the list (Oct 1): *Grok usage reset — restart plan* (Oct 1; resta
 
 - **Desk:** reads the feed from `/feed/` and GA4 from a `price-data` clone, never raw.githubusercontent (R19); delivers vendor briefs to Grok Bot again, replies-only (R10 Am. 4, Oct 2); runs 7 days; the inbox lookback diffs the last three Integrity Watch `*-proposals.json` files against `data/pipeline.json` (Sep 24 rule).
 - **Weekly:** no Tape Recap at all — retired by Mo Oct 1 (CHARTER §3); the Tuesday Tape is the one weekly email; Phase 2 (sold-basis card pages, engine blocks and home panels, Oct 7) is build-order #1 (R21); when no GA4-realtime proof is possible unattended, it sweeps on the offline harness (`tools/qa/render-local.cjs`) and says so, rather than skipping or loading production.
-- **X Desk Watch:** the vendor is back for likes and replies only (R10 Am. 4, Oct 2), so grade Grok's replies; one run a day at 13:00; select the Chrome by the listed deviceId.
+- ~~**X Desk Watch:** …~~ **fixed Oct 5 ~13:37 PT** — the task prompt was replaced whole (CoS with Mo; R10 Am. 4/5, 13:00, Browser 1 by id, GA4 `authuser=1`, SG/CN/NL Direct bot cluster subtracted before any site-traffic claim). Drift line struck by the Oct 5 desk.
 - **Growth League:** daily per the GO-TIME block, not Mon + Thu; distribution agents never write a contact address into a repo file.
-- **Monday trend scan:** drop STEP 3.6's ask-basis Bowman doctrine and its "never build a cross-set 1st Bowman index" line (superseded by the Sep 25 Bowman reset); STEP 3.6 covers the divisor-model Pokémon chase tickers only; delete STEP 3.98's lock sweep (R1).
+- **Monday trend scan:** drop STEP 3.6's ask-basis Bowman doctrine and its "never build a cross-set 1st Bowman index" line (superseded by the Sep 25 Bowman reset); STEP 3.6 covers the divisor-model Pokémon chase tickers only; delete STEP 3.98's lock sweep (R1). *Added by the Oct 5 desk (the lane's own report, prompt-drift-2026-10-05):* the "five tickers as of Aug 24" list is stale — `indices.json` holds 38 and this lane marks the six divisor-model chase tickers only, the other 31 are the nightly Action's; the COACH'S NOTE step is dead (coach notes retired) — skip it; STEP 0.5 (Release Watch / League A), STEP 0.6 GSC hygiene, STEP 1.5's Tue/Thu checkpoints, STEP 3.65 X intel (X Desk Watch) and STEP 3.95's GA4 read (the nightly snapshot) are not this lane's; **set `user.name`/`user.email` on the fresh clone before the first commit** (Oct 5: a rebase aborted half-way without one).
 - **Tuesday board:** the digest is the Monday close (R26, `tools/tuesday-tape-format.md`); never queue a tweet.
 - **Integrity Watch (desk, Oct 4, iw-2026-10-04-rule):** the −60%-vs-trailing-median FAIL test reads `keyEvents7` (and `cleanSessions7`), not `keyEventsYesterday` when that day's trailing median is under 5; the daily "zero key events on ≥ 30 sessions" FAIL is unchanged.
 - **Sunday brief:** the Tue/Thu light runs, coach's notes, the Grok vendor and the MWF auditor are gone; the charter is the Project/repo `claude/cos/CHARTER.md`; never commit.

@@ -7,7 +7,28 @@ reach. If something here no longer needs you, say so and it comes off.
 *(Housekeeping for the agents, not for Mo: this file lives in the repo beside `STATE.md`; that copy
 is canonical and the Project copy is a mirror written in the same run. Standing grants — Sep 4 "anything
 that needs Mo, I approve"; Sep 8 "I don't want to sign into anything"; Sep 16 "I'd prefer you guys just
-talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy.)*
+talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy. Oct 5 ~13:50: the Project copy was updated again from a CoS chat with no repo access; the Oct 5 desk mirrored it here, closed what §7 of `claude/cos/session-2026-10-05-predesk.md` settled, and wrote both copies.)*
+
+---
+
+## Open — from the desk (2026-10-05, 14:00 run). Mo, these are the only things waiting on you
+
+- **Bluesky, one time (~5 min, your account):** create a ShopCardHub account on Bluesky, then Settings → Privacy and security → **App passwords** → add one and paste it into a CoS chat. That's an app password, not your login. After that the X Daily lane posts the same batch there on your same "go"; no extra work for you. Threads stays off (it would need you present each time).
+- **TCGplayer on Impact (#2) and TAG payment info + affiliate link (#4):** unchanged; neither has reached the project.
+- *FYI, low stakes:* the 15 follow-backs Oct 3–4 (+1 on Oct 5) are still unattributed. If they weren't you, say so and the bots are told follows are out.
+- *Closed today:* the Oct 3 89-click day was your Grok site audit following our eBay links (you, ~14:00). Substack waits until the new Tuesday email format has run twice, so it's off this list for now.
+
+Checked against live state this run: no TCGplayer approval or TAG link in the repo; nothing else is physically yours.
+
+---
+
+## Open — from the CoS with Mo (2026-10-05, ~13:15–13:50 PT, before the 14:00 desk) — *mirrored from the Project by the Oct 5 desk; items settled at ~14:00 are marked*
+
+- **✅ EPN read done** from your screenshot (Sep 21–Oct 4: 155 clicks / 1 action / $64.00 sale / **$1.92**; Oct 4 had the first action since ~Sep 25). Below M0. The Oct 7 (Wednesday) EPN read takes the Oct 4 custom ID.
+- **✅ GA4 "Direct 207 sessions" ruled:** 174 of them are the Singapore/China/Netherlands bot cluster; the X Desk Watch quoted the raw number. Its prompt is fixed (re-signed on your desktop ~13:37).
+- **✅ X Desk Watch prompt replaced.**
+- ~~One question: the 89 EPN clicks on Saturday Oct 3~~ **✅ closed ~14:00 — your Grok site audit.**
+- ~~Distribution, two yes/no's (Substack, Bluesky/Threads)~~ **✅ ruled ~14:00:** Bluesky yes (see the desk block above), Threads deferred, Substack after the new Tuesday format has run twice.
 
 ---
 

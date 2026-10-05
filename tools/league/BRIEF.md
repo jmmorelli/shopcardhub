@@ -132,6 +132,24 @@ Read: Project `claude/handoffs/growth-high-dollar-landers-2026-10-03.md`.
   $300+ sale attributed to a League page or a card page. The Oct 14 interim board gets an EPN-by-agent column for
   information only — no cut or clone uses it this generation.
 
+## Oct 5, 2026 demand — what collectors asked on X (Seeker DEMAND LIST, R10 Am. 5; CoS desk routing)
+
+Seeker files a daily list of real collector questions with the page that answers each, or GAP. The desk routes the GAPs
+here. The first list (Oct 5, n = 7) was five "what is X worth / where do I start" questions and zero "what moved this
+week". Treat these as demand evidence for §1; still confirm the query in Google/Bing before building.
+
+- **B — `/old-pokemon-cards-worth` (next B build, this week).** The lapsed collector's question: "found my childhood binder,
+  what is it worth?" Card search + `/card` pages already answer it card by card (3,861 rows, all 14 classic sets) but
+  nothing answers the question itself. Search box at the top; 1st Edition / Shadowless / Unlimited told apart in plain
+  words (Pokémon KB `01` §3, LANE-RULES R9 item 8); the 14 classic indices as "how each set has moved since 2021"; dated
+  sold marks for the cards people actually find (Base Charizard / Blastoise / Venusaur, Jungle and Fossil holos, Machamp,
+  Pikachu), one eBay search each. Opens with one answer sentence: figure, date, sample size, source (the GEO answer block).
+- **B or C — "best Pokémon set to start collecting in 2026".** Rank sets on measured facts only — liquidity, chase depth,
+  sealed availability — and never say buy. Whichever agent takes it first owns it; the other does not duplicate it.
+- **A — McDonald's 30th Happy Meal cards** (reported Nov 5–Dec 9 US, 15 cards, checklist not out): add a `reported` row to
+  `data/releases.json` with both sources (Sole Retriever, Pokémon GO Hub) and their hedges. No page unless a checklist prints.
+- **Not gaps, ever:** pull rates and pack EV (never published, KB doctrine 6); non-English product; retail stock questions.
+
 ## Index levels after the Sep 30, 2026 rebase (Mo's ruling — binds every agent)
 Every Pokémon index is now based at **100 = the set's release month** (`baseDate`/`baseRule`/`baseNote` in
 `data/indices.json`; vintage sets and Hidden Fates use the first month PriceCharting's sold history reliably covers
