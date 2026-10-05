@@ -18,6 +18,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ebaySearchUrl, assertClean, SACAT_TCG } from "./lib/epn.mjs";
+import { THEMES, HERO_FX, HERO_JS } from "./collectors-desk/themes.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -103,7 +104,7 @@ function printBlock(slug, p, multi) {
   return `
         <div class="print${multi ? " print-multi" : ""}" data-card="${attr(c.id)}">
           <div class="print-head">
-            <span class="print-img" data-card-img="${attr(c.img || "")}" data-card-name="${attr(imgName)}" data-card-size="${multi ? "row" : "card"}"></span>
+            <span class="print-img" data-card-img="${attr(c.img || "")}" data-card-name="${attr(imgName)}" data-card-sub="pokemon" data-card-size="${multi ? "row" : "card"}"></span>
             <div class="print-id">
               ${multi ? `<div class="print-label">${esc(p.label)}</div>` : ""}
               <div class="print-set">${esc(c.name)} #${esc(c.num)} · ${esc(c.set.replace(/^Pokémon TCG /, ""))}</div>
@@ -125,6 +126,16 @@ function printBlock(slug, p, multi) {
         </div>`;
 }
 
+function searchBlock(slug, e, i) {
+  const cid = `${slug}-search-${i}`;
+  const u = assertClean(ebaySearchUrl({ q: e.search.q, customid: cid, sacat: SACAT_TCG }));
+  return `
+        <div class="print print-search">
+          <div class="print-set">${esc(e.search.sub || "not in our index yet · a search, not a price")}</div>
+          <div class="print-links"><a class="lk lk-raw" href="${u}" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','click',{item:'${cid}',page:location.pathname})">${e.search.label}</a></div>
+        </div>`;
+}
+
 function entryBlock(slug, e, i, shelfKey) {
   const multi = e.prints.length > 1;
   return `
@@ -133,9 +144,9 @@ function entryBlock(slug, e, i, shelfKey) {
           <span class="ck-tag">${esc(e.tag)}</span>
           <h3>${esc(e.title)}</h3>
         </div>
-        <p class="ck-why">${esc(e.why)}</p>
+        <p class="ck-why">${e.why}</p>
         ${e.note ? `<p class="ck-note">${esc(e.note)}</p>` : ""}
-        <div class="prints">${e.prints.map((p) => printBlock(slug, p, multi)).join("")}
+        <div class="prints">${e.prints.map((p) => printBlock(slug, p, multi)).join("")}${e.search ? searchBlock(slug, e, i) : ""}
         </div>
       </article>`;
 }
@@ -153,7 +164,7 @@ function build(d) {
 
   const themeCss = THEMES[d.theme](col);
   const hc = d.heroCard ? card(d.heroCard) : null;
-  const heroCard = hc ? `<div class="hero-card-photo hero-card"><span data-card-img="${attr(hc.img || "")}" data-card-name="${attr(hc.name + " #" + hc.num)}" data-card-size="hero" data-card-tilt="1"></span><div class="hero-card-cap">${esc(hc.name)} #${esc(hc.num)} &middot; ${esc(hc.set.replace(/^Pokémon TCG /, ""))}</div></div>` : "";
+  const heroCard = hc ? `<div class="hero-card-photo hero-card"><span data-card-img="${attr(hc.img || "")}" data-card-name="${attr(hc.name + " #" + hc.num)}" data-card-sub="pokemon" data-card-size="hero" data-card-tilt="1"></span><div class="hero-card-cap">${esc(hc.name)} #${esc(hc.num)} &middot; ${esc(hc.set.replace(/^Pokémon TCG /, ""))}</div></div>` : "";
   const shelves = d.shelves.map((s) => `
     <section class="shelf shelf-${s.key}" id="${s.key}">
       <div class="section-eyebrow">${esc(s.eyebrow)} · ${esc(s.label)}</div>
@@ -400,80 +411,6 @@ const DESK_CSS = (c) => `
 function hexa(hex, a) { const h = hex.replace("#", ""); const n = parseInt(h.length === 3 ? h.split("").map((x) => x + x).join("") : h, 16); return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`; }
 
 // ---- themes: the Pokémon's own element, like Pikachu's lightning on the 30th page ---------------------------------
-const THEMES = {
-  fire: (c) => `
-    /* ---- FIRE: heat on the headline ---- */
-    .hero h1 em { background:linear-gradient(100deg, #fff1b8 0%, ${c.glow} 28%, ${c.accent} 55%, ${c.accent2} 100%); background-size:200% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
-      animation:heat-shift 6s ease-in-out infinite; filter:drop-shadow(0 0 22px ${hexa(c.accent, 0.35)}); }
-    @keyframes heat-shift { 0%,100% { background-position:0% 0; } 50% { background-position:100% 0; } }
-    /* ---- ambient embers rising through the hero (scoped to .hero-fx, phone + reduced-motion off) ---- */
-    .ember { position:absolute; bottom:-12px; width:5px; height:5px; border-radius:50%; background:radial-gradient(circle, #fff3c4 0%, ${c.glow} 35%, ${c.accent} 70%, transparent 100%);
-      box-shadow:0 0 8px 2px ${hexa(c.accent, 0.55)}; opacity:0; animation:ember-rise var(--d, 7s) ease-out var(--t, 0s) infinite; }
-    .ember.s { width:3px; height:3px; } .ember.l { width:7px; height:7px; }
-    @keyframes ember-rise {
-      0%   { opacity:0; transform:translate(0, 0) scale(0.6); }
-      10%  { opacity:0.95; }
-      50%  { opacity:0.7; transform:translate(var(--x, 14px), -46vh) scale(1); }
-      85%  { opacity:0.35; }
-      100% { opacity:0; transform:translate(calc(var(--x, 14px) * -0.6), -92vh) scale(0.4); }
-    }
-    /* ---- the fire sweep: one breath of flame across the hero on load (the 30th page's bolt, as fire) ---- */
-    #flame-sweep { position:absolute; top:18%; left:-40%; width:46%; height:64%; opacity:0; pointer-events:none; filter:blur(14px);
-      background:radial-gradient(ellipse at 50% 50%, ${hexa("#fff1b8", 0.55)} 0%, ${hexa(c.glow, 0.5)} 22%, ${hexa(c.accent, 0.42)} 48%, ${hexa(c.accent2, 0.18)} 70%, transparent 82%); }
-    #flame-sweep.breathing { animation:flame-breath 1.6s cubic-bezier(.3,.8,.4,1) forwards; }
-    @keyframes flame-breath { 0% { opacity:0; transform:translateX(0) scaleY(0.6); } 12% { opacity:1; } 60% { opacity:0.85; transform:translateX(220%) scaleY(1); } 100% { opacity:0; transform:translateX(320%) scaleY(0.7); } }
-    #heat-overlay { position:absolute; inset:0; opacity:0; pointer-events:none; background:radial-gradient(ellipse at 30% 40%, ${hexa(c.accent, 0.22)} 0%, transparent 55%); }
-    #heat-overlay.breathing { animation:heat-flash 1.6s ease-out forwards; }
-    @keyframes heat-flash { 0% { opacity:0; } 15% { opacity:1; } 50% { opacity:0.45; } 100% { opacity:0; } }
-    /* ---- the ember sprite: a fireball crossing the bottom of the viewport once ---- */
-    #ember-sprite { position:fixed; bottom:10px; left:-90px; width:36px; height:26px; z-index:900; pointer-events:none; opacity:0; }
-    #ember-sprite.running { animation:sprite-fly 8s cubic-bezier(.4,0,.6,1) 1; }
-    @keyframes sprite-fly { 0% { transform:translateX(0) translateY(0); opacity:0; } 4% { opacity:1; } 25% { transform:translateX(25vw) translateY(-14px); } 50% { transform:translateX(50vw) translateY(4px); } 75% { transform:translateX(75vw) translateY(-18px); } 96% { opacity:1; } 100% { transform:translateX(calc(100vw + 160px)) translateY(0); opacity:0; } }
-    #ember-sprite .core { position:absolute; right:0; top:3px; width:22px; height:20px; border-radius:55% 45% 50% 50%;
-      background:radial-gradient(circle at 40% 40%, #fff6d0 0%, ${c.glow} 35%, ${c.accent} 70%, ${c.accent2} 100%); box-shadow:0 0 16px 4px ${hexa(c.accent, 0.6)}; animation:core-flicker 0.16s steps(2) infinite; }
-    @keyframes core-flicker { 0% { transform:scale(1,1); } 100% { transform:scale(1.08,0.92); } }
-    #ember-sprite .tail { position:absolute; right:14px; top:5px; width:64px; height:16px; background:linear-gradient(90deg, transparent 0%, ${hexa(c.accent2, 0.5)} 30%, ${c.accent} 70%, ${c.glow} 100%);
-      clip-path:polygon(0 50%, 18% 30%, 30% 48%, 48% 22%, 58% 50%, 76% 28%, 100% 42%, 100% 60%, 74% 72%, 56% 58%, 46% 80%, 28% 56%, 16% 72%); animation:tail-lick 0.22s steps(2) infinite; filter:blur(0.4px); }
-    @keyframes tail-lick { 0% { transform:scaleY(1); opacity:0.95; } 100% { transform:scaleY(-1) translateY(2px); opacity:0.7; } }
-    #ember-sprite:not(.running) .core, #ember-sprite:not(.running) .tail { animation:none; }
-    /* ---- shelves: the grail shelf glows ember on hover ---- */
-    .ck-grail:hover { border-left-color:${c.glow}; }
-    .lad-raw .lad-v { text-shadow:0 0 18px ${hexa(c.accent, 0.35)}; }
-    @media (max-width: 760px) { .ember, #ember-sprite, #flame-sweep { display:none !important; } }
-    @media (prefers-reduced-motion: reduce) { .ember, #ember-sprite, #flame-sweep, #heat-overlay { display:none !important; } .hero h1 em { animation:none; } }`,
-};
-
-const HERO_FX = {
-  fire: () => {
-    let s = "";
-    const n = 22;
-    for (let i = 0; i < n; i++) {
-      const left = (3 + (i * 97) / n + ((i * 37) % 11) - 5).toFixed(1);
-      const d = (5.5 + ((i * 7) % 9) * 0.55).toFixed(2);
-      const t = (-((i * 13) % 17) * 0.45).toFixed(2);
-      const x = ((((i * 29) % 7) - 3) * 9).toFixed(0);
-      const cls = i % 5 === 0 ? " l" : i % 3 === 0 ? " s" : "";
-      s += `<span class="ember${cls}" style="left:${left}%;--d:${d}s;--t:${t}s;--x:${x}px"></span>`;
-    }
-    return s + `<div id="heat-overlay"></div><div id="flame-sweep"></div>`;
-  },
-};
-
-const HERO_JS = {
-  fire: () => `
-(function(){
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (window.innerWidth < 761) return;
-  var sw = document.getElementById('flame-sweep'), ho = document.getElementById('heat-overlay');
-  setTimeout(function(){ if (sw) sw.classList.add('breathing'); if (ho) ho.classList.add('breathing'); }, 500);
-  var sp = document.createElement('div'); sp.id = 'ember-sprite'; sp.setAttribute('aria-hidden','true');
-  sp.innerHTML = '<div class="tail"></div><div class="core"></div>';
-  document.body.appendChild(sp);
-  setTimeout(function(){ sp.classList.add('running'); }, 2200);
-  sp.addEventListener('animationend', function(){ sp.classList.remove('running'); });
-})();`,
-};
-
 // ---- run ----------------------------------------------------------------------------------------------------
 const files = fs.readdirSync(path.join(ROOT, "data/collect")).filter((n) => n.endsWith(".json") && (!ONLY || n === ONLY + ".json"));
 for (const f of files) {
