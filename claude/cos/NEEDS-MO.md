@@ -11,9 +11,17 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## ✅ RULED by Mo in chat (2026-10-04 ~21:20 PT): "i say go/approve to all, but maybe wait until the pokemon KB gets finished first - your call"
+
+- **Liñan/Muñoz:** done the same evening, before the Monday mark (`4b4b543`, levels unchanged).
+- **Pokémon calls, all approved — CoS sequencing:** the KB fix list (Pass 1) ships first at the Oct 7 weekly; G19 (keep the promos, retitle "Celebrations + 25th promos") and G22 (TAG line) ship in that same pass; G20 (RGB Mews to the chase strip, divisor-logged) right after it, once the 30th page copy is corrected; G21 Delta Reign shell by Oct 10 (base 100 on Nov 6); G23 Surging Sparks + Mega Evolution base set after Delta Reign, week of Oct 12. Nothing here waits on you.
+- Still unanswered, low stakes: the 15 X follow-backs, and whether you were clicking card links on Saturday (the 89-click day).
+
+---
+
 ## Open — from the desk (2026-10-04, 14:00 run). Mo, these are the only things waiting on you
 
-- Nothing new needs a sign-in or money. Still waiting on a word from you: the Liñan/Muñoz "go" (below; it will now miss Monday's reconstitution and lands the next mark after you say go) and the four Pokémon calls just below.
+- ~~Nothing new needs a sign-in or money. Still waiting on a word from you: the Liñan/Muñoz "go" (below; it will now miss Monday's reconstitution and lands the next mark after you say go) and the four Pokémon calls just below.
 - *FYI, one question:* @shopcardhub followed 15 accounts between Saturday and Sunday afternoon, all of them follow-backs (two are card-price accounts). If that wasn't you, say so and Grok is told follows are out of its lane.
 - *FYI:* Grok's replies stopped after Oct 2 ~5:45 pm, which fits its free usage running out. Nothing to do: no one pays for more.
 
