@@ -176,6 +176,8 @@ function classicConfigs() {
   // --rescope/--mark drop it from stored data as a logged divisor adjustment (level unchanged). `label` is printed on the
   // page's method note so the exclusion is named, never a silent count.
   const MACHAMP_BSSL = { num: "8", name: /^Machamp$/, label: "Machamp #8 — the only shadowless Machamp carries the 1st Edition stamp (Machamp came only in the 2-Player Starter, always stamped), so it is a 1st Edition card and is priced in BS1E" };
+  const NR_DHE = { path: /double-holo-error/, label: "the “Double Holo Error” rows (Celebi #3, Crobat #4, Ho-Oh #7, Houndoom #8, Misdreavus #11, Shining Gyarados #65, Shining Magikarp #66) — misprint variants PriceCharting lists as separate items, not set slots" };
+  const NR_DHE_1E = { path: /double-holo-error/, label: "the five 1st Edition “Double Holo Error” rows (Celebi #3, Ho-Oh #7, Houndoom #8, Shining Gyarados #65, Shining Magikarp #66) — misprint variants PriceCharting lists as separate items, not set slots" };
   const MACHAMP_BS99 = { num: "8", name: /^Machamp$/, label: "Machamp #8 — no unstamped Unlimited Machamp was released (it came only in the 2-Player Starter, with the 1st Edition stamp); the only Machamp row on PriceCharting's Unlimited listing is the separate “1999-2000” print, so this index holds 101 cards" };
   return Object.fromEntries([
     mk("BS99", { exclude: [MACHAMP_BS99], imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base1/" + b.num + ".png" : null, name: "Base Set Index", set: "Pokémon TCG Base Set (Unlimited)", page: "/pokemon-base-set-index", pcSlug: "pokemon-base-set", q: "base set unlimited", theme: "#e8b93a", releaseDate: "1999-01-09", imgSet: "Pokemon Base Set", denom: 102, note: "The first English set (1999): Charizard, Blastoise and Venusaur lead a 102-card set. " + W }),
@@ -183,6 +185,13 @@ function classicConfigs() {
     mk("FO99", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base3/" + b.num + ".png" : null, name: "Fossil Set Index", set: "Pokémon TCG Fossil (Unlimited)", page: "/pokemon-fossil-index", pcSlug: "pokemon-fossil", q: "fossil unlimited", theme: "#b0a089", releaseDate: "1999-10-10", imgSet: "Pokemon Fossil", denom: 62, note: "The third English set (1999), 62 cards; Gengar, Dragonite and the legendary birds lead it. " + W }),
     mk("TR00", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/base5/" + b.num + ".png" : null, name: "Team Rocket Set Index", set: "Pokémon TCG Team Rocket (Unlimited)", page: "/team-rocket-index", pcSlug: "pokemon-team-rocket", q: "team rocket unlimited", theme: "#d23c3c", releaseDate: "2000-04-24", imgSet: "Pokemon Team Rocket", denom: 82, note: "The 2000 Dark Pokémon set; Dark Charizard, Dark Blastoise and the secret Dark Raichu #83 lead it. " + W }),
     mk("NG00", { exclude: [{ num: "159", name: /^Aligates$/, label: "the “Aligates #159” row — not a Neo Genesis card (the set has 111)" }], imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/neo1/" + b.num + ".png" : null, name: "Neo Genesis Set Index", set: "Pokémon TCG Neo Genesis (Unlimited)", page: "/neo-genesis-index", pcSlug: "pokemon-neo-genesis", q: "neo genesis unlimited", theme: "#f0a830", releaseDate: "2000-12-16", imgSet: "Pokemon Neo Genesis", denom: 111, note: "The first Neo set (2000), 111 cards; Lugia is the chase, with the two Typhlosion prints and Pichu behind it. " + W }),
+    // ---- NEO DISCOVERY + NEO REVELATION (Oct 4 2026, Mo: "add both. Do it please."). Same recipe as NG00/ND02: Unlimited =
+    // the bracketless print; the [1st Edition] pair is in the edition array below. Release dates per Bulbapedia (fetched Oct 4:
+    // Discovery "English: June 1, 2001", 75 cards; Revelation "English: September 21, 2001", 66 cards incl. the two Shining
+    // secrets). NDC = Neo DisCovery: "ND" is Neo Destiny's (ND02/ND1E). The console's "Double Holo Error" rows are misprint
+    // variants (bracketed, so the bracket rule already drops them); the exclude rule names them on the page.
+    mk("NDC01", { imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/neo2/" + b.num + ".png" : null, name: "Neo Discovery Set Index", set: "Pokémon TCG Neo Discovery (Unlimited)", page: "/neo-discovery-index", pcSlug: "pokemon-neo-discovery", q: "neo discovery unlimited", theme: "#c86bb0", releaseDate: "2001-06-01", imgSet: "Pokemon Neo Discovery", denom: 75, note: "The second Neo set (June 2001), 75 cards; the holo Espeon #1 and Umbreon #13 are the chase. " + W }),
+    mk("NR01", { exclude: [NR_DHE], imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? "https://images.pokemontcg.io/neo3/" + b.num + ".png" : null, name: "Neo Revelation Set Index", set: "Pokémon TCG Neo Revelation (Unlimited)", page: "/neo-revelation-index", pcSlug: "pokemon-neo-revelation", q: "neo revelation unlimited", theme: "#2bb3a3", releaseDate: "2001-09-21", imgSet: "Pokemon Neo Revelation", denom: 64, note: "The third Neo set (September 2001): 64 cards plus two secret rares, Shining Gyarados #65 and Shining Magikarp #66 — the first Shining Pokémon. Holos include Ho-Oh, Celebi and the legendary beasts. " + W }),
     // ---- WOTC EDITION INDICES (Sep 30 2026, Mo: "1st edition and shadowless … make a respective index for those two with their
     // specific cards"). Same set, different print = a different collectible. Universe = the console's "[1st Edition]" (or
     // "[Shadowless]") items only; Base Set 1st Edition copies are also shadowless by print, and PriceCharting lists them as
@@ -193,8 +202,10 @@ function classicConfigs() {
         ["FO1E", "pokemon-fossil", "Fossil", "base3", 62, "1999-10-10", "#8d7b5f", "/pokemon-fossil-1st-edition-index", "The 1999 Fossil 1st Edition print (stamped). "],
         ["TR1E", "pokemon-team-rocket", "Team Rocket", "base5", 82, "2000-04-24", "#a32020", "/team-rocket-1st-edition-index", "The 2000 Team Rocket 1st Edition print (stamped). "],
         ["NG1E", "pokemon-neo-genesis", "Neo Genesis", "neo1", 111, "2000-12-16", "#c98a1c", "/neo-genesis-1st-edition-index", "The 2000 Neo Genesis 1st Edition print (stamped). "],
+        ["NDC1E", "pokemon-neo-discovery", "Neo Discovery", "neo2", 75, "2001-06-01", "#9a4d86", "/neo-discovery-1st-edition-index", "The 2001 Neo Discovery 1st Edition print (stamped); the holo Espeon #1 and Umbreon #13 are its chase. "],
+        ["NR1E", "pokemon-neo-revelation", "Neo Revelation", "neo3", 64, "2001-09-21", "#1f8a7d", "/neo-revelation-1st-edition-index", "The 2001 Neo Revelation 1st Edition print (stamped); Shining Gyarados #65 and Shining Magikarp #66, the first Shining Pokémon, are its secret rares. ", { exclude: [NR_DHE_1E] }],
         ["ND1E", "pokemon-neo-destiny", "Neo Destiny", "neo4", 105, "2002-02-28", "#4b3fa8", "/neo-destiny-1st-edition-index", "The 2002 Neo Destiny 1st Edition print (stamped); the Shining Pokémon are its chase, and most of them sell too rarely raw to clear the screen (named above). "],
-    ].map(([tk, slug, set, img, denom, rel, theme, page, note]) => [tk, { imgSub: "pokemon", classic: true, imgNot: "-celebrations -25th -reprint -japanese",
+    ].map(([tk, slug, set, img, denom, rel, theme, page, note, extra]) => [tk, { ...(extra || {}), imgSub: "pokemon", classic: true, imgNot: "-celebrations -25th -reprint -japanese",
       imgSrc: (b) => /^[H]?\d+$/.test(String(b.num)) ? `https://images.pokemontcg.io/${img}/${b.num}.png` : null,
       name: `${set} 1st Edition Index`, set: `Pokémon TCG ${set} (1st Edition)`, page, pcSlug: slug,
       sources: [{ slug, keep: (title) => /\[1st Edition\]/.test(title) }],
@@ -478,9 +489,9 @@ function deskIds(x) {
   return m;
 }
 // WOTC print families (Sep 30 2026): 1st Edition, Shadowless and Unlimited are different collectibles — each index links its siblings
-const FAMILIES = [["BS1E", "BSSL", "BS99"], ["JU1E", "JU99"], ["FO1E", "FO99"], ["TR1E", "TR00"], ["NG1E", "NG00"], ["ND1E", "ND02"]];
+const FAMILIES = [["BS1E", "BSSL", "BS99"], ["JU1E", "JU99"], ["FO1E", "FO99"], ["TR1E", "TR00"], ["NG1E", "NG00"], ["NDC1E", "NDC01"], ["NR1E", "NR01"], ["ND1E", "ND02"]];
 const PRINTS = Object.fromEntries(FAMILIES.flatMap((f) => f.map((t) => [t, f])));
-const PRINT_LBL = { BS1E: "1st Edition", BSSL: "Shadowless", BS99: "Unlimited", JU1E: "1st Edition", JU99: "Unlimited", FO1E: "1st Edition", FO99: "Unlimited", TR1E: "1st Edition", TR00: "Unlimited", NG1E: "1st Edition", NG00: "Unlimited", ND1E: "1st Edition", ND02: "Unlimited" };
+const PRINT_LBL = { BS1E: "1st Edition", BSSL: "Shadowless", BS99: "Unlimited", JU1E: "1st Edition", JU99: "Unlimited", FO1E: "1st Edition", FO99: "Unlimited", TR1E: "1st Edition", TR00: "Unlimited", NG1E: "1st Edition", NG00: "Unlimited", NDC1E: "1st Edition", NDC01: "Unlimited", NR1E: "1st Edition", NR01: "Unlimited", ND1E: "1st Edition", ND02: "Unlimited" };
 // iw-2026-10-03-1 (desk Oct 3): "w/w" is the move vs the newest mark at least 5 days before the latest — the badge rule
 // (tools/build-badges.mjs weekMove). On Mon/Thu tickers the previous mark is 3–4 days back, so "w/w" against it was not a week.
 function weekBase(h) {

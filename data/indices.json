@@ -70969,5 +70969,5739 @@
       },
       "note": "Playbook Phase 2 shell (Mo 2026-10-04: Delta Reign is a go). Off the home board (board:false), nav and sitemap; noindex. Go-live: build-sector-index.mjs --ticker DLR26 --init, then build-recon.mjs (inception inside Nov 2026 = factor 1)."
     }
+  },
+  "NDC01": {
+    "ticker": "NDC01",
+    "name": "Neo Discovery Set Index",
+    "set": "Pokémon TCG Neo Discovery (Unlimited)",
+    "page": "/neo-discovery-index",
+    "model": "sector",
+    "status": "live",
+    "basis": "sold",
+    "basisLabel": "sold comps (PriceCharting ungraded) · sector model · twice-weekly re-mark",
+    "screen": {
+      "enter": 6,
+      "stay": 4,
+      "window": 30,
+      "source": "PriceCharting ungraded completed sales, clean single-card rows"
+    },
+    "cap": 0.25,
+    "capRule": {
+      "single": 0.25,
+      "big": 0.05,
+      "bigSum": 0.5,
+      "name": "25% single-card cap + 5/50 group cap (Select Sector SPDR rule)"
+    },
+    "base": 100,
+    "inception": "2026-10-04",
+    "releaseDate": "2001-06-01",
+    "universeComplete": true,
+    "pcSlug": "pokemon-neo-discovery",
+    "sources": [],
+    "divisor": 6.73364,
+    "divisorLog": [
+      {
+        "date": "2026-10-04",
+        "before": null,
+        "after": 14.1293,
+        "why": "inception — basket $1412.93 over 75 of 75 slots; 5 capped (25% single / 5-50 group)"
+      },
+      {
+        "date": "2026-10-04",
+        "before": 14.1293,
+        "after": 6.73364,
+        "why": "BASE (release-date rule). 100 = Jan 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Jun 1, 2001 release predates the data, so no release-day level is claimed. Every level × 2.098315; shape and % moves unchanged."
+      }
+    ],
+    "capLog": [
+      {
+        "date": "2026-10-04",
+        "num": "1",
+        "name": "Espeon",
+        "w": 0.8698
+      },
+      {
+        "date": "2026-10-04",
+        "num": "5",
+        "name": "Houndour",
+        "w": 0.8698
+      },
+      {
+        "date": "2026-10-04",
+        "num": "12",
+        "name": "Tyranitar",
+        "w": 0.8698
+      },
+      {
+        "date": "2026-10-04",
+        "num": "13",
+        "name": "Umbreon",
+        "w": 0.8527
+      },
+      {
+        "date": "2026-10-04",
+        "num": "32",
+        "name": "Umbreon",
+        "w": 0.9034
+      }
+    ],
+    "screenLog": [
+      {
+        "date": "2026-10-04",
+        "pass": 75,
+        "fail": 0,
+        "errors": 0
+      }
+    ],
+    "universe": [
+      {
+        "num": "1",
+        "name": "Espeon",
+        "path": "pokemon-neo-discovery/espeon-1"
+      },
+      {
+        "num": "2",
+        "name": "Forretress",
+        "path": "pokemon-neo-discovery/forretress-2"
+      },
+      {
+        "num": "3",
+        "name": "Hitmontop",
+        "path": "pokemon-neo-discovery/hitmontop-3"
+      },
+      {
+        "num": "4",
+        "name": "Houndoom",
+        "path": "pokemon-neo-discovery/houndoom-4"
+      },
+      {
+        "num": "5",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-5"
+      },
+      {
+        "num": "6",
+        "name": "Kabutops",
+        "path": "pokemon-neo-discovery/kabutops-6"
+      },
+      {
+        "num": "7",
+        "name": "Magnemite",
+        "path": "pokemon-neo-discovery/magnemite-7"
+      },
+      {
+        "num": "8",
+        "name": "Politoed",
+        "path": "pokemon-neo-discovery/politoed-8"
+      },
+      {
+        "num": "9",
+        "name": "Poliwrath",
+        "path": "pokemon-neo-discovery/poliwrath-9"
+      },
+      {
+        "num": "10",
+        "name": "Scizor",
+        "path": "pokemon-neo-discovery/scizor-10"
+      },
+      {
+        "num": "11",
+        "name": "Smeargle",
+        "path": "pokemon-neo-discovery/smeargle-11"
+      },
+      {
+        "num": "12",
+        "name": "Tyranitar",
+        "path": "pokemon-neo-discovery/tyranitar-12"
+      },
+      {
+        "num": "13",
+        "name": "Umbreon",
+        "path": "pokemon-neo-discovery/umbreon-13"
+      },
+      {
+        "num": "14",
+        "name": "Unown A",
+        "path": "pokemon-neo-discovery/unown-a-14"
+      },
+      {
+        "num": "15",
+        "name": "Ursaring",
+        "path": "pokemon-neo-discovery/ursaring-15"
+      },
+      {
+        "num": "16",
+        "name": "Wobbuffet",
+        "path": "pokemon-neo-discovery/wobbuffet-16"
+      },
+      {
+        "num": "17",
+        "name": "Yanma",
+        "path": "pokemon-neo-discovery/yanma-17"
+      },
+      {
+        "num": "18",
+        "name": "Beedrill",
+        "path": "pokemon-neo-discovery/beedrill-18"
+      },
+      {
+        "num": "19",
+        "name": "Butterfree",
+        "path": "pokemon-neo-discovery/butterfree-19"
+      },
+      {
+        "num": "20",
+        "name": "Espeon",
+        "path": "pokemon-neo-discovery/espeon-20"
+      },
+      {
+        "num": "21",
+        "name": "Forretress",
+        "path": "pokemon-neo-discovery/forretress-21"
+      },
+      {
+        "num": "22",
+        "name": "Hitmontop",
+        "path": "pokemon-neo-discovery/hitmontop-22"
+      },
+      {
+        "num": "23",
+        "name": "Houndoom",
+        "path": "pokemon-neo-discovery/houndoom-23"
+      },
+      {
+        "num": "24",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-24"
+      },
+      {
+        "num": "25",
+        "name": "Kabutops",
+        "path": "pokemon-neo-discovery/kabutops-25"
+      },
+      {
+        "num": "26",
+        "name": "Magnemite",
+        "path": "pokemon-neo-discovery/magnemite-26"
+      },
+      {
+        "num": "27",
+        "name": "Politoed",
+        "path": "pokemon-neo-discovery/politoed-27"
+      },
+      {
+        "num": "28",
+        "name": "Poliwrath",
+        "path": "pokemon-neo-discovery/poliwrath-28"
+      },
+      {
+        "num": "29",
+        "name": "Scizor",
+        "path": "pokemon-neo-discovery/scizor-29"
+      },
+      {
+        "num": "30",
+        "name": "Smeargle",
+        "path": "pokemon-neo-discovery/smeargle-30"
+      },
+      {
+        "num": "31",
+        "name": "Tyranitar",
+        "path": "pokemon-neo-discovery/tyranitar-31"
+      },
+      {
+        "num": "32",
+        "name": "Umbreon",
+        "path": "pokemon-neo-discovery/umbreon-32"
+      },
+      {
+        "num": "33",
+        "name": "Unown A",
+        "path": "pokemon-neo-discovery/unown-a-33"
+      },
+      {
+        "num": "34",
+        "name": "Ursaring",
+        "path": "pokemon-neo-discovery/ursaring-34"
+      },
+      {
+        "num": "35",
+        "name": "Wobbuffet",
+        "path": "pokemon-neo-discovery/wobbuffet-35"
+      },
+      {
+        "num": "36",
+        "name": "Yanma",
+        "path": "pokemon-neo-discovery/yanma-36"
+      },
+      {
+        "num": "37",
+        "name": "Corsola",
+        "path": "pokemon-neo-discovery/corsola-37"
+      },
+      {
+        "num": "38",
+        "name": "Eevee",
+        "path": "pokemon-neo-discovery/eevee-38"
+      },
+      {
+        "num": "39",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-39"
+      },
+      {
+        "num": "40",
+        "name": "Igglybuff",
+        "path": "pokemon-neo-discovery/igglybuff-40"
+      },
+      {
+        "num": "41",
+        "name": "Kakuna",
+        "path": "pokemon-neo-discovery/kakuna-41"
+      },
+      {
+        "num": "42",
+        "name": "Metapod",
+        "path": "pokemon-neo-discovery/metapod-42"
+      },
+      {
+        "num": "43",
+        "name": "Omastar",
+        "path": "pokemon-neo-discovery/omastar-43"
+      },
+      {
+        "num": "44",
+        "name": "Poliwhirl",
+        "path": "pokemon-neo-discovery/poliwhirl-44"
+      },
+      {
+        "num": "45",
+        "name": "Pupitar",
+        "path": "pokemon-neo-discovery/pupitar-45"
+      },
+      {
+        "num": "46",
+        "name": "Scyther",
+        "path": "pokemon-neo-discovery/scyther-46"
+      },
+      {
+        "num": "47",
+        "name": "Unown D",
+        "path": "pokemon-neo-discovery/unown-d-47"
+      },
+      {
+        "num": "48",
+        "name": "Unown F",
+        "path": "pokemon-neo-discovery/unown-f-48"
+      },
+      {
+        "num": "49",
+        "name": "Unown M",
+        "path": "pokemon-neo-discovery/unown-m-49"
+      },
+      {
+        "num": "50",
+        "name": "Unown N",
+        "path": "pokemon-neo-discovery/unown-n-50"
+      },
+      {
+        "num": "51",
+        "name": "Unown U",
+        "path": "pokemon-neo-discovery/unown-u-51"
+      },
+      {
+        "num": "52",
+        "name": "Xatu",
+        "path": "pokemon-neo-discovery/xatu-52"
+      },
+      {
+        "num": "53",
+        "name": "Caterpie",
+        "path": "pokemon-neo-discovery/caterpie-53"
+      },
+      {
+        "num": "54",
+        "name": "Dunsparce",
+        "path": "pokemon-neo-discovery/dunsparce-54"
+      },
+      {
+        "num": "55",
+        "name": "Hoppip",
+        "path": "pokemon-neo-discovery/hoppip-55"
+      },
+      {
+        "num": "56",
+        "name": "Kabuto",
+        "path": "pokemon-neo-discovery/kabuto-56"
+      },
+      {
+        "num": "57",
+        "name": "Larvitar",
+        "path": "pokemon-neo-discovery/larvitar-57"
+      },
+      {
+        "num": "58",
+        "name": "Mareep",
+        "path": "pokemon-neo-discovery/mareep-58"
+      },
+      {
+        "num": "59",
+        "name": "Natu",
+        "path": "pokemon-neo-discovery/natu-59"
+      },
+      {
+        "num": "60",
+        "name": "Omanyte",
+        "path": "pokemon-neo-discovery/omanyte-60"
+      },
+      {
+        "num": "61",
+        "name": "Pineco",
+        "path": "pokemon-neo-discovery/pineco-61"
+      },
+      {
+        "num": "62",
+        "name": "Poliwag",
+        "path": "pokemon-neo-discovery/poliwag-62"
+      },
+      {
+        "num": "63",
+        "name": "Sentret",
+        "path": "pokemon-neo-discovery/sentret-63"
+      },
+      {
+        "num": "64",
+        "name": "Spinarak",
+        "path": "pokemon-neo-discovery/spinarak-64"
+      },
+      {
+        "num": "65",
+        "name": "Teddiursa",
+        "path": "pokemon-neo-discovery/teddiursa-65"
+      },
+      {
+        "num": "66",
+        "name": "Tyrogue",
+        "path": "pokemon-neo-discovery/tyrogue-66"
+      },
+      {
+        "num": "67",
+        "name": "Unown E",
+        "path": "pokemon-neo-discovery/unown-e-67"
+      },
+      {
+        "num": "68",
+        "name": "Unown I",
+        "path": "pokemon-neo-discovery/unown-i-68"
+      },
+      {
+        "num": "69",
+        "name": "Unown O",
+        "path": "pokemon-neo-discovery/unown-o-69"
+      },
+      {
+        "num": "70",
+        "name": "Weedle",
+        "path": "pokemon-neo-discovery/weedle-70"
+      },
+      {
+        "num": "71",
+        "name": "Wooper",
+        "path": "pokemon-neo-discovery/wooper-71"
+      },
+      {
+        "num": "72",
+        "name": "Fossil Egg",
+        "path": "pokemon-neo-discovery/fossil-egg-72"
+      },
+      {
+        "num": "73",
+        "name": "Hyper Devolution Spray",
+        "path": "pokemon-neo-discovery/hyper-devolution-spray-73"
+      },
+      {
+        "num": "74",
+        "name": "Ruin Wall",
+        "path": "pokemon-neo-discovery/ruin-wall-74"
+      },
+      {
+        "num": "75",
+        "name": "Energy Ark",
+        "path": "pokemon-neo-discovery/energy-ark-75"
+      }
+    ],
+    "basket": [
+      {
+        "num": "1",
+        "name": "Espeon",
+        "path": "pokemon-neo-discovery/espeon-1",
+        "price": 211,
+        "n30": 25,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.8698
+      },
+      {
+        "num": "2",
+        "name": "Forretress",
+        "path": "pokemon-neo-discovery/forretress-2",
+        "price": 19.99,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "3",
+        "name": "Hitmontop",
+        "path": "pokemon-neo-discovery/hitmontop-3",
+        "price": 13,
+        "n30": 35,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "4",
+        "name": "Houndoom",
+        "path": "pokemon-neo-discovery/houndoom-4",
+        "price": 59.99,
+        "n30": 23,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "5",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-5",
+        "price": 86.9,
+        "n30": 19,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.8698
+      },
+      {
+        "num": "6",
+        "name": "Kabutops",
+        "path": "pokemon-neo-discovery/kabutops-6",
+        "price": 58.53,
+        "n30": 32,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "7",
+        "name": "Magnemite",
+        "path": "pokemon-neo-discovery/magnemite-7",
+        "price": 20,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "8",
+        "name": "Politoed",
+        "path": "pokemon-neo-discovery/politoed-8",
+        "price": 50,
+        "n30": 29,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "9",
+        "name": "Poliwrath",
+        "path": "pokemon-neo-discovery/poliwrath-9",
+        "price": 28.99,
+        "n30": 30,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "10",
+        "name": "Scizor",
+        "path": "pokemon-neo-discovery/scizor-10",
+        "price": 52,
+        "n30": 26,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "11",
+        "name": "Smeargle",
+        "path": "pokemon-neo-discovery/smeargle-11",
+        "price": 26.74,
+        "n30": 22,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "12",
+        "name": "Tyranitar",
+        "path": "pokemon-neo-discovery/tyranitar-12",
+        "price": 100,
+        "n30": 31,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.8698
+      },
+      {
+        "num": "13",
+        "name": "Umbreon",
+        "path": "pokemon-neo-discovery/umbreon-13",
+        "price": 390,
+        "n30": 29,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.8527
+      },
+      {
+        "num": "14",
+        "name": "Unown A",
+        "path": "pokemon-neo-discovery/unown-a-14",
+        "price": 10.99,
+        "n30": 35,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "15",
+        "name": "Ursaring",
+        "path": "pokemon-neo-discovery/ursaring-15",
+        "price": 29.99,
+        "n30": 16,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "16",
+        "name": "Wobbuffet",
+        "path": "pokemon-neo-discovery/wobbuffet-16",
+        "price": 22.63,
+        "n30": 7,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "17",
+        "name": "Yanma",
+        "path": "pokemon-neo-discovery/yanma-17",
+        "price": 18.99,
+        "n30": 26,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "18",
+        "name": "Beedrill",
+        "path": "pokemon-neo-discovery/beedrill-18",
+        "price": 10,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "19",
+        "name": "Butterfree",
+        "path": "pokemon-neo-discovery/butterfree-19",
+        "price": 3.99,
+        "n30": 19,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "20",
+        "name": "Espeon",
+        "path": "pokemon-neo-discovery/espeon-20",
+        "price": 17,
+        "n30": 33,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "21",
+        "name": "Forretress",
+        "path": "pokemon-neo-discovery/forretress-21",
+        "price": 7.1,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "22",
+        "name": "Hitmontop",
+        "path": "pokemon-neo-discovery/hitmontop-22",
+        "price": 6.67,
+        "n30": 10,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "23",
+        "name": "Houndoom",
+        "path": "pokemon-neo-discovery/houndoom-23",
+        "price": 10.25,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "24",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-24",
+        "price": 11.99,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "25",
+        "name": "Kabutops",
+        "path": "pokemon-neo-discovery/kabutops-25",
+        "price": 11.21,
+        "n30": 18,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "26",
+        "name": "Magnemite",
+        "path": "pokemon-neo-discovery/magnemite-26",
+        "price": 7.97,
+        "n30": 13,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "27",
+        "name": "Politoed",
+        "path": "pokemon-neo-discovery/politoed-27",
+        "price": 19.99,
+        "n30": 20,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "28",
+        "name": "Poliwrath",
+        "path": "pokemon-neo-discovery/poliwrath-28",
+        "price": 6.63,
+        "n30": 18,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "29",
+        "name": "Scizor",
+        "path": "pokemon-neo-discovery/scizor-29",
+        "price": 10,
+        "n30": 19,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "30",
+        "name": "Smeargle",
+        "path": "pokemon-neo-discovery/smeargle-30",
+        "price": 6.5,
+        "n30": 30,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "31",
+        "name": "Tyranitar",
+        "path": "pokemon-neo-discovery/tyranitar-31",
+        "price": 15,
+        "n30": 30,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "32",
+        "name": "Umbreon",
+        "path": "pokemon-neo-discovery/umbreon-32",
+        "price": 75,
+        "n30": 23,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.9034
+      },
+      {
+        "num": "33",
+        "name": "Unown A",
+        "path": "pokemon-neo-discovery/unown-a-33",
+        "price": 9.99,
+        "n30": 17,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "34",
+        "name": "Ursaring",
+        "path": "pokemon-neo-discovery/ursaring-34",
+        "price": 6.5,
+        "n30": 11,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "35",
+        "name": "Wobbuffet",
+        "path": "pokemon-neo-discovery/wobbuffet-35",
+        "price": 5.09,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "36",
+        "name": "Yanma",
+        "path": "pokemon-neo-discovery/yanma-36",
+        "price": 5.2,
+        "n30": 18,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "37",
+        "name": "Corsola",
+        "path": "pokemon-neo-discovery/corsola-37",
+        "price": 7.47,
+        "n30": 22,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "38",
+        "name": "Eevee",
+        "path": "pokemon-neo-discovery/eevee-38",
+        "price": 5.5,
+        "n30": 36,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "39",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-39",
+        "price": 1.99,
+        "n30": 31,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "40",
+        "name": "Igglybuff",
+        "path": "pokemon-neo-discovery/igglybuff-40",
+        "price": 5.69,
+        "n30": 35,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "41",
+        "name": "Kakuna",
+        "path": "pokemon-neo-discovery/kakuna-41",
+        "price": 0.99,
+        "n30": 9,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "42",
+        "name": "Metapod",
+        "path": "pokemon-neo-discovery/metapod-42",
+        "price": 1.58,
+        "n30": 17,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "43",
+        "name": "Omastar",
+        "path": "pokemon-neo-discovery/omastar-43",
+        "price": 1.35,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "44",
+        "name": "Poliwhirl",
+        "path": "pokemon-neo-discovery/poliwhirl-44",
+        "price": 2.32,
+        "n30": 30,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "45",
+        "name": "Pupitar",
+        "path": "pokemon-neo-discovery/pupitar-45",
+        "price": 1.15,
+        "n30": 20,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "46",
+        "name": "Scyther",
+        "path": "pokemon-neo-discovery/scyther-46",
+        "price": 2.19,
+        "n30": 27,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "47",
+        "name": "Unown D",
+        "path": "pokemon-neo-discovery/unown-d-47",
+        "price": 2.06,
+        "n30": 16,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "48",
+        "name": "Unown F",
+        "path": "pokemon-neo-discovery/unown-f-48",
+        "price": 2.49,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "49",
+        "name": "Unown M",
+        "path": "pokemon-neo-discovery/unown-m-49",
+        "price": 1.99,
+        "n30": 19,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "50",
+        "name": "Unown N",
+        "path": "pokemon-neo-discovery/unown-n-50",
+        "price": 1.7,
+        "n30": 19,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "51",
+        "name": "Unown U",
+        "path": "pokemon-neo-discovery/unown-u-51",
+        "price": 2.18,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "52",
+        "name": "Xatu",
+        "path": "pokemon-neo-discovery/xatu-52",
+        "price": 0.99,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "53",
+        "name": "Caterpie",
+        "path": "pokemon-neo-discovery/caterpie-53",
+        "price": 2,
+        "n30": 33,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "54",
+        "name": "Dunsparce",
+        "path": "pokemon-neo-discovery/dunsparce-54",
+        "price": 1.78,
+        "n30": 30,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "55",
+        "name": "Hoppip",
+        "path": "pokemon-neo-discovery/hoppip-55",
+        "price": 1.85,
+        "n30": 17,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "56",
+        "name": "Kabuto",
+        "path": "pokemon-neo-discovery/kabuto-56",
+        "price": 2.89,
+        "n30": 33,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "57",
+        "name": "Larvitar",
+        "path": "pokemon-neo-discovery/larvitar-57",
+        "price": 1.74,
+        "n30": 17,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "58",
+        "name": "Mareep",
+        "path": "pokemon-neo-discovery/mareep-58",
+        "price": 1.6,
+        "n30": 36,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "59",
+        "name": "Natu",
+        "path": "pokemon-neo-discovery/natu-59",
+        "price": 1.76,
+        "n30": 9,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "60",
+        "name": "Omanyte",
+        "path": "pokemon-neo-discovery/omanyte-60",
+        "price": 2.31,
+        "n30": 32,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "61",
+        "name": "Pineco",
+        "path": "pokemon-neo-discovery/pineco-61",
+        "price": 1.02,
+        "n30": 10,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "62",
+        "name": "Poliwag",
+        "path": "pokemon-neo-discovery/poliwag-62",
+        "price": 1.99,
+        "n30": 31,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "63",
+        "name": "Sentret",
+        "path": "pokemon-neo-discovery/sentret-63",
+        "price": 1.56,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "64",
+        "name": "Spinarak",
+        "path": "pokemon-neo-discovery/spinarak-64",
+        "price": 1.92,
+        "n30": 17,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "65",
+        "name": "Teddiursa",
+        "path": "pokemon-neo-discovery/teddiursa-65",
+        "price": 2.09,
+        "n30": 18,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "66",
+        "name": "Tyrogue",
+        "path": "pokemon-neo-discovery/tyrogue-66",
+        "price": 1.79,
+        "n30": 29,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "67",
+        "name": "Unown E",
+        "path": "pokemon-neo-discovery/unown-e-67",
+        "price": 1.84,
+        "n30": 16,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "68",
+        "name": "Unown I",
+        "path": "pokemon-neo-discovery/unown-i-68",
+        "price": 1.99,
+        "n30": 17,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "69",
+        "name": "Unown O",
+        "path": "pokemon-neo-discovery/unown-o-69",
+        "price": 1.53,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "70",
+        "name": "Weedle",
+        "path": "pokemon-neo-discovery/weedle-70",
+        "price": 1.45,
+        "n30": 17,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "71",
+        "name": "Wooper",
+        "path": "pokemon-neo-discovery/wooper-71",
+        "price": 2.49,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "72",
+        "name": "Fossil Egg",
+        "path": "pokemon-neo-discovery/fossil-egg-72",
+        "price": 1.79,
+        "n30": 11,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "73",
+        "name": "Hyper Devolution Spray",
+        "path": "pokemon-neo-discovery/hyper-devolution-spray-73",
+        "price": 1.62,
+        "n30": 10,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "74",
+        "name": "Ruin Wall",
+        "path": "pokemon-neo-discovery/ruin-wall-74",
+        "price": 1.97,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "75",
+        "name": "Energy Ark",
+        "path": "pokemon-neo-discovery/energy-ark-75",
+        "price": 0.99,
+        "n30": 11,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      }
+    ],
+    "history": [
+      {
+        "date": "2026-10-04",
+        "level": 209.83,
+        "basketValue": 1412.93,
+        "divisor": 6.73364,
+        "priced": 75,
+        "note": "inception"
+      }
+    ],
+    "reconstitution": {
+      "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
+      "next": "2027-01-04"
+    },
+    "sub": {},
+    "recon": [
+      {
+        "month": "2021-01",
+        "level": 100
+      },
+      {
+        "month": "2021-02",
+        "level": 93.4
+      },
+      {
+        "month": "2021-03",
+        "level": 111.82
+      },
+      {
+        "month": "2021-04",
+        "level": 104.84
+      },
+      {
+        "month": "2021-05",
+        "level": 83.22
+      },
+      {
+        "month": "2021-06",
+        "level": 77.49
+      },
+      {
+        "month": "2021-07",
+        "level": 74.14
+      },
+      {
+        "month": "2021-08",
+        "level": 74.16
+      },
+      {
+        "month": "2021-09",
+        "level": 77.05
+      },
+      {
+        "month": "2021-10",
+        "level": 70.6
+      },
+      {
+        "month": "2021-11",
+        "level": 76.72
+      },
+      {
+        "month": "2021-12",
+        "level": 80.43
+      },
+      {
+        "month": "2022-01",
+        "level": 82.14
+      },
+      {
+        "month": "2022-02",
+        "level": 78.77
+      },
+      {
+        "month": "2022-03",
+        "level": 77.08
+      },
+      {
+        "month": "2022-04",
+        "level": 78.25
+      },
+      {
+        "month": "2022-05",
+        "level": 77.86
+      },
+      {
+        "month": "2022-06",
+        "level": 79.27
+      },
+      {
+        "month": "2022-07",
+        "level": 84.86
+      },
+      {
+        "month": "2022-08",
+        "level": 81.95
+      },
+      {
+        "month": "2022-09",
+        "level": 78.3
+      },
+      {
+        "month": "2022-10",
+        "level": 85.18
+      },
+      {
+        "month": "2022-11",
+        "level": 74.28
+      },
+      {
+        "month": "2022-12",
+        "level": 82.73
+      },
+      {
+        "month": "2023-01",
+        "level": 93.08
+      },
+      {
+        "month": "2023-02",
+        "level": 90.99
+      },
+      {
+        "month": "2023-03",
+        "level": 90.13
+      },
+      {
+        "month": "2023-04",
+        "level": 88.51
+      },
+      {
+        "month": "2023-05",
+        "level": 91.48
+      },
+      {
+        "month": "2023-06",
+        "level": 90.75
+      },
+      {
+        "month": "2023-07",
+        "level": 90.29
+      },
+      {
+        "month": "2023-08",
+        "level": 89.13
+      },
+      {
+        "month": "2023-09",
+        "level": 88.04
+      },
+      {
+        "month": "2023-10",
+        "level": 86.28
+      },
+      {
+        "month": "2023-11",
+        "level": 86.32
+      },
+      {
+        "month": "2023-12",
+        "level": 91.45
+      },
+      {
+        "month": "2024-01",
+        "level": 92.8
+      },
+      {
+        "month": "2024-02",
+        "level": 91.37
+      },
+      {
+        "month": "2024-03",
+        "level": 92.16
+      },
+      {
+        "month": "2024-04",
+        "level": 88.68
+      },
+      {
+        "month": "2024-05",
+        "level": 93.4
+      },
+      {
+        "month": "2024-06",
+        "level": 95.88
+      },
+      {
+        "month": "2024-07",
+        "level": 100.08
+      },
+      {
+        "month": "2024-08",
+        "level": 84.8
+      },
+      {
+        "month": "2024-09",
+        "level": 90.34
+      },
+      {
+        "month": "2024-10",
+        "level": 91.88
+      },
+      {
+        "month": "2024-11",
+        "level": 94.11
+      },
+      {
+        "month": "2024-12",
+        "level": 102.38
+      },
+      {
+        "month": "2025-01",
+        "level": 104.54
+      },
+      {
+        "month": "2025-02",
+        "level": 104.48
+      },
+      {
+        "month": "2025-03",
+        "level": 115.86
+      },
+      {
+        "month": "2025-04",
+        "level": 117.94
+      },
+      {
+        "month": "2025-05",
+        "level": 121.03
+      },
+      {
+        "month": "2025-06",
+        "level": 126.81
+      },
+      {
+        "month": "2025-07",
+        "level": 117.34
+      },
+      {
+        "month": "2025-08",
+        "level": 115.4
+      },
+      {
+        "month": "2025-09",
+        "level": 135.95
+      },
+      {
+        "month": "2025-10",
+        "level": 127.18
+      },
+      {
+        "month": "2025-11",
+        "level": 130.55
+      },
+      {
+        "month": "2025-12",
+        "level": 138.3
+      },
+      {
+        "month": "2026-01",
+        "level": 149.59
+      },
+      {
+        "month": "2026-02",
+        "level": 157.41
+      },
+      {
+        "month": "2026-03",
+        "level": 161.66
+      },
+      {
+        "month": "2026-04",
+        "level": 178.5
+      },
+      {
+        "month": "2026-05",
+        "level": 188.83
+      },
+      {
+        "month": "2026-06",
+        "level": 203.46
+      },
+      {
+        "month": "2026-07",
+        "level": 203.74
+      },
+      {
+        "month": "2026-08",
+        "level": 205.43
+      },
+      {
+        "month": "2026-09",
+        "level": 224.35
+      }
+    ],
+    "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+    "baseDate": "2021-01",
+    "baseRule": "first-reliable",
+    "baseNote": "100 = Jan 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Jun 1, 2001 release predates the data, so no release-day level is claimed",
+    "rebase": {
+      "date": "2026-10-04",
+      "factor": 2.098315,
+      "ruling": "Mo 2026-09-30 in chat: every Pokémon index is based at its release date — this ticker launched on that basis",
+      "inceptionLevel": 209.83
+    }
+  },
+  "NR01": {
+    "ticker": "NR01",
+    "name": "Neo Revelation Set Index",
+    "set": "Pokémon TCG Neo Revelation (Unlimited)",
+    "page": "/neo-revelation-index",
+    "model": "sector",
+    "status": "live",
+    "basis": "sold",
+    "basisLabel": "sold comps (PriceCharting ungraded) · sector model · twice-weekly re-mark",
+    "screen": {
+      "enter": 6,
+      "stay": 4,
+      "window": 30,
+      "source": "PriceCharting ungraded completed sales, clean single-card rows"
+    },
+    "cap": 0.25,
+    "capRule": {
+      "single": 0.25,
+      "big": 0.05,
+      "bigSum": 0.5,
+      "name": "25% single-card cap + 5/50 group cap (Select Sector SPDR rule)"
+    },
+    "base": 100,
+    "inception": "2026-10-04",
+    "releaseDate": "2001-09-21",
+    "universeComplete": true,
+    "pcSlug": "pokemon-neo-revelation",
+    "sources": [],
+    "divisor": 7.217121,
+    "divisorLog": [
+      {
+        "date": "2026-10-04",
+        "before": null,
+        "after": 15.0746,
+        "why": "inception — basket $1507.46 over 66 of 66 slots; 8 capped (25% single / 5-50 group)"
+      },
+      {
+        "date": "2026-10-04",
+        "before": 15.0746,
+        "after": 7.217121,
+        "why": "BASE (release-date rule). 100 = Jan 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Sep 21, 2001 release predates the data, so no release-day level is claimed. Every level × 2.088728; shape and % moves unchanged."
+      }
+    ],
+    "capLog": [
+      {
+        "date": "2026-10-04",
+        "num": "3",
+        "name": "Celebi",
+        "w": 0.7375
+      },
+      {
+        "date": "2026-10-04",
+        "num": "6",
+        "name": "Entei",
+        "w": 0.5354
+      },
+      {
+        "date": "2026-10-04",
+        "num": "7",
+        "name": "Ho-oh",
+        "w": 0.4702
+      },
+      {
+        "date": "2026-10-04",
+        "num": "8",
+        "name": "Houndoom",
+        "w": 0.4702
+      },
+      {
+        "date": "2026-10-04",
+        "num": "13",
+        "name": "Raikou",
+        "w": 0.6476
+      },
+      {
+        "date": "2026-10-04",
+        "num": "14",
+        "name": "Suicune",
+        "w": 0.6375
+      },
+      {
+        "date": "2026-10-04",
+        "num": "65",
+        "name": "Shining Gyarados",
+        "w": 0.4204
+      },
+      {
+        "date": "2026-10-04",
+        "num": "66",
+        "name": "Shining Magikarp",
+        "w": 0.4702
+      }
+    ],
+    "screenLog": [
+      {
+        "date": "2026-10-04",
+        "pass": 66,
+        "fail": 0,
+        "errors": 0
+      }
+    ],
+    "universe": [
+      {
+        "num": "1",
+        "name": "Ampharos",
+        "path": "pokemon-neo-revelation/ampharos-1"
+      },
+      {
+        "num": "2",
+        "name": "Blissey",
+        "path": "pokemon-neo-revelation/blissey-2"
+      },
+      {
+        "num": "3",
+        "name": "Celebi",
+        "path": "pokemon-neo-revelation/celebi-3"
+      },
+      {
+        "num": "4",
+        "name": "Crobat",
+        "path": "pokemon-neo-revelation/crobat-4"
+      },
+      {
+        "num": "5",
+        "name": "Delibird",
+        "path": "pokemon-neo-revelation/delibird-5"
+      },
+      {
+        "num": "6",
+        "name": "Entei",
+        "path": "pokemon-neo-revelation/entei-6"
+      },
+      {
+        "num": "7",
+        "name": "Ho-oh",
+        "path": "pokemon-neo-revelation/ho-oh-7"
+      },
+      {
+        "num": "8",
+        "name": "Houndoom",
+        "path": "pokemon-neo-revelation/houndoom-8"
+      },
+      {
+        "num": "9",
+        "name": "Jumpluff",
+        "path": "pokemon-neo-revelation/jumpluff-9"
+      },
+      {
+        "num": "10",
+        "name": "Magneton",
+        "path": "pokemon-neo-revelation/magneton-10"
+      },
+      {
+        "num": "11",
+        "name": "Misdreavus",
+        "path": "pokemon-neo-revelation/misdreavus-11"
+      },
+      {
+        "num": "12",
+        "name": "Porygon2",
+        "path": "pokemon-neo-revelation/porygon2-12"
+      },
+      {
+        "num": "13",
+        "name": "Raikou",
+        "path": "pokemon-neo-revelation/raikou-13"
+      },
+      {
+        "num": "14",
+        "name": "Suicune",
+        "path": "pokemon-neo-revelation/suicune-14"
+      },
+      {
+        "num": "15",
+        "name": "Aerodactyl",
+        "path": "pokemon-neo-revelation/aerodactyl-15"
+      },
+      {
+        "num": "16",
+        "name": "Celebi",
+        "path": "pokemon-neo-revelation/celebi-16"
+      },
+      {
+        "num": "17",
+        "name": "Entei",
+        "path": "pokemon-neo-revelation/entei-17"
+      },
+      {
+        "num": "18",
+        "name": "Ho-oh",
+        "path": "pokemon-neo-revelation/ho-oh-18"
+      },
+      {
+        "num": "19",
+        "name": "Kingdra",
+        "path": "pokemon-neo-revelation/kingdra-19"
+      },
+      {
+        "num": "20",
+        "name": "Lugia",
+        "path": "pokemon-neo-revelation/lugia-20"
+      },
+      {
+        "num": "21",
+        "name": "Raichu",
+        "path": "pokemon-neo-revelation/raichu-21"
+      },
+      {
+        "num": "22",
+        "name": "Raikou",
+        "path": "pokemon-neo-revelation/raikou-22"
+      },
+      {
+        "num": "23",
+        "name": "Skarmory",
+        "path": "pokemon-neo-revelation/skarmory-23"
+      },
+      {
+        "num": "24",
+        "name": "Sneasel",
+        "path": "pokemon-neo-revelation/sneasel-24"
+      },
+      {
+        "num": "25",
+        "name": "Starmie",
+        "path": "pokemon-neo-revelation/starmie-25"
+      },
+      {
+        "num": "26",
+        "name": "Sudowoodo",
+        "path": "pokemon-neo-revelation/sudowoodo-26"
+      },
+      {
+        "num": "27",
+        "name": "Suicune",
+        "path": "pokemon-neo-revelation/suicune-27"
+      },
+      {
+        "num": "28",
+        "name": "Flaaffy",
+        "path": "pokemon-neo-revelation/flaaffy-28"
+      },
+      {
+        "num": "29",
+        "name": "Golbat",
+        "path": "pokemon-neo-revelation/golbat-29"
+      },
+      {
+        "num": "30",
+        "name": "Graveler",
+        "path": "pokemon-neo-revelation/graveler-30"
+      },
+      {
+        "num": "31",
+        "name": "Jynx",
+        "path": "pokemon-neo-revelation/jynx-31"
+      },
+      {
+        "num": "32",
+        "name": "Lanturn",
+        "path": "pokemon-neo-revelation/lanturn-32"
+      },
+      {
+        "num": "33",
+        "name": "Magcargo",
+        "path": "pokemon-neo-revelation/magcargo-33"
+      },
+      {
+        "num": "34",
+        "name": "Octillery",
+        "path": "pokemon-neo-revelation/octillery-34"
+      },
+      {
+        "num": "35",
+        "name": "Parasect",
+        "path": "pokemon-neo-revelation/parasect-35"
+      },
+      {
+        "num": "36",
+        "name": "Piloswine",
+        "path": "pokemon-neo-revelation/piloswine-36"
+      },
+      {
+        "num": "37",
+        "name": "Seaking",
+        "path": "pokemon-neo-revelation/seaking-37"
+      },
+      {
+        "num": "38",
+        "name": "Stantler",
+        "path": "pokemon-neo-revelation/stantler-38"
+      },
+      {
+        "num": "39",
+        "name": "Unown B",
+        "path": "pokemon-neo-revelation/unown-b-39"
+      },
+      {
+        "num": "40",
+        "name": "Unown Y",
+        "path": "pokemon-neo-revelation/unown-y-40"
+      },
+      {
+        "num": "41",
+        "name": "Aipom",
+        "path": "pokemon-neo-revelation/aipom-41"
+      },
+      {
+        "num": "42",
+        "name": "Chinchou",
+        "path": "pokemon-neo-revelation/chinchou-42"
+      },
+      {
+        "num": "43",
+        "name": "Farfetch'd",
+        "path": "pokemon-neo-revelation/farfetch%27d-43"
+      },
+      {
+        "num": "44",
+        "name": "Geodude",
+        "path": "pokemon-neo-revelation/geodude-44"
+      },
+      {
+        "num": "45",
+        "name": "Goldeen",
+        "path": "pokemon-neo-revelation/goldeen-45"
+      },
+      {
+        "num": "46",
+        "name": "Murkrow",
+        "path": "pokemon-neo-revelation/murkrow-46"
+      },
+      {
+        "num": "47",
+        "name": "Paras",
+        "path": "pokemon-neo-revelation/paras-47"
+      },
+      {
+        "num": "48",
+        "name": "Quagsire",
+        "path": "pokemon-neo-revelation/quagsire-48"
+      },
+      {
+        "num": "49",
+        "name": "Qwilfish",
+        "path": "pokemon-neo-revelation/qwilfish-49"
+      },
+      {
+        "num": "50",
+        "name": "Remoraid",
+        "path": "pokemon-neo-revelation/remoraid-50"
+      },
+      {
+        "num": "51",
+        "name": "Shuckle",
+        "path": "pokemon-neo-revelation/shuckle-51"
+      },
+      {
+        "num": "52",
+        "name": "Skiploom",
+        "path": "pokemon-neo-revelation/skiploom-52"
+      },
+      {
+        "num": "53",
+        "name": "Slugma",
+        "path": "pokemon-neo-revelation/slugma-53"
+      },
+      {
+        "num": "54",
+        "name": "Smoochum",
+        "path": "pokemon-neo-revelation/smoochum-54"
+      },
+      {
+        "num": "55",
+        "name": "Snubbull",
+        "path": "pokemon-neo-revelation/snubbull-55"
+      },
+      {
+        "num": "56",
+        "name": "Staryu",
+        "path": "pokemon-neo-revelation/staryu-56"
+      },
+      {
+        "num": "57",
+        "name": "Swinub",
+        "path": "pokemon-neo-revelation/swinub-57"
+      },
+      {
+        "num": "58",
+        "name": "Unown K",
+        "path": "pokemon-neo-revelation/unown-k-58"
+      },
+      {
+        "num": "59",
+        "name": "Zubat",
+        "path": "pokemon-neo-revelation/zubat-59"
+      },
+      {
+        "num": "60",
+        "name": "Balloon Berry",
+        "path": "pokemon-neo-revelation/balloon-berry-60"
+      },
+      {
+        "num": "61",
+        "name": "Healing Field",
+        "path": "pokemon-neo-revelation/healing-field-61"
+      },
+      {
+        "num": "62",
+        "name": "Pokemon Breeder Fields",
+        "path": "pokemon-neo-revelation/pokemon-breeder-fields-62"
+      },
+      {
+        "num": "63",
+        "name": "Rocket's Hideout",
+        "path": "pokemon-neo-revelation/rocket%27s-hideout-63"
+      },
+      {
+        "num": "64",
+        "name": "Old Rod",
+        "path": "pokemon-neo-revelation/old-rod-64"
+      },
+      {
+        "num": "65",
+        "name": "Shining Gyarados",
+        "path": "pokemon-neo-revelation/shining-gyarados-65"
+      },
+      {
+        "num": "66",
+        "name": "Shining Magikarp",
+        "path": "pokemon-neo-revelation/shining-magikarp-66"
+      }
+    ],
+    "basket": [
+      {
+        "num": "1",
+        "name": "Ampharos",
+        "path": "pokemon-neo-revelation/ampharos-1",
+        "price": 51,
+        "n30": 28,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "2",
+        "name": "Blissey",
+        "path": "pokemon-neo-revelation/blissey-2",
+        "price": 56.75,
+        "n30": 33,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "3",
+        "name": "Celebi",
+        "path": "pokemon-neo-revelation/celebi-3",
+        "price": 102,
+        "n30": 31,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.7375
+      },
+      {
+        "num": "4",
+        "name": "Crobat",
+        "path": "pokemon-neo-revelation/crobat-4",
+        "price": 35,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "5",
+        "name": "Delibird",
+        "path": "pokemon-neo-revelation/delibird-5",
+        "price": 35,
+        "n30": 29,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "6",
+        "name": "Entei",
+        "path": "pokemon-neo-revelation/entei-6",
+        "price": 146.5,
+        "n30": 29,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.5354
+      },
+      {
+        "num": "7",
+        "name": "Ho-oh",
+        "path": "pokemon-neo-revelation/ho-oh-7",
+        "price": 155.75,
+        "n30": 31,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.4702
+      },
+      {
+        "num": "8",
+        "name": "Houndoom",
+        "path": "pokemon-neo-revelation/houndoom-8",
+        "price": 235,
+        "n30": 31,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.4702
+      },
+      {
+        "num": "9",
+        "name": "Jumpluff",
+        "path": "pokemon-neo-revelation/jumpluff-9",
+        "price": 30,
+        "n30": 17,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "10",
+        "name": "Magneton",
+        "path": "pokemon-neo-revelation/magneton-10",
+        "price": 24.99,
+        "n30": 18,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "11",
+        "name": "Misdreavus",
+        "path": "pokemon-neo-revelation/misdreavus-11",
+        "price": 50,
+        "n30": 25,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "12",
+        "name": "Porygon2",
+        "path": "pokemon-neo-revelation/porygon2-12",
+        "price": 29.75,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "13",
+        "name": "Raikou",
+        "path": "pokemon-neo-revelation/raikou-13",
+        "price": 110,
+        "n30": 33,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.6476
+      },
+      {
+        "num": "14",
+        "name": "Suicune",
+        "path": "pokemon-neo-revelation/suicune-14",
+        "price": 125,
+        "n30": 31,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.6375
+      },
+      {
+        "num": "15",
+        "name": "Aerodactyl",
+        "path": "pokemon-neo-revelation/aerodactyl-15",
+        "price": 7,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "16",
+        "name": "Celebi",
+        "path": "pokemon-neo-revelation/celebi-16",
+        "price": 11.99,
+        "n30": 33,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "17",
+        "name": "Entei",
+        "path": "pokemon-neo-revelation/entei-17",
+        "price": 13.38,
+        "n30": 32,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "18",
+        "name": "Ho-oh",
+        "path": "pokemon-neo-revelation/ho-oh-18",
+        "price": 15.5,
+        "n30": 26,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "19",
+        "name": "Kingdra",
+        "path": "pokemon-neo-revelation/kingdra-19",
+        "price": 7.15,
+        "n30": 20,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "20",
+        "name": "Lugia",
+        "path": "pokemon-neo-revelation/lugia-20",
+        "price": 23.94,
+        "n30": 30,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "21",
+        "name": "Raichu",
+        "path": "pokemon-neo-revelation/raichu-21",
+        "price": 10.47,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "22",
+        "name": "Raikou",
+        "path": "pokemon-neo-revelation/raikou-22",
+        "price": 12.99,
+        "n30": 31,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "23",
+        "name": "Skarmory",
+        "path": "pokemon-neo-revelation/skarmory-23",
+        "price": 8.5,
+        "n30": 34,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "24",
+        "name": "Sneasel",
+        "path": "pokemon-neo-revelation/sneasel-24",
+        "price": 6,
+        "n30": 19,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "25",
+        "name": "Starmie",
+        "path": "pokemon-neo-revelation/starmie-25",
+        "price": 5.69,
+        "n30": 23,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "26",
+        "name": "Sudowoodo",
+        "path": "pokemon-neo-revelation/sudowoodo-26",
+        "price": 8.18,
+        "n30": 20,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "27",
+        "name": "Suicune",
+        "path": "pokemon-neo-revelation/suicune-27",
+        "price": 13.57,
+        "n30": 32,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "28",
+        "name": "Flaaffy",
+        "path": "pokemon-neo-revelation/flaaffy-28",
+        "price": 2.17,
+        "n30": 30,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "29",
+        "name": "Golbat",
+        "path": "pokemon-neo-revelation/golbat-29",
+        "price": 2.49,
+        "n30": 13,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "30",
+        "name": "Graveler",
+        "path": "pokemon-neo-revelation/graveler-30",
+        "price": 1.99,
+        "n30": 19,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "31",
+        "name": "Jynx",
+        "path": "pokemon-neo-revelation/jynx-31",
+        "price": 4.99,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "32",
+        "name": "Lanturn",
+        "path": "pokemon-neo-revelation/lanturn-32",
+        "price": 1.74,
+        "n30": 22,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "33",
+        "name": "Magcargo",
+        "path": "pokemon-neo-revelation/magcargo-33",
+        "price": 2,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "34",
+        "name": "Octillery",
+        "path": "pokemon-neo-revelation/octillery-34",
+        "price": 2.25,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "35",
+        "name": "Parasect",
+        "path": "pokemon-neo-revelation/parasect-35",
+        "price": 2,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "36",
+        "name": "Piloswine",
+        "path": "pokemon-neo-revelation/piloswine-36",
+        "price": 1.99,
+        "n30": 25,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "37",
+        "name": "Seaking",
+        "path": "pokemon-neo-revelation/seaking-37",
+        "price": 2.13,
+        "n30": 20,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "38",
+        "name": "Stantler",
+        "path": "pokemon-neo-revelation/stantler-38",
+        "price": 2.39,
+        "n30": 11,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "39",
+        "name": "Unown B",
+        "path": "pokemon-neo-revelation/unown-b-39",
+        "price": 2.97,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "40",
+        "name": "Unown Y",
+        "path": "pokemon-neo-revelation/unown-y-40",
+        "price": 2.49,
+        "n30": 17,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "41",
+        "name": "Aipom",
+        "path": "pokemon-neo-revelation/aipom-41",
+        "price": 1.99,
+        "n30": 29,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "42",
+        "name": "Chinchou",
+        "path": "pokemon-neo-revelation/chinchou-42",
+        "price": 1.85,
+        "n30": 12,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "43",
+        "name": "Farfetch'd",
+        "path": "pokemon-neo-revelation/farfetch%27d-43",
+        "price": 1.5,
+        "n30": 23,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "44",
+        "name": "Geodude",
+        "path": "pokemon-neo-revelation/geodude-44",
+        "price": 1.18,
+        "n30": 12,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "45",
+        "name": "Goldeen",
+        "path": "pokemon-neo-revelation/goldeen-45",
+        "price": 3,
+        "n30": 35,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "46",
+        "name": "Murkrow",
+        "path": "pokemon-neo-revelation/murkrow-46",
+        "price": 1.99,
+        "n30": 16,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "47",
+        "name": "Paras",
+        "path": "pokemon-neo-revelation/paras-47",
+        "price": 1.92,
+        "n30": 22,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "48",
+        "name": "Quagsire",
+        "path": "pokemon-neo-revelation/quagsire-48",
+        "price": 3.99,
+        "n30": 33,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "49",
+        "name": "Qwilfish",
+        "path": "pokemon-neo-revelation/qwilfish-49",
+        "price": 1.99,
+        "n30": 18,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "50",
+        "name": "Remoraid",
+        "path": "pokemon-neo-revelation/remoraid-50",
+        "price": 1.69,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "51",
+        "name": "Shuckle",
+        "path": "pokemon-neo-revelation/shuckle-51",
+        "price": 3.78,
+        "n30": 33,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "52",
+        "name": "Skiploom",
+        "path": "pokemon-neo-revelation/skiploom-52",
+        "price": 1.89,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "53",
+        "name": "Slugma",
+        "path": "pokemon-neo-revelation/slugma-53",
+        "price": 1.32,
+        "n30": 18,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "54",
+        "name": "Smoochum",
+        "path": "pokemon-neo-revelation/smoochum-54",
+        "price": 1.99,
+        "n30": 28,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "55",
+        "name": "Snubbull",
+        "path": "pokemon-neo-revelation/snubbull-55",
+        "price": 2.08,
+        "n30": 22,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "56",
+        "name": "Staryu",
+        "path": "pokemon-neo-revelation/staryu-56",
+        "price": 1.22,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "57",
+        "name": "Swinub",
+        "path": "pokemon-neo-revelation/swinub-57",
+        "price": 1.98,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "58",
+        "name": "Unown K",
+        "path": "pokemon-neo-revelation/unown-k-58",
+        "price": 1.73,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "59",
+        "name": "Zubat",
+        "path": "pokemon-neo-revelation/zubat-59",
+        "price": 1.87,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "60",
+        "name": "Balloon Berry",
+        "path": "pokemon-neo-revelation/balloon-berry-60",
+        "price": 1.23,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "61",
+        "name": "Healing Field",
+        "path": "pokemon-neo-revelation/healing-field-61",
+        "price": 1.87,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "62",
+        "name": "Pokemon Breeder Fields",
+        "path": "pokemon-neo-revelation/pokemon-breeder-fields-62",
+        "price": 3.99,
+        "n30": 34,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "63",
+        "name": "Rocket's Hideout",
+        "path": "pokemon-neo-revelation/rocket%27s-hideout-63",
+        "price": 7.99,
+        "n30": 35,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "64",
+        "name": "Old Rod",
+        "path": "pokemon-neo-revelation/old-rod-64",
+        "price": 1.37,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "65",
+        "name": "Shining Gyarados",
+        "path": "pokemon-neo-revelation/shining-gyarados-65",
+        "price": 700,
+        "n30": 23,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.4204
+      },
+      {
+        "num": "66",
+        "name": "Shining Magikarp",
+        "path": "pokemon-neo-revelation/shining-magikarp-66",
+        "price": 384.95,
+        "n30": 29,
+        "basis": "sold (PriceCharting ungraded, 30d median)",
+        "asOf": "2026-10-04",
+        "w": 0.4702
+      }
+    ],
+    "history": [
+      {
+        "date": "2026-10-04",
+        "level": 208.87,
+        "basketValue": 1507.46,
+        "divisor": 7.217121,
+        "priced": 66,
+        "note": "inception"
+      }
+    ],
+    "reconstitution": {
+      "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
+      "next": "2027-01-04"
+    },
+    "sub": {},
+    "recon": [
+      {
+        "month": "2021-01",
+        "level": 100
+      },
+      {
+        "month": "2021-02",
+        "level": 118.5
+      },
+      {
+        "month": "2021-03",
+        "level": 124.75
+      },
+      {
+        "month": "2021-04",
+        "level": 114.43
+      },
+      {
+        "month": "2021-05",
+        "level": 115.25
+      },
+      {
+        "month": "2021-06",
+        "level": 96.23
+      },
+      {
+        "month": "2021-07",
+        "level": 92.75
+      },
+      {
+        "month": "2021-08",
+        "level": 91.74
+      },
+      {
+        "month": "2021-09",
+        "level": 81.04
+      },
+      {
+        "month": "2021-10",
+        "level": 83.66
+      },
+      {
+        "month": "2021-11",
+        "level": 78.25
+      },
+      {
+        "month": "2021-12",
+        "level": 81.85
+      },
+      {
+        "month": "2022-01",
+        "level": 80.8
+      },
+      {
+        "month": "2022-02",
+        "level": 80.02
+      },
+      {
+        "month": "2022-03",
+        "level": 74.79
+      },
+      {
+        "month": "2022-04",
+        "level": 77.38
+      },
+      {
+        "month": "2022-05",
+        "level": 78.44
+      },
+      {
+        "month": "2022-06",
+        "level": 77.68
+      },
+      {
+        "month": "2022-07",
+        "level": 78.39
+      },
+      {
+        "month": "2022-08",
+        "level": 80.45
+      },
+      {
+        "month": "2022-09",
+        "level": 74
+      },
+      {
+        "month": "2022-10",
+        "level": 84.31
+      },
+      {
+        "month": "2022-11",
+        "level": 79.29
+      },
+      {
+        "month": "2022-12",
+        "level": 84.68
+      },
+      {
+        "month": "2023-01",
+        "level": 85.26
+      },
+      {
+        "month": "2023-02",
+        "level": 85.16
+      },
+      {
+        "month": "2023-03",
+        "level": 84.5
+      },
+      {
+        "month": "2023-04",
+        "level": 89.61
+      },
+      {
+        "month": "2023-05",
+        "level": 87.44
+      },
+      {
+        "month": "2023-06",
+        "level": 84.9
+      },
+      {
+        "month": "2023-07",
+        "level": 88.3
+      },
+      {
+        "month": "2023-08",
+        "level": 82.93
+      },
+      {
+        "month": "2023-09",
+        "level": 80.44
+      },
+      {
+        "month": "2023-10",
+        "level": 75.69
+      },
+      {
+        "month": "2023-11",
+        "level": 82.91
+      },
+      {
+        "month": "2023-12",
+        "level": 88.06
+      },
+      {
+        "month": "2024-01",
+        "level": 91.62
+      },
+      {
+        "month": "2024-02",
+        "level": 89.12
+      },
+      {
+        "month": "2024-03",
+        "level": 90.78
+      },
+      {
+        "month": "2024-04",
+        "level": 95.32
+      },
+      {
+        "month": "2024-05",
+        "level": 91.13
+      },
+      {
+        "month": "2024-06",
+        "level": 92.27
+      },
+      {
+        "month": "2024-07",
+        "level": 94.26
+      },
+      {
+        "month": "2024-08",
+        "level": 100.61
+      },
+      {
+        "month": "2024-09",
+        "level": 97.67
+      },
+      {
+        "month": "2024-10",
+        "level": 107.17
+      },
+      {
+        "month": "2024-11",
+        "level": 105.72
+      },
+      {
+        "month": "2024-12",
+        "level": 104.76
+      },
+      {
+        "month": "2025-01",
+        "level": 112.51
+      },
+      {
+        "month": "2025-02",
+        "level": 115.23
+      },
+      {
+        "month": "2025-03",
+        "level": 118.03
+      },
+      {
+        "month": "2025-04",
+        "level": 132.14
+      },
+      {
+        "month": "2025-05",
+        "level": 129.64
+      },
+      {
+        "month": "2025-06",
+        "level": 136.84
+      },
+      {
+        "month": "2025-07",
+        "level": 125.66
+      },
+      {
+        "month": "2025-08",
+        "level": 133.54
+      },
+      {
+        "month": "2025-09",
+        "level": 131.15
+      },
+      {
+        "month": "2025-10",
+        "level": 133.02
+      },
+      {
+        "month": "2025-11",
+        "level": 151.47
+      },
+      {
+        "month": "2025-12",
+        "level": 153.98
+      },
+      {
+        "month": "2026-01",
+        "level": 150.49
+      },
+      {
+        "month": "2026-02",
+        "level": 155.81
+      },
+      {
+        "month": "2026-03",
+        "level": 179.95
+      },
+      {
+        "month": "2026-04",
+        "level": 182.09
+      },
+      {
+        "month": "2026-05",
+        "level": 189.75
+      },
+      {
+        "month": "2026-06",
+        "level": 200.17
+      },
+      {
+        "month": "2026-07",
+        "level": 204.45
+      },
+      {
+        "month": "2026-08",
+        "level": 214.36
+      },
+      {
+        "month": "2026-09",
+        "level": 208.34
+      }
+    ],
+    "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+    "baseDate": "2021-01",
+    "baseRule": "first-reliable",
+    "baseNote": "100 = Jan 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Sep 21, 2001 release predates the data, so no release-day level is claimed",
+    "rebase": {
+      "date": "2026-10-04",
+      "factor": 2.088728,
+      "ruling": "Mo 2026-09-30 in chat: every Pokémon index is based at its release date — this ticker launched on that basis",
+      "inceptionLevel": 208.87
+    }
+  },
+  "NDC1E": {
+    "ticker": "NDC1E",
+    "name": "Neo Discovery 1st Edition Index",
+    "set": "Pokémon TCG Neo Discovery (1st Edition)",
+    "page": "/neo-discovery-1st-edition-index",
+    "model": "sector",
+    "status": "live",
+    "basis": "sold",
+    "basisLabel": "sold comps (PriceCharting ungraded) · sector model · twice-weekly re-mark",
+    "screen": {
+      "enter": 6,
+      "stay": 4,
+      "window": 90,
+      "source": "PriceCharting ungraded completed sales, clean single-card rows"
+    },
+    "cap": 0.25,
+    "capRule": {
+      "single": 0.25,
+      "big": 0.05,
+      "bigSum": 0.5,
+      "name": "25% single-card cap + 5/50 group cap (Select Sector SPDR rule)"
+    },
+    "base": 100,
+    "inception": "2026-10-04",
+    "releaseDate": "2001-06-01",
+    "universeComplete": true,
+    "pcSlug": "pokemon-neo-discovery",
+    "sources": [
+      "pokemon-neo-discovery"
+    ],
+    "divisor": 20.517353,
+    "divisorLog": [
+      {
+        "date": "2026-10-04",
+        "before": null,
+        "after": 40.2819,
+        "why": "inception — basket $4028.19 over 74 of 75 slots; 1 capped (25% single / 5-50 group)"
+      },
+      {
+        "date": "2026-10-04",
+        "before": 40.2819,
+        "after": 20.517353,
+        "why": "BASE (release-date rule). 100 = Jul 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Jun 1, 2001 release predates the data, so no release-day level is claimed. Every level × 1.963309; shape and % moves unchanged."
+      }
+    ],
+    "capLog": [
+      {
+        "date": "2026-10-04",
+        "num": "13",
+        "name": "Umbreon",
+        "w": 0.7193
+      }
+    ],
+    "screenLog": [
+      {
+        "date": "2026-10-04",
+        "pass": 74,
+        "fail": 1,
+        "errors": 0
+      }
+    ],
+    "universe": [
+      {
+        "num": "1",
+        "name": "Espeon",
+        "path": "pokemon-neo-discovery/espeon-1st-edition-1"
+      },
+      {
+        "num": "2",
+        "name": "Forretress",
+        "path": "pokemon-neo-discovery/forretress-1st-edition-2"
+      },
+      {
+        "num": "3",
+        "name": "Hitmontop",
+        "path": "pokemon-neo-discovery/hitmontop-1st-edition-3"
+      },
+      {
+        "num": "4",
+        "name": "Houndoom",
+        "path": "pokemon-neo-discovery/houndoom-1st-edition-4"
+      },
+      {
+        "num": "5",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-1st-edition-5"
+      },
+      {
+        "num": "6",
+        "name": "Kabutops",
+        "path": "pokemon-neo-discovery/kabutops-1st-edition-6"
+      },
+      {
+        "num": "7",
+        "name": "Magnemite",
+        "path": "pokemon-neo-discovery/magnemite-1st-edition-7"
+      },
+      {
+        "num": "8",
+        "name": "Politoed",
+        "path": "pokemon-neo-discovery/politoed-1st-edition-8"
+      },
+      {
+        "num": "9",
+        "name": "Poliwrath",
+        "path": "pokemon-neo-discovery/poliwrath-1st-edition-9"
+      },
+      {
+        "num": "10",
+        "name": "Scizor",
+        "path": "pokemon-neo-discovery/scizor-1st-edition-10"
+      },
+      {
+        "num": "11",
+        "name": "Smeargle",
+        "path": "pokemon-neo-discovery/smeargle-1st-edition-11"
+      },
+      {
+        "num": "12",
+        "name": "Tyranitar",
+        "path": "pokemon-neo-discovery/tyranitar-1st-edition-12"
+      },
+      {
+        "num": "13",
+        "name": "Umbreon",
+        "path": "pokemon-neo-discovery/umbreon-1st-edition-13"
+      },
+      {
+        "num": "14",
+        "name": "Unown A",
+        "path": "pokemon-neo-discovery/unown-a-1st-edition-14"
+      },
+      {
+        "num": "15",
+        "name": "Ursaring",
+        "path": "pokemon-neo-discovery/ursaring-1st-edition-15"
+      },
+      {
+        "num": "16",
+        "name": "Wobbuffet",
+        "path": "pokemon-neo-discovery/wobbuffet-1st-edition-16"
+      },
+      {
+        "num": "17",
+        "name": "Yanma",
+        "path": "pokemon-neo-discovery/yanma-1st-edition-17"
+      },
+      {
+        "num": "18",
+        "name": "Beedrill",
+        "path": "pokemon-neo-discovery/beedrill-1st-edition-18"
+      },
+      {
+        "num": "19",
+        "name": "Butterfree",
+        "path": "pokemon-neo-discovery/butterfree-1st-edition-19"
+      },
+      {
+        "num": "20",
+        "name": "Espeon",
+        "path": "pokemon-neo-discovery/espeon-1st-edition-20"
+      },
+      {
+        "num": "21",
+        "name": "Forretress",
+        "path": "pokemon-neo-discovery/forretress-1st-edition-21"
+      },
+      {
+        "num": "22",
+        "name": "Hitmontop",
+        "path": "pokemon-neo-discovery/hitmontop-1st-edition-22"
+      },
+      {
+        "num": "23",
+        "name": "Houndoom",
+        "path": "pokemon-neo-discovery/houndoom-1st-edition-23"
+      },
+      {
+        "num": "24",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-1st-edition-24"
+      },
+      {
+        "num": "25",
+        "name": "Kabutops",
+        "path": "pokemon-neo-discovery/kabutops-1st-edition-25"
+      },
+      {
+        "num": "26",
+        "name": "Magnemite",
+        "path": "pokemon-neo-discovery/magnemite-1st-edition-26"
+      },
+      {
+        "num": "27",
+        "name": "Politoed",
+        "path": "pokemon-neo-discovery/politoed-1st-edition-27"
+      },
+      {
+        "num": "28",
+        "name": "Poliwrath",
+        "path": "pokemon-neo-discovery/poliwrath-1st-edition-28"
+      },
+      {
+        "num": "29",
+        "name": "Scizor",
+        "path": "pokemon-neo-discovery/scizor-1st-edition-29"
+      },
+      {
+        "num": "30",
+        "name": "Smeargle",
+        "path": "pokemon-neo-discovery/smeargle-1st-edition-30"
+      },
+      {
+        "num": "31",
+        "name": "Tyranitar",
+        "path": "pokemon-neo-discovery/tyranitar-1st-edition-31"
+      },
+      {
+        "num": "32",
+        "name": "Umbreon",
+        "path": "pokemon-neo-discovery/umbreon-1st-edition-32"
+      },
+      {
+        "num": "33",
+        "name": "Unown A",
+        "path": "pokemon-neo-discovery/unown-a-1st-edition-33"
+      },
+      {
+        "num": "34",
+        "name": "Ursaring",
+        "path": "pokemon-neo-discovery/ursaring-1st-edition-34"
+      },
+      {
+        "num": "35",
+        "name": "Wobbuffet",
+        "path": "pokemon-neo-discovery/wobbuffet-1st-edition-35"
+      },
+      {
+        "num": "36",
+        "name": "Yanma",
+        "path": "pokemon-neo-discovery/yanma-1st-edition-36"
+      },
+      {
+        "num": "37",
+        "name": "Corsola",
+        "path": "pokemon-neo-discovery/corsola-1st-edition-37"
+      },
+      {
+        "num": "38",
+        "name": "Eevee",
+        "path": "pokemon-neo-discovery/eevee-1st-edition-38"
+      },
+      {
+        "num": "39",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-1st-edition-39"
+      },
+      {
+        "num": "40",
+        "name": "Igglybuff",
+        "path": "pokemon-neo-discovery/igglybuff-1st-edition-40"
+      },
+      {
+        "num": "41",
+        "name": "Kakuna",
+        "path": "pokemon-neo-discovery/kakuna-1st-edition-41"
+      },
+      {
+        "num": "42",
+        "name": "Metapod",
+        "path": "pokemon-neo-discovery/metapod-1st-edition-42"
+      },
+      {
+        "num": "43",
+        "name": "Omastar",
+        "path": "pokemon-neo-discovery/omastar-1st-edition-43"
+      },
+      {
+        "num": "44",
+        "name": "Poliwhirl",
+        "path": "pokemon-neo-discovery/poliwhirl-1st-edition-44"
+      },
+      {
+        "num": "45",
+        "name": "Pupitar",
+        "path": "pokemon-neo-discovery/pupitar-1st-edition-45"
+      },
+      {
+        "num": "46",
+        "name": "Scyther",
+        "path": "pokemon-neo-discovery/scyther-1st-edition-46"
+      },
+      {
+        "num": "47",
+        "name": "Unown D",
+        "path": "pokemon-neo-discovery/unown-d-1st-edition-47"
+      },
+      {
+        "num": "48",
+        "name": "Unown F",
+        "path": "pokemon-neo-discovery/unown-f-1st-edition-48"
+      },
+      {
+        "num": "49",
+        "name": "Unown M",
+        "path": "pokemon-neo-discovery/unown-m-1st-edition-49"
+      },
+      {
+        "num": "50",
+        "name": "Unown N",
+        "path": "pokemon-neo-discovery/unown-n-1st-edition-50"
+      },
+      {
+        "num": "51",
+        "name": "Unown U",
+        "path": "pokemon-neo-discovery/unown-u-1st-edition-51"
+      },
+      {
+        "num": "52",
+        "name": "Xatu",
+        "path": "pokemon-neo-discovery/xatu-1st-edition-52"
+      },
+      {
+        "num": "53",
+        "name": "Caterpie",
+        "path": "pokemon-neo-discovery/caterpie-1st-edition-53"
+      },
+      {
+        "num": "54",
+        "name": "Dunsparce",
+        "path": "pokemon-neo-discovery/dunsparce-1st-edition-54"
+      },
+      {
+        "num": "55",
+        "name": "Hoppip",
+        "path": "pokemon-neo-discovery/hoppip-1st-edition-55"
+      },
+      {
+        "num": "56",
+        "name": "Kabuto",
+        "path": "pokemon-neo-discovery/kabuto-1st-edition-56"
+      },
+      {
+        "num": "57",
+        "name": "Larvitar",
+        "path": "pokemon-neo-discovery/larvitar-1st-edition-57"
+      },
+      {
+        "num": "58",
+        "name": "Mareep",
+        "path": "pokemon-neo-discovery/mareep-1st-edition-58"
+      },
+      {
+        "num": "59",
+        "name": "Natu",
+        "path": "pokemon-neo-discovery/natu-1st-edition-59"
+      },
+      {
+        "num": "60",
+        "name": "Omanyte",
+        "path": "pokemon-neo-discovery/omanyte-1st-edition-60"
+      },
+      {
+        "num": "61",
+        "name": "Pineco",
+        "path": "pokemon-neo-discovery/pineco-1st-edition-61"
+      },
+      {
+        "num": "62",
+        "name": "Poliwag",
+        "path": "pokemon-neo-discovery/poliwag-1st-edition-62"
+      },
+      {
+        "num": "63",
+        "name": "Sentret",
+        "path": "pokemon-neo-discovery/sentret-1st-edition-63"
+      },
+      {
+        "num": "64",
+        "name": "Spinarak",
+        "path": "pokemon-neo-discovery/spinarak-1st-edition-64"
+      },
+      {
+        "num": "65",
+        "name": "Teddiursa",
+        "path": "pokemon-neo-discovery/teddiursa-1st-edition-65"
+      },
+      {
+        "num": "66",
+        "name": "Tyrogue",
+        "path": "pokemon-neo-discovery/tyrogue-1st-edition-66"
+      },
+      {
+        "num": "67",
+        "name": "Unown E",
+        "path": "pokemon-neo-discovery/unown-e-1st-edition-67"
+      },
+      {
+        "num": "68",
+        "name": "Unown I",
+        "path": "pokemon-neo-discovery/unown-i-1st-edition-68"
+      },
+      {
+        "num": "69",
+        "name": "Unown O",
+        "path": "pokemon-neo-discovery/unown-o-1st-edition-69"
+      },
+      {
+        "num": "70",
+        "name": "Weedle",
+        "path": "pokemon-neo-discovery/weedle-1st-edition-70"
+      },
+      {
+        "num": "71",
+        "name": "Wooper",
+        "path": "pokemon-neo-discovery/wooper-1st-edition-71"
+      },
+      {
+        "num": "72",
+        "name": "Fossil Egg",
+        "path": "pokemon-neo-discovery/fossil-egg-1st-edition-72"
+      },
+      {
+        "num": "73",
+        "name": "Hyper Devolution Spray",
+        "path": "pokemon-neo-discovery/hyper-devolution-spray-1st-edition-73"
+      },
+      {
+        "num": "74",
+        "name": "Ruin Wall",
+        "path": "pokemon-neo-discovery/ruin-wall-1st-edition-74"
+      },
+      {
+        "num": "75",
+        "name": "Energy Ark",
+        "path": "pokemon-neo-discovery/energy-ark-1st-edition-75"
+      }
+    ],
+    "basket": [
+      {
+        "num": "1",
+        "name": "Espeon",
+        "path": "pokemon-neo-discovery/espeon-1st-edition-1",
+        "price": 339.83,
+        "n30": 10,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "2",
+        "name": "Forretress",
+        "path": "pokemon-neo-discovery/forretress-1st-edition-2",
+        "price": 64.75,
+        "n30": 8,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "3",
+        "name": "Hitmontop",
+        "path": "pokemon-neo-discovery/hitmontop-1st-edition-3",
+        "price": 26.45,
+        "n30": 10,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "4",
+        "name": "Houndoom",
+        "path": "pokemon-neo-discovery/houndoom-1st-edition-4",
+        "price": 184.34,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "5",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-1st-edition-5",
+        "price": 191.95,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "6",
+        "name": "Kabutops",
+        "path": "pokemon-neo-discovery/kabutops-1st-edition-6",
+        "price": 139.93,
+        "n30": 6,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "7",
+        "name": "Magnemite",
+        "path": "pokemon-neo-discovery/magnemite-1st-edition-7",
+        "price": 55.44,
+        "n30": 12,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "8",
+        "name": "Politoed",
+        "path": "pokemon-neo-discovery/politoed-1st-edition-8",
+        "price": 184.39,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "9",
+        "name": "Poliwrath",
+        "path": "pokemon-neo-discovery/poliwrath-1st-edition-9",
+        "price": 78.5,
+        "n30": 12,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "10",
+        "name": "Scizor",
+        "path": "pokemon-neo-discovery/scizor-1st-edition-10",
+        "price": 130,
+        "n30": 7,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "11",
+        "name": "Smeargle",
+        "path": "pokemon-neo-discovery/smeargle-1st-edition-11",
+        "price": 125,
+        "n30": 12,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "12",
+        "name": "Tyranitar",
+        "path": "pokemon-neo-discovery/tyranitar-1st-edition-12",
+        "price": 249.99,
+        "n30": 7,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "13",
+        "name": "Umbreon",
+        "path": "pokemon-neo-discovery/umbreon-1st-edition-13",
+        "price": 1400,
+        "n30": 10,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 0.7193
+      },
+      {
+        "num": "14",
+        "name": "Unown A",
+        "path": "pokemon-neo-discovery/unown-a-1st-edition-14",
+        "price": 86.73,
+        "n30": 8,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "16",
+        "name": "Wobbuffet",
+        "path": "pokemon-neo-discovery/wobbuffet-1st-edition-16",
+        "price": 94.47,
+        "n30": 9,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "17",
+        "name": "Yanma",
+        "path": "pokemon-neo-discovery/yanma-1st-edition-17",
+        "price": 58.66,
+        "n30": 12,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "18",
+        "name": "Beedrill",
+        "path": "pokemon-neo-discovery/beedrill-1st-edition-18",
+        "price": 21.89,
+        "n30": 10,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "19",
+        "name": "Butterfree",
+        "path": "pokemon-neo-discovery/butterfree-1st-edition-19",
+        "price": 31.98,
+        "n30": 6,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "20",
+        "name": "Espeon",
+        "path": "pokemon-neo-discovery/espeon-1st-edition-20",
+        "price": 84,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "21",
+        "name": "Forretress",
+        "path": "pokemon-neo-discovery/forretress-1st-edition-21",
+        "price": 14.99,
+        "n30": 16,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "22",
+        "name": "Hitmontop",
+        "path": "pokemon-neo-discovery/hitmontop-1st-edition-22",
+        "price": 15.35,
+        "n30": 10,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "23",
+        "name": "Houndoom",
+        "path": "pokemon-neo-discovery/houndoom-1st-edition-23",
+        "price": 35,
+        "n30": 19,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "24",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-1st-edition-24",
+        "price": 36.84,
+        "n30": 13,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "25",
+        "name": "Kabutops",
+        "path": "pokemon-neo-discovery/kabutops-1st-edition-25",
+        "price": 35,
+        "n30": 13,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "26",
+        "name": "Magnemite",
+        "path": "pokemon-neo-discovery/magnemite-1st-edition-26",
+        "price": 14.95,
+        "n30": 13,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "27",
+        "name": "Politoed",
+        "path": "pokemon-neo-discovery/politoed-1st-edition-27",
+        "price": 38.99,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "28",
+        "name": "Poliwrath",
+        "path": "pokemon-neo-discovery/poliwrath-1st-edition-28",
+        "price": 16.07,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "29",
+        "name": "Scizor",
+        "path": "pokemon-neo-discovery/scizor-1st-edition-29",
+        "price": 38.1,
+        "n30": 11,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "30",
+        "name": "Smeargle",
+        "path": "pokemon-neo-discovery/smeargle-1st-edition-30",
+        "price": 19.99,
+        "n30": 16,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "31",
+        "name": "Tyranitar",
+        "path": "pokemon-neo-discovery/tyranitar-1st-edition-31",
+        "price": 71.76,
+        "n30": 13,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "32",
+        "name": "Umbreon",
+        "path": "pokemon-neo-discovery/umbreon-1st-edition-32",
+        "price": 223.11,
+        "n30": 12,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "33",
+        "name": "Unown A",
+        "path": "pokemon-neo-discovery/unown-a-1st-edition-33",
+        "price": 22,
+        "n30": 9,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "34",
+        "name": "Ursaring",
+        "path": "pokemon-neo-discovery/ursaring-1st-edition-34",
+        "price": 17.35,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "35",
+        "name": "Wobbuffet",
+        "path": "pokemon-neo-discovery/wobbuffet-1st-edition-35",
+        "price": 17.09,
+        "n30": 13,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "36",
+        "name": "Yanma",
+        "path": "pokemon-neo-discovery/yanma-1st-edition-36",
+        "price": 14.12,
+        "n30": 12,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "37",
+        "name": "Corsola",
+        "path": "pokemon-neo-discovery/corsola-1st-edition-37",
+        "price": 14.99,
+        "n30": 29,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "38",
+        "name": "Eevee",
+        "path": "pokemon-neo-discovery/eevee-1st-edition-38",
+        "price": 24.99,
+        "n30": 35,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "39",
+        "name": "Houndour",
+        "path": "pokemon-neo-discovery/houndour-1st-edition-39",
+        "price": 9.13,
+        "n30": 38,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "40",
+        "name": "Igglybuff",
+        "path": "pokemon-neo-discovery/igglybuff-1st-edition-40",
+        "price": 15.48,
+        "n30": 36,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "41",
+        "name": "Kakuna",
+        "path": "pokemon-neo-discovery/kakuna-1st-edition-41",
+        "price": 4,
+        "n30": 32,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "42",
+        "name": "Metapod",
+        "path": "pokemon-neo-discovery/metapod-1st-edition-42",
+        "price": 7,
+        "n30": 29,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "43",
+        "name": "Omastar",
+        "path": "pokemon-neo-discovery/omastar-1st-edition-43",
+        "price": 4.44,
+        "n30": 25,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "44",
+        "name": "Poliwhirl",
+        "path": "pokemon-neo-discovery/poliwhirl-1st-edition-44",
+        "price": 9.99,
+        "n30": 36,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "45",
+        "name": "Pupitar",
+        "path": "pokemon-neo-discovery/pupitar-1st-edition-45",
+        "price": 6.25,
+        "n30": 22,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "46",
+        "name": "Scyther",
+        "path": "pokemon-neo-discovery/scyther-1st-edition-46",
+        "price": 8.5,
+        "n30": 29,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "47",
+        "name": "Unown D",
+        "path": "pokemon-neo-discovery/unown-d-1st-edition-47",
+        "price": 3.99,
+        "n30": 23,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "48",
+        "name": "Unown F",
+        "path": "pokemon-neo-discovery/unown-f-1st-edition-48",
+        "price": 5.2,
+        "n30": 22,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "49",
+        "name": "Unown M",
+        "path": "pokemon-neo-discovery/unown-m-1st-edition-49",
+        "price": 6.49,
+        "n30": 22,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "50",
+        "name": "Unown N",
+        "path": "pokemon-neo-discovery/unown-n-1st-edition-50",
+        "price": 7.5,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "51",
+        "name": "Unown U",
+        "path": "pokemon-neo-discovery/unown-u-1st-edition-51",
+        "price": 4.98,
+        "n30": 20,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "52",
+        "name": "Xatu",
+        "path": "pokemon-neo-discovery/xatu-1st-edition-52",
+        "price": 3.09,
+        "n30": 28,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "53",
+        "name": "Caterpie",
+        "path": "pokemon-neo-discovery/caterpie-1st-edition-53",
+        "price": 7.59,
+        "n30": 59,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "54",
+        "name": "Dunsparce",
+        "path": "pokemon-neo-discovery/dunsparce-1st-edition-54",
+        "price": 3.25,
+        "n30": 41,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "55",
+        "name": "Hoppip",
+        "path": "pokemon-neo-discovery/hoppip-1st-edition-55",
+        "price": 2.56,
+        "n30": 44,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "56",
+        "name": "Kabuto",
+        "path": "pokemon-neo-discovery/kabuto-1st-edition-56",
+        "price": 12.02,
+        "n30": 54,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "57",
+        "name": "Larvitar",
+        "path": "pokemon-neo-discovery/larvitar-1st-edition-57",
+        "price": 3.49,
+        "n30": 45,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "58",
+        "name": "Mareep",
+        "path": "pokemon-neo-discovery/mareep-1st-edition-58",
+        "price": 3.49,
+        "n30": 47,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "59",
+        "name": "Natu",
+        "path": "pokemon-neo-discovery/natu-1st-edition-59",
+        "price": 2.87,
+        "n30": 40,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "60",
+        "name": "Omanyte",
+        "path": "pokemon-neo-discovery/omanyte-1st-edition-60",
+        "price": 12.02,
+        "n30": 51,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "61",
+        "name": "Pineco",
+        "path": "pokemon-neo-discovery/pineco-1st-edition-61",
+        "price": 3.66,
+        "n30": 43,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "62",
+        "name": "Poliwag",
+        "path": "pokemon-neo-discovery/poliwag-1st-edition-62",
+        "price": 6.5,
+        "n30": 41,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "63",
+        "name": "Sentret",
+        "path": "pokemon-neo-discovery/sentret-1st-edition-63",
+        "price": 2.5,
+        "n30": 44,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "64",
+        "name": "Spinarak",
+        "path": "pokemon-neo-discovery/spinarak-1st-edition-64",
+        "price": 2.99,
+        "n30": 51,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "65",
+        "name": "Teddiursa",
+        "path": "pokemon-neo-discovery/teddiursa-1st-edition-65",
+        "price": 5.29,
+        "n30": 51,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "66",
+        "name": "Tyrogue",
+        "path": "pokemon-neo-discovery/tyrogue-1st-edition-66",
+        "price": 3.39,
+        "n30": 42,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "67",
+        "name": "Unown E",
+        "path": "pokemon-neo-discovery/unown-e-1st-edition-67",
+        "price": 3,
+        "n30": 44,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "68",
+        "name": "Unown I",
+        "path": "pokemon-neo-discovery/unown-i-1st-edition-68",
+        "price": 3,
+        "n30": 33,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "69",
+        "name": "Unown O",
+        "path": "pokemon-neo-discovery/unown-o-1st-edition-69",
+        "price": 2.99,
+        "n30": 35,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "70",
+        "name": "Weedle",
+        "path": "pokemon-neo-discovery/weedle-1st-edition-70",
+        "price": 3.5,
+        "n30": 48,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "71",
+        "name": "Wooper",
+        "path": "pokemon-neo-discovery/wooper-1st-edition-71",
+        "price": 13.5,
+        "n30": 45,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "72",
+        "name": "Fossil Egg",
+        "path": "pokemon-neo-discovery/fossil-egg-1st-edition-72",
+        "price": 2.49,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "73",
+        "name": "Hyper Devolution Spray",
+        "path": "pokemon-neo-discovery/hyper-devolution-spray-1st-edition-73",
+        "price": 2.19,
+        "n30": 7,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "74",
+        "name": "Ruin Wall",
+        "path": "pokemon-neo-discovery/ruin-wall-1st-edition-74",
+        "price": 2.85,
+        "n30": 20,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "75",
+        "name": "Energy Ark",
+        "path": "pokemon-neo-discovery/energy-ark-1st-edition-75",
+        "price": 1,
+        "n30": 29,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      }
+    ],
+    "history": [
+      {
+        "date": "2026-10-04",
+        "level": 196.33,
+        "basketValue": 4028.19,
+        "divisor": 20.517353,
+        "priced": 74,
+        "note": "inception"
+      }
+    ],
+    "reconstitution": {
+      "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
+      "next": "2027-01-04"
+    },
+    "sub": {},
+    "recon": [
+      {
+        "month": "2021-07",
+        "level": 100
+      },
+      {
+        "month": "2021-08",
+        "level": 82.6
+      },
+      {
+        "month": "2021-09",
+        "level": 89.63
+      },
+      {
+        "month": "2021-10",
+        "level": 86.46
+      },
+      {
+        "month": "2021-11",
+        "level": 87.56
+      },
+      {
+        "month": "2021-12",
+        "level": 86.32
+      },
+      {
+        "month": "2022-01",
+        "level": 87.79
+      },
+      {
+        "month": "2022-02",
+        "level": 81.23
+      },
+      {
+        "month": "2022-03",
+        "level": 86.16
+      },
+      {
+        "month": "2022-04",
+        "level": 94.89
+      },
+      {
+        "month": "2022-05",
+        "level": 88.43
+      },
+      {
+        "month": "2022-06",
+        "level": 89.8
+      },
+      {
+        "month": "2022-07",
+        "level": 86.92
+      },
+      {
+        "month": "2022-08",
+        "level": 91.64
+      },
+      {
+        "month": "2022-09",
+        "level": 88.24
+      },
+      {
+        "month": "2022-10",
+        "level": 82.72
+      },
+      {
+        "month": "2022-11",
+        "level": 80.92
+      },
+      {
+        "month": "2022-12",
+        "level": 80.42
+      },
+      {
+        "month": "2023-01",
+        "level": 82.5
+      },
+      {
+        "month": "2023-02",
+        "level": 77.03
+      },
+      {
+        "month": "2023-03",
+        "level": 78.58
+      },
+      {
+        "month": "2023-04",
+        "level": 86.91
+      },
+      {
+        "month": "2023-05",
+        "level": 88.71
+      },
+      {
+        "month": "2023-06",
+        "level": 83.05
+      },
+      {
+        "month": "2023-07",
+        "level": 78.77
+      },
+      {
+        "month": "2023-08",
+        "level": 81.32
+      },
+      {
+        "month": "2023-09",
+        "level": 79.86
+      },
+      {
+        "month": "2023-10",
+        "level": 79.02
+      },
+      {
+        "month": "2023-11",
+        "level": 75.32
+      },
+      {
+        "month": "2023-12",
+        "level": 79.94
+      },
+      {
+        "month": "2024-01",
+        "level": 81.85
+      },
+      {
+        "month": "2024-02",
+        "level": 81.09
+      },
+      {
+        "month": "2024-03",
+        "level": 81.99
+      },
+      {
+        "month": "2024-04",
+        "level": 83.42
+      },
+      {
+        "month": "2024-05",
+        "level": 77.28
+      },
+      {
+        "month": "2024-06",
+        "level": 79.36
+      },
+      {
+        "month": "2024-07",
+        "level": 84.21
+      },
+      {
+        "month": "2024-08",
+        "level": 79.56
+      },
+      {
+        "month": "2024-09",
+        "level": 87.62
+      },
+      {
+        "month": "2024-10",
+        "level": 88.96
+      },
+      {
+        "month": "2024-11",
+        "level": 84.61
+      },
+      {
+        "month": "2024-12",
+        "level": 89.08
+      },
+      {
+        "month": "2025-01",
+        "level": 94.29
+      },
+      {
+        "month": "2025-02",
+        "level": 95.69
+      },
+      {
+        "month": "2025-03",
+        "level": 104.1
+      },
+      {
+        "month": "2025-04",
+        "level": 104.43
+      },
+      {
+        "month": "2025-05",
+        "level": 109.21
+      },
+      {
+        "month": "2025-06",
+        "level": 120.6
+      },
+      {
+        "month": "2025-07",
+        "level": 119.19
+      },
+      {
+        "month": "2025-08",
+        "level": 119.23
+      },
+      {
+        "month": "2025-09",
+        "level": 119.39
+      },
+      {
+        "month": "2025-10",
+        "level": 127.17
+      },
+      {
+        "month": "2025-11",
+        "level": 110.99
+      },
+      {
+        "month": "2025-12",
+        "level": 123.1
+      },
+      {
+        "month": "2026-01",
+        "level": 130.53
+      },
+      {
+        "month": "2026-02",
+        "level": 131.56
+      },
+      {
+        "month": "2026-03",
+        "level": 138.08
+      },
+      {
+        "month": "2026-04",
+        "level": 141.13
+      },
+      {
+        "month": "2026-05",
+        "level": 162.97
+      },
+      {
+        "month": "2026-06",
+        "level": 202.59
+      },
+      {
+        "month": "2026-07",
+        "level": 199.28
+      },
+      {
+        "month": "2026-08",
+        "level": 198.05
+      },
+      {
+        "month": "2026-09",
+        "level": 207.66
+      }
+    ],
+    "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+    "baseDate": "2021-07",
+    "baseRule": "first-reliable",
+    "baseNote": "100 = Jul 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Jun 1, 2001 release predates the data, so no release-day level is claimed",
+    "rebase": {
+      "date": "2026-10-04",
+      "factor": 1.963309,
+      "ruling": "Mo 2026-09-30 in chat: every Pokémon index is based at its release date — this ticker launched on that basis",
+      "inceptionLevel": 196.33
+    }
+  },
+  "NR1E": {
+    "ticker": "NR1E",
+    "name": "Neo Revelation 1st Edition Index",
+    "set": "Pokémon TCG Neo Revelation (1st Edition)",
+    "page": "/neo-revelation-1st-edition-index",
+    "model": "sector",
+    "status": "live",
+    "basis": "sold",
+    "basisLabel": "sold comps (PriceCharting ungraded) · sector model · twice-weekly re-mark",
+    "screen": {
+      "enter": 6,
+      "stay": 4,
+      "window": 90,
+      "source": "PriceCharting ungraded completed sales, clean single-card rows"
+    },
+    "cap": 0.25,
+    "capRule": {
+      "single": 0.25,
+      "big": 0.05,
+      "bigSum": 0.5,
+      "name": "25% single-card cap + 5/50 group cap (Select Sector SPDR rule)"
+    },
+    "base": 100,
+    "inception": "2026-10-04",
+    "releaseDate": "2001-09-21",
+    "universeComplete": true,
+    "pcSlug": "pokemon-neo-revelation",
+    "sources": [
+      "pokemon-neo-revelation"
+    ],
+    "divisor": 20.018953,
+    "divisorLog": [
+      {
+        "date": "2026-10-04",
+        "before": null,
+        "after": 39.8957,
+        "why": "inception — basket $3989.57 over 65 of 66 slots; 8 capped (25% single / 5-50 group)"
+      },
+      {
+        "date": "2026-10-04",
+        "before": 39.8957,
+        "after": 20.018953,
+        "why": "BASE (release-date rule). 100 = Sep 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Sep 21, 2001 release predates the data, so no release-day level is claimed. Every level × 1.992896; shape and % moves unchanged."
+      }
+    ],
+    "capLog": [
+      {
+        "date": "2026-10-04",
+        "num": "3",
+        "name": "Celebi",
+        "w": 0.6492
+      },
+      {
+        "date": "2026-10-04",
+        "num": "6",
+        "name": "Entei",
+        "w": 0.4803
+      },
+      {
+        "date": "2026-10-04",
+        "num": "7",
+        "name": "Ho-oh",
+        "w": 0.4803
+      },
+      {
+        "date": "2026-10-04",
+        "num": "8",
+        "name": "Houndoom",
+        "w": 0.4436
+      },
+      {
+        "date": "2026-10-04",
+        "num": "13",
+        "name": "Raikou",
+        "w": 0.4436
+      },
+      {
+        "date": "2026-10-04",
+        "num": "14",
+        "name": "Suicune",
+        "w": 0.4436
+      },
+      {
+        "date": "2026-10-04",
+        "num": "65",
+        "name": "Shining Gyarados",
+        "w": 0.4436
+      },
+      {
+        "date": "2026-10-04",
+        "num": "66",
+        "name": "Shining Magikarp",
+        "w": 0.4436
+      }
+    ],
+    "screenLog": [
+      {
+        "date": "2026-10-04",
+        "pass": 65,
+        "fail": 1,
+        "errors": 0
+      }
+    ],
+    "universe": [
+      {
+        "num": "1",
+        "name": "Ampharos",
+        "path": "pokemon-neo-revelation/ampharos-1st-edition-1"
+      },
+      {
+        "num": "2",
+        "name": "Blissey",
+        "path": "pokemon-neo-revelation/blissey-1st-edition-2"
+      },
+      {
+        "num": "3",
+        "name": "Celebi",
+        "path": "pokemon-neo-revelation/celebi-1st-edition-3"
+      },
+      {
+        "num": "4",
+        "name": "Crobat",
+        "path": "pokemon-neo-revelation/crobat-1st-edition-4"
+      },
+      {
+        "num": "5",
+        "name": "Delibird",
+        "path": "pokemon-neo-revelation/delibird-1st-edition-5"
+      },
+      {
+        "num": "6",
+        "name": "Entei",
+        "path": "pokemon-neo-revelation/entei-1st-edition-6"
+      },
+      {
+        "num": "7",
+        "name": "Ho-oh",
+        "path": "pokemon-neo-revelation/ho-oh-1st-edition-7"
+      },
+      {
+        "num": "8",
+        "name": "Houndoom",
+        "path": "pokemon-neo-revelation/houndoom-1st-edition-8"
+      },
+      {
+        "num": "9",
+        "name": "Jumpluff",
+        "path": "pokemon-neo-revelation/jumpluff-1st-edition-9"
+      },
+      {
+        "num": "10",
+        "name": "Magneton",
+        "path": "pokemon-neo-revelation/magneton-1st-edition-10"
+      },
+      {
+        "num": "11",
+        "name": "Misdreavus",
+        "path": "pokemon-neo-revelation/misdreavus-1st-edition-11"
+      },
+      {
+        "num": "12",
+        "name": "Porygon2",
+        "path": "pokemon-neo-revelation/porygon2-1st-edition-12"
+      },
+      {
+        "num": "13",
+        "name": "Raikou",
+        "path": "pokemon-neo-revelation/raikou-1st-edition-13"
+      },
+      {
+        "num": "14",
+        "name": "Suicune",
+        "path": "pokemon-neo-revelation/suicune-1st-edition-14"
+      },
+      {
+        "num": "15",
+        "name": "Aerodactyl",
+        "path": "pokemon-neo-revelation/aerodactyl-1st-edition-15"
+      },
+      {
+        "num": "16",
+        "name": "Celebi",
+        "path": "pokemon-neo-revelation/celebi-1st-edition-16"
+      },
+      {
+        "num": "17",
+        "name": "Entei",
+        "path": "pokemon-neo-revelation/entei-1st-edition-17"
+      },
+      {
+        "num": "18",
+        "name": "Ho-oh",
+        "path": "pokemon-neo-revelation/ho-oh-1st-edition-18"
+      },
+      {
+        "num": "19",
+        "name": "Kingdra",
+        "path": "pokemon-neo-revelation/kingdra-1st-edition-19"
+      },
+      {
+        "num": "20",
+        "name": "Lugia",
+        "path": "pokemon-neo-revelation/lugia-1st-edition-20"
+      },
+      {
+        "num": "21",
+        "name": "Raichu",
+        "path": "pokemon-neo-revelation/raichu-1st-edition-21"
+      },
+      {
+        "num": "22",
+        "name": "Raikou",
+        "path": "pokemon-neo-revelation/raikou-1st-edition-22"
+      },
+      {
+        "num": "23",
+        "name": "Skarmory",
+        "path": "pokemon-neo-revelation/skarmory-1st-edition-23"
+      },
+      {
+        "num": "24",
+        "name": "Sneasel",
+        "path": "pokemon-neo-revelation/sneasel-1st-edition-24"
+      },
+      {
+        "num": "25",
+        "name": "Starmie",
+        "path": "pokemon-neo-revelation/starmie-1st-edition-25"
+      },
+      {
+        "num": "26",
+        "name": "Sudowoodo",
+        "path": "pokemon-neo-revelation/sudowoodo-1st-edition-26"
+      },
+      {
+        "num": "27",
+        "name": "Suicune",
+        "path": "pokemon-neo-revelation/suicune-1st-edition-27"
+      },
+      {
+        "num": "28",
+        "name": "Flaaffy",
+        "path": "pokemon-neo-revelation/flaaffy-1st-edition-28"
+      },
+      {
+        "num": "29",
+        "name": "Golbat",
+        "path": "pokemon-neo-revelation/golbat-1st-edition-29"
+      },
+      {
+        "num": "30",
+        "name": "Graveler",
+        "path": "pokemon-neo-revelation/graveler-1st-edition-30"
+      },
+      {
+        "num": "31",
+        "name": "Jynx",
+        "path": "pokemon-neo-revelation/jynx-1st-edition-31"
+      },
+      {
+        "num": "32",
+        "name": "Lanturn",
+        "path": "pokemon-neo-revelation/lanturn-1st-edition-32"
+      },
+      {
+        "num": "33",
+        "name": "Magcargo",
+        "path": "pokemon-neo-revelation/magcargo-1st-edition-33"
+      },
+      {
+        "num": "34",
+        "name": "Octillery",
+        "path": "pokemon-neo-revelation/octillery-1st-edition-34"
+      },
+      {
+        "num": "35",
+        "name": "Parasect",
+        "path": "pokemon-neo-revelation/parasect-1st-edition-35"
+      },
+      {
+        "num": "36",
+        "name": "Piloswine",
+        "path": "pokemon-neo-revelation/piloswine-1st-edition-36"
+      },
+      {
+        "num": "37",
+        "name": "Seaking",
+        "path": "pokemon-neo-revelation/seaking-1st-edition-37"
+      },
+      {
+        "num": "38",
+        "name": "Stantler",
+        "path": "pokemon-neo-revelation/stantler-1st-edition-38"
+      },
+      {
+        "num": "39",
+        "name": "Unown B",
+        "path": "pokemon-neo-revelation/unown-b-1st-edition-39"
+      },
+      {
+        "num": "40",
+        "name": "Unown Y",
+        "path": "pokemon-neo-revelation/unown-y-1st-edition-40"
+      },
+      {
+        "num": "41",
+        "name": "Aipom",
+        "path": "pokemon-neo-revelation/aipom-1st-edition-41"
+      },
+      {
+        "num": "42",
+        "name": "Chinchou",
+        "path": "pokemon-neo-revelation/chinchou-1st-edition-42"
+      },
+      {
+        "num": "43",
+        "name": "Farfetch'd",
+        "path": "pokemon-neo-revelation/farfetch%27d-1st-edition-43"
+      },
+      {
+        "num": "44",
+        "name": "Geodude",
+        "path": "pokemon-neo-revelation/geodude-1st-edition-44"
+      },
+      {
+        "num": "45",
+        "name": "Goldeen",
+        "path": "pokemon-neo-revelation/goldeen-1st-edition-45"
+      },
+      {
+        "num": "46",
+        "name": "Murkrow",
+        "path": "pokemon-neo-revelation/murkrow-1st-edition-46"
+      },
+      {
+        "num": "47",
+        "name": "Paras",
+        "path": "pokemon-neo-revelation/paras-1st-edition-47"
+      },
+      {
+        "num": "48",
+        "name": "Quagsire",
+        "path": "pokemon-neo-revelation/quagsire-1st-edition-48"
+      },
+      {
+        "num": "49",
+        "name": "Qwilfish",
+        "path": "pokemon-neo-revelation/qwilfish-1st-edition-49"
+      },
+      {
+        "num": "50",
+        "name": "Remoraid",
+        "path": "pokemon-neo-revelation/remoraid-1st-edition-50"
+      },
+      {
+        "num": "51",
+        "name": "Shuckle",
+        "path": "pokemon-neo-revelation/shuckle-1st-edition-51"
+      },
+      {
+        "num": "52",
+        "name": "Skiploom",
+        "path": "pokemon-neo-revelation/skiploom-1st-edition-52"
+      },
+      {
+        "num": "53",
+        "name": "Slugma",
+        "path": "pokemon-neo-revelation/slugma-1st-edition-53"
+      },
+      {
+        "num": "54",
+        "name": "Smoochum",
+        "path": "pokemon-neo-revelation/smoochum-1st-edition-54"
+      },
+      {
+        "num": "55",
+        "name": "Snubbull",
+        "path": "pokemon-neo-revelation/snubbull-1st-edition-55"
+      },
+      {
+        "num": "56",
+        "name": "Staryu",
+        "path": "pokemon-neo-revelation/staryu-1st-edition-56"
+      },
+      {
+        "num": "57",
+        "name": "Swinub",
+        "path": "pokemon-neo-revelation/swinub-1st-edition-57"
+      },
+      {
+        "num": "58",
+        "name": "Unown K",
+        "path": "pokemon-neo-revelation/unown-k-1st-edition-58"
+      },
+      {
+        "num": "59",
+        "name": "Zubat",
+        "path": "pokemon-neo-revelation/zubat-1st-edition-59"
+      },
+      {
+        "num": "60",
+        "name": "Balloon Berry",
+        "path": "pokemon-neo-revelation/balloon-berry-1st-edition-60"
+      },
+      {
+        "num": "61",
+        "name": "Healing Field",
+        "path": "pokemon-neo-revelation/healing-field-1st-edition-61"
+      },
+      {
+        "num": "62",
+        "name": "Pokemon Breeder Fields",
+        "path": "pokemon-neo-revelation/pokemon-breeder-fields-1st-edition-62"
+      },
+      {
+        "num": "63",
+        "name": "Rocket's Hideout",
+        "path": "pokemon-neo-revelation/rocket%27s-hideout-1st-edition-63"
+      },
+      {
+        "num": "64",
+        "name": "Old Rod",
+        "path": "pokemon-neo-revelation/old-rod-1st-edition-64"
+      },
+      {
+        "num": "65",
+        "name": "Shining Gyarados",
+        "path": "pokemon-neo-revelation/shining-gyarados-1st-edition-65"
+      },
+      {
+        "num": "66",
+        "name": "Shining Magikarp",
+        "path": "pokemon-neo-revelation/shining-magikarp-1st-edition-66"
+      }
+    ],
+    "basket": [
+      {
+        "num": "1",
+        "name": "Ampharos",
+        "path": "pokemon-neo-revelation/ampharos-1st-edition-1",
+        "price": 133.62,
+        "n30": 20,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "2",
+        "name": "Blissey",
+        "path": "pokemon-neo-revelation/blissey-1st-edition-2",
+        "price": 193.45,
+        "n30": 19,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "3",
+        "name": "Celebi",
+        "path": "pokemon-neo-revelation/celebi-1st-edition-3",
+        "price": 318,
+        "n30": 9,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 0.6492
+      },
+      {
+        "num": "4",
+        "name": "Crobat",
+        "path": "pokemon-neo-revelation/crobat-1st-edition-4",
+        "price": 92.5,
+        "n30": 8,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "5",
+        "name": "Delibird",
+        "path": "pokemon-neo-revelation/delibird-1st-edition-5",
+        "price": 107.27,
+        "n30": 18,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "6",
+        "name": "Entei",
+        "path": "pokemon-neo-revelation/entei-1st-edition-6",
+        "price": 398.66,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 0.4803
+      },
+      {
+        "num": "7",
+        "name": "Ho-oh",
+        "path": "pokemon-neo-revelation/ho-oh-1st-edition-7",
+        "price": 402.5,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 0.4803
+      },
+      {
+        "num": "8",
+        "name": "Houndoom",
+        "path": "pokemon-neo-revelation/houndoom-1st-edition-8",
+        "price": 435,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 0.4436
+      },
+      {
+        "num": "9",
+        "name": "Jumpluff",
+        "path": "pokemon-neo-revelation/jumpluff-1st-edition-9",
+        "price": 55,
+        "n30": 15,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "11",
+        "name": "Misdreavus",
+        "path": "pokemon-neo-revelation/misdreavus-1st-edition-11",
+        "price": 124.53,
+        "n30": 13,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "12",
+        "name": "Porygon2",
+        "path": "pokemon-neo-revelation/porygon2-1st-edition-12",
+        "price": 114.63,
+        "n30": 16,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "13",
+        "name": "Raikou",
+        "path": "pokemon-neo-revelation/raikou-1st-edition-13",
+        "price": 485,
+        "n30": 16,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 0.4436
+      },
+      {
+        "num": "14",
+        "name": "Suicune",
+        "path": "pokemon-neo-revelation/suicune-1st-edition-14",
+        "price": 500,
+        "n30": 9,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 0.4436
+      },
+      {
+        "num": "15",
+        "name": "Aerodactyl",
+        "path": "pokemon-neo-revelation/aerodactyl-1st-edition-15",
+        "price": 22.5,
+        "n30": 26,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "16",
+        "name": "Celebi",
+        "path": "pokemon-neo-revelation/celebi-1st-edition-16",
+        "price": 33.67,
+        "n30": 27,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "17",
+        "name": "Entei",
+        "path": "pokemon-neo-revelation/entei-1st-edition-17",
+        "price": 40,
+        "n30": 20,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "18",
+        "name": "Ho-oh",
+        "path": "pokemon-neo-revelation/ho-oh-1st-edition-18",
+        "price": 51.5,
+        "n30": 22,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "19",
+        "name": "Kingdra",
+        "path": "pokemon-neo-revelation/kingdra-1st-edition-19",
+        "price": 17.49,
+        "n30": 16,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "20",
+        "name": "Lugia",
+        "path": "pokemon-neo-revelation/lugia-1st-edition-20",
+        "price": 126.5,
+        "n30": 22,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "21",
+        "name": "Raichu",
+        "path": "pokemon-neo-revelation/raichu-1st-edition-21",
+        "price": 37.9,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "22",
+        "name": "Raikou",
+        "path": "pokemon-neo-revelation/raikou-1st-edition-22",
+        "price": 34,
+        "n30": 25,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "23",
+        "name": "Skarmory",
+        "path": "pokemon-neo-revelation/skarmory-1st-edition-23",
+        "price": 29.74,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "24",
+        "name": "Sneasel",
+        "path": "pokemon-neo-revelation/sneasel-1st-edition-24",
+        "price": 18.24,
+        "n30": 14,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "25",
+        "name": "Starmie",
+        "path": "pokemon-neo-revelation/starmie-1st-edition-25",
+        "price": 14.49,
+        "n30": 26,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "26",
+        "name": "Sudowoodo",
+        "path": "pokemon-neo-revelation/sudowoodo-1st-edition-26",
+        "price": 18.99,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "27",
+        "name": "Suicune",
+        "path": "pokemon-neo-revelation/suicune-1st-edition-27",
+        "price": 42.5,
+        "n30": 23,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "28",
+        "name": "Flaaffy",
+        "path": "pokemon-neo-revelation/flaaffy-1st-edition-28",
+        "price": 5.48,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "29",
+        "name": "Golbat",
+        "path": "pokemon-neo-revelation/golbat-1st-edition-29",
+        "price": 3.48,
+        "n30": 27,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "30",
+        "name": "Graveler",
+        "path": "pokemon-neo-revelation/graveler-1st-edition-30",
+        "price": 3.38,
+        "n30": 32,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "31",
+        "name": "Jynx",
+        "path": "pokemon-neo-revelation/jynx-1st-edition-31",
+        "price": 12.59,
+        "n30": 32,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "32",
+        "name": "Lanturn",
+        "path": "pokemon-neo-revelation/lanturn-1st-edition-32",
+        "price": 3.25,
+        "n30": 21,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "33",
+        "name": "Magcargo",
+        "path": "pokemon-neo-revelation/magcargo-1st-edition-33",
+        "price": 6,
+        "n30": 18,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "34",
+        "name": "Octillery",
+        "path": "pokemon-neo-revelation/octillery-1st-edition-34",
+        "price": 8.67,
+        "n30": 31,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "35",
+        "name": "Parasect",
+        "path": "pokemon-neo-revelation/parasect-1st-edition-35",
+        "price": 4,
+        "n30": 25,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "36",
+        "name": "Piloswine",
+        "path": "pokemon-neo-revelation/piloswine-1st-edition-36",
+        "price": 3.07,
+        "n30": 20,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "37",
+        "name": "Seaking",
+        "path": "pokemon-neo-revelation/seaking-1st-edition-37",
+        "price": 3.3,
+        "n30": 34,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "38",
+        "name": "Stantler",
+        "path": "pokemon-neo-revelation/stantler-1st-edition-38",
+        "price": 3.98,
+        "n30": 24,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "39",
+        "name": "Unown B",
+        "path": "pokemon-neo-revelation/unown-b-1st-edition-39",
+        "price": 7.99,
+        "n30": 31,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "40",
+        "name": "Unown Y",
+        "path": "pokemon-neo-revelation/unown-y-1st-edition-40",
+        "price": 5.41,
+        "n30": 23,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "41",
+        "name": "Aipom",
+        "path": "pokemon-neo-revelation/aipom-1st-edition-41",
+        "price": 2.95,
+        "n30": 43,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "42",
+        "name": "Chinchou",
+        "path": "pokemon-neo-revelation/chinchou-1st-edition-42",
+        "price": 2.12,
+        "n30": 26,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "43",
+        "name": "Farfetch'd",
+        "path": "pokemon-neo-revelation/farfetch%27d-1st-edition-43",
+        "price": 2.99,
+        "n30": 42,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "44",
+        "name": "Geodude",
+        "path": "pokemon-neo-revelation/geodude-1st-edition-44",
+        "price": 2.37,
+        "n30": 40,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "45",
+        "name": "Goldeen",
+        "path": "pokemon-neo-revelation/goldeen-1st-edition-45",
+        "price": 4.99,
+        "n30": 47,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "46",
+        "name": "Murkrow",
+        "path": "pokemon-neo-revelation/murkrow-1st-edition-46",
+        "price": 4.91,
+        "n30": 42,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "47",
+        "name": "Paras",
+        "path": "pokemon-neo-revelation/paras-1st-edition-47",
+        "price": 3,
+        "n30": 39,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "48",
+        "name": "Quagsire",
+        "path": "pokemon-neo-revelation/quagsire-1st-edition-48",
+        "price": 12.69,
+        "n30": 45,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "49",
+        "name": "Qwilfish",
+        "path": "pokemon-neo-revelation/qwilfish-1st-edition-49",
+        "price": 2.99,
+        "n30": 37,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "50",
+        "name": "Remoraid",
+        "path": "pokemon-neo-revelation/remoraid-1st-edition-50",
+        "price": 1.95,
+        "n30": 38,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "51",
+        "name": "Shuckle",
+        "path": "pokemon-neo-revelation/shuckle-1st-edition-51",
+        "price": 13.99,
+        "n30": 47,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "52",
+        "name": "Skiploom",
+        "path": "pokemon-neo-revelation/skiploom-1st-edition-52",
+        "price": 2.69,
+        "n30": 47,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "53",
+        "name": "Slugma",
+        "path": "pokemon-neo-revelation/slugma-1st-edition-53",
+        "price": 2.17,
+        "n30": 36,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "54",
+        "name": "Smoochum",
+        "path": "pokemon-neo-revelation/smoochum-1st-edition-54",
+        "price": 4.51,
+        "n30": 45,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "55",
+        "name": "Snubbull",
+        "path": "pokemon-neo-revelation/snubbull-1st-edition-55",
+        "price": 4,
+        "n30": 47,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "56",
+        "name": "Staryu",
+        "path": "pokemon-neo-revelation/staryu-1st-edition-56",
+        "price": 2.49,
+        "n30": 45,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "57",
+        "name": "Swinub",
+        "path": "pokemon-neo-revelation/swinub-1st-edition-57",
+        "price": 2.21,
+        "n30": 40,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "58",
+        "name": "Unown K",
+        "path": "pokemon-neo-revelation/unown-k-1st-edition-58",
+        "price": 2.99,
+        "n30": 43,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "59",
+        "name": "Zubat",
+        "path": "pokemon-neo-revelation/zubat-1st-edition-59",
+        "price": 2.99,
+        "n30": 44,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "60",
+        "name": "Balloon Berry",
+        "path": "pokemon-neo-revelation/balloon-berry-1st-edition-60",
+        "price": 1.61,
+        "n30": 18,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "61",
+        "name": "Healing Field",
+        "path": "pokemon-neo-revelation/healing-field-1st-edition-61",
+        "price": 3,
+        "n30": 19,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "62",
+        "name": "Pokemon Breeder Fields",
+        "path": "pokemon-neo-revelation/pokemon-breeder-fields-1st-edition-62",
+        "price": 18.99,
+        "n30": 37,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "63",
+        "name": "Rocket's Hideout",
+        "path": "pokemon-neo-revelation/rocket%27s-hideout-1st-edition-63",
+        "price": 39.99,
+        "n30": 49,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "64",
+        "name": "Old Rod",
+        "path": "pokemon-neo-revelation/old-rod-1st-edition-64",
+        "price": 2.01,
+        "n30": 32,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 1
+      },
+      {
+        "num": "65",
+        "name": "Shining Gyarados",
+        "path": "pokemon-neo-revelation/shining-gyarados-1st-edition-65",
+        "price": 1575,
+        "n30": 12,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 0.4436
+      },
+      {
+        "num": "66",
+        "name": "Shining Magikarp",
+        "path": "pokemon-neo-revelation/shining-magikarp-1st-edition-66",
+        "price": 1230.9,
+        "n30": 6,
+        "basis": "sold (PriceCharting ungraded, 90d median)",
+        "asOf": "2026-10-04",
+        "w": 0.4436
+      }
+    ],
+    "history": [
+      {
+        "date": "2026-10-04",
+        "level": 199.29,
+        "basketValue": 3989.57,
+        "divisor": 20.018953,
+        "priced": 65,
+        "note": "inception"
+      }
+    ],
+    "reconstitution": {
+      "cadence": "quarterly, first Monday of Jan/Apr/Jul/Oct, announced the Monday before",
+      "next": "2027-01-04"
+    },
+    "sub": {},
+    "recon": [
+      {
+        "month": "2021-09",
+        "level": 100
+      },
+      {
+        "month": "2021-10",
+        "level": 87.59
+      },
+      {
+        "month": "2021-11",
+        "level": 72.77
+      },
+      {
+        "month": "2021-12",
+        "level": 73.07
+      },
+      {
+        "month": "2022-01",
+        "level": 76.93
+      },
+      {
+        "month": "2022-02",
+        "level": 73.56
+      },
+      {
+        "month": "2022-03",
+        "level": 74.31
+      },
+      {
+        "month": "2022-04",
+        "level": 74.49
+      },
+      {
+        "month": "2022-05",
+        "level": 81.16
+      },
+      {
+        "month": "2022-06",
+        "level": 72.2
+      },
+      {
+        "month": "2022-07",
+        "level": 72.52
+      },
+      {
+        "month": "2022-08",
+        "level": 67.93
+      },
+      {
+        "month": "2022-09",
+        "level": 70.37
+      },
+      {
+        "month": "2022-10",
+        "level": 71.99
+      },
+      {
+        "month": "2022-11",
+        "level": 67.11
+      },
+      {
+        "month": "2022-12",
+        "level": 65.5
+      },
+      {
+        "month": "2023-01",
+        "level": 60.68
+      },
+      {
+        "month": "2023-02",
+        "level": 65.45
+      },
+      {
+        "month": "2023-03",
+        "level": 72.93
+      },
+      {
+        "month": "2023-04",
+        "level": 66.1
+      },
+      {
+        "month": "2023-05",
+        "level": 70.09
+      },
+      {
+        "month": "2023-06",
+        "level": 70.09
+      },
+      {
+        "month": "2023-07",
+        "level": 71
+      },
+      {
+        "month": "2023-08",
+        "level": 71.21
+      },
+      {
+        "month": "2023-09",
+        "level": 68.2
+      },
+      {
+        "month": "2023-10",
+        "level": 67.55
+      },
+      {
+        "month": "2023-11",
+        "level": 68.04
+      },
+      {
+        "month": "2023-12",
+        "level": 67.97
+      },
+      {
+        "month": "2024-01",
+        "level": 71.39
+      },
+      {
+        "month": "2024-02",
+        "level": 72.26
+      },
+      {
+        "month": "2024-03",
+        "level": 73.1
+      },
+      {
+        "month": "2024-04",
+        "level": 76.69
+      },
+      {
+        "month": "2024-05",
+        "level": 76.54
+      },
+      {
+        "month": "2024-06",
+        "level": 74.46
+      },
+      {
+        "month": "2024-07",
+        "level": 71.53
+      },
+      {
+        "month": "2024-08",
+        "level": 71.43
+      },
+      {
+        "month": "2024-09",
+        "level": 71.03
+      },
+      {
+        "month": "2024-10",
+        "level": 76.04
+      },
+      {
+        "month": "2024-11",
+        "level": 76.56
+      },
+      {
+        "month": "2024-12",
+        "level": 79.73
+      },
+      {
+        "month": "2025-01",
+        "level": 82.81
+      },
+      {
+        "month": "2025-02",
+        "level": 84.73
+      },
+      {
+        "month": "2025-03",
+        "level": 84.72
+      },
+      {
+        "month": "2025-04",
+        "level": 86.55
+      },
+      {
+        "month": "2025-05",
+        "level": 92.02
+      },
+      {
+        "month": "2025-06",
+        "level": 94.32
+      },
+      {
+        "month": "2025-07",
+        "level": 104.1
+      },
+      {
+        "month": "2025-08",
+        "level": 103.28
+      },
+      {
+        "month": "2025-09",
+        "level": 103.13
+      },
+      {
+        "month": "2025-10",
+        "level": 104.94
+      },
+      {
+        "month": "2025-11",
+        "level": 98.26
+      },
+      {
+        "month": "2025-12",
+        "level": 107.07
+      },
+      {
+        "month": "2026-01",
+        "level": 119.92
+      },
+      {
+        "month": "2026-02",
+        "level": 123.25
+      },
+      {
+        "month": "2026-03",
+        "level": 139.56
+      },
+      {
+        "month": "2026-04",
+        "level": 136.88
+      },
+      {
+        "month": "2026-05",
+        "level": 154.57
+      },
+      {
+        "month": "2026-06",
+        "level": 159.78
+      },
+      {
+        "month": "2026-07",
+        "level": 168.79
+      },
+      {
+        "month": "2026-08",
+        "level": 181.77
+      },
+      {
+        "month": "2026-09",
+        "level": 189.01
+      }
+    ],
+    "reconBasis": "monthly, reconstructed from PriceCharting ungraded price history, current basket and weights, chain-linked on cards priced in both months; not live marks",
+    "baseDate": "2021-09",
+    "baseRule": "first-reliable",
+    "baseNote": "100 = Sep 2021, the first month PriceCharting's ungraded sold history covers 90% of the basket by value — the Sep 21, 2001 release predates the data, so no release-day level is claimed",
+    "rebase": {
+      "date": "2026-10-04",
+      "factor": 1.992896,
+      "ruling": "Mo 2026-09-30 in chat: every Pokémon index is based at its release date — this ticker launched on that basis",
+      "inceptionLevel": 199.29
+    }
   }
 }

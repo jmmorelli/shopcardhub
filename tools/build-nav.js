@@ -190,6 +190,7 @@ function buildStyle() {
   .nav-search-results .ns-h { padding:8px 16px 4px; font-family:var(--fm); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); border-top:1px solid var(--border2); margin-top:4px; }
   .nav-search-results a small { display:block; font-family:var(--fm); font-size:10px; font-weight:400; color:var(--text-dim); letter-spacing:0; margin-top:2px; }
   .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
+  .nav-search-results .ns-empty a { display:inline; padding:0; color:var(--accent); text-decoration:underline; }
   .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
   /* dropdown + search panels: solid ground (page --bg2, fallback) so hero text never bleeds through */
   .nav-dropdown, .nav-search-results { background:var(--bg2, #0c1017); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
@@ -319,7 +320,7 @@ function buildScript(index) {
     function render(items){
       sel = -1;
       if (!input.value.trim()){ results.classList.remove('show'); results.innerHTML=''; return; }
-      if (!items.length){ results.innerHTML='<div class="ns-empty">No matches</div>'; results.classList.add('show'); return; }
+      if (!items.length){ results.innerHTML='<div class="ns-empty">Not in an index yet — <a href="/indices">see what we track</a></div>'; results.classList.add('show'); return; }
       results.innerHTML = items.map(function(it){ return it.h ? '<div class="ns-h">'+it.h+'</div>' : '<a href="'+it.u+'">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</a>'; }).join('');
       results.classList.add('show');
     }

@@ -20,6 +20,11 @@ const SPEC = {
   TR00:  { set: "Team Rocket", q: "team rocket unlimited", year: 2000 },
   NG00:  { set: "Neo Genesis", q: "neo genesis unlimited", year: 2000 },
   ND02:  { set: "Neo Destiny", q: "neo destiny unlimited", year: 2002 },
+  // Neo Discovery + Neo Revelation pairs (Oct 4 2026, Mo: "add both. Do it please.")
+  NDC01: { set: "Neo Discovery", q: "neo discovery unlimited", year: 2001 },
+  NR01:  { set: "Neo Revelation", q: "neo revelation unlimited", year: 2001 },
+  NDC1E: { set: "Neo Discovery 1st Edition", q: "neo discovery 1st edition", year: 2001 },
+  NR1E:  { set: "Neo Revelation 1st Edition", q: "neo revelation 1st edition", year: 2001 },
   AQ03:  { set: "Aquapolis", q: "aquapolis", year: 2003 },
   SK03:  { set: "Skyridge", q: "skyridge", year: 2003 },
   HF19:  { set: "Hidden Fates", q: "hidden fates", year: 2019 },
@@ -40,8 +45,8 @@ const SPEC = {
   // pre shell (playbook Phase 2): no level, no basket, noindex; --init replaces the DLR26 block once the console lists
   DLR26: { set: "Delta Reign", q: "delta reign", year: 2026, pre: true },
 };
-const PAGES = { BS99: "pokemon-base-set-index", JU99: "pokemon-jungle-index", FO99: "pokemon-fossil-index", TR00: "team-rocket-index", NG00: "neo-genesis-index", ND02: "neo-destiny-index", AQ03: "aquapolis-index", SK03: "skyridge-index", HF19: "hidden-fates-index", EVS21: "evolving-skies-index", CEL21: "celebrations-index", CZ23: "crown-zenith-index" , BS1E: "pokemon-base-set-1st-edition-index", BSSL: "pokemon-base-set-shadowless-index", JU1E: "pokemon-jungle-1st-edition-index", FO1E: "pokemon-fossil-1st-edition-index", TR1E: "team-rocket-1st-edition-index", NG1E: "neo-genesis-1st-edition-index", ND1E: "neo-destiny-1st-edition-index", SSP24: "surging-sparks-index", MEG25: "mega-evolution-index", DLR26: "delta-reign-index" };
-const THEME = { BS99: "#e8b93a", JU99: "#4caf50", FO99: "#b0a089", TR00: "#d23c3c", NG00: "#f0a830", ND02: "#6a5acd", AQ03: "#2fa4d8", SK03: "#8fb6e8", HF19: "#e0503c", EVS21: "#3c7fd8", CEL21: "#d4af37", CZ23: "#c9a227" , BS1E: "#c0392b", BSSL: "#7f8c8d", JU1E: "#2e7d32", FO1E: "#8d7b5f", TR1E: "#a32020", NG1E: "#c98a1c", ND1E: "#4b3fa8", SSP24: "#f7d02c", MEG25: "#5b8cff", DLR26: "#2fbf71" };
+const PAGES = { BS99: "pokemon-base-set-index", JU99: "pokemon-jungle-index", FO99: "pokemon-fossil-index", TR00: "team-rocket-index", NG00: "neo-genesis-index", ND02: "neo-destiny-index", AQ03: "aquapolis-index", SK03: "skyridge-index", HF19: "hidden-fates-index", EVS21: "evolving-skies-index", CEL21: "celebrations-index", CZ23: "crown-zenith-index" , BS1E: "pokemon-base-set-1st-edition-index", BSSL: "pokemon-base-set-shadowless-index", JU1E: "pokemon-jungle-1st-edition-index", FO1E: "pokemon-fossil-1st-edition-index", TR1E: "team-rocket-1st-edition-index", NG1E: "neo-genesis-1st-edition-index", ND1E: "neo-destiny-1st-edition-index", SSP24: "surging-sparks-index", MEG25: "mega-evolution-index", DLR26: "delta-reign-index", NDC01: "neo-discovery-index", NR01: "neo-revelation-index", NDC1E: "neo-discovery-1st-edition-index", NR1E: "neo-revelation-1st-edition-index" };
+const THEME = { BS99: "#e8b93a", JU99: "#4caf50", FO99: "#b0a089", TR00: "#d23c3c", NG00: "#f0a830", ND02: "#6a5acd", AQ03: "#2fa4d8", SK03: "#8fb6e8", HF19: "#e0503c", EVS21: "#3c7fd8", CEL21: "#d4af37", CZ23: "#c9a227" , BS1E: "#c0392b", BSSL: "#7f8c8d", JU1E: "#2e7d32", FO1E: "#8d7b5f", TR1E: "#a32020", NG1E: "#c98a1c", ND1E: "#4b3fa8", SSP24: "#f7d02c", MEG25: "#5b8cff", DLR26: "#2fbf71", NDC01: "#c86bb0", NR01: "#2bb3a3", NDC1E: "#9a4d86", NR1E: "#1f8a7d" };
 const s = SPEC[TK]; if (!s) { console.error("unknown ticker " + TK); process.exit(2); }
 const slug = PAGES[TK], out = path.join(ROOT, slug + ".html"), theme = THEME[TK];
 if (fs.existsSync(out) && !args.includes("--force")) { console.log("exists: " + slug); process.exit(0); }
