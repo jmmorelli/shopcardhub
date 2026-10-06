@@ -6,6 +6,7 @@
  *
  * Markup: <div class="idx-chart" data-ticker="DR25"></div>  (styles below are injected once; the page's own
  * --p1/--bd/--th/--dim/--gn/--rd/--iac tokens colour it, so each index keeps its set theme). */
+/* B37 (Night Crew Oct 6): one shared /data/indices.json request per page (window.schIdx), whoever asks first */
 (function () {
   'use strict';
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -90,7 +91,7 @@
   function boot() {
     var els = document.querySelectorAll('.idx-chart[data-ticker]'); if (!els.length) return;
     var st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
-    fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
+    (window.schIdx = window.schIdx || function () { return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { window.__schIdxP = null; throw e; })); })().then(function (j) {
       Array.prototype.forEach.call(els, function (el) { var tk = el.getAttribute('data-ticker'), sub = el.getAttribute('data-sub'); var v = j && j[tk]; if (v && sub) { v = v.sub && v.sub[sub]; tk = tk + '·' + sub; } if (!v || typeof v !== 'object') { el.remove(); return; } try { paint(el, v, tk); } catch (e) { el.remove(); } });
     }).catch(function () { Array.prototype.forEach.call(els, function (el) { el.remove(); }); });
   }

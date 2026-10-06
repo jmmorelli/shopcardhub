@@ -6,6 +6,7 @@
  *      price the watchlist has logged (localStorage sch_vault_v1, written only by js/vault-track.js and the watchlist).
  * "Last here" is a timestamp this file keeps in localStorage (sch_home_seen). First visit: nothing renders. Nothing here
  * is a call; the panel is a diff. */
+/* B37 (Night Crew Oct 6): one shared /data/indices.json request per page (window.schIdx), whoever asks first */
 (function () {
   'use strict';
   var SEEN = 'sch_home_seen', LS = 'sch_vault_v1';
@@ -85,7 +86,7 @@
     if (window.gtag) gtag('event', 'home_you', { indices: chips.length, cards: mine.length, moved: moved.length });
   }
   if (seenDay) {
-    fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    (window.schIdx = window.schIdx || function () { return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { window.__schIdxP = null; throw e; })); })()
       .then(render).catch(function () { render(null); });
   } else render(null);
 })();

@@ -84,7 +84,7 @@ const html = `${head}
 <!-- BF26:END -->
 <script>
 (function(){
-  fetch('/data/indices.json').then(function(r){ return r.json(); }).then(function(D){
+  (window.schIdx = window.schIdx || function(){ return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function(e){ window.__schIdxP = null; throw e; })); })().then(function(D){
     var el = document.getElementById('strip'); if (!el) return;
     var html = '';
     Object.keys(D).forEach(function(t){

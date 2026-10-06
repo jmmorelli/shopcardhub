@@ -5,6 +5,7 @@
  * Numbers shown: the engine's nightly ask mark (trimmed low median of verified
  * fixed-price asks — asks, not solds), the verified-ask count (thin under 8),
  * the box's 30-day move, and the index's own 30-day move beside it. */
+/* B37 (Night Crew Oct 6): one shared /data/indices.json request per page (window.schIdx), whoever asks first */
 (function () {
   var rows = document.querySelectorAll('.sealed[data-box-feed]');
   if (!rows.length) return;
@@ -24,7 +25,7 @@
     for (var i = 0; i < series.length; i++) { if (new Date(series[i][dateKey] + 'T00:00:00Z').getTime() <= target) pick = series[i]; else break; }
     return pick === last ? null : pick[valKey];
   };
-  Promise.all([get(FEED + '/prices-latest.json?t=' + Math.floor(Date.now() / 600000)), get(FEED + '/prices-history.json?t=' + Math.floor(Date.now() / 600000)).catch(function () { return {}; }), get('/data/indices.json?t=' + Date.now()).catch(function () { return {}; })])
+  Promise.all([get(FEED + '/prices-latest.json?t=' + Math.floor(Date.now() / 600000)), get(FEED + '/prices-history.json?t=' + Math.floor(Date.now() / 600000)).catch(function () { return {}; }), (window.schIdx = window.schIdx || function () { return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { window.__schIdxP = null; throw e; })); })().catch(function () { return {}; })])
     .then(function (r) {
       var latest = r[0] || {}, hist = r[1] || {}, idx = r[2] || {};
       var byKey = {}; (latest.cards || []).forEach(function (c) { byKey[c.key] = c; });

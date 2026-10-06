@@ -15,6 +15,7 @@
  * Rules baked in: the board row is 1st Bowman Chrome autos only (cardType chrome-auto,
  * !boardHide) — never a Pokémon card; hammers appear only as the "closes" count; every number
  * is the engine's, labelled ask-basis. Return math lives in js/engine-stats.js. */
+/* B37 (Night Crew Oct 6): one shared /data/indices.json request per page (window.schIdx), whoever asks first */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory(require('./engine-stats.js'));
   else root.SCH_HOME = factory(root.SCH_STATS);
@@ -531,7 +532,7 @@
     try { paintScreen(/screen=/.test(location.hash || '')); } catch (e) {}
     /* live feed → re-render; any failure leaves the pre-rendered HTML alone */
     var get = function (u) { return fetch(u, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
-    Promise.all([get(FEED + '/prices-latest.json?t=' + Math.floor(Date.now() / 600000)), get(FEED + '/prices-history.json?t=' + Math.floor(Date.now() / 600000)), get(FEED + '/market-latest.json?t=' + Math.floor(Date.now() / 600000)).catch(function () { return null; }), get('/data/indices.json?t=' + Date.now()).catch(function () { return null; })])
+    Promise.all([get(FEED + '/prices-latest.json?t=' + Math.floor(Date.now() / 600000)), get(FEED + '/prices-history.json?t=' + Math.floor(Date.now() / 600000)), get(FEED + '/market-latest.json?t=' + Math.floor(Date.now() / 600000)).catch(function () { return null; }), (window.schIdx = window.schIdx || function () { return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { window.__schIdxP = null; throw e; })); })().catch(function () { return null; })])
       .then(function (a) {
         model = buildModel(a[0], a[1], a[2], a[3] || {});
         /* each panel paints on its own — one bad panel never blanks the others (the pre-render stays) */
@@ -543,7 +544,7 @@
         safe(function () { paintScreen(false); });
         safe(function () { var dy = $('[data-home="day"]'); if (dy) dy.textContent = dstr(model.day); var st = $('[data-home="stamp"]'); if (st) st.textContent = model.marked + '/' + model.total + ' marked · ' + model.gatedN + ' gated'; });
       }).catch(function () { /* pre-rendered numbers stay */
-        get('/data/indices.json?t=' + Date.now()).then(function (idx) { idxModel = buildModel({ day: '', cards: [] }, {}, null, idx || {}); try { var ib = panel('indexboard'); if (ib) ib.innerHTML = renderIndexBoard(idxModel); } catch (e5) {} }).catch(function () {});
+        (window.schIdx = window.schIdx || function () { return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { window.__schIdxP = null; throw e; })); })().then(function (idx) { idxModel = buildModel({ day: '', cards: [] }, {}, null, idx || {}); try { var ib = panel('indexboard'); if (ib) ib.innerHTML = renderIndexBoard(idxModel); } catch (e5) {} }).catch(function () {});
       });
     /* upcoming releases: the bake is Monday's; drop rows whose date has passed since (the <li> keeps data-date) */
     try {

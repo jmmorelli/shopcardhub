@@ -13,6 +13,7 @@
  * bakes the read, its button and the folded stats into the page (it require()s build() and PR_CSS from this file), so
  * on those pages mount() only refreshes the text if the data moved and wires the button. Other pages work as before.
  */
+/* B37 (Night Crew Oct 6): one shared /data/indices.json request per page (window.schIdx), whoever asks first */
 (function () {
   var HAS_DOM = typeof document !== 'undefined';
   var KEY = 'sch-show-numbers';
@@ -169,7 +170,7 @@
 
   function go() {
     if (!document.querySelector('.idx-chart[data-ticker]')) return;
-    fetch('/data/indices.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(mount).catch(function () {});
+    (window.schIdx = window.schIdx || function () { return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { window.__schIdxP = null; throw e; })); })().then(mount).catch(function () {});
   }
   if (typeof module !== 'undefined' && module.exports) module.exports = { build: build, bakeBox: bakeBox, PR_CSS: css };
   if (!HAS_DOM) return;

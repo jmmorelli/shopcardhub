@@ -368,7 +368,15 @@
       document.body.classList.add('sch-cta-live');
       /* Night Crew Oct 4: step aside while the reader types (it sat on the checklist search box) and while the page's own
          "track any card" Vault tile is on screen (the pill repeated it and covered its arrow) */
-      var typing = false, tileOn = false, away = function () { el.classList.toggle('sch-cta-away', typing || tileOn); };
+      /* Night Crew Oct 6 (B47, desk Oct 5): on phones the buy dock (.bs-dock, js/buy-strip.js) owns the bottom edge; the pill
+         used to sit under it. The pill now steps aside while the dock is up and comes back when the dock goes. */
+      var typing = false, tileOn = false, dockOn = false, away = function () { el.classList.toggle('sch-cta-away', typing || tileOn || dockOn); };
+      var watchDock = function () {
+        var d = document.querySelector('.bs-dock'); if (!d || !('MutationObserver' in window)) return false;
+        var f = function () { dockOn = !d.classList.contains('bs-dock-off'); away(); };
+        new MutationObserver(f).observe(d, { attributes: true, attributeFilter: ['class'] }); f(); return true;
+      };
+      if (!watchDock()) window.addEventListener('load', watchDock, { once: true });
       var isField = function (t) { return t && t.matches && t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]),textarea,select'); };
       document.addEventListener('focusin', function (e) { if (isField(e.target)) { typing = true; away(); } });
       document.addEventListener('focusout', function (e) { if (isField(e.target)) { typing = false; away(); } });

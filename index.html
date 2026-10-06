@@ -367,10 +367,11 @@ body::before{
   .nav-search-results.show { display:block; }
   .nav-search-results a { display:block; padding:8px 16px; font-size:11px; font-weight:600; letter-spacing:.5px; color:var(--text-dim); font-family:var(--fb); text-transform:none; }
   .nav-search-results a:hover, .nav-search-results a.sel { color:var(--text-head); background:rgba(0,204,245,0.08); text-decoration:none; }
-  .nav-search-results .ns-h { padding:8px 16px 4px; font-family:var(--fm); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); border-top:1px solid var(--border2); margin-top:4px; }
-  .nav-search-results a small { display:block; font-family:var(--fm); font-size:10px; font-weight:400; color:var(--text-dim); letter-spacing:0; margin-top:2px; }
+  .nav-search-results .ns-h { padding:8px 16px 4px; font-family:var(--fm); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); border-top:1px solid var(--border2); margin-top:4px; }
+  .nav-search-results a small { display:block; font-family:var(--fm); font-size:11px; font-weight:400; color:var(--text-dim); letter-spacing:0; margin-top:2px; }
   .nav-search-results .ns-empty { padding:10px 16px; font-size:11px; color:var(--text-dim); font-family:var(--fm); }
-  .nav-search-results .ns-empty a { display:inline; padding:0; color:var(--accent); text-decoration:underline; }
+  /* Night Crew Oct 6 (B45b): miss links were 81×14 on phones, header 9 px, card sub-line 10 px */
+  .nav-search-results .ns-empty a { display:inline-flex; align-items:center; min-height:40px; padding:0; border:0; color:var(--accent); text-decoration:underline; }
   .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--accent); }
   /* dropdown + search panels: solid ground (page --bg2, fallback) so hero text never bleeds through */
   .nav-dropdown, .nav-search-results { background:var(--bg2, #0c1017); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
@@ -772,10 +773,15 @@ body::before{
     // is loaded on first focus (~90 KB raw, ~20 KB gzip), never on page load. Every token must match; dearest card first.
     var CARDS = null, cardsP = null;
     // empty state → affiliate click (Oct 4 2026, Coverage Scout report, build E): a query that finds no page and no card opens
-    // an EPN-tagged eBay search for the typed text in the Pokémon TCG singles category (customid search-miss), and GA4 gets a
+    // an EPN-tagged eBay search for the typed text (Pokémon TCG or Sports Trading Cards category, see missUrl; customid search-miss), and GA4 gets a
     // search_miss event once per query, 1.2 s after typing stops and only once the card list has loaded (no false misses).
     var EPN = 'mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001';
-    function missUrl(q){ var t = /pok[eé]mon/i.test(q) ? q : 'pokemon ' + q; return 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(t.replace(/\s+/g,' ').trim()).replace(/%20/g,'+').replace(/'/g,'%27').replace(/[!()*]/g, function(c){ return '%' + c.charCodeAt(0).toString(16).toUpperCase(); }) + '&_sacat=183454&LH_BIN=1&' + EPN + '&customid=search-miss'; }
+    // Night Crew Oct 6 (B45, desk ruling Oct 5): "pokemon " + the Pokémon TCG category (183454) only when the query names
+    // Pokémon (or a Pokémon name like Charizard) or the page is a Pokémon page (path, or title/description names Pokémon and no sports product); otherwise the
+    // plain query in Sports Trading Cards (212). "mahomes" no longer lands on a Pokémon search. Other params unchanged.
+    var PK_RE = /pok[eé]mon|pikachu|charizard|gengar|mewtwo|lugia|umbreon|eevee|darkrai|greninja|prismatic evolutions|ascended heroes|\btcg\b/i, SP_RE = /bowman|topps|panini|baseball|football|basketball|soccer|rookie/i;
+    function pkPage(){ var m = document.querySelector('meta[name="description"]'), t = document.title + ' ' + (m ? m.content : ''); return /pokemon/i.test(location.pathname) || (PK_RE.test(t) && !SP_RE.test(t)); }
+    function missUrl(q){ var named = /pok[eé]mon/i.test(q), pk = named || PK_RE.test(q) || pkPage(), t = pk && !named ? 'pokemon ' + q : q; return 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(t.replace(/\s+/g,' ').trim()).replace(/%20/g,'+').replace(/'/g,'%27').replace(/[!()*]/g, function(c){ return '%' + c.charCodeAt(0).toString(16).toUpperCase(); }) + '&_sacat=' + (pk ? '183454' : '212') + '&LH_BIN=1&' + EPN + '&customid=search-miss'; }
     function ga(ev, p){ try { if (typeof gtag === 'function') gtag('event', ev, Object.assign({ page: location.pathname }, p)); } catch (e) {} }
     var missT = null, missSent = {};
     function missEvent(q){ clearTimeout(missT); missT = setTimeout(function(){ var k = nk(q); if (!k || missSent[k] || nk(input.value) !== k) return; missSent[k] = 1; ga('search_miss', { query: q }); }, 1200); }
@@ -948,12 +954,22 @@ body::before{
         .door b{font-size:16px;color:var(--text-head,#fff);}
         .door small{font-size:12.5px;line-height:1.45;color:var(--text-dim,#8a97a5);}
         .door-k{font-family:var(--fm,monospace);font-size:10px;letter-spacing:2px;color:var(--accent,#00ccf5);}
-        /* phone: the rail's chip row directly above already offers these three doors, so the board goes first (Night Crew, Sep 29; Site Sweep U4) */
-        @media(max-width:760px){.door-row{display:none;}}
+        /* Night Crew Oct 6 (P27, absorbs P22/P11): on phones the rail's chip row repeated the hamburger, so the home drops it and
+           shows these three doors instead, one line each (no number, no kicker). The legend line goes too; the board's own
+           column heads and the first door carry it. Net fewer things above the fold. */
+        @media(max-width:820px){#rail.rail{display:none;}}
+        @media(max-width:760px){
+          .door-row{width:100%;grid-template-columns:1fr;gap:0;margin:8px 0 0;border-top:1px solid var(--border2,rgba(255,255,255,.12));}
+          .door{flex-direction:row;align-items:center;justify-content:space-between;min-height:40px;padding:6px 2px;border:0;border-bottom:1px solid var(--border2,rgba(255,255,255,.12));background:none;border-radius:0;}
+          .door b{font-size:15px;font-weight:600;}
+          .door b::after{content:" \203A";color:var(--accent,#00ccf5);}
+          .door small,.door-k{display:none;}
+          #set-indices .panel-h .sub{display:none;}
+        }
       </style>
 
       <div class="panel ib-panel" id="set-indices">
-        <div class="panel-h"><h2>Set Indices</h2><span class="sub">100 = the set's release month · log-scale charts · green = up, red = down · <a href="/indices">every set &amp; how it works »</a></span></div>
+        <div class="panel-h"><h2>Set Indices</h2><span class="sub">100 = the set's release month · charts show % moves · green = up, red = down · <a href="/indices">every set &amp; how it works »</a></span></div>
         <div class="tbl-wrap">
           <table class="ib" aria-label="Set indices: one row per set">
             <thead><tr><th>Set</th><th title="100 = the set's release month">Now</th><th>Week</th><th>Month</th><th title="level − 100: the change since the set's release month">Since release</th><th title="Every line uses the same minimum scale, so a small move looks small. Dashed line = 100. Faint = fewer than 3 marks.">Trend</th><th>Updated</th><th class="ib-buy-h">Sealed</th></tr></thead>
@@ -974,7 +990,7 @@ body::before{
 
       <div class="grid2 top">
         <div class="panel">
-          <div class="panel-h"><h2>Chart</h2><span class="sub">pick an index · Bangers board 30D composite is ask-basis, nightly · <span data-home="cadence-chart">indices Mondays, most also Thursdays</span></span></div>
+          <div class="panel-h"><h2>Chart</h2><span class="sub">pick an index · Bangers board = live asking prices, nightly · <span data-home="cadence-chart">set indices update Mondays, most also Thursdays</span></span></div>
           <div class="mkt">
             <div class="list" data-home="markets">
 <!-- HOME:markets:START -->

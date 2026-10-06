@@ -95,7 +95,7 @@ if (latest && history) {
   const cad = HOME.cadence(indices);
   const sub = (re, to, what) => { if (!re.test(html)) throw new Error(`index.html: cadence hook missing (${what})`); html = html.replace(re, to); };
   sub(/(<span data-home="cadence">)[^<]*(<\/span>)/, `$1${cad.clause}$2`, "tm-foot");
-  sub(/(<span data-home="cadence-chart">)[^<]*(<\/span>)/, `$1indices ${cad.short}$2`, "chart caption");
+  sub(/(<span data-home="cadence-chart">)[^<]*(<\/span>)/, `$1set indices update ${cad.short}$2`, "chart caption");  // Night Crew Oct 6 (U-F17): plain words
   sub(/(<span data-home="cadence-short">)[^<]*(<\/span>)/g, `$1${cad.short}$2`, "disclosure/footer");
   sub(/(<meta name="description" content="[^"]*?built from sold comps, )re-marked [^"]*?(, every card)/, `$1re-marked ${cad.short}$2`, "meta description");
   sub(/(<meta property="og:description" content="[^"]*?sold comps, )re-marked [^"]*?(, every card)/, `$1re-marked ${cad.short}$2`, "og:description");
