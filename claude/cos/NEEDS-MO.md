@@ -13,7 +13,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## Open — from the desk (2026-10-06, 14:00 run). Mo, these are the only things waiting on you
 
-- **One yes/no — the Tuesday email is on hold until you answer.** On Sep 29 one subscriber that isn't one of your known addresses unsubscribed (a gmail address starting **"vpt…"**, it reads like a test; full address in MailerLite → Subscribers → Unsubscribed). By the house rule, a real outside unsubscribe stops the next send until you decide, so the Oct 6 Tuesday Tape did not go out. **Was that address yours?** Yes → the Oct 13 Tape goes out as normal. No → it stays held and we talk about why someone left.
+- ~~One yes/no — the Tuesday email kill switch~~ **✅ closed Oct 6 — Mo: "the test email was not mine - you can remove it."** Treated as a test signup; it no longer holds the email. The Oct 13 Tuesday Tape goes out as normal. (The address is already unsubscribed, so it gets nothing; deleting the record in MailerLite is optional.)
 - **Bluesky, one time (~5 min, your account):** unchanged from yesterday — create the ShopCardHub account, Settings → Privacy and security → App passwords → paste one into a CoS chat.
 - **TCGplayer on Impact (#2) and TAG payment info + affiliate link (#4):** unchanged; neither has reached the project.
 - *FYI, low stakes:* @shopcardhub liked 4 card-account posts Tuesday between ~8:30 am and 1:00 pm (handles in the Project X Desk Watch note for Oct 6), before the Grok bots' 1:46 pm wake and on posts they didn't reply to. If those were yours, nothing to do. If not, say so and Grok is told likes are only for the post it answers.
