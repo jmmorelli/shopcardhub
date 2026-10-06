@@ -19717,6 +19717,31 @@
   },
   "releaseWindowDays": 30
  },
+ "BCS26": {
+  "ticker": "BCS26",
+  "name": "2026 Bowman Chrome Sapphire 1st Auto Index",
+  "set": "2026 Bowman Chrome Sapphire Edition",
+  "page": "/bowman-chrome-sapphire-2026-index",
+  "model": "sector",
+  "status": "pre",
+  "basis": "sold",
+  "basisLabel": "sold comps (SportsCardsPro ungraded) · sector model · twice-weekly re-mark — activates on the first verified sold reads",
+  "base": 100,
+  "inception": null,
+  "releaseDate": "2026-10-07",
+  "universeComplete": false,
+  "sources": [],
+  "board": false,
+  "pre": {
+   "opened": "2026-10-06",
+   "sealed": {
+    "product": "Hobby box (Topps.com / EQL, $599.99)",
+    "customid": "bcs26-box"
+   },
+   "universe": "33 Chrome Sapphire Prospect Autographs (CSPA) whose September Chrome auto is the player's 1st Bowman auto (data/sets/2026-bowman-chrome-sapphire-baseball.json); sub-index: the sapphire 1st Bowman Chrome base cards (BCP-151 to 250)",
+   "note": "Mo 2026-10-06 in chat: 'track this as an index and the cards per our bowman rules'. Off the home board (board:false) until live. Go-live: once SportsCardsPro lists the Chrome Sapphire autos (own console or [Sapphire] rows on the 2026 Bowman Chrome Prospect Autograph console — the nightly runner reads SCP, the desk cannot), add a BCS26 config in bowmanConfigs() keeping CSPA/sapphire rows of the 33, then build-sector-index.mjs --ticker BCS26 --init; base 100 = Oct 2026 (release month)."
+  }
+ },
  "BS99": {
   "ticker": "BS99",
   "name": "Base Set Index",
