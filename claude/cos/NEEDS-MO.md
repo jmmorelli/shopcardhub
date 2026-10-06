@@ -15,7 +15,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 - **Bluesky, one time (~5 min, your account):** create a ShopCardHub account on Bluesky, then Settings → Privacy and security → **App passwords** → add one and paste it into a CoS chat. That's an app password, not your login. After that the X Daily lane posts the same batch there on your same "go"; no extra work for you. Threads stays off (it would need you present each time).
 - **TCGplayer on Impact (#2) and TAG payment info + affiliate link (#4):** unchanged; neither has reached the project.
-- *FYI, low stakes:* the 15 follow-backs Oct 3–4 (+1 on Oct 5) are still unattributed. If they weren't you, say so and the bots are told follows are out.
+- ~~*FYI, low stakes:* the 15 follow-backs Oct 3–4 (+1 on Oct 5)~~ **✅ closed Oct 6 — Mo: "i followed people recently."** His own follows; nothing for the bots.
 - *Closed today:* the Oct 3 89-click day was your Grok site audit following our eBay links (you, ~14:00). Substack waits until the new Tuesday email format has run twice, so it's off this list for now.
 
 Checked against live state this run: no TCGplayer approval or TAG link in the repo; nothing else is physically yours.
@@ -38,7 +38,7 @@ Checked against live state this run: no TCGplayer approval or TAG link in the re
 
 - **Liñan/Muñoz:** done the same evening, before the Monday mark (`4b4b543`, levels unchanged).
 - **Pokémon calls, all approved — CoS sequencing:** the KB fix list (Pass 1) ships first at the Oct 7 weekly; G19 (keep the promos, retitle "Celebrations + 25th promos") and G22 (TAG line) ship in that same pass; G20 (RGB Mews to the chase strip, divisor-logged) right after it, once the 30th page copy is corrected; G21 Delta Reign shell by Oct 10 (base 100 on Nov 6); G23 Surging Sparks + Mega Evolution base set after Delta Reign, week of Oct 12. Nothing here waits on you.
-- Still unanswered, low stakes: the 15 X follow-backs, and whether you were clicking card links on Saturday (the 89-click day).
+- ~~Still unanswered, low stakes: the 15 X follow-backs~~ (✅ Mo's own, Oct 6), and whether you were clicking card links on Saturday (the 89-click day).
 
 ---
 
