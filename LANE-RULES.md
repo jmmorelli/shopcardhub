@@ -1026,6 +1026,15 @@ Player breaks (one prospect's slot in a 1–3 case break, winner takes every car
 - **The Bangers board** gets break links only under this rule — today its seats' autos are 2026 Bowman (May), whose window closed, so it gets none.
 - **Kill:** Dec 2 EPN read, `*-break-*` 0 actions on ≥ 20 clicks → links out, math stays (ledger #45).
 
+## R30 · Founder privacy (Mo, 2026-10-06)
+
+The owner is **"Mo"** — first name only, and only when a name is needed. No lane writes his surname, photo, city,
+employer, title, credentials or profession, or anything implying them, on any page, post, reply, Grok brief, email or
+public repo file. The site's origin story may be told without the job: a collector dad built set indices so his kids could
+see which cards in a set matter and what they are worth, instead of asking him to scan every card. "Built like a stock
+index" describes the method, never the man. Details and the word list: Project `claude/cos/founder-privacy.md`.
+X Desk Watch grades a slip as a FAIL the same day.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
