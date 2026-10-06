@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-10-05",
+  "generated": "2026-10-06",
   "generator": "bowman-bangers-tuesday-update (Tuesday 2026-09-29, STEP 3.5)",
   "agents": {
     "seeker": {
@@ -67,8 +67,8 @@
     "curator": {
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-09-29",
-      "nextRun": "2026-10-06",
+      "lastRun": "2026-10-06",
+      "nextRun": "2026-10-13",
       "actions": [
         {
           "ts": "2026-09-21",
@@ -117,6 +117,10 @@
         {
           "ts": "2026-09-29",
           "msg": "Friday release-window task disabled (Bowman Chrome street Sep 9 + 21 days). BCB26 not marked by this lane: the Sep 25 reset put it on the nightly sector tool."
+        },
+        {
+          "ts": "2026-10-06",
+          "msg": "Board re-marked on the 30-day sold mark (nightly sold catalog, read Oct 6): Fischer $155.00 (+4.2%), Holliday $105.00 (-2.6%), Gonzales $70.00 (-11.9%, bottom), Florentino $69.00 (-0.7%). Kim comes off the board (no sale since Aug 5, no 30-day mark; the CoS kim-gate ruling applied) with a departures row; Aloy takes #5 at $57.00 on 19 sales, the highest mark of any unseated card (Jump $50.00 is a 90-day median on 1 sale in 30 days, Arquette $41.00 on 5). Seat choice differs from the ruling's named Arquette: filed awaiting-cos."
         }
       ],
       "log": [
@@ -193,8 +197,8 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-10-05",
-      "nextRun": "2026-10-12",
+      "lastRun": "2026-10-06",
+      "nextRun": "2026-10-13",
       "actions": [
         {
           "ts": "2026-09-22",
@@ -243,6 +247,10 @@
         {
           "ts": "2026-10-05",
           "msg": "Prompt drift filed: this task's prompt contradicts LANE-RULES in 6 named places (prompt-drift-2026-10-05)."
+        },
+        {
+          "ts": "2026-10-06",
+          "msg": "Vendor feed rebuilt after the re-mark: data/x-board.json asOf 2026-10-06 (5 seats, callout agrees with seats) and og/x/board-latest.png regenerated and read before shipping. Ledger reads rolled locally (data/calls.json, not staged): fischer-2 $155.00 (+5.6% vs $146.80), gonzales-pass $70.00 (entry 90.00), florentino $69.00 (-13.0% vs $79.32, trending), kim-wait $130.00 (90-day median). No FINAL rows touched, projections immutable."
         }
       ],
       "log": [
@@ -2756,6 +2764,39 @@
       "severity": "NOTE",
       "title": "iw-2026-10-01-2 ('All N cards ... priced') now also covers TU19 175/196, SSP24 249/252, MEG25 185/188, NR1E 65/66, NDC1E 74/75.",
       "decision": "DESK 2026-10-05: page list on the queued Oct 7 item extended (STATE OPEN ITEMS); the generator fix covers them."
+    },
+    {
+      "id": "aloy-seat-2026-10-06",
+      "status": "awaiting-cos",
+      "date": "2026-10-06",
+      "area": "bangers",
+      "by": "tuesday-board",
+      "severity": "MEDIUM",
+      "title": "Kim demoted as ruled, but #5 went to Aloy ($57.00, 19 sales) not Arquette: the ruling named Arquette at $64.36, a Sep 15 figure; on Oct 6 his 30-day mark is $41.00 on 5 sales.",
+      "decision": null,
+      "ask": "Confirm Aloy at #5 (the page's own rule: highest sold mark, a sale inside 30 days), or override. Watch tier now: Houston $29.38, Jump $50.00 (90-day median, 1 sale in 30 days), Arquette $41.00, Pierce $17.45, Kim (no mark). Aloy shows WATCH, never carried a published call, and has no calls.json row."
+    },
+    {
+      "id": "low-last-prints-2026-10-06",
+      "status": "awaiting-cos",
+      "date": "2026-10-06",
+      "area": "bangers",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "Three board seats print a last sale more than 45% under their 30-day mark (Holliday $48.17 Oct 1 vs $105.00; Florentino $31.38 Oct 2 vs $69.00; Aloy $29.78 Sep 30 vs $57.00) while Fischer's last is 31% over.",
+      "decision": null,
+      "ask": "Possible mis-attributed rows (a lot, a different parallel or a graded copy sorted into the Ungraded tab). Marks are medians and held. The page prints each last sale with its date and says it is one print. Worth a look in the nightly sold-marks parse; the lane cannot read SCP from the sandbox."
+    },
+    {
+      "id": "carried-oct6-tuesday",
+      "status": "awaiting-cos",
+      "date": "2026-10-06",
+      "area": "bangers",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "Not done this run (sandbox cannot reach SportsCardsPro, which needs Chrome): Scouting Grades re-grade and ccx-2026-09-24-3 seat-table bake; PSA 10 figures carried as dated sales, none re-read.",
+      "decision": null,
+      "ask": "Re-grade needs a Chrome SCP pass; Oct 13 lane or a desk run. Grades section still stamped Sep 24 and lists Kim and Aloy as before."
     }
   ],
   "scoreboard": {
