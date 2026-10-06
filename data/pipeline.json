@@ -251,6 +251,10 @@
         {
           "ts": "2026-10-06",
           "msg": "Vendor feed rebuilt after the re-mark: data/x-board.json asOf 2026-10-06 (5 seats, callout agrees with seats) and og/x/board-latest.png regenerated and read before shipping. Ledger reads rolled locally (data/calls.json, not staged): fischer-2 $155.00 (+5.6% vs $146.80), gonzales-pass $70.00 (entry 90.00), florentino $69.00 (-13.0% vs $79.32, trending), kim-wait $130.00 (90-day median). No FINAL rows touched, projections immutable."
+        },
+        {
+          "ts": "2026-10-06",
+          "msg": "Weekly digest NOT sent and NOT staged. Kill switch tripped: vpttestper@gmail.com (non-owner address, looks like a test) unsubscribed Sep 29 21:00 UTC, after the Sep 29 send; four shopcardhub+ test addresses unsubscribed the same evening (owner plus-addresses, not counted). Rogue-send check clean: no campaign since Digest 2026-09-29 (delivered 4, opens 3, clicks 0, unsub 0, bounces 0, spam 0). Active subscribers: 3 (+2 unconfirmed). A tool-permission denial also blocked the digest build this run."
         }
       ],
       "log": [
@@ -2797,6 +2801,17 @@
       "title": "Not done this run (sandbox cannot reach SportsCardsPro, which needs Chrome): Scouting Grades re-grade and ccx-2026-09-24-3 seat-table bake; PSA 10 figures carried as dated sales, none re-read.",
       "decision": null,
       "ask": "Re-grade needs a Chrome SCP pass; Oct 13 lane or a desk run. Grades section still stamped Sep 24 and lists Kim and Aloy as before."
+    },
+    {
+      "id": "digest-killswitch-2026-10-06",
+      "status": "awaiting-mo",
+      "date": "2026-10-06",
+      "area": "digest",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "Oct 6 digest held by the kill switch: vpttestper@gmail.com unsubscribed on Sep 29 after the send.",
+      "decision": null,
+      "ask": "Mo: is vpttestper@gmail.com one of yours (a test)? If yes, say so and the Oct 13 lane (or the CoS) can send; if no, it is a real unsubscribe and the kill-switch rule stands. The Oct 6 tape content (Monday close, movers, chase cards, Bangers) was not built because the build step was permission-denied; the Oct 6 Tape is skipped unless the CoS commissions it."
     }
   ],
   "scoreboard": {
@@ -4032,6 +4047,16 @@
           "by": "CoS · Growth League daily (05:56, cloud + Mac deploy key, unattended): A /panini-donruss-football-2026 (Oct 28 reported) + Cosmic Chrome Baseball dated Nov 4; B /old-pokemon-cards-worth + charizard-ex-worth on the release-month base; C /best-pokemon-set-to-start-collecting; release rows (Donruss, Obsidian, Pro Debut pre-order, McDonald's Happy Meal reported, Chrome Update to Dec, Flagship Basketball one Oct 22 row); score.mjs skips non-league manifests; integrate.mjs carries release window",
           "gates": "audit-prices FAIL 0 / WARN 73 · audit-site FAIL 0 / WARN 5 (167) · audit-terminal --feed 0/2 (+1 = feed day Oct 4, Monday nightly publish late; prices 73 = main before this run)",
           "liveVerified": "~90 s after push: 4 URLs 200 with BUYSTRIP:START + sch-signup; Cosmic page reads Nov 4; IndexNow 7 URLs → 200"
+        },
+        {
+          "date": "2026-10-06",
+          "commits": [
+            "0185e2a"
+          ],
+          "by": "tuesday-board (4.8)",
+          "gates": "audit-prices FAIL 0 / WARN 73 · audit-site FAIL 0 / WARN 5 (167) · audit-terminal FAIL 0 / WARN 1 (feed unavailable in sandbox) — all at baseline 73/5/1; first-bowman --apply run first to clear Kim's stray board:true on the Sapphire set file",
+          "liveVerified": "~2 min after push: /bowman-bangers hero stamp 'Updated Oct 6, 2026'; data/x-board.json 200, asOf 2026-10-06; og/x/board-latest.png 200, 94362 bytes (matches the committed file)",
+          "note": "Board re-mark + Kim off / Aloy #5. data/calls.json reads rolled locally and NOT staged (fischer-2 $155.00, gonzales-pass $70.00, florentino $69.00, kim-wait $130.00; the CoS pushes them). Digest NOT sent."
         }
       ]
     },
