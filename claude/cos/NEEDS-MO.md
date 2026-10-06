@@ -11,7 +11,18 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## Open — from the desk (2026-10-05, 14:00 run). Mo, these are the only things waiting on you
+## Open — from the desk (2026-10-06, 14:00 run). Mo, these are the only things waiting on you
+
+- **One yes/no — the Tuesday email is on hold until you answer.** On Sep 29 one subscriber that isn't one of your known addresses unsubscribed (a gmail address starting **"vpt…"**, it reads like a test; full address in MailerLite → Subscribers → Unsubscribed). By the house rule, a real outside unsubscribe stops the next send until you decide, so the Oct 6 Tuesday Tape did not go out. **Was that address yours?** Yes → the Oct 13 Tape goes out as normal. No → it stays held and we talk about why someone left.
+- **Bluesky, one time (~5 min, your account):** unchanged from yesterday — create the ShopCardHub account, Settings → Privacy and security → App passwords → paste one into a CoS chat.
+- **TCGplayer on Impact (#2) and TAG payment info + affiliate link (#4):** unchanged; neither has reached the project.
+- *FYI, low stakes:* @shopcardhub liked 4 card-account posts Tuesday between ~8:30 am and 1:00 pm (handles in the Project X Desk Watch note for Oct 6), before the Grok bots' 1:46 pm wake and on posts they didn't reply to. If those were yours, nothing to do. If not, say so and Grok is told likes are only for the post it answers.
+
+Checked against live state this run: no TCGplayer or TAG affiliate link in the repo; the Monday price job that failed (cancelled at GitHub's 6-hour limit) is ours to fix, not yours.
+
+---
+
+## Superseded by the Oct 6 block above — from the desk (2026-10-05, 14:00 run)
 
 - **Bluesky, one time (~5 min, your account):** create a ShopCardHub account on Bluesky, then Settings → Privacy and security → **App passwords** → add one and paste it into a CoS chat. That's an app password, not your login. After that the X Daily lane posts the same batch there on your same "go"; no extra work for you. Threads stays off (it would need you present each time).
 - **TCGplayer on Impact (#2) and TAG payment info + affiliate link (#4):** unchanged; neither has reached the project.

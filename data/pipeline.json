@@ -254,7 +254,7 @@
         },
         {
           "ts": "2026-10-06",
-          "msg": "Weekly digest NOT sent and NOT staged. Kill switch tripped: vpttestper@gmail.com (non-owner address, looks like a test) unsubscribed Sep 29 21:00 UTC, after the Sep 29 send; four shopcardhub+ test addresses unsubscribed the same evening (owner plus-addresses, not counted). Rogue-send check clean: no campaign since Digest 2026-09-29 (delivered 4, opens 3, clicks 0, unsub 0, bounces 0, spam 0). Active subscribers: 3 (+2 unconfirmed). A tool-permission denial also blocked the digest build this run."
+          "msg": "Weekly digest NOT sent and NOT staged. Kill switch tripped: a non-owner gmail address (vpt…, in MailerLite) (non-owner address, looks like a test) unsubscribed Sep 29 21:00 UTC, after the Sep 29 send; four shopcardhub+ test addresses unsubscribed the same evening (owner plus-addresses, not counted). Rogue-send check clean: no campaign since Digest 2026-09-29 (delivered 4, opens 3, clicks 0, unsub 0, bounces 0, spam 0). Active subscribers: 3 (+2 unconfirmed). A tool-permission denial also blocked the digest build this run."
         }
       ],
       "log": [
@@ -2712,7 +2712,7 @@
       "id": "monday-nightly-2026-10-05",
       "status": "ruled",
       "title": "MED (confirm, do not assume): the Monday nightly price Action had not published at 17:22Z / 10:22 PT - the live /feed/prices-latest.json still serves day 2026-10-04 and there is no 'feed: nightly 2026-10-05' commit on main. Monday is the long run (the graded card ladder has a 50-minute timeout and Sep 28's Monday feed landed 17:28Z, the latest of any recent day), so it may simply have been in flight at run time and this is NOT filed as a break. What it would cost if it did fail: the Mon/Thu marks for the 31 sector tickers, the Monday graded ladder, the home re-bake and the badge redraw all ride that job, and the 08:30 PT site-gates feed-freshness check FAILs when the served feed is older than yesterday. ASK: the desk confirms the run's outcome in the Actions log; if it failed, the 31 sector tickers are a mark behind and the ladder is a week behind.",
-      "decision": "DESK 2026-10-05 ~14:30 PT: CONFIRMED NOT FAILED, LATE. GitHub queued the 08:15Z cron until 17:07Z; run 37346124426 is still in step 10 'Publish the public feed' (started 17:26Z) - Monday is the long run (31 sector marks on ~3,550 cards at ~2.3 s each + the 50-min ladder). Root risk filed in STATE OPEN ITEMS: step 10 has no step timeout and build-sector-index fetch() has no AbortSignal; a hung read would sit until the 6 h job limit (~23:08Z) and publish nothing.",
+      "decision": "DESK 2026-10-05 ~14:30 PT: CONFIRMED NOT FAILED, LATE. GitHub queued the 08:15Z cron until 17:07Z; run 37346124426 is still in step 10 'Publish the public feed' (started 17:26Z) - Monday is the long run (31 sector marks on ~3,550 cards at ~2.3 s each + the 50-min ladder). Root risk filed in STATE OPEN ITEMS: step 10 has no step timeout and build-sector-index fetch() has no AbortSignal; a hung read would sit until the 6 h job limit (~23:08Z) and publish nothing. || SUPERSEDED by the Oct 6 desk: run 37346124426 ended CANCELLED at 23:08:44Z (6 h limit) — nothing published; see iw-2026-10-06-1.",
       "decidedBy": "cos-desk",
       "resolvedOn": "2026-10-05"
     },
@@ -2771,35 +2771,35 @@
     },
     {
       "id": "aloy-seat-2026-10-06",
-      "status": "awaiting-cos",
+      "status": "ruled",
       "date": "2026-10-06",
       "area": "bangers",
       "by": "tuesday-board",
       "severity": "MEDIUM",
       "title": "Kim demoted as ruled, but #5 went to Aloy ($57.00, 19 sales) not Arquette: the ruling named Arquette at $64.36, a Sep 15 figure; on Oct 6 his 30-day mark is $41.00 on 5 sales.",
-      "decision": null,
+      "decision": "DESK 2026-10-06: CONFIRMED Aloy at #5 — the page's own rule (highest sold mark with a sale inside 30 days) outranks a ruling that quoted Arquette's Sep 15 $64.36; on Oct 6 Arquette's 30-day mark is $41.00 on 5 sales. Aloy carries no call and no calls.json row (projections untouched).",
       "ask": "Confirm Aloy at #5 (the page's own rule: highest sold mark, a sale inside 30 days), or override. Watch tier now: Houston $29.38, Jump $50.00 (90-day median, 1 sale in 30 days), Arquette $41.00, Pierce $17.45, Kim (no mark). Aloy shows WATCH, never carried a published call, and has no calls.json row."
     },
     {
       "id": "low-last-prints-2026-10-06",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-10-06",
       "area": "bangers",
       "by": "tuesday-board",
       "severity": "LOW",
       "title": "Three board seats print a last sale more than 45% under their 30-day mark (Holliday $48.17 Oct 1 vs $105.00; Florentino $31.38 Oct 2 vs $69.00; Aloy $29.78 Sep 30 vs $57.00) while Fischer's last is 31% over.",
-      "decision": null,
+      "decision": "DESK 2026-10-06: ACCEPTED as a parse check, QUEUED Oct 7 weekly (Index Keeper): read the three last-sale rows (Holliday Oct 1, Florentino Oct 2, Aloy Sep 30) in the nightly sold-marks parse for lot/parallel/graded mis-sorts. Marks are medians and held; the page labels each last sale as one dated print. No page change today.",
       "ask": "Possible mis-attributed rows (a lot, a different parallel or a graded copy sorted into the Ungraded tab). Marks are medians and held. The page prints each last sale with its date and says it is one print. Worth a look in the nightly sold-marks parse; the lane cannot read SCP from the sandbox."
     },
     {
       "id": "carried-oct6-tuesday",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-10-06",
       "area": "bangers",
       "by": "tuesday-board",
       "severity": "LOW",
       "title": "Not done this run (sandbox cannot reach SportsCardsPro, which needs Chrome): Scouting Grades re-grade and ccx-2026-09-24-3 seat-table bake; PSA 10 figures carried as dated sales, none re-read.",
-      "decision": null,
+      "decision": "DESK 2026-10-06: QUEUED — Scouting Grades re-grade + ccx-2026-09-24-3 seat-table bake need a Chrome SCP pass: next attended CoS session with Chrome, else the Oct 13 Tuesday lane. The calls.json reads the lane rolled locally (fischer-2 $155.00, gonzales-pass $70.00, florentino $69.00, kim-wait $130.00) were never staged and are not in this clone — the Oct 13 lane writes them (no row finalizes before Oct 13).",
       "ask": "Re-grade needs a Chrome SCP pass; Oct 13 lane or a desk run. Grades section still stamped Sep 24 and lists Kim and Aloy as before."
     },
     {
@@ -2809,9 +2809,69 @@
       "area": "digest",
       "by": "tuesday-board",
       "severity": "LOW",
-      "title": "Oct 6 digest held by the kill switch: vpttestper@gmail.com unsubscribed on Sep 29 after the send.",
-      "decision": null,
-      "ask": "Mo: is vpttestper@gmail.com one of yours (a test)? If yes, say so and the Oct 13 lane (or the CoS) can send; if no, it is a real unsubscribe and the kill-switch rule stands. The Oct 6 tape content (Monday close, movers, chase cards, Bangers) was not built because the build step was permission-denied; the Oct 6 Tape is skipped unless the CoS commissions it."
+      "title": "Oct 6 digest held by the kill switch: a non-owner gmail address (vpt…, in MailerLite) unsubscribed on Sep 29 after the send.",
+      "decision": "DESK 2026-10-06: kept awaiting-mo (the kill switch is Mo's call by the lane's own rule) — on NEEDS-MO as one yes/no. Subscriber address redacted from this public file. The Oct 6 Tape is not commissioned: no send without Mo's answer.",
+      "ask": "Mo: is a non-owner gmail address (vpt…, in MailerLite) one of yours (a test)? If yes, say so and the Oct 13 lane (or the CoS) can send; if no, it is a real unsubscribe and the kill-switch rule stands. The Oct 6 tape content (Monday close, movers, chase cards, Bangers) was not built because the build step was permission-denied; the Oct 6 Tape is skipped unless the CoS commissions it."
+    },
+    {
+      "id": "iw-2026-10-06-1",
+      "status": "queued",
+      "date": "2026-10-06",
+      "area": "pipeline",
+      "by": "integrity-watch",
+      "severity": "HIGH",
+      "title": "HIGH: the Monday Oct 5 nightly published nothing to main. 31 sector tickers (24 Mon/Thu + 7 Oct 4 inceptions) missed the Monday mark, /feed served day 2026-10-04 until the Oct 6 nightly, / was not re-baked, the Monday graded ladder did not land.",
+      "decision": "DESK 2026-10-06: ACCEPTED, VERIFIED — Actions run 37346124426 (price-snapshot) ended conclusion CANCELLED at 23:08:44Z Oct 5 (6 h limit); the monday-nightly-2026-10-05 ruling is superseded. The Oct 6 nightly published (860f2c5, feed day 2026-10-06) but did not re-mark the 31 tickers (--if-mark-day). (a) marks + Monday ladder out of the push-retry loop with timeout-minutes and (b) AbortSignal.timeout on build-sector-index.mjs:323 QUEUED Oct 7 weekly as build-order #1b (right after Phase 2) — must ship before the Mon Oct 12 run. (c) DECLINED: no off-cadence --mark; the next mark is Thu Oct 8 and pages show their honest 'mark · Oct 1' stamp."
+    },
+    {
+      "id": "iw-2026-10-06-2",
+      "status": "queued",
+      "date": "2026-10-06",
+      "area": "pricing-integrity",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "MED: R18 breach — graded figures as '~$' and ranges on /harry-kane-cards (PSA 10 ~$1,439), /kylian-mbappe-rookie-cards (~$400–$500, ~$800–$900, ~$494 30-day average) and /roman-anthony-rookie-cards (~$120 'Aug 12 read'); audit-prices check 10 passes all three.",
+      "decision": "DESK 2026-10-06: ACCEPTED. Anthony's cell APPLIED as 'No verified sale' (53ea5ea). Kane + Mbappé cells and the check-10 tightening (sale-shape date, TAG in GRADED_FIG, WARN on '~$'/range after a grade) QUEUED Oct 7 weekly with the lebron-james-cards iw-2026-09-21-1 SCP pull (same Chrome SCP work): each cell becomes one dated sale, a median of 3+, or 'No verified sale'."
+    },
+    {
+      "id": "iw-2026-10-06-3",
+      "status": "queued",
+      "date": "2026-10-06",
+      "area": "freshness",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "LOW: /roman-anthony-rookie-cards past its TTL (Sep 14), 'Chrome Sapphire drops Aug 26' in the future tense, undated '~+51% recent', two stamps.",
+      "decision": "DESK 2026-10-06: PART APPLIED 53ea5ea (Aug 26 now past tense). Dated SCP re-read, the undated +51% (6 places) and the one-stamp fix → Oct 7 weekly with iw-2026-10-06-2."
+    },
+    {
+      "id": "iw-2026-10-06-4",
+      "status": "queued",
+      "date": "2026-10-06",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "LOW: Collector's Desk pages print '#N of <whole set> by weight' (denominator counts unranked cards) and the header/data-prices-updated take the newest stamp while most cells are Oct 1 / Sep 30.",
+      "decision": "DESK 2026-10-06: ACCEPTED, QUEUED Oct 7 weekly (generator, six pages): nCards = ranked cards; header 'Sold marks <oldest> – <newest>'; data-prices-updated = oldest stamp; regenerate all six desks."
+    },
+    {
+      "id": "iw-2026-10-06-5",
+      "status": "applied",
+      "date": "2026-10-06",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "LOW: /best-pikachu-cards 'a $3 card that becomes a four-figure slab in a 10' (own ladder: PSA 10 $559) and 'the biggest on this site' (Celebrations #5 205.9× beats vintage 194.0×).",
+      "decision": "DESK 2026-10-06: APPLIED 53ea5ea — 'three-figure slab in a 10 (four figures in 1st Edition)'; 'among the biggest on this site'. Regenerated, live-verified."
+    },
+    {
+      "id": "iw-2026-10-06-note-1",
+      "status": "ruled",
+      "date": "2026-10-06",
+      "area": "instruments",
+      "by": "integrity-watch",
+      "severity": "NOTE",
+      "title": "NOTE: ga4-latest cleanSessions7 prints high (bot rule misses Singapore); no lane reads it as the R25 signal until the ga4-snapshot.mjs fix.",
+      "decision": "DESK 2026-10-06: NOTED — the Oct 6 snapshot prints clean 336 / botShare 4.27% (Singapore 179 sessions at 3.9 s slips the < 2 s rule again); corrected clean ≈ 155. Fix stays queued Oct 7 weekly."
     }
   ],
   "scoreboard": {
@@ -4057,6 +4117,16 @@
           "gates": "audit-prices FAIL 0 / WARN 73 · audit-site FAIL 0 / WARN 5 (167) · audit-terminal FAIL 0 / WARN 1 (feed unavailable in sandbox) — all at baseline 73/5/1; first-bowman --apply run first to clear Kim's stray board:true on the Sapphire set file",
           "liveVerified": "~2 min after push: /bowman-bangers hero stamp 'Updated Oct 6, 2026'; data/x-board.json 200, asOf 2026-10-06; og/x/board-latest.png 200, 94362 bytes (matches the committed file)",
           "note": "Board re-mark + Kim off / Aloy #5. data/calls.json reads rolled locally and NOT staged (fischer-2 $155.00, gonzales-pass $70.00, florentino $69.00, kim-wait $130.00; the CoS pushes them). Digest NOT sent."
+        },
+        {
+          "date": "2026-10-06",
+          "commits": [
+            "53ea5ea"
+          ],
+          "by": "CoS desk (14:00 run, Mac deploy key)",
+          "gates": "audit-prices FAIL 0 / WARN 72 (baseline 73; -1 = the Anthony graded cell) · audit-site FAIL 0 / WARN 5 (167) · audit-terminal FAIL 0 / WARN 1 (--feed data/feed)",
+          "liveVerified": "~90 s after push: /best-pikachu-cards serves 'three-figure slab in a 10 (four figures in 1st Edition)' + 'among the biggest'; /roman-anthony-rookie-cards serves 'No verified sale' + 'Chrome Sapphire released Aug 26', no '~$120'",
+          "note": "iw-2026-10-06-5 + iw-2026-10-06-2/-3 (Anthony part). Deploys. Docs commit follows (STATE, NEEDS-MO, LEDGER #57, these rulings, League BRIEF preload line); does not deploy."
         }
       ]
     },

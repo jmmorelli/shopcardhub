@@ -158,3 +158,8 @@ quote it from `history`, say "100 = <Mon YYYY> (release)" or the page's own base
 at 100.00 on Aug 24" or "since inception" for a Pokémon ticker. **Improve runs, Oct 1 onward:** the ten Pokémon
 league pages carrying a `data-rebase-note` paragraph quote old-base levels; rewrite their index claims on the new
 base (titles and H1s included where they carry a level), then delete the note. Moves between marks are unchanged.
+
+**Font preloads (desk, Oct 6, from Night Crew log Oct 5 proposal 5):** every new league page carries
+`<link rel="preload" … barlow-condensed-900>` in `<head>`, plus `barlow-700` when the hero sub uses `<strong>`.
+The three Oct 5 pages shipped without it and the 1440 h1 reflow cost CLS 0.05–0.06 until the crew patched it.
+Copy the `<head>` preload lines from any page the crew fixed on Oct 6 (e.g. `/old-pokemon-cards-worth`).
