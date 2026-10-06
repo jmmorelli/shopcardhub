@@ -40,22 +40,11 @@
       "family": "sports",
       "sport": "NBA",
       "label": "2026-27 Topps Flagship Basketball",
-      "note": "hobby 20×12, 1 auto or relic · jumbo 10×28, 1 auto + 1 relic · mega · blaster · hanger — distributor date; Topps has not published a street date",
+      "note": "hobby 20×12, 1 auto or relic · jumbo 10×28 · mega · blaster · hanger — distributor date; Topps' calendar shows the Oct 6 pre-order only",
       "status": "reported",
       "href": "/topps-flagship-basketball-2026-27",
       "q": "2026-27 Topps Basketball hobby box",
-      "source": "https://www.steelcitycollectibles.com/i/2026-27-topps-basketball-hobby-box (read 2026-10-04: 'RELEASES 10/22/26 SUBJECT TO CHANGE', 'Release Date: 10/22/26'); https://www.steelcitycollectibles.com/product-release-calendar (read 2026-10-04: all seven 2026-27 Topps Basketball formats under OCTOBER 22, 2026). New row; the Oct 6 pre-order row stays."
-    },
-    {
-      "date": "2026-10-06",
-      "family": "sports",
-      "sport": "NBA",
-      "label": "2026-27 Topps Flagship Basketball",
-      "note": "pre-order, moved from Sep 22 (Topps delayed it Sep 21); hobby listed for Oct 22 by a distributor",
-      "status": "confirmed",
-      "href": "/topps-flagship-basketball-2026-27",
-      "q": "2026-27 Topps Basketball hobby box",
-      "source": "https://www.topps.com/release-calendar (re-read 2026-10-04: 'Tuesday, Oct 6 at 5:00 PM UTC 2026-27 Topps Flagship Basketball' · Pre-order); delay: https://www.soleretriever.com/news/articles/2026-27-topps-flagship-basketball-preorder-gets-new-date (Sep 22). Replaces the existing Oct 6 row: adds href and the note."
+      "source": "https://www.steelcitycollectibles.com/product-release-calendar (re-read 2026-10-06: all seven 2026-27 Topps Basketball formats under OCTOBER 22, 2026); https://www.steelcitycollectibles.com/i/2026-27-topps-basketball-hobby-box (read 2026-10-04: 'RELEASES 10/22/26 SUBJECT TO CHANGE'); https://www.topps.com/release-calendar (re-read 2026-10-06: 'Tuesday, Oct 6 at 5:00 PM UTC 2026-27 Topps Flagship Basketball' · Pre-order, no street date). ONE row only: replaces the Oct 6 pre-order row (same label)."
     }
   ],
   "searchExtra": {
@@ -65,5 +54,5 @@
   "warnsAdded": [
     "site-auditor sitemap-missing-page on topps-flagship-basketball-2026-27.html (expected until integration)"
   ],
-  "notes": "NEW PAGE Oct 4 2026 (league week 2, 2 of 5). Status 'reported' for Oct 22: only Steel City dates it; Topps' calendar has the Oct 6 pre-order only. A hero eBay CTA (customids -1, -2) sits above the fold so conversion-below-fold passes before the BUYSTRIP is baked. Calendar checks Oct 4 (no row changes proposed): Topps calendar still lists Bowman Chrome Sapphire Oct 7, A&G Oct 7, Midnight Football pre-order Oct 12, Update Series Oct 14, Chrome F1 Oct 15, Holiday Oct 21, Museum Nov 11; Steel City still shows UD Series 1 Hockey hobby Oct 7 (blaster and tin Oct 21) and Panini Select Basketball Oct 14; the 2026-11-15 'expected' Chrome Update Baseball row has no source field and Steel City shows it under 'NOVEMBER 2026 TBD'. Next: re-read this page after Oct 6 for the first dated presale asks; build 2026 Topps Chrome Update Baseball the day a dated line appears."
+  "notes": "NEW PAGE Oct 4 2026 (league week 2, 2 of 5). Status 'reported' for Oct 22: only Steel City dates it; Topps' calendar has the Oct 6 pre-order only. A hero eBay CTA (customids -1, -2) sits above the fold so conversion-below-fold passes before the BUYSTRIP is baked. Calendar checks Oct 4 (no row changes proposed): Topps calendar still lists Bowman Chrome Sapphire Oct 7, A&G Oct 7, Midnight Football pre-order Oct 12, Update Series Oct 14, Chrome F1 Oct 15, Holiday Oct 21, Museum Nov 11; Steel City still shows UD Series 1 Hockey hobby Oct 7 (blaster and tin Oct 21) and Panini Select Basketball Oct 14; the 2026-11-15 'expected' Chrome Update Baseball row has no source field and Steel City shows it under 'NOVEMBER 2026 TBD'. Next: re-read this page after Oct 6 for the first dated presale asks; build 2026 Topps Chrome Update Baseball the day a dated line appears. | Oct 6 2026 (agent A): releases[] cut to the one Oct 22 row. Both rows shared the label '2026-27 Topps Flagship Basketball', so integrate.mjs matched the Oct 22 row onto the Oct 6 item and then the Oct 6 row overwrote it back — data/releases.json ended up with only the Oct 6 pre-order row and the reported Oct 22 street date never reached /release-calendar. One row per label fixes it. Page re-read Oct 6 ~13:00 UTC: pre-order opens 17:00 UTC today, /api/comps still 0 listings, topps.com/pages/topps-basketball still 2025-26 — no page change."
 }

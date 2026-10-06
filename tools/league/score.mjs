@@ -35,6 +35,8 @@ if (args.includes("--sync")) {
     const m = JSON.parse(fs.readFileSync(path.join(MAN, f), "utf8"));
     if (!m.slug || !m.agent || !m.published) throw new Error(`${f}: slug, agent, published are required`);
     if (reg.pages.some((p) => p.slug === m.slug)) continue;
+    // Not a league agent (e.g. Gengar's Collector's Desk reuses manifests for integrate.mjs only) — never registered, scored or floored (CoS, 2026-10-06).
+    if (!reg.agents || !reg.agents[m.agent]) continue;
     reg.pages.push({ slug: m.slug, agent: m.agent, query: m.query || "", published: m.published, floorFrom: m.floorFrom || m.published, hub: m.hub || "/research", week: isoWeekOf(reg.opened, m.published), status: "live" });
     added++;
   }
@@ -65,7 +67,7 @@ if (args.includes("--check")) {
   for (const f of fs.existsSync(MAN) ? fs.readdirSync(MAN).filter((n) => n.endsWith(".json")) : []) {
     const m = JSON.parse(fs.readFileSync(path.join(MAN, f), "utf8"));
     if (!fs.existsSync(path.join(REPO, m.slug + ".html"))) bad.push(`manifest ${f}: no ${m.slug}.html`);
-    if (!reg.pages.some((p) => p.slug === m.slug)) bad.push(`manifest ${f}: not in data/league.json (run --sync)`);
+    if (reg.agents && reg.agents[m.agent] && !reg.pages.some((p) => p.slug === m.slug)) bad.push(`manifest ${f}: not in data/league.json (run --sync)`);
     const html = fs.existsSync(path.join(REPO, m.slug + ".html")) ? fs.readFileSync(path.join(REPO, m.slug + ".html"), "utf8") : "";
     if (html && !html.includes(`customid=${m.slug}`)) bad.push(`${m.slug}.html: no eBay link tagged customid=${m.slug}-… (the page's clicks would be unattributable)`);
   }

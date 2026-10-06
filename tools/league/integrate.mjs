@@ -59,7 +59,7 @@ const byPublished = [...manifests].sort((a, b) => String(a.published || "").loca
 for (const m of byPublished) for (const r of m.releases || []) {
   if (!r.date || !r.label) continue;
   const key = norm(r.label);
-  const row = { date: r.date, family: r.family, sport: r.sport, label: r.label, note: r.note || "", status: r.status || "reported", href: r.href || null, q: r.q || undefined, cat: r.cat ? String(r.cat) : undefined, source: r.source || undefined };
+  const row = { date: r.date, family: r.family, sport: r.sport, label: r.label, note: r.note || "", status: r.status || "reported", href: r.href || null, q: r.q || undefined, cat: r.cat ? String(r.cat) : undefined, source: r.source || undefined, window: r.window || undefined };
   Object.keys(row).forEach((k) => row[k] === undefined && delete row[k]);
   if (row.href && !fs.existsSync(path.join(REPO, row.href.replace(/^\//, "").replace(/#.*$/, "") + ".html"))) row.href = null;
   const i = rel.items.findIndex((x) => norm(x.label) === key || (norm(x.label).startsWith(key.slice(0, 28)) && x.date === r.date));
