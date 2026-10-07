@@ -13,7 +13,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## Open — from the CoS with Mo (2026-10-07, ~09:45–10:20 PT). Mo, these are the only things waiting on you
 
-- **One call, no sign-in: what the Grok bots are for now.** You stopped all their X activity this morning ("terrible … looked like bots"). The weekly usage is at 90% and resets ~Oct 9; nobody pays for more. Options: **(a)** Seeker-only — the weekday read-only DEMAND LIST feeds Growth League page topics, no X at all (CoS lean); **(b)** cancel the bots outright; **(c)** keep them paused and decide after the reset. Say a letter. Until then nothing posts, likes or follows from them, and X Desk Watch treats any Grok action after 08:40 PT today as a breach.
+- ~~One call, no sign-in: what the Grok bots are for now~~ **✅ RULED by Mo Oct 7 ~10:40 PT: "I lean A … You are in charge of them from now on to utilize them how you see fit."** Written as LANE-RULES R10 Am. 6 (read-only scouts, zero X actions, CoS owns them outright, no money ever). Nothing on the bots comes back to this list again except a billing prompt, which is answered no.
 - **Bluesky, one time (~5 min, your account):** unchanged — create the ShopCardHub account, Settings → Privacy and security → App passwords → paste one into a CoS chat.
 - **TCGplayer on Impact (#2) and TAG payment info + affiliate link (#4):** unchanged.
 
