@@ -342,7 +342,11 @@ const TITLE_BAD = /\b(lot|lots|bundle|x\s?\d+|\d+\s*(cards?|pcs?|pack)|set of|co
 function cfg() { const c = CONFIG[TICKER]; if (!c) { console.error(`no config for ticker ${TICKER}`); process.exit(2); } return c; }
 async function get(url) {
   for (let a = 1; a <= 3; a++) {
-    const r = await fetch(url, { headers: { "User-Agent": UA, Accept: "text/html" } });
+    // iw-2026-10-06-1 (weekly Oct 7): a hung PriceCharting read held the Oct 5 nightly until GitHub's 6 h cancel.
+    // 45 s per read; a timeout counts as a retryable failure like a 5xx.
+    let r;
+    try { r = await fetch(url, { headers: { "User-Agent": UA, Accept: "text/html" }, signal: AbortSignal.timeout(45000) }); }
+    catch (e) { if (a === 3) throw new Error("fetch failed/timed out: " + url); await sleep(5000 * a); continue; }
     if (r.status === 429 || r.status === 403 || r.status >= 500) { await sleep(5000 * a); continue; }
     if (!r.ok) throw new Error("HTTP " + r.status);
     return await r.text();
@@ -742,7 +746,7 @@ ${PR.PR_CSS}
 .sidx-tbl tr:last-child td{border-bottom:0}
 .sidx-tbl td.rk{color:var(--sidx);font-weight:700;width:28px;text-align:left}
 .sidx-tbl td.nm b{font-family:var(--fb,Barlow,sans-serif);font-weight:700;color:var(--sidx-th);font-size:13px}
-.sidx-tbl td.nm small{display:block;font-size:10.5px;color:var(--sidx-dim)}
+.sidx-tbl td.nm small{display:block;font-size:11px;color:var(--sidx-dim)}
 .sidx-tbl td.nm small .thin{color:var(--orange,#ff8c00)}
 .sidx-tbl td.dim{color:var(--sidx-dim)}
 .sidx-tbl td i{color:var(--sidx);font-style:normal}
@@ -774,7 +778,7 @@ ${PR.PR_CSS}
 .sidx-tbl td.act a.ebay:hover{filter:brightness(1.1)}
 .sidx-auc-slot{display:inline-block;vertical-align:middle;min-height:1px}
 .sidx-auc-slot a.auc{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-th);background:var(--sidx-bg2);border:1px solid var(--sidx);padding:5px 10px;border-radius:2px;text-decoration:none}
-.sidx-auc-slot a.auc small{font-family:var(--fm,ui-monospace,monospace);font-weight:400;letter-spacing:0;text-transform:none;color:var(--sidx-dim);margin-left:6px;font-size:10.5px}
+.sidx-auc-slot a.auc small{font-family:var(--fm,ui-monospace,monospace);font-weight:400;letter-spacing:0;text-transform:none;color:var(--sidx-dim);margin-left:6px;font-size:11px}
 .sidx-auc-slot a.auc:hover{background:var(--sidx);color:#000} .sidx-auc-slot a.auc:hover small{color:#000}
 .sidx-more{margin-top:8px}
 .sidx-more>summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;min-height:40px;font-family:var(--fd,'Barlow Condensed',sans-serif);font-weight:700;font-size:14px;letter-spacing:1.2px;text-transform:uppercase;color:var(--sidx);border:1px solid var(--sidx);border-radius:2px;padding:8px 18px;margin:6px 0 4px}
@@ -782,13 +786,13 @@ ${PR.PR_CSS}
 .sidx-more>summary:hover{background:var(--sidx);color:#000}
 .sidx-more .sm-close{display:none}.sidx-more[open] .sm-open{display:none}.sidx-more[open] .sm-close{display:inline}
 .sidx-sib{margin:10px 0 0;font-family:var(--fm,ui-monospace,monospace);font-size:11px;color:var(--sidx-dim)}.sidx-sib a{color:var(--sidx);font-weight:700;text-decoration:none;border-bottom:1px solid var(--sidx);margin:0 2px}
-.sidx-cap{font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--sidx-dim);margin:14px 0 6px}
+.sidx-cap{font-family:var(--fm,ui-monospace,monospace);font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--sidx-dim);margin:14px 0 6px}
 .sidx-more .sidx-tbl{margin-top:0}
 .sidx-note{font-size:11px;line-height:1.65;color:var(--sidx-dim);margin:14px 0 0}
 .sidx-note b{color:var(--text,#b8cdd4)} .sidx-note a{color:var(--sidx)}
 @media(max-width:900px){.sidx-stats{grid-template-columns:repeat(4,1fr)}.sidx-stats>div:nth-child(4){border-right:0}.sidx-stats>div:nth-child(-n+4){border-bottom:1px solid var(--sidx-bd)}}
 @media(max-width:760px){.sidx-mast{display:block;position:relative;padding-right:104px}.sidx-photo{position:absolute;right:0;top:0;width:96px}.sidx-photo .sch-cimg{width:90px!important;height:126px!important}.sidx-photo>[data-card-img]{width:90px;height:126px}.sidx-photo figcaption{display:none}.sidx-level{text-align:left;margin-top:12px}.sidx-level .lv{font-size:36px}.sidx-tbl th:nth-child(5),.sidx-tbl td:nth-child(5){display:none}.sidx-tbl td.act .act-w{grid-template-columns:32px 96px 92px}.sidx-tbl td.act a.ebay,.sidx-auc-slot a.auc{padding:5px 6px;font-size:10px;letter-spacing:.5px}.sidx-auc-slot a.auc small{display:none}}
-@media(max-width:760px){body .sidx-tbl td.act.g{text-align:center}body .sidx-tbl td.act .act-w.g{display:inline-flex;width:auto;justify-content:center}body .sidx-tbl td.act .glk a.ebay{flex:0 0 auto;min-width:0;height:36px;padding:0 10px;font-size:10.5px;letter-spacing:.5px}.glk-bar .glk-n{display:none}}
+@media(max-width:760px){body .sidx-tbl td.act.g{text-align:center}body .sidx-tbl td.act .act-w.g{display:inline-flex;width:auto;justify-content:center}body .sidx-tbl td.act .glk a.ebay{flex:0 0 auto;min-width:0;height:36px;padding:0 10px;font-size:11px;letter-spacing:.5px}.glk-bar .glk-n{display:none}}
 </style>`;
 
 function bake(x, c) {

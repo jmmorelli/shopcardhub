@@ -127,17 +127,24 @@ async function runReport(token, body) {
 // rule as organic-beside-blended.
 const BOT_MAX_AVG_SESSION_SEC = 2;   // a real visit is not under two seconds
 const BOT_MIN_SESSIONS = 10;         // below this it is noise, not a cluster worth subtracting
+// Second test (Oct 7 2026 weekly, iw-2026-10-06-note-1): Singapore ran 179–186 sessions a week at 3.8–4.3 s with ZERO
+// key events and slipped the 2 s test three snapshots running (clean printed ~336 vs ~155 true). A country with >= 30
+// sessions, no key event at all and an average under 10 s is a cluster, not readers. Still behavioural, still no names.
+const BOT2_MIN_SESSIONS = 30, BOT2_MAX_AVG_SESSION_SEC = 10;
+const isBot = (r) => r.averageSessionDuration != null && (
+  ((r.sessions || 0) >= BOT_MIN_SESSIONS && r.averageSessionDuration < BOT_MAX_AVG_SESSION_SEC) ||
+  ((r.sessions || 0) >= BOT2_MIN_SESSIONS && !(r.keyEvents > 0) && r.averageSessionDuration < BOT2_MAX_AVG_SESSION_SEC));
 
 function botFilter(rep) {
   const rows = rep.countries7.rows || [];
-  const suspects = rows.filter((r) => (r.sessions || 0) >= BOT_MIN_SESSIONS && r.averageSessionDuration != null && r.averageSessionDuration < BOT_MAX_AVG_SESSION_SEC);
+  const suspects = rows.filter(isBot);
   const totalSessions = rows.reduce((s, r) => s + (r.sessions || 0), 0);
   const botSessions = suspects.reduce((s, r) => s + (r.sessions || 0), 0);
   const botKeyEvents = suspects.reduce((s, r) => s + (r.keyEvents || 0), 0);
   const cleanSessions = totalSessions - botSessions;
   const cleanKeyEvents = rows.reduce((s, r) => s + (r.keyEvents || 0), 0) - botKeyEvents;
   return {
-    rule: `avg session < ${BOT_MAX_AVG_SESSION_SEC}s over >= ${BOT_MIN_SESSIONS} sessions, 7d, by country`,
+    rule: `avg session < ${BOT_MAX_AVG_SESSION_SEC}s over >= ${BOT_MIN_SESSIONS} sessions, OR 0 key events + avg < ${BOT2_MAX_AVG_SESSION_SEC}s over >= ${BOT2_MIN_SESSIONS} sessions; 7d, by country`,
     suspects: suspects.map((r) => ({ country: r.country, sessions: r.sessions, keyEvents: r.keyEvents || 0, avgSessionSec: +(r.averageSessionDuration || 0).toFixed(3) })),
     botSessions7: botSessions,
     botShare7: totalSessions ? +(botSessions / totalSessions * 100).toFixed(2) : null,

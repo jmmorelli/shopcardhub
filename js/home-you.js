@@ -73,7 +73,7 @@
     }
     var css = document.createElement('style');
     css.textContent = '.you-home{border-left:3px solid var(--gd,#f5c800)}.you-home .yh-row{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--bd,rgba(255,255,255,.08));font-family:var(--fm,ui-monospace,monospace);font-size:11.5px}' +
-      '.you-home .yh-k{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim,#7a969e);min-width:72px}' +
+      '.you-home .yh-k{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim,#7a969e);min-width:72px}' +
       '.you-home .yh-c{display:inline-flex;align-items:baseline;gap:7px;background:var(--p2,#111820);border:1px solid var(--bd,rgba(255,255,255,.1));border-radius:2px;padding:4px 9px;text-decoration:none;color:var(--tx,#b8cdd4);white-space:nowrap}.you-home .yh-c:hover{border-color:var(--gd,#f5c800)}.you-home .yh-c b{color:var(--th,#e4f0f4);font-weight:600}.you-home .yh-c i{font-style:normal;font-weight:700}.you-home .yh-c i.up{color:var(--gn,#00e07a)}.you-home .yh-c i.dn{color:var(--rd,#ff2e55)}.you-home .yh-c i.flat{color:var(--dim,#7a969e)}.you-home .yh-c small{color:var(--dim,#7a969e);font-size:10px}' +
       '.you-home .yh-more,.you-home .yh-note{color:var(--dim,#7a969e)}' +
       '@media(max-width:640px){.you-home .yh-row{padding:9px 10px;gap:6px 8px}.you-home .yh-c{white-space:normal}.you-home .yh-k{min-width:0;flex:1 1 100%}}';
@@ -81,7 +81,7 @@
     var el = document.createElement('div');
     el.className = 'panel you-home'; el.id = 'you-home';
     el.innerHTML = html;
-    host.parentNode.insertBefore(el, host.nextSibling);
+    host.parentNode.insertBefore(el, host); // Oct 7 weekly (UX R5): returning visitors see their block first, not 3.8 phone screens down
     stamp();
     if (window.gtag) gtag('event', 'home_you', { indices: chips.length, cards: mine.length, moved: moved.length });
   }
