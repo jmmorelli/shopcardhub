@@ -25,7 +25,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 ## Open — from X Desk Watch (2026-10-07, 13:00 run). One reply, best before 6:30 pm PT today
 
 - **Your pinned index thread (Oct 6) has two lines the site contradicts.** Post 3 says no card can be more than 25% of a basket, but the six chase indices have no cap, and today's 6:30 pm post says Mega Charizard X is 63% of Phantasmal Flames. Post 4 says every index starts at 100 in its release month, but the older sets (WOTC, Hidden Fates, Team Up) start at the first month the sold history covers. **Ask: reply under the thread with this (or say "go" in a CoS chat and it posts it with you present). Don't delete.**
-  > One fix to this thread: sets older than the sold history (the WOTC sets, Hidden Fates, Team Up) start at 100 in the first month it reliably covers, not release month. And as of today the 25% cap covers every index, the six chase sets included.
+  > One fix to this thread: sets older than the sold history (the WOTC sets, Hidden Fates, Team Up) start at 100 in the first month it reliably covers, not release month. And the 25% cap now covers every index, reset each quarter like an ETF rebalance.
   *(Text updated Oct 7 ~15:30 PT after the cap shipped: post 3 is now true; only post 4 needs the fix. Tonight's 6:30 pm PF25 post was pulled from the scheduler with Mo present.)*
   (278 characters. Details: Project `claude/cos/x-desk-watch-run-2026-10-07-1300.md`.)
 ---

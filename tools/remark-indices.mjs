@@ -34,11 +34,13 @@ const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const DRY = args.includes("--dry");
 // --bake (Sep 30 2026, the release-date rebase): re-bake every chase page from data/indices.json as it stands — no marks,
 // no history row, indices.json untouched. The strip, level, levelchg, stats, table and CARDS all follow the file.
-const BAKE = args.includes("--bake") || args.includes("--cap");   // --cap bakes like --bake after capping
-// --cap (Oct 7 2026, Mo: "it should only be 25% of the index"): apply the 25% single-card cap to every chase basket now as a
-// logged, level-neutral divisor adjustment (no marks, no history row), then re-bake the pages. From then on every weekly
-// re-mark re-applies the cap after pricing (level computed on the old weights, then weights + divisor reset, level unchanged).
-const CAPOP = args.includes("--cap");
+const BAKE = args.includes("--bake") || args.includes("--cap") || args.includes("--rebalance");   // both bake like --bake after capping
+// --rebalance (alias --cap; Oct 7 2026, Mo: "it should only be 25% of the index" + "the only time they can exceed the 25% cap
+// is if they run up before a quarterly index rebalance … this is what ETFs do"): reset every chase basket's weights to the
+// 25% single-card cap as a logged, level-neutral divisor adjustment (no marks, no history row), then re-bake the pages.
+// Run it at the QUARTERLY REBALANCE — the first Monday of Jan/Apr/Jul/Oct, after that Monday's re-mark (LANE-RULES cadence).
+// Weekly re-marks leave the weights alone, so a card that runs between rebalances can sit above 25% until the next one.
+const CAPOP = args.includes("--cap") || args.includes("--rebalance");
 const marksFile = opt("--marks", BAKE || CAPOP ? "/dev/null" : null);
 const DATE = opt("--date", new Date().toLocaleDateString("en-CA"));
 if (!marksFile) { console.error("usage: node tools/remark-indices.mjs --marks marks.txt [--date YYYY-MM-DD] [--dry]"); process.exit(2); }
@@ -85,7 +87,7 @@ function recap(ix, k, why) {
   const bv = bvOf(ix.basket);
   const bv1 = ix.basket.reduce((a, b) => a + b.price * b.w, 0);
   const after = +(before * (bv1 / bv0)).toFixed(6);   // level-neutral by construction (no rounding through the 2-dp level)
-  ix.cap = CAP; ix.capRule = "25% single-card cap, re-applied at every weekly mark (Mo, Oct 7 2026)";
+  ix.cap = CAP; ix.capRule = "25% single-card cap, reset at each quarterly rebalance (first Monday of Jan/Apr/Jul/Oct); weights drift with prices in between (Mo, Oct 7 2026)"; ix.reconstitution = { cadence: "quarterly rebalance, first Monday of Jan/Apr/Jul/Oct, after that Monday's re-mark; announced the Monday before", next: "2027-01-04" };
   if (Math.abs(after - before) > 1e-6) {
     ix.divisor = after;
     ix.divisorLog = ix.divisorLog || [];
@@ -101,7 +103,7 @@ for (const k of POKE) {
   const ix = idx[k]; const m = marks[k] || {};
   if (BAKE) {
     const h = ix.history, L = h[h.length - 1], P = h.length > 1 ? h[h.length - 2] : L;
-    if (CAPOP) recap(ix, k, "CAP (Mo 2026-10-07): 25% single-card cap applied; weights reset, level unchanged.");
+    if (CAPOP) recap(ix, k, DATE === "2026-10-07" ? "CAP (Mo 2026-10-07): 25% single-card cap applied; weights reset, level unchanged." : "quarterly rebalance: weights reset to the 25% single-card cap; level unchanged.");
     const bv = bvOf(ix.basket);
     summary[k] = { level: L.level, prevLevel: P.level, wow: (L.level / P.level - 1) * 100, bv, remarked: 0, n: ix.basket.length, universe: ix.universe.length, date: L.date };
     continue;
@@ -120,10 +122,6 @@ for (const k of POKE) {
   const wow = (level / prevRow.level - 1) * 100;
   if (ix.history.some((h) => h.date === DATE)) throw new Error(`${k}: history already has a ${DATE} row — refusing to double-mark.`);
   ix.history.push({ date: DATE, level, basketValue: bv, divisor: ix.divisor, priced: ix.basket.length, note: "weekly re-mark" });
-  if (ix.cap) {   // re-apply the cap on the new prices; level unchanged; the history row records the post-cap basket
-    bv = recap(ix, k, "weekly re-mark: 25% cap re-applied on the new marks; level unchanged.");
-    const row = ix.history[ix.history.length - 1]; row.basketValue = bv; row.divisor = ix.divisor; row.note = "weekly re-mark · cap re-applied";
-  }
   summary[k] = { level, prevLevel: prevRow.level, wow, bv, remarked, n: ix.basket.length, universe: ix.universe.length };
 }
 if (!BAKE && !CAPOP) idx.updated = DATE;
