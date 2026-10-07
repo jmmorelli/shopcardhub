@@ -7,8 +7,26 @@ reach. If something here no longer needs you, say so and it comes off.
 *(Housekeeping for the agents, not for Mo: this file lives in the repo beside `STATE.md`; that copy
 is canonical and the Project copy is a mirror written in the same run. Standing grants — Sep 4 "anything
 that needs Mo, I approve"; Sep 8 "I don't want to sign into anything"; Sep 16 "I'd prefer you guys just
-talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy. Oct 5 ~13:50: the Project copy was updated again from a CoS chat with no repo access; the Oct 5 desk mirrored it here, closed what §7 of `claude/cos/session-2026-10-05-predesk.md` settled, and wrote both copies. Oct 7 ~10:20: CoS chat with repo access wrote both copies in the same run.)*
+talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy. Oct 5 ~13:50: the Project copy was updated again from a CoS chat with no repo access; the Oct 5 desk mirrored it here, closed what §7 of `claude/cos/session-2026-10-05-predesk.md` settled, and wrote both copies. Oct 7 ~10:20: CoS chat with repo access wrote both copies in the same run. Oct 7 13:00: X Desk Watch added its block to the Project copy only; the Oct 7 desk mirrored it here and wrote both copies.)*
 
+---
+
+## Open — from the desk (2026-10-07, 14:00 run). Mo, these are the only things waiting on you
+
+- **Today, before 6:30 pm PT — one reply under your pinned index thread** (X Desk Watch block just below; pushed to your phone ~14:20 PT). Posts 3 and 4 say no card can be over 25% and every index starts at 100 in its release month; tonight's 6:30 pm post says one card is 63% of Phantasmal Flames. Reply with the text below, or say "go" in a CoS chat and it posts with you present. Don't delete. The site's own explainer (`/how-prices-work`) now states both rules with their scope.
+- **One "go" before Mon Oct 12 (no sign-in):** the snapshot-workflow fix from the weekly, unchanged.
+- **eBay Partner Network is still signed out** (checked in your Chrome ~14:35 PT: login page). This week's money read waits on a sign-in at partner.ebay.com.
+- **/track-record Greninja yes/no, Bluesky, TCGplayer (#2), TAG (#4):** unchanged.
+
+*Closed this run without you:* the Oct 6 likes FYI — the bots now take no X action at all (R10 Am. 6) and those four likes are gone from the Likes tab. Checked against live state: no TCGplayer or TAG affiliate link in the repo.
+
+---
+
+## Open — from X Desk Watch (2026-10-07, 13:00 run). One reply, best before 6:30 pm PT today
+
+- **Your pinned index thread (Oct 6) has two lines the site contradicts.** Post 3 says no card can be more than 25% of a basket, but the six chase indices have no cap, and today's 6:30 pm post says Mega Charizard X is 63% of Phantasmal Flames. Post 4 says every index starts at 100 in its release month, but the older sets (WOTC, Hidden Fates, Team Up) start at the first month the sold history covers. **Ask: reply under the thread with this (or say "go" in a CoS chat and it posts it with you present). Don't delete.**
+  > Two fixes to this thread. Sets older than the sold history (the WOTC sets, Hidden Fates, Team Up) start at 100 in the first month it reliably covers, not release month. And the 25% cap is for whole-set indices; the six chase indices have none, so one card can carry most of one.
+  (278 characters. Details: Project `claude/cos/x-desk-watch-run-2026-10-07-1300.md`.)
 ---
 
 ## Open — from the weekly (2026-10-07, ~12:40 PT). Mo, these are the only things waiting on you
@@ -33,7 +51,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 - ~~One yes/no — the Tuesday email kill switch~~ **✅ closed Oct 6 — Mo: "the test email was not mine - you can remove it."** Treated as a test signup; it no longer holds the email. The Oct 13 Tuesday Tape goes out as normal. (The address is already unsubscribed, so it gets nothing; deleting the record in MailerLite is optional.)
 - **Bluesky, one time (~5 min, your account):** unchanged from yesterday — create the ShopCardHub account, Settings → Privacy and security → App passwords → paste one into a CoS chat.
 - **TCGplayer on Impact (#2) and TAG payment info + affiliate link (#4):** unchanged; neither has reached the project.
-- *FYI, low stakes:* @shopcardhub liked 4 card-account posts Tuesday between ~8:30 am and 1:00 pm (handles in the Project X Desk Watch note for Oct 6), before the Grok bots' 1:46 pm wake and on posts they didn't reply to. If those were yours, nothing to do. If not, say so and Grok is told likes are only for the post it answers.
+- ~~*FYI, low stakes:* @shopcardhub liked 4 card-account posts Tuesday between ~8:30 am and 1:00 pm (handles in the Project X Desk Watch note for Oct 6), before the Grok bots' 1:46 pm wake and on posts they didn't reply to. If those were yours, nothing to do. If not, say so and Grok is told likes are only for the post it answers.~~ **✅ closed Oct 7 desk — moot under R10 Am. 6; the likes are no longer on the account.**
 
 Checked against live state this run: no TCGplayer or TAG affiliate link in the repo; the Monday price job that failed (cancelled at GitHub's 6-hour limit) is ours to fix, not yours.
 

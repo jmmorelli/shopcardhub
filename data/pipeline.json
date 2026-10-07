@@ -51,7 +51,7 @@
         },
         {
           "ts": "2026-10-05",
-          "msg": "Competitor sweep Oct 5 (first since Sep 7): the HIGH-overlap index competitor now publishes a quantified track record - 54.9% hit rate, +17.4% avg return, 346 resolved picks, 259,680 indexed cards. Cardboard Terminal shipped an iOS app (Android in dev) and a <3-sales/30d volume filter; still NO set-level index. Filed comp-2026-10-05."
+          "msg": "Competitor sweep Oct 5 (first since Sep 7): the HIGH-overlap index competitor now publishes a quantified track record - 54.9% hit rate, +17.4% avg return, 346 resolved picks, 259,680 indexed cards. A competitor tracker app shipped an iOS app (Android in dev) and a <3-sales/30d volume filter; still NO set-level index. Filed comp-2026-10-05."
         },
         {
           "ts": "2026-10-05",
@@ -2872,6 +2872,76 @@
       "severity": "NOTE",
       "title": "NOTE: ga4-latest cleanSessions7 prints high (bot rule misses Singapore); no lane reads it as the R25 signal until the ga4-snapshot.mjs fix.",
       "decision": "DESK 2026-10-06: NOTED — the Oct 6 snapshot prints clean 336 / botShare 4.27% (Singapore 179 sessions at 3.9 s slips the < 2 s rule again); corrected clean ≈ 155. Fix stays queued Oct 7 weekly."
+    },
+    {
+      "id": "iw-2026-10-07-1",
+      "status": "applied",
+      "date": "2026-10-07",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "Holo rule's level-neutral divisor row published as a market mark on 15 index pages ('re-marked 10/06/26 · 0.0% w/w', 'Biggest move: Charizard up 34%').",
+      "decision": "CoS with Mo 2026-10-07 ~10:00 PT: APPLIED e993536 — history rows from --holo/--recon carry kind:'divisor'; plain read, home, chart, badges, mast read market marks only; 31 pages re-baked. Desk 2026-10-07: recorded."
+    },
+    {
+      "id": "iw-2026-10-07-2",
+      "status": "applied",
+      "date": "2026-10-07",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "/bowman-chrome-sapphire-2026-index calls BCP-151–250 'the sapphire 1st Bowman Chrome base cards' (28 are returners incl. Holliday BCP-209, Arquette BCP-174); break math 34 vs 33 players.",
+      "decision": "CoS with Mo 2026-10-07: APPLIED e993536 — '72 of the 100 … returning cards'; N=33, 0.30/case, 74%/41%. Desk 2026-10-07: recorded."
+    },
+    {
+      "id": "iw-2026-10-07-3",
+      "status": "applied",
+      "date": "2026-10-07",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "/bowman-bangers quotes BB26 benchmark 76.44 on Sep 28 while the index reads 76.88 (Oct 1).",
+      "decision": "DESK 2026-10-07: APPLIED 609f6b8 — '76.88 on Oct 1, −23.12%'. The page is hand-maintained by the Tuesday lane: from Oct 13 it reads the benchmark from indices.json at run time (lane note in STATE OPEN ITEMS)."
+    },
+    {
+      "id": "iw-2026-10-07-4",
+      "status": "applied",
+      "date": "2026-10-07",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "/bowman-bangers two prose lines use bare '1st Bowman' for the auto (R9.1).",
+      "decision": "DESK 2026-10-07: APPLIED 609f6b8 — both read '1st Bowman Chrome Auto'. Live-verified."
+    },
+    {
+      "id": "iw-2026-10-07-5",
+      "status": "applied",
+      "date": "2026-10-07",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "Home: BF26 football pre index sits inside 'Pokémon · new sets · 11 indices'.",
+      "decision": "DESK 2026-10-07: APPLIED 609f6b8 — js/home.js v13 ibGroup sends BCS/BF tickers to Sports (label 'Sports · Bowman'); home regen 10 indices. Live-verified iPhone 13: BF26 under ib-grp-sports."
+    },
+    {
+      "id": "iw-2026-10-07-6",
+      "status": "applied",
+      "date": "2026-10-07",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "/best-pokemon-set-to-start-collecting H1/og:title call SSP24/MEG25 'the cheapest Pokémon sets' — five classic Unlimited sets cost less to finish (Am. 3 superlative).",
+      "decision": "DESK 2026-10-07: APPLIED 609f6b8 — H1 'the cheapest of seven Pokémon sets…', og/ld 'Of 7 Sets Measured, …'. League C page, claims fix only (board not re-graded)."
+    },
+    {
+      "id": "iw-2026-10-07-7",
+      "status": "applied",
+      "date": "2026-10-07",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "/panini-donruss-football-2026 calls presale-vs-last-year's-sold gap 'the market's first guess at the license discount'.",
+      "decision": "DESK 2026-10-07: APPLIED 609f6b8 — sentence now says presale and last year's sold are different markets, so the gap is not a read on the license."
     }
   ],
   "scoreboard": {
@@ -4170,6 +4240,16 @@
           "liveVerified": "see STATE WEEKLY 2026-10-07 (curl after push)",
           "rollback": "git revert --no-edit c29a23b^..d078293",
           "note": "signup on 29 index pages; build-sector-index fetch timeout; ga4-snapshot second bot test; Bowman monthly R8/R9 fixes; phone text floor + home-you placement; card-images 552->557; About COMC lines out. price-snapshot.yml refactor refused by the run's permission check -> claude/handoffs/price-snapshot-1b-2026-10-07.diff."
+        },
+        {
+          "date": "2026-10-07",
+          "commits": [
+            "609f6b8"
+          ],
+          "by": "CoS desk (unattended, Mac deploy key)",
+          "gates": "audit-prices FAIL 0 / WARN 73 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal FAIL 0 / WARN 1 (roman-anthony-sapphire, standing) = baseline",
+          "liveVerified": "~3 min (curl + Playwright iPhone 13): bangers '76.88 on Oct 1' + R9.1 lines, best-set H1, Donruss line, BCB title ×3, /how-prices-work block, /affiliate-disclosure no COMC, home BF26 under Sports; 7 pages 200, 0 overflow, 0 console errors",
+          "note": "IW Oct 7 LOWs 3–7; Site Sweep F1 (disclosure COMC row); index-explainer /how-prices-work block (scoped per X Desk Watch Oct 7 FAIL); ideas Oct 7 note 1 BCB title. Deploys. Docs commit follows (no deploy)."
         }
       ]
     },
