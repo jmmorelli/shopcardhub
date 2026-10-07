@@ -1058,6 +1058,7 @@ Binds every email, pitch, reply, X post, Bluesky post, forum answer, newsletter 
 
 - **Every outbound draft goes through the `humanizer` skill before it leaves**, then a second read for the tells it lists first: a not-X-but-Y contrast, a one-line closer, a dash, a triad, a bold label. A draft with any of them does not go out.
 - **Mo's voice:** a collector typing. Short, plain, first person ("I"), contractions, one idea per sentence, no em dashes, no "Happy to help!" wrappers, no pitch-deck words (leverage, insights, robust, data-driven, unlock). Round prices the way a person would ("about $808") unless the exact figure is the point; never more than two numbers in one sentence.
+- **Tone of a cold email (Mo, Oct 7, same afternoon):** a friendly hi from a fellow collector, not a pitch and never a correction. Open warm ("Hope you're doing well"), say you enjoyed their piece, say you built something you think they might find useful, link it, thank them. Never point out that their numbers were wrong or "the data agrees/disagrees", never ask for credit or a link, no "free to use with a credit", at most one light number or none. Never invent a personal anecdote; use only what Mo has said about himself (three boys, collected baseball with his dad, back into Pokemon through his kids).
 - **Emails:** greeting by first name, three short paragraphs at most, one link with no tracking parameters, signed "Mo" alone. No signature block, no title.
 - **Numbers still obey R18/R20** — rounding in prose is fine; changing what a number means is not.
 
