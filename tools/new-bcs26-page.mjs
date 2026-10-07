@@ -67,7 +67,7 @@ const html = `${head}
 <h2>What it will track</h2>
 <div class="bf-grid">
 <div><b>Main line</b><span>The 33 Chrome Sapphire Prospect Autographs (CSPA) whose September Chrome auto is the player's 1st Bowman auto. A sapphire edition is the same card in sapphire, so it carries the same 1st logo. Sapphire Selections autos are an insert and are left out.</span></div>
-<div><b>Sub-index</b><span>The sapphire 1st Bowman Chrome base cards (BCP-151 to 250, no autograph), tracked as their own line for the non-auto buyer.</span></div>
+<div><b>Sub-index</b><span>The sapphire base Chrome Prospects (BCP-151 to 250, no autograph), tracked as their own line for the non-auto buyer. 72 of the 100 are the player’s 1st Bowman Chrome; the other 28, Holliday BCP-209 and Arquette BCP-174 among them, are returning cards with no 1st logo.</span></div>
 <div><b>Color ladder</b><span>Green, Gold, Orange, Black, Red and Padparadscha sapphire autos. The source has not published their print runs yet, so no serial is stated here until it does.</span></div>
 </div>
 

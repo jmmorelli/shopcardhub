@@ -84,7 +84,8 @@
       var v = indices[k];
       /* board:false (Oct 4 2026, DLR26): a pre shell kept off the home board, the Markets picker and the tape until it goes live */
       if (v.board === false) continue;
-      var h = (v.history || []).filter(function (r) { return r && r.level != null; }).map(function (r) { return { date: r.date, level: r.level, note: r.note || '' }; });
+      var h = (v.history || []).filter(function (r) { return r && r.level != null && r.kind !== 'divisor'; }).map(   // iw-2026-10-07-1: divisor ops are not marks
+        function (r) { return { date: r.date, level: r.level, note: r.note || '' }; });
       var pre = v.status === 'pre' || v.status === 'pre-activation' || !h.length;
       idx.push({ k: k, name: v.name || k, page: v.page || null, status: pre ? 'pre' : 'live', basis: v.basisLabel || (v.basis === 'ask' ? 'ask-basis · nightly marks' : 'sold comps only · weekly re-mark'), history: h,
         level: h.length ? h[h.length - 1].level : null, prev: h.length > 1 ? h[h.length - 2].level : null, date: h.length ? h[h.length - 1].date : null, inception: v.inception || null, rd: v.releaseDate || null, baseDate: v.baseDate || null, baseRule: v.baseRule || null, recon: (v.recon || []).filter(function (r) { return r && r.level > 0; }) });
@@ -137,7 +138,7 @@
    * Never the BOARD composite (that is ask-basis and not an index — it lives in the Bowman panel below). Pre-activation
    * rows show PRE. Every figure is one already in data/indices.json; nothing is derived that a reader can't re-check. */
   function idxStats(r) {
-    var h = r.history || [], n = h.length, level = n ? h[n - 1].level : null;
+    var h = (r.history || []).filter(function (x) { return x && x.kind !== 'divisor'; }), n = h.length, level = n ? h[n - 1].level : null;   // iw-2026-10-07-1
     // 1W = vs the newest mark at least 5 days back (iw-2026-10-03-1, the badge rule) — Mon/Thu tickers' prior mark is 3–4 days old
     var wk = null;
     for (var j = n - 2; j >= 0; j--) { if ((new Date(String(h[n - 1].date).slice(0, 10)) - new Date(String(h[j].date).slice(0, 10))) / 86400000 >= 5) { wk = ST.pctChange(h[j].level, level); break; } }

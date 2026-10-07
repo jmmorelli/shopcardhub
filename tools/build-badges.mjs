@@ -34,7 +34,7 @@ function weekMove(h) {
 const fmtDate = (iso) => { const [y, m, d] = iso.split("-"); return `${["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+m - 1]} ${+d}, ${y}`; };
 
 function svg(tk, t) {
-  const h = t.history || [];
+  const h = (t.history || []).filter((r) => r && r.kind !== "divisor");   // iw-2026-10-07-1: divisor ops are not marks
   const last = h[h.length - 1];
   const level = last && Number.isFinite(last.level) ? last.level.toFixed(2) : "—";
   const mv = weekMove(h);

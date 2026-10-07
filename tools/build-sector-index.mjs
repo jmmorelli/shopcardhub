@@ -554,7 +554,11 @@ const PRINTS = Object.fromEntries(FAMILIES.flatMap((f) => f.map((t) => [t, f])))
 const PRINT_LBL = { BS1E: "1st Edition", BSSL: "Shadowless", BS99: "Unlimited", JU1E: "1st Edition", JU99: "Unlimited", FO1E: "1st Edition", FO99: "Unlimited", TR1E: "1st Edition", TR00: "Unlimited", NG1E: "1st Edition", NG00: "Unlimited", NDC1E: "1st Edition", NDC01: "Unlimited", NR1E: "1st Edition", NR01: "Unlimited", ND1E: "1st Edition", ND02: "Unlimited" };
 // iw-2026-10-03-1 (desk Oct 3): "w/w" is the move vs the newest mark at least 5 days before the latest — the badge rule
 // (tools/build-badges.mjs weekMove). On Mon/Thu tickers the previous mark is 3–4 days back, so "w/w" against it was not a week.
+// iw-2026-10-07-1 (CoS Oct 7): a level-neutral divisor op (holo rule, reconstitution) is a history row with kind "divisor" —
+// a change of measure, not a mark. "re-marked", w/w and the mark count read market marks only; the chart/pages keep the row.
+const marksOnly = (h) => (Array.isArray(h) ? h : []).filter((r) => r && r.kind !== "divisor");
 function weekBase(h) {
+  h = marksOnly(h);
   if (!Array.isArray(h) || h.length < 2) return null;
   const last = h[h.length - 1];
   for (let i = h.length - 2; i >= 0; i--) if ((new Date(last.date) - new Date(h[i].date)) / 86400000 >= 5 && h[i].level > 0) return h[i];
@@ -562,7 +566,7 @@ function weekBase(h) {
 }
 function block(x, c) {
   const prBox = PR.bakeBox(x.ticker, x, "var(--sidx)");   // "" for a pre-activation ticker: then nothing is folded (as before)
-  const h = x.history || [], last = h[h.length - 1] || null, prev = weekBase(h);
+  const h = marksOnly(x.history), last = h[h.length - 1] || null, prev = weekBase(h);
   const lvl = last ? last.level : null;
   const wow = prev && last ? (last.level / prev.level - 1) * 100 : null;
   const bv = basketValue(x.basket), rows = x.basket.slice().sort((a, b) => b.price * b.w - a.price * a.w);
@@ -884,7 +888,7 @@ async function holoRule(x, c) {
   x.screen = { ...SCREEN, source: x.screen && x.screen.source || "PriceCharting ungraded completed sales, clean single-card rows" };
   x.basket = next; x.divisor = divisor;
   x.holoRule = { since: TODAY, rule: "holo-tier slots are standing constituents (tools/lib/holo-tier.mjs)", rarity: c.rarity || [] };
-  if (!h.some((r) => r.date === TODAY)) h.push({ date: TODAY, level, basketValue: r2(bv), divisor, priced: next.filter((b) => !b.carried).length, note: `holo rule (+${entered.length})${windowChange ? ` · ${SCREEN.window}d window` : ""}` });
+  if (!h.some((r) => r.date === TODAY)) h.push({ date: TODAY, level, basketValue: r2(bv), divisor, priced: next.filter((b) => !b.carried).length, kind: "divisor", note: `holo rule (+${entered.length})${windowChange ? ` · ${SCREEN.window}d window` : ""}` });
   console.log(`${x.ticker} holo rule ${TODAY}: +${entered.length} (${holoIn.length} holo-tier, ${scrIn.length} screen)${unpriced.length ? ` · ${unpriced.length} holo-tier still unpriced` : ""} · basket ${inB.size}→${next.length} · capped ${capped.length} · divisor ${wBefore.size ? x.divisorLog[x.divisorLog.length - 1].before : "?"}→${divisor} · level ${level} unchanged · errors ${errors}`);
   return true;
 }
@@ -1032,7 +1036,7 @@ if (has("--init")) {
   x.capLog.push(...next.filter((b) => b.w < 1).map((b) => ({ date: TODAY, num: b.num, name: b.name, w: b.w })));
   x.screenLog.push({ date: TODAY, pass: next.length, fail: x.universe.length - next.length, entered, exited });
   x.basket = next; x.divisor = divisor;
-  x.history.push({ date: TODAY, level: before, basketValue: r2(bvNew), divisor, priced: next.length, note: `reconstitution (+${entered}/−${exited})` });
+  x.history.push({ date: TODAY, level: before, basketValue: r2(bvNew), divisor, priced: next.length, kind: "divisor", note: `reconstitution (+${entered}/−${exited})` });
   await subMark(x, TODAY);
   console.log(`${TICKER} reconstitution ${TODAY}: ${next.length} in basket (+${entered}/−${exited}) · divisor ${x.divisor} · level ${before} unchanged`);
   save(); bake(x, c);

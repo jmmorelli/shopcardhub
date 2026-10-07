@@ -55,7 +55,10 @@
   }
 
   function build(k, r) {
-    var h = r.history || [], n = h.length;
+    // iw-2026-10-07-1: rows with kind "divisor" (holo rule, reconstitution) are level-neutral changes of measure, not marks —
+    // they never set "last week", and while the newest row is one of them the basket's prevPrice is a window change, so no "biggest move".
+    var raw = r.history || [], h = raw.filter(function (x) { return x && x.kind !== 'divisor'; }), n = h.length;
+    var measureChanged = raw.length && raw[raw.length - 1].kind === 'divisor';
     if (!n) return null;
     var level = h[n - 1].level, prev = n > 1 ? h[n - 2].level : null;
     var wk = prev ? (level / prev - 1) * 100 : null;
@@ -94,7 +97,7 @@
       .map(function (c) { return { c: c, p: (c.price / c.prevPrice - 1) * 100 }; })
       .filter(function (m) { return Math.abs(m.p) >= 1; })
       .sort(function (a, b) { return Math.abs(b.p) - Math.abs(a.p); });
-    if (movers.length) bits.push('Biggest move last week: <b>' + esc(movers[0].c.name) + '</b>, ' + (movers[0].p < 0 ? 'down ' : 'up ') + Math.abs(movers[0].p).toFixed(0) + '%.');
+    if (movers.length && !measureChanged) bits.push('Biggest move last week: <b>' + esc(movers[0].c.name) + '</b>, ' + (movers[0].p < 0 ? 'down ' : 'up ') + Math.abs(movers[0].p).toFixed(0) + '%.');
     if (bits.length) out.push('<p>' + bits.join(' ') + '</p>');
 
     // how to read the big number

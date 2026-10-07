@@ -76,7 +76,7 @@
       '<circle class="ic-dot" cx="' + ex.toFixed(1) + '" cy="' + ey.toFixed(1) + '" r="3.5"/>' + lastLbl + xl.join('') + '</svg>';
   }
   function paint(el, v, tk) {
-    var h = (v.history || []).filter(function (r) { return r && r.level != null && isFinite(r.level) && r.level > 0; });
+    var h = (v.history || []).filter(function (r) { return r && r.level != null && isFinite(r.level) && r.level > 0 && r.kind !== 'divisor'; });   // iw-2026-10-07-1: divisor ops are not marks
     var rc = (v.recon || []).filter(function (r) { return r && r.level > 0; });
     if (!h.length) { el.innerHTML = '<div class="ic-one">Pre-activation — the level starts on the first verified sold reads.</div>'; return; }
     var last = h[h.length - 1];
