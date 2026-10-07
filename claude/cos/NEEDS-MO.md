@@ -7,7 +7,17 @@ reach. If something here no longer needs you, say so and it comes off.
 *(Housekeeping for the agents, not for Mo: this file lives in the repo beside `STATE.md`; that copy
 is canonical and the Project copy is a mirror written in the same run. Standing grants — Sep 4 "anything
 that needs Mo, I approve"; Sep 8 "I don't want to sign into anything"; Sep 16 "I'd prefer you guys just
-talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy. Oct 5 ~13:50: the Project copy was updated again from a CoS chat with no repo access; the Oct 5 desk mirrored it here, closed what §7 of `claude/cos/session-2026-10-05-predesk.md` settled, and wrote both copies.)*
+talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy. Oct 5 ~13:50: the Project copy was updated again from a CoS chat with no repo access; the Oct 5 desk mirrored it here, closed what §7 of `claude/cos/session-2026-10-05-predesk.md` settled, and wrote both copies. Oct 7 ~10:20: CoS chat with repo access wrote both copies in the same run.)*
+
+---
+
+## Open — from the CoS with Mo (2026-10-07, ~09:45–10:20 PT). Mo, these are the only things waiting on you
+
+- **One call, no sign-in: what the Grok bots are for now.** You stopped all their X activity this morning ("terrible … looked like bots"). The weekly usage is at 90% and resets ~Oct 9; nobody pays for more. Options: **(a)** Seeker-only — the weekday read-only DEMAND LIST feeds Growth League page topics, no X at all (CoS lean); **(b)** cancel the bots outright; **(c)** keep them paused and decide after the reset. Say a letter. Until then nothing posts, likes or follows from them, and X Desk Watch treats any Grok action after 08:40 PT today as a breach.
+- **Bluesky, one time (~5 min, your account):** unchanged — create the ShopCardHub account, Settings → Privacy and security → App passwords → paste one into a CoS chat.
+- **TCGplayer on Impact (#2) and TAG payment info + affiliate link (#4):** unchanged.
+
+*Closed today without you:* the GitHub "price-snapshot: All jobs have failed" email (run #72) — a push race with the GA4 job, fixed `6f1c35b`, the Oct 7 snapshot re-run as #73; the Integrity Watch MEDs on the Base Set/Skyridge "0.0% w/w · Charizard up 34%" read and the Sapphire page's 1st-logo line (`e993536`). The push-loop refactor from Oct 5's 6-hour cancel is still with today's 11:05 weekly.
 
 ---
 

@@ -4147,6 +4147,17 @@
           "gates": "audit-prices FAIL 0 / WARN 73 (+1 named: 3 'No sold read' cells on /base-set-charizard-worth) · audit-site FAIL 0 / WARN 5 (171) · audit-terminal FAIL 0 / WARN 1",
           "liveVerified": "~100 s: /panini-obsidian-football-2026, /base-set-charizard-worth, /surging-sparks-vs-destined-rivals 200 + BUYSTRIP + sch-signup; og/league/f-20261007.png 200; IndexNow 7 URLs 200",
           "note": "League gen 1 week 2 day 5: A/B/C 5 of 5 each; E/F week-2 drafts; D held. Trees matched d8493d2d. Deploys."
+        },
+        {
+          "date": "2026-10-07",
+          "commits": [
+            "6f1c35b",
+            "e993536"
+          ],
+          "by": "CoS with Mo in chat (Mo: 'anything else open … go ahead and do so now') — price-snapshot race fix + Integrity Watch Oct 7 MEDs + BCB guide callout",
+          "gates": "audit-prices FAIL 0 / WARN 73; audit-site FAIL 0 / WARN 5 (171 pages); audit-terminal FAIL 0 / WARN 1 (roman-anthony-sapphire, standing) — both trees",
+          "liveVerified": "pending Vercel at write time (STATE RUN LOG Oct 7 ~09:45 has the live check once it lands); run #73 (workflow_dispatch) fired 09:55 PT to recover the lost Oct 7 snapshot",
+          "note": "#72 lost the night's snapshot to a non-fast-forward push (ga4-snapshot pushed price-data mid-run); 6f1c35b puts price-snapshot in concurrency group price-data-writers + rebase/retry. e993536: history rows kind:'divisor' are not marks (plain read, home, chart, badges, mast); BCS26 72-of-100 1st copy + N=33; BCB guide re-dated. Patches via Card Hub/deploy, git am on the Mac, tree hashes matched."
         }
       ]
     },
