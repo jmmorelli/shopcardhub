@@ -182,11 +182,11 @@
   // Board groups (Sep 28 2026, Mo: "split the pokemon and sports cards more rather than mingling them"). Pokémon first,
   // new sets then classic sets (released before mid-2023), then sports; one labelled header row per group.
   function ibGroup(r) {
-    if (/^(BOW|BCB|SAPH|DRAFT|BB|BD)/.test(r.k)) return 'sports';
+    if (/^(BOW|BCB|BCS|BF|SAPH|DRAFT|BB|BD)/.test(r.k)) return 'sports';   // BCS26 Sapphire + BF26 football pre indices (iw-2026-10-07-5)
     if (/1E$|^BSSL$/.test(r.k)) return 'editions';   // WOTC 1st Edition / Shadowless (Sep 30 2026): on /indices#editions and their set pages, not the home board (phone length)
     return r.rd && r.rd < '2023-06-01' ? 'classic' : 'pokemon';
   }
-  var IB_GROUPS = [['pokemon', 'Pokémon · new sets'], ['classic', 'Pokémon · classic sets'], ['sports', 'Sports · Bowman baseball']];
+  var IB_GROUPS = [['pokemon', 'Pokémon · new sets'], ['classic', 'Pokémon · classic sets'], ['sports', 'Sports · Bowman']];
   /* re-mark cadence, derived from data/indices.json (iw-2026-09-28-3 / iw-2026-09-29-6, weekly Sep 30): sector-model tickers
      mark Monday and Thursday (build-sector-index.mjs --mark --if-mark-day), the chase indices once a week on Monday
      (remark-indices.mjs). Live tickers only. build-home.mjs writes these phrases into the home copy and metas. */
