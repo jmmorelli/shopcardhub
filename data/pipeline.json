@@ -4158,6 +4158,18 @@
           "gates": "audit-prices FAIL 0 / WARN 73; audit-site FAIL 0 / WARN 5 (171 pages); audit-terminal FAIL 0 / WARN 1 (roman-anthony-sapphire, standing) — both trees",
           "liveVerified": "2026-10-07 ~10:20 PT (curl): /pokemon-base-set-index mast 're-marked 10/01/26', plain read 'Last week: down 2.4%', no 'Biggest move'; /bowman-chrome-sapphire-2026-index '72 of the 100', 'across 33 players'; /bowman-chrome-baseball-2026 'Updated Oct 7, 2026'; home 'Oct 1 · 2 marks' ×12; /feed/prices-latest.json day 2026-10-07 (run #73 → price-engine cbefe39, feed c06f881). Vercel skipped the two deploy-key pushes and caught up on the feed commit.",
           "note": "#72 lost the night's snapshot to a non-fast-forward push (ga4-snapshot pushed price-data mid-run); 6f1c35b puts price-snapshot in concurrency group price-data-writers + rebase/retry. e993536: history rows kind:'divisor' are not marks (plain read, home, chart, badges, mast); BCS26 72-of-100 1st copy + N=33; BCB guide re-dated. Patches via Card Hub/deploy, git am on the Mac, tree hashes matched."
+        },
+        {
+          "date": "2026-10-07",
+          "commits": [
+            "c29a23b",
+            "d078293"
+          ],
+          "by": "CoS weekly (unattended, cloud + deploy key)",
+          "gates": "audit-prices FAIL 0 / WARN 73; audit-site FAIL 0 / WARN 5 (171 pages); audit-terminal FAIL 0 / WARN 1 (roman-anthony-sapphire, standing) — both trees",
+          "liveVerified": "see STATE WEEKLY 2026-10-07 (curl after push)",
+          "rollback": "git revert --no-edit c29a23b^..d078293",
+          "note": "signup on 29 index pages; build-sector-index fetch timeout; ga4-snapshot second bot test; Bowman monthly R8/R9 fixes; phone text floor + home-you placement; card-images 552->557; About COMC lines out. price-snapshot.yml refactor refused by the run's permission check -> claude/handoffs/price-snapshot-1b-2026-10-07.diff."
         }
       ]
     },

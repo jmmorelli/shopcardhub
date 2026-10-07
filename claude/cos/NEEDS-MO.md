@@ -11,6 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the weekly (2026-10-07, ~12:40 PT). Mo, these are the only things waiting on you
+
+- **One "go" in any CoS chat before Mon Oct 12 (no sign-in):** the fix for the Oct 5 six-hour nightly cancel (marks run once, time-boxed, outside the push loop) is written and checked, but an unattended run isn't allowed to edit the GitHub workflow file. Say "go on the snapshot workflow" and it ships in minutes. Tonight's Thursday mark is already safer (45-second fetch timeout shipped).
+- **eBay Partner Network is signed out** in your Chrome, so this week's money read (R22) was skipped. Next time you're at the Mac, sign in at partner.ebay.com; the desk reads it the same day.
+- **One yes/no, /track-record (yours by rule):** the Greninja PSA 10 call cites "$495 sold (Sep 7)" and "$625 → $550 → $493" — those are weekly PriceCharting value reads, not sales. OK to replace with a dated sold median (or "no verified sale") and a strike note? The call's grade can't change (its floor is $800).
+- **Bluesky, TCGplayer on Impact (#2), TAG payment info + link (#4):** unchanged.
+
 ## Open — from the CoS with Mo (2026-10-07, ~09:45–10:20 PT). Mo, these are the only things waiting on you
 
 - ~~One call, no sign-in: what the Grok bots are for now~~ **✅ RULED by Mo Oct 7 ~10:40 PT: "I lean A … You are in charge of them from now on to utilize them how you see fit."** Written as LANE-RULES R10 Am. 6 (read-only scouts, zero X actions, CoS owns them outright, no money ever). Nothing on the bots comes back to this list again except a billing prompt, which is answered no.
