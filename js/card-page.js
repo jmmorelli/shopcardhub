@@ -29,7 +29,7 @@
     // marked weekly on PriceCharting's ungraded sold value rather than a 30-day median of our own clean rows.
     var scr = c.screened && c.why === 'screen', chase = d.kind === 'chase', win = (d.screen && d.screen.window) || d.window || 30;
     var R = [
-      { k: 'raw', lbl: 'Raw', m: raw, sub: scr ? 'not priced · below the liquidity screen' : chase ? 'index sold mark · PriceCharting ungraded sold value, re-marked weekly' : 'index sold mark · median of ' + c.n30 + ' sales, ' + (d.window || 30) + ' days', last: null, scr: scr },
+      { k: 'raw', lbl: 'Raw', m: raw, sub: scr ? 'not priced · below the liquidity screen' : chase ? 'index sold mark · PriceCharting ungraded sold value, re-marked weekly' : 'index sold mark · median of ' + (c.wn != null ? c.wn : c.n30) + ' sales, ' + (c.win || d.window || 30) + ' days' + (c.thin ? ' · thin — holo-tier standing constituent' : c.holo ? ' · holo-tier' : ''), last: null, scr: scr },
     ];
     [['psa9', 'PSA 9'], ['psa10', 'PSA 10'], ['tag10', 'TAG 10']].forEach(function (p) {
       var x = g ? g[p[0]] : undefined;
