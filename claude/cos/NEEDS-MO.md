@@ -15,7 +15,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 - **Today, before 6:30 pm PT — one reply under your pinned index thread** (X Desk Watch block just below; pushed to your phone ~14:20 PT). Posts 3 and 4 say no card can be over 25% and every index starts at 100 in its release month; tonight's 6:30 pm post says one card is 63% of Phantasmal Flames. Reply with the text below, or say "go" in a CoS chat and it posts with you present. Don't delete. The site's own explainer (`/how-prices-work`) now states both rules with their scope.
 - **One "go" before Mon Oct 12 (no sign-in):** the snapshot-workflow fix from the weekly, unchanged.
-- **eBay Partner Network is still signed out** (checked in your Chrome ~14:35 PT: login page). This week's money read waits on a sign-in at partner.ebay.com.
+- ~~eBay Partner Network is still signed out~~ **✅ closed Oct 7 — Mo sent the two CSV exports (by day + by custom ID, Sep 23–Oct 6); read done.** From now on the Wednesday read uses CSVs you drop in `Card Hub/epn/`; no sign-in is asked for.
 - **/track-record Greninja yes/no, Bluesky, TCGplayer (#2), TAG (#4):** unchanged.
 
 *Closed this run without you:* the Oct 6 likes FYI — the bots now take no X action at all (R10 Am. 6) and those four likes are gone from the Likes tab. Checked against live state: no TCGplayer or TAG affiliate link in the repo.
@@ -32,7 +32,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 ## Open — from the weekly (2026-10-07, ~12:40 PT). Mo, these are the only things waiting on you
 
 - **One "go" in any CoS chat before Mon Oct 12 (no sign-in):** the fix for the Oct 5 six-hour nightly cancel (marks run once, time-boxed, outside the push loop) is written and checked, but an unattended run isn't allowed to edit the GitHub workflow file. Say "go on the snapshot workflow" and it ships in minutes. Tonight's Thursday mark is already safer (45-second fetch timeout shipped).
-- **eBay Partner Network is signed out** in your Chrome, so this week's money read (R22) was skipped. Next time you're at the Mac, sign in at partner.ebay.com; the desk reads it the same day.
+- ~~eBay Partner Network is signed out~~ **✅ closed Oct 7 (CSV exports).**
 - **One yes/no, /track-record (yours by rule):** the Greninja PSA 10 call cites "$495 sold (Sep 7)" and "$625 → $550 → $493" — those are weekly PriceCharting value reads, not sales. OK to replace with a dated sold median (or "no verified sale") and a strike note? The call's grade can't change (its floor is $800).
 - **Bluesky, TCGplayer on Impact (#2), TAG payment info + link (#4):** unchanged.
 

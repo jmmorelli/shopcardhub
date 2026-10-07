@@ -906,6 +906,12 @@ Chrome). Steps: open the EPN dashboard in Mo's Chrome → read earnings, clicks 
 under *Milestones* and the full read to the Project doc `claude/cos/epn-read-<date>.md`. The rung moves
 only on two consecutive weekly reads. No trend is claimed on fewer than ~30 actions.
 If EPN is signed out: the read is skipped, and **one** NEEDS-MO line says so (a sign-in is Mo's).
+**Amended Oct 7 (Mo: "I think ebay EPN keeps blocking you to some extent. Here are some CSVs"):** the read's source is
+**Mo's EPN CSV exports** (Performance by Day + Performance by Custom Id) saved in `Card Hub/epn/` as
+`epn-byday-<from>_<to>.csv` / `epn-customid-<from>_<to>.csv`. The desk reads the newest pair; it does not retry the EPN
+login, and a missing export is a NEEDS-MO FYI, not a sign-in ask. **Custom-ID caveat:** the eBay app drops `customid`,
+so phone purchases land in `No Custom ID` — every per-ID kill rule ("0 actions on ≥ 20 clicks") reads against an
+undercount and is stated that way at the read.
 
 **Oct 21 (a Wednesday) — the link experiment verdict rides on this read.** On Sep 20 we added
 sealed-case links (`-case`) and eBay Authenticity Guarantee links (`-ag`) to product pages as a test.
