@@ -246,7 +246,10 @@
       var href = r.page || '/indices', game = /^(BOW|BCB|SAPH|DRAFT|BB)/.test(r.k) ? 'Bowman' : 'Pokémon';
       if (r.status === 'pre') return '<tr class="ib-pre"><td class="ib-k"><a href="' + esc(href) + '"><b>' + esc(r.k) + '</b><small>' + esc(r.name) + '</small></a></td><td class="ib-pre-t" colspan="6">PRE · activates on the first verified sold reads</td>' + sealedCell(r.k) + '</tr>';
       var s = idxStats(r);
-      var cell = function (v, d) { return '<td class="num ' + cls(v) + '">' + pct(v, d == null ? 1 : d) + '</td>'; };
+      /* graded move colour (P29, desk Oct 5; Design Scout Oct 5): the size of a move sets how loud it is.
+         |move| < 1% muted, 1–5% softened, > 5% full colour at weight 600. Same numbers, same up/dn/flat rule. */
+      var mag = function (v) { var a = Math.abs(v); return v == null || !isFinite(v) || !a ? '' : a < 1 ? ' mg1' : a <= 5 ? ' mg2' : ' mg3'; };
+      var cell = function (v, d) { return '<td class="num ' + cls(v) + mag(v) + '">' + pct(v, d == null ? 1 : d) + '</td>'; };
       return '<tr' + (r._new ? ' class="ib-new"' : '') + '><td class="ib-k"><a href="' + esc(href) + '"' + (r._new ? ' title="New index"' : '') + '><b>' + esc(r.k) + '</b><small>' + esc(r.name) + ' · ' + game + '</small></a></td>' +
         '<td class="num ib-lvl">' + num(s.level, 2) + '</td>' + cell(s.wk) + cell(s.mo) +
         cell(s.since, 2) +

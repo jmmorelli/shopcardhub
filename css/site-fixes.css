@@ -599,3 +599,19 @@ body .hero-scan-line { display: none !important; }
   body .sch-signup .ss-f { flex-wrap: wrap; }
   body .sch-signup .ss-f input, body .sch-signup .ss-f button { flex: 1 1 100%; width: 100%; }
 }
+
+/* 21 (Night Crew, Oct 7 2026 — Bug Hunter P1-a, "B51"). Font-swap layout shift. Every face in css/fonts.css is
+   font-display:swap and the page stacks fall back to plain sans-serif, which is 20–40% wider than Barlow Condensed.
+   A hero headline set in the fallback wraps to more lines, then snaps shorter when Barlow lands (BCB guide 1440 h1
+   222 → 148 px, /bowman-vs-bowman-chrome phone CLS 0.26–0.28). Preloads alone don't fix it on a cold phone.
+   These fallback faces are the system Arial/Helvetica (or Roboto) scaled to Barlow's width and line metrics, so the
+   fallback text wraps the way Barlow will and nothing moves on the swap. Only the font-family stacks change; the
+   brand fonts, sizes and weights are untouched. `html:root` outranks the per-page `:root` blocks that define them. */
+@font-face { font-family: 'SCH Cond Fallback'; font-weight: 100 599; src: local('Arial'), local('ArialMT'), local('Helvetica'), local('Liberation Sans'), local('Roboto'); size-adjust: 76%; ascent-override: 131%; descent-override: 26%; line-gap-override: 0%; }
+@font-face { font-family: 'SCH Cond Fallback'; font-weight: 600 900; src: local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Bold'), local('Liberation Sans Bold'), local('Roboto Bold'); size-adjust: 72%; ascent-override: 139%; descent-override: 28%; line-gap-override: 0%; }
+@font-face { font-family: 'SCH Sans Fallback'; font-weight: 100 599; src: local('Arial'), local('ArialMT'), local('Helvetica'), local('Liberation Sans'), local('Roboto'); size-adjust: 95%; ascent-override: 105%; descent-override: 21%; line-gap-override: 0%; }
+@font-face { font-family: 'SCH Sans Fallback'; font-weight: 600 900; src: local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Bold'), local('Liberation Sans Bold'), local('Roboto Bold'); size-adjust: 92%; ascent-override: 109%; descent-override: 22%; line-gap-override: 0%; }
+html:root {
+  --fd: 'Barlow Condensed', 'SCH Cond Fallback', sans-serif;
+  --fb: 'Barlow', 'SCH Sans Fallback', sans-serif;
+}

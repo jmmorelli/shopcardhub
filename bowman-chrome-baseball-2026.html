@@ -485,6 +485,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       .hero h1 { font-size:clamp(28px,8.6vw,40px); }
       .hero-sub { clear:both; }
       .entry-header .entry-lead { flex:0 0 auto; }
+      /* B42 (Night Crew Oct 7): a table's 32 px margin stacked on two 64 px section paddings left a ~180 px empty
+         band before "The Checklist" on phones */
+      section { padding:44px 0; }
+      .roi-table-wrap:last-child { margin-bottom:0; }
     }
     .entry-lead { display:flex; align-items:flex-start; gap:16px; flex:1 1 280px; min-width:0; }
     .entry-lead > div { min-width:0; }

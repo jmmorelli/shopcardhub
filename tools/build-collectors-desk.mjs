@@ -359,7 +359,7 @@ const DESK_CSS = (c) => `
     @keyframes ck-sheen { 0% { background-position:200% 0; } 100% { background-position:-200% 0; } }
     .ck-top { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
     .ck-top h3 { margin:0; font-size:24px; }
-    .ck-tag { font-family:var(--fm); font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#000; background:var(--accent); padding:4px 8px; border-radius:2px; white-space:nowrap; }
+    .ck-tag { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#000; background:var(--accent); padding:4px 8px; border-radius:2px; white-space:nowrap; }
     .ck-grail .ck-tag { background:var(--dkg); }
     .ck-starter .ck-tag { background:var(--green); }
     .ck-why { font-size:15px; line-height:1.72; color:var(--text); max-width:820px; margin-bottom:8px; }
@@ -375,12 +375,12 @@ const DESK_CSS = (c) => `
     .ladder { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:8px; }
     .lad-cell { background:var(--bg2); border:1px solid var(--border); padding:10px 12px 9px; min-width:0; }
     .lad-raw { border-top:2px solid var(--accent); }
-    .lad-k { font-family:var(--fm); font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:4px; }
+    .lad-k { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); margin-bottom:4px; }
     .lad-v { font-family:var(--fd); font-size:24px; font-weight:900; color:var(--text-head); line-height:1; }
     .lad-na .lad-v { font-size:15px; font-weight:700; color:var(--text-dim); padding-top:4px; }
     .lad-s { font-size:11px; color:var(--text-dim); margin-top:5px; line-height:1.4; }
     .print-links { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-    .lk { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:8px 12px; border-radius:2px; border:1px solid var(--border2); color:var(--text-head); background:rgba(255,255,255,0.03); transition:background .15s, border-color .15s, color .15s; }
+    .lk { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; display:inline-flex; align-items:center; min-height:40px; padding:8px 12px; border-radius:2px; border:1px solid var(--border2); color:var(--text-head); background:rgba(255,255,255,0.03); transition:background .15s, border-color .15s, color .15s; }
     .lk:hover { text-decoration:none; color:#fff; border-color:var(--accent); background:var(--accent-dim); }
     .lk-raw { background:var(--accent); color:#000; border-color:var(--accent); }
     .lk-raw:hover { background:#fff; color:#000; }
