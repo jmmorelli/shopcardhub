@@ -560,9 +560,48 @@ def card_release_log(idx, out):
     footer(d, asof, "· 100 = release month · log scale")
     p = out / "release-log.png"; im.save(p); return p
 
+# ---------- one card's dated sold tape (Oct 7 2026, league F shareable) ----------
+def card_solds(specs, card, eyebrow, url, out, name="solds.png", note=""):
+    """Strip plot of one card's dated sales, one lane per grade, each dot one sale, tick = median.
+    specs = [(label, path to `node tools/league/solds.mjs <path> [--grade G] --json` output)]. Prices are
+    the tool's rows verbatim (sold comps only); the headline quotes each lane's median, count and window."""
+    lanes = []
+    for label, path in specs:
+        j = json.load(open(path)); rows = j["rows"]
+        lanes.append(dict(label=label, rows=rows, n=j["n"], med=j["mark"]["median"], lo=j["windowFrom"], hi=j["windowTo"]))
+    fmt = lambda s: datetime.date.fromisoformat(s).strftime("%b %-d")
+    title = " · ".join(f"{money(l['med'])} {l['label']}" for l in sorted(lanes, key=lambda l: -l["med"]))
+    im, d = canvas(eyebrow, title, f"{card}. One dot = one sale; bar = median.")
+    top = max(r["price"] for l in lanes for r in l["rows"])
+    xmax = math.ceil(top / 1000) * 1000; x0, x1 = 230, W - 70
+    X = lambda v: x0 + (x1 - x0) * v / xmax
+    y, lh = 250, 150
+    cols = [CYAN, "#ffb020"]
+    for i in range(len(lanes)): d.rounded_rectangle([48, y + i * lh, W - 48, y + i * lh + lh - 24], 8, fill=PANEL, outline="#16303a")
+    for t in range(0, xmax + 1, 1000):
+        for i in range(len(lanes)): d.line([(X(t), y + i * lh + 6), (X(t), y + i * lh + lh - 30)], fill=GRID, width=1)
+        s = f"${t:,}"; d.text((X(t) - d.textlength(s, font=MONO(15)) / 2, y + lh * len(lanes) - 12), s, font=MONO(15), fill=DIM)
+    for i, l in enumerate(lanes):
+        yy = y + i * lh; cy = yy + 50; c = cols[i % 2]
+        d.text((66, yy + 14), l["label"], font=COND9(34), fill=c)
+        d.text((66, yy + 56), f"{l['n']} sales", font=MONO(15), fill=TXT)
+        d.text((66, yy + 80), f"{fmt(l['lo'])}–{fmt(l['hi'])}", font=MONO(15), fill=DIM)
+        for j, r in enumerate(sorted(l["rows"], key=lambda r: r["price"])):
+            dy = ((j * 4) % 9 - 4) * 5
+            d.ellipse([X(r["price"]) - 6, cy + dy - 6, X(r["price"]) + 6, cy + dy + 6], fill=c, outline=BG)
+        mx = X(l["med"]); d.rectangle([mx - 2, cy - 30, mx + 2, cy + 30], fill=TXT)
+        s = f"median {money(l['med'])}"; tx = min(max(mx - d.textlength(s, font=COND7(26)) / 2, x0), W - 66 - d.textlength(s, font=COND7(26)))
+        d.text((tx, cy + 34), s, font=COND7(26), fill=TXT)
+    d.line([(48, H - 52), (W - 48, H - 52)], fill="#0e3a45", width=1)
+    d.text((48, H - 40), f"sold comps via PriceCharting, read {datetime.date.today():%b %-d %Y} {note}· {url}", font=MONO(13), fill=DIM)
+    p = out / name; im.save(p); return p
+
 # ---------- main ----------
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("kind"); ap.add_argument("ticker", nargs="?"); ap.add_argument("--out")
+    ap.add_argument("--lane", action="append", default=[], help="solds: LABEL=path/to/solds.json (repeatable)")
+    ap.add_argument("--card", default=""); ap.add_argument("--eyebrow", default=""); ap.add_argument("--url", default="shopcardhub.com")
+    ap.add_argument("--note", default=""); ap.add_argument("--name", default="solds.png")
     a = ap.parse_args(); idx = json.load(open(DATA))
     out = pathlib.Path(a.out) if a.out else (ROOT.parent / "Card Hub" / "x-images" / datetime.date.today().isoformat())
     out.mkdir(parents=True, exist_ok=True)
@@ -581,4 +620,5 @@ if __name__ == "__main__":
     if a.kind == "bcb26": done.append(card_bcb26(idx, out))
     if a.kind == "call": done.append(card_call(a.ticker, out))
     if a.kind == "drawdown": done.append(card_drawdown(idx, out))
+    if a.kind == "solds": done.append(card_solds([tuple(s.split("=", 1)) for s in a.lane], a.card, a.eyebrow, a.url, out, a.name, a.note))
     for p in done: print(p)

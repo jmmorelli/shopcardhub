@@ -1,0 +1,20 @@
+{
+  "id": "f-20261007",
+  "agent": "F",
+  "date": "2026-10-07",
+  "kind": "shareable",
+  "campaign": "f-20261007",
+  "target": "/umbreon-ex-worth",
+  "domains": [],
+  "status": "drafted",
+  "image": "og/league/f-20261007.png",
+  "caption": "Umbreon ex 161/131, Prismatic Evolutions SIR: $1,125 raw (median of 30 eBay sales, Sep 24–Oct 1) and $5,300 in PSA 10 (median of 30 sales, Sep 11–Oct 1). Sold comps only. https://www.shopcardhub.com/umbreon-ex-worth?d=1002&utm_source=x&utm_medium=league&utm_campaign=f-20261007",
+  "evidence": [
+    "node tools/league/solds.mjs pokemon-prismatic-evolutions/umbreon-ex-161 --json (read 2026-10-07): ungraded n=30 (capped, most recent), window 2026-09-24..2026-10-01, median $1,125.00",
+    "node tools/league/solds.mjs pokemon-prismatic-evolutions/umbreon-ex-161 --grade \"PSA 10\" --json (read 2026-10-07): n=30 (capped), window 2026-09-11..2026-10-01, median $5,300.00",
+    "umbreon-ex-worth.html carries the same two figures (H1 $1,125 raw; title $5,300 PSA 10) with data-prices-updated=2026-10-02 -> d=1002; its og:image is og/default.png, so this card fills an empty share slot",
+    "data/indices.json PRIS25 history 2026-10-05 level 70.64 (weekly re-mark, 49 priced; baseNote 100 = Jan 2025, release month) -- footer line only",
+    "Oct 5 re-mark did land for the six chase indices (commit 8c3a986, 2026-10-05 rows in history); no index figure here is dated later than Oct 5"
+  ],
+  "notes": "Followed the Oct 3 focus (one big dated sale over set overviews) instead of re-running drawdown. Raw lane shows three high dots ($1,600, $1,764.25, $2,500 on Sep 28) that are real rows but are not quoted anywhere. The PRIS25 basket holds Umbreon at $1,179.50 (Oct 5 mark, different window); the image and caption use only the solds.mjs read, which matches the landing page. Next week: same card-tape kind for Mega Gengar ex SIR (AH26, $827.50 median of 30, Sep 14–Oct 7 read today) on /gengar-ex-worth (the page exists)."
+}
