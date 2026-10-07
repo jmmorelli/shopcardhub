@@ -17,8 +17,11 @@ on:
 permissions:
   contents: write
 
+# Oct 7 2026: run #72 lost the whole night's snapshot when ga4-snapshot pushed to price-data mid-run
+# (both schedules drift into the same 15:30 UTC window) and this job's push was rejected non-fast-forward.
+# Same group as ga4-snapshot so the two price-data writers never overlap; the push below also rebases + retries.
 concurrency:
-  group: price-snapshot
+  group: price-data-writers
   cancel-in-progress: false
 
 jobs:
@@ -83,7 +86,15 @@ jobs:
             exit 0
           fi
           git commit -m "price-engine: snapshot $(date -u +%F)"
-          git push -u origin price-data
+          # Another writer (ga4-snapshot) may have pushed meanwhile: rebase onto it and retry.
+          # The two jobs touch disjoint files (prices-*/market-*/sold-*/listings-* vs ga4-*), so the rebase is clean.
+          for attempt in 1 2 3; do
+            if git push -u origin price-data; then exit 0; fi
+            echo "push rejected (another writer pushed meanwhile) - rebasing and retrying ($attempt/3)"
+            git pull --rebase origin price-data || { git rebase --abort 2>/dev/null; echo "::error::rebase onto origin/price-data failed - snapshot not pushed"; exit 1; }
+            sleep 10
+          done
+          echo "::error::could not push the snapshot after 3 attempts"; exit 1
 
       # Compliance Phase 1 (2026-09-22): the site serves the feed from its own origin, so the repo can
       # go private. Copy ONLY the three derived public files onto main under data/feed/ — the push
