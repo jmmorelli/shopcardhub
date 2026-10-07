@@ -13,7 +13,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## Open — from the desk (2026-10-07, 14:00 run). Mo, these are the only things waiting on you
 
-- **One reply under your pinned index thread (no longer time-boxed — tonight's post was pulled)** (X Desk Watch block just below; pushed to your phone ~14:20 PT). Posts 3 and 4 say no card can be over 25% and every index starts at 100 in its release month; tonight's 6:30 pm post says one card is 63% of Phantasmal Flames. Reply with the text below, or say "go" in a CoS chat and it posts with you present. Don't delete. The site's own explainer (`/how-prices-work`) now states both rules with their scope.
+- ~~One reply under your pinned index thread~~ **✅ posted Oct 7 ~16:00 PT on Mo's "go", from his Chrome with him present, as a reply under thread post 5.** Original text kept below for the record: (X Desk Watch block just below; pushed to your phone ~14:20 PT). Posts 3 and 4 say no card can be over 25% and every index starts at 100 in its release month; tonight's 6:30 pm post says one card is 63% of Phantasmal Flames. Reply with the text below, or say "go" in a CoS chat and it posts with you present. Don't delete. The site's own explainer (`/how-prices-work`) now states both rules with their scope.
 - **One "go" before Mon Oct 12 (no sign-in):** the snapshot-workflow fix from the weekly, unchanged.
 - ~~eBay Partner Network is still signed out~~ **✅ closed Oct 7 — Mo sent the two CSV exports (by day + by custom ID, Sep 23–Oct 6); read done.** From now on the Wednesday read uses CSVs you drop in `Card Hub/epn/`; no sign-in is asked for.
 - **/track-record Greninja yes/no, Bluesky, TCGplayer (#2), TAG (#4):** unchanged.
