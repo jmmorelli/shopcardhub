@@ -61,6 +61,55 @@ Mo ruled that the screen and the mark both run on **PriceCharting's blended ungr
 
 The alternative — an eBay-only screen — is a defensible index and would have produced a 75-card basket. It is not the index we run. Restating to the eBay basis remains open (see §7) and, if it happens, is a **logged divisor adjustment with the level unchanged**, never a silent re-base.
 
+### 2c. Amendment, Oct 6 2026 (Mo): THE HOLO RULE — holo-tier slots are standing constituents
+
+> **Every holo-tier card in a set is in its index. The liquidity screen applies to non-holo slots only.**
+
+**What Mo said (Oct 6, in chat):** holos are more important than non-holos and must be in the Pokémon set-index baskets; fix the
+holos missing from Skyridge and the classic sets immediately — on all indices, not just Skyridge. "Holographics are obviously worth
+more than non" — this should have been common knowledge from the Pokémon KB.
+
+**What was wrong.** §2 treats the screen as a pure liquidity test with no price floor, which is right for the cheap end and wrong
+for the top: in cards, illiquidity *correlates with price*. A $3,000 raw Gengar H9 sells a few times a quarter; a $1 Skyridge common
+sells forty times a month. So the screen was selecting *against* value. The Oct 6 audit (`tools/lib/holo-tier.mjs` against the
+printed rarities): **Skyridge held 3 of its 38 holo-tier slots** (all six Crystals, Gengar H9, Umbreon H30, Gyarados H10 and
+Alakazam H1 out — the level read Poliwrath H24 as the set's priciest card); Aquapolis 20 of 35; Neo Destiny 1st Edition 17 of 24
+(six of the eight Shinings out, Shining Charizard among them); Team Rocket missing Dark Dragonite #5; Team Up 9 out; 78 holo-tier
+slots out across the family. An index that holds a set's commons and not its holos is not measuring the set.
+
+**The rule.** A slot is holo-tier by its *printed rarity* (data/kb/pokemon-rarity.json, from pokemontcg.io): Rare Holo and every
+rarity above it — Shining, Crystal (Rare Secret), Rare Holo V/VMAX/VSTAR/GX, Ultra, Rainbow, Secret, Illustration, Special
+Illustration, Hyper, Radiant, Amazing, Prism Star, Shiny, Classic Collection, ACE SPEC; in the Scarlet & Violet / Mega Evolution era
+"Rare" is printed in holofoil and counts. Common, Uncommon and the non-holo Rare do not. Holo-tier slots:
+- are **always in the basket** — they never enter or exit on the screen (a reconstitution cannot drop one);
+- are **marked on the nearest window with clean sales**: the ticker window first, then 90, 180, 365 days. A row whose count in
+  the ticker window is under the stay threshold is flagged **thin** in the table with the window and count its mark came from
+  — a stale price is never shown as a fresh one;
+- with **no clean raw sale in a year stay out**, and are named on the page as "tracked, unpriced" (never a silent count).
+Non-holo slots keep §2 exactly: 6 to enter, 4 to stay, no price floor.
+
+**Why this is still an index and not a portfolio.** Nobody chooses the holos; the printer did. The universe is unchanged (every
+card in the set), the basket rule is a published, mechanical function of printed rarity and sales, and it applies identically to
+every ticker. The precedent is the one §3 already leans on: a sector ETF's liquidity screen never drops the sector's largest
+names — size and liquidity move together in equities, so the screen never has to choose. In cards they move apart, so the rule
+has to say which wins. Value wins.
+
+**Level continuity.** Applying the rule is composition, not a market event: `--holo` enters the holo-tier slots at their dated
+marks, re-applies both cap legs, and sets the divisor so the level is identical before and after (logged in `divisorLog`,
+`capLog`, `screenLog`; a history row notes "holo rule (+N)"). Applied Oct 6 2026 to all 27 sector tickers (`a41927b`): SK03
+70→181 of 182, AQ03 126→186, ND1E 105→112, TU19 175→184, CEL21 71→75, ND02 109→112, TR00 82→83 …; every level unchanged;
+0 holo-tier slots out.
+
+**The window change that rode with it (Mo, Oct 6).** The ten WOTC-era *Unlimited* sets (BS99 JU99 FO99 TR00 NG00 NDC01 NR01
+ND02 AQ03 SK03) now screen and mark on **90 days**, the window their 1st Edition / Shadowless siblings have used since Sep 30 —
+one print family, one window; raw vintage sells a few times a month. Every kept row was re-marked on the 90-day median in the
+same level-neutral step, so from here those ten move on 90-day medians (smoother, a little slower). Modern sets stay on 30.
+A stored-vs-CONFIG window mismatch now refuses a `--mark`: a window change is always a logged `--holo` step, never slipped in.
+
+**Where the rule is not needed.** The six chase indices (PB26 CR26 AH26 PRIS25 DR25 PF25) are hand-scoped chase tiers whose
+basket *is* their universe — nothing is screened there. TH26 (191/191) and SV151, HF19, CZ23 and the WOTC 1st Edition sets other
+than ND1E/NDC1E/NR1E already held every holo-tier slot; the rule flags them and changes nothing.
+
 ## 3. The 25% single-card cap
 
 > No single card may exceed **25%** of the index at reconstitution.
