@@ -34,8 +34,12 @@ const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const DRY = args.includes("--dry");
 // --bake (Sep 30 2026, the release-date rebase): re-bake every chase page from data/indices.json as it stands — no marks,
 // no history row, indices.json untouched. The strip, level, levelchg, stats, table and CARDS all follow the file.
-const BAKE = args.includes("--bake");
-const marksFile = opt("--marks", BAKE ? "/dev/null" : null);
+const BAKE = args.includes("--bake") || args.includes("--cap");   // --cap bakes like --bake after capping
+// --cap (Oct 7 2026, Mo: "it should only be 25% of the index"): apply the 25% single-card cap to every chase basket now as a
+// logged, level-neutral divisor adjustment (no marks, no history row), then re-bake the pages. From then on every weekly
+// re-mark re-applies the cap after pricing (level computed on the old weights, then weights + divisor reset, level unchanged).
+const CAPOP = args.includes("--cap");
+const marksFile = opt("--marks", BAKE || CAPOP ? "/dev/null" : null);
 const DATE = opt("--date", new Date().toLocaleDateString("en-CA"));
 if (!marksFile) { console.error("usage: node tools/remark-indices.mjs --marks marks.txt [--date YYYY-MM-DD] [--dry]"); process.exit(2); }
 
@@ -59,6 +63,36 @@ const pctTxt = (p, dec = 1) => (p >= 0 ? "▲ " : "▼ ") + Math.abs(p).toFixed(
 const signed = (p, dec = 2) => (p >= 0 ? "+" : "−") + Math.abs(p).toFixed(dec) + "%";
 const clr = (p) => (p >= 0 ? "var(--gn)" : "var(--rd)");  // pages define --gn (not --grn) for green
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// ---- the chase cap (Oct 7 2026): weights w so no card exceeds CAP of Σ(price·w); single leg only, w ≤ 1 ----
+const CAP = 0.25;
+const wOf = (b) => (b.w == null ? 1 : b.w);
+const bvOf = (basket) => +basket.reduce((a, b) => a + b.price * wOf(b), 0).toFixed(2);
+function capWeights(basket) {
+  basket.forEach((b) => { b.w = 1; });
+  for (let it = 0; it < 200; it++) {
+    let changed = false;
+    const T = basket.reduce((a, b) => a + b.price * b.w, 0);
+    for (const b of basket) { if ((b.price * b.w) / T > CAP + 1e-9) { b.w = +((CAP * T) / b.price).toFixed(6); changed = true; } }
+    if (!changed) break;
+  }
+  basket.forEach((b) => { if (b.w >= 1) b.w = 1; });
+}
+// re-cap a ticker without moving its level: new divisor = new basket value / current level; logged
+function recap(ix, k, why) {
+  const before = ix.divisor;
+  const bv0 = ix.basket.reduce((a, b) => a + b.price * wOf(b), 0);
+  capWeights(ix.basket);
+  const bv = bvOf(ix.basket);
+  const bv1 = ix.basket.reduce((a, b) => a + b.price * b.w, 0);
+  const after = +(before * (bv1 / bv0)).toFixed(6);   // level-neutral by construction (no rounding through the 2-dp level)
+  ix.cap = CAP; ix.capRule = "25% single-card cap, re-applied at every weekly mark (Mo, Oct 7 2026)";
+  if (Math.abs(after - before) > 1e-6) {
+    ix.divisor = after;
+    ix.divisorLog = ix.divisorLog || [];
+    ix.divisorLog.push({ date: DATE, before, after, why });
+  }
+  return bv;
+}
 
 const summary = {};
 
@@ -67,7 +101,8 @@ for (const k of POKE) {
   const ix = idx[k]; const m = marks[k] || {};
   if (BAKE) {
     const h = ix.history, L = h[h.length - 1], P = h.length > 1 ? h[h.length - 2] : L;
-    const bv = +ix.basket.reduce((a, b) => a + b.price, 0).toFixed(2);
+    if (CAPOP) recap(ix, k, "CAP (Mo 2026-10-07): 25% single-card cap applied; weights reset, level unchanged.");
+    const bv = bvOf(ix.basket);
     summary[k] = { level: L.level, prevLevel: P.level, wow: (L.level / P.level - 1) * 100, bv, remarked: 0, n: ix.basket.length, universe: ix.universe.length, date: L.date };
     continue;
   }
@@ -79,16 +114,19 @@ for (const k of POKE) {
       b.prevPrice = b.price; b.prevAsOf = b.asOf;
       b.price = np; b.asOf = DATE; remarked++;
     }
-    bv += b.price;
   }
-  bv = +bv.toFixed(2);
+  bv = bvOf(ix.basket);
   const level = +(bv / ix.divisor).toFixed(2);
   const wow = (level / prevRow.level - 1) * 100;
   if (ix.history.some((h) => h.date === DATE)) throw new Error(`${k}: history already has a ${DATE} row — refusing to double-mark.`);
   ix.history.push({ date: DATE, level, basketValue: bv, divisor: ix.divisor, priced: ix.basket.length, note: "weekly re-mark" });
+  if (ix.cap) {   // re-apply the cap on the new prices; level unchanged; the history row records the post-cap basket
+    bv = recap(ix, k, "weekly re-mark: 25% cap re-applied on the new marks; level unchanged.");
+    const row = ix.history[ix.history.length - 1]; row.basketValue = bv; row.divisor = ix.divisor; row.note = "weekly re-mark · cap re-applied";
+  }
   summary[k] = { level, prevLevel: prevRow.level, wow, bv, remarked, n: ix.basket.length, universe: ix.universe.length };
 }
-if (!BAKE) idx.updated = DATE;
+if (!BAKE && !CAPOP) idx.updated = DATE;
 
 // ---- 2) pages ----
 const stripHtml = () => {
@@ -148,9 +186,10 @@ for (const k of POKE) {
   html = html.replace(LEVELCHG, (all, inc) =>
     `<div class="levelchg" data-prices-updated="${MD}">100 = ${baseLbl} · live since ${inc} · re-marked ${mdy(MD)} · ${s.wow >= 0 ? "▲" : "▼"} ${signed(s.wow, 1)} w/w</div>`);
 
+  // method note: the divisor now moves at every capped mark (Oct 7 2026), so the printed figure follows the file
+  html = html.replace(/(<b>INDEX LEVEL<\/b> — Σ\(sold mark × weight\) ÷ divisor \()[\d.]+\)/, (_, a) => `${a}${ix.divisor})`);
   // stats
-  const prices = ix.basket.map((b) => b.price);
-  const w = prices.map((p) => p / s.bv);
+  const w = ix.basket.map((b) => (b.price * wOf(b)) / s.bv);
   const sortedW = [...w].sort((a, b) => b - a);
   const top2 = (sortedW[0] + sortedW[1]) * 100;
   const hhi = w.reduce((a, x) => a + x * x, 0);
@@ -189,7 +228,7 @@ for (const k of POKE) {
       launch = Math.abs(np) < 0.05 ? `<span style="color:var(--dim)">0.0%</span>` : `<span style="color:${clr(np)}">${pctTxt(np)}</span>`;
       launchAttr = ` data-launch="${base.toFixed(2)}"`;
     }
-    const wt = (b.price / s.bv) * 100;
+    const wt = ((b.price * wOf(b)) / s.bv) * 100;
     blk = blk.replace(cell[0], `<td class="num">${money(b.price)}</td><td class="num wt">${wt.toFixed(1)}%</td><td class="num"${launchAttr}>${launch}</td>`);
     if (!BAKE && b.asOf === DATE) blk = blk.replace(/<td class="num dim2">\d\d-\d\d<\/td>/, `<td class="num dim2">${mmdd(DATE)}</td>`);
     return { b, blk };
@@ -230,7 +269,7 @@ for (const k of POKE) {
   for (const c of cards) {
     const num = (c.num.match(/#(\w+)\//) || [])[1]; const b = byNum.get(num);
     if (!b) throw new Error(`${k}: CARDS entry ${c.num} not in basket`);
-    c.px = b.price; c.wt = +((b.price / s.bv) * 100).toFixed(1); c.asof = b.asOf;
+    c.px = b.price; c.wt = +(((b.price * wOf(b)) / s.bv) * 100).toFixed(1); c.asof = b.asOf;
   }
   cards.sort((a, c) => c.px - a.px);
   html = html.replace(cm[0], `var CARDS = ${JSON.stringify(cards)};\n`);
@@ -248,7 +287,7 @@ for (const k of POKE) {
   console.log(`${k}: ${s.prevLevel.toFixed(2)} -> ${s.level.toFixed(2)} (${signed(s.wow, 2)} w/w) basket $${s.bv.toFixed(2)} re-marked ${s.remarked}/${s.n} (universe ${s.universe}) top2 ${s.top2.toFixed(1)}% eff ${s.eff.toFixed(1)} skew ${s.skew.toFixed(2)} ROC rows ${s.rocRows} | #1 ${s.top}${s.hero && !s.hero.startsWith(s.top.split(" #")[0]) ? "  ** HERO IMAGE IS " + s.hero + " — check **" : ""}`);
 }
 if (DRY) { console.log("(dry run — nothing written)"); process.exit(0); }
-if (!BAKE) fs.writeFileSync(idxPath, JSON.stringify(idx, null, 1));
+if (!BAKE || CAPOP) fs.writeFileSync(idxPath, JSON.stringify(idx, null, 1));
 for (const [f, h] of Object.entries(pageEdits)) fs.writeFileSync(f, h);
 console.log(`written: data/indices.json + ${Object.keys(pageEdits).length} pages (${DATE})`);
 // The CHASE strip (tools/build-chase-strip.mjs, Sep 26 2026) is baked from each page's CARDS array — re-bake it so the

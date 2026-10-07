@@ -13,7 +13,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## Open — from the desk (2026-10-07, 14:00 run). Mo, these are the only things waiting on you
 
-- **Today, before 6:30 pm PT — one reply under your pinned index thread** (X Desk Watch block just below; pushed to your phone ~14:20 PT). Posts 3 and 4 say no card can be over 25% and every index starts at 100 in its release month; tonight's 6:30 pm post says one card is 63% of Phantasmal Flames. Reply with the text below, or say "go" in a CoS chat and it posts with you present. Don't delete. The site's own explainer (`/how-prices-work`) now states both rules with their scope.
+- **One reply under your pinned index thread (no longer time-boxed — tonight's post was pulled)** (X Desk Watch block just below; pushed to your phone ~14:20 PT). Posts 3 and 4 say no card can be over 25% and every index starts at 100 in its release month; tonight's 6:30 pm post says one card is 63% of Phantasmal Flames. Reply with the text below, or say "go" in a CoS chat and it posts with you present. Don't delete. The site's own explainer (`/how-prices-work`) now states both rules with their scope.
 - **One "go" before Mon Oct 12 (no sign-in):** the snapshot-workflow fix from the weekly, unchanged.
 - ~~eBay Partner Network is still signed out~~ **✅ closed Oct 7 — Mo sent the two CSV exports (by day + by custom ID, Sep 23–Oct 6); read done.** From now on the Wednesday read uses CSVs you drop in `Card Hub/epn/`; no sign-in is asked for.
 - **/track-record Greninja yes/no, Bluesky, TCGplayer (#2), TAG (#4):** unchanged.
@@ -25,7 +25,8 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 ## Open — from X Desk Watch (2026-10-07, 13:00 run). One reply, best before 6:30 pm PT today
 
 - **Your pinned index thread (Oct 6) has two lines the site contradicts.** Post 3 says no card can be more than 25% of a basket, but the six chase indices have no cap, and today's 6:30 pm post says Mega Charizard X is 63% of Phantasmal Flames. Post 4 says every index starts at 100 in its release month, but the older sets (WOTC, Hidden Fates, Team Up) start at the first month the sold history covers. **Ask: reply under the thread with this (or say "go" in a CoS chat and it posts it with you present). Don't delete.**
-  > Two fixes to this thread. Sets older than the sold history (the WOTC sets, Hidden Fates, Team Up) start at 100 in the first month it reliably covers, not release month. And the 25% cap is for whole-set indices; the six chase indices have none, so one card can carry most of one.
+  > One fix to this thread: sets older than the sold history (the WOTC sets, Hidden Fates, Team Up) start at 100 in the first month it reliably covers, not release month. And as of today the 25% cap covers every index, the six chase sets included.
+  *(Text updated Oct 7 ~15:30 PT after the cap shipped: post 3 is now true; only post 4 needs the fix. Tonight's 6:30 pm PF25 post was pulled from the scheduler with Mo present.)*
   (278 characters. Details: Project `claude/cos/x-desk-watch-run-2026-10-07-1300.md`.)
 ---
 
