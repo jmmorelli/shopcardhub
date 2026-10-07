@@ -1051,6 +1051,18 @@ see which cards in a set matter and what they are worth, instead of asking him t
 index" describes the method, never the man. Details and the word list: Project `claude/cos/founder-privacy.md`.
 X Desk Watch grades a slip as a FAIL the same day.
 
+## R31 · Anything a person outside reads must read like Mo wrote it (Mo, 2026-10-07)
+
+Mo: *"it is of utmost importance that our writing to others looks like a human wrote it and not a bot/AI."*
+Binds every email, pitch, reply, X post, Bluesky post, forum answer, newsletter line and vendor message, from every lane.
+
+- **Every outbound draft goes through the `humanizer` skill before it leaves**, then a second read for the tells it lists first: a not-X-but-Y contrast, a one-line closer, a dash, a triad, a bold label. A draft with any of them does not go out.
+- **Mo's voice:** a collector typing. Short, plain, first person ("I"), contractions, one idea per sentence, no em dashes, no "Happy to help!" wrappers, no pitch-deck words (leverage, insights, robust, data-driven, unlock). Round prices the way a person would ("about $808") unless the exact figure is the point; never more than two numbers in one sentence.
+- **Emails:** greeting by first name, three short paragraphs at most, one link with no tracking parameters, signed "Mo" alone. No signature block, no title.
+- **Numbers still obey R18/R20** — rounding in prose is fine; changing what a number means is not.
+
+*Origin: the Oct 7 outreach batch went out reading like a data report (parenthesised sale counts, five index levels in one sentence, "the sets around it have not"). Mo caught the risk the same afternoon.*
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
