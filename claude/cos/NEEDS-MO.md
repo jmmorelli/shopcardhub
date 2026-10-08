@@ -13,7 +13,7 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## Open — from the desk (2026-10-08, 14:00 run). Mo, these are the only things waiting on you
 
-- **Paste one message into Grok (1 min), or say "send the Grok brief" in a CoS chat.** The Oct 8 scout plan you approved ("go and do all") still hasn't reached the bots: the Grok Bot app refuses screen reads from unattended runs (blocked again today). The text is in Project `claude/cos/grok-x-native-read-2026-10-08.md`, between ▼ MESSAGE TO PASTE and ▲ end, for the ShopCardHub Content group.
+- ~~Paste the Grok brief~~ **✅ delivered Oct 8 ~16:55 PT by the CoS with Mo present** (the app allowed it this time): full plan text sent to the ShopCardHub Content group, then a follow-up — start Fri Oct 9 without waiting for a reset announcement; stop and say so at any usage or payment prompt.
 - ~~One word: were today's likes and the new follow yours?~~ **✅ Mo, Oct 8 ~16:50 PT: "yes the likes were me."** X Desk Watch's unattributed-likes MED is closed; Mo's own likes and follows are not graded (R10 Am. 6: Mo handles his own interactions).
 - ~~One "go" for the classic-marks job~~ **✅ done on your "I approve" (Oct 8 ~16:40 PT):** the classic and WOTC indices now mark in their own job after the nightly (Mon/Thu); 9 of them were re-marked by hand today, the other 15 mark Monday.
 - Carried: the May "chase rule" call (block below) · Bluesky, TCGplayer (#2), TAG (#4).
