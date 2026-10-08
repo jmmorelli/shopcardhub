@@ -4272,6 +4272,17 @@
           "gates": "audit-prices FAIL 0 / WARN 76 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal FAIL 0 / WARN 1 = baseline on e0df805",
           "liveVerified": "~100 s curl: /topps-chrome-formula-1-2026, /charizard-ex-worth, /prismatic-evolutions-vs-destined-rivals 200 + BUYSTRIP + sch-signup + stamp 2026-10-08; /release-calendar 200 with the Oct 29 row; IndexNow 5 URLs 200",
           "note": "Improve-only run (A/B/C at 5/5 for league week 2): three league pages re-read Oct 8, one reported release row added. Deploys. Docs commit follows (no deploy)."
+        },
+        {
+          "date": "2026-10-08",
+          "commits": [
+            "6d25841",
+            "17902da"
+          ],
+          "by": "CoS · Bowman release team (Mac deploy key, unattended)",
+          "gates": "audit-prices FAIL 0 / WARN 76 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal FAIL 0 / WARN 1 = baseline · first-bowman dry run clean (659 INFO)",
+          "liveVerified": "curl after each push: /bowman-chrome-sapphire-2026-index (Dropped on Topps.com, auto ladder, 0.29/case, 'mirror a September 1st'), /bowman-chrome-baseball-2026 (BCS26 link, 104 CPA / 97 1sts), /release-calendar (Chrome Sapphire note + guide), /bowman-sapphire-2026 (Padparadscha ladder); IndexNow 6 URLs 200",
+          "note": "2026 Bowman Chrome Sapphire release run: Topps PDF confirms BSPA-EHA Hartman (34 autos; kept out of BCS26), break math 34, KB 02/03 §9 + verifier 92.3% PASS; live-sweep HIGH on June Sapphire ladder fixed in 17902da. No index methodology/constituent change. Rollback: git revert 17902da 6d25841."
         }
       ]
     },
