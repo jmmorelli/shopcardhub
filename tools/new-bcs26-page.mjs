@@ -61,14 +61,14 @@ const html = `${head}
 </style>
 <div class="bf">
 <div class="mast"><div><div class="eyebrow">Set index · pre-launch</div><h1><span class="tick">BCS26</span> · 2026 Bowman Chrome Sapphire</h1>
-<div class="subline">On Topps.com (EQL) Wednesday, Oct 7 at 9 am PT, $599.99 a box. This is the sapphire edition of September's 2026 Bowman Chrome, not June's 2026 Bowman Sapphire. Like every Bowman index it is based at its release month (100 = Oct 2026); the first level prints once enough cards have real, dated sales, and nothing is printed before then.</div></div>
+<div class="subline">Dropped on Topps.com (EQL) Wednesday, Oct 7 at 9 am PT, $599.99 a box; Topps has not published a ship date. This is the sapphire edition of September's 2026 Bowman Chrome, not June's 2026 Bowman Sapphire. Like every Bowman index it is based at its release month (100 = Oct 2026); the first level prints once enough cards have real, dated sales, and nothing is printed before then.</div></div>
 <div class="levelbox"><div class="level">PRE</div><div class="levelchg">first mark: the Monday or Thursday after the screen fills</div></div></div>
 
 <h2>What it will track</h2>
 <div class="bf-grid">
-<div><b>Main line</b><span>The 33 Chrome Sapphire Prospect Autographs (CSPA) whose September Chrome auto is the player's 1st Bowman auto. A sapphire edition is the same card in sapphire, so it carries the same 1st logo. Sapphire Selections autos are an insert and are left out.</span></div>
+<div><b>Main line</b><span>The 33 Chrome Sapphire Prospect Autographs (CSPA) whose September Chrome auto is the player's 1st Bowman auto. A sapphire edition is the same card in sapphire, so each one mirrors the player's September 1st Bowman auto (the 2025 Chrome Sapphire checklist marked its autos 1st; Topps' 2026 checklist marks no 1sts, so the logo on these cards is confirmed from card images as copies surface). The checklist's 34th auto, BSPA-EHA Eric Hartman, is left out: his 1st Bowman auto is May's 2026 Bowman CPA-EHA. Sapphire Selections autos are an insert and are left out.</span></div>
 <div><b>Sub-index</b><span>The sapphire base Chrome Prospects (BCP-151 to 250, no autograph), tracked as their own line for the non-auto buyer. 72 of the 100 are the player’s 1st Bowman Chrome; the other 28, Holliday BCP-209 and Arquette BCP-174 among them, are returning cards with no 1st logo.</span></div>
-<div><b>Color ladder</b><span>Green, Gold, Orange, Black, Red and Padparadscha sapphire autos. The source has not published their print runs yet, so no serial is stated here until it does.</span></div>
+<div><b>Color ladder</b><span>Base /199, Green /99, Gold /50, Orange /25, Black /10, Red /5 and Padparadscha 1/1 (print runs per Checklist Insider; base /199 and Green /99 confirmed by a second source).</span></div>
 </div>
 
 <h2>How it goes live</h2>
