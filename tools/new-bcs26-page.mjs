@@ -30,7 +30,7 @@ if (/BOW26 ·/.test(head.slice(0, head.indexOf("<!-- NAV:START")))) throw new Er
 const L = (q, id) => assertClean(ebaySearchUrl({ q, customid: "bcs26-" + id, sacat: SACAT_SPORTS }));
 // R8: every query names "chrome sapphire" and drops June's BSPA cards, so June's 2026 Bowman Sapphire never answers.
 const shops = [
-  ["Chrome Sapphire 1st autos", "2026 bowman chrome sapphire auto -bspa -break -lot", "auto"],
+  ["Chrome Sapphire autos", "2026 bowman chrome sapphire auto -bspa -break -lot", "auto"],
   ["Chrome Sapphire hobby box", "2026 bowman chrome sapphire hobby box -break -case -pyt", "box"],
 ];
 const html = `${head}
@@ -67,20 +67,20 @@ const html = `${head}
 <h2>What it will track</h2>
 <div class="bf-grid">
 <div><b>Main line</b><span>The 33 Chrome Sapphire Prospect Autographs (CSPA) whose September Chrome auto is the player's 1st Bowman auto. A sapphire edition is the same card in sapphire, so each one mirrors the player's September 1st Bowman auto (the 2025 Chrome Sapphire checklist marked its autos 1st; Topps' 2026 checklist marks no 1sts, so the logo on these cards is confirmed from card images as copies surface). The checklist's 34th auto, BSPA-EHA Eric Hartman, is left out: his 1st Bowman auto is May's 2026 Bowman CPA-EHA. Sapphire Selections autos are an insert and are left out.</span></div>
-<div><b>Sub-index</b><span>The sapphire base Chrome Prospects (BCP-151 to 250, no autograph), tracked as their own line for the non-auto buyer. 72 of the 100 are the player’s 1st Bowman Chrome; the other 28, Holliday BCP-209 and Arquette BCP-174 among them, are returning cards with no 1st logo.</span></div>
-<div><b>Color ladder</b><span>Base /199, Green /99, Gold /50, Orange /25, Black /10, Red /5 and Padparadscha 1/1 (print runs per Checklist Insider; base /199 and Green /99 confirmed by a second source).</span></div>
+<div><b>Sub-index</b><span>The sapphire base Chrome Prospects (BCP-151 to 250, no autograph), tracked as their own line for the non-auto buyer. 72 of the 100 mirror a September card that is the player’s 1st Bowman Chrome; the other 28, Holliday BCP-209 and Arquette BCP-174 among them, mirror returning cards with no 1st logo.</span></div>
+<div><b>Color ladder</b><span>Base /199 (per Slabsquatch and Baseballcardpedia); Green /99, Gold /50, Orange /25, Black /10, Red /5 and Padparadscha 1/1 (per Checklist Insider; Green /99 also Slabsquatch).</span></div>
 </div>
 
 <h2>How it goes live</h2>
 <ul class="bf-rules">
-<li>All 33 Chrome Sapphire 1st autos are in the universe. A card enters the basket once it has 6 or more clean dated sales in 30 days.</li>
+<li>All 33 Chrome Sapphire autos that mirror a September 1st Bowman auto are in the universe. A card enters the basket once it has 6 or more clean dated sales in 30 days.</li>
 <li>Priced from sold comps only, never asks, and never from the regular Chrome card: a sapphire auto sells at its own price. 100 = the release month (Oct 2026), the Bowman rule since Oct 1; re-marked Monday and Thursday once live.</li>
 <li>Boxes ship after the online sale, so the first sales may take a few weeks. Launch pricing is recorded, not smoothed away, and the chart will show it.</li>
 </ul>
 
 <h2>Hunting now</h2>
 <div class="bf-shop">${shops.map(([l, q, id]) => `<a href="${L(q, id)}" target="_blank" rel="sponsored nofollow noopener">${esc(l)} →</a>`).join("")}</div>
-<p class="bf-f">eBay searches (affiliate links), not prices. The regular release is <a href="/bowman-chrome-2026-index">BCB26</a>; the 2026 cohort index is <a href="/bowman-1st-chrome-index">BOW26</a>. Box facts: Checklist Insider and Topps, read Oct 6.</p>
+<p class="bf-f">eBay searches (affiliate links), not prices. The regular release is <a href="/bowman-chrome-2026-index">BCB26</a>; the 2026 cohort index is <a href="/bowman-1st-chrome-index">BOW26</a>. Box facts: Checklist Insider and Topps, read Oct 8.</p>
 </div>
 <!-- BCS26:END -->
 <script>
