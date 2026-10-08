@@ -351,6 +351,10 @@ body::before{
   </script>
   <link rel="stylesheet" href="/css/site-fixes.css">
   <link rel="stylesheet" href="/css/terminal-shell.css?v=2">
+  <!-- Night Crew Oct 8 (NEW-1): a returning visitor's "since you were here" panel used to land above the board ~1 s after
+       paint (phone CLS 0.17-0.23). This reads the same two localStorage keys js/home-you.js reads and reserves the panel's
+       exact height before first paint; home-you.js then fills #you-slot. Device-local; nothing is sent anywhere. -->
+  <script>(function(){try{var d=function(t){return new Date(t).toISOString().slice(0,10)},s=parseInt(localStorage.getItem('sch_home_seen')||'',10)||0,v=JSON.parse(localStorage.getItem('sch_vault_v1')||'null'),c=((v&&v.cards)||[]).filter(function(x){return x&&x.name}).length,r=(s&&d(s)!==d(Date.now())?1:0)+(c?1:0);if(r)document.documentElement.classList.add('sch-ret','sch-ret'+r)}catch(e){}})();</script>
 </head>
 <body>
 
@@ -969,9 +973,15 @@ body::before{
           .door b::after{content:" \203A";color:var(--accent,#00ccf5);}
           .door small,.door-k{display:none;}
           #set-indices .panel-h .sub{display:none;}
+          html.sch-ret .tm-deck{display:none;} /* Night Crew Oct 8: a returning visitor has read the explainer; their panel takes its place */
         }
+        /* Night Crew Oct 8 (NEW-1): the slot js/home-you.js fills; 40 px head + 58 px per row + 2 px border, reserved from first paint */
+        html.sch-ret #you-slot{margin-bottom:14px;}
+        html.sch-ret1 #you-slot{min-height:100px;}
+        html.sch-ret2 #you-slot{min-height:158px;}
       </style>
 
+      <div id="you-slot"></div>
       <div class="panel ib-panel" id="set-indices">
         <div class="panel-h"><h2>Set Indices</h2><span class="sub">100 = the set's release month · charts show % moves · green = up, red = down · <a href="/indices">every set &amp; how it works »</a></span></div>
         <div class="tbl-wrap">
@@ -1136,6 +1146,6 @@ feed <b data-home="day">Oct 7</b> · <span data-home="stamp">37/41 marked · 9 g
 <script src="/js/engine-stats.js?v=1"></script>
 <script src="/js/vault-schema.js?v=3"></script>
 <script src="/js/home.js?v=13" defer></script>
-<script src="/js/home-you.js?v=2" defer></script>
+<script src="/js/home-you.js?v=3" defer></script>
 </body>
 </html>

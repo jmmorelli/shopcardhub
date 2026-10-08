@@ -569,6 +569,10 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
 .sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { display: block; margin-top: 10px; min-height: 62px; }
 @media (max-width: 999px) { .sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { min-height: 106px; } }
 @media (max-width: 760px) { .sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { min-height: 131px; } }
+/* B54 (Night Crew, Oct 8): at <= 420 px §20 stacks the field and the button, so the filled box is 177 px (195 at
+   <= 379 px), not 131; the short reservation let the BCS26 index jump 46 px when signup.js filled it (phone CLS 0.027). */
+@media (max-width: 420px) { .sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { min-height: 177px; } }
+@media (max-width: 379px) { .sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { min-height: 195px; } }
 .bstrip .bs-live:empty { display: inline-block; min-height: 17px; }
 @media (min-width: 761px) {
   .bstrip .bs-live:empty { min-width: 180px; }

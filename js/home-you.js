@@ -16,7 +16,8 @@
   try { seen = parseInt(localStorage.getItem(SEEN) || '', 10) || null; } catch (e) { seen = null; }
   var cards = (store && store.cards) || [];
   var stamp = function () { try { localStorage.setItem(SEEN, String(Date.now())); } catch (e) {} };
-  if (!seen && !cards.length) { stamp(); return; }
+  var unslot = function () { document.documentElement.classList.remove('sch-ret', 'sch-ret1', 'sch-ret2'); };
+  if (!seen && !cards.length) { unslot(); stamp(); return; }
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]; }); };
   var iso = function (ms) { return new Date(ms).toISOString().slice(0, 10); };
@@ -51,15 +52,15 @@
       }
       chips.sort(function (a, b) { return Math.abs(b.move) - Math.abs(a.move); });
     }
-    if (!chips.length && !mine.length) { stamp(); return; }
+    if (!chips.length && !mine.length && !seenDay) { unslot(); stamp(); return; }   // Night Crew Oct 8: a returner always gets the panel (the slot is reserved for it)
     var head = seenDay ? 'Since you were here · ' + dstr(seenDay) : 'Your watchlist';
-    var html = '<div class="panel-h"><h2>' + esc(head) + '</h2><span class="sub">' + (cards.length ? '<a href="/watchlist">' + cards.length + ' card' + (cards.length === 1 ? '' : 's') + ' on your watchlist »</a>' : 'index moves since your last visit') + '</span></div>';
+    var html = '<div class="panel-h"><h2>' + esc(head) + '</h2><span class="sub">' + (cards.length ? '<a href="/watchlist">' + cards.length + ' card' + (cards.length === 1 ? '' : 's') + '<span class="yh-long"> on your watchlist</span> »</a>' : '<span class="yh-plain">index moves since your last visit</span>') + '</span></div>';
     if (chips.length) {
       html += '<div class="yh-row"><span class="yh-k">Indices</span>' + chips.slice(0, 9).map(function (c) {
         return '<a class="yh-c" href="' + esc(c.href) + '"><b>' + esc(c.k) + '</b><i class="' + cls(c.move) + '">' + esc(pct(c.move, 2)) + '</i><small>' + c.level.toFixed(2) + '</small></a>';
       }).join('') + '</div>';
     } else if (seenDay) {
-      html += '<div class="yh-row yh-note">No index has re-marked since ' + esc(dstr(seenDay)) + ' — the next Monday mark is the next thing that moves.</div>';
+      html += '<div class="yh-row yh-note">No index has re-marked since then. Check back after the next mark.</div>';
     }
     if (mine.length) {
       var items = moved.slice(0, 6).map(function (m) {
@@ -72,16 +73,26 @@
         (moved.length > 6 ? '<span class="yh-more">+' + (moved.length - 6) + ' more</span>' : '') + '</div>';
     }
     var css = document.createElement('style');
-    css.textContent = '.you-home{border-left:3px solid var(--gd,#f5c800)}.you-home .yh-row{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--bd,rgba(255,255,255,.08));font-family:var(--fm,ui-monospace,monospace);font-size:11.5px}' +
-      '.you-home .yh-k{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim,#7a969e);min-width:72px}' +
-      '.you-home .yh-c{display:inline-flex;align-items:baseline;gap:7px;background:var(--p2,#111820);border:1px solid var(--bd,rgba(255,255,255,.1));border-radius:2px;padding:4px 9px;text-decoration:none;color:var(--tx,#b8cdd4);white-space:nowrap}.you-home .yh-c:hover{border-color:var(--gd,#f5c800)}.you-home .yh-c b{color:var(--th,#e4f0f4);font-weight:600}.you-home .yh-c i{font-style:normal;font-weight:700}.you-home .yh-c i.up{color:var(--gn,#00e07a)}.you-home .yh-c i.dn{color:var(--rd,#ff2e55)}.you-home .yh-c i.flat{color:var(--dim,#7a969e)}.you-home .yh-c small{color:var(--dim,#7a969e);font-size:10px}' +
-      '.you-home .yh-more,.you-home .yh-note{color:var(--dim,#7a969e)}' +
-      '@media(max-width:640px){.you-home .yh-row{padding:9px 10px;gap:6px 8px}.you-home .yh-c{white-space:normal}.you-home .yh-k{min-width:0;flex:1 1 100%}}';
+    /* Night Crew Oct 8 (NEW-1): fixed geometry so the slot index.html reserves before paint is exactly filled:
+       head 40 px, each row 58 px (40 px chips + 9 px padding), one line per row that scrolls sideways on a phone. */
+    css.textContent = '.you-home{border-left:3px solid var(--gd,#f5c800)}.you-home .panel-h{height:40px;box-sizing:border-box;padding:0 16px;flex-wrap:nowrap;overflow:hidden}.you-home .panel-h h2{white-space:nowrap}.you-home .panel-h .sub{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}' +
+      '.you-home .yh-row{display:flex;align-items:center;gap:8px 10px;flex-wrap:nowrap;height:58px;box-sizing:border-box;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;padding:9px 14px;border-top:1px solid var(--bd,rgba(255,255,255,.08));font-family:var(--fm,ui-monospace,monospace);font-size:11.5px}.you-home .yh-row.yh-note{white-space:normal;line-height:1.4}' +
+      '.you-home .yh-k{flex:none;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim,#7a969e);min-width:72px}' +
+      '.you-home .yh-c{flex:none;display:inline-flex;align-items:center;min-height:40px;box-sizing:border-box;gap:7px;background:var(--p2,#111820);border:1px solid var(--bd,rgba(255,255,255,.1));border-radius:2px;padding:4px 9px;text-decoration:none;color:var(--tx,#b8cdd4);white-space:nowrap}.you-home .yh-c:hover{border-color:var(--gd,#f5c800)}.you-home .yh-c b{color:var(--th,#e4f0f4);font-weight:600}.you-home .yh-c i{font-style:normal;font-weight:700}.you-home .yh-c i.up{color:var(--gn,#00e07a)}.you-home .yh-c i.dn{color:var(--rd,#ff2e55)}.you-home .yh-c i.flat{color:var(--dim,#7a969e)}.you-home .yh-c small{color:var(--dim,#7a969e);font-size:11px}' +
+      '.you-home .yh-more{flex:none;white-space:nowrap}.you-home .yh-more,.you-home .yh-note{color:var(--dim,#7a969e)}' +
+      '@media(max-width:640px){.you-home .panel-h{padding:0 12px}.you-home .yh-plain,.you-home .yh-long{display:none}.you-home .panel-h h2{letter-spacing:1.2px}.you-home .yh-k{letter-spacing:.5px}.you-home .yh-row{padding:9px 10px;gap:6px 8px}.you-home .yh-k{min-width:0}}';
     document.head.appendChild(css);
     var el = document.createElement('div');
     el.className = 'panel you-home'; el.id = 'you-home';
     el.innerHTML = html;
-    host.parentNode.insertBefore(el, host); // Oct 7 weekly (UX R5): returning visitors see their block first, not 3.8 phone screens down
+    // Oct 7 weekly (UX R5): returning visitors see their block first, not 3.8 phone screens down.
+    // Night Crew Oct 8: it fills the slot index.html reserved before paint; the reservation is corrected if the guess was off.
+    var slot = document.getElementById('you-slot');
+    if (slot) {
+      slot.appendChild(el);
+      var rows = el.querySelectorAll('.yh-row').length, de = document.documentElement;
+      de.classList.remove('sch-ret1', 'sch-ret2'); de.classList.add('sch-ret', 'sch-ret' + Math.min(rows, 2));
+    } else host.parentNode.insertBefore(el, host);
     stamp();
     if (window.gtag) gtag('event', 'home_you', { indices: chips.length, cards: mine.length, moved: moved.length });
   }

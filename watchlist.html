@@ -543,6 +543,10 @@
        rule in site-fixes.css zeroes the delay, so those visitors see it at once. */
     .vault-pending > #pfWarns, .vault-pending > #pfWarns ~ * { visibility:hidden; animation:vault-show 0s 2s forwards; }
     @keyframes vault-show { to { visibility:visible; } }
+    /* B39 (Night Crew, Oct 8): before the vault renders the page is ~660 px tall, so the footer painted inside the first
+       phone screen and was then pushed ~1,000 px down (390 CLS 0.05-0.22 live). The main column now holds at least one
+       screen from first paint, so the footer starts below the fold and the scrollbar exists from the start. */
+    main#main { min-height:100vh; }
   </style>
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
   <script data-gtag-deferred="G-2Q52C5EKG7">
