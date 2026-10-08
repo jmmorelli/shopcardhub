@@ -1066,6 +1066,17 @@ Binds every email, pitch, reply, X post, Bluesky post, forum answer, newsletter 
 
 *Origin: the Oct 7 outreach batch went out reading like a data report (parenthesised sale counts, five index levels in one sentence, "the sets around it have not"). Mo caught the risk the same afternoon.*
 
+## R32 · No competition-facing posts or outreach until the indices and the knowledge bases are dialed in (Mo, 2026-10-08)
+
+Mo, after @dahldoescards' "2026 Bowman Chrome: One Month In" post (14K likes) and the finding that BCB26 held none of the set's five highest-priced autos: *"We need to dial in the indices and your brain first before we show our competition we are doing what they do for free."*
+
+- **No X post, reply, email or forum answer that compares ShopCardHub to, answers, quotes or is addressed to a competing tracker or index** (ProspectPulse / @dahldoescards, Card Ladder, Market Movers, TCGIndex, Prospects Live and the watchlist in `Card Hub/competitors/watchlist.md`) until Mo lifts this in chat. Ordinary posts about our own indices continue under R10 Am. 2.
+- **ProspectPulse / Andrew Dahl: outreach tabled.** Nothing further goes to him. One R31 email already went Oct 7 15:30 PT in the League D batch Mo approved; a reply, if one comes, is held for Mo and not answered by a lane.
+- **The competitor watch stays read-only** (Monday scan STEP 1.5): intel in, nothing out. Competitor numbers are never a price source (unchanged).
+- **"Dialed in" means, at minimum:** every live index holds its set's top-priced cards (the holo rule for Pokémon; the release-window entry for new Bowman sets; a May-cohort chase rule is a NEEDS-MO call), page and `indices.json` carry the same mark (the Oct 8 nightly divergence is fixed in the workflow), and the Bowman and Pokémon KBs have a verifier pass with 0 HIGH. The CoS says in chat when it believes that bar is met; Mo decides.
+
+*Origin: Oct 8 2026. The post that prompted it is recorded in the Bowman KB, `05-trackers-and-release-window.md`, with his numbers and our cross-check.*
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.

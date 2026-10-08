@@ -4283,6 +4283,16 @@
           "gates": "audit-prices FAIL 0 / WARN 76 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal FAIL 0 / WARN 1 = baseline · first-bowman dry run clean (659 INFO)",
           "liveVerified": "curl after each push: /bowman-chrome-sapphire-2026-index (Dropped on Topps.com, auto ladder, 0.29/case, 'mirror a September 1st'), /bowman-chrome-baseball-2026 (BCS26 link, 104 CPA / 97 1sts), /release-calendar (Chrome Sapphire note + guide), /bowman-sapphire-2026 (Padparadscha ladder); IndexNow 6 URLs 200",
           "note": "2026 Bowman Chrome Sapphire release run: Topps PDF confirms BSPA-EHA Hartman (34 autos; kept out of BCS26), break math 34, KB 02/03 §9 + verifier 92.3% PASS; live-sweep HIGH on June Sapphire ladder fixed in 17902da. No index methodology/constituent change. Rollback: git revert 17902da 6d25841."
+        },
+        {
+          "date": "2026-10-08",
+          "commits": [
+            "c409f34"
+          ],
+          "by": "CoS with Mo (cloud build, Mac deploy key, git am tree-matched)",
+          "gates": "audit-prices FAIL 0 / WARN 77 (= baseline on unchanged main, identical WARN set) · audit-site FAIL 0 / WARN 5 (171) · audit-terminal --feed data/feed FAIL 0 / WARN 1",
+          "liveVerified": "curl ~3 min after push: /bowman-chrome-2026-index 84.83 re-marked 10/08/26, Show all 90 cards, release-window note; /bowman-1st-chrome-index 71.70, 154 cards; /pokemon-30th-anniversary-2026 79.33; /how-prices-work release-window sentence; live data/indices.json BCB26/BOW26/TH26/SV151 history 2026-10-08; home board BCB26 84.83",
+          "note": "Index dial-in (Mo: fix it all): RELEASE-WINDOW ENTRY in build-sector-index.mjs (90 d after release, entries at each mark, logged divisor adjustment, level unchanged; BOW26 entryWindowFrom 2026-09-09); BCB26 42 -> 90 of 97 (Hernandez/Renteria/Gomez/Asigen in), BOW26 106 -> 154; seven tickers re-marked today because the Oct 8 nightly's marks were erased from indices.json by a later group's git checkout (iw-2026-10-08-1) — price-snapshot.yml now restores per ticker key (tools/ci/merge-ticker-keys.mjs) and merges marked keys over a main clash. Methodology change (constituent entry timing), approved by Mo in chat. Rollback: git revert c409f34."
         }
       ]
     },

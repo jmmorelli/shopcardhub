@@ -11,6 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the CoS with Mo (2026-10-08, ~10:15–12:20 PT). One call, no sign-in
+
+- **One word — a Bowman "chase rule" for the May cohort?** The Oct 8 fix (release-window entry, 90 days) puts September's headliners back in BCB26 and BOW26. May's window closed Aug 11, so under the pure liquidity screen **Aiva Arquette, Max Clark, Seong-Jun Kim and Gage Jump sit outside BB26 and BOW26** until the Jan 4 reconstitution (fewer than 6 clean sales in 30 days each; the same "illiquid because expensive" effect the holo rule fixed for Pokémon). Options: (a) a Bowman chase rule — the Bangers board names and any May auto that has ever marked above ~$50 become standing constituents, marked on the nearest window with sales (30 → 90 → 180 d), flagged thin, like the holo rule; (b) leave the screen as it is and let January sort it. CoS leans (a), one rule for both Bowman release lines. Say "a" or "b"; silence = a at the Oct 14 weekly.
+- **FYI, no action:** the outreach email to ProspectPulse (Andrew Dahl) went out **yesterday, Oct 7 15:30 PT**, in the batch you approved ("send every email"), before today's "don't reach out" — nothing further goes to him (R32), and if he replies the desk holds it for you.
+- **FYI, no action:** TH26 (30th Celebration) marked 79.33 today, −19.6% on the week. It is real, not a data error: Lugia #149 $350 → $240, Mew ex $140 → $90, Gengar ex $110 → $75; the median card moved −1.6%. The chase cards carry the price-weighted index, as designed. The Monday close post will say it plainly; nothing to do.
+- **Bluesky, TCGplayer (#2), TAG (#4):** unchanged.
+
+---
+
 ## Open — from the desk (2026-10-07, 14:00 run). Mo, these are the only things waiting on you
 
 - ~~One reply under your pinned index thread~~ **✅ posted Oct 7 ~16:00 PT on Mo's "go", from his Chrome with him present, as a reply under thread post 5.** Original text kept below for the record: (X Desk Watch block just below; pushed to your phone ~14:20 PT). Posts 3 and 4 say no card can be over 25% and every index starts at 100 in its release month; tonight's 6:30 pm post says one card is 63% of Phantasmal Flames. Reply with the text below, or say "go" in a CoS chat and it posts with you present. Don't delete. The site's own explainer (`/how-prices-work`) now states both rules with their scope.
