@@ -4262,6 +4262,16 @@
           "gates": "as recorded in STATE / the commit bodies: audit-prices FAIL 0 / WARN 73 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal FAIL 0 / WARN 1 = baseline on each tree",
           "liveVerified": "7e74814 re-verified by the outreach session on a fresh deploy-key clone: .github/workflows/price-snapshot.yml carries the 1b diff (concurrency price-data-writers, 150-min marks step, $RUNNER_TEMP artifacts, 3-attempt publish loop), YAML parses, ls-remote = 7e74814. aa3d889 / b270c8a live checks are in their STATE NOW blocks (25% cap, quarterly rebalance).",
           "note": "aa3d889 chase-index 25% cap (Mo); b270c8a quarterly rebalance + reconstitution scheduled (Mo); 7e74814 #1b part 2 price-snapshot.yml refactor (Mo 'go - yes') + calls.json Greninja PSA 10 read. First run on the new workflow = Thu Oct 8 nightly; the next desk reads its step times. Rollback: git revert 7e74814."
+        },
+        {
+          "date": "2026-10-08",
+          "commits": [
+            "479e93a"
+          ],
+          "by": "Growth League (cloud build + Mac deploy key, unattended)",
+          "gates": "audit-prices FAIL 0 / WARN 76 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal FAIL 0 / WARN 1 = baseline on e0df805",
+          "liveVerified": "~100 s curl: /topps-chrome-formula-1-2026, /charizard-ex-worth, /prismatic-evolutions-vs-destined-rivals 200 + BUYSTRIP + sch-signup + stamp 2026-10-08; /release-calendar 200 with the Oct 29 row; IndexNow 5 URLs 200",
+          "note": "Improve-only run (A/B/C at 5/5 for league week 2): three league pages re-read Oct 8, one reported release row added. Deploys. Docs commit follows (no deploy)."
         }
       ]
     },
