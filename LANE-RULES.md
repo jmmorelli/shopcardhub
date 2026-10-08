@@ -850,6 +850,8 @@ from a row of a different grade** — Holliday's $720 "PSA 10 (1 dated sale, Aug
 number wearing the date of a PSA 9 sale, and it survived six weeks and one review. One row reads
 `(1 dated sale, <date>)`, never as a price or a range. Otherwise the cell reads **No verified sale**.
 
+**R18 · desk ruling, 2026-10-08 (Growth League B's graded medians):** a graded figure may also be a **median of ≥ 3 dated sales rows whose own titles each name that grade**, printed with the count and the window ("PSA 10 median of 29 sales, Sep 9–Oct 7"). Fewer than 3 rows print singly as `(1 dated sale, <date>)`; a guide or ladder cell still never suffices, and no date is borrowed across grades. This ratifies the house shape League B has used since Sep 26 and the Downtown rows on the Donruss page.
+
 ## R19 · The feed is served from our own origin (CoS, 2026-09-22 — compliance Phase 1)
 
 The nightly price Action copies the three derived public files — `prices-latest.json`, `prices-history.json`,

@@ -36,6 +36,9 @@ manifest's `notes` and bump the page's `data-prices-updated` stamp.
   (183456 = Pokémon sealed; sports needs no category). Print "lowest ask $X · n live (Sep 26)". Filter
   accessories/lots/damaged out by eye before quoting the low. An ask is never called a comp, a sale, a value
   or a mark (LANE-RULES R20). A graded figure is one dated row: date + grade + price (R18).
+  A graded median is allowed only over ≥ 3 dated rows whose own titles name that grade, with the count and window printed; fewer rows print singly as `(1 dated sale, <date>)` (R18 desk ruling, Oct 8).
+- No presale-vs-secondary "license discount" or "market's guess" reads: a distributor presale and last year's sold box are different markets, so the gap is never a read on a license or a product (desk ruling Oct 7, iw-2026-10-07-7 / iw-2026-10-08-6).
+- Quote index marks from `history` rows without `kind:"divisor"` — a divisor row (holo/recon/cap/release-window) is never "the <date> mark" (iw-2026-10-08-4).
 - Index levels: `data/indices.json` (`level`, `asOf`) — quote level and date.
 - Release dates: only a date read from the maker (topps.com/release-calendar, pokemon.com, paniniamerica.net,
   upperdeck.com) or a distributor with a dated line (blowoutcards, dacardworld, steelcitycollectibles). Status
