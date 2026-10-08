@@ -24,6 +24,15 @@
 //                                                                       keep predicates) to the stored ticker, offline: logged divisor adjustment, level unchanged
 // Add --if-mark-day to --mark to make it a no-op except on Monday/Thursday (for the nightly Action).
 //
+// RELEASE-WINDOW ENTRY (CoS, Oct 8 2026 — Mo: "fix it all" after BCB26 shipped without the set's five highest-priced autos).
+// A quarterly-only reconstitution locks a new set's late-listing chase cards out for three months: SportsCardsPro lists a
+// card's sales with a lag, redemption autos trade before the live card exists, and the Sep 25 BCB26 inception screened 16
+// days after street with Hernandez / Renteria / Gomez / Asigen / Cijntje at 0–5 listed sales. So, for the first
+// ENTRY_WINDOW_DAYS after a ticker's release date (c.entryWindowFrom overrides, for a cohort ticker whose latest release is
+// not its first), every --mark also reads the universe cards NOT in the basket and admits any that clear the entry screen
+// — a logged divisor adjustment, level unchanged, caps re-applied, screenLog row "release window". Exits stay quarterly.
+// After the window the index is back to the sector-model calendar. Index providers do the same for IPOs (fast entry).
+//
 // Writes: data/indices.json (the ticker's key), <page>.html between <!-- <TICKER>:START --> … <!-- <TICKER>:END -->.
 // Never touches another ticker, never touches the page outside its markers. Idempotent.
 import fs from "node:fs";
@@ -324,6 +333,7 @@ function bowmanConfigs() {
       subUniverse: { key: "BASE", name: "1st Bowman Chrome (base)", blurb: "September's 1st Bowman Chrome base cards (BCP-151 up), price-weighted, uncapped", sources: [{ slug: BASE, keep: (t, name, num) => baseSlot(t) && sept.base(name, num) }] },
       note: "September's 2026 Bowman Chrome: only the autos our Sep 9 per-card audit tags as a player's first Bowman autograph are in (97 of 104; no published checklist marks 1sts on auto lines); returning autos (Kilby, Quintero, F. Arias, J. Gonzalez, Parker, Doyle, Peña) had their 1st Bowman autos in 2025 products and are excluded here, not double-counted. Release-week supply is heavy, so the first quarter of marks reads the drawdown every Bowman product prints before the class sorts itself." },
     BOW26: { ...common, name: "2026 1st Bowman Chrome Auto Index", set: "2026 Bowman and Bowman Chrome", page: "/bowman-1st-chrome-index",
+      entryWindowFrom: "2026-09-09",   // release-window entry runs from the cohort's LATEST release (Chrome, Sep 9); move to Draft's street date when BD26 joins
       sources: [{ slug: AUTOS, keep: (t, name, num) => autoSlot(t) && (may.auto(name, num) || sept.auto(name, num)) }],
       subUniverse: { key: "BASE", name: "1st Bowman Chrome (base), all releases", blurb: "every 2026 1st Bowman Chrome base card, price-weighted, uncapped", sources: [{ slug: BASE, keep: (t, name, num) => baseSlot(t) && (may.base(name, num) || sept.base(name, num)) }] },
       note: "The year cohort: every 1st Bowman Chrome Auto issued across the 2026 Bowman releases — May's Bowman and September's Bowman Chrome now, Bowman Draft (Dec–Jan) when its console lists (it enters the first Monday after street, a logged divisor adjustment, level unchanged). BB26 and BCB26 are the same cards by release. Bowman is a spec market held for years; the cohort line is the position, the release line is the entry. BOW27 starts with May 2027." },
@@ -331,6 +341,13 @@ function bowmanConfigs() {
 }
 
 const BASE_SCREEN = { enter: 6, stay: 4, window: 30 };
+const ENTRY_WINDOW_DAYS = 90;   // release-window entry (Oct 8 2026): weekly entries for 90 days after release, then quarterly
+// days left in a ticker's release window, or 0 when closed / no release date (c.entryWindowDays / c.entryWindowFrom override)
+function entryWindowLeft(c) {
+  const from = c.entryWindowFrom || c.releaseDate; if (!from) return 0;
+  const left = (c.entryWindowDays == null ? ENTRY_WINDOW_DAYS : c.entryWindowDays) - days(from);
+  return left > 0 ? Math.ceil(left) : 0;
+}
 // per-ticker override (Sep 30 2026, Mo chose the 90-day window for the WOTC 1st Edition / Shadowless indices: raw 1st Ed holos sell 2–5×/month)
 let SCREEN = BASE_SCREEN;
 const CAP = 0.25;          // no single card above 25% …
@@ -635,6 +652,9 @@ function block(x, c) {
     : outRows.length <= 12 ? `${outRows.length} of ${x.universe.length} cards ${outRows.length === 1 ? "is" : "are"} in the universe but not the basket — too few clean sales in the trailing ${SCREEN.window} days at the last screen: ${outRows.map((u) => `${u.name} #${u.num}`).join(", ")}.`
     : `${outRows.length} of ${x.universe.length} cards ${outRows.length === 1 ? "is" : "are"} in the universe but not the basket (non-holo cards below the screen).`)
     + (outHolo.length ? ` ${outHolo.length} holo-tier card${outHolo.length === 1 ? " is" : "s are"} tracked but unpriced — no clean raw sale in the last year: ${outHolo.map((u) => `${u.name} #${u.num}`).join(", ")}.` : "");
+  // RELEASE-WINDOW ENTRY (Oct 8 2026): say so on the page while the window is open or once it has admitted anyone
+  const rwLeft = entryWindowLeft(c), rwRows = (x.screenLog || []).filter((r) => /release window/.test(r.note || ""));
+  const rwTxt = rwLeft || rwRows.length ? ` Release window: for the first ${c.entryWindowDays == null ? ENTRY_WINDOW_DAYS : c.entryWindowDays} days after release${rwLeft ? ` (${rwLeft} day${rwLeft === 1 ? "" : "s"} left)` : ""}, a card that newly clears the screen enters at the next mark rather than waiting for the quarter — a new set's chase cards list their sales late, so a one-time screen at inception would leave them out; exits still wait for the reconstitution${rwRows.length ? ` (${rwRows.reduce((n, r) => n + (r.entered || 0), 0)} entered this way so far, last ${mdy(rwRows[rwRows.length - 1].date)})` : ""}.` : "";
   const holoTxt = holoN ? ` The holo rule: ${holoN} holo-tier cards (holos, Shinings, Crystals, secret and illustration rares — by printed rarity) are standing constituents. They are never screened out, because a set's value sits in its holos and raw holos trade slower than commons precisely because they cost more; ${thinN ? `${thinN} of them currently sell fewer than ${SCREEN.stay} times in ${SCREEN.window} days and are marked on the nearest window with clean sales (90, 180 or 365 days), flagged thin and dated in the table` : `all of them currently clear the screen on their own`}.` : "";
   const exTxt = (c.exclude || []).filter((r) => r.label).length ? `Left out of the universe on purpose: ${(c.exclude || []).filter((r) => r.label).map((r) => r.label).join("; ")}.` : "";
   const noteTxt = typeof c.note === "function" ? c.note(x) : c.note;
@@ -682,7 +702,7 @@ function block(x, c) {
     <tbody>${top10}</tbody>
   </table></div>
   ${rest ? `<details class="sidx-more"><summary><span class="sm-open">Show all ${rows.length} cards ▾</span><span class="sm-close">Hide cards 11–${rows.length} ▴</span></summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
-  <p class="sidx-note" id="${x.ticker.toLowerCase()}-method"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay.${holoTxt} Price-weighted on ${c.srcNote || "PriceCharting's dated ungraded sold list (blended eBay + TCGplayer)"}, never asks. Caps: no card above ${(CAP * 100).toFixed(0)}% and positions above ${(BIG * 100).toFixed(0)}% never past ${(BIG_SUM * 100).toFixed(0)}% together (the Select Sector SPDR 5/50 rule) — a weight marked * is capped, and every cap is a weight in the divisor math, so applying one never moves the level. Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; entries, exits and cap changes are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before). ${esc(outTxt)} ${exTxt ? esc(exTxt) + " " : ""}n30 is a liquidity gate, never a volume figure (the source caps its table at ${c.rowCap || 60} rows${c.rowCapNote || ""}). ${esc(noteTxt)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>
+  <p class="sidx-note" id="${x.ticker.toLowerCase()}-method"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay.${holoTxt} Price-weighted on ${c.srcNote || "PriceCharting's dated ungraded sold list (blended eBay + TCGplayer)"}, never asks. Caps: no card above ${(CAP * 100).toFixed(0)}% and positions above ${(BIG * 100).toFixed(0)}% never past ${(BIG_SUM * 100).toFixed(0)}% together (the Select Sector SPDR 5/50 rule) — a weight marked * is capped, and every cap is a weight in the divisor math, so applying one never moves the level. Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; entries, exits and cap changes are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before).${rwTxt} ${esc(outTxt)} ${exTxt ? esc(exTxt) + " " : ""}n30 is a liquidity gate, never a volume figure (the source caps its table at ${c.rowCap || 60} rows${c.rowCapNote || ""}). ${esc(noteTxt)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>
 </section></div>`;
 }
 function ST_spark(ys, w, h) {
@@ -1009,9 +1029,36 @@ if (has("--init")) {
     if (!READ_CACHE_HIT) await sleep(PAUSE);
   }
   const level = levelOf(x);
-  x.history.push({ date: TODAY, level, basketValue: r2(basketValue(x.basket)), divisor: x.divisor, priced: x.basket.length - carried, note: carried ? `${carried} carried` : "" });
+  // RELEASE-WINDOW ENTRY (see header): inside the window, universe cards outside the basket that now clear the entry screen
+  // join at this mark — divisor re-struck so the level is identical before and after; exits still wait for --recon.
+  let entered = [];
+  const winLeft = entryWindowLeft(c);
+  if (winLeft) {
+    const inBasket = new Set(x.basket.map((b) => b.path));
+    const cands = x.universe.filter((u) => !inBasket.has(u.path) && !exRule(c, u));
+    console.log(`${TICKER}: release window open (${winLeft} d left) — screening ${cands.length} universe cards outside the basket`);
+    for (const u of cands) {
+      try {
+        const r = await readCard(u);
+        const b = entrantRow({ ...u, ...r }, isHolo(u));
+        if (b) { b.prevPrice = null; b.prevAsOf = null; entered.push(b); console.log(`  enters: ${u.name} #${u.num} $${b.price} (${r.clean30} clean sales in ${SCREEN.window} d)`); }
+      } catch (e) { console.log(`  ${u.name} #${u.num}: ${e.message}`); }
+      if (!READ_CACHE_HIT) await sleep(PAUSE);
+    }
+    if (entered.length) {
+      const next = x.basket.concat(entered);
+      applyCap(next, exW(c));
+      const divisor = r4(basketValue(next) / level);
+      x.divisorLog.push({ date: TODAY, before: x.divisor, after: divisor, why: `RELEASE-WINDOW ENTRY (${winLeft} d left in the ${c.entryWindowDays == null ? ENTRY_WINDOW_DAYS : c.entryWindowDays}-day window from ${c.entryWindowFrom || c.releaseDate}): ${entered.length} entered on the ${SCREEN.enter}-in-${SCREEN.window} screen — ${entered.map((b) => `${b.name} #${b.num} $${b.price}`).join(", ")}; ${next.filter((b) => b.w < 1).length} at the cap; level ${level} unchanged` });
+      x.capLog.push(...next.filter((b) => b.w < 1 && b.w > 0 && !x.basket.some((o) => o.path === b.path && o.w === b.w)).map((b) => ({ date: TODAY, num: b.num, name: b.name, w: b.w })));
+      x.screenLog = x.screenLog || [];
+      x.screenLog.push({ date: TODAY, pass: next.length, fail: x.universe.length - next.length, entered: entered.length, exited: 0, note: "release window (entries only)" });
+      x.basket = next; x.divisor = divisor;
+    }
+  }
+  x.history.push({ date: TODAY, level, basketValue: r2(basketValue(x.basket)), divisor: x.divisor, priced: x.basket.length - carried, note: [carried ? `${carried} carried` : "", entered.length ? `${entered.length} entered (release window)` : ""].filter(Boolean).join(" · ") });
   await subMark(x, TODAY);
-  console.log(`${TICKER} ${TODAY}: level ${level} (prev ${x.history[x.history.length - 2].level}) · ${carried} carried`);
+  console.log(`${TICKER} ${TODAY}: level ${level} (prev ${x.history[x.history.length - 2].level}) · ${carried} carried${entered.length ? ` · ${entered.length} entered (release window)` : ""}`);
   save(); bake(x, c);
 } else if (has("--recon")) {
   const x = IDX[TICKER]; if (!x || x.status !== "live") { console.error(`${TICKER} is not live`); process.exit(2); }
