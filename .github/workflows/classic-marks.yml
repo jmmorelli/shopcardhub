@@ -1,0 +1,101 @@
+name: classic-marks
+
+# CoS desk, Oct 8 2026 (Mo in chat: "do everything you as the CoS feel is the best route. I approve").
+# The 24 classic / WOTC Pokémon set indices used to mark inside the nightly price-snapshot job as ONE call under
+# `timeout 40m`. Measured by hand on Oct 8 the group needs ~2-3 h (BS99 alone ~10 min of dated-sale reads), so it
+# timed out on Thu Oct 8 (run #74) and was part of the 6-h cancel on Mon Oct 5: 19 tickers sat on their Oct 1 mark.
+# They now mark here, after the nightly has published, one ticker per call so a slow or failing ticker costs only
+# itself. Same tool, same Mon/Thu UTC mark days (--if-mark-day), same never-block rule. Handoff:
+# claude/handoffs/classic-marks-job-2026-10-08.md. The desk checks every Mon/Thu that all 37 live tickers carry a
+# market row (kind != divisor) for the day.
+
+on:
+  schedule:
+    - cron: "30 19 * * 1,4"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: price-data-writers
+  cancel-in-progress: false
+
+jobs:
+  classic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      - name: Checkout price-data branch
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: price-data
+          path: price-data
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Mark the classic tickers (one call each, time-boxed)
+        continue-on-error: true
+        timeout-minutes: 300
+        run: |
+          set +e
+          git rev-parse HEAD > "$RUNNER_TEMP/base"
+          : > "$RUNNER_TEMP/marked.list"
+          for TK in BS99 JU99 FO99 TR00 NG00 NDC01 NR01 ND02 AQ03 SK03 HF19 TU19 EVS21 CEL21 CZ23 BS1E BSSL JU1E FO1E TR1E NG1E NDC1E NR1E ND1E; do
+            cp data/indices.json "$RUNNER_TEMP/idx-pre.json"
+            PAGE=$(node -e 'const d=require("./data/indices.json");const p=(d[process.argv[1]]||{}).page||"";process.stdout.write(p.replace(/^\//,"")+(p?".html":""))' "$TK")
+            LOWER=$(echo "$TK" | tr 'A-Z' 'a-z')
+            if timeout 25m node tools/build-sector-index.mjs --ticker "$TK" --mark --if-mark-day; then
+              echo "$TK" >> "$RUNNER_TEMP/marked.list"
+            else
+              echo "::warning::$TK mark failed - level and page keep the previous mark"
+              node tools/ci/merge-ticker-keys.mjs --from "$RUNNER_TEMP/idx-pre.json" --into data/indices.json --tickers "$TK"
+              git checkout -q -- "data/cards/$LOWER.json" 2>/dev/null
+              if [ -n "$PAGE" ]; then git checkout -q -- "$PAGE" 2>/dev/null; fi
+            fi
+          done
+          echo "marked: $(paste -sd, "$RUNNER_TEMP/marked.list")"
+          cp data/indices.json "$RUNNER_TEMP/idx-marked.json"
+          git diff --name-only > "$RUNNER_TEMP/artifacts.list"
+          if [ -s "$RUNNER_TEMP/artifacts.list" ]; then tar -cf "$RUNNER_TEMP/artifacts.tar" -T "$RUNNER_TEMP/artifacts.list"; fi
+          git checkout -q -- . 2>/dev/null
+          exit 0
+
+      - name: Publish (re-apply, re-bake home + badges, gate, push)
+        run: |
+          set -e
+          if [ ! -s "$RUNNER_TEMP/marked.list" ]; then echo "Nothing marked (not a mark day, or every ticker failed)."; exit 0; fi
+          git config user.name "price-engine[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch -q origin main
+            git checkout -q -B main origin/main
+            BASE=$(cat "$RUNNER_TEMP/base")
+            CLASH=$(git diff --name-only "$BASE" origin/main -- $(cat "$RUNNER_TEMP/artifacts.list") 2>/dev/null || true)
+            tar -xf "$RUNNER_TEMP/artifacts.tar"
+            for f in $CLASH; do git checkout -q origin/main -- "$f"; done
+            if echo "$CLASH" | grep -qx "data/indices.json"; then
+              node tools/ci/merge-ticker-keys.mjs --from "$RUNNER_TEMP/idx-marked.json" --into data/indices.json --tickers "$(paste -sd, "$RUNNER_TEMP/marked.list")"
+            fi
+            if [ -n "$CLASH" ]; then echo "::warning::main changed during the marks - kept main's copy of: $CLASH (indices.json keys re-applied)"; fi
+            git add $(cat "$RUNNER_TEMP/artifacts.list")
+            if FEED_BASE=price-data/data node tools/build-home.mjs; then git add index.html
+            else echo "::warning::build-home failed - / keeps its previous bake"; git checkout -- index.html; fi
+            if node tools/build-badges.mjs; then git add badge
+            else echo "::warning::build-badges failed"; git checkout -- badge 2>/dev/null || true; fi
+            if ! node tools/audit-prices.mjs > /dev/null || ! node tools/site-auditor/audit-site.mjs > /dev/null; then
+              echo "::error::a gate FAILed on the marked tree - nothing pushed"; exit 1
+            fi
+            if git diff --cached --quiet; then echo "Nothing to commit."; exit 0; fi
+            git commit -q -m "price-engine: classic marks $(date -u +%F) ($(paste -sd, "$RUNNER_TEMP/marked.list"))"
+            if git push -q origin main; then echo "Classic marks published."; exit 0; fi
+            echo "push rejected - retrying"; sleep 10
+          done
+          echo "could not publish after 3 attempts"; exit 1

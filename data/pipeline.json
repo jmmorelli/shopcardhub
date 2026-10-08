@@ -2942,6 +2942,66 @@
       "severity": "LOW",
       "title": "/panini-donruss-football-2026 calls presale-vs-last-year's-sold gap 'the market's first guess at the license discount'.",
       "decision": "DESK 2026-10-07: APPLIED 609f6b8 — sentence now says presale and last year's sold are different markets, so the gap is not a read on the license."
+    },
+    {
+      "id": "iw-2026-10-08-1",
+      "status": "applied",
+      "date": "2026-10-08",
+      "area": "bowman-bangers",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "/bowman-bangers intro claimed the ten tracked autos are the class's ten highest-selling; BB26 ranks untracked Hartman #2 and Lin #4.",
+      "decision": "DESK 2026-10-08: APPLIED 6d4fa21 (a): intro now 'the ten 2026 Bowman prospects we track, ranked by what their 1st Bowman autographs sell for right now'. (b) QUEUED Tuesday lane Oct 13: list untracked BB26 autos priced above seat #5 under the watch tier with their marks (Hartman CPA-EHA is May's 1st auto per the Topps PDF read Oct 8). Seating them is curation tied to the May chase-rule call on NEEDS-MO."
+    },
+    {
+      "id": "iw-2026-10-08-2",
+      "status": "applied",
+      "date": "2026-10-08",
+      "area": "bowman-bangers",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "/bowman-bangers seats 1-4 verdict reasons are the undated Sep 22 read on the retired guide measure.",
+      "decision": "DESK 2026-10-08: APPLIED interim 6d4fa21: each of the four verdicts carries 'Reasons as of the Sep 22 read; the seat and marks above are Oct 6. Re-read Oct 13.' QUEUED Tuesday lane Oct 13: rewrite the four reason paragraphs on the sold mark, dated, and drop the interim line."
+    },
+    {
+      "id": "iw-2026-10-08-3",
+      "status": "applied",
+      "date": "2026-10-08",
+      "area": "home",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "Home index table says 'release month' / 'Since release' for 13 first-reliable rows.",
+      "decision": "DESK 2026-10-08: APPLIED 6d4fa21: column 'Since base'; header and Now tooltip name both bases (release month, or the first month with reliable sales for older sets). Live-verified."
+    },
+    {
+      "id": "iw-2026-10-08-4",
+      "status": "applied",
+      "date": "2026-10-08",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "Holo divisor op read as a mark: home tape 'Mon mark', SSP24 vs DR25 'Oct 6 mark', Base Set Charizard 'Oct 6 mark'.",
+      "decision": "DESK 2026-10-08: APPLIED 6d4fa21: tape sub 'last mark' (home.js v14, home re-baked); SSP24 page quotes the Oct 4 market mark and names Oct 6 a level-neutral basket adjustment; Charizard page quotes the Oct 1 mark. BRIEF gains 'never quote a divisor row as a mark'. Tape prevPrice residue on BS99/FO99/JU99 clears at their next market mark (the Oct 8 classic group did not mark; see STATE)."
+    },
+    {
+      "id": "iw-2026-10-08-5",
+      "status": "applied",
+      "date": "2026-10-08",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "/base-set-charizard-worth: 47.3% is the cap multiplier, not Charizard's share (41.4%).",
+      "decision": "DESK 2026-10-08: APPLIED 6d4fa21: 'about 41% of the basket on its own'."
+    },
+    {
+      "id": "iw-2026-10-08-6",
+      "status": "applied",
+      "date": "2026-10-08",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "/panini-obsidian-football-2026 repeats the presale-vs-sold license read ruled out on Donruss.",
+      "decision": "DESK 2026-10-08: APPLIED 6d4fa21: Donruss wording; tools/league/BRIEF.md line added (no presale-vs-secondary license reads)."
     }
   ],
   "scoreboard": {
@@ -4293,6 +4353,26 @@
           "gates": "audit-prices FAIL 0 / WARN 77 (= baseline on unchanged main, identical WARN set) · audit-site FAIL 0 / WARN 5 (171) · audit-terminal --feed data/feed FAIL 0 / WARN 1",
           "liveVerified": "curl ~3 min after push: /bowman-chrome-2026-index 84.83 re-marked 10/08/26, Show all 90 cards, release-window note; /bowman-1st-chrome-index 71.70, 154 cards; /pokemon-30th-anniversary-2026 79.33; /how-prices-work release-window sentence; live data/indices.json BCB26/BOW26/TH26/SV151 history 2026-10-08; home board BCB26 84.83",
           "note": "Index dial-in (Mo: fix it all): RELEASE-WINDOW ENTRY in build-sector-index.mjs (90 d after release, entries at each mark, logged divisor adjustment, level unchanged; BOW26 entryWindowFrom 2026-09-09); BCB26 42 -> 90 of 97 (Hernandez/Renteria/Gomez/Asigen in), BOW26 106 -> 154; seven tickers re-marked today because the Oct 8 nightly's marks were erased from indices.json by a later group's git checkout (iw-2026-10-08-1) — price-snapshot.yml now restores per ticker key (tools/ci/merge-ticker-keys.mjs) and merges marked keys over a main clash. Methodology change (constituent entry timing), approved by Mo in chat. Rollback: git revert c409f34."
+        },
+        {
+          "date": "2026-10-08",
+          "commits": [
+            "6d4fa21"
+          ],
+          "by": "CoS desk (Mac deploy key, unattended)",
+          "gates": "audit-prices FAIL 0 / WARN 77 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal --feed data/feed FAIL 0 / WARN 1 (= baseline)",
+          "liveVerified": "curl ~2 min after push: bangers 'we track' + 4 dated verdict lines; / 'Since base', 'last mark', home.js?v=14, no 'Mon mark'; SSP24 vs DR25 'Oct 4 mark' x4; Charizard 'about 41%'; Obsidian 'not a read on the license'.",
+          "note": "Integrity Watch Oct 8 (3 MED + 3 LOW) applied; LANE-RULES R18 desk ruling (graded median over >= 3 title-verified dated rows); League BRIEF lines."
+        },
+        {
+          "date": "2026-10-08",
+          "commits": [
+            "744861a"
+          ],
+          "by": "CoS desk (cloud mark, Mac deploy key, git apply)",
+          "gates": "audit-prices FAIL 0 / WARN 77 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal --feed data/feed FAIL 0 / WARN 1 (= baseline)",
+          "liveVerified": "see STATE run log Oct 8 desk",
+          "note": "Classic marks Oct 8 by hand for 9 tickers (BS99 JU99 FO99 TR00 NG00 NDC01 NR01 ND02 AQ03) after the nightly's classic group timed out (run #74); the other 15 move to .github/workflows/classic-marks.yml (Mon/Thu 19:30 UTC)."
         }
       ]
     },

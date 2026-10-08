@@ -11,6 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the desk (2026-10-08, 14:00 run). Mo, these are the only things waiting on you
+
+- **Paste one message into Grok (1 min), or say "send the Grok brief" in a CoS chat.** The Oct 8 scout plan you approved ("go and do all") still hasn't reached the bots: the Grok Bot app refuses screen reads from unattended runs (blocked again today). The text is in Project `claude/cos/grok-x-native-read-2026-10-08.md`, between ▼ MESSAGE TO PASTE and ▲ end, for the ShopCardHub Content group.
+- **One word: were today's likes and the new follow yours?** X Desk Watch saw at least six likes on Pokémon collector posts after 12:09 PT and a follow of @p_rabtsevich (an AI-tools account), none logged by any lane. If yours, nothing to do. If not, say so and the CoS checks the Grok room (the bots are not allowed any X action).
+- ~~One "go" for the classic-marks job~~ **✅ done on your "I approve" (Oct 8 ~16:40 PT):** the classic and WOTC indices now mark in their own job after the nightly (Mon/Thu); 9 of them were re-marked by hand today, the other 15 mark Monday.
+- Carried: the May "chase rule" call (block below) · Bluesky, TCGplayer (#2), TAG (#4).
+
+---
+
 ## Open — from the CoS with Mo (2026-10-08, ~10:15–12:20 PT). One call, no sign-in
 
 - **One word — a Bowman "chase rule" for the May cohort?** The Oct 8 fix (release-window entry, 90 days) puts September's headliners back in BCB26 and BOW26. May's window closed Aug 11, so under the pure liquidity screen **Aiva Arquette, Max Clark, Seong-Jun Kim and Gage Jump sit outside BB26 and BOW26** until the Jan 4 reconstitution (fewer than 6 clean sales in 30 days each; the same "illiquid because expensive" effect the holo rule fixed for Pokémon). Options: (a) a Bowman chase rule — the Bangers board names and any May auto that has ever marked above ~$50 become standing constituents, marked on the nearest window with sales (30 → 90 → 180 d), flagged thin, like the holo rule; (b) leave the screen as it is and let January sort it. CoS leans (a), one rule for both Bowman release lines. Say "a" or "b"; silence = a at the Oct 14 weekly.
