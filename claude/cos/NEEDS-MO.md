@@ -13,7 +13,8 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## Open — from the desk (2026-10-09, 14:00 run). Mo, these are the only things waiting on you
 
-- **One yes (no sign-in, ~1 min):** OK to generate a Bing Webmaster API key (Bing Webmaster → Settings → API Access) so a nightly job reads our Bing search queries and page stats? Free, read-only, revocable; the key goes only into the GitHub secret store. Bing (with the Yahoo/DuckDuckGo it feeds) is where our search visitors actually come from, and the Growth League would aim its improve runs at queries Bing already shows us for. Say "yes on Bing" in any CoS chat and it's built in that session. *(Ideas ledger #61.)*
+- ~~One yes on the Bing API key~~ **✅ Mo "yes on Bing" Oct 9; the nightly read is built and waiting on one paste (below).**
+- **Bing key, ~2 min (a key is yours to paste; the CoS never types one into a form):** (1) Bing Webmaster Tools → Settings (gear) → API Access → Generate API Key → copy it. (2) github.com/jmmorelli/shopcardhub → Settings → Secrets and variables → Actions → New repository secret → Name `BING_WMT_KEY`, Value = the key → Add secret. That's it: the next nightly snapshot (02:00 PT) starts reading Bing, and the desk confirms the first file.
 - **Weekly, ~5 min, your account:** the new Tuesday task drafts one Reddit data post for you to post yourself (traffic plan item 3). Nothing to do until the first draft lands Tue Oct 13.
 - Carried: the May "chase rule" call (block below; silence = "a" at the Oct 14 weekly) · Bluesky, TCGplayer (#2), TAG (#4).
 - *FYI, no action:* the Dungeon keeper moved two old backups into `Card Hub/dungeon-keeper/_to_delete/` (it can't delete unattended). Delete that folder whenever you like.

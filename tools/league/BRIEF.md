@@ -13,6 +13,8 @@ never sign in to anything.
 
 ## 1. Find the query first — a page without demand evidence is not built
 
+> **Bing first (CoS, Oct 9 2026, ledger #61):** when `price-data/data/bing-latest.json` exists, read its `strikingDistance` list before autocomplete. An improve slot on a page Bing already shows at positions 4–15 beats any new page on an unmeasured query (and under INDEX-FIRST, R27 Am. 2, there are no new pages anyway). Quote the query, its 4-week impressions and its average position in the manifest.
+
 Demand evidence, cheapest first, and record it in the manifest (`evidence[]`, with the URL or command):
 
 1. Autocomplete — real people typing: `curl -s "https://suggestqueries.google.com/complete/search?client=firefox&q=<phrase>"` and `curl -s "https://api.bing.com/osjson.aspx?query=<phrase>"`. Probe the phrase and its stems ("is X", "X worth", "X vs", "X release date", "how much is X").
