@@ -129,6 +129,14 @@
     table.ib tr.ib-grp-sports th { color:var(--accent); }
     table.ib tr.ib-grp th small { font-family:var(--fm); font-size:10px; font-weight:400; letter-spacing:1px; color:var(--text-dim); margin-left:8px; text-transform:none; }
     table.ib tbody tr.ib-grp:hover th { background:var(--bg2,#0e151c); }
+    /* Night Crew Oct 9 (Design Scout: Stripe/Vercel keep the reading frame on screen): the column names stay pinned under the
+       nav while the board scrolls, so a phone reader 15 rows down still knows which number is Now and which is Week. The wrap's
+       overflow-x is lifted because sticky can't escape a scroll box, so only where the table fits its box: phones 360–768
+       (min-width 0) and desktops ≥ 1280. Between them the table is wider than its panel and keeps its own scroll. */
+    @media (min-width:360px) and (max-width:768px), (min-width:1280px) {
+      #set-indices .tbl-wrap { overflow:visible; }
+      #set-indices table.ib thead th { position:sticky; top:59px; z-index:3; background:var(--bg2); box-shadow:inset 0 -1px 0 var(--border2); }
+    }
     .ib-foot { font-family:var(--fb); font-size:12.5px; color:var(--text-dim); line-height:1.5; border-top:1px solid var(--border); }
     .ib-foot a { color:var(--accent); }
     .scr-fold > summary { list-style:none; cursor:pointer; display:flex; align-items:baseline; justify-content:space-between; gap:8px 16px; flex-wrap:wrap; padding:11px 16px; }
@@ -1146,6 +1154,6 @@ feed <b data-home="day">Oct 8</b> · <span data-home="stamp">37/41 marked · 11 
 <script src="/js/engine-stats.js?v=1"></script>
 <script src="/js/vault-schema.js?v=3"></script>
 <script src="/js/home.js?v=14" defer></script>
-<script src="/js/home-you.js?v=3" defer></script>
+<script src="/js/home-you.js?v=4" defer></script>
 </body>
 </html>

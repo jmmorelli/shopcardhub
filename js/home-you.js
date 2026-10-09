@@ -80,11 +80,13 @@
       '.you-home .yh-k{flex:none;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim,#7a969e);min-width:72px}' +
       '.you-home .yh-c{flex:none;display:inline-flex;align-items:center;min-height:40px;box-sizing:border-box;gap:7px;background:var(--p2,#111820);border:1px solid var(--bd,rgba(255,255,255,.1));border-radius:2px;padding:4px 9px;text-decoration:none;color:var(--tx,#b8cdd4);white-space:nowrap}.you-home .yh-c:hover{border-color:var(--gd,#f5c800)}.you-home .yh-c b{color:var(--th,#e4f0f4);font-weight:600}.you-home .yh-c i{font-style:normal;font-weight:700}.you-home .yh-c i.up{color:var(--gn,#00e07a)}.you-home .yh-c i.dn{color:var(--rd,#ff2e55)}.you-home .yh-c i.flat{color:var(--dim,#7a969e)}.you-home .yh-c small{color:var(--dim,#7a969e);font-size:11px}' +
       '.you-home .yh-more{flex:none;white-space:nowrap}.you-home .yh-more,.you-home .yh-note{color:var(--dim,#7a969e)}' +
-      '@media(max-width:640px){.you-home .panel-h{padding:0 12px}.you-home .yh-plain,.you-home .yh-long{display:none}.you-home .panel-h h2{letter-spacing:1.2px}.you-home .yh-k{letter-spacing:.5px}.you-home .yh-row{padding:9px 10px;gap:6px 8px}.you-home .yh-k{min-width:0}}';
+      '@media(max-width:640px){.you-home .panel-h{padding:0 12px}.you-home .yh-plain,.you-home .yh-long{display:none}.you-home .panel-h h2{letter-spacing:1.2px}.you-home .yh-k{letter-spacing:.5px}.you-home .yh-row{padding:9px 10px;gap:6px 8px}.you-home .yh-k{min-width:0}.you-home.yh-one .yh-k{display:none}}';
     document.head.appendChild(css);
     var el = document.createElement('div');
     el.className = 'panel you-home'; el.id = 'you-home';
     el.innerHTML = html;
+    // Night Crew Oct 9 (FTV): with one row the 'Indices' label only eats a quarter of a phone's width; the chips get it back
+    if (el.querySelectorAll('.yh-row').length === 1) el.classList.add('yh-one');
     // Oct 7 weekly (UX R5): returning visitors see their block first, not 3.8 phone screens down.
     // Night Crew Oct 8: it fills the slot index.html reserved before paint; the reservation is corrected if the guess was off.
     var slot = document.getElementById('you-slot');

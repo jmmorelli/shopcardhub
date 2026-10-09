@@ -380,7 +380,9 @@
       var isField = function (t) { return t && t.matches && t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]),textarea,select'); };
       document.addEventListener('focusin', function (e) { if (isField(e.target)) { typing = true; away(); } });
       document.addEventListener('focusout', function (e) { if (isField(e.target)) { typing = false; away(); } });
-      var tiles = document.querySelectorAll('.dest-tile[href*="watchlist"],.dest-tile[href*="vault"]');
+      /* Night Crew Oct 9 (FTV): ...and while the email signup is on screen — on phones the pill sat on the right half of the
+         unfocused email field (/pokemon-30th-anniversary-2026) */
+      var tiles = document.querySelectorAll('.dest-tile[href*="watchlist"],.dest-tile[href*="vault"],.sch-signup');
       if (tiles.length && 'IntersectionObserver' in window) {
         var seen = new Set();
         var io = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) seen.add(x.target); else seen.delete(x.target); }); tileOn = seen.size > 0; away(); });
