@@ -11,6 +11,17 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the desk (2026-10-09, 14:00 run). Mo, these are the only things waiting on you
+
+- **One yes (no sign-in, ~1 min):** OK to generate a Bing Webmaster API key (Bing Webmaster → Settings → API Access) so a nightly job reads our Bing search queries and page stats? Free, read-only, revocable; the key goes only into the GitHub secret store. Bing (with the Yahoo/DuckDuckGo it feeds) is where our search visitors actually come from, and the Growth League would aim its improve runs at queries Bing already shows us for. Say "yes on Bing" in any CoS chat and it's built in that session. *(Ideas ledger #61.)*
+- **Weekly, ~5 min, your account:** the new Tuesday task drafts one Reddit data post for you to post yourself (traffic plan item 3). Nothing to do until the first draft lands Tue Oct 13.
+- Carried: the May "chase rule" call (block below; silence = "a" at the Oct 14 weekly) · Bluesky, TCGplayer (#2), TAG (#4).
+- *FYI, no action:* the Dungeon keeper moved two old backups into `Card Hub/dungeon-keeper/_to_delete/` (it can't delete unattended). Delete that folder whenever you like.
+
+*Checked against live state this run:* no TCGplayer, TAG or Bluesky link in the repo; the Oct 8 block's three asks are all closed.
+
+---
+
 ## Open — from the desk (2026-10-08, 14:00 run). Mo, these are the only things waiting on you
 
 - ~~Paste the Grok brief~~ **✅ delivered Oct 8 ~16:55 PT by the CoS with Mo present** (the app allowed it this time): full plan text sent to the ShopCardHub Content group, then a follow-up — start Fri Oct 9 without waiting for a reset announcement; stop and say so at any usage or payment prompt.

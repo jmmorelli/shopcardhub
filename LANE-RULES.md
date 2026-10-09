@@ -707,6 +707,7 @@ and the charter points at it. **If you see a day in any other document, this tab
 |---|---|---|---|
 | **Night Crew** | **Mon/Wed/Fri** 00:47 (Oct 8, R33) | cloud | ≤ 5 on-page fixes, bugs first, net-calm → `claude/night-crew/pending.patch.txt` (R28). |
 | **Earnings Ideas Desk** | **Tue/Fri** 04:15 (Oct 8, R33) | cloud | Find-and-file only: 1–3 earnings ideas in the nine-line format of `claude/ideas/README.md`, never repeating `claude/ideas/LEDGER.md`; the desk rules on each (adopt/park/decline). |
+| **Retention Desk** | **Sun–Thu** 03:40 (Oct 9; first fire Sun Oct 11) | cloud | Find-and-file only: 1 (max 2) reason-to-return idea a night in the nine-line format of `claude/retention/README.md`, each with a Fit Analyst verdict against the live site; never repeats `claude/retention/LEDGER.md`; stops at 4 unruled rows; the desk rules (adopt/park/decline) at STEP 5 (R34). |
 | **Integrity Watch** | **Mon/Thu** 05:00 (mark days; Oct 8, R33) | cloud | Find-and-file only (R24). Part A: feed counts, marks, signals, index cadence, auction closes vs trailing-14 medians, the age of the last GA4 read in STATE (HIGH if > 7 days). Part B: six live pages a run, claims vs data. Files `claude/cos/integrity-watch-<date>.md` + proposals JSON; the desk adjudicates. |
 | **Growth League** | daily 05:56 | cloud + Mac deploy key | Search A/B/C: 1 new page per agent per run, 5 per agent per league week (GO-TIME); Distribution D/E/F on the Wednesday run (R27 Am. 1). |
 | **Night Crew deploy** | **Mon/Wed/Fri** 07:52 (Oct 8, R33) | Mac-linked | Applies the night's patch, gates, push, live check, reverts on regression. |
@@ -726,6 +727,8 @@ and the charter points at it. **If you see a day in any other document, this tab
 | **Nightly price Action** (GitHub, not a task) | ~01:15 | GitHub runner | Feed, sold marks, Mon/Thu index marks, Monday card ladder. `site-gates.yml` 08:30 checks gates + feed freshness + the desk heartbeat (R24). |
 
 One-shots on the list (Oct 1): *Grok usage reset — restart plan* (Oct 1; restarts nothing — Mo paused the Grok bots Sep 30) and *Football conversion re-read* (Oct 3). **Off:** *X Desk Watch — audit Grok Bot* (disabled Sep 30). **Retired, do not re-create:** MWF site auditor, Gengar coverage task, 06:00 cloud daily, Tue/Thu checkpoints (all Sep 21); Friday release window (its job is Release Watch's, CHARTER §2B); the Wednesday build session (absorbed by the desk and the Night Crew).
+
+**Added Oct 9 (CoS session with Mo; recorded by the Oct 9 desk from `list_triggers`):** *Retention Desk* (row above); *X Weekly Batch* (Mon 08:17, one "go" schedules the week) + *X daily check — Grok digest bridge, reply menu, scheduled-post check* (Tue–Sun 08:17) — together they replace the 3-a-day X Daily Posts row (`claude/cos/x-voice.md` top section: 2 posts a day + a reply menu for Mo); *Reddit draft for Mo — weekly data post* (Tue 09:13; traffic plan item 3 — supersedes the room's Sep 29 "Reddit is parked" line); *Grok team manager — weekly review + coaching* (Mon 09:37, Mac, Gmail to the bot inbox only); one-shot *Google index fixes — post-publish check + GSC resubmit* (Mon Oct 12 10:12). *COMC trader Thursday* is paused (Mo, Oct 8).
 
 #### Known prompt drift (Oct 1) — the file wins; a lane reading its prompt follows these lines
 
@@ -1016,6 +1019,10 @@ per-batch yes, Mo pastes forum posts, X goes through the X daily lane (R10). No 
 the Wednesday league run; no new scheduled run. Cuts and clones follow `data/league.json` → `selection`: 4-week seasons,
 a minimum score to rank, the bottom agent cut only on an exact binomial test (p < 0.05) against the winner, the winner
 cloned into the slot with a mandatory new niche, and a division grows by one slot at ≥ 300 sessions a season (max 5).
+**R27 Amendment 2 — INDEX-FIRST (CoS, 2026-10-09, under Mo's mandate `claude/cos/MANDATE.md`; traffic plan `claude/cos/traffic-plan-2026-10-09.md`).**
+Google indexes 3 of ~145 URLs and organic landings fell four straight weeks (191 → 146 → 105 → 74) while ~45 league pages shipped.
+Until Search Console shows **≥ 20 indexed URLs**: **0 new league pages per agent** — every run is an improve or a merge; a league page ≥ 21 days old with 0 organic sessions in 28 days and < 300 visible words is merged into its hub (canonical + out of the sitemap, status `merged-<date>`); a page with any organic session in 28 days is kept. This overrides the GO-TIME "5 per agent per week" and the week-3 opening on Oct 10. A silent league week is the rule working, not a lane failure; nobody re-files it. The CoS weekly reads the indexed count each Wednesday and lifts this in writing.
+
 ## R28 · The Night Crew — the site's UI/UX is honed every night (Mo, 2026-09-28 — "make a team to hone it in every night while I sleep … I approve of all you would probably ask me")
 
 Mo asked for a standing team that fixes bugs, polishes the interface and makes the site a place people are curious
@@ -1071,7 +1078,7 @@ Binds every email, pitch, reply, X post, Bluesky post, forum answer, newsletter 
 
 ## R32 · No competition-facing posts or outreach until the indices and the knowledge bases are dialed in (Mo, 2026-10-08)
 
-Mo, after @dahldoescards' "2026 Bowman Chrome: One Month In" post (14K likes) and the finding that BCB26 held none of the set's five highest-priced autos: *"We need to dial in the indices and your brain first before we show our competition we are doing what they do for free."*
+Mo, after @dahldoescards' "2026 Bowman Chrome: One Month In" post (~13K views on his profile, Oct 9 read; the Oct 8 "398K views / 14K likes" was a misread) and the finding that BCB26 held none of the set's five highest-priced autos: *"We need to dial in the indices and your brain first before we show our competition we are doing what they do for free."*
 
 - **No X post, reply, email or forum answer that compares ShopCardHub to, answers, quotes or is addressed to a competing tracker or index** (ProspectPulse / @dahldoescards, Card Ladder, Market Movers, TCGIndex, Prospects Live and the watchlist in `Card Hub/competitors/watchlist.md`) until Mo lifts this in chat. Ordinary posts about our own indices continue under R10 Am. 2.
 - **ProspectPulse / Andrew Dahl: outreach tabled.** Nothing further goes to him. One R31 email already went Oct 7 15:30 PT in the League D batch Mo approved; a reply, if one comes, is held for Mo and not answered by a lane.
@@ -1089,6 +1096,10 @@ Mo asked why the site earns so little. The CoS read (Oct 8, GA4 data day Oct 7, 
 - **Traffic priorities, in order:** (1) the Growth League's search pages (first scoring Oct 26; don't judge before); (2) card-level price pages for cards ≥ $200 where we hold dated sold data — the buyer who paid us before (one Messi click → $860 sale → $25.82; 64% of all-time $ from 7 phone clicks); the Oct 14 weekly reads Search Console for which card pages Google has indexed and pushes those; (3) collector communities through Mo's own human account (Reddit, forums) with real data, drafted by the CoS, posted by Mo (R31 voice; R32 still bars anything aimed at competitors).
 - **Index work stops at "dialed in" (R32's bar).** After that, governance time on the indices is the Monday lane and the Integrity Watch, nothing more.
 - **Read:** the monthly review (Nov 1) reports clean sessions/week and eBay clicks/week against the Oct 8 baseline (~200 / 42). Nothing else is the headline.
+
+## R34 · Reasons to return are a desk, not a side effect (Mo, 2026-10-09)
+
+Retention ideas are generated nightly by the **Retention Desk** (Sun–Thu 03:40, `claude/retention/README.md`) and ruled on by the weekday CoS desk at STEP 5 (adopt with owner + week: S → Night Crew BACKLOG, M → the Wednesday weekly, L → a `claude/handoffs/` note; park with the gate named; decline with the reason). The Vault is not the reason to return and no lane extends it beyond ledger #13 (Mo, Sep 25). Lanes B and D never store a collection or compete with PSA vaulting. R25, R26 and R33 still gate what ships: the desk may propose past a freeze and must name the gate. A retention row left unruled is a desk defect; at 4 unruled rows the Retention Desk stops proposing. Adoption rate is read at the Nov 1 monthly review; below 1 in 5, the cadence drops to Tue/Fri. Ledger: `claude/retention/LEDGER.md` (Project copy canonical, the desk mirrors it to the repo).
 
 ## Changing this file
 
