@@ -4396,6 +4396,19 @@
           "gates": "audit-prices FAIL 0 / WARN 76 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal --feed price-data FAIL 0 / WARN 1 (= baseline)",
           "liveVerified": "2026-10-09 ~14:12 PT: /best-card-supplies 200, 0 undated '~$' price cells, #essentials anchor intact",
           "note": "Site Sweep Oct 9 F1: six undated supply price figures removed (every figure dated). Docs/tooling commit follows (LANE-RULES R27 Am. 2 INDEX-FIRST + R34 retention, heartbeat manifest, retention mirror, ledger #61); it does not deploy."
+        },
+        {
+          "date": "2026-10-10",
+          "commits": [
+            "4e39a69",
+            "e10fbfd",
+            "8f35441",
+            "3621256"
+          ],
+          "by": "Growth League 05:56 (cloud build, Mac deploy key)",
+          "gates": "audit-prices FAIL 0 / WARN 77 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal --feed data/feed FAIL 0 / WARN 1 (= baseline; prices 77 vs STATE's 78, one fewer, pre-existing)",
+          "liveVerified": "2026-10-10 ~07:10 PT: /topps-allen-ginter-2026, /is-pokemon-151-worth-it, /pitch-black-vs-chaos-rising, /prismatic-evolutions-vs-destined-rivals 200 + BUYSTRIP:START + sch-signup + stamp 2026-10-10; /release-calendar 200. IndexNow 6 URLs -> 200.",
+          "note": "INDEX-FIRST improve-only run (0 new pages). Mac git am tree 2e2ea15a = cloud; origin unmoved, fast-forward."
         }
       ]
     },
