@@ -36,10 +36,26 @@
   function vaultCount() {
     try { var s = JSON.parse(localStorage.getItem('sch_vault_v1') || 'null'); return s && Array.isArray(s.cards) ? s.cards.length : 0; } catch (e) { return 0; }
   }
+  // signup_view (R11 / P39, Oct 9 2026): the capture's exposure event — fired once per block when at least half of it has
+  // been on screen, so "views → signups" can be read per page (pageClicks28 in tools/ga4-snapshot.mjs). Fires whether or
+  // not the visitor is already subscribed (the block is still shown), with the same location/variant as newsletter_signup.
+  function watchView(el, src, v) {
+    if (!('IntersectionObserver' in window)) return;
+    var seen = false;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (seen || !en.isIntersecting || en.intersectionRatio < 0.5) return;
+        seen = true; io.disconnect();
+        if (typeof gtag === 'function') gtag('event', 'signup_view', { location: src, variant: v, subscribed: done ? 1 : 0 });
+      });
+    }, { threshold: [0.5] });
+    io.observe(el);
+  }
   Array.prototype.forEach.call(els, function (el) {
     var v = el.getAttribute('data-variant') === 'watchlist' ? 'watchlist' : 'tape', c = COPY[v];
     var src = String(el.getAttribute('data-signup') || 'site').replace(/[^a-z0-9_-]/gi, '').slice(0, 30);
     if (v === 'watchlist') src = 'watchlist-' + vaultCount();
+    watchView(el, src, v);
     if (done) { el.innerHTML = '<div class="ss-row"><span class="ss-k">' + c.k + '</span><span class="ss-ok">' + c.ok.replace(/ —.*$/, '') + '</span></div>'; return; }
     el.innerHTML = '<form class="ss-row" novalidate><span class="ss-k">✉ ' + c.k + '</span><span class="ss-p">' + c.p + '</span>' +
       '<span class="ss-f"><input type="email" required autocomplete="email" placeholder="your@email.com" aria-label="Email address"><button type="submit">' + c.b + '</button></span>' +

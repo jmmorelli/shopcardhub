@@ -585,8 +585,13 @@ function weekBase(h) {
   for (let i = h.length - 2; i >= 0; i--) if ((new Date(last.date) - new Date(h[i].date)) / 86400000 >= 5 && h[i].level > 0) return h[i];
   return null;
 }
-function block(x, c) {
+function block(x, c, opt = {}) {
+  // B67 (Oct 9 2026): the index IS the page on a standalone index page, so its title is the page's one <h1>;
+  // on a host page that already has an <h1> (the 30th guide) the block keeps an <h2>. bake() decides.
+  const H = opt.h1 ? "h1" : "h2";
   const prBox = PR.bakeBox(x.ticker, x, "var(--sidx)");   // "" for a pre-activation ticker: then nothing is folded (as before)
+  // R13 (Retention Desk, Oct 9 2026): when the plain read carries the whole-set cost line, the method note says what it is.
+  const fcTxt = PR.finishCost && PR.finishCost(x.ticker, x) ? " The plain read's whole-set figure is the plain sum of every priced card's sold mark, one copy each, raw and uncapped, with its window and date printed; its change compares the same cards at two market marks at least five days apart and never across a divisor row. It is what the set costs to buy, not a level and not a call." : "";
   const h = marksOnly(x.history), last = h[h.length - 1] || null, prev = weekBase(h);
   const lvl = last ? last.level : null;
   const wow = prev && last ? (last.level / prev.level - 1) * 100 : null;
@@ -674,7 +679,7 @@ function block(x, c) {
   <div class="sidx-mast">
     <div class="sidx-t">
       <div class="sidx-eyebrow">▮ ${c.kindPlural ? "Class Index · Sector Model · Every " + esc(c.kindPlural.replace(/s$/, "")) : "Set Index · Sector Model · Every Card In The Set"}</div>
-      <h2><span class="sidx-tk">${x.ticker}</span> <span class="sidx-dot">·</span> ${esc(c.name)}</h2>
+      <${H} class="sidx-ttl"><span class="sidx-tk">${x.ticker}</span> <span class="sidx-dot">·</span> ${esc(c.name)}</${H}>
       <p class="sidx-sub">${c.kindPlural ? `Every ${esc(c.kindPlural.replace(/s$/, ""))} in ${esc(c.set)} — ${x.universe.length} cards, ${weighted} trading — priced` : `${esc(countLine)}, priced`} from dated sold comps and re-marked Monday and Thursday. ${baseSentence(x)} This block tracks the ${c.kindPlural ? "class" : "set"}; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
     </div>
     <figure class="sidx-photo"><span data-card-img="${esc(imgAttr(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · ${c.imgSrc && c.imgSrc(hero) ? "card image" : "live eBay listing"}</figcaption></figure>
@@ -702,7 +707,7 @@ function block(x, c) {
     <tbody>${top10}</tbody>
   </table></div>
   ${rest ? `<details class="sidx-more"><summary><span class="sm-open">Show all ${rows.length} cards ▾</span><span class="sm-close">Hide cards 11–${rows.length} ▴</span></summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
-  <p class="sidx-note" id="${x.ticker.toLowerCase()}-method"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay.${holoTxt} Price-weighted on ${c.srcNote || "PriceCharting's dated ungraded sold list (blended eBay + TCGplayer)"}, never asks. Caps: no card above ${(CAP * 100).toFixed(0)}% and positions above ${(BIG * 100).toFixed(0)}% never past ${(BIG_SUM * 100).toFixed(0)}% together (the Select Sector SPDR 5/50 rule) — a weight marked * is capped, and every cap is a weight in the divisor math, so applying one never moves the level. Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; entries, exits and cap changes are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before).${rwTxt} ${esc(outTxt)} ${exTxt ? esc(exTxt) + " " : ""}n30 is a liquidity gate, never a volume figure (the source caps its table at ${c.rowCap || 60} rows${c.rowCapNote || ""}). ${esc(noteTxt)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>
+  <p class="sidx-note" id="${x.ticker.toLowerCase()}-method"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay.${holoTxt} Price-weighted on ${c.srcNote || "PriceCharting's dated ungraded sold list (blended eBay + TCGplayer)"}, never asks. Caps: no card above ${(CAP * 100).toFixed(0)}% and positions above ${(BIG * 100).toFixed(0)}% never past ${(BIG_SUM * 100).toFixed(0)}% together (the Select Sector SPDR 5/50 rule) — a weight marked * is capped, and every cap is a weight in the divisor math, so applying one never moves the level. Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; entries, exits and cap changes are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before).${rwTxt}${fcTxt} ${esc(outTxt)} ${exTxt ? esc(exTxt) + " " : ""}n30 is a liquidity gate, never a volume figure (the source caps its table at ${c.rowCap || 60} rows${c.rowCapNote || ""}). ${esc(noteTxt)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>
 </section></div>`;
 }
 function ST_spark(ys, w, h) {
@@ -717,7 +722,7 @@ ${PR.PR_CSS}
 .sidx{margin:26px 0 0;padding:0 0 8px;font-family:var(--fb,Barlow,system-ui,sans-serif);color:var(--text,#b8cdd4);--sidx-th:var(--text-head,#e4f0f4);--sidx-dim:var(--text-dim,#7a969e);--sidx-bd:var(--border,rgba(255,255,255,.08));--sidx-bg:var(--bg2,#0c1017);--sidx-bg2:var(--bg3,#111820)}
 .sidx-mast{display:grid;grid-template-columns:minmax(0,1fr) auto 220px;column-gap:40px;align-items:end;padding-bottom:12px}
 .sidx-eyebrow{font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--sidx);margin-bottom:8px}
-.sidx h2{font-family:var(--fd,'Barlow Condensed',sans-serif);font-size:clamp(26px,3.4vw,38px);font-weight:900;text-transform:uppercase;color:var(--sidx-th);margin:0 0 8px;line-height:1.02;letter-spacing:-.3px}
+.sidx h2,.sidx .sidx-ttl{font-family:var(--fd,'Barlow Condensed',sans-serif);font-size:clamp(26px,3.4vw,38px);font-weight:900;text-transform:uppercase;color:var(--sidx-th);margin:0 0 8px;line-height:1.02;letter-spacing:-.3px}
 .sidx-tk{color:var(--sidx-th)} .sidx-dot{color:var(--sidx)}
 .sidx-sub{font-size:13px;line-height:1.55;margin:0;color:var(--sidx-dim);max-width:620px}
 .sidx-sub a{color:var(--sidx)}
@@ -820,7 +825,10 @@ function bake(x, c) {
   const file = path.join(ROOT, c.page.slice(1) + ".html");
   let html = fs.readFileSync(file, "utf8");
   const S = `<!-- ${x.ticker}:START -->`, E = `<!-- ${x.ticker}:END -->`;
-  const body = `${S}\n${CSS}\n${block(x, c)}\n${E}`;
+  const S_RE = new RegExp(`<!-- ${x.ticker}:START -->[\\s\\S]*?<!-- ${x.ticker}:END -->`);
+  const outside = html.replace(S_RE, "").replace(/<script[\s\S]*?<\/script>/g, "").replace(/<!--[\s\S]*?-->/g, "");
+  const h1 = !/<h1[\s>]/i.test(outside);   // B67: no other <h1> on the page -> the index title is the h1
+  const body = `${S}\n${CSS}\n${block(x, c, { h1 })}\n${E}`;
   if (html.includes(S)) {
     const re = new RegExp(`<!-- ${x.ticker}:START -->[\\s\\S]*?<!-- ${x.ticker}:END -->`);
     html = html.replace(re, () => body);

@@ -116,9 +116,12 @@ const html = `<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/fonts/barlow-condensed-900.woff2" as="font" type="font/woff2" crossorigin>
   <title>Auction Desk — Live eBay Auctions Ending Under the Mark | ShopCardHub</title>
   <meta name="description" content="Every verified live eBay auction for the cards our price engine tracks — 1st Bowman Chrome autos, Sapphire, Pokémon index singles — with the nightly mark and the last bid we saw on auctions that ended, beside the current bid, sorted by time to close. Refreshed every 15 minutes.">
   <link rel="canonical" href="https://www.shopcardhub.com/auctions">
+  <!-- B64 (Oct 9 2026, Google index fixes): a live auction list is a utility, not a page to rank - out of the sitemap, noindex. -->
+  <meta name="robots" content="noindex,follow">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Auction Desk — Live Auctions Ending Under the Mark">
   <meta property="og:description" content="Verified live eBay auctions for every engine-tracked card, current bid vs the nightly mark and the last bid we saw on auctions that ended, sorted by time to close.">

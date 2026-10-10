@@ -23,7 +23,9 @@ const SKIP_FILES = new Set(["card-dungeon.html", "welcome-email.html"]);
 const SITEMAP_EXEMPT = new Set(["card-dungeon", "welcome-email", "index", "set-index-preview",
   // Sep 8 2026 (Business Read): noindex'd utility/app pages and the host-less /card-* chart pages are
   // deliberately OUT of the sitemap — Google crawled the templated card pages and declined them.
-  "cards", "watchlist", "research", "privacy", "affiliate-disclosure"]);
+  "cards", "watchlist", "research", "privacy", "affiliate-disclosure",
+  // Oct 9 2026 (B64, Google index fixes): the live auction list is a utility — noindexed, out of the sitemap.
+  "auctions"]);
 const SITEMAP_EXEMPT_RE = /^card-/;
 
 // THE mandatory EPN param set (see memory: Jul 28 2026 mkevt=1 incident —
@@ -176,7 +178,54 @@ try {
   }
   for (const slug of inMap)
     if (!fs.existsSync(path.join(REPO, slug + ".html"))) add("FAIL", "sitemap-dead-url", "sitemap.xml", `/${slug} listed but no file`);
+  // B64 (Oct 9 2026, Google index fixes — GSC: 102 known, 3 indexed): the sitemap lists only pages we want ranked.
+  // Every <loc> must be a real page that is self-canonical and not noindexed; no noindexed page may be in the sitemap;
+  // every <url> carries a dated <lastmod> (tools/sitemap-lastmod.mjs writes them from git history on each nightly).
+  const NOINDEX_RE = /<meta\s+name="robots"\s+content="[^"]*noindex/i;
+  const locs = [...xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map(m => m[1]);
+  for (const loc of locs) {
+    const u = new URL(loc);
+    if (u.host !== "www.shopcardhub.com" || u.protocol !== "https:") add("FAIL", "sitemap-host", "sitemap.xml", `${loc} is not on https://www.shopcardhub.com`);
+    const slug = u.pathname.replace(/^\//, "").replace(/\/$/, "");
+    const file = (slug || "index") + ".html";
+    if (!fs.existsSync(path.join(REPO, file))) continue; // sitemap-dead-url above
+    const head = read(file).split(/<body[\s>]/i)[0];
+    if (NOINDEX_RE.test(head)) add("FAIL", "sitemap-noindex", "sitemap.xml", `/${slug} is in the sitemap but carries noindex`);
+    const canon = (head.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i) || [])[1];
+    const want = `https://www.shopcardhub.com/${slug}`;
+    if (!canon) add("WARN", "sitemap-canonical", file, `in the sitemap with no canonical (expected ${want})`);
+    else if (canon.replace(/\/$/, "") !== want.replace(/\/$/, "")) add("FAIL", "sitemap-canonical", file, `canonical ${canon} ≠ sitemap URL ${want}`);
+  }
+  for (const u of xml.matchAll(/<url>[\s\S]*?<\/url>/g)) {
+    const loc = (u[0].match(/<loc>\s*([^<\s]+)/) || [])[1] || "?";
+    if (!/<lastmod>\s*\d{4}-\d{2}-\d{2}/.test(u[0])) add("WARN", "sitemap-lastmod", "sitemap.xml", `${loc} has no dated <lastmod> — run tools/sitemap-lastmod.mjs`);
+  }
+  for (const f of pages) {
+    const slug = f.replace(/\.html$/, "");
+    if (inMap.has(slug) && NOINDEX_RE.test(read(f).split(/<body[\s>]/i)[0])) add("FAIL", "noindex-in-sitemap", f, `noindexed page listed in sitemap.xml`);
+  }
 } catch (e) { add("FAIL", "sitemap", "sitemap.xml", e.message); }
+
+/* ---------- 7b. Whole-set cost line = indices.json (R13, Oct 9 2026) ---------- */
+// The plain read's "One of each of the N cards … about $X" line is baked by tools/build-sector-index.mjs from
+// data/indices.json (js/plain-read.js finishCost). A page whose baked sum, count or date differs from the data has
+// drifted from its own card rows — re-bake (node tools/build-sector-index.mjs --ticker <TK> --bake). Pricing integrity: FAIL.
+try {
+  const idx = JSON.parse(read("data/indices.json"));
+  for (const f of pages) {
+    const html = read(f);
+    for (const m of html.matchAll(/<div class="pr" data-plain="([A-Z0-9]+)"[\s\S]*?<p class="pr-fc" data-fc="([\d.]+)" data-fc-n="(\d+)" data-fc-asof="([\d-]+)"/g)) {
+      const [, tk, fc, n, asOf] = m;
+      const r = idx[tk];
+      if (!r || !Array.isArray(r.basket)) { add("FAIL", "finish-cost-ticker", f, `${tk} whole-set line but no basket in indices.json`); continue; }
+      const cards = r.basket.filter(c => typeof c.price === "number" && c.price > 0);
+      const sum = cards.reduce((a, c) => a + c.price, 0);
+      const last = cards.map(c => String(c.asOf || "").slice(0, 10)).sort().pop();
+      if (Math.abs(sum - +fc) > 0.011 || +n !== cards.length || last !== asOf)
+        add("FAIL", "finish-cost-drift", f, `${tk} whole-set line says $${fc} / ${n} cards / ${asOf}; indices.json gives $${sum.toFixed(2)} / ${cards.length} / ${last} — re-bake`);
+    }
+  }
+} catch (e) { add("FAIL", "finish-cost", "data/indices.json", e.message); }
 
 /* ---------- 8. Vault track-button contract ---------- */
 for (const f of pages) {

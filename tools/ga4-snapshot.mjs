@@ -61,7 +61,9 @@ const REPORTS = {
   // the bot filter (the Singapore/China clusters land Direct). 28 days so a full generation is readable from
   // one night's file. tools/league/score.mjs reads these two.
   landingOrganicDaily28: { dateRanges: RANGES.d28, dimensions: d("landingPage", "date"), metrics: m("sessions", "keyEvents"), dimensionFilter: { filter: { fieldName: "sessionDefaultChannelGroup", stringFilter: { value: "Organic Search" } } }, orderBys: [{ dimension: { dimensionName: "date" } }], limit: 5000 },
-  pageClicks28: { dateRanges: RANGES.d28, dimensions: d("pagePath", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["click", "buystrip_click", "buybox_click", "newsletter_signup"] } } }, limit: 2000 },
+  // Oct 9 2026 (Retention Desk R13 pre-step, before the Mon Oct 12 baseline): chase_click + grade_click fire on the
+  // sector index pages and were site-wide only; signup_view (R11) is the capture's exposure event. Per page from now on.
+  pageClicks28: { dateRanges: RANGES.d28, dimensions: d("pagePath", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["click", "buystrip_click", "buybox_click", "newsletter_signup", "chase_click", "grade_click", "signup_view"] } } }, limit: 2000 },
   // Growth League Distribution division (Mo, 2026-09-29): sessions that arrive on a league agent's tagged link
   // (utm_medium=league, utm_campaign=<agent>-<item>) and referral sessions by source domain (an outreach win is a
   // link another site writes, so it carries no UTM). tools/league/score.mjs reads both.

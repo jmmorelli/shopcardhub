@@ -31,6 +31,7 @@
     '.pr .pr-key{font-size:13px;color:var(--dim,#8a97a5);}' +
     '.pr .pr-key b{color:var(--tx,#d6dde4);}' +
     '.pr-foot{margin-top:8px;font-size:12px;color:var(--dim,#8a97a5);}' +
+    '.pr .pr-fc-k{display:block;font-size:12px;color:var(--dim,#8a97a5);margin-top:2px;}' +
     '.pr-tg{display:inline-block;margin:10px 0 0;background:none;border:1px solid var(--bd,#23303d);color:var(--tx,#d6dde4);font:600 12px/1 var(--fd,inherit);letter-spacing:1.2px;text-transform:uppercase;padding:8px 12px;border-radius:2px;cursor:pointer;}' +
     '.pr-tg:hover{border-color:var(--pr-acc,#00ccf5);color:var(--th,#fff);}' +
     '.pr-fold[hidden]{display:none!important;}' +
@@ -100,6 +101,15 @@
     if (movers.length && !measureChanged) bits.push('Biggest move last week: <b>' + esc(movers[0].c.name) + '</b>, ' + (movers[0].p < 0 ? 'down ' : 'up ') + Math.abs(movers[0].p).toFixed(0) + '%.');
     if (bits.length) out.push('<p>' + bits.join(' ') + '</p>');
 
+    // R13 (Retention Desk, adopted Oct 9 2026) — "what it costs to finish this set": one dated dollar line on the
+    // Pokémon whole-set (sector) indices only. Plain sum of every priced card's sold mark, one copy each, raw, UNCAPPED
+    // (the level is capped; this is not). Conditions from the Fit Analyst, all in finishCost(): "all N cards" only when
+    // every card in the set is priced, else "N of M" with the unpriced named (≤ 3); the real window and date printed;
+    // the change clause only against one shared prior that is a market mark (never a divisor row) ≥ 5 days back, worded
+    // with its date; cards tracked outside the level (TH26's RGB Mews) counted and named. Never a call.
+    var fc = finishCost(k, r);
+    if (fc) out.push('<p class="pr-fc" data-fc="' + fc.sum.toFixed(2) + '" data-fc-n="' + fc.n + '" data-fc-asof="' + esc(fc.asOf) + '">' + fc.html + '</p>');
+
     // how to read the big number
     var key = 'How to read the big number: it started at <b>100</b>. ';
     if (n < 2 || Math.abs(since) < 0.5) key += 'Above 100 means these cards got pricier; below 100 means cheaper.';
@@ -108,6 +118,63 @@
 
     return '<div class="pr-top"><span class="pr-eb">The plain read</span><span class="pr-v ' + v.c + '">' + v.w + '</span></div>' + out.join('') +
       '<div class="pr-foot">This tracks prices — it doesn’t tell you to buy or sell. Cards are long holds, so the 6–12 month picture matters more than any one week.</div>';
+  }
+
+  // R13 — the whole-set cost line. Returns null when the ticker is out of scope or a condition is not met.
+  function finishCost(k, r) {
+    if (r.model !== 'sector' || !/pok[eé]mon/i.test(String(r.set || ''))) return null;   // Pokémon whole-set indices only (chase six + Bowman out)
+    var raw = r.history || []; if (!raw.length) return null;
+    var cards = (r.basket || []).filter(function (c) { return typeof c.price === 'number' && c.price > 0; });   // w 0 cards count: they are set cards
+    if (cards.length < 2) return null;
+    var universe = Array.isArray(r.universe) ? r.universe : null;
+    var uN = universe ? universe.length : (r.universeCount || cards.length);
+    var sum = 0, i; for (i = 0; i < cards.length; i++) sum += cards[i].price;
+    var asOfs = cards.map(function (c) { return String(c.asOf || '').slice(0, 10); }).filter(Boolean).sort();
+    if (!asOfs.length) return null;
+    var asOf = asOfs[asOfs.length - 1], asOfTxt = asOfs[0] === asOf ? day(asOf) : day(asOfs[0]) + '–' + day(asOf);
+    // window: each card's own, else the ticker's screen window
+    var defWin = (r.screen && r.screen.window) || 30, wins = {}, w;
+    cards.forEach(function (c) { w = c.win || defWin; wins[w] = (wins[w] || 0) + 1; });
+    var winKeys = Object.keys(wins).map(Number).sort(function (a, b) { return wins[b] - wins[a]; });
+    var winTxt = winKeys[0] + '-day sold medians', winNote = '';
+    if (winKeys.length > 1) { var longer = cards.length - wins[winKeys[0]]; winNote = ' ' + longer + (longer === 1 ? ' card that sells' : ' cards that sell') + ' less often ' + (longer === 1 ? 'is' : 'are') + ' marked on ' + winKeys.slice(1).sort(function (a, b) { return a - b; }).join('- and ') + '-day medians.'; }
+    // count line
+    var countTxt, missTxt = '';
+    if (cards.length >= uN) countTxt = 'One of each of the <b>' + cards.length + ' cards</b> in the set, raw';
+    else {
+      countTxt = 'One of each of the <b>' + cards.length + ' of ' + uN + ' cards</b> that sell often enough to price, raw';
+      if (universe) {
+        var have = {}; cards.forEach(function (c) { have[String(c.num)] = 1; });
+        var miss = universe.filter(function (u) { return !have[String(u && u.num != null ? u.num : u)]; });
+        if (miss.length && miss.length <= 3) missTxt = ' Not priced: ' + miss.map(function (u) { return esc(u.name || '') + (u.num != null ? ' #' + esc(u.num) : ''); }).join(', ') + '.';
+        else if (miss.length) missTxt = ' ' + miss.length + ' cards have too few sales to price.';
+      }
+    }
+    // cards tracked outside the level (w 0) — counted here, so say so and name them (≤ 3)
+    var w0 = cards.filter(function (c) { return c.w === 0; }), w0Txt = '';
+    if (w0.length) {
+      var w0sum = 0; w0.forEach(function (c) { w0sum += c.price; });
+      w0Txt = ', including ' + (w0.length <= 3 ? w0.map(function (c) { return '<b>' + esc(c.name) + (c.num ? ' ' + (/^\d/.test(String(c.num)) ? '#' : '') + esc(c.num) : '') + '</b>'; }).join(', ') : w0.length + ' cards') + ' tracked outside the index level (' + money(w0sum) + ' of it)';
+    }
+    // change clause: same cards, one shared prior that is a market mark, ≥ 5 days back, newest row not a divisor row
+    var chgTxt = '';
+    var newest = raw[raw.length - 1];
+    var prevs = cards.map(function (c) { return typeof c.prevPrice === 'number' && c.prevPrice > 0 ? String(c.prevAsOf || '').slice(0, 10) : ''; });
+    var prevAsOf = prevs[0];
+    var shared = prevAsOf && prevs.every(function (p) { return p === prevAsOf; });
+    if (shared && newest && newest.kind !== 'divisor') {
+      var prevRow = null; for (i = 0; i < raw.length; i++) if (String(raw[i].date).slice(0, 10) === prevAsOf) prevRow = raw[i];
+      var gap = (new Date(asOf + 'T12:00:00Z') - new Date(prevAsOf + 'T12:00:00Z')) / 864e5;
+      if (prevRow && prevRow.kind !== 'divisor' && gap >= 5) {
+        var prevSum = 0; cards.forEach(function (c) { prevSum += c.prevPrice; });
+        var diff = sum - prevSum, dAbs = Math.abs(diff);
+        var dTxt = sum >= 100 ? '$' + Math.round(dAbs).toLocaleString('en-US') : money(dAbs);   // the sum is "about", so the change is to the dollar too
+        chgTxt = dAbs < 0.5 ? ', unchanged from the same cards at the ' + day(prevAsOf) + ' mark' : ', <b>' + dTxt + ' ' + (diff < 0 ? 'less' : 'more') + '</b> than the same cards at the ' + day(prevAsOf) + ' mark';
+      }
+    }
+    var html = countTxt + ': <b>about ' + money(sum) + '</b> at ' + winTxt + ' as of ' + asOfTxt + w0Txt + chgTxt + '.' + missTxt + winNote +
+      ' <span class="pr-fc-k">What the whole set costs to buy, one copy of each card, on that date. The index level above is capped and weighted; this sum is neither.</span>';
+    return { sum: sum, n: cards.length, asOf: asOf, html: html };
   }
 
   function foldTargets(chart) {
@@ -175,7 +242,7 @@
     if (!document.querySelector('.idx-chart[data-ticker]')) return;
     (window.schIdx = window.schIdx || function () { return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { window.__schIdxP = null; throw e; })); })().then(mount).catch(function () {});
   }
-  if (typeof module !== 'undefined' && module.exports) module.exports = { build: build, bakeBox: bakeBox, PR_CSS: css };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { build: build, bakeBox: bakeBox, finishCost: finishCost, PR_CSS: css };
   if (!HAS_DOM) return;
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
 })();

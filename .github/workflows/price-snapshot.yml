@@ -30,6 +30,10 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
+        with:
+          # B63 (Oct 9 2026): tools/sitemap-lastmod.mjs dates every sitemap <lastmod> from the page's last content
+          # commit, so the publish step needs the full history (a shallow clone would date every page to HEAD).
+          fetch-depth: 0
 
       - name: Checkout price-data branch (may not exist yet)
         uses: actions/checkout@v4
@@ -194,6 +198,13 @@ jobs:
             # /badge/<TICKER>.svg (Oct 2 2026, Ledger #52): embeddable index badges drawn from indices.json; redraw after each re-mark.
             if node tools/build-badges.mjs; then git add badge
             else echo "::warning::build-badges failed - badges keep their previous draw"; git checkout -- badge 2>/dev/null || true; fi
+            # /track-record scorecard baked from data/calls.json (B66, Oct 9 2026) so crawlers see the graded calls, not "Loading…".
+            if node tools/build-track-record.mjs; then git add track-record.html
+            else echo "::warning::build-track-record failed - page keeps its previous bake"; git checkout -- track-record.html; fi
+            # sitemap <lastmod> = each page's last content commit (B63, Oct 9 2026). Pages baked above are "today".
+            # Never blocks the feed: a failure leaves sitemap.xml as it was.
+            if node tools/sitemap-lastmod.mjs | tail -2; then git add sitemap.xml
+            else echo "::warning::sitemap-lastmod failed - sitemap.xml keeps its previous dates"; git checkout -- sitemap.xml; fi
             if git diff --cached --quiet; then echo "Feed unchanged."; exit 0; fi
             git commit -q -m "feed: nightly $(date -u +%F)"
             if git push -q origin main; then echo "Feed published."; exit 0; fi
