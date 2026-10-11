@@ -1,7 +1,7 @@
 {
   "slug": "mega-darkrai-ex-worth",
   "agent": "B",
-  "title": "How Much Is Mega Darkrai ex Worth? $172 Raw, $830 PSA 10 — Dated Sold Comps, Oct 2026 | ShopCardHub",
+  "title": "How Much Is Mega Darkrai ex Worth? $163 Raw, $830 PSA 10 — Dated Sold Comps, Oct 2026 | ShopCardHub",
   "query": "how much is mega darkrai ex worth",
   "evidence": [
     "google autocomplete (2026-10-04): 'how much is mega darkrai ex' -> 'how much is mega darkrai ex worth' 1st of 10, all 10 completions (subtype 512) incl. '...pitch black', '...gold', '...worth psa 10', '...psa 10', '...sir', '...101/084 worth', '...card worth' — curl -s 'https://suggestqueries.google.com/complete/search?client=firefox&q=how+much+is+mega+darkrai+ex'",
@@ -11,7 +11,13 @@
     "site check (ls *.html, 2026-10-04): no darkrai page; pitch-black-index (PB26 marks, no graded ladder), pitch-black-set-guide and pitch-black-vs-chaos-rising exist; this is the Mega Darkrai single-card worth answer, high-dollar per the Oct 3 focus (PSA 10 116 $700–$2,000 dated rows; PSA 10 120 $1,525–$2,500)",
     "sold basis: PriceCharting completed sales read 2026-10-04 (node tools/league/solds.mjs + a title filter, graded rows kept only where the title names the grade): 116 raw $171.75/30 (Sep 29–Oct 3), PSA 10 $830.00/21 in 30d (Sep 5–Oct 1; 30 of 30 titled), last ten $780.50 (Sep 23–Oct 1), buckets Aug 22–Sep 2 $1,525/9, Sep 5–17 $1,226/9, Sep 22–Oct 1 $790.50/12, PSA 9 $302.00/14 (Sep 8–30; CGC 9 rows dropped); 120 raw $146.78/30 (Sep 23–Oct 1), PSA 10 $1,950.00/5 in 90d (Aug 16–Sep 30; only 2 in 30d), dated rows $1,950 Aug 16, $2,500 Aug 21, $2,100 Aug 30, $1,800 Sep 19, $1,525 Sep 30, PSA 9 $321.09/2 (Sep 18 $395, Oct 1 $247.18; TAG/ACE/CGC 9 dropped); 101 raw $8.39/30 (Sep 27–Oct 1), no graded rows listed; 048 raw $1.89/30 (Sep 27–Oct 1), no graded rows listed",
     "index: PB26 68.13 (2026-09-28; 100 = Jul 2026, first month of sold data after the Jul 17, 2026 release), 69.75 (2026-09-21); live from 82.33 (Aug 24); Mega Darkrai ex 116 $184.01 + 120 $155.03 + 101 $9.79 = $348.83 = 48.1% of $724.88, nos. 1 and 2 of 36",
-    "ask (labelled): Pitch Black Elite Trainer Box lowest live ask $69.99 among 49 listings returned, 2026-10-04 — curl -s -H 'x-shopcardhub-client: tool' 'https://www.shopcardhub.com/api/comps?q=Pitch%20Black%20Elite%20Trainer%20Box&limit=50&sort=price&category_ids=183456' (redemption codes, used, damaged, lots, cases, Pokémon Center editions excluded by eye)"
+    "ask (labelled): Pitch Black Elite Trainer Box lowest live ask $69.99 among 49 listings returned, 2026-10-04 — curl -s -H 'x-shopcardhub-client: tool' 'https://www.shopcardhub.com/api/comps?q=Pitch%20Black%20Elite%20Trainer%20Box&limit=50&sort=price&category_ids=183456' (redemption codes, used, damaged, lots, cases, Pokémon Center editions excluded by eye)",
+    "google autocomplete (2026-10-11): 'mega darkrai ex worth' -> '...worth' 1st, '...worth pitch black' 2nd, '...worth grading' 3rd, '...price psa 10' 6th, '...price chart' 9th of 10 — curl -s 'https://suggestqueries.google.com/complete/search?client=firefox&q=mega+darkrai+ex+worth'",
+    "WebSearch 'mega darkrai ex worth pitch black price' (2026-10-11): pokemonwizard article, mydextcg, misprint preview, tcgstacked price guide, eyevotcg, tcgdropradar, tcgalbum, tcgindex — undated guides; none prints a dated sold median with counts over time",
+    "bing-latest.json (origin/price-data, 2026-10-10): no striking-distance query or page row for this slug",
+    "nightly sold read: git show origin/price-data:data/sold-history.json + data/sold-marks.json (day 2026-10-10, generated 2026-10-10T14:53Z by tools/price-engine/sold-marks.mjs; SportsCardsPro/PriceCharting ungraded completed sales, 30-day median + n30) — 116: $186.50/42 (to 09-25), $180.00/43 (10-02), $165.00/41 (10-09), $162.50/41 (10-10); 120: $152.50/37, $147.25/38, $144.25/38, $145.00/38; 101: $9.77/36, $8.50/36, $7.90/37, $8.00/37",
+    "data/indices.json PB26 history row 2026-10-05 (weekly re-mark, no kind:divisor): 64.74 (prev 68.13 Sep 28); basket marks 116 $174.28 (prev $184.01), 120 $154.46 (prev $155.03), 101 $8.30 (prev $9.79); rank 3 = Morpeko ex 117 $82.72",
+    "R18 fix: 120 PSA 9 cell was '$321.09 median of 2 dated sales' (pre-Oct 8 shape); now printed singly from the Oct 4 rows already in this manifest: $247.18 (1 dated sale, Oct 1), $395.00 (1 dated sale, Sep 18)"
   ],
   "published": "2026-10-04",
   "floorFrom": "2026-10-04",
@@ -41,5 +47,5 @@
     "label": "How much is Mega Darkrai ex worth?"
   },
   "warnsAdded": [],
-  "notes": "2026-10-04 build (week 2: 2 of 5). Eight tagged eBay links mega-darkrai-ex-worth-1..8. Next run: the charizard-ex-worth rebase fix (data-rebase-note still on the page), then a high-dollar sports card query with autocomplete evidence that the player pages do not answer."
+  "notes": "improve run 2026-10-11 (INDEX-FIRST, 0 new pages): PriceCharting direct reads blocked (Cloudflare 403), so graded cells and the main table stay on their dated Oct 4 read. New: 'The Raw Trend' section — 30-day raw sold median + count for 116/120/101 at Sep 25, Oct 2, Oct 9, Oct 10 from our nightly sold read; hero/H1/title/meta/og/FAQ move to the Oct 10 nightly 116 read ($171.75 -> $162.50, 41 sales, 30 days to Oct 10); which-one grid follows; PB26 cards move to Oct 5 (64.74); basket-share claim replaced by rank; grading-multiple paragraph recomputed on the Oct 10 raw read; R18 Oct 8 ruling applied to the 120 PSA 9 two-row median (now two single dated rows). Stamp 2026-10-11. No WARN added. | previous: 2026-10-04 build (week 2: 2 of 5). Eight tagged eBay links mega-darkrai-ex-worth-1..8. Next run: the charizard-ex-worth rebase fix (data-rebase-note still on the page), then a high-dollar sports card query with autocomplete evidence that the player pages do not answer."
 }
