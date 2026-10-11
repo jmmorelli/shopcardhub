@@ -1,6 +1,6 @@
 {
  "_comment": "UPCOMING RELEASES panel on / (homepage rework, Sep 19 2026). Rendered by tools/build-home.mjs (HOME:releases) and re-filtered client-side by js/home.js so a past date drops off between Monday re-bakes. Hand-curated: only dates read from the named source, never guessed. status = confirmed (a dated line on the maker's calendar) | expected (a window a calendar publishes without a day — shown with its window text, no fake day). href only to a page that exists (build-home refuses otherwise). Keep ~10 upcoming; keep past rows for 30 days (the /release-calendar page shows them under 'Just released' — the 'X release date' searches keep coming for weeks after the date), prune older. `q` = the eBay search for the sealed product (used by tools/build-release-calendar.mjs; falls back to the label); `cat` = eBay category id when not sports cards (183456 = CCG sealed).",
- "asOf": "2026-10-10",
+ "asOf": "2026-10-11",
  "sources": {
   "topps": "https://www.topps.com/release-calendar (read 2026-09-26)",
   "bowman-chrome-mega": "https://www.topps.com/pages/bowman-chrome-baseball (Mega boxes available September 23 at 12pm ET)",
@@ -263,17 +263,6 @@
    "source": "https://www.steelcitycollectibles.com/i/2026-panini-obsidian-football-hobby-box (read 2026-10-07: 'Release Date: 10/21/26', 'RELEASES 10/21/26 SUBJECT TO CHANGE'); https://www.steelcitycollectibles.com/product-release-calendar (OCTOBER 21, 2026, read 2026-10-07); https://www.dacardworld.com/sports-cards/2026-panini-obsidian-football-hobby-box ('Release Date: October 21st, 2026', read 2026-10-07). Replaces the Oct 6 row (same label, href added)."
   },
   {
-   "date": "2026-10-22",
-   "family": "sports",
-   "sport": "NBA",
-   "label": "2026-27 Topps Flagship Basketball",
-   "note": "hobby 20×12, 1 auto or relic · jumbo 10×28 · mega · blaster · hanger — distributor date; Topps' calendar shows the Oct 6 pre-order only",
-   "status": "reported",
-   "href": "/topps-flagship-basketball-2026-27",
-   "q": "2026-27 Topps Basketball hobby box",
-   "source": "https://www.steelcitycollectibles.com/product-release-calendar (re-read 2026-10-06: all seven 2026-27 Topps Basketball formats under OCTOBER 22, 2026); https://www.steelcitycollectibles.com/i/2026-27-topps-basketball-hobby-box (read 2026-10-04: 'RELEASES 10/22/26 SUBJECT TO CHANGE'); https://www.topps.com/release-calendar (re-read 2026-10-06: 'Tuesday, Oct 6 at 5:00 PM UTC 2026-27 Topps Flagship Basketball' · Pre-order, no street date). ONE row only: replaces the Oct 6 pre-order row (same label)."
-  },
-  {
    "date": "2026-10-23",
    "family": "pokemon",
    "sport": "PKMN",
@@ -328,6 +317,17 @@
    "href": "/topps-cosmic-chrome-baseball-2026",
    "q": "2026 Topps Cosmic Chrome Baseball hobby box",
    "source": "https://www.topps.com/release-calendar (read 2026-10-06: 'Wednesday, Nov 4 2026 Topps Cosmic Chrome® Baseball', no pre-order tag); https://www.steelcitycollectibles.com/i/2026-topps-cosmic-chrome-baseball-hobby-box (read 2026-10-06: 'Release Date: 11/4/26', subject to change). Replaces the 2026-10-05 pre-order row (same label): moves it to the street date."
+  },
+  {
+   "date": "2026-11-05",
+   "family": "sports",
+   "sport": "NBA",
+   "label": "2026-27 Topps Flagship Basketball",
+   "note": "hobby 20×12, 1 auto or relic · jumbo 10×28 · value box · hanger — distributor date, moved from Oct 22; mega listed Nov 12 (Checklist Insider); Topps' calendar has no street date",
+   "status": "reported",
+   "href": "/topps-flagship-basketball-2026-27",
+   "q": "2026-27 Topps Basketball hobby box",
+   "source": "https://www.steelcitycollectibles.com/i/2026-27-topps-basketball-hobby-box (read 2026-10-11: 'Presale Releases: 11/5/26', 'RELEASES 11/5/26 SUBJECT TO CHANGE', 'Release Date: 11/5/26'; read 10/22/26 on 2026-10-04); https://www.checklistinsider.com/2026-27-topps-flagship-basketball (updated 2026-10-06, read 2026-10-11: 'Release Date: November 5, 2026', Hobby/Jumbo and Blaster Nov 5, Mega Nov 12); https://www.topps.com/release-calendar (read 2026-10-11: no Flagship Basketball date in the Oct 11–25 window or the spotlight). ONE row only, same label: replaces the Oct 22 row (integrate.mjs applies this Oct 4-published manifest after topps-update-series-2026's Sep 26 row with the same label)."
   },
   {
    "date": "2026-11-05",
