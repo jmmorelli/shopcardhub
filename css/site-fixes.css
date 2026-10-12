@@ -621,3 +621,39 @@ html:root {
   --fd: 'Barlow Condensed', 'SCH Cond Fallback', sans-serif;
   --fb: 'Barlow', 'SCH Sans Fallback', sans-serif;
 }
+
+/* 22 (Night Crew, Oct 12 2026). Four fixes, one block.
+   B30 — taps under 40 px on desktop. The 11 px / 40 px floors above live inside the phone query, so at 1440 the BCB
+   checklist Track button (js/set-checklist.js, 100 rows) was 73×26 at 10.5 px, the Bangers seat Track button
+   (js/vault-track.js base rule) 69×23 at 10 px, and the sector-index ticker chips (inline .chip on 39 index pages,
+   from tools/new-sector-page.mjs) 126×29 at 10 px. Same buttons, same labels; they get the phone floor everywhere.
+   The vault-track / set-checklist <style> lands after this sheet, hence the body prefix. */
+body .schk .sch-track-card, body .entry-head-txt .sch-track-card {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 12px; font-size: 11px; }
+body .schk .sch-track-card { margin-top: 0; }
+body .strip > a.chip { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; font-size: 11px; }
+
+/* B59 — the desktop nav row is 711–771 px of links, but every page shows it from 769 px, so from 769 to ~923 px
+   the page scrolled sideways by up to 155 px (home 94 px at 769). Below 960 px the hamburger takes over, the way it
+   already does under 769 (same drawer, same links). */
+@media (min-width: 769px) and (max-width: 959px) {
+  body .nav-links { display: none !important; }
+  body .nav-hamburger { display: flex !important; }
+  body .mobile-nav { display: block !important; }
+}
+
+/* P42 (First-Time Visitor Oct 9 + Oct 12) — Best Hobby Boxes "At a Glance" on a phone stacked ~201–224 px per box
+   (1,473 px for seven), because the Sport cell pushed Sold / Autos / Verdict onto a second label row. The box name's
+   sub-line already says what it is; on a stacked ranking row the Sport cell is dropped so the three numbers sit on
+   one line. Only rows that carry a Verdict (the ranking), only on phones; desktop keeps the full table. */
+@media (max-width: 600px) {
+  body table.roi-table.rt-stack tr:has(> td[data-label="Verdict"]) > td[data-label="Sport"] { display: none; }
+}
+
+/* P46 (First-Time Visitor Oct 12) — guide heroes (104 pages share .hero { padding:72px 0 56px }) opened with a 72 px
+   empty band under the sticky nav on a phone. 24 px is enough air; the headline and the buy box move up 48 px.
+   Plain .hero on purpose: it beats the earlier per-page rule but not css/terminal-page.css (16 px, loaded after this
+   sheet on the 8 terminal guides), which is already tighter. */
+@media (max-width: 600px) {
+  .hero { padding-top: 24px; }
+}
