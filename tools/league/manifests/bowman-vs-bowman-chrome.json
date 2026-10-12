@@ -1,14 +1,15 @@
 {
   "slug": "bowman-vs-bowman-chrome",
   "agent": "C",
-  "title": "Bowman vs Bowman Chrome 2026: Which 1st Autos Held Value? Index, Sold Comps, Hobby Box Asks | ShopCardHub",
+  "title": "Bowman vs Bowman Chrome 2026: Which 1st Autos Hold Value? Index, Sold Comps, Hobby Box Asks | ShopCardHub",
   "query": "bowman vs bowman chrome",
   "evidence": [
     "google autocomplete: 'bowman vs bowman chrome' 2nd of 10 for 'bowman vs' — curl https://suggestqueries.google.com/complete/search?client=firefox&q=bowman+vs (2026-10-03)",
     "google autocomplete: 'bowman chrome vs bowman' 2nd of 6 for 'bowman chrome vs'; 'bowman or bowman chrome' 1st of 10 for its own stem — curl …&q=bowman+chrome+vs and …&q=bowman+or+bowman+chrome (2026-10-03)",
     "bing autocomplete: no 'bowman vs bowman chrome' completion (only 'bowman vs topps', 'bowman chrome vs topps chrome', 'bowman chrome hobby vs lite') — curl https://api.bing.com/osjson.aspx?query=bowman+vs (2026-10-03); Google is the evidence",
     "WebSearch 'bowman vs bowman chrome difference which is better' (2026-10-03): top results are Topps Chrome vs Bowman Chrome shop blogs, a trading-forum thread and browser (Chromium vs Chrome) pages; nothing decides Bowman vs Bowman Chrome on an index or dated sold comps",
-    "parked lead since 2026-09-29 (Google 2nd for 'bowman vs', 1st for 'bowman or bowman chrome'), held until BB26/BCB26 had a third mark — both now have Sep 25, Sep 28, Oct 1"
+    "parked lead since 2026-09-29 (Google 2nd for 'bowman vs', 1st for 'bowman or bowman chrome'), held until BB26/BCB26 had a third mark — both now have Sep 25, Sep 28, Oct 1",
+    "re-checked 2026-10-12: google autocomplete 'bowman vs bowman chrome' still 2nd of 10 for 'bowman vs'; 'bowman chrome vs bowman' 2nd of 6 for 'bowman chrome vs'; 'bowman or bowman chrome' 1st of 10 for its own stem. Bing autocomplete still has no completion. Bing strikingDistance (price-data bing-latest, Oct 11) has no query mapping to this page; Bowman Chrome demand shows on other pages ('2026 bowman chrome' 73 impr pos 6.3, 'bowman chrome 2026' 50 impr pos 4.7)"
   ],
   "published": "2026-10-03",
   "floorFrom": "2026-10-03",
@@ -31,13 +32,19 @@
     "req": "bowman"
   },
   "releases": [],
-  "searchExtra": { "href": "/bowman-vs-bowman-chrome", "label": "Bowman vs Bowman Chrome (2026)" },
-  "warnsAdded": [],
-  "verdict": "Same chase in both (1st Bowman Chrome Prospect Autos). Matched window Sep 25 -> Oct 1, 2026: BB26 77.11 -> 76.44 -> 76.88 (-0.3%), BCB26 100.00 -> 97.15 -> 85.87 (-14.1%). Levels on different bases (BB26 100 = May 2026 release, BCB26 100 = Sep 2026 release), compared only on matched dates. Top autos (30-day sold medians at the Oct 1 mark): Bowman Fischer $153.35 (30 sales), Hartman $110.00 (30), Holliday $108.00 (13); Chrome Zazueta $47.00 (23), Dos Santos $42.50 (22), Azocar $35.00 (28). Middle auto $8.75 vs $9.25. Hobby box lowest asks Oct 3: Bowman $385 (17 live, 1 auto) vs Chrome $515 (22 live, 2 autos = $257.50 an auto).",
-  "sources": {
-    "indices": "data/indices.json BB26/BCB26 history + basket (asOf 2026-10-01)",
-    "boxes": ["https://www.checklistinsider.com/2026-bowman-baseball", "https://www.checklistinsider.com/2026-bowman-chrome-baseball"],
-    "asks": "https://www.shopcardhub.com/api/comps (x-shopcardhub-client: tool), read 2026-10-03"
+  "searchExtra": {
+    "href": "/bowman-vs-bowman-chrome",
+    "label": "Bowman vs Bowman Chrome (2026)"
   },
-  "notes": "Built 2026-10-03 (1 of 5, league week 2). Auto prices are the Oct 1 index-mark sold rows (PriceCharting 30-day medians with counts) because tools/league/solds.mjs was blocked today: pricecharting.com 301s sports paths to sportscardspro.com, which returned Cloudflare 403 to both fetch and headless Chromium all run. Re-read the six autos with solds.mjs on the next run that can reach SportsCardsPro and bump data-prices-updated. Buy strip: Chrome primary (in-season release, cheaper per auto), Bowman secondary. Next: re-mark this page on the Oct 5 mark (a fourth BCB26 mark decides whether the slide is release-decay or trend); new page 'destined rivals vs pitch black' (Google 2nd of 10 for 'destined rivals vs', Oct 3) — DR25 and PB26 both have six marks."
+  "warnsAdded": [],
+  "verdict": "Oct 8, 2026 mark: Chrome's headline 1sts entered BCB26 (48 entered, logged divisor). Top autos (30-day sold medians, sales counted): Bowman Fischer $155.00 (21), Hartman $110.00 (22), Holliday $105.00 (13); Chrome Luis Hernandez $152.50 (21), Renteria $103.50 (7), Gomez $93.95 (18); Asigen $57.00 (15). Latest week Oct 1 -> Oct 8: BB26 76.88 -> 74.09 (-3.6%), BCB26 85.87 -> 84.83 (-1.2%). Sep 25 -> Oct 8: BB26 -3.9%, BCB26 -15.2%. Middle auto $8.87 (37 of 64 under $10) vs $8.50 (61 of 90). Hobby box lowest asks Oct 12: Bowman $375.00 (21 live, 1 auto) vs Chrome $549.99 (30 live, 2 autos = $275.00 an auto).",
+  "sources": {
+    "indices": "data/indices.json BB26/BCB26 history + basket + divisorLog (marks Sep 25, Sep 28, Oct 1, Oct 8; updated 2026-10-08)",
+    "boxes": [
+      "https://www.checklistinsider.com/2026-bowman-baseball",
+      "https://www.checklistinsider.com/2026-bowman-chrome-baseball"
+    ],
+    "asks": "https://www.shopcardhub.com/api/comps (x-shopcardhub-client: tool), read 2026-10-12 and 2026-10-03"
+  },
+  "notes": "Built 2026-10-03 (1 of 5, league week 2). Auto prices are the Oct 1 index-mark sold rows (PriceCharting 30-day medians with counts) because tools/league/solds.mjs was blocked today: pricecharting.com 301s sports paths to sportscardspro.com, which returned Cloudflare 403 to both fetch and headless Chromium all run. Re-read the six autos with solds.mjs on the next run that can reach SportsCardsPro and bump data-prices-updated. Buy strip: Chrome primary (in-season release, cheaper per auto), Bowman secondary. Next: re-mark this page on the Oct 5 mark (a fourth BCB26 mark decides whether the slide is release-decay or trend); new page 'destined rivals vs pitch black' (Google 2nd of 10 for 'destined rivals vs', Oct 3) — DR25 and PB26 both have six marks. | IMPROVE 2026-10-12 (INDEX-FIRST, 0 new pages): re-marked on the Oct 8 index mark (BCB26 release-window entries brought Hernandez/Renteria/Gomez/Asigen in), new H1 (Chrome's top 1st auto $152.50 vs Bowman's $155.00), latest-week row added, Chrome top-3 rows swapped to the entered names with new customids -11/-12/-13, Oct 12 box asks, data-prices-updated 2026-10-12. Auto figures are the index-mark rows (solds.mjs blocked by SportsCardsPro 403); Fischer cross-checks with sold-marks Oct 10 ($155, 21 sales). Next: re-mark on the next BB26/BCB26 mark after Oct 8; watch Renteria (7 sales, thinnest row)."
 }
