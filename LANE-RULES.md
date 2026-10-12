@@ -732,6 +732,7 @@ One-shots on the list (Oct 1): *Grok usage reset — restart plan* (Oct 1; resta
 
 #### Known prompt drift (Oct 1) — the file wins; a lane reading its prompt follows these lines
 
+- **Desk (Oct 12):** no vendor briefs exist (STEP 3 is dead under R10 Am. 6); a scheduled GitHub run can start 6–10 h late — "no run yet" by early afternoon PT is late, not dead (check the Actions API before calling it); calls.json reads belong to the Tuesday board lane, never the desk.
 - **Desk:** reads the feed from `/feed/` and GA4 from a `price-data` clone, never raw.githubusercontent (R19); reads the Grok scouts' daily digest as leads (R10 Am. 6, Oct 7; no vendor briefs — the bots take no X action); runs 7 days; the inbox lookback diffs the last three Integrity Watch `*-proposals.json` files against `data/pipeline.json` (Sep 24 rule).
 - **Weekly:** no Tape Recap at all — retired by Mo Oct 1 (CHARTER §3); the Tuesday Tape is the one weekly email; Phase 2 (sold-basis card pages, engine blocks and home panels, Oct 7) is build-order #1 (R21); when no GA4-realtime proof is possible unattended, it sweeps on the offline harness (`tools/qa/render-local.cjs`) and says so, rather than skipping or loading production.
 - ~~**X Desk Watch:** …~~ **fixed Oct 5 ~13:37 PT** — the task prompt was replaced whole (CoS with Mo; R10 Am. 4/5, 13:00, Browser 1 by id, GA4 `authuser=1`, SG/CN/NL Direct bot cluster subtracted before any site-traffic claim). Drift line struck by the Oct 5 desk.
@@ -1100,6 +1101,18 @@ Mo asked why the site earns so little. The CoS read (Oct 8, GA4 data day Oct 7, 
 ## R34 · Reasons to return are a desk, not a side effect (Mo, 2026-10-09)
 
 Retention ideas are generated nightly by the **Retention Desk** (Sun–Thu 03:40, `claude/retention/README.md`) and ruled on by the weekday CoS desk at STEP 5 (adopt with owner + week: S → Night Crew BACKLOG, M → the Wednesday weekly, L → a `claude/handoffs/` note; park with the gate named; decline with the reason). The Vault is not the reason to return and no lane extends it beyond ledger #13 (Mo, Sep 25). Lanes B and D never store a collection or compete with PSA vaulting. R25, R26 and R33 still gate what ships: the desk may propose past a freeze and must name the gate. A retention row left unruled is a desk defect; at 4 unruled rows the Retention Desk stops proposing. Adoption rate is read at the Nov 1 monthly review; below 1 in 5, the cadence drops to Tue/Fri. Ledger: `claude/retention/LEDGER.md` (Project copy canonical, the desk mirrors it to the repo).
+
+## R35 · Fewer, Realer — the site must stop reading like a bot (Mo, 2026-10-12)
+
+Mo, Oct 12: the site "stinks of AI", collectors are sniffing it out, retention is terrible; fix it first. Program: `claude/cos/fewer-realer-program-2026-10-12.md` (Project), handoff `claude/handoffs/fewer-realer-2026-10-12.md`. Recorded here by the Oct 12 desk so no lane works against it; the Wed Oct 14 weekly files the full de-template spec (§2 of the program) as the body of this rule. *(The program text says "R34"; R34 is the Retention Desk rule, so this is R35.)*
+
+- **No name, no face, no personal byline anywhere on the site — compliance. Mo stays anonymous. Do not re-ask.** Every fix works anonymously.
+- **Cull: 144 sitemap URLs → ≤ 50 by Oct 31 (CoS call).** Keep the index pages + `/indices`, the utility pages, and any page with organic/Bing landings in 28 days or a Google-indexed status; merge the rest into its hub with a 301 and its one or two human sentences. The Oct 14 weekly writes `claude/cos/cull-list-2026-10-14.md` before the first merge. Growth League stays INDEX-FIRST and its work is merges only until GSC ≥ 20 indexed; the 300-word merge bar (R27 Am. 2) yields to the cull list.
+- **De-template (binding on every surviving page, every lane that writes copy):** one "not a call" line per page (footer); no "The Tape / The Index / What This Means / Sources" eyebrows; at most one "X, not Y" sentence per page; one read date per page; zero placeholders live ("—", "first mark tonight", stale badges); a dated, specific "what changed this week" paragraph on index pages; humanizer pass (R31).
+- **X from Mon Oct 19: Mo's voice.** The X Weekly Batch ends with the Oct 12–18 queue; the daily X task becomes a reply sheet (3–5 conversations + one optional post in Mo's voice that he posts or ignores). Nothing on this project posts (R10 unchanged).
+- **Grok team (R10 Am. 6 unchanged, read-only):** Seeker daily reply-sheet feed; Auditor → weekly "Trust Reader"; Editor weekly who-to-know list. Free credits only.
+- **Measure (weekly, vs Oct 8):** URL count · Google indexed (3 → ≥ 20 by Nov 15) · returning share (→ 15% by Nov 30) · Organic Social sessions · eBay clicks/week · placeholder/boilerplate string count on the pushed tree (target 0).
+- **Needs Mo:** only owned-card photos (~30, anonymous, `Card Hub/photos/owned/`, shot list in the Project).
 
 ## Changing this file
 

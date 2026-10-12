@@ -11,10 +11,23 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the desk (2026-10-12, 14:00 run). Mo, these are the only things waiting on you
+
+- **Before Wed Oct 14, ~3 min:** drop this week's two eBay Partner Network CSVs (Performance by Day + by Custom ID, Oct 7–13) into `Card Hub/epn/`. It is the only money read; the newest pair ends Oct 6.
+- **When you have 20 minutes, anonymous:** phone photos of cards you own, one per index page (desk or hand, daylight, no face, no names, no COMC stickers), dropped in `Card Hub/photos/owned/` named like `BSSL-nidorino-37.jpg`. The shot list (cards you already have at home, matched to each index) is the Project doc `claude/cos/owned-card-shot-list-2026-10-12.md`. This is the one piece of the Fewer, Realer program only you can do.
+- **One yes/no — /track-record labels.** Eight Bowman rows on `/track-record` call their pre-Sep 25 figures "SportsCardsPro raw sold"; the site's own Sep 29 method note says those were guide values, not sales (it names Kim's $131.25). Fix = a dated bracketed correction on each row; entries, dates and projections stay byte-identical (the Greninja shape you OK'd Oct 7). Say "yes" and the Tuesday lane carries it. Silence = it stays as is.
+- **Optional, before Thu 12:30 PT (your X account):** the queued Thursday Base Set post says "the holos below it climbed"; two fell (Mewtwo, Ninetales). Change it to "most of the holos below it climbed". Every other queued post is true as dated — leave them.
+- Carried: the May "chase rule" call (silence = "a" at the Oct 14 weekly) · Bluesky, TCGplayer (#2), TAG (#4).
+- *FYI, no action needed:* your own clone at `~/Projects/shopcardhub` has had a stale `.git/index.lock` since Sep 21 and 30 uncommitted files from before then. Nothing on the site uses it. When convenient: `rm ~/Projects/shopcardhub/.git/index.lock`, then `git status` there before anything else.
+
+*Closed this run:* the Bing key — you pasted it Oct 10 and the first nightly read landed (`bing-latest.json`). *Checked against live state:* no TCGplayer, TAG or Bluesky link in the repo.
+
+---
+
 ## Open — from the desk (2026-10-09, 14:00 run). Mo, these are the only things waiting on you
 
 - ~~One yes on the Bing API key~~ **✅ Mo "yes on Bing" Oct 9; the nightly read is built and waiting on one paste (below).**
-- **Bing key, ~2 min (a key is yours to paste; the CoS never types one into a form):** (1) Bing Webmaster Tools → Settings (gear) → API Access → Generate API Key → copy it. (2) github.com/jmmorelli/shopcardhub → Settings → Secrets and variables → Actions → New repository secret → Name `BING_WMT_KEY`, Value = the key → Add secret. That's it: the next nightly snapshot (02:00 PT) starts reading Bing, and the desk confirms the first file.
+- ~~**Bing key, ~2 min**~~ **✅ closed Oct 12 desk: Mo pasted it Oct 10; the nightly reads Bing.** Original ask: (1) Bing Webmaster Tools → Settings (gear) → API Access → Generate API Key → copy it. (2) github.com/jmmorelli/shopcardhub → Settings → Secrets and variables → Actions → New repository secret → Name `BING_WMT_KEY`, Value = the key → Add secret. That's it: the next nightly snapshot (02:00 PT) starts reading Bing, and the desk confirms the first file.
 - **Weekly, ~5 min, your account:** the new Tuesday task drafts one Reddit data post for you to post yourself (traffic plan item 3). Nothing to do until the first draft lands Tue Oct 13.
 - Carried: the May "chase rule" call (block below; silence = "a" at the Oct 14 weekly) · Bluesky, TCGplayer (#2), TAG (#4).
 - *FYI, no action:* the Dungeon keeper moved two old backups into `Card Hub/dungeon-keeper/_to_delete/` (it can't delete unattended). Delete that folder whenever you like.
