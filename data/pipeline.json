@@ -133,10 +133,6 @@
       "nextRun": "2026-10-19",
       "actions": [
         {
-          "ts": "2026-09-25",
-          "msg": "FINDING filed (friday-2026-09-25-holliday-psa10-row, awaiting-cos): SportsCardsPro's \"PSA 10 Sold Listings (1)\" tab on ethan-holliday-cpa-eh carries one dated row on the Sep 25 read - 2026-08-06, $720.00 (listed $999.99), eBay item 407062353443, title \"...#CPA-EH Auto - PSA 10 - LOW POP\". It meets R18 on its face and contradicts the Sep 22 correction (\"no PSA 10 sale ... at any date\"). Not acted on (R1/R6): the page keeps the Sep 22 correction and \"no verified sale\" until the CoS rules."
-        },
-        {
           "ts": "2026-09-28",
           "msg": "Three audit gates re-run on the published tree: audit-prices FAIL 0 / WARN 76, audit-site FAIL 0 / WARN 3, audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected)"
         },
@@ -179,6 +175,10 @@
         {
           "ts": "2026-10-12",
           "msg": "Gates 0 FAIL on all three (prices 0/82, site 0/5 over 171 pages, terminal 0/1 feed-unavailable). Identical counts at clean HEAD, so this run added no WARN. Delta vs the stated 0/77 - 0/4 (141) - 0/1 baseline is +5 prices / +1 site and 30 more pages, all inherited, none ours."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Mo's working clone at ~/Projects/shopcardhub has carried a stale .git/index.lock since Sep 21 20:37 - three weeks. It sits 468 commits behind main with 30 uninspected dirty files, and any git command that writes its index fails. Site unaffected (lanes push from scratch clones). Filed awaiting-mo with the one-line remedy; not touched, per R1."
         }
       ],
       "log": [
@@ -3045,6 +3045,15 @@
       "by": "monday-scan",
       "severity": "MED",
       "title": "MED, and time-sensitive: BCS26's activation blocker is GONE. STATE (Oct 6 evening, 'Activation (desk/weekly, when SCP lists the cards)') and build-sector-index.mjs line 146 ('--init needs no code change once PriceCharting lists the console (404 on Oct 4)') both park BCS26 until SportsCardsPro files the Chrome Sapphire autos. Verified today: https://www.sportscardspro.com/console/baseball-cards-2026-bowman-chrome-sapphire-prospect-autograph returns HTTP 200 with 150 product rows, titled '2026 Bowman Chrome Sapphire Prospect Autograph Card Prices'. So `node tools/build-sector-index.mjs --ticker BCS26 --init` is runnable now, 5 days after the Oct 7 street date and inside the 30-day attention window that R32's 'release-window entry for new Bowman sets' is about. The ticker is still status pre with a 0-card universe. Not run by this lane: the Bowman tickers are the nightly Action's and --init is a first build, not a re-mark. RECOMMEND the desk or the Wednesday weekly runs it this week. SEPARATELY, same class but unverified: BF26 (2026 Bowman Football) streeted Sep 30 and is 12 days PRE with a 0-card universe; its football console returned HTTP 403 behind a Cloudflare challenge from this shell, so whether SCP lists it is NOT established and I am not claiming it does. What IS established and is a claims defect either way: the live /bowman-football-2026-index page tells the reader 'Every card in the checklist is in the universe' and 'Streets Wednesday, Sep 30' in the future tense, while the universe holds 0 cards and the product streeted 12 days ago - the same shape as iw-2026-10-04-1 on /bowman-football and audit-2026-09-09-2 on /topps-finest-baseball. BCS26's page should be checked for the same two sentences before it activates."
+    },
+    {
+      "id": "mo-clone-locked-2026-10-12",
+      "status": "awaiting-mo",
+      "date": "2026-10-12",
+      "area": "infrastructure",
+      "by": "monday-scan",
+      "severity": "MED",
+      "title": "MED, and physically Mo's: his own working clone at ~/Projects/shopcardhub has been GIT-LOCKED FOR THREE WEEKS. `.git/index.lock` is a 0-byte file dated Sep 21 20:37 from a session that finished long ago; the clone sits at edb8b15, 468 commits behind main, with 30 dirty files, and its directory mtime is that same Sep 21 20:37 timestamp. Any git command that writes the index there - add, commit, checkout, pull, stash - fails with \"Unable to create '.git/index.lock': File exists\". Nothing on the site is affected: every lane pushes from a fresh scratch clone, which is why nobody noticed and why R2 calls the mount stale by construction. But if Mo opens that folder expecting to use git, it is broken, and the 30 uncommitted files in it have never been inspected - they may be his own work from before Sep 21. NOT TOUCHED by this run: R1 bars a lane from acting on Mo's clone and the lock-sweep step was deleted from this task's prompt for exactly that reason. REMEDY, for Mo or for a desk run he authorises: `rm ~/Projects/shopcardhub/.git/index.lock`, then `git status` to see what those 30 files are before anything else. Do not reset or checkout that tree until someone has looked at them."
     }
   ],
   "scoreboard": {
