@@ -1,26 +1,14 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-10-06",
-  "generator": "bowman-bangers-tuesday-update (Tuesday 2026-09-29, STEP 3.5)",
+  "generated": "2026-10-12",
+  "generator": "shopcardhub-weekly-trend-scan (Monday 2026-10-12, STEP 3.9)",
   "agents": {
     "seeker": {
       "label": "SEEKER",
       "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
-      "lastRun": "2026-10-05",
-      "nextRun": "2026-10-12",
+      "lastRun": "2026-10-12",
+      "nextRun": "2026-10-19",
       "actions": [
-        {
-          "ts": "2026-09-21",
-          "msg": "Freshness gate (LANE-RULES R2): Mo's mount is 108 commits behind with a 6-day-old .git/index.lock; worked from a fresh clone of e13fcdf per R1/R2. Mount left untouched."
-        },
-        {
-          "ts": "2026-09-21",
-          "msg": "Coach note for monday-scan is weekOf 2026-09-14 — one week stale; the Sunday Sep 20 run did not write a fresh one."
-        },
-        {
-          "ts": "2026-09-22",
-          "msg": "Signal harvest: no card reached the count>=5 auto-add threshold (highest is jacob-misiorowski-2022-bowman-chrome-1st-auto at 3). No watchlist additions. Aug 11 test entries stay excluded."
-        },
         {
           "ts": "2026-09-22",
           "msg": "Watch-tier hygiene: all five names are trackable (Houston 15 asks, Jump 15, Arquette 9, Aloy 27, Pierce 27) - none untrackable. All five read SELL on the nightly engine; four are down double digits over 30 days (Houston -27.8%, Jump -17.8%, Aloy -17.7%, Pierce -9.1%, Arquette -6.7%)."
@@ -56,6 +44,18 @@
         {
           "ts": "2026-10-05",
           "msg": "Release calendar Oct: A&G + UD Series 1 Hockey Oct 7, Update Series Oct 14, Heritage FB + Holiday Oct 21, Flagship Basketball Oct 22, Five Star Oct 28. Covered-set check: no chase index gap created this week."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Competitor sweep Oct 12: the HIGH-overlap index competitor's self-reported track record scaled again - 516 picks scored, 288 open, 70% finished higher, 44% hit +10%, avg day-30 return +11.6% (was 346 resolved picks Oct 5); Premium now $19/mo ($15.20 annual), free tier waits 14 days; price basis (sold vs ask) still undisclosed on a published methodology page."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Cross-cohort read, same week, same sold source: their whole-Pokemon market level printed +0.32% 7d / +1.66% 30d (32,715 cards) while our six chase tickers marked -5.92% mean w/w. Not a contradiction - the drawdown is concentrated at the top of the market, which is the investor story (R9) and ours alone to tell."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "New-entrant hunt surfaced three names not on the watchlist: Vaultlie (vaultlie.com, portfolio + price tracker, freemium $6.99/$16.99, 63k cards, 'real eBay sold listings', NO set-level indices), Card Codex (Pokemon tracker, 'binder like a portfolio'), PokeScreener. Vaultlie is the strongest candidate yet for the vault-style site the owner half-remembers - name, shape, 2026 launch all fit. Flagged for him by name."
         }
       ],
       "log": [
@@ -67,21 +67,9 @@
     "curator": {
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-10-06",
-      "nextRun": "2026-10-13",
+      "lastRun": "2026-10-12",
+      "nextRun": "2026-10-19",
       "actions": [
-        {
-          "ts": "2026-09-21",
-          "msg": "BOW26 re-mark (ask basis, nightly feed Sep 21): 99.21→98.29, basket $1,087.09."
-        },
-        {
-          "ts": "2026-09-21",
-          "msg": "BCB26 release-window re-mark: 95.67→73.14 (−23.5% in 6 days, ask basis). Every one of the 8 basket cards marked down off the Sep 21 feed; units and divisor unchanged; CPA-LH still carries no verified ask and stays out of the basket. Flagged to the CoS for magnitude, not for doubt — the direction is uniform across the basket and is release-window ask decay."
-        },
-        {
-          "ts": "2026-09-22",
-          "msg": "Board re-marked on the Sep 22 SCP read. No seat moved: 1 Fischer $154.60 (+4.2%) · 2 Holliday $107.16 (+3.0%) · 3 Gonzales $91.25 (-0.8%) · 4 Florentino $70.00 flat · 5 Kim $131.25 carried (gated, last print Aug 5)."
-        },
         {
           "ts": "2026-09-22",
           "msg": "Fischer's published two-run clock is now running: last printed sale Sep 14, none on the Sep 22 read. A second empty read on Sep 29 hands #1 to Holliday on the rule."
@@ -121,6 +109,14 @@
         {
           "ts": "2026-10-06",
           "msg": "Board re-marked on the 30-day sold mark (nightly sold catalog, read Oct 6): Fischer $155.00 (+4.2%), Holliday $105.00 (-2.6%), Gonzales $70.00 (-11.9%, bottom), Florentino $69.00 (-0.7%). Kim comes off the board (no sale since Aug 5, no 30-day mark; the CoS kim-gate ruling applied) with a departures row; Aloy takes #5 at $57.00 on 19 sales, the highest mark of any unseated card (Jump $50.00 is a 90-day median on 1 sale in 30 days, Arquette $41.00 on 5). Seat choice differs from the ruling's named Arquette: filed awaiting-cos."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "No new page built or proposed this run: R27 Am. 2 (INDEX-FIRST) holds new league pages at zero until Search Console shows 20+ indexed URLs (today's index check read 3 indexed / 29 crawled-not-indexed / 115 discovered), and R25 bars a new surface. The exceptional-page slot was not used."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Index badges redrawn after the re-mark: badge/{PB26,CR26,AH26,PRIS25,DR25,PF25}.svg (37 scanned, 6 written) - these were missed earlier in the run and are in the publish set."
         }
       ],
       "log": [
@@ -133,25 +129,9 @@
     "inspector": {
       "label": "INSPECTOR",
       "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-      "lastRun": "2026-10-05",
-      "nextRun": "2026-10-12",
+      "lastRun": "2026-10-12",
+      "nextRun": "2026-10-19",
       "actions": [
-        {
-          "ts": "2026-09-22",
-          "msg": "PRICING-INTEGRITY DEFECT, live and now corrected: /bowman-bangers published 'PSA 10 $720.00 (1 dated sale, Aug 6 2026)' for Holliday. SportsCardsPro's Aug 6 graded sale on that card is a PSA 9 at $155.00; there is no PSA 10 sale of it at any date. The $720 was a guide estimate read as a sale and carried for six weeks - including through the Sep 17 review that kept it as the one figure judged verified."
-        },
-        {
-          "ts": "2026-09-22",
-          "msg": "The same read reversed the Sep 17 finding on two other seats: Fischer HAS dated PSA 10 sales ($650.00 Sep 7, $425.00 Aug 12, $417.00 Jun 10) and Florentino's $492.00 IS dated (Aug 17). Both restored with dates. Gonzales (only graded sale a PSA 8 at $113.50) and Kim (no graded sale at any grade) stay off."
-        },
-        {
-          "ts": "2026-09-22",
-          "msg": "Regression found and fixed in shared tooling: js/home.js linked every unslugged feed card to /card-<id>. Idea #30's three 'single' star-page cards (Ohtani, Yamal, Wembanyama) entered the feed with no page built, so any build-home run shipped three dead hrefs onto the home Screens table - client-side render included. Guarded: cardType 'single' renders unlinked until it can name a page."
-        },
-        {
-          "ts": "2026-09-25",
-          "msg": "Friday release-window read (street +16), SportsCardsPro card pages via the Chrome same-origin recipe, feed marks from /feed/ (R19): Fischer $156.13 (+1.0% vs Sep 22; printed $144.26 Sep 23, first since Sep 14), Holliday $107.16 (flat; last print Sep 15, 17 sales Aug 26-Sep 25), Gonzales $79.99 (-12.3%; printed $67.00 Sep 24, six sales Sep 18-24), Florentino $70.00 (flat; last print $89.99 Sep 17, none Sep 18-25), Kim $131.25 carried (last print Aug 5). Watch tier: Arquette $60.50, Aloy $60.00, Jump $39.75, Houston $29.99, Pierce $17.54. Sold-basis nightly feed (data/feed/sold-marks.json, Sep 25) agrees on every last-sale date."
-        },
         {
           "ts": "2026-09-25",
           "msg": "FINDING filed (friday-2026-09-25-holliday-psa10-row, awaiting-cos): SportsCardsPro's \"PSA 10 Sold Listings (1)\" tab on ethan-holliday-cpa-eh carries one dated row on the Sep 25 read - 2026-08-06, $720.00 (listed $999.99), eBay item 407062353443, title \"...#CPA-EH Auto - PSA 10 - LOW POP\". It meets R18 on its face and contradicts the Sep 22 correction (\"no PSA 10 sale ... at any date\"). Not acted on (R1/R6): the page keeps the Sep 22 correction and \"no verified sale\" until the CoS rules."
@@ -183,6 +163,22 @@
         {
           "ts": "2026-10-05",
           "msg": "Ledger reconcile: audit-2026-09-07-3 and lane-reads-cos-state-2026-09-15 verified DONE in the tree and marked applied; 20 of 22 remaining 'approved' items are ruled to other owners (Wed weekly / Wed build / desk), 9 of them now 20-41 days old."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "HIGH, filed not fixed: every schedule-triggered GitHub workflow has stopped firing since Oct 11 ~15:00 UTC - price-snapshot (no run #78; last #77 Oct 11 14:54Z), ga4-snapshot (last Oct 11 15:09Z), price-audit (Mon 15:00 UTC slot missed), site-gates (daily 15:30 UTC independent check missed). All five report state=active and push-triggered runs are green, so Actions is healthy and the cron is what dropped. classic-marks.yml has never run since it was created Oct 8 (0 runs)."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Consequences verified live: /feed/prices-latest.json serves day 2026-10-11 (generated 14:56Z), so the 08:30 PT feed-freshness gate fails tomorrow if nothing lands; 31 of 37 live tickers missed Monday's mark - 8 classics are 11 days old (last Oct 1) and 7 are 6 days old (Oct 6). The Oct 5 lane logged the same non-publish at 17:22Z, so this is the second Monday running."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Ledger reconcile: audit-2026-09-07-1 (approved, 35 days) part-applied only - 8 of 25 named pages now carry data-prices-updated, 17 still do not, and their human stamps read June 2026 (6 pages), Jul 6 2026 (7), Jul 28 / Aug 17 / Aug 25. Left approved; the item's own note says the premise failed and a whole-page rewrite is needed, not a stamp roll."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Gates 0 FAIL on all three (prices 0/82, site 0/5 over 171 pages, terminal 0/1 feed-unavailable). Identical counts at clean HEAD, so this run added no WARN. Delta vs the stated 0/77 - 0/4 (141) - 0/1 baseline is +5 prices / +1 site and 30 more pages, all inherited, none ours."
         }
       ],
       "log": [
@@ -197,29 +193,9 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-10-06",
-      "nextRun": "2026-10-13",
+      "lastRun": "2026-10-12",
+      "nextRun": "2026-10-19",
       "actions": [
-        {
-          "ts": "2026-09-22",
-          "msg": "Vendor feed rebuilt after the re-mark: data/x-board.json asOf 2026-09-22 (the pre-guard LEGACY file's dated grace expired today) and og/x/board-latest.png regenerated and read before shipping."
-        },
-        {
-          "ts": "2026-09-22",
-          "msg": "Feed defect caught before it shipped: currentSignal for Holliday resolved to SELL off the seat's Signal stat while his published verdict is Hold - the vendor would have quoted an engine ask-signal as our call. Fixed on the page (the Signal stat now matches the verdict; the engine's SELL stays named as the engine's in the verdict prose)."
-        },
-        {
-          "ts": "2026-09-22",
-          "msg": "Weekly digest SENT after the push verified: campaign 199336068998236154, finished 18:31Z, delivered 4, opens 0, clicks 0, unsubscribes 0, bounces 0, spam complaints 0 (read ~4 min after send). Rogue-send check clean — no campaign since Digest 2026-09-15. Kill switch clear: 4 active subscribers unchanged, nothing unsubscribed or complained since the last send."
-        },
-        {
-          "ts": "2026-09-25",
-          "msg": "Ledger reads rolled (data/calls.json, LOCAL, built on Card Hub/calls-2026-09-22-tuesday-regrade.json - origin still carries Sep 11 reads because the Sep 22 Tuesday reads were never pushed): fischer-2 $156.13 (+6.4%, inside band), gonzales $79.99 (entry 90 -> -11.1%), florentino $70.00 carried (-11.7%), kim $131.25 carried. No new call rows, no FINAL rows touched, projections immutable."
-        },
-        {
-          "ts": "2026-09-28",
-          "msg": "Calls ledger: three Pitch Black verdicts past finalizeAfter moved to final on fresh sold reads (local only - calls.json is not in the price lane)"
-        },
         {
           "ts": "2026-09-28",
           "msg": "Coach note is two weeks stale (weekOf 2026-09-14) - the Sunday end of the loop did not refresh it"
@@ -255,6 +231,18 @@
         {
           "ts": "2026-10-06",
           "msg": "Weekly digest NOT sent and NOT staged. Kill switch tripped: a non-owner gmail address (vpt…, in MailerLite) (non-owner address, looks like a test) unsubscribed Sep 29 21:00 UTC, after the Sep 29 send; four shopcardhub+ test addresses unsubscribed the same evening (owner plus-addresses, not counted). Rogue-send check clean: no campaign since Digest 2026-09-29 (delivered 4, opens 3, clicks 0, unsub 0, bounces 0, spam 0). Active subscribers: 3 (+2 unconfirmed). A tool-permission denial also blocked the digest build this run."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Calls ledger re-read on fresh dated PriceCharting ungraded solds (accessory/graded/lot-filtered), written locally and NOT pushed (calls.json is outside the price lane): Florentino $65.50 (30d median, n=12) from $69.50; Gonzales $69.99 (n=19) from $79.44; Fischer $154.25 (n=20) from $148.75; Kim $130.00 (90d median, n=5) unchanged. updated -> 2026-10-12. Patch staged for the desk."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Kim CPA-SK finalizes Oct 13 and cannot be finalized on sold data: 0 clean sales in the trailing 30 days and 68 days since the last (Aug 5). It stays trending and the reason is on the record."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Prompt drift confirmed against LANE-RULES: this lane's STEP 0.5, 0.6, 3.65 and 3.95 GA4 read are not its own, the coach's-note step is dead, and STEP 3.6 covers the six divisor-model chase tickers only. All already on the file's known-drift list; followed the file."
         }
       ],
       "log": [
@@ -325,21 +313,9 @@
     "gengar": {
       "label": "GENGAR",
       "role": "Pokémon Index Specialist + conversion coverage — owned by the Monday trend-scan (STEP 3.6 index re-marks, STEP 3.65 X intel, chase-image checks) and, from 2026-09-17, the Monday conversion beat (LANE-RULES R11: every commercial page sells its product above the fold; buy-strip health against live eBay). No-new-Pokémon-calls mandate stays retired forever.",
-      "lastRun": "2026-10-05",
-      "nextRun": "2026-10-12",
+      "lastRun": "2026-10-12",
+      "nextRun": "2026-10-19",
       "actions": [
-        {
-          "ts": "2026-09-14",
-          "msg": "Weekly re-mark, PriceCharting ungraded solds, 253/253 cards: PB26 93.51→90.52 (−3.2%: Darkrai #116 $231→$214, #120 $182→$172, Zeraora $60→$55), CR26 93.71→94.89 (+1.3%: Floette SIR +29%, Greninja MHR +4%), AH26 97.97→96.89 (−1.1%: Mega Dragonite SIR $621→$580, Gengar $924→$899; Charizard Y MHR +11.5%), PRIS25 97.44→96.79 (−0.7%: Umbreon $1,254→$1,192, Leafeon −12.5%; Vaporeon +17.8%, Flareon +12.8%), DR25 96.25→97.71 (+1.5%: Mewtwo $467→$480, Ho-Oh +9%). No basket entries, no divisor changes. >40% moves all sub-$3 cards (noise, applied as marked)."
-        },
-        {
-          "ts": "2026-09-14",
-          "msg": "Images: all wired, nothing new (no new Pokémon pages). X intel: a large Pokémon account is all-in on 30th Celebration hype ('hottest set ever', ETB deal links, RGB Mew pull); the quant account's Deal Finder expanded beyond Pokémon to sports/One Piece/MTG (Sep 10) and is doing Collect-a-con promo; a third account says 'Destined Rivals prices falling' — our DR25 tape says +1.5% w/w after −1.4% (flat-to-up on solds), a contrast worth a Tuesday line."
-        },
-        {
-          "ts": "2026-09-17",
-          "msg": "New beat (Mo's directive): conversion coverage. /pokemon-30th shipped with no way to buy the ETB above the fold; the sweep found 58 pages the same. Buy strip now on all 58, site-auditor §15 FAILs on a buried or missing eBay link, and buy-strip-health checks every live query against production weekly. Today: 31 live queries, 0 dead, 2 thin (Pristine BB, Tribute — 1 listing each)."
-        },
         {
           "ts": "2026-09-21",
           "msg": "Pokémon re-mark (STEP 3.6): all 6 universes fully priced off PriceCharting ungraded solds, 289/289 cards — PB26 90.52→84.72 (−6.41%), CR26 94.89→93.17 (−1.81%), AH26 96.89→93.88 (−3.11%), PRIS25 96.79→98.04 (+1.29%), DR25 97.71→95.75 (−2.01%). No basket entries, no divisor change."
@@ -375,6 +351,18 @@
         {
           "ts": "2026-10-05",
           "msg": "X intel not read this run - the X feed is X Desk Watch's lane under R10/the cadence table; competitor X accounts last characterised Sep 7."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Six chase tickers re-marked on dated PriceCharting ungraded solds, 289/289 universe cards priced, 0 misses, full basket coverage on all six. No card entered or left a basket, so no divisor adjustment; base, inception and past history rows untouched."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Levels: PB26 57.70 (-10.87%), CR26 36.04 (-7.21%), AH26 74.83 (-4.30%), PRIS25 67.02 (-5.12%), DR25 56.02 (-3.10%), PF25 68.82 (-4.94%). All six down a second straight week; two-week moves -1.55% to -15.31%."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Card images: nothing new wired this week and no new Pokemon page built by this lane. The six Collector's Desk pages were rebuilt from the chase card files and the generator's own EPN self-test passed on all six."
         }
       ],
       "status": "active",
@@ -1033,7 +1021,7 @@
       "status": "approved",
       "title": "MED (coach's fix class): 22 pages carry human-readable price stamps 63–87 days old with NO machine stamp, so the sweep never sees them. Worst two are board names whose guides now contradict the board: ethan-holliday-rookie-cards.html line 774 '● Prices Updated June 2026' + lines 936–939 'eBay Sold Avg ~$85 / gem candidates $75–$95' vs bowman-bangers.html line 1236 'SCP raw $109 · Sep 1' (guide 22% under the board); aiva-arquette-1st-bowman.html line 717 'Updated June 12, 2026' + line 872 'eBay (June 2026) ~$55–$85' vs board $59 (Sep 1) / BOW26 ask $109.50. Same class: shohei-ohtani-cards 682, nfl-rookie-cards-2026 687, best-hobby-boxes-2026 772, best-{baseball,basketball,football}-cards-under-50 785 ('as of June 2026'), topps-series-1-2026 892, topps-chrome-basketball-2026 892, chaos-rising 895, prismatic-evolutions-guide 895, topps-chrome-cactus-jack-basketball / topps-cosmic-chrome-football / topps-inception-baseball 896 ('as of Jun 22, 2026'), cooper-flagg footers 996/1017 'June 2026' under a 'Jul 28' hero, world-cup footers 944/966. Watch (63d, Jul 6 trophy lines): messi/ronaldo/haaland/kane/mbappe/yamal/misiorowski/pete-crow-armstrong. All 22 confirmed live on www. Fix (Monday reprice lane): re-mark Holliday + Arquette guides first (they are board names with daily chart pages — the destination and the on-ramp must agree), then roll the rest; every re-mark must rewrite the human stamp AND add data-prices-updated so the sweep owns it from then on. — CoS, 2026-09-07 (4.7) [CoS change: today STEP 3.6 re-marks Holliday + Arquette only (human stamp rewritten + data-prices-updated added); the other 20 roll to the Sep 14 lane; 2σ/narrative exceptions still queue] — Monday Sep 7 result: NOT applied. The re-mark premise fails: SCP + eBay put the BCP-1 BASE card at ~$1–2 raw / $35.61 PSA 10, not $85 / $380 — see audit-2026-09-07-4 (HIGH). Arquette base BCP-40 same class ($8–15 on page vs ~$1). Whole-page rewrite needed, not a stamp roll. — CoS, 2026-09-07: the two lead pages carved out to audit-2026-09-07-4 (banner now, rewrite session); the remaining 20 pages roll to the Sep 14 Monday lane as ruled.",
       "appliedNote": "2026-09-28 Monday STEP 0: NOT applied - FOURTH silent week, and the lane is saying so rather than letting it pass again. 21 days old. 29 pages still have price cells with no data-prices-updated. The proposal's own fix ('re-mark, rewrite the human stamp AND add the machine stamp') needs a sold-comp budget for ~20 pages, which is a build session, not a mechanical lane item, and the CoS's own fallback in this note - a dated-notice banner pass on all 20 - is a copy change across 20 pages that the lane will not self-approve. Adding the machine stamp alone was considered and rejected: it would make 29 pages start reporting as stale without fixing any of them and would move the stated WARN baseline. RECOMMENDATION, plainly: commission the priced build session, or rule the dated-notice pass explicitly so a lane can execute it. A fifth week should not happen by default.",
-      "decision": "RULED CoS 2026-09-28 (Mo in chat: \"chief can you handle these?\") — no fifth silent week. Owner: the Sep 30 CoS weekly build. Order: (1) consolidation batch 2 first — the tier-label Topps pages on that list fold (301) and leave the count; (2) every page still carrying unstamped price cells after that gets a priced re-read on dated sold comps (SCP/PriceCharting) and a machine stamp in the same build; (3) any page the build cannot re-read that day gets a dated notice line ('prices on this page last checked <date>') — authorised now, so no lane waits on another ruling. Done = audit-prices no-machine-stamp count 0 on main, or every remaining page carrying its notice.",
+      "decision": "RULED CoS 2026-09-28 (Mo in chat: \"chief can you handle these?\") — no fifth silent week. Owner: the Sep 30 CoS weekly build. Order: (1) consolidation batch 2 first — the tier-label Topps pages on that list fold (301) and leave the count; (2) every page still carrying unstamped price cells after that gets a priced re-read on dated sold comps (SCP/PriceCharting) and a machine stamp in the same build; (3) any page the build cannot re-read that day gets a dated notice line ('prices on this page last checked <date>') — authorised now, so no lane waits on another ruling. Done = audit-prices no-machine-stamp count 0 on main, or every remaining page carrying its notice. | MONDAY 2026-10-12 reconcile: still approved, 35 days old. 8 of the 25 named pages now carry data-prices-updated (ethan-holliday, aiva-arquette, nfl-rookie-cards-2026, best-hobby-boxes-2026, best-baseball-cards-under-50, best-football-cards-under-50, chaos-rising, prismatic-evolutions-guide); 17 do not, and their human stamps read June 2026 (shohei-ohtani, best-basketball-cards-under-50, topps-series-1-2026, topps-chrome-basketball-2026 + three Jun 22 Topps pages), Jul 6 2026 (messi, ronaldo, haaland, kane, mbappe, yamal, pete-crow-armstrong), Jul 28 (cooper-flagg), Aug 17 (misiorowski), Aug 25 (world-cup). Not applied: the fix is a sold-comp rewrite per page, not a stamp roll, and R20 limits this lane to sold-basis publishes.",
       "decidedBy": "cos",
       "decidedOn": "2026-09-28"
     },
@@ -1238,7 +1226,8 @@
     {
       "id": "polish-2026-09-14",
       "status": "approved",
-      "title": "POLISH: / — Markets panel — give each ticker row (BOARD, PB26, CR26, AH26, PRIS25, DR25, BOW26) a 30-mark sparkline in the row, the same svg.spark up/dn that Board Movers already draws 300px lower, sourced from the history arrays indices.json already carries — why it earns a wow: today the Markets list is seven lines of text and only the selected row gets a chart; with sparklines a first-time visitor reads the whole tape moving at a glance (PRIS25 −4.25% vs BOW26 +1.25% as shapes, not digits), which is the single thing that makes a terminal read like a terminal — and the renderer, CSS and data all exist, so it is a js/home.js + build-home.mjs change, not a new system. - CoS checkpoint, 2026-09-15 (4.7/4.8)"
+      "title": "POLISH: / — Markets panel — give each ticker row (BOARD, PB26, CR26, AH26, PRIS25, DR25, BOW26) a 30-mark sparkline in the row, the same svg.spark up/dn that Board Movers already draws 300px lower, sourced from the history arrays indices.json already carries — why it earns a wow: today the Markets list is seven lines of text and only the selected row gets a chart; with sparklines a first-time visitor reads the whole tape moving at a glance (PRIS25 −4.25% vs BOW26 +1.25% as shapes, not digits), which is the single thing that makes a terminal read like a terminal — and the renderer, CSS and data all exist, so it is a js/home.js + build-home.mjs change, not a new system. - CoS checkpoint, 2026-09-15 (4.7/4.8)",
+      "decision": "MONDAY 2026-10-12: left approved, 28 days old, and RECOMMEND RE-ROUTING. Sparklines in the Markets rows are on-page UI/UX, which R28 gave to the Night Crew on Sep 28; this lane may not guess a design change and the Night Crew has the before/after harness. Move it to claude/night-crew/BACKLOG.md and close it here."
     },
     {
       "id": "price-exceptions-2026-09-14",
@@ -3002,10 +2991,55 @@
       "severity": "LOW",
       "title": "/panini-obsidian-football-2026 repeats the presale-vs-sold license read ruled out on Donruss.",
       "decision": "DESK 2026-10-08: APPLIED 6d4fa21: Donruss wording; tools/league/BRIEF.md line added (no presale-vs-secondary license reads)."
+    },
+    {
+      "id": "gha-schedule-dead-2026-10-12",
+      "status": "awaiting-cos",
+      "date": "2026-10-12",
+      "area": "infrastructure",
+      "by": "monday-scan",
+      "severity": "HIGH",
+      "title": "HIGH: every schedule-triggered GitHub workflow stopped firing after Oct 11 ~15:00 UTC - no price-snapshot #78 (nightly feed + the Mon/Thu marks for 31 of 37 live tickers), no ga4-snapshot, no Monday price-audit, no daily site-gates independent check (R24). All five workflows report state=active and push-triggered runs are green, so Actions is healthy and GitHub's cron is what dropped; the repo's own history already shows the 08:15 UTC cron landing 14:27-15:35 UTC every day, and the Oct 5 lane logged the same non-publish. classic-marks.yml has 0 runs since it was created Oct 8, so its Mon/Thu 19:30 UTC schedule has never fired either. Verified live: /feed/prices-latest.json serves day 2026-10-11; 8 classic tickers carry Oct 1 marks (11 days) and 7 carry Oct 6. Not fixed and not fixable from here - R1 bars this lane from acting and the deploy key is git-only, with no Actions token to dispatch. RECOMMEND: the 14:00 desk dispatches price-snapshot and classic-marks today, and the real fix is a watchdog that dispatches the nightly when the cron drops it rather than leaving the site's whole data refresh on GitHub's scheduler. Also still open: gate-watch issue #2, 13 days, fixed by ecb0488 but never closed."
+    },
+    {
+      "id": "r21-phase2-slip-2026-10-12",
+      "status": "awaiting-cos",
+      "date": "2026-10-12",
+      "area": "compliance",
+      "by": "monday-scan",
+      "severity": "MED",
+      "title": "MED: R21's Oct 7 Phase 2 deliverable has not landed and is slipping silently, which R21 itself forbids. The /card-* pages and /cards still publish an engine mark in their meta description, JSON-LD and data-prices-updated ('engine mark $4.50 as of 2026-10-11' on /card-travis-bazzana), which is ask basis off prices-latest.json. This run ran tools/build-card-pages.mjs as a lane derived asset, then REVERTED those 18 files out of the publish set rather than write a fresh ask-derived figure onto a public page (R20's stop-and-file sentence); the nightly owns that repaint. The Oct 14 gate adds ask-basis-mark as a FAIL, so unless Phase 2 lands first, Wednesday's gate run fails on the card pages. Needs the CoS: either confirm the re-bake is permitted (ccx-2026-09-24-1 reads the same ambiguity and is still sitting at approved without a written ruling) or land Phase 2."
+    },
+    {
+      "id": "th26-mark-check-2026-10-12",
+      "status": "awaiting-cos",
+      "date": "2026-10-12",
+      "area": "pricing-integrity",
+      "by": "monday-scan",
+      "severity": "MED",
+      "title": "MED: TH26 (30th Celebration, whole-set sector model) marked -19.62% w/w on its Oct 8 row - level 79.33 - against a sector-cohort mean of -0.97% across 31 tickers that same week, and against our six chase tickers' -5.92%. A whole-set index moving a fifth in a week is either a real supply event on a two-week-old set or a mark artifact, and it is not this lane's ticker to check (the nightly owns it). Verify before the Tuesday Tape or any X post quotes it. AQ03 -8.56% is the same question one order smaller."
+    },
+    {
+      "id": "comp-2026-10-12",
+      "status": "awaiting-cos",
+      "date": "2026-10-12",
+      "area": "competitor",
+      "by": "monday-scan",
+      "severity": "LOW",
+      "title": "COMP: the HIGH-overlap index competitor's self-reported accountability number scaled from 346 resolved picks to 516 scored / 288 open / 70% finished higher / 44% hit +10% / +11.6% average day-30 return, behind a $19-a-month tier, with the price basis still undisclosed on a page that links a methodology. RESPOND, on the difference and not the volume, and on our own pages only (R32 bars anything competition-facing until the indices and the KBs are dialed in): their picks are self-reported model signals scored at 30 days over a trailing-90-day window of live picks and can be restated; ours are immutable published projections on dated sold comps and cannot - but that only counts where our number is, and /track-record still shows 19 finals with 1 hit in 9 in the only finalised cohort. STEAL, unshipped since Aug 31 and now 6 weeks old: their set screener's 7d/30d/90d momentum ranking, for /indices - we already hold every number it needs. IGNORE: the iOS app and the deal gate at the Pokemon-lane competitor (mobile is no capacity under R25, a gate is forbidden under R26), and its est-value methodology, still undisclosed; it has added our own <3-sales/30d liquidity screen but still has no set-level or index-level tracking, so the index lane stays differentiated. NEW ENTRANT, and the one the owner asked to have identified: Vaultlie (vaultlie.com) - a 2026 indie portfolio and price tracker, freemium $6.99/$16.99, 63k cards across Pokemon/MTG/YGO/sports, 24-hour valuations off 'real eBay sold listings', price alerts at 5%, and NO set-level indices. Name, shape and timing all fit the vault-style site he half-remembers from his July feed; flagged by name for him to confirm or reject. Card Codex and PokeScreener added to the watchlist as MED."
+    },
+    {
+      "id": "kim-liquidity-2026-10-12",
+      "status": "awaiting-cos",
+      "date": "2026-10-12",
+      "area": "calls",
+      "by": "monday-scan",
+      "severity": "LOW",
+      "title": "LOW: v-bb-kim-wait (Seong-Jun Kim CPA-SK, board #2 on the crossover rule) reaches finalizeAfter Oct 13 with no sold comp to finalize on - 0 clean sales in the trailing 30 days and 68 days since the last on Aug 5. It stays trending, per the rule, and the read carries the gap in its label. Worth a separate look at whether a card with no sale in ten weeks belongs at board #2 at all; that is a ranking question for the board lane, not a price one."
     }
   ],
   "scoreboard": {
-    "updated": "2026-10-05",
+    "updated": "2026-10-12",
     "final": 19,
     "trending": 4,
     "open": 0,
@@ -3016,7 +3050,7 @@
       "None": 2,
       "right": 2
     },
-    "note": "Unchanged by this run - the price lane does not write calls.json. Four trending calls re-read on dated PriceCharting ungraded solds Oct 5 for the record (not written): Florentino $69.00 (30d median, n=19, last sale Oct 2) vs $69.50 Sep 29; Gonzales $70.00 (n=25, last sale Sep 30) vs $79.44, -11.9% and now 22% under its $90 PASS entry; Fischer $155.00 (n=25, last sale Oct 1) vs $148.75, +4.2% and 5.6% above its $146.80 BUY entry; Kim $130.00 (90-day median, n=5, still no sale since Aug 5) unchanged. None reach finalizeAfter (earliest Oct 13). The Tuesday board lane owns the write."
+    "note": "Final grades unchanged. The four trending calls were re-read on fresh dated PriceCharting ungraded solds and WRITTEN LOCALLY ONLY (calls.json is outside the price lane; patch staged for the desk): Florentino $65.50 (30d median, n=12, last sale Oct 9) from $69.50, now 17.4% under its $79.32 BUY entry; Gonzales $69.99 (n=19, last sale Oct 8) from $79.44, now 22.2% under its $90 PASS entry; Fischer $154.25 (n=20, last sale Oct 8) from $148.75, 5.1% above its $146.80 BUY entry; Kim $130.00 (90-day median, n=5) unchanged, 0 sales in 30 days. None of these is a public grade - the public grade is the thesis check at 6 and 12 months (Feb and Aug 2027). Kim and Florentino reach finalizeAfter Oct 13; Kim has no sold comp to finalize on."
   },
   "chiefOfStaff": {
     "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
@@ -4431,6 +4465,16 @@
           "by": "Growth League 05:56 (cloud build, Mac deploy key)",
           "gates": "audit-prices FAIL 0 / WARN 82 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal --feed data/feed FAIL 0 / WARN 1 (= Oct 11 baseline, no delta)",
           "liveVerified": "2026-10-12 ~06:20 PT: /panini-donruss-football-2026, /umbreon-ex-worth, /bowman-vs-bowman-chrome 200 + BUYSTRIP:START + sch-signup + stamp 2026-10-12; /release-calendar 200 with the Donruss hobby tin row; IndexNow 144 URLs -> 200"
+        },
+        {
+          "date": "2026-10-12",
+          "commits": [
+            "07c8052"
+          ],
+          "by": "monday-scan STEP 3.98 (price lane, charter 4.8)",
+          "gates": "audit-prices 0/82 - audit-site 0/5 (171) - audit-terminal 0/1; no WARN added by this run",
+          "liveVerified": "2026-10-12 - six chase levels serving on www and in public /data/indices.json",
+          "note": "Weekly sold-basis re-mark of the six divisor-model Pokemon chase tickers. Card pages reverted out of the lane under R20. A follow-up commit carries the badges and this file."
         }
       ]
     },
@@ -4589,25 +4633,26 @@
     "_retired": "2026-09-22 (bb-2026-09-22-coach-note-stale): no longer a standing weekly duty; written ad hoc by the CoS desk only when a lane needs a specific correction. Stale weekOf is not a finding."
   },
   "publish": {
-    "date": "2026-10-05",
+    "date": "2026-10-12",
     "by": "monday-scan STEP 3.98",
-    "commit": "8c3a986",
+    "commit": "07c8052",
     "lane": [
-      "data/indices.json (PB26/CR26/AH26/PRIS25/DR25/PF25 re-marked on PriceCharting ungraded sold comps)",
-      "the 6 chase index pages (levels, stats, holdings, ROC, stamps)",
-      "the other 32 index + comparison pages (og cache-bust v=20261005)",
-      "badge/{PB26,CR26,AH26,PRIS25,DR25,PF25}.svg",
-      "og/indices.png",
-      "the /card-* chase pages + cards.html + data/cards/*.json + data/card-search.json",
-      "index.html (build-home re-bake, feed day 2026-10-04)",
-      "data/pipeline.json"
+      "data/indices.json (PB26/CR26/AH26/PRIS25/DR25/PF25 re-marked on dated PriceCharting ungraded sold comps; 289/289 universe cards priced, 0 misses, no divisor change)",
+      "the 6 chase index pages (levels, stats, holdings, ROC, stamps, plain-read bake)",
+      "the 6 Gengar Collector's Desk pages (build-collectors-desk.mjs; EPN self-test passed)",
+      "data/cards/{pb26,cr26,ah26,pris25,dr25,pf25}.json + data/card-search.json",
+      "the other 42 index + comparison pages (og cache-bust v=20261012)",
+      "og/indices.png, index.html (build-home re-bake, feed day 2026-10-11), indices.html",
+      "badge/{PB26,CR26,AH26,PRIS25,DR25,PF25}.svg (second commit)",
+      "data/pipeline.json (second commit)"
     ],
-    "gates": "audit-prices FAIL 0 / WARN 70 · audit-site FAIL 0 / WARN 5 (158 pages) · audit-terminal FAIL 0 / WARN 1 (--feed data/feed; roman-anthony-sapphire, in the stated baseline). No WARN added by this run.",
+    "gates": "audit-prices FAIL 0 / WARN 82 - audit-site FAIL 0 / WARN 5 (171 pages) - audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected in the sandbox). Identical counts at clean HEAD, so this run added no WARN. Delta vs the stated 0/77 - 0/4 (141) - 0/1 baseline is +5 prices / +1 site across 30 more pages, all inherited.",
+    "liveVerified": "2026-10-12: /pitch-black-index and /prismatic-evolutions-index serve the new strip levels and public /data/indices.json carries the 2026-10-12 row for all six tickers (57.70 / 36.04 / 74.83 / 67.02 / 56.02 / 68.82).",
     "notPushed": [
-      "data/calls.json - not in the price lane; four trending reads refreshed in the report only",
-      "sitemap entry for /delta-reign-index - outside the lane, filed for the CoS"
+      "data/calls.json - outside the price lane; four trending reads refreshed, patch staged for the desk",
+      "the /card-* pages + /cards + the engine data they read - REVERTED out of the lane under R20 (ask-basis marks); the nightly owns that repaint and R21's Oct 7 Phase 2 date has not landed"
     ],
-    "rebasedOnto": "1e7c5b0 (Site Sweep Oct 5 landed mid-run; fetched + rebased, no file overlap)"
+    "rebasedOnto": "fec1ed6 (the CoS Oct 12 index-check docs landed mid-run; fetched + rebased, no file overlap)"
   },
   "decisions": [
     {
