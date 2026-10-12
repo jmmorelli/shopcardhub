@@ -46,6 +46,17 @@ jobs:
         timeout-minutes: 300
         run: |
           set +e
+          # Desk, Oct 12 2026: GitHub has been starting our crons 6-10 h late (price-snapshot #78: 08:15Z cron, ran 17:53Z).
+          # A Mon/Thu 19:30Z run that starts after midnight UTC would no-op under --if-mark-day and the 24 tickers would
+          # skip a whole mark day. A scheduled run that lands on Tue/Fri before 18:00 UTC marks as the scheduled day.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            DOW=$(date -u +%u); HR=$(date -u +%H)
+            if { [ "$DOW" = 2 ] || [ "$DOW" = 5 ]; } && [ "$HR" -lt 18 ]; then
+              export SIDX_TODAY=$(date -u -d yesterday +%F)
+              echo "SIDX_TODAY=$SIDX_TODAY" >> "$GITHUB_ENV"
+              echo "::notice::late scheduled run - marking as the scheduled day $SIDX_TODAY"
+            fi
+          fi
           git rev-parse HEAD > "$RUNNER_TEMP/base"
           : > "$RUNNER_TEMP/marked.list"
           for TK in BS99 JU99 FO99 TR00 NG00 NDC01 NR01 ND02 AQ03 SK03 HF19 TU19 EVS21 CEL21 CZ23 BS1E BSSL JU1E FO1E TR1E NG1E NDC1E NR1E ND1E; do
@@ -94,7 +105,7 @@ jobs:
               echo "::error::a gate FAILed on the marked tree - nothing pushed"; exit 1
             fi
             if git diff --cached --quiet; then echo "Nothing to commit."; exit 0; fi
-            git commit -q -m "price-engine: classic marks $(date -u +%F) ($(paste -sd, "$RUNNER_TEMP/marked.list"))"
+            git commit -q -m "price-engine: classic marks ${SIDX_TODAY:-$(date -u +%F)} ($(paste -sd, "$RUNNER_TEMP/marked.list"))"
             if git push -q origin main; then echo "Classic marks published."; exit 0; fi
             echo "push rejected - retrying"; sleep 10
           done

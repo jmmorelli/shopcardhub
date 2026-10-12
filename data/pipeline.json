@@ -51,7 +51,7 @@
         },
         {
           "ts": "2026-10-12",
-          "msg": "New-entrant hunt surfaced three names not on the watchlist: Vaultlie (vaultlie.com, portfolio + price tracker, freemium $6.99/$16.99, 63k cards, 'real eBay sold listings', NO set-level indices), Card Codex (Pokemon tracker, 'binder like a portfolio'), PokeScreener. Vaultlie is the strongest candidate yet for the vault-style site the owner half-remembers - name, shape, 2026 launch all fit. Flagged for him by name."
+          "msg": "New-entrant hunt surfaced three names not on the watchlist: a new indie portfolio tracker, a second tracker, a new entrant. a new entrant is the strongest candidate yet for the vault-style site the owner half-remembers - name, shape, 2026 launch all fit. Flagged for him by name."
         },
         {
           "ts": "2026-10-12",
@@ -257,8 +257,8 @@
     "trader": {
       "label": "TRADER",
       "role": "COMC trading analyst (Thursday runs) — recommend-only, Mo executes; book stays local",
-      "lastRun": "2026-09-24",
-      "nextRun": "2026-10-01",
+      "lastRun": "2026-10-08",
+      "nextRun": null,
       "actions": [
         {
           "ts": "2026-08-27",
@@ -308,7 +308,9 @@
           "ts": "2026-09-10",
           "msg": "lesson filed against my own escalation — two runs were reported as blocked by the venue before anyone diagnosed the cause, which turned out to be a one-question fix. Escalating an undiagnosed blocker hands the owner work the agent should have done. Also filed: listings that change status on the venue now require a market check on arrival."
         }
-      ]
+      ],
+      "status": "paused",
+      "pausedWhy": "paused by Mo 2026-10-08 (re-evaluating)"
     },
     "gengar": {
       "label": "GENGAR",
@@ -2994,57 +2996,63 @@
     },
     {
       "id": "gha-schedule-dead-2026-10-12",
-      "status": "awaiting-cos",
+      "status": "applied",
       "date": "2026-10-12",
       "area": "infrastructure",
       "by": "monday-scan",
       "severity": "HIGH",
-      "title": "HIGH: every schedule-triggered GitHub workflow stopped firing after Oct 11 ~15:00 UTC - no price-snapshot #78 (nightly feed + the Mon/Thu marks for 31 of 37 live tickers), no ga4-snapshot, no Monday price-audit, no daily site-gates independent check (R24). All five workflows report state=active and push-triggered runs are green, so Actions is healthy and GitHub's cron is what dropped; the repo's own history already shows the 08:15 UTC cron landing 14:27-15:35 UTC every day, and the Oct 5 lane logged the same non-publish. classic-marks.yml has 0 runs since it was created Oct 8, so its Mon/Thu 19:30 UTC schedule has never fired either. Verified live: /feed/prices-latest.json serves day 2026-10-11; 8 classic tickers carry Oct 1 marks (11 days) and 7 carry Oct 6. Not fixed and not fixable from here - R1 bars this lane from acting and the deploy key is git-only, with no Actions token to dispatch. RECOMMEND: the 14:00 desk dispatches price-snapshot and classic-marks today, and the real fix is a watchdog that dispatches the nightly when the cron drops it rather than leaving the site's whole data refresh on GitHub's scheduler. Also still open: gate-watch issue #2, 13 days, fixed by ecb0488 but never closed."
+      "title": "HIGH: every schedule-triggered GitHub workflow stopped firing after Oct 11 ~15:00 UTC - no price-snapshot #78 (nightly feed + the Mon/Thu marks for 31 of 37 live tickers), no ga4-snapshot, no Monday price-audit, no daily site-gates independent check (R24). All five workflows report state=active and push-triggered runs are green, so Actions is healthy and GitHub's cron is what dropped; the repo's own history already shows the 08:15 UTC cron landing 14:27-15:35 UTC every day, and the Oct 5 lane logged the same non-publish. classic-marks.yml has 0 runs since it was created Oct 8, so its Mon/Thu 19:30 UTC schedule has never fired either. Verified live: /feed/prices-latest.json serves day 2026-10-11; 8 classic tickers carry Oct 1 marks (11 days) and 7 carry Oct 6. Not fixed and not fixable from here - R1 bars this lane from acting and the deploy key is git-only, with no Actions token to dispatch. RECOMMEND: the 14:00 desk dispatches price-snapshot and classic-marks today, and the real fix is a watchdog that dispatches the nightly when the cron drops it rather than leaving the site's whole data refresh on GitHub's scheduler. Also still open: gate-watch issue #2, 13 days, fixed by ecb0488 but never closed.",
+      "decision": "CoS desk 2026-10-12: not dead, late. price-snapshot #78 (08:15Z cron) ran 17:53Z and ga4-snapshot #25 ran 18:18Z, both success; the 13 nightly-marked tickers carry an Oct 12 row. classic-marks had not fired by 21:30Z. Applied: classic-marks.yml now marks as the scheduled day when a scheduled run lands on Tue/Fri before 18:00Z (SIDX_TODAY), so a 6-10 h GitHub delay no longer skips a mark day. Queued Oct 14 weekly: a feed-date watchdog. gate-watch #2 stays open (no Actions/issues token on this desk)."
     },
     {
       "id": "r21-phase2-slip-2026-10-12",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-10-12",
       "area": "compliance",
       "by": "monday-scan",
       "severity": "MED",
-      "title": "MED: R21's Oct 7 Phase 2 deliverable has not landed and is slipping silently, which R21 itself forbids. The /card-* pages and /cards still publish an engine mark in their meta description, JSON-LD and data-prices-updated ('engine mark $4.50 as of 2026-10-11' on /card-travis-bazzana), which is ask basis off prices-latest.json. This run ran tools/build-card-pages.mjs as a lane derived asset, then REVERTED those 18 files out of the publish set rather than write a fresh ask-derived figure onto a public page (R20's stop-and-file sentence); the nightly owns that repaint. The Oct 14 gate adds ask-basis-mark as a FAIL, so unless Phase 2 lands first, Wednesday's gate run fails on the card pages. Needs the CoS: either confirm the re-bake is permitted (ccx-2026-09-24-1 reads the same ambiguity and is still sitting at approved without a written ruling) or land Phase 2."
+      "title": "MED: R21's Oct 7 Phase 2 deliverable has not landed and is slipping silently, which R21 itself forbids. The /card-* pages and /cards still publish an engine mark in their meta description, JSON-LD and data-prices-updated ('engine mark $4.50 as of 2026-10-11' on /card-travis-bazzana), which is ask basis off prices-latest.json. This run ran tools/build-card-pages.mjs as a lane derived asset, then REVERTED those 18 files out of the publish set rather than write a fresh ask-derived figure onto a public page (R20's stop-and-file sentence); the nightly owns that repaint. The Oct 14 gate adds ask-basis-mark as a FAIL, so unless Phase 2 lands first, Wednesday's gate run fails on the card pages. Needs the CoS: either confirm the re-bake is permitted (ccx-2026-09-24-1 reads the same ambiguity and is still sitting at approved without a written ruling) or land Phase 2.",
+      "decision": "CoS desk 2026-10-12: R21 Phase 2 new date = Wed Oct 21 weekly (named, not silent). The ask-basis-mark check stays WARN until Phase 2 lands and arms as FAIL in the same commit. R20 holds meanwhile."
     },
     {
       "id": "th26-mark-check-2026-10-12",
-      "status": "awaiting-cos",
+      "status": "declined",
       "date": "2026-10-12",
       "area": "pricing-integrity",
       "by": "monday-scan",
       "severity": "MED",
-      "title": "MED: TH26 (30th Celebration, whole-set sector model) marked -19.62% w/w on its Oct 8 row - level 79.33 - against a sector-cohort mean of -0.97% across 31 tickers that same week, and against our six chase tickers' -5.92%. A whole-set index moving a fifth in a week is either a real supply event on a two-week-old set or a mark artifact, and it is not this lane's ticker to check (the nightly owns it). Verify before the Tuesday Tape or any X post quotes it. AQ03 -8.56% is the same question one order smaller."
+      "title": "MED: TH26 (30th Celebration, whole-set sector model) marked -19.62% w/w on its Oct 8 row - level 79.33 - against a sector-cohort mean of -0.97% across 31 tickers that same week, and against our six chase tickers' -5.92%. A whole-set index moving a fifth in a week is either a real supply event on a two-week-old set or a mark artifact, and it is not this lane's ticker to check (the nightly owns it). Verify before the Tuesday Tape or any X post quotes it. AQ03 -8.56% is the same question one order smaller.",
+      "decision": "CoS desk 2026-10-12: already verified Oct 8 (CoS with Mo): real move, chase cards (Lugia 149 $350 to $240, Mew ex $140 to $90, Gengar ex $110 to $75), median card -1.6%; Oct 12 row continues it (Lugia $230)."
     },
     {
       "id": "comp-2026-10-12",
-      "status": "awaiting-cos",
+      "status": "declined",
       "date": "2026-10-12",
       "area": "competitor",
       "by": "monday-scan",
       "severity": "LOW",
-      "title": "COMP: the HIGH-overlap index competitor's self-reported accountability number scaled from 346 resolved picks to 516 scored / 288 open / 70% finished higher / 44% hit +10% / +11.6% average day-30 return, behind a $19-a-month tier, with the price basis still undisclosed on a page that links a methodology. RESPOND, on the difference and not the volume, and on our own pages only (R32 bars anything competition-facing until the indices and the KBs are dialed in): their picks are self-reported model signals scored at 30 days over a trailing-90-day window of live picks and can be restated; ours are immutable published projections on dated sold comps and cannot - but that only counts where our number is, and /track-record still shows 19 finals with 1 hit in 9 in the only finalised cohort. STEAL, unshipped since Aug 31 and now 6 weeks old: their set screener's 7d/30d/90d momentum ranking, for /indices - we already hold every number it needs. IGNORE: the iOS app and the deal gate at the Pokemon-lane competitor (mobile is no capacity under R25, a gate is forbidden under R26), and its est-value methodology, still undisclosed; it has added our own <3-sales/30d liquidity screen but still has no set-level or index-level tracking, so the index lane stays differentiated. NEW ENTRANT, and the one the owner asked to have identified: Vaultlie (vaultlie.com) - a 2026 indie portfolio and price tracker, freemium $6.99/$16.99, 63k cards across Pokemon/MTG/YGO/sports, 24-hour valuations off 'real eBay sold listings', price alerts at 5%, and NO set-level indices. Name, shape and timing all fit the vault-style site he half-remembers from his July feed; flagged by name for him to confirm or reject. Card Codex and PokeScreener added to the watchlist as MED."
+      "title": "COMP: the HIGH-overlap index competitor's self-reported accountability number scaled from 346 resolved picks to 516 scored / 288 open / 70% finished higher / 44% hit +10% / +11.6% average day-30 return, behind a $19-a-month tier, with the price basis still undisclosed on a page that links a methodology. RESPOND, on the difference and not the volume, and on our own pages only (R32 bars anything competition-facing until the indices and the KBs are dialed in): their picks are self-reported model signals scored at 30 days over a trailing-90-day window of live picks and can be restated; ours are immutable published projections on dated sold comps and cannot - but that only counts where our number is, and /track-record still shows 19 finals with 1 hit in 9 in the only finalised cohort. STEAL, unshipped since Aug 31 and now 6 weeks old: their set screener's 7d/30d/90d momentum ranking, for /indices - we already hold every number it needs. IGNORE: the iOS app and the deal gate at the Pokemon-lane competitor (mobile is no capacity under R25, a gate is forbidden under R26), and its est-value methodology, still undisclosed; it has added our own <3-sales/30d liquidity screen but still has no set-level or index-level tracking, so the index lane stays differentiated. NEW ENTRANT, and the one the owner asked to have identified: a new indie portfolio tracker - a 2026 indie portfolio and price tracker, freemium $6.99/$16.99, 63k cards across Pokemon/MTG/YGO/sports, 24-hour valuations off 'real eBay sold listings', price alerts at 5%, and NO set-level indices. Name, shape and timing all fit the vault-style site he half-remembers from his July feed; flagged by name for him to confirm or reject. a new entrant and a new entrant added to the watchlist as MED.",
+      "decision": "CoS desk 2026-10-12: R32 holds competitor work read-only; no response posture on site this month. Momentum-ranking steal declined on the record (R33/R25: no new surface; the Oct 12 Fewer, Realer program cuts surfaces)."
     },
     {
       "id": "kim-liquidity-2026-10-12",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-10-12",
       "area": "calls",
       "by": "monday-scan",
       "severity": "LOW",
-      "title": "LOW: v-bb-kim-wait (Seong-Jun Kim CPA-SK, board #2 on the crossover rule) reaches finalizeAfter Oct 13 with no sold comp to finalize on - 0 clean sales in the trailing 30 days and 68 days since the last on Aug 5. It stays trending, per the rule, and the read carries the gap in its label. Worth a separate look at whether a card with no sale in ten weeks belongs at board #2 at all; that is a ranking question for the board lane, not a price one."
+      "title": "LOW: v-bb-kim-wait (Seong-Jun Kim CPA-SK, board #2 on the crossover rule) reaches finalizeAfter Oct 13 with no sold comp to finalize on - 0 clean sales in the trailing 30 days and 68 days since the last on Aug 5. It stays trending, per the rule, and the read carries the gap in its label. Worth a separate look at whether a card with no sale in ten weeks belongs at board #2 at all; that is a ranking question for the board lane, not a price one.",
+      "decision": "CoS desk 2026-10-12: board ranking question to the Tuesday board lane, Oct 13."
     },
     {
       "id": "bcs26-unblocked-2026-10-12",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-10-12",
       "area": "index-pipeline",
       "by": "monday-scan",
       "severity": "MED",
-      "title": "MED, and time-sensitive: BCS26's activation blocker is GONE. STATE (Oct 6 evening, 'Activation (desk/weekly, when SCP lists the cards)') and build-sector-index.mjs line 146 ('--init needs no code change once PriceCharting lists the console (404 on Oct 4)') both park BCS26 until SportsCardsPro files the Chrome Sapphire autos. Verified today: https://www.sportscardspro.com/console/baseball-cards-2026-bowman-chrome-sapphire-prospect-autograph returns HTTP 200 with 150 product rows, titled '2026 Bowman Chrome Sapphire Prospect Autograph Card Prices'. So `node tools/build-sector-index.mjs --ticker BCS26 --init` is runnable now, 5 days after the Oct 7 street date and inside the 30-day attention window that R32's 'release-window entry for new Bowman sets' is about. The ticker is still status pre with a 0-card universe. Not run by this lane: the Bowman tickers are the nightly Action's and --init is a first build, not a re-mark. RECOMMEND the desk or the Wednesday weekly runs it this week. SEPARATELY, same class but unverified: BF26 (2026 Bowman Football) streeted Sep 30 and is 12 days PRE with a 0-card universe; its football console returned HTTP 403 behind a Cloudflare challenge from this shell, so whether SCP lists it is NOT established and I am not claiming it does. What IS established and is a claims defect either way: the live /bowman-football-2026-index page tells the reader 'Every card in the checklist is in the universe' and 'Streets Wednesday, Sep 30' in the future tense, while the universe holds 0 cards and the product streeted 12 days ago - the same shape as iw-2026-10-04-1 on /bowman-football and audit-2026-09-09-2 on /topps-finest-baseball. BCS26's page should be checked for the same two sentences before it activates."
+      "title": "MED, and time-sensitive: BCS26's activation blocker is GONE. STATE (Oct 6 evening, 'Activation (desk/weekly, when SCP lists the cards)') and build-sector-index.mjs line 146 ('--init needs no code change once PriceCharting lists the console (404 on Oct 4)') both park BCS26 until SportsCardsPro files the Chrome Sapphire autos. Verified today: https://www.sportscardspro.com/console/baseball-cards-2026-bowman-chrome-sapphire-prospect-autograph returns HTTP 200 with 150 product rows, titled '2026 Bowman Chrome Sapphire Prospect Autograph Card Prices'. So `node tools/build-sector-index.mjs --ticker BCS26 --init` is runnable now, 5 days after the Oct 7 street date and inside the 30-day attention window that R32's 'release-window entry for new Bowman sets' is about. The ticker is still status pre with a 0-card universe. Not run by this lane: the Bowman tickers are the nightly Action's and --init is a first build, not a re-mark. RECOMMEND the desk or the Wednesday weekly runs it this week. SEPARATELY, same class but unverified: BF26 (2026 Bowman Football) streeted Sep 30 and is 12 days PRE with a 0-card universe; its football console returned HTTP 403 behind a Cloudflare challenge from this shell, so whether SCP lists it is NOT established and I am not claiming it does. What IS established and is a claims defect either way: the live /bowman-football-2026-index page tells the reader 'Every card in the checklist is in the universe' and 'Streets Wednesday, Sep 30' in the future tense, while the universe holds 0 cards and the product streeted 12 days ago - the same shape as iw-2026-10-04-1 on /bowman-football and audit-2026-09-09-2 on /topps-finest-baseball. BCS26's page should be checked for the same two sentences before it activates.",
+      "decision": "CoS desk 2026-10-12: BCS26 --init is a first build (generator) -> Wed Oct 14 weekly, with the two stale pre-release sentences on the Bowman pre pages. BF26 not established; weekly checks."
     },
     {
       "id": "mo-clone-locked-2026-10-12",
@@ -3054,6 +3062,26 @@
       "by": "monday-scan",
       "severity": "MED",
       "title": "MED, and physically Mo's: his own working clone at ~/Projects/shopcardhub has been GIT-LOCKED FOR THREE WEEKS. `.git/index.lock` is a 0-byte file dated Sep 21 20:37 from a session that finished long ago; the clone sits at edb8b15, 468 commits behind main, with 30 dirty files, and its directory mtime is that same Sep 21 20:37 timestamp. Any git command that writes the index there - add, commit, checkout, pull, stash - fails with \"Unable to create '.git/index.lock': File exists\". Nothing on the site is affected: every lane pushes from a fresh scratch clone, which is why nobody noticed and why R2 calls the mount stale by construction. But if Mo opens that folder expecting to use git, it is broken, and the 30 uncommitted files in it have never been inspected - they may be his own work from before Sep 21. NOT TOUCHED by this run: R1 bars a lane from acting on Mo's clone and the lock-sweep step was deleted from this task's prompt for exactly that reason. REMEDY, for Mo or for a desk run he authorises: `rm ~/Projects/shopcardhub/.git/index.lock`, then `git status` to see what those 30 files are before anything else. Do not reset or checkout that tree until someone has looked at them."
+    },
+    {
+      "id": "iw-2026-10-12-1",
+      "status": "awaiting-mo",
+      "date": "2026-10-12",
+      "area": "track-record",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "MED: /track-record labels eight pre-Sep 25 Bowman figures as raw sales; the site's own Sep 29 method change says they were raw guide values. Remedy: a dated bracketed correction on each row, entries/projections untouched.",
+      "decision": "CoS desk 2026-10-12: agreed on the merits; /track-record is Mo's (CHARTER s3), so one yes/no on NEEDS-MO. On yes, the Tuesday board lane carries it."
+    },
+    {
+      "id": "iw-2026-10-12-disagree-1",
+      "status": "queued",
+      "date": "2026-10-12",
+      "area": "indices",
+      "by": "integrity-watch",
+      "severity": null,
+      "title": "Disagreement with iw-2026-09-28-1: chase-index pages say each mark is a median of recent dated sales; the chase six are marked from the price guide's ungraded figure.",
+      "decision": "CoS desk 2026-10-12: upheld. Re-label (not re-mark) the chase six method line to 'ungraded price built from recent sales, read <date>' in the generator -> Wed Oct 14 weekly. Re-marking on a dated-sales median is a methodology change and is not ruled here."
     }
   ],
   "scoreboard": {
@@ -3071,74 +3099,85 @@
     "note": "Final grades unchanged. The four trending calls were re-read on fresh dated PriceCharting ungraded solds and WRITTEN LOCALLY ONLY (calls.json is outside the price lane; patch staged for the desk): Florentino $65.50 (30d median, n=12, last sale Oct 9) from $69.50, now 17.4% under its $79.32 BUY entry; Gonzales $69.99 (n=19, last sale Oct 8) from $79.44, now 22.2% under its $90 PASS entry; Fischer $154.25 (n=20, last sale Oct 8) from $148.75, 5.1% above its $146.80 BUY entry; Kim $130.00 (90-day median, n=5) unchanged, 0 sales in 30 days. None of these is a public grade - the public grade is the thesis check at 6 and 12 months (Feb and Aug 2027). Kim and Florentino reach finalizeAfter Oct 13; Kim has no sold comp to finalize on."
   },
   "chiefOfStaff": {
-    "_comment": "CHIEF OF STAFF — weekly triage, written Sundays. Has NO tools of its own and never does a specialist agent's work; that rule is what keeps it from becoming the bottleneck it exists to remove. PUBLIC FILE — this block is redaction-safe by construction: counts, ids, lanes and reasons only, never card names, prices, costs, budgets or float data. Full detail lives in the LOCAL brief at Card Hub/chief-of-staff/.",
-    "generated": "2026-09-27T14:30:00-07:00",
-    "weekOf": "2026-09-21",
-    "headline": "Go time: Mo moved the whole staff to daily and shipped three site pushes in an afternoon (plain read, affiliate restore, a QA/UX sweep); earnings still below M0.",
-    "doNothing": "Skipping the whole queue costs nothing that compounds except distribution: traffic stays where it is until a link is earned. The site keeps marking, gating and deploying without Mo.",
+    "generated": "2026-10-11T14:45:00-07:00",
+    "weekOf": "2026-10-05",
+    "headline": "Foundations week, traffic still sliding: index dial-in, the holo rule and cap, Google index fixes, a Bing feed and the traffic-first reset all shipped, while organic landings fell a fifth straight week and eBay clicks sat below the Oct 8 baseline.",
+    "doNothing": "Skipping the queue costs a second week with no money read; nothing else compounds - the site keeps marking, gating and deploying without Mo, and the index-rule call defaults to the CoS recommendation at the Oct 14 weekly.",
     "queue": [
       {
         "rank": 1,
-        "id": "distribution-link-post-feed-offer",
-        "title": "One forum link post + one feed-offer note (drafts ready)",
-        "why": "The only traffic lever not pulled; inbound links are the search engine's own recommendation",
-        "effort": "5-10 min, Mo's accounts",
-        "ref": "NEEDS-MO"
+        "id": "affiliate-csv-2026-10-13",
+        "title": "Drop this week's two affiliate CSV exports in the private exports folder before Wed Oct 14",
+        "why": "The only money read; the newest exports end Oct 6, so Wednesday reads nothing without them, and the Oct 21 link-experiment verdict rides on these reads",
+        "effort": "~3 min",
+        "ref": "LANE-RULES R22 (Oct 7 amendment)"
       },
       {
         "rank": 2,
-        "id": "idea-38-affiliate-application",
-        "title": "Affiliate application for idea #38",
-        "why": "Unblocks a second earning link on the Pokemon index tables; kill date Oct 31",
-        "effort": "10 min",
-        "ref": "NEEDS-MO"
+        "id": "may-chase-rule",
+        "title": "Bowman May-cohort chase rule: silence = option (a) at the Oct 14 weekly; CoS recommends (a)",
+        "why": "Methodology is Mo's; no action needed unless he prefers (b)",
+        "effort": "0-1 word",
+        "ref": "NEEDS-MO 2026-10-08"
       }
     ],
     "watchdog": [
       {
-        "finding": "Four cloud lanes moved to daily Sep 27 plus a new daily site sweep; Mo's ruling, LANE-RULES GO-TIME CADENCE block written the same afternoon",
-        "class": "fixed"
-      },
-      {
-        "finding": "Nav watchlist panel copy on 20 pages says nothing leaves the browser; a star sends an anonymous counter request and a GA4 event; also still says portfolio. Verified live — fixed 2026-09-28 desk (2881045)",
-        "class": "fixed"
-      },
-      {
-        "finding": "STATE.md back to ~97 KB five days after the split set a 25 KB cap",
+        "finding": "Sold-basis Phase 2 (card pages, engine blocks, home panels) has slipped twice since its Oct 7 date; the desk names a new date Monday (CoS recommends the Oct 21 weekly)",
         "class": "watch"
       },
       {
-        "finding": "Three Sep 27 site pushes not yet in the STATE run log or pushLog (documented in Project docs only) — logged 2026-09-28 desk",
-        "class": "fixed"
-      },
-      {
-        "finding": "pipeline.json chiefOfStaff block last written Sep 15; vendor agent still active with a past nextRun; trader nextRun in the past — merged 2026-09-28 desk",
-        "class": "fixed"
-      },
-      {
-        "finding": "Dungeon Keeper task named Saturday, cron fires Friday",
+        "finding": "31 sector index pages promise reconstitutions are announced the Monday before; no tool announces them - soften the copy now",
         "class": "watch"
       },
       {
-        "finding": "Weekend cover (R23): Saturday X filing already actioned with Mo present; Sunday filing 4/4 PASS",
+        "finding": "The public index data file carries internal notes (owner quotes, internal ids) in its change-log reason fields; move to fixed templates and scrub",
+        "class": "watch"
+      },
+      {
+        "finding": "First retention-desk row awaits the Monday desk ruling (CoS recommends adopt for the Oct 21 weekly)",
+        "class": "watch"
+      },
+      {
+        "finding": "Two price sources blocked the cloud container with 403s on Oct 11; the nightly still landed - confirm Monday's marks and the first classic-marks run",
+        "class": "watch"
+      },
+      {
+        "finding": "Track-record stamp goes stale Oct 20 unless the calls file gets a real update",
+        "class": "watch"
+      },
+      {
+        "finding": "NEEDS-MO still lists an ask Mo completed Oct 10 - strike it",
+        "class": "watch"
+      },
+      {
+        "finding": "First weekly email since Sep 29 is due Oct 13; confirm it sent",
+        "class": "watch"
+      },
+      {
+        "finding": "STATE.md is ~240 KB against a 25 KB cap, the fourth Sunday running",
+        "class": "watch"
+      },
+      {
+        "finding": "pipeline.json stale: chiefOfStaff from Sep 27, trader shown scheduled though paused since Oct 8",
+        "class": "watch"
+      },
+      {
+        "finding": "Weekend cover: X daily check ran Sat and Sun, empty queue, no bot action, no correction owed",
+        "class": "fixed"
+      },
+      {
+        "finding": "Every scheduled lane fired with no failures this week; release one-shot handled its launch",
         "class": "fixed"
       }
     ],
     "analyst": {
-      "ranAsExpected": "all cloud lanes fired on their table days this week; desktop lanes not visible to the scheduler API",
+      "ranAsExpected": "every scheduled lane fired on its table day; the retention desk filed its first nightly row; the trader lane is paused by Mo",
       "agentsTotal": 7,
-      "note": "Mo actioned nearly everything put in front of him in chat this week; the three human-account items (distribution post, affiliate application, grading-partner payment details) are the only ones left standing. Could not measure: earnings since Sep 25, list signups since the forms went live, desktop-lane schedules.",
-      "kill": "R12 test passes: Mo actioned CoS items this week."
+      "note": "Mo actioned everything that reached him on five days (index rules, outreach, bots, traffic reset, mandate, a credential paste, reply-menu use). Outcome is down: organic landings fell a fifth week, eBay clicks below baseline, zero signups, returning share lower. None of this week's levers (index fixes Oct 9, sitemap resubmit Oct 12, guide work Oct 14, first community post Oct 13) has had time to show. Could not measure: earnings since Oct 6, indexed-page count since the fixes, signup conversion, scout-digest usefulness.",
+      "kill": "Actions test (R12 s4) passes: Mo actioned CoS items this week."
     },
-    "approvals": [
-      {
-        "id": "watchlist-nav-copy-2026-09-27",
-        "decision": "approve"
-      }
-    ],
-    "approvalsNote": "Sunday Sep 13 pass plus the Tue Sep 15 checkpoint. The checkpoint decided or routed 10 sitting items: 4 approved, 1 part-approved and routed, 1 ratified on precedent, 1 declined for now, 1 held, 1 deferred to Sunday, 2 approved but blocked on a read-only prompt path. Two open items stay with Mo; both are on his own machine and neither is an agent's to touch.",
-    "cadenceChange": "none this run (4.4): every enabled task's last/next run is ordered and current; the Friday release-window task is correctly ON through ~Sep 29; the one-week reply-paster self-disabled after its Sep 13 slot as designed.",
-    "lastCheckpoint": "2026-09-25T15:00:00-07:00",
+    "approvals": [],
     "pushLog": {
       "_comment": "Added by CoS light checkpoint 2026-09-03 (janitorial state, charter 4.8 visible-delegation). Pushes outside the Monday STEP 3.98 lane; gates = read-only re-run on the pushed tree by the checkpoint unless the pushing run reported them. | Schema (CoS 2026-09-13, one shape from here): {date, commits[], by, gates, liveVerified, note}.",
       "entries": [
@@ -4496,134 +4535,7 @@
         }
       ]
     },
-    "previousWeek": {
-      "weekOf": "2026-09-07",
-      "headline": "First full-authority week: 10 pushes in 3 days, all gated and live-verified. Sunday evening Mo said 'I approve whatever you want to do' — the Chief took the prompts: Monday scan and Tuesday board rewritten to the 4.8 model, BCB26 (first per-set Bowman index) prebuild scheduled for 7am, retention re-measured on the surfaces that matter. Queue is 1 item.",
-      "queueCount": 2,
-      "approvals": [
-        {
-          "id": "email-ownership-to-cos-sep01",
-          "decision": "approve",
-          "basis": "4.8 — option (a) decided; see proposal"
-        },
-        {
-          "id": "cos-full-authority-sep02",
-          "decision": "approve",
-          "basis": "4.8 — acknowledged; follow-ups queued"
-        },
-        {
-          "date": "2026-09-07",
-          "by": "CoS ruling on Mo's chat ask ('ask the CoS if he approves these audits')",
-          "authority": "4.7",
-          "approved": [
-            "audit-2026-09-07-1",
-            "audit-2026-09-07-2",
-            "audit-2026-09-07-3",
-            "polish-2026-09-07"
-          ],
-          "note": "All four approved with changes (see titles). 4.8 call, vetoable by Mo: retire BOW26's pre-activation Base tab (BCP-151–250 universe belongs to BCB26 under the Sep 4 per-set rule; BOW26 keeps its 10 autos). pushLog gap for e9303ea→ff5a1a1 = janitorial (4.2): Monday scan backfills the entry when it pushes pipeline.json today; if still missing Wed the auditor's LOW stands."
-        },
-        {
-          "date": "2026-09-07",
-          "by": "CoS light checkpoint (Mo-directed, chat: \"pass the jobs off to the CoS\")",
-          "authority": "4.8 (+4.7 categories)",
-          "approved": [
-            "audit-2026-09-07-4 (HIGH — mitigation applied today, rewrite routed to a build session, auditor rule to Wednesday)",
-            "tooling-2026-09-07-watcher (LOW — shipped)",
-            "retention-split-exploration-sep07 (MED — Tuesday live sitting)",
-            "exceptions: 3 held pages re-attempt Sep 14 with batched pulls; PCA statistical row = sold-verified read only, press number never applied"
-          ],
-          "declined": [],
-          "janitorial": [
-            "3 trader rows (17–19d) closed as applied — Mo executed, ledger is the record",
-            "sapphire feeds fix marked applied — verified on main since Sep 1",
-            "vault-indices-box kept, build session to be scheduled Sep 13"
-          ],
-          "note": "Pushed: 1 content/tooling commit + 1 pipeline commit (see pushLog). Held: nothing — every unpushed non-lane file either shipped or had no reason to wait."
-        },
-        {
-          "date": "2026-09-09",
-          "by": "CoS light checkpoint (Tuesday slot, ran Wed 8am)",
-          "authority": "4.7 / 4.8",
-          "approved": [
-            "gonzales-name-query-sep08 (LOW — mechanical query fix, Friday run applies)",
-            "x-images-bangers-kind-sep08 (LOW — shipped with this checkpoint)",
-            "bcb26-universe-duplicate-ids-sep09 (LOW — filed by the watchdog, Friday run applies)"
-          ],
-          "declined": [],
-          "janitorial": [
-            "pushLog backfilled for 7 unlogged commits (Sep 7 evening ×4, Sep 8 ×3)",
-            "local-clone lock + bogus ref moved out of refs/heads; aborted fast-forward artifacts quarantined under .git/stale-locks",
-            "repo-root loose file copied to Card Hub/link-posts/ + the scratch folder gitignored",
-            "root INDEX caught up"
-          ],
-          "note": "Both gates re-run on the live tree before this push. One item for Mo: confirm the Sep 7 recap email send was his call (one word)."
-        },
-        {
-          "date": "2026-09-09",
-          "by": "CoS ruling on the Wed audit (Mo in chat: 'ask the CoS if he approves. His call.')",
-          "authority": "4.7 / 4.8",
-          "approved": [
-            "audit-2026-09-09-1 (MED — applied: street-date convention, nav rebuilt, pushed)",
-            "audit-2026-09-09-2 (MED — stopgap applied now: Finest released framing over a dated snapshot; reprice → Sep 14 lane)",
-            "audit-2026-09-09-3 (LOW — absolute-dates rule approved; STEP 4 prompt edit queued for Sunday Sep 13)",
-            "audit-2026-09-09-4 (LOW — applied: de9d243 pushLog backfilled; index.lock is Mo's)"
-          ],
-          "declined": [],
-          "janitorial": [
-            "sandbox-git-lock-sweep-sep01 closed as applied under option (c) (auditor reports locks every run)",
-            "Sep 9 checkpoint pushLog placeholder resolved to f27bde0"
-          ],
-          "note": "Nothing needs Mo except the lock in his own clone."
-        },
-        {
-          "date": "2026-09-10",
-          "by": "CoS Thursday light checkpoint",
-          "authority": "4.7",
-          "approved": [],
-          "declined": [],
-          "note": "No Tier 2 item was sitting. The only open proposal is money-adjacent and stays with Mo."
-        },
-        {
-          "date": "2026-09-11",
-          "by": "CoS ruling on Mo's chat delegation (Fri Sep 11)",
-          "authority": "4.8",
-          "approved": [
-            "bcb26-chase-basket-v1-2026-09-11",
-            "v-bb-fischer-buy-2 (re-entry call, SS7)",
-            "position-language redaction (whole payload)",
-            "scp-sandbox-path-2026-09-11"
-          ],
-          "queued": [
-            "bb-transition-doctrine-2026-09-11 -> Tuesday STEP 0",
-            "watch-hygiene-gage-jump-2026-09-11 -> Tuesday SS4.7",
-            "audit-2026-09-11-1..5 (Friday auditor, homepage) -> Sunday checkpoint"
-          ],
-          "note": "Board reorder (Fischer #2 / Kim #3) needed no approval - it executed a condition the Sep 8 run published on the page."
-        },
-        {
-          "date": "2026-09-13",
-          "by": "CoS Sunday ruling (Mo in chat: 'i approve if the CoS approves')",
-          "authority": "4.8",
-          "approved": [
-            "audit-2026-09-11-4 (LOW — applied: Finest meta description + hero-meta tense fixed)"
-          ],
-          "closed": [
-            "audit-2026-09-11-1/2/3 — mooted by the Sep 11-12 Terminal rewrite of index.html; strings verified absent in 90a0f1b"
-          ],
-          "queued": [
-            "audit-2026-09-11-5 -> Monday STEP 0.6 (read robots meta before GSC request)"
-          ],
-          "moOnly": [
-            "trader-2026-09-10-5/6/7 — Mo executes on COMC tonight (Sep 13)"
-          ],
-          "stale": [
-            "queue #1 tuesday-sitting-two-things retired — all 6 reply-paster slots Sep 8-13 posted and verified"
-          ]
-        }
-      ],
-      "approvalsNote": "4.7 pass: nothing in the three self-approvable categories was waiting — the week's only audit item was already applied under 4.8 on Friday, no polish or comp item is open (Monday files the next ones)."
-    }
+    "lastCheckpoint": "2026-09-25T15:00:00-07:00"
   },
   "coachNotes": {
     "_comment": "Written Sundays by the Chief of Staff (charter 4.5). Each weekly task reads its note at run start and must meet it. Standards, never pep talks; grounded strictly in that week's observed output. PUBLIC FILE — behaviors, counts, lanes only.",
