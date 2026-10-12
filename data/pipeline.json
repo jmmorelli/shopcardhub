@@ -10,10 +10,6 @@
       "nextRun": "2026-10-19",
       "actions": [
         {
-          "ts": "2026-09-22",
-          "msg": "Watch-tier hygiene: all five names are trackable (Houston 15 asks, Jump 15, Arquette 9, Aloy 27, Pierce 27) - none untrackable. All five read SELL on the nightly engine; four are down double digits over 30 days (Houston -27.8%, Jump -17.8%, Aloy -17.7%, Pierce -9.1%, Arquette -6.7%)."
-        },
-        {
           "ts": "2026-09-25",
           "msg": "Signal harvest (track-signals.json off the price-data branch via a fresh fetch; file updated 2026-09-16, unchanged since): 30 entries, max count 3 (jacob-misiorowski-2022-bowman-chrome-1st-auto), none at count>=5 - no watchlist auto-adds. Aug 11 test entries excluded. Nine days without a new * Track add is itself a read."
         },
@@ -56,6 +52,10 @@
         {
           "ts": "2026-10-12",
           "msg": "New-entrant hunt surfaced three names not on the watchlist: Vaultlie (vaultlie.com, portfolio + price tracker, freemium $6.99/$16.99, 63k cards, 'real eBay sold listings', NO set-level indices), Card Codex (Pokemon tracker, 'binder like a portfolio'), PokeScreener. Vaultlie is the strongest candidate yet for the vault-style site the owner half-remembers - name, shape, 2026 launch all fit. Flagged for him by name."
+        },
+        {
+          "ts": "2026-10-12",
+          "msg": "Index pipeline: BCS26's named activation blocker is cleared - SportsCardsPro now lists the 2026 Bowman Chrome Sapphire Prospect Autograph console (HTTP 200, 150 rows, checked today) where it 404'd on Oct 4, so --init is runnable 5 days after the Oct 7 street date. BF26 is 12 days PRE with a 0-card universe and its football console answered 403 behind a challenge, so that half is unverified. Both pages carry pre-release sentences that are no longer true."
         }
       ],
       "log": [
@@ -3036,6 +3036,15 @@
       "by": "monday-scan",
       "severity": "LOW",
       "title": "LOW: v-bb-kim-wait (Seong-Jun Kim CPA-SK, board #2 on the crossover rule) reaches finalizeAfter Oct 13 with no sold comp to finalize on - 0 clean sales in the trailing 30 days and 68 days since the last on Aug 5. It stays trending, per the rule, and the read carries the gap in its label. Worth a separate look at whether a card with no sale in ten weeks belongs at board #2 at all; that is a ranking question for the board lane, not a price one."
+    },
+    {
+      "id": "bcs26-unblocked-2026-10-12",
+      "status": "awaiting-cos",
+      "date": "2026-10-12",
+      "area": "index-pipeline",
+      "by": "monday-scan",
+      "severity": "MED",
+      "title": "MED, and time-sensitive: BCS26's activation blocker is GONE. STATE (Oct 6 evening, 'Activation (desk/weekly, when SCP lists the cards)') and build-sector-index.mjs line 146 ('--init needs no code change once PriceCharting lists the console (404 on Oct 4)') both park BCS26 until SportsCardsPro files the Chrome Sapphire autos. Verified today: https://www.sportscardspro.com/console/baseball-cards-2026-bowman-chrome-sapphire-prospect-autograph returns HTTP 200 with 150 product rows, titled '2026 Bowman Chrome Sapphire Prospect Autograph Card Prices'. So `node tools/build-sector-index.mjs --ticker BCS26 --init` is runnable now, 5 days after the Oct 7 street date and inside the 30-day attention window that R32's 'release-window entry for new Bowman sets' is about. The ticker is still status pre with a 0-card universe. Not run by this lane: the Bowman tickers are the nightly Action's and --init is a first build, not a re-mark. RECOMMEND the desk or the Wednesday weekly runs it this week. SEPARATELY, same class but unverified: BF26 (2026 Bowman Football) streeted Sep 30 and is 12 days PRE with a 0-card universe; its football console returned HTTP 403 behind a Cloudflare challenge from this shell, so whether SCP lists it is NOT established and I am not claiming it does. What IS established and is a claims defect either way: the live /bowman-football-2026-index page tells the reader 'Every card in the checklist is in the universe' and 'Streets Wednesday, Sep 30' in the future tense, while the universe holds 0 cards and the product streeted 12 days ago - the same shape as iw-2026-10-04-1 on /bowman-football and audit-2026-09-09-2 on /topps-finest-baseball. BCS26's page should be checked for the same two sentences before it activates."
     }
   ],
   "scoreboard": {
