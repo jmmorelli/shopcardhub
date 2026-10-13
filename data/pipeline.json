@@ -3097,43 +3097,43 @@
     },
     {
       "id": "tuesday-2026-10-13-1",
-      "status": "awaiting-cos",
+      "status": "declined",
       "date": "2026-10-13",
       "area": "bowman-bangers",
       "by": "tuesday-board",
       "severity": "MED",
       "title": "Florentino: the Aug 18 Buy finalized Oct 13 at -17.4% (wrong, final). The page verdict now reads Watch (not renewed) and the Signal stat reads WATCH; no new ledger row was appended.",
-      "decision": "Lane judgment, not a ruling: if the CoS wants a standing Hold or a renewed Buy, that is a new verdict row. The ledger row itself is final."
+      "decision": "Lane judgment, not a ruling: if the CoS wants a standing Hold or a renewed Buy, that is a new verdict row. The ledger row itself is final. | CoS desk 2026-10-13: no new verdict row. Watch (not renewed) stands as the lane wrote it; calls were retired Aug 18 and the ledger row is final (-17.4%, wrong). Nothing to append."
     },
     {
       "id": "tuesday-2026-10-13-2",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-10-13",
       "area": "bowman-bangers",
       "by": "tuesday-board",
       "severity": "MED",
       "title": "Fischer's box writes the $115 level as a print level. An Oct 8 sale at $105.00 is under it (the same day's $117.50 is not). The page says so and keeps the Hold because the 30-day median of 19 is $153.50.",
-      "decision": "Confirm the Hold stands, or reword the level as a mark level in the Oct 20 run."
+      "decision": "Confirm the Hold stands, or reword the level as a mark level in the Oct 20 run. | CoS desk 2026-10-13: the Hold stands (30-day median $153.50 on 19 sales; one Oct 8 print under the line is not a mark). Tuesday lane Oct 20 rewords $115 as a mark level, not a print level."
     },
     {
       "id": "tuesday-2026-10-13-3",
-      "status": "awaiting-cos",
+      "status": "applied",
       "date": "2026-10-13",
       "area": "tuesday-lane",
       "by": "tuesday-board",
       "severity": "LOW",
       "title": "calls.json was updated locally for Oct 13 (Florentino and Kim finalized, Gonzales and Fischer reads) and is not pushed, per the lane file. The staged copy is Card Hub/calls-2026-10-13-tuesday-regrade.json.",
-      "decision": "CoS decides when /track-record gets it. Not done this run: the Scouting Grades re-grade and the ccx-2026-09-24-3 seat-table bake (both need an attended Chrome SCP session)."
+      "decision": "CoS decides when /track-record gets it. Not done this run: the Scouting Grades re-grade and the ccx-2026-09-24-3 seat-table bake (both need an attended Chrome SCP session). | CoS desk 2026-10-13: staged calls.json applied as filed (reads/labels/state only, projections untouched), /track-record re-baked, pushed d92b1c7, live 'Updated 2026-10-13'. Scouting Grades re-grade + ccx-2026-09-24-3 seat-table bake stay with an attended Chrome SCP session (not the desk)."
     },
     {
       "id": "tuesday-2026-10-13-4",
-      "status": "awaiting-cos",
+      "status": "declined",
       "date": "2026-10-13",
       "area": "coach-note",
       "by": "tuesday-board",
       "severity": "LOW",
       "title": "coachNotes['tuesday-bangers'] is weekOf 2026-09-14, four weeks stale. This run read it and applied its two standing items (absolute dates, three gates).",
-      "decision": "Sunday CoS to refresh the note."
+      "decision": "Sunday CoS to refresh the note. | CoS desk 2026-10-13: coach notes are retired (Oct 5 prompt-drift ruling; the Sunday brief no longer writes them). The Tuesday lane skips coachNotes from Oct 20; its standing items (absolute dates, three gates) live in LANE-RULES."
     }
   ],
   "scoreboard": {
@@ -4622,6 +4622,55 @@
           "by": "Growth League 05:56 (CoS commissioner, unattended) - INDEX-FIRST/R35 correction run: league agent C re-marked its 10 comparison pages on the uncapped Oct 12 index levels (R36); 0 new pages, 0 merges",
           "gates": "audit-prices FAIL 0 / WARN 82 · audit-site FAIL 0 / WARN 5 (171) · audit-terminal FAIL 0 / WARN 1 (baseline)",
           "liveVerified": "2026-10-13 ~13:50 UTC: 10/10 changed URLs 200 with BUYSTRIP:START + sch-signup; IndexNow 200"
+        },
+        {
+          "date": "2026-10-13",
+          "commits": [
+            "289b1cc"
+          ],
+          "by": "Site Sweep (Mac key, Tue) - copy-only plain-word hero labels + stale pre-release tense on 4 guides (backfilled by the CoS desk)",
+          "gates": "audit-prices FAIL 0 / WARN 81 · audit-site FAIL 0 / WARN 5 · audit-terminal FAIL 0 / WARN 1 (171)",
+          "liveVerified": "2026-10-13 ~17:25 UTC by the lane: 4 pages new strings present, old 0"
+        },
+        {
+          "date": "2026-10-13",
+          "commits": [
+            "59d2df9"
+          ],
+          "by": "Tuesday board lane - Bangers 2026-10-13 (Holliday +5.2%, Florentino -5.1%, Florentino Buy graded wrong, final) (backfilled by the CoS desk)",
+          "gates": "as reported by the lane",
+          "liveVerified": "not separately verified by the desk"
+        },
+        {
+          "date": "2026-10-13",
+          "commits": [
+            "e20bf81",
+            "f659fc8"
+          ],
+          "by": "CoS with Mo (Mac VM, deploy key) - 30th Celebration page: nine hand-written TH26 Oct 1 lines -> Oct 12 marks; X chart image for Mo's go'd post (backfilled by the CoS desk)",
+          "gates": "audit-prices FAIL 0 / WARN 81 · audit-site FAIL 0 / WARN 5 · audit-terminal FAIL 0 / WARN 1 (171)",
+          "liveVerified": "2026-10-13 ~20:05 UTC: page shows $230 Lugia, no $349.95; IndexNow 200"
+        },
+        {
+          "date": "2026-10-13",
+          "commits": [
+            "5b27a51",
+            "b447f0a",
+            "7d57f58"
+          ],
+          "by": "CoS with Mo (Mac VM, bundles + deploy key) - GSTAR Gold Star & Grails board (/gold-star-index) + homepage vintage-vs-modern block; classic-marks re-reads GSTAR Mon/Thu (Mo: 'start all that stuff right now') (backfilled by the CoS desk)",
+          "gates": "audit-prices FAIL 0 / WARN 81 · audit-site FAIL 0 / WARN 5 · audit-terminal FAIL 0 / WARN 1 (172)",
+          "liveVerified": "by that session (handoff graded-surge-2026-10-13)"
+        },
+        {
+          "date": "2026-10-13",
+          "commits": [
+            "d92b1c7",
+            "5c8d521"
+          ],
+          "by": "CoS desk 14:00 (Mac deploy key, unattended) - /track-record Oct 13 reads (Tuesday regrade applied) + 'live eBay sold comps' claim off 7 ask-priced player pages; /roy-watch-2026 Bazzana/Griffin draft years (KB G29)",
+          "gates": "audit-prices FAIL 0 / WARN 81 · audit-site FAIL 0 / WARN 5 · audit-terminal FAIL 0 / WARN 1 (171 -> 172 with GSTAR)",
+          "liveVerified": "2026-10-13 ~21:40 UTC: 4/4 player pages new clause, old 0; /track-record 'Updated 2026-10-13'; IndexNow 8 URLs 200"
         }
       ]
     },
