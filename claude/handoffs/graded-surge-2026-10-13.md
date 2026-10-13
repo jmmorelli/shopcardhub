@@ -1,0 +1,23 @@
+# Handoff — Pokémon graded-vintage surge build (CoS with Mo, Tue Oct 13 2026, ~14:00–16:00 PT)
+
+Mo in chat: "start all that stuff right now … pretend you are a collector and an investor … the longer term hold … go ahead and build everything you want to build." Read + ruling: Project `claude/cos/pokemon-graded-surge-2026-10-13.md`.
+
+## Shipped (live-verified, pushed from Mo's Mac VM via `Card Hub/deploy/bundles/*.bundle` + the deploy key — the cloud git proxy refuses this repo)
+- `5b27a511` **/gold-star-index — GSTAR · Gold Star & Grails board.** 27 English Gold Stars + Double Crisis Team EX pair + 6 Legendary Collection reverse holos. Per card: raw mark (90d median, holo-rule windows 90→180→365, thin flag), PSA 9 / PSA 10 / TAG 10 ladders per `build-card-ladder.mjs` (R18: median of ≥3 titled sales else one dated sale else "no verified sale"), Raw/PSA 9/PSA 10/TAG eBay links (grade-links.js, customid `gstar-<key>`), Watch ★. The Graded Tape: 12 PSA 10 record prints Sep 10 – Oct 11 (house, date, prior comp, move, PSA 10 eBay link) from `data/graded-tape.json`. "Reading the prints" (skew/kurtosis/thin n; the ≥4 PSA 10 sales/card/90d rule for any level) and "Who is buying the slabs" (Coinbase tease, Collector Crypt/Courtyard/Deadstock numbers, the buyback caveat, standing-buyer mechanism). Collector-investor voice; humanized. **No index level, by rule.** Tools: `tools/build-grails.mjs` (`--bake` offline), `data/grails.json`. Scaffold: GSTAR in `new-sector-page.mjs` (signup block now repointed for every future scaffold). Registered: sitemap, `/indices` classic section (COMING row, "board"), nav.json → build-nav (172 pages).
+- `5b27a511` **/ HOME:regime block** (`tools/build-regime.mjs`, under the index board): vintage median +2.5% (19 WOTC-era, 17 up / 2 down, Sep 28–Oct 4 starts) vs modern median −11.2% (10 tickers 2024–26, 0 up / 10 down); TH26 75.19 line; links to GSTAR. One disclaimer per page kept (board footer); the block's own "not a call" dropped.
+- `b447f0a3` **classic-marks workflow**: on mark days, after the 24 tickers, `build-grails.mjs` re-reads the board (15 min box, keep-previous on failure); `build-regime.mjs` re-bakes after `build-home` in the publish step. Both Mon/Thu from now.
+- Gates at push: audit-prices FAIL 0 / WARN 81 · audit-site FAIL 0 / WARN 5 · audit-terminal FAIL 0 / WARN 1 (feed). Rendered 1440/390: 0 overflow, console errors only the QA harness's aborted feed.
+
+## Rulings recorded
+- R35 cull: GSTAR is an index-family page (kept class). The Graded Tape and the tokenization explainer were **folded into the GSTAR page** rather than opened as `/graded-tape` and a Collector's Desk page — one new URL, not three. Reverses the Oct 5 "skip Legendary Collection" (that skip was about broken PC PSA 10 series; a ladder of dated rows does not need them).
+- R33 link freeze: no new link family — the board uses the Sep 30 grade-link control and the Oct 5 approved Gold Star build.
+- PSA 10 sub-line on classic tickers: **Jan 2027 reconstitution at the earliest**, only on cards with ≥4 PSA 10 sales/90d; the Mon/Thu GSTAR reads + card-page ladders are the data collection. PriceCharting's PSA 10 vintage *series* still not published as levels (KB 04 #6).
+- Mo's framing for everything Pokémon from here: long-term collector-investor (blue chips, decade holds, "cards my kids can enjoy"), not flippers or pack-rippers. TAG shown beside PSA; PSA stays the reference grade. Mo's view that AI-measured grades and a machine-readable record of top-grade copies are where this goes is noted for the KB (04 §4 crypto/vintage link) — no build.
+
+## Open / next
+- **Graded Tape refresh — weekly, inside the Tuesday run (CoS):** append rows to `data/graded-tape.json` (house, date, grade, price, prior, source; one sales row each), bump `updated`, `node tools/build-grails.mjs --bake`, gates, push. First refresh Tue Oct 20. Sources that worked: ALT / Goldin / Fanatics Collect results via ComicBook.com, GempireCards, Polkastarter; Goldin on X.
+- **NEEDS-MO (X, R10):** two drafts of the "vintage up, modern down" post in `claude/cos/pokemon-graded-surge-2026-10-13.md` § X (also sent in chat). Mo says go, CoS queues.
+- Tuesday Tape (Oct 20): the paragraph in the same doc § Tape.
+- Pokémon KB: add a Gold Star chapter line pointing at `data/grails.json` as the live source; COVERAGE-REPORT "Gold Star strip" row → SHIPPED Oct 13.
+- Wed Oct 14 weekly: card search rows for the 35 GSTAR cards (they have no `/card` pages yet — `data/cards/gstar.json` would need a card-file writer for cross-set paths); the cull list (R35) should list `/gold-star-index` as KEEP.
+- Mo's open question from Oct 12 stands (TH26 RGB Mews at weight 0).
