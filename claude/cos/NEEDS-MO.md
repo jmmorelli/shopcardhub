@@ -13,9 +13,9 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ## Open — from the desk (2026-10-13, 14:00 run). Mo, these are the only things waiting on you
 
-- **Before Wed Oct 14, ~3 min:** this week's two eBay Partner Network CSVs (Performance by Day + by Custom ID, Oct 7–13) into `Card Hub/epn/`. Still the only money read; the newest pair ends Oct 6.
+- ~~EPN CSVs~~ **✅ Mo uploaded both Oct 13 (Sep 29–Oct 12); filed in `Card Hub/epn/`, read in STATE MILESTONES.**
 - **One "go" on X (two posts, text ready):** (1) the cap-correction reply under your pinned index thread (the reply text is in `claude/handoffs/uncap-2026-10-12.md` § X; you OK'd it Oct 12 night, but this desk never posts on its own, so it waits for you or an attended CoS session with you there); (2) the "vintage up, modern down" post — two drafts in `claude/cos/pokemon-graded-surge-2026-10-13.md` § X. Post them yourself, or say go to the CoS in chat.
-- **One call — TH26's three RGB Mews** (open since Oct 12): keep them as their own line at weight 0 (today), or let them into the index under "one copy of every card"? If in, TH26 becomes mostly a Mew chart with an ex-Mew line beside it. Silence keeps them out.
+- ~~One call — TH26's three RGB Mews~~ **✅ Mo, Oct 13 in chat: keep them out — a separate sub page like the Bowman refractors (too top-heavy inside the index). Recorded in LANE-RULES R36; build queued for the Oct 14 weekly.**
 - **When you have 20 minutes, anonymous:** phone photos of cards you own for the index pages, dropped in `Card Hub/photos/owned/` (folder not created yet). Shot list: Project `claude/cos/owned-card-shot-list-2026-10-12.md`.
 - **One yes/no — /track-record labels** (unchanged from Oct 12): eight Bowman rows call pre-Sep 25 guide values "SportsCardsPro raw sold". "Yes" = a dated bracketed correction on each row, projections untouched. Silence = it stays.
 - **Optional, before Thu 12:30 PT (your X account):** Thursday's Base Set post says "the holos below it climbed"; two fell. "most of the holos below it climbed" fixes it.
