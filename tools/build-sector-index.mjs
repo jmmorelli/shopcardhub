@@ -4,8 +4,10 @@
 //
 // The model, in one line: one set is one sector; the universe is EVERY card in the set (nobody selects
 // constituents); a card is in the basket when it clears the liquidity screen (>= 6 clean single-card sold
-// comps in the trailing 30 days, stays until < 4); price-weighted with a 25% single-card cap applied at
-// reconstitution; base 100 at inception (Pokémon: at the release month since the Sep 30 2026 rebase — see baseLine()); divisor-continuous, so only prices move the level. Quarterly
+// comps in the trailing 30 days, stays until < 4); price-weighted and UNCAPPED — the index is the cost of one copy of every
+// card in the basket (Mo, Oct 12 2026: the 25% single-card cap and the 5/50 group cap are retired on every ticker; an ETF can
+// trim a position, a set cannot, and the cap bound only on the card each set is known for — concentration is published, not
+// suppressed: top-card weight, effective holdings, an EX sub-line where the top card is 25% or more); base 100 at inception (Pokémon: at the release month since the Sep 30 2026 rebase — see baseLine()); divisor-continuous, so only prices move the level. Quarterly
 // reconstitution (first Monday of Jan/Apr/Jul/Oct), announced the Monday before.
 //
 // DATA: PriceCharting — the set's console page for the universe (one product per slot) and each item's
@@ -14,9 +16,9 @@
 // (R17); only dates and prices leave the page, and only aggregates are published. Asks are never used (R20).
 //
 // Usage:
-//   node tools/build-sector-index.mjs --ticker TH26 --init [--dry]      first build: universe → screen → basket → cap → divisor → level 100 → page block
+//   node tools/build-sector-index.mjs --ticker TH26 --init [--dry]      first build: universe → screen → basket → divisor → level 100 → page block
 //   node tools/build-sector-index.mjs --ticker TH26 --mark [--dry]      twice weekly (Mon/Thu): re-read the basket's sales, append a history row, re-bake the block
-//   node tools/build-sector-index.mjs --ticker TH26 --recon [--dry]     quarterly: re-run the screen on the universe, enter/exit, re-cap, divisor-adjust (level unchanged)
+//   node tools/build-sector-index.mjs --ticker TH26 --recon [--dry]     quarterly: re-run the screen on the universe, enter/exit, divisor-adjust (level unchanged)
 //   node tools/build-sector-index.mjs --ticker TH26 --bake              re-bake the page block from data/indices.json only (no network)
 //   node tools/build-sector-index.mjs --ticker SK03 --holo              apply the HOLO RULE (Oct 6 2026) + any CONFIG window change: holo-tier
 //                                                                       slots enter as standing constituents; logged divisor adjustment, level unchanged
@@ -30,7 +32,7 @@
 // days after street with Hernandez / Renteria / Gomez / Asigen / Cijntje at 0–5 listed sales. So, for the first
 // ENTRY_WINDOW_DAYS after a ticker's release date (c.entryWindowFrom overrides, for a cohort ticker whose latest release is
 // not its first), every --mark also reads the universe cards NOT in the basket and admits any that clear the entry screen
-// — a logged divisor adjustment, level unchanged, caps re-applied, screenLog row "release window". Exits stay quarterly.
+// — a logged divisor adjustment, level unchanged, screenLog row "release window". Exits stay quarterly.
 // After the window the index is back to the sector-model calendar. Index providers do the same for IPOs (fast entry).
 //
 // Writes: data/indices.json (the ticker's key), <page>.html between <!-- <TICKER>:START --> … <!-- <TICKER>:END -->.
@@ -88,10 +90,10 @@ const CONFIG = {
     sub: { RGB: { name: "Mew RGB trio", nums: ["R/RGB", "G/RGB", "B/RGB"], blurb: "The three secret-rare Mews (R, G, B) — the set's chase, tracked as their own line so the trio's move is never mistaken for the set's." } },
     // G20 (Pokémon KB, Oct 4 2026 — Mo: "do whatever the CoS says"; CoS: move them out of the weighted basket). The three
     // RGB Mews stay in the universe, stay marked Mon/Thu, carry the RGB sub-index line and the chase strip, but weigh 0 in
-    // the basket: at ~$3,500–$4,000 each they sat pinned at the 5/50 group cap as half the level. Honoured by --init,
-    // --recon (applyCap), --mark (weights untouched) and --bake (table, stats, plain read).
+    // the basket: at ~$3,500–$4,000 each they would be most of the level. A SCOPE ruling, not a cap — it survives the Oct 12 uncap
+    // (flagged to Mo that day). Honoured by --init, --recon (setWeights), --mark (weights untouched) and --bake (table, stats, plain read).
     basketExclude: ["R/RGB", "G/RGB", "B/RGB"],
-    note: "Includes the Classic Collection reprints (Charizard #4, Lugia #149 …) — they are in the set on PriceCharting's listing and enter the basket the week they clear the screen; the Ultra-Premium Collection that carries them ships Nov 6. The three RGB Mews are the set's chase and are tracked as their own line below; since Oct 4 2026 they are not in the weighted basket (weight 0, still marked twice a week) — at several thousand dollars each they sat at the 5/50 group cap as half of the index, so the level read the Mew trio rather than the set. Product waves run through Dec 4; the index runs forward from its release-month base, so supply arriving later is a market event, never a restatement.",
+    note: "Includes the Classic Collection reprints (Charizard #4, Lugia #149 …) — they are in the set on PriceCharting's listing and enter the basket the week they clear the screen; the Ultra-Premium Collection that carries them ships Nov 6. The three RGB Mews are the set's chase and are tracked as their own line below; since Oct 4 2026 they are not in the weighted basket (weight 0, still marked twice a week) — at several thousand dollars each they would be most of the index, so the level would read the Mew trio rather than the set. Product waves run through Dec 4; the index runs forward from its release-month base, so supply arriving later is a market event, never a restatement.",
   },
   // SV151 (Sep 25 2026, Mo: "SV151 index now"). Path B of claude/cos/sv151-rebuild-spec-2026-09-17.md: inception = the
   // build date, base 100, never Sep 15. The Sep 17 "authenticated Chrome wall" is gone — item pages carry the ungraded
@@ -350,8 +352,10 @@ function entryWindowLeft(c) {
 }
 // per-ticker override (Sep 30 2026, Mo chose the 90-day window for the WOTC 1st Edition / Shadowless indices: raw 1st Ed holos sell 2–5×/month)
 let SCREEN = BASE_SCREEN;
-const CAP = 0.25;          // no single card above 25% …
-const BIG = 0.05, BIG_SUM = 0.50;   // … and positions above 5% may not sum past 50% — the Select Sector SPDR "5/50" rule, adopted Sep 25 2026 (Mo) when the three Mew RGB secrets would otherwise have taken 75% of TH26
+// Oct 12 2026 (Mo: "Change the cap now"): NO caps. The 25% single-card cap (Sep 15) and the 5/50 group cap (Sep 25) are retired;
+// weights are 1 for every basket row except basketExclude rows (0). tools/uncap-indices.mjs applied the switch to every stored ticker.
+const UNCAP_RULE = "uncapped — price-weighted: the index is the cost of one copy of every card in the basket, indexed to 100 at the base month; weights are price ÷ basket value and move with prices; no cap, no rebalance — membership changes only, through the divisor (Mo, Oct 12 2026)";
+const EX_AT = 0.25;   // a sector ticker whose top weighted card is at or above this share carries an EX sub-line (the set without that card)
 
 // titles that are not one ungraded single of this card (read in memory only — never stored)
 const TITLE_BAD = /\b(lot|lots|bundle|x\s?\d+|\d+\s*(cards?|pcs?|pack)|set of|complete set|master set|playset|proxy|custom|sealed|booster|etb|elite trainer|box|tin|japanese|japan|korean|chinese|jpn|kor|psa|cgc|bgs|sgc|tag\s*\d|graded|slab|reverse holo|rev holo|cosmos|stamp)\b/i;
@@ -474,29 +478,17 @@ function setMark(b, m, date, anchor) {
   if (anchor) b.holo = true; else delete b.holo;
 }
 
-// ---------------- the 25% cap: weights w so no card exceeds CAP of Σ(price·w); level unchanged by construction ----------------
-function applyCap(basket, ex) {
+// ---------------- weights: one copy of every card (uncapped, Oct 12 2026); basketExclude rows weigh 0 ----------------
+function setWeights(basket, ex) {
   ex = ex || new Set();
-  basket.forEach((b) => { b.w = ex.has(String(b.num)) ? 0 : 1; });   // basketExclude rows weigh 0 and take no part in either cap leg
-  for (let it = 0; it < 200; it++) {
-    let changed = false;
-    const T = basket.reduce((s, b) => s + b.price * b.w, 0);
-    // leg 1: no single position above CAP of the total
-    for (const b of basket) { const v = b.price * b.w; if (v / T > CAP + 1e-9) { b.w = r4((CAP * T) / b.price); changed = true; } }
-    // leg 2: positions above BIG may not sum past BIG_SUM of the total (5/50)
-    const T2 = basket.reduce((s, b) => s + b.price * b.w, 0);
-    const big = basket.filter((b) => (b.price * b.w) / T2 > BIG + 1e-9);
-    const bigSum = big.reduce((s, b) => s + b.price * b.w, 0);
-    if (bigSum / T2 > BIG_SUM + 1e-9) { const f = (BIG_SUM * T2) / bigSum; for (const b of big) { b.w = r4(b.w * f); } changed = true; }
-    if (!changed) break;
-  }
-  basket.forEach((b) => { if (b.w > 1) b.w = 1; });
+  basket.forEach((b) => { b.w = ex.has(String(b.num)) ? 0 : 1; });
   return basket;
 }
 const basketValue = (basket) => basket.reduce((s, b) => s + b.price * (b.w == null ? 1 : b.w), 0);
 const levelOf = (x) => r2(basketValue(x.basket) / x.divisor);
 // sub-index: a named subset of the basket, price-weighted, uncapped, base 100 at the same inception — a second line, never the level
-function subValue(x, nums) { return x.basket.filter((b) => nums.includes(String(b.num))).reduce((s, b) => s + b.price, 0); }
+function subValue(x, nums, kind) { const inN = (b) => nums.includes(String(b.num)); return x.basket.filter((b) => typeof b.price === "number" && (kind === "ex" ? !inN(b) && b.w !== 0 : inN(b))).reduce((s, b) => s + b.price * (kind === "ex" ? (b.w == null ? 1 : b.w) : 1), 0); }
+// EX sub-line (Oct 12 2026): the set without its top card — created by tools/uncap-indices.mjs (or ensureEx() at a mark) when the top card is ≥ EX_AT; marked here like any sub
 // screened sub-index (Bowman, Sep 25 2026): its own universe and liquidity screen, price-weighted, uncapped, base 100
 async function readUniverse(uni, label) {
   const reads = [];
@@ -533,8 +525,22 @@ async function subInit(x, c) {
     console.log(`sub ${d.key}: basket ${basket.length}/${uni.length} · value $${r2(v)}`);
   }
 }
+// EX line at a mark (Oct 12 2026): when a sector ticker's top weighted card reaches EX_AT and no EX line exists yet, launch one at
+// the index level (no monthly reconstruction here — tools/uncap-indices.mjs does the chained launch; this is the forward fallback).
+function ensureEx(x, level, date) {
+  if (x.model !== "sector" || (x.sub && x.sub.EX)) return;
+  const w = x.basket.filter((b) => typeof b.price === "number" && b.w !== 0), bv = w.reduce((s, b) => s + b.price, 0);
+  if (!bv) return;
+  const top = w.slice().sort((a, b) => b.price - a.price)[0];
+  if (top.price / bv < EX_AT) return;
+  const exVal = r2(bv - top.price);
+  x.sub = x.sub || {};
+  x.sub.EX = { kind: "ex", name: `ex-${top.name}`, nums: [String(top.num)], blurb: `${x.name.replace(/ Index$/, "")} without ${top.name} #${top.num} — the other ${w.length - 1} cards, one copy each. ${top.name} is ${(top.price / bv * 100).toFixed(1)}% of the index; this line is what the rest of the set did.`, divisor: r4(exVal / level), history: [{ date, level, basketValue: exVal, priced: w.length - 1, note: `launched at the index level on ${date}` }] };
+  console.log(`${x.ticker}: EX line launched — ${x.sub.EX.name} at ${level} (top card ${(top.price / bv * 100).toFixed(1)}%)`);
+}
 async function subMark(x, date) {
   for (const [k, sx] of Object.entries(x.sub || {})) {
+    if (sx.history && sx.history.length && sx.history[sx.history.length - 1].date === date) continue;   // launched today
     if (sx.kind === "screened") {
       let carried = 0;
       for (const b of sx.basket) { try { const r = await readCard(b); b.prevPrice = b.price; b.prevAsOf = b.asOf; if (r.price != null) { b.price = r.price; b.asOf = date; b.n30 = r.clean30; b.carried = false; } else { b.carried = true; carried++; } } catch (e) { b.carried = true; carried++; } if (!READ_CACHE_HIT) await sleep(PAUSE); }
@@ -542,7 +548,7 @@ async function subMark(x, date) {
       sx.history.push({ date, level: r2(v / sx.divisor), basketValue: r2(v), priced: sx.basket.length - carried, note: carried ? `${carried} carried` : "" });
       continue;
     }
-    const v = subValue(x, sx.nums); if (!v) continue; sx.history.push({ date, level: r2(v / sx.divisor), basketValue: r2(v) });
+    const v = subValue(x, sx.nums, sx.kind); if (!v) continue; sx.history.push({ date, level: r2(v / sx.divisor), basketValue: r2(v), ...(sx.kind === "ex" ? { priced: x.basket.filter((b) => typeof b.price === "number" && b.w !== 0 && !sx.nums.includes(String(b.num))).length } : {}) });
   }
 }
 
@@ -598,7 +604,7 @@ function block(x, c, opt = {}) {
   const bv = basketValue(x.basket), rows = x.basket.slice().sort((a, b) => b.price * b.w - a.price * a.w);
   const wts = rows.map((b) => (b.price * b.w) / bv);
   const hhi = wts.reduce((s, w) => s + w * w, 0), eff = hhi ? 1 / hhi : 0;
-  const top = wts[0] || 0, capped = rows.filter((b) => b.w < 1 && !lineOnly(b)).length, weighted = rows.filter((b) => !lineOnly(b)).length;
+  const top = wts[0] || 0, top5 = wts.slice(0, 5).reduce((s, w) => s + w, 0), weighted = rows.filter((b) => !lineOnly(b)).length;
   const pct = (v, d) => v == null ? "—" : (v > 0 ? "+" : "") + v.toFixed(d == null ? 1 : d) + "%";
   const cls = (v) => v > 0 ? "up" : v < 0 ? "dn" : "flat";
   const money = (n, d) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: d == null ? 2 : d, maximumFractionDigits: d == null ? 2 : d });
@@ -607,8 +613,8 @@ function block(x, c, opt = {}) {
   // Pokémon tickers get the grade-link group (Sep 30 2026, Mo): Raw baked + PSA 9 · PSA 10 · TAG built by js/grade-links.js
   // from data-q, one Buy-It-Now/Auctions switch per table, and the card name opens /card?id=… (the ladder page).
   const GL = (c.imgSub || "pokemon") === "pokemon" && !c.kindPlural, wotc = WOTC.has(x.ticker), ed = EDITION[x.ticker] || null;
-  // weight cell: capped rows carry *, line-only rows (basketExclude) read "line" — tracked and marked, weight 0 in the level
-  const wCell = (b, w) => lineOnly(b) ? '<span title="tracked as its own line, not in the weighted basket — see the method note">line</span><i title="not in the weighted basket">‡</i>' : `${(w * 100).toFixed(1)}%${b.w < 1 ? '<i title="capped — see the method note">*</i>' : ""}`;
+  // weight cell: price ÷ basket value (uncapped); line-only rows (basketExclude) read "line" — tracked and marked, weight 0 in the level
+  const wCell = (b, w) => lineOnly(b) ? '<span title="tracked as its own line, not in the weighted basket — see the method note">line</span><i title="not in the weighted basket">‡</i>' : `${(w * 100).toFixed(1)}%`;
   // card keys in table order (= data/cards order): a second card on the same number gets "<num>-<name>" (Classic Collection
   // reprints in CEL21 / TH26), so its customid and /card link never collide with the first (Oct 5 2026)
   const seenK = new Set(); rows.forEach((b) => { b.key = cardKey(b.num, b.name, seenK); });
@@ -671,9 +677,9 @@ function block(x, c, opt = {}) {
   const subs = Object.entries(x.sub || {}).map(([k, sx]) => {
     const sh = sx.history || [], sl = sh[sh.length - 1], sp = sh.length > 1 ? sh[sh.length - 2] : null;
     const sw = sp ? (sl.level / sp.level - 1) * 100 : null;
-    const cards = sx.kind === "screened" ? sx.basket.slice().sort((a, b) => b.price - a.price) : x.basket.filter((b) => sx.nums.includes(String(b.num)));
-    const shown = sx.kind === "screened" ? cards.slice(0, 3) : cards;
-    return `<div class="sidx-subidx"><span class="sidx-subidx-k"><b>${x.ticker}·${esc(k)}</b> ${esc(sx.name)}</span><span class="sidx-subidx-lv">${sl ? sl.level.toFixed(2) : "—"}</span><span class="sidx-subidx-w ${cls(sw == null ? 0 : sw)}">${sw == null ? "first mark" : (sw >= 0 ? "▲ " : "▼ ") + pct(sw)}</span><span class="sidx-subidx-cards">${shown.map((b) => `<i>${esc(b.name)} #${esc(b.num)} <b>${money(b.price, 0)}</b></i>`).join("")}${sx.kind === "screened" && cards.length > 3 ? `<i>+${cards.length - 3} more</i>` : ""}</span>${sh.length > 1 ? `<span class="sidx-subidx-sp">${ST_spark(sh.map((r) => r.level))}</span>` : ""}<span class="sidx-subidx-n">${cards.length} cards${sx.kind === "screened" && sx.universe ? ` of ${sx.universe.length}` : ""} · price-weighted · uncapped · ${sx.baseDate ? `100 = ${baseMon(sx)} (release month)` : `base 100 at ${mdy(x.inception)}`} — ${esc(sx.blurb || "")}</span></div>`;
+    const cards = sx.kind === "screened" ? sx.basket.slice().sort((a, b) => b.price - a.price) : sx.kind === "ex" ? x.basket.filter((b) => typeof b.price === "number" && b.w !== 0 && !sx.nums.includes(String(b.num))).sort((a, b) => b.price - a.price) : x.basket.filter((b) => sx.nums.includes(String(b.num)));
+    const shown = sx.kind === "screened" || sx.kind === "ex" ? cards.slice(0, 3) : cards;
+    return `<div class="sidx-subidx"><span class="sidx-subidx-k"><b>${x.ticker}·${esc(k)}</b> ${esc(sx.name)}</span><span class="sidx-subidx-lv">${sl ? sl.level.toFixed(2) : "—"}</span><span class="sidx-subidx-w ${cls(sw == null ? 0 : sw)}">${sw == null ? "first mark" : (sw >= 0 ? "▲ " : "▼ ") + pct(sw)}</span><span class="sidx-subidx-cards">${shown.map((b) => `<i>${esc(b.name)} #${esc(b.num)} <b>${money(b.price, 0)}</b></i>`).join("")}${(sx.kind === "screened" || sx.kind === "ex") && cards.length > 3 ? `<i>+${cards.length - 3} more</i>` : ""}</span>${sh.length > 1 ? `<span class="sidx-subidx-sp">${ST_spark(sh.map((r) => r.level))}</span>` : ""}<span class="sidx-subidx-n">${cards.length} cards${sx.kind === "screened" && sx.universe ? ` of ${sx.universe.length}` : ""} · price-weighted · uncapped · ${sx.baseDate ? `100 = ${baseMon(sx.kind === "ex" ? x : sx)} (${sx.kind === "ex" ? "same base month as the index" : "release month"})` : sx.kind === "ex" ? `launched at the index level ${mdy(sx.history[0].date)}` : `base 100 at ${mdy(x.inception)}`} — ${esc(sx.blurb || "")}</span></div>`;
   }).join("");
   return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}"${c.classic ? " data-no-repoint" : ""}${GL ? " data-glk" : ""}${GL && wotc ? " data-wotc" : ""}${GL && ed ? ` data-wotc="${ed}"` : ""} style="--sidx:${c.theme};">
   <div class="sidx-mast">
@@ -683,16 +689,16 @@ function block(x, c, opt = {}) {
       <p class="sidx-sub">${c.kindPlural ? `Every ${esc(c.kindPlural.replace(/s$/, ""))} in ${esc(c.set)} — ${x.universe.length} cards, ${weighted} trading — priced` : `${esc(countLine)}, priced`} from dated sold comps and re-marked Monday and Thursday. ${baseSentence(x)} This block tracks the ${c.kindPlural ? "class" : "set"}; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
     </div>
     <figure class="sidx-photo"><span data-card-img="${esc(imgAttr(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · ${c.imgSrc && c.imgSrc(hero) ? "card image" : "live eBay listing"}</figcaption></figure>
-    <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div><div class="lvc">${baseLine(x)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</div></div>
+    <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div><div class="lvc"><b class="sidx-cost" title="what one copy of every priced card in the basket costs at the latest sold marks — the number the level indexes">${money(bv, 0)} for one of each</b> · ${weighted} cards</div><div class="lvc">${baseLine(x)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</div></div>
   </div>
   ${prBox}
   <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>
   ${prBox ? `<div class="pr-fold" id="pr-fold-${x.ticker.toLowerCase()}" hidden>` : ""}<div class="sidx-stats">
     <div><span class="k">Basket / Universe</span><span class="v">${weighted} <i>/ ${x.universe.length}</i></span></div>
     <div><span class="k">Top card weight</span><span class="v">${(top * 100).toFixed(1)}%</span></div>
+    <div><span class="k">Top 5 weight</span><span class="v">${(top5 * 100).toFixed(1)}%</span></div>
     <div><span class="k">Effective holdings</span><span class="v">${eff.toFixed(1)}</span></div>
-    <div><span class="k">Basket value</span><span class="v">${money(bv, 0)}<i> Σpx·w</i></span></div>
-    <div><span class="k">Capped</span><span class="v">${capped}</span></div>
+    <div><span class="k">One of each · cost</span><span class="v">${money(bv, 0)}</span></div>
     <div><span class="k">${sinceLbl(x)}</span><span class="v ${cls(lvl == null ? 0 : lvl - 100)}">${lvl == null ? "—" : pct(lvl - 100, 2)}</span></div>
     <div><span class="k">Divisor</span><span class="v">${x.divisor}</span></div>
     <div><span class="k">Re-mark</span><span class="v">MON · THU</span></div>
@@ -707,7 +713,7 @@ function block(x, c, opt = {}) {
     <tbody>${top10}</tbody>
   </table></div>
   ${rest ? `<details class="sidx-more"><summary><span class="sm-open">Show all ${rows.length} cards ▾</span><span class="sm-close">Hide cards 11–${rows.length} ▴</span></summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
-  <p class="sidx-note" id="${x.ticker.toLowerCase()}-method"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay.${holoTxt} Price-weighted on ${c.srcNote || "PriceCharting's dated ungraded sold list (blended eBay + TCGplayer)"}, never asks. Caps: no card above ${(CAP * 100).toFixed(0)}% and positions above ${(BIG * 100).toFixed(0)}% never past ${(BIG_SUM * 100).toFixed(0)}% together (the Select Sector SPDR 5/50 rule) — a weight marked * is capped, and every cap is a weight in the divisor math, so applying one never moves the level. Level = Σ(sold mark × weight) ÷ divisor ${x.divisor}; entries, exits and cap changes are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before).${rwTxt}${fcTxt} ${esc(outTxt)} ${exTxt ? esc(exTxt) + " " : ""}n30 is a liquidity gate, never a volume figure (the source caps its table at ${c.rowCap || 60} rows${c.rowCapNote || ""}). ${esc(noteTxt)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>
+  <p class="sidx-note" id="${x.ticker.toLowerCase()}-method"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay.${holoTxt} Price-weighted on ${c.srcNote || "PriceCharting's dated ungraded sold list (blended eBay + TCGplayer)"}, never asks. <b>No caps.</b> The index is the cost of one copy of every card in the basket (${money(bv, 0)} today), indexed to 100 at the base month: a card's weight is its price over that sum and moves with prices, nothing is ever trimmed, and there is no rebalance — the top card is ${(top * 100).toFixed(1)}% because that is what the set is${top >= EX_AT ? `, and the ${x.sub && x.sub.EX ? x.sub.EX.name : "ex-top-card"} line above shows what the rest of the set did without it` : ""}. (The 25% single-card and 5/50 group caps used Sep 15 – Oct 12, 2026 were retired on Oct 12: a set cannot trim a Charizard the way an ETF trims a position.) Level = Σ(sold mark) ÷ divisor ${x.divisor}; entries and exits are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before).${rwTxt}${fcTxt} ${esc(outTxt)} ${exTxt ? esc(exTxt) + " " : ""}n30 is a liquidity gate, never a volume figure (the source caps its table at ${c.rowCap || 60} rows${c.rowCapNote || ""}). ${esc(noteTxt)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>
 </section></div>`;
 }
 function ST_spark(ys, w, h) {
@@ -726,6 +732,7 @@ ${PR.PR_CSS}
 .sidx-tk{color:var(--sidx-th)} .sidx-dot{color:var(--sidx)}
 .sidx-sub{font-size:13px;line-height:1.55;margin:0;color:var(--sidx-dim);max-width:620px}
 .sidx-sub a{color:var(--sidx)}
+.sidx-cost{color:var(--sidx-th);font-weight:700}
 .sidx-photo{margin:0;justify-self:center;text-align:center}
 .sidx-photo .sch-cimg{width:150px!important;height:210px!important}
 /* Night Crew Oct 1 (B20): the photo slot holds its final size before js/card-img.js fills it, so the mast does not jump */
@@ -901,10 +908,10 @@ async function holoRule(x, c) {
     else if (anchor) unpriced.push({ ...r, why: "no clean raw sale in 365 days" });
   }
   const ex = exW(c), wBefore = new Map(x.basket.map((b) => [b.path, b.w])), weightedBefore = x.basket.filter((b) => b.w !== 0).length;
-  applyCap(next, ex);
+  setWeights(next, ex);
   const bv = basketValue(next), divisor = r6(bv / level), lvlAfter = r2(bv / divisor);
   if (Math.abs(lvlAfter - level) > 0.005) { console.error(`${x.ticker}: level would move ${level} → ${lvlAfter} — refusing`); process.exit(3); }
-  const wChanged = next.filter((b) => wBefore.has(b.path) && wBefore.get(b.path) !== b.w), capped = next.filter((b) => b.w > 0 && b.w < 1);
+  const wChanged = next.filter((b) => wBefore.has(b.path) && wBefore.get(b.path) !== b.w);
   const nW = (bk) => bk.filter((b) => !lineOnly(b)).length, lbl = (b) => `${b.name} #${b.num}`;
   const holoIn = entered.filter((b) => b.holo), scrIn = entered.filter((b) => !b.holo);
   const parts = [`HOLO RULE (Mo, Oct 6 2026: "holos are more important than non-holos and must be in the baskets"). Holo-tier slots (printed rarity, data/kb/pokemon-rarity.json) are standing constituents: never screened out, marked on the nearest window with clean sales (${SCREEN.window} → 90 → 180 → 365 d), flagged thin under ${SCREEN.stay} sales`];
@@ -912,7 +919,7 @@ async function holoRule(x, c) {
   if (holoIn.length) parts.push(`entered as holo-tier standing constituents: ${holoIn.map((b) => `${lbl(b)} $${b.price} (${b.win === SCREEN.window ? `n${SCREEN.window} ${b.n30}` : `${b.wn} sales, ${b.win}-day median`}${b.thin ? ", thin" : ""})`).join("; ")}`);
   if (scrIn.length) parts.push(`entered on the ${SCREEN.window}-day screen: ${scrIn.map((b) => `${lbl(b)} $${b.price} (n ${b.n30})`).join("; ")}`);
   if (unpriced.length) parts.push(`holo-tier, still outside (${unpriced.map((u) => `${lbl(u)}: ${u.why}`).join("; ")})`);
-  parts.push(`caps re-applied (25% single / 5-50 group): ${capped.length ? capped.map((b) => `${lbl(b)} w ${b.w}`).join(", ") : "none binds"}`);
+  parts.push(`weights: one copy of each, uncapped (Oct 12 2026)`);
   parts.push(`universe ${x.universe.length}, weighted basket ${weightedBefore}→${nW(next)}, basket value Σpx·w $${r2(bvBefore)}→$${r2(bv)}; logged divisor adjustment ${x.divisor}→${divisor}, level ${level} unchanged`);
   x.divisorLog.push({ date: TODAY, before: x.divisor, after: divisor, why: parts.join(". ") + "." });
   x.capLog.push(...wChanged.map((b) => ({ date: TODAY, num: b.num, name: b.name, w: b.w })));
@@ -922,15 +929,15 @@ async function holoRule(x, c) {
   x.basket = next; x.divisor = divisor;
   x.holoRule = { since: TODAY, rule: "holo-tier slots are standing constituents (tools/lib/holo-tier.mjs)", rarity: c.rarity || [] };
   if (!h.some((r) => r.date === TODAY)) h.push({ date: TODAY, level, basketValue: r2(bv), divisor, priced: next.filter((b) => !b.carried).length, kind: "divisor", note: `holo rule (+${entered.length})${windowChange ? ` · ${SCREEN.window}d window` : ""}` });
-  console.log(`${x.ticker} holo rule ${TODAY}: +${entered.length} (${holoIn.length} holo-tier, ${scrIn.length} screen)${unpriced.length ? ` · ${unpriced.length} holo-tier still unpriced` : ""} · basket ${inB.size}→${next.length} · capped ${capped.length} · divisor ${wBefore.size ? x.divisorLog[x.divisorLog.length - 1].before : "?"}→${divisor} · level ${level} unchanged · errors ${errors}`);
+  console.log(`${x.ticker} holo rule ${TODAY}: +${entered.length} (${holoIn.length} holo-tier, ${scrIn.length} screen)${unpriced.length ? ` · ${unpriced.length} holo-tier still unpriced` : ""} · basket ${inB.size}→${next.length} · divisor ${wBefore.size ? x.divisorLog[x.divisorLog.length - 1].before : "?"}→${divisor} · level ${level} unchanged · errors ${errors}`);
   return true;
 }
 
 // ---------------- --rescope: apply CONFIG scope to the stored ticker offline (no network) ----------------
 // Universe = stored rows (plus, for offlineKeep tickers, rows the same console feeds to sibling tickers) that pass the
 // ticker's keep predicates and are not excluded. Basket = stored rows still in the universe, plus newly in-scope rows that a
-// sibling's basket already marks at or above the entry screen (same dated sold mark — nothing is re-read). Caps re-applied the
-// way --recon does (25% + 5/50, basketExclude at weight 0) when the basket changes; divisor = new Σ(mark × w) ÷ the current
+// sibling's basket already marks at or above the entry screen (same dated sold mark — nothing is re-read). Weights re-set the
+// way --recon does (one copy of each, basketExclude at weight 0) when the basket changes; divisor = new Σ(mark × w) ÷ the current
 // level, so the level is unchanged. Logged in divisorLog / capLog / screenLog. A no-op when nothing differs (idempotent).
 function scopeKeep(c, u) {
   if (exRule(c, u)) return false;
@@ -965,21 +972,20 @@ function rescope(x, c, why) {
   const basket = x.basket.filter((b) => uniSet.has(b.path)).concat(entrants);
   const basketChanged = exits.length || entrants.length || wrongW.length;
   const wBefore = new Map(x.basket.map((b) => [b.path, b.w])), weightedBefore = x.basket.filter((b) => b.w !== 0).length;
-  if (basketChanged) applyCap(basket, ex);
+  if (basketChanged) setWeights(basket, ex);
   const bv = basketValue(basket), divisor = basketChanged ? r6(bv / level) : before;
   const lvlAfter = r2(bv / divisor);
   if (Math.abs(lvlAfter - level) > 0.005) { console.error(`${x.ticker}: level would move ${level} → ${lvlAfter} — refusing`); process.exit(3); }
   const lbl = (u) => `${u.name} #${u.num}`;
   const reasons = [...new Set(uniOut.map((u) => exRule(c, u)).filter((r) => r && r.label).map((r) => r.label))];
   const wChanged = basket.filter((b) => wBefore.has(b.path) && wBefore.get(b.path) !== b.w);
-  const capped = basket.filter((b) => b.w > 0 && b.w < 1);
   const nW = (bk) => bk.filter((b) => !lineOnly(b)).length;
   const parts = [why || "SCOPE CORRECTION (CONFIG)"];
   if (uniOut.length) parts.push(`out of the universe: ${uniOut.map(lbl).join("; ")}${reasons.length ? ` (${reasons.join("; ")})` : ""} — ${exits.length ? exits.map((b) => `${b.name} #${b.num} was in the basket at $${b.price}`).join(", ") : "none was in the basket"}`);
   if (uniIn.length) parts.push(`into the universe: ${uniIn.map((u) => `${u.name} #${u.num}`).join("; ")}${entrants.length ? ` — entered the basket at the sibling's dated mark: ${entrants.map((b) => `${b.name} #${b.num} $${b.price} (n30 ${b.n30}, marked ${b.asOf})`).join(", ")}` : " — universe only"}`);
   const zero = wChanged.filter((b) => b.w === 0);
   if (zero.length) parts.push(`weight 0, kept in the universe and on their own line: ${zero.map((b) => `${b.name} #${b.num}`).join(", ")}`);
-  if (basketChanged) parts.push(`caps re-applied (25% single / 5-50 group): ${capped.length ? capped.map((b) => `${b.name} #${b.num} w ${b.w}`).join(", ") : "none binds"}${wChanged.filter((b) => b.w !== 0).length ? ` (weights changed: ${wChanged.filter((b) => b.w !== 0).map((b) => `${b.name} #${b.num} ${wBefore.get(b.path)}→${b.w}`).join(", ")})` : ""}`);
+  if (basketChanged) parts.push(`weights: one copy of each, uncapped${wChanged.filter((b) => b.w !== 0).length ? ` (weights changed: ${wChanged.filter((b) => b.w !== 0).map((b) => `${b.name} #${b.num} ${wBefore.get(b.path)}→${b.w}`).join(", ")})` : ""}`);
   parts.push(`universe ${x.universe.length}→${uni.length}, weighted basket ${weightedBefore}→${nW(basket)}, basket value Σpx·w $${r2(bvBefore)}→$${r2(bv)}; ${basketChanged ? "logged divisor adjustment" : "basket unchanged, divisor unchanged"}, level ${level} unchanged`);
   x.divisorLog.push({ date: TODAY, before, after: divisor, why: parts.join(". ") + "." });
   if (basketChanged) x.capLog.push(...wChanged.map((b) => ({ date: TODAY, num: b.num, name: b.name, w: b.w })));
@@ -1001,14 +1007,14 @@ if (has("--init")) {
   const reads = await readUniverse(uni, TICKER);
   const isHolo = holoOf(c);
   const basket = reads.map((r) => entrantRow(r, isHolo(r))).filter(Boolean);
-  applyCap(basket, exW(c));
+  setWeights(basket, exW(c));
   const bv = basketValue(basket), divisor = r4(bv / 100);
   IDX[TICKER] = {
     ticker: TICKER, name: c.name, set: c.set, page: c.page, model: "sector", status: "live", basis: "sold", basisLabel: "sold comps (PriceCharting ungraded) · sector model · twice-weekly re-mark",
-    screen: { ...SCREEN, source: "PriceCharting ungraded completed sales, clean single-card rows" }, cap: CAP, capRule: { single: CAP, big: BIG, bigSum: BIG_SUM, name: "25% single-card cap + 5/50 group cap (Select Sector SPDR rule)" }, base: 100, inception: TODAY, releaseDate: c.releaseDate,
+    screen: { ...SCREEN, source: "PriceCharting ungraded completed sales, clean single-card rows" }, cap: null, capRule: UNCAP_RULE, base: 100, inception: TODAY, releaseDate: c.releaseDate,
     universeComplete: true, pcSlug: c.pcSlug || null, sources: (c.sources || []).map((q) => q.slug), divisor,
-    divisorLog: [{ date: TODAY, before: null, after: divisor, why: `inception — basket $${r2(bv)} over ${basket.length} of ${uni.length} slots; ${basket.filter((b) => b.w < 1).length} capped (25% single / 5-50 group)${basket.some((b) => b.holo) ? `; holo rule: ${basket.filter((b) => b.holo).length} holo-tier standing constituents, ${basket.filter((b) => b.holo && b.thin).length} thin` : ""}` }],
-    capLog: basket.filter((b) => b.w < 1).map((b) => ({ date: TODAY, num: b.num, name: b.name, w: b.w })),
+    divisorLog: [{ date: TODAY, before: null, after: divisor, why: `inception — basket $${r2(bv)} over ${basket.length} of ${uni.length} slots; one copy of each, uncapped${basket.some((b) => b.holo) ? `; holo rule: ${basket.filter((b) => b.holo).length} holo-tier standing constituents, ${basket.filter((b) => b.holo && b.thin).length} thin` : ""}` }],
+    capLog: [],
     screenLog: [{ date: TODAY, pass: basket.length, fail: uni.length - basket.length, errors: reads.filter((r) => r.error).length }],
     universe: uni.map((u) => ({ num: u.num, name: u.name, path: u.path })),
     basket,
@@ -1017,7 +1023,7 @@ if (has("--init")) {
   };
   await subInit(IDX[TICKER], c);
   assertScope(IDX[TICKER], c);
-  console.log(`${TICKER}: basket ${basket.length}/${uni.length} · value $${r2(bv)} · divisor ${divisor} · capped ${basket.filter((b) => b.w < 1).length} · top ${basket.slice().sort((a, b) => b.price * b.w - a.price * a.w).slice(0, 3).map((b) => `${b.name} #${b.num} ${(b.price * b.w / bv * 100).toFixed(1)}%`).join(" · ")}`);
+  console.log(`${TICKER}: basket ${basket.length}/${uni.length} · value $${r2(bv)} · divisor ${divisor} · top ${basket.slice().sort((a, b) => b.price * b.w - a.price * a.w).slice(0, 3).map((b) => `${b.name} #${b.num} ${(b.price * b.w / bv * 100).toFixed(1)}%`).join(" · ")}`);
   save(); bake(IDX[TICKER], c);
 } else if (has("--mark")) {
   const x = IDX[TICKER]; if (!x || x.status !== "live") { console.error(`${TICKER} is not live`); process.exit(2); }
@@ -1056,16 +1062,16 @@ if (has("--init")) {
     }
     if (entered.length) {
       const next = x.basket.concat(entered);
-      applyCap(next, exW(c));
+      setWeights(next, exW(c));
       const divisor = r4(basketValue(next) / level);
-      x.divisorLog.push({ date: TODAY, before: x.divisor, after: divisor, why: `RELEASE-WINDOW ENTRY (${winLeft} d left in the ${c.entryWindowDays == null ? ENTRY_WINDOW_DAYS : c.entryWindowDays}-day window from ${c.entryWindowFrom || c.releaseDate}): ${entered.length} entered on the ${SCREEN.enter}-in-${SCREEN.window} screen — ${entered.map((b) => `${b.name} #${b.num} $${b.price}`).join(", ")}; ${next.filter((b) => b.w < 1).length} at the cap; level ${level} unchanged` });
-      x.capLog.push(...next.filter((b) => b.w < 1 && b.w > 0 && !x.basket.some((o) => o.path === b.path && o.w === b.w)).map((b) => ({ date: TODAY, num: b.num, name: b.name, w: b.w })));
+      x.divisorLog.push({ date: TODAY, before: x.divisor, after: divisor, why: `RELEASE-WINDOW ENTRY (${winLeft} d left in the ${c.entryWindowDays == null ? ENTRY_WINDOW_DAYS : c.entryWindowDays}-day window from ${c.entryWindowFrom || c.releaseDate}): ${entered.length} entered on the ${SCREEN.enter}-in-${SCREEN.window} screen — ${entered.map((b) => `${b.name} #${b.num} $${b.price}`).join(", ")}; one copy of each, uncapped; level ${level} unchanged` });
       x.screenLog = x.screenLog || [];
       x.screenLog.push({ date: TODAY, pass: next.length, fail: x.universe.length - next.length, entered: entered.length, exited: 0, note: "release window (entries only)" });
       x.basket = next; x.divisor = divisor;
     }
   }
   x.history.push({ date: TODAY, level, basketValue: r2(basketValue(x.basket)), divisor: x.divisor, priced: x.basket.length - carried, note: [carried ? `${carried} carried` : "", entered.length ? `${entered.length} entered (release window)` : ""].filter(Boolean).join(" · ") });
+  ensureEx(x, level, TODAY);
   await subMark(x, TODAY);
   console.log(`${TICKER} ${TODAY}: level ${level} (prev ${x.history[x.history.length - 2].level}) · ${carried} carried${entered.length ? ` · ${entered.length} entered (release window)` : ""}`);
   save(); bake(x, c);
@@ -1089,11 +1095,10 @@ if (has("--init")) {
     } catch (e) { if (cur) next.push({ ...cur, carried: true }); console.log(`${u.name} #${u.num}: ${e.message}`); }
     if (!READ_CACHE_HIT) await sleep(PAUSE);
   }
-  applyCap(next, exW(c));
+  setWeights(next, exW(c));
   const bvNew = basketValue(next), divisor = r4(bvNew / before);          // level identical before and after
   const entered = next.filter((b) => !inBasket.has(b.path)).length, exited = x.basket.filter((b) => !next.some((n) => n.path === b.path)).length;
-  x.divisorLog.push({ date: TODAY, before: x.divisor, after: divisor, why: `reconstitution — ${entered} entered, ${exited} exited, ${next.filter((b) => b.w < 1).length} at the cap; level ${before} unchanged` });
-  x.capLog.push(...next.filter((b) => b.w < 1).map((b) => ({ date: TODAY, num: b.num, name: b.name, w: b.w })));
+  x.divisorLog.push({ date: TODAY, before: x.divisor, after: divisor, why: `reconstitution — ${entered} entered, ${exited} exited; one copy of each, uncapped; level ${before} unchanged` });
   x.screenLog.push({ date: TODAY, pass: next.length, fail: x.universe.length - next.length, entered, exited });
   x.basket = next; x.divisor = divisor;
   x.history.push({ date: TODAY, level: before, basketValue: r2(bvNew), divisor, priced: next.length, kind: "divisor", note: `reconstitution (+${entered}/−${exited})` });

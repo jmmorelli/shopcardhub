@@ -110,7 +110,9 @@ A stored-vs-CONFIG window mismatch now refuses a `--mark`: a window change is al
 basket *is* their universe — nothing is screened there. TH26 (191/191) and SV151, HF19, CZ23 and the WOTC 1st Edition sets other
 than ND1E/NDC1E/NR1E already held every holo-tier slot; the rule flags them and changes nothing.
 
-## 3. The 25% single-card cap
+## 3. The 25% single-card cap — RETIRED Oct 12 2026 (LANE-RULES R36)
+
+> **Superseded.** Mo, Oct 12 2026: no caps on any index. The index is the cost of one copy of every card in the basket; weights are price ÷ basket value and move with prices; concentration is published (top-card weight, top-5, effective holdings, an EX sub-line where the top card is ≥ 25%). §3 and §3a below are kept as the record of what ran Sep 15 – Oct 12 and why it was dropped: the cap bound only on the card each set is known for, and a set cannot trim a Charizard the way an ETF trims a position. `tools/uncap-indices.mjs` carried out the switch; `w` stays in the schema (1 for every weighted row, 0 for scope-excluded rows).
 
 > No single card may exceed **25%** of the index at reconstitution.
 

@@ -102,8 +102,8 @@
     if (bits.length) out.push('<p>' + bits.join(' ') + '</p>');
 
     // R13 (Retention Desk, adopted Oct 9 2026) — "what it costs to finish this set": one dated dollar line on the
-    // Pokémon whole-set (sector) indices only. Plain sum of every priced card's sold mark, one copy each, raw, UNCAPPED
-    // (the level is capped; this is not). Conditions from the Fit Analyst, all in finishCost(): "all N cards" only when
+    // Pokémon whole-set (sector) indices only. Plain sum of every priced card's sold mark, one copy each, raw
+    // (since Oct 12 2026 the level is the same uncapped sum ÷ divisor; before that the level was capped and this was not). Conditions from the Fit Analyst, all in finishCost(): "all N cards" only when
     // every card in the set is priced, else "N of M" with the unpriced named (≤ 3); the real window and date printed;
     // the change clause only against one shared prior that is a market mark (never a divisor row) ≥ 5 days back, worded
     // with its date; cards tracked outside the level (TH26's RGB Mews) counted and named. Never a call.
@@ -173,7 +173,7 @@
       }
     }
     var html = countTxt + ': <b>about ' + money(sum) + '</b> at ' + winTxt + ' as of ' + asOfTxt + w0Txt + chgTxt + '.' + missTxt + winNote +
-      ' <span class="pr-fc-k">What the whole set costs to buy, one copy of each card, on that date. The index level above is capped and weighted; this sum is neither.</span>';
+      ' <span class="pr-fc-k">What the whole set costs to buy, one copy of each card, on that date. Since Oct 12, 2026 the index level above is this same one-of-each sum, indexed to the set\u2019s base month (cards tracked outside the level excepted).</span>';
     return { sum: sum, n: cards.length, asOf: asOf, html: html };
   }
 

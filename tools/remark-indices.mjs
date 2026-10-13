@@ -34,13 +34,16 @@ const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const DRY = args.includes("--dry");
 // --bake (Sep 30 2026, the release-date rebase): re-bake every chase page from data/indices.json as it stands — no marks,
 // no history row, indices.json untouched. The strip, level, levelchg, stats, table and CARDS all follow the file.
-const BAKE = args.includes("--bake") || args.includes("--cap") || args.includes("--rebalance");   // both bake like --bake after capping
-// --rebalance (alias --cap; Oct 7 2026, Mo: "it should only be 25% of the index" + "the only time they can exceed the 25% cap
+const BAKE = args.includes("--bake") || args.includes("--cap") || args.includes("--rebalance");   // --cap / --rebalance are retired (Oct 12 2026) and now just bake
+// RETIRED Oct 12 2026 (Mo: "Change the cap now") — every index is uncapped, one copy of every card; see tools/uncap-indices.mjs.
+// --cap / --rebalance are kept as aliases of --bake so the LANE-RULES cadence line keeps working; they reset no weights.
+// History of the retired op — --rebalance (alias --cap; Oct 7 2026, Mo: "it should only be 25% of the index" + "the only time they can exceed the 25% cap
 // is if they run up before a quarterly index rebalance … this is what ETFs do"): reset every chase basket's weights to the
 // 25% single-card cap as a logged, level-neutral divisor adjustment (no marks, no history row), then re-bake the pages.
 // Run it at the QUARTERLY REBALANCE — the first Monday of Jan/Apr/Jul/Oct, after that Monday's re-mark (LANE-RULES cadence).
 // Weekly re-marks leave the weights alone, so a card that runs between rebalances can sit above 25% until the next one.
-const CAPOP = args.includes("--cap") || args.includes("--rebalance");
+const CAPOP = false;   // retired Oct 12 2026 — see above
+if (args.includes("--cap") || args.includes("--rebalance")) console.log("--cap/--rebalance: retired Oct 12 2026 (indices are uncapped) — baking only, no weights reset");
 const marksFile = opt("--marks", BAKE || CAPOP ? "/dev/null" : null);
 const DATE = opt("--date", new Date().toLocaleDateString("en-CA"));
 if (!marksFile) { console.error("usage: node tools/remark-indices.mjs --marks marks.txt [--date YYYY-MM-DD] [--dry]"); process.exit(2); }
@@ -65,8 +68,8 @@ const pctTxt = (p, dec = 1) => (p >= 0 ? "▲ " : "▼ ") + Math.abs(p).toFixed(
 const signed = (p, dec = 2) => (p >= 0 ? "+" : "−") + Math.abs(p).toFixed(dec) + "%";
 const clr = (p) => (p >= 0 ? "var(--gn)" : "var(--rd)");  // pages define --gn (not --grn) for green
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-// ---- the chase cap (Oct 7 2026): weights w so no card exceeds CAP of Σ(price·w); single leg only, w ≤ 1 ----
-const CAP = 0.25;
+// ---- weights: one copy of every card (uncapped since Oct 12 2026); the cap code below is retired and unreachable (CAPOP = false) ----
+const CAP = 0.25;   // historical constant, no longer applied
 const wOf = (b) => (b.w == null ? 1 : b.w);
 const bvOf = (basket) => +basket.reduce((a, b) => a + b.price * wOf(b), 0).toFixed(2);
 function capWeights(basket) {

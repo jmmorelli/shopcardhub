@@ -944,9 +944,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <h2>Index Levels</h2>
     <p class="section-intro">
       <b>An index, not a vault.</b> Each index is a basket of one set&rsquo;s cards, price-weighted like the Dow, so the
-      expensive chase cards move it most. Every index is capped at 25% per card and rebalanced quarterly, like an ETF: on the first Monday of January, April,
-      July and October any card over 25% is trimmed back to 25% (next: Jan 4, 2027). Between rebalances weights move with prices, so a
-      card that runs can sit above 25% until the next one. A rebalance never moves the level. A new set gets a release window: for 90 days after release, a card that newly clears the sales screen enters at the next Monday or Thursday mark instead of waiting for the quarter (a new set&rsquo;s chase cards list their sales late), logged as a divisor change that never moves the level; cards only leave at a reconstitution. 100 is the set&rsquo;s release month, or for sets older
+      expensive chase cards move it most. <b>No caps.</b> The level is the cost of one copy of every card in the basket, indexed to 100 at the
+      set&rsquo;s base month &mdash; a card&rsquo;s weight is its price over that sum and moves with prices. Nothing is ever trimmed and there is no
+      rebalance, because a set is not an ETF: you cannot hold 0.47 of a Charizard. (We ran a 25% single-card cap from Sep 15 to Oct 12, 2026 and retired it;
+      every page now prints the top card&rsquo;s share, the top-5 share and the effective number of holdings, and sets where one card is a quarter or more of the
+      basket carry an &ldquo;ex&rdquo; line showing what the rest of the set did without it.) Membership changes quarterly at a reconstitution, through a divisor change that never moves the level. A new set gets a release window: for 90 days after release, a card that newly clears the sales screen enters at the next Monday or Thursday mark instead of waiting for the quarter (a new set&rsquo;s chase cards list their sales late), logged as a divisor change that never moves the level; cards only leave at a reconstitution. 100 is the set&rsquo;s release month, or for sets older
       than the sold history, the first month it reliably covers.
     </p>
     <p class="section-intro">
