@@ -207,6 +207,13 @@ for (const k of POKE) {
   rep(/<div class="k">Weight Skew<\/div><div class="v gold">[+−-][\d.]+/, `<div class="k">Weight Skew</div><div class="v gold">${skew >= 0 ? "+" : "−"}${Math.abs(skew).toFixed(2)}`, "skew");
   // At inception the cell is class "v" with a bare "0.00%" (PF25's Sep 18 template); after the first re-mark it is grn/rd.
   rep(/<div class="k">Since (?:Inception|Release|Base)<\/div><div class="v(?: (?:grn|rd))?">[+−-]?[\d.]+%/, `<div class="k">Since ${ix.baseRule === "release" ? "Release" : "Base"}</div><div class="v ${sinceInc >= 0 ? "grn" : "rd"}">${signed(sinceInc, 2)}`, "sinceInc");
+  // Divisor stat: follows the file (Oct 12 2026 — DR25 had printed a Sep divisor for a month because nothing re-wrote this cell)
+  if (/<div class="k">Divisor<\/div><div class="v">[\d.]+<\/div>/.test(html)) html = html.replace(/<div class="k">Divisor<\/div><div class="v">[\d.]+<\/div>/, `<div class="k">Divisor</div><div class="v">${ix.divisor}</div>`);
+  // Column label: the per-card % is vs the RELEASE-MONTH price when the basket carries basePx (tools/base-prices.mjs,
+  // Oct 12 2026), else the old "Since Launch" (vs the activation mark) stays until base prices are fetched.
+  const hasBase = ix.basket.some((b) => b.basePx > 0);
+  const colLbl = hasBase ? (ix.baseRule === "release" ? "Since Release" : "Since Base") : "Since Launch";
+  html = html.replace(/<th>Since (?:Launch|Release|Base)<\/th>/, `<th>${colLbl}</th>`);
 
   // holdings table rows
   const rowRe = /<tr class="hrow" data-i="(\d+)"[^>]*>[\s\S]*?<\/tr>\n?/g;
@@ -216,18 +223,31 @@ for (const k of POKE) {
     let blk = mm[0];
     const numM = blk.match(/<span class="cn">#(\w+)\//); if (!numM) throw new Error(`${k}: row without #num`);
     const b = byNum.get(numM[1]); if (!b) throw new Error(`${k}: page row #${numM[1]} not in basket`);
-    const cell = blk.match(/<td class="num">\$([\d,.]+)<\/td><td class="num wt">[\d.]+%<\/td><td class="num"(?: data-launch="([\d.]+)")?>(<span[^>]*>[^<]*<\/span>)<\/td>/);
+    const cell = blk.match(/<td class="num">\$([\d,.]+)<\/td><td class="num wt">[\d.]+%<\/td><td class="num"(?: data-launch="([\d.]+)")?(?: data-base="([\d.]+)"(?: title="[^"]*")?)?>(<span[^>]*>[^<]*<\/span>)<\/td>/);
     if (!cell) throw new Error(`${k}: price cells not found for #${b.num}`);
     const oldPx = +cell[1].replace(/,/g, "");
-    // Since Launch = vs the card's INCEPTION sold mark, carried on the cell as data-launch (Sep 26 2026 fix: the
-    // old cell-chained method drifted with rounding and, on PB26/CR26, inherited a pre-launch ask base — Darkrai
-    // #116 read ▼57.7% against a $456 ask while the launch sold read was $257). No attribute → leave the cell.
-    let launch = cell[3], launchAttr = "";
-    const base = cell[2] ? +cell[2] : null;
-    if (base && base > 0) {
-      const np = (b.price / base - 1) * 100;
-      launch = Math.abs(np) < 0.05 ? `<span style="color:var(--dim)">0.0%</span>` : `<span style="color:${clr(np)}">${pctTxt(np)}</span>`;
-      launchAttr = ` data-launch="${base.toFixed(2)}"`;
+    // Since Release (Oct 12 2026, Mo: the newer sets still read from our own inception) = vs the card's RELEASE-MONTH
+    // PriceCharting price, basket[i].basePx (tools/base-prices.mjs) — the same series and month the index level is
+    // chained to, so the column agrees with the headline "Since Release". Carried on the cell as data-base. A card with
+    // no base-month price shows "—". Fallback when the basket has no basePx yet: the old Since Launch (vs the Aug 24
+    // 2026 activation mark, data-launch — Sep 26 2026 fix: the cell-chained method drifted and, on PB26/CR26, inherited
+    // a pre-launch ask base). No attribute → leave the cell.
+    let launch = cell[4], launchAttr = "";
+    if (hasBase) {
+      if (b.basePx > 0) {
+        const np = (b.price / b.basePx - 1) * 100;
+        launch = Math.abs(np) < 0.05 ? `<span style="color:var(--dim)">0.0%</span>` : `<span style="color:${clr(np)}">${pctTxt(np)}</span>`;
+        launchAttr = ` data-base="${b.basePx.toFixed(2)}" title="${money(b.basePx)} in ${b.basePxMonth || ix.baseDate} (PriceCharting month price) → ${money(b.price)}"`;
+      } else {
+        launch = `<span style="color:var(--dim)" title="no sold price in the base month">—</span>`;
+      }
+    } else {
+      const base = cell[2] ? +cell[2] : null;
+      if (base && base > 0) {
+        const np = (b.price / base - 1) * 100;
+        launch = Math.abs(np) < 0.05 ? `<span style="color:var(--dim)">0.0%</span>` : `<span style="color:${clr(np)}">${pctTxt(np)}</span>`;
+        launchAttr = ` data-launch="${base.toFixed(2)}"`;
+      }
     }
     const wt = ((b.price * wOf(b)) / s.bv) * 100;
     blk = blk.replace(cell[0], `<td class="num">${money(b.price)}</td><td class="num wt">${wt.toFixed(1)}%</td><td class="num"${launchAttr}>${launch}</td>`);
@@ -249,10 +269,26 @@ for (const k of POKE) {
   rep(/(<td class="card" style="color:var\(--th\);font-weight:700;">TOTAL — ALL HOLDINGS<\/td><td><\/td><td class="num">)\$[\d,.]+/, `$1${money(s.bv)}`, "total row");
   rep(/\*Holdings as of \d\d\/\d\d\/\d\d/, `*Holdings as of ${mdy(s.date || DATE)}`, "holdings stamp");
 
-  // ROC block: ($from → $to) per listed card; from stays, to = current
-  const rocRe = /<span style="color:var\(--th\)">([^<]+)<\/span><span style="color:var\(--(?:grn|gn|rd)\)">[▲▼] [\d.]+% <span style="color:var\(--dim\);font-size:9px">\(\$([\d,.]+) → \$[\d,.]+\)<\/span><\/span>/g;
+  // ROC block. With base prices (Oct 12 2026) the block is rebuilt every bake as "Since Release — held vs slid": the three
+  // cards that held best and the three that slid most vs their release-month PriceCharting price, ($base → $now), on the
+  // same basis as the headline Since Release. Without base prices the old activation-window rows are carried forward.
+  const ROC_BLOCK = /<div class="block"><h3>(?:Rate of Change — Since Launch|Since Release — [^<]*)<\/h3>\n[^\n]*\n<div style="font-family:var\(--fm\);font-size:9px;[^"]*">[^\n]*<\/div>\n<\/div>\n/;
   let rocN = 0;
-  html = html.replace(rocRe, (all, label, from) => {
+  if (hasBase) {
+    must(ROC_BLOCK, "ROC block");
+    const based = ix.basket.filter((b) => b.basePx > 0 && b.price > 0).map((b) => ({ b, p: (b.price / b.basePx - 1) * 100 })).sort((a, c) => c.p - a.p);
+    const row = (r) => `<div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:var(--th)">${r.b.name} ${r.b.rarity || ""} #${r.b.num}</span><span style="color:${clr(r.p)}">${pctTxt(r.p)} <span style="color:var(--dim);font-size:9px">(${money(r.b.basePx)} → ${money(r.b.price)})</span></span></div>`;
+    const held = based.slice(0, 3), slid = based.slice(-3).reverse().filter((r) => !held.includes(r));
+    rocN = held.length + slid.length;
+    const upN = based.filter((r) => r.p >= 0).length;
+    const bm = baseLbl.replace(/ \(.*$/, "");
+    const blockHtml = `<div class="block"><h3>Since Release — held vs slid</h3>\n` +
+      `<div style="font-family:var(--fm);font-size:11px;line-height:2;max-width:560px;"><div style="color:var(--dim);font-size:9px;letter-spacing:1px;text-transform:uppercase;">Held best</div>${held.map(row).join("")}<div style="color:var(--dim);font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-top:6px;">Slid most</div>${slid.map(row).join("")}</div>\n` +
+      `<div style="font-family:var(--fm);font-size:9px;color:var(--dim);margin-top:8px;">${upN} of ${based.length} basket cards ${upN === 1 ? "is" : "are"} above ${upN === 1 ? "its" : "their"} ${bm} price. Release-month price = PriceCharting's monthly ungraded price for the card; today's figure is the live sold mark (${mdy(s.date || DATE)}). Same basis as the index's Since Release.</div>\n</div>\n`;
+    html = html.replace(ROC_BLOCK, () => blockHtml);
+  }
+  const rocRe = /<span style="color:var\(--th\)">([^<]+)<\/span><span style="color:var\(--(?:grn|gn|rd)\)">[▲▼] [\d.]+% <span style="color:var\(--dim\);font-size:9px">\(\$([\d,.]+) → \$[\d,.]+\)<\/span><\/span>/g;
+  if (!hasBase) html = html.replace(rocRe, (all, label, from) => {
     const cand = ix.basket.filter((b) => (b.name + " " + b.rarity) === label);
     if (cand.length !== 1) throw new Error(`${k}: ROC label '${label}' matches ${cand.length} basket cards`);
     const b = cand[0]; const f = +from.replace(/,/g, ""); const p = (b.price / f - 1) * 100; rocN++;
