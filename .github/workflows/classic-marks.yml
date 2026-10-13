@@ -72,6 +72,15 @@ jobs:
               if [ -n "$PAGE" ]; then git checkout -q -- "$PAGE" 2>/dev/null; fi
             fi
           done
+          # GSTAR Gold Star & Grails board (Oct 13 2026): re-read on mark days only, same time-box, same keep-previous fallback
+          if [ -s "$RUNNER_TEMP/marked.list" ]; then
+            if GRAILS_TODAY="${SIDX_TODAY:-}" timeout 15m node tools/build-grails.mjs; then
+              echo "GSTAR" >> "$RUNNER_TEMP/marked.list"
+            else
+              echo "::warning::GSTAR read failed - the board keeps its previous read"
+              git checkout -q -- data/grails.json gold-star-index.html 2>/dev/null
+            fi
+          fi
           echo "marked: $(paste -sd, "$RUNNER_TEMP/marked.list")"
           cp data/indices.json "$RUNNER_TEMP/idx-marked.json"
           git diff --name-only > "$RUNNER_TEMP/artifacts.list"
@@ -99,6 +108,9 @@ jobs:
             git add $(cat "$RUNNER_TEMP/artifacts.list")
             if FEED_BASE=price-data/data node tools/build-home.mjs; then git add index.html
             else echo "::warning::build-home failed - / keeps its previous bake"; git checkout -- index.html; fi
+            # the vintage-vs-modern block under the board reads the marks just published (tools/build-regime.mjs, Oct 13 2026)
+            if node tools/build-regime.mjs > /dev/null; then git add index.html
+            else echo "::warning::build-regime failed - the block keeps its previous bake"; fi
             if node tools/build-badges.mjs; then git add badge
             else echo "::warning::build-badges failed"; git checkout -- badge 2>/dev/null || true; fi
             if ! node tools/audit-prices.mjs > /dev/null || ! node tools/site-auditor/audit-site.mjs > /dev/null; then
