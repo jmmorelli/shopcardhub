@@ -2,40 +2,6 @@
   "_comment": "Above-the-fold eBay conversion strip, one entry per page. Consumed by tools/build-buy-strip.mjs, which writes the BUYSTRIP block into each page; enforced by site-auditor §15 (conversion-coverage). q = eBay _nkw for the strip's primary CTA; customid = EPN Custom ID so per-product earnings are readable in the EPN 'Performance by Custom ID' report. live=true shows the lowest live single-unit ask from /api/comps beside the product; it is only set where the primary query names ONE sealed product, because the cheapest listing on a broad player search is a $0.99 common and tells the reader nothing. Pages deliberately outside the contract are listed in the auditor's CONVERSION_EXEMPT set, not here. case = the sealed-CASE link rendered beside the box link (Idea #32, adopted 2026-09-20): a LINK ONLY — no figure is ever rendered from it, it never reaches the price engine and it is never an index input, because a case would corrupt a per-box mark. It is present only where tools/buy-strip-health.mjs measured at least CASE_MIN clean case listings (tools/case-shelf.mjs); `must` is a contiguous-phrase guard so a Bowman Chrome case link cannot land on a plain Bowman case (LANE-RULES R8). secondary.ag = true adds eBay's Authenticity Guarantee filter (LH_AV=1, read off eBay's own 'Show only' sidebar 2026-09-20) and routes the click to its own -ag custom ID, so the trust-copy effect is readable against the plain IDs. Set only where the link's own /api/comps median ask is >= $200 (eBay's Aug 2026 AG threshold for single cards) AND the AG-filtered search still has real depth — a narrow query plus AG is how you send a reader to an empty page. fanatics = optional {q,label,title}: a fanatics.com search link (Impact, subId1 = page slug) rendered beside the eBay CTAs (Sep 27 2026, Mo: restore the Fanatics links). Link only, never a price. rep = optional {q,label}: TEST 'rep the player' Fanatics gear search (subId1 <slug>-rep), Sep 27 2026.",
   "generated": "2026-09-27",
   "pages": {
-    "adley-rutschman-cards": {
-      "product": "Adley Rutschman cards",
-      "primary": {
-        "label": "Shop Adley Rutschman cards on eBay",
-        "q": "Adley Rutschman rookie -lot -reprint -digital -custom",
-        "customid": "adley-rutschman-cards-top"
-      },
-      "secondary": {
-        "label": "Top card &rarr;",
-        "q": "Adley Rutschman Topps Chrome Rookie Auto 2023 RA-AR",
-        "customid": "adley-rutschman-cards-hero",
-        "title": "Adley Rutschman 2023 Topps Chrome Rookie Auto"
-      },
-      "live": false,
-      "rep": {
-        "q": "Adley Rutschman",
-        "label": "Rep Rutschman &mdash; gear &rarr;"
-      }
-    },
-    "aiva-arquette-1st-bowman": {
-      "product": "Aiva Arquette 1st Bowman",
-      "primary": {
-        "label": "Shop Aiva Arquette 1st Bowman on eBay",
-        "q": "Aiva Arquette 1st Bowman Chrome -lot -reprint -digital -custom",
-        "customid": "aiva-arquette-1st-bowman-top"
-      },
-      "secondary": {
-        "label": "Top card &rarr;",
-        "q": "Aiva Arquette Bowman Chrome Auto Refractor 2026 CPA-AA",
-        "customid": "aiva-arquette-1st-bowman-hero",
-        "title": "Aiva Arquette Chrome Auto Refractor #CPA-AA /499"
-      },
-      "live": false
-    },
     "ascended-heroes": {
       "product": "Pokémon TCG Ascended Heroes Elite Trainer Box",
       "primary": {
@@ -51,21 +17,6 @@
       },
       "live": true,
       "cat": "183456"
-    },
-    "best-baseball-cards-under-50": {
-      "product": "Baseball rookie autos under $50",
-      "primary": {
-        "label": "Shop Baseball rookie autos under $50 →",
-        "q": "baseball rookie auto card -lot -reprint -digital -custom",
-        "customid": "best-baseball-cards-under-50-top"
-      },
-      "secondary": {
-        "label": "Top card &rarr;",
-        "q": "Roman Anthony Bowman Chrome Auto 2024 -lot -reprint -digital -ip -signed -coa",
-        "customid": "best-baseball-cards-under-50-hero",
-        "title": "Roman Anthony 2024 Bowman Chrome Auto"
-      },
-      "live": false
     },
     "best-basketball-cards-under-50": {
       "product": "Basketball rookies under $50",
@@ -260,26 +211,6 @@
       "live": true,
       "cat": "183456"
     },
-    "chase-delauter-rookie-cards": {
-      "product": "Chase DeLauter rookie cards",
-      "primary": {
-        "label": "Shop Chase DeLauter rookie cards →",
-        "q": "Chase DeLauter rookie -lot -reprint -digital -custom",
-        "customid": "chase-delauter-rookie-cards-top"
-      },
-      "secondary": {
-        "label": "Top card &rarr;",
-        "q": "Chase DeLauter Bowman Draft Chrome auto CDA -lot -break",
-        "customid": "chase-delauter-rookie-cards-post",
-        "title": "Chase DeLauter 2022 Bowman Draft Chrome Auto #CDA-CD",
-        "ag": true
-      },
-      "live": false,
-      "rep": {
-        "q": "Chase DeLauter",
-        "label": "Rep DeLauter &mdash; gear &rarr;"
-      }
-    },
     "cooper-flagg-rookie-cards": {
       "product": "Cooper Flagg rookie cards",
       "primary": {
@@ -337,21 +268,6 @@
         "label": "Rep Haaland &mdash; gear &rarr;"
       }
     },
-    "ethan-holliday-rookie-cards": {
-      "product": "Ethan Holliday rookie cards",
-      "primary": {
-        "label": "Shop Ethan Holliday rookie cards →",
-        "q": "Ethan Holliday 1st Bowman -lot -reprint -digital -custom",
-        "customid": "ethan-holliday-rookie-cards-top"
-      },
-      "secondary": {
-        "label": "Top card &rarr;",
-        "q": "Ethan Holliday PSA 10 Bowman Chrome Auto 2026 CPA-EH",
-        "customid": "ethan-holliday-rookie-cards-hero",
-        "title": "Ethan Holliday 2026 Bowman Chrome 1st Auto #CPA-EH PSA 10"
-      },
-      "live": false
-    },
     "fernando-mendoza-rookie-cards": {
       "product": "Fernando Mendoza rookie cards",
       "primary": {
@@ -388,26 +304,6 @@
       "rep": {
         "q": "Harry Kane",
         "label": "Rep Kane &mdash; gear &rarr;"
-      }
-    },
-    "jacob-misiorowski-rookie-cards": {
-      "product": "Jacob Misiorowski rookie cards",
-      "primary": {
-        "label": "Shop Jacob Misiorowski rookie cards →",
-        "q": "Jacob Misiorowski rookie -lot -reprint -digital -custom",
-        "customid": "jacob-misiorowski-rookie-cards-top"
-      },
-      "secondary": {
-        "label": "Top card &rarr;",
-        "q": "Jacob Misiorowski Bowman Draft Chrome Auto 2022 1st CDA",
-        "customid": "jacob-misiorowski-rookie-cards-post",
-        "title": "Jacob Misiorowski 2022 Bowman Draft Chrome 1st Auto",
-        "ag": true
-      },
-      "live": false,
-      "rep": {
-        "q": "Jacob Misiorowski",
-        "label": "Rep Misiorowski &mdash; gear &rarr;"
       }
     },
     "kylian-mbappe-rookie-cards": {
@@ -488,25 +384,6 @@
         "label": "Rep Messi &mdash; gear &rarr;"
       }
     },
-    "munetaka-murakami-rookie-cards": {
-      "product": "Munetaka Murakami rookie cards",
-      "primary": {
-        "label": "Shop Munetaka Murakami rookie cards →",
-        "q": "Munetaka Murakami rookie -lot -reprint -digital -custom",
-        "customid": "munetaka-murakami-rookie-cards-top"
-      },
-      "secondary": {
-        "label": "Top card &rarr;",
-        "q": "Munetaka Murakami 2026 Topps Chrome #274 RC -lot",
-        "customid": "munetaka-murakami-rookie-cards-hero",
-        "title": "Munetaka Murakami 2026 Topps Chrome #274 RC"
-      },
-      "live": false,
-      "rep": {
-        "q": "Munetaka Murakami",
-        "label": "Rep Murakami &mdash; gear &rarr;"
-      }
-    },
     "nfl-rookie-cards-2026": {
       "product": "2026 Bowman Football hobby box",
       "primary": {
@@ -527,25 +404,6 @@
         "q": "topps football",
         "label": "Topps boxes at Fanatics &rarr;",
         "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
-      }
-    },
-    "pete-crow-armstrong-cards": {
-      "product": "Pete Crow-Armstrong cards",
-      "primary": {
-        "label": "Shop Pete Crow-Armstrong cards on eBay",
-        "q": "Pete Crow-Armstrong rookie -lot -reprint -digital -custom",
-        "customid": "pete-crow-armstrong-cards-top"
-      },
-      "secondary": {
-        "label": "Top card &rarr;",
-        "q": "Pete Crow-Armstrong Bowman Chrome Draft Auto 2020 CDA-PC",
-        "customid": "pete-crow-armstrong-cards-hero",
-        "title": "Pete Crow-Armstrong 2020 Bowman Chrome Draft 1st Auto"
-      },
-      "live": false,
-      "rep": {
-        "q": "Pete Crow-Armstrong",
-        "label": "Rep PCA &mdash; gear &rarr;"
       }
     },
     "pitch-black-set-guide": {
@@ -589,25 +447,6 @@
       "live": true,
       "cat": "183456"
     },
-    "roman-anthony-rookie-cards": {
-      "product": "Roman Anthony rookie cards",
-      "primary": {
-        "label": "Shop Roman Anthony rookie cards →",
-        "q": "Roman Anthony rookie -lot -reprint -digital -custom",
-        "customid": "roman-anthony-rookie-cards-top"
-      },
-      "secondary": {
-        "label": "Top card &rarr;",
-        "q": "Roman Anthony Bowman Chrome 1st Prospect 2023 Red Sox",
-        "customid": "roman-anthony-rookie-cards-hero",
-        "title": "Roman Anthony 2023 Bowman Chrome 1st Prospect"
-      },
-      "live": false,
-      "rep": {
-        "q": "Roman Anthony",
-        "label": "Rep Anthony &mdash; gear &rarr;"
-      }
-    },
     "roy-watch-2026": {
       "product": "2026 ROY-watch rookie autos",
       "primary": {
@@ -622,26 +461,6 @@
         "title": "Kevin McGonigle 2025 Bowman Chrome Auto #CPA-KM"
       },
       "live": false
-    },
-    "shohei-ohtani-cards": {
-      "product": "Shohei Ohtani cards",
-      "primary": {
-        "label": "Shop Shohei Ohtani cards on eBay",
-        "q": "Shohei Ohtani card -lot -reprint -digital -custom",
-        "customid": "shohei-ohtani-cards-top"
-      },
-      "secondary": {
-        "label": "Top card &rarr;",
-        "q": "Shohei Ohtani Topps Update Rookie Debut 2018 #US285 PSA 10",
-        "customid": "shohei-ohtani-cards-post",
-        "title": "Shohei Ohtani 2018 Topps Update #US285 Rookie Debut",
-        "ag": true
-      },
-      "live": false,
-      "rep": {
-        "q": "Shohei Ohtani",
-        "label": "Rep Ohtani &mdash; gear &rarr;"
-      }
     },
     "topps-chrome-baseball-2026": {
       "product": "2026 Topps Chrome Baseball Hobby Box",
@@ -1916,6 +1735,21 @@
       "live": true,
       "req": "surging",
       "_why": "Growth League C page (2026-10-07); query \"surging sparks vs destined rivals\". R11."
+    },
+    "mlb-cards": {
+      "product": "2026 Bowman Chrome Baseball hobby box",
+      "primary": {
+        "label": "Shop 2026 Bowman Chrome hobby boxes on eBay",
+        "q": "2026 Bowman Chrome Baseball hobby box -case -break -lot -mega -blaster",
+        "customid": "mlb-cards-box"
+      },
+      "secondary": {
+        "label": "Topps Chrome box &rarr;",
+        "q": "2026 Topps Chrome Baseball hobby box -case -break -lot -mega -blaster",
+        "customid": "mlb-cards-topps-box",
+        "title": "2026 Topps Chrome Baseball hobby box"
+      },
+      "live": false
     }
   },
   "watchTiles": {
