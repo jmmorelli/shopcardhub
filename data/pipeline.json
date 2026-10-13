@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-10-12",
+  "generated": "2026-10-13",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-10-12, STEP 3.9)",
   "agents": {
     "seeker": {
@@ -67,8 +67,8 @@
     "curator": {
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-10-12",
-      "nextRun": "2026-10-19",
+      "lastRun": "2026-10-13",
+      "nextRun": "2026-10-20",
       "actions": [
         {
           "ts": "2026-09-22",
@@ -117,6 +117,10 @@
         {
           "ts": "2026-10-12",
           "msg": "Index badges redrawn after the re-mark: badge/{PB26,CR26,AH26,PRIS25,DR25,PF25}.svg (37 scanned, 6 written) - these were missed earlier in the run and are in the publish set."
+        },
+        {
+          "ts": "2026-10-13",
+          "msg": "Oct 13 board re-mark, no seat moved: Fischer $153.50 (-1.0%) · Holliday $110.50 (+5.2%, top) · Gonzales $68.50 (-2.1%) · Florentino $65.50 (-5.1%, bottom) · Aloy $55.00 (-3.5%). Florentino's Buy flipped to Watch on the page after its Aug 18 call finalized wrong. Benchmark line reads BB26 72.30 (Oct 12, indices.json)."
         }
       ],
       "log": [
@@ -129,8 +133,8 @@
     "inspector": {
       "label": "INSPECTOR",
       "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-      "lastRun": "2026-10-12",
-      "nextRun": "2026-10-19",
+      "lastRun": "2026-10-13",
+      "nextRun": "2026-10-20",
       "actions": [
         {
           "ts": "2026-09-28",
@@ -179,6 +183,10 @@
         {
           "ts": "2026-10-12",
           "msg": "Mo's working clone at ~/Projects/shopcardhub has carried a stale .git/index.lock since Sep 21 20:37 - three weeks. It sits 468 commits behind main with 30 uninspected dirty files, and any git command that writes its index fails. Site unaffected (lanes push from scratch clones). Filed awaiting-mo with the one-line remedy; not touched, per R1."
+        },
+        {
+          "ts": "2026-10-13",
+          "msg": "Sold marks read Oct 13 from the nightly sold-marks.json (feed day 2026-10-13; SportsCardsPro catalog) and Fischer's Oct 8 sold list spot-checked in the browser: $105.00 and $117.50 both printed Oct 8 as raw 1st Auto sales. Signal harvest: top track-signals count is 3, none at 5, no adds."
         }
       ],
       "log": [
@@ -193,8 +201,8 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-10-12",
-      "nextRun": "2026-10-19",
+      "lastRun": "2026-10-13",
+      "nextRun": "2026-10-20",
       "actions": [
         {
           "ts": "2026-09-28",
@@ -243,6 +251,10 @@
         {
           "ts": "2026-10-12",
           "msg": "Prompt drift confirmed against LANE-RULES: this lane's STEP 0.5, 0.6, 3.65 and 3.95 GA4 read are not its own, the coach's-note step is dead, and STEP 3.6 covers the six divisor-model chase tickers only. All already on the file's known-drift list; followed the file."
+        },
+        {
+          "ts": "2026-10-13",
+          "msg": "Ledger Oct 13 (calls.json LOCAL, unpushed): Florentino BUY final, wrong at -17.4% (entry 79.32 -> mark 65.50); Kim WAIT final, inside band, not graded; Gonzales PASS read $68.50; Fischer re-entry read $153.50 (+4.6%). Board tape og/x/board-latest.png and data/x-board.json regenerated (asOf 2026-10-13)."
         }
       ],
       "log": [
@@ -3082,6 +3094,46 @@
       "severity": null,
       "title": "Disagreement with iw-2026-09-28-1: chase-index pages say each mark is a median of recent dated sales; the chase six are marked from the price guide's ungraded figure.",
       "decision": "CoS desk 2026-10-12: upheld. Re-label (not re-mark) the chase six method line to 'ungraded price built from recent sales, read <date>' in the generator -> Wed Oct 14 weekly. Re-marking on a dated-sales median is a methodology change and is not ruled here."
+    },
+    {
+      "id": "tuesday-2026-10-13-1",
+      "status": "awaiting-cos",
+      "date": "2026-10-13",
+      "area": "bowman-bangers",
+      "by": "tuesday-board",
+      "severity": "MED",
+      "title": "Florentino: the Aug 18 Buy finalized Oct 13 at -17.4% (wrong, final). The page verdict now reads Watch (not renewed) and the Signal stat reads WATCH; no new ledger row was appended.",
+      "decision": "Lane judgment, not a ruling: if the CoS wants a standing Hold or a renewed Buy, that is a new verdict row. The ledger row itself is final."
+    },
+    {
+      "id": "tuesday-2026-10-13-2",
+      "status": "awaiting-cos",
+      "date": "2026-10-13",
+      "area": "bowman-bangers",
+      "by": "tuesday-board",
+      "severity": "MED",
+      "title": "Fischer's box writes the $115 level as a print level. An Oct 8 sale at $105.00 is under it (the same day's $117.50 is not). The page says so and keeps the Hold because the 30-day median of 19 is $153.50.",
+      "decision": "Confirm the Hold stands, or reword the level as a mark level in the Oct 20 run."
+    },
+    {
+      "id": "tuesday-2026-10-13-3",
+      "status": "awaiting-cos",
+      "date": "2026-10-13",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "calls.json was updated locally for Oct 13 (Florentino and Kim finalized, Gonzales and Fischer reads) and is not pushed, per the lane file. The staged copy is Card Hub/calls-2026-10-13-tuesday-regrade.json.",
+      "decision": "CoS decides when /track-record gets it. Not done this run: the Scouting Grades re-grade and the ccx-2026-09-24-3 seat-table bake (both need an attended Chrome SCP session)."
+    },
+    {
+      "id": "tuesday-2026-10-13-4",
+      "status": "awaiting-cos",
+      "date": "2026-10-13",
+      "area": "coach-note",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "coachNotes['tuesday-bangers'] is weekOf 2026-09-14, four weeks stale. This run read it and applied its two standing items (absolute dates, three gates).",
+      "decision": "Sunday CoS to refresh the note."
     }
   ],
   "scoreboard": {
