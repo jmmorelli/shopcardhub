@@ -34,7 +34,7 @@ try {
   let r = 0, w = 0; const due = [];
   for (const c of calls) for (const t of c.thesis || []) { if (t.grade === "right") r++; else if (t.grade === "wrong") w++; else if (!t.grade && t.due) due.push(t.due); }
   if (r + w) recordPill = `${r}–${w}`;
-  else if (due.length) { const d = due.sort()[0]; const [, m, dd] = d.split("-"); recordPill = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+m - 1] + " " + +dd; }
+  else if (due.length) { const d = due.sort()[0]; const [, m, dd] = d.split("-"); recordPill = "due " + ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+m - 1] + " " + +dd; }
 } catch {}
 const PILLS = { board: boardN == null ? null : String(boardN), indices: indicesN == null ? null : String(indicesN), record: recordPill };
 const allowed = new Set(["/", "/watchlist", "/indices", "/auctions"]);

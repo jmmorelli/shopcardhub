@@ -116,7 +116,7 @@
     else key += '<b>' + level.toFixed(2) + '</b> means these cards cost about ' + Math.abs(since).toFixed(0) + '% ' + (since < 0 ? 'less' : 'more') + ' than on day one.';
     out.push('<p class="pr-key">' + key + '</p>');
 
-    return '<div class="pr-top"><span class="pr-eb">The plain read</span><span class="pr-v ' + v.c + '">' + v.w + '</span></div>' + out.join('') +
+    return '<div class="pr-top"><span class="pr-eb">The plain read</span> <span class="pr-v ' + v.c + '">' + v.w + '</span></div>' + out.join('') +
       '<div class="pr-foot">This tracks prices — it doesn’t tell you to buy or sell. Cards are long holds, so the 6–12 month picture matters more than any one week.</div>';
   }
 

@@ -52,9 +52,10 @@ function block(c, ticker) {
 .sealed>div{grid-column:1;min-width:0;}
 .sealed .sk{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);}
 .sealed .sk b{color:var(--gd);font-weight:700;letter-spacing:2px;}
-.sealed .sv{font-family:var(--fd);font-size:22px;line-height:1;color:var(--th);margin-top:4px;}
+.sealed .sv{font-family:var(--fd);font-size:22px;line-height:1;color:var(--th);margin-top:4px;min-height:22px;}
 .sealed .sv small{font-family:var(--fm);font-size:10px;color:var(--dim);margin-left:8px;}
 .sealed .sc{font-size:10px;color:var(--dim);margin-top:5px;}
+.sealed .sc:not(.on){visibility:hidden;}
 .sealed .sc i{font-style:normal;color:var(--tx);}
 .sealed .up{color:var(--gn);} .sealed .dn{color:var(--rd);} .sealed .thin{color:var(--gd);}
 .sealed .buy{grid-column:2;grid-row:1/4;align-self:center;white-space:nowrap;text-decoration:none;font-family:var(--fm);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#000;background:var(--gd);padding:9px 12px;border-radius:2px;font-weight:700;}
@@ -68,11 +69,11 @@ function block(c, ticker) {
 </style>
 <div class="sealed" data-box-feed="${esc(key)}" data-box-index="${esc(ticker)}" data-box-product="${esc(product)}">
   <div class="sk"><b>Sealed</b> · ${esc(product)} · nightly eBay ask mark · asks, not solds</div>
-  <div class="sv"><span class="sealed-price">first mark tonight</span><small class="sealed-sup"></small></div>
-  <div class="sc">30D · box <i class="sealed-box30">—</i> · index <i class="sealed-idx30">—</i> <span class="sealed-note"></span></div>
+  <div class="sv"><span class="sealed-price"></span><small class="sealed-sup"></small></div>
+  <div class="sc">30D · box <i class="sealed-box30"></i> · index <i class="sealed-idx30"></i> <span class="sealed-note"></span></div>
   <a class="buy" href="${esc(href)}" target="_blank" rel="sponsored nofollow noopener">Shop ${esc(product === "Booster box" ? "booster boxes" : "ETBs")} on eBay ↗</a>${retailLine(ticker)}
 </div>
-<script src="/js/sealed-row.js?v=2" defer></script>
+<script src="/js/sealed-row.js?v=3" defer></script>
 <!-- SEALED:END -->`;
 }
 

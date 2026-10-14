@@ -657,3 +657,10 @@ body .strip > a.chip { display: inline-flex; align-items: center; gap: 4px; min-
 @media (max-width: 600px) {
   .hero { padding-top: 24px; }
 }
+
+/* 23. Sector-index grade buttons on phones: the TAG button rendered 38 × 40 px (191 on the 30th page, 207 on SV151;
+   Bug Hunter, Night Crew Oct 14, B73). The block rule in build-sector-index's <style> sets min-width:0; one extra
+   element of specificity puts the 44 px floor back without touching the generated block. */
+@media (max-width: 760px) {
+  html body .sidx-tbl td.act .glk a.ebay { min-width: 44px; }
+}

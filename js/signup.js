@@ -53,7 +53,7 @@
   }
   Array.prototype.forEach.call(els, function (el) {
     var v = el.getAttribute('data-variant') === 'watchlist' ? 'watchlist' : 'tape', c = COPY[v];
-    var src = String(el.getAttribute('data-signup') || 'site').replace(/[^a-z0-9_-]/gi, '').slice(0, 30);
+    var src = String(el.getAttribute('data-signup') || 'site').replace(/[^a-z0-9_-]/gi, '').slice(0, 40);   // B71 (Night Crew Oct 14): match api/subscribe.js (40) so long -index slugs reach MailerLite/GA4 whole
     if (v === 'watchlist') src = 'watchlist-' + vaultCount();
     watchView(el, src, v);
     if (done) { el.innerHTML = '<div class="ss-row"><span class="ss-k">' + c.k + '</span><span class="ss-ok">' + c.ok.replace(/ —.*$/, '') + '</span></div>'; return; }

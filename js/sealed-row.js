@@ -39,7 +39,8 @@
         if (ih.length) { var il = ih[ih.length - 1].level, i0 = back30(ih, 'date', 'level'); if (i0 == null && ih.length > 1) i0 = ih[0].level; var ip = pct(il, i0); i30.textContent = pctText(ip); i30.className = 'sealed-idx30 ' + cls(ip); }
         if (!c || c.last == null) {
           var n = (c && c.supply != null) ? c.supply : null;
-          priceEl.textContent = n != null && n < 4 ? 'no mark · ' + n + ' verified asks (need 4)' : 'first mark tonight';
+          priceEl.textContent = n != null && n < 4 ? 'No ask mark · ' + n + ' verified asks (need 4)' : 'No ask mark';
+          b30.textContent = 'n/a'; row.querySelector('.sc').classList.add('on');
           return;
         }
         var last = series.length ? series[series.length - 1] : null;
@@ -50,6 +51,9 @@
         var p0 = back30(series, 'd', 'p'); var bp = pct(c.last, p0);
         b30.textContent = series.length < 2 ? 'day 1' : pctText(bp); b30.className = 'sealed-box30 ' + cls(bp);
         if (last && daysAgo(last.d) > 4) noteEl.textContent = '· stale mark (' + Math.round(daysAgo(last.d)) + 'd)';
+        row.querySelector('.sc').classList.add('on');
       });
-    }).catch(function () { /* feed unreachable — the row already says "first mark tonight" */ });
+    }).catch(function () { /* feed unreachable: say so plainly; the 30D line stays hidden (B70, Night Crew Oct 14) */
+      rows.forEach(function (row) { var el = row.querySelector('.sealed-price'); if (el && !el.textContent) el.textContent = 'No ask mark'; });
+    });
 })();

@@ -328,12 +328,33 @@ const PLACEHOLDER_FAIL = [
   [/\bcomps?\s+TBD\b/i, "'comps TBD' — sold comps are pullable (SCP/PriceCharting); mark it or label it"],
   [/\bonce [^.<]{0,60}?\bis connected\b/i, "'once … is connected' — the engine/Vault/indices are all connected"],
   [/\bwhen the (?:price )?engine (?:goes|is) live\b/i, "engine-pending copy — the engine has been live since August"],
+  // B70 (Night Crew, Oct 14 2026 — Fewer, Realer, R35: zero placeholders live). Generator output that a crawler or a
+  // no-JS reader sees verbatim: the old sealed-row filler and a label glued to the next word in the plain read.
+  [/first mark tonight/i, "'first mark tonight' filler — leave the cell empty for the script, or print what is true (build-sealed-rows.mjs)"],
+  [/class="pr-eb">[^<]*<\/span><span/, "plain-read label glued to the verdict ('The plain readSliding' in page text) — re-bake with the space"],
+  [/class="sealed-(?:price|box30|idx30)">\s*(?:—|&mdash;)\s*</, "lone '—' in a sealed price cell — leave it empty for the script or print 'No ask mark'"],
 ];
 const PLACEHOLDER_WARN = [[/\bcoming soon\b/i, "'Coming soon' — verify the product/feature is still unreleased"]];
+// B70: a visible date pill/badge more than 30 days old reads as abandoned (the home rail's bare "Dec 12" was the
+// example). A badge that names a future date ("due Dec 12", "next …", "until …") is exempt. No year → this year,
+// or last year when that would put it more than 60 days ahead.
+const BADGE_RE = /class="[^"]*\b(?:pill|badge|bb-badge)\b[^"]*">([^<]{0,60})</g;
+const MON = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+const NOW = Date.now();
+function badgeAgeDays(t) {
+  if (/\b(?:due|next|until|by|from)\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i.test(t)) return null;
+  const m = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2})(?:,?\s+(20\d\d))?/.exec(t);
+  if (!m) return null;
+  const y0 = new Date(NOW).getUTCFullYear();
+  let d = Date.UTC(m[3] ? +m[3] : y0, MON[m[1]], +m[2]);
+  if (!m[3] && d - NOW > 60 * 864e5) d = Date.UTC(y0 - 1, MON[m[1]], +m[2]);
+  return (NOW - d) / 864e5;
+}
 for (const f of pages) {
   const text = markup(f).replace(/<!--[\s\S]*?-->/g, "");
   for (const [re, why] of PLACEHOLDER_FAIL) { const m = text.match(re); if (m) add("FAIL", "placeholder-copy", f, `${why}: "${m[0].slice(0, 80)}"`); }
   for (const [re, why] of PLACEHOLDER_WARN) { const m = text.match(re); if (m) add("WARN", "placeholder-copy", f, `${why}: "${m[0].slice(0, 80)}"`); }
+  for (const m of text.matchAll(BADGE_RE)) { const age = badgeAgeDays(m[1]); if (age != null && age > 30) add("FAIL", "stale-date-badge", f, `badge "${m[1].trim().slice(0, 50)}" is ${Math.round(age)} days old — date it as due, update it, or drop it`); }
 }
 
 /* ---------- 12. Feed / line integrity (auditor-feed-line-rule, applied Sep 2 2026) ----------
