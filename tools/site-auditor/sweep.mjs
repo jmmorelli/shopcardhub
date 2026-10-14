@@ -88,7 +88,7 @@ async function metrics(page, deep) {
     r.smallText = small;
     // tap floor in nav/CTAs
     let smallTaps = 0;
-    for (const el of document.querySelectorAll("nav a, nav button, header a, header button, .sch-nav a, .sch-nav button, [class*='cta'] a, a[class*='cta'], button[class*='cta']")) {
+    for (const el of document.querySelectorAll("nav a, nav button, header a, header button, .sch-nav a, .sch-nav button, [class*='cta']:not(body) a, a[class*='cta'], button[class*='cta']")) { /* T5 (Oct 14): :not(body) — body.sch-cta-live made every link a "CTA" */
       const b = el.getBoundingClientRect();
       if (b.width > 0 && b.height > 0 && b.height < 40) smallTaps++;
     }
@@ -96,6 +96,17 @@ async function metrics(page, deep) {
     // first data row Y
     const row = document.querySelector(".panel table tbody tr, .panel li, .panel .mrow, .sch-markets tbody tr, table tbody tr, .sch-row, .board-row");
     r.firstDataRowY = row ? Math.round(row.getBoundingClientRect().top + window.scrollY) : null;
+    /* T4 (Oct 14): deep guide/player pages carry no table the selector above knows, so it read null. Fall back to the
+       first visible row-like element outside nav/rail/footer that shows a price — the reader's "first number". */
+    if (r.firstDataRowY === null) {
+      for (const el of document.querySelectorAll("tbody tr, a.mrow, .mrow, .sch-row, .board-row, li")) {
+        const b = el.getBoundingClientRect(); if (b.height < 8 || b.width < 100) continue;
+        if (el.closest("nav, header, .mobile-nav, #rail, footer, .nav-dropdown, .nav-search-results")) continue;
+        if (!/\$\s?\d/.test(el.innerText || "")) continue;
+        const y = Math.round(b.top + window.scrollY); if (r.firstDataRowY === null || y < r.firstDataRowY) r.firstDataRowY = y;
+      }
+      if (r.firstDataRowY !== null) r.firstDataRowFallback = true;
+    }
     return r;
   }, deep);
 }
