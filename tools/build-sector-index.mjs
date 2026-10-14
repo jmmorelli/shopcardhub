@@ -43,7 +43,7 @@ import { fileURLToPath } from "node:url";
 import { consoleCards } from "./price-engine/pc-console.mjs";
 import { parsePage } from "./price-engine/sold-marks.mjs";
 import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
-import { cardId, cardKey, rawNot, RAW_EXTRA, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
+import { cardId, cardKey, assignKeys, rawNot, RAW_EXTRA, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
 import { holoTest, hasRarity } from "./lib/holo-tier.mjs";
 import { isReprintTitle, REPRINT_PAIRS, reprintFloor } from "./lib/reprint-filter.mjs";
 import { createRequire } from "node:module";
@@ -633,7 +633,7 @@ function block(x, c, opt = {}) {
   const wCell = (b, w) => lineOnly(b) ? '<span title="tracked as its own line, not in the weighted basket — see the method note">line</span><i title="not in the weighted basket">‡</i>' : `${(w * 100).toFixed(1)}%`;
   // card keys in table order (= data/cards order): a second card on the same number gets "<num>-<name>" (Classic Collection
   // reprints in CEL21 / TH26), so its customid and /card link never collide with the first (Oct 5 2026)
-  const seenK = new Set(); rows.forEach((b) => { b.key = cardKey(b.num, b.name, seenK); });
+  const KEYS = assignKeys(ROOT, x.ticker, rows.concat(x.universe || [])); rows.forEach((b) => { b.key = KEYS.get(b.path || `${b.name}#${b.num}`); });   // sticky keys (Oct 14 2026, lib/card-files.mjs)
   // HOLO RULE labels: a holo-tier row says so; a thin one names the window its mark came from (never a silent stale price)
   const subLbl = (b) => `${b.holo ? " · holo" : ""}${b.thin ? ` · <span class="thin" title="fewer than ${SCREEN.stay} clean raw sales in ${SCREEN.window} days — standing constituent under the holo rule, marked on the nearest window with sales">thin · ${b.win && b.win !== SCREEN.window ? `${b.wn} sale${b.wn === 1 ? "" : "s"}, ${b.win}-day median` : `${b.n30} sale${b.n30 === 1 ? "" : "s"}`}</span>` : ""}${b.carried ? " · carried " + mdy(b.asOf) : ""}`;
   const salesCell = (b) => `${b.n30}${b.win && b.win !== SCREEN.window ? `<small title="clean sales in the ${b.win}-day window the mark came from"> · ${b.wn} in ${b.win}d</small>` : ""}`;
