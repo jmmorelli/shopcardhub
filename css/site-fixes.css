@@ -664,3 +664,21 @@ body .strip > a.chip { display: inline-flex; align-items: center; gap: 4px; min-
 @media (max-width: 760px) {
   html body .sidx-tbl td.act .glk a.ebay { min-width: 44px; }
 }
+
+/* 24 (UX Auditor, CoS weekly Oct 14 2026). The phone text floor again (brief-to-green: no text < 11 px). The Oct 14
+   production sweep counted ~1,100 visible text elements under 11 px on 54 pages, 836 of them on /mlb-cards (new
+   Oct 13: grade links 10 px, tier badges 9.5 px, footnote marks 8 px). The rest is the long tail the §12 list missed:
+   comparison-table row heads and the age table, the sector "auctions" links and grade-bar keys, the best-* desk
+   contents and narrator chip, a few guide labels, the 9 px notes on the Bowman/Gold Star index pages, the home
+   "where to start" foot, and the docked buy button's own label (a 10.5 px ::before). Size only; no layout change. */
+@media (max-width:540px) {
+  body .mlb .glk a.ebay, body .mlb .glk .gl, body .mlb .tb, body .mlb .pl-note .pl-d, body .mlb sup.pt,
+  body .mlb .chips .gh, body .mlb .tools button,
+  body .cmp tbody th, body .age thead th, body .age .wh,
+  body td.act a.auc, body .glk-bar .glk-k,
+  body .desk-toc a, body .narrator-chip, body .lead-card .lbl, body .ocs label, body .tl-dot,
+  body .bb-also .sch-ebay-tag, body .rg-foot, body .rg-foot a, body .sealed-date-note,
+  body .statnote, body td.card .cn, body .pop-price .basis, body .tl th
+  { font-size: 11px !important; }
+  body .bstrip.bs-dock .bs-go::before, body .bstrip.bs-dock .bs-fan::before { font-size: 11px; letter-spacing: 1px; }
+}
