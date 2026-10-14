@@ -72,6 +72,19 @@ try {
     : JSON.parse(fs.readFileSync(path.join(FEED_SRC, "prices-latest.json"), "utf8"));
 } catch { latest = null; }
 const latestBy = new Map(((latest && latest.cards) || []).map((c) => [c.key, c]));
+// Oct 14 2026 (B68): read market-latest.json at build time so a card the engine has auction data for ships the
+// three-cell hammers grid as a baked shell ("—" values, filled client-side) instead of a one-line empty state
+// that the client then replaces with a taller grid — that swap was CLS 0.118–0.120 at 390 on the BCB26 base pages.
+let market = null;
+try {
+  market = /^https?:\/\//.test(FEED_SRC)
+    ? JSON.parse(await (await fetch(`${FEED_SRC}/market-latest.json?t=${Date.now()}`)).text())
+    : JSON.parse(fs.readFileSync(path.join(FEED_SRC, "market-latest.json"), "utf8"));
+} catch { market = null; }
+const marketOf = (id) => { const m = market || {}; const k = "ebay:" + id; return m[k] || (m.byKey && m.byKey[k]) || (m.cards && m.cards[k]) || null; };
+const hasHammers = (id) => { const b = marketOf(id); return !!(b && (((b.hammers || []).length) || b.watching)); };
+const HAMMERS_EMPTY = `<div class="cp-empty">No auction close recorded for this card yet.</div>`;
+const HAMMERS_SHELL = `<div class="cp-hammers"><div class="cp-cell"><div class="l">Hammers · 30d</div><div class="v">—</div><div class="s">ended with a bid on them</div></div><div class="cp-cell"><div class="l">Median last bid</div><div class="v">—</div><div class="s">a floor, not the sale price</div></div><div class="cp-cell"><div class="l">Watching</div><div class="v">—</div><div class="s">live auctions tracked nightly</div></div></div>`;
 
 // ---------- per-card derived facts ----------
 const TCG_SETS = {
@@ -253,10 +266,11 @@ const CLIENT_JS = `
 
   /* 3. hammers / auction closes (market-latest.json exists once the engine has recorded closes) */
   getJSON(FEED + '/market-latest.json?t=' + Math.floor(Date.now() / 600000)).then(function(m){
-    var b = m && (m[KEY] || (m.byKey && m.byKey[KEY]) || (m.cards && m.cards[KEY])); if(!b) return;
     var box = $('cp-hammers'); if(!box) return;
+    var EMPTY = '<div class="cp-empty">No auction close recorded for this card yet.</div>';
+    var b = m && (m[KEY] || (m.byKey && m.byKey[KEY]) || (m.cards && m.cards[KEY])); if(!b) { if (box.querySelector('.cp-hammers')) box.innerHTML = EMPTY; return; }
     var n = (b.hammers||[]).length;
-    if (!n && !b.watching) return;
+    if (!n && !b.watching) { if (box.querySelector('.cp-hammers')) box.innerHTML = EMPTY; return; }
     box.innerHTML = '<div class="cp-hammers">' +
       '<div class="cp-cell"><div class="l">Hammers \\u00b7 30d</div><div class="v">' + n + '</div><div class="s">ended with a bid on them</div></div>' +
       '<div class="cp-cell"><div class="l">Median last bid</div><div class="v">' + (b.hammerMedian!=null ? fmt(b.hammerMedian) : '\\u2014') + '</div><div class="s">a floor, not the sale price</div></div>' +
@@ -393,7 +407,7 @@ ${nav}
   <section class="cp-sec" id="sold">
     <h2>Auction bid watch</h2>
     <p class="sub">The engine watches live auctions and records the last bid it sees before they end. It looks once a night, so that last look lands a median of about 12 hours before the close — and eBay auctions do most of their bidding in the final minutes. Treat these as a floor: the card sold for at least this, usually more. They are not sale prices and are never blended into the mark.</p>
-    <div id="cp-hammers"><div class="cp-empty">No auction close recorded for this card yet.</div></div>
+    <div id="cp-hammers">${hasHammers(c.id) ? HAMMERS_SHELL : HAMMERS_EMPTY}</div>
   </section>
 
   <section class="cp-sec" id="live">
