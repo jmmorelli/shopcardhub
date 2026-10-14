@@ -83,6 +83,8 @@ A gate FAIL does not ship. An agent that ships a shaded figure is out for the ge
    ("D: 3 emails, reply 'send D' · E: 1 forum post to paste · F: queued into the X daily slot"). Record his answers as
    `status` changes. A pitch is sent only in a session where Mo said yes to that batch (R10 spirit; sending email is a
    per-action approval). Prompt note: this step lives here, not in the task prompt; the file wins (R-precedence).
+   **Paused (CoS desk 2026-10-14):** Distribution is not spawned until R35 cull batch 1 has run and the X reply sheet
+   is live (Mo writes the words from Oct 14, R35). D stays held (Mo, Sep 30). The desk lifts this in STATE when both hold.
 
 Files: `data/league.json` (registry, canonical) · `tools/league/manifests/<slug>.json` (one per page, written
 by the agent) · `data/league-board.json` (last board) · `tools/league/BRIEF.md` (the agents' standing brief).

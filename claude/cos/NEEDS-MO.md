@@ -11,6 +11,16 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the desk (2026-10-14, 14:00 run). Mo, these are the only things waiting on you
+
+- **Before Thu 12:30 PT, your X queue:** Thursday's scheduled Base Set post says Charizard is "still $468 raw". The page re-marked Oct 12 and says about $400. Delete it, edit it, or let it go. Since this morning the CoS doesn't write or edit posts, so it's yours. (Friday's Neo Destiny post is true as dated, but its page will show newer numbers by then. Same choice.)
+- Everything else is unchanged from the blocks below: the X "go" items (now yours to post or skip), owned-card photos, /track-record labels yes/no, Bluesky / TCGplayer / TAG.
+
+*Checked against live state:* no new EPN CSVs in `Card Hub/epn/` since Oct 13; `Card Hub/photos/owned/` still absent. *Not yours:* the page cull (next attended CoS session) and the X daily task's prompt text (the CoS fixes it; its rulebook already carries your Oct 14 ruling).
+
+
+---
+
 ## Open — from the weekly (2026-10-14, 11:00 run). Nothing new needs you
 
 Checked against live state: no new EPN CSVs since Oct 13 (Oct 13's pair covers Sep 29–Oct 12; next pair before Wed Oct 21 when convenient); `Card Hub/photos/owned/` still absent; no TCGplayer, TAG or Bluesky link in the repo. Still open from the Oct 13 desk block below and unchanged: the X "go" (cap-correction reply + vintage-up post), owned-card photos, /track-record labels yes/no, the optional Thu Base Set wording, the May chase rule (silence = "a"; the weekly did not build it this run — next weekly), Bluesky / TCGplayer / TAG.
