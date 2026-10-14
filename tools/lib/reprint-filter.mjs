@@ -54,3 +54,15 @@ export function isReprintTitle(title, path) {
   if (HOLO_MEANS_REPRINT.has(String(path)) && HOLO_WORD.test(t)) return true;
   return false;
 }
+
+// PRICE-BAND GUARD (separate switch, see the CoS note in the Oct 14 report). Most reprint rows on the Aquapolis Lugia page
+// carry no reprint word at all ("Pokemon TCG Lugia Aquapolis 149/147 Secret Rare Holo English 80 HP", $160–$256) while a
+// raw original sells for thousands. Where the two price bands cannot overlap — the original's last mark is at least
+// BAND_GAP × the reprint's mark — a row priced at or under BAND_FLOOR × the reprint's mark is a reprint sale.
+// Returns the floor in dollars, or null when the guard does not apply (bands overlap or a mark is missing).
+export const BAND_GAP = 5, BAND_FLOOR = 2.5;
+export function reprintFloor(origMark, reprintMark) {
+  if (!(origMark > 0) || !(reprintMark > 0)) return null;
+  if (origMark < BAND_GAP * reprintMark) return null;
+  return Math.round(BAND_FLOOR * reprintMark * 100) / 100;
+}

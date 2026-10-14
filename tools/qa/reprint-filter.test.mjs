@@ -6,7 +6,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { isReprintTitle, inReprintScope } from "../lib/reprint-filter.mjs";
+import { isReprintTitle, inReprintScope, reprintFloor } from "../lib/reprint-filter.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 let fail = 0, n = 0;
@@ -87,6 +87,14 @@ const clean = (t, p) => !TITLE_BAD.test(t) && !isReprintTitle(t, p);
 ok(clean("1999 Pokemon Base Set Charizard 4/102 Holo Rare Heavily Played Unlimited 4/102", ZARD), "combined: Unlimited Charizard dropped");
 ok(clean("Pokemon TCG Lugia Aquapolis 149/147 Secret Rare Holo English 80 HP 149/147", LUGIA), "combined: Lugia original dropped");
 ok(!clean("Pokemon 30th Anniversary Pikachu & Zekrom GX 33/181 Sm-Team Up Holo", PZ), "combined: P&Z reprint kept");
+
+// price-band guard
+ok(reprintFloor(3176.86, 230) === 575, "floor Lugia");
+ok(reprintFloor(375, 30.93) === 77.33, "floor Celebi");
+ok(reprintFloor(399.99, 179.53) === null, "floor Charizard should be off (bands overlap)");
+ok(reprintFloor(31.49, 30.5) === null, "floor P&Z should be off");
+ok(reprintFloor(3.99, 26.99) === null, "floor Pikachu should be off");
+ok(reprintFloor(null, 230) === null && reprintFloor(3000, null) === null, "floor with a missing mark");
 
 console.log(`reprint-filter self-test: ${n - fail}/${n} pass${fail ? ` · ${fail} FAIL` : ""}`);
 process.exit(fail ? 1 : 0);

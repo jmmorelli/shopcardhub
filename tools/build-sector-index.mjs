@@ -45,7 +45,7 @@ import { parsePage } from "./price-engine/sold-marks.mjs";
 import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
 import { cardId, cardKey, rawNot, RAW_EXTRA, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
 import { holoTest, hasRarity } from "./lib/holo-tier.mjs";
-import { isReprintTitle } from "./lib/reprint-filter.mjs";
+import { isReprintTitle, REPRINT_PAIRS, reprintFloor } from "./lib/reprint-filter.mjs";
 import { createRequire } from "node:module";
 // The plain read is baked, not injected after paint (Night Crew Oct 3 2026, B29: load CLS 0.1-0.24 at 1024). Same renderer as the browser.
 const PR = createRequire(import.meta.url)("../js/plain-read.js");
@@ -447,6 +447,7 @@ async function readCardUncached(slot) {
   const end = html.indexOf('<div class="completed-auctions-', start + 20);
   const body = html.slice(start, end > 0 ? end : start + 400000);
   const rows = [];
+  const floor = bandFloor(slot.path);   // price-band guard (reprint-filter.mjs): null unless the slot is one of the six reprint pairs with disjoint bands
   for (const tr of body.split("<tr").slice(1)) {
     const d = tr.match(/<td class="date">\s*(\d{4}-\d{2}-\d{2})\s*<\/td>/);
     const p = tr.match(/<span class="js-price"[^>]*>\s*\$([\d,]+(?:\.\d+)?)/);
@@ -455,11 +456,11 @@ async function readCardUncached(slot) {
     // reprint filter (Oct 14 2026, tools/lib/reprint-filter.mjs): a 30th Celebration / Celebrations Classic Collection reprint
     // sold under the original's number is not a sale of the original (WOTC consoles + Team Up only)
     const pr = p ? parseFloat(p[1].replace(/,/g, "")) : null;
-    const rp = !!(tt && isReprintTitle(tt, slot.path));
+    const rp = !!(tt && isReprintTitle(tt, slot.path)) || (floor != null && pr != null && pr <= floor);
     if (d && p) rows.push({ d: d[1], p: pr, rp, clean: !(tt && TITLE_BAD.test(tt)) && !rp });
   }
   const rpN = rows.filter((r) => r.rp).length;
-  if (rpN) console.log(`  reprint filter: ${slot.path} — ${rpN} reprint row${rpN === 1 ? "" : "s"} dropped (${rows.filter((r) => r.rp && days(r.d) <= SCREEN.window).length} in the ${SCREEN.window}-day window)`);
+  if (rpN) console.log(`  reprint filter: ${slot.path} — ${rpN} reprint row${rpN === 1 ? "" : "s"} dropped (${rows.filter((r) => r.rp && days(r.d) <= SCREEN.window).length} in the ${SCREEN.window}-day window)${floor != null ? ` · price-band floor $${floor}` : ""}`);
   const in30 = rows.filter((r) => days(r.d) <= SCREEN.window), clean30 = in30.filter((r) => r.clean);
   // wider windows for the HOLO RULE: a holo-tier slot with no clean sale in the ticker window is marked on 90 → 180 → 365 days
   const wide = {};
@@ -467,6 +468,13 @@ async function readCardUncached(slot) {
   return { all30: in30.length, clean30: clean30.length, tabCount: pg.tabCount, price: clean30.length ? r2(median(clean30.map((r) => r.p))) : null, lastSale: rows.length ? rows.map((r) => r.d).sort().slice(-1)[0] : null, wide };
 }
 const WIDE = [90, 180, 365];
+// PRICE-BAND GUARD for the six original ↔ 30th reprint pairs (tools/lib/reprint-filter.mjs): the original's stored mark (any
+// ticker carrying this path, pre-run snapshot) against the TH26 reprint's stored mark. Off when either is missing or the bands overlap.
+function bandFloor(p) {
+  const rpPath = REPRINT_PAIRS[p]; if (!rpPath) return null;
+  const markOf = (q) => { for (const x of Object.values(ORIG)) { const b = x && Array.isArray(x.basket) && x.basket.find((r) => r.path === q && typeof r.price === "number"); if (b) return b.price; } return null; };
+  return reprintFloor(markOf(p), markOf(rpPath));
+}
 // markFor(read, anchor) → { price, win, n } | null. Every row: the ticker-window median when the window has a clean sale.
 // A holo-tier anchor with none widens to the first of 90 / 180 / 365 days that has one; a non-anchor does not (it is
 // carried, as before). `thin` is set by the caller: n under the stay threshold in the ticker window.
