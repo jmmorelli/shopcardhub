@@ -31,4 +31,6 @@ Could Mo have typed this on his phone in the time it takes to wait for coffee? I
 
 ## What the CoS wrote the same day, for contrast (do not imitate)
 - 2026-10-13 2:41 PM post: "Marks, Sep 28 to Oct 12. Skyridge +17.7%. Base Set 1st Ed +15.2%. Aquapolis +6.6%. Team Rocket +4.3%. Every 2025-26 modern chase index fell 8 to 23%. 30th Celebration (TH26) sits at 75.19 vs 100 at its Sep 16 release. Vintage up, modern down. shopcardhub.com" — a terminal readout. Mo: "not loving the bot sounding X posts."
-- How Mo would have said the same thing (CoS attempt, for the record, not posted): "old sets keep climbing and every new set keeps bleeding. 30th celebration is down a quarter since release and skyridge is up almost 20% in the same two weeks. the old stuff doesn't care about anniversaries."
+
+## Approved by Mo — the register to write in (CoS drafts Mo signed off on)
+- 2026-10-14 · the Oct 13 story in his voice, Mo: "now that is a much better voicing of a tweet": **"old sets keep climbing and every new set keeps bleeding. 30th celebration down a quarter since release. the old stuff doesn't care about anniversaries."** Why it works: lowercase, three short sentences, one rounded number, a take in the last line, the picture carries the table. This is the ceiling for a CoS draft; the daily "one line" under the image may be a full draft in exactly this register (three sentences, one number, a take), never more. Mo still posts it.
