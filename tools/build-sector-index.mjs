@@ -45,6 +45,7 @@ import { parsePage } from "./price-engine/sold-marks.mjs";
 import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
 import { cardId, cardKey, rawNot, RAW_EXTRA, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
 import { holoTest, hasRarity } from "./lib/holo-tier.mjs";
+import { isReprintTitle } from "./lib/reprint-filter.mjs";
 import { createRequire } from "node:module";
 // The plain read is baked, not injected after paint (Night Crew Oct 3 2026, B29: load CLS 0.1-0.24 at 1024). Same renderer as the browser.
 const PR = createRequire(import.meta.url)("../js/plain-read.js");
@@ -450,8 +451,15 @@ async function readCardUncached(slot) {
     const d = tr.match(/<td class="date">\s*(\d{4}-\d{2}-\d{2})\s*<\/td>/);
     const p = tr.match(/<span class="js-price"[^>]*>\s*\$([\d,]+(?:\.\d+)?)/);
     const t = tr.match(/<td class="title">[\s\S]*?<a[^>]*>([\s\S]*?)<\/a>/);
-    if (d && p) rows.push({ d: d[1], p: parseFloat(p[1].replace(/,/g, "")), clean: !(t && TITLE_BAD.test(t[1].replace(/<[^>]+>/g, " "))) });
+    const tt = t ? t[1].replace(/<[^>]+>/g, " ") : null;
+    // reprint filter (Oct 14 2026, tools/lib/reprint-filter.mjs): a 30th Celebration / Celebrations Classic Collection reprint
+    // sold under the original's number is not a sale of the original (WOTC consoles + Team Up only)
+    const pr = p ? parseFloat(p[1].replace(/,/g, "")) : null;
+    const rp = !!(tt && isReprintTitle(tt, slot.path));
+    if (d && p) rows.push({ d: d[1], p: pr, rp, clean: !(tt && TITLE_BAD.test(tt)) && !rp });
   }
+  const rpN = rows.filter((r) => r.rp).length;
+  if (rpN) console.log(`  reprint filter: ${slot.path} — ${rpN} reprint row${rpN === 1 ? "" : "s"} dropped (${rows.filter((r) => r.rp && days(r.d) <= SCREEN.window).length} in the ${SCREEN.window}-day window)`);
   const in30 = rows.filter((r) => days(r.d) <= SCREEN.window), clean30 = in30.filter((r) => r.clean);
   // wider windows for the HOLO RULE: a holo-tier slot with no clean sale in the ticker window is marked on 90 → 180 → 365 days
   const wide = {};
