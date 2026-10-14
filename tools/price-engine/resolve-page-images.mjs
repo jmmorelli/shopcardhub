@@ -7,7 +7,10 @@
 // so the page paints from the map with zero API calls. Re-run whenever a list page changes.
 //
 // Usage: node tools/price-engine/resolve-page-images.mjs [page.html …]   (default: all *.html)
-// Env: SITE_URL (default https://www.shopcardhub.com)
+// Env: SITE_URL (default https://www.shopcardhub.com) · FORCE=<regex> re-resolves matching keys inside the 14-day cache
+// Cloud runs: NODE_USE_ENV_PROXY=1 NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt
+// Oct 14 2026 (Photo Keeper): an entry carrying "official": true is a hand-set official scan (images.pokemontcg.io /
+// images.scrydex.com) for a key the listing search cannot place; the resolver never overwrites it.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -16,6 +19,7 @@ const SITE = (process.env.SITE_URL || "https://www.shopcardhub.com").replace(/\/
 const OUT = "data/card-images.json";
 const TCG = "183454"; // eBay: Collectible Card Games > CCG Individual Cards
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const FORCE = process.env.FORCE ? new RegExp(process.env.FORCE, "i") : null;
 const files = process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync(".").filter((f) => f.endsWith(".html"));
 
 const out = (() => { try { return JSON.parse(fs.readFileSync(OUT, "utf8")); } catch { return { cards: {} }; } })();
@@ -38,6 +42,11 @@ function pick(listings, q) {
     if (num && !t.includes(num)) continue;
     if (!toks.every((k) => t.includes(k))) continue;
     if (negs.some((k) => t.includes(k))) continue;
+    // Oct 14 2026 (Photo Keeper): "Bowman Chrome" is a product, not two words. "2026 BOWMAN BASEBALL HOBBY BOX w/Chrome"
+    // (paper Bowman, photographed in a shipping carton) sat on the Bowman Chrome guide hero for two weeks.
+    if (/\bbowman chrome\b/.test(q.toLowerCase()) && !/\bbowman(?:®|™)? chrome\b/.test(t)) continue;
+    // A redemption card is a voucher, not the card (the BCB26 hero resolved to a CPA-LH redemption on Oct 14).
+    if (/redemption|\bredemp\b/.test(t)) continue;
     // Sep 13 2026 (Mo: a DR25 hero was a card CASE, not the card): accessories and
     // display products never picture the card; graded slabs are allowed but a raw
     // listing wins when one exists (the loop keeps the first raw fixed-price hit).
@@ -66,7 +75,8 @@ for (const f of files) {
     const sub = attr("sub"); const catid = attr("catid") || (/pok[eé]mon|tcg/i.test(sub) ? TCG : "");
     const q = name.replace(/[—–].*$/, "").replace(/#/g, "").replace(RARITY, "").replace(/\s+/g, " ").trim();
     const prev = out.cards[key];
-    if (prev && prev.url && prev.d && Date.now() - new Date(prev.d).getTime() < 14 * 864e5) { cached++; continue; }
+    if (prev && prev.official) { cached++; continue; }
+    if (prev && prev.url && prev.d && !(FORCE && FORCE.test(key)) && Date.now() - new Date(prev.d).getTime() < 14 * 864e5) { cached++; continue; }
     try {
       const get = async (qq) => { const r = await fetch(SITE + "/api/comps?q=" + encodeURIComponent(qq) + "&sort=price&limit=30&customid=img-resolver" + (catid ? "&category_ids=" + catid : ""), { headers: { Accept: "application/json", "x-shopcardhub-client": "tool" } }); return r.ok ? r.json() : null; };
       let j = await get(q);
