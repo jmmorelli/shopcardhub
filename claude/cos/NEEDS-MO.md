@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## Open — from the weekly (2026-10-14, 11:00 run). Nothing new needs you
+
+Checked against live state: no new EPN CSVs since Oct 13 (Oct 13's pair covers Sep 29–Oct 12; next pair before Wed Oct 21 when convenient); `Card Hub/photos/owned/` still absent; no TCGplayer, TAG or Bluesky link in the repo. Still open from the Oct 13 desk block below and unchanged: the X "go" (cap-correction reply + vintage-up post), owned-card photos, /track-record labels yes/no, the optional Thu Base Set wording, the May chase rule (silence = "a"; the weekly did not build it this run — next weekly), Bluesky / TCGplayer / TAG.
+
+*Not yours:* the page cull (R35 batch 1) was written but not executed — this unattended run's permission check refused the site-wide deletes/301s; the next attended CoS session runs it.
+
+---
+
 ## Open — from the desk (2026-10-13, 14:00 run). Mo, these are the only things waiting on you
 
 - ~~EPN CSVs~~ **✅ Mo uploaded both Oct 13 (Sep 29–Oct 12); filed in `Card Hub/epn/`, read in STATE MILESTONES.**
