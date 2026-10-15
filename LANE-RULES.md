@@ -1128,6 +1128,18 @@ The 25% single-card cap (rulebook §3, Sep 15) and the 5/50 group cap (§3a, Sep
 - **Never re-add a cap, a group cap or a weight reset** to `build-sector-index.mjs`, `remark-indices.mjs` or a new builder. A lane that thinks concentration is a problem files a finding; the answer is an EX line or a scope ruling by Mo, never a trim.
 - **Public record:** the pinned X index thread's post 4 reply (Oct 7) says "the 25% cap now covers every index" — now false; a correcting reply is a NEEDS-MO item (R10: nothing posts without Mo).
 
+## R37 · GitHub is the archive; the Project is the working desk (Mo, 2026-10-15: "offload as much to github … as we can")
+
+The claude.ai Project has a hard knowledge cap of 2,000,000 bytes (`project_info.max_knowledge_size`). At the cap every lane's `project_write` fails, a silent org-wide outage. On Oct 15 it hit 1.84 MB, mostly from dated run files. The repo has no practical limit at our size.
+
+- **What lives in the Project:** standing doctrine and live state (ORG, BLOCKED, EXPERIMENTS, MANDATE, CHARTERs, KB chapters, LEDGERs, STATE, NEEDS-MO, voice files), plus dated run files from the **last 14 days**.
+- **What moves to the repo:** every dated run file older than 14 days (`x-desk-watch-run-*`, `x-daily-*`, `league-board-*`, `integrity-watch-*`, `ideas/<date>`, `retention/<date>`, `night-crew/log-*`, `grok/digest-*`, `measure/*`, `ops/heartbeat-*`, `traffic/<date>*`, `daily-review-*`, `brief-*`, `pipeline-payload-*`, handoffs whose work has shipped). Destination: `claude/archive/project-<yyyy-mm>/<same path>`. The doc is deleted from the Project only after its copy is on `origin/main`. Manifest: `claude/ops/archive-<date>.md`.
+- **Owner and cadence:** the CoS desk, every **Friday**, runs the 14-day sweep (Oct 15 did the first, 123 docs). Ops prints `knowledge_size` at the top of each heartbeat; above **1.6 MB** the desk runs the sweep the same day whatever the weekday.
+- **The repo is public. These never go to it** (they stay Project-only, and the sweep skips them): third-party contact addresses, Mo's name or personal account identifiers (R30), credentials, anything Mo marked private. When a run file mixes those in, archive it without the lines or leave it in the Project. List what you held back in the manifest.
+- **Root-level Project docs are Mo's uploads.** List them in the manifest; never delete them.
+- **STATE.md under 25 KB** (its own header rule): the Friday desk moves dated blocks older than 7 days to `STATE-ARCHIVE-<yyyy-mm>.md` in the same run.
+- **Lanes that can write to the repo** (Mac deploy key, or a push-capable session) write their durable run file to the repo first and put only a short pointer or summary in the Project. Cloud lanes that can't push keep writing to the Project; the Friday sweep carries their files over.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
