@@ -1,0 +1,94 @@
+{
+  "_comment": "Integrity Watch 2026-09-30. Staged OUTSIDE data/pipeline.json per R1. The CoS appends these from a fresh clone after ruling. Every finding re-verified live 12:09Z (R5); ledger (202 proposals) and STATE checked (R6); cited files confirmed with git ls-files (R7). Report: claude/cos/integrity-watch-2026-09-30.md",
+  "generated": "2026-09-30T12:15:00Z",
+  "generator": "integrity-watch (cloud, daily per GO-TIME block)",
+  "head": "a81f607f78963f1de595262d849e70d8af279930",
+  "gates": "audit-prices 0/75 · audit-site 0/3 (132) · audit-terminal --feed 0/0 = baseline",
+  "proposals": [
+    {
+      "id": "iw-2026-09-30-1",
+      "status": "awaiting-cos",
+      "severity": "HIGH",
+      "area": "bangers",
+      "title": "HIGH: /bowman-bangers buy strip leads with the September 2026 Bowman Chrome hobby box; none of the ten board autos (all May 2026 Bowman CPAs) is on the September Chrome auto checklist.",
+      "evidence": [
+        "Live 12:09Z: strip title '2026 Bowman Chrome Baseball Hobby Box', primary customid=bowman-bangers-top; May box is secondary; phone dock shows the primary only.",
+        "data/sets/2026-bowman-chrome-baseball.json CPA group (104): no CPA for Holliday, Fischer, Arquette, Florentino, Kim, Gonzales, Aloy, Houston, Pierce, Jump (Checklist Insider agrees); Holliday/Arquette only as returning base BCP-209/BCP-174.",
+        "Same page: 'there is no Andrew Fischer autograph on the published 2026 Bowman Chrome checklist'; R8; R29 'its seats' autos are 2026 Bowman (May)'."
+      ],
+      "r6": "CHALLENGES the Sep 26 strip ruling (STATE shipped table; data/buy-strip.json _why 'its sealed product is the Chrome hobby box, May's box second') on a factual premise, not a judgement: the board class's autos are May Bowman CPAs.",
+      "suggestedRemedy": "data/buy-strip.json: primary → 2026 Bowman (May) hobby box (existing -chrome query); Chrome box → secondary labelled as the next class, or dropped; case query/req follow the primary; re-run build-buy-strip.mjs. No figure change.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-30-2",
+      "status": "awaiting-cos",
+      "severity": "MED",
+      "area": "indices",
+      "title": "MED: bowmanConfigs() matches SCP names to the September checklist without folding accents — Liñan (Sep 1st) is priced live in BB26 as '2026 Bowman' and missing from BCB26; Muñoz (Sep 1st) likewise in universe; Luis Peña (Sep returning auto, 1st in 2025 Bowman) sits in BB26/BOW26 universes as a 1st; BCB26 claims 'every … 95 cards' / universeComplete vs 97.",
+      "evidence": [
+        "tools/build-sector-index.mjs l.119-137: sep.autos keyed by player.toLowerCase(); may.auto = !isSepAuto(name).",
+        "indices.json: BB26 basket CPA-SL 'Sean Paul Linan' 8.5, n30 7; BB26+BOW26 universe CPA-YM Munoz, CPA-LP Pena; BCB26 universe 95, universeComplete true; checklist 97 first CPAs; missing = CPA-SL, CPA-YM.",
+        "Live 12:09Z: /bowman-2026-index 'Sean Paul Linan #CPA-SL — 2026 Bowman'; /bowman-chrome-2026-index 0 hits for Linan/Munoz; hero '95 cards, 41 trading'.",
+        "bowman-baseball-2025.json: CPA-LP Luis Pena (his prior auto); 2026 Chrome CPA-LP not first.",
+        "PriceCharting (cloud, not screened): CPA-SL 8 dated sales Sep 10-29, CPA-YM 13 Sep 15-30 — likely clear the 6-comp entry at the Oct 5 reconstitution."
+      ],
+      "r6": "None.",
+      "suggestedRemedy": "Fold diacritics on both sides (NFD, strip marks) or match on code+name; re-run BB26/BCB26/BOW26 as a logged divisor adjustment before Mon Oct 5; builder assert |BCB26 universe| == first CPAs in the September checklist. Keep the CPA-AN Angel/Alejandro Nunez split by path.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-30-3",
+      "status": "awaiting-cos",
+      "severity": "MED",
+      "area": "indices",
+      "title": "MED: BCB26 break math says 'The floor is his non-auto 1st Bowman Chromes, which come in every case' — 34 of the 104 CPA players have no 1st BCP in September Chrome (30 no BCP, 4 non-1st BCP), incl. table rows Azocar (#5) and J. Torres (#12).",
+      "evidence": [
+        "Live 12:09Z /bowman-chrome-2026-index; tools/build-break-math.mjs:89.",
+        "data/sets/2026-bowman-chrome-baseball.json CPA vs BCP groups; Azocar/Torres only CPA-EA/CPA-JT on Checklist Insider.",
+        "Both rows currently 'few spots listed' — no paid link carries the error today."
+      ],
+      "r6": "None. Scopes the queued 'non-auto 1st Bowman Chrome floor per case' (STATE Sep 29 21:00 → Thu Oct 1 Chrome read).",
+      "suggestedRemedy": "Reword now ('…where this product has one; 34 of 104 players have none here') or fold into Thursday's floor build, taking the floor per player from the BCP group and printing 'no 1st Bowman Chrome base in this product' where absent.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-30-4",
+      "status": "awaiting-cos",
+      "severity": "LOW",
+      "area": "indices",
+      "title": "LOW: BCB26 method note 'returning names (Holliday BCP-209, Kilby, Quintero, Arias …) had their 1sts in May' — Kilby 2025 Bowman Draft, Quintero/F. Arias 2025 Bowman, J. Gonzalez 2025 Bowman Chrome; Holliday has no September auto (BCP-209 is base).",
+      "evidence": [
+        "Live 12:09Z /bowman-chrome-2026-index; tools/build-sector-index.mjs:149.",
+        "data/sets/bowman-draft-baseball-2025.json CPA-DK; bowman-baseball-2025.json CPA-EQ, CPA-FA; bowman-chrome-baseball-2025.json CPA-JD."
+      ],
+      "r6": "Same generator note as queued iw-2026-09-29-5 — add to its scope, no separate work.",
+      "suggestedRemedy": "'returning autos (Kilby, Quintero, F. Arias, J. Gonzalez, Parker, Doyle, Peña) had their 1st Bowman autos in 2025 products and are excluded here'.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-30-5",
+      "status": "awaiting-cos",
+      "severity": "LOW",
+      "area": "league",
+      "title": "LOW: /topps-holiday-baseball-2026 says Hidden Elf is '25 cards, five variations for each of five players'; the checklist is 25 cards for 25 players (HE-1 Judge … HE-25 Chandler).",
+      "evidence": [
+        "Live 12:09Z (topps-holiday-baseball-2026.html:949); Checklist Insider Hidden Elf Checklist; the page's own rows cite HE-14 and HE-17; same cell names 14 players."
+      ],
+      "r6": "None. Agent A's page (R27) — desk or integrator edits.",
+      "suggestedRemedy": "'25 cards, one per player, with an elf hidden in the photo.'",
+      "decision": null
+    }
+  ],
+  "promptDefects": [
+    "Prompt names LANE-RULES R1-R11; file is R1-R29.",
+    "Prompt reads the feed from raw.githubusercontent; R19 says /feed/.",
+    "Prompt's SV151 caveat stale (live since Sep 25).",
+    "Cadence table row says Mon + Thu; the GO-TIME block (Sep 27) says daily and wins — fix the row. Yesterday's 'fired on a Tuesday' flag was this lane's misread."
+  ],
+  "watch": [
+    "Thu Oct 1: Oct 1 mark on all 17 Mon/Thu tickers (classics' first move).",
+    "Mon Oct 5 reconstitution: iw-2026-09-30-2 should land first.",
+    "GA4 clicks7 23 vs median 36 (-36%); Singapore 39% of US sessions (bar 40%)."
+  ]
+}

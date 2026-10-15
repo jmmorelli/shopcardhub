@@ -1,0 +1,92 @@
+{
+  "_comment": "Integrity Watch 2026-09-28. Staged OUTSIDE data/pipeline.json per R1. The CoS appends these from a fresh clone after ruling. Every finding re-verified live 12:10-12:11Z (R5); ledger (180 proposals) and STATE checked (R6); no absence claims made (R7). Report: claude/cos/integrity-watch-2026-09-28.md",
+  "generated": "2026-09-28T12:12:00Z",
+  "generator": "integrity-watch (cloud, Mon+Thu 05:00 PT)",
+  "head": "d4bfcbd498930b1c77f7509bce17e37034a892e5",
+  "gates": "audit-prices 0/76 · audit-site 0/3 · audit-terminal --feed 0/0 = baseline",
+  "proposals": [
+    {
+      "id": "iw-2026-09-28-1",
+      "status": "awaiting-cos",
+      "severity": "HIGH",
+      "area": "indices",
+      "title": "HIGH: the chase strip ('top 3 by last sold', '$X sold · <date>') and the 'Last sold' table column print a 30-day median, or PriceCharting's smoothed figure, with the read date, as if it were a dated last sale.",
+      "evidence": [
+        "Live 12:10Z /pokemon-30th-anniversary-2026: 'Mew #G/RGB $3,675 sold · Sep 25'. indices.json TH26 G/RGB price 3674.5, n30 28, basis 'sold (PriceCharting ungraded, 30d median)', asOf 2026-09-25.",
+        "Live /bowman-2026-index: 'Andrew Fischer #CPA-AF $145 sold · Sep 25'; column 'Last sold' $144.63 (30d median of 30). /bowman-bangers the same minute: last printed sale $144.26 on Sep 23.",
+        "Generator tools/build-chase-strip.mjs:89. Strip on 9 pages (ascended-heroes-index, bowman-1st-chrome-index, bowman-2026-index, chaos-rising-index, destined-rivals-index, pitch-black-index, pokemon-30th-anniversary-2026, prismatic-evolutions-index, scarlet-violet-151-index)."
+      ],
+      "r6": "No ledger row covers the label. Ledger #34 chip and R26's 'chase cards' last sold' promise inherit the word; neither rules a median may be called a last sale.",
+      "suggestedRemedy": "Label it '30-day median sold · n sales · read <date>' in strip, column and #34 chip, or source the strip from the dated last print where one exists.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-28-2",
+      "status": "awaiting-cos",
+      "severity": "HIGH",
+      "area": "engine-blocks",
+      "title": "HIGH: 28 pages say engine marks come from 'verified eBay asking prices and, where recorded, auction closes'. Marks are asks only; market-latest.json says closes are 'not yet a mark'.",
+      "evidence": [
+        "Live 12:10Z on /pokemon-30th-anniversary-2026 and /card-seong-jun-kim.",
+        "snapshot-free.mjs: series (:451) and last (:475, :517) from verified-ask comps; hammers summarised separately (:405-416) into market-latest.json, note 'OBSERVATION ONLY ... Not published on the site; not yet a mark.'",
+        "Generators tools/build-engine-blocks.mjs:271, tools/build-card-pages.mjs:425; 28 HTML files."
+      ],
+      "r6": "iw-2026-09-19-1 (applied 80eac88) swapped the block labels, not this footnote. Not ledgered.",
+      "suggestedRemedy": "String swap at both generators ('verified eBay asking prices (asks, not sales)') and re-bake with no new mark (R20 clean). Retires anyway with the Oct 7 R21 step.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-28-3",
+      "status": "awaiting-cos",
+      "severity": "MED",
+      "area": "indices",
+      "title": "MED: home, /indices and /how-prices-work still describe the retired Bowman lines (BOW26/BCB26 'on asks', 'held', 'six sold / two ask', 're-marked weekly'). Since the Sep 25 reset, all 11 tickers are sold-basis, BB26 exists, and five tickers mark Mon+Thu.",
+      "evidence": [
+        "index.html:899 'the Bowman indices (BOW26, BCB26) on asks until their sold basis lands'; :984, :1029 'Bowman ask-basis'.",
+        "/indices meta + JSON-LD 'Six tickers mark on sold comps, two on verified asks (held since Sep 21-22...)'; og 'two tickers run ask-basis'.",
+        "/how-prices-work :764, :802 'BCB26 and BOW26 (ask-basis...) are held at their last level'.",
+        "indices.json: BOW26/BB26/BCB26 basis 'sold', inception 2026-09-25; retired lines in data/indices-retired.json."
+      ],
+      "r6": "These strings are the applied fixes for iw-2026-09-17-3, -19-4, -21-2 and -24-3, overtaken by bb18f6e (Sep 25). New defect, not a re-file.",
+      "suggestedRemedy": "Generate the basis/cadence sentence from indices.json so the next reset cannot strand it.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-28-4",
+      "status": "awaiting-cos",
+      "severity": "MED",
+      "area": "content",
+      "title": "MED: /pokemon-30th-anniversary-2026 says 'nothing in this set has a verified sold comp yet ... everything else in the set still has no published price' above its own 191-card sold-basis TH26 index.",
+      "evidence": [
+        "Live 12:10Z, At-a-Glance note beginning 'Release-night tape (Sep 16) retired Sep 18' (pokemon-30th-anniversary-2026.html ~1363).",
+        "indices.json TH26: 191 priced, basis sold, inception 2026-09-25; same page's top-10 and chase strip show dated sold marks."
+      ],
+      "r6": "Not in the ledger or STATE's TH26 notes.",
+      "suggestedRemedy": "Delete the clause or date it 'as of Sep 18'.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-28-5",
+      "status": "awaiting-cos",
+      "severity": "LOW",
+      "area": "league",
+      "title": "LOW: /is-pokemon-151-worth-it says every chase card 'trades 29 or 30 times a month raw'. Its own table shows the 30-row cap spanning 6 to 24 days (Blastoise 30 sales Sep 20-25).",
+      "evidence": [
+        "Live 12:10Z. The page's tape note says 'the tab caps at 30'; the sibling /umbreon-ex-worth says 'Thirty is a cap, not a month'."
+      ],
+      "r6": "None.",
+      "suggestedRemedy": "'at least 29-30 sales in the last 1-4 weeks'. Edit by the league integrator or the desk (R27: agents do not edit pages they did not create).",
+      "decision": null
+    }
+  ],
+  "promptDefects": [
+    "Prompt names LANE-RULES R1-R11; file is R1-R27.",
+    "Prompt reads the feed from raw.githubusercontent; R19 says https://www.shopcardhub.com/feed/.",
+    "Prompt's SV151 caveat is stale: SV151 is live in indices.json since Sep 25, Mon+Thu. The Sep 24 suggestion to exempt R20-held tickers is also moot (BOW26/BCB26 replaced Sep 25).",
+    "GA4 backstop: prompt says MED at 14 days; the LANE-RULES cadence table says HIGH at 7 days. File wins."
+  ],
+  "watch": [
+    "GA4 clicks7 26 vs trailing median 38 (-32%), down 5 days running; buystrip clicks up. Under the 60% line; re-read Thursday.",
+    "Thursday run: every one of the 11 tickers should show a Sep 28 mark (6 weekly incl. PF25's first re-mark via the Monday lane, 5 sector via the nightly Action)."
+  ]
+}

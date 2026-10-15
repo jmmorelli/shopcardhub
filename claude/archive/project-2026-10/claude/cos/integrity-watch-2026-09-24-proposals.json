@@ -1,0 +1,121 @@
+{
+  "_comment": "Integrity Watch 2026-09-24 — staged OUTSIDE data/pipeline.json per R1. The CoS appends these from a fresh clone after ruling. Every finding re-verified live 12:09-12:10Z (R5); ledger (160 proposals) and STATE checked (R6); absence claims from git ls-files in this run's clone (R7). Report: claude/cos/integrity-watch-2026-09-24.md",
+  "generated": "2026-09-24T12:12:00Z",
+  "generator": "integrity-watch (cloud, Mon+Thu 05:00 PT)",
+  "head": "8f92ab05ec4da183724891f7b72b679ce4eb94a6",
+  "gates": "audit-prices 0/76 · audit-site 0/3 · audit-terminal --feed 0/0 = Sep 22 baseline",
+  "proposals": [
+    {
+      "id": "iw-2026-09-24-1",
+      "status": "approved",
+      "severity": "HIGH",
+      "area": "process",
+      "title": "HIGH — the Sep 19 and Sep 20 Integrity Watch proposals (8 items, 2 FAIL) never entered pipeline.json and were never ruled; both FAILs are still live and iw-2026-09-19-1 has spread from 8 to 10 HTML files.",
+      "evidence": [
+        "pipeline.json holds iw-2026-09-19-3 only from those two days; STATE + STATE-ARCHIVE grep for iw-2026-09-19 / iw-2026-09-20 returns only the 19-3 line.",
+        "The desk's Sep 22 inbox found the same miss for integrity-watch-2026-09-21 ('never entered the ledger; entered and ruled now') and did not check the two prior filings.",
+        "iw-2026-09-19-1 FAIL live: git grep 'what buyers paid' = 10 HTML files incl. new cards.html, topps-chrome-black-basketball.html; generator lines tools/build-engine-blocks.mjs:215,220,235-236 and js/engine-block.js:147 unchanged.",
+        "iw-2026-09-20-1 FAIL live: /best-football-cards-under-50 still serves 'a Prizm Draft Black Shimmer 1/1 sold for $1,349' below its own withdrawal of that figure.",
+        "iw-2026-09-19-2 reproduced: buy-strip.json live:true; /api/comps (tool header) 7 listings, min $14,500; body 'Box Price TBA · Comps None yet'.",
+        "iw-2026-09-19-4 live: /indices meta + JSON-LD 'Five tickers mark on sold comps, two on verified asks' (true: six of eight).",
+        "iw-2026-09-20-2 unchanged: tools/ga4-snapshot.mjs:161 reads rows.at(-1); no provisional flag.",
+        "iw-2026-09-20-3 live: board keywords meta '1st Bowman cards 2026'.",
+        "iw-2026-09-19-5 resolved in substance (seat now 'no printed sale since Aug 5'); iw-2026-09-19-6 superseded by cos-2026-09-20-1/-4 — recommend close both."
+      ],
+      "r6": "Nothing here was ruled; this files the ingestion gap, not the items.",
+      "suggestedRemedy": "Append the eight from Project docs claude/cos/integrity-watch-2026-09-19-proposals.json and -09-20-proposals.json and rule them. Change the desk inbox check from 'since the last desk run' to 'every *-proposals.json whose ids are absent from pipeline.json'.",
+      "decision": "APPROVED by Mo 2026-09-24 in chat; CoS to append, re-verify live and apply on the next desk run."
+    },
+    {
+      "id": "iw-2026-09-24-2",
+      "status": "approved",
+      "severity": "HIGH",
+      "area": "bowman-bangers",
+      "title": "HIGH — /bowman-bangers says it ranks on 'the last printed sale', but the seat price is SportsCardsPro's raw guide value, which the page's own prose shows differs from the last print; the vendor feed labels it rawSold.",
+      "evidence": [
+        "Live 12:09Z: heading 'Ranked by the last printed sale · 30-day liquidity gate'; '(SportsCardsPro raw solds)' x4.",
+        "'Fischer +4.2% to $154.60 but his last printed sale is still Sep 14' — the figure moved with no sale.",
+        "Gonzales $91.25: 'his last three printed sales were $79.99 (Sep 21), $72.00 (Sep 17) and $42.01 (Sep 14), all below the number the guide is carrying'.",
+        "Florentino: 'The guide read $70.00 again, unchanged since Sep 1' beside five prints Sep 15-17.",
+        "data/board-history.json Sep 22: 'Fischer holds #1 on a $154.60 printed sale (+4.2%) but has not printed since Sep 14'.",
+        "/data/x-board.json: rankingRule 'the last printed sold price'; seat 1 marks.rawSold '$155' beside lastPrintedSale null."
+      ],
+      "r6": "R20 table says board seats rank on 'last printed sold price (already the rule)'. kim-unrankable-clock and xbi-2026-09-21-1 touch single-seat wording, not the ranking basis. Partly overturns this lane's own Sep 17 clearance (stumble 2a).",
+      "notClaimed": "Whether seats change under true last prints (Gonzales $79.99 Sep 21 vs Florentino $89.99/$69.00 Sep 17, intraday order unknown).",
+      "suggestedRemedy": "Tuesday lane Sep 29: either call the rule what it is (SCP raw value + 30-day gate) on the page and in x-board.json (rawSold -> rawGuide), or rank on the dated last print the page already quotes.",
+      "decision": "APPROVED by Mo 2026-09-24 in chat; CoS to append, re-verify live and apply on the next desk run."
+    },
+    {
+      "id": "iw-2026-09-24-3",
+      "status": "approved",
+      "severity": "MED",
+      "area": "indices",
+      "title": "MED — /how-prices-work says every set index is sold-basis and re-marked Mondays (four places); BCB26 and BOW26 are ask-basis and R20-held.",
+      "evidence": [
+        "how-prices-work.html:755 'the marking basis for every set index'; :790 'a basket of sold marks'; :793 'Re-marked every Monday from sold comps.'; :822 'sold-basis, divisor-continuous, re-marked Mondays'.",
+        "data/indices.json: BCB26 basis 'ask', heldSince 2026-09-22; BOW26 basis 'ask', heldSince 2026-09-21.",
+        "6e69d39 (Sep 23) touched this file (PF25 link colour) while shipping R20 hold lines elsewhere."
+      ],
+      "r6": "Same class as iw-2026-09-17-3 (/indices) and iw-2026-09-21-2 (home), both applied; neither covered this page.",
+      "suggestedRemedy": "Name both bases and the hold, as home now does; the Sep 30 rebuild will change it again, so write it from indices.json or date it.",
+      "decision": "APPROVED by Mo 2026-09-24 in chat; CoS to append, re-verify live and apply on the next desk run."
+    },
+    {
+      "id": "iw-2026-09-24-4",
+      "status": "approved",
+      "severity": "MED",
+      "area": "content",
+      "title": "MED — /topps-pristine-baseball speaks in 'week one' six weeks after its Aug 12 release, and its meta/og description sells 'an $800+ secondary' from pre-release data stamped Aug 17 (38 days, no machine stamp).",
+      "evidence": [
+        "Live 12:10Z: 'Thin inside week one'; 'as first-week comps form'; meta + og 'an $800+ secondary'; 'Box pricing as of Aug 17, 2026'.",
+        "No data-prices-updated on the page, so audit-prices check 4 cannot see it."
+      ],
+      "r6": "Not in audit-2026-09-07-1's list; no Pristine proposal in the 160. STATE's 'Pristine body -> release-day state' item is the basketball page.",
+      "suggestedRemedy": "Re-read the secondary on dated solds and date it, or drop the figure from the snippet; retire the week-one tense; add a machine stamp.",
+      "decision": "APPROVED by Mo 2026-09-24 in chat; CoS to append, re-verify live and apply on the next desk run."
+    },
+    {
+      "id": "iw-2026-09-24-5",
+      "status": "approved",
+      "severity": "MED",
+      "area": "analytics",
+      "title": "MED — US sessions stepped down ~55% on Sep 19 (35/38/33 -> 16/17/16/15 a day) and stayed there; sessionsYesterday hides it because bot sessions fill the gap.",
+      "evidence": [
+        "ga4-latest.json (13:55Z Sep 23) reports.countriesDaily7, US sessions Sep 16-22: 35, 38, 33, 16, 17, 16, 15 (Sep 19-21 settled).",
+        "daily28 sessions Sep 19-22: 59, 54, 40, 30, with Singapore+China 42, 33, 21, 10.",
+        "Pre-bot whole-site sessions Sep 10-15: 45, 44, 31, 26, 32, 45.",
+        "Key events held (5, 6, 1, 8), so organicKeyEventRate7 rose on a shrinking denominator."
+      ],
+      "r6": "STATE top problem #2 notes small traffic and 45% bots, not the step. Nothing in the 160.",
+      "notClaimed": "Cause. Candidates: Bing ranking (77 of 134 organic sessions/7d), or a tag-affecting change Sep 18-19.",
+      "suggestedRemedy": "Desk reads Bing Webmaster clicks by day Sep 14-23. ga4-snapshot.mjs publishes a clean (bot-excluded) daily sessions series or usSessionsYesterday so this lane can median it.",
+      "decision": "APPROVED by Mo 2026-09-24 in chat; CoS to append, re-verify live and apply on the next desk run."
+    },
+    {
+      "id": "iw-2026-09-24-6",
+      "status": "approved",
+      "severity": "LOW",
+      "area": "instruments",
+      "title": "LOW — the Sep 23 price-data history reset removed the only source of trailing medians for signal and gate counts; log the counts nightly.",
+      "evidence": [
+        "price-data branch = one commit (6cd29fc, 2026-09-23). prices-latest.json carries no history of its own counts.",
+        "IW Sep 18/19/20/21 stumbles each flagged this single point of failure."
+      ],
+      "r6": "Does not re-open Mo's 'scrub history, stay public' ruling; additive only.",
+      "suggestedRemedy": "Nightly appends {day, cards, numericLast, signals{BUY,HOLD,SELL}, gated, closesCum, watching} to a small log on price-data.",
+      "decision": "APPROVED by Mo 2026-09-24 in chat; CoS to append, re-verify live and apply on the next desk run."
+    }
+  ],
+  "promptDefects": [
+    "Prompt names LANE-RULES R1-R11; file is R1-R24.",
+    "Prompt reads the feed from raw.githubusercontent; R19 says https://www.shopcardhub.com/feed/.",
+    "Index cadence check should exempt R20-held tickers (BCB26, BOW26) until their R21 date."
+  ],
+  "moApproval": {
+    "by": "Mo (live, in the Integrity Watch session)",
+    "at": "2026-09-24",
+    "verbatim": "pss all of these to the chief of staff for review on his next run and tell him I approve",
+    "scope": "All six iw-2026-09-24-* items, plus the eight unledgered Sep 19/20 items named in iw-2026-09-24-1 (iw-2026-09-19-1,-2,-4,-5,-6; iw-2026-09-20-1,-2,-3).",
+    "note": "Approval of the findings and remedies. The CoS still re-verifies live before applying (R5) and picks the fix shape; 19-5 and 19-6 are recommended close, not fix."
+  }
+}

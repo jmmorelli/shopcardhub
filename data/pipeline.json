@@ -3134,6 +3134,56 @@
       "severity": "LOW",
       "title": "coachNotes['tuesday-bangers'] is weekOf 2026-09-14, four weeks stale. This run read it and applied its two standing items (absolute dates, three gates).",
       "decision": "Sunday CoS to refresh the note. | CoS desk 2026-10-13: coach notes are retired (Oct 5 prompt-drift ruling; the Sunday brief no longer writes them). The Tuesday lane skips coachNotes from Oct 20; its standing items (absolute dates, three gates) live in LANE-RULES."
+    },
+    {
+      "id": "iw-2026-10-15-1",
+      "status": "queued",
+      "date": "2026-10-15",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "HIGH",
+      "title": "HIGH: /mlb-cards says 'Every number here is a sold price' over 12 SportsCardsPro price-guide points (6 raw, 6 PSA 10, n=0 'scp-point'); 103 graded cells print as lo-hi ranges, 25 of them on 2 sales (R18 + iw-2026-10-06-2 accepted shape).",
+      "decision": "CoS daily review 2026-10-15 07:35 accepted with the filed remedy; CoS desk 2026-10-15 recorded it here (R5: 'Every number here is a sold price' still live 21:20Z). Owner: Traffic Agent Fri Oct 16 first item (build-mlb-cards.mjs + data/mlb-cards.json + handoff spec, so the Mon Oct 19 re-mark keeps it), with Bowman KB G32 (paper rows lose tier + graded links). Not shipped by Oct 18 23:59 -> Oct 19 review escalates to the desk."
+    },
+    {
+      "id": "iw-2026-10-15-2",
+      "status": "queued",
+      "date": "2026-10-15",
+      "area": "indices",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "MED: one raw sale (SK03 Charizard #146, n30=1, thin) is 92.6% of Skyridge's Oct 6-12 move; /skyridge-index labels it 'sold mark ... a median of recent dated sales (not one sale)', home names SK03 'Best +17.7%' and tapes it '+60.0%' unflagged.",
+      "decision": "CoS daily review 2026-10-15 accepted; queued -> Wed Oct 21 weekly (Index Keeper), after Phase 2, F4 + F2 first. Generated output (R28 bars the Night Crew)."
+    },
+    {
+      "id": "iw-2026-10-15-3",
+      "status": "queued",
+      "date": "2026-10-15",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "MED: /gold-star-index prints eleven 2-sale midpoints as graded prices ('$22,356 2 sales · 90d' = midpoint of $32,211 Oct 12 and ~$12,500); footer 'Every mark here is a dated sold comp'. R18 Oct 8 ruling: <3 rows print singly.",
+      "decision": "CoS daily review 2026-10-15 accepted; queued -> Wed Oct 21 weekly (Index Keeper), with Pokemon KB P2 (GSTAR Umbreon gold star PSA 9 reprint sale) in the same tools/build-grails.mjs pass."
+    },
+    {
+      "id": "iw-2026-10-15-4",
+      "status": "queued",
+      "date": "2026-10-15",
+      "area": "indices",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "LOW: plain read 'Last week' = previous row (3-4 days on Mon/Thu tickers) under a w/w badge on the one-week rule: TH26 '-21.9% w/w' vs 'Last week: down 2.8%'; SV151 -3.0% vs 1.5%. Missed element of iw-2026-10-03-1.",
+      "decision": "CoS daily review 2026-10-15 accepted (= Retention 2026-10-15 side finding (a), 16 of 31 sector pages; gate 1 of retention R17/E10); queued -> Wed Oct 21 weekly (Index Keeper), first item with F2: one comparison rule for the box and the plain read, start date printed."
+    },
+    {
+      "id": "iw-2026-10-15-5",
+      "status": "queued",
+      "date": "2026-10-15",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "LOW: home 'Our 10 modern indices (2024-26 sets)' counts SV151 (released 2023-09-22); build-regime.mjs L54 vs its own MID (2019-2023) comment.",
+      "decision": "CoS daily review 2026-10-15 accepted; queued -> Wed Oct 21 weekly (build-regime.mjs: SV151 to MID or label '2023-26')."
     }
   ],
   "scoreboard": {
@@ -4722,7 +4772,7 @@
           "by": "CoS with Mo (cloud build, Mac deploy key) - /indices momentum screener: every live ticker ranked by 1W/1M/3M, sortable; horizon math windowed, live never joined to recon; STATE + sitemap lastmod",
           "gates": "audit-prices FAIL 0 / WARN 65 · audit-site FAIL 0 / WARN 5 (166) · audit-terminal FAIL 0 / WARN 1",
           "rollback": "git revert --no-edit 45437ae",
-          "liveVerified": "pending - verified by curl after push (this entry updated by the next desk if not)"
+          "liveVerified": "2026-10-15 ~21:20 UTC (CoS desk): /indices 200, #screener present; commit on origin as 45437ae9, docs 3dddda20"
         },
         {
           "date": "2026-10-15",
@@ -4735,8 +4785,48 @@
           ],
           "by": "Traffic Agent (E6 Bing striking-distance via League A/B/C + E7 GEO slice 1), Task-key traffic-agent; Authority: Mo 2026-09-27 (go time) + Mo 2026-10-14 (traffic function)",
           "gates": "audit-prices FAIL 0 / WARN 62 (65 before; 3 cleared on changed pages) · audit-site FAIL 0 / WARN 5 · audit-terminal FAIL 0 / WARN 1 · sitemap-lastmod --check 0 · llms --check ok · league score --check ok · Chromium 1280/390 on 5 pages clean",
-          "liveVerified": "pending (curl after push)",
-          "note": "/pokemon-30th-anniversary-2026 release-date answer; /topps-definitive-basketball released Sep 17 (reported) + list/ask; /bowman-chrome-baseball-2026 BCB26 worth answer (Oct 12 mark); /bowman-football format table (hobby sold median Oct 3-11 + Oct 15 asks); /llms.txt + /llms-full.txt generated"
+          "liveVerified": "2026-10-15 ~21:20 UTC (CoS desk): 4/4 pages 200 with the new answers (30th 'Sep 16, 2026'; Definitive 'Sep 17, 2026'; BCB '71.87'; Bowman FB '$394 median across 7 sales'), /llms.txt 200",
+          "note": "/pokemon-30th-anniversary-2026 release-date answer; /topps-definitive-basketball released Sep 17 (reported) + list/ask; /bowman-chrome-baseball-2026 BCB26 worth answer (Oct 12 mark); /bowman-football format table (hobby sold median Oct 3-11 + Oct 15 asks); /llms.txt + /llms-full.txt generated | CoS desk Oct 15: the commits listed are the cloud-side hashes; origin carries 2a1129fb, 99fad40a, 95a0fe11, df31bacf, 128246dc (+ pushLog 64d968f8, docs 859ee812) — same trees per the Traffic Agent's write-tree check."
+        },
+        {
+          "date": "2026-10-14",
+          "commits": [
+            "d7c0ba14"
+          ],
+          "by": "CoS with Mo (docs only, does not deploy) - voice corpus: Mo-approved register sample",
+          "gates": "docs only",
+          "liveVerified": "n/a (docs; vercel ignoreCommand)",
+          "note": "Backfilled by the CoS desk Oct 15."
+        },
+        {
+          "date": "2026-10-15",
+          "commits": [
+            "9ca03b42"
+          ],
+          "by": "CoS with Mo in chat ('start the cull', ~14:45 PT Oct 14 local commit time) - R35 cull batch 1: 24 pages merged into hubs with 301s, sitemap 136 -> 112; index.html + sitemap.xml regenerated (build-home --feed data/feed, sitemap-lastmod, build-llms)",
+          "gates": "audit-prices FAIL 0 / WARN 45 · audit-site FAIL 0 / WARN 5 (146) · audit-terminal FAIL 0 / WARN 1 · sitemap-lastmod --check 0",
+          "rollback": "git revert --no-edit 9ca03b42",
+          "liveVerified": "2026-10-15 (attended session): 24/24 old URLs 308 to hubs, sitemap 112, IndexNow 112 -> 200; re-checked by the CoS desk ~21:20 UTC (/roy-watch-2026 -> 308 /mlb-cards)",
+          "note": "Backfilled by the CoS desk Oct 15 (owed per claude/traffic/2026-10-15-cull-batch-1-applied.md). Gates re-run by the desk on b7deac6: 0/45 · 0/5 (146) · 0/1."
+        },
+        {
+          "date": "2026-10-15",
+          "commits": [
+            "b7deac6e"
+          ],
+          "by": "CoS with Mo (E13 Mark Monday) - og/x/mark-monday.png evergreen opener card",
+          "gates": "audit-prices FAIL 0 / WARN 45 · audit-site FAIL 0 / WARN 5 (146) · audit-terminal FAIL 0 / WARN 1 (desk re-run)",
+          "liveVerified": "n/a (image asset)",
+          "note": "Backfilled by the CoS desk Oct 15."
+        },
+        {
+          "date": "2026-10-15",
+          "commits": [
+            "(this desk docs commit)"
+          ],
+          "by": "CoS desk (Mac deploy key, unattended) - STATE run log + NOW (desk, cull batch 1), NEEDS-MO, retention LEDGER mirror (R17 ruled), pipeline IW Oct 15 rows + pushLog backfills, Project archive claude/archive/project-2026-10/; docs only, does not deploy",
+          "gates": "audit-prices FAIL 0 / WARN 45 · audit-site FAIL 0 / WARN 5 (146) · audit-terminal FAIL 0 / WARN 1",
+          "liveVerified": "n/a (docs; vercel ignoreCommand)"
         }
       ]
     },

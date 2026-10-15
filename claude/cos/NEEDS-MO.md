@@ -7,7 +7,26 @@ reach. If something here no longer needs you, say so and it comes off.
 *(Housekeeping for the agents, not for Mo: this file lives in the repo beside `STATE.md`; that copy
 is canonical and the Project copy is a mirror written in the same run. Standing grants — Sep 4 "anything
 that needs Mo, I approve"; Sep 8 "I don't want to sign into anything"; Sep 16 "I'd prefer you guys just
-talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy. Oct 5 ~13:50: the Project copy was updated again from a CoS chat with no repo access; the Oct 5 desk mirrored it here, closed what §7 of `claude/cos/session-2026-10-05-predesk.md` settled, and wrote both copies. Oct 7 ~10:20: CoS chat with repo access wrote both copies in the same run. Oct 7 13:00: X Desk Watch added its block to the Project copy only; the Oct 7 desk mirrored it here and wrote both copies.)*
+talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy. Oct 5 ~13:50: the Project copy was updated again from a CoS chat with no repo access; the Oct 5 desk mirrored it here, closed what §7 of `claude/cos/session-2026-10-05-predesk.md` settled, and wrote both copies. Oct 7 ~10:20: CoS chat with repo access wrote both copies in the same run. Oct 7 13:00: X Desk Watch added its block to the Project copy only; the Oct 7 desk mirrored it here and wrote both copies. Oct 15 13:00: X Desk Watch added its block to the Project copy only (built on the repo copy at `b7deac6`); the Oct 15 desk mirrored it here and wrote both copies.)*
+
+---
+
+## Open — from the desk (2026-10-15, 14:00 run). Mo, these are the only things waiting on you
+
+- **Optional, your X account, no rush:** one reply under your Oct 13 "Marks" post fixing the modern range (text in the X Desk Watch block just below). Or leave it.
+- **Optional, only if you want the X loop unattended:** the drafted R10 amendment 7 (`claude/cos/R10-amendment-7-draft.md`) lets the X daily lane queue your Mark Monday opener and post the mark replies without you in a chat. The automation layer won't let an unattended run grant itself that, so it's yours to paste into `LANE-RULES.md`, or to switch that task's approval setting in the desktop app. Until then: Friday "go" in a CoS chat queues Monday's opener; Monday afternoon you paste the drafted mark replies.
+- Standing, unchanged: owned-card photos (`Card Hub/photos/owned/`, by Oct 25 or it closes) · /track-record labels yes/no · TCGplayer on Impact · TAG payment info + link.
+
+*Closed this run:* the stale Thu Base Set post — you deleted it (and the two off-cadence posts) before its slot. The cull — you ran it with the CoS today; 24 pages now redirect, 112 left. *Checked against live state:* no new EPN CSVs in `Card Hub/epn/` since Oct 13; `Card Hub/photos/owned/` still absent. *Not yours:* the Thursday price re-mark check (its job hadn't run yet; tomorrow's desk), the Project storage clean-up (done today).
+
+---
+
+## Open — from X Desk Watch (2026-10-15, 13:00 run). One optional reply, no rush
+
+- **Your Oct 13 2:41 pm "Marks, Sep 28 to Oct 12" post has one wrong range.** It says every modern chase index fell 8 to 23%. That range came from mid-September starts; from Sep 28 to Oct 12 they fell 1.5% to 15%. **Ask: reply under the post with this, or leave it (59 views, two days old). Don't delete.**
+  > fix on this one: the modern drops ran from mid-September, not Sep 28. from Sep 28 to Oct 12 the six modern chase indices fell between 1.5% and 15%.
+  Optional second line: "and most of Skyridge's jump is one Crystal Charizard sale."
+  (Post: https://x.com/shopcardhub/status/2110123791577923894 · details: Project `claude/cos/x-desk-watch-run-2026-10-15-1300.md`.)
 
 ---
 

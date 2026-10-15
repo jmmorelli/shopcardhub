@@ -1,0 +1,108 @@
+{
+  "_comment": "Integrity Watch 2026-09-29. Staged OUTSIDE data/pipeline.json per R1. The CoS appends these from a fresh clone after ruling. Every finding re-verified live 12:05-12:09Z (R5); ledger (192 proposals) and STATE checked (R6); cited files confirmed with git ls-files (R7). Report: claude/cos/integrity-watch-2026-09-29.md",
+  "generated": "2026-09-29T12:12:00Z",
+  "generator": "integrity-watch (cloud; fired Tue — cadence row says Mon+Thu)",
+  "head": "df6054c76c747d1c97e58299f7b6f48e9625efbf",
+  "gates": "audit-prices 0/75 · audit-site 0/3 · audit-terminal --feed 0/0 = baseline",
+  "proposals": [
+    {
+      "id": "iw-2026-09-29-1",
+      "status": "awaiting-cos",
+      "severity": "HIGH",
+      "area": "home",
+      "title": "HIGH: home door 03 says the Auction Desk shows 'Live eBay auctions next to what the card last sold for'. /auctions compares bids to the engine's nightly ASK mark ('our price') and a median of last-seen bids ('a floor, not a sale price'). Neither is a sale.",
+      "evidence": [
+        "Live 12:09Z / (index.html:849): 'Auctions ending soon — Live eBay auctions next to what the card last sold for'.",
+        "auctions.html renders 'vs our price' = r.mark (api/auctions.js: engine nightly mark from prices-latest.json, verified asks) and 'vs last bids' = hammerMedian; the page's own copy: 'the card's nightly mark and a floor, not the sale price at recent auctions'.",
+        "market-latest.json note: 'OBSERVATION ONLY ... not yet a mark'."
+      ],
+      "r6": "iw-2026-09-19-1 fixed labels inside the desk/engine blocks; this home door line was never ledgered.",
+      "suggestedRemedy": "One string: 'Live eBay auctions next to our nightly ask mark and recent last bids' (or 'soonest close first'). No new mark; R20 clean.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-29-2",
+      "status": "awaiting-cos",
+      "severity": "MED",
+      "area": "league",
+      "title": "MED: /moonbreon-worth says 'Index: none — no ShopCardHub index tracks Evolving Skies' and 'Evolving Skies is not in any ShopCardHub index'. EVS21 went live Sep 28 with Umbreon VMAX #215 as its #1 constituent.",
+      "evidence": [
+        "Live 12:09Z, two places (moonbreon-worth.html:823, :948).",
+        "indices.json EVS21 status live, inception 2026-09-28, page /evolving-skies-index, basket 235/238; #215 price 1975, n30 35, w 0.5114 (capped); hero card on that page (live).",
+        "Page built b05b26f (league Sep 28); classic indices landed 9d9f7b8 22:52Z the same day."
+      ],
+      "r6": "None.",
+      "suggestedRemedy": "Link the chip to /evolving-skies-index and replace the paragraph clause; league integrator or desk edits (R27). League build check: 'Index: none' verified against indices.json at build time.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-29-3",
+      "status": "awaiting-cos",
+      "severity": "MED",
+      "area": "retention",
+      "title": "MED: iw-2026-09-28-1 follow-up incomplete — the signup pitch 'the chase cards’ last sold' is still baked into 8 live pages and re-emitted by tools/build-signup.mjs:32; only js/signup.js and R26 were changed to 'sold marks'.",
+      "evidence": [
+        "Live 12:05Z and 12:09Z, one hit each: /, /bowman-bangers, /ascended-heroes-index, /chaos-rising-index, /destined-rivals-index, /phantasmal-flames-index, /pitch-black-index, /prismatic-evolutions-index.",
+        "tools/build-signup.mjs:32 NEW_PITCH '...and the chase cards&rsquo; last sold. One email, Tuesdays. Free.'",
+        "Same root on /: 'every card in the basket with its dated sold price' (tables now say 'sold mark')."
+      ],
+      "r6": "Incomplete application of applied iw-2026-09-28-1 (desk e0c1550); R26 says 'No lane writes a different pitch.' Not a re-file.",
+      "suggestedRemedy": "Fix NEW_PITCH to the R26 wording, re-run the tool (or sed the 8 pages); home line → 'dated sold mark'.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-29-4",
+      "status": "awaiting-cos",
+      "severity": "MED",
+      "area": "site-wide",
+      "title": "MED: 42 page footers say 'PSA pricing sourced from psacard.com, updated February 10, 2026'. The graded figures on those pages come from PriceCharting/SportsCardsPro dated sales, per each page's own Sources.",
+      "evidence": [
+        "Live 12:09Z /moonbreon-worth (PSA 10 $3,999.00, PSA 9 $2,123.10 from PriceCharting tabs) and /topps-allen-ginter-2026 (Kurtz PSA 10 $33.00 from SportsCardsPro).",
+        "grep: 42 of 129 HTML files carry the line."
+      ],
+      "r6": "Not in the ledger or STATE.",
+      "suggestedRemedy": "Delete the clause site-wide; keep a psacard.com credit only where a page quotes psacard.com (e.g. grading fees), with that page's read date.",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-29-5",
+      "status": "awaiting-cos",
+      "severity": "LOW",
+      "area": "indices",
+      "title": "LOW: the three Bowman index pages' method note says 'PriceCharting's dated ungraded sold list (blended eBay + TCGplayer)' and 'the source caps its table at 60 rows'. For Bowman items the list is eBay-only and caps at 30.",
+      "evidence": [
+        "Live 12:09Z on /bowman-1st-chrome-index, /bowman-2026-index, /bowman-chrome-2026-index.",
+        "Cloud read this run: pricecharting.com/game/baseball-cards-2026-bowman-chrome-prospect-autograph/andrew-fischer-cpa-af → 30 eBay rows, 0 TCGplayer; pokemon-base-set/alakazam-1 → 30 + 30. One item read; SportsCardsPro 403s from the cloud.",
+        "BOW26 n30 29–30 on Fischer, Hartman, Gonzales, Torres = cap-bound.",
+        "Template text: tools/build-sector-index.mjs:400."
+      ],
+      "r6": "Noted-not-filed by the Sep 28 run; no ruling.",
+      "suggestedRemedy": "Per-config source sentence and row cap (sports: 'SportsCardsPro/PriceCharting dated eBay sales · table caps at 30').",
+      "decision": null
+    },
+    {
+      "id": "iw-2026-09-29-6",
+      "status": "awaiting-cos",
+      "severity": "LOW",
+      "area": "home",
+      "title": "LOW: home still says set indices are 're-marked weekly' (body x2, footer, og:description, chart caption 'indices weekly'); 17 of 23 tickers mark Mon + Thu. /indices is already correct.",
+      "evidence": [
+        "Live 12:09Z /: 'Set indices are re-marked weekly — on sold comps...'; og:description '...sold comps, re-marked weekly'.",
+        "indices.json: 5 sector + 12 classic tickers Mon/Thu; /indices live: 'six Pokémon chase indices weekly; the whole-set indices ... Monday and Thursday'."
+      ],
+      "r6": "Home residual of applied iw-2026-09-28-3; its 'generate from indices.json' part is queued to the Sep 30 weekly — add home to that scope, no separate work.",
+      "suggestedRemedy": "Fold into the Sep 30 weekly's generated basis/cadence sentence.",
+      "decision": null
+    }
+  ],
+  "promptDefects": [
+    "Prompt names LANE-RULES R1-R11; file is R1-R28.",
+    "Prompt reads the feed from raw.githubusercontent; R19 says /feed/.",
+    "Prompt's SV151 caveat stale (live since Sep 25).",
+    "This run fired Tuesday; LANE-RULES cadence row says Mon + Thu 05:00 — fix the row or the schedule at the Oct 1 roster review."
+  ],
+  "watch": [
+    "GA4 clicks7 22 vs trailing median 36 (-39%), falling 6 days; chase_click absent from events7 since Sep 26 launch (wiring present).",
+    "Thursday: all 17 Mon/Thu tickers (5 sector + 12 classic) should show an Oct 1 mark — the classics' first move."
+  ]
+}

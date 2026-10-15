@@ -1,0 +1,85 @@
+{
+  "_comment": "Integrity Watch 2026-09-20 — staged proposals for the Chief of Staff to append to data/pipeline.json from a fresh clone. This lane does not write the ledger (R1). All entries awaiting-cos. Report: claude/cos/integrity-watch-2026-09-20.md",
+  "generated": "2026-09-20T12:10:00Z",
+  "lane": "integrity-watch",
+  "head": "663fe85ffb5812f208aafe64b51212506c0caf91",
+  "gates": "audit-prices 0 FAIL / 60 WARN (31 no-machine-stamp, 25 non-numeric-price, 4 stale-prose-stamp) · audit-site 0/3 · audit-terminal 0/1 — exactly the baseline restated in 663fe85",
+  "proposals": [
+    {
+      "id": "iw-2026-09-20-1",
+      "status": "awaiting-cos",
+      "severity": "FAIL",
+      "surface": "/best-football-cards-under-50",
+      "file": "best-football-cards-under-50.html",
+      "title": "FAIL — /best-football-cards-under-50 withdraws three claims in one block and republishes all three in its 'Deep Dives' block below, including the $1,349 Black Shimmer sale that cos-2026-09-19-1 records as withdrawn and deliberately not restated.",
+      "evidence": [
+        "Live re-verified 2026-09-20T12:08:48Z, HTTP 200.",
+        "Correction block (live): 'Rewritten September 19, 2026. The previous version of this list recommended Panini Prizm and Optic parallels of the 2026 class, and those are the wrong products... The old list also carried a \"+40% post-draft\" figure and a $1,349 Black Shimmer sale we cannot trace to a dated record; both are withdrawn and neither is restated.'",
+        "Deep-dive entry 1 (live): 'Fernando Mendoza 2026 Prizm Silver / Optic Holo RC · ~$12–$45. Mendoza's cards surged ~40% after the draft confirmed his starting role in Las Vegas.' — restates the withdrawn Prizm/Optic product AND the withdrawn +40% figure.",
+        "Deep-dive entry 2 (live): 'Tate is the top WR target of this class, and the high end is already proving out — a Prizm Draft Black Shimmer 1/1 sold for $1,349.' — restates the withdrawn $1,349 as a completed sale, as evidence for a buy recommendation.",
+        "Deep-dive entry 3 (live): 'Class Basket · 2026 Draft Class Prizm Draft Picks Silver (college) · ~$15–$45. Before the fully-licensed NFL rookie products drop...' — restates Prizm, plus pre-release framing on a class this same page prices on September 2026 dated sales.",
+        "Production /api/comps read live this run: q='2026 Panini Prizm Football Fernando Mendoza Silver RC -auto -lot' returns total 0 / count 0; q='2026 Donruss Optic Football Mendoza Holo RC -lot' returns total 0 / count 0. Both products have zero listings — the exact shape of cos-2026-09-19-1.",
+        "The three deep-dive ranges (~$12–$45, ~$30–$50, ~$15–$45) are neither dated sales nor labelled asks, against the page's own contract: 'Every price below is a median of dated completed sales... Where a figure is an ask rather than a sale, it says so.'",
+        "Sibling page is correct: /nfl-rookie-cards-2026 names both withdrawn figures once, inside the withdrawal sentence only. git grep -l '1,349' in the clone taken this run returns exactly these two HTML files.",
+        "Hand-authored HTML, no generator: git grep -l 'Black Shimmer' -- '*.mjs' '*.js' '*.py' returns nothing. Fix is confined to one file.",
+        "The eight ranked rows ABOVE the defect are clean and were cross-checked against data/football-solds-2026-09-19.json ($2.87 median on 30 dated Sep 18 sales; the +24/33/39% insert premiums recompute exactly from the published medians)."
+      ],
+      "r6": "Not a re-file. cos-2026-09-19-1 is scoped to /nfl-rookie-cards-2026; cos-2026-09-19-3 to the /bowman-football buy strip; cos-2026-09-19-4 to Cosmic Chrome / Chrome Black. No proposal in the 139 covers this page's deep-dive block. The applied decision on cos-2026-09-19-1 explicitly states the two June figures are 'WITHDRAWN and deliberately not restated'.",
+      "why_gates_passed": "audit-prices check 7 sold-provenance reads graded price cells; these are prose ranges in a div and '$1,349' sits inside a sentence. Fourth reproduction of iw-2026-09-17-4 (open gate gap).",
+      "proposed_check": "A mechanical, greppable gate: a page that contains a withdrawal sentence naming a figure must not contain that figure anywhere outside it. Would also have caught the graded-ladder retraction.",
+      "remedy_shape": "Not this lane's to apply. The deep-dive block needs the same treatment the ranked table already got: rebuilt on products that exist and figures that have dated sales, or removed. Withdrawn figures are not replaced with new guesses."
+    },
+    {
+      "id": "iw-2026-09-20-2",
+      "status": "awaiting-cos",
+      "severity": "HIGH",
+      "surface": "tools/ga4-snapshot.mjs · data/ga4-latest.json · data/ga4-history.json (price-data branch)",
+      "title": "HIGH — GA4's newest day is not settled when the nightly snapshot reads it. Sep 17's engagement rate read 8.57% in one night's file and 47.22% in the next. The two fields this lane's FAIL rule depends on (keyEventsYesterday, sessionsYesterday) are taken from that unsettled row.",
+      "evidence": [
+        "Two committed files on the price-data branch, same day, same property, different answers. cc36fb7 (generatedAt 2026-09-18T18:00:17Z, day 2026-09-17), newest daily28 row: {\"date\":\"20260917\",\"sessions\":70,\"keyEvents\":11,\"engagementRate\":0.08571428571428572,\"averageSessionDuration\":156.2795861}.",
+        "2cbf66f (generatedAt 2026-09-19T12:44:30Z, day 2026-09-18), the SAME Sep 17 row: {\"date\":\"20260917\",\"sessions\":72,\"keyEvents\":12,\"engagementRate\":0.4722222222222222,\"averageSessionDuration\":136.01312173611112}.",
+        "Engagement rate restated 5.5x (8.57% -> 47.22%); sessions 70 -> 72; key events 11 -> 12. GA4 finishes attributing engagement after it finishes counting sessions, so the ratio moves far more than its inputs.",
+        "tools/ga4-snapshot.mjs:113 writes both summary fields straight off the newest row with no settled-day guard: keyEventsYesterday: (rep.daily28.rows.at(-1)||{}).keyEvents, sessionsYesterday: (rep.daily28.rows.at(-1)||{}).sessions.",
+        "Line 131 stamps every written file with its own warning: 'Windows end on yesterday (GA4 finishes processing a day ~24h after it ends).' The tool documents the lag and then reads the day inside it.",
+        "git grep -in 'provisional' in the clone taken this run returns no hit in any tool, workflow or data file (one unrelated prose hit in data/calls.json). Nothing marks the unsettled row (R7 satisfied).",
+        "Today's exposure, unfiled on purpose: the current file's freshest row reads Sep 18 at 4 key events on 54 sessions and a 12.96% engagement rate. On this evidence that is probably not what Sep 18 will say tomorrow. No lane should quote it."
+      ],
+      "consequence": "The Integrity Watch charter makes ZERO key events on a day with >=30 sessions a FAIL — the Sep 4-16 blackout shape. That test is currently evaluated on the least settled day in the file. A morning where GA4 has attributed nothing yet hands this lane a zero on a healthy day and it files a blackout that does not exist.",
+      "already_cost_something": "This produced a wrong finding yesterday. iw-2026-09-19-6(b) filed Sep 17 as 'the 28-day engagement floor, 8.57% against a 45.66% trailing median, -81%'. The settled value is 47.22%, 3% ABOVE the median. See the withdrawal entry below.",
+      "r6": "No existing ruling. Nothing in the 139 proposals concerns GA4 processing lag; claude/handoffs/ga4-snapshot-2026-09-18.md and STATE 2026-09-18 section 2 cover the pipeline's construction and first-run verification, not freshness semantics.",
+      "remedy_shape": "One file, for the CoS to rule on: either have ga4-snapshot.mjs emit the summary for the newest SETTLED day (day-before-yesterday) alongside the current block, or mark the freshest daily28 row and both *Yesterday fields provisional:true. Then the zero-key-events FAIL is evaluated on a settled day. In the same pass, ga4-history.json's Sep 17 row carries the stale 8.57%-era figures and should be restated from the settled read — it is this lane's trailing-median material, currently seeded with one bad row out of two."
+    },
+    {
+      "id": "iw-2026-09-20-3",
+      "status": "awaiting-cos",
+      "severity": "LOW",
+      "surface": "/bowman-bangers",
+      "file": "bowman-bangers.html",
+      "title": "LOW — the board's keywords meta sells the page as '1st Bowman cards 2026' (the base-card category R9 section 3 makes a gate failure), and two prose lines use bare '1st Bowman' as shorthand for the auto.",
+      "evidence": [
+        "Live re-verified this run. <meta name=\"keywords\" content=\"2026 Bowman baseball prospects, 1st Bowman cards 2026, Ethan Holliday Bowman card, ...\">",
+        "Prose instance 1 (Holliday entry): 'The headliner of the 2026 Bowman class and the most-chased 1st Bowman in years.'",
+        "Prose instance 2 (Kim entry): 'The most expensive 1st Bowman in the entire 2026 class — and he came off the watch tier to take it.'",
+        "Every other bare '1st Bowman' on the page is inside the correct phrase 'his 1st Bowman auto'.",
+        "audit-terminal's board-autos-only check passes: it reads body copy for the self-description and does not read <meta>."
+      ],
+      "why_low": "The board's public face is correct where it counts. Title: '1st Bowman Chrome Autos, Ranked and Priced Nightly'. Meta description: 'On-card autos only: not base 1st Bowman Chromes, not graded copies.' The explainer states R9 section 1 verbatim. Both prose instances sit inside entries whose headings and price rows say '1st Bowman Chrome Auto', and keywords meta has been ignored by every major search engine since 2009. No reader is misled.",
+      "why_filed_anyway": "The interesting part is the gate's SCOPE: the exact string R9 section 3 names as a FAIL is on the page in a place the gate does not look. The Sep 16 incident Mo caught himself was this category error in this page's public face.",
+      "r6": "R9 is doctrine, not a proposal; no item in the 139 covers the keywords meta on any page."
+    }
+  ],
+  "withdrawals": [
+    {
+      "against": "iw-2026-09-19-6(b)",
+      "status": "WITHDRAWN BY THE FILING LANE",
+      "note": "Yesterday's finding that 'Sep 17 is the 28-day engagement floor (8.57%, -81% vs a 45.66% median)' was read off an unsettled GA4 row. The settled figure from the next night's snapshot is 47.22% — 3% above the median, entirely ordinary. The finding is withdrawn before it is ruled. It has not yet been appended to data/pipeline.json, so nothing needs to be reversed there. iw-2026-09-19-6(a) — the Singapore cluster — is unaffected and stands on its own evidence (re-read today: 74 sessions, 0.205s average, 38.1% of US sessions, up from 61 / 31.6%). Cause: see iw-2026-09-20-2."
+    }
+  ],
+  "status_of_prior_findings_checked_live_not_refiled": {
+    "iw-2026-09-19-1 (FAIL, engine-block generator 'What buyers paid' / 'Hammer med')": "Still live — /ethan-holliday-rookie-cards serves both strings in the static shell today. Not re-filed.",
+    "iw-2026-09-19-2 (HIGH, /topps-definitive-basketball ask over a TBA page)": "Page copy unchanged ('TBA' x3, 'Comps'/'None yet' present in the served HTML). The $14,999 itself is client-rendered from /api/comps and was NOT re-queried this run, so this is 'page unchanged', not 'finding reproduced'.",
+    "iw-2026-09-19-3 (HIGH, /bowman-football 1st-logo contradiction)": "Fixed and in the ledger, applied in c0398f9.",
+    "iw-2026-09-19-4 (MED, /indices 'five of the seven' on eight tickers)": "Still live — 'Five of the seven' in body, 'Five tickers' in meta description and JSON-LD. Not re-filed.",
+    "iw-2026-09-19-5 (MED, board liquidity-gate counters static)": "Still live, with one narrowing from this run: Kim's row reads '41 days as of Sep 15' — it IS stamped, so it is a dated claim inside its stamp rather than an unstamped stale number. The substance (a hand-written counter on a nightly page) stands; the framing should be 'a counter that should be computed, not a false number'."
+    }
+}

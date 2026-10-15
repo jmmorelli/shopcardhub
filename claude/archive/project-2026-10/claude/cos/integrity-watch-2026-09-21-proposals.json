@@ -1,0 +1,96 @@
+{
+  "_comment": "Integrity Watch 2026-09-21 — staged OUTSIDE data/pipeline.json per R1. The CoS appends these to pipeline.json's proposals array from a fresh clone. All three reproduced live at 2026-09-21T12:11:42Z (R5). Ledger checked against 145 proposals (R6). Clone taken this run, HEAD 7ce80d1 = origin/main (R7).",
+  "generated": "2026-09-21T12:13:26Z",
+  "generator": "integrity-watch",
+  "report": "claude/cos/integrity-watch-2026-09-21.md",
+  "proposals": [
+    {
+      "id": "iw-2026-09-21-1",
+      "status": "awaiting-cos",
+      "severity": "FAIL",
+      "area": "pricing-integrity",
+      "filed": "2026-09-21",
+      "by": "integrity-watch",
+      "page": "/lebron-james-cards",
+      "title": "FAIL — /lebron-james-cards publishes three graded figures as 'recent sold comps' sourced to SportsCardsPro, with no sale count and a 42-day-old stamp, on the page that gained an Authenticity-Guarantee buy link yesterday. cos-2026-09-16-graded-ladder never reached this page.",
+      "evidence": [
+        "Live 2026-09-21T12:11:42Z, served HTML, hand-authored, no ENGINE markers and no repaint script.",
+        "Page-level claim: 'prices below are recent sold comps (SportsCardInvestor / SportsCardsPro / Card Ladder, plus The Hobby Wire's +11.4% read on the raw Topps RC since Jul 27)'.",
+        "Graded figures with no sale count: '2003 Topps #221 PSA 10 $6,000-$7,200' (labelled 'Recent eBay range'), 'Chrome #111 PSA 10 ~$12,000', 'Chrome #111 PSA 9 ~$2,637'. Raw figures ~$512 and ~$2,460 same block.",
+        "The only attribution on the page is 'May 2026 auction printed $12,000 even' — a four-month-old single auction under the words 'recent sold comps'.",
+        "Stamp: prose 'Comps as of Aug 10, 2026' x2 plus 'as of Aug 10, 2026' in the table intro = 42 days. tools/audit-prices.mjs sets STALE_DAYS = 21.",
+        "Page carries NO data-prices-updated, so check 4 never runs; check 9 raises no-machine-stamp (inside the accepted 60-WARN baseline); check 6 stale-prose-stamp measures drift against the page's OWN newest date, which is also Aug 10, so drift is 0 and it stays silent. A page where every date is equally old is invisible to the freshness gate by construction.",
+        "Present-tense framing over 42-day-old data: hero 'his raw 2003 Topps rookie is up double digits'; stat grid '30-Day Move +24%' with no window stated (reads as Aug 22-Sep 21; is Jul 11-Aug 10).",
+        "Aggravating: 7d0f85f (2026-09-20 15:50Z) selected this page for the AG link on a live /api/comps median ask of $9,500 / 19 AG listings read that day. A measurement taken yesterday sits in the buy strip above a comp set stamped 42 days ago.",
+        "Secondary, same page, not filed separately: the post-signing move is published as +24% (hero chip, deep dive) and as +11.4% (warning block, Avoid list). Different windows, used interchangeably; only the smaller figure is attributed."
+      ],
+      "ruleBasis": [
+        "cos-2026-09-16-graded-ladder (applied, HIGH): every graded figure with no dated sale behind it reads 'No verified sale'; SCP's grade ladder is partly modelled.",
+        "LANE-RULES Part B: a figure labelled 'sold' that is not a dated transaction; a dated claim past its ttl.",
+        "iw-2026-09-17-4 (awaiting-cos): the gate gap. FIFTH reproduction, and the first where the sold-claim is page-scoped rather than cell-scoped — which is precisely what that item's proposed prose-scoped check would catch. Recommend ruling it."
+      ],
+      "r6": "Not a re-file. No proposal in the 145 covers lebron-james-cards.html. cos-2026-09-16-graded-ladder names /ethan-holliday-rookie-cards, /aiva-arquette-1st-bowman, /roy-watch-2026. iw-2026-09-17-1 is the board. audit-2026-09-07-1's 22-page list and 8-page watch list do not include this page — on Sep 7 its Aug 10 stamp was 28 days old and correctly under that item's 63-87 day bar. It has since crossed the 21-day line, as has /cameron-boozer-rookie-cards (also Aug 10, also no machine stamp, but its figures are individually dated and attributed, so it is reported as clear, not filed).",
+      "suggestedFix": "Owner: the first publishing lane from a fresh clone. (a) Every graded tier reads either '(N dated sale)' with the date or 'No verified sale', per the Sep 16 ruling — the $6,000-$7,200 PSA 10 range and the ~$2,637 PSA 9 have nothing behind them today. (b) Drop 'recent sold comps' as a page-level basis claim or replace it with what the figures actually are. (c) Re-read or withdraw the Aug 10 figures and ADD data-prices-updated so the sweep owns the page from then on. (d) State the +24% window or reconcile it with the attributed +11.4%. Do NOT roll the stamp without re-reading the prices — that is what audit-2026-09-07-1's Sep 7 attempt got wrong.",
+      "alsoNoted": "/victor-wembanyama-rookie-cards is at exactly 21 days (Aug 31) with no machine stamp and crosses the line tomorrow with nothing to say so."
+    },
+    {
+      "id": "iw-2026-09-21-2",
+      "status": "awaiting-cos",
+      "severity": "MED",
+      "area": "claims",
+      "filed": "2026-09-21",
+      "by": "integrity-watch",
+      "page": "/",
+      "title": "MED — the homepage says 'set indices are sold comps only' in three disclosure blocks while its own Markets panel renders BCB26 and BOW26 and labels them ask-basis. The Sep 18 fix corrected one string on this page and left three.",
+      "evidence": [
+        "Live 2026-09-21T12:11:42Z, all three in the served HTML, all OUTSIDE the HOME: generated markers (instance 1 sits in <p class=\"tm-foot\"> immediately after <!-- HOME:screen:END -->), so this is a page edit, not a generator change.",
+        "1. 'Marks are the engine's nightly reads from verified eBay asking prices - asks, not solds - dated above and never hand-typed; set indices are sold comps only, re-marked weekly.'",
+        "2. 'Prices on this page are the engine's nightly reads from verified eBay asking prices (asks, not solds) and the set indices' weekly sold-comp re-marks, dated on the page.'",
+        "3. 'Card prices are the engine's nightly ask-basis reads and weekly sold-comp index re-marks, dated on the page.'",
+        "data/indices.json: BCB26 basket basis 'ask (eBay verified, engine)', BOW26 basket basis 'ask'. Both status live, both rendered in the homepage Markets panel today (BCB26 95.67, BOW26 99.21).",
+        "The same panel's subheader is correct: 'board ask-basis - nightly - Pokemon indices sold-basis, Bowman ask-basis - weekly'. The page states both things about the same eight tickers.",
+        "STATE 2026-09-18 evening, in its own words: 'the Markets panel subheader called all seven indices sold-only while BCB26 and BOW26 are ask-basis - real claims defect, fixed this push (one string, outside the generated markers)'. One string was fixed. Three remained on the same page."
+      ],
+      "ruleBasis": [
+        "Same defect class as iw-2026-09-17-3 (applied, MED) - /indices sold the whole page as sold-basis in its banner, subline, meta description and JSON-LD. Same pattern: the fix lands on the instance quoted in the filing and misses the copies."
+      ],
+      "r6": "Not a re-file. iw-2026-09-17-3 is scoped to /indices. STATE's Sep 18 entry is scoped to the Markets panel subheader on this page. No proposal in the 145 covers the homepage price-disclosure blocks.",
+      "suggestedFix": "One edit, three strings, outside every generated marker. Recommend copying the subheader's own wording so the page says one thing: 'Pokemon indices sold-basis, Bowman indices ask-basis, re-marked weekly'. While that file is open, grep the whole site for 'sold comps only' and 'sold-comp ... re-mark' rather than fixing the three instances this filing quotes - that is the mistake the Sep 18 push made."
+    },
+    {
+      "id": "iw-2026-09-21-3",
+      "status": "awaiting-cos",
+      "severity": "MED",
+      "area": "claims",
+      "filed": "2026-09-21",
+      "by": "integrity-watch",
+      "page": "/lionel-messi-cards",
+      "title": "MED — /lionel-messi-cards describes itself as 'with live eBay sold comps' in its meta description, its og:description and its hero, one line above its own basis chip reading 'Ask marks - Aug 31, 2026 (eBay live asks, labeled)'. This is the site's highest-earning page.",
+      "evidence": [
+        "Live 2026-09-21T12:11:42Z. The identical sentence 'Every key Messi card ranked by ROI, liquidity, and upside, with live eBay sold comps.' appears in <meta name=\"description\">, <meta property=\"og:description\"> and the hero <p>.",
+        "The next element on the page: '● Ask marks · Aug 31, 2026 (eBay live asks, labeled; house trim)'.",
+        "Two of the five ranked rows publish '~$9 asks (base) · house trim, n=10 · Aug 31' and '~$15 asks (base) · house trim, n=10, tight spread · Aug 31'.",
+        "The body is correct throughout: asks are labelled asks with trim method and n; trophy figures are attributed sales with house and date ($1.5M MBA-certified PSA 10, $1.1M Goldin private, $212,280 Goldin Jun 2026) under their own scoped stamp 'Trophy-tier results as of Jul 6, 2026.' Nothing in the body overstates anything. The only false claim on the page is the sentence describing the page - and it is the one that goes into the search snippet and the social card.",
+        "STATE 2026-09-18: the single largest attributed EPN event in the Sep 4-17 window was an $860 sale off /lionel-messi-cards on 4 clicks. The page also gained an AG link yesterday (7d0f85f).",
+        "The sibling AG page already carries the right sentence without being told: /victor-wembanyama-rookie-cards reads 'with live eBay ask marks (labeled as asks - a sold feed comes later)'."
+      ],
+      "ruleBasis": [
+        "Same shape as iw-2026-09-17-3 (applied): a surface selling itself as sold-basis over ask-basis data, in banner + meta + structured data.",
+        "LANE-RULES Part B: the words overstate the data."
+      ],
+      "r6": "Not a re-file. audit-2026-09-07-1 names messi only on its watch list for the 63-day Jul 6 trophy lines - that is the stamp, not the basis claim, and the trophy block's own scoped stamp is honest. iw-2026-09-17-3 is /indices. Nothing in the 145 covers this page's description copy.",
+      "suggestedFix": "Replace the sentence in all three places with the wemby wording: 'with live eBay ask marks (labeled as asks)'. One string, three instances, no generator involved."
+    }
+  ],
+  "reportedNotFiled": [
+    "Sep 20 F2 (GA4 unsettled newest day, iw-2026-09-20-2, staged not appended) reproduced a second time: Sep 19's engagementRate reads 8.62% in today's freshest daily28 row, the same artefact as Sep 17's 8.57% -> 47.22%. Two consecutive instances. Not re-filed; the CoS should know the second exists before ruling on the first. ga4-history.json's Sep 17 row still carries the stale 8.57%-era figures.",
+    "Sep 19 F1 (engine-block 'what buyers paid' / 'Hammer med' over last-bid data) also renders on /pokemon-30th-anniversary-2026, a page that states three times that no sold comps exist for the set and that every price on it is a live ask. Sharpens F1; not re-filed.",
+    "audit-2026-09-07-1 (approved): the 20 rolled pages are still not re-marked. Verified live today on /topps-series-1-2026 ('Prices: eBay/market, June 2026'). Its own appliedNote called a fourth silent week 'not acceptable'; today is the sixth. Not re-filed - reported because iw-2026-09-21-1 shows the cohort is now growing at its edges (lebron, boozer, and wemby tomorrow).",
+    "Singapore 104 sessions / 0.146s = 56.2% of US sessions, up from 74 then 61; China 13 at 0.318s. Ruled: cos-2026-09-20-1 applied (bot filter shipped 5929714 at 15:39Z, AFTER the 13:16Z snapshot, so today's ga4-latest.json has no summary.bots block - expected, not a defect; ga4-snapshot.yml checks out main so tonight's run is the first that should carry it). TRIPWIRE: if a ga4-latest.json generated after 2026-09-21T09:00Z still has no summary.bots, the shipped fix is not running and that is a HIGH.",
+    "Sep 20 F3 LOW (/bowman-bangers keywords meta + two '1st Bowman' prose instances) still live; not re-filed."
+  ],
+  "couldNotVerify": [
+    "Homepage 'BOARD · equal-weight · 9 autos' vs BOW26's 10-auto basket (all 10 carry a numeric last today). js/home.js:96 computes that count client-side as ids.length and the composite normalises each series against its value 30 nights ago, so an auto without a 30-night anchor would be legitimately excluded. curl cannot tell those apart and this run has no browser. Handed to a browser lane; NOT filed.",
+    "/topps-series-1-2026 coverage claim 'Every base card and every published autograph ... 1,098 cards, searchable'. Checklist is rendered by js/set-checklist.js; curl returns zero rows. Unverified, NOT filed."
+  ]
+}

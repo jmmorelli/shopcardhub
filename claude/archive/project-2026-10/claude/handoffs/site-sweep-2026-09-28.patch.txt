@@ -1,0 +1,95 @@
+From d7cf0c10e715ef4db55d67b6c5ab54d6066735cf Mon Sep 17 00:00:00 2001
+From: ShopCardHub Site Sweep <sweep@shopcardhub.invalid>
+Date: Mon, 28 Sep 2026 17:37:29 +0000
+Subject: [PATCH] site-sweep: phone buy-strip dock no longer hides title/ask or
+ clips the Fanatics button (28 pages); F1 strip button wraps; plain copy on
+ ROI calculator + best hobby boxes heroes
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- css/site-fixes.css §8b: docks carrying .bs-fan or .bs-rep stack (title, live ask, buttons);
+  docked Fanatics label shortens to "At Fanatics →"; in-flow .bs-go may wrap (F1 page overflowed 7 px at 390).
+- hobby-box-roi-calculator: "total EV, net profit or loss, ROI" → "what the hits are worth, your profit or loss";
+  chips "EV · ROI · Break-even" → "Value · Profit · Break-even", "sold comps" → "sold prices".
+- best-hobby-boxes-2026: "ranked by expected value and ROI" → "ranked by what you can expect to pull for the price";
+  "Real EV math included" → "Real pull-value math". Meta/title untouched (SEO).
+
+Task-key: site-sweep
+Authority: Mo 2026-09-27
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LymFSfPBzUTewcGLCggCbZ
+---
+ best-hobby-boxes-2026.html    |  4 ++--
+ css/site-fixes.css            | 14 ++++++++++++++
+ hobby-box-roi-calculator.html |  6 +++---
+ 3 files changed, 19 insertions(+), 5 deletions(-)
+
+diff --git a/best-hobby-boxes-2026.html b/best-hobby-boxes-2026.html
+index 2a0259a..e571849 100644
+--- a/best-hobby-boxes-2026.html
++++ b/best-hobby-boxes-2026.html
+@@ -776,14 +776,14 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
+     </figure>
+     <h1>Best Hobby Boxes<br>to Buy in <em>2026</em></h1>
+     <p class="hero-sub">
+-      Seven boxes ranked by expected value and ROI — baseball, basketball, and football.
++      Seven boxes ranked by what you can expect to pull for the price — baseball, basketball, and football.
+       All prices sourced from eBay completed and recently sold listings. Honest math. One box to avoid.
+     </p>
+     <div class="hero-meta">
+       <span>Updated June 2026</span>
+       <span>📦 7 boxes reviewed</span>
+       <span>⚾ Baseball · 🏀 Basketball · 🏈 Football</span>
+-      <span>💰 Real EV math included</span>
++      <span>💰 Real pull-value math</span>
+     </div>
+   </div>
+ </section>
+diff --git a/css/site-fixes.css b/css/site-fixes.css
+index c85f502..2137a15 100644
+--- a/css/site-fixes.css
++++ b/css/site-fixes.css
+@@ -300,4 +300,18 @@ body .focus .items a { min-height: 44px; }
+   body .bstrip.bs-dock .bs-go { flex: 0 0 auto; display: block; padding: 11px 14px; font-size: 0; letter-spacing: 0; white-space: nowrap; }
+   body .bstrip.bs-dock .bs-go::before { content: "Buy on eBay \2192"; font-size: 10.5px; letter-spacing: 1.2px; }
+   body .bs-hold { height: 0; }
++  /* 8b (Site Sweep, Sep 28 2026). A strip with a second store link (.bs-fan, Fanatics) or a
++     gear link (.bs-rep) made the docked CTA row wider than the phone: the title and live ask
++     collapsed to 0 px and the Fanatics button ran off the right edge (28 pages). Those docks
++     stack instead — title, live ask, then the buttons sharing one row. */
++  body .bstrip.bs-dock:has(.bs-fan), body .bstrip.bs-dock:has(.bs-rep) {
++    grid-template-columns: minmax(0, 1fr); grid-template-areas: "t" "live" "go"; row-gap: 3px; }
++  body .bstrip.bs-dock:has(.bs-fan) .bs-cta, body .bstrip.bs-dock:has(.bs-rep) .bs-cta { width: 100%; gap: 8px; margin-top: 4px; }
++  body .bstrip.bs-dock:has(.bs-fan) .bs-go, body .bstrip.bs-dock:has(.bs-rep) .bs-go { flex: 1 1 0; text-align: center; padding: 10px 8px; }
++  body .bstrip.bs-dock .bs-fan { flex: 1 1 0; min-width: 0; padding: 9px 8px; font-size: 0; letter-spacing: 0; justify-content: center; }
++  body .bstrip.bs-dock .bs-fan::before { content: "At Fanatics \2192"; font-size: 10.5px; letter-spacing: 1.2px; }
++  body .bstrip.bs-dock .bs-rep { flex: 1 1 0; min-width: 0; text-align: center; overflow: hidden; text-overflow: ellipsis; }
++  /* In the flow, a long primary label ("Shop 2026 Chrome F1 hobby boxes on eBay") may wrap
++     rather than push past the strip's edge. */
++  body .bstrip:not(.bs-dock) .bs-go { white-space: normal; min-width: 0; text-align: center; line-height: 1.35; }
+ }
+diff --git a/hobby-box-roi-calculator.html b/hobby-box-roi-calculator.html
+index baadab2..c297d43 100644
+--- a/hobby-box-roi-calculator.html
++++ b/hobby-box-roi-calculator.html
+@@ -790,12 +790,12 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
+     <p class="hero-sub">
+       Stop guessing whether a box is worth ripping. Enter what you'd pay and the hits you realistically
+       expect, and this runs the same expected-value math behind every box ranking on this site —
+-      total EV, net profit or loss, ROI, and a straight rip-or-flip verdict.
++      what the hits are worth, your profit or loss, and a straight rip-or-flip verdict.
+     </p>
+     <div class="hero-meta">
+       <span>Updates live as you type</span>
+-      <span>📦 EV · ROI · Break-even</span>
+-      <span>Bring your own sold comps</span>
++      <span>📦 Value · Profit · Break-even</span>
++      <span>Bring your own sold prices</span>
+     </div>
+   </div>
+ </section>
+-- 
+2.43.0
+
