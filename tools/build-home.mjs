@@ -56,6 +56,23 @@ if (!RELEASES_ONLY && !(latest && history)) {
   process.exit(2);
 }
 const indices = JSON.parse(read("data/indices.json"));
+// Oct 14 2026 (R35 cull batch 1): the feed's `slug` is the engine's copy of the watchlist host page and lags a merge by a
+// nightly (Oct 13: /ethan-holliday-rookie-cards#engine-… baked onto the home screens the day after that page 301'd).
+// Bake hrefs from THIS tree instead: the watchlist host when its page exists · the /card-<id> page when it exists ·
+// else the vercel.json 301 for the dead host. The browser repaints from the live feed (js/home.js honours c.href only
+// when set), so the 301 carries the stale slug until the engine catches up.
+if (latest && latest.cards) {
+  const wlBy = new Map((JSON.parse(read("data/watchlist.json")).cards || []).map((c) => [`${c.source}:${c.id}`, c]));
+  const redirects = Object.fromEntries((JSON.parse(read("vercel.json")).redirects || []).map((r) => [r.source, r.destination]));
+  const pageExists = (slug) => !!slug && fs.existsSync(path.join(REPO, slug + ".html"));
+  for (const c of latest.cards) {
+    const id = String(c.key || "").replace(/^[a-z]+:/, "");
+    const w = wlBy.get(c.key);
+    if (w && pageExists(w.slug)) { c.slug = w.slug; delete c.href; continue; }
+    if (w && !w.slug && pageExists("card-" + id)) { delete c.slug; delete c.href; continue; }
+    if (c.slug && !pageExists(c.slug)) { const to = redirects["/" + c.slug]; if (to) c.href = to; else if (pageExists("card-" + id)) delete c.slug; }
+  }
+}
 const releases = JSON.parse(read("data/releases.json"));
 const TODAY = process.env.HOME_TODAY || new Date().toISOString().slice(0, 10);
 for (const it of releases.items || []) {

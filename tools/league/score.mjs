@@ -66,6 +66,8 @@ if (args.includes("--check")) {
   }
   for (const f of fs.existsSync(MAN) ? fs.readdirSync(MAN).filter((n) => n.endsWith(".json")) : []) {
     const m = JSON.parse(fs.readFileSync(path.join(MAN, f), "utf8"));
+    // R35 merge (Oct 14 2026): a manifest marked status "merged-<date>" keeps its history but has no page by design.
+    if (/^merged-/.test(m.status || "")) continue;
     if (!fs.existsSync(path.join(REPO, m.slug + ".html"))) bad.push(`manifest ${f}: no ${m.slug}.html`);
     if (reg.agents && reg.agents[m.agent] && !reg.pages.some((p) => p.slug === m.slug)) bad.push(`manifest ${f}: not in data/league.json (run --sync)`);
     const html = fs.existsSync(path.join(REPO, m.slug + ".html")) ? fs.readFileSync(path.join(REPO, m.slug + ".html"), "utf8") : "";

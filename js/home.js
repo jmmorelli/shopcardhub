@@ -64,7 +64,7 @@
         // which entered the nightly feed 2026-09-21 with no slug and no /card-<id> page built yet — linking it
         // shipped three dead hrefs onto the home Screens table. Same rule the other generators already apply:
         // refuse the new type until it can name its page. Null href renders the name unlinked (see screen rows).
-        slug: c.slug || null, href: c.slug ? '/' + c.slug + '#engine-' + id : /-(booster-box|etb)$/.test(id) ? indexPage(indices, id.replace(/-(booster-box|etb)$/, '')) : c.cardType === 'single' ? null : '/card-' + id,
+        slug: c.slug || null, href: c.href || (c.slug ? '/' + c.slug + '#engine-' + id : /-(booster-box|etb)$/.test(id) ? indexPage(indices, id.replace(/-(booster-box|etb)$/, '')) : c.cardType === 'single' ? null : '/card-' + id),
         last: c.last, prev5: prev5, chg: c.last != null && prev5 != null ? c.last - prev5 : null, chgp: ST.pctChange(prev5, c.last),
         lo30: last30.length ? Math.min.apply(null, last30) : null, hi30: last30.length ? Math.max.apply(null, last30) : null,
         roc: c.roc30, z: c.z, sd: m ? m.sd : null,

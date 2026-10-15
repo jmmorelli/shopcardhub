@@ -2,22 +2,6 @@
   "_comment": "Above-the-fold eBay conversion strip, one entry per page. Consumed by tools/build-buy-strip.mjs, which writes the BUYSTRIP block into each page; enforced by site-auditor §15 (conversion-coverage). q = eBay _nkw for the strip's primary CTA; customid = EPN Custom ID so per-product earnings are readable in the EPN 'Performance by Custom ID' report. live=true shows the lowest live single-unit ask from /api/comps beside the product; it is only set where the primary query names ONE sealed product, because the cheapest listing on a broad player search is a $0.99 common and tells the reader nothing. Pages deliberately outside the contract are listed in the auditor's CONVERSION_EXEMPT set, not here. case = the sealed-CASE link rendered beside the box link (Idea #32, adopted 2026-09-20): a LINK ONLY — no figure is ever rendered from it, it never reaches the price engine and it is never an index input, because a case would corrupt a per-box mark. It is present only where tools/buy-strip-health.mjs measured at least CASE_MIN clean case listings (tools/case-shelf.mjs); `must` is a contiguous-phrase guard so a Bowman Chrome case link cannot land on a plain Bowman case (LANE-RULES R8). secondary.ag = true adds eBay's Authenticity Guarantee filter (LH_AV=1, read off eBay's own 'Show only' sidebar 2026-09-20) and routes the click to its own -ag custom ID, so the trust-copy effect is readable against the plain IDs. Set only where the link's own /api/comps median ask is >= $200 (eBay's Aug 2026 AG threshold for single cards) AND the AG-filtered search still has real depth — a narrow query plus AG is how you send a reader to an empty page. fanatics = optional {q,label,title}: a fanatics.com search link (Impact, subId1 = page slug) rendered beside the eBay CTAs (Sep 27 2026, Mo: restore the Fanatics links). Link only, never a price. rep = optional {q,label}: TEST 'rep the player' Fanatics gear search (subId1 <slug>-rep), Sep 27 2026.",
   "generated": "2026-09-27",
   "pages": {
-    "ascended-heroes": {
-      "product": "Pokémon TCG Ascended Heroes Elite Trainer Box",
-      "primary": {
-        "label": "Shop ETBs on eBay",
-        "q": "Pokemon Ascended Heroes Elite Trainer Box -divider -redeem -promo -code -case -japanese -psa -cgc -bundle -sleeve -playmat -topper",
-        "customid": "ascended-heroes-box"
-      },
-      "secondary": {
-        "label": "Singles on eBay",
-        "q": "Pokémon TCG Ascended Heroes card -lot -reprint -digital -sealed -box",
-        "customid": "ascended-heroes-singles",
-        "title": "Pokémon TCG Ascended Heroes singles"
-      },
-      "live": true,
-      "cat": "183456"
-    },
     "best-basketball-cards-under-50": {
       "product": "Basketball rookies under $50",
       "primary": {
@@ -175,42 +159,6 @@
         "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
-    "cameron-boozer-rookie-cards": {
-      "product": "Cameron Boozer rookie cards",
-      "primary": {
-        "label": "Shop Cameron Boozer rookie cards →",
-        "q": "Cameron Boozer rookie -lot -reprint -digital -custom",
-        "customid": "cameron-boozer-rookie-cards-top"
-      },
-      "secondary": {
-        "label": "Authenticated on eBay &rarr;",
-        "q": "Cameron Boozer Bowman Chrome Prospect Auto Duke",
-        "customid": "cameron-boozer-rookie-cards-ag",
-        "title": "Cameron Boozer 2025-26 Bowman U Chrome Prospect Auto",
-        "ag": true
-      },
-      "live": false,
-      "rep": {
-        "q": "Cameron Boozer",
-        "label": "Rep Boozer &mdash; gear &rarr;"
-      }
-    },
-    "chaos-rising": {
-      "product": "Pokémon TCG Chaos Rising Elite Trainer Box",
-      "primary": {
-        "label": "Shop ETBs on eBay",
-        "q": "Pokemon Chaos Rising Elite Trainer Box Sealed -divider -redeem -promo -code -case -japanese -psa -cgc -sleeve -playmat -topper",
-        "customid": "chaos-rising-box"
-      },
-      "secondary": {
-        "label": "Singles on eBay",
-        "q": "Pokémon TCG Chaos Rising card -lot -reprint -digital -sealed -box",
-        "customid": "chaos-rising-singles",
-        "title": "Pokémon TCG Chaos Rising singles"
-      },
-      "live": true,
-      "cat": "183456"
-    },
     "cooper-flagg-rookie-cards": {
       "product": "Cooper Flagg rookie cards",
       "primary": {
@@ -344,26 +292,6 @@
         "label": "Rep Yamal &mdash; gear &rarr;"
       }
     },
-    "lebron-james-cards": {
-      "product": "LeBron James cards",
-      "primary": {
-        "label": "Shop LeBron James cards on eBay",
-        "q": "LeBron James card -lot -reprint -digital -custom",
-        "customid": "lebron-james-cards-top"
-      },
-      "secondary": {
-        "label": "Authenticated on eBay &rarr;",
-        "q": "LeBron James Topps Rookie PSA 10 2003-04 #221",
-        "customid": "lebron-james-cards-ag",
-        "title": "LeBron James 2003-04 Topps #221 RC",
-        "ag": true
-      },
-      "live": false,
-      "rep": {
-        "q": "LeBron James",
-        "label": "Rep James &mdash; gear &rarr;"
-      }
-    },
     "lionel-messi-cards": {
       "product": "Lionel Messi cards",
       "primary": {
@@ -436,32 +364,6 @@
       "deny": "energy|promo|coin|player's guide|manual|sticker|poster|binder|dice|proxy|custom|empty|japanese",
       "msrp": 49.99
     },
-    "prismatic-evolutions-guide": {
-      "product": "Prismatic Evolutions ETB",
-      "primary": {
-        "label": "Shop Prismatic Evolutions ETB on eBay",
-        "q": "Pokemon Prismatic Evolutions Elite Trainer Box -proxy -custom -empty -code -japanese -divider -sleeve -playmat -topper",
-        "customid": "prismatic-evolutions-guide-top"
-      },
-      "secondary": null,
-      "live": true,
-      "cat": "183456"
-    },
-    "roy-watch-2026": {
-      "product": "2026 ROY-watch rookie autos",
-      "primary": {
-        "label": "Shop 2026 ROY-watch rookie autos →",
-        "q": "2026 Bowman Chrome 1st auto -lot -reprint -digital -custom",
-        "customid": "roy-watch-2026-top"
-      },
-      "secondary": {
-        "label": "Top card &rarr;",
-        "q": "Kevin McGonigle Bowman Chrome Auto CPA-KM 2025 -lot -reprint",
-        "customid": "roy-watch-2026-hero",
-        "title": "Kevin McGonigle 2025 Bowman Chrome Auto #CPA-KM"
-      },
-      "live": false
-    },
     "topps-chrome-baseball-2026": {
       "product": "2026 Topps Chrome Baseball Hobby Box",
       "primary": {
@@ -508,51 +410,6 @@
         "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
-    "topps-chrome-black-basketball": {
-      "product": "2025-26 Topps Chrome Black Basketball Hobby Box",
-      "primary": {
-        "label": "Shop hobby boxes on eBay",
-        "q": "Sealed Hobby Box Topps Chrome Black Basketball 2025-26 -case -pack -packs -jumbo -blaster -lot",
-        "customid": "topps-chrome-black-basketball-box"
-      },
-      "secondary": {
-        "label": "Singles on eBay",
-        "q": "2025-26 Topps Chrome Black Basketball card -lot -reprint -digital -sealed -box",
-        "customid": "topps-chrome-black-basketball-singles",
-        "title": "2025-26 Topps Chrome Black Basketball singles"
-      },
-      "live": true,
-      "case": {
-        "q": "Hobby Box Topps Chrome Black Basketball 2025-26 Case -break -pyp -pick -rip -random -slot -spot",
-        "customid": "topps-chrome-black-basketball-case",
-        "must": "chrome black basketball"
-      },
-      "fanatics": {
-        "q": "topps basketball",
-        "label": "Topps boxes at Fanatics &rarr;",
-        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
-      }
-    },
-    "topps-chrome-black-football": {
-      "product": "2025 Topps Chrome Black Football Hobby Box",
-      "primary": {
-        "label": "Shop hobby boxes on eBay",
-        "q": "Sealed Hobby Box Topps Chrome Black Football 2025 -case -pack -packs -jumbo -blaster -lot",
-        "customid": "topps-chrome-black-football-box"
-      },
-      "secondary": {
-        "label": "Singles on eBay",
-        "q": "2025 Topps Chrome Black Football card -lot -reprint -digital -sealed -box",
-        "customid": "topps-chrome-black-football-singles",
-        "title": "2025 Topps Chrome Black Football singles"
-      },
-      "live": true,
-      "fanatics": {
-        "q": "topps football",
-        "label": "Topps boxes at Fanatics &rarr;",
-        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
-      }
-    },
     "topps-chrome-cactus-jack-basketball": {
       "product": "2025-26 Topps Chrome Cactus Jack Basketball Hobby Box",
       "primary": {
@@ -565,46 +422,6 @@
         "q": "2025-26 Topps Chrome Cactus Jack Basketball card -lot -reprint -digital -sealed -box",
         "customid": "topps-chrome-cactus-jack-basketball-singles",
         "title": "2025-26 Topps Chrome Cactus Jack Basketball singles"
-      },
-      "live": true,
-      "fanatics": {
-        "q": "topps basketball",
-        "label": "Topps boxes at Fanatics &rarr;",
-        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
-      }
-    },
-    "topps-chrome-sapphire-2026": {
-      "product": "2026 Topps Chrome Sapphire Baseball Box",
-      "primary": {
-        "label": "Shop sealed boxes on eBay",
-        "q": "Sealed Hobby Box Topps Chrome Sapphire Baseball 2026 -bowman -case -pack -packs -jumbo -blaster -lot",
-        "customid": "topps-chrome-sapphire-2026-box"
-      },
-      "secondary": {
-        "label": "Singles on eBay",
-        "q": "2026 Topps Chrome Sapphire Baseball card -lot -reprint -digital -sealed -box",
-        "customid": "topps-chrome-sapphire-2026-singles",
-        "title": "2026 Topps Chrome Sapphire Baseball singles"
-      },
-      "live": true,
-      "fanatics": {
-        "q": "topps baseball",
-        "label": "Topps boxes at Fanatics &rarr;",
-        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
-      }
-    },
-    "topps-chrome-updates-basketball-sapphire-edition": {
-      "product": "2025-26 Topps Chrome Updates Basketball Sapphire Edition Box",
-      "primary": {
-        "label": "Shop sealed boxes on eBay",
-        "q": "2025-26 Topps Chrome Updates Basketball Sapphire Edition box",
-        "customid": "topps-chrome-updates-basketball-sapphire-edition-box"
-      },
-      "secondary": {
-        "label": "Singles on eBay",
-        "q": "2025-26 Topps Chrome Updates Basketball Sapphire Edition card -lot -reprint -digital -sealed -box",
-        "customid": "topps-chrome-updates-basketball-sapphire-edition-singles",
-        "title": "2025-26 Topps Chrome Updates Basketball Sapphire Edition singles"
       },
       "live": true,
       "fanatics": {
@@ -901,31 +718,6 @@
         "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
-    "topps-tribute-baseball": {
-      "product": "2026 Topps Tribute Baseball Hobby Box",
-      "primary": {
-        "label": "Shop hobby boxes on eBay",
-        "q": "Sealed Hobby Box Topps Tribute Baseball 2026 -case -pack -packs -jumbo -blaster -lot",
-        "customid": "topps-tribute-baseball-box"
-      },
-      "secondary": {
-        "label": "Singles on eBay",
-        "q": "2026 Topps Tribute Baseball card -lot -reprint -digital -sealed -box",
-        "customid": "topps-tribute-baseball-singles",
-        "title": "2026 Topps Tribute Baseball singles"
-      },
-      "live": true,
-      "case": {
-        "q": "Hobby Box Topps Tribute Baseball 2026 Case -break -pyp -pick -rip -random -slot -spot",
-        "customid": "topps-tribute-baseball-case",
-        "must": "tribute baseball"
-      },
-      "fanatics": {
-        "q": "topps baseball",
-        "label": "Topps boxes at Fanatics &rarr;",
-        "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
-      }
-    },
     "victor-wembanyama-rookie-cards": {
       "product": "Victor Wembanyama rookie cards",
       "primary": {
@@ -1055,25 +847,6 @@
         "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
-    "is-pokemon-151-worth-it": {
-      "product": "Pokémon 151 Booster Bundle",
-      "primary": {
-        "label": "Shop 151 Booster Bundles on eBay",
-        "q": "Pokemon Scarlet Violet 151 Booster Bundle sealed -japanese -lot -korean -mystery -chinese -empty -custom",
-        "customid": "is-pokemon-151-worth-it-top"
-      },
-      "secondary": {
-        "label": "Charizard ex 199/165 &rarr;",
-        "q": "Charizard ex 199/165 Pokemon 151 -japanese",
-        "customid": "is-pokemon-151-worth-it-hero",
-        "title": "Charizard ex 199/165 Special Illustration Rare",
-        "cat": "183454"
-      },
-      "cat": "183456",
-      "live": true,
-      "req": "151",
-      "_why": "Growth League B page (2026-09-26); query \"is pokemon 151 worth it\". R11."
-    },
     "pitch-black-vs-chaos-rising": {
       "product": "Pokémon TCG Chaos Rising Elite Trainer Box",
       "primary": {
@@ -1150,25 +923,6 @@
         "title": "Factory-sealed Topps retail boxes on fanatics.com — a search, not a price"
       }
     },
-    "umbreon-ex-worth": {
-      "product": "Prismatic Evolutions Elite Trainer Box",
-      "primary": {
-        "label": "Shop Prismatic Evolutions ETBs on eBay",
-        "q": "Pokemon Prismatic Evolutions Elite Trainer Box -proxy -custom -empty -code -japanese -divider -sleeve -playmat -topper",
-        "customid": "umbreon-ex-worth-top"
-      },
-      "secondary": {
-        "label": "Umbreon ex 161/131 &rarr;",
-        "q": "Umbreon ex 161/131 Prismatic Evolutions -japanese",
-        "customid": "umbreon-ex-worth-hero",
-        "title": "Umbreon ex 161/131 Special Illustration Rare",
-        "cat": "183454"
-      },
-      "cat": "183456",
-      "live": true,
-      "req": "prismatic",
-      "_why": "Growth League B page (2026-09-26); query \"how much is umbreon ex worth\". R11."
-    },
     "gengar-ex-worth": {
       "product": "Ascended Heroes Elite Trainer Box",
       "primary": {
@@ -1187,24 +941,6 @@
       "live": true,
       "req": "ascended",
       "_why": "Growth League B page (2026-09-27); query \"how much is gengar ex worth\". R11."
-    },
-    "prismatic-evolutions-vs-ascended-heroes": {
-      "product": "Prismatic Evolutions Elite Trainer Box",
-      "primary": {
-        "label": "Shop Prismatic Evolutions ETBs on eBay",
-        "q": "Pokemon Prismatic Evolutions Elite Trainer Box Sealed -proxy -custom -empty -code -japanese -divider -sleeve -playmat -topper -bundle -surprise",
-        "customid": "prismatic-evolutions-vs-ascended-heroes-top"
-      },
-      "secondary": {
-        "label": "Ascended Heroes ETBs on eBay",
-        "q": "Pokemon Ascended Heroes Elite Trainer Box Sealed -proxy -custom -empty -code -japanese -divider -sleeve -playmat -topper -bundle -center -blister",
-        "customid": "prismatic-evolutions-vs-ascended-heroes-alt",
-        "title": "Pokémon TCG Ascended Heroes Elite Trainer Box"
-      },
-      "cat": "183456",
-      "live": true,
-      "req": "prismatic",
-      "_why": "Growth League C page (2026-09-27); query \"prismatic evolutions vs ascended heroes\". R11."
     },
     "topps-chrome-formula-1-2026": {
       "product": "2026 Topps Chrome Formula 1 hobby box",
@@ -1325,60 +1061,6 @@
       "req": "bowman|football|hobby",
       "deny": "chrome|jumbo|first day|mega|blaster|case|lot|break"
     },
-    "ascended-heroes-vs-chaos-rising": {
-      "product": "Pokémon TCG Chaos Rising Elite Trainer Box",
-      "primary": {
-        "label": "Shop Chaos Rising ETBs on eBay",
-        "q": "Pokemon Chaos Rising Elite Trainer Box Sealed -proxy -custom -empty -code -japanese -divider -sleeve -playmat -topper -bundle -center -case -lot -promo",
-        "customid": "ascended-heroes-vs-chaos-rising-top"
-      },
-      "secondary": {
-        "label": "Ascended Heroes ETBs on eBay",
-        "q": "Pokemon Ascended Heroes Elite Trainer Box Sealed -proxy -custom -empty -code -japanese -divider -sleeve -playmat -topper -bundle -center -blister -case -lot",
-        "customid": "ascended-heroes-vs-chaos-rising-alt",
-        "title": "Pokémon TCG Ascended Heroes Elite Trainer Box"
-      },
-      "cat": "183456",
-      "live": true,
-      "req": "chaos rising",
-      "_why": "Growth League C page (2026-09-30); query \"ascended heroes vs chaos rising\". R11."
-    },
-    "bowman-vs-bowman-chrome": {
-      "product": "2026 Bowman Chrome Baseball Hobby Box",
-      "primary": {
-        "label": "Shop 2026 Bowman Chrome hobby boxes on eBay",
-        "q": "2026 Bowman Chrome Baseball Hobby Box sealed -mega -break -case -pack -sapphire -lot -breakers",
-        "customid": "bowman-vs-bowman-chrome-top"
-      },
-      "secondary": {
-        "label": "2026 Bowman hobby boxes on eBay",
-        "q": "2026 Bowman Baseball Hobby Box sealed -jumbo -chrome -break -case -pack -sapphire -lot -breakers",
-        "customid": "bowman-vs-bowman-chrome-alt",
-        "title": "2026 Bowman Baseball Hobby Box"
-      },
-      "live": true,
-      "req": "bowman",
-      "_why": "Growth League C page (2026-10-03); query \"bowman vs bowman chrome\". R11."
-    },
-    "mega-greninja-ex-worth": {
-      "product": "Mega Greninja ex Premium Collection",
-      "primary": {
-        "label": "Shop the Premium Collection on eBay",
-        "q": "Mega Greninja ex Premium Collection sealed -ripped -opened -empty -case -lot -japanese",
-        "customid": "mega-greninja-ex-worth-top"
-      },
-      "secondary": {
-        "label": "Mega Greninja ex 116/086 &rarr;",
-        "q": "Mega Greninja ex 116/086 Chaos Rising -japanese -proxy -custom -lot",
-        "customid": "mega-greninja-ex-worth-hero",
-        "title": "Mega Greninja ex 116/086 Special Illustration Rare",
-        "cat": "183454"
-      },
-      "cat": "183456",
-      "live": true,
-      "req": "greninja",
-      "_why": "Growth League B page (2026-10-03); query \"how much is mega greninja ex worth\". R11."
-    },
     "topps-heritage-football-2026": {
       "product": "2026 Topps Heritage Football hobby box",
       "primary": {
@@ -1395,24 +1077,6 @@
       "live": true,
       "req": "heritage",
       "_why": "Growth League A page (2026-10-03); query \"2026 topps heritage football release date\". R11."
-    },
-    "1st-edition-vs-shadowless-vs-unlimited": {
-      "product": "Pokémon Base Set Charizard 4/102 (Shadowless)",
-      "primary": {
-        "label": "Shop Shadowless Charizard on eBay",
-        "q": "Charizard 4/102 Base Set Shadowless holo -1st -german -french -italian -spanish -korean -japanese -portuguese -custom -metal -proxy -reprint -celebrations -lot",
-        "customid": "1st-edition-vs-shadowless-vs-unlimited-top"
-      },
-      "secondary": {
-        "label": "1st Edition Charizard on eBay",
-        "q": "Charizard 4/102 Base Set 1st Edition Shadowless holo -german -french -italian -spanish -korean -japanese -portuguese -custom -metal -proxy -reprint -celebrations -lot",
-        "customid": "1st-edition-vs-shadowless-vs-unlimited-alt",
-        "title": "Pokémon Base Set 1st Edition Charizard 4/102"
-      },
-      "cat": "183454",
-      "live": true,
-      "req": "charizard",
-      "_why": "Growth League C page (2026-10-04); query \"1st edition vs shadowless vs unlimited\". R11."
     },
     "mega-darkrai-ex-worth": {
       "product": "Pokémon TCG Pitch Black Elite Trainer Box",
@@ -1449,24 +1113,6 @@
       "live": true,
       "req": "2026-27|hobby",
       "_why": "Growth League A page (2026-10-04); query \"2026-27 topps basketball release date\". R11."
-    },
-    "prismatic-evolutions-vs-surging-sparks": {
-      "product": "Surging Sparks Elite Trainer Box",
-      "primary": {
-        "label": "Shop Surging Sparks ETBs on eBay",
-        "q": "Pokemon Surging Sparks Elite Trainer Box sealed -japanese -lot -case -code -promo -sleeve -divider -playmat -topper -bundle -costco -center -empty -guide",
-        "customid": "prismatic-evolutions-vs-surging-sparks-top"
-      },
-      "secondary": {
-        "label": "Prismatic Evolutions ETBs on eBay",
-        "q": "Pokemon Prismatic Evolutions Elite Trainer Box sealed -japanese -lot -case -code -promo -sleeve -divider -playmat -topper -bundle -surprise -empty -center",
-        "customid": "prismatic-evolutions-vs-surging-sparks-alt",
-        "title": "Pokémon TCG Prismatic Evolutions Elite Trainer Box"
-      },
-      "cat": "183456",
-      "live": true,
-      "req": "surging",
-      "_why": "Growth League C page (2026-10-05); query \"prismatic evolutions vs surging sparks\". R11."
     },
     "topps-cosmic-chrome-baseball-2026": {
       "product": "2026 Topps Cosmic Chrome Baseball hobby box",
@@ -1618,42 +1264,6 @@
       "req": "prismatic",
       "_why": "Growth League gengar page (2026-10-05); query \"best umbreon cards to collect\". R11."
     },
-    "best-pokemon-set-to-start-collecting": {
-      "product": "Surging Sparks Elite Trainer Box",
-      "primary": {
-        "label": "Shop Surging Sparks ETBs on eBay",
-        "q": "Pokemon Surging Sparks Elite Trainer Box sealed -japanese -lot -case -acrylic -code -promo -sleeve -sleeves -divider -empty -opened -center -mystery -custom -bundle -costco",
-        "customid": "best-pokemon-set-to-start-collecting-top"
-      },
-      "secondary": {
-        "label": "Mega Evolution ETBs on eBay",
-        "q": "Pokemon Mega Evolution Elite Trainer Box sealed -pitch -chaos -perfect -phantasmal -ascended -riolu -japanese -lot -case -acrylic -code -promo -sleeve -sleeves -divider -empty -opened -center -mystery -custom -bundle",
-        "customid": "best-pokemon-set-to-start-collecting-alt",
-        "title": "Pokémon TCG Mega Evolution Elite Trainer Box"
-      },
-      "cat": "183456",
-      "live": true,
-      "req": "surging",
-      "_why": "Growth League C page (2026-10-06); query \"best pokemon set to start collecting\". R11."
-    },
-    "old-pokemon-cards-worth": {
-      "product": "Pokémon Base Set Charizard 4/102 (Unlimited)",
-      "primary": {
-        "label": "Shop Base Set Charizard on eBay",
-        "q": "Charizard 4/102 Base Set Unlimited holo -japanese -german -french -italian -spanish -korean -proxy -custom -metal -reprint -celebrations -lot -shadowless -1st",
-        "customid": "old-pokemon-cards-worth-top"
-      },
-      "secondary": {
-        "label": "Blastoise 2/102 on eBay",
-        "q": "Blastoise 2/102 Base Set Unlimited holo -japanese -german -french -italian -spanish -korean -proxy -custom -metal -reprint -celebrations -lot -shadowless -1st",
-        "customid": "old-pokemon-cards-worth-alt",
-        "title": "Pokémon Base Set Blastoise 2/102 (Unlimited)"
-      },
-      "cat": "183454",
-      "live": true,
-      "req": "charizard",
-      "_why": "Growth League B page (2026-10-06); query \"old pokemon cards worth\". R11."
-    },
     "panini-donruss-football-2026": {
       "product": "2026 Panini Donruss Football hobby box",
       "primary": {
@@ -1683,24 +1293,6 @@
       "req": "2026|chrome sapphire|box",
       "deny": "case|break|lot|spot|pyp|random|pick your|slot|draft|single|bcp|#|mega|2025"
     },
-    "base-set-charizard-worth": {
-      "product": "Pokémon Base Set Charizard 4/102 (Unlimited)",
-      "primary": {
-        "label": "Shop Base Set Charizard on eBay",
-        "q": "Charizard 4/102 Base Set Unlimited holo -japanese -german -french -italian -spanish -korean -portuguese -proxy -custom -metal -reprint -celebrations -lot -shadowless -1st",
-        "customid": "base-set-charizard-worth-top"
-      },
-      "secondary": {
-        "label": "PSA-graded Charizard on eBay",
-        "q": "Charizard 4/102 Base Set Unlimited holo PSA -shadowless -1st -japanese -german -french -italian -spanish -korean -portuguese -proxy -custom -metal -reprint -celebrations -lot -cgc -bgs -sgc",
-        "customid": "base-set-charizard-worth-alt",
-        "title": "Pokémon Base Set Charizard 4/102, PSA graded"
-      },
-      "cat": "183454",
-      "live": true,
-      "req": "charizard",
-      "_why": "Growth League B page (2026-10-07); query \"how much is a base set charizard worth\". R11."
-    },
     "panini-obsidian-football-2026": {
       "product": "2026 Panini Obsidian Football hobby box",
       "primary": {
@@ -1717,24 +1309,6 @@
       "live": true,
       "req": "obsidian",
       "_why": "Growth League A page (2026-10-07); query \"2026 panini obsidian football release date\". R11."
-    },
-    "surging-sparks-vs-destined-rivals": {
-      "product": "Surging Sparks Elite Trainer Box",
-      "primary": {
-        "label": "Shop Surging Sparks ETBs on eBay",
-        "q": "Pokemon Surging Sparks Elite Trainer Box sealed -japanese -lot -case -code -promo -sleeve -divider -playmat -topper -bundle -costco -center -empty -guide",
-        "customid": "surging-sparks-vs-destined-rivals-top"
-      },
-      "secondary": {
-        "label": "Destined Rivals ETBs on eBay",
-        "q": "Pokemon Destined Rivals Elite Trainer Box sealed -japanese -lot -case -code -promo -sleeve -divider -playmat -topper -bundle -center -empty -guide",
-        "customid": "surging-sparks-vs-destined-rivals-alt",
-        "title": "Pokémon TCG Destined Rivals Elite Trainer Box"
-      },
-      "cat": "183456",
-      "live": true,
-      "req": "surging",
-      "_why": "Growth League C page (2026-10-07); query \"surging sparks vs destined rivals\". R11."
     },
     "mlb-cards": {
       "product": "2026 Bowman Chrome Baseball hobby box",
