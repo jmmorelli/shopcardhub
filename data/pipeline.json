@@ -4712,6 +4712,17 @@
           "by": "CoS desk (Mac deploy key, unattended) - STATE/NEEDS-MO/LEAGUE.md, Growth League Oct 14 board (staged patch), archive pass Oct 6-7; docs only, does not deploy",
           "gates": "audit-prices FAIL 0 / WARN 65 · audit-site FAIL 0 / WARN 5 (166) · audit-terminal FAIL 0 / WARN 1",
           "liveVerified": "n/a (docs; vercel ignoreCommand)"
+        },
+        {
+          "date": "2026-10-14",
+          "commits": [
+            "45437ae",
+            "(this docs commit)"
+          ],
+          "by": "CoS with Mo (cloud build, Mac deploy key) - /indices momentum screener: every live ticker ranked by 1W/1M/3M, sortable; horizon math windowed, live never joined to recon; STATE + sitemap lastmod",
+          "gates": "audit-prices FAIL 0 / WARN 65 · audit-site FAIL 0 / WARN 5 (166) · audit-terminal FAIL 0 / WARN 1",
+          "rollback": "git revert --no-edit 45437ae",
+          "liveVerified": "pending - verified by curl after push (this entry updated by the next desk if not)"
         }
       ]
     },
