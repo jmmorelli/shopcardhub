@@ -47,6 +47,7 @@ import { cardId, cardKey, assignKeys, rawNot, RAW_EXTRA, WOTC, EDITION, writeCar
 import { holoTest, hasRarity } from "./lib/holo-tier.mjs";
 import { isReprintTitle, REPRINT_PAIRS, reprintFloor } from "./lib/reprint-filter.mjs";
 import { createRequire } from "node:module";
+import { applyIndexLd } from "./lib/index-jsonld.mjs";
 // The plain read is baked, not injected after paint (Night Crew Oct 3 2026, B29: load CLS 0.1-0.24 at 1024). Same renderer as the browser.
 const PR = createRequire(import.meta.url)("../js/plain-read.js");
 
@@ -871,6 +872,8 @@ function bake(x, c) {
     const bv = x.basket.reduce((a, b) => a + b.price * b.w, 0);
     writeCardFile(ROOT, x, c, x.basket.slice().sort((a, b) => b.price * b.w - a.price * a.w), imgAttr, DRY);
   }
+  // E7 slice 2: Dataset + Organization JSON-LD, dateModified = this mark (tools/lib/index-jsonld.mjs)
+  try { html = applyIndexLd(html, { ...x, page: x.page || c.page }); } catch (e) { console.log(`LD skipped ${c.page}: ${e.message}`); }
   if (!DRY) fs.writeFileSync(file, html);
   console.log(`${DRY ? "would bake" : "baked"} ${c.page} block: ${x.basket.length} rows`);
 }
