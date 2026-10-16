@@ -7,7 +7,18 @@ reach. If something here no longer needs you, say so and it comes off.
 *(Housekeeping for the agents, not for Mo: this file lives in the repo beside `STATE.md`; that copy
 is canonical and the Project copy is a mirror written in the same run. Standing grants — Sep 4 "anything
 that needs Mo, I approve"; Sep 8 "I don't want to sign into anything"; Sep 16 "I'd prefer you guys just
-talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy. Oct 5 ~13:50: the Project copy was updated again from a CoS chat with no repo access; the Oct 5 desk mirrored it here, closed what §7 of `claude/cos/session-2026-10-05-predesk.md` settled, and wrote both copies. Oct 7 ~10:20: CoS chat with repo access wrote both copies in the same run. Oct 7 13:00: X Desk Watch added its block to the Project copy only; the Oct 7 desk mirrored it here and wrote both copies. Oct 15 13:00: X Desk Watch added its block to the Project copy only (built on the repo copy at `b7deac6`); the Oct 15 desk mirrored it here and wrote both copies.)*
+talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy. Oct 5 ~13:50: the Project copy was updated again from a CoS chat with no repo access; the Oct 5 desk mirrored it here, closed what §7 of `claude/cos/session-2026-10-05-predesk.md` settled, and wrote both copies. Oct 7 ~10:20: CoS chat with repo access wrote both copies in the same run. Oct 7 13:00: X Desk Watch added its block to the Project copy only; the Oct 7 desk mirrored it here and wrote both copies. Oct 15 13:00: X Desk Watch added its block to the Project copy only (built on the repo copy at `b7deac6`); the Oct 15 desk mirrored it here and wrote both copies. Oct 16 ~15:00: the desk ran cloud-only (Mac unreachable) and wrote its block to the Project copy only; the next Mac-linked desk mirrors it here. Oct 16 ~15:45: the Mac-linked desk fire (same afternoon) mirrored it here and wrote both copies.)*
+
+---
+
+## Open — from the desk (2026-10-16, re-run ~14:40 PT after the 14:00 fire was skipped). Nothing new needs you
+
+- Unchanged and optional: the one-line fix under your Oct 13 "Marks" post · the R10 amendment 7 pick (until you choose, Monday's mark replies are a 10-minute sitting) · owned-card photos (by Oct 25 or it closes) · /track-record labels yes/no · TAG payment info + link.
+- *FYI, no action needed:* this run had no access to your Mac (it ran in the cloud while the laptop was off), so nothing was pushed and the Mac-side inbox waits for Monday's desk. One scheduled-task change half-landed: the morning measure page now runs at 1:05 pm, but moving the daily review to 1:35 pm was refused from an unattended run. The next CoS session with you fixes it in a minute; until then the review reads the previous day's page.
+
+*Checked against live state:* EPN CSVs and `Card Hub/photos/owned/` could not be checked (Mac unreachable). *Not yours:* the SK03 one-sale jump (ruled; Monday's marks re-read it), the cron fix, the STATE archive.
+
+*Update, same afternoon (~15:45 PT, the Mac-linked desk fire):* the Mac side ran after all. Nothing new for you. Checked on the Mac: no new EPN CSVs in `Card Hub/epn/` since Oct 13; `Card Hub/photos/owned/` still absent. The STATE archive is done; the cron fix still waits for a CoS session with you.
 
 ---
 

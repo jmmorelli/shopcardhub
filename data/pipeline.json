@@ -4822,7 +4822,7 @@
         {
           "date": "2026-10-15",
           "commits": [
-            "(this desk docs commit)"
+            "5b48974"
           ],
           "by": "CoS desk (Mac deploy key, unattended) - STATE run log + NOW (desk, cull batch 1), NEEDS-MO, retention LEDGER mirror (R17 ruled), pipeline IW Oct 15 rows + pushLog backfills, Project archive claude/archive/project-2026-10/; docs only, does not deploy",
           "gates": "audit-prices FAIL 0 / WARN 45 · audit-site FAIL 0 / WARN 5 (146) · audit-terminal FAIL 0 / WARN 1",
@@ -4867,7 +4867,7 @@
         {
           "date": "2026-10-16",
           "commits": [
-            "(this commit)"
+            "9248ea7"
           ],
           "by": "CoS (R38 bug, sweep fix) - image-sweep wrapped-controls now means a control starts below where another ends (overlap), not differing tops; prod sweep SV151/AH26/EVS21 at 1280: FAIL 0. tools-only, no deploy",
           "gates": "n/a (tools/ci only; site-gates re-runs on push)",
@@ -4876,18 +4876,72 @@
         {
           "date": "2026-10-16",
           "commits": [
-            "da6674f4",
-            "6be07f2a",
-            "bde8022d",
-            "a6cfece2",
-            "bd2f9ad0",
-            "1c2ec1d0",
-            "553c7804"
+            "f8a897a",
+            "494a7f4",
+            "ae1211b",
+            "50829e9",
+            "5d568d0",
+            "bd64edf",
+            "6125036",
+            "b117848"
           ],
           "by": "Traffic Agent (/mlb-cards integrity IW F1 + Bowman KB G32; E6 Bing striking-distance follow-ups via League A/B/C; E7 GEO slice 2 JSON-LD), Task-key traffic-agent; Authority: Mo 2026-09-27 (go time) + Mo 2026-10-14 (traffic function)",
           "gates": "audit-prices FAIL 0 / WARN 44 (45 before; BCB tier labels) · audit-site FAIL 0 / WARN 5 (146) · audit-terminal FAIL 0 / WARN 1 · sitemap-lastmod --check 0 · build-llms --check ok · build-index-jsonld --check ok · league score --check ok · Chromium 1280/390 on 8 pages clean",
           "rollback": "git revert the listed commits (newest first)",
-          "liveVerified": "pending - curl after push"
+          "liveVerified": "2026-10-16 desk ~22:05Z: /mlb-cards 200, \"Every number here is a sold price\" 0 hits",
+          "note": "Desk Oct 16: cloud hashes mapped to origin (da6674f4..553c7804 -> f8a897a..6125036; b117848 = the pushLog commit)."
+        },
+        {
+          "date": "2026-10-16",
+          "commits": [
+            "c2c140d",
+            "0af88a2"
+          ],
+          "by": "CoS one-time build nfl-rookie-board (Mac deploy key, unattended); Authority: Mo in chat 2026-10-14",
+          "gates": "0/45 · 0/5 (146) · 0/1 (reported by the build)",
+          "liveVerified": "2026-10-16 desk ~22:05Z: /nfl-rookie-cards-2026 200, data-prices-updated 2026-10-16",
+          "note": "Backfilled by the Oct 16 desk. Record: Project claude/cos/nfl-board-build-2026-10-16.md"
+        },
+        {
+          "date": "2026-10-16",
+          "commits": [
+            "841f244",
+            "45c8ca3"
+          ],
+          "by": "Night Crew deploy (Mac deploy key, unattended): B74–B77, B79–B81, P57; then scoped revert of B76 (card-page CLS 0.039 at 1440)",
+          "gates": "0/44 · 4/5 (146; track-record dead links pre-existing on 0a997d5, fixed by 5958251) · 0/1",
+          "liveVerified": "2026-10-16 desk ~22:05Z: /favicon.ico + /apple-touch-icon.png 200; /indices #collectors-wall present",
+          "note": "Backfilled by the Oct 16 desk. Record: Project claude/night-crew/log-2026-10-15.md"
+        },
+        {
+          "date": "2026-10-16",
+          "commits": [
+            "5958251"
+          ],
+          "by": "CoS with Mo (attended, Mac deploy key): track-record builder follows vercel.json 301s; closes gate-watch #2",
+          "gates": "0 FAIL ×3 (handoff); Actions site-gates green",
+          "liveVerified": "2026-10-16 desk ~22:05Z: /track-record 0 hrefs to /ascended-heroes or /chaos-rising",
+          "note": "Backfilled by the Oct 16 desk. Record: Project claude/handoffs/track-record-relink-2026-10-16.md"
+        },
+        {
+          "date": "2026-10-16",
+          "commits": [
+            "3941fb5"
+          ],
+          "by": "Site Sweep (Mac deploy key, unattended), Task-key site-sweep; Authority: Mo 2026-09-27",
+          "gates": "0/44 · 0/5 (146) · 0/1",
+          "liveVerified": "2026-10-16 desk ~22:05Z: /victor-wembanyama-rookie-cards 'priced on dated sales' 3 hits",
+          "note": "Backfilled by the Oct 16 desk. Record: Project claude/cos/site-sweep-2026-10-16.md"
+        },
+        {
+          "date": "2026-10-16",
+          "commits": [
+            "9d9b522"
+          ],
+          "by": "site-fixes §27 (desktop index tables fit at 1280; fixes scheduled site-gates image-sweep FAIL 7)",
+          "gates": "desk re-run on 9d9b522: 0/44 · 0/5 (146) · 0/1",
+          "liveVerified": "n/a (CSS; covered by the next site-gates image-sweep)",
+          "note": "Backfilled by the Oct 16 desk; author session not recorded in STATE."
         }
       ]
     },
