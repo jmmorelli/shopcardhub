@@ -190,6 +190,11 @@ jobs:
             # dashboard (Sep 18: a reversed SELL; Sep 24: stamp Sep 22, Gage Jump SELL vs the feed's HOLD).
             # Re-bake in the SAME commit so the served copy and the feed move together. A failed bake never
             # blocks the feed: / keeps its last bake and audit-terminal's home-feed-day FAILs (gate-watch).
+            # Shop price (Oct 15 2026, Mo's ruling): TCGplayer market per card via the TCGCSV daily mirror -> data/tcg/<tk>.json
+            # + data/tcg-marks.json, read client-side by js/shop-spread.js. Beside the index, never in it. A failure keeps
+            # yesterday's files (the page just shows a day-older shop price); the tool keeps a ticker's previous marks on a fetch miss.
+            if timeout 10m node tools/tcg-pull.mjs; then git add data/tcg data/tcg-marks.json
+            else echo "::warning::tcg-pull failed - shop prices keep yesterday's files"; git checkout -- data/tcg data/tcg-marks.json 2>/dev/null || true; fi
             if FEED_BASE=data/feed node tools/build-home.mjs; then git add index.html
             else echo "::warning::build-home failed - / keeps its previous bake; home-feed-day will FAIL"; git checkout -- index.html; fi
             # /release-calendar (Sep 26 2026): the "This week / Just released" buckets move with the date, so re-bake nightly.

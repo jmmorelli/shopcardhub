@@ -97,6 +97,9 @@
     });
     if (window.SCHVault && SCHVault.mark) SCHVault.mark(main);
     chart(d, c);
+    // shop-spread.js (Oct 15 2026) adds the TCGplayer shop price / spread block into .cdp-buy once the card is on the page
+    window.__schCard = { d: d, c: c };
+    try { document.dispatchEvent(new CustomEvent('sch:card-rendered', { detail: window.__schCard })); } catch (e) {}
     try { if (typeof gtag === 'function') gtag('event', 'card_page_view', { item: c.id }); } catch (e) {}
   }
   /* Price history chart (Sep 30 2026, Mo: "doesn't price charting show a chart we can use for individual cards?").

@@ -1,0 +1,12 @@
+{
+ "_comment": "Affiliate link config read by js/shop-spread.js at runtime (Oct 15 2026). One place to flip a program on. TCGplayer runs on Impact (first-click, 48h, whole-cart credit); application submitted Oct 15 2026 8:38 PM PT from the ShopCardHub Impact account. While status is 'pending' the TCGplayer buttons are plain product links (rel=nofollow, no tracking). On approval: set status to 'live' and base to the Impact tracking base Impact shows for the TCGplayer campaign (same shape as the Fanatics one in tools/build-buy-strip.mjs, e.g. https://tcgplayer.pxf.io/c/<partner>/<ad>/<campaign>); links then render as base + '?u=' + encodeURIComponent(productUrl) + '&' + subIdParam + '=' + <card id>. Nothing else changes. eBay/EPN is unchanged by this file — it lives in tools/lib/epn.mjs and js/grade-links.js.",
+ "tcgplayer": {
+  "status": "pending",
+  "network": "Impact",
+  "appliedOn": "2026-10-15",
+  "base": null,
+  "subIdParam": "subId1",
+  "productUrl": "https://www.tcgplayer.com/product/{pid}",
+  "label": "TCGplayer"
+ }
+}
