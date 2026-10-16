@@ -15,7 +15,9 @@
   var AFF = null, FILES = {};
   function get(u) { return fetch(u + '?t=' + T, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
   function aff() { return AFF || (AFF = get('/data/affiliates.json').then(function (j) { return (j && j.tcgplayer) || {}; }).catch(function () { return {}; })); }
-  function marks(tk) { tk = String(tk || '').toLowerCase(); return FILES[tk] || (FILES[tk] = get('/data/tcg/' + tk + '.json').catch(function () { return null; })); }
+  // Tickers tools/tcg-pull.mjs never writes (BS1E: TCGplayer lists Base Set Unlimited only) — skip the fetch, no console 404.
+  var NO_SHOP = { bs1e: 1 };
+  function marks(tk) { tk = String(tk || '').toLowerCase(); if (NO_SHOP[tk]) return Promise.resolve(null); return FILES[tk] || (FILES[tk] = get('/data/tcg/' + tk + '.json').catch(function () { return null; })); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function money(n, d) { if (n == null || !isFinite(n)) return ''; var o = d != null ? { minimumFractionDigits: d, maximumFractionDigits: d } : n >= 1000 ? { maximumFractionDigits: 0 } : { minimumFractionDigits: 2, maximumFractionDigits: 2 }; return '$' + Number(n).toLocaleString('en-US', o); }
   function pct(d) { var p = Math.abs(d) * 100; return (d < 0 ? '−' : '+') + (p >= 10 ? p.toFixed(0) : p.toFixed(1)) + '%'; }
