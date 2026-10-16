@@ -1,5 +1,5 @@
 {
- "_comment": "Source for /mlb-cards (tools/build-mlb-cards.mjs). Every price is a SportsCardsPro sold-listing range inside the 30-day window; n=0 + note 'scp-point' = SCP price point with no sale in the window (rendered with the 'pt' mark). Refresh with the Monday build; bump 'asof'.",
+ "_comment": "Source for /mlb-cards (tools/build-mlb-cards.mjs). lo/hi = the middle half of the in-window SportsCardsPro (eBay) sold listings, n = sales in the window; add 'med' (median of the n sales) and the generator prints it instead of the range. Cells with n < 3 print as too thin to price (R18). n=0 + note 'scp-point' = SCP price point, no sale in the window: printed as 'No verified sale' (graded) / 'No sale in 30 days' (raw), never as a number. Paper Bowman rows (BP-/BD-/BDPP codes, flagship Bowman base) are refused by the generator (Bowman KB G32). Refresh with the Monday build; bump 'asof'.",
  "asof": "2026-10-13",
  "window": {
   "from": "2026-09-13",
@@ -368,34 +368,6 @@
      "src": "https://www.sportscardspro.com/game/baseball-cards-2017-topps/aaron-judge-287"
     },
     {
-     "year": 2013,
-     "set": "Bowman Draft",
-     "num": "BDPP19",
-     "parallel": "Base",
-     "label": "1st Bowman paper",
-     "tier": "Value",
-     "q": "Aaron Judge 2013 Bowman Draft BDPP19",
-     "raw": {
-      "lo": 60,
-      "hi": 67,
-      "n": 25,
-      "asof": "2026-10-10"
-     },
-     "psa9": {
-      "lo": 110,
-      "hi": 120,
-      "n": 7,
-      "asof": "2026-10-08"
-     },
-     "psa10": {
-      "lo": 241,
-      "hi": 294,
-      "n": 9,
-      "asof": "2026-10-08"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2013-bowman-draft-picks-&-prospects/aaron-judge-bdpp19"
-    },
-    {
      "year": 2026,
      "set": "Topps Series 1",
      "num": "1",
@@ -568,28 +540,6 @@
      "src": "https://www.sportscardspro.com/game/baseball-cards-2018-topps-update/juan-soto-us300"
     },
     {
-     "year": 2017,
-     "set": "Bowman Draft",
-     "num": "BD162",
-     "parallel": "Base",
-     "label": "Bowman Draft paper",
-     "tier": "Value",
-     "q": "Juan Soto 2017 Bowman Draft BD162",
-     "raw": {
-      "lo": 1,
-      "hi": 3,
-      "n": 15,
-      "asof": "2026-10-13"
-     },
-     "psa10": {
-      "lo": 33,
-      "hi": 49,
-      "n": 3,
-      "asof": "2026-10-09"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2017-bowman-draft/juan-soto-bd162"
-    },
-    {
      "year": 2018,
      "set": "Bowman Chrome Prospects",
      "num": "BCP52",
@@ -740,34 +690,6 @@
       "asof": "2026-10-03"
      },
      "src": "https://www.sportscardspro.com/game/baseball-cards-2022-bowman-chrome/bobby-witt-jr-77"
-    },
-    {
-     "year": 2020,
-     "set": "Bowman Prospects",
-     "num": "BP-25",
-     "parallel": "Base",
-     "label": "1st Bowman paper",
-     "tier": "Value",
-     "q": "Bobby Witt Jr. 2020 Bowman Prospects BP-25",
-     "raw": {
-      "lo": 1.61,
-      "hi": 3.25,
-      "n": 8,
-      "asof": "2026-10-12"
-     },
-     "psa9": {
-      "lo": 19.5,
-      "hi": 21.0,
-      "n": 4,
-      "asof": "2026-10-05"
-     },
-     "psa10": {
-      "lo": 48.0,
-      "hi": 50.0,
-      "n": 5,
-      "asof": "2026-10-10"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2020-bowman-paper-prospects/bobby-witt-jr-bp-25"
     },
     {
      "year": 2022,
@@ -980,34 +902,6 @@
      "src": "https://www.sportscardspro.com/game/baseball-cards-2024-topps-update/paul-skenes-us100"
     },
     {
-     "year": 2023,
-     "set": "Bowman Draft",
-     "num": "BD-14",
-     "parallel": "Base",
-     "label": "1st Bowman paper",
-     "tier": "Value",
-     "q": "Paul Skenes 2023 Bowman Draft BD-14",
-     "raw": {
-      "lo": 1.25,
-      "hi": 6.5,
-      "n": 29,
-      "asof": "2026-10-13"
-     },
-     "psa9": {
-      "lo": 19.27,
-      "hi": 26.0,
-      "n": 9,
-      "asof": "2026-10-12"
-     },
-     "psa10": {
-      "lo": 62.0,
-      "hi": 92.0,
-      "n": 11,
-      "asof": "2026-10-12"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2023-bowman-draft/paul-skenes-bd-14"
-    },
-    {
      "year": 2026,
      "set": "Topps Series 1",
      "num": "100",
@@ -1129,34 +1023,6 @@
     },
     {
      "year": 2014,
-     "set": "Bowman",
-     "num": "176",
-     "parallel": "Base",
-     "label": "Bowman RC",
-     "tier": "Core",
-     "q": "Jose Ramirez 2014 Bowman 176",
-     "raw": {
-      "lo": 6.26,
-      "hi": 15.5,
-      "n": 29,
-      "asof": "2026-10-13"
-     },
-     "psa9": {
-      "lo": 34.95,
-      "hi": 46.0,
-      "n": 4,
-      "asof": "2026-10-12"
-     },
-     "psa10": {
-      "lo": 81.68,
-      "hi": 118.5,
-      "n": 15,
-      "asof": "2026-10-13"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2014-bowman/jose-ramirez-176"
-    },
-    {
-     "year": 2014,
      "set": "Donruss The Rookies",
      "num": "41",
      "parallel": "Base",
@@ -1268,34 +1134,6 @@
       "asof": "2026-10-07"
      },
      "src": "https://www.sportscardspro.com/game/baseball-cards-2018-topps-update/ronald-acuna-jr-at-bat-in-blue-jersey-us250"
-    },
-    {
-     "year": 2017,
-     "set": "Bowman Prospects",
-     "num": "BP127",
-     "parallel": "Base",
-     "label": "1st Bowman paper",
-     "tier": "Value",
-     "q": "Ronald Acuna 2017 Bowman Prospects BP127",
-     "raw": {
-      "lo": 2,
-      "hi": 5,
-      "n": 4,
-      "asof": "2026-09-26"
-     },
-     "psa9": {
-      "lo": 13,
-      "hi": 20,
-      "n": 5,
-      "asof": "2026-10-11"
-     },
-     "psa10": {
-      "lo": 33,
-      "hi": 41,
-      "n": 8,
-      "asof": "2026-10-09"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2017-bowman-prospects/ronald-acuna-bp127"
     },
     {
      "year": 2018,
@@ -1422,34 +1260,6 @@
       "asof": "2026-10-08"
      },
      "src": "https://www.sportscardspro.com/game/baseball-cards-2024-topps/elly-de-la-cruz-141"
-    },
-    {
-     "year": 2022,
-     "set": "Bowman Paper Prospects",
-     "num": "BP-50",
-     "parallel": "Base",
-     "label": "1st Bowman paper",
-     "tier": "Value",
-     "q": "Elly De La Cruz 2022 Bowman Prospects BP-50",
-     "raw": {
-      "lo": 1,
-      "hi": 5,
-      "n": 2,
-      "asof": "2026-09-19"
-     },
-     "psa9": {
-      "lo": 16,
-      "hi": 20,
-      "n": 3,
-      "asof": "2026-10-07"
-     },
-     "psa10": {
-      "lo": 31,
-      "hi": 45,
-      "n": 13,
-      "asof": "2026-10-10"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2022-bowman-paper-prospects/elly-de-la-cruz-bp-50"
     }
    ],
    "grp": "stars"
@@ -1564,28 +1374,6 @@
       "asof": "2026-10-05"
      },
      "src": "https://www.sportscardspro.com/game/baseball-cards-2023-topps/gunnar-henderson-206"
-    },
-    {
-     "year": 2019,
-     "set": "Bowman Draft",
-     "num": "BD-22",
-     "parallel": "Base",
-     "label": "1st Bowman paper",
-     "tier": "Value",
-     "q": "Gunnar Henderson 2019 Bowman Draft BD-22",
-     "raw": {
-      "lo": 2.5,
-      "hi": 4,
-      "n": 5,
-      "asof": "2026-10-04"
-     },
-     "psa10": {
-      "lo": 21.5,
-      "hi": 25,
-      "n": 2,
-      "asof": "2026-10-02"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2019-bowman-draft/gunnar-henderson-bd-22"
     }
    ],
    "grp": "stars"
@@ -1689,34 +1477,6 @@
       "asof": "2026-10-13"
      },
      "src": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome/roman-anthony-225"
-    },
-    {
-     "year": 2023,
-     "set": "Bowman Prospects",
-     "num": "BP-71",
-     "parallel": "Base",
-     "label": "1st Bowman paper",
-     "tier": "Value",
-     "q": "Roman Anthony 2023 Bowman Prospects BP-71",
-     "raw": {
-      "lo": 1,
-      "hi": 3,
-      "n": 15,
-      "asof": "2026-10-09"
-     },
-     "psa9": {
-      "lo": 8.5,
-      "hi": 19,
-      "n": 5,
-      "asof": "2026-10-10"
-     },
-     "psa10": {
-      "lo": 61,
-      "hi": 65,
-      "n": 3,
-      "asof": "2026-10-13"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2023-bowman-prospects/roman-anthony-bp-71"
     },
     {
      "year": 2026,
@@ -1854,22 +1614,6 @@
       "asof": "2026-10-08"
      },
      "src": "https://www.sportscardspro.com/game/baseball-cards-2023-topps-chrome/adley-rutschman-1"
-    },
-    {
-     "year": 2019,
-     "set": "Bowman Draft",
-     "num": "BD-1",
-     "parallel": "Base",
-     "label": "Draft paper 1st",
-     "tier": "Value",
-     "q": "Adley Rutschman 2019 Bowman Draft BD-1",
-     "raw": {
-      "lo": 2.25,
-      "hi": 10,
-      "n": 3,
-      "asof": "2026-10-04"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2019-bowman-draft/adley-rutschman-bd-1"
     },
     {
      "year": 2023,
@@ -2010,34 +1754,6 @@
      "src": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome/pete-crow-armstrong-45"
     },
     {
-     "year": 2020,
-     "set": "Bowman Draft",
-     "num": "BD-72",
-     "parallel": "Base",
-     "label": "Draft paper 1st",
-     "tier": "Value",
-     "q": "Pete Crow-Armstrong 2020 Bowman Draft BD-72",
-     "raw": {
-      "lo": 5.5,
-      "hi": 10,
-      "n": 27,
-      "asof": "2026-10-13"
-     },
-     "psa9": {
-      "lo": 42,
-      "hi": 45,
-      "n": 3,
-      "asof": "2026-09-28"
-     },
-     "psa10": {
-      "lo": 230,
-      "hi": 350,
-      "n": 3,
-      "asof": "2026-10-06"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2020-bowman-draft/pete-crow-armstrong-bd-72"
-    },
-    {
      "year": 2024,
      "set": "Topps Series 2",
      "num": "407",
@@ -2151,22 +1867,6 @@
     },
     {
      "year": 2026,
-     "set": "Bowman",
-     "num": "BP-1",
-     "parallel": "Base",
-     "label": "1st Bowman paper",
-     "tier": "Value",
-     "q": "Ethan Holliday 2026 Bowman BP-1",
-     "raw": {
-      "lo": 0.99,
-      "hi": 1.99,
-      "n": 21,
-      "asof": "2026-10-12"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2026-bowman-paper-prospect/ethan-holliday-bp-1"
-    },
-    {
-     "year": 2026,
      "set": "Bowman Chrome",
      "num": "BCP-209",
      "parallel": "Base",
@@ -2189,7 +1889,7 @@
    "name": "Jacob Misiorowski",
    "team": "Milwaukee Brewers",
    "pos": "SP",
-   "note": "The 2022 Bowman Draft Chrome CDA-JMI auto is the trophy and barely trades raw, but two base PSA 10s cleared $2,450 to $3,000 this month. The 2026 Topps #10 RC in PSA 10 at $250 to $315 is the liquid way in.",
+   "note": "The 2022 Bowman Draft Chrome CDA-JMI auto is the trophy and barely trades. The 2026 Topps #10 RC in PSA 10 at $250 to $315 is the liquid way in.",
    "cards": [
     {
      "year": 2022,
@@ -2301,28 +2001,6 @@
       "asof": "2026-09-27"
      },
      "src": "https://www.sportscardspro.com/game/baseball-cards-2026-topps/jacob-misiorowski-10"
-    },
-    {
-     "year": 2022,
-     "set": "Bowman Draft",
-     "num": "BD-132",
-     "parallel": "Base",
-     "label": "1st Bowman paper",
-     "tier": "Value",
-     "q": "Jacob Misiorowski 2022 Bowman Draft BD-132",
-     "raw": {
-      "lo": 8.02,
-      "hi": 12.99,
-      "n": 24,
-      "asof": "2026-10-10"
-     },
-     "psa10": {
-      "lo": 345,
-      "hi": 400,
-      "n": 4,
-      "asof": "2026-09-28"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2022-bowman-draft/jacob-misiorowski-bd-132"
     }
    ],
    "grp": "prospects"
@@ -2349,28 +2027,6 @@
       "asof": "2026-10-11"
      },
      "src": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome/munetaka-murakami-image-variation-274"
-    },
-    {
-     "year": 2026,
-     "set": "Bowman",
-     "num": "9",
-     "parallel": "Base",
-     "label": "Bowman RC",
-     "tier": "Core",
-     "q": "Munetaka Murakami 2026 Bowman 9",
-     "raw": {
-      "lo": 0.99,
-      "hi": 2.99,
-      "n": 18,
-      "asof": "2026-10-11"
-     },
-     "psa10": {
-      "lo": 100,
-      "hi": 112.49,
-      "n": 2,
-      "asof": "2026-10-09"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2026-bowman/munetaka-murakami-9"
     },
     {
      "year": 2026,
@@ -2518,7 +2174,7 @@
    "name": "Chase DeLauter",
    "team": "Cleveland Guardians",
    "pos": "OF",
-   "note": "The 2022 Bowman Draft Chrome CDA-CD auto is where the money is, $155 to $260 raw and $218 to $325 in PSA 10 this month. All four of his 2026 rookie cards are $1 to $3 and none has a graded sale yet.",
+   "note": "The 2022 Bowman Draft Chrome CDA-CD auto is where the money is, $155 to $260 raw this month. His 2026 rookie cards are $1 to $3 raw and none has a graded sale yet.",
    "cards": [
     {
      "year": 2022,
@@ -2618,44 +2274,6 @@
       "asof": "2026-10-13"
      },
      "src": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-series-2/chase-delauter-458"
-    },
-    {
-     "year": 2026,
-     "set": "Bowman",
-     "num": "37",
-     "parallel": "Base",
-     "label": "Bowman RC",
-     "tier": "Value",
-     "q": "Chase DeLauter 2026 Bowman 37",
-     "raw": {
-      "lo": 0.99,
-      "hi": 2.0,
-      "n": 5,
-      "asof": "2026-10-11"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2026-bowman/chase-delauter-37"
-    },
-    {
-     "year": 2022,
-     "set": "Bowman Draft",
-     "num": "BD-49",
-     "parallel": "Base",
-     "label": "1st Bowman paper",
-     "tier": "Value",
-     "q": "Chase DeLauter 2022 Bowman Draft BD-49",
-     "raw": {
-      "lo": 1.19,
-      "hi": 2.47,
-      "n": 6,
-      "asof": "2026-10-09"
-     },
-     "psa10": {
-      "lo": 31,
-      "hi": 62,
-      "n": 8,
-      "asof": "2026-10-13"
-     },
-     "src": "https://www.sportscardspro.com/game/baseball-cards-2022-bowman-draft/chase-delauter-bd-49"
     }
    ],
    "grp": "prospects"

@@ -48,11 +48,20 @@ const money = (v) => {
 };
 function range(x, pt, lab) {
   if (!x) return `<td class="num none" data-l="${lab}" aria-label="no sales in window"><span class="dot">·</span><span class="nos">no sale</span></td>`;
-  const isPt = x.n === 0 || pt;
-  const txt = isPt ? "~" + money(x.lo) + '<sup class="pt" title="SportsCardsPro price point — no sale inside the 30-day window">pt</sup>'
-    : (Math.abs(x.hi - x.lo) < 0.01 ? money(x.lo) : money(x.lo) + "&ndash;" + money(x.hi));
-  const n = isPt ? "" : `<small>${x.n >= 30 ? "30+" : x.n} sale${x.n === 1 ? "" : "s"} &middot; ${fmtDate(x.asof)}</small>`;
-  return `<td class="num${isPt ? " pt" : ""}" data-l="${lab}">${txt}${n}</td>`;
+  // R18 + IW 2026-10-15 F1 (CoS ruling Oct 15): a guide point is never printed as a price; a cell needs 3+ in-window
+  // sales to carry a number; a median (x.med) prints when the data file has one, else the middle half of the sales.
+  if (x.n === 0 || pt) return `<td class="num none" data-l="${lab}"><span class="nos">${lab === "Raw" ? "No sale in 30 days" : "No verified sale"}</span></td>`;
+  if (x.n < 3) return `<td class="num none" data-l="${lab}"><span class="nos">Too few sales</span><small>${x.n} sale${x.n === 1 ? "" : "s"} &middot; last ${fmtDate(x.asof)}</small></td>`;
+  const cnt = x.n >= 30 ? "30+" : x.n;
+  if (x.med != null) return `<td class="num" data-l="${lab}">${money(x.med)}<small>median of ${cnt} &middot; to ${fmtDate(x.asof)}</small></td>`;
+  const txt = Math.abs(x.hi - x.lo) < 0.01 ? money(x.lo) : money(x.lo) + "&ndash;" + money(x.hi);
+  return `<td class="num" data-l="${lab}">${txt}<small>mid of ${cnt} sales &middot; to ${fmtDate(x.asof)}</small></td>`;
+}
+// Bowman KB G32 (Oct 15): paper Bowman (BP-/BD-/BDPP codes, flagship Bowman base) gets no tier and no buy links.
+const PAPER_SET = /^Bowman( Draft| Prospects| Paper Prospects)?$/;
+const CHROME_NUM = /^(CPA|BCP|CDA|BDC|BCRA)/i;
+for (const p of D.players) for (const c of p.cards) {
+  if (PAPER_SET.test(c.set) && !CHROME_NUM.test(c.num)) throw new Error(`paper Bowman row refused (G32): ${p.name} ${c.year} ${c.set} #${c.num}`);
 }
 const fmtDate = (iso) => { const [y, m, d] = iso.split("-").map(Number); return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][m - 1] + " " + d + (y !== 2026 ? " " + y : ""); };
 const cardTitle = (c) => `${c.year} ${c.set}${c.num ? " #" + c.num : ""}${c.parallel && c.parallel !== "Base" ? " " + c.parallel : ""}`;
@@ -63,8 +72,9 @@ function playerBlock(p, i) {
   const rows = p.cards.map((c, j) => {
     const cid = `mlb-${p.slug}-${j + 1}`;
     const pt = c.note && /scp-point/.test(c.note);
-    const seed = c.raw ? c.raw.lo : c.psa10 ? c.psa10.lo : 0;
-    const seedGrade = c.raw ? "Raw" : "PSA 10";
+    const ok = (x) => x && x.n >= 3 && !pt;
+    const seed = ok(c.raw) ? (c.raw.med ?? c.raw.lo) : ok(c.psa10) ? (c.psa10.med ?? c.psa10.lo) : 0;
+    const seedGrade = ok(c.raw) || !ok(c.psa10) ? "Raw" : "PSA 10";
     const name = `${p.name} #${c.num} — ${c.year} ${c.set}${c.parallel && c.parallel !== "Base" ? " " + c.parallel : ""}`;
     return `<tr class="t-${c.tier.toLowerCase()}">
 <td class="cd"><b>${esc(cardTitle(c))}</b><span class="lb">${esc(c.label)}</span><span class="tb t-${c.tier.toLowerCase()}">${TIER[c.tier]}</span></td>
@@ -232,7 +242,7 @@ ${GTAG}
   <div class="container">
     <div class="hero-eyebrow">⚾ MLB · ${D.players.length} players · ${nCards} cards · sold prices</div>
     <h1>MLB cards<br><em>what to buy, player by player</em></h1>
-    <p class="hero-sub">Pick a player, get ${Math.min(...D.players.map((p) => p.cards.length))}–${Math.max(...D.players.map((p) => p.cards.length))} cards worth owning at three price levels, each with what it actually sold for in the last 30 days raw, PSA 9 and PSA 10, and a button to go buy it. No essay per player. The one line under each name says what moved that market this month.</p>
+    <p class="hero-sub">Pick a player, get ${Math.min(...D.players.map((p) => p.cards.length))}–${Math.max(...D.players.map((p) => p.cards.length))} cards worth owning at three price levels, each with what it sold for in the last 30 days raw, PSA 9 and PSA 10 where there were enough sales to say, and a button to go buy it. No essay per player. The one line under each name says what moved that market this month.</p>
     <div class="hero-meta">
       <span>● Sold comps ${esc(win)}</span>
       <span>⚾ ${stars.length} stars · ${prospects.length} prospects</span>
@@ -248,8 +258,8 @@ ${GTAG}
 
 <div class="container mlb">
   <section style="border-top:none; padding-top:28px;">
-    <p class="intro">Every number here is a sold price, pulled from SportsCardsPro's eBay sold listings for ${esc(win)}, with the sale count under it so you can see how thick the market is. A grail is the card you buy once; core is the card most collectors of that player actually own; value is the sub-$30 way in with real daily volume. Tap a name to open its table, or tap Raw, PSA 9, PSA 10 or TAG to go straight to live copies on eBay.</p>
-    <div class="legend"><span class="tb t-grail">The grail</span><span class="tb t-core">Core</span><span class="tb t-value">Value</span><span><sup class="pt">pt</sup> = SportsCardsPro price point, no sale inside the window</span><span>· = no sale at that grade inside the window</span></div>
+    <p class="intro">Every number here comes from eBay sold listings for ${esc(win)}, read on SportsCardsPro. A price shows the middle half of that month's sales, with the count under it so you can see how thick the market is. Under 3 sales, we print no price. A grail is the card you buy once; core is the card most collectors of that player actually own; value is the sub-$30 way in with real daily volume. Tap a name to open its table, or tap Raw, PSA 9, PSA 10 or TAG to go straight to live copies on eBay.</p>
+    <div class="legend"><span class="tb t-grail">The grail</span><span class="tb t-core">Core</span><span class="tb t-value">Value</span><span>No verified sale = nothing sold at that grade in the window</span><span>· = no sale at that grade inside the window</span></div>
     <div class="chips"><span class="gh">Stars</span>${chips(stars)}<span class="gh">2026 Bowman prospects</span>${chips(prospects)}</div>
     <div class="tools"><button type="button" data-all="open">Open all</button><button type="button" data-all="close">Close all</button></div>
 
