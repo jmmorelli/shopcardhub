@@ -54,17 +54,14 @@
       'i.shc,.sidx-tbl td i.shc{display:inline-block;margin-left:5px;font:600 10px/1.4 var(--fm,ui-monospace,monospace);font-style:normal;color:var(--text-dim,var(--dim,#5a7880));border:1px solid var(--border2,var(--bd2,#23303d));border-radius:2px;padding:0 4px;vertical-align:middle;white-space:nowrap}' +
       'i.shc.shop,.sidx-tbl td i.shc.shop{color:var(--green,var(--gn,#00e07a));border-color:currentColor}i.shc.ebay,.sidx-tbl td i.shc.ebay{color:var(--red,var(--rd,#ff2e55));border-color:currentColor}' +
       'td.shop{white-space:nowrap}td.shop small{display:block;font-size:9px;color:var(--text-dim,var(--dim,#5a7880));letter-spacing:.3px}' +
-      '.sidx .act-w a.tcgl,.chase-tbl .act-w a.tcgl{display:inline-flex;align-items:center;justify-content:center;font:700 11px/1 var(--fd,inherit);letter-spacing:1px;text-transform:uppercase;min-height:40px;padding:0 12px;border:1px solid var(--border2,var(--bd2,#23303d));border-radius:2px;color:var(--text-head,var(--th,#e4f0f4));text-decoration:none;margin-left:4px;box-sizing:border-box}' +
       'td.shop.two .l2{margin-top:2px;line-height:1}td.shop.two .l2 i.shc{margin-left:0}a.tcgs{color:inherit;text-decoration:none;border-bottom:1px dotted var(--border2,var(--bd2,#23303d));white-space:nowrap}a.tcgs.lo{color:var(--green,var(--gn,#00e07a));border-bottom-color:currentColor}a.tcgs:hover{color:var(--text-head,var(--th,#e4f0f4))}' +
       /* the nine-column chase table fills the page at 1012px: let long card names wrap so the Shop column fits without a scrollbar */
       '.chase-tbl tr.has-shop td.card .roi-cell>div{max-width:150px;white-space:normal;line-height:1.25}' +
-      '.sidx .act-w a.tcgl.lo,.chase-tbl .act-w a.tcgl.lo{border-color:var(--green,var(--gn,#00e07a));color:var(--green,var(--gn,#00e07a))}' +
-      '.sidx .act-w a.tcgl:hover,.chase-tbl .act-w a.tcgl:hover{background:var(--p2,#0e151c)}' +
       '.sh-line b{font-weight:700}.sh-line .shk{opacity:.8}' +
       '.sch-shop-m{display:none}' +
       /* phones: the sector table becomes a grid (css/site-fixes.css §10) — the Shop cell hides and a one-line chip rides in the action cell */
       '@media(max-width:760px){.sidx-tbl tr.has-shop th:nth-child(6),.sidx-tbl tr.has-shop td:nth-child(6){display:none}}' +
-      '@media(max-width:560px){.sidx-tbl tr.has-shop td.shop{display:none}.sidx-tbl tr.has-shop td.act .tcgw{display:none}.sidx-tbl tr.has-shop td.act .sch-shop-m{display:flex;flex:1 0 100%;order:8;align-items:center;gap:6px;font:600 10px/1.4 var(--fm,ui-monospace,monospace);color:var(--text-dim,var(--dim,#5a7880))}.sidx-tbl tr.has-shop td.act .sch-shop-m .shc{margin-left:0}}' +
+      '@media(max-width:560px){.sidx-tbl tr.has-shop td.shop{display:none}.sidx-tbl tr.has-shop td.act .sch-shop-m{display:flex;flex:1 0 100%;order:8;align-items:center;gap:6px;font:600 10px/1.4 var(--fm,ui-monospace,monospace);color:var(--text-dim,var(--dim,#5a7880))}.sidx-tbl tr.has-shop td.act .sch-shop-m .shc{margin-left:0}}' +
       /* card page block */
       '.cdp-shop{margin:0 0 12px;border:1px solid var(--border,var(--bd,#23303d));border-radius:3px;background:var(--p2,#0e151c);padding:10px 12px}' +
       '.cdp-shop .g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.cdp-shop .r .k{display:block;font:600 10px/1.2 var(--fd,inherit);letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim,var(--dim,#5a7880));margin-bottom:3px}' +
@@ -86,15 +83,14 @@
       sec.querySelectorAll('.sidx-tbl tbody tr[data-cid]').forEach(function (tr) {
         var cid = tr.getAttribute('data-cid'), v = M[cid]; if (!v) return;
         var tds = tr.children; if (tds.length < 4) return;
+        // the price itself is the TCGplayer link (a fifth button in the action cell wrapped the Raw/PSA/TAG group onto two
+        // rows whenever a live Bid was showing — Mo, Oct 16: "the Wartortle and Psyduck rows look broken")
         var td = document.createElement('td'); td.className = 'num shop';
-        td.innerHTML = money(v.m) + chipHtml(v);
+        td.innerHTML = tcgLink(a, v, cid, 'tcgs', money(v.m) + ' ↗') + chipHtml(v);
         tds[2].insertAdjacentElement('afterend', td);
         tr.classList.add('has-shop');
         var act = tr.querySelector('td.act .act-w');
         if (act) {
-          var glk = act.querySelector('.glk');
-          var l = document.createElement('span'); l.className = 'tcgw'; l.innerHTML = tcgLink(a, v, cid, 'tcgl', 'TCG');
-          if (glk) glk.insertAdjacentElement('afterend', l); else act.appendChild(l);
           var m = document.createElement('span'); m.className = 'sch-shop-m'; m.innerHTML = tcgLink(a, v, cid, 'tcgs', 'shop ' + money(v.m) + ' ↗') + chipHtml(v);
           act.appendChild(m);
         }
@@ -104,7 +100,7 @@
       sec.querySelectorAll('.sidx-tbl thead tr').forEach(function (tr) {
         if (tr.querySelector('th.shop')) return;
         var th = document.createElement('th'); th.className = 'shop';
-        th.title = 'TCGplayer market price (the "shop price" most card shops sell at), mirrored daily with about a 24-hour lag. Chip = shop vs the eBay sold mark: green, cheaper at the shop; red, cheaper on eBay. Shown beside the index, never used in it.';
+        th.title = 'TCGplayer market price (the "shop price" most card shops sell at), mirrored daily with about a 24-hour lag. Tap the price to open the card on TCGplayer. Chip = shop vs the eBay sold mark: green, cheaper at the shop; red, cheaper on eBay. Shown beside the index, never used in it.';
         th.textContent = 'Shop (TCG)';
         tr.children[2].insertAdjacentElement('afterend', th);
         tr.classList.add('has-shop');

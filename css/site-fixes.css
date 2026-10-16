@@ -682,3 +682,14 @@ body .strip > a.chip { display: inline-flex; align-items: center; gap: 4px; min-
   { font-size: 11px !important; }
   body .bstrip.bs-dock .bs-go::before, body .bstrip.bs-dock .bs-fan::before { font-size: 11px; letter-spacing: 1px; }
 }
+
+/* 25 (CoS with Mo, Oct 16 2026 — "the Wartortle and Psyduck rows look broken"). Set-index action cells were
+   centred, so a row with a live Bid button started its ★ / Raw / PSA / TAG group 150 px further left than the
+   row under it with no bid, and the group wrapped onto two lines when a bid and a fifth button shared the cell.
+   Desktop only (the phone grid in §10 already lays the cell out on its own line): every row's group starts at
+   the same left edge, the Bid button extends to the right, nothing wraps. */
+@media (min-width: 561px) {
+  body .sidx-tbl td.act.g, body .sidx-tbl th.th-act.g { text-align: left; }
+  body .sidx-tbl td.act .act-w.g { justify-content: flex-start; flex-wrap: nowrap; }
+  body .sidx-tbl td.act .act-w.g .glk { flex-wrap: nowrap; }
+}

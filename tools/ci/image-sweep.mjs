@@ -6,7 +6,8 @@
 // images load, and reports per page: <img> elements that failed (naturalWidth 0 after load), card slots still on the
 // generated placeholder, page errors, horizontal overflow.
 //   FAIL: any <img> that failed to load; a page error; horizontal overflow at 390px; a clipped CTA label; text the same
-//         colour as its background; a bare var(--x) the page never defines; an element hanging off the phone viewport
+//         colour as its background; a bare var(--x) the page never defines; an element hanging off the phone viewport;
+//         (Oct 16) a button group wrapped onto two rows or a table wider than its box on desktop
 //   WARN: card slots left on the placeholder (a photo the name search could not find); tap targets under 28px on a phone
 // --shots <dir> also saves a 390px above-the-fold screenshot per page (the weekly's visual review reads those).
 // Usage: node tools/ci/image-sweep.mjs [--base https://www.shopcardhub.com] [--width 1280,390] [--pages a,b] [--json out.json]
@@ -107,6 +108,23 @@ for (const w of WIDTHS) {
         if (innerWidth <= 420 && document.documentElement.scrollWidth > innerWidth) {
           for (const el of document.querySelectorAll("body *")) { const r = el.getBoundingClientRect(); if (r.width > 0 && r.right > innerWidth + 8 && getComputedStyle(el).position !== "fixed" && !el.closest("[style*='overflow'], .tbl-scroll, .tbl-wrap, .strip, nav, .rail, .mobile-nav")) { ui.push("overflow-el: " + el.tagName.toLowerCase() + (el.className ? "." + String(el.className).split(" ")[0] : "") + " right=" + Math.round(r.right)); break; } }
         }
+        // 5. (Oct 16 2026, Mo: "the Wartortle and Psyduck rows look broken") desktop layout breaks the static gates cannot see:
+        //    a button group (Raw/PSA/TAG, the action cell) wrapped onto a second row, and a data table wider than its box
+        //    (a desktop horizontal scrollbar on an index table). Both FAIL at >= 1000 px; the phone layout wraps by design.
+        if (innerWidth >= 1000) {
+          let wrapped = 0, wex = "";
+          for (const g of document.querySelectorAll(".glk, .act-w, .cdp-btns")) {
+            if (!vis(g) || g.children.length < 2) continue;
+            const kids = Array.from(g.children).filter(vis); if (kids.length < 2) continue;
+            const tops = new Set(kids.map((k) => Math.round(k.getBoundingClientRect().top / 4)));
+            if (tops.size > 1 && !g.classList.contains("cdp-btns")) { wrapped++; if (!wex) wex = (g.closest("tr")?.querySelector("b, .nm")?.textContent || g.className || "").toString().trim().slice(0, 30); }
+          }
+          if (wrapped) ui.push("wrapped-controls: " + wrapped + " button group(s) on two rows (e.g. " + wex + ")");
+          for (const t of document.querySelectorAll("table")) {
+            if (!vis(t)) continue; const box = t.parentElement; if (!box) continue;
+            if (t.scrollWidth > box.clientWidth + 4 && box.clientWidth > 600) { ui.push("table-overflow: " + (t.closest("section, div[class]")?.className || "table").toString().split(" ")[0] + " " + t.scrollWidth + ">" + box.clientWidth); break; }
+          }
+        }
         const imgs = Array.from(document.images);
         // an <img> with no src at all is a slot a script fills later (the watchlist's share-card preview) — not a break
         const bad = imgs.filter((i) => i.complete && i.naturalWidth === 0 && i.getAttribute("src") && !(i.src || "").startsWith("data:")).map((i) => (i.currentSrc || i.src || "").slice(0, 140));
@@ -116,7 +134,7 @@ for (const w of WIDTHS) {
         return { imgs: imgs.length, bad, pending, slots: slots.length, placeholder: ph, ui: ui.slice(0, 12), sw: document.documentElement.scrollWidth, iw: innerWidth, h: document.documentElement.scrollHeight };
       });
       const row = { page: p, width: w, status, ms: Date.now() - t0, ...info, errors: errs };
-      const hard = row.ui.filter((u) => /^(clipped-cta|invisible-text|undefined-var|overflow-el)/.test(u));
+      const hard = row.ui.filter((u) => /^(clipped-cta|invisible-text|undefined-var|overflow-el|wrapped-controls|table-overflow)/.test(u));
       row.fail = status !== 200 || row.bad.length > 0 || errs.length > 0 || (w <= 420 && row.sw > row.iw) || hard.length > 0;
       row.warn = row.placeholder.length > 0 || row.ui.length > hard.length;
       if (SHOTS && w <= 420) { try { await pg.screenshot({ path: path.join(SHOTS, p.replace(/[^a-z0-9]+/gi, "_").replace(/^_|_$/g, "") || "home") + "-390.png", fullPage: false }); } catch (e) {} }
