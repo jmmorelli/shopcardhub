@@ -4858,11 +4858,20 @@
         {
           "date": "2026-10-16",
           "commits": [
-            "(this commit)"
+            "cdb999b"
           ],
           "by": "CoS with Mo (R38 bug, 2/2) - sector shop cell two-line (price link over chip) so EVS21-size tables fit 1010px with live bids; image-sweep wrapped-controls counts only a/button children (the vs-sold chip under Listings is by design); shop-spread.js v4",
           "gates": "audit-prices FAIL 0 / WARN 45 · audit-site FAIL 0 / WARN 5 (146) · local sweep EVS21+AH26 1280 FAIL 0",
-          "liveVerified": "pending (sweep prod after deploy)"
+          "liveVerified": "yes - prod sweep 5 pages x 1280/390 after deploy: 0 wraps, 0 overflow (SV151 flag was the check reading a 29px Bid beside 40px buttons as a second row; fixed next commit)"
+        },
+        {
+          "date": "2026-10-16",
+          "commits": [
+            "(this commit)"
+          ],
+          "by": "CoS (R38 bug, sweep fix) - image-sweep wrapped-controls now means a control starts below where another ends (overlap), not differing tops; prod sweep SV151/AH26/EVS21 at 1280: FAIL 0. tools-only, no deploy",
+          "gates": "n/a (tools/ci only; site-gates re-runs on push)",
+          "liveVerified": "n/a"
         }
       ]
     },

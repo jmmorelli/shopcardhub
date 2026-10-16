@@ -117,8 +117,10 @@ for (const w of WIDTHS) {
             if (!vis(g) || g.children.length < 2) continue;
             // only the controls count: the "vs sold mark" / shop chips sit under the button by design
             const kids = Array.from(g.children).filter((k) => vis(k) && (k.matches("a, button") || k.querySelector("a, button")) && !k.matches(".sch-vs-sold, .sch-shop-m")); if (kids.length < 2) continue;
-            const tops = new Set(kids.map((k) => Math.round(k.getBoundingClientRect().top / 4)));
-            if (tops.size > 1 && !g.classList.contains("cdp-btns")) { wrapped++; if (!wex) wex = (g.closest("tr")?.querySelector("b, .nm")?.textContent || g.className || "").toString().trim().slice(0, 30); }
+            // wrapped = some control starts below where another one ends (shorter buttons centred on one row are fine)
+            const rs = kids.map((k) => k.getBoundingClientRect());
+            const wrappedRow = Math.max(...rs.map((r) => r.top)) >= Math.min(...rs.map((r) => r.bottom)) - 2;
+            if (wrappedRow && !g.classList.contains("cdp-btns")) { wrapped++; if (!wex) wex = (g.closest("tr")?.querySelector("b, .nm")?.textContent || g.className || "").toString().trim().slice(0, 30); }
           }
           if (wrapped) ui.push("wrapped-controls: " + wrapped + " button group(s) on two rows (e.g. " + wex + ")");
           for (const t of document.querySelectorAll("table")) {
