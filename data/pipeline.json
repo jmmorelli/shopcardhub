@@ -4872,6 +4872,22 @@
           "by": "CoS (R38 bug, sweep fix) - image-sweep wrapped-controls now means a control starts below where another ends (overlap), not differing tops; prod sweep SV151/AH26/EVS21 at 1280: FAIL 0. tools-only, no deploy",
           "gates": "n/a (tools/ci only; site-gates re-runs on push)",
           "liveVerified": "n/a"
+        },
+        {
+          "date": "2026-10-16",
+          "commits": [
+            "da6674f4",
+            "6be07f2a",
+            "bde8022d",
+            "a6cfece2",
+            "bd2f9ad0",
+            "1c2ec1d0",
+            "553c7804"
+          ],
+          "by": "Traffic Agent (/mlb-cards integrity IW F1 + Bowman KB G32; E6 Bing striking-distance follow-ups via League A/B/C; E7 GEO slice 2 JSON-LD), Task-key traffic-agent; Authority: Mo 2026-09-27 (go time) + Mo 2026-10-14 (traffic function)",
+          "gates": "audit-prices FAIL 0 / WARN 44 (45 before; BCB tier labels) · audit-site FAIL 0 / WARN 5 (146) · audit-terminal FAIL 0 / WARN 1 · sitemap-lastmod --check 0 · build-llms --check ok · build-index-jsonld --check ok · league score --check ok · Chromium 1280/390 on 8 pages clean",
+          "rollback": "git revert the listed commits (newest first)",
+          "liveVerified": "pending - curl after push"
         }
       ]
     },
