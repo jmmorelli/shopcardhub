@@ -1,0 +1,552 @@
+{
+ "_comment": "Source for the NFL-BOARD block on /nfl-rookie-cards-2026 (tools/build-nfl-cards.mjs). Raw prices: SportsCardsPro public item pages (eBay + Fanatics sold listings, ungraded tab), read 2026-10-16 in a browser, one request at a time. Range = middle half (25th-75th percentile) of in-window sales after dropping lots, parallels, foils, refractors, serial-numbered and graded titles; n = sales kept; capped = the source shows only its 30 most recent rows and all were in the window, so n is a floor (rendered 'n+'). psa9/psa10 = null: zero title-verified PSA sales on any of these items in the window (R18) -> rendered 'no sale'. A card with no in-window sale would carry an SCP price point marked 'pt' (none this read). 'spike' is filled by the Monday 'Sunday Spike -> NFL rookie board' task: [{player, line, date}]. Refresh weekly; bump asof.",
+ "asof": "2026-10-16",
+ "window": {
+  "from": "2026-09-16",
+  "to": "2026-10-16"
+ },
+ "source": "SportsCardsPro sold listings (ungraded), read 2026-10-16",
+ "spike": [],
+ "players": [
+  {
+   "slug": "fernando-mendoza",
+   "name": "Fernando Mendoza",
+   "team": "Las Vegas Raiders",
+   "pos": "QB",
+   "played": {
+    "fact": "NFL debut Week 5 vs NE: 6 of 8, 48 yards (backup to Kirk Cousins)",
+    "outlet": "CBS Sports",
+    "date": "2026-10-11",
+    "url": "https://www.cbssports.com/nfl/news/raiders-fernando-mendoza-nfl-debut/"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "301",
+     "label": "Base rookie card",
+     "q": "Fernando Mendoza 2026 Topps Flagship 301 rookie",
+     "raw": {
+      "lo": 1.01,
+      "hi": 2.19,
+      "med": 1.62,
+      "n": 30,
+      "capped": true,
+      "to": "2026-10-15",
+      "asof": "2026-10-15",
+      "from": "2026-10-13"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/fernando-mendoza-301",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-1",
+     "label": "1991 design insert",
+     "q": "Fernando Mendoza 2026 Topps Flagship 1991 91TR-1",
+     "raw": {
+      "lo": 1.99,
+      "hi": 2.5,
+      "med": 2.37,
+      "n": 30,
+      "capped": true,
+      "to": "2026-10-15",
+      "asof": "2026-10-15",
+      "from": "2026-10-12"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/fernando-mendoza-91tr-1",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  },
+  {
+   "slug": "carnell-tate",
+   "name": "Carnell Tate",
+   "team": "Tennessee Titans",
+   "pos": "WR",
+   "played": {
+    "fact": "82% snap share; 23 catches, 274 yards",
+    "outlet": "Sports Illustrated (On SI Fantasy)",
+    "date": "2026-10-14",
+    "url": "https://www.si.com/onsi/fantasy/rankings/carnell-tate-the-top-fantasy-football-rookies-to-watch-in-week-6"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "318",
+     "label": "Base rookie card",
+     "q": "Carnell Tate 2026 Topps Flagship 318 rookie",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.75,
+      "med": 1.04,
+      "n": 29,
+      "capped": true,
+      "to": "2026-10-13",
+      "asof": "2026-10-13",
+      "from": "2026-09-26"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/carnell-tate-318",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-18",
+     "label": "1991 design insert",
+     "q": "Carnell Tate 2026 Topps Flagship 1991 91TR-18",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.73,
+      "med": 1.25,
+      "n": 30,
+      "capped": true,
+      "to": "2026-10-12",
+      "asof": "2026-10-12",
+      "from": "2026-09-17"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/carnell-tate-91tr-18",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  },
+  {
+   "slug": "jeremiyah-love",
+   "name": "Jeremiyah Love",
+   "team": "Arizona Cardinals",
+   "pos": "RB",
+   "played": {
+    "fact": "65% snap share; 67 carries, 245 yards",
+    "outlet": "Sports Illustrated (On SI Fantasy)",
+    "date": "2026-10-14",
+    "url": "https://www.si.com/onsi/fantasy/rankings/carnell-tate-the-top-fantasy-football-rookies-to-watch-in-week-6"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "309",
+     "label": "Base rookie card",
+     "q": "Jeremiyah Love 2026 Topps Flagship 309 rookie",
+     "raw": {
+      "lo": 1.0,
+      "hi": 1.99,
+      "med": 1.25,
+      "n": 29,
+      "capped": true,
+      "to": "2026-10-15",
+      "asof": "2026-10-15",
+      "from": "2026-09-23"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/jeremiyah-love-309",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-9",
+     "label": "1991 design insert",
+     "q": "Jeremiyah Love 2026 Topps Flagship 1991 91TR-9",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.99,
+      "med": 1.53,
+      "n": 30,
+      "capped": true,
+      "to": "2026-10-12",
+      "asof": "2026-10-12",
+      "from": "2026-09-17"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/jeremiyah-love-91tr-9",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  },
+  {
+   "slug": "david-bailey",
+   "name": "David Bailey",
+   "team": "New York Jets",
+   "pos": "EDGE",
+   "played": {
+    "fact": "3 sacks, 7 tackles Week 5 vs CLE",
+    "outlet": "CBS Sports",
+    "date": "2026-10-12",
+    "url": "https://cbssports.com/nfl/news/jets-david-bailey-breakout-shines-vs-browns/"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "343",
+     "label": "Base rookie card",
+     "q": "David Bailey 2026 Topps Flagship 343 rookie",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.5,
+      "med": 1.25,
+      "n": 25,
+      "capped": false,
+      "to": "2026-10-13",
+      "asof": "2026-10-13",
+      "from": "2026-10-02"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/david-bailey-343",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-43",
+     "label": "1991 design insert",
+     "q": "David Bailey 2026 Topps Flagship 1991 91TR-43",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.76,
+      "med": 1.49,
+      "n": 17,
+      "capped": false,
+      "to": "2026-10-12",
+      "asof": "2026-10-12",
+      "from": "2026-09-17"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/david-bailey-91tr-43",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  },
+  {
+   "slug": "denzel-boston",
+   "name": "Denzel Boston",
+   "team": "Cleveland Browns",
+   "pos": "WR",
+   "played": {
+    "fact": "16 catches, 330 yards, 3 TD",
+    "outlet": "Sports Illustrated (On SI Fantasy)",
+    "date": "2026-10-14",
+    "url": "https://www.si.com/onsi/fantasy/rankings/carnell-tate-the-top-fantasy-football-rookies-to-watch-in-week-6"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "322",
+     "label": "Base rookie card",
+     "q": "Denzel Boston 2026 Topps Flagship 322 rookie",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.99,
+      "med": 1.29,
+      "n": 23,
+      "capped": true,
+      "to": "2026-10-13",
+      "asof": "2026-10-13",
+      "from": "2026-09-16"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/denzel-boston-322",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-22",
+     "label": "1991 design insert",
+     "q": "Denzel Boston 2026 Topps Flagship 1991 91TR-22",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.38,
+      "med": 1,
+      "n": 15,
+      "capped": false,
+      "to": "2026-10-12",
+      "asof": "2026-10-12",
+      "from": "2026-09-20"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/denzel-boston-91tr-22",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  },
+  {
+   "slug": "kc-concepcion",
+   "name": "KC Concepcion",
+   "team": "Cleveland Browns",
+   "pos": "WR",
+   "played": {
+    "fact": "65% snap share",
+    "outlet": "Sports Illustrated (On SI Fantasy)",
+    "date": "2026-10-14",
+    "url": "https://www.si.com/onsi/fantasy/rankings/carnell-tate-the-top-fantasy-football-rookies-to-watch-in-week-6"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "323",
+     "label": "Base rookie card",
+     "q": "KC Concepcion 2026 Topps Flagship 323 rookie",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.87,
+      "med": 1.29,
+      "n": 18,
+      "capped": false,
+      "to": "2026-10-10",
+      "asof": "2026-10-10",
+      "from": "2026-09-16"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/kc-concepcion-323",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-23",
+     "label": "1991 design insert",
+     "q": "KC Concepcion 2026 Topps Flagship 1991 91TR-23",
+     "raw": {
+      "lo": 1.0,
+      "hi": 1.29,
+      "med": 1.25,
+      "n": 21,
+      "capped": false,
+      "to": "2026-10-14",
+      "asof": "2026-10-14",
+      "from": "2026-09-16"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/kc-concepcion-91tr-23",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  },
+  {
+   "slug": "kenyon-sadiq",
+   "name": "Kenyon Sadiq",
+   "team": "New York Jets",
+   "pos": "TE",
+   "played": {
+    "fact": "71% snap share",
+    "outlet": "Sports Illustrated (On SI Fantasy)",
+    "date": "2026-10-14",
+    "url": "https://www.si.com/onsi/fantasy/rankings/carnell-tate-the-top-fantasy-football-rookies-to-watch-in-week-6"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "338",
+     "label": "Base rookie card",
+     "q": "Kenyon Sadiq 2026 Topps Flagship 338 rookie",
+     "raw": {
+      "lo": 1.19,
+      "hi": 1.69,
+      "med": 1.35,
+      "n": 29,
+      "capped": true,
+      "to": "2026-10-14",
+      "asof": "2026-10-14",
+      "from": "2026-09-28"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/kenyon-sadiq-338",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-38",
+     "label": "1991 design insert",
+     "q": "Kenyon Sadiq 2026 Topps Flagship 1991 91TR-38",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.75,
+      "med": 1,
+      "n": 29,
+      "capped": true,
+      "to": "2026-10-12",
+      "asof": "2026-10-12",
+      "from": "2026-09-22"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/kenyon-sadiq-91tr-38",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  },
+  {
+   "slug": "makai-lemon",
+   "name": "Makai Lemon",
+   "team": "Philadelphia Eagles",
+   "pos": "WR",
+   "played": {
+    "fact": "74% snap share",
+    "outlet": "Sports Illustrated (On SI Fantasy)",
+    "date": "2026-10-14",
+    "url": "https://www.si.com/onsi/fantasy/rankings/carnell-tate-the-top-fantasy-football-rookies-to-watch-in-week-6"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "319",
+     "label": "Base rookie card",
+     "q": "Makai Lemon 2026 Topps Flagship 319 rookie",
+     "raw": {
+      "lo": 1.0,
+      "hi": 1.79,
+      "med": 1.25,
+      "n": 29,
+      "capped": true,
+      "to": "2026-10-12",
+      "asof": "2026-10-12",
+      "from": "2026-09-16"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/makai-lemon-319",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-19",
+     "label": "1991 design insert",
+     "q": "Makai Lemon 2026 Topps Flagship 1991 91TR-19",
+     "raw": {
+      "lo": 1.0,
+      "hi": 1.52,
+      "med": 1.29,
+      "n": 16,
+      "capped": false,
+      "to": "2026-10-14",
+      "asof": "2026-10-14",
+      "from": "2026-09-17"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/makai-lemon-91tr-19",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  },
+  {
+   "slug": "sonny-styles",
+   "name": "Sonny Styles",
+   "team": "Washington Commanders",
+   "pos": "LB",
+   "played": {
+    "fact": "Week 5 vs NYG: 4 solo, 9 assisted tackles",
+    "outlet": "Fox Sports",
+    "date": "2026-10-14",
+    "url": "https://www.foxsports.com/stories/nfl/2026-27-nfl-defensive-rookie-year-odds"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "347",
+     "label": "Base rookie card",
+     "q": "Sonny Styles 2026 Topps Flagship 347 rookie",
+     "raw": {
+      "lo": 1.49,
+      "hi": 2.71,
+      "med": 1.6,
+      "n": 25,
+      "capped": true,
+      "to": "2026-10-13",
+      "asof": "2026-10-13",
+      "from": "2026-10-02"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/sonny-styles-347",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-47",
+     "label": "1991 design insert",
+     "q": "Sonny Styles 2026 Topps Flagship 1991 91TR-47",
+     "raw": {
+      "lo": 1.22,
+      "hi": 2.02,
+      "med": 1.5,
+      "n": 28,
+      "capped": true,
+      "to": "2026-10-12",
+      "asof": "2026-10-12",
+      "from": "2026-09-17"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/sonny-styles-91tr-47",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  },
+  {
+   "slug": "arvell-reese",
+   "name": "Arvell Reese",
+   "team": "New York Giants",
+   "pos": "LB",
+   "played": {
+    "fact": "Week 3 vs TEN: 10 solo tackles, 1 INT",
+    "outlet": "Fox Sports",
+    "date": "2026-10-14",
+    "url": "https://www.foxsports.com/stories/nfl/2026-27-nfl-defensive-rookie-year-odds"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "346",
+     "label": "Base rookie card",
+     "q": "Arvell Reese 2026 Topps Flagship 346 rookie",
+     "raw": {
+      "lo": 1.0,
+      "hi": 2.08,
+      "med": 1.5,
+      "n": 29,
+      "capped": true,
+      "to": "2026-10-10",
+      "asof": "2026-10-10",
+      "from": "2026-09-27"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/arvell-reese-346",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-46",
+     "label": "1991 design insert",
+     "q": "Arvell Reese 2026 Topps Flagship 1991 91TR-46",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.62,
+      "med": 1.25,
+      "n": 11,
+      "capped": false,
+      "to": "2026-10-12",
+      "asof": "2026-10-12",
+      "from": "2026-09-16"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/arvell-reese-91tr-46",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  }
+ ]
+}
