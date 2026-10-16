@@ -4831,11 +4831,20 @@
         {
           "date": "2026-10-16",
           "commits": [
-            "(this commit)"
+            "b636f40"
           ],
           "by": "CoS with Mo (R38 shop price) - tools/tcg-pull.mjs + data/tcg/<tk>.json (33 Pokemon tickers, 3,705/3,763 cards matched to TCGplayer market via TCGCSV), js/shop-spread.js (Shop column + spread chip + level line on 35 index pages, Shop/eBay/spread block + Buy-on-TCGplayer on /card), data/affiliates.json (TCGplayer Impact switch, pending), nightly tcg-pull step in price-snapshot.yml, affiliate-disclosure TCGplayer row + garbled Fanatics row fixed, LANE-RULES R38",
           "gates": "audit-prices FAIL 0 / WARN 45 · audit-site FAIL 0 / WARN 5 (146) · audit-terminal FAIL 0 / WARN 1",
-          "liveVerified": "pending (verify /scarlet-violet-151-index Shop column + /data/tcg/sv151.json after deploy)"
+          "liveVerified": "yes - 2026-10-16 ~04:25 UTC: /scarlet-violet-151-index 207 Shop cells + level line, /ascended-heroes-index 70, /card?id=dr25-238 block, /data/tcg/sv151.json 200; pushed from a fresh clone on the Mac (sandbox has no ssh; git proxy refuses the repo)"
+        },
+        {
+          "date": "2026-10-16",
+          "commits": [
+            "(this commit)"
+          ],
+          "by": "CoS with Mo (R38 follow-up) - wide-spread wording on the level line (WotC pages said 'even' at +100%; now 'a condition gap, not a bargain'), shop-spread.js v2, pushLog live-verify backfill",
+          "gates": "audit-prices FAIL 0 / WARN 45 · audit-site FAIL 0 / WARN 5 (146) · audit-terminal FAIL 0 / WARN 1 (unchanged tree apart from js + ?v bumps)",
+          "liveVerified": "pending"
         }
       ]
     },

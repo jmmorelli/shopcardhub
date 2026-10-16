@@ -113,7 +113,7 @@
       var lv = sec.querySelector('.sidx-level');
       if (lv && S && S.basketSold > 0 && S.spread != null && !lv.querySelector('.sh-line')) {
         var s = side(S.spread), d = document.createElement('div'); d.className = 'lvc sh-line';
-        d.innerHTML = 'at shop price <b>' + money(S.basketShop, 0) + '</b> · <span class="' + (S.spread < 0 ? 'dn' : S.spread > 0 ? 'up' : 'flat') + '">' + (S.spread < 0 ? '▼' : S.spread > 0 ? '▲' : '') + ' ' + pct(S.spread).replace(/^[−+]/, '') + '</span> vs the same ' + S.weighted + ' cards at eBay sold' + (s === 'shop' ? ' · <b>cheaper at the shop</b>' : s === 'ebay' ? ' · <b>cheaper on eBay</b>' : ' · even') + ' <span class="shk" title="TCGplayer market price via the TCGCSV daily mirror, ~24h lag. Not part of the level.">· TCGplayer market, ' + md(f.asOf) + '</span>';
+        d.innerHTML = 'at shop price <b>' + money(S.basketShop, 0) + '</b> · <span class="' + (S.spread < 0 ? 'dn' : S.spread > 0 ? 'up' : 'flat') + '">' + (S.spread < 0 ? '▼' : S.spread > 0 ? '▲' : '') + ' ' + pct(S.spread).replace(/^[−+]/, '') + '</span> vs the same ' + S.weighted + ' cards at eBay sold' + (s === 'shop' ? ' · <b>cheaper at the shop</b>' : s === 'ebay' ? ' · <b>cheaper on eBay</b>' : s === 'wide' ? ' · <b>a condition gap, not a bargain</b> (shop = near-mint, eBay raw = any condition)' : ' · even') + ' <span class="shk" title="TCGplayer market price via the TCGCSV daily mirror, ~24h lag. Not part of the level.">· TCGplayer market, ' + md(f.asOf) + '</span>';
         lv.appendChild(d);
       }
       track(sec);
@@ -161,7 +161,7 @@
       var lb = document.querySelector('.levelbox');
       if (lb && S && S.basketSold > 0 && S.spread != null && !lb.querySelector('.sh-line')) {
         var s = side(S.spread), d = document.createElement('div'); d.className = 'levelchg sh-line';
-        d.innerHTML = 'at shop price <b>' + money(S.basketShop, 0) + '</b> · <span style="color:' + (S.spread < 0 ? 'var(--gn,#00e07a)' : 'var(--rd,#ff2e55)') + '">' + (S.spread < 0 ? '▼' : '▲') + ' ' + pct(S.spread).replace(/^[−+]/, '') + '</span> vs the same ' + S.weighted + ' cards at our sold marks' + (s === 'shop' ? ' · <b>cheaper at the shop</b>' : s === 'ebay' ? ' · <b>cheaper on eBay</b>' : ' · even') + ' <span class="shk" title="TCGplayer market price via the TCGCSV daily mirror, ~24h lag. Not part of the level.">· TCGplayer market, ' + md(f.asOf) + '</span>';
+        d.innerHTML = 'at shop price <b>' + money(S.basketShop, 0) + '</b> · <span style="color:' + (S.spread < 0 ? 'var(--gn,#00e07a)' : 'var(--rd,#ff2e55)') + '">' + (S.spread < 0 ? '▼' : '▲') + ' ' + pct(S.spread).replace(/^[−+]/, '') + '</span> vs the same ' + S.weighted + ' cards at our sold marks' + (s === 'shop' ? ' · <b>cheaper at the shop</b>' : s === 'ebay' ? ' · <b>cheaper on eBay</b>' : s === 'wide' ? ' · <b>a condition gap, not a bargain</b> (shop = near-mint, eBay raw = any condition)' : ' · even') + ' <span class="shk" title="TCGplayer market price via the TCGCSV daily mirror, ~24h lag. Not part of the level.">· TCGplayer market, ' + md(f.asOf) + '</span>';
         lb.appendChild(d);
       }
       track(tbl);
