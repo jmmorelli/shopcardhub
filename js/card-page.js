@@ -42,8 +42,20 @@
       return '<div class="cdp-rung' + (r.k === 'tag10' ? ' tag' : '') + '"><div class="k"><b>' + r.lbl + '</b>' + (r.k === 'raw' ? ' · ungraded' : ' · sold') + '</div>' + v +
         '<div class="x">' + (x ? x.toFixed(x >= 10 ? 0 : x < 2 ? 2 : 1) + '× raw' : r.k === 'raw' && r.m != null ? 'base' : '') + '</div><div class="n">' + esc(r.sub) + last + '</div></div>';
     }
-    // B76 (phone teardown, CoS + Mo Oct 14): the log-scale bar block (and its grading-premium line) repeated the four
-    // price tiles right above it, so it is gone; "Get this card" sits directly under the tiles and the chart follows it.
+    var have = R.filter(function (r) { return r.m != null && r.m > 0; });
+    var lo = Math.min.apply(null, have.map(function (r) { return r.m; })) * 0.7, hi = Math.max.apply(null, have.map(function (r) { return r.m; }));
+    var bars = have.length >= 2 ? '<div class="cdp-bars"><div class="h">The ladder on a log scale — each equal step is the same multiple, not the same dollars</div>' + have.map(function (r) {
+      var w = Math.max(2, (Math.log(r.m) - Math.log(lo)) / (Math.log(hi) - Math.log(lo)) * 100);
+      return '<div class="cdp-bar' + (r.k === 'tag10' ? ' tag' : '') + '"><span>' + r.lbl + '</span><i style="width:' + w.toFixed(1) + '%"></i><span>' + money(r.m) + '</span></div>';
+    }).join('') + statLine() + '</div>' : '';
+    function statLine() {
+      var p9 = R[1].m, p10 = R[2].m, t10 = R[3].m, out = [];
+      if (p9 && raw) out.push('PSA 9 = <b>' + (p9 / raw).toFixed(1) + '×</b> raw');
+      if (p10 && raw) out.push('PSA 10 = <b>' + (p10 / raw).toFixed(1) + '×</b> raw');
+      if (p10 && p9) out.push('the 9 → 10 step = <b>' + (p10 / p9).toFixed(1) + '×</b>');
+      if (t10 && p10) out.push('TAG 10 = <b>' + Math.round(t10 / p10 * 100) + '%</b> of PSA 10');
+      return out.length ? '<div class="cdp-stat">Grading premium: ' + out.join(' · ') + '.</div>' : '';
+    }
     var cid = 'card-' + c.id;
     var mode = window.SCH_GLK ? SCH_GLK.getMode() : 'bin';
     function btns(m) {
@@ -66,12 +78,11 @@
       '<div class="cdp-eyebrow">▮ Card price ladder · raw to PSA 10</div><h1>' + esc(c.name) + ' #' + esc(c.num) + '</h1>' +
       '<p class="cdp-set">' + esc(d.set) + ' · in the <a href="' + esc(d.page) + '#' + esc(d.ticker.toLowerCase()) + '">' + esc(d.ticker) + ' ' + esc(d.name) + '</a></p>' +
       '<div class="cdp-idx"><a href="' + esc(d.page) + '">' + esc(d.ticker) + (d.level != null ? ' ' + Number(d.level).toFixed(2) : '') + ' →</a>' + (scr ? '<span>tracked · outside the level</span>' : c.w === 0 ? '<span>tracked as its own line · not in the weighted basket</span>' : '<span>#' + c.rank + ' by weight' + (c.w != null ? ' · ' + c.w.toFixed(1) + '% of the index' : '') + '</span>') + (scr ? (gRead ? '<span>graded read ' + md(gRead) + '</span>' : '') : '<span>raw marked ' + md(c.rawAsOf) + (gRead ? ' · graded read ' + md(gRead) : '') + '</span>') + '</div>' + scrNote + '</div>' +
-      '<div class="cdp-ladder">' + R.map(rung).join('') + '</div></div>' +
+      '<div class="cdp-ladder">' + R.map(rung).join('') + '</div></div>' + '<div class="cdp-chart cdp-wait" id="cdp-chart"><div class="wl">Loading price history…</div></div>' + bars +
       '<div class="cdp-buy"><div class="h"><b>Get this card</b><span class="cdp-mode" role="group" aria-label="Which eBay listings the buttons open"><button type="button" data-mode="bin" aria-pressed="' + (mode === 'bin') + '">Buy It Now</button><button type="button" data-mode="auc" aria-pressed="' + (mode === 'auc') + '">Auctions · ending soon</button></span></div>' +
       '<div class="cdp-btns" id="cdp-btns">' + btns(mode) + '</div>' +
       '<div class="f">eBay searches for this exact card in each grade, with our affiliate tag (ShopCardHub earns a commission at no cost to you) — live listings, not prices. ' + (d.ed === '1st' ? 'Searches are for the 1st Edition print this index tracks. ' : d.ed === 'shadowless' ? 'Searches are for Shadowless copies and exclude 1st Edition. ' : d.wotc ? 'Searches exclude 1st Edition and Shadowless copies: this index tracks the Unlimited print. ' : '') + '<b>TAG:</b> we link TAG because it publishes its measurements. PSA is the reference grade. Our view: machine grading wins over time. <a href="/tag-grading-guide">How TAG grading works →</a></div>' +
       '<div class="cdp-row"><button type="button" class="sch-track-card" data-name="' + esc(c.name) + ' #' + esc(c.num) + ' — ' + esc(d.set) + '" data-set="' + esc(d.set) + '" data-cat="pokemon" data-grade="Raw" data-price="' + (raw == null ? '' : raw) + '">★ Watch this card</button></div></div>' +
-      '<div class="cdp-chart cdp-wait" id="cdp-chart"><div class="wl">Loading price history…</div></div>' +
       (more ? '<div class="cdp-more"><h2>More from the ' + esc(d.ticker) + ' basket</h2><div class="g">' + more + '</div></div>' : '') +
       '<p class="cdp-method"><b>Method.</b> ' + (chase ? '<b>Raw</b> is the card’s sold mark in its chase index: PriceCharting’s ungraded sold value for the card, re-marked weekly — the same number as the index table.' : scr ? '<b>Raw</b> is not priced: this card is in the set’s universe but sold too rarely as a clean ungraded single to clear the index’s liquidity screen (' + ((d.screen && d.screen.enter) || 6) + ' sales in ' + win + ' days to enter) at the last read, so it is tracked outside the level and shows no raw number.' : '<b>Raw</b> is the card’s sold mark in its set index: the median of its clean ungraded sold comps over the trailing ' + (d.window || 30) + ' days (PriceCharting), re-marked Monday and Thursday — the same number as the index table.') + ' <b>PSA 9, PSA 10, TAG 10</b> come from PriceCharting’s dated completed sales for this card, counting only sales whose own listing title names that grade' + (d.ed === '1st' ? ' (and only sales whose title says 1st Edition)' : d.ed === 'shadowless' ? ' (and only sales titled Shadowless, never 1st Edition)' : d.wotc ? ' (and dropping any titled 1st Edition or Shadowless)' : '') + ': the median of 3+ sales in 30 days, else 2+ in 90 days. Fewer than that is <b>no mark</b>; a single sale is shown as one dated sale, never as a price. Medians of recent sales, not calls. Raw vintage copies can be in any condition, so the raw mark is a typical raw sale, not a near-mint price.</p>';
     var box = document.getElementById('cdp-btns');
