@@ -28,6 +28,17 @@ const R = require(path.join(REPO, "js/track-record-render.js"));
 
 const calls = JSON.parse(fs.readFileSync(path.join(REPO, "data/calls.json"), "utf8"));
 const out = R.render(calls);
+
+// Merged pages (R35 cull): calls.json keeps the page each call was made on, and some of those URLs now 301 to a
+// hub (vercel.json). Bake the hub URL so the page links straight to a live file (audit-site dead-internal-link)
+// without editing calls.json. Exact-source permanent redirects only; the browser re-render still works via the 301.
+const REDIRECTS = new Map(
+  (JSON.parse(fs.readFileSync(path.join(REPO, "vercel.json"), "utf8")).redirects || [])
+    .filter((r) => r && r.permanent !== false && /^\/[a-z0-9-]+$/.test(r.source || "") && /^\/[a-z0-9-]*$/.test(r.destination || ""))
+    .map((r) => [r.source, r.destination])
+);
+const relink = (s) => typeof s === "string" ? s.replace(/href="(\/[a-z0-9-]+)"/g, (m, u) => REDIRECTS.has(u) ? `href="${REDIRECTS.get(u)}"` : m) : s;
+for (const k of Object.keys(out)) out[k] = relink(out[k]);
 const file = path.join(REPO, "track-record.html");
 let html = fs.readFileSync(file, "utf8");
 const before = html;
