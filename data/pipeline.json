@@ -4849,10 +4849,19 @@
         {
           "date": "2026-10-16",
           "commits": [
-            "(this commit)"
+            "fcee4e4"
           ],
           "by": "CoS with Mo (R38 bug) - Mo: 'the Wartortle and Psyduck rows look broken'. Sector rows: the TCG link is the shop price itself (the fifth button wrapped Raw/PSA/TAG onto two rows beside a live Bid); site-fixes §25 left-aligns the action cell on desktop so rows with and without a Bid start at the same edge and never wrap; image-sweep gains wrapped-controls + table-overflow FAILs at >=1000px (proved on prod: 20 wrapped groups on SV151, 3 on AH26 before the fix); shop-spread.js v3",
           "gates": "audit-prices FAIL 0 / WARN 45 · audit-site FAIL 0 / WARN 5 (146) · audit-terminal FAIL 0 / WARN 1 · image-sweep local 3 pages x 1280/390 FAIL 0",
+          "liveVerified": "partial - prod sweep after deploy: SV151 clean at 1280/390; EVS21 sidx table 1025>1010 with live bids (fixed next commit: two-line shop cell); AH26 wrapped-controls was a false positive on the vs-sold chip (check refined next commit)"
+        },
+        {
+          "date": "2026-10-16",
+          "commits": [
+            "(this commit)"
+          ],
+          "by": "CoS with Mo (R38 bug, 2/2) - sector shop cell two-line (price link over chip) so EVS21-size tables fit 1010px with live bids; image-sweep wrapped-controls counts only a/button children (the vs-sold chip under Listings is by design); shop-spread.js v4",
+          "gates": "audit-prices FAIL 0 / WARN 45 · audit-site FAIL 0 / WARN 5 (146) · local sweep EVS21+AH26 1280 FAIL 0",
           "liveVerified": "pending (sweep prod after deploy)"
         }
       ]

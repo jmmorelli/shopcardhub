@@ -115,7 +115,8 @@ for (const w of WIDTHS) {
           let wrapped = 0, wex = "";
           for (const g of document.querySelectorAll(".glk, .act-w, .cdp-btns")) {
             if (!vis(g) || g.children.length < 2) continue;
-            const kids = Array.from(g.children).filter(vis); if (kids.length < 2) continue;
+            // only the controls count: the "vs sold mark" / shop chips sit under the button by design
+            const kids = Array.from(g.children).filter((k) => vis(k) && (k.matches("a, button") || k.querySelector("a, button")) && !k.matches(".sch-vs-sold, .sch-shop-m")); if (kids.length < 2) continue;
             const tops = new Set(kids.map((k) => Math.round(k.getBoundingClientRect().top / 4)));
             if (tops.size > 1 && !g.classList.contains("cdp-btns")) { wrapped++; if (!wex) wex = (g.closest("tr")?.querySelector("b, .nm")?.textContent || g.className || "").toString().trim().slice(0, 30); }
           }

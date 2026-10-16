@@ -85,8 +85,8 @@
         var tds = tr.children; if (tds.length < 4) return;
         // the price itself is the TCGplayer link (a fifth button in the action cell wrapped the Raw/PSA/TAG group onto two
         // rows whenever a live Bid was showing — Mo, Oct 16: "the Wartortle and Psyduck rows look broken")
-        var td = document.createElement('td'); td.className = 'num shop';
-        td.innerHTML = tcgLink(a, v, cid, 'tcgs', money(v.m) + ' ↗') + chipHtml(v);
+        var td = document.createElement('td'); td.className = 'num shop two';
+        td.innerHTML = tcgLink(a, v, cid, 'tcgs', money(v.m) + ' ↗') + '<div class="l2">' + chipHtml(v) + '</div>';
         tds[2].insertAdjacentElement('afterend', td);
         tr.classList.add('has-shop');
         var act = tr.querySelector('td.act .act-w');

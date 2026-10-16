@@ -867,7 +867,7 @@ function bake(x, c) {
   if ((c.imgSub || "pokemon") === "pokemon" && !c.kindPlural) {
     if (!html.includes('src="/js/grade-links.js')) html = html.replace("</body>", '<script src="/js/grade-links.js?v=2" defer></script>\n</body>');
     // shop price + spread column (Oct 15 2026, js/shop-spread.js reads data/tcg/<tk>.json — beside the index, never in it)
-    if (!html.includes('src="/js/shop-spread.js')) html = html.replace("</body>", '<script src="/js/shop-spread.js?v=3" defer></script>\n</body>');
+    if (!html.includes('src="/js/shop-spread.js')) html = html.replace("</body>", '<script src="/js/shop-spread.js?v=4" defer></script>\n</body>');
     const bv = x.basket.reduce((a, b) => a + b.price * b.w, 0);
     writeCardFile(ROOT, x, c, x.basket.slice().sort((a, b) => b.price * b.w - a.price * a.w), imgAttr, DRY);
   }
