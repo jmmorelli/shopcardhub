@@ -701,3 +701,26 @@ body .strip > a.chip { display: inline-flex; align-items: center; gap: 4px; min-
    Every index is one tap away on /indices. The "Live · real sold prices" bar and the cohort footnote above the plain
    read were removed from the pages themselves. */
 body .strip { display: none !important; }
+
+/* 27 (site-gates run 38951174085, Oct 16 2026). The nightly image-sweep's new desktop table-overflow check (fcee4e4)
+   failed 7 pages at 1280 px once the Shop (TCG) column landed: the four chase pages (AH26, PRE, DR, PFL — 1018 > 1012),
+   SV151 (1020 > 1010) and Gold Star (1036 > 1010) index tables, and the home screener (min-width 1000 px in a 986 px box,
+   1084 wide). Causes: a fixed 176 px Bid slot (td.lst grid track, build-index-listings-col; .act-w.g slot min-width,
+   build-sector-index) holding "Bid $X" and "N bids · 2d" on one line; Gold Star's "no verified sale" / "1 sale · Feb 17"
+   notes held nowrap; the screener's 1000 px floor and 44 px range tracks. Desktop only (phones keep §10/§10b): the bid
+   count sits under the Bid label, the slot grows from 120 px only as far as its content, grade-cell notes wrap, and
+   the screener fits its box. Overrides the inline page CSS so no generated block changes. */
+@media (min-width: 761px) {
+  body .sidx-auc-slot a.auc { line-height: 1.25; }
+  body .sidx-auc-slot a.auc small { display: block; margin-left: 0; margin-top: 1px; }
+  body .sidx-tbl td.act .act-w.g .sidx-auc-slot { min-width: 120px; }
+  body td.lst .act-w { grid-template-columns: minmax(150px, max-content) minmax(120px, max-content); }
+}
+@media (min-width: 561px) {
+  body .sidx-tbl td.num small { white-space: normal; }
+}
+@media (min-width: 1000px) {
+  body table.scr { min-width: 0; }
+  body table.scr th, body table.scr td { padding-left: 6px; padding-right: 6px; }
+  body table.scr .rng { grid-template-columns: auto 24px auto; gap: 3px; }
+}
