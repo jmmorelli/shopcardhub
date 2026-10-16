@@ -40,9 +40,31 @@ const cfg = JSON.parse(readFileSync(join(ROOT, 'data', 'nav.json'), 'utf8'));
 /* ---------- helpers ---------- */
 const normKey = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
+// B74 (phone teardown, CoS + Mo Oct 14): the baked card pages (card-*.html, e.g. /card-ethan-holliday) are searchable
+// as cards, labelled from their own <title> ("Ethan Holliday — 1st Bowman Chrome Auto"), and they list ahead of pages.
+// A card page that vercel.json redirects away is left out; nav.json's "Card chart: …" rows for the same URL are skipped.
+function cardPages() {
+  let redirected = new Set();
+  try { redirected = new Set((JSON.parse(readFileSync(join(ROOT, 'vercel.json'), 'utf8')).redirects || []).map((r) => r.source)); } catch (e) {}
+  const dec = (x) => x.replace(/&amp;/g, '&').replace(/&#39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  const out = [];
+  for (const f of readdirSync(ROOT).filter((x) => /^card-.+\.html$/.test(x)).sort()) {
+    const href = '/' + f.replace(/\.html$/, '');
+    if (redirected.has(href)) continue;
+    const html = readFileSync(join(ROOT, f), 'utf8');
+    const m = html.match(/<title>([^<]*)<\/title>/i);
+    if (!m) continue;
+    const parts = dec(m[1]).split(/\s+[—|]\s+/);
+    if (!parts[0]) continue;
+    out.push({ t: parts[0], s: parts[1] || '', u: href, c: 1, n: normKey(parts[0] + ' ' + (parts[1] || '') + ' ' + href.replace(/[\/-]/g, ' ')) });
+  }
+  return out;
+}
+
 function buildSearchIndex() {
   const seen = new Set();
   const out = [];
+  for (const c of cardPages()) { seen.add(c.u); out.push(c); }
   const add = (label, href) => {
     if (!href || seen.has(href)) return;
     seen.add(href);
@@ -116,6 +138,10 @@ function buildDesktop() {
   return `  <nav class="nav">
     <div class="nav-inner">
       <a class="logo" href="${(cfg.brand && cfg.brand.href) || "/"}" style="text-decoration:none;" aria-label="ShopCardHub — home">${cfg.brand.html}</a>
+        <div class="nav-search nav-search-m" id="nav-search-mobile">
+          <input type="search" class="nav-search-input" id="nav-search-input-m" placeholder="Search cards" aria-label="Search cards and pages" autocomplete="off" enterkeyhint="search">
+          <div class="nav-search-results" id="nav-search-results-m" role="listbox"></div>
+        </div>
       <div class="nav-links">${items}
         <div class="nav-search" id="nav-search-desktop">
           <input type="text" class="nav-search-input" id="nav-search-input-d" placeholder="Search cards…" aria-label="Search the site" autocomplete="off">
@@ -161,10 +187,6 @@ function buildMobile() {
   const cta = cfg.cta;
   return `<!-- ═══ MOBILE DRAWER ═══ -->
 <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
-  <div class="m-search">
-    <input type="text" class="nav-search-input" id="nav-search-input-m" placeholder="Search cards & pages…" aria-label="Search the site" autocomplete="off">
-    <div class="nav-search-results" id="nav-search-results-m" role="listbox"></div>
-  </div>
   <a href="${cfg.home.href}" class="m-home">${cfg.home.label}</a>${groups}
 ${cfg.cta2 ? `  <a href="${cfg.cta2.href}"${extAttrs(cfg.cta2)} class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">${cfg.cta2.mobileLabel || cfg.cta2.label}</a>\n` : ""}  <a href="${cta.href}"${extAttrs(cta)} class="m-cta">${cta.mobileLabel || cta.label}</a>
 </div>`;
@@ -212,11 +234,22 @@ function buildStyle() {
   /* mobile equivalents */
   .mobile-nav a.m-all { color:var(--accent); font-weight:700; }
   .mobile-nav a.m-money { color:#00e07a; font-weight:700; }
-  /* mobile search + accordion */
-  .m-search { position:relative; margin-bottom:8px; }
-  .m-search .nav-search-input { width:100%; font-size:14px; padding:12px 14px; }
-  .m-search .nav-search-input:focus { width:100%; }
-  .m-search .nav-search-results { left:0; right:0; min-width:0; }
+  /* B74 (phone teardown, Oct 14): the phone search sits in the nav bar, not in the menu. Below 960 px (where the
+     hamburger takes over) it fills the space between the logo and the menu button; 16 px text so iOS doesn't zoom.
+     Its results open full width under the bar and run to the bottom of the screen (no 340 px cut-off). */
+  .nav-search-m { display:none; }
+  @media (max-width:959px) {
+    .nav-inner > .nav-search-m { display:block; flex:1 1 auto; min-width:0; margin:0 10px 0 14px; }
+    .nav-search-m .nav-search-input, .nav-search-m .nav-search-input:focus { width:100%; min-height:40px; font-size:16px; letter-spacing:0; padding:7px 10px; }
+    .nav-search-m .nav-search-input::-webkit-search-decoration { -webkit-appearance:none; }
+    .nav-search-m .nav-search-results { position:fixed; top:64px; left:8px; right:8px; min-width:0; max-height:calc(100vh - 80px); }
+    .nav-search-m .nav-search-results a { padding:10px 14px; min-height:40px; }
+  }
+  /* B74: card rows lead the results, name left and the raw price right (one glance, no sub-line hunt) */
+  .nav-search-results a.ns-c { display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:12px; align-items:center; }
+  .nav-search-results a.ns-c .ns-t { min-width:0; color:var(--text-head); }
+  .nav-search-results a.ns-c .ns-p { font-family:var(--fm); font-size:13px; font-weight:700; color:var(--text-head); text-align:right; white-space:nowrap; }
+  .nav-search-results a.ns-c .ns-p small { display:block; margin-top:1px; font-size:11px; font-weight:400; color:var(--text-dim); }
   .m-home { padding-top:16px; }
   .m-group { border-bottom:1px solid var(--border); }
   .m-group-btn { display:flex; align-items:center; justify-content:space-between; width:100%; background:none; border:none; cursor:pointer; font-family:var(--fd); font-size:20px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); padding:16px 0; text-align:left; transition:color .15s; }
@@ -318,12 +351,14 @@ function buildScript(index) {
   function setup(input, results){
     if (!input || !results) return;
     var sel = -1;
+    // B74: the phone list is fixed under the bar; start it under the input and stop it at the screen's bottom edge
+    function place(){ try { if (getComputedStyle(results).position !== 'fixed') return; var b = input.getBoundingClientRect().bottom + 6; results.style.top = b + 'px'; results.style.maxHeight = Math.max(160, window.innerHeight - b - 10) + 'px'; } catch (e) {} }
     function render(items){
       sel = -1;
       if (!input.value.trim()){ results.classList.remove('show'); results.innerHTML=''; return; }
       if (!items.length){ var mq = input.value.trim().slice(0,80); results.innerHTML='<div class="ns-empty">Not in an index yet — <a href="'+missUrl(mq)+'" target="_blank" rel="sponsored nofollow noopener" data-miss="1">see it on eBay ›</a> · <a href="/indices">what we track</a></div>'; results.classList.add('show'); var ml = results.querySelector('a[data-miss]'); if (ml) ml.addEventListener('click', function(){ ga('search_miss_click', { query: mq }); }); if (CARDS) missEvent(mq); return; }
-      results.innerHTML = items.map(function(it){ return it.h ? '<div class="ns-h">'+it.h+'</div>' : '<a href="'+it.u+'">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</a>'; }).join('');
-      results.classList.add('show');
+      results.innerHTML = items.map(function(it){ if (it.h) return '<div class="ns-h">'+it.h+'</div>'; if (it.c) return '<a class="ns-c" href="'+it.u+'"><span class="ns-t">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</span>'+(it.pr ? '<b class="ns-p">'+it.pr+'<small>raw</small></b>' : '')+'</a>'; return '<a href="'+it.u+'">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</a>'; }).join('');
+      results.classList.add('show'); place();
     }
     // card search (Sep 30 2026, Mo: search a card, land on its page with raw / PSA 9 / PSA 10 / TAG): /data/card-search.json
     // is loaded on first focus (~90 KB raw, ~20 KB gzip), never on page load. Every token must match; dearest card first.
@@ -347,9 +382,11 @@ function buildScript(index) {
     function findCards(q){ q = nk(q); if (!CARDS || q.length < 2) return []; var tk = q.split(' ');
       return CARDS.filter(function(c){ for (var i=0;i<tk.length;i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
         .sort(function(a,b){ var sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1; return sa - sb || (b.p||0) - (a.p||0); }).slice(0,8)
-        .map(function(c){ return { u:'/card?id='+c.id, t:esc(c.t), s:esc(c.s)+(c.p == null ? '' : ' · raw '+money(c.p)) }; }); }
-    function find(q){ q = nk(q); if(!q) return []; return INDEX.filter(function(it){ return it.n.indexOf(q) > -1; }).slice(0,8); }
-    function all(q){ var pg = find(q), cd = findCards(q); if (!cd.length) return pg; return pg.slice(0,4).concat([{h:'Cards · raw to PSA 10'}], cd); }
+        .map(function(c){ return { c:1, u:'/card?id='+c.id, t:esc(c.t), s:esc(c.s), pr:c.p == null ? '' : money(c.p) }; }); }
+    function find(q){ q = nk(q); if(!q) return []; return INDEX.filter(function(it){ return it.n.indexOf(q) > -1; }); }
+    // B74: cards first (the baked card pages, then the card list, dearest first), pages after under one label
+    function all(q){ var hit = find(q), cp = hit.filter(function(it){ return it.c; }).sort(function(a,b){ return a.u.length - b.u.length; }).slice(0,3), pg = hit.filter(function(it){ return !it.c; }).slice(0,4), cd = findCards(q), cards = cp.concat(cd);
+      if (!cards.length) return pg; return pg.length ? cards.concat([{h:'Pages'}], pg) : cards; }
     input.addEventListener('focus', loadCards);
     input.addEventListener('input', function(){ var v = input.value; render(all(v)); if (!CARDS) loadCards().then(function(){ if (input.value === v) render(all(v)); }); });
     input.addEventListener('keydown', function(e){

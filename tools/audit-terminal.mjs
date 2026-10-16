@@ -721,7 +721,9 @@ try {
     // Sep 30 ruling — same test as ibGroup() in js/home.js) must still be reachable from the CHART picker.
     const mk = home.match(/<!-- HOME:markets:START -->([\s\S]*?)<!-- HOME:markets:END -->/);
     const ib = home.match(/<!-- HOME:indexboard:START -->([\s\S]*?)<!-- HOME:indexboard:END -->/);
-    if (!mk || !ib) add("WARN", "home-index-level", "index.html", "HOME:markets or HOME:indexboard block not found - cannot cross-check index levels");
+    // Night Crew Oct 16 (B75, phone teardown ruled by the CoS with Mo, Oct 14): the CHART panel (HOME:markets) was removed
+    // from /. Levels are checked on the board; tickers the board keeps off / are reached from /indices, not from a picker.
+    if (!ib) add("WARN", "home-index-level", "index.html", "HOME:indexboard block not found - cannot cross-check index levels");
     else {
       for (const [tk, v] of Object.entries(idx)) {
         if (!v || typeof v !== "object" || Array.isArray(v) || v.status !== "live" || !Array.isArray(v.history)) continue;
@@ -729,9 +731,9 @@ try {
         if (!last) continue;
         const offBoard = /1E$|^BSSL$/.test(tk);
         const row = ib[1].match(new RegExp('<b>' + esc(tk) + '</b>[\\s\\S]{0,400}?<td class="num ib-lvl">([-\\d.,]+)</td>')) ||
-          mk[1].match(new RegExp('data-k="' + esc(tk) + '"[\\s\\S]{0,400}?<span class="num">([-\\d.,]+)</span>'));
+          (mk && mk[1].match(new RegExp('data-k="' + esc(tk) + '"[\\s\\S]{0,400}?<span class="num">([-\\d.,]+)</span>')));
         if (!row && offBoard) {
-          if (!new RegExp('<option value="' + esc(tk) + '"').test(mk[1])) add("FAIL", "home-index-level", "index.html", `${tk} is live (${last.level} on ${last.date}) but is neither on the board nor in the HOME:markets CHART picker`);
+          if (mk && !new RegExp('<option value="' + esc(tk) + '"').test(mk[1])) add("FAIL", "home-index-level", "index.html", `${tk} is live (${last.level} on ${last.date}) but is neither on the board nor in the HOME:markets CHART picker`);
         } else if (!row) { add("FAIL", "home-index-level", "index.html", `${tk} is live (${last.level} on ${last.date}) but has no row in HOME:indexboard or HOME:markets`); continue; }
         else {
           const shown = Number(String(row[1]).replace(/,/g, ""));

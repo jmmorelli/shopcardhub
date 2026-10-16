@@ -44,7 +44,7 @@ const read = (f) => fs.readFileSync(path.join(REPO, f), "utf8");
 const START = "<!-- HOME:regime:START -->";
 const END = "<!-- HOME:regime:END -->";
 const BOARD_END = "<!-- HOME:indexboard:END -->";
-const ANCHOR_AFTER_BOARD = '<div class="grid2 top">'; // the first block after the board panel closes
+const ANCHOR_AFTER_BOARD = '<div class="grid2">'; // the first block after the board panel closes (B75 removed the old "grid2 top" chart pair, Oct 16)
 const WINDOW_DAYS = 30;
 
 // The groups (CoS, Oct 13). A ticker missing from indices.json, not live, or without a numeric level is skipped

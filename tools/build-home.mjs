@@ -85,8 +85,12 @@ const upcomingN = HOME.upcoming(releases, TODAY).length;
 if (!upcomingN) throw new Error(`releases.json: nothing dated on or after ${TODAY} — add the next releases before baking`);
 
 let html = read("index.html");
+// B75 (Night Crew Oct 16, phone teardown): the Chart/markets, Upcoming releases and tape panels were removed from /.
+// Those keys are optional now: a missing block is skipped (logged), every other block still fails the bake when missing.
+const OPTIONAL = new Set(["markets", "chart", "tape", "releases"]);
 const put = (key, body) => {
   const re = new RegExp(`(<!-- HOME:${key}:START -->)[\\s\\S]*?(<!-- HOME:${key}:END -->)`);
+  if (!re.test(html) && OPTIONAL.has(key)) { console.log(`HOME:${key} not on the page (removed, B75) - skipped`); return; }
   if (!re.test(html)) throw new Error(`index.html has no <!-- HOME:${key}:START/END --> markers`);
   html = html.replace(re, (m, a, b) => `${a}\n${body}\n${b}`);
 };
@@ -112,7 +116,7 @@ if (latest && history) {
   const cad = HOME.cadence(indices);
   const sub = (re, to, what) => { if (!re.test(html)) throw new Error(`index.html: cadence hook missing (${what})`); html = html.replace(re, to); };
   sub(/(<span data-home="cadence">)[^<]*(<\/span>)/, `$1${cad.clause}$2`, "tm-foot");
-  sub(/(<span data-home="cadence-chart">)[^<]*(<\/span>)/, `$1set indices update ${cad.short}$2`, "chart caption");  // Night Crew Oct 6 (U-F17): plain words
+  if (/<span data-home="cadence-chart">/.test(html)) sub(/(<span data-home="cadence-chart">)[^<]*(<\/span>)/, `$1set indices update ${cad.short}$2`, "chart caption");  // the chart panel is gone since B75  // Night Crew Oct 6 (U-F17): plain words
   sub(/(<span data-home="cadence-short">)[^<]*(<\/span>)/g, `$1${cad.short}$2`, "disclosure/footer");
   sub(/(<meta name="description" content="[^"]*?built from sold comps, )re-marked [^"]*?(, every card)/, `$1re-marked ${cad.short}$2`, "meta description");
   sub(/(<meta property="og:description" content="[^"]*?sold comps, )re-marked [^"]*?(, every card)/, `$1re-marked ${cad.short}$2`, "og:description");

@@ -18,6 +18,7 @@ Usage:
   python3 tools/x-images/make.py bcb26                    # BCB26 pre-activation / release-window card from indices.json (added Sep 8 2026; shows the level once live)
   python3 tools/x-images/make.py call v-bb-florentino-buy # accountability card for ONE published call, straight from data/calls.json (added Sep 15 2026)
   python3 tools/x-images/make.py drawdown               # chase-tier drawdown, Aug-24-inception indices only (matched window), levels + w/w (added Sep 30 2026)
+  python3 tools/x-images/make.py wall <handle> [--card pris25-161]   # Mark Monday reply card: handle + card + our dated raw mark (E13, added Oct 16 2026)
   python3 tools/x-images/make.py all AH26
 
 Output: --out DIR (default: ../Card Hub/x-images/<YYYY-MM-DD>/). Prints paths.
@@ -408,6 +409,47 @@ def card_call(cid, out):
     footer(d, c.get("readDate", ""), "\u00b7 shopcardhub.com/track-record")
     p_ = out / f"call-{cid}.png"; im.save(p_); return p_
 
+def card_wall(handle, out, card_id=""):
+    """Mark Monday reply card (E13, Night Crew P57 Oct 16 2026): handle · card · our dated raw mark, on the `call`
+    layout. The mark comes from data/cards/<tk>.json (the same file the /indices Collectors wall reads); with no dated
+    raw mark it says "no sale in 30 days", never a blank. The collector's own words and prices are never drawn.
+    make.py wall <handle>                 newest row for that handle in data/collectors-wall.json
+    make.py wall <handle> --card pris25-161   before the row is filed (the desk drafting Monday's replies)"""
+    handle = (handle or "").lstrip("@")
+    if not handle or not all(ch.isalnum() or ch == "_" for ch in handle) or len(handle) > 15:
+        raise SystemExit("wall: handle must be 1-15 of A-Z a-z 0-9 _")
+    if not card_id:
+        rows = json.load(open(ROOT / "data" / "collectors-wall.json", encoding="utf8"))
+        mine = sorted([r for r in rows if str(r.get("handle", "")).lower() == handle.lower()], key=lambda r: r.get("flaggedDate", ""))
+        if not mine: raise SystemExit(f"wall: no row for @{handle} in data/collectors-wall.json (or pass --card <id>)")
+        card_id = mine[-1]["card"]
+    tk = card_id.split("-")[0].lower()
+    f = ROOT / "data" / "cards" / f"{tk}.json"
+    if not f.exists(): raise SystemExit(f"wall: no data/cards/{tk}.json")
+    dc = json.load(open(f, encoding="utf8"))
+    c = next((x for x in dc.get("cards", []) if x.get("id") == card_id), None)
+    if c is None: raise SystemExit(f"wall: card {card_id} not in data/cards/{tk}.json")
+    name = f"{c['name']} #{c['num']}" if c.get("num") else c["name"]
+    im, d = canvas("mark monday \u00b7 from your shelf", "Your card, our mark.",
+                   "The latest dated sold mark from the index it sits in.",
+                   tag="//  COLLECTORS WALL · SOLD COMPS ONLY")
+    y = 250
+    d.rounded_rectangle([48, y, W - 48, y + 300], 8, fill=PANEL, outline="#16303a")
+    d.text((80, y + 30), f"@{handle}", font=MONO(22), fill=CYAN)
+    d.text((80, y + 70), name.upper()[:40], font=COND9(46), fill=TXT)
+    d.text((80, y + 128), f"{dc.get('set', '')} \u00b7 {dc.get('ticker', tk.upper())}"[:78], font=MONO(14), fill=DIM)
+    has = c.get("raw") is not None and c.get("rawAsOf")
+    when = datetime.date.fromisoformat(c["rawAsOf"]).strftime("%b %-d %Y") if has else ""
+    cells = [("RAW SOLD MARK", money(float(c["raw"])) if has else "no sale in 30 days", TXT if has else DIM)]
+    if has: cells.append(("MARKED", when, TXT))
+    cells.append(("INDEX", str(dc.get("ticker", tk.upper())), CYAN))
+    for i, (k, v, col) in enumerate(cells):
+        x = 80 + i * 340
+        d.text((x, y + 180), k, font=MONO(13), fill=DIM)
+        d.text((x, y + 204), v, font=COND7(40), fill=col)
+    footer(d, when or dc.get("asOf", ""))
+    p_ = out / f"wall-{handle.lower()}-{card_id}.png"; im.save(p_); return p_
+
 def card_bcb26(idx, out):
     """BCB26 release-window card. PRE: universe counts + the activation rule, no prices (none exist that the
     site can attribute). LIVE: level, w/w, priced count — same fields as `levels`. Added Sep 8 2026."""
@@ -619,6 +661,7 @@ if __name__ == "__main__":
     if a.kind == "bangers": done.append(card_bangers(out))
     if a.kind == "bcb26": done.append(card_bcb26(idx, out))
     if a.kind == "call": done.append(card_call(a.ticker, out))
+    if a.kind == "wall": done.append(card_wall(a.ticker, out, a.card))
     if a.kind == "drawdown": done.append(card_drawdown(idx, out))
     if a.kind == "solds": done.append(card_solds([tuple(s.split("=", 1)) for s in a.lane], a.card, a.eyebrow, a.url, out, a.name, a.note))
     for p in done: print(p)

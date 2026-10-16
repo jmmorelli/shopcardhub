@@ -693,3 +693,11 @@ body .strip > a.chip { display: inline-flex; align-items: center; gap: 4px; min-
   body .sidx-tbl td.act .act-w.g { justify-content: flex-start; flex-wrap: nowrap; }
   body .sidx-tbl td.act .act-w.g .glk { flex-wrap: nowrap; }
 }
+
+/* 26 — B77 (Night Crew Oct 16; phone teardown, CoS with Mo Oct 14 "the site is kind of clunky"). The set-index pages
+   opened with a ticker strip of every other index (37 chips, each "x% w/w") above the page's own level and plain
+   read, the words a phone reader scrolled past before the answer. The strip stays in the HTML because the Mon/Thu
+   re-mark (tools/remark-indices.mjs, a price-lane tool) rewrites it in place and requires it; it is simply not shown.
+   Every index is one tap away on /indices. The "Live · real sold prices" bar and the cohort footnote above the plain
+   read were removed from the pages themselves. */
+body .strip { display: none !important; }

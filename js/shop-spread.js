@@ -51,24 +51,28 @@
     if (document.getElementById('shop-css')) return;
     var st = document.createElement('style'); st.id = 'shop-css';
     st.textContent =
-      'i.shc,.sidx-tbl td i.shc{display:inline-block;margin-left:5px;font:600 10px/1.4 var(--fm,ui-monospace,monospace);font-style:normal;color:var(--text-dim,var(--dim,#5a7880));border:1px solid var(--border2,var(--bd2,#23303d));border-radius:2px;padding:0 4px;vertical-align:middle;white-space:nowrap}' +
+      'i.shc,.sidx-tbl td i.shc{display:inline-block;margin-left:5px;font:600 11px/1.4 var(--fm,ui-monospace,monospace);font-style:normal;color:var(--text-dim,var(--dim,#5a7880));border:1px solid var(--border2,var(--bd2,#23303d));border-radius:2px;padding:0 4px;vertical-align:middle;white-space:nowrap}' +
       'i.shc.shop,.sidx-tbl td i.shc.shop{color:var(--green,var(--gn,#00e07a));border-color:currentColor}i.shc.ebay,.sidx-tbl td i.shc.ebay{color:var(--red,var(--rd,#ff2e55));border-color:currentColor}' +
-      'td.shop{white-space:nowrap}td.shop small{display:block;font-size:9px;color:var(--text-dim,var(--dim,#5a7880));letter-spacing:.3px}' +
+      'td.shop{white-space:nowrap}td.shop small{display:block;font-size:11px;color:var(--text-dim,var(--dim,#5a7880));letter-spacing:.3px}' +
       'td.shop.two .l2{margin-top:2px;line-height:1}td.shop.two .l2 i.shc{margin-left:0}a.tcgs{color:inherit;text-decoration:none;border-bottom:1px dotted var(--border2,var(--bd2,#23303d));white-space:nowrap}a.tcgs.lo{color:var(--green,var(--gn,#00e07a));border-bottom-color:currentColor}a.tcgs:hover{color:var(--text-head,var(--th,#e4f0f4))}' +
       /* the nine-column chase table fills the page at 1012px: let long card names wrap so the Shop column fits without a scrollbar */
       '.chase-tbl tr.has-shop td.card .roi-cell>div{max-width:150px;white-space:normal;line-height:1.25}' +
       '.sh-line b{font-weight:700}.sh-line .shk{opacity:.8}' +
       '.sch-shop-m{display:none}' +
+      /* B81 (Night Crew Oct 16): the Shop header and the chips sat at 8.5–10 px under the 11 px floor (§12/§24) */
+      '.sidx-tbl th.shop,.chase-tbl th.shop{font-size:11px}' +
+      /* B80: with the Shop column in, a long card name kept nowrap pushed the table past its box at 1280 (ND1E 1075 > 1010); names wrap instead */
+      '@media(min-width:561px){.sidx-tbl tr.has-shop>td:nth-child(2){white-space:normal}}' +
       /* phones: the sector table becomes a grid (css/site-fixes.css §10) — the Shop cell hides and a one-line chip rides in the action cell */
       '@media(max-width:760px){.sidx-tbl tr.has-shop th:nth-child(6),.sidx-tbl tr.has-shop td:nth-child(6){display:none}}' +
-      '@media(max-width:560px){.sidx-tbl tr.has-shop td.shop{display:none}.sidx-tbl tr.has-shop td.act .sch-shop-m{display:flex;flex:1 0 100%;order:8;align-items:center;gap:6px;font:600 10px/1.4 var(--fm,ui-monospace,monospace);color:var(--text-dim,var(--dim,#5a7880))}.sidx-tbl tr.has-shop td.act .sch-shop-m .shc{margin-left:0}}' +
+      '@media(max-width:560px){.sidx-tbl tr.has-shop td.shop{display:none}.sidx-tbl tr.has-shop td.act .sch-shop-m{display:flex;flex:1 0 100%;order:8;align-items:center;gap:6px;font:600 11px/1.4 var(--fm,ui-monospace,monospace);color:var(--text-dim,var(--dim,#5a7880))}.sidx-tbl tr.has-shop td.act .sch-shop-m .shc{margin-left:0}}' +
       /* card page block */
       '.cdp-shop{margin:0 0 12px;border:1px solid var(--border,var(--bd,#23303d));border-radius:3px;background:var(--p2,#0e151c);padding:10px 12px}' +
-      '.cdp-shop .g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.cdp-shop .r .k{display:block;font:600 10px/1.2 var(--fd,inherit);letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim,var(--dim,#5a7880));margin-bottom:3px}' +
+      '.cdp-shop .g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.cdp-shop .r .k{display:block;font:600 11px/1.2 var(--fd,inherit);letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim,var(--dim,#5a7880));margin-bottom:3px}' +
       '.cdp-shop .r b{display:block;font:700 18px/1.1 var(--fm,ui-monospace,monospace);color:var(--text-head,var(--th,#e4f0f4))}.cdp-shop .r b.shop{color:var(--green,var(--gn,#00e07a))}.cdp-shop .r b.ebay{color:var(--red,var(--rd,#ff2e55))}' +
-      '.cdp-shop .r small{display:block;font-size:10px;color:var(--text-dim,var(--dim,#5a7880));margin-top:2px;line-height:1.4}' +
+      '.cdp-shop .r small{display:block;font-size:11px;color:var(--text-dim,var(--dim,#5a7880));margin-top:2px;line-height:1.4}' +
       '.cdp-shop .v{margin-top:8px;font:600 11px/1.5 var(--fb,inherit);color:var(--text,var(--tx,#b8cdd4))}.cdp-shop .v b{color:var(--text-head,var(--th,#e4f0f4))}' +
-      '.cdp-shop .n{margin:8px 0 0;font-size:10px;line-height:1.5;color:var(--text-dim,var(--dim,#5a7880))}' +
+      '.cdp-shop .n{margin:8px 0 0;font-size:11px;line-height:1.5;color:var(--text-dim,var(--dim,#5a7880))}' +
       '.cdp-btns a.tcgbtn{border-color:var(--border2,var(--bd2,#23303d))}.cdp-btns a.tcgbtn.lo{border-color:var(--green,var(--gn,#00e07a))}' +
       '@media(max-width:560px){.cdp-shop .g{grid-template-columns:1fr 1fr}.cdp-shop .r b{font-size:16px}}';
     document.head.appendChild(st);
@@ -97,6 +101,17 @@
         any = true;
       });
       if (!any) return;
+      // B80 (Night Crew Oct 16): a row with no shop mark got no cell, so its Weight sat under "Shop (TCG)" and its buttons
+      // spilled past the table (30th: 1405 px in a 1010 px box at 1280; Skyridge, Neo 1st Ed, Aquapolis, Celebrations).
+      // Every data row gets a cell (empty when there is no mark, R35: no dash); a full-width row's colspan grows by one.
+      sec.querySelectorAll('.sidx-tbl').forEach(function (tbl) {
+        tbl.querySelectorAll('tbody tr').forEach(function (tr) {
+          if (tr.classList.contains('has-shop')) return;
+          var tds = tr.children;
+          if (tr.hasAttribute('data-cid') && tds.length >= 4) { var td = document.createElement('td'); td.className = 'num shop'; tds[2].insertAdjacentElement('afterend', td); tr.classList.add('has-shop'); }
+          else if (tds.length === 1 && tds[0].colSpan > 1) tds[0].colSpan = tds[0].colSpan + 1;
+        });
+      });
       sec.querySelectorAll('.sidx-tbl thead tr').forEach(function (tr) {
         if (tr.querySelector('th.shop')) return;
         var th = document.createElement('th'); th.className = 'shop';

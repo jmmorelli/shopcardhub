@@ -55,11 +55,6 @@ const CSS = `
 .cdp-chart .leg b{color:var(--text-head)} .cdp-chart .leg em{font-style:normal} .cdp-chart .leg .up{color:var(--green,#00e07a)} .cdp-chart .leg .dn{color:var(--red,#ff2e55)}
 .cdp-chart svg{display:block;max-width:100%}
 .cdp-chart .src{font-family:var(--fm);font-size:11px;color:var(--text-dim);margin-top:6px;line-height:1.5} .cdp-chart .src a{color:var(--ac)}
-.cdp-bars{margin:14px 0 0;padding:14px;border:1px solid var(--border,rgba(255,255,255,.08));background:var(--bg2,#0c1017)}
-.cdp-bars .h{font-family:var(--fm);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px}
-.cdp-bar{display:grid;grid-template-columns:64px minmax(0,1fr) 90px;gap:10px;align-items:center;margin:6px 0;font-family:var(--fm);font-size:11px}
-.cdp-bar i{display:block;height:12px;background:var(--ac);border-radius:1px;min-width:2px}
-.cdp-bar span:last-child{text-align:right;color:var(--text-head)}
 .cdp-stat{font-family:var(--fm);font-size:11px;color:var(--text-dim);margin-top:10px;line-height:1.6}
 .cdp-stat b{color:var(--text-head)}
 .cdp-buy{margin:18px 0 0;padding:16px;border:1px solid var(--border,rgba(255,255,255,.08));border-left:3px solid var(--ac);background:var(--bg2,#0c1017)}
@@ -89,7 +84,7 @@ const CSS = `
 .cdp-chart.cdp-wait{min-height:401px}.cdp-chart.cdp-wait .wl{font-family:var(--fm);font-size:11px;color:var(--text-dim)}
 @media(max-width:760px){.cdp-top{grid-template-columns:110px minmax(0,1fr);grid-template-areas:"photo info" "ladder ladder";column-gap:14px;row-gap:14px}.cdp-chart.cdp-wait{min-height:449px}.cdp-photo .sch-cimg{width:110px!important;height:154px!important}
 .cdp-ladder{grid-template-columns:repeat(2,minmax(0,1fr))}.cdp-rung:nth-child(2){border-right:0}.cdp-rung:nth-child(-n+2){border-bottom:1px solid var(--border,rgba(255,255,255,.08))}.cdp-rung .v{font-size:24px}
-.cdp-btns{grid-template-columns:repeat(2,minmax(0,1fr))}.cdp-more .g{grid-template-columns:repeat(2,minmax(0,1fr))}.cdp-bar{grid-template-columns:52px minmax(0,1fr) 76px}}
+.cdp-btns{grid-template-columns:repeat(2,minmax(0,1fr))}.cdp-more .g{grid-template-columns:repeat(2,minmax(0,1fr))}}
 `;
 
 const html = `<!DOCTYPE html>
@@ -130,7 +125,7 @@ ${nav}
 ${footer}
 
 <script src="/js/grade-links.js?v=2" defer></script>
-<script src="/js/card-page.js?v=6" defer></script>
+<script src="/js/card-page.js?v=7" defer></script>
 <script src="/js/shop-spread.js?v=4" defer></script>
 <script src="/js/card-img.js?v=3" defer></script>
 <script src="/js/vault-track.js?v=6" defer></script>
