@@ -240,7 +240,7 @@ body #gstar .gs-tape .sidx-tbl tbody td:nth-child(6)::before{content:"Move · ";
     <thead><tr><th>#</th><th>Card</th><th>Raw mark</th><th>PSA 9</th><th>PSA 10</th><th>TAG 10</th><th class="th-act g">Watch · Buy raw / graded</th></tr></thead>
     <tbody>${rows}</tbody>
   </table></div>
-  <p class="sidx-note">${esc(tape.copy.tagLine)} Raw mark = median of clean ungraded sold rows in the trailing 90 days (180 or 365 where 90 holds fewer than 4, flagged thin). A graded mark = median of at least 3 dated sales whose own title names the grade, in 30 days, else at least 2 in 90; fewer prints as one dated sale. Source: PriceCharting's dated sold lists (blended eBay + TCGplayer), never asks. Watch ★ adds the raw card to your watchlist.</p>
+  <p class="sidx-note">${esc(tape.copy.tagLine)} Raw mark = median of clean ungraded sold rows in the trailing 90 days (180 or 365 where 90 holds fewer than 4, flagged thin). A graded mark = median of at least 3 dated sales whose own title names the grade, in 30 days, else at least 2 in 90; fewer prints as one dated sale. Source: PriceCharting's dated sold lists (eBay sales, with TCGplayer sales where PriceCharting records them), never asks. The TCGplayer shop price shown beside each card is a separate number and is not in the level. Watch ★ adds the raw card to your watchlist.</p>
 
   <div class="gs-tape" id="graded-tape">
     <div class="sidx-cap">The graded tape · PSA 10 record prints · ${md(tapeDates[0])} – ${mdy(tapeDates[tapeDates.length - 1])}</div>

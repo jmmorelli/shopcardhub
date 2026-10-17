@@ -1,11 +1,11 @@
-/* shop-spread.js — the SHOP PRICE beside every Pokémon index card (Oct 15 2026, Mo's ruling after the Wild Things /
+/* shop-spread.js v5 — the SHOP PRICE beside every Pokémon index card (Oct 15 2026, Mo's ruling after the Wild Things /
  * BinderPOS read: keep eBay sold as the index basis, show the TCGplayer market price and the spread on every card, and
  * let the collector pick the venue — "the arbitrage between the two").
  *
  * Reads /data/tcg/<tk>.json (tools/tcg-pull.mjs, nightly: TCGplayer market via the TCGCSV mirror, ~24h lag) and
  * /data/affiliates.json (link config). Adds, client-side only — no page HTML, no index number is touched:
  *   · set-index pages (sector + chase): a "Shop" column with the spread chip, a TCG button beside the eBay buttons,
- *     one line under the level ("at shop price $X · ▼ 6.8% vs the same cards at eBay sold");
+ *     one line under the level ("The same N cards: $X at TCGplayer market · $Y at eBay sold · shop 6.8% lower");
  *   · /card?id=…: a Shop / eBay sold / spread block with a Buy-on-TCGplayer button, ordered by which venue is cheaper.
  * A card with no shop mark gets nothing (no dash, no placeholder — R35). Never a level, a mark or a % move (R20).
  * TCGplayer links: plain product links until data/affiliates.json says status "live" (Impact), then wrapped + subId1=<card id>. */
@@ -27,11 +27,19 @@
   // the shop price still shows, the chip and the venue call do not.
   var WIDE = 0.6, EDGE = 0.03;
   function side(d) { return d == null || Math.abs(d) > WIDE ? 'wide' : d <= -EDGE ? 'shop' : d >= EDGE ? 'ebay' : 'even'; }
-  function chipHtml(v) {
+  // Chip text names the venue so a cold read is "the shop is 2.4% under eBay", not a daily move (Ivan review 1, Oct 17).
+  function chipHtml(v, m) {
     var s = side(v.d);
     if (s === 'wide' || v.d == null) return '';
-    var t = s === 'shop' ? 'TCGplayer market is ' + pct(v.d).replace('−', '') + ' below the eBay sold mark' : s === 'ebay' ? 'TCGplayer market is ' + pct(v.d).replace('+', '') + ' above the eBay sold mark' : 'TCGplayer market and the eBay sold mark are within 3%';
-    return '<i class="shc ' + s + '" title="' + esc(t) + '">' + pct(v.d) + '</i>';
+    var t = s === 'shop' ? 'TCGplayer market is ' + pct(v.d).replace('−', '') + ' below the eBay sold mark — cheaper at the shop' : s === 'ebay' ? 'TCGplayer market is ' + pct(v.d).replace('+', '') + ' above the eBay sold mark — cheaper on eBay' : 'TCGplayer market and the eBay sold mark are within 3% — even';
+    return '<i class="shc ' + s + '" title="' + esc(t) + '">' + (m === 'm' ? pct(v.d) + ' vs eBay' : 'shop ' + pct(v.d)) + '</i>';
+  }
+  // The line under the level: both venues, the same cards, in dollars; coloured by the chip rule (shop cheaper = green,
+  // eBay cheaper = red) — the sector version used the move classes and painted a red arrow next to "cheaper at the shop".
+  function lineHtml(S, f, basis) {
+    var s = side(S.spread), a = Math.abs(S.spread) * 100, p = (a >= 10 ? a.toFixed(0) : a.toFixed(1)) + '%';
+    var call = s === 'shop' ? '<span class="shs shop">shop ' + p + ' lower · cheaper at the shop</span>' : s === 'ebay' ? '<span class="shs ebay">shop ' + p + ' higher · cheaper on eBay</span>' : s === 'wide' ? '<span class="shs">a condition gap, not a bargain (shop = near-mint, eBay raw = any condition)</span>' : '<span class="shs">within 3% · even</span>';
+    return 'The same ' + S.weighted + ' cards: <b>' + money(S.basketShop, 0) + '</b> at TCGplayer market · <b>' + money(S.basketSold, 0) + '</b> at ' + basis + ' · ' + call + ' <span class="shk" title="TCGplayer market price via the TCGCSV daily mirror. Not part of the level.">· TCGplayer as of ' + md(f.asOf) + ', about a day behind</span>';
   }
   function tcgUrl(a, pid, cid) {
     var p = (a.productUrl || 'https://www.tcgplayer.com/product/{pid}').replace('{pid}', String(pid));
@@ -55,6 +63,7 @@
     st.textContent =
       'i.shc,.sidx-tbl td i.shc{display:inline-block;margin-left:5px;font:600 11px/1.4 var(--fm,ui-monospace,monospace);font-style:normal;color:var(--text-dim,var(--dim,#5a7880));border:1px solid var(--border2,var(--bd2,#23303d));border-radius:2px;padding:0 4px;vertical-align:middle;white-space:nowrap}' +
       'i.shc.shop,.sidx-tbl td i.shc.shop{color:var(--green,var(--gn,#00e07a));border-color:currentColor}i.shc.ebay,.sidx-tbl td i.shc.ebay{color:var(--red,var(--rd,#ff2e55));border-color:currentColor}' +
+      '.sh-line .shs{font-weight:600}.sh-line .shs.shop{color:var(--green,var(--gn,#00e07a))}.sh-line .shs.ebay{color:var(--red,var(--rd,#ff2e55))}' +
       'td.shop{white-space:nowrap}td.shop small{display:block;font-size:11px;color:var(--text-dim,var(--dim,#5a7880));letter-spacing:.3px}' +
       'td.shop.two .l2{margin-top:2px;line-height:1}td.shop.two .l2 i.shc{margin-left:0}a.tcgs{color:inherit;text-decoration:none;border-bottom:1px dotted var(--border2,var(--bd2,#23303d));white-space:nowrap}a.tcgs.lo{color:var(--green,var(--gn,#00e07a));border-bottom-color:currentColor}a.tcgs:hover{color:var(--text-head,var(--th,#e4f0f4))}' +
       /* the nine-column chase table fills the page at 1012px: let long card names wrap so the Shop column fits without a scrollbar */
@@ -97,7 +106,7 @@
         tr.classList.add('has-shop');
         var act = tr.querySelector('td.act .act-w');
         if (act) {
-          var m = document.createElement('span'); m.className = 'sch-shop-m'; m.innerHTML = tcgLink(a, v, cid, 'tcgs', 'shop ' + money(v.m) + ' ↗') + chipHtml(v);
+          var m = document.createElement('span'); m.className = 'sch-shop-m'; m.innerHTML = tcgLink(a, v, cid, 'tcgs', 'shop ' + money(v.m) + ' ↗') + chipHtml(v, 'm');
           act.appendChild(m);
         }
         any = true;
@@ -125,8 +134,8 @@
       var S = f.summary;
       var lv = sec.querySelector('.sidx-level');
       if (lv && S && S.basketSold > 0 && S.spread != null && !lv.querySelector('.sh-line')) {
-        var s = side(S.spread), d = document.createElement('div'); d.className = 'lvc sh-line';
-        d.innerHTML = 'at shop price <b>' + money(S.basketShop, 0) + '</b> · <span class="' + (S.spread < 0 ? 'dn' : S.spread > 0 ? 'up' : 'flat') + '">' + (S.spread < 0 ? '▼' : S.spread > 0 ? '▲' : '') + ' ' + pct(S.spread).replace(/^[−+]/, '') + '</span> vs the same ' + S.weighted + ' cards at eBay sold' + (s === 'shop' ? ' · <b>cheaper at the shop</b>' : s === 'ebay' ? ' · <b>cheaper on eBay</b>' : s === 'wide' ? ' · <b>a condition gap, not a bargain</b> (shop = near-mint, eBay raw = any condition)' : ' · even') + ' <span class="shk" title="TCGplayer market price via the TCGCSV daily mirror, ~24h lag. Not part of the level.">· TCGplayer market, ' + md(f.asOf) + '</span>';
+        var d = document.createElement('div'); d.className = 'lvc sh-line';
+        d.innerHTML = lineHtml(S, f, 'eBay sold');
         lv.appendChild(d);
       }
       track(sec);
@@ -173,8 +182,8 @@
       if (sum && S && S.basketShop) { sum.classList.add('two'); sum.innerHTML = '<div>' + money(S.basketShop, 0) + '</div>' + (S.spread != null && side(S.spread) !== 'wide' ? '<div class="l2"><i class="shc ' + side(S.spread) + '">' + pct(S.spread) + '</i></div>' : ''); }
       var lb = document.querySelector('.levelbox');
       if (lb && S && S.basketSold > 0 && S.spread != null && !lb.querySelector('.sh-line')) {
-        var s = side(S.spread), d = document.createElement('div'); d.className = 'levelchg sh-line';
-        d.innerHTML = 'at shop price <b>' + money(S.basketShop, 0) + '</b> · <span style="color:' + (S.spread < 0 ? 'var(--gn,#00e07a)' : 'var(--rd,#ff2e55)') + '">' + (S.spread < 0 ? '▼' : '▲') + ' ' + pct(S.spread).replace(/^[−+]/, '') + '</span> vs the same ' + S.weighted + ' cards at our sold marks' + (s === 'shop' ? ' · <b>cheaper at the shop</b>' : s === 'ebay' ? ' · <b>cheaper on eBay</b>' : s === 'wide' ? ' · <b>a condition gap, not a bargain</b> (shop = near-mint, eBay raw = any condition)' : ' · even') + ' <span class="shk" title="TCGplayer market price via the TCGCSV daily mirror, ~24h lag. Not part of the level.">· TCGplayer market, ' + md(f.asOf) + '</span>';
+        var d = document.createElement('div'); d.className = 'levelchg sh-line';
+        d.innerHTML = lineHtml(S, f, 'our sold marks');
         lb.appendChild(d);
       }
       track(tbl);
@@ -201,12 +210,15 @@
       buy.insertBefore(box, btns || buy.firstChild);
       if (btns) {
         var cid = 'card-' + c.id;
+        // Button order follows the price every time (a card "even" within 3% but still lower at the shop led with five eBay
+        // buttons — Ivan review 1); the chip says "even", the order says which is cheaper.
+        var lead = s !== 'wide' && v.d != null && raw != null && v.d < 0;
         var btn = document.createElement('a'); btn.className = 'tcgbtn' + (s === 'shop' ? ' lo' : ''); btn.setAttribute('data-cid', cid); btn.setAttribute('data-shop', s === 'shop' ? 'cheaper' : s);
         btn.href = tcgUrl(a, v.pid, cid); btn.target = '_blank'; btn.rel = tcgRel(a);
-        btn.innerHTML = 'Buy on TCGplayer<small>' + (s === 'shop' ? 'cheaper venue today · ' : '') + 'market ' + money(v.m) + (v.lo ? ' · from ' + money(v.lo) : '') + '</small>';
-        if (s === 'shop') btns.insertBefore(btn, btns.firstChild); else btns.appendChild(btn);
+        btn.innerHTML = 'Buy on TCGplayer<small>' + (s === 'shop' ? 'cheaper venue today · ' : lead ? 'about even, a touch lower · ' : '') + 'market ' + money(v.m) + (v.lo ? ' · from ' + money(v.lo) : '') + '</small>';
+        if (lead) btns.insertBefore(btn, btns.firstChild); else btns.appendChild(btn);
         // the eBay buttons are re-rendered on a Buy It Now / Auctions switch — keep the TCG button through it
-        new MutationObserver(function () { if (!btns.contains(btn)) { if (s === 'shop') btns.insertBefore(btn, btns.firstChild); else btns.appendChild(btn); } }).observe(btns, { childList: true });
+        new MutationObserver(function () { if (!btns.contains(btn)) { if (lead) btns.insertBefore(btn, btns.firstChild); else btns.appendChild(btn); } }).observe(btns, { childList: true });
       }
       track(buy);
     });
