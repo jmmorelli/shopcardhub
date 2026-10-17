@@ -60,3 +60,30 @@ export function applyCatalogLd(html, idx) {
     dataset: live.map((t) => ({ "@type": "Dataset", "@id": SITE + t.page + "#dataset-" + t.ticker.toLowerCase(), name: entity(t), url: SITE + t.page, dateModified: lastMark(t).date })) };
   return put(html, "CATALOG", tag("CATALOG", [ORG, cat]));
 }
+
+// E7 slice 3 (approved Oct 5 2026): one answer sentence at the top of every index page — level, date, sample size,
+// source — baked into the hero line (.sidx-sub). It REPLACES that line's opening clause ("All N cards of X, priced
+// from dated sold comps and re-marked Monday and Thursday."), it never adds a line. Marked <!-- ANS:<TK> --> … <!-- /ANS:<TK> -->
+// so build-index-jsonld.mjs and the build-sector-index.mjs bake hook refresh it in place after any mark.
+// HOLD: tickers listed here keep the old clause (SK03 — Pokémon KB P14, the disputed $34,100 sale; lift when the row closes).
+export const ANSWER_HOLD = new Set(["SK03"]);
+export function answerSentence(t) {
+  const m = lastMark(t);
+  const n = m.priced ?? (t.basket || []).length;
+  const set = (t.set || t.name || t.ticker).replace(/^Pokémon TCG /, "").replace(/\s+Set Index$/i, "");
+  const base = t.baseDate ? ` (${fmtMonth(t.baseDate)} = 100)` : "";
+  const lv = typeof m.level === "number" ? m.level.toFixed(2) : m.level;
+  const src = /PriceCharting/i.test(t.basisLabel || "") ? "eBay sold prices read on PriceCharting" : "dated sold prices";
+  const cost = typeof m.basketValue === "number" ? `, and one raw copy of each of the ${n} cards it prices cost about ${usd(m.basketValue)} at ${src}` : `, across ${n} cards at ${src}`;
+  return `On ${fmtDate(m.date)} the ${set} index (${t.ticker}) stood at ${lv}${base}${cost}. It is re-marked every Monday and Thursday.`;
+}
+export function applyIndexAnswer(html, t) {
+  if (ANSWER_HOLD.has(t.ticker)) return html;
+  const tk = t.ticker;
+  const block = `<!-- ANS:${tk} -->${answerSentence(t)}<!-- /ANS:${tk} -->`;
+  const marked = new RegExp(`<!-- ANS:${tk} -->[\\s\\S]*?<!-- /ANS:${tk} -->`);
+  if (marked.test(html)) return html.replace(marked, () => block);
+  const raw = /(<p class="sidx-sub">)([^<]*?re-marked Monday and Thursday\.)/;
+  if (!raw.test(html)) return html; // page without the standard hero line: leave it alone (reported by --check as skipped)
+  return html.replace(raw, (_, p) => p + block);
+}
