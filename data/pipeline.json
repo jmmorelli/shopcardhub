@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-10-13",
+  "generated": "2026-10-19T17:50:00Z",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-10-12, STEP 3.9)",
   "agents": {
     "seeker": {
@@ -327,17 +327,9 @@
     "gengar": {
       "label": "GENGAR",
       "role": "Pokémon Index Specialist + conversion coverage — owned by the Monday trend-scan (STEP 3.6 index re-marks, STEP 3.65 X intel, chase-image checks) and, from 2026-09-17, the Monday conversion beat (LANE-RULES R11: every commercial page sells its product above the fold; buy-strip health against live eBay). No-new-Pokémon-calls mandate stays retired forever.",
-      "lastRun": "2026-10-12",
-      "nextRun": "2026-10-19",
+      "lastRun": "2026-10-19",
+      "nextRun": "2026-10-26",
       "actions": [
-        {
-          "ts": "2026-09-21",
-          "msg": "Pokémon re-mark (STEP 3.6): all 6 universes fully priced off PriceCharting ungraded solds, 289/289 cards — PB26 90.52→84.72 (−6.41%), CR26 94.89→93.17 (−1.81%), AH26 96.89→93.88 (−3.11%), PRIS25 96.79→98.04 (+1.29%), DR25 97.71→95.75 (−2.01%). No basket entries, no divisor change."
-        },
-        {
-          "ts": "2026-09-21",
-          "msg": "PF25 NOT re-marked: tools/remark-indices.mjs refuses the page (no levelchg block — it shipped Sep 18 at inception). Basket is down to $1,150.42 (level would be 95.62, −4.38%); left at 100.00 with its honest Sep 18 asOf. Needs a page-template fix before it can be marked — filed for the CoS."
-        },
         {
           "ts": "2026-09-21",
           "msg": "Images: all wired, nothing new (no new Pokémon page built this run). X intel not read — Chrome lane not exercised this run."
@@ -377,6 +369,14 @@
         {
           "ts": "2026-10-12",
           "msg": "Card images: nothing new wired this week and no new Pokemon page built by this lane. The six Collector's Desk pages were rebuilt from the chase card files and the generator's own EPN self-test passed on all six."
+        },
+        {
+          "ts": "2026-10-19",
+          "msg": "Levels: PB26 61.56 (-0.06%), CR26 37.94 (+0.61%), AH26 71.43 (-4.54%), PRIS25 63.89 (-5.21%), DR25 57.69 (-0.67%), PF25 70.93 (+1.05%). 289/289 cards re-marked on PriceCharting ungraded sold value; no divisor change."
+        },
+        {
+          "ts": "2026-10-19",
+          "msg": "Collector’s Desk pages, badges, home panels and og image re-baked from the new marks. Top holding changed on CR26 and AH26; the page hero images still show the old leader, filed for the CoS."
         }
       ],
       "status": "active",
@@ -4969,6 +4969,15 @@
           "gates": "audit-prices FAIL 0 / WARN 47 (+3 stale-prices aging on untouched pages, identical on base) · audit-site FAIL 0 / WARN 5 (146) · audit-terminal FAIL 0 / WARN 1 · sitemap-lastmod --check 0 · build-llms --check ok · build-index-jsonld --check ok · league score --check ok · Chromium 1280/390 on 5 pages: 0 overflow, console counts equal to origin/main",
           "rollback": "git revert the listed commits (newest first)",
           "liveVerified": "pending - curl after push"
+        },
+        {
+          "date": "2026-10-19",
+          "commits": [
+            "0faed75"
+          ],
+          "by": "Monday trend scan (shopcardhub-weekly-trend-scan), fresh clone, Mac deploy key",
+          "gates": "audit-prices 0/47 · audit-site 0/5 (146) · audit-terminal 0/1 = baseline",
+          "liveVerified": "2026-10-19 ~17:55Z: live /data/indices.json carries the 2026-10-19 rows (PB26 61.56, PRIS25 63.89, AH26 71.43); /prismatic-evolutions-index and /ascended-heroes-index serve 63.89 / 71.43"
         }
       ]
     },
@@ -5000,26 +5009,23 @@
     "_retired": "2026-09-22 (bb-2026-09-22-coach-note-stale): no longer a standing weekly duty; written ad hoc by the CoS desk only when a lane needs a specific correction. Stale weekOf is not a finding."
   },
   "publish": {
-    "date": "2026-10-12",
+    "date": "2026-10-19",
     "by": "monday-scan STEP 3.98",
-    "commit": "07c8052",
+    "commit": "0faed75",
     "lane": [
-      "data/indices.json (PB26/CR26/AH26/PRIS25/DR25/PF25 re-marked on dated PriceCharting ungraded sold comps; 289/289 universe cards priced, 0 misses, no divisor change)",
-      "the 6 chase index pages (levels, stats, holdings, ROC, stamps, plain-read bake)",
-      "the 6 Gengar Collector's Desk pages (build-collectors-desk.mjs; EPN self-test passed)",
+      "data/indices.json",
+      "6 chase index pages",
+      "6 Collector’s Desk pages",
       "data/cards/{pb26,cr26,ah26,pris25,dr25,pf25}.json + data/card-search.json",
-      "the other 42 index + comparison pages (og cache-bust v=20261012)",
-      "og/indices.png, index.html (build-home re-bake, feed day 2026-10-11), indices.html",
-      "badge/{PB26,CR26,AH26,PRIS25,DR25,PF25}.svg (second commit)",
-      "data/pipeline.json (second commit)"
+      "badge/*.svg (6)",
+      "index.html (build-home + build-regime)",
+      "og/indices.png + ?v=20261019 on index/comparison pages"
     ],
-    "gates": "audit-prices FAIL 0 / WARN 82 - audit-site FAIL 0 / WARN 5 (171 pages) - audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected in the sandbox). Identical counts at clean HEAD, so this run added no WARN. Delta vs the stated 0/77 - 0/4 (141) - 0/1 baseline is +5 prices / +1 site across 30 more pages, all inherited.",
-    "liveVerified": "2026-10-12: /pitch-black-index and /prismatic-evolutions-index serve the new strip levels and public /data/indices.json carries the 2026-10-12 row for all six tickers (57.70 / 36.04 / 74.83 / 67.02 / 56.02 / 68.82).",
+    "gates": "audit-prices 0 FAIL/47 WARN · audit-site 0/5 (146 pages) · audit-terminal 0/1 — identical to clean HEAD 1e27d71",
+    "liveVerified": "2026-10-19 ~17:55Z: live /data/indices.json carries the 2026-10-19 rows (PB26 61.56, PRIS25 63.89, AH26 71.43); /prismatic-evolutions-index and /ascended-heroes-index serve 63.89 / 71.43",
     "notPushed": [
-      "data/calls.json - outside the price lane; four trending reads refreshed, patch staged for the desk",
-      "the /card-* pages + /cards + the engine data they read - REVERTED out of the lane under R20 (ask-basis marks); the nightly owns that repaint and R21's Oct 7 Phase 2 date has not landed"
-    ],
-    "rebasedOnto": "fec1ed6 (the CoS Oct 12 index-check docs landed mid-run; fetched + rebased, no file overlap)"
+      "nothing else edited this run (calls.json, guide pages untouched)"
+    ]
   },
   "decisions": [
     {
