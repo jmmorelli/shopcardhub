@@ -11,6 +11,18 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-10-19 — six scheduled-task switches (2 minutes, in your scheduled-tasks list)
+
+The Oct 19 pivot (`claude/cos/PIVOT-2026-10-19.md`, approved in chat) cuts the governance lanes. The CoS session's permission layer let one toggle through (CEO Desk off) and refused the rest as "task delete". Flip these yourself, or approve the prompt next time a CoS session asks:
+1. **Chief of staff sunday** → off
+2. **CoS · monthly roster & rooms review** → off
+3. **X Desk Watch — audit @shopcardhub feed + CoS queue (Mon/Thu 13:00)** → off
+4. **Earnings Ideas Desk — Tue/Fri** → off
+5. **COO — weekly org audit** → schedule `CRON_TZ=America/Los_Angeles 47 19 1 * *` (monthly, 1st)
+6. **Retention Desk — nightly** → schedule `CRON_TZ=America/Los_Angeles 40 3 * * 0` (Sundays only)
+
+Also yours, weekly, and the most valuable input we have: watch one real collector try to find one card's price on the site and tell the CoS what happened in five lines. It goes into `claude/cos/ceo-desk/FROM-MO.md` for Collector Voice (Mondays).
+
 ## Open — from the desk (2026-10-16, re-run ~14:40 PT after the 14:00 fire was skipped). Nothing new needs you
 
 - Unchanged and optional: the one-line fix under your Oct 13 "Marks" post · the R10 amendment 7 pick (until you choose, Monday's mark replies are a 10-minute sitting) · owned-card photos (by Oct 25 or it closes) · /track-record labels yes/no · TAG payment info + link.
