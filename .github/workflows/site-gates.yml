@@ -46,7 +46,13 @@ jobs:
               # <img>, a page error, or phone overflow; placeholder card photos are WARN only. ~8 min.
               # Since Sep 25 it also runs the UI checks (clipped CTA text, invisible text, undefined CSS tokens, phone
               # overflow = FAIL; small tap targets = WARN) and saves a 390px screenshot per page for the weekly's eyes.
-              echo; echo "## image-sweep (rendered, production: images + UI checks)"; node tools/ci/image-sweep.mjs --json image-sweep.json --shots shots | tail -60; [ ${PIPESTATUS[0]} -eq 0 ] || fail=1
+              # gate-watch Oct 19 2026: `tail -60` kept only the last 60 page lines, so a FAIL early in the sitemap order
+              # reached the issue as a bare "FAIL 2" with no page named. Keep every FAIL/WARN line (with its detail
+              # lines) plus the summary; the full log stays in the run output and image-sweep.json in the artifact.
+              echo; echo "## image-sweep (rendered, production: images + UI checks)"
+              node tools/ci/image-sweep.mjs --json image-sweep.json --shots shots > image-sweep.log 2>&1; [ $? -eq 0 ] || fail=1
+              grep -E '^\[(FAIL|WARN)\]|^        (ui|broken):|^image-sweep —' image-sweep.log | head -80
+              echo "  ($(grep -c '^\[ ok \]' image-sweep.log) page loads ok — full list in the run log)"
             fi
           } > gates.txt 2>&1
           cat gates.txt
