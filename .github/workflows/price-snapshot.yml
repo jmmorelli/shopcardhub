@@ -184,6 +184,14 @@ jobs:
                 node tools/ci/merge-ticker-keys.mjs --from "$RUNNER_TEMP/idx-marked.json" --into data/indices.json --tickers "$(paste -sd, "$RUNNER_TEMP/marked.list")"
               fi
               git add $(cat "$RUNNER_TEMP/artifacts.list")
+              # gate-watch Oct 19 2026 (finish-cost-drift x3): when a lane touched the marked tickers' PAGES meanwhile, the
+              # clash rule above kept main's stale page while the data took tonight's mark - page and data split and
+              # audit-site FAILs until the next mark. Re-bake the marked tickers from data/indices.json (no network) so
+              # the served page always matches the data it was built from. A failed bake keeps main's copy (logged).
+              if [ -n "$CLASH" ] && [ -s "$RUNNER_TEMP/marked.list" ]; then
+                if node tools/build-sector-index.mjs --ticker "$(paste -sd, "$RUNNER_TEMP/marked.list")" --bake; then git add -u
+                else echo "::warning::post-clash re-bake failed - marked pages keep main's copy; finish-cost-drift may FAIL"; git checkout -q -- . ; fi
+              fi
             fi
             # crawlable-copy-integrity (2026-09-24, CoS-commissioned): / is pre-rendered from this feed for
             # crawlers and JS-off readers. Publishing the feed without re-baking it left / serving a stale
