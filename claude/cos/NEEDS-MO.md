@@ -23,6 +23,14 @@ The Oct 19 pivot (`claude/cos/PIVOT-2026-10-19.md`, approved in chat) cuts the g
 
 Also yours, weekly, and the most valuable input we have: watch one real collector try to find one card's price on the site and tell the CoS what happened in five lines. It goes into `claude/cos/ceo-desk/FROM-MO.md` for Collector Voice (Mondays).
 
+## Open — from the desk (2026-10-19, 14:00 fire). Three small things, all optional except the CSVs
+
+- **EPN CSVs, Oct 13–19** (the customid report + the earnings report) into `Card Hub/epn/` before Wed Oct 21 — the Controller's P&L and Wednesday's money read need them. Last pair in the folder ends Oct 12.
+- **Grok app, one setting:** the room's email to shopcardhub@gmail.com is refused with "needs Auto-review approval" (Editor's gaps report and Coach's spike report both stuck). Turn that approval on for the room, or leave it and the bots post their reports in the app chat instead.
+- **Optional, one click, frees the laptop:** connect GitHub (push to `jmmorelli/shopcardhub`) to your Claude account. The cloud sessions are refused today with "GitHub access to this repository is not enabled for this session"; with it, the four push lanes that need your Mac awake can run from the cloud.
+
+*Checked against live state:* no new EPN CSVs since Oct 12; `Card Hub/photos/owned/` still absent (closes Oct 25 if not shot). *Not yours:* the SK03 re-mark check (the Monday classic-marks job is running late; Tuesday's desk verifies), the Mark Monday wall (taken down after your deletion), the stale page copy Integrity Watch found (fixed today).
+
 ## Open — from the desk (2026-10-16, re-run ~14:40 PT after the 14:00 fire was skipped). Nothing new needs you
 
 - Unchanged and optional: the one-line fix under your Oct 13 "Marks" post · the R10 amendment 7 pick (until you choose, Monday's mark replies are a 10-minute sitting) · owned-card photos (by Oct 25 or it closes) · /track-record labels yes/no · TAG payment info + link.
