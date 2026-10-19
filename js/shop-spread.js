@@ -65,7 +65,7 @@
       'i.shc.shop,.sidx-tbl td i.shc.shop{color:var(--green,var(--gn,#00e07a));border-color:currentColor}i.shc.ebay,.sidx-tbl td i.shc.ebay{color:var(--red,var(--rd,#ff2e55));border-color:currentColor}' +
       '.sh-line .shs{font-weight:600}.sh-line .shs.shop{color:var(--green,var(--gn,#00e07a))}.sh-line .shs.ebay{color:var(--red,var(--rd,#ff2e55))}' +
       'td.shop{white-space:nowrap}td.shop small{display:block;font-size:11px;color:var(--text-dim,var(--dim,#5a7880));letter-spacing:.3px}' +
-      'td.shop.two .l2{margin-top:2px;line-height:1}td.shop.two .l2 i.shc{margin-left:0}a.tcgs{color:inherit;text-decoration:none;border-bottom:1px dotted var(--border2,var(--bd2,#23303d));white-space:nowrap}a.tcgs.lo{color:var(--green,var(--gn,#00e07a));border-bottom-color:currentColor}a.tcgs:hover{color:var(--text-head,var(--th,#e4f0f4))}' +
+      'td.shop.two .l2{margin-top:2px;line-height:1}td.shop.two .l2 i.shc{margin-left:0}a.tcgs{color:inherit;text-decoration:none;white-space:nowrap;display:inline-block;padding:13px 0;margin:-13px 0;background:linear-gradient(to right,var(--border2,var(--bd2,#3a4a58)) 50%,transparent 0) repeat-x 0 calc(100% - 13px)/3px 1px}a.tcgs.lo{color:var(--green,var(--gn,#00e07a));background-image:linear-gradient(currentColor,currentColor);background-size:100% 1px}a.tcgs:hover{color:var(--text-head,var(--th,#e4f0f4))}' +
       /* the nine-column chase table fills the page at 1012px: let long card names wrap so the Shop column fits without a scrollbar */
       '.chase-tbl tr.has-shop td.card .roi-cell>div{max-width:150px;white-space:normal;line-height:1.25}' +
       '.sh-line b{font-weight:700}.sh-line .shk{opacity:.8}' +
@@ -194,10 +194,13 @@
   function card(detail, a) {
     var d = detail.d, c = detail.c; if (!c || !c.id) return;
     var buy = document.querySelector('#cdp .cdp-buy'); if (!buy) return;
-    marks(d.ticker || c.id.split('-')[0]).then(function (f) {
-      var v = f && f.marks && f.marks[c.id]; if (!v) return;
+    (window.__schShopFile ? Promise.resolve(window.__schShopFile) : marks(d.ticker || c.id.split('-')[0])).then(function (f) {
+      var v = f && f.marks && f.marks[c.id];
+      // B76 re-land: card-page.js reserves .cdp-shop-wait + .tcg-slot on first paint when the file has this card
+      var slot = buy.querySelector('.cdp-shop-wait'), tslot = buy.querySelector('.tcg-slot');
+      if (!v) { if (slot) slot.remove(); if (tslot) tslot.remove(); return; }
       var s = side(v.d), raw = c.raw;
-      var box = document.createElement('div'); box.className = 'cdp-shop';
+      var box = slot || document.createElement('div'); box.className = 'cdp-shop'; box.removeAttribute('aria-hidden');
       box.innerHTML =
         '<div class="g">' +
         '<div class="r"><span class="k">Shop price</span><b>' + money(v.m) + '</b><small>TCGplayer market · ' + md(f.asOf) + (v.lo ? ' · lowest listing ' + money(v.lo) : '') + '</small></div>' +
@@ -207,7 +210,7 @@
         (s === 'shop' ? '<div class="v">Today the shop is the place: TCGplayer’s market price is <b>' + pct(v.d).replace('−', '') + ' under</b> what this card has been selling for raw on eBay.</div>' : s === 'ebay' ? '<div class="v">Today eBay is the place: raw copies have been selling <b>' + pct(v.d).replace('+', '') + ' under</b> TCGplayer’s market price — use the Raw button below.</div>' : '') +
         '<p class="n">Shop price = TCGplayer’s market price (their recent sales of this printing, near-mint), mirrored daily with about a day’s lag. Shown beside the index, never used in it. ' + (d.wotc ? 'Vintage note: the shop price is a near-mint price; the eBay raw mark is a typical raw sale in any condition, so a wide gap here is condition, not a bargain.' : '') + '</p>';
       var btns = buy.querySelector('.cdp-btns');
-      buy.insertBefore(box, btns || buy.firstChild);
+      if (!slot) buy.insertBefore(box, btns || buy.firstChild);
       if (btns) {
         var cid = 'card-' + c.id;
         // Button order follows the price every time (a card "even" within 3% but still lower at the shop led with five eBay
@@ -216,6 +219,7 @@
         var btn = document.createElement('a'); btn.className = 'tcgbtn' + (s === 'shop' ? ' lo' : ''); btn.setAttribute('data-cid', cid); btn.setAttribute('data-shop', s === 'shop' ? 'cheaper' : s);
         btn.href = tcgUrl(a, v.pid, cid); btn.target = '_blank'; btn.rel = tcgRel(a);
         btn.innerHTML = 'Buy on TCGplayer<small>' + (s === 'shop' ? 'cheaper venue today · ' : lead ? 'about even, a touch lower · ' : '') + 'market ' + money(v.m) + (v.lo ? ' · from ' + money(v.lo) : '') + '</small>';
+        if (tslot) tslot.remove();
         if (lead) btns.insertBefore(btn, btns.firstChild); else btns.appendChild(btn);
         // the eBay buttons are re-rendered on a Buy It Now / Auctions switch — keep the TCG button through it
         new MutationObserver(function () { if (!btns.contains(btn)) { if (lead) btns.insertBefore(btn, btns.firstChild); else btns.appendChild(btn); } }).observe(btns, { childList: true });

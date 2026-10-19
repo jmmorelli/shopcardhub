@@ -412,7 +412,7 @@ def card_call(cid, out):
 def card_wall(handle, out, card_id=""):
     """Mark Monday reply card (E13, Night Crew P57 Oct 16 2026): handle · card · our dated raw mark, on the `call`
     layout. The mark comes from data/cards/<tk>.json (the same file the /indices Collectors wall reads); with no dated
-    raw mark it says "no sale in 30 days", never a blank. The collector's own words and prices are never drawn.
+    raw mark it says "too few sales to mark", never a blank. The collector's own words and prices are never drawn.
     make.py wall <handle>                 newest row for that handle in data/collectors-wall.json
     make.py wall <handle> --card pris25-161   before the row is filed (the desk drafting Monday's replies)"""
     handle = (handle or "").lstrip("@")
@@ -440,7 +440,7 @@ def card_wall(handle, out, card_id=""):
     d.text((80, y + 128), f"{dc.get('set', '')} \u00b7 {dc.get('ticker', tk.upper())}"[:78], font=MONO(14), fill=DIM)
     has = c.get("raw") is not None and c.get("rawAsOf")
     when = datetime.date.fromisoformat(c["rawAsOf"]).strftime("%b %-d %Y") if has else ""
-    cells = [("RAW SOLD MARK", money(float(c["raw"])) if has else "no sale in 30 days", TXT if has else DIM)]
+    cells = [("RAW SOLD MARK", money(float(c["raw"])) if has else "too few sales to mark", TXT if has else DIM)]
     if has: cells.append(("MARKED", when, TXT))
     cells.append(("INDEX", str(dc.get("ticker", tk.upper())), CYAN))
     for i, (k, v, col) in enumerate(cells):
