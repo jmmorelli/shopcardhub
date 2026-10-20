@@ -198,10 +198,6 @@
       "actions": [
         {
           "ts": "2026-09-29",
-          "msg": "Board tape og/x/board-latest.png and data/x-board.json regenerated at publish time (asOf 2026-09-29; soldMark + lastSale fields replace rawSold)."
-        },
-        {
-          "ts": "2026-09-29",
           "msg": "Digest 2026-09-29 SENT (MailerLite campaign 199969838099072348, finished 18:23 UTC) after the push verified; rogue-send check clean, kill switch clean; 4 active subscribers; stats not yet populated at read. First send in the R26 Monday-close shape."
         },
         {
@@ -243,6 +239,10 @@
         {
           "ts": "2026-10-20",
           "msg": "Ledger reads Oct 20 (calls.json NOT edited by this run; reads filed for the CoS): Gonzales PASS $70.00 vs $90.00 entry (-22.2%, finalizes Nov 3); Fischer re-entry $152.85 vs $146.80 (+4.1%). Board tape og/x/board-latest.png and data/x-board.json regenerated (asOf 2026-10-20)."
+        },
+        {
+          "ts": "2026-10-20",
+          "msg": "Tuesday Tape sent: MailerLite campaign 201872750894122464 'Digest 2026-10-20', instant, after push 780f555 live-verified. Rogue-send check clean (no campaign since Sep 29); kill switch clear (unsubscribes since Sep 29 = owner aliases + the vpt test record ruled by Mo Oct 6); 3 active subscribers. No ebay.com link in the email."
         }
       ],
       "log": [
@@ -5091,6 +5091,16 @@
           "gates": "audit-prices 0/50 · audit-site 0/5 · audit-terminal 0/1 (= HEAD 54a1c509)",
           "liveVerified": "pending at commit time; curl check in claude/traffic/2026-10-20.md",
           "note": "E6 round 4 copy (Definitive, BCB, Bowman Football, 30th fold) + Pokemon KB P25 Delta Reign deletions. P0-D batch 2 prepared as a patch for the attended apply, not pushed."
+        },
+        {
+          "date": "2026-10-20",
+          "commits": [
+            "780f555"
+          ],
+          "by": "tuesday-board (4.8)",
+          "gates": "audit-prices FAIL 0 / WARN 50 · audit-site FAIL 0 / WARN 5 · audit-terminal FAIL 0 / WARN 1 (= baseline 0/50 · 0/5 · 0/1 on 3cb4e5d; re-run on the Mac clone after git am, write-tree match)",
+          "liveVerified": "2026-10-20 ~18:25 UTC: /bowman-bangers data-prices-updated 2026-10-20 + Oct 20 tape column, board rows render 5 seats (Playwright, 0 page errors); /data/x-board.json asOf 2026-10-20; /og/x/board-latest.png md5 matches the pushed file",
+          "note": "Bangers re-mark Oct 20, no seat moved; Holliday G50 correction, G51 rank/date fixes; Tuesday Tape digest campaign 201872750894122464 sent instant after the push."
         }
       ]
     },
