@@ -11,13 +11,12 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## 2026-10-20 — desk (14:00 fire, verified live). Two things, both in your next chat with the CoS
+## 2026-10-20 — desk (14:00 fire, verified live). One thing, in your next chat with the CoS
 
-- **Say "go" on the hobby-box page** (`/best-hobby-boxes-2026`, Phase 1 built and gated, not pushed — the build session's permission layer wanted your explicit go; patch `Card Hub/deploy/box-screener-p1-2026-10-20.patch`). One word in an attended CoS chat ships it.
-- **Be present for the cull batch 2 push** (25 pages set to noindex, sitemap 112 → 72; site-wide, so it waits for you by rule). Same chat as above is fine.
+- **Be present for the cull batch 2 push** (25 pages set to noindex, sitemap 112 → 72; site-wide, so it waits for you by rule). 
 - Standing: one real collector finding one card's price on the site, five lines into `claude/cos/ceo-desk/FROM-MO.md` (first by Oct 26) · owned-card photos (`Card Hub/photos/owned/`, still absent — closes Oct 25) · TAG payment (Nov 1) · optional GitHub connection for cloud pushes.
 
-*Closed this run:* the six scheduled-task switches below (verified off/rescheduled in the task list by the Oct 19 16:35 review); the Grok room email approval (moot — the bots write files now, LANE-RULES R39); the EPN Oct 13–19 CSVs (the Controller read your Oct 5–18 upload on Oct 19). *Not yours:* Ivan's 9 AM Grok run left no file and no chat line today — the CoS handles it.
+*Closed this run:* the hobby-box page (you said go; shipped `e579ea0` by the session with you at 22:2xZ); the six scheduled-task switches below (verified off/rescheduled in the task list by the Oct 19 16:35 review); the Grok room email approval (moot — the bots write files now, LANE-RULES R39); the EPN Oct 13–19 CSVs (the Controller read your Oct 5–18 upload on Oct 19). *Not yours:* Ivan's 9 AM Grok run left no file and no chat line today — the CoS handles it.
 
 ## 2026-10-19 — six scheduled-task switches — CLOSED 2026-10-20 (verified done) (2 minutes, in your scheduled-tasks list)
 
