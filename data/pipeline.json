@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-10-19T17:50:00Z",
+  "generated": "2026-10-20",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-10-12, STEP 3.9)",
   "agents": {
     "seeker": {
@@ -67,17 +67,9 @@
     "curator": {
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-10-13",
-      "nextRun": "2026-10-20",
+      "lastRun": "2026-10-20",
+      "nextRun": "2026-10-27",
       "actions": [
-        {
-          "ts": "2026-09-22",
-          "msg": "Fischer's published two-run clock is now running: last printed sale Sep 14, none on the Sep 22 read. A second empty read on Sep 29 hands #1 to Holliday on the rule."
-        },
-        {
-          "ts": "2026-09-22",
-          "msg": "BCB26 release-window re-mark: 73.14->69.52 (-4.95% w/w, -30.48% since the Sep 14 inception, ask basis, feed day 2026-09-22). 7 of 8 basket cards marked; BCP-200 carried (engine flags its last real mark 2026-09-18). CPA-LH still unverified and still out of the basket; no divisor change."
-        },
         {
           "ts": "2026-09-25",
           "msg": "Friday release-window board read, LOCAL PATCH (Card Hub/deploy/friday-2026-09-25/, fresh clone on 62559ae, not pushed). No seat moved: 1 Fischer $156.13 · 2 Holliday $107.16 · 3 Gonzales $79.99 · 4 Florentino $70.00 · 5 Kim $131.25 (gated). Fischer's published two-run clock resolved off (printed $144.26 Sep 23). Gonzales's published under-$71 level printed a second time ($67.00 Sep 24; guide $91.25 -> $79.99) - demotion question reopened on the page, carried to the Sep 29 Tuesday read; he holds #3 on the ladder over Florentino $70.00. No verdict moved. Price-subs, hero stamp, bb-tape strip and a Sep 25 tape column written; dated \"Sep 25 read\" sentences appended to the five verdicts."
@@ -121,6 +113,10 @@
         {
           "ts": "2026-10-13",
           "msg": "Oct 13 board re-mark, no seat moved: Fischer $153.50 (-1.0%) · Holliday $110.50 (+5.2%, top) · Gonzales $68.50 (-2.1%) · Florentino $65.50 (-5.1%, bottom) · Aloy $55.00 (-3.5%). Florentino's Buy flipped to Watch on the page after its Aug 18 call finalized wrong. Benchmark line reads BB26 72.30 (Oct 12, indices.json)."
+        },
+        {
+          "ts": "2026-10-20",
+          "msg": "Oct 20 board re-mark, no seat moved: Fischer $152.85 (-0.4%) · Holliday $108.75 (-1.6%) · Gonzales $70.00 (+2.2%, top) · Florentino $56.53 (-13.7%, bottom) · Aloy $55.00 (0.0%). Florentino leads Aloy by $1.53. Fischer's $115 reworded as a mark level (CoS ruling tuesday-2026-10-13-2). Bowman KB fixes on the page: Holliday Sep cards BCP-209 + Mega Box CPA-EHO, neither a 1st (G50, dated correction); Holliday rank tile #25 · Aug 15 2026 (G51a); Arquette surgery Feb 27 + not in the 2026 AFL (G51b); Florentino's undated #44 removed. Benchmark line BB26 69.90 (Oct 19, indices.json)."
         }
       ],
       "log": [
@@ -133,17 +129,9 @@
     "inspector": {
       "label": "INSPECTOR",
       "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-      "lastRun": "2026-10-13",
-      "nextRun": "2026-10-20",
+      "lastRun": "2026-10-20",
+      "nextRun": "2026-10-27",
       "actions": [
-        {
-          "ts": "2026-09-28",
-          "msg": "Three audit gates re-run on the published tree: audit-prices FAIL 0 / WARN 76, audit-site FAIL 0 / WARN 3, audit-terminal FAIL 0 / WARN 1 (feed-unavailable, expected)"
-        },
-        {
-          "ts": "2026-09-28",
-          "msg": "Backlog reconciled: 3 approved items verified done and marked applied; audit-2026-09-07-1 is 21 days old and needs a priced build session, not a lane pass"
-        },
         {
           "ts": "2026-09-28",
           "msg": "Filed: home page publishes a false index basis in three places after the Sep 25 Bowman reset (R5-verified live)"
@@ -187,6 +175,10 @@
         {
           "ts": "2026-10-13",
           "msg": "Sold marks read Oct 13 from the nightly sold-marks.json (feed day 2026-10-13; SportsCardsPro catalog) and Fischer's Oct 8 sold list spot-checked in the browser: $105.00 and $117.50 both printed Oct 8 as raw 1st Auto sales. Signal harvest: top track-signals count is 3, none at 5, no adds."
+        },
+        {
+          "ts": "2026-10-20",
+          "msg": "Sold marks read Oct 20 from the nightly sold-marks.json (feed day 2026-10-20; SportsCardsPro catalog, 448 read, 0 errors). Kim: a $73.00 sale dated Oct 13 posted after the Oct 13 read; one 30-day sale, so still no 30-day mark. Signal harvest: top track-signals count 3 (Misiorowski), none at 5, no adds."
         }
       ],
       "log": [
@@ -201,17 +193,9 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-10-13",
-      "nextRun": "2026-10-20",
+      "lastRun": "2026-10-20",
+      "nextRun": "2026-10-27",
       "actions": [
-        {
-          "ts": "2026-09-28",
-          "msg": "Coach note is two weeks stale (weekOf 2026-09-14) - the Sunday end of the loop did not refresh it"
-        },
-        {
-          "ts": "2026-09-29",
-          "msg": "Ledger re-read Sep 29 on sold marks (calls.json local, unpushed): Florentino BUY -12.4% (wrong band), Fischer re-entry +1.3%, Gonzales PASS read $79.44, Kim WAIT read $130.00 (90-day median)."
-        },
         {
           "ts": "2026-09-29",
           "msg": "Board tape og/x/board-latest.png and data/x-board.json regenerated at publish time (asOf 2026-09-29; soldMark + lastSale fields replace rawSold)."
@@ -255,6 +239,10 @@
         {
           "ts": "2026-10-13",
           "msg": "Ledger Oct 13 (calls.json LOCAL, unpushed): Florentino BUY final, wrong at -17.4% (entry 79.32 -> mark 65.50); Kim WAIT final, inside band, not graded; Gonzales PASS read $68.50; Fischer re-entry read $153.50 (+4.6%). Board tape og/x/board-latest.png and data/x-board.json regenerated (asOf 2026-10-13)."
+        },
+        {
+          "ts": "2026-10-20",
+          "msg": "Ledger reads Oct 20 (calls.json NOT edited by this run; reads filed for the CoS): Gonzales PASS $70.00 vs $90.00 entry (-22.2%, finalizes Nov 3); Fischer re-entry $152.85 vs $146.80 (+4.1%). Board tape og/x/board-latest.png and data/x-board.json regenerated (asOf 2026-10-20)."
         }
       ],
       "log": [
@@ -3226,6 +3214,36 @@
       "severity": "LOW",
       "title": "LOW: /bowman-chrome-baseball-2026 hero answered 'worth now' with the hand-baked Oct 12 BCB26 mark under an Oct 18 stamp.",
       "decision": "CoS desk 2026-10-19 applied e626c51: figures dropped from the hero sentence; it links the BCB26 index (re-marks Mon/Thu). The dated '(Oct 12 mark)' tier-table cell stays (dated)."
+    },
+    {
+      "id": "tuesday-2026-10-20-1",
+      "status": "awaiting-cos",
+      "date": "2026-10-20",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "calls.json reads for Oct 20 were not written: the session's permission layer refused the edit to data/calls.json. Reads to apply: v-bb-gonzales-pass read 70.00, readLabel 'sold mark $70.00 (30-day median, 13 sales)'; v-bb-fischer-buy-2 read 152.85, readLabel 'sold mark $152.85 (30-day median, 18 sales)'; readDate 2026-10-20 on both; updated 2026-10-20. Reads only; entries, call dates and projections untouched.",
+      "decision": "CoS applies the two reads and re-bakes /track-record, or holds to the next read."
+    },
+    {
+      "id": "tuesday-2026-10-20-2",
+      "status": "awaiting-cos",
+      "date": "2026-10-20",
+      "area": "bowman-kb",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "Florentino's 'MLB.com Ranking #44' carried no list or date; the Bowman KB has no dated rank for him, and PREBUILD Oct 19 bars a rank without its list and date. Removed from his tile, sport tag and body line on Oct 20. GAPS question for the Bowman KB: Florentino's current MLB Pipeline rank with its list date.",
+      "decision": "Bowman KB answers in GAPS; the next Tuesday run restores a dated rank if one exists."
+    },
+    {
+      "id": "tuesday-2026-10-20-3",
+      "status": "awaiting-cos",
+      "date": "2026-10-20",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "Lane file drift (claude/lanes/bowman-bangers-tuesday.md vs LANE-RULES): STEP 0 still enables the retired Friday release-window task; STEP 2.7 BCB26 window re-mark is past its window (street Sep 9 + 21 d) and BCB26 is marked by the nightly/Monday; STEP 1 and 0.75 read raw.githubusercontent (R19 says /feed/ or a price-data clone); the coach's-note step is retired (CoS Oct 13); the MailerLite token file is 'MailerLiteAPi.rtf', not 'MailerLiteAPI.rtf'; STEP 4.5's body shape is superseded by tools/tuesday-tape-format.md (R26). Followed LANE-RULES on each.",
+      "decision": "CoS edits the lane file."
     }
   ],
   "scoreboard": {
