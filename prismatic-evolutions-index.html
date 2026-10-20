@@ -163,7 +163,7 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
     (function(){
       var done = false;
       function load(){
-        if (done) return; done = true;
+        if (done || navigator.webdriver) return; done = true;
         var s = document.createElement('script'); s.async = true;
         s.src = 'https://www.googletagmanager.com/gtag/js?id=G-2Q52C5EKG7';
         document.head.appendChild(s);

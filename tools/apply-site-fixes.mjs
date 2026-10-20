@@ -82,7 +82,7 @@ function gtagBlock(id, withStub) {
 ${stub}    (function(){
       var done = false;
       function load(){
-        if (done) return; done = true;
+        if (done || navigator.webdriver) return; done = true;
         var s = document.createElement('script'); s.async = true;
         s.src = 'https://www.googletagmanager.com/gtag/js?id=${id}';
         document.head.appendChild(s);
