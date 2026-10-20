@@ -65,8 +65,9 @@ export function applyCatalogLd(html, idx) {
 // source — baked into the hero line (.sidx-sub). It REPLACES that line's opening clause ("All N cards of X, priced
 // from dated sold comps and re-marked Monday and Thursday."), it never adds a line. Marked <!-- ANS:<TK> --> … <!-- /ANS:<TK> -->
 // so build-index-jsonld.mjs and the build-sector-index.mjs bake hook refresh it in place after any mark.
-// HOLD: tickers listed here keep the old clause (SK03 — Pokémon KB P14, the disputed $34,100 sale; lift when the row closes).
-export const ANSWER_HOLD = new Set(["SK03"]);
+// HOLD: tickers listed here keep the old clause. Empty since 2026-10-20 (CoS desk): SK03 lifted — Pokémon KB P14 closed,
+// the disputed $34,100 #146 sale is out of the Oct 19 mark (#146 = $6,050, 1 dated sale, thin).
+export const ANSWER_HOLD = new Set([]);
 export function answerSentence(t) {
   const m = lastMark(t);
   const n = m.priced ?? (t.basket || []).length;
