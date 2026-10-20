@@ -39,7 +39,7 @@ const m = (...names) => names.map((name) => ({ name }));
 const d = (...names) => names.map((name) => ({ name }));
 
 // Event names read per page on the 7-day window (pageClicks7, cardClicks7).
-const PAGE_EVENTS7 = ["click", "buystrip_click", "buybox_click", "newsletter_signup", "chase_click", "grade_click", "signup_view", "shop_click", "fanatics_click", "track_card_from_page", "search_miss_click", "card_page_view"];
+const PAGE_EVENTS7 = ["click", "buystrip_click", "buybox_click", "newsletter_signup", "chase_click", "grade_click", "signup_view", "shop_click", "fanatics_click", "track_card_from_page", "search_miss_click", "card_page_view", "box_sort", "box_filter", "box_profile"];
 // Outbound-click events (affiliate or shop) — what cardPageClicks7 counts. Exposure/signup events are excluded.
 const OUTBOUND_EVENTS = new Set(["click", "buystrip_click", "buybox_click", "chase_click", "grade_click", "shop_click", "fanatics_click", "search_miss_click"]);
 const CARD_PATH = /^\/card(?:$|[?\/.-])/;
@@ -69,7 +69,10 @@ const REPORTS = {
   landingOrganicDaily28: { dateRanges: RANGES.d28, dimensions: d("landingPage", "date"), metrics: m("sessions", "keyEvents"), dimensionFilter: { filter: { fieldName: "sessionDefaultChannelGroup", stringFilter: { value: "Organic Search" } } }, orderBys: [{ dimension: { dimensionName: "date" } }], limit: 5000 },
   // Oct 9 2026 (Retention Desk R13 pre-step, before the Mon Oct 12 baseline): chase_click + grade_click fire on the
   // sector index pages and were site-wide only; signup_view (R11) is the capture's exposure event. Per page from now on.
-  pageClicks28: { dateRanges: RANGES.d28, dimensions: d("pagePath", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["click", "buystrip_click", "buybox_click", "newsletter_signup", "chase_click", "grade_click", "signup_view"] } } }, limit: 2000 },
+  // Oct 20 2026 (Box Desk, box screener spec §7): box_sort / box_filter / box_profile fire on /best-hobby-boxes-2026 only;
+  // per page in pageClicks28 + pageClicks7, site-wide counts in summary.boxSort7 / boxFilter7 / boxProfile7. Adding names to
+  // an inList filter leaves every existing row's count unchanged.
+  pageClicks28: { dateRanges: RANGES.d28, dimensions: d("pagePath", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["click", "buystrip_click", "buybox_click", "newsletter_signup", "chase_click", "grade_click", "signup_view", "box_sort", "box_filter", "box_profile"] } } }, limit: 2000 },
   // Oct 21 2026 (CoS weekly, BLOCKED "Measurement instruments missing" items 1-2). pageClicks7 is pageClicks28 on a
   // 7-day window, same dimensions, plus the click events the 28-day list predates (shop_click, fanatics_click,
   // track_card_from_page, search_miss_click) and card_page_view as the card-page exposure count. pageClicks28 is left
@@ -224,6 +227,8 @@ function derive(rep) {
     returningShare7: (() => { const all = tot(rep.returning7.rows, "activeUsers"); return all ? +((ret7.activeUsers || 0) / all * 100).toFixed(2) : null; })(),
     clicks7: ev(rep.events7.rows, "click"), buystripClicks7: ev(rep.events7.rows, "buystrip_click"), buyboxClicks7: ev(rep.events7.rows, "buybox_click"),
     trackCardFromPage7: ev(rep.events7.rows, "track_card_from_page"), newsletterSignup7: ev(rep.events7.rows, "newsletter_signup"),
+    // box screener (Box Desk, Oct 20 2026; spec §7 kill read: ≥ 25% of BHB sessions interact by Nov 19, < 10% by Dec 17 strips it back)
+    boxSort7: ev(rep.events7.rows, "box_sort"), boxFilter7: ev(rep.events7.rows, "box_filter"), boxProfile7: ev(rep.events7.rows, "box_profile"),
     keyEventsYesterday: (rep.daily28.rows.at(-1) || {}).keyEvents ?? null, sessionsYesterday: (rep.daily28.rows.at(-1) || {}).sessions ?? null,
     topCountry7: (rep.countries7.rows[0] || {}).country || null, nonUSTopCountry7: (rep.countries7.rows.find((r) => r.country !== "United States") || {}),
     // Raw figures stay above, unchanged. The bot-adjusted pair sits beside them, never instead of them.

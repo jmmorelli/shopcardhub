@@ -1,0 +1,900 @@
+{
+  "_comment": "Box screener rows for /best-hobby-boxes-2026 (spec claude/handoffs/box-screener-2026-10-20.md §3A). One row per product × format. sold = SportsCardsPro single-box sold median (read rule: 30 d, widen to 60 then 90 d below 5 sales; post-street-date only; jumbo, case, lot, break excluded). eBay is a buy link only, never a mark. Config fields (packs, cardsPerPack, hits, msrp, variety) only from a cited source; null otherwise. Note tokens {IDX.median} {IDX.n} {IDX.top} {IDX.topPrice} {IDX.k} {IDX.mark} {ROW.perHit} are filled by tools/build-box-screener.mjs from data/indices.json. Edit here, then run the generator; never hand-edit the BOXSCREENER / BOXNOTES blocks.",
+  "read": "2026-10-20",
+  "readRule": "single-box hobby (or jumbo) sales on SportsCardsPro in the 30 days to the read date; under 5 sales, widen to 60 then 90 days; sales before street date, cases, lots, breaks, packs and other products excluded by title",
+  "rows": [
+    {
+      "anchor": "bowman-baseball",
+      "product": "2026 Bowman (May) Baseball Hobby",
+      "sport": "Baseball",
+      "category": "baseball",
+      "format": "hobby",
+      "releaseDate": "2026-05-13",
+      "msrp": {
+        "value": 259.99,
+        "basis": "release day",
+        "presale": 239.99,
+        "releaseDay": 259.99,
+        "source": "Checklist Insider (presale $239.99, $259.99 on release day); KB bowman 04 §5 / GAPS G13"
+      },
+      "packs": 20,
+      "cardsPerPack": 8,
+      "hits": {
+        "autos": 1,
+        "relics": null,
+        "numbered": null,
+        "total": 1,
+        "guaranteedText": "1 auto"
+      },
+      "variety": null,
+      "checklist": {
+        "base": 100,
+        "prospects": 150,
+        "autos": 87,
+        "firstAutos": 76,
+        "rookies": null,
+        "bowman": true
+      },
+      "sold": {
+        "median": 377.5,
+        "n": 10,
+        "from": "2026-08-25",
+        "to": "2026-10-09",
+        "windowDays": 60,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/baseball-cards-2026-bowman/hobby-box"
+      },
+      "indexTicker": "BB26",
+      "indexPage": "/bowman-2026-index",
+      "keepLine": "2026 Bowman Baseball is the best prospect box of the year and it's not particularly close.",
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2026-bowman-baseball",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/baseball-cards-2026-bowman/hobby-box",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "Bowman KB 02 §1, 04 §5",
+          "read": "2026-10-19"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-bowman-baseball",
+      "ebayQuery": "Sealed Hobby Box Bowman Baseball 2026 -chrome -sapphire -draft -\"best of\" -mega -case -pack -packs -jumbo -blaster -lot",
+      "tag": "⚾ Baseball · Prospect · Topps",
+      "note": "<strong>2026 Bowman Baseball is the best prospect box of the year and it's not particularly close.</strong> It came out May 13, 2026 at $239.99 on presale ($259.99 on release day, per Checklist Insider) with one auto per box. The checklist has 150 Chrome Prospects and 87 signed versions, and 76 of those are 1st Bowman autos (per Checklist Insider). Ethan Holliday's 1st Bowman Chrome, BCP-1, is in this set. <br><br> One auto at a $377.50 box means your auto has to be worth about $380 to break even. On our {BB26.mark} BB26 mark, the median 2026 Bowman (May) 1st auto was {BB26.median}, and {BB26.k} of the {BB26.n} we track reached {ROW.perHit}. The top one was {BB26.top} at {BB26.topPrice}. So a box comes out ahead on a numbered parallel or a top name. A jumbo sold for a $659.00 median (5 sales, Aug 14–Sep 26) with three autos."
+    },
+    {
+      "anchor": "bowman-baseball",
+      "product": "2026 Bowman (May) Baseball Jumbo",
+      "sport": "Baseball",
+      "category": "baseball",
+      "format": "jumbo",
+      "parent": "bowman-baseball",
+      "releaseDate": "2026-05-13",
+      "msrp": {
+        "value": 539.99,
+        "basis": "release day",
+        "presale": 519.99,
+        "releaseDay": 539.99,
+        "source": "Checklist Insider (presale $519.99, $539.99 on release day); KB bowman GAPS G13"
+      },
+      "packs": 12,
+      "cardsPerPack": 28,
+      "hits": {
+        "autos": 3,
+        "relics": null,
+        "numbered": null,
+        "total": 3,
+        "guaranteedText": "3 autos"
+      },
+      "variety": null,
+      "checklist": {
+        "base": 100,
+        "prospects": 150,
+        "autos": 87,
+        "firstAutos": 76,
+        "rookies": null,
+        "bowman": true
+      },
+      "sold": {
+        "median": 659,
+        "n": 5,
+        "from": "2026-08-14",
+        "to": "2026-09-26",
+        "windowDays": 90,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/baseball-cards-2026-bowman/hobby-box (jumbos misfiled there)"
+      },
+      "indexTicker": "BB26",
+      "indexPage": "/bowman-2026-index",
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2026-bowman-baseball",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/baseball-cards-2026-bowman/hobby-box",
+          "read": "2026-10-20"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-bowman-baseball-jumbo",
+      "ebayQuery": "Jumbo Hobby Box Bowman Baseball 2026 -chrome -sapphire -draft -mega -case -pack -packs -blaster -lot",
+      "note": null
+    },
+    {
+      "anchor": "bowman-chrome-baseball",
+      "product": "2026 Bowman Chrome (Sep) Baseball Hobby",
+      "sport": "Baseball",
+      "category": "baseball",
+      "format": "hobby",
+      "releaseDate": "2026-09-09",
+      "msrp": {
+        "value": 329.99,
+        "basis": "release day",
+        "presale": 299.99,
+        "releaseDay": 329.99,
+        "source": "Checklist Insider (presale $299.99 Aug 10, $329.99 on release day); KB bowman 02 §1 [HIGH]"
+      },
+      "packs": 6,
+      "cardsPerPack": 10,
+      "hits": {
+        "autos": 2,
+        "relics": null,
+        "numbered": null,
+        "total": 2,
+        "guaranteedText": "2 autos"
+      },
+      "variety": null,
+      "checklist": {
+        "base": 100,
+        "prospects": 100,
+        "autos": 104,
+        "firstAutos": 97,
+        "firstAutosSource": "data/indices.json BCB26 universe (97 audited Sep 1st autos)",
+        "rookies": null,
+        "bowman": true
+      },
+      "sold": {
+        "median": 509.99,
+        "n": 29,
+        "from": "2026-09-26",
+        "to": "2026-10-18",
+        "windowDays": 30,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/baseball-cards-2026-bowman-chrome/hobby-box"
+      },
+      "indexTicker": "BCB26",
+      "indexPage": "/bowman-chrome-2026-index",
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2026-bowman-chrome-baseball",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/baseball-cards-2026-bowman-chrome/hobby-box",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "Bowman KB 02 §1",
+          "read": "2026-10-19"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-bowman-chrome-baseball",
+      "ebayQuery": "Sealed Hobby Box Bowman Chrome Baseball 2026 -sapphire -draft -mega -case -pack -packs -jumbo -blaster -lot -break",
+      "tag": "⚾ Baseball · Prospect · Topps",
+      "note": "2026 Bowman Chrome came out Sep 9, 2026. A hobby box is 6 packs of 10 with 2 on-card autos, and it was $329.99 at release. It's a different set from May's 2026 Bowman. The 1st class here is mostly the 2026 international signings, and the checklist has 104 Chrome Prospect Autographs, 97 of them 1st Bowman autos. See the <a href=\"/bowman-chrome-baseball-2026\">2026 Bowman Chrome guide</a> and the <a href=\"/bowman-chrome-2026-index\">BCB26 index</a>. <br><br> At the $509.99 median, each auto costs about $255. On our {BCB26.mark} BCB26 mark, {BCB26.k} of the {BCB26.n} base 1st autos had a 30-day median that high. The top one was {BCB26.top} at {BCB26.topPrice}, so a box comes out ahead on the parallels and the rare big hit."
+    },
+    {
+      "anchor": "topps-chrome-baseball",
+      "product": "2026 Topps Chrome Baseball Hobby",
+      "sport": "Baseball",
+      "category": "baseball",
+      "format": "hobby",
+      "releaseDate": "2026-08-05",
+      "releaseNote": "Aug 5 per /topps-chrome-baseball-2026 (Topps calendar move); Checklist Insider still lists Jul 22 — open item for the Bowman KB",
+      "msrp": {
+        "value": 249.99,
+        "basis": "release day",
+        "presale": 239.99,
+        "releaseDay": 249.99,
+        "source": "Checklist Insider (presale $239.99, $249.99 on release day)"
+      },
+      "packs": 20,
+      "cardsPerPack": 4,
+      "hits": {
+        "autos": 1,
+        "relics": null,
+        "numbered": null,
+        "total": 1,
+        "guaranteedText": "1 auto"
+      },
+      "variety": {
+        "looks": 11,
+        "text": "about 1 numbered card, 4 Prism Refractors, 6 inserts (1991 Topps, Big Ticket Players, Wrecking Crew)",
+        "source": "Cardsmiths Breaks box guide (its own estimates)",
+        "url": "https://cardsmithsbreaks.com/full-checklist/2026-topps-chrome-baseball-hobby-box",
+        "read": "2026-10-22"
+      },
+      "checklist": {
+        "base": 300,
+        "autos": null,
+        "firstAutos": null,
+        "rookies": null,
+        "bowman": false
+      },
+      "sold": {
+        "median": 466,
+        "n": 5,
+        "from": "2026-09-15",
+        "to": "2026-10-15",
+        "windowDays": 60,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/baseball-cards-2026-topps-chrome/hobby-box"
+      },
+      "indexTicker": null,
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2026-topps-chrome-baseball",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome/hobby-box",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "Cardsmiths Breaks box guide",
+          "url": "https://cardsmithsbreaks.com/full-checklist/2026-topps-chrome-baseball-hobby-box",
+          "read": "2026-10-22"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-topps-chrome-baseball",
+      "ebayQuery": "Sealed Hobby Box Topps Chrome Baseball 2026 -bowman -sapphire -update -black -cosmic -mega -case -pack -packs -jumbo -blaster -lot -break",
+      "tag": "⚾ Baseball · Rookie Chrome · Topps",
+      "note": "2026 Topps Chrome Baseball came out Aug 5, 2026 with one auto per hobby box. The draw is the refractor rainbow and the year's rookie autos. Hobby boxes sold for a $466.00 median (5 sales, Sep 15–Oct 15), and jumbos for $765.00 (7 sales, Sep 20–28). More in the <a href=\"/topps-chrome-baseball-2026\">2026 Topps Chrome guide</a>."
+    },
+    {
+      "anchor": "topps-chrome-baseball",
+      "product": "2026 Topps Chrome Baseball Jumbo",
+      "sport": "Baseball",
+      "category": "baseball",
+      "format": "jumbo",
+      "parent": "topps-chrome-baseball",
+      "releaseDate": "2026-08-05",
+      "msrp": {
+        "value": 419.99,
+        "basis": "release day",
+        "presale": null,
+        "releaseDay": 419.99,
+        "source": "Checklist Insider ($419.99 on release day; no presale listed)"
+      },
+      "packs": 12,
+      "cardsPerPack": 11,
+      "hits": {
+        "autos": 2,
+        "relics": null,
+        "numbered": null,
+        "total": 2,
+        "guaranteedText": "2 autos"
+      },
+      "variety": {
+        "looks": 18,
+        "text": "about 3 numbered cards, 6 Wave Refractors, 9 inserts (1991 Topps, Big Ticket Players, Wrecking Crew / Future Stars / Perspectives)",
+        "source": "Cardsmiths Breaks box guide (its own estimates)",
+        "url": "https://cardsmithsbreaks.com/full-checklist/2026-topps-chrome-baseball-jumbo-box",
+        "read": "2026-10-22"
+      },
+      "checklist": {
+        "base": 300,
+        "autos": null,
+        "firstAutos": null,
+        "rookies": null,
+        "bowman": false
+      },
+      "sold": {
+        "median": 765,
+        "n": 7,
+        "from": "2026-09-20",
+        "to": "2026-09-28",
+        "windowDays": 30,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/baseball-cards-2026-topps-chrome/hobby-box (jumbos misfiled there)"
+      },
+      "indexTicker": null,
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2026-topps-chrome-baseball",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome/hobby-box",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "Cardsmiths Breaks box guide",
+          "url": "https://cardsmithsbreaks.com/full-checklist/2026-topps-chrome-baseball-jumbo-box",
+          "read": "2026-10-22"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-topps-chrome-baseball-jumbo",
+      "ebayQuery": "Jumbo Hobby Box Topps Chrome Baseball 2026 -bowman -sapphire -update -black -cosmic -mega -case -pack -packs -blaster -lot -break",
+      "note": null
+    },
+    {
+      "anchor": "series-1",
+      "product": "2026 Topps Series 1 Baseball Hobby",
+      "sport": "Baseball",
+      "category": "baseball",
+      "format": "hobby",
+      "releaseDate": "2026-02-11",
+      "msrp": {
+        "value": null,
+        "basis": null,
+        "presale": null,
+        "releaseDay": null,
+        "source": "Not printed: Checklist Insider's $99.99 presale has no second source (Box Desk rev 2, Oct 20)."
+      },
+      "packs": 20,
+      "cardsPerPack": 12,
+      "hits": {
+        "autos": null,
+        "relics": null,
+        "numbered": null,
+        "total": 1,
+        "guaranteedText": "1 auto or relic"
+      },
+      "variety": null,
+      "checklist": {
+        "base": 350,
+        "autos": null,
+        "firstAutos": null,
+        "rookies": null,
+        "bowman": false
+      },
+      "sold": {
+        "median": 199.99,
+        "n": 17,
+        "from": "2026-09-21",
+        "to": "2026-10-05",
+        "windowDays": 30,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/baseball-cards-2026-topps/hobby-box"
+      },
+      "indexTicker": null,
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2026-topps-series-1-baseball",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/baseball-cards-2026-topps/hobby-box",
+          "read": "2026-10-20"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-series-1",
+      "ebayQuery": "Sealed Hobby Box Topps Series 1 Baseball 2026 -\"series 2\" -chrome -heritage -mega -complete -japan -case -pack -packs -jumbo -blaster -lot",
+      "tag": "⚾ Baseball · Flagship · Topps",
+      "note": "Series 1 came out Feb 11, 2026 with one auto or relic per box. Roman Anthony's MLB Rookie Card is here, with Jac Caglianone and Jacob Misiorowski. Flagship is the set people build, and the parallel rainbow gives set builders plenty to chase. The box has held near $200: 17 sales from Sep 21 to Oct 5 had a $199.99 median. See the <a href=\"/topps-series-1-2026\">2026 Topps Series 1 guide</a>."
+    },
+    {
+      "anchor": "series-2",
+      "product": "2026 Topps Series 2 Baseball Hobby",
+      "sport": "Baseball",
+      "category": "baseball",
+      "format": "hobby",
+      "releaseDate": "2026-06-10",
+      "msrp": {
+        "value": 127.99,
+        "basis": "release day",
+        "presale": 117.99,
+        "releaseDay": 127.99,
+        "source": "Checklist Insider (presale $117.99 May 11, $127.99 on release day)"
+      },
+      "packs": 20,
+      "cardsPerPack": 12,
+      "hits": {
+        "autos": null,
+        "relics": null,
+        "numbered": null,
+        "total": 1,
+        "guaranteedText": "1 auto or relic"
+      },
+      "variety": null,
+      "checklist": {
+        "base": 350,
+        "autos": null,
+        "firstAutos": null,
+        "rookies": null,
+        "bowman": false
+      },
+      "sold": {
+        "median": 139.98,
+        "n": 16,
+        "from": "2026-09-22",
+        "to": "2026-10-16",
+        "windowDays": 30,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/baseball-cards-2026-topps-series-2/hobby-box"
+      },
+      "indexTicker": null,
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2026-topps-series-2-baseball",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-series-2/hobby-box",
+          "read": "2026-10-20"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-series-2",
+      "ebayQuery": "Sealed Hobby Box Topps Series 2 Baseball 2026 -chrome -heritage -mega -complete -sets -japan -case -pack -packs -jumbo -blaster -lot -qty -quantity",
+      "tag": "⚾ Baseball · Flagship · Topps",
+      "note": "Series 2 came out Jun 10, 2026 at $127.99: 20 packs of 12 and one auto or relic per box. It carries most of the year's rookie call-ups that missed Series 1. Four months on, it still sells close to that price, a $139.98 median over 16 sales (Sep 22–Oct 16). That makes it the cheapest guaranteed hit on this page. Jumbos sold for $245.00 (8 sales, Sep 15–Oct 16). See the <a href=\"/topps-series-2-2026\">2026 Topps Series 2 guide</a>."
+    },
+    {
+      "anchor": "series-2",
+      "product": "2026 Topps Series 2 Baseball Jumbo",
+      "sport": "Baseball",
+      "category": "baseball",
+      "format": "jumbo",
+      "parent": "series-2",
+      "releaseDate": "2026-06-10",
+      "msrp": {
+        "value": 249.99,
+        "basis": "release day",
+        "presale": 239.99,
+        "releaseDay": 249.99,
+        "source": "Checklist Insider (presale $239.99, $249.99 on release day)"
+      },
+      "packs": 10,
+      "cardsPerPack": 40,
+      "hits": {
+        "autos": 1,
+        "relics": 1,
+        "numbered": null,
+        "total": 2,
+        "guaranteedText": "1 auto + 1 relic"
+      },
+      "variety": null,
+      "checklist": {
+        "base": 350,
+        "autos": null,
+        "firstAutos": null,
+        "rookies": null,
+        "bowman": false
+      },
+      "sold": {
+        "median": 245,
+        "n": 8,
+        "from": "2026-09-15",
+        "to": "2026-10-16",
+        "windowDays": 60,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/baseball-cards-2026-topps-series-2/hobby-box (jumbos misfiled there)"
+      },
+      "indexTicker": null,
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2026-topps-series-2-baseball",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-series-2/hobby-box",
+          "read": "2026-10-20"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-series-2-jumbo",
+      "ebayQuery": "Jumbo Hobby Box Topps Series 2 Baseball 2026 -chrome -heritage -mega -complete -sets -japan -case -pack -packs -blaster -lot",
+      "note": null
+    },
+    {
+      "anchor": "bowman-football",
+      "product": "2026 Bowman Football Hobby",
+      "sport": "Football",
+      "category": "football",
+      "format": "hobby",
+      "releaseDate": "2026-09-30",
+      "msrp": {
+        "value": 309.99,
+        "basis": "release day",
+        "presale": 289.99,
+        "releaseDay": 309.99,
+        "source": "Checklist Insider (presale $289.99, $309.99 on release day); KB bowman 02 §5 [HIGH]"
+      },
+      "packs": 20,
+      "cardsPerPack": 8,
+      "hits": {
+        "autos": 2,
+        "relics": null,
+        "numbered": null,
+        "total": 2,
+        "guaranteedText": "2 autos"
+      },
+      "variety": null,
+      "checklist": {
+        "base": 200,
+        "prospects": 201,
+        "autos": null,
+        "firstAutos": null,
+        "rookies": null,
+        "bowman": true
+      },
+      "sold": {
+        "median": 394,
+        "n": 11,
+        "from": "2026-09-30",
+        "to": "2026-10-19",
+        "windowDays": 30,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/football-cards-2026-bowman/hobby-box"
+      },
+      "indexTicker": "BF26",
+      "indexPage": "/bowman-football-2026-index",
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2026-bowman-football",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/football-cards-2026-bowman/hobby-box",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "Bowman KB 02 §5",
+          "read": "2026-10-19"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-bowman-football",
+      "ebayQuery": "Sealed Hobby Box 2026 Bowman Football -chrome -university -\"bowman u\" -best -mega -case -pack -packs -jumbo -blaster -lot -break",
+      "tag": "🏈 Football · Prospect · Topps",
+      "note": "2026 Bowman Football came out Sep 30, 2026. It puts a 200-card NFL set next to a 200-card Bowman Prospect set of college players, and a hobby box is 20 packs of 8 with 2 autos. Topps listed it at $309.99 on release day. Since street date, 11 hobby boxes sold at a $394.00 median (Sep 30–Oct 19), about $197 per auto. More in the <a href=\"/bowman-football\">2026 Bowman Football guide</a>."
+    },
+    {
+      "anchor": "prizm-football",
+      "product": "2025 Panini Prizm Football Hobby",
+      "sport": "Football",
+      "category": "football",
+      "format": "hobby",
+      "releaseDate": "2026-02-02",
+      "msrp": null,
+      "msrpNote": "Checklist Insider prints $974.95 without calling it a list price, so no MSRP is carried",
+      "packs": 12,
+      "cardsPerPack": 12,
+      "hits": {
+        "autos": 2,
+        "relics": null,
+        "numbered": 10,
+        "total": 2,
+        "guaranteedText": "2 autos"
+      },
+      "variety": {
+        "looks": 19,
+        "text": "10 numbered Prizms, 3 base Prizms, 1 rookie Prizm, 5 inserts (average box)",
+        "source": "Checklist Insider box break"
+      },
+      "checklist": {
+        "base": 400,
+        "autos": null,
+        "firstAutos": null,
+        "rookies": null,
+        "bowman": false
+      },
+      "sold": {
+        "median": 842,
+        "n": 10,
+        "from": "2026-09-08",
+        "to": "2026-09-25",
+        "windowDays": 60,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/football-cards-2025-panini-prizm/hobby-box"
+      },
+      "indexTicker": null,
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2025-panini-prizm-football",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/football-cards-2025-panini-prizm/hobby-box",
+          "read": "2026-10-20"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-prizm-football",
+      "ebayQuery": "Sealed Hobby Box Panini Prizm Football 2025 -draft -blaster -mega -collegiate -h2 -choice -fotl -huddle -black -international -\"off the line\" -case -pack -packs -jumbo -lot",
+      "tag": "🏈 Football · Flagship Rookie · Panini",
+      "note": "Prizm is still the NFL's flagship rookie chase. This set's rookies are the 2025 draft class, the box has 2 autos, and the top pull is a Black Finite 1/1. At an $842.00 median (10 sales, Sep 8–25) that's about $421 per auto, so most boxes come out behind unless you hit one of the big rookies or a low-numbered Prizm."
+    },
+    {
+      "anchor": "chrome-basketball",
+      "product": "2025-26 Topps Chrome Basketball Hobby",
+      "sport": "Basketball",
+      "category": "basketball",
+      "format": "hobby",
+      "releaseDate": "2025-12-18",
+      "msrp": {
+        "value": 379.99,
+        "basis": "release day",
+        "presale": 369.99,
+        "releaseDay": 379.99,
+        "source": "Checklist Insider (presale $369.99 Nov 19, $379.99 on release day)"
+      },
+      "packs": 20,
+      "cardsPerPack": 4,
+      "hits": {
+        "autos": 1,
+        "relics": null,
+        "numbered": null,
+        "total": 1,
+        "guaranteedText": "1 auto"
+      },
+      "variety": {
+        "looks": 26,
+        "text": "4 Prism Refractors, 6 Refractors, 4 other base parallels, 12 inserts",
+        "source": "Checklist Insider box break"
+      },
+      "checklist": {
+        "base": 299,
+        "autos": null,
+        "firstAutos": null,
+        "rookies": null,
+        "bowman": false
+      },
+      "sold": {
+        "median": 1005,
+        "n": 5,
+        "from": "2026-09-21",
+        "to": "2026-10-02",
+        "windowDays": 30,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/basketball-cards-2025-topps-chrome/hobby-box"
+      },
+      "indexTicker": null,
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2025-26-topps-chrome-basketball",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/basketball-cards-2025-topps-chrome/hobby-box",
+          "read": "2026-10-20"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-topps-chrome-basketball",
+      "ebayQuery": "Sealed Hobby Box Topps Chrome Basketball 2025-26 -black -updates -update -cactus -cosmic -sapphire -pristine -case -pack -packs -jumbo -blaster -lot",
+      "tag": "🏀 Basketball · Rookie Chrome · Topps",
+      "note": "This is Cooper Flagg's Chrome rookie year, with Ace Bailey, Dylan Harper and Kon Knueppel in the class too. The box was $379.99 on release day ($369.99 on presale) with one auto, and it now sells for a $1,005.00 median (5 sales, Sep 21–Oct 2). At that price you need a Flagg hit or a low-numbered parallel to come out ahead. If you only want Flagg, his singles are the cheaper way in."
+    },
+    {
+      "anchor": "bowman-basketball",
+      "product": "2025-26 Bowman Basketball Hobby",
+      "sport": "Basketball",
+      "category": "basketball",
+      "format": "hobby",
+      "releaseDate": "2026-04-22",
+      "msrp": {
+        "value": 359.99,
+        "basis": "release day",
+        "presale": 339.99,
+        "releaseDay": 359.99,
+        "source": "Checklist Insider (presale $339.99 Mar 24, $359.99 on release day)"
+      },
+      "packs": 20,
+      "cardsPerPack": 8,
+      "hits": {
+        "autos": 2,
+        "relics": null,
+        "numbered": null,
+        "total": 2,
+        "guaranteedText": "2 autos (1 NBA, 1 NIL)"
+      },
+      "variety": {
+        "looks": 20,
+        "text": "1 Mini-Diamond Refractor, 6 base parallels, 1–2 Red RC variations, 12 inserts",
+        "source": "Checklist Insider box break"
+      },
+      "checklist": {
+        "base": 200,
+        "prospects": 100,
+        "autos": null,
+        "firstAutos": null,
+        "rookies": null,
+        "bowman": true
+      },
+      "sold": {
+        "median": 489,
+        "n": 5,
+        "from": "2026-09-24",
+        "to": "2026-10-17",
+        "windowDays": 30,
+        "source": "SportsCardsPro",
+        "read": "2026-10-20",
+        "scpPath": "/game/basketball-cards-2025-bowman/hobby-box"
+      },
+      "indexTicker": null,
+      "sources": [
+        {
+          "name": "Checklist Insider",
+          "url": "https://www.checklistinsider.com/2025-26-bowman-basketball",
+          "read": "2026-10-20"
+        },
+        {
+          "name": "SportsCardsPro sold rows",
+          "url": "https://www.sportscardspro.com/game/basketball-cards-2025-bowman/hobby-box",
+          "read": "2026-10-20"
+        }
+      ],
+      "id": "best-hobby-boxes-2026-bowman-basketball",
+      "ebayQuery": "Sealed Hobby Box Bowman Basketball 2025-26 -chrome -sapphire -university -\"bowman u\" -case -pack -packs -jumbo -blaster -lot",
+      "tag": "🏀 Basketball · Prospect Chrome · Topps",
+      "note": "Bowman Basketball came out Apr 22, 2026 at $359.99 ($339.99 on presale) with 2 autos per box. It mixes Cooper Flagg, AJ Dybantsa and Cameron Boozer with NCAA women's stars like JuJu Watkins and Ta'Niya Latson, so a box gives you a wide spread of players. Boxes sold for a $489.00 median (5 sales, Sep 24–Oct 17), about $245 per auto."
+    }
+  ],
+  "profiles": {
+    "version": "v2, Oct 22 2026",
+    "method": "For each figure, the boxes that have it are ranked from worst to best. A box is scored on a goal only when every figure that goal weighs is on file and it passes the goal's gate; the score (0 to 100) is the weighted average of its ranks. Best fit is the highest-scoring of Prospector, Collector and Ripper. Budget and Set builder are the badge only when none of those three applies, and a box with no goal reads \"Needs data\".",
+    "list": [
+      {
+        "id": "prospector",
+        "name": "Prospector",
+        "goal": "chasing 1st Bowman autos",
+        "style": "growth",
+        "weights": [
+          [
+            "firstAutosPerBox",
+            3
+          ],
+          [
+            "perHit",
+            -3
+          ]
+        ],
+        "gate": "carries 1st Bowman autos, with the count on file",
+        "content": true
+      },
+      {
+        "id": "collector",
+        "name": "Collector",
+        "goal": "lots of different looks from one box",
+        "style": "",
+        "weights": [
+          [
+            "price",
+            -2
+          ],
+          [
+            "variety",
+            2
+          ]
+        ],
+        "gate": "parallel and insert count on file",
+        "content": true
+      },
+      {
+        "id": "set-builder",
+        "name": "Set builder",
+        "goal": "building the base set",
+        "style": "value",
+        "weights": [
+          [
+            "perCard",
+            -2
+          ],
+          [
+            "checklistSize",
+            1
+          ]
+        ],
+        "gate": "$ per card in the cheapest third of the boxes here",
+        "content": false
+      },
+      {
+        "id": "ripper",
+        "name": "Ripper",
+        "goal": "the big pull at the top of the set",
+        "style": "high growth",
+        "weights": [
+          [
+            "lottery",
+            2
+          ],
+          [
+            "topShare",
+            2
+          ],
+          [
+            "price",
+            -1
+          ]
+        ],
+        "gate": "set indexed on 20+ priced cards, and lottery ratio 3 or more or top card 25% or more of the set",
+        "content": true
+      },
+      {
+        "id": "budget",
+        "name": "Budget",
+        "goal": "a guaranteed hit for the least money",
+        "style": "value",
+        "weights": [
+          [
+            "price",
+            -3
+          ],
+          [
+            "guaranteedHit",
+            1
+          ]
+        ],
+        "gate": "box price in the cheapest third of the boxes here, or $200 or less",
+        "content": false
+      },
+      {
+        "id": "sealed-holder",
+        "name": "Sealed holder",
+        "goal": "keeping the box sealed",
+        "style": "",
+        "weights": [
+          [
+            "msrpHistory",
+            1
+          ]
+        ],
+        "needsMonths": 3,
+        "note": "Needs three months of box sales. No box here has that yet, so this profile scores nothing and gives no badge.",
+        "gate": "three months of box sales",
+        "content": false
+      }
+    ],
+    "metrics": {
+      "firstAutosPerBox": "1st Bowman autos per box (autos per box × the checklist's share of 1st autos; 0 for non-Bowman products)",
+      "perHit": "$ per hit (sold median ÷ guaranteed hits)",
+      "firstAutoMedOverPerHit": "median 1st auto in our index ÷ $ per hit",
+      "skew": "skew of the index's hit prices",
+      "price": "box price (sold median)",
+      "variety": "parallels and inserts in an average box (Checklist Insider or Cardsmiths Breaks box guides; each row names its source)",
+      "perCard": "$ per card",
+      "baseShare": "base cards' share of set value (Pokémon whole-set indices only)",
+      "checklistSize": "base checklist size",
+      "lottery": "lottery ratio (mean hit ÷ median hit)",
+      "topShare": "top card's share of the index",
+      "guaranteedHit": "at least one guaranteed hit",
+      "msrpHistory": "sold history against MSRP (3 months or more)"
+    },
+    "_tuning": "v2 (Box Desk rev 2 after CoS review, rebuilt Oct 22): full-coverage rule + printed gates (gate logic in the generator, GATES). Index-only figures (median 1st auto ÷ $/hit, skew) left Prospector and base share left Set builder so a missing index cannot lock a box out; they stay as table columns."
+  }
+}
