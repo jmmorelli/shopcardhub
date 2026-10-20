@@ -242,6 +242,16 @@
     var ref = (100 >= lo && 100 <= hi) ? '<line class="ref" x1="1" x2="' + (w - 1) + '" y1="' + y(100).toFixed(1) + '" y2="' + y(100).toFixed(1) + '"/>' : '';
     return '<svg class="spark ' + (s[s.length - 1] >= s[0] ? 'up' : 'dn') + (s.length < 3 ? ' thin' : '') + '" viewBox="0 0 ' + w + ' ' + h + '" aria-hidden="true">' + ref + '<path d="' + d + '"/><circle cx="' + e[0].toFixed(1) + '" cy="' + e[1].toFixed(1) + '" r="1.8"/></svg>';
   }
+  /* "Since release" (Mo, Oct 20 2026): the % since 100 names its month under the figure, so −62% reads as "since May '26",
+     not an unexplained loss. Release-based rows say "release"; older sets (base = first month with reliable sales) show the month only. */
+  var IB_MN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function sinceCell(v, r) {
+    var m = r && r.baseDate ? IB_MN[+r.baseDate.slice(5, 7) - 1] + ' \u2019' + r.baseDate.slice(2, 4) : '';
+    var a = v == null || !isFinite(v) ? 0 : Math.abs(v), g = !a ? '' : a < 1 ? ' mg1' : a <= 5 ? ' mg2' : ' mg3';
+    var rd = String(r.rd || ''), out = rd.length >= 10 ? IB_MN[+rd.slice(5, 7) - 1] + ' ' + (+rd.slice(8, 10)) : '';
+    var lab = !m ? '' : '<small class="ib-since-m">' + (r.baseRule !== 'release' ? 'since ' + m : rd.slice(0, 7) === r.baseDate ? 'since ' + m + ' release' : 'since ' + m + (out ? ' \u00b7 out ' + out : '')) + '</small>';
+    return '<td class="num ib-since ' + cls(v) + g + '">' + pct(v, 2) + lab + '</td>';
+  }
   function renderIbRows(rows) {
     return rows.map(function (r) {
       var href = r.page || '/indices', game = /^(BOW|BCB|SAPH|DRAFT|BB)/.test(r.k) ? 'Bowman' : 'Pokémon';
@@ -253,7 +263,7 @@
       var cell = function (v, d) { return '<td class="num ' + cls(v) + mag(v) + '">' + pct(v, d == null ? 1 : d) + '</td>'; };
       return '<tr' + (r._new ? ' class="ib-new"' : '') + '><td class="ib-k"><a href="' + esc(href) + '"' + (r._new ? ' title="New index"' : '') + '><b>' + esc(r.k) + '</b><small>' + esc(r.name) + ' · ' + game + '</small></a></td>' +
         '<td class="num ib-lvl">' + num(s.level, 2) + '</td>' + cell(s.wk) + cell(s.mo) +
-        cell(s.since, 2) +
+        sinceCell(s.since, r) +
         '<td class="ib-sp">' + sparkIdx(s.spark, 96, 24) + '</td>' +
         '<td class="ib-when">' + esc(dstr(r.date)) + ' · ' + s.marks + ' mark' + (s.marks === 1 ? '' : 's') + '</td>' +
         sealedCell(r.k) + '</tr>';
