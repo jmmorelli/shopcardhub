@@ -789,3 +789,32 @@ body .strip { display: none !important; }
   body .chase-tbl tr td.lst { grid-area: act; }
   body .chase-tbl thead th:nth-child(n+8) { display: none; }
 }
+
+/* 30 (Gate Keeper, Oct 20 2026; site-gates #331/#344, gate-watch issue #4). The home Set Indices board, the home engine
+   screener and the /track-record scorecard all measured exactly their box at 1280 (986/986, 1012/1012) — zero slack, so
+   a runner whose fonts render a few % wider tipped them over (1012 > 986, 1020 > 1012), and any real desktop window a
+   little under 1280 (1180–1265, or Windows Chrome with a visible scrollbar) already got a sideways scrollbar on the
+   home tables; the screener's other screens (Autos under $100, Drying up, Sealed …) ran 1050–1102 wide at 1280.
+   Desktop only — phones (≤ 760 px) keep their sideways scroll / stacked rows by design. Sizes and wrapping only:
+   no font family, colour, copy, data or column change. Card/set names may wrap to a second line when the box is
+   tight; at wide windows the tables lay out exactly as before. */
+@media (min-width: 761px) {
+  body table.scr td.sym, body table.scr td.sym small { white-space: normal; }
+  body table.scr td.sym { min-width: 100px; }
+  body table.ib td.ib-k small { white-space: normal; }
+  body table.ib td.ib-k { min-width: 120px; }
+  body table.ib td.ib-when { white-space: normal; }
+}
+@media (min-width: 761px) and (max-width: 1320px) {
+  body table.scr th, body table.scr td { padding-left: 4px; padding-right: 4px; }
+  body table.scr th { letter-spacing: 0.6px; }
+  body table.scr td { font-size: 11.5px; }
+  body table.scr td.sym a { font-size: 14px; }
+  body table.scr .rng { grid-template-columns: auto 14px auto; gap: 5px; }
+  body table.ib th, body table.ib td { padding-left: 8px; padding-right: 8px; }
+  body table.ib th { letter-spacing: 0.8px; }
+}
+@media (min-width: 601px) {
+  body table.roi-table:has(> #tr-rows, > #tr-rows-poke) thead th,
+  body table.roi-table:has(> #tr-rows, > #tr-rows-poke) tbody td { padding-left: 10px; padding-right: 10px; }
+}
