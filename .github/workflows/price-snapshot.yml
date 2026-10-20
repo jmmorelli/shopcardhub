@@ -214,6 +214,19 @@ jobs:
             # /track-record scorecard baked from data/calls.json (B66, Oct 9 2026) so crawlers see the graded calls, not "Loading…".
             if node tools/build-track-record.mjs; then git add track-record.html
             else echo "::warning::build-track-record failed - page keeps its previous bake"; git checkout -- track-record.html; fi
+            # E7 + 30th page wiring (CoS attended with Mo, Oct 19 2026; BLOCKED row of 2026-10-15 13:50): /llms.txt, the index
+            # JSON-LD + answer sentence, and the 30th page's TH26 lines go stale at every mark unless re-baked here. All warn-only:
+            # a failure keeps the previous bake and never blocks the publish. bake-th26-marks refuses a card whose rawAsOf differs
+            # from the index date (one read date per page, R35) - that refusal is a warning, the page keeps its last good bake.
+            if node tools/build-llms.mjs > /dev/null; then git add llms.txt llms-full.txt
+            else echo "::warning::build-llms failed - llms files keep their previous bake"; git checkout -- llms.txt llms-full.txt 2>/dev/null || true; fi
+            LDSTALE=$(node tools/build-index-jsonld.mjs --check 2>/dev/null | sed -n 's/^stale: //p')
+            if [ -n "$LDSTALE" ]; then
+              if node tools/build-index-jsonld.mjs > /dev/null; then git add $LDSTALE
+              else echo "::warning::build-index-jsonld failed - JSON-LD keeps its previous bake"; git checkout -- $LDSTALE 2>/dev/null || true; fi
+            fi
+            if node tools/bake-th26-marks.mjs; then git add pokemon-30th-anniversary-2026.html
+            else echo "::warning::bake-th26-marks refused - the 30th page keeps its previous bake"; git checkout -- pokemon-30th-anniversary-2026.html 2>/dev/null || true; fi
             # sitemap <lastmod> = each page's last content commit (B63, Oct 9 2026). Pages baked above are "today".
             # Never blocks the feed: a failure leaves sitemap.xml as it was.
             if node tools/sitemap-lastmod.mjs | tail -2; then git add sitemap.xml
