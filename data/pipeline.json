@@ -3217,33 +3217,33 @@
     },
     {
       "id": "tuesday-2026-10-20-1",
-      "status": "awaiting-cos",
+      "status": "applied",
       "date": "2026-10-20",
       "area": "tuesday-lane",
       "by": "tuesday-board",
       "severity": "LOW",
       "title": "calls.json reads for Oct 20 were not written: the session's permission layer refused the edit to data/calls.json. Reads to apply: v-bb-gonzales-pass read 70.00, readLabel 'sold mark $70.00 (30-day median, 13 sales)'; v-bb-fischer-buy-2 read 152.85, readLabel 'sold mark $152.85 (30-day median, 18 sales)'; readDate 2026-10-20 on both; updated 2026-10-20. Reads only; entries, call dates and projections untouched.",
-      "decision": "CoS applies the two reads and re-bakes /track-record, or holds to the next read."
+      "decision": "CoS desk 2026-10-20: applied verbatim in e23d70f (reads only); /track-record re-baked; live 152.85 verified."
     },
     {
       "id": "tuesday-2026-10-20-2",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-10-20",
       "area": "bowman-kb",
       "by": "tuesday-board",
       "severity": "LOW",
       "title": "Florentino's 'MLB.com Ranking #44' carried no list or date; the Bowman KB has no dated rank for him, and PREBUILD Oct 19 bars a rank without its list and date. Removed from his tile, sport tag and body line on Oct 20. GAPS question for the Bowman KB: Florentino's current MLB Pipeline rank with its list date.",
-      "decision": "Bowman KB answers in GAPS; the next Tuesday run restores a dated rank if one exists."
+      "decision": "CoS desk 2026-10-20: queued as a Bowman KB GAPS question (Florentino MLB Pipeline rank + list date), carried by the Oct 21 weekly (GAPS is Project-only); the Tuesday run restores a dated rank only from the KB."
     },
     {
       "id": "tuesday-2026-10-20-3",
-      "status": "awaiting-cos",
+      "status": "applied",
       "date": "2026-10-20",
       "area": "tuesday-lane",
       "by": "tuesday-board",
       "severity": "LOW",
       "title": "Lane file drift (claude/lanes/bowman-bangers-tuesday.md vs LANE-RULES): STEP 0 still enables the retired Friday release-window task; STEP 2.7 BCB26 window re-mark is past its window (street Sep 9 + 21 d) and BCB26 is marked by the nightly/Monday; STEP 1 and 0.75 read raw.githubusercontent (R19 says /feed/ or a price-data clone); the coach's-note step is retired (CoS Oct 13); the MailerLite token file is 'MailerLiteAPi.rtf', not 'MailerLiteAPI.rtf'; STEP 4.5's body shape is superseded by tools/tuesday-tape-format.md (R26). Followed LANE-RULES on each.",
-      "decision": "CoS edits the lane file."
+      "decision": "CoS desk 2026-10-20: lane file marked in e23d70f (coach note, Friday window, STEP 2.7 retired; R19 clone reads; MailerLiteAPi.rtf; R26 format file wins)."
     }
   ],
   "scoreboard": {
@@ -5111,6 +5111,16 @@
           "gates": "audit-prices FAIL 0 / WARN 50 · audit-site FAIL 0 / WARN 5 · audit-terminal FAIL 0 / WARN 1 (= baseline on 8b1c77b; cloud clone + Mac clone after git am, tree b86aa2b match) · image-sweep (local, Playwright 1.47.2) /,/track-record × 1280/1200/390 FAIL 0 (baseline FAIL at 1200: tbl-wrap 939>906)",
           "liveVerified": "2026-10-20 ~21:50 UTC: curl /css/site-fixes.css carries §30 (HTTP 200)",
           "note": "site-gates #331/#344 (gate-watch #4) table-overflow at 1280 (home 1012>986, /track-record 1020>1012): zero-slack tables tipped over by the runner change. css/site-fixes.css §30 desktop-only wrap/padding; min-content slack now ≥5% at 1180 and 17% (home screener) / 11.5% (track-record) at 1280. Rollback: git revert 83a5782."
+        },
+        {
+          "date": "2026-10-20",
+          "commits": [
+            "e23d70f"
+          ],
+          "by": "CoS desk Oct 20 (SK03 ANSWER_HOLD lifted after P14 closed; Tuesday calls.json reads; Chrome Updates release framing; Tuesday lane file drift; Traffic pushLog hash fix), Task-key cos-desk-2026-10-20",
+          "gates": "audit-prices 0/50 · audit-site 0/5 (146) · audit-terminal 0/1 = baseline",
+          "rollback": "git revert e23d70f",
+          "liveVerified": "2026-10-20 22:16Z: /skyridge-index carries ANS:SK03 (367.36, Oct 19); /track-record prints 152.85 and no 153.50; /topps-chrome-updates-basketball tile reads Released Aug 6, 2026"
         }
       ]
     },

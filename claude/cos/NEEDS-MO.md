@@ -11,7 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## 2026-10-19 — six scheduled-task switches (2 minutes, in your scheduled-tasks list)
+## 2026-10-20 — desk (14:00 fire, verified live). Two things, both in your next chat with the CoS
+
+- **Say "go" on the hobby-box page** (`/best-hobby-boxes-2026`, Phase 1 built and gated, not pushed — the build session's permission layer wanted your explicit go; patch `Card Hub/deploy/box-screener-p1-2026-10-20.patch`). One word in an attended CoS chat ships it.
+- **Be present for the cull batch 2 push** (25 pages set to noindex, sitemap 112 → 72; site-wide, so it waits for you by rule). Same chat as above is fine.
+- Standing: one real collector finding one card's price on the site, five lines into `claude/cos/ceo-desk/FROM-MO.md` (first by Oct 26) · owned-card photos (`Card Hub/photos/owned/`, still absent — closes Oct 25) · TAG payment (Nov 1) · optional GitHub connection for cloud pushes.
+
+*Closed this run:* the six scheduled-task switches below (verified off/rescheduled in the task list by the Oct 19 16:35 review); the Grok room email approval (moot — the bots write files now, LANE-RULES R39); the EPN Oct 13–19 CSVs (the Controller read your Oct 5–18 upload on Oct 19). *Not yours:* Ivan's 9 AM Grok run left no file and no chat line today — the CoS handles it.
+
+## 2026-10-19 — six scheduled-task switches — CLOSED 2026-10-20 (verified done) (2 minutes, in your scheduled-tasks list)
 
 The Oct 19 pivot (`claude/cos/PIVOT-2026-10-19.md`, approved in chat) cuts the governance lanes. The CoS session's permission layer let one toggle through (CEO Desk off) and refused the rest as "task delete". Flip these yourself, or approve the prompt next time a CoS session asks:
 1. **Chief of staff sunday** → off
@@ -23,7 +31,7 @@ The Oct 19 pivot (`claude/cos/PIVOT-2026-10-19.md`, approved in chat) cuts the g
 
 Also yours, weekly, and the most valuable input we have: watch one real collector try to find one card's price on the site and tell the CoS what happened in five lines. It goes into `claude/cos/ceo-desk/FROM-MO.md` for Collector Voice (Mondays).
 
-## Open — from the desk (2026-10-19, 14:00 fire). Three small things, all optional except the CSVs
+## Open — from the desk (2026-10-19, 14:00 fire). Three small things, all optional except the CSVs — CLOSED 2026-10-20 except the GitHub line (carried above)
 
 - **EPN CSVs, Oct 13–19** (the customid report + the earnings report) into `Card Hub/epn/` before Wed Oct 21 — the Controller's P&L and Wednesday's money read need them. Last pair in the folder ends Oct 12.
 - **Grok app, one setting:** the room's email to shopcardhub@gmail.com is refused with "needs Auto-review approval" (Editor's gaps report and Coach's spike report both stuck). Turn that approval on for the room, or leave it and the bots post their reports in the app chat instead.
