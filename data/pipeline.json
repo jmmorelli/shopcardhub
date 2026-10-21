@@ -5184,6 +5184,16 @@
           "gates": "audit-prices 0/46 · audit-site 0/18 (+13 sitemap-missing-page = deliberate sitemap-only cuts) · audit-terminal 0/1 (tree 5072f69)",
           "rollback": "git revert b7cfeb1",
           "liveVerified": "2026-10-21 ~20:05Z: sitemap 73 <loc>; 3 noindexed pages serve noindex,follow; /, /bowman-chrome-baseball-2026, /mlb-cards 200 indexable; IndexNow 73 -> 200"
+        },
+        {
+          "date": "2026-10-21",
+          "commits": [
+            "c87ee21"
+          ],
+          "by": "CoS desk (Wed 15:11 fire, Mac deploy key, unattended) \u2014 /mlb-cards meta + og description: the 4th name was empty (\"Soto, , Skenes\"); generator surname now suffix-safe (Jr./Sr./II-IV); page meta edited in place (BLOCKED row 2026-10-21, owner CoS desk)",
+          "gates": "audit-prices 0/46 \u00b7 audit-site 0/18 \u00b7 audit-terminal 0/1 (= baseline)",
+          "rollback": "git revert c87ee21",
+          "liveVerified": "2026-10-21 ~22:20Z: /mlb-cards meta reads \"Ohtani, Judge, Soto, Witt, Skenes, Ram\u00edrez\" (2 of 2 lines)"
         }
       ]
     },

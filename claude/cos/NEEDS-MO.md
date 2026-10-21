@@ -11,6 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-10-21 — desk (15:11 fire, verified live). Three things from today's chat, all yours by nature (accounts, card, two calls)
+
+- **Paid test, ~20 min, your accounts + card:** sign up at ads.microsoft.com and ads.reddit.com with shopcardhub@gmail.com, business name ShopCardHub, add the card, then tell the CoS — it sets up the campaigns with you ($5/day each, 10 days, $100 cap you approved). Steps: Project `claude/growth/earned-links-and-paid-test-2026-10-21.md` §3.
+- **Quote requests, ~4 min:** free signups at sourceofsources.com and qwoted.com with shopcardhub@gmail.com. After that the CoS drafts the answers as Gmail drafts; you only hit send.
+- **YouTube, two words:** (1) may videos show pull odds — Topps' published odds with a source line, and Pokémon rates only as a dated community sample (yes/no)? (2) who uploads — you (recommended) or a channel login? `claude/cos/youtube-and-loops-2026-10-21.md`.
+- Standing, re-verified today: owned-card photos (`Card Hub/photos/owned/` still absent — closes Oct 25) · one real collector finding one card's price in `claude/cos/ceo-desk/FROM-MO.md` (first due Oct 26) · TAG payment info (Nov 1) · optional GitHub connection (cloud still refused today) · optional EPN CSVs Oct 13–19 into `Card Hub/epn/`.
+
+*Not yours:* the eBay live-listings quota ran out this afternoon (live comps on the pages fall back until eBay resets it); the CoS is on it.
+
 ## 2026-10-21 — weekly (11:05 run, verified live). One thing, ~10 minutes — CLOSED 2026-10-21 ~13:00 PT (Mo: "push batch 2"; live `b7cfeb1`)
 
 - **Cull batch 2 push — rev 3 is ready.** Why: it is the main fix for falling search traffic (organic 99 → 43 landings a week; Google indexes 3 pages), and by rule a site-wide change waits for you. Rev 1 and rev 2 both died overnight on a sitemap conflict; rev 3 cuts the sitemap at apply time, so it stays good. Action: open a CoS chat and say "push batch 2" — the session applies `Card Hub/deploy/cull-batch-2-rev3-2026-10-21.patch` (24 pages noindexed, sitemap 112 → 73), runs the gates, pushes and checks live.
