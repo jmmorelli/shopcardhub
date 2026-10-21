@@ -111,7 +111,7 @@ const asof = fmtDate(D.asof) + " " + D.asof.slice(0, 4);
 const win = `${fmtDate(D.window.from)}–${fmtDate(D.window.to)} ${D.window.to.slice(0, 4)}`;
 
 const title = `MLB Cards to Buy — ${D.players.length} Players, ${nCards} Cards, Sold Prices | ShopCardHub`;
-const desc = `What to buy for ${stars.map((p) => p.name.split(" ").pop().replace("Jr.", "")).slice(0, 6).join(", ")} and ${D.players.length - 6} more: 5–8 cards per player in three tiers (grail, core, value) with ${win} sold prices raw, PSA 9 and PSA 10, and a buy link for each.`;
+const desc = `What to buy for ${stars.map((p) => p.name.replace(/\s+(Jr\.|Sr\.|II|III|IV)$/, "").split(" ").pop()).slice(0, 6).join(", ")} and ${D.players.length - 6} more: 5–8 cards per player in three tiers (grail, core, value) with ${win} sold prices raw, PSA 9 and PSA 10, and a buy link for each.`;
 
 const html = `<!DOCTYPE html>
 <html lang="en">
