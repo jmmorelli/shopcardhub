@@ -88,7 +88,12 @@ async function metrics(page, deep) {
     r.smallText = small;
     // tap floor in nav/CTAs
     let smallTaps = 0;
-    for (const el of document.querySelectorAll("nav a, nav button, header a, header button, .sch-nav a, .sch-nav button, [class*='cta']:not(body) a, a[class*='cta'], button[class*='cta']")) { /* T5 (Oct 14): :not(body) — body.sch-cta-live made every link a "CTA" */
+    for (const el of document.querySelectorAll("nav a, nav button, header a, header button, .sch-nav a, .sch-nav button, [class*='cta']:not(body):not(html) a, a[class*='cta'], button[class*='cta']")) { /* T5 (Oct 14): :not(body) — body.sch-cta-live made every link a "CTA" */
+      /* NFL board follow-up (3), Oct 21: the desktop "80 short taps" on /nfl-rookie-cards-2026 were 64 closed-dropdown
+         links (.dd-col, visibility:hidden but still boxed) + 8 footer links + the nav itself, not the board and not a
+         cta class on <html>. Count only taps a reader can see, outside the footer. */
+      if (el.closest("footer")) continue;
+      if (el.checkVisibility ? !el.checkVisibility({ visibilityProperty: true, opacityProperty: true }) : getComputedStyle(el).visibility === "hidden") continue;
       const b = el.getBoundingClientRect();
       if (b.width > 0 && b.height > 0 && b.height < 40) smallTaps++;
     }
@@ -106,6 +111,19 @@ async function metrics(page, deep) {
         const y = Math.round(b.top + window.scrollY); if (r.firstDataRowY === null || y < r.firstDataRowY) r.firstDataRowY = y;
       }
       if (r.firstDataRowY !== null) r.firstDataRowFallback = true;
+    }
+    /* T4 (Oct 21): card-* pages print the price in tiles (.cp-cell), not rows, and still read null. Last resort: the
+       first visible HTML text node showing a $ figure outside nav/header/rail/footer (chart SVG labels skipped).
+       Explainers with no price on the page (/how-prices-work) stay null and say why. */
+    if (r.firstDataRowY === null) {
+      const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      while (w.nextNode()) {
+        const n = w.currentNode; if (!/\$\s?\d/.test(n.textContent)) continue;
+        const el = n.parentElement; if (!el || el.closest("svg, nav, header, .mobile-nav, #rail, footer, .nav-dropdown, .nav-search-results, script, style")) continue;
+        const b = el.getBoundingClientRect(); if (!b.height || !b.width) continue;
+        const y = Math.round(b.top + window.scrollY); if (r.firstDataRowY === null || y < r.firstDataRowY) r.firstDataRowY = y;
+      }
+      if (r.firstDataRowY !== null) r.firstDataRowFallback = "price-text"; else r.firstDataRowNone = "no $ figure on the page";
     }
     return r;
   }, deep);
