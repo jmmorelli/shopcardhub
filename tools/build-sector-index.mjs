@@ -57,7 +57,21 @@ const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const has = (k) => args.includes(k);
 let TICKER = opt("--ticker", null);
 const DRY = has("--dry");
-const TODAY = process.env.SIDX_TODAY || new Date().toISOString().slice(0, 10);
+// One mark day per CI run (Index Keeper, CoS weekly Oct 21 2026). classic-marks.yml calls this tool once per ticker over
+// ~4.5 h from 19:30Z Mon/Thu; every call used to read the clock itself, so the tickers that started after 00:00Z saw
+// Tue/Fri, --if-mark-day no-op'd them with exit 0, and the job still listed them as marked (Oct 15 run: NDC1E NR1E ND1E;
+// Oct 19 run: CEL21 … ND1E — the 11 stale tickers). Inside a GitHub Actions run the first call now pins its UTC date in
+// $RUNNER_TEMP and every later call in the same run + attempt reuses it. SIDX_TODAY (the late-cron guard) still wins.
+function runToday() {
+  const now = new Date().toISOString().slice(0, 10);
+  const { GITHUB_ACTIONS, RUNNER_TEMP, GITHUB_RUN_ID, GITHUB_RUN_ATTEMPT } = process.env;
+  if (GITHUB_ACTIONS !== "true" || !RUNNER_TEMP || !GITHUB_RUN_ID) return now;
+  const pin = path.join(RUNNER_TEMP, `sidx-today-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT || 1}`);
+  try { const d = fs.readFileSync(pin, "utf8").trim(); if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d; } catch {}
+  try { fs.writeFileSync(pin, now); } catch {}
+  return now;
+}
+const TODAY = process.env.SIDX_TODAY || runToday();
 const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/128 Safari/537.36";
 const PAUSE = 1600;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
