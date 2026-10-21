@@ -55,6 +55,7 @@ const V1_STORE = { demo: false, cards: [
  *   all   : run the scenario once per matching element (the "every …" scenarios)
  *   pre   : async (page) => {} run after load, before the click (open a menu, switch a tab)
  *   optional: selector may be absent (WARN scenario-skipped instead of FAIL dead-control) */
+const openScreensFold = async (page) => { await page.evaluate(() => { const d = document.getElementById("screens-fold"); if (d) d.open = true; }); await page.waitForTimeout(150); };
 const ownTab = async (page) => { const t = await page.$("#tabOwn"); if (t) { await t.click(); await page.waitForTimeout(250); } };
 const openPfMenu = async (page) => { await ownTab(page); await page.click(".pf-name", { timeout: 3000 }); await page.waitForTimeout(150); };
 /* COMMON runs on every page the suite visits (added Sep 12 2026: build-nav.js emitted the
@@ -74,23 +75,23 @@ const SCENARIOS = {
     { name: "rail portfolio row", sel: '#rail [data-rail="portfolios"] a', all: true, expect: "nav" },
     { name: "rail Portfolios Vault →", sel: '#rail h4 a[href^="/watchlist"]', expect: "nav" },
     { name: "rail saved screen", sel: "#rail a[data-screen]", all: true, expect: "screen", panel: "#screens" },
-    { name: "screens chip", sel: ".scr-chips a[data-screen]", all: true, expect: "screen", panel: "#screens" },
+    { name: "screens chip", sel: ".scr-chips a[data-screen]", all: true, expect: "screen", panel: "#screens", pre: openScreensFold },   /* Oct 21: the Screens table sits in a closed <details id="screens-fold"> (Mo, Sep 25) */
     { name: "markets row (chart swaps)", sel: "a.mrow[data-k]:not(.pre-row):not(.on)", all: true, expect: "dom", panel: '[data-home="chart"]', optional: true },   /* Oct 3 (B32): only the selected row is baked; the <select data-home-pick> swaps the chart */
     { name: "markets PRE row (n-a, must link)", sel: "a.mrow.pre-row", all: true, expect: "nav", optional: true },
     { name: "chart caption link", sel: ".chart-cap a", expect: "nav", optional: true },
-    { name: "Release guides »", sel: 'a:text-is("Release guides »")', expect: "nav" },
+    /* Oct 21 (Gate Keeper): "Release guides »" and the scrolling tape left the home in Night Crew B75 (841f244b, Oct 16); scenarios retired. */
     { name: "Full board »", sel: 'a:text-is("Full board »")', expect: "nav" },
     { name: "Auction Desk »", sel: 'a:text-is("Auction Desk »")', expect: "nav" },
-    { name: "tape item (animation paused)", sel: '[data-home="tape"] .tape-run:not([aria-hidden]) a.tp', expect: "nav", pre: async (page) => { await page.evaluate(() => { const t = document.querySelector(".tape-track"); if (t) t.style.animation = "none"; }); } },
     { name: "upcoming release link", sel: '[data-home="releases"] li a', all: true, expect: "nav", optional: true },
     { name: "movers card link", sel: '[data-home="movers"] li a', expect: "nav", optional: true },
-    { name: "screens row link", sel: "[data-screen-body]:not([hidden]) td.sym a, #screens td.sym a", expect: "nav", optional: true },
+    { name: "screens row link", sel: "[data-screen-body]:not([hidden]) td.sym a, #screens td.sym a", expect: "nav", optional: true, pre: openScreensFold },
     { name: "deep link #screen=fat on load", sel: "#screens", expect: "screen-on-load", hash: "#screen=fat", panel: "#screens" },
   ],
   watchlist: [
     { name: "rail nav row", sel: '#rail nav a.rl[href^="/"]:not([href^="/#"])', all: true, expect: "nav" },
     { name: "rail saved screen (→ /#screen=)", sel: "#rail a[data-screen]", expect: "nav" },
     { name: "rail portfolio row", sel: '#rail [data-rail="portfolios"] a', all: true, expect: "any" },
+    { name: "Advanced view toggle", sel: "#modeBtn", expect: "dom" },
     { name: "tab My cards", sel: "#tabOwn", expect: "dom", pre: async (page) => { await page.click("#tabWatch"); await page.waitForTimeout(200); } },
     { name: "tab Hunting", sel: "#tabWatch", expect: "dom", pre: ownTab },
     { name: "portfolio ▾ opens menu", sel: ".pf-name", expect: "dom", pre: ownTab },
@@ -119,7 +120,7 @@ const SCENARIOS = {
     { name: "★ Track opens chooser", sel: ".sch-track-card", expect: "dom", optional: true },
   ],
   auctions: [
-    { name: "rail nav row", sel: '#rail nav a.rl[href^="/"]:not([href^="/#"])', all: true, expect: "nav" },
+    { name: "rail nav row", sel: '#rail nav a.rl[href^="/"]:not([href^="/#"])', all: true, expect: "nav", optional: true },   /* Oct 21: /auctions has carried no rail since the Sep 27 go-time sweep (033cf673); surface frozen, so a missing rail WARNs */
     { name: "filter chip", sel: ".au-chip:not([aria-pressed='true'])", all: true, expect: "dom", panel: "#au-list, #au-note, #au-strip" },
     { name: "filter chip All (back)", sel: ".au-chip[data-f='all']", expect: "dom", panel: "#au-list, #au-note, #au-strip", pre: async (page) => { await page.click(".au-chip[data-f='under']"); await page.waitForTimeout(200); } },
     { name: "card select", sel: "#au-card", expect: "select", panel: "#au-list, #au-note, #au-strip" },
@@ -217,6 +218,10 @@ async function genericChecks(page, slug, origin, redirects, ctxRequest) {
     const log = await H.routeContext(ctx, { mode: PROD ? "prod" : "local", origin, feed: FEED });
     await ctx.addInitScript((store) => {
       try { localStorage.setItem("sch_vault_v1", JSON.stringify(store)); } catch {}
+      /* Oct 21 (Gate Keeper): /watchlist opens in Simple view since Mo's Sep 25 ruling; portfolios, views, columns,
+       * group, paste and import live behind "Advanced view". The suite clicks the full toolset, so it opts in here;
+       * the "Advanced view toggle" scenario still proves the switch itself responds. */
+      try { localStorage.setItem("sch_vault_mode", "advanced"); } catch {}
       window.prompt = () => "QA box"; window.confirm = () => true; window.alert = () => {};
       window.open = (u) => { window.__qaPopup = String(u); return null; };
     }, V1_STORE);
