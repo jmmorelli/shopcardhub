@@ -788,6 +788,13 @@ body .strip { display: none !important; }
   body .chase-tbl tr td.shop { grid-area: shop; text-align: left; white-space: nowrap; }
   body .chase-tbl tr td.lst { grid-area: act; }
   body .chase-tbl thead th:nth-child(n+8) { display: none; }
+  /* B91 (Night Crew, Oct 21 2026): the act cell is an auto track. When a live auction fills the Bid slot (and the
+     "vs sold mark" note), it grows to ~350 px and the shop price + chip slide under the Listings button (live CR
+     59-66 px, AH 16 px, PRIS 10 px at 390). Rows with a filled Bid slot get a fourth line: the actions go full width
+     under ★ · shop. Rows without one keep the three-line layout. */
+  body .chase-tbl tbody tr:has(.sidx-auc-slot:not(:empty)), body .chase-tbl tbody tr:has(.sch-vs-sold) {
+    grid-template-areas: "rk card price" "rk rar since" "star shop shop" "act act act"; }
+  body .chase-tbl tbody tr:has(.sidx-auc-slot:not(:empty)) td.lst, body .chase-tbl tbody tr:has(.sch-vs-sold) td.lst { padding-top: 6px; }
 }
 
 /* 30 (Gate Keeper, Oct 20 2026; site-gates #331/#344, gate-watch issue #4). The home Set Indices board, the home engine
@@ -818,3 +825,9 @@ body .strip { display: none !important; }
   body table.roi-table:has(> #tr-rows, > #tr-rows-poke) thead th,
   body table.roi-table:has(> #tr-rows, > #tr-rows-poke) tbody td { padding-left: 10px; padding-right: 10px; }
 }
+
+/* 31 (Night Crew, Oct 21 2026; Bug Hunter). The closed phone menu is opacity 0 + pointer-events none + aria-hidden,
+   but its 46 links stayed in the Tab order, so a keyboard user tabbed through an invisible menu on every page.
+   visibility:hidden takes them out; the switch waits for the 0.2 s fade on close and is instant on open. */
+body .mobile-nav:not(.open) { visibility: hidden; transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s; }
+body .mobile-nav.open { visibility: visible; transition: opacity .2s ease, transform .2s ease, visibility 0s; }

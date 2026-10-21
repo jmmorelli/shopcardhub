@@ -153,9 +153,16 @@ async function main() {
     try { groups = []; for (const gid of cfg.groups) groups.push(await loadGroup(gid, cache)); }
     catch (e) {
       console.warn(`${tk}: ${e.message} — keeping previous marks for this ticker`);
-      if (prev && prev.tickers && prev.tickers[tk]) {
-        out.tickers[tk] = { ...prev.tickers[tk], stale: true };
-        for (const [id, v] of Object.entries(prev.marks || {})) if (id.startsWith(tk.toLowerCase() + "-")) out.marks[id] = v;
+      // Oct 21 2026 (Night Crew, BLOCKED 2026-10-19 row (a)): card marks live in data/tcg/<tk>.json since the per-ticker
+      // split; the summary file carries none, so the old fallback wrote `marks: {}` and the page silently lost every shop
+      // price. Read the previous marks from the ticker's own file (else the legacy summary's marks, if any).
+      let prevFile = null;
+      try { const pf = path.join(path.dirname(OUT), "tcg", `${tk.toLowerCase()}.json`); if (fs.existsSync(pf)) prevFile = JSON.parse(fs.readFileSync(pf, "utf8")); } catch { prevFile = null; }
+      const prevTk = (prev && prev.tickers && prev.tickers[tk]) || (prevFile && prevFile.summary) || null;
+      if (prevTk) {
+        out.tickers[tk] = { ...prevTk, stale: true };
+        const prevMarks = (prevFile && prevFile.marks) || (prev && prev.marks) || {};
+        for (const [id, v] of Object.entries(prevMarks)) if (id.startsWith(tk.toLowerCase() + "-")) out.marks[id] = v;
       }
       continue;
     }
