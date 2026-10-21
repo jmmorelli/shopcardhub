@@ -11,6 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-10-21 — weekly (11:05 run, verified live). One thing, ~10 minutes
+
+- **Cull batch 2 push — rev 3 is ready.** Why: it is the main fix for falling search traffic (organic 99 → 43 landings a week; Google indexes 3 pages), and by rule a site-wide change waits for you. Rev 1 and rev 2 both died overnight on a sitemap conflict; rev 3 cuts the sitemap at apply time, so it stays good. Action: open a CoS chat and say "push batch 2" — the session applies `Card Hub/deploy/cull-batch-2-rev3-2026-10-21.patch` (24 pages noindexed, sitemap 112 → 73), runs the gates, pushes and checks live.
+- Standing, unchanged and verified today: owned-card photos (`Card Hub/photos/owned/` still absent — closes Oct 25) · one real collector finding one card's price, five lines in `claude/cos/ceo-desk/FROM-MO.md` (none since Oct 16; first due Oct 26) · TAG payment info (Nov 1) · optional GitHub connection to your Claude account (cloud pushes still refused today) · optional EPN CSVs Oct 13–19 into `Card Hub/epn/`.
+
+*Closed or not yours:* the `/card` bot cluster — the Oct 19 gtag guard took Singapore from 1,246 sessions/day to 15, no firewall rule needed. The 11 stale classic tickers — cause fixed and pushed today; they re-mark Thursday.
+
 ## 2026-10-20 — desk (14:00 fire, verified live). One thing, in your next chat with the CoS
 
 - **Be present for the cull batch 2 push** (25 pages set to noindex, sitemap 112 → 72; site-wide, so it waits for you by rule). 
