@@ -99,7 +99,8 @@ function block(tk, cards, html) {
     lines.push(`    </a>`);
   });
   lines.push(`  </div>`);
-  lines.push(`  <div class="cf">Sold mark per card, from the index table below: a median of recent dated sales (not one sale), dated to the read — not a call. Links open live eBay listings (affiliate; ShopCardHub earns a commission at no cost to you).</div>`);
+  // Pokémon KB P20 (ruled copy-only, Oct 17): these six tickers mark on PriceCharting's ungraded value, not a median of dated sales.
+  lines.push(`  <div class="cf">Per card: PriceCharting's ungraded value, read ${dstr(asof)}, from the index table below — not a call. Links open live eBay listings (affiliate; ShopCardHub earns a commission at no cost to you).</div>`);
   lines.push(`</div>`);
   // keep the strip in step with CARDS if the table was re-marked after this bake
   lines.push(`<script>(function(){try{if(typeof CARDS==='undefined')return;var top=CARDS.filter(function(c){return typeof c.px==='number'&&c.px>=${MIN_PX}}).sort(function(a,b){return b.px-a.px}).slice(0,${N});var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];var f=function(v){return v>=100?'$'+Math.round(v).toLocaleString('en-US'):'$'+v.toFixed(2)};var d=function(s){var m=/^(\\d{4})-(\\d{2})-(\\d{2})/.exec(String(s||''));return m?M[+m[2]-1]+' '+(+m[3]):''};document.querySelectorAll('#chase a.cc').forEach(function(a,i){var c=top[i];if(!c)return;var nm=(c.nm+' '+String(c.num||'').split('/')[0]).trim();var el=a.querySelector('.cn');if(el&&el.firstChild&&el.firstChild.nodeType===3&&el.firstChild.nodeValue.trim()!==nm)return;var px=a.querySelector('[data-chase-px]'),as=a.querySelector('[data-chase-asof]');if(px)px.textContent=f(c.px);if(as)as.textContent=d(c.asof);});}catch(e){}})();</script>`);
