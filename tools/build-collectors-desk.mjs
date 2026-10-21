@@ -75,14 +75,17 @@ const dateShort = (d) => dateLong(d).replace(/, \d{4}$/, "");
 
 function gradeCell(k, label, r, c) {
   r = r || {};
-  if (r.m != null) {
+  // R18 desk ruling (Oct 8 2026): a graded median needs >= 3 dated sales rows of that grade; fewer print singly.
+  // The ladder file still stores a 2-sale 90-day median — this page does not print it (Index Keeper, CoS weekly Oct 21).
+  if (r.m != null && r.n >= 3) {
     return `<div class="lad-cell"><div class="lad-k">${label}</div><div class="lad-v">${money(r.m)}</div><div class="lad-s">median of ${r.n} ${r.n === 1 ? "sale" : "sales"} · ${r.basis === "90d" ? "90 days" : "30 days"}${r.asOf || c.gAsOf ? " · as of " + dateShort(r.asOf || c.gAsOf) : ""}</div></div>`;
   }
   // R18 one-row form — but a lone TAG row far above the PSA 10 mark is a mislisted slab, not a sale worth printing
   const p10 = c.gr && c.gr.psa10 && c.gr.psa10.m;
   const sane = !(k === "tag10" && p10 && r.last && r.last.p > 3 * p10);
   if (r.last && r.last.d && sane) {
-    return `<div class="lad-cell lad-na"><div class="lad-k">${label}</div><div class="lad-v">No mark</div><div class="lad-s">1 dated sale, ${dateLong(r.last.d)}: ${money(r.last.p)}</div></div>`;
+    const lead = r.n === 2 ? "last of 2 dated sales" : "1 dated sale";
+    return `<div class="lad-cell lad-na"><div class="lad-k">${label}</div><div class="lad-v">No mark</div><div class="lad-s">${lead}, ${dateLong(r.last.d)}: ${money(r.last.p)}</div></div>`;
   }
   return `<div class="lad-cell lad-na"><div class="lad-k">${label}</div><div class="lad-v">${k === "tag10" ? "No TAG sale" : "No verified sale"}</div><div class="lad-s">${k === "tag10" ? "TAG is a small share of graded volume" : "no title-verified sale in 90 days"}</div></div>`;
 }
@@ -95,10 +98,22 @@ function printBlock(slug, p, multi) {
   const p10 = assertClean(ebaySearchUrl({ q: phrase(q, "psa10", c.ed, c.tk), customid: cid + "-psa10", sacat: SACAT_TCG }));
   const tag = assertClean(ebaySearchUrl({ q: phrase(q, "tag", c.ed, c.tk), customid: cid + "-tag", sacat: SACAT_TCG }));
   const track = (id) => `onclick="if(typeof gtag==='function')gtag('event','click',{item:'${id}',page:location.pathname})"`;
-  const rawCell = c.raw != null
-    ? `<div class="lad-cell lad-raw"><div class="lad-k">Raw</div><div class="lad-v">${money(c.raw)}</div><div class="lad-s">${c.n30 ? `median of ${c.n30} sales · ${c.window} days` : "index sold mark"}${c.rawAsOf ? " · as of " + dateShort(c.rawAsOf) : ""}</div></div>`
-    : `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">Not priced</div><div class="lad-s">too few clean raw sales to mark — trades graded</div></div>`;
-  const ratio = c.raw && c.gr.psa10 && c.gr.psa10.m ? `<span class="lad-ratio">PSA 10 = <b>${(c.gr.psa10.m / c.raw).toFixed(1)}×</b> raw</span>` : "";
+  // Raw cell (Index Keeper, CoS weekly Oct 21 2026). R18's >= 3 rule: n30 1-2 is no median — one sale prints as that sale,
+  // two print as a count. A wide-window card (wn sales over win days, e.g. ND1E #107 at 180 d) prints its own window.
+  // n30 null = the chase-six cards, which mark on PriceCharting's ungraded value (Pokémon KB P20, copy-only ruling).
+  const rn = c.wn != null ? c.wn : c.n30;
+  const rdays = c.wn != null ? (c.win || c.window) : c.window;
+  const rAsOf = c.rawAsOf ? " · as of " + dateShort(c.rawAsOf) : "";
+  const rawCell = c.raw == null
+    ? `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">Not priced</div><div class="lad-s">too few clean raw sales to mark — trades graded</div></div>`
+    : rn == null
+    ? `<div class="lad-cell lad-raw"><div class="lad-k">Raw</div><div class="lad-v">${money(c.raw)}</div><div class="lad-s">PriceCharting's ungraded value${c.rawAsOf ? ", read " + dateShort(c.rawAsOf) : ""}</div></div>`
+    : rn >= 3
+    ? `<div class="lad-cell lad-raw"><div class="lad-k">Raw</div><div class="lad-v">${money(c.raw)}</div><div class="lad-s">median of ${rn} sales · ${rdays} days${rAsOf}</div></div>`
+    : rn === 1
+    ? `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">No mark</div><div class="lad-s">1 dated sale in ${rdays} days: ${money(c.raw)}${rAsOf}</div></div>`
+    : `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">No mark</div><div class="lad-s">${rn ? rn + " dated sales" : "no dated sale"} in ${rdays} days — too few for a median${rAsOf}</div></div>`;
+  const ratio = c.raw && (rn == null || rn >= 3) && c.gr.psa10 && c.gr.psa10.m && c.gr.psa10.n >= 3 ? `<span class="lad-ratio">PSA 10 = <b>${(c.gr.psa10.m / c.raw).toFixed(1)}×</b> raw</span>` : "";
   const rank = c.rank ? `<span class="lad-rank">#${c.rank} of ${c.nCards} by weight in <a href="${c.page}">${esc(c.ticker)}</a></span>` : `<span class="lad-rank">tracked outside the <a href="${c.page}">${esc(c.ticker)}</a> level</span>`;
   const imgName = `${c.name} #${c.num} ${c.set.replace(/^Pokémon TCG /, "")}`;
   return `
@@ -280,7 +295,7 @@ ${shelves}
   <section class="means">
     <div class="section-eyebrow cyan">Where every number came from</div>
     <h2>Method</h2>
-    <p class="section-intro" style="margin-bottom:0;"><b>Raw</b> is each card's sold mark in its own ShopCardHub set index: the median of its clean ungraded sold comps (PriceCharting completed sales) over the trailing 30 days, 90 days on the 1st Edition and Shadowless indices, re-marked Monday and Thursday — the same number as the index table and the card page. <b>PSA 9, PSA 10 and TAG 10</b> are read from dated completed sales whose own listing title names that grade: the median of 3+ sales in 30 days, else 2+ in 90 days. Fewer than that is no mark; a single sale is shown as one dated sale, never as a price. A raw vintage copy can be in any condition, so a raw mark on a 1999 card is a typical raw sale, not a near-mint price. Marks on this page were read between ${dateLong(oldest)} and ${dateLong(updated)}. eBay links are searches for the exact print on each row, with our affiliate tag — live listings, never a price. Nothing on this desk is a call to buy or sell. <a href="/how-prices-work">How prices work →</a></p>
+    <p class="section-intro" style="margin-bottom:0;"><b>Raw</b> is each card's sold mark in its own ShopCardHub set index: the median of its clean ungraded sold comps (PriceCharting completed sales) over the trailing 30 days, 90 days on the 1st Edition and Shadowless indices, re-marked Monday and Thursday — the same number as the index table and the card page. <b>PSA 9, PSA 10 and TAG 10</b> are read from dated completed sales whose own listing title names that grade: the median of 3 or more sales, over 30 days or else 90. Fewer than 3 is no mark; the latest sale is shown as one dated sale, never as a price. Where a raw cell reads PriceCharting's ungraded value, that is the figure instead of a median. A raw vintage copy can be in any condition, so a raw mark on a 1999 card is a typical raw sale, not a near-mint price. Marks on this page were read between ${dateLong(oldest)} and ${dateLong(updated)}. eBay links are searches for the exact print on each row, with our affiliate tag — live listings, never a price. Nothing on this desk is a call to buy or sell. <a href="/how-prices-work">How prices work →</a></p>
   </section>
 
   <div class="disclosure">ShopCardHub earns an eBay Partner Network commission on qualifying purchases made through the links on this page, at no extra cost to you. Prices shown are dated sold comps from our index data; they are not offers and not advice. Card images are verified eBay listing photos and link to that listing. <a href="/affiliate-disclosure">Affiliate disclosure</a></div>
