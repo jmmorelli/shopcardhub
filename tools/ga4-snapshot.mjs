@@ -38,6 +38,12 @@ const RANGES = {
 const m = (...names) => names.map((name) => ({ name }));
 const d = (...names) => names.map((name) => ({ name }));
 
+// Event names read per page on the 7-day window (pageClicks7, cardClicks7).
+const PAGE_EVENTS7 = ["click", "buystrip_click", "buybox_click", "newsletter_signup", "chase_click", "grade_click", "signup_view", "shop_click", "fanatics_click", "track_card_from_page", "search_miss_click", "card_page_view"];
+// Outbound-click events (affiliate or shop) — what cardPageClicks7 counts. Exposure/signup events are excluded.
+const OUTBOUND_EVENTS = new Set(["click", "buystrip_click", "buybox_click", "chase_click", "grade_click", "shop_click", "fanatics_click", "search_miss_click"]);
+const CARD_PATH = /^\/card(?:$|[?\/.-])/;
+
 // The reports. Names are the GA4 Data API's own (metrics/dimensions), not the UI labels.
 const REPORTS = {
   daily28: { dateRanges: RANGES.d28, dimensions: d("date"), metrics: m("sessions", "activeUsers", "newUsers", "keyEvents", "engagementRate", "averageSessionDuration"), orderBys: [{ dimension: { dimensionName: "date" } }], limit: 100 },
@@ -64,6 +70,20 @@ const REPORTS = {
   // Oct 9 2026 (Retention Desk R13 pre-step, before the Mon Oct 12 baseline): chase_click + grade_click fire on the
   // sector index pages and were site-wide only; signup_view (R11) is the capture's exposure event. Per page from now on.
   pageClicks28: { dateRanges: RANGES.d28, dimensions: d("pagePath", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["click", "buystrip_click", "buybox_click", "newsletter_signup", "chase_click", "grade_click", "signup_view"] } } }, limit: 2000 },
+  // Oct 21 2026 (CoS weekly, BLOCKED "Measurement instruments missing" items 1-2). pageClicks7 is pageClicks28 on a
+  // 7-day window, same dimensions, plus the click events the 28-day list predates (shop_click, fanatics_click,
+  // track_card_from_page, search_miss_click) and card_page_view as the card-page exposure count. pageClicks28 is left
+  // exactly as it was so its series does not break. Ordered by eventCount so a limit cut drops the smallest rows.
+  // /card: the card page's eBay buttons fire grade_click (js/card-page.js -> SCH_GLK.track), which IS in both lists, so
+  // no filter drops /card. GA4's pagePath strips the query string, so every /card?id=... reads as "/card"; cardClicks7
+  // keeps the per-card split with pagePathPlusQueryString, restricted to /card paths.
+  pageClicks7: { dateRanges: RANGES.d7, dimensions: d("pagePath", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: PAGE_EVENTS7 } } }, orderBys: [{ metric: { metricName: "eventCount" }, desc: true }], limit: 2000 },
+  cardClicks7: { dateRanges: RANGES.d7, dimensions: d("pagePathPlusQueryString", "eventName"), metrics: m("eventCount"), dimensionFilter: { andGroup: { expressions: [{ filter: { fieldName: "eventName", inListFilter: { values: PAGE_EVENTS7 } } }, { filter: { fieldName: "pagePath", stringFilter: { matchType: "BEGINS_WITH", value: "/card" } } }] } }, orderBys: [{ metric: { metricName: "eventCount" }, desc: true }], limit: 1000 },
+  // Page x country (item 2), 7 days, top 500 by sessions. pageCountry7 = every page viewed (sessions here = sessions
+  // that viewed the path); landingCountry7 = where the session started, with averageSessionDuration so the same
+  // behavioural bot test as countries7 can run per landing page. derive() folds /card into summary.cardLanding7.
+  pageCountry7: { dateRanges: RANGES.d7, dimensions: d("pagePath", "country"), metrics: m("sessions", "keyEvents", "screenPageViews", "userEngagementDuration"), orderBys: [{ metric: { metricName: "sessions" }, desc: true }], limit: 500 },
+  landingCountry7: { dateRanges: RANGES.d7, dimensions: d("landingPage", "country"), metrics: m("sessions", "keyEvents", "averageSessionDuration"), orderBys: [{ metric: { metricName: "sessions" }, desc: true }], limit: 500 },
   // Growth League Distribution division (Mo, 2026-09-29): sessions that arrive on a league agent's tagged link
   // (utm_medium=league, utm_campaign=<agent>-<item>) and referral sessions by source domain (an outreach win is a
   // link another site writes, so it carries no UTM). tools/league/score.mjs reads both.
@@ -209,7 +229,48 @@ function derive(rep) {
     // Raw figures stay above, unchanged. The bot-adjusted pair sits beside them, never instead of them.
     bots: botFilter(rep),
     retentionSplit28: retentionSplit(rep),
+    // Oct 21 2026 (BLOCKED instruments item 3): user counts in every history row so clean N1 has a 7-day series.
+    activeUsers7: (rep.totals7.rows[0] || {}).activeUsers ?? null, activeUsers28: (rep.totals28.rows[0] || {}).activeUsers ?? null,
+    returningUsers7: rep.returning7.rows.length ? (ret7.activeUsers || 0) : null,
+    ...cardRead(rep),
   };
+}
+
+// /card reads (Oct 21 2026). Outbound clicks and card_page_view on /card* paths (7d), and /card landings split by the
+// countries7 bot verdict: a landing from a country the bot filter flags counts as bot, every other one as clean.
+// Null when the source report is missing (optional reports), so a gap never reads as a zero.
+function cardRead(rep) {
+  const out = {};
+  const pc = rep.pageClicks7 && rep.pageClicks7.rows;
+  if (pc) {
+    let clicks = 0, views = 0; const byEvent = {};
+    for (const r of pc) {
+      if (!CARD_PATH.test(String(r.pagePath || ""))) continue;
+      if (r.eventName === "card_page_view") views += r.eventCount || 0;
+      else if (OUTBOUND_EVENTS.has(r.eventName)) { clicks += r.eventCount || 0; byEvent[r.eventName] = (byEvent[r.eventName] || 0) + (r.eventCount || 0); }
+    }
+    out.cardPageClicks7 = clicks; out.cardPageViews7 = views; out.cardPageClicksByEvent7 = byEvent;
+  } else { out.cardPageClicks7 = null; out.cardPageViews7 = null; }
+  const lc = rep.landingCountry7 && rep.landingCountry7.rows;
+  if (lc) {
+    const botCountries = new Set(((rep.countries7 || {}).rows || []).filter(isBot).map((r) => r.country));
+    const o = { sessions: 0, keyEvents: 0, botSessions: 0, cleanSessions: 0, cleanKeyEvents: 0, cleanCountries: [] };
+    const byC = new Map();
+    for (const r of lc) {
+      if (!CARD_PATH.test(String(r.landingPage || ""))) continue;
+      const s = r.sessions || 0, k = r.keyEvents || 0;
+      o.sessions += s; o.keyEvents += k;
+      if (botCountries.has(r.country)) { o.botSessions += s; continue; }
+      o.cleanSessions += s; o.cleanKeyEvents += k;
+      const c = byC.get(r.country) || { country: r.country, sessions: 0, keyEvents: 0, durW: 0 };
+      c.sessions += s; c.keyEvents += k; c.durW += (r.averageSessionDuration || 0) * s; byC.set(r.country, c);
+    }
+    o.cleanCountries = [...byC.values()].sort((a, b) => b.sessions - a.sessions).slice(0, 15)
+      .map((c) => ({ country: c.country, sessions: c.sessions, keyEvents: c.keyEvents, avgSessionSec: c.sessions ? +(c.durW / c.sessions).toFixed(3) : null }));
+    o.rule = "landingPage matches /card* (7d, landingCountry7 top 500); bot = country flagged by summary.bots (countries7)";
+    out.cardLanding7 = o;
+  } else out.cardLanding7 = null;
+  return out;
 }
 
 async function main() {
@@ -222,7 +283,8 @@ async function main() {
   }
   const rep = {};
   // The two distribution reports (added 2026-09-29) are optional: if GA4 rejects one, the snapshot still ships.
-  const OPTIONAL = new Set(["leagueCampaignDaily28", "referralDaily28"]);
+  // The Oct 21 2026 instrument reports are optional too: a rejected new report must never cost the nightly file.
+  const OPTIONAL = new Set(["leagueCampaignDaily28", "referralDaily28", "pageClicks7", "cardClicks7", "pageCountry7", "landingCountry7"]);
   for (const [name, body] of Object.entries(REPORTS)) {
     if (!OPTIONAL.has(name)) { rep[name] = await runReport(token, body); continue; }
     try { rep[name] = await runReport(token, body); } catch (e) { console.error(`optional report ${name} skipped: ${String(e.message || e).slice(0, 200)}`); }
@@ -241,7 +303,7 @@ async function main() {
   hist.rows.sort((a, b) => a.day.localeCompare(b.day));
   hist.rows = hist.rows.slice(-400);
   fs.writeFileSync(histPath, JSON.stringify(hist, null, 1) + "\n");
-  console.log(`ga4-snapshot ${day}: sessions28 ${summary.sessions28} · KE28 ${summary.keyEvents28} (blended ${summary.blendedKeyEventRate28}% · organic ${summary.organicKeyEventRate28}%) · returning28 ${summary.returningShare28}% · clicks7 ${summary.clicks7} · buystrip7 ${summary.buystripClicks7} · KE yesterday ${summary.keyEventsYesterday}`);
+  console.log(`ga4-snapshot ${day}: sessions28 ${summary.sessions28} · KE28 ${summary.keyEvents28} (blended ${summary.blendedKeyEventRate28}% · organic ${summary.organicKeyEventRate28}%) · returning28 ${summary.returningShare28}% · clicks7 ${summary.clicks7} · card clicks7 ${summary.cardPageClicks7} · buystrip7 ${summary.buystripClicks7} · KE yesterday ${summary.keyEventsYesterday}`);
 }
 
 main().catch((e) => { console.error(String(e && e.stack || e)); process.exit(1); });

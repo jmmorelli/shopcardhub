@@ -60,6 +60,8 @@ function rollup(rows, keyField, buckets = 4) {
   return { dates, rows: [...by.values()].map((o) => ({ key: o.key, impressions: o.impressions, clicks: o.clicks, avgPosition: o.impressions ? o.posW / o.impressions : null })) };
 }
 
+function win(dates) { return { from: dates[0] || null, to: dates.at(-1) || null, buckets: dates.length, unit: "week (Bing bucket date)" }; }
+
 function median(a) { const s = a.filter((x) => x != null).sort((x, y) => x - y); return s.length ? s[Math.floor(s.length / 2)] : null; }
 
 async function main() {
@@ -88,6 +90,12 @@ async function main() {
     source: "Bing Webmaster API (GetQueryStats, GetPageStats), weekly buckets",
     site: SITE,
     buckets: q.dates,
+    // Oct 21 2026 (BLOCKED instruments item 4): the page table is rolled up from GetPageStats' own weekly buckets, which
+    // can lag or lead the query buckets, so `buckets` alone never said which weeks `pages` covers. Both windows stated.
+    // Dates are Bing's bucket dates as reported (weekly), not a computed day range.
+    queryWindow: win(q.dates),
+    pageBuckets: p.dates,
+    pageWindow: win(p.dates),
     positionScale: scale === 10 ? "tenths (divided by 10)" : "as reported",
     totals: { queries: queries.length, impressions: queries.reduce((s, r) => s + r.impressions, 0), clicks: queries.reduce((s, r) => s + r.clicks, 0) },
     strikingDistance: striking,
@@ -96,7 +104,7 @@ async function main() {
   };
   fs.mkdirSync(OUT, { recursive: true });
   fs.writeFileSync(path.join(OUT, "bing-latest.json"), JSON.stringify(out, null, 1) + "\n");
-  console.log(`bing-snapshot: ${q.dates.length} buckets · ${queries.length} queries · ${pageOut.length} pages · ${striking.length} striking-distance rows`);
+  console.log(`bing-snapshot: ${q.dates.length} buckets · ${queries.length} queries · ${pageOut.length} pages (window ${out.pageWindow.from}..${out.pageWindow.to}) · ${striking.length} striking-distance rows`);
 }
 
 main().catch((e) => { console.log(`bing-snapshot: failed (${e.message}) — GA4 snapshot unaffected.`); process.exitCode = 0; });
