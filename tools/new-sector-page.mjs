@@ -163,7 +163,7 @@ if (s.pre) {
   <ul>
     <li>The universe is every numbered card on PriceCharting's ${setE} listing once it exists. Sealed product is not a card and is not in it.</li>
     <li>A card enters the basket at 6 or more clean, single-card dated sales in the trailing 30 days and stays until it falls below 4. Prerelease-weekend sales are not used to set the base.</li>
-    <li>Price-weighted on dated sold comps, never asks. No card above 25%, and cards above 5% never past 50% together.</li>
+    <li>Price-weighted on dated sold comps, never asks.</li>
   </ul>
 </div>
 <!-- ${TK}:END -->
