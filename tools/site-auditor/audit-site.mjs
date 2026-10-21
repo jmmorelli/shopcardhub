@@ -174,7 +174,10 @@ try {
   const inMap = new Set([...xml.matchAll(/shopcardhub\.com\/([a-z0-9-]*)/g)].map(m => m[1]).filter(Boolean));
   for (const f of pages) {
     const slug = f.replace(/\.html$/, "");
-    if (!inMap.has(slug) && !SITEMAP_EXEMPT.has(slug) && !SITEMAP_EXEMPT_RE.test(slug)) add("WARN", "sitemap-missing-page", f, `page not in sitemap.xml`);
+    // Oct 21 2026 (P0-D, desk ruling Oct 20): a page carrying robots noindex in its <head> is deliberately
+    // out of the sitemap — keyed on the meta itself, never a blanket slug list.
+    const noindexed = /<meta\s+name="robots"\s+content="[^"]*noindex/i.test(read(f).split(/<body[\s>]/i)[0]);
+    if (!inMap.has(slug) && !noindexed && !SITEMAP_EXEMPT.has(slug) && !SITEMAP_EXEMPT_RE.test(slug)) add("WARN", "sitemap-missing-page", f, `page not in sitemap.xml`);
   }
   for (const slug of inMap)
     if (!fs.existsSync(path.join(REPO, slug + ".html"))) add("FAIL", "sitemap-dead-url", "sitemap.xml", `/${slug} listed but no file`);
