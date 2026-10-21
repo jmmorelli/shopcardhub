@@ -56,7 +56,11 @@ const LINES = ["heritage", "chrome", "sapphire", "black", "cosmic", "inception",
   "flagship"];
 const lineWords = (product) => {
   const prod = String(product || "").toLowerCase();
-  return { own: LINES.filter((w) => prod.includes(w)), foreign: LINES.filter((w) => !prod.includes(w)) };
+  // A product named with no line word ("2026-27 Topps Basketball hobby box") IS the flagship line, so a
+  // seller's "Topps Flagship Basketball" title is the same product, not a sibling (false WRONG-PRODUCT, Oct 21).
+  const own = LINES.filter((w) => prod.includes(w));
+  if (!own.length) own.push("flagship");
+  return { own, foreign: LINES.filter((w) => !own.includes(w)) };
 };
 // A listing is another product only if it names a line this page is NOT, and does not name the
 // line this page IS. Without that second half the check cries wolf: "Topps Pristine Basketball
