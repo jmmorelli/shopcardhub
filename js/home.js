@@ -32,7 +32,7 @@
     drying: { n: 'Supply drying up', meta: 'verified asks down 20% or more vs 30 nights ago', f: function (c) { return c.supd != null && c.supd <= -20; } },
     z2: { n: 'Unusual swings', meta: 'mark more than two σ from its 30-night mean — stretched either way', f: function (c) { return c.z != null && Math.abs(c.z) >= 2; } },
     fat: { n: 'Extreme movers', meta: 'excess kurtosis above 3 — jump-driven series, treat the ROC with care', f: function (c) { return c.kurt != null && c.kurt > 3; } },
-    all: { n: 'Every tracked card', meta: 'everything the engine marks nightly', f: function () { return true; } }
+    all: { n: 'Every tracked card', meta: 'everything the engine marks nightly', f: function (c) { return c.last != null; } }   // R35 Oct 21: a card with no mark tonight is not a row of dashes
   };
 
   /* ---------- model ---------- */

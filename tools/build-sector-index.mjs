@@ -628,7 +628,7 @@ function block(x, c, opt = {}) {
   const H = opt.h1 ? "h1" : "h2";
   const prBox = PR.bakeBox(x.ticker, x, "var(--sidx)");   // "" for a pre-activation ticker: then nothing is folded (as before)
   // R13 (Retention Desk, Oct 9 2026): when the plain read carries the whole-set cost line, the method note says what it is.
-  const fcTxt = PR.finishCost && PR.finishCost(x.ticker, x) ? " The plain read's whole-set figure is the plain sum of every priced card's sold mark, one copy each, raw and uncapped, with its window and date printed; its change compares the same cards at two market marks at least five days apart and never across a divisor row. It is what the set costs to buy, not a level and not a call." : "";
+  const fcTxt = PR.finishCost && PR.finishCost(x.ticker, x) ? " The plain read's whole-set figure is the plain sum of every priced card's sold mark, one copy each, raw and uncapped, with its window and date printed; its change compares the same cards at two market marks at least five days apart and never across a divisor row. It is what the set costs to buy, not a level." : "";
   const h = marksOnly(x.history), last = h[h.length - 1] || null, prev = weekBase(h);
   const lvl = last ? last.level : null;
   const wow = prev && last ? (last.level / prev.level - 1) * 100 : null;
@@ -683,7 +683,7 @@ function block(x, c, opt = {}) {
       const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
       return `<a class="cc" href="${url}" target="_blank" rel="noopener sponsored" title="${esc(b.name)} #${esc(b.num)} — live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(cid)}',page:location.pathname})"><span class="ci" data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="row" data-card-surface="${x.ticker.toLowerCase()}-chase" data-card-link="off"></span><span class="cn">${esc(b.name)} #${esc(b.num)}</span><span class="cp"><b>${b.price >= 100 ? "$" + Math.round(b.price).toLocaleString("en-US") : money(b.price)}</b><small>sold mark · ${mdShort(b.asOf || (last && last.date))}</small></span><span class="cgo">${b.price >= 200 ? "Authenticated on eBay" : "Listings on eBay"} &rarr;</span></a>`;
     }).join("")}</div>
-    <div class="cf">Sold mark per card, from the table below: a median of recent dated sales (not one sale), dated to the read — not a call. Links open live eBay listings (affiliate; ShopCardHub earns a commission at no cost to you).</div>
+    <div class="cf">Sold mark per card, from the table below: a median of recent dated sales (not one sale), dated to the read. Links open live eBay listings (affiliate; ShopCardHub earns a commission at no cost to you).</div>
   </div>`;
   // Name what is out (Pokémon KB G12/G13/G14, Oct 4 2026): up to 12 cards out of the basket are listed by name, not counted;
   // CONFIG exclusions are named with their reason; line-only rows are explained by the ticker's note.

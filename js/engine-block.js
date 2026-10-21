@@ -97,7 +97,7 @@
         else if (hb) hb.innerHTML = '<div class="cp-empty">' + r.length + ' daily return' + (r.length === 1 ? '' : 's') + ' so far — the histogram needs ~10 nightly marks.</div>';
         var rd = $('hist-read');
         if (rd && svg) rd.innerHTML = '<div><b>Read</b>' + (kurt != null && kurt > 3 ? 'Fat tails: most nights do nothing, then one prints a jump. The 30D ROC is a few nights’ work.' : 'Returns cluster near zero with ordinary tails; the 30D ROC is a real drift, not one print.') + (skew != null && Math.abs(skew) > 1 ? (skew > 0 ? ' Skew is positive — the jumps are upward.' : ' Skew is negative — the jumps are downward.') : '') + '</div>' +
-          '<div><b>Method</b>Population moments of night-over-night % returns on the ask-basis mark, all ' + m.n + ' returns; excess kurtosis (normal = 0). Not a call.</div>';
+          '<div><b>Method</b>Population moments of night-over-night % returns on the ask-basis mark, all ' + m.n + ' returns; excess kurtosis (normal = 0).</div>';
       } else {
         var hb2 = $('hist'); if (hb2) hb2.innerHTML = '<div class="cp-empty">' + r.length + ' daily return' + (r.length === 1 ? '' : 's') + ' so far — needs ~10 nightly marks.</div>';
       }
