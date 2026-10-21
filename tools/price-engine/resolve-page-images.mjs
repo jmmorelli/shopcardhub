@@ -35,16 +35,30 @@ function pick(listings, q) {
   const words = q.toLowerCase().replace(RARITY, "").split(" ");
   const negs = words.filter((t) => /^-[a-z]{3,}$/.test(t)).map((t) => t.slice(1));
   const toks = words.filter((t) => t.length > 2 && !t.startsWith("-") && !/[#\d]/.test(t)).slice(0, num ? 2 : 4);
+  const bareTok = words.find((t) => /^(?:#?\d{1,3}[a-z]?|swsh\d{1,3}|svp?\d{1,3})$/.test(t) && !/^(19|20)\d\d$/.test(t));
+  const bare = bareTok ? new RegExp("(^|[^a-z0-9])#?0*" + bareTok.replace(/^#/, "").replace(/^0+(?=\d)/, "") + "(?![a-z0-9])") : null;
   let best = null;
   for (const l of listings) {
     const t = normNum(String(l.title || "").toLowerCase());
     if (!l.image || !/^https:\/\/i\.ebayimg\.com\//.test(l.image)) continue;
     if (num && !t.includes(num)) continue;
+    // Oct 21 2026 (Photo Keeper): a bare card number ("Pikachu 40 Pokemon 30th Celebration", "SWSH138") was never required,
+    // so a Jangmo-o listing that mentioned Pikachu won the 30th Celebration #40 slot. When the key has no n/n number, its
+    // bare number (or promo code) must appear in the title as a whole token.
+    if (!num && bare && !bare.test(t)) continue;
+    // AR / SAR / CHR / CSR are the Japanese rarity names (English prints say IR / SIR); no Pokémon key of ours uses them.
+    if (/\bpokemon\b/.test(q.toLowerCase()) && /\b(ar|sar|chr|csr|art rare|special art rare)\b/.test(t)) continue;
+    if (/\bsv2a\b|pok[eé]mon card 151/.test(t)) continue; // "Pokémon Card 151" is the Japanese set's own name
+    if (/code card|\+ code\b/.test(t)) continue; // photographed with a code card / bundle, not the single // the Japanese 151 set code — same /165 numbering as English 151
     if (!toks.every((k) => t.includes(k))) continue;
     if (negs.some((k) => t.includes(k))) continue;
     // Oct 14 2026 (Photo Keeper): "Bowman Chrome" is a product, not two words. "2026 BOWMAN BASEBALL HOBBY BOX w/Chrome"
     // (paper Bowman, photographed in a shipping carton) sat on the Bowman Chrome guide hero for two weeks.
     if (/\bbowman chrome\b/.test(q.toLowerCase()) && !/\bbowman(?:®|™)? chrome\b/.test(t)) continue;
+    // Oct 21 2026 (Photo Keeper): every set we index is the English print. Japanese 151 (SV2a) shares the /165 numbering,
+    // so "Nidoking 174/165 Pokemon 151" resolved to the Japanese card. A foreign-language listing is skipped unless the
+    // key asks for that language.
+    if (!/\b(japanese|japan|korean|chinese)\b/.test(q.toLowerCase().replace(/(^|\s)-\S+/g, " ")) && /\b(japanese|japan|jpn|jp|korean|chinese|s-chinese|t-chinese|thai|indonesian)\b/.test(t)) continue;
     // A redemption card is a voucher, not the card (the BCB26 hero resolved to a CPA-LH redemption on Oct 14).
     if (/redemption|\bredemp\b/.test(t)) continue;
     // Sep 13 2026 (Mo: a DR25 hero was a card CASE, not the card): accessories and
@@ -60,8 +74,17 @@ function pick(listings, q) {
 
 const seen = new Set();
 let ok = 0, miss = 0, cached = 0;
+// Oct 21 2026 (Photo Keeper): /card?id= pages are built by js/card-page.js from data/cards/<tk>.json, whose `img`
+// name: keys reached the map only per visitor (725 keys across the modern chase/set files). Passing a card file
+// (node … data/cards/dr25.json) resolves those keys the same way as a page marker (Pokémon category, same pick()).
+const asMarkers = (f) => {
+  const d = JSON.parse(fs.readFileSync(f, "utf8"));
+  const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+  return (d.cards || []).filter((c) => c && typeof c.img === "string" && c.img.startsWith("name:"))
+    .map((c) => '<span data-card-img="' + esc(c.img) + '" data-card-sub="pokemon">').join("\n");
+};
 for (const f of files) {
-  const html = fs.readFileSync(f, "utf8");
+  const html = f.endsWith(".json") ? asMarkers(f) : fs.readFileSync(f, "utf8");
   const re = /<span[^>]*data-card-img="((?:ph|name):[^"]+)"[^>]*>/g;
   let m;
   while ((m = re.exec(html))) {
@@ -85,7 +108,11 @@ for (const f of files) {
         const q2 = normNum(q); if (q2 !== q) { await sleep(400); j = await get(q2); best = pick((j && j.listings) || [], q); }
         if (!best) { const q3 = q.replace(/\b\d{1,3}\/\d{1,3}\b/, "").replace(/\s+/g, " ").trim(); await sleep(400); j = await get(q3); best = pick((j && j.listings) || [], q); }
       }
-      if (best) { out.cards[key] = { ...best, label: name, d: new Date().toISOString().slice(0, 10), page: path.basename(f) }; ok++; console.log("ok  ", f, key.slice(0, 48)); }
+      // Card-file photos render with data-card-link="off" on /card, so the listing link is never used — not stored (map size).
+      // A key an HTML page also carries (index rows repoint their listing link to `item`) keeps its item and its page.
+      const shared = f.endsWith(".json") && prev && prev.page && !String(prev.page).endsWith(".json");
+      if (best && f.endsWith(".json") && !shared) delete best.item;
+      if (best) { out.cards[key] = { ...best, label: name, d: new Date().toISOString().slice(0, 10), page: shared ? prev.page : path.basename(f) }; ok++; console.log("ok  ", f, key.slice(0, 48)); }
       else { miss++; console.log("miss", f, key.slice(0, 48), "(" + ((j && j.count) || 0) + " listings)"); }
     } catch (e) { miss++; console.log("err ", f, key.slice(0, 48), String(e.message || e)); }
     await sleep(500);
