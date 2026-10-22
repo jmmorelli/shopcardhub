@@ -245,7 +245,7 @@ ${GTAG}
     <p class="hero-sub">Pick a player, get ${Math.min(...D.players.map((p) => p.cards.length))}–${Math.max(...D.players.map((p) => p.cards.length))} cards worth owning at three price levels, each with what it sold for in the last 30 days raw, PSA 9 and PSA 10 where there were enough sales to say, and a button to go buy it. No essay per player. The one line under each name says what moved that market this month.</p>
     <div class="hero-meta">
       <span>● Sold comps ${esc(win)}</span>
-      <span>⚾ ${stars.length} stars · ${prospects.length} prospects</span>
+      <span>⚾ ${stars.length} stars · ${prospects.length} rookies &amp; prospects</span>
       <span>📊 Raw · PSA 9 · PSA 10</span>
       <span>💰 eBay buy links on every row</span>
     </div>
@@ -260,7 +260,7 @@ ${GTAG}
   <section style="border-top:none; padding-top:28px;">
     <p class="intro">Every number here comes from eBay sold listings for ${esc(win)}, read on SportsCardsPro. A price shows the middle half of that month's sales, with the count under it so you can see how thick the market is. Under 3 sales, we print no price. A grail is the card you buy once; core is the card most collectors of that player actually own; value is the sub-$30 way in with real daily volume. Tap a name to open its table, or tap Raw, PSA 9, PSA 10 or TAG to go straight to live copies on eBay.</p>
     <div class="legend"><span class="tb t-grail">The grail</span><span class="tb t-core">Core</span><span class="tb t-value">Value</span><span>No verified sale = nothing sold at that grade in the window</span><span>· = no sale at that grade inside the window</span></div>
-    <div class="chips"><span class="gh">Stars</span>${chips(stars)}<span class="gh">2026 Bowman prospects</span>${chips(prospects)}</div>
+    <div class="chips"><span class="gh">Stars</span>${chips(stars)}<span class="gh">2026 rookies &amp; Bowman prospects</span>${chips(prospects)}</div>
     <div class="tools"><button type="button" data-all="open">Open all</button><button type="button" data-all="close">Close all</button></div>
 
     <div class="grp">${esc(D.groups[0].title)}</div>
