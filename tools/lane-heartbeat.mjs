@@ -49,6 +49,8 @@ for (const lane of cfg.lanes) {
   const from = lane.startedOn && lane.startedOn > since ? lane.startedOn : since;
   const d = new Date(from + "T12:00:00");
   const end = new Date(ptNow); end.setHours(12, 0, 0, 0);
+  // A lane switched off (endedOn) owes nothing after that date (CoS desk 2026-10-22: PIVOT toggles).
+  if (lane.endedOn) { const e = new Date(lane.endedOn + "T12:00:00"); if (e < end) end.setTime(e.getTime()); }
   for (; d <= end; d.setDate(d.getDate() + 1)) {
     const dow = d.getDay();
     const due = lane.days === "daily" || (Array.isArray(lane.days) && lane.days.includes(dow));

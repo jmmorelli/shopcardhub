@@ -3216,6 +3216,46 @@
       "decision": "CoS desk 2026-10-19 applied e626c51: figures dropped from the hero sentence; it links the BCB26 index (re-marks Mon/Thu). The dated '(Oct 12 mark)' tier-table cell stays (dated)."
     },
     {
+      "id": "iw-2026-10-22-1",
+      "status": "queued",
+      "date": "2026-10-22",
+      "area": "indices",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "MED: NG00 'Sliding \u00b7 down 7.8%' is ~90% one card's sampling swing (Lugia #9 549.99 -> 427.50 on a bimodal, row-capped sample); a German-language copy passes TITLE_BAD.",
+      "decision": "CoS desk 2026-10-22: accepted, queued -> Wed Oct 28 weekly (Index Keeper): (a) non-English language terms in TITLE_BAD (a tightening, never a softening of the gate); (c) the plain read names the top card when it is >75% of the week's move; (d) 'window = the source's last ~50 rows' where the cap binds. (b) hold-or-IQR rule is methodology: the weekly writes it as a doctrine option beside P9. Generator + engine changes, so not applied by the desk."
+    },
+    {
+      "id": "iw-2026-10-22-2",
+      "status": "applied",
+      "date": "2026-10-22",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "MED: /destined-rivals-index (Reddit paid-test landing) printed three coverage counts (59 / 45 / 62); data says 62 of 62.",
+      "decision": "Applied 67141db (Traffic Oct 22, CoS edit); CoS desk 2026-10-22 confirmed live. The rest of iw-2026-10-12-disagree-1 on the six chase pages ('every price is a dated sold read', 'sold comps only', 'top 3 by sold mark', the sigma formula) is generator text on 37 pages -> stays queued, Oct 28 weekly first item (DR25 carries paid traffic to Oct 31)."
+    },
+    {
+      "id": "iw-2026-10-22-3",
+      "status": "applied",
+      "date": "2026-10-22",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "MED: /mlb-cards filed Misiorowski, Murakami and DeLauter (2026 MLB rookies, 2022 Bowman Draft Chrome) under '2026 Bowman prospects' (R8/R9).",
+      "decision": "CoS desk 2026-10-22 re-verified live and applied e740ffb: group, chip header and hero count read '2026 rookies & Bowman prospects' / '5 rookies & prospects'; generator literal + data title carry the same string (generator not run). Live verified 22:2xZ."
+    },
+    {
+      "id": "iw-2026-10-22-4",
+      "status": "queued",
+      "date": "2026-10-22",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "LOW: site nav labels /best-hobby-boxes-2026 'Best Boxes 2026 \u2014 Ranked by ROI'; the page ranks nothing by ROI.",
+      "decision": "CoS desk 2026-10-22: accepted, queued -> Box Desk / the attended Box P2 sitting (the page's owner, PIVOT Am. 1), else the Oct 28 weekly: data/nav.json label -> 'Best Hobby Boxes 2026 \u2014 Sold Prices', then build-nav (146 pages, so not a desk edit)."
+    },
+    {
       "id": "tuesday-2026-10-20-1",
       "status": "applied",
       "date": "2026-10-20",
@@ -5209,6 +5249,16 @@
           "gates": "audit-prices 0/42 \u00b7 audit-site 0/18 \u00b7 audit-terminal 0/1 (prices 46 \u2192 42)",
           "rollback": "git revert b3a6d63 2b009ff e684829 14e580d 8e9d442 67141db",
           "liveVerified": "pending"
+        },
+        {
+          "date": "2026-10-22",
+          "commits": [
+            "e740ffb"
+          ],
+          "by": "CoS desk (Thu 15:11 fire, Mac deploy key, unattended) \u2014 IW Oct 22 F3: /mlb-cards '2026 rookies & Bowman prospects' (generator literal + data title aligned, generator not run)",
+          "gates": "audit-prices 0/42 \u00b7 audit-site 0/18 \u00b7 audit-terminal 0/1 (= baseline)",
+          "rollback": "git revert e740ffb",
+          "liveVerified": "2026-10-22 22:2xZ (iPhone 13: chip, group title, hero count)"
         }
       ]
     },

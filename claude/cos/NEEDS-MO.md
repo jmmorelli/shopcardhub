@@ -11,7 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## 2026-10-21 — desk (15:11 fire, verified live). Three things from today's chat, all yours by nature (accounts, card, two calls)
+## 2026-10-22 — desk (15:11 fire, verified live). One thing, ~5 minutes, when you get to it
+
+- **YouTube channel, your Google account:** confirm the new channel on shopcardhub@gmail.com (handle @shopcardhub, not your personal channel), and do YouTube's Advanced-features check (ID or video selfie) so description links are clickable. The prototype video builds tonight at 8 PM PT; you upload only when you like it. Detail: `claude/cos/youtube-and-loops-2026-10-21.md`.
+- Standing, re-verified today: owned-card photos (`Card Hub/photos/owned/` still absent — closes Oct 25) · one real collector finding one card's price, five lines in `claude/cos/ceo-desk/FROM-MO.md` (first due Oct 26) · TAG payment info (Nov 1) · optional GitHub connection · optional EPN CSVs Oct 13–19 into `Card Hub/epn/` (newest pair still ends Oct 12).
+
+*Closed from yesterday's list:* Reddit paid test is live (you set the $50 lifetime cap, Oct 21 15:35; read Nov 1) · Bing Ads half stays unopened by your call, nothing owed · Source of Sources signup done (the Press desk read 9 queries today, none about cards) · the two YouTube calls (made Oct 21 evening). qwoted.com was never opened; it is dropped unless you want a second source. *Not yours:* the eBay live-listings quota recovered (3/3 calls 200, 0 console errors on 8 pages at 22:2xZ).
+
+## 2026-10-21 — desk (15:11 fire, verified live). Three things from today's chat, all yours by nature (accounts, card, two calls) — CLOSED 2026-10-22 except the standing lines (carried above)
 
 - **Paid test, ~20 min, your accounts + card:** sign up at ads.microsoft.com and ads.reddit.com with shopcardhub@gmail.com, business name ShopCardHub, add the card, then tell the CoS — it sets up the campaigns with you ($5/day each, 10 days, $100 cap you approved). Steps: Project `claude/growth/earned-links-and-paid-test-2026-10-21.md` §3.
 - **Quote requests, ~4 min:** free signups at sourceofsources.com and qwoted.com with shopcardhub@gmail.com. After that the CoS drafts the answers as Gmail drafts; you only hit send.
