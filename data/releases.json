@@ -1,11 +1,11 @@
 {
  "_comment": "UPCOMING RELEASES panel on / (homepage rework, Sep 19 2026). Rendered by tools/build-home.mjs (HOME:releases) and re-filtered client-side by js/home.js so a past date drops off between Monday re-bakes. Hand-curated: only dates read from the named source, never guessed. status = confirmed (a dated line on the maker's calendar) | expected (a window a calendar publishes without a day — shown with its window text, no fake day). href only to a page that exists (build-home refuses otherwise). Keep ~10 upcoming; keep past rows for 30 days (the /release-calendar page shows them under 'Just released' — the 'X release date' searches keep coming for weeks after the date), prune older. `q` = the eBay search for the sealed product (used by tools/build-release-calendar.mjs; falls back to the label); `cat` = eBay category id when not sports cards (183456 = CCG sealed).",
- "asOf": "2026-10-14",
+ "asOf": "2026-10-22",
  "sources": {
-  "topps": "https://www.topps.com/release-calendar (read 2026-10-14)",
+  "topps": "https://www.topps.com/release-calendar (read 2026-10-22)",
   "bowman-chrome-mega": "https://www.topps.com/pages/bowman-chrome-baseball (Mega boxes available September 23 at 12pm ET)",
   "pokemon-30th-waves": "https://seller.tcgplayer.com/blog/30th-celebration-quick-facts (TCGplayer, Aug 26 2026) + ICv2 62819 (UPC) / 63260 (Dec 4 tins) + Steel City calendar (read 2026-10-14)",
-  "delta-reign": "https://pokecottage.com/pokemon-set-release-calendar and https://www.cardrake.com/guides/upcoming-sets (name and date reported, not yet on pokemon.com)",
+  "delta-reign": "https://www.pokemon.com/us/news/the-pokemon-tcg-mega-evolution-delta-reign-expansion-arrives-november-6-2026 (set date); Build & Battle prerelease: https://icv2.com/articles/news/view/63514 + https://www.billsarchive.com/delta-reign.html (read 2026-10-22)",
   "baseball-windows": "https://baseball.cards/release-calendar/ (expected windows, no day)",
   "bowman-football": "https://www.topps.com/release-calendar (read 2026-09-26: Wednesday, Sep 30) — was presale-only on 2026-09-19"
  },
@@ -133,17 +133,6 @@
    "source": "https://www.steelcitycollectibles.com/i/2026-topps-chrome-formula-1-f1-racing-hobby-box-first-day-issue-fdi (read 2026-09-27: 'Releases 10/9/26'); Checklist Insider lists FDI 'October 9, 2026'; re-read 2026-10-08: Steel City \"Releases 10/9/26 Subject to change\", out of stock"
   },
   {
-   "date": "2026-10-12",
-   "family": "sports",
-   "sport": "NFL",
-   "label": "2026 Topps Midnight Football",
-   "note": "pre-order opens (Topps calendar); street date not published",
-   "status": "confirmed",
-   "href": null,
-   "q": "2026 Topps Midnight Football hobby box",
-   "source": "https://www.topps.com/release-calendar (read 2026-09-29: 'Monday, Oct 12 2026 Topps Midnight Football · Pre-order')"
-  },
-  {
    "date": "2026-10-14",
    "family": "sports",
    "sport": "MLB",
@@ -159,66 +148,44 @@
    "family": "sports",
    "sport": "F1",
    "label": "2026 Topps Chrome Formula 1",
-   "note": "hobby 20×4, 1 auto · Topps list $469.99 · eBay presale lowest ask $917.99 (Oct 8)",
+   "note": "released Oct 15 · hobby 20×4, 1 auto · Topps list $469.99 · no 2026 sold read yet (last eBay presale ask $917.99, Oct 8)",
    "status": "confirmed",
    "href": "/topps-chrome-formula-1-2026",
    "q": "2026 Topps Chrome Formula 1 hobby box",
-   "source": "https://www.topps.com/release-calendar (read 2026-09-27: 'Thursday, Oct 15 2026 Topps Chrome Formula 1'); https://www.topps.com/products/2026-topps-chrome-formula-1%C2%AE-value-box ('October 15, 2026'); Steel City lists hobby/blaster/mega under OCTOBER 15, 2026; re-read 2026-10-08: topps.com/release-calendar \"Thursday, Oct 15 2026 Topps Chrome Formula 1\"; value box page \"Available From: Oct 15, 2026\"; re-read 2026-10-14: 'Thursday, Oct 15 at 3:00 PM UTC 2026 Topps Chrome® Formula 1®'"
-  },
-  {
-   "date": "2026-10-16",
-   "family": "sports",
-   "sport": "NFL",
-   "label": "2026 Topps Chrome Football",
-   "note": "pre-order opens Oct 16; Topps has not posted a ship date",
-   "status": "reported",
-   "href": null,
-   "q": "2026 Topps Chrome Football hobby box",
-   "source": "https://www.topps.com/release-calendar (read 2026-10-14: '[Pre-order] Friday, Oct 16 at 4:00 PM UTC 2026 Topps Chrome® Football')"
-  },
-  {
-   "date": "2026-10-19",
-   "family": "sports",
-   "sport": "MLB",
-   "label": "2026 Topps Pro Debut Baseball",
-   "note": "pre-order opens Oct 19; Topps has not posted a ship date. Steel City lists the hobby box under November 2026 with no day",
-   "status": "reported",
-   "href": null,
-   "q": "2026 Topps Pro Debut Baseball hobby box",
-   "source": "https://www.topps.com/release-calendar (read 2026-10-14: '[Pre-order] Monday, Oct 19 2026 Topps Pro Debut Baseball'); DK Network Oct calendar (read 2026-10-14: 'October 19, preorder')"
+   "source": "https://www.topps.com/release-calendar (read 2026-09-27: 'Thursday, Oct 15 2026 Topps Chrome Formula 1'); https://www.topps.com/products/2026-topps-chrome-formula-1%C2%AE-value-box ('October 15, 2026'); Steel City lists hobby/blaster/mega under OCTOBER 15, 2026; re-read 2026-10-08: topps.com/release-calendar \"Thursday, Oct 15 2026 Topps Chrome Formula 1\"; value box page \"Available From: Oct 15, 2026\"; re-read 2026-10-14: 'Thursday, Oct 15 at 3:00 PM UTC 2026 Topps Chrome® Formula 1®'; flipped to released 2026-10-22 (street date passed; the Topps calendar read 2026-10-22 lists only Oct 22 onward)"
   },
   {
    "date": "2026-10-21",
    "family": "sports",
    "sport": "NFL",
    "label": "2026 Panini Obsidian Football",
-   "note": "hobby 1 pack × 7, 2 autos + 2 relics · first Obsidian without the NFL license (retired greats + college NIL) · distributor date; presale $374.95",
+   "note": "released Oct 21 (distributor date; Panini has not published one) · hobby 1 pack × 7, 2 autos + 2 relics · first Obsidian without the NFL license (retired greats + college NIL) · no sold read yet",
    "status": "reported",
    "href": "/panini-obsidian-football-2026",
    "q": "2026 Panini Obsidian Football hobby box",
-   "source": "https://www.steelcitycollectibles.com/i/2026-panini-obsidian-football-hobby-box (read 2026-10-07: 'Release Date: 10/21/26', 'RELEASES 10/21/26 SUBJECT TO CHANGE'); https://www.steelcitycollectibles.com/product-release-calendar (OCTOBER 21, 2026, read 2026-10-07); https://www.dacardworld.com/sports-cards/2026-panini-obsidian-football-hobby-box ('Release Date: October 21st, 2026', read 2026-10-07). Replaces the Oct 6 row (same label, href added); https://www.steelcitycollectibles.com/product-release-calendar (read 2026-10-14: Obsidian Football Hobby Box under OCTOBER 21, 2026); DK Network Oct calendar (read 2026-10-14: 'October 21', FOTL Oct 13). Panini's own calendar not read."
+   "source": "https://www.steelcitycollectibles.com/i/2026-panini-obsidian-football-hobby-box (read 2026-10-07: 'Release Date: 10/21/26', 'RELEASES 10/21/26 SUBJECT TO CHANGE'); https://www.steelcitycollectibles.com/product-release-calendar (OCTOBER 21, 2026, read 2026-10-07); https://www.dacardworld.com/sports-cards/2026-panini-obsidian-football-hobby-box ('Release Date: October 21st, 2026', read 2026-10-07). Replaces the Oct 6 row (same label, href added); https://www.steelcitycollectibles.com/product-release-calendar (read 2026-10-14: Obsidian Football Hobby Box under OCTOBER 21, 2026); DK Network Oct calendar (read 2026-10-14: 'October 21', FOTL Oct 13). Panini's own calendar not read.; https://www.steelcitycollectibles.com/i/2026-panini-obsidian-football-hobby-box (read 2026-10-22: 'Release Date: 10/21/26', listed in stock)"
   },
   {
    "date": "2026-10-21",
    "family": "sports",
    "sport": "NFL",
    "label": "2026 Topps Heritage Football",
-   "note": "hobby 20×8, 1 auto or relic on average · mega · value blaster · 1976 design",
+   "note": "released Oct 21 · hobby 20×8, 1 auto or relic on average · mega · value blaster · 1976 design · no sold read yet",
    "status": "confirmed",
    "href": "/topps-heritage-football-2026",
    "q": "2026 Topps Heritage Football hobby box",
-   "source": "https://www.topps.com/pages/topps-heritage-football (read 2026-10-03: 'Available October 21'); https://www.steelcitycollectibles.com/i/2026-topps-heritage-football-hobby-box ('Releases 10/21/26'); https://www.diamondcardsonline.com/2026-topps-heritage-football-hobby-box/ ('Expected release date is Oct 21, 2026'). Replaces the 'reported' row (now on the maker's product page; not on topps.com/release-calendar as of Oct 3); https://www.topps.com/release-calendar (read 2026-10-14: 'Wednesday, Oct 21 2026 Topps Heritage Football'); Steel City lists Topps Heritage Football under NOVEMBER 04 (the mega box, per DK Network)"
+   "source": "https://www.topps.com/pages/topps-heritage-football (read 2026-10-03: 'Available October 21'); https://www.steelcitycollectibles.com/i/2026-topps-heritage-football-hobby-box ('Releases 10/21/26'); https://www.diamondcardsonline.com/2026-topps-heritage-football-hobby-box/ ('Expected release date is Oct 21, 2026'). Replaces the 'reported' row (now on the maker's product page; not on topps.com/release-calendar as of Oct 3); https://www.topps.com/release-calendar (read 2026-10-14: 'Wednesday, Oct 21 2026 Topps Heritage Football'); Steel City lists Topps Heritage Football under NOVEMBER 04 (the mega box, per DK Network); https://www.topps.com/pages/topps-heritage-football (read 2026-10-22: 'Hobby & Value Boxes available now')"
   },
   {
    "date": "2026-10-21",
    "family": "sports",
    "sport": "MLB",
    "label": "2026 Topps Holiday Baseball",
-   "note": "mega box 10×10, 1 auto/relic/Chrome · tin · advent calendar",
+   "note": "released Oct 21 · mega box 10×10, 1 auto/relic/Chrome · tin · advent calendar · mega box on sale at topps.com $29.99 (Oct 22); it left Topps' release calendar only because the date passed",
    "status": "confirmed",
    "href": "/topps-holiday-baseball-2026",
    "q": "2026 Topps Holiday Baseball mega box",
-   "source": "https://www.topps.com/release-calendar (read 2026-09-29: 'Wednesday, Oct 21 2026 Topps Holiday Baseball'); https://www.topps.com/products/2026-topps-holiday-baseball-mega-box ('October 21, 2026'); re-read 2026-10-14: 'Wednesday, Oct 21 2026 Topps Holiday Baseball'"
+   "source": "https://www.topps.com/release-calendar (read 2026-09-29: 'Wednesday, Oct 21 2026 Topps Holiday Baseball'); https://www.topps.com/products/2026-topps-holiday-baseball-mega-box ('October 21, 2026'); re-read 2026-10-14: 'Wednesday, Oct 21 2026 Topps Holiday Baseball'; https://www.topps.com/products/2026-topps-holiday-baseball-mega-box (read 2026-10-22: 'Available From Oct 21, 2026', $29.99, add to cart; Mega Case sold out); https://www.topps.com/release-calendar (read 2026-10-22: lists Oct 22 onward only, so no Holiday Baseball line)"
   },
   {
    "date": "2026-10-23",
@@ -264,6 +231,18 @@
    "q": "Pokemon Deck Crafter's Collection",
    "cat": "183456",
    "source": "https://icv2.com/articles/news/view/63081/build-new-decks-pokemon-tcg-deck-crafters-collection (Aug 10 2026, read 2026-10-07: 'The Pokemon Company International will release Deck Crafter's Collection', October 23, 2026, MSRP $9.99); https://www.pokeguardian.com/3313621_deck-crafter-s-collection-revealed (Aug 6 2026, read 2026-10-07: October 23, 2026, $9.99); https://www.steelcitycollectibles.com/product-release-calendar (read 2026-10-07: Deck Crafter's Collection Box + 12-Box Case under OCTOBER 23, 2026). pokemon.com product gallery did not render for us. New row; no page (low-dollar product)."
+  },
+  {
+   "date": "2026-10-24",
+   "family": "pokemon",
+   "sport": "PKMN",
+   "label": "Delta Reign Build & Battle Box (prerelease)",
+   "note": "sold at prerelease events Oct 24–Nov 1, in shops Nov 6 · 4 Delta Reign packs + 40-card deck + 1 of 4 foil promos (Masquerain, Magmortar, Enamorus, Kommo-o) · trade-press and fan-archive date; pokemon.com did not load for us",
+   "status": "reported",
+   "href": "/pokemon-delta-reign-2026",
+   "q": "Pokemon Delta Reign Build and Battle Box",
+   "cat": "183456",
+   "source": "https://icv2.com/articles/news/view/63514 (Oct 1 2026, read 2026-10-22: 'starting October 24, 2026 they will be selling' the Build & Battle Boxes at prerelease events; four foil promos; set 'available everywhere on November 6, 2026'); https://www.billsarchive.com/delta-reign.html (updated Oct 16 2026, read 2026-10-22: 'Prerelease events run from 24 October to 1 November 2026'; 40-card deck + four Delta Reign booster packs + code card; 'Sold at prerelease events from 24 October, then in shops from 6 November 2026'). pokemon.com news page blocked by bot check on 2026-10-22."
   },
   {
    "date": "2026-10-28",
@@ -337,11 +316,11 @@
    "family": "sports",
    "sport": "NBA",
    "label": "2026-27 Topps Flagship Basketball",
-   "note": "hobby 20×12, 1 auto or relic · jumbo 10×28 · value box · hanger — distributor date, moved from Oct 22; mega listed Nov 12 (Checklist Insider); Topps' calendar has no street date",
-   "status": "reported",
+   "note": "hobby 20×12, 1 auto or relic · jumbo 10×28 · value box · hanger · on Topps' calendar Nov 5 (moved from Oct 22) · mega listed Nov 12 (Checklist Insider)",
+   "status": "confirmed",
    "href": "/topps-flagship-basketball-2026-27",
    "q": "2026-27 Topps Basketball hobby box",
-   "source": "https://www.steelcitycollectibles.com/i/2026-27-topps-basketball-hobby-box (read 2026-10-11: 'Presale Releases: 11/5/26', 'RELEASES 11/5/26 SUBJECT TO CHANGE', 'Release Date: 11/5/26'; read 10/22/26 on 2026-10-04); https://www.checklistinsider.com/2026-27-topps-flagship-basketball (updated 2026-10-06, read 2026-10-11: 'Release Date: November 5, 2026', Hobby/Jumbo and Blaster Nov 5, Mega Nov 12); https://www.topps.com/release-calendar (read 2026-10-11: no Flagship Basketball date in the Oct 11–25 window or the spotlight). ONE row only, same label: replaces the Oct 22 row (integrate.mjs applies this Oct 4-published manifest after topps-update-series-2026's Sep 26 row with the same label)."
+   "source": "https://www.steelcitycollectibles.com/i/2026-27-topps-basketball-hobby-box (read 2026-10-11: 'Presale Releases: 11/5/26', 'RELEASES 11/5/26 SUBJECT TO CHANGE', 'Release Date: 11/5/26'; read 10/22/26 on 2026-10-04); https://www.checklistinsider.com/2026-27-topps-flagship-basketball (updated 2026-10-06, read 2026-10-11: 'Release Date: November 5, 2026', Hobby/Jumbo and Blaster Nov 5, Mega Nov 12); https://www.topps.com/release-calendar (read 2026-10-11: no Flagship Basketball date in the Oct 11–25 window or the spotlight). ONE row only, same label: replaces the Oct 22 row (integrate.mjs applies this Oct 4-published manifest after topps-update-series-2026's Sep 26 row with the same label).; https://www.topps.com/release-calendar (read 2026-10-22: 'Thursday, Nov 5 at 5:00 AM UTC 2026-27 Topps Flagship Basketball')"
   },
   {
    "date": "2026-11-05",
@@ -425,6 +404,18 @@
    "source": "https://www.topps.com/release-calendar (read 2026-10-01: 'Wednesday, Nov 11 2026 Topps Museum Collection Baseball', no pre-order tag); https://www.topps.com/pages/topps-museum-collection-baseball ('Available November 11'). Replaces the unsourced 2026-10-07 row."
   },
   {
+   "date": "2026-11-11",
+   "family": "pokemon",
+   "sport": "PKMN",
+   "label": "Pokémon TCG League Battle Deck — Mega Greninja ex",
+   "note": "$29.99 MSRP · 60-card deck with Mega Greninja ex, Mega Starmie ex, Meowth ex · trade-press date; Midwest Cards lists the 6-deck case for Dec 11 · not read on pokemon.com",
+   "status": "reported",
+   "href": null,
+   "q": "Pokemon Mega Greninja ex League Battle Deck",
+   "cat": "183456",
+   "source": "https://icv2.com/articles/news/view/63295/new-pokemon-tcg-league-battle-deck-incoming (Sep 4 2026, read 2026-10-22: 'into retail on November 11, 2026', 'It will retail for $29.99'); https://www.midwestcards.com/products/pokemon-mega-greninja-ex-league-battle-deck-6-box-case (read 2026-10-22: 'Expected release: Fri, Dec 11'). No Nov 13 date found in any source read today."
+  },
+  {
    "date": "2026-11-12",
    "family": "sports",
    "sport": "F1",
@@ -436,16 +427,49 @@
    "source": "https://www.steelcitycollectibles.com/product-release-calendar (read 2026-10-14: Topps Chrome Formula 1 Sapphire Edition under NOVEMBER 12, 2026)"
   },
   {
+   "date": "2026-11-13",
+   "family": "sports",
+   "sport": "NFL",
+   "label": "2026 Topps Midnight Football",
+   "note": "street date from distributors; Topps' release calendar (Oct 22) does not show it · Oct 12 was the pre-order opening (Topps calendar)",
+   "status": "reported",
+   "href": null,
+   "q": "2026 Topps Midnight Football hobby box",
+   "source": "https://www.topps.com/release-calendar (read 2026-09-29: 'Monday, Oct 12 2026 Topps Midnight Football · Pre-order'); https://www.steelcitycollectibles.com/i/2026-topps-midnight-football-hobby-box (read 2026-10-22: 'Presale Releases: 11/13/26', 'Releases 11/13/26 Subject to change'); https://www.checklistinsider.com/2026-topps-midnight-football (modified 2026-10-13, read 2026-10-22: 'Release Date: November 13, 2026'). Moves the Oct 12 pre-order row to the street date."
+  },
+  {
+   "date": "2026-11-18",
+   "family": "sports",
+   "sport": "NFL",
+   "label": "2026 Topps Chrome Football",
+   "note": "street date from distributors; Topps' release calendar (Oct 22) does not show it yet · Oct 16 was the pre-order opening (Topps calendar)",
+   "status": "reported",
+   "href": null,
+   "q": "2026 Topps Chrome Football hobby box",
+   "source": "https://www.topps.com/release-calendar (read 2026-10-14: '[Pre-order] Friday, Oct 16 at 4:00 PM UTC 2026 Topps Chrome® Football'); https://www.steelcitycollectibles.com/i/2026-topps-chrome-football-hobby-box (read 2026-10-22: 'Presale Releases: 11/18/26', 'Releases 11/18/26 Subject to change'); https://www.checklistinsider.com/2026-topps-chrome-football (modified 2026-10-21, read 2026-10-22: 'Release Date: November 18, 2026'); https://www.topps.com/release-calendar (read 2026-10-22: no Chrome Football line). Moves the Oct 16 pre-order row to the street date."
+  },
+  {
+   "date": "2026-11-18",
+   "family": "sports",
+   "sport": "MLB",
+   "label": "2026 Topps Pro Debut Baseball",
+   "note": "street date on Topps' calendar · Oct 19 was the pre-order opening",
+   "status": "confirmed",
+   "href": null,
+   "q": "2026 Topps Pro Debut Baseball hobby box",
+   "source": "https://www.topps.com/release-calendar (read 2026-10-14: '[Pre-order] Monday, Oct 19 2026 Topps Pro Debut Baseball'); DK Network Oct calendar (read 2026-10-14: 'October 19, preorder'); https://www.topps.com/release-calendar (read 2026-10-22, release spotlight: 'Wednesday, Nov 18 2026 Topps Pro Debut Baseball'). Moves the Oct 19 pre-order row to the street date."
+  },
+  {
    "date": "2026-12-01",
    "family": "sports",
    "sport": "MLB",
    "label": "2026 Topps Chrome Update Baseball",
-   "note": "no day published · Steel City lists the hobby box under December 2026 with no day; not on Topps' release calendar",
+   "note": "pre-order opens Mon Nov 2 (Topps calendar) · no street day published · Steel City lists the hobby box under December 2026 with no day",
    "status": "expected",
    "window": "Dec",
    "href": null,
    "q": "2026 Topps Chrome Update Baseball hobby box",
-   "source": "https://www.steelcitycollectibles.com/product-release-calendar (read 2026-10-06: '2026 Topps Chrome Update Series Baseball Hobby Box' under DECEMBER 2026 TBD; it sat under NOVEMBER 2026 TBD on Oct 4); https://www.topps.com/release-calendar (read 2026-10-06: no Chrome Update entry). Replaces the unsourced 2026-11-15 'mid-Nov' expected row (same label)."
+   "source": "https://www.steelcitycollectibles.com/product-release-calendar (read 2026-10-06: '2026 Topps Chrome Update Series Baseball Hobby Box' under DECEMBER 2026 TBD; it sat under NOVEMBER 2026 TBD on Oct 4); https://www.topps.com/release-calendar (read 2026-10-06: no Chrome Update entry). Replaces the unsourced 2026-11-15 'mid-Nov' expected row (same label).; https://www.topps.com/release-calendar (read 2026-10-22: '[Pre-order] Monday, Nov 2 2026 Topps Chrome® Update Series Baseball')"
   },
   {
    "date": "2026-12-04",
