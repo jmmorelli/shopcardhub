@@ -49,10 +49,7 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add data/feed/deals-latest.json
           if git diff --cached --quiet; then echo "No deals change."; exit 0; fi
-          git commit -m "deals: screen $(date -u +%FT%H:%MZ)
-
-Task-key: deals
-Authority: Mo 2026-10-23 (R42)"
+          git commit -m "deals: screen $(date -u +%FT%H:%MZ)" -m "Task-key: deals" -m "Authority: Mo 2026-10-23 (R42)"
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then exit 0; fi
             echo "push rejected (main moved) - rebasing and retrying ($attempt/3)"
