@@ -5292,6 +5292,16 @@
           "gates": "audit-prices 0/43 · audit-site 0/18 (197 pages, after the home-v2 rebase) · audit-terminal 0/1 (= baseline); Playwright 37 pages × 1366×768/1366×900/390×844: 0 console errors, 0 overflow, chart visible unscrolled at 1366×768 on 36 (the 30th guide hosts its block under the guide hero)",
           "rollback": "git revert 0c14f12",
           "liveVerified": "2026-10-23 ~21:56Z: /destined-rivals-index, /neo-revelation-1st-edition-index, /bowman-1st-chrome-index, /scarlet-violet-151-index, /pitch-black-index 200 with pr-line / read / tiles / pr-how + plain-read.js?v=5 + index-chart.js?v=4; live Playwright 4 pages × 3 sizes 0 bad"
+        },
+        {
+          "date": "2026-10-23",
+          "commits": [
+            "6f7193d"
+          ],
+          "by": "CoS desk (Fri 15:13 fire, Mac deploy key, unattended) — deals.mjs quota breaker: stop after 15 /api/comps errors in a row; no feed written when >25% of candidates errored, so a run inside an eBay 429 window leaves the previous deals feed live (Browse quota spent Oct 21 and Oct 23)",
+          "gates": "audit-prices 0/43 · audit-site 0/18 · audit-terminal 0/1 (= baseline); breaker verified against a 404 path (stops at 15, exit 1, no file)",
+          "rollback": "git revert 6f7193d",
+          "liveVerified": "n/a — tooling only, does not deploy; first exercised by the 02:40Z Oct 24 deals Action"
         }
       ]
     },

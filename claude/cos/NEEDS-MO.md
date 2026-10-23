@@ -11,7 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## 2026-10-22 — desk (15:11 fire, verified live). One thing, ~5 minutes, when you get to it
+## 2026-10-23 — desk (15:13 fire, verified live). Two looks, both yours by nature
+
+- **Home v2, ~2 minutes:** open https://www.shopcardhub.com/home-v2 (live, 200, hidden from Google) on your phone and laptop. Reply "yes" or a list of tweaks. Your yes is what lets the Night Crew swap it in for the home page. (The CoS leans to dropping the chip strip on phones, which costs about 48 px of the first screen.)
+- **BCB26 video, ~10 minutes:** watch `Card Hub/youtube/bcb26-prototype/bcb26-breakdown.mp4` (7:03) once. If you like it, upload it to the new @shopcardhub channel as "Not made for kids" and paste the description from `upload-sheet.md` (the disclosure is line 1). Upload the 0:57 Short separately. The CoS has ruled on the agent's two judgment calls, so nothing else is open. This still needs the channel confirmed first (yesterday's line below).
+- Standing, re-verified today: owned-card photos (`Card Hub/photos/owned/` still absent; closes Oct 25) · one real collector finding one card's price, five lines in `claude/cos/ceo-desk/FROM-MO.md` (first due Oct 26) · TAG payment info (Nov 1) · optional EPN CSVs Oct 13–19 into `Card Hub/epn/` (the newest pair still ends Oct 12).
+
+*Not yours:* the eBay live-listings quota ran out again this afternoon. Live comps rails on the pages fall back until eBay resets, and the CoS has guarded the Deals feed against it. The Reddit test is still running to Oct 31. Its first 11 visits stayed 0 seconds, and the 16:35 review reads that.
+
+## 2026-10-22 — desk (15:11 fire, verified live). One thing, ~5 minutes — YouTube line still open (carried above); rest carried
 
 - **YouTube channel, your Google account:** confirm the new channel on shopcardhub@gmail.com (handle @shopcardhub, not your personal channel), and do YouTube's Advanced-features check (ID or video selfie) so description links are clickable. The prototype video builds tonight at 8 PM PT; you upload only when you like it. Detail: `claude/cos/youtube-and-loops-2026-10-21.md`.
 - Standing, re-verified today: owned-card photos (`Card Hub/photos/owned/` still absent — closes Oct 25) · one real collector finding one card's price, five lines in `claude/cos/ceo-desk/FROM-MO.md` (first due Oct 26) · TAG payment info (Nov 1) · optional GitHub connection · optional EPN CSVs Oct 13–19 into `Card Hub/epn/` (newest pair still ends Oct 12).
