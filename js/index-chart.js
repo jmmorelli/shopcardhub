@@ -81,12 +81,21 @@
     if (!h.length) { el.innerHTML = '<div class="ic-one">Pre-activation — the level starts on the first verified sold reads.</div>'; return; }
     var last = h[h.length - 1];
     if (h.length + rc.length < 2) { el.innerHTML = '<div class="ic-one">One mark so far (' + esc(dstr(last.date)) + ' · ' + num(last.level, 2) + '). The line starts at the next re-mark — no history is invented.</div>'; return; }
-    var since = last.level - 100, wk = h.length > 1 ? (last.level / h[h.length - 2].level - 1) * 100 : null;
+    var since = last.level - 100;
+    /* "this week" = the badge rule (iw-2026-10-03-1): vs the newest mark at least 5 days before the latest — the same figure the hero line prints */
+    var prevWk = null; for (var pi = h.length - 2; pi >= 0; pi--) { if ((Date.parse(String(last.date).slice(0, 10)) - Date.parse(String(h[pi].date).slice(0, 10))) / 864e5 >= 5) { prevWk = h[pi]; break; } }
+    var wk = prevWk ? (last.level / prevWk.level - 1) * 100 : null;
     var base = v.baseDate ? mlabel(v.baseDate).replace('’', '20') : dstr(h[0].date);
     el.classList.toggle('dn', last.level < 100);
     el.innerHTML = chart(rc, h, tk, v) + '<div class="ic-cap"><span><b>' + esc(tk) + '</b> · 100 = ' + esc(base) + (v.baseRule === 'release' ? (String(v.releaseDate || '').slice(0, 7) === v.baseDate ? ' (release month)' : ' (first month after release)') : v.baseRule ? ' (first reliable month)' : '') + ' · log scale' +
-      (rc.length ? ' · <i class="ic-k"></i> monthly, reconstructed · <i class="ic-k ic-kl"></i> live marks since ' + esc(dstr(h[0].date)) : '') + '</span><span>since ' + (v.baseRule === 'release' ? 'release' : 'base') + ' <b>' + (since > 0 ? '+' : '') + num(since, 2) + '%</b> · w/w <b>' + (wk == null ? '—' : (wk > 0 ? '+' : '') + num(wk, 1) + '%') + '</b> · last ' + esc(dstr(last.date)) + '</span></div>' +
-      (v.baseNote ? '<div class="ic-note">' + esc(v.baseNote) + '.' + (rc.length ? ' Months before ' + esc(dstr(h[0].date)) + ' are reconstructed from PriceCharting’s monthly ungraded price history with today’s basket; live marks since.' : '') + (v.releaseWindowDays ? ' Shaded: the first ' + v.releaseWindowDays + ' days after release, when most new Bowman cards print their high before supply catches up.' : '') + '</div>' : '');
+      (rc.length ? ' · <i class="ic-k"></i> monthly history · <i class="ic-k ic-kl"></i> our marks since ' + esc(dstr(h[0].date)) : '') + '</span><span>since ' + (v.baseRule === 'release' ? 'release' : 'base') + ' <b>' + (since > 0 ? '+' : '') + num(since, 2) + '%</b> · this week <b>' + (wk == null ? '—' : (wk > 0 ? '+' : '') + num(wk, 1) + '%') + '</b> · last ' + esc(dstr(last.date)) + '</span></div>';
+    /* the base/method note: behind "How this index works" when the page has the toggle (P0-C, Oct 23 2026), else under the chart */
+    if (v.baseNote) {
+      var noteTxt = esc(v.baseNote) + '.' + (rc.length ? ' Months before ' + esc(dstr(h[0].date)) + ' are reconstructed from PriceCharting’s monthly ungraded price history with today’s basket; live marks since.' : '') + (v.releaseWindowDays ? ' Shaded on the chart: the first ' + v.releaseWindowDays + ' days after release, when most new Bowman cards print their high before supply catches up.' : '');
+      var how = document.querySelector('details.pr-how > .pr-how-in');
+      if (how && !how.querySelector('.ic-note')) { var p = document.createElement('p'); p.className = 'pr-stamp ic-note'; p.innerHTML = noteTxt; var st = how.querySelector('.ic-note, .sh-line, .pr-stamp, .levelchg'); if (st && st.nextSibling) how.insertBefore(p, st.nextSibling); else how.appendChild(p); }
+      else if (!how) el.insertAdjacentHTML('beforeend', '<div class="ic-note">' + noteTxt + '</div>');
+    }
   }
   function boot() {
     var els = document.querySelectorAll('.idx-chart[data-ticker]'); if (!els.length) return;

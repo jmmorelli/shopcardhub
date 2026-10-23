@@ -626,7 +626,6 @@ function block(x, c, opt = {}) {
   // B67 (Oct 9 2026): the index IS the page on a standalone index page, so its title is the page's one <h1>;
   // on a host page that already has an <h1> (the 30th guide) the block keeps an <h2>. bake() decides.
   const H = opt.h1 ? "h1" : "h2";
-  const prBox = PR.bakeBox(x.ticker, x, "var(--sidx)");   // "" for a pre-activation ticker: then nothing is folded (as before)
   // R13 (Retention Desk, Oct 9 2026): when the plain read carries the whole-set cost line, the method note says what it is.
   const fcTxt = PR.finishCost && PR.finishCost(x.ticker, x) ? " The plain read's whole-set figure is the plain sum of every priced card's sold mark, one copy each, raw and uncapped, with its window and date printed; its change compares the same cards at two market marks at least five days apart and never across a divisor row. It is what the set costs to buy, not a level." : "";
   const h = marksOnly(x.history), last = h[h.length - 1] || null, prev = weekBase(h);
@@ -712,19 +711,20 @@ function block(x, c, opt = {}) {
     const shown = sx.kind === "screened" || sx.kind === "ex" ? cards.slice(0, 3) : cards;
     return `<div class="sidx-subidx"><span class="sidx-subidx-k"><b>${x.ticker}·${esc(k)}</b> ${esc(sx.name)}</span><span class="sidx-subidx-lv">${sl ? sl.level.toFixed(2) : "—"}</span><span class="sidx-subidx-w ${cls(sw == null ? 0 : sw)}">${sw == null ? "first mark" : (sw >= 0 ? "▲ " : "▼ ") + pct(sw)}</span><span class="sidx-subidx-cards">${shown.map((b) => `<i>${esc(b.name)} #${esc(b.num)} <b>${money(b.price, 0)}</b></i>`).join("")}${(sx.kind === "screened" || sx.kind === "ex") && cards.length > 3 ? `<i>+${cards.length - 3} more</i>` : ""}</span>${sh.length > 1 ? `<span class="sidx-subidx-sp">${ST_spark(sh.map((r) => r.level))}</span>` : ""}<span class="sidx-subidx-n">${cards.length} cards${sx.kind === "screened" && sx.universe ? ` of ${sx.universe.length}` : ""} · price-weighted · uncapped · ${sx.baseDate ? `100 = ${baseMon(sx.kind === "ex" ? x : sx)} (${sx.kind === "ex" ? "same base month as the index" : "release month"})` : sx.kind === "ex" ? `launched at the index level ${mdy(sx.history[0].date)}` : `base 100 at ${mdy(x.inception)}`} — ${esc(sx.blurb || "")}</span></div>`;
   }).join("");
-  return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}"${c.classic ? " data-no-repoint" : ""}${GL ? " data-glk" : ""}${GL && wotc ? " data-wotc" : ""}${GL && ed ? ` data-wotc="${ed}"` : ""} style="--sidx:${c.theme};">
-  <div class="sidx-mast">
-    <div class="sidx-t">
-      <div class="sidx-eyebrow">▮ ${c.kindPlural ? "Class Index · Every " + esc(c.kindPlural.replace(/s$/, "")) : "Set Index · Every Card In The Set"}</div>
-      <${H} class="sidx-ttl"><span class="sidx-tk">${x.ticker}</span> <span class="sidx-dot">·</span> ${esc(c.name)}</${H}>
-      <p class="sidx-sub">${c.kindPlural ? `Every ${esc(c.kindPlural.replace(/s$/, ""))} in ${esc(c.set)} — ${x.universe.length} cards, ${weighted} trading — priced` : `${esc(countLine)}, priced`} from dated sold comps and re-marked Monday and Thursday. ${baseSentence(x)} This block tracks the ${c.kindPlural ? "class" : "set"}; it does not recommend cards. <a href="#${x.ticker.toLowerCase()}-method">Method ↓</a></p>
-    </div>
-    <figure class="sidx-photo"><span data-card-img="${esc(imgAttr(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="hero" data-card-surface="${x.ticker.toLowerCase()}-hero"></span><figcaption>#1 constituent · <b>${esc(hero.name)} #${esc(hero.num)}</b> · ${c.imgSrc && c.imgSrc(hero) ? "card image" : "live eBay listing"}</figcaption></figure>
-    <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div><div class="lvc"><b class="sidx-cost" title="what one copy of every priced card in the basket costs at the latest sold marks — the number the level indexes">${money(bv, 0)} for one of each</b> · ${weighted} cards</div><div class="lvc">${baseLine(x)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</div></div>
-  </div>
-  ${prBox}
-  <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>
-  ${prBox ? `<div class="pr-fold" id="pr-fold-${x.ticker.toLowerCase()}" hidden>` : ""}<div class="sidx-stats">
+  // the #1 card's photo lives in the "Priciest card" tile (was the mast figure); the tile text is the plain-read module's
+  const topImg = `<span data-card-img="${esc(imgAttr(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="card" data-card-surface="${x.ticker.toLowerCase()}-hero"></span>`;
+  // P0-C chart-first (Mo, Oct 23 2026 — DESIGN-DIRECTIVE-2026-10-23 §4): the plain read is four baked parts (line under the
+  // level, one sentence under the chart, two tiles, the "how to read" text for the toggle); null for a pre-activation ticker.
+  const parts = PR.bakeParts(x.ticker, x, { accent: "var(--sidx)", topImg });
+  const family = c.cat === "baseball" ? "Bowman Baseball" : c.cat === "football" ? "Bowman Football" : c.cat === "basketball" ? "Bowman Basketball" : "Pokémon";
+  const levelLine = parts ? parts.line : `<div class="pr-line">${baseLine(x)}</div>`;
+  // everything that used to sit in the hero — the set description, the base/stamp line, the quant strip and the method —
+  // goes behind one toggle (directive §2.4 "behind the index"). Nothing is removed and no figure changes.
+  const how = PR.howWrap(x.ticker, `
+    <p class="sidx-sub">${c.kindPlural ? `Every ${esc(c.kindPlural.replace(/s$/, ""))} in ${esc(c.set)} — ${x.universe.length} cards, ${weighted} trading — priced` : `${esc(countLine)}, priced`} from dated sold comps and re-marked Monday and Thursday. ${baseSentence(x)} This block tracks the ${c.kindPlural ? "class" : "set"}; it does not recommend cards.</p>
+    <p class="pr-stamp"><b class="sidx-cost" title="what one copy of every priced card in the basket costs at the latest sold marks — the number the level indexes">${money(bv, 0)} for one of each</b> · ${weighted} cards · ${baseLine(x)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</p>
+    ${parts ? parts.works : ""}
+    <div class="sidx-stats">
     <div><span class="k">Basket / Universe</span><span class="v">${weighted} <i>/ ${x.universe.length}</i></span></div>
     <div><span class="k">Top card weight</span><span class="v">${(top * 100).toFixed(1)}%</span></div>
     <div><span class="k">Top 5 weight</span><span class="v">${(top5 * 100).toFixed(1)}%</span></div>
@@ -733,7 +733,20 @@ function block(x, c, opt = {}) {
     <div><span class="k">${sinceLbl(x)}</span><span class="v ${cls(lvl == null ? 0 : lvl - 100)}">${lvl == null ? "—" : pct(lvl - 100, 2)}</span></div>
     <div><span class="k">Divisor</span><span class="v">${x.divisor}</span></div>
     <div><span class="k">Re-mark</span><span class="v">MON · THU</span></div>
-  </div>${prBox ? "</div>" : ""}
+  </div>
+  <p class="sidx-note"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay.${holoTxt} Price-weighted on ${c.srcNote || "PriceCharting's dated ungraded sold list (eBay sales, with TCGplayer sales where PriceCharting records them)"}, never asks.${c.srcNote ? "" : " The TCGplayer shop price shown beside each card is a separate number and is not in the level."} <b>No caps.</b> The index is the cost of one copy of every card in the basket (${money(bv, 0)} today), indexed to 100 at the base month: a card's weight is its price over that sum and moves with prices, nothing is ever trimmed, and there is no rebalance — the top card is ${(top * 100).toFixed(1)}% because that is what the set is${top >= EX_AT ? `, and the ${x.sub && x.sub.EX ? x.sub.EX.name : "ex-top-card"} line above shows what the rest of the set did without it` : ""}. (The 25% single-card and 5/50 group caps used Sep 15 – Oct 12, 2026 were retired on Oct 12: a set cannot trim a Charizard the way an ETF trims a position.) Level = Σ(sold mark) ÷ divisor ${x.divisor}; entries and exits are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before).${rwTxt}${fcTxt} ${esc(outTxt)} ${exTxt ? esc(exTxt) + " " : ""}n30 is a liquidity gate, never a volume figure (the source caps its table at ${c.rowCap || 60} rows${c.rowCapNote || ""}). ${esc(noteTxt)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>`, "var(--sidx)");
+  return `<div class="container"><section class="sidx" id="${x.ticker.toLowerCase()}" data-prices-updated="${last ? last.date : x.inception}"${c.classic ? " data-no-repoint" : ""}${GL ? " data-glk" : ""}${GL && wotc ? " data-wotc" : ""}${GL && ed ? ` data-wotc="${ed}"` : ""} style="--sidx:${c.theme};">
+  <div class="sidx-mast cf">
+    <div class="sidx-t">
+      <div class="sidx-eyebrow">▮ ${c.kindPlural ? "Class Index" : "Set Index"} · ${family}</div>
+      <${H} class="sidx-ttl"><span class="sidx-tk">${x.ticker}</span> <span class="sidx-dot">·</span> ${esc(c.name)}</${H}>
+    </div>
+    <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div>${levelLine}</div>
+  </div>
+  <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>
+  ${parts ? parts.read : ""}
+  <!-- SIDX:BUY -->
+  ${parts ? parts.tiles : ""}
   ${PRINTS[x.ticker] ? `<p class="sidx-sib">Same set, other prints — each its own index: ${PRINTS[x.ticker].filter((t) => t !== x.ticker && CONFIG[t]).map((t) => `<a href="${CONFIG[t].page}">${t} · ${esc(PRINT_LBL[t])}</a>`).join(" · ")}</p>` : ""}
   ${subs}
   ${chase}
@@ -744,7 +757,7 @@ function block(x, c, opt = {}) {
     <tbody>${top10}</tbody>
   </table></div>
   ${rest ? `<details class="sidx-more"><summary><span class="sm-open">Show all ${rows.length} cards ▾</span><span class="sm-close">Hide cards 11–${rows.length} ▴</span></summary><div class="sidx-tbl"><table><tbody>${rest}</tbody></table></div></details>` : ""}
-  <p class="sidx-note" id="${x.ticker.toLowerCase()}-method"><b>Method.</b> One set, one index. The universe is every card in the set; the basket is the cards that trade as ungraded singles — at least ${SCREEN.enter} clean single-card sold comps in the trailing ${SCREEN.window} days to enter, ${SCREEN.stay} to stay.${holoTxt} Price-weighted on ${c.srcNote || "PriceCharting's dated ungraded sold list (eBay sales, with TCGplayer sales where PriceCharting records them)"}, never asks.${c.srcNote ? "" : " The TCGplayer shop price shown beside each card is a separate number and is not in the level."} <b>No caps.</b> The index is the cost of one copy of every card in the basket (${money(bv, 0)} today), indexed to 100 at the base month: a card's weight is its price over that sum and moves with prices, nothing is ever trimmed, and there is no rebalance — the top card is ${(top * 100).toFixed(1)}% because that is what the set is${top >= EX_AT ? `, and the ${x.sub && x.sub.EX ? x.sub.EX.name : "ex-top-card"} line above shows what the rest of the set did without it` : ""}. (The 25% single-card and 5/50 group caps used Sep 15 – Oct 12, 2026 were retired on Oct 12: a set cannot trim a Charizard the way an ETF trims a position.) Level = Σ(sold mark) ÷ divisor ${x.divisor}; entries and exits are logged divisor adjustments; reconstitution quarterly (first Monday of Jan/Apr/Jul/Oct, announced the Monday before).${rwTxt}${fcTxt} ${esc(outTxt)} ${exTxt ? esc(exTxt) + " " : ""}n30 is a liquidity gate, never a volume figure (the source caps its table at ${c.rowCap || 60} rows${c.rowCapNote || ""}). ${esc(noteTxt)} Bid buttons are live eBay auctions on the exact card (verified title, soonest close with bids first, refreshed every 15 minutes) — bids, not marks. An index is a measurement, not a call. <a href="/how-prices-work">How prices work</a> · <a href="/indices">every ticker</a>.</p>
+  ${how}
 </section></div>`;
 }
 function ST_spark(ys, w, h) {
@@ -775,6 +788,15 @@ ${PR.PR_CSS}
 .sidx-level .lvc{font-family:var(--fm,ui-monospace,monospace);font-size:10px;color:var(--sidx-dim);margin-top:8px;line-height:1.6}
 .sidx .up{color:var(--green,#00e07a)} .sidx .dn{color:var(--red,#ff2e55)} .sidx .flat{color:var(--sidx-dim)}
 .sidx .idx-chart{margin-top:10px}
+/* P0-C chart-first (Oct 23 2026): title left, level right, chart next; the photo moved into the priciest-card tile */
+.sidx-mast.cf{grid-template-columns:minmax(0,1fr) auto;align-items:end;padding-bottom:6px}
+.sidx-mast.cf .sidx-ttl{margin-bottom:0}
+.sidx-mast.cf .sidx-level .pr-line{margin-top:8px;text-align:right}
+.sidx .pr-tiles .pr-ti [data-card-img]{margin:0}
+.sidx .ci-buy,.sidx .sv151-buy,.sidx .bstrip-wrap{max-width:none;margin:12px 0 0;padding:0}
+@media(max-width:760px){.sidx .ci-buy,.sidx .sv151-buy,.sidx .bstrip-wrap{padding:0}}
+.sidx [data-pr="read"]{--pr-acc:var(--sidx)}
+@media(max-width:760px){.sidx-mast.cf{display:block;padding-right:0}.sidx-mast.cf .sidx-level{margin-top:10px;text-align:left}.sidx-mast.cf .sidx-level .pr-line{text-align:left}}
 .sidx-stats{display:grid;grid-template-columns:repeat(8,1fr);gap:0;margin:12px 0 0;border:1px solid var(--sidx-bd);background:var(--sidx-bg)}
 .sidx-stats>div{padding:12px 12px;border-right:1px solid var(--sidx-bd)} .sidx-stats>div:last-child{border-right:0}
 .sidx-stats .k{display:block;font-family:var(--fm,ui-monospace,monospace);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sidx-dim);line-height:1.4}
@@ -866,23 +888,34 @@ function bake(x, c) {
   const S_RE = new RegExp(`<!-- ${x.ticker}:START -->[\\s\\S]*?<!-- ${x.ticker}:END -->`);
   const outside = html.replace(S_RE, "").replace(/<script[\s\S]*?<\/script>/g, "").replace(/<!--[\s\S]*?-->/g, "");
   const h1 = !/<h1[\s>]/i.test(outside);   // B67: no other <h1> on the page -> the index title is the h1
-  const body = `${S}\n${CSS}\n${block(x, c, { h1 })}\n${E}`;
+  let body = `${S}\n${CSS}\n${block(x, c, { h1 })}\n${E}`;
+  // P0-C (Oct 23 2026): on a standalone index page the sealed/eBay strip (BUYBOX from new-sector-page / build-grails, or the
+  // Bowman BUYSTRIP from build-buy-strip) moves from above the title to just under the plain read — directive §4 order. The
+  // strip stays the owning tool's block (same markers, replaced in place by that tool wherever it sits); this bake only
+  // moves it: it is cut from wherever it is (outside the block on the first run, inside the old block on every later run)
+  // and pasted at the SIDX:BUY slot. A host page (the 30th guide, h2 block) keeps its strip where it is — audit-site §15
+  // counts sections before the first eBay link and the block is that page's second section.
+  const BUY_RE = /<!-- BUY(?:BOX|STRIP):START[\s\S]*?<!-- BUY(?:BOX|STRIP):END -->/;
+  const buyM = h1 ? html.match(BUY_RE) : null;
+  body = body.replace("<!-- SIDX:BUY -->", buyM ? buyM[0] : "");
   if (html.includes(S)) {
-    const re = new RegExp(`<!-- ${x.ticker}:START -->[\\s\\S]*?<!-- ${x.ticker}:END -->`);
-    html = html.replace(re, () => body);
+    if (buyM) html = html.replace(BUY_RE, "");
+    html = html.replace(S_RE, () => body);
+  } else if (buyM) {
+    html = html.replace(BUY_RE, () => body);   // first bake: the block takes the strip's place, with the strip inside it
   } else {
     const anchor = "<!-- BUYBOX:END -->";
     if (!html.includes(anchor)) throw new Error(`${c.page}: no ${anchor} anchor to place the index block after`);
     html = html.replace(anchor, anchor + "\n" + body);
   }
-  if (!html.includes('src="/js/index-chart.js')) html = html.replace("</body>", '<script src="/js/index-chart.js?v=3" defer></script>\n</body>');
+  if (!html.includes('src="/js/index-chart.js')) html = html.replace("</body>", '<script src="/js/index-chart.js?v=4" defer></script>\n</body>');
   if (!html.includes('src="/js/card-img.js')) html = html.replace("</body>", '<script src="/js/card-img.js?v=3" defer></script>\n</body>');
   if (!html.includes('src="/js/index-you.js')) html = html.replace("</body>", '<script src="/js/index-you.js?v=1" defer></script>\n</body>');
   if (!html.includes('src="/js/sector-auctions.js')) html = html.replace("</body>", '<script src="/js/sector-auctions.js?v=3" defer></script>\n</body>');
   if ((c.imgSub || "pokemon") === "pokemon" && !c.kindPlural) {
     if (!html.includes('src="/js/grade-links.js')) html = html.replace("</body>", '<script src="/js/grade-links.js?v=2" defer></script>\n</body>');
     // shop price + spread column (Oct 15 2026, js/shop-spread.js reads data/tcg/<tk>.json — beside the index, never in it)
-    if (!html.includes('src="/js/shop-spread.js')) html = html.replace("</body>", '<script src="/js/shop-spread.js?v=5" defer></script>\n</body>');
+    if (!html.includes('src="/js/shop-spread.js')) html = html.replace("</body>", '<script src="/js/shop-spread.js?v=6" defer></script>\n</body>');
     const bv = x.basket.reduce((a, b) => a + b.price * b.w, 0);
     writeCardFile(ROOT, x, c, x.basket.slice().sort((a, b) => b.price * b.w - a.price * a.w), imgAttr, DRY);
   }

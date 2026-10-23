@@ -41,6 +41,9 @@
     var call = s === 'shop' ? '<span class="shs shop">shop ' + p + ' lower · cheaper at the shop</span>' : s === 'ebay' ? '<span class="shs ebay">shop ' + p + ' higher · cheaper on eBay</span>' : s === 'wide' ? '<span class="shs">a condition gap, not a bargain (shop = near-mint, eBay raw = any condition)</span>' : '<span class="shs">within 3% · even</span>';
     return 'The same ' + S.weighted + ' cards: <b>' + money(S.basketShop, 0) + '</b> at TCGplayer market · <b>' + money(S.basketSold, 0) + '</b> at ' + basis + ' · ' + call + ' <span class="shk" title="TCGplayer market price via the TCGCSV daily mirror. Not part of the level.">· TCGplayer as of ' + md(f.asOf) + ', about a day behind</span>';
   }
+  /* the "How this index works" body on a chart-first index page (P0-C); null on pages without it */
+  function howSlot(root) { var h = root.querySelector('details.pr-how > .pr-how-in'); return h || null; }
+  function placeLine(slot, d) { var after = slot.classList.contains('pr-how-in') ? slot.querySelector('.ic-note, .pr-stamp, .levelchg') : null; if (after && after.nextSibling) slot.insertBefore(d, after.nextSibling); else slot.appendChild(d); }
   function tcgUrl(a, pid, cid) {
     var p = (a.productUrl || 'https://www.tcgplayer.com/product/{pid}').replace('{pid}', String(pid));
     if (a.status === 'live' && a.base) return a.base + '?u=' + encodeURIComponent(p) + '&' + (a.subIdParam || 'subId1') + '=' + encodeURIComponent(cid);
@@ -132,11 +135,12 @@
         tr.classList.add('has-shop');
       });
       var S = f.summary;
-      var lv = sec.querySelector('.sidx-level');
+      // P0-C (Oct 23 2026): the spread line sits behind "How this index works" when the page has the toggle, else in the level box
+      var lv = howSlot(sec) || sec.querySelector('.sidx-level');
       if (lv && S && S.basketSold > 0 && S.spread != null && !lv.querySelector('.sh-line')) {
-        var d = document.createElement('div'); d.className = 'lvc sh-line';
+        var d = document.createElement(lv.classList.contains('pr-how-in') ? 'p' : 'div'); d.className = (lv.classList.contains('pr-how-in') ? 'pr-stamp' : 'lvc') + ' sh-line';
         d.innerHTML = lineHtml(S, f, 'eBay sold');
-        lv.appendChild(d);
+        placeLine(lv, d);
       }
       track(sec);
     });
@@ -180,11 +184,11 @@
       }
       var S = f.summary, sum = tbl.querySelector('tr.sumrow td.shop');
       if (sum && S && S.basketShop) { sum.classList.add('two'); sum.innerHTML = '<div>' + money(S.basketShop, 0) + '</div>' + (S.spread != null && side(S.spread) !== 'wide' ? '<div class="l2"><i class="shc ' + side(S.spread) + '">' + pct(S.spread) + '</i></div>' : ''); }
-      var lb = document.querySelector('.levelbox');
+      var lb = howSlot(document) || document.querySelector('.levelbox');
       if (lb && S && S.basketSold > 0 && S.spread != null && !lb.querySelector('.sh-line')) {
-        var d = document.createElement('div'); d.className = 'levelchg sh-line';
+        var d = document.createElement(lb.classList.contains('pr-how-in') ? 'p' : 'div'); d.className = (lb.classList.contains('pr-how-in') ? 'pr-stamp' : 'levelchg') + ' sh-line';
         d.innerHTML = lineHtml(S, f, 'our sold marks');
-        lb.appendChild(d);
+        placeLine(lb, d);
       }
       track(tbl);
     });
