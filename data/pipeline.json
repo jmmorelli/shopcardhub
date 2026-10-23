@@ -5282,6 +5282,16 @@
           "gates": "audit-prices 0/43 · audit-site 0/18 · audit-terminal 0/1 (prices 46 at run start → 43; STATE baseline 42 +4 from four Oct 1 stamps crossing 21 days today, −3 cleared)",
           "rollback": "git revert 6e33cce bb61292 e400aa8 39ad7fb",
           "liveVerified": "pending"
+        },
+        {
+          "date": "2026-10-23",
+          "commits": [
+            "0c14f12"
+          ],
+          "by": "P0-C build lane (CoS-commissioned, cloud build + Mac deploy key push, unattended) — chart-first on all 37 set-index pages per DESIGN-DIRECTIVE-2026-10-23 §4: level + chart first, one plain sentence, sealed/eBay strip, two tiles, method behind one \"How this index works\" toggle; generators tools/build-sector-index.mjs + tools/bake-plain-read.mjs, module js/plain-read.js (v5), js/index-chart.js (v4), js/shop-spread.js (v6). No price/date/weight/level changed; the plain-read \"this week\" figure now follows the badge rule on 22 Mon/Thu-marked sector pages (= the hero w/w it already printed).",
+          "gates": "audit-prices 0/43 · audit-site 0/18 (197 pages, after the home-v2 rebase) · audit-terminal 0/1 (= baseline); Playwright 37 pages × 1366×768/1366×900/390×844: 0 console errors, 0 overflow, chart visible unscrolled at 1366×768 on 36 (the 30th guide hosts its block under the guide hero)",
+          "rollback": "git revert 0c14f12",
+          "liveVerified": "2026-10-23 ~21:56Z: /destined-rivals-index, /neo-revelation-1st-edition-index, /bowman-1st-chrome-index, /scarlet-violet-151-index, /pitch-black-index 200 with pr-line / read / tiles / pr-how + plain-read.js?v=5 + index-chart.js?v=4; live Playwright 4 pages × 3 sizes 0 bad"
         }
       ]
     },
