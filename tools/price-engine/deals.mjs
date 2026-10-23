@@ -230,15 +230,25 @@ function score(row) {
   return s;
 }
 
+const MAX_CONSECUTIVE_ERRORS = 15, MAX_ERROR_SHARE = 0.25; // breaker; see main()
+
 async function main() {
   const cands = candidates();
   const counts = { candidates: cands.length, calls: 0, scanned: 0, verified: 0, deals: 0, heldBelowFloor: 0, errors: 0, rejected: {} };
   const rows = [];
   const t0 = Date.now();
+  let consecutiveErrors = 0;
   for (const [i, cand] of cands.entries()) {
     let listings = [], floor = 0.55, under = 0.9;
-    try { ({ listings, floor, under } = await comps(cand)); counts.calls++; }
-    catch (e) { counts.errors++; console.warn(`  ! ${cand.tk} ${cand.card.name} ${cand.grade}: ${e.message}`); await sleep(PAUSE_MS * 2); continue; }
+    try { ({ listings, floor, under } = await comps(cand)); counts.calls++; consecutiveErrors = 0; }
+    catch (e) {
+      counts.errors++; consecutiveErrors++;
+      console.warn(`  ! ${cand.tk} ${cand.card.name} ${cand.grade}: ${e.message}`);
+      // Breaker (CoS desk, Oct 23): the Browse quota ran out twice this week (Oct 21, Oct 23) and every call then
+      // answers 502/429. Stop spending calls into the wall, and never publish an error-wiped feed over a good one.
+      if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS) { console.error(`::error::${consecutiveErrors} /api/comps errors in a row (quota?) - stopping, feed NOT written; the previous feed stays live`); process.exit(1); }
+      await sleep(PAUSE_MS * 2); continue;
+    }
     counts.scanned += listings.length;
     const kept = [];
     for (const l of listings) {
@@ -286,6 +296,7 @@ async function main() {
     rows,
   };
   console.log(JSON.stringify({ ...counts, seconds: Math.round((Date.now() - t0) / 1000), affiliateTagged: feed.affiliateTagged }, null, 1));
+  if (counts.errors > Math.max(10, cands.length * MAX_ERROR_SHARE)) { console.error(`::error::${counts.errors} of ${cands.length} candidates errored - feed NOT written; the previous feed stays live`); process.exit(1); }
   if (DRY) { console.log("--dry: not written"); return; }
   fs.mkdirSync(path.dirname(path.resolve(OUT)), { recursive: true });
   fs.writeFileSync(path.resolve(OUT), JSON.stringify(feed, null, 1));
