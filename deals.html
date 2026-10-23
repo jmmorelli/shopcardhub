@@ -396,7 +396,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 .dl-sel { font-family:var(--fm); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text); background:var(--bg2); border:1px solid var(--border2); padding:9px 10px; min-height:38px; }
 .dl-sel.set { margin-left:auto; max-width:46%; }
 .dl-list { display:flex; flex-direction:column; gap:6px; }
-.dl-row { display:grid; grid-template-columns:52px minmax(0,1fr) 130px 128px 128px; gap:12px; align-items:center; background:var(--bg2); border:1px solid var(--border2); border-left:3px solid var(--green); padding:10px 12px 10px 10px; color:var(--text); min-height:72px; }
+.dl-row { display:grid; grid-template-columns:52px minmax(0,1fr) 130px 128px 150px; gap:12px; align-items:center; background:var(--bg2); border:1px solid var(--border2); border-left:3px solid var(--green); padding:10px 12px 10px 10px; color:var(--text); min-height:72px; }
 .dl-row .ph { width:52px; height:72px; background:var(--bg3); overflow:hidden; } .dl-row .ph img { width:100%; height:100%; object-fit:cover; display:block; }
 .dl-row .nm { min-width:0; }
 .dl-row .nm a.c, .dl-row .nm span.c { display:block; font-family:var(--fd); font-size:18px; font-weight:800; text-transform:uppercase; color:var(--text-head); line-height:1.05; }
@@ -412,7 +412,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 .dl-vs { text-align:right; }
 .dl-vs b { display:inline-block; font-family:var(--fm); font-size:13px; font-weight:700; letter-spacing:0.5px; padding:5px 8px; border:1px solid rgba(0,224,122,0.5); color:var(--green); background:var(--green-dim); }
 .dl-vs span { display:block; font-family:var(--fm); font-size:11px; color:var(--text-dim); margin-top:5px; }
-.dl-buy { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; background:var(--green); color:#000; padding:12px 12px; text-align:center; display:block; min-height:44px; line-height:20px; }
+.dl-buy { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; background:var(--green); color:#000; padding:12px 10px; text-align:center; display:block; min-height:44px; line-height:20px; white-space:nowrap; }
 .dl-buy:hover { background:#fff; color:#000; text-decoration:none; }
 .dl-empty { background:var(--bg2); border:1px solid var(--border2); padding:26px 20px; font-size:14px; color:var(--text-dim); line-height:1.65; }
 .dl-empty b { color:var(--text-head); }
@@ -430,6 +430,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   .dl-row .ph { grid-area:ph; width:44px; height:60px; }
   .dl-row .nm { grid-area:nm; } .dl-row .dl-num { grid-area:num; } .dl-row .dl-vs { grid-area:vs; text-align:left; } .dl-row .dl-buy { grid-area:buy; }
   .dl-sel.set { margin-left:0; max-width:none; width:100%; }
+  .dl-row .nm .sl .basis { display:none; }
 }
 </style>
   <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->
@@ -1017,7 +1018,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         (href ? '<a class="ph" href="' + esc(href) + '">' : '<span class="ph">') + (r.image ? '<img src="' + esc(r.image) + '" alt="" loading="lazy">' : '') + (href ? '</a>' : '</span>') +
         '<div class="nm">' + (href ? '<a class="c" href="' + esc(href) + '">' : '<span class="c">') + name + (href ? '</a>' : '</span>') +
           '<span class="t"><span class="dl-g ' + esc(r.grade) + '">' + (GL[r.grade]||r.grade) + '</span>' + esc(r.idx) + (r.tk && r.tk !== 'BOWMAN' && r.tk !== 'SEALED' ? ' \u00b7 ' + esc(r.tk) : '') + '</span>' +
-          '<span class="sl">mark ' + fmt(r.mark) + ' \u00b7 ' + esc(r.markBasis || '') + (r.markAsOf ? ' \u00b7 ' + esc(r.markAsOf) : '') + '</span></div>' +
+          '<span class="sl">mark ' + fmt(r.mark) + '<span class="basis"> \u00b7 ' + esc(r.markBasis || '') + '</span>' + (r.markAsOf ? ' \u00b7 ' + esc(r.markAsOf) : '') + '</span></div>' +
         '<div class="dl-num"><b>' + fmt(r.total) + '</b><span>' + fmt(r.price) + (r.shipUnknown ? ' + ship' : r.ship===0 ? ' \u00b7 free ship' : ' + ' + fmt(r.ship) + ' ship') + (r.seller && r.seller.pct ? ' \u00b7 ' + esc(r.seller.pct) + '%' : '') + '</span></div>' +
         '<div class="dl-vs"><b>' + pct(r.disc) + ' vs mark</b><span>save ' + fmt(r.mark - r.total) + '</span></div>' +
         '<a class="dl-buy" href="' + esc(r.url) + '" target="_blank" rel="nofollow sponsored noopener" data-card="' + esc(r.cardId) + '" data-grade="' + esc(r.grade) + '">Buy on eBay \u2192</a>' +
