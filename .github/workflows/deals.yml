@@ -1,0 +1,69 @@
+name: deals
+
+# Deals screener — Buy It Now listings below our dated SOLD mark (CoS, Oct 23 2026; Mo in chat: "go on A1").
+# Reads: data/indices.json + data/cards/*.json (Pokémon baskets and graded ladders), data/watchlist.json +
+# data/feed/sold-marks.json (Bowman). Calls the site's own /api/comps (tool header, customid=deals), one call per
+# candidate inside a price band under the mark — ~500 Browse calls a run, 3 runs a day, under the 5k/day keyset quota
+# with the Auction Desk. Writes ONE derived file to the private price-data branch; /api/deals serves it. No deploy.
+# Never blocks anything: a failed run leaves the previous feed in place and /api/deals drops ended rows itself.
+
+on:
+  schedule:
+    - cron: "40 3,11,19 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: price-data-writers
+  cancel-in-progress: false
+
+jobs:
+  deals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      - name: Checkout price-data branch
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: price-data
+          path: price-data
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Screen deals
+        timeout-minutes: 45
+        run: |
+          mkdir -p price-data/data
+          node tools/price-engine/deals.mjs --out price-data/data/deals-latest.json --pause 650
+
+      - name: Commit and push to price-data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd price-data
+          if [ ! -d .git ]; then
+            git init -b price-data .
+            git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          fi
+          git checkout -B price-data
+          git config user.name "price-engine[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/deals-latest.json
+          if git diff --cached --quiet; then echo "No deals change."; exit 0; fi
+          git commit -m "deals: screen $(date -u +%FT%H:%MZ)"
+          for attempt in 1 2 3; do
+            if git push -u origin price-data; then exit 0; fi
+            echo "push rejected (another writer pushed meanwhile) - rebasing and retrying ($attempt/3)"
+            git pull --rebase origin price-data || { git rebase --abort 2>/dev/null; echo "::error::rebase onto origin/price-data failed - deals not pushed"; exit 1; }
+            sleep 10
+          done
+          echo "::error::could not push the deals feed after 3 attempts"; exit 1

@@ -146,6 +146,17 @@ export default async function handler(req, res) {
   // free-text queries cap at 50 (the most any page asks for); card mode keeps 100 for the engine's filter
   const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || (card ? 100 : 50), 1), card ? 100 : 50);
   const sortParam = req.query.sort === "price" ? "price" : req.query.sort === "-price" ? "-price" : null;
+  // Deals screener (Oct 23 2026, tools/price-engine/deals.mjs): optional narrowing of the Browse filter so one
+  // call returns only the listings that can be a deal — Buy It Now only, inside a price band under the mark.
+  //   ?buying=FIXED_PRICE|AUCTION      (default: both, unchanged)
+  //   ?price=<min>..<max>              (USD, item price only; shipping is judged after the call)
+  const buyingParam = req.query.buying === "FIXED_PRICE" ? "FIXED_PRICE" : req.query.buying === "AUCTION" ? "AUCTION" : null;
+  const priceBand = (() => {
+    const m = /^(\d+(?:\.\d+)?)\.\.(\d+(?:\.\d+)?)$/.exec(String(req.query.price || "").trim());
+    if (!m) return null;
+    const lo = Number(m[1]), hi = Number(m[2]);
+    return isFinite(lo) && isFinite(hi) && hi > lo && hi <= 1e6 ? `${lo}..${hi}` : null;
+  })();
 
   // EPN custom ID (added Aug 25, 2026). Until now these links went out with a
   // campaign ID but no custom ID, so every sale they drove landed in EPN's
@@ -167,7 +178,7 @@ export default async function handler(req, res) {
       // Card mode: honor the watchlist entry's own category (183454 for TCG
       // singles - pinned room rule), same as the nightly engine (snapshot-free.mjs).
       category_ids: req.query.category_ids || (card && card.categoryIds) || TRADING_CARDS_CATEGORY,
-      filter: "buyingOptions:{FIXED_PRICE|AUCTION},itemLocationCountry:US",
+      filter: `buyingOptions:{${buyingParam || "FIXED_PRICE|AUCTION"}},itemLocationCountry:US${priceBand ? `,price:[${priceBand}],priceCurrency:USD` : ""}`,
     });
     if (sortParam) params.set("sort", sortParam);
 

@@ -25,7 +25,9 @@ const SITEMAP_EXEMPT = new Set(["card-dungeon", "welcome-email", "index", "set-i
   // deliberately OUT of the sitemap — Google crawled the templated card pages and declined them.
   "cards", "watchlist", "research", "privacy", "affiliate-disclosure",
   // Oct 9 2026 (B64, Google index fixes): the live auction list is a utility — noindexed, out of the sitemap.
-  "auctions"]);
+  "auctions",
+  // Oct 23 2026: the deals screen is the same shape — a live listing list, noindexed, out of the sitemap.
+  "deals"]);
 const SITEMAP_EXEMPT_RE = /^card-/;
 
 // THE mandatory EPN param set (see memory: Jul 28 2026 mkevt=1 incident —
@@ -453,6 +455,8 @@ const CONVERSION_EXEMPT = new Set([
   "track-record", "how-prices-work", "set-index-preview", "indices",
   // /auctions builds its own affiliate rows client-side from /api/auctions
   "auctions",
+  // /deals builds its own affiliate rows client-side from /api/deals (Oct 23 2026) — every row IS an EPN link
+  "deals",
   // service + tool pages: the honest CTA is not a product (revisit if that changes)
   "psa-grading-guide", "tag-grading-guide", "hobby-box-roi-calculator",
   // Amazon lane (supplies) — the Associates account needs the volume, see epn-mkevt-fix notes

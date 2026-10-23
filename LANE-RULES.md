@@ -1183,6 +1183,31 @@ Mo, Oct 22, after a high-engagement @LugiaConsulting post listing vintage set ma
 - **Blocked on data:** we hold graded sold marks for every Pokémon basket (`data/cards/g-*.json`) but no population counts. PSA pop pages return 403 to the cloud; CGC's population report answers 200. The data-source check is a BLOCKED row (owner CoS weekly, Oct 28). Nothing ships until a weekly pop read path is proven.
 - **The X data-post watch:** the Grok Editor's Monday brief gains §6, data posts that won (see `claude/grok/collector-voice-brief.md`). Collector Voice turns it into a "data we should show" list, and builders read it at STEP 0 under R40.
 
+## R42 · The Deals screen — Buy It Now below the mark (Mo, 2026-10-23: "go on A1")
+
+**Why:** the Oct 23 TCGBerg read (Project doc `claude/cos/competitor-tcgberg-2026-10-23.md`) found their affiliate engine is a
+list of fixed-price eBay listings priced under their mark. We had the auction half (/auctions) and not the Buy It Now half, which
+is the click that converts. Mo asked for it in chat; that is the R25 exemption ("unless Mo asks") on the record.
+
+- **What it is:** `/deals` + `/api/deals`, fed by `tools/price-engine/deals.mjs` (GitHub Action `deals.yml`, 3x/day, writes
+  `data/deals-latest.json` to the private `price-data` branch; no deploy per refresh). Nav: Tools & Guides → Trackers;
+  Terminal rail. Noindex, out of the sitemap (same call as /auctions, B64). `/deals?tk=<ticker>` pre-filters one index.
+- **The yardstick is our mark, nothing else.** Raw = the set index's dated sold mark (`data/cards/<tk>.json` raw); PSA 10 / PSA 9 =
+  the graded ladder's 30-day median only (`g-<tk>.json`, basis "30d"); Bowman = `sold-marks.json` with ≥3 sales in 30 days. An
+  ask-basis figure is never a yardstick here (R20). Stale marks are skipped (raw > 14 d, graded > 21 d, Bowman > 30 d).
+- **A deal is price + shipping ≤ 97% of the mark and ≥ ~50% of it** (45% on slabs, 60% sealed). Deeper is held back as a probable
+  mislabel or damage and counted, never shown. Top 3 rows per card and grade.
+- **Verification is by title, logged by reason:** name tokens + card number; edition words agree with the ticker (1st / Shadowless /
+  Unlimited); no other language, reverse, promo; raw rows carry no grading word and no damage word ("READ" counts); PSA rows name
+  exactly that PSA grade and no other grader; sellers under 97% feedback dropped. Bowman rows run the engine's `verifyListings`.
+- **Hygiene:** the feed stores derived rows only — our ids, prices, the affiliate URL, image URL, end time, seller feedback. No
+  listing titles, no seller names, no item ids (R17/R20). `/api/comps` gained `?buying=` and `?price=` for the screener; nothing
+  else changed on it. Every link is EPN-tagged with `customid=deals` — read it in the Wednesday money read (R22) beside `auctions`.
+- **Quota:** ~500 Browse calls a run (8 raw + 4 PSA 10 + 3 PSA 9 per ticker, 40 Bowman), 3 runs a day, under the 5k/day keyset
+  limit with the Auction Desk. A lane that wants more candidates raises the tunables in `deals.mjs` and says so here.
+- **Not a gate, not a signal (R26, R14):** free, no account, no "deal of the day" post. A row is a price under a dated mark; the
+  page says "a deal is a price, not a call" once, in the sub-line, and the footer carries the site's one disclosure.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
