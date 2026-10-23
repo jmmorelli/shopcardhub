@@ -68,12 +68,11 @@ function block(c, ticker) {
 @media(max-width:560px){.sealed{grid-template-columns:1fr;}.sealed .buy{grid-column:1;grid-row:auto;justify-self:start;}}
 </style>
 <div class="sealed" data-box-feed="${esc(key)}" data-box-index="${esc(ticker)}" data-box-product="${esc(product)}">
-  <div class="sk"><b>Sealed</b> · ${esc(product)} · nightly eBay ask mark · asks, not solds</div>
-  <div class="sv"><span class="sealed-price"></span><small class="sealed-sup"></small></div>
-  <div class="sc">30D · box <i class="sealed-box30"></i> · index <i class="sealed-idx30"></i> <span class="sealed-note"></span></div>
+  <div class="sk"><b>Sealed</b> · ${esc(product)} · live eBay asks, not sales</div>
+  <div class="sv"><span class="sealed-price"></span><small class="sealed-sup"></small><small class="sealed-note"></small></div>
   <a class="buy" href="${esc(href)}" target="_blank" rel="sponsored nofollow noopener">Shop ${esc(product === "Booster box" ? "booster boxes" : "ETBs")} on eBay ↗</a>${retailLine(ticker)}
 </div>
-<script src="/js/sealed-row.js?v=3" defer></script>
+<script src="/js/sealed-row.js?v=4" defer></script>
 <!-- SEALED:END -->`;
 }
 

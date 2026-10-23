@@ -10,7 +10,7 @@
 //   2. data/buy-strip.json  ← manifest.buyStrip (new slugs only; an existing entry is never overwritten here).
 //   3. data/releases.json   ← manifest.releases[] (agent A): a row with the same normalised label is updated
 //      (date/status/note/href/q/cat/source) — the newer read wins; anything else is appended. asOf = today.
-//   4. sitemap.xml          ← a <url> for the page (weekly, 0.7) if absent.
+//   4. sitemap.xml          ← OFF by default since Oct 23 (P0-D owns the sitemap); --sitemap adds a <url> for a live, indexable page.
 //   5. data/nav.json        ← searchExtra row if absent (site search finds the page; no nav item, R27).
 //   6. The hub page named in the manifest gets a LEAGUE-LINKS block before its <footer>, rebuilt from every
 //      manifest that names that hub (skipped for /release-calendar — the calendar links release pages by href).
@@ -76,9 +76,14 @@ for (const m of manifests) if (m.agent === "A" && m.hub === "/release-calendar")
 rel.items.sort((a, b) => a.date.localeCompare(b.date));
 if (relChanged) { rel.asOf = TODAY; wr("data/releases.json", JSON.stringify(rel, null, 1) + "\n"); }
 
-// 4. sitemap.xml
+// 4. sitemap.xml — OFF since Oct 23 (Night Crew; BLOCKED row 2026-10-22, Traffic stumble 1). The sitemap is P0-D's curated
+// list (PIVOT §2, Traffic): on Oct 22 this step put 10 noindexed pages back (audit-site FAIL 12), and it would also re-add the
+// indexable league pages P0-D left out on purpose. INDEX-FIRST (R27 Am. 2) ships 0 new league URLs, so the step has no job.
+// A new league page reaches the sitemap through Traffic. `--sitemap` restores the old behaviour, minus merged/noindexed pages.
+const SITEMAP_STEP = process.argv.includes("--sitemap");
 let sm = rd("sitemap.xml");
-for (const m of manifests) {
+for (const m of SITEMAP_STEP ? manifests : []) {
+  if (/^merged/i.test(String(m.status || "")) || /<meta\s+name="robots"\s+content="[^"]*noindex/i.test(rd(m.slug + ".html").split(/<body[\s>]/i)[0])) continue;
   const loc = `https://www.shopcardhub.com/${m.slug}`;
   if (sm.includes(`<loc>${loc}</loc>`)) continue;
   sm = sm.replace("</urlset>", `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n</urlset>`);

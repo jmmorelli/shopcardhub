@@ -6,12 +6,12 @@
   <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR — Price Chart &amp; Verified Live Listings | ShopCardHub</title>
-  <meta name="description" content="Nightly price chart for Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR (engine mark $204 as of 2026-10-14): verified live eBay listings for this exact card, the auction bid watch, and a ★ Track button for your Vault.">
+  <meta name="description" content="Nightly price chart for Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR (engine mark $213 as of 2026-10-23): verified live eBay listings for this exact card, the auction bid watch, and a ★ Track button for your Vault.">
   <link rel="canonical" href="https://www.shopcardhub.com/card-francisco-renteria-bcb26-auto">
   <meta name="robots" content="noindex,follow">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR — Price Chart &amp; Live Listings">
-  <meta property="og:description" content="Nightly price chart for Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR (engine mark $204 as of 2026-10-14): verified live eBay listings for this exact card, the auction bid watch, and a ★ Track button for your Vault.">
+  <meta property="og:description" content="Nightly price chart for Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR (engine mark $213 as of 2026-10-23): verified live eBay listings for this exact card, the auction bid watch, and a ★ Track button for your Vault.">
   <meta property="og:url" content="https://www.shopcardhub.com/card-francisco-renteria-bcb26-auto">
   <meta property="og:site_name" content="ShopCardHub">
   <meta name="twitter:card" content="summary_large_image">
@@ -20,7 +20,7 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="628">
   <meta name="twitter:image" content="https://www.shopcardhub.com/og/bowman.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR — price chart","url":"https://www.shopcardhub.com/card-francisco-renteria-bcb26-auto","description":"Nightly price chart for Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR (engine mark $204 as of 2026-10-14): verified live eBay listings for this exact card, the auction bid watch, and a ★ Track button for your Vault.","isPartOf":{"@type":"WebSite","name":"ShopCardHub","url":"https://www.shopcardhub.com"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR — price chart","url":"https://www.shopcardhub.com/card-francisco-renteria-bcb26-auto","description":"Nightly price chart for Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR (engine mark $213 as of 2026-10-23): verified live eBay listings for this exact card, the auction bid watch, and a ★ Track button for your Vault.","isPartOf":{"@type":"WebSite","name":"ShopCardHub","url":"https://www.shopcardhub.com"}}</script>
   <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/css/fonts.css">
@@ -390,7 +390,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 .cp-cell { background:var(--bg2); padding:14px 12px; min-width:0; }
 .cp-cell .l { font-family:var(--fm); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .cp-cell .v { font-family:var(--fd); font-size:26px; font-weight:900; line-height:1; color:var(--text-head); letter-spacing:-0.5px; }
-.cp-cell .s { font-family:var(--fm); font-size:11px; color:var(--text-dim); margin-top:5px; }
+.cp-cell .s { font-family:var(--fm); font-size:11px; color:var(--text-dim); margin-top:5px; min-height:2.6em; line-height:1.3; } /* B89/B92: sub-lines are re-written client-side; two lines reserved */
 .cp-cell .v.up { color:var(--green); } .cp-cell .v.dn { color:var(--red); }
 .cp-sig { display:inline-flex; align-items:center; gap:6px; font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border2); background:var(--bg2); color:var(--text); }
 .cp-sig.buy { border-color:rgba(0,224,122,0.5); color:var(--green); } .cp-sig.sell { border-color:rgba(255,46,85,0.5); color:var(--red); } .cp-sig.hold { border-color:rgba(245,200,0,0.4); color:var(--gold); }
@@ -403,6 +403,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 .cp-sec .sub { font-size:13px; color:var(--text-dim); margin:0 0 14px; line-height:1.55; }
 .cp-chart { background:var(--bg2); border:1px solid var(--border2); padding:12px 8px 6px; }
 .cp-chart svg { width:100%; height:auto; display:block; }
+/* Night Crew Oct 23 (B89/B92): the chart box is drawn at the SVG's final height (viewBox 640×260) before the series loads,
+   so the line replacing "Loading…" no longer pushes the page down (1440: #chart grew 156 → 300 px at ~0.6 s). */
+.cp-chart { box-sizing:border-box; min-height:calc((min(100vw - 40px, 720px) - 18px) * 0.40625 + 48px); } /* + padding, border and the one-line legend */
+#cp-why { min-height:18px; }
+@media (min-width:641px) { .cp-actions .cp-sig { white-space:nowrap; } } /* B92 residual: the label growing to "engine · HOLD · gated, thin sample" wrapped the chip to 2 lines (+6 px) */
 .cp-chart .axis { font-family:var(--fm); font-size:11px; fill:var(--text-dim); }
 .cp-chart .grid { stroke:rgba(255,255,255,0.06); }
 .cp-chart .line { fill:none; stroke:var(--accent); stroke-width:2; stroke-linejoin:round; stroke-linecap:round; }
@@ -441,6 +446,10 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   .cp-head { grid-template-columns:96px 1fr; gap:14px; }
   .cp-strip { grid-template-columns:1fr 1fr; }
   .cp-cell .v { font-size:24px; }
+  /* B89 (Oct 23): give the signal chip its own line so a longer label can't re-wrap the action row. */
+  .cp-actions .cp-sig { order:3; flex:1 0 100%; }
+  .cp-chart { min-height:calc((100vw - 46px) * 0.40625 + 100px); } /* legend wraps to 3 lines at 390 */
+  #cp-why { min-height:35px; } /* the engine's one-line reason arrives client-side and wraps to 2 lines on a phone (+61 px push, Oct 23) */
   .cp-related { grid-template-columns:1fr; }
   .cp-hammers { grid-template-columns:1fr 1fr 1fr; }
   .cp-item { grid-template-columns:56px 1fr auto; gap:10px; }
@@ -947,11 +956,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </script>
 <!-- NAV:END -->
 
-<main class="cp-wrap" data-prices-updated="2026-10-14">
+<main class="cp-wrap" data-prices-updated="2026-10-23">
   <div class="cp-crumbs"><a href="/">Home</a> <span>/</span> <a href="/cards">Card Charts</a> <span>/</span> <span>Francisco Renteria</span></div>
 
   <div class="cp-head">
-    <a class="cp-photo" id="cp-photo" href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20chrome%201st%20auto%20francisco%20renteria%20CPA-FR&amp;LH_BIN=1&amp;mkcid=1&amp;mkrid=711-53200-19255-0&amp;siteid=0&amp;mkevt=1&amp;campid=5339155990&amp;toolid=10001&amp;customid=card-francisco-renteria-bcb26-auto" target="_blank" rel="noopener sponsored" aria-label="Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR on eBay"><img id="cp-img" src="https://i.ebayimg.com/images/g/~KgAAeSwu9pqwcMD/s-l500.jpg" alt="Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR" loading="eager"><span class="sch-ebay-tag" aria-hidden="true">eBay</span></a>
+    <a class="cp-photo" id="cp-photo" href="https://www.ebay.com/sch/i.html?_nkw=2026%20bowman%20chrome%201st%20auto%20francisco%20renteria%20CPA-FR&amp;LH_BIN=1&amp;mkcid=1&amp;mkrid=711-53200-19255-0&amp;siteid=0&amp;mkevt=1&amp;campid=5339155990&amp;toolid=10001&amp;customid=card-francisco-renteria-bcb26-auto" target="_blank" rel="noopener sponsored" aria-label="Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR on eBay"><img id="cp-img" src="https://i.ebayimg.com/images/g/iNgAAeSwAvhqoh2P/s-l500.jpg" alt="Francisco Renteria — 2026 Bowman Chrome 1st Bowman Auto CPA-FR" loading="eager"><span class="sch-ebay-tag" aria-hidden="true">eBay</span></a>
     <div>
       <div class="cp-eyebrow">Card chart · 2026 Bowman Chrome · engine-tracked</div>
       <h1 class="cp-title">Francisco Renteria</h1>
@@ -960,7 +969,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   </div>
 
   <div class="cp-strip">
-    <div class="cp-cell"><div class="l">Engine mark</div><div class="v" id="cp-mark">$204</div><div class="s" id="cp-mark-d">engine mark · 2026-10-14</div></div>
+    <div class="cp-cell"><div class="l">Engine mark</div><div class="v" id="cp-mark">$213</div><div class="s" id="cp-mark-d">engine mark · 2026-10-23</div></div>
     <div class="cp-cell"><div class="l">30-day change</div><div class="v" id="cp-roc">—</div><div class="s">vs 30 nights ago</div></div>
     <div class="cp-cell"><div class="l">Verified asks</div><div class="v" id="cp-n">—</div><div class="s" id="cp-n-s">in tonight's mark</div></div>
     <div class="cp-cell"><div class="l">Supply</div><div class="v" id="cp-sup">—</div><div class="s" id="cp-sup-s">live listings of this card</div></div>

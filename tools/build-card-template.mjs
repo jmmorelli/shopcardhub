@@ -10,7 +10,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ebaySearchUrl, SACAT_TCG } from "./lib/epn.mjs";
+import { rawNot, RAW_EXTRA } from "./lib/card-files.mjs";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const DRY = process.argv.includes("--dry");
 const SHELL = fs.readFileSync(path.join(ROOT, "how-prices-work.html"), "utf8");
 const pageCss = (SHELL.match(/<style>([\s\S]*?)<\/style>/) || [])[1];
 const gtag = (SHELL.match(/(<!-- Google Analytics[\s\S]*?<\/script>)/) || [])[1];
@@ -112,19 +114,23 @@ const CSS = `
 .cdp-chart.cdp-wait{min-height:299px}.cdp-more .g{grid-template-columns:repeat(2,minmax(0,1fr))}.cdp-big{font-size:36px}.cdp-tabs button{padding:8px 10px;font-size:14px}.cdp-kv{grid-template-columns:1fr}.cdp-btns{grid-template-columns:1fr}}
 `;
 
-const html = `<!DOCTYPE html>
+const DEFAULT_LOAD = `  <div class="cdp-crumbs"><a href="/">Home</a><span>/</span><a href="/indices">Indices</a><span>/</span><span>Card</span></div>
+  <div class="cdp-miss" id="cdp-load">Loading card… <a href="${ebaySearchUrl({ q: "pokemon card", customid: "card-page", sacat: SACAT_TCG })}" target="_blank" rel="sponsored nofollow noopener">Pokémon singles on eBay →</a></div>
+`;
+const page = (o) => `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <title>Card Price — Raw vs PSA 9 vs PSA 10 vs TAG | ShopCardHub</title>
-  <meta name="description" content="One Pokémon card, every grade: the raw sold mark from its set index beside dated PSA 9, PSA 10 and TAG 10 sales, the grading premium, and eBay links for each grade (Buy It Now or auctions).">
-  <meta name="robots" content="noindex,follow">
-  <link rel="canonical" href="https://www.shopcardhub.com/card">
+  <title>${o.title}</title>
+  <meta name="description" content="${o.desc}">
+  <meta name="robots" content="${o.robots}">
+  <link rel="canonical" href="https://www.shopcardhub.com${o.path}">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Card Price Ladder — Raw vs PSA 9 vs PSA 10 vs TAG">
+  <meta property="og:title" content="${o.ogTitle}">${o.path !== "/card" ? `
+  <meta property="og:url" content="https://www.shopcardhub.com${o.path}">` : ""}
   <meta property="og:site_name" content="ShopCardHub">
   <meta property="og:image" content="https://www.shopcardhub.com/og/pokemon.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -141,21 +147,68 @@ const html = `<!DOCTYPE html>
 
 ${nav}
 
-<main class="cdp" id="cdp" aria-live="polite">
-  <div class="cdp-crumbs"><a href="/">Home</a><span>/</span><a href="/indices">Indices</a><span>/</span><span>Card</span></div>
-  <div class="cdp-miss" id="cdp-load">Loading card… <a href="${ebaySearchUrl({ q: "pokemon card", customid: "card-page", sacat: SACAT_TCG })}" target="_blank" rel="sponsored nofollow noopener">Pokémon singles on eBay →</a></div>
-  <noscript><p class="cdp-miss">This page needs JavaScript to read the card's price ladder. Every card is also listed on its set's index page — <a href="/indices">open the indices</a>.</p></noscript>
+<main class="cdp" id="cdp" aria-live="polite"${o.id ? ` data-card-id="${o.id}"` : ""}>
+${o.load || DEFAULT_LOAD}  <noscript><p class="cdp-miss">This page needs JavaScript to read the card's price ladder. Every card is also listed on its set's index page — <a href="/indices">open the indices</a>.</p></noscript>
 </main>
 
 ${footer}
 
 <script src="/js/grade-links.js?v=2" defer></script>
-<script src="/js/card-page.js?v=8" defer></script>
+<script src="/js/card-page.js?v=9" defer></script>
 <script src="/js/shop-spread.js?v=6" defer></script>
 <script src="/js/card-img.js?v=3" defer></script>
 <script src="/js/vault-track.js?v=6" defer></script>
 </body>
 </html>
 `;
-fs.writeFileSync(path.join(ROOT, "card.html"), html);
+fs.writeFileSync(path.join(ROOT, "card.html"), page({
+  title: "Card Price — Raw vs PSA 9 vs PSA 10 vs TAG | ShopCardHub",
+  desc: "One Pokémon card, every grade: the raw sold mark from its set index beside dated PSA 9, PSA 10 and TAG 10 sales, the grading premium, and eBay links for each grade (Buy It Now or auctions).",
+  robots: "noindex,follow", path: "/card", ogTitle: "Card Price Ladder — Raw vs PSA 9 vs PSA 10 vs TAG",
+}));
 console.log("wrote card.html");
+
+// ---------- P0-A static card pages (PIVOT Oct 19; Night Crew Fri Oct 23) ----------
+// One static /card-<slug> page per basket card of the tickers in STATIC_TICKERS, on the same v2 template: the page carries
+// its id on <main data-card-id>, js/card-page.js renders it exactly like /card?id=. The build bakes what a crawler (and a
+// visitor before JS runs) needs: crumbs, H1, set + number, and the same raw figure + basis line the page shows.
+// Indexability gate (PIVOT §2): index,follow only when the card has >= 20 clean raw sales in 90 days in
+// data/feed/sold-marks.json (n90); otherwise noindex,follow. Sitemap entries are P0-D's (Traffic), not this tool's.
+// Slug rule (keep in step with cardUrl() in js/card-page.js): <card name>-<number>-<set path minus "pokemon-">.
+const STATIC_TICKERS = ["pris25"]; // Mon Oct 26: every live ticker (WOTC tickers: port the edition words from js/grade-links.js into the baked raw link first)
+const GATE_N90 = 20;
+const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const md = (d) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ""); return m ? `${MON[+m[2] - 1]} ${+m[3]}, ${m[1]}` : ""; };
+const money = (n) => n == null ? "" : "$" + Number(n).toLocaleString("en-US", n >= 100 ? { maximumFractionDigits: 0 } : { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+export function staticSlug(c) {
+  const p = String(c.path || "").split("/"); let nm = p[1] || "";
+  try { nm = decodeURIComponent(nm); } catch {}
+  return (nm + "-" + (p[0] || "").replace(/^pokemon-/, "")).toLowerCase().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+let sold = null;
+try { sold = JSON.parse(fs.readFileSync(path.join(ROOT, "data/feed/sold-marks.json"), "utf8")); } catch { sold = null; }
+const n90Of = (c) => { const r = ((sold && sold.cards) || []).find((x) => x.key === "sold:" + c.path && x.cond === "Raw"); return r && r.n90 != null ? r.n90 : 0; };
+let nStatic = 0, nIndexed = 0;
+for (const tk of STATIC_TICKERS) {
+  const d = JSON.parse(fs.readFileSync(path.join(ROOT, "data/cards", tk + ".json"), "utf8"));
+  const setShort = String(d.set).replace(/^Pokémon TCG /, "");
+  for (const c of d.cards) {
+    if (!c.path) continue;
+    const slug = staticSlug(c), indexable = n90Of(c) >= GATE_N90;
+    // Same basis wording as js/card-page.js render() (chase: PriceCharting's ungraded value; sector: median of n raw sales).
+    const basis = c.raw == null ? "Too few raw sales to mark." : d.kind === "chase" ? `PriceCharting’s ungraded value, read ${md(c.rawAsOf)}` : `Median of ${c.wn != null ? c.wn : c.n30} raw sales, ${c.win || d.window || 30} days · marked ${md(c.rawAsOf)}`;
+    const nm = `${c.name} #${c.num}`;
+    const load = `  <div class="cdp-crumbs"><a href="/">Home</a><span>/</span><a href="${esc(d.page)}">${esc(d.ticker)}</a><span>/</span><span>${esc(nm)}</span></div>
+  <div class="cdp-miss" id="cdp-load"><h1>${esc(nm)}</h1><p class="cdp-set"><a href="${esc(d.page)}">${esc(setShort)}</a> · #${esc(c.num)}${c.rarity ? " · " + esc(c.rarity) : ""}</p><p>Raw ${c.raw != null ? `<b>${money(c.raw)}</b> · ` : ""}${esc(basis)}. Loading PSA 9, PSA 10 and TAG 10 sales…</p><p><a href="${esc(ebaySearchUrl({ q: `${c.q || nm} ${rawNot(d.ticker)}${RAW_EXTRA[d.ticker] || ""}`, customid: "card-" + c.id, sacat: SACAT_TCG, av: c.raw >= 200 }))}" target="_blank" rel="sponsored nofollow noopener">Raw copies on eBay →</a></p></div>
+`;
+    const desc = `${nm} ${setShort} price${c.raw != null ? `: raw ${money(c.raw)} (${d.kind === "chase" ? "PriceCharting ungraded" : "median of raw sales"}, ${md(c.rawAsOf)})` : ""}, beside dated PSA 9, PSA 10 and TAG 10 sales and an eBay link for each grade.`;
+    if (!DRY) fs.writeFileSync(path.join(ROOT, `card-${slug}.html`), page({
+      title: `${esc(nm)} ${esc(setShort)} Price — Raw, PSA 9, PSA 10, TAG | ShopCardHub`, desc: esc(desc),
+      robots: indexable ? "index,follow" : "noindex,follow", path: `/card-${slug}`, ogTitle: `${esc(nm)} ${esc(setShort)} — Raw vs PSA 9 vs PSA 10`,
+      id: esc(c.id), load,
+    }));
+    nStatic++; if (indexable) nIndexed++;
+  }
+}
+console.log(`${DRY ? "would write" : "wrote"} ${nStatic} static card pages (${nIndexed} index,follow at >= ${GATE_N90} raw sales / 90 d) for ${STATIC_TICKERS.join(", ")}`);

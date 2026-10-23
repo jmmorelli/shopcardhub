@@ -9,8 +9,12 @@
  * R18 (Oct 8 ruling): a median needs ≥ 3 dated rows; fewer prints as one dated sale. */
 (function () {
   var main = document.getElementById('cdp'); if (!main) return;
-  var id = (new URLSearchParams(location.search).get('id') || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40);
+  // v9 (Night Crew Oct 23, P0-A static pages): a static /card-<slug> page carries its id on <main data-card-id>; /card?id= reads the query.
+  var id = (main.getAttribute('data-card-id') || new URLSearchParams(location.search).get('id') || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40);
   var tk = id.split('-')[0];
+  // Static card pages (P0-A, Oct 23): tickers whose basket has /card-<slug> pages. Same slug rule as tools/build-card-template.mjs staticSlug().
+  var STATIC_TK = { pris25: 1 };
+  function cardUrl(x, tick) { if (!STATIC_TK[tick] || !x.path) return '/card?id=' + x.id; var p = String(x.path).split('/'), nm = p[1] || ''; try { nm = decodeURIComponent(nm); } catch (e) {} return '/card-' + (nm + '-' + (p[0] || '').replace(/^pokemon-/, '')).toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function money(n) { return n == null ? '' : '$' + Number(n).toLocaleString('en-US', n >= 100 ? { maximumFractionDigits: 0 } : { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -68,7 +72,7 @@
     }).join('');
     var p62 = grade62(d, c, G);
     var more = d.cards.filter(function (x) { return x.id !== c.id && x.raw != null; }).slice(0, 8).map(function (x) {
-      return '<a href="/card?id=' + x.id + '"><b>' + esc(x.name) + ' #' + esc(x.num) + '</b>raw ' + money(x.raw) + ' · ' + (x.w === 0 ? 'own line' : x.w != null ? x.w.toFixed(1) + '% of index' : '') + '</a>';
+      return '<a href="' + cardUrl(x, tk) + '"><b>' + esc(x.name) + ' #' + esc(x.num) + '</b>raw ' + money(x.raw) + ' · ' + (x.w === 0 ? 'own line' : x.w != null ? x.w.toFixed(1) + '% of index' : '') + '</a>';
     }).join('');
     // Sales tab: the dated rows we hold (R18) — one per grade, newest sale with its date, plus the median it sits in.
     var salesRows = G.map(function (e) {

@@ -34,26 +34,22 @@
         var c = byKey[key], series = (hist[key] && hist[key].series) || [];
         var priceEl = row.querySelector('.sealed-price'), supEl = row.querySelector('.sealed-sup'), noteEl = row.querySelector('.sealed-note');
         var b30 = row.querySelector('.sealed-box30'), i30 = row.querySelector('.sealed-idx30');
-        // index 30D from indices.json history (weekly marks; falls back to inception)
-        var ih = (idx[ticker] && idx[ticker].history) || [];
-        if (ih.length) { var il = ih[ih.length - 1].level, i0 = back30(ih, 'date', 'level'); if (i0 == null && ih.length > 1) i0 = ih[0].level; var ip = pct(il, i0); i30.textContent = pctText(ip); i30.className = 'sealed-idx30 ' + cls(ip); }
+        // Night Crew Oct 23 (desk ruling Oct 22, Ivan review 3, R20): one live-listing line, no % moves. The 30D box-vs-index
+        // line compared an ask series with a sold-basis index; it is gone (generator v4 drops the .sc row; old markup is ignored).
         if (!c || c.last == null) {
           var n = (c && c.supply != null) ? c.supply : null;
-          priceEl.textContent = n != null && n < 4 ? 'No ask mark · ' + n + ' verified asks (need 4)' : 'No ask mark';
-          b30.textContent = 'n/a'; row.querySelector('.sc').classList.add('on');
+          priceEl.textContent = n != null && n < 4 ? 'Too few live asks to show (' + n + ' verified, need 4)' : 'Too few live asks to show';
           return;
         }
         var last = series.length ? series[series.length - 1] : null;
         var n = last && last.n != null ? last.n : c.supply;
         priceEl.textContent = fmt(c.last);
-        supEl.textContent = (n != null ? n + ' verified asks' : '') + (last ? ' · ' + last.d.slice(5).replace('-', '/') : '');
+        // a real separator in the text (innerText read "$13842 verified asks" with only a CSS margin between them)
+        supEl.textContent = ' typical low ask' + (n != null ? ' · ' + n + ' live' : '') + (last ? ' · ' + last.d.slice(5).replace('-', '/') : '');
         if (n != null && n < 8) { supEl.textContent += ' · thin'; supEl.className = 'sealed-sup thin'; }
-        var p0 = back30(series, 'd', 'p'); var bp = pct(c.last, p0);
-        b30.textContent = series.length < 2 ? 'day 1' : pctText(bp); b30.className = 'sealed-box30 ' + cls(bp);
-        if (last && daysAgo(last.d) > 4) noteEl.textContent = '· stale mark (' + Math.round(daysAgo(last.d)) + 'd)';
-        row.querySelector('.sc').classList.add('on');
+        if (last && daysAgo(last.d) > 4 && noteEl) noteEl.textContent = ' · last read ' + Math.round(daysAgo(last.d)) + ' days ago';
       });
     }).catch(function () { /* feed unreachable: say so plainly; the 30D line stays hidden (B70, Night Crew Oct 14) */
-      rows.forEach(function (row) { var el = row.querySelector('.sealed-price'); if (el && !el.textContent) el.textContent = 'No ask mark'; });
+      rows.forEach(function (row) { var el = row.querySelector('.sealed-price'); if (el && !el.textContent) el.textContent = 'Live asks unavailable right now'; });
     });
 })();
