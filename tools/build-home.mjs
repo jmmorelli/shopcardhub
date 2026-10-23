@@ -16,6 +16,16 @@
 // after editing data/releases.json or data/indices.json). Homepage rework Sep 19 2026 (Mo): the
 // "From the engine last night" panel and the In Focus strip are gone — tape + releases replace them.
 //
+// HOME V2 (Oct 23 2026, Mo: "push all of this live tonight" — DESIGN-DIRECTIVE-2026-10-23 §4 P0-B): / is the Seeking-Alpha
+// layout. tools/lib/home-v2.mjs builds three more blocks every bake —
+//   <!-- HOME:idxbox:START/END -->   the tabbed index box (every live ticker, every tab, chart payload, the sealed eBay button)
+//   <!-- HOME:releases:START/END --> Coming out (new markup, same data/releases.json)
+//   <!-- HOME:movers2:START/END -->  What moved this week (card-level, basket price vs prevPrice, 12-month shape)
+// and the long index board (HOME:indexboard) and the Bowman movers list (HOME:movers) are gone from / — they are optional
+// markers now (skipped when absent), the board lives on /indices. The engine screens + HOME:stamp stay, collapsed.
+// `--init-v2` installs the v2 <main> skeleton + head links once (idempotent; it carries the SIGNUP, regime, screens,
+// where-to-start and tm-foot blocks over verbatim). After every write, home-v2.html (the noindex preview) is re-derived.
+//
 // Usage:  node tools/build-home.mjs            node tools/build-home.mjs --dry
 //         FEED_BASE=/path/to/price-data/data node tools/build-home.mjs   (local clone; a URL also works)
 //         node tools/build-home.mjs --releases-only   (no feed needed: re-bakes ONLY the releases panel, says so)
@@ -35,6 +45,8 @@ const DRY = process.argv.includes("--dry");
 const RELEASES_ONLY = process.argv.includes("--releases-only");
 const FEED_BASE = process.env.FEED_BASE || "https://www.shopcardhub.com/feed";
 const require = createRequire(import.meta.url);
+const V2 = await import("./lib/home-v2.mjs");
+const INIT_V2 = process.argv.includes("--init-v2");
 const HOME = require(path.join(REPO, "js/home.js"));
 const ST = require(path.join(REPO, "js/engine-stats.js"));
 const read = (f) => fs.readFileSync(path.join(REPO, f), "utf8");
@@ -85,12 +97,35 @@ const upcomingN = HOME.upcoming(releases, TODAY).length;
 if (!upcomingN) throw new Error(`releases.json: nothing dated on or after ${TODAY} — add the next releases before baking`);
 
 let html = read("index.html");
+/* ---- v2 skeleton (one-time, or whenever the page lacks the v2 markers) ---- */
+if (INIT_V2 || !/<!-- HOME:idxbox:START -->/.test(html)) {
+  const grab = (re, what) => { const m = html.match(re); if (!m) throw new Error(`index.html: cannot carry the ${what} block into the v2 skeleton (anchor missing)`); return m[0]; };
+  const carry = {
+    signup: grab(/<!-- SIGNUP:START[\s\S]*?<!-- SIGNUP:END -->/, "SIGNUP"),
+    regime: grab(/<!-- HOME:regime:START -->[\s\S]*?<!-- HOME:regime:END -->/, "HOME:regime"),
+    screens: grab(/<details class="panel scr-fold" id="screens-fold">[\s\S]*?<\/details>/, "engine screens"),
+    startHere: grab(/<section class="panel start-here"[\s\S]*?<\/section>/, "where-to-start"),
+    foot: grab(/<p class="tm-foot">[\s\S]*?<\/p>/, "tm-foot"),
+  };
+  const main = html.match(/<main class="tmain[^"]*" id="main">[\s\S]*?<\/main>/);
+  if (!main) throw new Error("index.html: <main class=\"tmain\" id=\"main\"> … </main> not found");
+  html = html.replace(main[0], V2.skeleton(carry));
+  // head: the shared v2 stylesheet + script; the retired returning-visitor slot (js/home-you.js) and its pre-paint reservation go
+  if (!/\/css\/home-v2\.css/.test(html)) html = html.replace(/(<link rel="stylesheet" href="\/css\/terminal-shell\.css[^"]*">)/, '$1\n  <link rel="stylesheet" href="/css/home-v2.css?v=1">');
+  // home-v2.js runs BEFORE home.js (both deferred, document order): it opens the "More" fold on a /#screen= deep link before home.js scrolls there
+  if (!/\/js\/home-v2\.js/.test(html)) html = html.replace(/(<script src="\/js\/home\.js[^"]*" defer><\/script>)/, '<script src="/js/home-v2.js?v=1" defer></script>\n$1');
+  html = html.replace(/\n\s*<script src="\/js\/home-you\.js[^"]*" defer><\/script>/, "");
+  html = html.replace(/\n\s*<!-- Night Crew Oct 8 \(NEW-1\)[\s\S]*?<\/script>(?=\n\s*<\/head>)/, "");
+  html = html.replace(/<div class="term" data-prices-updated=/, '<div class="term h2-page" data-prices-updated=');
+  console.log("v2 skeleton installed in index.html (SIGNUP, HOME:regime, screens, where-to-start, tm-foot carried over)");
+}
 // B75 (Night Crew Oct 16, phone teardown): the Chart/markets, Upcoming releases and tape panels were removed from /.
 // Those keys are optional now: a missing block is skipped (logged), every other block still fails the bake when missing.
-const OPTIONAL = new Set(["markets", "chart", "tape", "releases"]);
+// Home v2 (Oct 23): the index board and the Bowman movers list left / too.
+const OPTIONAL = new Set(["markets", "chart", "tape", "indexboard", "movers"]);
 const put = (key, body) => {
   const re = new RegExp(`(<!-- HOME:${key}:START -->)[\\s\\S]*?(<!-- HOME:${key}:END -->)`);
-  if (!re.test(html) && OPTIONAL.has(key)) { console.log(`HOME:${key} not on the page (removed, B75) - skipped`); return; }
+  if (!re.test(html) && OPTIONAL.has(key)) { console.log(`HOME:${key} not on the page (removed) - skipped`); return; }
   if (!re.test(html)) throw new Error(`index.html has no <!-- HOME:${key}:START/END --> markers`);
   html = html.replace(re, (m, a, b) => `${a}\n${body}\n${b}`);
 };
@@ -122,8 +157,15 @@ if (latest && history) {
   sub(/(<meta property="og:description" content="[^"]*?sold comps, )re-marked [^"]*?(, every card)/, `$1re-marked ${cad.short}$2`, "og:description");
   console.log(`cadence: ${cad.twice} of ${cad.n} live tickers Mon + Thu, ${cad.weekly} Monday only`);
 }
-put("releases", HOME.renderReleases(releases, TODAY, 9));
-console.log(`releases: ${upcomingN} upcoming from ${TODAY} (asOf ${releases.asOf}) · tape ${latest && history ? HOME.tapeItems(HOME.buildModel(latest, history, market, indices), indices).length : "?"} items`);
+/* ---- v2 blocks: the index box, Coming out, What moved this week (tools/lib/home-v2.mjs) ---- */
+const v2 = V2.buildV2(REPO, { today: TODAY });
+put("idxbox", v2.blocks.idxbox);
+put("releases", v2.blocks.releases);
+put("movers2", v2.blocks.movers2);
+console.log(`home v2: ${v2.summary}`);
+console.log(`releases: ${upcomingN} upcoming from ${TODAY} (asOf ${releases.asOf}) · ${v2.RELEASES.length} shown`);
 
 if (!DRY) fs.writeFileSync(path.join(REPO, "index.html"), html);
 console.log(`${DRY ? "would update" : "updated"} index.html`);
+// the noindex preview is index.html with a preview head (one source, no drift)
+if (fs.existsSync(path.join(REPO, "home-v2.html"))) { if (!DRY) fs.writeFileSync(path.join(REPO, "home-v2.html"), V2.previewFromIndex(html)); console.log(`${DRY ? "would update" : "updated"} home-v2.html (preview derived from index.html)`); }

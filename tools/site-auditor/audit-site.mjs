@@ -492,6 +492,8 @@ const CONVERSION_EXEMPT = new Set([
   // 15b. The home is exempt from the strip because its conversion surface is the SEALED column on the
   // index board (one gold eBay button per ticker, customid=home-<ticker>). If the board bake ever drops it,
   // the front door has no way to buy again — the exact gap the Sep 26 2026 EPN read found.
+  // Home v2 (Oct 23 2026): the same links ride on the index box rows (data-buy, tools/lib/home-v2.mjs) and the
+  // selected row's button under the chart — same customid prefix, same count.
   {
     const home = markup("index.html");
     const n = (home.match(/customid=home-[a-z0-9]+/g) || []).length;

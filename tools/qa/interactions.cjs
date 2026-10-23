@@ -55,7 +55,7 @@ const V1_STORE = { demo: false, cards: [
  *   all   : run the scenario once per matching element (the "every …" scenarios)
  *   pre   : async (page) => {} run after load, before the click (open a menu, switch a tab)
  *   optional: selector may be absent (WARN scenario-skipped instead of FAIL dead-control) */
-const openScreensFold = async (page) => { await page.evaluate(() => { const d = document.getElementById("screens-fold"); if (d) d.open = true; }); await page.waitForTimeout(150); };
+const openScreensFold = async (page) => { await page.evaluate(() => { const m = document.querySelector("details.h2-more"); if (m) m.open = true; const d = document.getElementById("screens-fold"); if (d) d.open = true; }); await page.waitForTimeout(150); };   /* Oct 23 (home v2): the screens fold sits inside the "More" fold on / */
 const ownTab = async (page) => { const t = await page.$("#tabOwn"); if (t) { await t.click(); await page.waitForTimeout(250); } };
 const openPfMenu = async (page) => { await ownTab(page); await page.click(".pf-name", { timeout: 3000 }); await page.waitForTimeout(150); };
 /* COMMON runs on every page the suite visits (added Sep 12 2026: build-nav.js emitted the
@@ -80,9 +80,18 @@ const SCENARIOS = {
     { name: "markets PRE row (n-a, must link)", sel: "a.mrow.pre-row", all: true, expect: "nav", optional: true },
     { name: "chart caption link", sel: ".chart-cap a", expect: "nav", optional: true },
     /* Oct 21 (Gate Keeper): "Release guides »" and the scrolling tape left the home in Night Crew B75 (841f244b, Oct 16); scenarios retired. */
-    { name: "Full board »", sel: 'a:text-is("Full board »")', expect: "nav" },
-    { name: "Auction Desk »", sel: 'a:text-is("Auction Desk »")', expect: "nav" },
-    { name: "upcoming release link", sel: '[data-home="releases"] li a', all: true, expect: "nav", optional: true },
+    /* Oct 23 2026 (home v2, Mo: "push all of this live tonight"): the Bowman movers / Ending soon panels left /; the index box,
+       Coming out and the four tiles replaced them. Release rows link the set page where one exists, else a sealed eBay search
+       (off-box, aborted by the harness) — only the internal ones are navigation scenarios here. */
+    { name: "index box tab", sel: ".h2-tab:not([aria-selected='true'])", all: true, expect: "dom", panel: ".h2-box" },
+    { name: "index box row (chart swaps)", sel: "#h2-rows tr:not([hidden]):not([aria-selected='true'])", expect: "dom", panel: ".h2-viz" },
+    { name: "index box range", sel: "#h2-rng button:not([hidden]):not([aria-pressed='true'])", expect: "dom", panel: "#h2-chart" },
+    { name: "index box Every card →", sel: "#h2-open", expect: "nav" },
+    { name: "index box All sets →", sel: ".h2-r2 .q a.all", expect: "nav" },
+    { name: "movers Down toggle", sel: ".h2-tile .tog button[data-dir='down']", expect: "dom", panel: ".h2-tile" },
+    { name: "tile see all →", sel: ".h2-tiles .q a.all", all: true, expect: "nav" },
+    { name: "upcoming release link (set page)", sel: '[data-home="releases"] li a[href^="/"]', all: true, expect: "nav", optional: true },
+    { name: "Full calendar →", sel: '.h2-rel .ft a', expect: "nav" },
     { name: "movers card link", sel: '[data-home="movers"] li a', expect: "nav", optional: true },
     { name: "screens row link", sel: "[data-screen-body]:not([hidden]) td.sym a, #screens td.sym a", expect: "nav", optional: true, pre: openScreensFold },
     { name: "deep link #screen=fat on load", sel: "#screens", expect: "screen-on-load", hash: "#screen=fat", panel: "#screens" },

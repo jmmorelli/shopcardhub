@@ -720,10 +720,12 @@ try {
     // (HOME:indexboard), or a HOME:markets row. Tickers the board deliberately keeps off / (WOTC 1st Edition / Shadowless,
     // Sep 30 ruling — same test as ibGroup() in js/home.js) must still be reachable from the CHART picker.
     const mk = home.match(/<!-- HOME:markets:START -->([\s\S]*?)<!-- HOME:markets:END -->/);
-    const ib = home.match(/<!-- HOME:indexboard:START -->([\s\S]*?)<!-- HOME:indexboard:END -->/);
+    // Home v2 (Oct 23 2026): the board left /; the tabbed index box (HOME:idxbox, tools/lib/home-v2.mjs) prints every live
+    // ticker's level in the same <b>TK</b> … <td class="num ib-lvl">level</td> shape, so the cross-check reads either block.
+    const ib = home.match(/<!-- HOME:indexboard:START -->([\s\S]*?)<!-- HOME:indexboard:END -->/) || home.match(/<!-- HOME:idxbox:START -->([\s\S]*?)<!-- HOME:idxbox:END -->/);
     // Night Crew Oct 16 (B75, phone teardown ruled by the CoS with Mo, Oct 14): the CHART panel (HOME:markets) was removed
     // from /. Levels are checked on the board; tickers the board keeps off / are reached from /indices, not from a picker.
-    if (!ib) add("WARN", "home-index-level", "index.html", "HOME:indexboard block not found - cannot cross-check index levels");
+    if (!ib) add("WARN", "home-index-level", "index.html", "neither HOME:indexboard nor HOME:idxbox found - cannot cross-check index levels");
     else {
       for (const [tk, v] of Object.entries(idx)) {
         if (!v || typeof v !== "object" || Array.isArray(v) || v.status !== "live" || !Array.isArray(v.history)) continue;
