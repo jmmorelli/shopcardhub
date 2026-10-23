@@ -12,16 +12,16 @@
 //        • their PSA 10 / PSA 9 graded marks (data/cards/g-<tk>.json) when the mark is a 30-day median (basis "30d");
 //        • the Bowman watchlist (data/watchlist.json) against data/feed/sold-marks.json (>= 3 sales in 30 days).
 //   2. One /api/comps call per candidate (our own endpoint, tool header, customid=deals): Buy It Now only, inside the
-//      price band [FLOOR x mark .. 0.97 x mark], cheapest first. The band is what keeps this at ~500 Browse calls a run.
+//      price band [FLOOR x mark .. UNDER x mark], cheapest first. The band is what keeps this at ~500 Browse calls a run.
 //   3. Verification, each stage logged by reason (the TCGBerg cascade, our rules):
 //        L1 exact card — name tokens + card number in the title (Pokémon) / the engine's verifyListings (Bowman);
 //        L2 variant — 1st Edition / Shadowless / Unlimited / language / reverse / promo must not contradict the basket;
 //        L3 grade — PSA rows: the title names exactly that PSA grade and no other grader; raw rows: no grading words;
 //        L4 condition — raw rows must be Ungraded/New with no damage words in the title (eBay's summary field only
 //                       says Ungraded/Graded); PSA rows must not be marked Ungraded.
-//   4. Deal = (price + shipping) <= 0.97 x mark AND >= FLOOR x mark (deeper than that is a mislabel or damage, not a
+//   4. Deal = (price + shipping) <= UNDER x mark AND >= FLOOR x mark (deeper than that is a mislabel or damage, not a
 //      deal — held back, counted). Top KEEP_PER_CARD per card+grade, sorted by discount.
-//   5. Writes ONE file (--out), derived rows only: our ids, numbers, the affiliate URL, image URL, end time, seller
+//   5. Writes ONE file (--out; the Action publishes it as data/feed/deals-latest.json on main), derived rows only: our ids, numbers, the affiliate URL, image URL, end time, seller
 //      feedback. NO listing titles (R17/R20 feed hygiene — same as the nightly feed).
 //
 // Mark freshness gates: raw <= RAW_MAX_AGE_DAYS, graded <= GRADED_MAX_AGE_DAYS, Bowman lastSale <= 30d.
@@ -47,11 +47,22 @@ const LIMIT = parseInt(arg("--limit", "0"), 10) || 0;          // cap candidates
 const PAUSE_MS = parseInt(arg("--pause", "650"), 10);
 
 // ---- tunables (all named here, all printed into the feed's `rules` block) ----
-const RAW_PER_TICKER = 8, G10_PER_TICKER = 4, G9_PER_TICKER = 3, KEEP_PER_CARD = 3;
-const RAW_MIN_MARK = 15, GRADED_MIN_MARK = 40;
+const RAW_PER_TICKER = 8, G10_PER_TICKER = 4, G9_PER_TICKER = 3, KEEP_PER_CARD = 2;
+const RAW_MIN_MARK = 25, GRADED_MIN_MARK = 40;
 const RAW_MAX_AGE_DAYS = 14, GRADED_MAX_AGE_DAYS = 21, BOWMAN_MAX_AGE_DAYS = 30;
-const UNDER = 0.97;                       // a deal is at least 3% under the mark, all-in
-const FLOOR = { raw: 0.5, psa9: 0.45, psa10: 0.45, bowman: 0.5, sealed: 0.6 };   // deeper = mislabel/damage, held back
+// First full read (Oct 23 2026, 105 modern-Pokémon candidates): the raw sold mark (PriceCharting ungraded) sits ~10-15% above
+// the eBay Buy It Now floor on modern cards, so "3% under" would have printed 139 raw rows — a shelf, not a screen. Raw rows
+// must be 10% under; slabs (30-day PSA median of eBay sales, closer to the ask side) 5%. Floors: 55% — a PSA 10 at 46% of
+// its 30-day median is where mislabels live, and the page would rather miss one real steal than print one fake.
+const UNDER = { raw: 0.90, psa9: 0.95, psa10: 0.95, bowman: 0.90, sealed: 0.95 };
+const FLOOR = { raw: 0.65, psa9: 0.55, psa10: 0.55, bowman: 0.55, sealed: 0.65 };   // deeper = mislabel/damage, held back
+// Vintage raw (set released before VINTAGE_BEFORE): the second full read (78 WOTC-era candidates) printed 81 raw rows
+// clustered at -40..-50% — played copies whose sellers said nothing, against a clean-sale mark. A raw vintage row only
+// counts when the title itself claims the condition (NM / near mint / mint / pack fresh) and sits no deeper than -25%.
+const VINTAGE_BEFORE = 2010;
+const VINTAGE_RAW_FLOOR = 0.75;
+const NM_CLAIM = /\b(nm|near\s?mint|mint|pack\s?fresh)\b/;
+const MIN_SELLER_SCORE = 10;              // feedback count; a 100% seller with 2 reviews is not a trust signal
 const MIN_SELLER_PCT = 97;                // below this the listing is dropped (believability)
 
 const read = (f) => JSON.parse(fs.readFileSync(path.join(REPO, f), "utf8"));
@@ -88,7 +99,7 @@ const VARIANT = {
   promo: /\b(promo|black\s?star|pokemon\s?center|pokémon\s?center|cosmos|stamped|league)\b/,
 };
 
-function verifyPokemon(l, c, grade, ed, wotc) {
+function verifyPokemon(l, c, grade, ed, wotc, vintage) {
   const t = norm(l.title);
   const toks = nameTokens(c.name);
   const miss = toks.find((tok) => !t.includes(tok));
@@ -109,6 +120,7 @@ function verifyPokemon(l, c, grade, ed, wotc) {
     if (RAW_DAMAGE.test(t)) return "L4 damage word: " + RAW_DAMAGE.exec(t)[0];
     const cond = String(l.condition || "").toLowerCase();
     if (cond && !/ungraded|near mint|like new|^new\b|brand new/.test(cond)) return "L4 condition (" + cond + ")";
+    if (vintage && !NM_CLAIM.test(t)) return "L4 vintage raw without an NM claim";
   } else {
     const cond = String(l.condition || "").toLowerCase();
     if (/ungraded/.test(cond)) return "L4 condition says ungraded on a PSA row";
@@ -150,7 +162,8 @@ function candidates() {
     if (!exists(f)) continue;
     const b = read(f);
     const cards = (b.cards || []).filter((c) => c && typeof c === "object" && c.q);
-    const base = { tk, idx: v.name || b.name, page: v.page || b.page, ed: b.ed || null, wotc: !!b.wotc };
+    const year = parseInt(String(v.releaseDate || "").slice(0, 4), 10);
+    const base = { tk, idx: v.name || b.name, page: v.page || b.page, ed: b.ed || null, wotc: !!b.wotc, vintage: Number.isFinite(year) && year < VINTAGE_BEFORE };
     const live = cards.filter((c) => Number.isFinite(c.raw) && !c.screened && c.raw >= RAW_MIN_MARK && ageDays(c.rawAsOf) <= RAW_MAX_AGE_DAYS)
       .sort((a, b2) => (b2.w || 0) - (a.w || 0)).slice(0, RAW_PER_TICKER);
     for (const c of live) out.push({ ...base, kind: "pokemon", grade: "raw", card: c, mark: c.raw, markAsOf: c.rawAsOf, markN: c.n30 ?? null, markBasis: `${b.window || 30}d median of clean ungraded sales`, q: c.q, categoryIds: "183454" });
@@ -193,9 +206,10 @@ function candidates() {
 
 // ---- fetch ----
 async function comps(cand) {
-  const floor = FLOOR[cand.kind === "bowman" ? cand.grade === "sealed" ? "sealed" : "bowman" : cand.grade];
-  const lo = Math.max(1, Math.floor(cand.mark * floor)), hi = Math.ceil(cand.mark * UNDER);
-  if (hi <= lo) return { listings: [], floor };
+  const tier = cand.kind === "bowman" ? cand.grade === "sealed" ? "sealed" : "bowman" : cand.grade;
+  const floor = cand.vintage && cand.grade === "raw" ? VINTAGE_RAW_FLOOR : FLOOR[tier], under = UNDER[tier];
+  const lo = Math.max(1, Math.floor(cand.mark * floor)), hi = Math.floor(cand.mark * under);
+  if (hi <= lo) return { listings: [], floor, under };
   const u = new URL(SITE + "/api/comps");
   u.searchParams.set("q", cand.q); u.searchParams.set("buying", "FIXED_PRICE"); u.searchParams.set("price", `${lo}..${hi}`);
   u.searchParams.set("sort", "price"); u.searchParams.set("limit", "50"); u.searchParams.set("customid", "deals");
@@ -203,7 +217,7 @@ async function comps(cand) {
   const r = await fetch(u, { headers: { Accept: "application/json", "x-shopcardhub-client": "tool" } });
   if (!r.ok) throw new Error(`/api/comps -> HTTP ${r.status}`);
   const j = await r.json();
-  return { listings: j.listings || [], floor };
+  return { listings: j.listings || [], floor, under };
 }
 
 function score(row) {
@@ -222,23 +236,24 @@ async function main() {
   const rows = [];
   const t0 = Date.now();
   for (const [i, cand] of cands.entries()) {
-    let listings = [], floor = 0.5;
-    try { ({ listings, floor } = await comps(cand)); counts.calls++; }
+    let listings = [], floor = 0.55, under = 0.9;
+    try { ({ listings, floor, under } = await comps(cand)); counts.calls++; }
     catch (e) { counts.errors++; console.warn(`  ! ${cand.tk} ${cand.card.name} ${cand.grade}: ${e.message}`); await sleep(PAUSE_MS * 2); continue; }
     counts.scanned += listings.length;
     const kept = [];
     for (const l of listings) {
       if (l.buyingOption && l.buyingOption !== "FIXED_PRICE") continue;
-      const why = cand.kind === "bowman" ? verifyBowman(l, cand.wlCard) : verifyPokemon(l, cand.card, cand.grade, cand.ed, cand.wotc);
+      const why = cand.kind === "bowman" ? verifyBowman(l, cand.wlCard) : verifyPokemon(l, cand.card, cand.grade, cand.ed, cand.wotc, cand.vintage);
       if (why) { const k = why.split(" ").slice(0, 2).join(" "); counts.rejected[k] = (counts.rejected[k] || 0) + 1; continue; }
       const price = Number(l.price); if (!Number.isFinite(price) || price < 1) continue;
       const shipUnknown = !Number.isFinite(l.shipping);
       const ship = shipUnknown ? 0 : Number(l.shipping);
       const total = round2(price + ship);
       const sellerPct = Number(l.seller && l.seller.feedbackPct);
-      if (Number.isFinite(sellerPct) && sellerPct < MIN_SELLER_PCT) { counts.rejected["seller feedback"] = (counts.rejected["seller feedback"] || 0) + 1; continue; }
+      const sellerN = Number(l.seller && l.seller.feedbackScore);
+      if ((Number.isFinite(sellerPct) && sellerPct < MIN_SELLER_PCT) || (Number.isFinite(sellerN) && sellerN < MIN_SELLER_SCORE)) { counts.rejected["seller feedback"] = (counts.rejected["seller feedback"] || 0) + 1; continue; }
       counts.verified++;
-      if (total > cand.mark * UNDER) continue;
+      if (total > cand.mark * under) continue;
       if (total < cand.mark * floor) { counts.heldBelowFloor++; continue; }
       const row = {
         tk: cand.tk, idx: cand.idx, page: cand.page, kind: cand.kind, grade: cand.grade,
@@ -248,7 +263,7 @@ async function main() {
         mark: round2(cand.mark), markAsOf: cand.markAsOf, markN: cand.markN, markBasis: cand.markBasis,
         disc: round2(total / cand.mark - 1),
         url: l.url, image: l.image || null, ends: l.endDate || null,
-        cond: l.condition || null, condStated: /near mint|like new|new|graded/i.test(String(l.condition || "")),
+        vintage: !!cand.vintage, cond: l.condition || null, condStated: /near mint|like new|new|graded/i.test(String(l.condition || "")),
         seller: l.seller ? { pct: l.seller.feedbackPct ?? null, score: l.seller.feedbackScore ?? null } : null,
       };
       row.score = score(row);
@@ -265,7 +280,7 @@ async function main() {
   const feed = {
     _comment: "GENERATED by tools/price-engine/deals.mjs — Buy It Now listings priced below our dated SOLD mark for the exact card and grade. Derived rows only: no listing titles, sellers' names or item ids. mark = the index's own dated sold comp (PriceCharting / SportsCardsPro ungraded, or the graded ladder's 30-day PSA median); the listing is a live eBay ask. Never blended.",
     generated: new Date().toISOString(), day: today(),
-    rules: { under: UNDER, floor: FLOOR, minSellerPct: MIN_SELLER_PCT, rawPerTicker: RAW_PER_TICKER, g10PerTicker: G10_PER_TICKER, g9PerTicker: G9_PER_TICKER, keepPerCard: KEEP_PER_CARD, rawMinMark: RAW_MIN_MARK, gradedMinMark: GRADED_MIN_MARK, maxAgeDays: { raw: RAW_MAX_AGE_DAYS, graded: GRADED_MAX_AGE_DAYS, bowman: BOWMAN_MAX_AGE_DAYS } },
+    rules: { under: UNDER, floor: FLOOR, vintageBefore: VINTAGE_BEFORE, vintageRawFloor: VINTAGE_RAW_FLOOR, vintageRawNeedsNmClaim: true, minSellerPct: MIN_SELLER_PCT, minSellerScore: MIN_SELLER_SCORE, rawPerTicker: RAW_PER_TICKER, g10PerTicker: G10_PER_TICKER, g9PerTicker: G9_PER_TICKER, keepPerCard: KEEP_PER_CARD, rawMinMark: RAW_MIN_MARK, gradedMinMark: GRADED_MIN_MARK, maxAgeDays: { raw: RAW_MAX_AGE_DAYS, graded: GRADED_MAX_AGE_DAYS, bowman: BOWMAN_MAX_AGE_DAYS } },
     counts, customId: "deals",
     affiliateTagged: rows.some((r) => r.url && r.url.includes("mkevt=")),
     rows,

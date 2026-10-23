@@ -5,7 +5,7 @@
 // /data/feed/<file>). No token, no secret, and nothing breaks when the repo goes private.
 // listings-history.json (raw-listing store) and ga4-*.json never leave the price-data branch.
 
-export const PUBLIC_FEED = new Set(["prices-latest.json", "prices-history.json", "market-latest.json"]);
+export const PUBLIC_FEED = new Set(["prices-latest.json", "prices-history.json", "market-latest.json", "deals-latest.json"]);
 
 const SITE = (process.env.SITE_URL || "https://www.shopcardhub.com").replace(/\/$/, "");
 const TTL_MS = 5 * 60_000;

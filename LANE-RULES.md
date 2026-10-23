@@ -1189,14 +1189,17 @@ Mo, Oct 22, after a high-engagement @LugiaConsulting post listing vintage set ma
 list of fixed-price eBay listings priced under their mark. We had the auction half (/auctions) and not the Buy It Now half, which
 is the click that converts. Mo asked for it in chat; that is the R25 exemption ("unless Mo asks") on the record.
 
-- **What it is:** `/deals` + `/api/deals`, fed by `tools/price-engine/deals.mjs` (GitHub Action `deals.yml`, 3x/day, writes
-  `data/deals-latest.json` to the private `price-data` branch; no deploy per refresh). Nav: Tools & Guides → Trackers;
-  Terminal rail. Noindex, out of the sitemap (same call as /auctions, B64). `/deals?tk=<ticker>` pre-filters one index.
+- **What it is:** `/deals` + `/api/deals`, fed by `tools/price-engine/deals.mjs` (GitHub Action `deals.yml`, 3x/day, publishes
+  `data/feed/deals-latest.json` onto main — the public-feed path, R19; one small build per refresh). Nav: Tools & Guides →
+  Trackers; Terminal rail. Noindex, out of the sitemap (same call as /auctions, B64). `/deals?tk=<ticker>` pre-filters one index.
 - **The yardstick is our mark, nothing else.** Raw = the set index's dated sold mark (`data/cards/<tk>.json` raw); PSA 10 / PSA 9 =
   the graded ladder's 30-day median only (`g-<tk>.json`, basis "30d"); Bowman = `sold-marks.json` with ≥3 sales in 30 days. An
   ask-basis figure is never a yardstick here (R20). Stale marks are skipped (raw > 14 d, graded > 21 d, Bowman > 30 d).
-- **A deal is price + shipping ≤ 97% of the mark and ≥ ~50% of it** (45% on slabs, 60% sealed). Deeper is held back as a probable
-  mislabel or damage and counted, never shown. Top 3 rows per card and grade.
+- **A deal is price + shipping at least 10% under the mark on raw rows and 5% under on slabs, and no deeper than 65% of the mark
+  (55% slabs).** Deeper is held back as a probable mislabel or damage and counted, never shown. **Vintage raw (set released
+  before 2010) counts only when the title itself claims NM / near mint / mint / pack fresh, and no deeper than −25%** — the
+  first read printed 81 WOTC raw rows at −40..−50%, played copies against a clean-sale mark, and the rule turned that into 5.
+  Top 2 rows per card and grade.
 - **Verification is by title, logged by reason:** name tokens + card number; edition words agree with the ticker (1st / Shadowless /
   Unlimited); no other language, reverse, promo; raw rows carry no grading word and no damage word ("READ" counts); PSA rows name
   exactly that PSA grade and no other grader; sellers under 97% feedback dropped. Bowman rows run the engine's `verifyListings`.
