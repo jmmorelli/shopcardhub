@@ -198,7 +198,7 @@
       var svg = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(s.lbl) + ' monthly price history">';
       for (var t = 0; t <= 3; t++) { var v = y0 + (y1 - y0) * t / 3, yy = y(v).toFixed(1); svg += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + yy + '" y2="' + yy + '" stroke="rgba(255,255,255,.07)"/><text x="' + (padL - 6) + '" y="' + (+yy + 4) + '" text-anchor="end" font-size="11" fill="#7a969e" font-family="ui-monospace,monospace">' + money(v) + '</text>'; }
       var step = Math.max(1, Math.round(R.length / (W < 560 ? 4 : 7)));
-      R.forEach(function (r, i) { if (i % step === 0 || i === R.length - 1) { var mo = r[0]; svg += '<text x="' + x(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + (i === R.length - 1 ? 'end' : i === 0 ? 'start' : 'middle') + '" font-size="11" fill="#7a969e" font-family="ui-monospace,monospace">' + MON[+mo.slice(5, 7) - 1] + ' ’' + mo.slice(2, 4) + '</text>'; } });
+      R.forEach(function (r, i) { if ((i % step === 0 && R.length - 1 - i >= step * 0.75) || i === R.length - 1) { var mo = r[0]; svg += '<text x="' + x(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + (i === R.length - 1 ? 'end' : i === 0 ? 'start' : 'middle') + '" font-size="11" fill="#7a969e" font-family="ui-monospace,monospace">' + MON[+mo.slice(5, 7) - 1] + ' ’' + mo.slice(2, 4) + '</text>'; } });
       // 3-month average (dashed), then the monthly points joined by a thin line
       var ma = '', pen = false;
       R.forEach(function (r, i) {

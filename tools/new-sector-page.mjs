@@ -154,7 +154,7 @@ if (s.pre) {
 </style>
 <div class="pre-sh" data-prices-updated="2026-10-04">
   <div class="pm">
-    <div><div class="eb">▮ Set Index · Sector Model · Pre-launch</div>
+    <div><div class="eb">▮ Set Index · Pre-launch</div>
     <h2>${TK} <i>·</i> ${setE} Set Index</h2>
     <p class="sub">Every card in Pokémon ${setE} (${esc(CFG.code)}), priced from dated sold comps once the cards trade, re-marked Monday and Thursday. 100 = ${CFG.baseMon}, the set's release month. Nothing is printed before real sales exist. ${esc(CFG.chase)} is the chase.</p></div>
     <div><div class="lv">PRE</div><div class="lvc">first level: the Monday or Thursday after enough cards clear the screen</div></div>
