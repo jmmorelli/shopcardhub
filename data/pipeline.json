@@ -3222,7 +3222,7 @@
       "area": "indices",
       "by": "integrity-watch",
       "severity": "MED",
-      "title": "MED: NG00 'Sliding \u00b7 down 7.8%' is ~90% one card's sampling swing (Lugia #9 549.99 -> 427.50 on a bimodal, row-capped sample); a German-language copy passes TITLE_BAD.",
+      "title": "MED: NG00 'Sliding · down 7.8%' is ~90% one card's sampling swing (Lugia #9 549.99 -> 427.50 on a bimodal, row-capped sample); a German-language copy passes TITLE_BAD.",
       "decision": "CoS desk 2026-10-22: accepted, queued -> Wed Oct 28 weekly (Index Keeper): (a) non-English language terms in TITLE_BAD (a tightening, never a softening of the gate); (c) the plain read names the top card when it is >75% of the week's move; (d) 'window = the source's last ~50 rows' where the cap binds. (b) hold-or-IQR rule is methodology: the weekly writes it as a doctrine option beside P9. Generator + engine changes, so not applied by the desk."
     },
     {
@@ -3252,8 +3252,8 @@
       "area": "claims",
       "by": "integrity-watch",
       "severity": "LOW",
-      "title": "LOW: site nav labels /best-hobby-boxes-2026 'Best Boxes 2026 \u2014 Ranked by ROI'; the page ranks nothing by ROI.",
-      "decision": "CoS desk 2026-10-22: accepted, queued -> Box Desk / the attended Box P2 sitting (the page's owner, PIVOT Am. 1), else the Oct 28 weekly: data/nav.json label -> 'Best Hobby Boxes 2026 \u2014 Sold Prices', then build-nav (146 pages, so not a desk edit)."
+      "title": "LOW: site nav labels /best-hobby-boxes-2026 'Best Boxes 2026 — Ranked by ROI'; the page ranks nothing by ROI.",
+      "decision": "CoS desk 2026-10-22: accepted, queued -> Box Desk / the attended Box P2 sitting (the page's owner, PIVOT Am. 1), else the Oct 28 weekly: data/nav.json label -> 'Best Hobby Boxes 2026 — Sold Prices', then build-nav (146 pages, so not a desk edit)."
     },
     {
       "id": "tuesday-2026-10-20-1",
@@ -5230,10 +5230,10 @@
           "commits": [
             "c87ee21"
           ],
-          "by": "CoS desk (Wed 15:11 fire, Mac deploy key, unattended) \u2014 /mlb-cards meta + og description: the 4th name was empty (\"Soto, , Skenes\"); generator surname now suffix-safe (Jr./Sr./II-IV); page meta edited in place (BLOCKED row 2026-10-21, owner CoS desk)",
-          "gates": "audit-prices 0/46 \u00b7 audit-site 0/18 \u00b7 audit-terminal 0/1 (= baseline)",
+          "by": "CoS desk (Wed 15:11 fire, Mac deploy key, unattended) — /mlb-cards meta + og description: the 4th name was empty (\"Soto, , Skenes\"); generator surname now suffix-safe (Jr./Sr./II-IV); page meta edited in place (BLOCKED row 2026-10-21, owner CoS desk)",
+          "gates": "audit-prices 0/46 · audit-site 0/18 · audit-terminal 0/1 (= baseline)",
           "rollback": "git revert c87ee21",
-          "liveVerified": "2026-10-21 ~22:20Z: /mlb-cards meta reads \"Ohtani, Judge, Soto, Witt, Skenes, Ram\u00edrez\" (2 of 2 lines)"
+          "liveVerified": "2026-10-21 ~22:20Z: /mlb-cards meta reads \"Ohtani, Judge, Soto, Witt, Skenes, Ramírez\" (2 of 2 lines)"
         },
         {
           "date": "2026-10-22",
@@ -5245,8 +5245,8 @@
             "2b009ff",
             "b3a6d63"
           ],
-          "by": "Traffic Agent (Thu 05:56 fire, cloud + Mac deploy key, unattended) \u2014 IW Oct 22 F2 on /destined-rivals-index (62 of 62, paid-test landing); League A release calendar (Delta Reign Build & Battle Oct 24, F1/Heritage FB/Obsidian street flips, 6 date/status moves); E6 round 6: /pokemon-30th-anniversary-2026 (158 numbered + 3 RGB + 30 CC + 8 = 199; Binder Dec 4), /topps-chrome-baseball-2026 (asks re-read Oct 22, machine stamp), /cristiano-ronaldo-cards + /lamine-yamal-rookie-cards (graded figures sourced or dropped); league board",
-          "gates": "audit-prices 0/42 \u00b7 audit-site 0/18 \u00b7 audit-terminal 0/1 (prices 46 \u2192 42)",
+          "by": "Traffic Agent (Thu 05:56 fire, cloud + Mac deploy key, unattended) — IW Oct 22 F2 on /destined-rivals-index (62 of 62, paid-test landing); League A release calendar (Delta Reign Build & Battle Oct 24, F1/Heritage FB/Obsidian street flips, 6 date/status moves); E6 round 6: /pokemon-30th-anniversary-2026 (158 numbered + 3 RGB + 30 CC + 8 = 199; Binder Dec 4), /topps-chrome-baseball-2026 (asks re-read Oct 22, machine stamp), /cristiano-ronaldo-cards + /lamine-yamal-rookie-cards (graded figures sourced or dropped); league board",
+          "gates": "audit-prices 0/42 · audit-site 0/18 · audit-terminal 0/1 (prices 46 → 42)",
           "rollback": "git revert b3a6d63 2b009ff e684829 14e580d 8e9d442 67141db",
           "liveVerified": "pending"
         },
@@ -5255,10 +5255,20 @@
           "commits": [
             "e740ffb"
           ],
-          "by": "CoS desk (Thu 15:11 fire, Mac deploy key, unattended) \u2014 IW Oct 22 F3: /mlb-cards '2026 rookies & Bowman prospects' (generator literal + data title aligned, generator not run)",
-          "gates": "audit-prices 0/42 \u00b7 audit-site 0/18 \u00b7 audit-terminal 0/1 (= baseline)",
+          "by": "CoS desk (Thu 15:11 fire, Mac deploy key, unattended) — IW Oct 22 F3: /mlb-cards '2026 rookies & Bowman prospects' (generator literal + data title aligned, generator not run)",
+          "gates": "audit-prices 0/42 · audit-site 0/18 · audit-terminal 0/1 (= baseline)",
           "rollback": "git revert e740ffb",
           "liveVerified": "2026-10-22 22:2xZ (iPhone 13: chip, group title, hero count)"
+        },
+        {
+          "date": "2026-10-22",
+          "commits": [
+            "3c5ca71"
+          ],
+          "by": "CoS attended session with Mo present (Box Desk Phase 2 rev 2 rebuilt on main; Mo approved the push in chat after screenshots)",
+          "gates": "audit-prices 0/46 · audit-site 0/18 · audit-terminal 0/1 (= baseline on 5aaae69); image-sweep local 1280/1200/390 FAIL 0 WARN 0; generator second run unchanged",
+          "rollback": "git revert 3c5ca71",
+          "liveVerified": "2026-10-23 ~05:50Z: /best-hobby-boxes-2026 200 with BOXSCREENER + bx-data + per-box customids + weights v2; /js/box-screener.js?v=1 200; production image-sweep 1280/390 FAIL 0 WARN 0; 53/53 click checks on production; IndexNow 200"
         }
       ]
     },
