@@ -33,7 +33,9 @@ async function main() {
   const errored = cards.filter((c) => c.error).length;
   const summary = { source: d.source, generated: d.generated, cards: cards.length, errored, tripped: d.tripped || null, rows: (d.rows || []).length, verifiedCards: cards.filter((c) => c.verified > 0).length, quota: d.quota || null, note: d.note || null };
   console.log(JSON.stringify(summary));
-  if (d.source !== "live") { console.error(`::error::answer was "${d.source}", not a live fan-out (${d.note || "budget"}); snapshot NOT written`); process.exit(1); }
+  // Budget says no (source "empty"/"snapshot" with the quota in the body): that is the ledger working, not a failure —
+  // exit 0 with a notice so the Action does not mail a red run every time the day's quota is spent before this slot.
+  if (d.source !== "live") { console.warn(`::warning::answer was "${d.source}", not a live fan-out (${d.note || "budget"}); snapshot NOT written, previous one stays`); process.exit(0); }
   if (!cards.length || errored > cards.length / 2 || (d.tripped && !(d.rows || []).length)) { console.error(`::error::${errored}/${cards.length} cards errored${d.tripped ? " (" + d.tripped + ")" : ""}; snapshot NOT written`); process.exit(1); }
   const rows = (d.rows || []).map(({ title: _t, seller, ...row }) => ({ ...row, seller: seller ? { feedbackPct: seller.feedbackPct ?? null, feedbackScore: seller.feedbackScore ?? null } : null }));
   const feed = {

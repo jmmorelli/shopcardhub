@@ -46,6 +46,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          if [ ! -f "$RUNNER_TEMP/auctions/auctions-latest.json" ]; then echo "No snapshot this run (budget) - previous one stays."; exit 0; fi
           mkdir -p data/feed
           cp "$RUNNER_TEMP/auctions/auctions-latest.json" data/feed/auctions-latest.json
           git config user.name "price-engine[bot]"
