@@ -1224,6 +1224,30 @@ is the click that converts. Mo asked for it in chat; that is the R25 exemption (
 - **Not a gate, not a signal (R26, R14):** free, no account, no "deal of the day" post. A row is a price under a dated mark; the
   page says "a deal is a price, not a call" once, in the sub-line, and the footer carries the site's one disclosure.
 
+## R43 · The human lens — first-screen failures on index, card and home pages are fixed same-run, not filed (Mo, 2026-10-23, attended)
+
+**Why:** Mo landed on `/destined-rivals-index` (the page we promote on Reddit) and could not see the index chart without scrolling.
+The Site Sweep had found exactly that (U-F11) the same morning and filed it for the Oct 28 weekly. Filing is not fixing. The whole
+directive, with the §2 five-second test and the §3 list of words banned from a first screen, is the Project doc
+`claude/cos/DESIGN-DIRECTIVE-2026-10-23.md` (PIVOT Amendment 2). Every lane that ships copy or layout reads it at STEP 0, next to
+COLLECTOR-VOICE.md, and answers the five-second test in its report (what the first 390 px screen shows, in words).
+
+- **Fix, don't file (Site Sweep, Night Crew, Index Keeper, any builder):** on a set-index page, a card page or `/`, a first-screen
+  failure — a method sentence, a date stamp, a parameter, or a §3 word before the chart/number and its one-line plain read, at
+  390 px or 1366×768 — is fixed in the same run through the page's generator (re-bake, gates FAIL 0, push). Shipped that way on
+  Oct 23: P0-C chart-first on 37 index pages (`0c14f12`), home v2 (`93c2ea3`).
+- **Still filed, never swapped mid-run:** anything that changes a figure, a date, a source label (pricing integrity, R20), or a
+  HOME:* / generated block another lane is rewriting that day. Those go to the owner named in the directive.
+- **The order on every index page:** eyebrow → ticker + name → level with this-week and since-release on one line → the chart →
+  one plain sentence → the sealed/eBay button → two small tiles → the table → one collapsed "How this index works" holding every
+  method sentence, stamp and the shop-price explanation. Nothing numeric moves out of the page; it moves down.
+- **Home (`/`, since Oct 23 evening):** search → the tabbed index box with its mini chart → "What's coming out" → one-question
+  tiles → the Tape. The full table lives on the Set indices page. HOME:idxbox / HOME:releases / HOME:movers2 are written by
+  `build-home.mjs`; `home-v2.html` is a derivative and `/home-v2` 301s to `/`.
+- **Checklist worksheet (P0-E):** `/bowman-chrome-2026-checklist` is v1 (Oct 23). More sets and the share card are v2; it must not
+  take P0-A's build slot.
+- **Sweep rotation:** `/` is read first on the run after any home change; the five-second test is written out, not ticked.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
