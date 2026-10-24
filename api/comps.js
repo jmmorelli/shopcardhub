@@ -41,6 +41,23 @@ const TRADING_CARDS_CATEGORY = "212";
 // no fs access needed, and the card page and the engine read the same document).
 const SITE_ORIGIN = (process.env.SITE_URL || "https://www.shopcardhub.com").replace(/\/$/, ""); // Sports Mem, Cards & Fan Shop > Sports Trading Cards root
 
+// Edge cache (Oct 23 2026, eBay budget). A page view's query is cached 6 h at the edge and served stale up to 24 h
+// while it revalidates, so repeat views of the same page cost 0 Browse calls; the response says when it was fetched.
+// Our tools (header) keep the 15-min window — the nightly and the screeners want today's book, and their customids
+// make distinct URLs, so the two never share a cache entry. A 429/5xx answer is held 2 min, never longer.
+const CACHE_PAGE = "s-maxage=21600, stale-while-revalidate=86400";
+const CACHE_TOOL = "s-maxage=900, stale-while-revalidate=3600";
+const CACHE_ERR = "s-maxage=120";
+// Identical Browse URLs in flight on one warm instance share one eBay call (a page that mounts the same query twice,
+// or two visitors landing on a cold edge together).
+const inflight = new Map();
+function browseOnce(url, headers) {
+  if (inflight.has(url)) return inflight.get(url);
+  const p = fetch(url, { headers }).then(async (r) => ({ ok: r.ok, status: r.status, text: await r.text() })).finally(() => inflight.delete(url));
+  inflight.set(url, p);
+  return p;
+}
+
 // ---- Stats helpers (population moments) ----
 function quantile(sorted, p) {
   if (!sorted.length) return null;
@@ -200,37 +217,38 @@ export default async function handler(req, res) {
     });
     if (sortParam) params.set("sort", sortParam);
 
-    const r = await fetch(`${BROWSE_URL}?${params.toString()}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "X-EBAY-C-MARKETPLACE-ID": "EBAY_US",
-        // Affiliate context: tags every itemWebUrl in the response with EPN tracking.
-        // affiliateReferenceId is what surfaces as "Custom ID" in EPN reporting.
-        "X-EBAY-C-ENDUSERCTX": customId
-          ? `affiliateCampaignId=${EPN_CAMPAIGN_ID},affiliateReferenceId=${customId}`
-          : `affiliateCampaignId=${EPN_CAMPAIGN_ID}`,
-        Accept: "application/json",
-      },
+    const isTool = !!(req.headers || {})[TOOL_HEADER];
+    const r = await browseOnce(`${BROWSE_URL}?${params.toString()}`, {
+      Authorization: `Bearer ${token}`,
+      "X-EBAY-C-MARKETPLACE-ID": "EBAY_US",
+      // Affiliate context: tags every itemWebUrl in the response with EPN tracking.
+      // affiliateReferenceId is what surfaces as "Custom ID" in EPN reporting.
+      "X-EBAY-C-ENDUSERCTX": customId
+        ? `affiliateCampaignId=${EPN_CAMPAIGN_ID},affiliateReferenceId=${customId}`
+        : `affiliateCampaignId=${EPN_CAMPAIGN_ID}`,
+      Accept: "application/json",
     });
+    // One line per Browse call in the Vercel function log: the split by lane the rate-limit API cannot give us.
+    console.log(JSON.stringify({ ebay: "browse", fn: "comps", status: r.status, lane: isTool ? "tool" : "page", customid: customId || null, card: card ? card.id : null }));
 
     if (!r.ok) {
-      const detail = await r.text().catch(() => "");
-      // a 429 (quota) is held at the edge for 2 min so a busy page does not re-ask eBay on every view
-      res.setHeader("Cache-Control", r.status === 429 ? "s-maxage=120" : "no-store");
-      return res.status(502).json({ error: `eBay Browse API error (${r.status}).`, detail: detail.slice(0, 500) });
+      // a 429 (quota) or 5xx is held at the edge for 2 min so a busy page does not re-ask eBay on every view
+      res.setHeader("Cache-Control", r.status === 429 || r.status >= 500 ? CACHE_ERR : "no-store");
+      return res.status(502).json({ error: `eBay Browse API error (${r.status}).`, detail: r.text.slice(0, 500) });
     }
 
-    const data = await r.json();
+    const data = JSON.parse(r.text);
     const items = data.itemSummaries || [];
     const listings = items.map(trimListing);
     const prices = listings.map((l) => l.price).filter((p) => typeof p === "number" && isFinite(p));
 
-    // CDN cache: identical queries served from edge for 15 min, stale allowed
-    // for 1 hour while revalidating. This is the quota shield.
-    res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=3600");
+    // CDN cache: a page view's query is served from the edge for 6 h (+24 h stale while revalidating); a tool's for
+    // 15 min. This is the quota shield (see CACHE_PAGE above).
+    res.setHeader("Cache-Control", isTool ? CACHE_TOOL : CACHE_PAGE);
 
     const payload = {
       query: q,
+      fetchedAt: new Date().toISOString(),
       // Echoed so a caller (or an audit) can confirm the click will be attributed.
       // null here means the sale will land in EPN's "No Custom ID" bucket.
       customId,

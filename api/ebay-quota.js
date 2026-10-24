@@ -26,6 +26,9 @@ export default async function handler(req, res) {
     browse: quota ? { limit: quota.limit, remaining: quota.remaining, count: quota.count, reset: quota.reset, timeWindow: quota.timeWindow, resource: quota.resource, fetchedAt: quota.fetchedAt } : null,
     error: quota ? null : lastQuotaError(),
     floors: FLOORS,
+    // eBay's rate_limit API has no per-caller split; every Browse call logs one line {ebay:"browse", fn, lane, customid,
+    // status} — Vercel > Logs, filter `ebay":"browse` — which is the breakdown by customid.
+    breakdown: "see Vercel function logs: one JSON line per Browse call ({ebay:'browse', fn, lane, customid, status})",
     lanes,
     asked: asked ? { lane: asked.lane, need: asked.need, ok: asked.ok, floor: asked.floor, reason: asked.reason } : null,
   });

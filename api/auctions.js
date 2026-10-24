@@ -94,6 +94,7 @@ async function searchAuctions(token, card) {
       Accept: "application/json",
     },
   });
+  console.log(JSON.stringify({ ebay: "browse", fn: "auctions", status: r.status, lane: "auctions", customid: CUSTOM_ID, card: card.id }));
   if (!r.ok) throw new Error(`eBay ${r.status}`);
   const data = await r.json();
   return (data.itemSummaries || []).map(trimListing);

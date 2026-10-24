@@ -30,7 +30,7 @@
     cache = Promise.all([pLocal, pFeed]).then(function (res) {
       var map = {};
       var local = res[0] && res[0].cards ? res[0].cards : {};
-      Object.keys(local).forEach(function (k) { if (local[k] && local[k].url) map[k] = { url: local[k].url, item: local[k].item || null, title: local[k].title || null }; });
+      Object.keys(local).forEach(function (k) { if (local[k] && local[k].url) map[k] = { url: local[k].url, item: local[k].item || null, title: local[k].title || null, fp: local[k].fp, px: local[k].px, d: local[k].d || null }; });
       var feed = res[1] && Array.isArray(res[1].cards) ? res[1].cards : [];
       feed.forEach(function (c) { if (c && c.key && c.image && c.image.url) map[c.key] = { url: c.image.url, item: c.image.item || null, title: c.image.title || null }; });
       return map;
@@ -63,6 +63,11 @@
 
   // Cards the engine doesn't track (anything a visitor adds to the Vault) still get a
   // photo: one Browse call by name through the site's own comps endpoint, cached a week.
+  // Oct 23 2026 (eBay budget): this runtime lookup is for VISITOR-ADDED cards only (the Vault, data-card-runtime="1").
+  // Page markers (index rows, heroes, card files) resolve at build time into /data/card-images.json
+  // (tools/price-engine/resolve-page-images.mjs) and never call eBay from a page view; an unresolved
+  // marker keeps the placeholder tile. Before this, the top-10 rows of every Pokémon index table re-read
+  // the cheapest listing live for the "vs sold mark" chip — ~10 Browse calls per new visitor per page.
   var LS = 'sch_cimg_v3'; // v2 (Sep 28): cached hits carry fp/px for the vs-last-sold chip; v3 (Sep 30): accent-folded matching + skin/sticker filter re-resolves stale hits
   function lsGet() { try { return JSON.parse(localStorage.getItem(LS) || '{}'); } catch (e) { return {}; } }
   function lsSet(m) { try { localStorage.setItem(LS, JSON.stringify(m)); } catch (e) {} }
@@ -171,6 +176,9 @@
       var cat = el.getAttribute('data-card-catid') || (/pok[eé]mon|tcg/i.test(el.getAttribute('data-card-sub') || '') ? '183454' : null);
       // src: keys (Sep 28 2026, classic sets) name the official card scan directly — no listing lookup, no eBay tag.
       if (key && key.indexOf('src:https://images.pokemontcg.io/') === 0) return { url: key.slice(4) };
+      // Runtime eBay lookup only for visitor-added cards (the Vault / watchlist); page markers paint from the map or the tile.
+      var runtime = o.runtime || el.getAttribute('data-card-runtime') === '1' || /^\/watchlist(\.html)?$/.test(location.pathname);
+      if (!runtime) return null;
       if (key && key.indexOf('name:') === 0) return byName(key.slice(5), cat);
       // ph: keys are page-list placeholders that still carry the card's full name — try it before settling for the tile.
       if (key && key.indexOf('ph:') === 0 && name && name !== key) return byName(name, cat);
@@ -195,11 +203,11 @@
         var noRepoint = row && row.closest && row.closest('[data-no-repoint]');
         if (rowA && rowCid && hit.item && !rowAv && !noRepoint && !rowA.getAttribute('data-listing')) {
           rowA.setAttribute('data-listing', '1');
-          // Hits from the nightly photo map carry no price. The top ten rows of a table (most of
-          // its weight) re-read the cheapest verified listing live so the chip has a price; the
-          // lookup is the same cached /api/comps call name-mode rows already make (7-day cache).
-          var needLive = hit.fp === undefined && row.rowIndex > 0 && row.rowIndex <= 10;
-          (needLive ? byName(name, '183454').then(function (h2) { return (h2 && h2.item) ? h2 : hit; }, function () { return hit; }) : Promise.resolve(hit)).then(function (h) {
+          // Oct 23 2026 (eBay budget): no live re-read for the chip. The build-time resolver stores the listing's
+          // fp/px with the photo; a chip prints only from a map hit resolved in the last 7 days. (Before: the top ten
+          // rows of every Pokémon table each made a Browse call per new visitor to price this chip.)
+          var fresh = hit.d ? (Date.now() - new Date(hit.d).getTime()) < 7 * 864e5 : hit.fp !== undefined;
+          Promise.resolve(fresh ? hit : { url: hit.url, item: hit.item }).then(function (h) {
             // Ledger #34 on sold-basis tables (Sep 28): a fixed-price listing gets a neutral
             // "−12% vs last sold 09/21" chip — (price + shipping − the row's dated sold mark) / mark.
             // Auction rows get nothing (a bid is not a price). Under-mark rows route to <cid>-bm so

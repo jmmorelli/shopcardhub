@@ -65,8 +65,12 @@ function pick(listings, q) {
     // display products never picture the card; graded slabs are allowed but a raw
     // listing wins when one exists (the loop keeps the first raw fixed-price hit).
     if (/(lot of|reprint|digital|custom|proxy|you pick|choose|\bcase\b|cases|frame|display|magnetic|toploader|top loader|sleeve|binder|stand|holder|acrylic|protector|playmat|deck box|storage)/.test(t)) continue;
-    if (/(psa|bgs|cgc|sgc|graded|slab)\b/.test(t)) { if (!best) best = { url: l.image.replace(/s-l\d+\./, "s-l500."), item: l.url || null, title: l.title || null }; continue; }
-    best = { url: l.image.replace(/s-l\d+\./, "s-l500."), item: l.url || null, title: l.title || null };
+    // fp/px (Oct 23 2026): the "vs sold mark" chip on index rows used to re-read this listing live per visitor; now it
+    // prints from the map, so the pick carries whether it is Buy It Now and its price + shipping.
+    const hit = { url: l.image.replace(/s-l\d+\./, "s-l500."), item: l.url || null, title: l.title || null,
+      fp: l.buyingOption === "FIXED_PRICE", px: (typeof l.price === "number" && l.price > 0) ? l.price + (typeof l.shipping === "number" ? l.shipping : 0) : null };
+    if (/(psa|bgs|cgc|sgc|graded|slab)\b/.test(t)) { if (!best) best = hit; continue; }
+    best = hit;
     if (l.buyingOption === "FIXED_PRICE") break;
   }
   return best;

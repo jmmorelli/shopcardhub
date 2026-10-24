@@ -331,7 +331,7 @@ ${shelves}
 })();
 ${HERO_JS[d.theme]()}
 </script>
-<script src="/js/card-img.js?v=3" defer></script>
+<script src="/js/card-img.js?v=4" defer></script>
 </body>
 </html>
 `;

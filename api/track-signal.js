@@ -88,7 +88,9 @@ export default async function handler(req, res) {
       return;
     } catch (e) {
       if (attempt === 0) continue;             // sha conflict → re-read once
-      res.status(502).json({ error: "store write failed" });
+      // Oct 23 2026: say which GitHub status it was (a 401 here = the Vercel GITHUB_TOKEN PAT is expired/revoked,
+      // the same token the deals lane found dead; only Mo can rotate it in Vercel > Settings > Environment Variables).
+      res.status(502).json({ error: "store write failed", detail: String(e && e.message || e).slice(0, 160) });
       return;
     }
   }
