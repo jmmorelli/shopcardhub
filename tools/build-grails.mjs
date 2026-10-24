@@ -227,7 +227,7 @@ body #gstar .gs-tape .sidx-tbl tbody td:nth-child(6)::before{content:"Move · ";
   <div class="sidx-stats">
     <div><span class="k">Cards on the board</span><span class="v">${cards.length} <i>/ ${stars} ☆</i></span></div>
     <div><span class="k">One raw of each</span><span class="v">${money(oneOfEach)}</span></div>
-    <div><span class="k">PSA 10 marks (≥3 sales)</span><span class="v">${p10.length} <i>/ ${cards.length}</i></span></div>
+    <div><span class="k">PSA 10 prices (3+ sales)</span><span class="v">${p10.length} <i>/ ${cards.length}</i></span></div>
     <div><span class="k">PSA 10 ÷ raw, median</span><span class="v">${medMult ? medMult.toFixed(1) + "×" : "—"}</span></div>
     <div><span class="k">Sets covered</span><span class="v">${new Set(cards.map((c) => c.set)).size}</span></div>
     <div><span class="k">Years</span><span class="v">2002–15</span></div>
