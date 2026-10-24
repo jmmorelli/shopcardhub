@@ -294,7 +294,7 @@ try {
      bangers-tag-stray           board:true on a name not on the CURRENT board (entryDates minus departures)
      bangers-tag-missing         a current board name in a current-year Bowman-family set without board:true
      first-bowman-render         a renderer that derives the 1ST BOWMAN tag from anything but card.first
-     sets-json-invalid/schema    data/sets/*.json must parse and carry set/slug/groups/cards{n,player}   */
+     sets-json-invalid/schema    data/sets/*.json must parse and carry set/slug/groups/cards{n,player|name}   */
 try {
   const setsDir = path.join(REPO, "data/sets");
   const setFiles = fs.existsSync(setsDir) ? fs.readdirSync(setsDir).filter(f => f.endsWith(".json")) : [];
@@ -302,7 +302,7 @@ try {
     const rel = "data/sets/" + f;
     let d; try { d = JSON.parse(read(rel)); } catch (e) { add("FAIL", "sets-json-invalid", rel, e.message); continue; }
     if (!d.set || !d.slug || !Array.isArray(d.groups)) { add("FAIL", "sets-json-schema", rel, "missing set/slug/groups"); continue; }
-    for (const g of d.groups) for (const c of (g.cards || [])) if (!c.n || !c.player) { add("FAIL", "sets-json-schema", rel, `${g.key || g.title}: card without n/player`); break; }
+    for (const g of d.groups) for (const c of (g.cards || [])) if (!c.n || !(c.player || c.name)) { add("FAIL", "sets-json-schema", rel, `${g.key || g.title}: card without n/player (or n/name — Pokémon sheets, Oct 24 2026)`); break; }
     if (/\bbowman\b/i.test(d.set) && d.groups.some(g => (g.cards || []).some(c => c.first)) && !(d.firstAudit && d.firstAudit.verified))
       add("WARN", "first-bowman-unverified", rel, "carries 1st tags but no firstAudit.verified — run the prior-set check (tools/first-bowman.mjs) against checklists outside data/sets before trusting them");
   }

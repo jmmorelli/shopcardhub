@@ -16,7 +16,8 @@
 // What it writes, per page (markers; everything else is untouched):
 //   HERO:START/END             the mast (eyebrow, h1, .level, the pr-line) — .level is remark-indices.mjs's, edited in place
 //   PLAIN-READ:START/END       the plain-read CSS (id="pr-css") + the one sentence, UNDER the chart
-//   PLAIN-READ:TILES:START/END the two tiles (the image slot is the old hero figure, kept verbatim inside the tile)
+//   PLAIN-READ:TILES:START/END the two tiles (the image slot is the old hero figure, kept verbatim inside the tile) + the
+//                              checklist link tile for the sets in CHECKLIST (P0-E, Oct 24 2026)
 //   PLAIN-READ:HOW:START/END   the toggle: .subline · .levelchg (remark-owned) · WORKS:START/END · .stats + .statnote
 //                              (remark-owned cells) · the Legend & Methodology block — before <div class="foot">
 // The SEALED block (tools/build-sealed-rows.mjs) is moved once, under the sentence; its own markers travel with it and
@@ -37,6 +38,12 @@ const PR = createRequire(import.meta.url)(path.join(REPO, "js/plain-read.js"));
 const CHECK = process.argv.includes("--check");
 
 const PAGES = ["pitch-black-index", "chaos-rising-index", "ascended-heroes-index", "prismatic-evolutions-index", "destined-rivals-index", "phantasmal-flames-index"];
+/* P0-E (Oct 24 2026): a set with a checklist worksheet (tools/build-checklist-page.mjs CONFIG) gets the third, full-width link
+   tile in the tiles row — the same opts.link build-sector-index.mjs passes for BCB26. Keyed by ticker. */
+const CHECKLIST = {
+  DR25: { href: "/destined-rivals-checklist", label: "Checklist: track what you have", sub: "Tick your cards, see an estimated value" },
+  PRIS25: { href: "/prismatic-evolutions-checklist", label: "Checklist: track what you have", sub: "Tick your cards, see an estimated value" },
+};
 const START = "<!-- PLAIN-READ:START", END = "<!-- PLAIN-READ:END -->";
 const HERO_S = "<!-- HERO:START", HERO_E = "<!-- HERO:END -->";
 const TILES_S = "<!-- PLAIN-READ:TILES:START -->", TILES_E = "<!-- PLAIN-READ:TILES:END -->";
@@ -96,7 +103,7 @@ function bake(html) {
   const tiles = between(html, TILES_S, TILES_E);
   const slot = /<span class="pr-ti">([\s\S]*?)<\/span>\s*<span class="pr-t[bn]"/.exec(tiles.inner);
   if (slot) img = slot[1];
-  const parts = PR.bakeParts(tk, r, { accent: "var(--iac)", topImg: img });
+  const parts = PR.bakeParts(tk, r, { accent: "var(--iac)", topImg: img, link: CHECKLIST[tk] ? { href: CHECKLIST[tk].href, k: "Your checklist", label: CHECKLIST[tk].label, sub: CHECKLIST[tk].sub } : null });
   if (!parts) return { skip: `${tk} has no read yet (pre-activation)` };
   const css = `<style id="pr-css">${PR.PR_CSS}</style>`;
   // 1 · line under the level

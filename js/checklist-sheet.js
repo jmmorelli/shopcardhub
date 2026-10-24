@@ -25,6 +25,12 @@
      /watchlist applies on its next load. First visit with no saved sheet: rows already in the Vault (same card name)
      are pre-ticked.
    - Export CSV · Clear (asks first).
+   v2 (Oct 24 2026, P0-E: Prismatic Evolutions + Destined Rivals): rows may carry {name, rarity, id} instead of {player, team}
+   (tools/fetch-pokemon-checklist.mjs); a sheet with cat "pokemon" names Vault cards the way the chase pages do
+   ("Umbreon ex SIR #161 Prismatic Evolutions", group.code = the rarity tag), searches eBay the way the index page does
+   ("<name> <n>/<printed> <exclusions>", data.tcg.printedTotal), shows Rarity where Bowman shows Team, and its group chips
+   are the rarity row (group.short: Base · IR · SIR · UR · Hyper · ACE SPEC — only the kinds the set has). The set page's
+   accent arrives as --clw-acc on the host (bar, numbers, chips); the eBay button stays yellow. Bowman sheets are unchanged.
    Never writes a price. Never shows an exact total. */
 (function () {
   'use strict';
@@ -34,18 +40,18 @@
   var BAND = 0.10;   // ± around the mark — the one range rule, named in the toggle
 
   var CSS = '.clw{margin:0}' +
-    '.clw-sum{position:sticky;top:58px;z-index:20;background:rgba(7,9,12,.96);backdrop-filter:blur(12px);border:1px solid var(--bd2,rgba(255,255,255,.12));border-left:3px solid var(--gd,#f5c800);border-radius:3px;padding:12px 16px;margin:14px 0 12px;display:grid;grid-template-columns:auto 1fr auto;gap:10px 22px;align-items:center}' +
+    '.clw-sum{position:sticky;top:58px;z-index:20;background:rgba(7,9,12,.96);backdrop-filter:blur(12px);border:1px solid var(--bd2,rgba(255,255,255,.12));border-left:3px solid var(--clw-acc,var(--gd,#f5c800));border-radius:3px;padding:12px 16px;margin:14px 0 12px;display:grid;grid-template-columns:auto 1fr auto;gap:10px 22px;align-items:center}' +
     '.clw-sum>div{min-width:0}' +
     '.clw-k{font-family:var(--fm,ui-monospace,monospace);font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--dim,#5a7880);display:block;margin-bottom:4px}' +
     '.clw-n{font-family:var(--fm,ui-monospace,monospace);font-size:26px;font-weight:700;line-height:1;color:var(--th,#e4f0f4);white-space:nowrap}.clw-n small{font-size:13px;color:var(--dim,#5a7880);font-weight:400;margin-left:6px}' +
-    '.clw-bar{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:8px;overflow:hidden;min-width:120px}.clw-bar i{display:block;height:100%;width:0;background:var(--gd,#f5c800);transition:width .4s}' +
+    '.clw-bar{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:8px;overflow:hidden;min-width:120px}.clw-bar i{display:block;height:100%;width:0;background:var(--clw-acc,var(--gd,#f5c800));transition:width .4s}' +
     '.clw-v{font-family:var(--fm,ui-monospace,monospace);font-size:24px;font-weight:700;line-height:1;color:var(--gd,#f5c800);white-space:nowrap}.clw-v.none{color:var(--dim,#5a7880);font-size:15px;font-weight:400;white-space:normal}' +
     '.clw-sub{font-size:11.5px;color:var(--dim,#5a7880);margin-top:5px;line-height:1.45}' +
     '.clw-go{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-family:var(--fm,ui-monospace,monospace);font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:11px 16px;border-radius:2px;background:var(--gd,#f5c800);color:#000!important;text-decoration:none;white-space:nowrap}.clw-go:hover{background:#fff;text-decoration:none}' +
     '.clw-ctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 10px}' +
     '.clw-ctl input[type=search]{flex:1 1 200px;min-width:0;background:var(--p2,#111820);border:1px solid var(--bd2,rgba(255,255,255,.12));color:var(--tx,#b8cdd4);font-family:var(--fm,ui-monospace,monospace);font-size:13px;padding:8px 12px;border-radius:2px}.clw-ctl input[type=search]:focus{outline:none;border-color:var(--ac,#00ccf5)}' +
     '.clw-chips{display:inline-flex;border:1px solid var(--bd2,rgba(255,255,255,.12));border-radius:2px;overflow:hidden}' +
-    '.clw-chips button{background:none;border:0;border-right:1px solid var(--bd2,rgba(255,255,255,.12));color:var(--dim,#5a7880);font-family:var(--fm,ui-monospace,monospace);font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 11px;cursor:pointer;min-height:36px}.clw-chips button:last-child{border-right:0}.clw-chips button.on{background:var(--ac,#00ccf5);color:#000}.clw-chips button:focus-visible{outline:2px solid var(--gd,#f5c800);outline-offset:-2px}' +
+    '.clw-chips button{background:none;border:0;border-right:1px solid var(--bd2,rgba(255,255,255,.12));color:var(--dim,#5a7880);font-family:var(--fm,ui-monospace,monospace);font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 11px;cursor:pointer;min-height:36px}.clw-chips button:last-child{border-right:0}.clw-chips button.on{background:var(--clw-acc,var(--ac,#00ccf5));color:#000}.clw-chips button:focus-visible{outline:2px solid var(--gd,#f5c800);outline-offset:-2px}' +
     '.clw-chips button b{font-weight:400;opacity:.75;margin-left:4px}' +
     '.clw-act{margin-left:auto;display:inline-flex;gap:6px}.clw-act button{background:none;border:1px solid var(--bd2,rgba(255,255,255,.12));color:var(--tx,#b8cdd4);font-family:var(--fm,ui-monospace,monospace);font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 11px;border-radius:2px;cursor:pointer;min-height:36px}.clw-act button:hover{border-color:var(--ac,#00ccf5);color:var(--th,#e4f0f4)}' +
     '.clw-wrap{overflow:auto;border:1px solid var(--bd2,rgba(255,255,255,.12));background:var(--p1,#0c1017);max-height:70vh}' +
@@ -56,7 +62,7 @@
     '.clw td{padding:0 10px;height:34px;border-bottom:1px solid var(--bd,rgba(255,255,255,.07));vertical-align:middle;color:var(--tx,#b8cdd4)}' +
     '.clw tbody tr:nth-child(even) td{background:rgba(255,255,255,.018)}.clw tbody tr:hover td{background:rgba(0,204,245,.06)}' +
     '.clw tr.h td{background:rgba(245,200,0,.05)}.clw tr.h td.p a,.clw tr.h td.p{color:var(--th,#e4f0f4)}' +
-    '.clw td.n{color:var(--ac,#00ccf5);font-weight:700;width:78px}.clw td.p{font-family:var(--fb,Barlow,system-ui,sans-serif);font-weight:600;font-size:13.5px;color:var(--th,#e4f0f4)}.clw td.p a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--bd2,rgba(255,255,255,.22))}.clw td.p a:hover{color:var(--ac,#00ccf5)}' +
+    '.clw td.n{color:var(--clw-acc,var(--ac,#00ccf5));font-weight:700;width:78px}.clw td.p{font-family:var(--fb,Barlow,system-ui,sans-serif);font-weight:600;font-size:13.5px;color:var(--th,#e4f0f4)}.clw td.p a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--bd2,rgba(255,255,255,.22))}.clw td.p a:hover{color:var(--ac,#00ccf5)}' +
     '.clw td.t{color:var(--dim,#5a7880);max-width:170px;overflow:hidden;text-overflow:ellipsis}.clw td.v{text-align:right;width:92px;font-weight:700;color:var(--th,#e4f0f4)}.clw td.v.none{color:var(--dim,#5a7880);font-weight:400;font-size:10.5px}.clw td.v small{display:block;font-weight:400;font-size:9px;color:var(--dim,#5a7880);letter-spacing:.5px}' +
     '.clw td.c{text-align:center;width:52px}.clw td.c label{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;cursor:pointer}.clw td.c input{width:17px;height:17px;accent-color:var(--gd,#f5c800);cursor:pointer;margin:0}.clw td.c.w input{accent-color:var(--ac,#00ccf5)}' +
     '.clw td.q{width:74px;text-align:center}.clw .qs{display:inline-flex;align-items:center;border:1px solid var(--bd2,rgba(255,255,255,.12));border-radius:2px;overflow:hidden;opacity:.35}.clw tr.h .qs{opacity:1}.clw .qs button{all:unset;width:22px;height:26px;text-align:center;cursor:pointer;color:var(--tx,#b8cdd4);font-weight:700}.clw .qs button:hover{background:rgba(255,255,255,.08)}.clw .qs button:disabled{opacity:.3;cursor:default}.clw .qs output{min-width:18px;text-align:center;font-size:12px;color:var(--th,#e4f0f4)}' +
@@ -67,7 +73,7 @@
     '.clw-empty td{color:var(--dim,#5a7880);height:60px;text-align:center}' +
     '.clw-snack{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);background:#0c1017;border:1px solid var(--gd,#f5c800);color:var(--th,#e4f0f4);font-family:var(--fm,ui-monospace,monospace);font-size:12px;padding:10px 16px;border-radius:2px;z-index:300;opacity:0;pointer-events:none;transition:opacity .2s}.clw-snack.show{opacity:1}' +
     '@media(max-width:760px){.clw-sum{top:58px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 14px;padding:10px 12px}.clw-sum .clw-cta{grid-column:1/-1;min-width:0}.clw-go{width:100%;box-sizing:border-box;white-space:normal;text-align:center;padding:10px 12px}.clw-n,.clw-v{white-space:normal}.clw-n{font-size:22px}.clw-v{font-size:19px}.clw-sub{font-size:11px}' +
-    '.clw td.t,.clw th.t{display:none}.clw td{height:40px}.clw td.l a{padding:6px 7px}.clw td.c label{width:40px;height:40px}.clw td.c input{width:20px;height:20px}.clw-act{margin-left:0}}';
+    '.clw-chips{flex-wrap:wrap;max-width:100%}.clw-chips button{flex:1 1 auto;border-bottom:1px solid var(--bd2,rgba(255,255,255,.12));margin-bottom:-1px}.clw td.t,.clw th.t{display:none}.clw td{height:40px}.clw td.l a{padding:6px 7px}.clw td.c label{width:40px;height:40px}.clw td.c input{width:20px;height:20px}.clw-act{margin-left:0}}';
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
   function nk(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
@@ -123,6 +129,9 @@
     var customid = host.getAttribute('data-customid') || ('cl-' + slug), sacat = host.getAttribute('data-sacat') || '';
     var pages = {}; try { pages = JSON.parse(host.getAttribute('data-card-pages') || '{}'); } catch (e) {}
     var page = location.pathname;
+    var poke = (data.cat || cat) === 'pokemon', printed = data.tcg && data.tcg.printedTotal;
+    var EXCL = '-lot -case -proxy -proxies -reprint -digital -custom -diy -skin -metal -display -sticker';   // the index page's row search
+    var topUrl = host.getAttribute('data-top-url') || ebayUrl((poke ? 'pokemon ' : '') + setName + ' -box -case -lot -break', customid + '-top', sacat);
 
     // marks: the ticker's basket + every sub-index basket (same numbers as the index page)
     var marks = {}, asOfMax = '';
@@ -140,12 +149,17 @@
     var rows = [];
     (data.groups || []).forEach(function (g, gi) {
       (g.cards || []).forEach(function (c, ci) {
-        rows.push({ n: c.n, k: num(c.n), player: c.player, team: c.team || '', first: !!c.first, rc: !!c.rc, g: g, gi: gi, ci: ci,
-          name: c.player + ' ' + setName + ' ' + (g.kind || '') + ' #' + c.n, href: pages[num(c.n)] || null,
-          q: setName + ' ' + c.player + ' ' + c.n + (/auto/i.test(g.kind || g.title || '') ? ' auto' : '') });
+        var nm = c.name || c.player; if (!nm) return;
+        rows.push({ n: c.n, k: num(c.n), player: nm, team: c.team || '', rarity: c.rarity || '', first: !!c.first, rc: !!c.rc, g: g, gi: gi, ci: ci,
+          // the Vault card name: Bowman "<player> <set> <kind> #<n>" (Aug 21 component); Pokémon "<name> <SIR> #<n> <set>" (the chase pages' tname)
+          name: poke ? nm + (g.code ? ' ' + g.code : '') + ' #' + c.n + ' ' + setName : nm + ' ' + setName + ' ' + (g.kind || '') + ' #' + c.n,
+          href: pages[num(c.n)] || null,
+          q: poke ? nm + ' ' + c.n + (printed ? '/' + printed : '') + ' ' + EXCL : setName + ' ' + nm + ' ' + c.n + (/auto/i.test(g.kind || g.title || '') ? ' auto' : '') });
       });
     });
     var total = rows.length;
+    var hasTeam = rows.some(function (x) { return x.team; }), col3 = hasTeam ? 'Team' : 'Rarity';
+    function third(rw) { return hasTeam ? rw.team : (rw.rarity || rw.g.title); }
 
     // state
     var all = loadAll(), st = all[slug];
@@ -161,18 +175,18 @@
       '<div class="clw-sum" role="region" aria-label="Your checklist summary" aria-live="polite">' +
         '<div><span class="clw-k">You have</span><span class="clw-n" data-clw="count">0 <small>of ' + total + '</small></span><div class="clw-bar"><i data-clw="bar"></i></div></div>' +
         '<div><span class="clw-k">Estimated value</span><span class="clw-v none" data-clw="val">Tick the cards you have</span><div class="clw-sub" data-clw="sub"></div></div>' +
-        '<div class="clw-cta"><a class="clw-go" href="' + esc(ebayUrl(setName + ' -box -case -lot -break', customid + '-top', sacat)) + '" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag===\'function\')gtag(\'event\',\'checklist_shop\',{set:\'' + esc(slug) + '\'})">Shop ' + esc(setName) + ' singles on eBay &rarr;</a></div>' +
+        '<div class="clw-cta"><a class="clw-go" href="' + esc(topUrl) + '" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag===\'function\')gtag(\'event\',\'checklist_shop\',{set:\'' + esc(slug) + '\'})">Shop ' + esc(setName) + ' singles on eBay &rarr;</a></div>' +
       '</div>' +
       '<div class="clw-ctl">' +
-        '<input type="search" placeholder="Search player, team or number…" aria-label="Search the checklist">' +
+        '<input type="search" placeholder="' + (hasTeam ? 'Search player, team or number…' : 'Search card, rarity or number…') + '" aria-label="Search the checklist">' +
         '<div class="clw-chips" role="group" aria-label="Show"><button data-f="all" class="on" aria-pressed="true">All<b data-clw="c-all"></b></button><button data-f="h" aria-pressed="false">Have<b data-clw="c-h"></b></button><button data-f="w" aria-pressed="false">Want<b data-clw="c-w"></b></button><button data-f="top" aria-pressed="false" title="The 20 cards with the highest recent-sales mark">Most valuable</button></div>' +
-        ((data.groups || []).length > 1 ? '<div class="clw-chips" role="group" aria-label="Section"><button data-g="-1" class="on" aria-pressed="true">All sections</button>' + data.groups.map(function (g, i) { return '<button data-g="' + i + '" aria-pressed="false">' + esc(g.title) + '<b>' + (g.cards || []).length + '</b></button>'; }).join('') + '</div>' : '') +
+        ((data.groups || []).length > 1 ? '<div class="clw-chips" role="group" aria-label="' + (poke ? 'Rarity' : 'Section') + '"><button data-g="-1" class="on" aria-pressed="true">' + (poke ? 'All' : 'All sections') + '</button>' + data.groups.map(function (g, i) { return '<button data-g="' + i + '" aria-pressed="false"' + (g.short && g.short !== g.title ? ' title="' + esc(g.title) + '"' : '') + '>' + esc(g.short || g.title) + '<b>' + (g.cards || []).length + '</b></button>'; }).join('') + '</div>' : '') +
         '<div class="clw-act"><button type="button" data-a="csv">Export CSV</button><button type="button" data-a="clear">Clear</button></div>' +
       '</div>' +
       '<div class="clw-wrap"><table><thead><tr>' +
         '<th><button type="button" data-s="n" aria-sort="none">#<span class="ar">↕</span></button></th>' +
         '<th><button type="button" data-s="name" aria-sort="none">Card<span class="ar">↕</span></button></th>' +
-        '<th class="t"><button type="button" data-s="team" aria-sort="none">Team<span class="ar">↕</span></button></th>' +
+        '<th class="t"><button type="button" data-s="team" aria-sort="none">' + col3 + '<span class="ar">↕</span></button></th>' +
         '<th style="text-align:right"><button type="button" data-s="v" aria-sort="none" title="Latest recent-sales mark for the grade you picked — a median of dated sales, not one sale">Value<span class="ar">↕</span></button></th>' +
         '<th style="text-align:center"><span>Have</span></th><th style="text-align:center"><span>Want</span></th><th style="text-align:center"><span>Qty</span></th><th><span>Grade</span></th><th style="text-align:right"><span>Open</span></th>' +
       '</tr></thead><tbody></tbody></table></div>' +
@@ -195,9 +209,9 @@
         if (m) { var v = m.p * (s.q || 1); low += v * (1 - BAND); high += v * (1 + BAND); counted++; if (m.asOf > through) through = m.asOf; }
         else skipped++;
       });
-      var pct = total ? Math.round(have / total * 100) : 0;
-      host.querySelector('[data-clw="count"]').innerHTML = have + ' <small>of ' + total + ' · ' + pct + '%</small>';
-      host.querySelector('[data-clw="bar"]').style.width = pct + '%';
+      var pct = total ? Math.round(have / total * 100) : 0;   // 1 of 244 reads "<1%" and still shows a sliver, not an empty bar
+      host.querySelector('[data-clw="count"]').innerHTML = have + ' <small>of ' + total + ' · ' + (have && !pct ? '&lt;1' : pct) + '%</small>';
+      host.querySelector('[data-clw="bar"]').style.width = (have ? Math.max(pct, 1.5) : 0) + '%';
       var val = host.querySelector('[data-clw="val"]'), sub = host.querySelector('[data-clw="sub"]');
       if (!have) { val.className = 'clw-v none'; val.textContent = 'Tick the cards you have'; sub.textContent = 'We estimate what the stack is worth from recent sales.'; }
       else if (!counted) { val.className = 'clw-v none'; val.textContent = 'No recent sales for these ' + (have === 1 ? 'card' : 'cards') + ' yet'; sub.textContent = have + ' card' + (have === 1 ? '' : 's') + ' ticked · none has a recent-sales mark, so there is no range to show.'; }
@@ -212,7 +226,7 @@
         if (filter === 'h' && !(s && s.s === 'h')) return false;
         if (filter === 'w' && !(s && s.s === 'w')) return false;
         if (filter === 'top' && !topSet[rw.k]) return false;
-        if (q && nk(rw.player + ' ' + rw.team + ' ' + rw.n).indexOf(q) < 0) return false;
+        if (q && nk(rw.player + ' ' + third(rw) + ' ' + rw.n).indexOf(q) < 0) return false;
         return true;
       });
       var d = sort.dir;
@@ -220,7 +234,7 @@
         if (sort.key === 'order') return (a.gi - b.gi) || (a.ci - b.ci);
         if (sort.key === 'v') { var va = valueOf(a), vb = valueOf(b); va = va ? va.p : -1; vb = vb ? vb.p : -1; return (vb - va) * d || (a.gi - b.gi) || (a.ci - b.ci); }   // value: first click = highest first
         if (sort.key === 'n') { var na = parseInt(String(a.n).replace(/\D/g, ''), 10) || 0, nb = parseInt(String(b.n).replace(/\D/g, ''), 10) || 0; return ((a.gi - b.gi) || (na - nb) || String(a.n).localeCompare(String(b.n))) * d; }
-        var ka = nk(sort.key === 'team' ? a.team : a.player), kb = nk(sort.key === 'team' ? b.team : b.player);
+        var ka = nk(sort.key === 'team' ? third(a) : a.player), kb = nk(sort.key === 'team' ? third(b) : b.player);
         return (ka < kb ? -1 : ka > kb ? 1 : (a.gi - b.gi) || (a.ci - b.ci)) * d;
       });
       return list;
@@ -235,7 +249,7 @@
         return '<tr class="' + cls + '" data-k="' + esc(rw.k) + '">' +
           '<td class="n">' + esc(rw.n) + '</td>' +
           '<td class="p">' + (rw.href ? '<a href="' + esc(rw.href) + '">' + esc(rw.player) + '</a>' : esc(rw.player)) + (rw.first ? '<span class="tag" title="Carries the 1st Bowman logo — the player&#39;s first Bowman card of this kind (verified per card)">1ST</span>' : '') + '</td>' +
-          '<td class="t">' + esc(rw.team) + '</td>' +
+          '<td class="t">' + esc(third(rw)) + '</td>' +
           '<td class="v' + (m ? '' : ' none') + '">' + (m ? money(m.p) + '<small>' + (m.graded ? esc(g) + ' · ' : '') + mdy(m.asOf) + '</small>' : (g === 'Raw' ? 'no recent sales' : 'no recent ' + esc(g) + ' sales')) + '</td>' +
           '<td class="c"><label title="I have this card"><input type="checkbox" data-t="h" aria-label="Have ' + esc(rw.player) + ' ' + esc(rw.n) + '"' + (s && s.s === 'h' ? ' checked' : '') + '></label></td>' +
           '<td class="c w"><label title="I want this card"><input type="checkbox" data-t="w" aria-label="Want ' + esc(rw.player) + ' ' + esc(rw.n) + '"' + (s && s.s === 'w' ? ' checked' : '') + '></label></td>' +
@@ -291,8 +305,8 @@
         draw(); return;
       }
       if (b.getAttribute('data-a') === 'csv') {
-        var lines = [['number', 'card', 'team', 'section', 'status', 'qty', 'grade', 'value_mark_usd', 'mark_as_of', 'link'].join(',')];
-        rows.forEach(function (rw) { var s = rowState(rw), m = markFor(rw.n, s ? s.g : 'Raw'); lines.push([rw.n, rw.player, rw.team, rw.g.title, s ? (s.s === 'h' ? 'have' : 'want') : '', s && s.s === 'h' ? (s.q || 1) : '', s ? s.g : '', m ? m.p : '', m ? m.asOf : '', 'https://www.shopcardhub.com' + (rw.href || page)].map(function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(',')); });
+        var lines = [['number', 'card', hasTeam ? 'team' : 'rarity', 'section', 'status', 'qty', 'grade', 'value_mark_usd', 'mark_as_of', 'link'].join(',')];
+        rows.forEach(function (rw) { var s = rowState(rw), m = markFor(rw.n, s ? s.g : 'Raw'); lines.push([rw.n, rw.player, third(rw), rw.g.title, s ? (s.s === 'h' ? 'have' : 'want') : '', s && s.s === 'h' ? (s.q || 1) : '', s ? s.g : '', m ? m.p : '', m ? m.asOf : '', 'https://www.shopcardhub.com' + (rw.href || page)].map(function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(',')); });
         var blob = new Blob([lines.join('\n')], { type: 'text/csv' }), a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = slug + '-checklist.csv'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
         ga('checklist_export', { set: slug }); return;
       }
