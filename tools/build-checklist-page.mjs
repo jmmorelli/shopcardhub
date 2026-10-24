@@ -15,6 +15,9 @@
 //   The index page gets its "Checklist →" tile through build-sector-index.mjs (CONFIG.<tk>.checklist) — re-run it with
 //   --ticker <tk> --bake. The NAV block is whatever the shell page carries; run tools/build-nav.js after if nav.json moved.
 //
+// v2.1 (Oct 24 2026): the sheet script adds the "Still need (N)" chip (gap rows tagged customid=<customid>-need, strip button
+//   -need-top), Import CSV (merge by card number) and writes `total` into the saved sheet; the index-page tile reads it.
+//
 // Usage:
 //   node tools/build-checklist-page.mjs [--set BCB26|DR25|PRIS25] [--check] [--dry]
 //   --check: rebuild in memory and exit 1 if the page on disk differs (a stale page). Deterministic: no clock, no network.
@@ -184,14 +187,15 @@ ${rowsHtml}
   <details class="clp-how" id="checklist-method"><summary>How the estimate works</summary><div>
     <p><b>The count</b> is simply the rows you tick as Have, out of the ${total} cards on this sheet (${esc(c.scopeNote)}).</p>
     <p><b>The value is a range on purpose.</b> Each card&rsquo;s number is our latest <b>recent-sales mark</b> for the grade you picked &mdash; the median of dated eBay sales, the same figure the <a href="${c.indexHref}">${esc(c.ticker)} index page</a> shows, refreshed ${esc(c.refresh || "every week")}. We add those up for your Have rows (times quantity) and show <b>10% under to 10% over</b> that sum, with the date of the newest sale in it. Cards with no recent sales &mdash; or no recent sales in the grade you picked &mdash; say so and are left out, and the bar tells you how many were left out. Nothing here is an appraisal or an offer.${c.markNote ? " " + esc(c.markNote) : ""}</p>
-    <p><b>Saved on this device.</b> Ticks live in your browser (no account). Have also puts the card in <a href="/watchlist">your Vault</a> as My cards and Want as Hunting, so the two agree; untick and it leaves. Export CSV keeps a copy. <a href="/how-prices-work">How prices work &rarr;</a></p>
+    <p><b>Saved on this device.</b> Ticks live in your browser (no account). Have also puts the card in <a href="/watchlist">your Vault</a> as My cards and Want as Hunting, so the two agree; untick and it leaves. <b>Export CSV</b> keeps a copy; <b>Import CSV</b> brings it back on another device or browser &mdash; it adds to what is ticked here and never clears anything. <b>Still need</b> lists every card you have not ticked, each with its eBay search.</p>
+    <p><a href="/how-prices-work">How prices work &rarr;</a></p>
   </div></details>
   <p class="clp-fine">Affiliate links &mdash; ShopCardHub earns an eBay Partner Network commission on qualifying purchases at no extra cost to you. Every eBay button here is a search, not a price. Checklist as published ${esc(data.asof || "")} &middot; ${esc(data.source || "")}. <a href="/affiliate-disclosure">Disclosure</a>${c.guideHref ? ` &middot; <a href="${c.guideHref}">${esc(c.guideLabel || c.name + " release guide")} &rarr;</a>` : ""}</p>
 </section>
 </div>
 
 <script src="/js/vault-track.js?v=6" defer></script>
-<script src="/js/checklist-sheet.js?v=2" defer></script>
+<script src="/js/checklist-sheet.js?v=3" defer></script>
 </body></html>
 `;
   const html = head + "</head><body>\n" + body;

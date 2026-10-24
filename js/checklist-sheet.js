@@ -31,6 +31,15 @@
    ("<name> <n>/<printed> <exclusions>", data.tcg.printedTotal), shows Rarity where Bowman shows Team, and its group chips
    are the rarity row (group.short: Base · IR · SIR · UR · Hyper · ACE SPEC — only the kinds the set has). The set page's
    accent arrives as --clw-acc on the host (bar, numbers, chips); the eBay button stays yellow. Bowman sheets are unchanged.
+   v2.1 (Oct 24 2026, P0-E — the checklist camp's most-used features, claude/cos/learn-collection-trackers-2026-10-23.md §4):
+   - "Still need (N)" chip = every row not ticked Have (Want rows included). In that view every row's Open cell is the
+     card's eBay search tagged customid=<customid>-need, and a strip above the list carries the yellow "Shop the N you
+     still need on eBay →" (the set singles search, tagged -need-top) so the Wednesday money read can split the gap list
+     from the rest of the sheet.
+   - Import CSV: the same columns Export writes (number · status · qty · grade; anything else ignored). Rows are matched
+     by card number; a row with no status leaves the device's tick alone — import adds, it never wipes. No account.
+   - the saved sheet also carries `total` (rows on the sheet) so the index page's "Your checklist" tile can say
+     "You have 61 of 244 · 25%" from the device alone (js/plain-read.js clTiles()).
    Never writes a price. Never shows an exact total. */
 (function () {
   'use strict';
@@ -53,7 +62,9 @@
     '.clw-chips{display:inline-flex;border:1px solid var(--bd2,rgba(255,255,255,.12));border-radius:2px;overflow:hidden}' +
     '.clw-chips button{background:none;border:0;border-right:1px solid var(--bd2,rgba(255,255,255,.12));color:var(--dim,#5a7880);font-family:var(--fm,ui-monospace,monospace);font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 11px;cursor:pointer;min-height:36px}.clw-chips button:last-child{border-right:0}.clw-chips button.on{background:var(--clw-acc,var(--ac,#00ccf5));color:#000}.clw-chips button:focus-visible{outline:2px solid var(--gd,#f5c800);outline-offset:-2px}' +
     '.clw-chips button b{font-weight:400;opacity:.75;margin-left:4px}' +
-    '.clw-act{margin-left:auto;display:inline-flex;gap:6px}.clw-act button{background:none;border:1px solid var(--bd2,rgba(255,255,255,.12));color:var(--tx,#b8cdd4);font-family:var(--fm,ui-monospace,monospace);font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 11px;border-radius:2px;cursor:pointer;min-height:36px}.clw-act button:hover{border-color:var(--ac,#00ccf5);color:var(--th,#e4f0f4)}' +
+    '.clw-need{display:none;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px;padding:10px 12px;border:1px solid rgba(245,200,0,.35);border-radius:3px;background:rgba(245,200,0,.05)}.clw-need.on{display:flex}.clw-need>span{font-size:12px;line-height:1.45;color:var(--tx,#b8cdd4)}.clw-need .clw-go span{color:inherit}' +
+    '.clw-act input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}' +
+    '.clw-act{margin-left:auto;display:inline-flex;gap:6px;position:relative}.clw-act button{background:none;border:1px solid var(--bd2,rgba(255,255,255,.12));color:var(--tx,#b8cdd4);font-family:var(--fm,ui-monospace,monospace);font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 11px;border-radius:2px;cursor:pointer;min-height:36px}.clw-act button:hover{border-color:var(--ac,#00ccf5);color:var(--th,#e4f0f4)}' +
     '.clw-wrap{overflow:auto;border:1px solid var(--bd2,rgba(255,255,255,.12));background:var(--p1,#0c1017);max-height:70vh}' +
     '.clw table{width:100%;border-collapse:collapse;font-family:var(--fm,ui-monospace,monospace);font-size:12.5px;white-space:nowrap}' +
     '.clw th{position:sticky;top:0;z-index:2;background:var(--p2,#111820);color:var(--dim,#5a7880);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;text-align:left;padding:0;border-bottom:1px solid var(--bd2,rgba(255,255,255,.12))}' +
@@ -165,10 +176,12 @@
     var all = loadAll(), st = all[slug];
     var fresh = !st;
     if (!st) { st = { rows: {}, t: Date.now() }; var own = vaultOwnedNames(); rows.forEach(function (rw) { var o = own[rw.name.toLowerCase()]; if (o) st.rows[rw.k] = { s: o.s, q: Math.min(9, Math.max(1, parseInt(o.q, 10) || 1)), g: (o.g === 'Raw' || GKEY[o.g]) ? o.g : 'Raw', vid: o.id || null }; }); }
-    function persist() { st.t = Date.now(); all[slug] = st; saveAll(all); }
-    if (fresh && Object.keys(st.rows).length) persist();
+    function persist() { st.t = Date.now(); st.total = total; all[slug] = st; saveAll(all); }
+    if ((fresh && Object.keys(st.rows).length) || (!fresh && st.total !== total)) persist();   // v2.1: the tile on the index page reads total from here
 
     var sort = { key: 'order', dir: 1 }, filter = 'all', group = -1, q = '';
+    // the gap list's own tags: rows -need, the strip's button -need-top (same searches as the rest of the sheet)
+    var needId = customid + '-need', needTopUrl = /customid=[^&]*-top(&|$)/.test(topUrl) ? topUrl.replace(/(customid=[^&]*)-top(?=&|$)/, '$1-need-top') : topUrl.replace(/(customid=[^&]*)/, '$1-need-top');
     var topSet = {}; rows.slice().filter(function (x) { return marks[x.k]; }).sort(function (a, b) { return marks[b.k].p - marks[a.k].p; }).slice(0, 20).forEach(function (x) { topSet[x.k] = 1; });
 
     host.innerHTML =
@@ -179,10 +192,11 @@
       '</div>' +
       '<div class="clw-ctl">' +
         '<input type="search" placeholder="' + (hasTeam ? 'Search player, team or number…' : 'Search card, rarity or number…') + '" aria-label="Search the checklist">' +
-        '<div class="clw-chips" role="group" aria-label="Show"><button data-f="all" class="on" aria-pressed="true">All<b data-clw="c-all"></b></button><button data-f="h" aria-pressed="false">Have<b data-clw="c-h"></b></button><button data-f="w" aria-pressed="false">Want<b data-clw="c-w"></b></button><button data-f="top" aria-pressed="false" title="The 20 cards with the highest recent-sales mark">Most valuable</button></div>' +
+        '<div class="clw-chips" role="group" aria-label="Show"><button data-f="all" class="on" aria-pressed="true">All<b data-clw="c-all"></b></button><button data-f="h" aria-pressed="false">Have<b data-clw="c-h"></b></button><button data-f="need" aria-pressed="false" title="Every card you have not ticked as Have, each with its eBay search">Still need<b data-clw="c-need"></b></button><button data-f="w" aria-pressed="false">Want<b data-clw="c-w"></b></button><button data-f="top" aria-pressed="false" title="The 20 cards with the highest recent-sales mark">Most valuable</button></div>' +
         ((data.groups || []).length > 1 ? '<div class="clw-chips" role="group" aria-label="' + (poke ? 'Rarity' : 'Section') + '"><button data-g="-1" class="on" aria-pressed="true">' + (poke ? 'All' : 'All sections') + '</button>' + data.groups.map(function (g, i) { return '<button data-g="' + i + '" aria-pressed="false"' + (g.short && g.short !== g.title ? ' title="' + esc(g.title) + '"' : '') + '>' + esc(g.short || g.title) + '<b>' + (g.cards || []).length + '</b></button>'; }).join('') + '</div>' : '') +
-        '<div class="clw-act"><button type="button" data-a="csv">Export CSV</button><button type="button" data-a="clear">Clear</button></div>' +
+        '<div class="clw-act"><button type="button" data-a="csv">Export CSV</button><button type="button" data-a="import" title="Bring a checklist you exported on another device — adds to what is ticked here, never clears">Import CSV</button><input type="file" accept=".csv,text/csv,text/plain" aria-label="Choose the CSV you exported" tabindex="-1"><button type="button" data-a="clear">Clear</button></div>' +
       '</div>' +
+      '<div class="clw-need" data-clw="need"><a class="clw-go" href="' + esc(needTopUrl) + '" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag===\'function\')gtag(\'event\',\'checklist_shop_need\',{set:\'' + esc(slug) + '\'})" data-clw="need-go">Shop the <span data-clw="need-n">' + total + '</span> you still need on eBay &rarr;</a><span>Every row below opens the eBay search for that card.</span></div>' +
       '<div class="clw-wrap"><table><thead><tr>' +
         '<th><button type="button" data-s="n" aria-sort="none">#<span class="ar">↕</span></button></th>' +
         '<th><button type="button" data-s="name" aria-sort="none">Card<span class="ar">↕</span></button></th>' +
@@ -217,6 +231,10 @@
       else if (!counted) { val.className = 'clw-v none'; val.textContent = 'No recent sales for these ' + (have === 1 ? 'card' : 'cards') + ' yet'; sub.textContent = have + ' card' + (have === 1 ? '' : 's') + ' ticked · none has a recent-sales mark, so there is no range to show.'; }
       else { val.className = 'clw-v'; val.textContent = rangeMoney(low) + '–' + rangeMoney(high); sub.textContent = 'based on sales through ' + mdy(through || lastMark) + (skipped ? ' · ' + skipped + ' card' + (skipped === 1 ? '' : 's') + ' with no recent sales not counted' : '') + ' · a range, not a total'; }
       host.querySelector('[data-clw="c-all"]').textContent = total; host.querySelector('[data-clw="c-h"]').textContent = have || ''; host.querySelector('[data-clw="c-w"]').textContent = want || '';
+      var need = total - have;
+      host.querySelector('[data-clw="c-need"]').textContent = need;
+      host.querySelector('[data-clw="need-n"]').textContent = need;
+      var strip = host.querySelector('[data-clw="need"]'); strip.classList.toggle('on', filter === 'need' && need > 0);
     }
 
     function visible() {
@@ -225,6 +243,7 @@
         var s = rowState(rw);
         if (filter === 'h' && !(s && s.s === 'h')) return false;
         if (filter === 'w' && !(s && s.s === 'w')) return false;
+        if (filter === 'need' && s && s.s === 'h') return false;
         if (filter === 'top' && !topSet[rw.k]) return false;
         if (q && nk(rw.player + ' ' + third(rw) + ' ' + rw.n).indexOf(q) < 0) return false;
         return true;
@@ -245,7 +264,9 @@
       tbody.innerHTML = list.map(function (rw) {
         var s = rowState(rw), g = s ? s.g : 'Raw', m = markFor(rw.n, g), qn = s && s.s === 'h' ? (s.q || 1) : 1;
         var cls = s ? (s.s === 'h' ? 'h' : 'w') : '';
-        var link = rw.href ? '<a href="' + esc(rw.href) + '" title="Price chart and live listings">Chart</a>' : '<a class="eb" href="' + esc(ebayUrl(rw.q, customid, sacat)) + '" target="_blank" rel="noopener sponsored" title="Live eBay listings for this card (affiliate)">eBay</a>';
+        // the gap list: every row opens its eBay search, tagged -need (a card with a chart keeps the chart link on its name)
+        var link = filter === 'need' ? '<a class="eb" href="' + esc(ebayUrl(rw.q, needId, sacat)) + '" target="_blank" rel="noopener sponsored" title="Live eBay listings for this card (affiliate)">eBay</a>' :
+          rw.href ? '<a href="' + esc(rw.href) + '" title="Price chart and live listings">Chart</a>' : '<a class="eb" href="' + esc(ebayUrl(rw.q, customid, sacat)) + '" target="_blank" rel="noopener sponsored" title="Live eBay listings for this card (affiliate)">eBay</a>';
         return '<tr class="' + cls + '" data-k="' + esc(rw.k) + '">' +
           '<td class="n">' + esc(rw.n) + '</td>' +
           '<td class="p">' + (rw.href ? '<a href="' + esc(rw.href) + '">' + esc(rw.player) + '</a>' : esc(rw.player)) + (rw.first ? '<span class="tag" title="Carries the 1st Bowman logo — the player&#39;s first Bowman card of this kind (verified per card)">1ST</span>' : '') + '</td>' +
@@ -256,13 +277,13 @@
           '<td class="q"><span class="qs"><button type="button" data-q="-1" aria-label="One fewer"' + (!(s && s.s === 'h') || qn <= 1 ? ' disabled' : '') + '>−</button><output aria-label="Quantity">' + qn + '</output><button type="button" data-q="1" aria-label="One more"' + (!(s && s.s === 'h') || qn >= 9 ? ' disabled' : '') + '>+</button></span></td>' +
           '<td class="g"><select aria-label="Grade">' + GRADES.map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === g ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></td>' +
           '<td class="l">' + link + '</td></tr>';
-      }).join('') || '<tr class="clw-empty"><td colspan="9">' + (filter === 'h' ? 'Nothing ticked as Have yet — tick the cards you own.' : filter === 'w' ? 'Nothing on your Want list yet.' : 'No matches.') + '</td></tr>';
+      }).join('') || '<tr class="clw-empty"><td colspan="9">' + (filter === 'h' ? 'Nothing ticked as Have yet — tick the cards you own.' : filter === 'w' ? 'Nothing on your Want list yet.' : filter === 'need' && !q && group < 0 ? 'You have every card on this sheet.' : 'No matches.') + '</td></tr>';
       host.querySelector('[data-clw="foot"]').textContent = list.length + ' of ' + total + ' cards shown';
       summary();
     }
 
     // ---- state changes ----
-    function setStatus(rw, s) {   // s: 'h' | 'w' | null
+    function setStatus(rw, s, quiet) {   // s: 'h' | 'w' | null; quiet = no per-row analytics event (import)
       var cur = rowState(rw);
       if (cur && cur.vid) vaultRemove(cur.vid, rw.name); else if (cur) vaultRemove(null, rw.name);
       if (!s) { delete st.rows[rw.k]; persist(); return; }
@@ -270,7 +291,7 @@
       var m = markFor(rw.n, next.g);
       next.vid = vaultAdd({ name: rw.name, set: data.set, cat: cat, grade: next.g, price: m ? m.p : null, status: s === 'h' ? 'own' : 'watch', page: page });
       st.rows[rw.k] = next; persist();
-      ga('checklist_tick', { set: slug, status: s, card: rw.name.slice(0, 90) });
+      if (!quiet) ga('checklist_tick', { set: slug, status: s, card: rw.name.slice(0, 90) });
     }
     host.addEventListener('change', function (e) {
       var t = e.target, tr = t.closest && t.closest('tr'); if (!tr) return;
@@ -310,6 +331,7 @@
         var blob = new Blob([lines.join('\n')], { type: 'text/csv' }), a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = slug + '-checklist.csv'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
         ga('checklist_export', { set: slug }); return;
       }
+      if (b.getAttribute('data-a') === 'import') { var fi = host.querySelector('.clw-act input[type=file]'); fi.value = ''; fi.click(); return; }
       if (b.getAttribute('data-a') === 'clear') {
         var n = Object.keys(st.rows).length; if (!n) { snack('Nothing to clear'); return; }
         if (!confirm('Clear all ' + n + ' ticked cards on this checklist? They leave your Vault too.')) return;
@@ -318,6 +340,58 @@
       }
     });
     input.addEventListener('input', function () { q = nk(input.value.trim()); draw(); });
+
+    /* ---- Import CSV: the columns Export writes, matched by card number; merge, never wipe ---- */
+    function parseCsv(text) {   // RFC-4180-ish: quoted fields, doubled quotes, CRLF; returns rows of strings
+      var out = [], row = [], f = '', i = 0, c, inQ = false; text = String(text).replace(/^﻿/, '');
+      for (; i < text.length; i++) {
+        c = text[i];
+        if (inQ) { if (c === '"') { if (text[i + 1] === '"') { f += '"'; i++; } else inQ = false; } else f += c; }
+        else if (c === '"') inQ = true;
+        else if (c === ',') { row.push(f); f = ''; }
+        else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(f); f = ''; if (row.some(function (x) { return x !== ''; })) out.push(row); row = []; }
+        else f += c;
+      }
+      row.push(f); if (row.some(function (x) { return x !== ''; })) out.push(row);
+      return out;
+    }
+    function importCsv(text) {
+      var table = parseCsv(text); if (table.length < 2) return { err: 'That file has no rows.' };
+      var hdr = table[0].map(function (h) { return nk(h).replace(/[^a-z0-9]/g, ''); });
+      var col = function () { for (var a = 0; a < arguments.length; a++) { var j = hdr.indexOf(arguments[a]); if (j > -1) return j; } return -1; };
+      var iN = col('number', 'num', 'no', 'card', 'cardnumber'), iS = col('status', 'have', 'own'), iQ = col('qty', 'quantity', 'count'), iG = col('grade', 'condition');
+      if (iN < 0) return { err: 'No "number" column — export a checklist from this page and import that file.' };
+      if (iS < 0) return { err: 'No "status" column (have / want).' };
+      var byK = {}; rows.forEach(function (rw) { byK[rw.k] = rw; });
+      var added = 0, same = 0, skipped = 0, unknown = 0;
+      table.slice(1).forEach(function (r) {
+        var rw = byK[num(r[iN])]; if (!rw) { unknown++; return; }
+        var sv = nk(r[iS] || '').trim(), s = /^(have|h|own|owned|yes|x|1|true)$/.test(sv) ? 'h' : /^(want|w|hunting|watch|wish)$/.test(sv) ? 'w' : null;
+        if (!s) { skipped++; return; }   // a blank status never clears a tick on this device
+        var qv = iQ > -1 ? parseInt(r[iQ], 10) : NaN, qn = s === 'h' && qv >= 1 ? Math.min(9, qv) : 1;
+        var gv = iG > -1 ? String(r[iG] || '').trim() : '', gn = GRADES.filter(function (o) { return o[0].toLowerCase() === gv.toLowerCase(); })[0]; gn = gn ? gn[0] : 'Raw';
+        var cur = rowState(rw);
+        if (cur && cur.s === s && (cur.q || 1) === qn && cur.g === gn) { same++; return; }
+        // seed the row with the file's qty/grade, then write it through setStatus so the Vault mirror agrees (old card out, new in)
+        st.rows[rw.k] = { s: s, q: qn, g: gn, vid: cur ? cur.vid : null };
+        setStatus(rw, s, true); added++;
+      });
+      return { added: added, same: same, skipped: skipped, unknown: unknown };
+    }
+    host.querySelector('.clw-act input[type=file]').addEventListener('change', function (e) {
+      var f = e.target.files && e.target.files[0]; if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function () {
+        var res = importCsv(rd.result || '');
+        if (res.err) { snack(res.err); return; }
+        draw();
+        var msg = res.added ? 'Imported ' + res.added + ' card' + (res.added === 1 ? '' : 's') : 'Nothing new to import';
+        if (res.same) msg += ' · ' + res.same + ' already ticked'; if (res.unknown) msg += ' · ' + res.unknown + ' row' + (res.unknown === 1 ? '' : 's') + ' not on this sheet';
+        snack(msg); ga('checklist_import', { set: slug, n: res.added });
+      };
+      rd.onerror = function () { snack('Could not read that file.'); };
+      rd.readAsText(f);
+    });
     draw();
   }
 

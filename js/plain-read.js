@@ -161,7 +161,30 @@
       '<div class="pr-tile"><span class="pr-tb"><span class="pr-tk">Biggest move this week</span><span class="pr-tn" data-pr-t="mv">' + tileMv(f) + '</span><span class="pr-tv ' + (f.mover ? cls(f.mover.p) : '') + '" data-pr-t="mvv">' + tileMvV(f) + '</span></span></div>' +
       /* P0-E (Oct 23 2026): a set with a checklist worksheet gets a third, full-width tile that is a link — the generator passes
        * opts.link = { href, k, label, sub }. Inline layout only, so no baked page's CSS has to change for the two-tile sets. */
-      (opts.link && opts.link.href ? '<a class="pr-tile pr-tile-link" href="' + esc(opts.link.href) + '" style="grid-column:1/-1;text-decoration:none;min-height:0;align-items:center" data-pr-t="link"><span class="pr-tb" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span class="pr-tk" style="grid-column:auto;margin:0">' + esc(opts.link.k || 'Your checklist') + '</span><span class="pr-tn" style="font-size:14px">' + esc(opts.link.label || 'Checklist') + ' &rarr;</span>' + (opts.link.sub ? '<span class="pr-tn" style="font-weight:400;font-size:12px;color:var(--dim,#8a97a5)">' + esc(opts.link.sub) + '</span>' : '') + '</span></a>' : '');
+      (opts.link && opts.link.href ? '<a class="pr-tile pr-tile-link" href="' + esc(opts.link.href) + '" style="grid-column:1/-1;text-decoration:none;min-height:0;align-items:center" data-pr-t="link"' +
+        /* v2.1 (Oct 24 2026): opts.link.slug = the sheet's localStorage key (data/sets/<slug>.json slug), opts.link.total = rows on the
+         * sheet. clTiles() below reads the device's ticks and turns the sub line into "You have 61 of 244 · 25%". Never baked. */
+        (opts.link.slug ? ' data-cl-slug="' + esc(opts.link.slug) + '"' + (opts.link.total ? ' data-cl-total="' + (+opts.link.total) + '"' : '') : '') +
+        '><span class="pr-tb" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span class="pr-tk" style="grid-column:auto;margin:0">' + esc(opts.link.k || 'Your checklist') + '</span><span class="pr-tn" style="font-size:14px">' + esc(opts.link.label || 'Checklist') + ' &rarr;</span>' + (opts.link.sub ? '<span class="pr-tn" style="font-weight:400;font-size:12px;color:var(--dim,#8a97a5)" data-pr-t="linksub">' + esc(opts.link.sub) + '</span>' : '') + '</span></a>' : '');
+  }
+
+  /* the checklist tile's per-device line: localStorage sch_checklist_v1[slug].rows → "You have N of M · P%". Nothing from the
+   * network, nothing baked — a reader who has ticked nothing keeps the generator's "Tick your cards…" line. */
+  function clTiles() {
+    var tiles = document.querySelectorAll('[data-pr-t="link"][data-cl-slug]'); if (!tiles.length) return;
+    var all; try { all = JSON.parse(localStorage.getItem('sch_checklist_v1') || '{}'); } catch (e) { return; }
+    if (!all || typeof all !== 'object') return;
+    Array.prototype.forEach.call(tiles, function (a) {
+      var st = all[a.getAttribute('data-cl-slug')], rows = st && st.rows; if (!rows || typeof rows !== 'object') return;
+      var have = 0; for (var k in rows) if (rows[k] && rows[k].s === 'h') have++;
+      if (!have) return;
+      var total = (st.total > 0 ? st.total : 0) || parseInt(a.getAttribute('data-cl-total'), 10) || 0;
+      var sub = a.querySelector('[data-pr-t="linksub"]');
+      if (!sub) { sub = document.createElement('span'); sub.className = 'pr-tn'; sub.style.cssText = 'font-weight:400;font-size:12px;color:var(--dim,#8a97a5)'; sub.setAttribute('data-pr-t', 'linksub'); var tb = a.querySelector('.pr-tb'); (tb || a).appendChild(sub); }
+      var pct = total ? Math.round(have / total * 100) : 0;
+      sub.textContent = total ? 'You have ' + have + ' of ' + total + ' · ' + (pct ? pct : '<1') + '%' : 'You have ' + have;
+      sub.style.color = 'var(--th,#fff)';
+    });
   }
 
   /* 4 · what goes behind "How this index works" */
@@ -285,6 +308,11 @@
   }
 
   function go() {
+    try { clTiles(); } catch (e) {}
+    try {   /* re-read on a bfcache return from the sheet and when another tab ticks */
+      window.addEventListener('pageshow', function (ev) { if (ev && ev.persisted) clTiles(); });
+      window.addEventListener('storage', function (ev) { if (!ev || !ev.key || ev.key === 'sch_checklist_v1') clTiles(); });
+    } catch (e) {}
     if (!document.querySelector('.idx-chart[data-ticker]')) return;
     (window.schIdx = window.schIdx || function () { return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { window.__schIdxP = null; throw e; })); })().then(mount).catch(function () {});
   }

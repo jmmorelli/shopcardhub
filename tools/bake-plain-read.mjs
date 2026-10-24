@@ -41,9 +41,17 @@ const PAGES = ["pitch-black-index", "chaos-rising-index", "ascended-heroes-index
 /* P0-E (Oct 24 2026): a set with a checklist worksheet (tools/build-checklist-page.mjs CONFIG) gets the third, full-width link
    tile in the tiles row — the same opts.link build-sector-index.mjs passes for BCB26. Keyed by ticker. */
 const CHECKLIST = {
-  DR25: { href: "/destined-rivals-checklist", label: "Checklist: track what you have", sub: "Tick your cards, see an estimated value" },
-  PRIS25: { href: "/prismatic-evolutions-checklist", label: "Checklist: track what you have", sub: "Tick your cards, see an estimated value" },
+  DR25: { href: "/destined-rivals-checklist", setFile: "destined-rivals", label: "Checklist: track what you have", sub: "Tick your cards, see an estimated value" },
+  PRIS25: { href: "/prismatic-evolutions-checklist", setFile: "prismatic-evolutions", label: "Checklist: track what you have", sub: "Tick your cards, see an estimated value" },
 };
+/* v2.1 (Oct 24 2026): the tile also carries the sheet's localStorage slug + row count so js/plain-read.js clTiles() can say
+   "You have 61 of 244 · 25%" from the device (never baked). The count is the sheet's card count, the same one the checklist
+   page prints — not a price. */
+function clLink(tk) {
+  const c = CHECKLIST[tk]; if (!c) return null;
+  const d = JSON.parse(fs.readFileSync(path.join(REPO, `data/sets/${c.setFile}.json`), "utf8"));
+  return { href: c.href, k: "Your checklist", label: c.label, sub: c.sub, slug: d.slug || c.setFile, total: (d.groups || []).reduce((n, g) => n + (g.cards || []).length, 0) };
+}
 const START = "<!-- PLAIN-READ:START", END = "<!-- PLAIN-READ:END -->";
 const HERO_S = "<!-- HERO:START", HERO_E = "<!-- HERO:END -->";
 const TILES_S = "<!-- PLAIN-READ:TILES:START -->", TILES_E = "<!-- PLAIN-READ:TILES:END -->";
@@ -103,7 +111,7 @@ function bake(html) {
   const tiles = between(html, TILES_S, TILES_E);
   const slot = /<span class="pr-ti">([\s\S]*?)<\/span>\s*<span class="pr-t[bn]"/.exec(tiles.inner);
   if (slot) img = slot[1];
-  const parts = PR.bakeParts(tk, r, { accent: "var(--iac)", topImg: img, link: CHECKLIST[tk] ? { href: CHECKLIST[tk].href, k: "Your checklist", label: CHECKLIST[tk].label, sub: CHECKLIST[tk].sub } : null });
+  const parts = PR.bakeParts(tk, r, { accent: "var(--iac)", topImg: img, link: clLink(tk) });
   if (!parts) return { skip: `${tk} has no read yet (pre-activation)` };
   const css = `<style id="pr-css">${PR.PR_CSS}</style>`;
   // 1 · line under the level
