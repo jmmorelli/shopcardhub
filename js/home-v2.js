@@ -108,14 +108,22 @@
   var rz = null, lastW = document.getElementById('h2-chart').clientWidth;
   window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(function () { var w = document.getElementById('h2-chart').clientWidth; if (Math.abs(w - lastW) > 24) { lastW = w; var keep = RM; RM = true; chart(T[cur]); RM = keep; } }, 150); });
 
-  /* ---------- what moved this week: both lists are baked (HOME:movers2); the toggle shows one ---------- */
-  Array.prototype.forEach.call(document.querySelectorAll('.h2-tile .tog button[data-dir]'), function (b) {
-    b.addEventListener('click', function () {
-      var dir = b.getAttribute('data-dir');
-      Array.prototype.forEach.call(document.querySelectorAll('.h2-tile .tog button[data-dir]'), function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-      Array.prototype.forEach.call(document.querySelectorAll('[data-mv]'), function (ul) { ul.hidden = ul.getAttribute('data-mv') !== dir; });
+  /* ---------- what moved this week: all four lists are baked (HOME:movers2, cards/sets × up/down); the two toggles show one ---------- */
+  (function () {
+    var tile = document.getElementById('h2-mvh'); tile = tile && tile.closest('.h2-tile'); if (!tile) return;
+    var view = 'cards', dir = 'up';
+    function paint() {
+      Array.prototype.forEach.call(tile.querySelectorAll('ul[data-view]'), function (ul) { ul.hidden = !(ul.getAttribute('data-view') === view && ul.getAttribute('data-dir') === dir); });
+      Array.prototype.forEach.call(tile.querySelectorAll('small[data-view]'), function (s) { s.hidden = s.getAttribute('data-view') !== view; });
+      Array.prototype.forEach.call(tile.querySelectorAll('.tog button[data-view]'), function (x) { x.setAttribute('aria-pressed', String(x.getAttribute('data-view') === view)); });
+      Array.prototype.forEach.call(tile.querySelectorAll('.tog button[data-dir]'), function (x) { x.setAttribute('aria-pressed', String(x.getAttribute('data-dir') === dir)); });
+    }
+    tile.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('.tog button'); if (!b) return;
+      if (b.hasAttribute('data-view')) view = b.getAttribute('data-view'); else if (b.hasAttribute('data-dir')) dir = b.getAttribute('data-dir'); else return;
+      paint(); ga('home2_movers_toggle', { view: view, dir: dir });
     });
-  });
+  })();
 
   /* ---------- /#screen=<id> (rail saved screens) lives inside the collapsed "More" fold on /: open it so js/home.js can scroll there ---------- */
   (function () { var more = document.querySelector('.h2-more'); if (!more) return; var openIf = function () { if (/screen=/.test(location.hash || '')) more.open = true; }; openIf(); window.addEventListener('hashchange', openIf);

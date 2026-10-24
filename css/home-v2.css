@@ -119,6 +119,21 @@
 .h2-tile .tog { display:inline-flex; border:1px solid var(--border); border-radius:2px; overflow:hidden; }
 .h2-tile .tog button { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); background:none; border:0; padding:6px 10px; cursor:pointer; min-height:28px; }
 .h2-tile .tog button[aria-pressed="true"] { color:#000; background:var(--text-head); }
+/* the movers tile (Oct 23 evening): two toggle groups in the heading, a sub-line with the "How we pick these" fold, a second
+   11 px meta line per row (dates · n · basis), thin-data and usual-range rows dimmed */
+.h2-tile .togs { display:inline-flex; gap:6px; flex-wrap:wrap; }
+.h2-sub { display:flex; justify-content:space-between; align-items:baseline; gap:6px 14px; flex-wrap:wrap; margin:-4px 0 6px; }
+.h2-sub > small { font-family:var(--fm); font-size:11px; color:var(--text-dim); letter-spacing:0.3px; }
+.h2-how { font-size:12px; color:var(--text-dim); min-width:0; }
+.h2-how > summary { cursor:pointer; list-style:none; font-family:var(--fm); font-size:11px; letter-spacing:0.5px; color:var(--accent); white-space:nowrap; min-height:24px; display:inline-flex; align-items:center; }
+.h2-how > summary::-webkit-details-marker { display:none; }
+.h2-how[open] > summary { color:var(--text-head); }
+.h2-how > div { border-left:3px solid var(--border2); background:var(--bg3); padding:8px 12px; margin:6px 0 4px; line-height:1.6; }
+.h2-how p { margin:0 0 6px; } .h2-how p:last-child { margin:0; } .h2-how b { color:var(--text); }
+.h2-sub:has(.h2-how[open]) { flex-direction:column; align-items:stretch; }
+.h2-tile li .nm small.mt { font-size:11px; color:var(--text-dim); opacity:0.85; margin-top:1px; }
+.h2-tile li.thin .ch, .h2-tile li.usual .ch { opacity:0.6; }
+.h2-tile li.empty.note { font-size:12px; padding:6px 0 2px; }
 .h2-g { font-family:var(--fm); font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:1px 5px; border:1px solid var(--border2); color:var(--text); margin-right:5px; vertical-align:middle; }
 .h2-g.psa10 { color:var(--gold); border-color:rgba(245,200,0,0.5); } .h2-g.psa9 { color:var(--accent); border-color:rgba(0,204,245,0.5); }
 
