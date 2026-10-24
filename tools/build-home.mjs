@@ -111,9 +111,11 @@ if (INIT_V2 || !/<!-- HOME:idxbox:START -->/.test(html)) {
   if (!main) throw new Error("index.html: <main class=\"tmain\" id=\"main\"> … </main> not found");
   html = html.replace(main[0], V2.skeleton(carry));
   // head: the shared v2 stylesheet + script; the retired returning-visitor slot (js/home-you.js) and its pre-paint reservation go
-  if (!/\/css\/home-v2\.css/.test(html)) html = html.replace(/(<link rel="stylesheet" href="\/css\/terminal-shell\.css[^"]*">)/, '$1\n  <link rel="stylesheet" href="/css/home-v2.css?v=1">');
+  if (!/\/css\/home-v2\.css/.test(html)) html = html.replace(/(<link rel="stylesheet" href="\/css\/terminal-shell\.css[^"]*">)/, '$1\n  <link rel="stylesheet" href="/css/home-v2.css?v=2">');
   // home-v2.js runs BEFORE home.js (both deferred, document order): it opens the "More" fold on a /#screen= deep link before home.js scrolls there
-  if (!/\/js\/home-v2\.js/.test(html)) html = html.replace(/(<script src="\/js\/home\.js[^"]*" defer><\/script>)/, '<script src="/js/home-v2.js?v=1" defer></script>\n$1');
+  if (!/\/js\/home-v2\.js/.test(html)) html = html.replace(/(<script src="\/js\/home\.js[^"]*" defer><\/script>)/, '<script src="/js/home-v2.js?v=2" defer></script>\n$1');
+  // asset versions: bump both when css/home-v2.css or js/home-v2.js change (v=2 Oct 23 2026: empty-tile sizing, auctions "as of")
+  html = html.replace(/\/css\/home-v2\.css\?v=\d+/, "/css/home-v2.css?v=2").replace(/\/js\/home-v2\.js\?v=\d+/, "/js/home-v2.js?v=2");
   html = html.replace(/\n\s*<script src="\/js\/home-you\.js[^"]*" defer><\/script>/, "");
   html = html.replace(/\n\s*<!-- Night Crew Oct 8 \(NEW-1\)[\s\S]*?<\/script>(?=\n\s*<\/head>)/, "");
   html = html.replace(/<div class="term" data-prices-updated=/, '<div class="term h2-page" data-prices-updated=');

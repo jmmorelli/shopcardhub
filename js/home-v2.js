@@ -140,11 +140,12 @@
   var ends = function (iso) { var ms = new Date(iso).getTime() - Date.now(); if (!(ms > 0)) return 'ending'; var h = ms / 36e5; return h < 1 ? Math.max(1, Math.round(ms / 6e4)) + 'm' : h < 48 ? Math.round(h) + 'h' : Math.round(h / 24) + 'd'; };
   fetch('/api/auctions').then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
     var now = Date.now(), rows = (j.rows || []).filter(function (r) { return r && r.url && r.endDate && new Date(r.endDate).getTime() > now && isFinite(r.total); }).sort(function (a, b) { return new Date(a.endDate) - new Date(b.endDate); }).slice(0, 5);
-    if (!rows.length) { au.innerHTML = '<li class="empty">No verified auction is live right now. <a href="/auctions">Auction Desk \u2192</a></li>'; return; }
+    if (!rows.length) { au.innerHTML = '<li class="empty">' + (j.source === 'empty' || j.tripped ? 'The live auction feed is resting (eBay call limit for today). ' : 'No verified auction is live right now. ') + '<a href="/auctions">Auction Desk \u2192</a></li>'; return; }
     au.innerHTML = rows.map(function (r) { var nm = String(r.label || '').split(' \u2014 ')[0];
       return '<li title="' + esc((r.bidCount || 0) + ' bids \u00b7 ends ' + new Date(r.endDate).toLocaleString()) + '"><span class="nm"><b>' + esc(nm) + '</b><small>' + esc(String(r.label || '').split(' \u2014 ')[1] || r.cardType || '') + ' \u00b7 ends in ' + ends(r.endDate) + (r.bidCount != null ? ' \u00b7 ' + r.bidCount + ' bid' + (r.bidCount === 1 ? '' : 's') : '') + '</small></span>' +
         '<span class="rt"><span class="px">' + esc(money(r.total)) + '</span><a class="btn bid" href="' + esc(r.url) + '" target="_blank" rel="noopener sponsored">Bid \u2192</a></span></li>'; }).join('');
-    document.getElementById('h2-aus').textContent = rows.length + ' of ' + (j.count || rows.length) + ' live';
+    var asOf = j.generated && (Date.now() - new Date(j.generated).getTime()) > 20 * 60000 ? ' \u00b7 as of ' + new Date(j.generated).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '';
+    document.getElementById('h2-aus').textContent = rows.length + ' of ' + (j.count || rows.length) + ' live' + asOf;
   }).catch(function () { au.innerHTML = '<li class="empty">Couldn\u2019t reach the live auction feed just now. <a href="/auctions">Auction Desk \u2192</a></li>'; });
 
   /* ---------- your watchlist: localStorage sch_vault_v1 (written by js/vault-track.js and /watchlist; nothing leaves the device) ---------- */
