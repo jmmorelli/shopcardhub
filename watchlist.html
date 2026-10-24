@@ -1534,6 +1534,10 @@ function mergeMirror(full, mirror) {
   // cards present in the localStorage mirror but not in the full store were added from a card page
   if (!mirror || !Array.isArray(mirror.cards)) return 0;
   if (mirror.demo && !full.demo) return 0;
+  // tombstones (checklist worksheet, Oct 23 2026 — js/checklist-sheet.js): a card the sheet un-ticked after this page had
+  // already merged it is removed here by id, BEFORE the add pass, so a re-tick under the other status (same name, new id)
+  // lands. The mirror is rewritten from the full state on save(), which drops the applied tombstones.
+  if (Array.isArray(mirror.rm) && mirror.rm.length) { const rm = new Set(mirror.rm.map(r => r && String(r.id)).filter(Boolean)); full.cards = full.cards.filter(c => !(c && rm.has(String(c.id)))); }
   const ids = new Set(full.cards.map(c => c.id)), names = new Set(full.cards.map(c => (c.name || '').toLowerCase()));
   let added = 0;
   // lists created from a card page's chooser ("+ New…") live only in the mirror until this merge

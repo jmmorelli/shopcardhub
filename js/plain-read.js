@@ -158,7 +158,10 @@
     opts = opts || {};
     var img = opts.topImg ? '<span class="pr-ti">' + opts.topImg + '</span>' : '';
     return '<div class="pr-tile' + (img ? ' has-img' : '') + '">' + img + '<span class="pr-tb"><span class="pr-tk">Priciest card</span><span class="pr-tn" data-pr-t="top">' + tileTop(f) + '</span><span class="pr-tv" data-pr-t="topv">' + tileTopV(f) + '</span></span></div>' +
-      '<div class="pr-tile"><span class="pr-tb"><span class="pr-tk">Biggest move this week</span><span class="pr-tn" data-pr-t="mv">' + tileMv(f) + '</span><span class="pr-tv ' + (f.mover ? cls(f.mover.p) : '') + '" data-pr-t="mvv">' + tileMvV(f) + '</span></span></div>';
+      '<div class="pr-tile"><span class="pr-tb"><span class="pr-tk">Biggest move this week</span><span class="pr-tn" data-pr-t="mv">' + tileMv(f) + '</span><span class="pr-tv ' + (f.mover ? cls(f.mover.p) : '') + '" data-pr-t="mvv">' + tileMvV(f) + '</span></span></div>' +
+      /* P0-E (Oct 23 2026): a set with a checklist worksheet gets a third, full-width tile that is a link — the generator passes
+       * opts.link = { href, k, label, sub }. Inline layout only, so no baked page's CSS has to change for the two-tile sets. */
+      (opts.link && opts.link.href ? '<a class="pr-tile pr-tile-link" href="' + esc(opts.link.href) + '" style="grid-column:1/-1;text-decoration:none;min-height:0;align-items:center" data-pr-t="link"><span class="pr-tb" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span class="pr-tk" style="grid-column:auto;margin:0">' + esc(opts.link.k || 'Your checklist') + '</span><span class="pr-tn" style="font-size:14px">' + esc(opts.link.label || 'Checklist') + ' &rarr;</span>' + (opts.link.sub ? '<span class="pr-tn" style="font-weight:400;font-size:12px;color:var(--dim,#8a97a5)">' + esc(opts.link.sub) + '</span>' : '') + '</span></a>' : '');
   }
 
   /* 4 · what goes behind "How this index works" */

@@ -349,7 +349,9 @@ function bowmanConfigs() {
       universeCount: sep.firstAutos, universeCountWhy: "the September checklist's first-flagged CPAs (data/sets/2026-bowman-chrome-baseball.json)",
       sources: [{ slug: AUTOS, keep: (t, name, num) => autoSlot(t) && sept.auto(name, num) }],
       subUniverse: { key: "BASE", name: "1st Bowman Chrome (base)", blurb: "September's 1st Bowman Chrome base cards (BCP-151 up), price-weighted, uncapped", sources: [{ slug: BASE, keep: (t, name, num) => baseSlot(t) && sept.base(name, num) }] },
-      note: "September's 2026 Bowman Chrome: only the autos our Sep 9 per-card audit tags as a player's first Bowman autograph are in (97 of 104; no published checklist marks 1sts on auto lines); returning autos (Kilby, Quintero, F. Arias, J. Gonzalez, Parker, Doyle, Peña) had their 1st Bowman autos in 2025 products and are excluded here, not double-counted. Release-week supply is heavy, so the first quarter of marks reads the drawdown every Bowman product prints before the class sorts itself." },
+      note: "September's 2026 Bowman Chrome: only the autos our Sep 9 per-card audit tags as a player's first Bowman autograph are in (97 of 104; no published checklist marks 1sts on auto lines); returning autos (Kilby, Quintero, F. Arias, J. Gonzalez, Parker, Doyle, Peña) had their 1st Bowman autos in 2025 products and are excluded here, not double-counted. Release-week supply is heavy, so the first quarter of marks reads the drawdown every Bowman product prints before the class sorts itself.",
+      // P0-E (Oct 23 2026): the set's checklist worksheet (tools/build-checklist-page.mjs) — a third tile in the tiles row links to it
+      checklist: { href: "/bowman-chrome-2026-checklist", label: "Checklist: track what you have", sub: "Tick your cards, see an estimated value" } },
     BOW26: { ...common, name: "2026 1st Bowman Chrome Auto Index", set: "2026 Bowman and Bowman Chrome", page: "/bowman-1st-chrome-index",
       entryWindowFrom: "2026-09-09",   // release-window entry runs from the cohort's LATEST release (Chrome, Sep 9); move to Draft's street date when BD26 joins
       sources: [{ slug: AUTOS, keep: (t, name, num) => autoSlot(t) && (may.auto(name, num) || sept.auto(name, num)) }],
@@ -715,7 +717,7 @@ function block(x, c, opt = {}) {
   const topImg = `<span data-card-img="${esc(imgAttr(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="card" data-card-surface="${x.ticker.toLowerCase()}-hero"></span>`;
   // P0-C chart-first (Mo, Oct 23 2026 — DESIGN-DIRECTIVE-2026-10-23 §4): the plain read is four baked parts (line under the
   // level, one sentence under the chart, two tiles, the "how to read" text for the toggle); null for a pre-activation ticker.
-  const parts = PR.bakeParts(x.ticker, x, { accent: "var(--sidx)", topImg });
+  const parts = PR.bakeParts(x.ticker, x, { accent: "var(--sidx)", topImg, link: c.checklist ? { href: c.checklist.href, k: "Your checklist", label: c.checklist.label, sub: c.checklist.sub } : null });
   const family = c.cat === "baseball" ? "Bowman Baseball" : c.cat === "football" ? "Bowman Football" : c.cat === "basketball" ? "Bowman Basketball" : "Pokémon";
   const levelLine = parts ? parts.line : `<div class="pr-line">${baseLine(x)}</div>`;
   // everything that used to sit in the hero — the set description, the base/stamp line, the quant strip and the method —
