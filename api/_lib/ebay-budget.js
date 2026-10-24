@@ -10,6 +10,10 @@
 // deals screener (361 calls x 3 runs) or the nightly (~60) spend anything. The quota ran out on Oct 21 (before deals
 // existed) and again Oct 23 (~22:15Z); every lane found out by reading 429s.
 //
+// Read at 00:19Z Oct 24 from eBay's rate_limit API: limit 5,000, count 6,070, remaining 0, reset 2026-10-24T07:00Z —
+// the window is a day ending at 07:00Z (midnight Pacific), NOT midnight UTC. Schedules that must run on a fresh quota
+// (the nightly at 08:15Z, deals at 09:40Z, the first auctions snapshot at 07:20Z) sit just after that.
+//
 // The fix is one ledger, read from eBay itself: the Developer Analytics API (getRateLimits) reports the Browse resource's
 // limit / remaining / reset for the keyset — the same number from a Vercel function in any region and from a GitHub
 // runner, with no file to share. Each lane has a FLOOR: it may spend only while `remaining` is above its floor, so the

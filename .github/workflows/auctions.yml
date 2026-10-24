@@ -6,12 +6,14 @@ name: auctions
 # onto main (served at /feed/, R19). The function serves that snapshot, filtered to auctions still live, in every
 # region for zero Browse calls while it is fresh (< 200 min), and only fans out live when it has aged out and the
 # budget allows (api/_lib/ebay-budget.js, auctions floor 1,000). 8 runs x 105 = ~840 Browse calls a day, fixed.
+# eBay's window: 86,400 s ending 07:00Z (midnight Pacific) — read from the rate_limit API on Oct 24 00:19Z, when it
+# reported count 6,070 of 5,000 for the day and remaining 0.
 # Never blocks anything: a failed run leaves the previous snapshot in place. No listing titles or seller names are
 # written (R17) — the builder strips them.
 
 on:
   schedule:
-    - cron: "20 */3 * * *"
+    - cron: "20 1-22/3 * * *"   # 07:20Z is the first run after eBay resets the keyset at 07:00Z (midnight PT)
   workflow_dispatch: {}
 
 permissions:

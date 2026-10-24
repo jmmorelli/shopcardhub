@@ -856,7 +856,7 @@ call the site makes spends ONE 5,000/day keyset quota, and `/api/auctions` alone
 edge region) could spend all of it. `api/_lib/ebay-budget.js` is now the one ledger: it reads the keyset's remaining
 calls from eBay's own rate-limit API, and each lane spends only while `remaining` is above its floor —
 **deals 2,600 → other tools 1,600 → auctions live fan-out 1,000 → nightly engine and visitors' page views never
-blocked.** `/api/ebay-quota` (tool header) shows the live number. Consequences every lane obeys: (1) `/api/auctions`
+blocked.** `/api/ebay-quota` (tool header) shows the live number; eBay's day ends at **07:00Z (midnight Pacific)**, not midnight UTC. Consequences every lane obeys: (1) `/api/auctions`
 serves `data/feed/auctions-latest.json` (`auctions.yml`, every 3 h, titles and seller names stripped) while it is
 < 200 min old, fans out live only past that and above its floor, paced 12 at a time and aborted on the first 429;
 (2) the deals screener runs twice a day (09:40 / 21:40 UTC), ≤ 300 calls a run, candidates interleaved by set, and
