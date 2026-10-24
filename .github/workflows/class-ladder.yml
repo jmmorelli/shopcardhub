@@ -1,0 +1,132 @@
+name: class-ladder
+
+# Bowman Class Ladder (Mo in chat, Oct 23 2026: one page, /bowman-classes, the 1st Bowman Chrome Auto classes 2009-2025).
+# Modelled on classic-marks.yml. Nightly at 10:25 UTC (03:25 PT), after the nightly price snapshot has published, so the two
+# never write data/indices.json at once (same concurrency group). Each run marks, one call each and time-boxed, at most THREE
+# class tickers that are not yet live (newest class first - a pre-activation read is what moves a class toward its gate), plus,
+# on Mondays, every class that is already live (the weekly re-mark). A class ticker is one data/classes/BOWyy-universe.json
+# file (the Bowman KB agent writes those; data/classes/README.md is the contract). The engine's publish gate - universe
+# complete AND the 20 priciest autos on fresh 90-day marks - is what flips a ticker to live at 100.00; this job never does.
+# Then the page is regenerated from data/indices.json, the nav rebuilt, the two gates run, and the result published with the
+# same keep-main's-copy / re-apply-the-marked-keys / retry step as classic-marks. A failed ticker costs only itself.
+
+on:
+  schedule:
+    - cron: "25 10 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: price-data-writers
+  cancel-in-progress: false
+
+jobs:
+  classes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      - name: Checkout price-data branch
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: price-data
+          path: price-data
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Mark the class tickers (one call each, time-boxed)
+        continue-on-error: true
+        timeout-minutes: 110
+        run: |
+          set +e
+          git rev-parse HEAD > "$RUNNER_TEMP/base"
+          : > "$RUNNER_TEMP/marked.list"
+          : > "$RUNNER_TEMP/todo.list"
+          # newest class first; at most 3 that are not yet live, plus every live class on Mondays (UTC)
+          DOW=$(date -u +%u)
+          PRE=0
+          for F in $(ls -r data/classes/BOW??-universe.json 2>/dev/null); do
+            TK=$(basename "$F" -universe.json)
+            if node -e 'process.exit(require("./"+process.argv[1]).fixture===true?0:1)' "$F"; then echo "$TK: fixture file - skipped"; continue; fi
+            STATUS=$(node -e 'const d=require("./data/indices.json");const x=d[process.argv[1]];process.stdout.write(x&&x.status?x.status:"none")' "$TK")
+            if [ "$STATUS" = "live" ]; then
+              if [ "$DOW" = 1 ]; then echo "$TK" >> "$RUNNER_TEMP/todo.list"; fi
+            elif [ "$PRE" -lt 3 ]; then
+              echo "$TK" >> "$RUNNER_TEMP/todo.list"; PRE=$((PRE+1))
+            fi
+          done
+          echo "to mark: $(paste -sd, "$RUNNER_TEMP/todo.list")"
+          for TK in $(cat "$RUNNER_TEMP/todo.list"); do
+            cp data/indices.json "$RUNNER_TEMP/idx-pre.json"
+            if timeout 30m node tools/build-sector-index.mjs --ticker "$TK" --mark; then
+              echo "$TK" >> "$RUNNER_TEMP/marked.list"
+            else
+              echo "::warning::$TK class mark failed - the ticker keeps its previous read"
+              node tools/ci/merge-ticker-keys.mjs --from "$RUNNER_TEMP/idx-pre.json" --into data/indices.json --tickers "$TK"
+            fi
+          done
+          # the page is always regenerated from data/indices.json (a class that went live tonight shows up; nothing is typed)
+          if ! node tools/build-class-ladder.mjs --sitemap; then
+            echo "::warning::build-class-ladder failed - the page keeps its previous bake"
+            git checkout -q -- bowman-classes.html sitemap.xml 2>/dev/null
+          fi
+          node tools/build-nav.js > /dev/null || echo "::warning::build-nav failed"
+          echo "marked: $(paste -sd, "$RUNNER_TEMP/marked.list")"
+          cp data/indices.json "$RUNNER_TEMP/idx-marked.json"
+          git diff --name-only > "$RUNNER_TEMP/artifacts.list"
+          if [ -s "$RUNNER_TEMP/artifacts.list" ]; then tar -cf "$RUNNER_TEMP/artifacts.tar" -T "$RUNNER_TEMP/artifacts.list"; fi
+          git checkout -q -- . 2>/dev/null
+          exit 0
+
+      - name: Publish (re-apply, re-bake home + badges, gate, push)
+        run: |
+          set -e
+          if [ ! -s "$RUNNER_TEMP/artifacts.list" ]; then echo "Nothing changed (no class to mark, or every mark failed and the page is unchanged)."; exit 0; fi
+          git config user.name "price-engine[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch -q origin main
+            git checkout -q -B main origin/main
+            BASE=$(cat "$RUNNER_TEMP/base")
+            CLASH=$(git diff --name-only "$BASE" origin/main -- $(cat "$RUNNER_TEMP/artifacts.list") 2>/dev/null || true)
+            tar -xf "$RUNNER_TEMP/artifacts.tar"
+            for f in $CLASH; do git checkout -q origin/main -- "$f"; done
+            if echo "$CLASH" | grep -qx "data/indices.json" && [ -s "$RUNNER_TEMP/marked.list" ]; then
+              node tools/ci/merge-ticker-keys.mjs --from "$RUNNER_TEMP/idx-marked.json" --into data/indices.json --tickers "$(paste -sd, "$RUNNER_TEMP/marked.list")"
+            fi
+            if [ -n "$CLASH" ]; then
+              echo "::warning::main changed during the marks - kept main's copy of: $CLASH (indices.json keys re-applied)"
+              # the page and the nav are derived files: rebuild them on the merged tree rather than keep a stale copy
+              node tools/build-class-ladder.mjs --sitemap > /dev/null || echo "::warning::build-class-ladder failed on the merged tree"
+              node tools/build-nav.js > /dev/null || echo "::warning::build-nav failed on the merged tree"
+            fi
+            git add -A -- $(cat "$RUNNER_TEMP/artifacts.list") bowman-classes.html sitemap.xml data/indices.json
+            # a class that went live tonight is a new live ticker: the home board, badges and llms files read indices.json (warn-only, as classic-marks)
+            if FEED_BASE=price-data/data node tools/build-home.mjs; then git add index.html
+            else echo "::warning::build-home failed - / keeps its previous bake"; git checkout -- index.html; fi
+            if node tools/build-badges.mjs; then git add badge
+            else echo "::warning::build-badges failed"; git checkout -- badge 2>/dev/null || true; fi
+            if node tools/build-llms.mjs > /dev/null; then git add llms.txt llms-full.txt
+            else echo "::warning::build-llms failed - llms files keep their previous bake"; git checkout -- llms.txt llms-full.txt 2>/dev/null || true; fi
+            LDSTALE=$(node tools/build-index-jsonld.mjs --check 2>/dev/null | sed -n 's/^stale: //p')
+            if [ -n "$LDSTALE" ]; then
+              if node tools/build-index-jsonld.mjs > /dev/null; then git add $LDSTALE
+              else echo "::warning::build-index-jsonld failed - JSON-LD keeps its previous bake"; git checkout -- $LDSTALE 2>/dev/null || true; fi
+            fi
+            if ! node tools/audit-prices.mjs > /dev/null || ! node tools/site-auditor/audit-site.mjs > /dev/null; then
+              echo "::error::a gate FAILed on the marked tree - nothing pushed"; exit 1
+            fi
+            if git diff --cached --quiet; then echo "Nothing to commit."; exit 0; fi
+            git commit -q -m "price-engine: class ladder $(date -u +%F) ($(paste -sd, "$RUNNER_TEMP/marked.list"))" -m "Task-key: class-ladder" -m "Authority: Mo 2026-10-23 (Bowman Class Ladder)"
+            if git push -q origin main; then echo "Class ladder published."; exit 0; fi
+            echo "push rejected - retrying"; sleep 10
+          done
+          echo "could not publish after 3 attempts"; exit 1

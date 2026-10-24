@@ -83,7 +83,7 @@
       if (k === '_comment' || k === 'updated' || !indices[k] || typeof indices[k] !== 'object') continue;
       var v = indices[k];
       /* board:false (Oct 4 2026, DLR26): a pre shell kept off the home board, the Markets picker and the tape until it goes live */
-      if (v.board === false) continue;
+      if (v.board === false || v.model === 'class') continue;   /* class tickers (BOWyy, Oct 24 2026): /bowman-classes only, never the home board */
       var h = (v.history || []).filter(function (r) { return r && r.level != null && r.kind !== 'divisor'; }).map(   // iw-2026-10-07-1: divisor ops are not marks
         function (r) { return { date: r.date, level: r.level, note: r.note || '' }; });
       var pre = v.status === 'pre' || v.status === 'pre-activation' || !h.length;
@@ -344,7 +344,7 @@
     });
     for (var k in indices || {}) {
       var v = indices[k]; if (!v || typeof v !== 'object' || k === '_comment' || k === 'updated') continue;
-      if (v.status === 'pre' || v.status === 'pre-activation' || !(v.history || []).length) continue;
+      if (v.status === 'pre' || v.status === 'pre-activation' || !(v.history || []).length || v.model === 'class') continue;
       var basket = Array.isArray(v.basket) ? v.basket : [];
       basket.filter(function (b) { return b && b.price != null && isFinite(b.price); }).sort(function (a, b) { return b.price - a.price; }).slice(0, 5).forEach(function (b) {
         var name = b.name || b.player || b.id || '';

@@ -48,6 +48,7 @@ import { holoTest, hasRarity } from "./lib/holo-tier.mjs";
 import { isReprintTitle, REPRINT_PAIRS, reprintFloor } from "./lib/reprint-filter.mjs";
 import { createRequire } from "node:module";
 import { applyIndexLd, applyIndexAnswer } from "./lib/index-jsonld.mjs";
+import { CLASS_PAGE, classTickers, readClassFile, classYear, classRows, rowKey, fold as foldName, classQuery, isFixture } from "./lib/bowman-class.mjs";
 // The plain read is baked, not injected after paint (Night Crew Oct 3 2026, B29: load CLS 0.1-0.24 at 1024). Same renderer as the browser.
 const PR = createRequire(import.meta.url)("../js/plain-read.js");
 /* the checklist tile's link options: href/label/sub from CONFIG, plus the sheet's localStorage slug and row count (data/sets) so
@@ -64,6 +65,10 @@ const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const has = (k) => args.includes(k);
 let TICKER = opt("--ticker", null);
 const DRY = has("--dry");
+// --offline (Class Ladder test rig, Oct 24 2026): stub the console and item-page reads with deterministic fixture data so the
+// class mark can be exercised without the network. Impossible in CI: it needs SIDX_OFFLINE_FIXTURE=1 AND no GITHUB_ACTIONS.
+const OFFLINE = has("--offline");
+if (OFFLINE && (process.env.SIDX_OFFLINE_FIXTURE !== "1" || process.env.GITHUB_ACTIONS === "true")) { console.error("--offline is a local test rig: set SIDX_OFFLINE_FIXTURE=1, never in GitHub Actions"); process.exit(2); }
 // One mark day per CI run (Index Keeper, CoS weekly Oct 21 2026). classic-marks.yml calls this tool once per ticker over
 // ~4.5 h from 19:30Z Mon/Thu; every call used to read the clock itself, so the tickers that started after 00:00Z saw
 // Tue/Fri, --if-mark-day no-op'd them with exit 0, and the job still listed them as marked (Oct 15 run: NDC1E NR1E ND1E;
@@ -198,6 +203,13 @@ const CONFIG = {
   // CPA/BCP slot is taken as a 1st unless the player had a same-kind card in a 2025 release (Oct 1 2026 correction). Bowman Draft (December) joins BOW26 as a third source
   // the first Monday after its console appears.
   ...bowmanConfigs(),
+  // ---------------- BOWMAN CLASS LADDER (Mo, Oct 23 2026: one page, /bowman-classes, the 1st Bowman Chrome Auto classes
+  // 2009–2025). One ticker per data/classes/BOWyy-universe.json (the Bowman KB agent's file; data/classes/README.md is the
+  // contract). The class model below (classMark) replaces --init/--recon for these tickers: a class is a closed cohort, every
+  // 1st auto is a standing constituent, the base is the first LIVE mark (not the release — no release-window sold tape exists
+  // for a 2009 class), and the publish gate keeps a ticker at pre-activation until the universe is complete and the top 20 rows
+  // carry fresh marks. BOW26 keeps its own cohort ticker above and is only referenced by the ladder page.
+  ...classConfigs(),
 };
 
 // ---------------- THE HOLO RULE (Mo, Oct 6 2026: "holos are more important than non-holos and must be in the Pokémon set-index
@@ -368,6 +380,29 @@ function bowmanConfigs() {
   };
 }
 
+function classConfigs() {
+  const out = {};
+  for (const tk of classTickers(ROOT)) {
+    let u; try { u = readClassFile(ROOT, tk); } catch (e) { console.error(`class ${tk}: universe file unreadable — ${e.message}`); continue; }
+    if (u.ticker && u.ticker !== tk) { console.error(`class ${tk}: file says ticker ${u.ticker} — skipped`); continue; }
+    const year = classYear(tk, u);
+    const products = (u.products || []).filter((p) => p && p.name).slice().sort((a, b) => String(a.release || "").localeCompare(String(b.release || "")));
+    out[tk] = {
+      classTicker: true, fixture: isFixture(u), year, products,
+      name: `${year} 1st Bowman Chrome Auto Class`, set: `${year} Bowman, all releases`, page: CLASS_PAGE,
+      cat: "baseball", imgSub: "1ST BOWMAN", sacat: SACAT_SPORTS, theme: "#00ccf5",
+      releaseDate: products[0] && products[0].release ? products[0].release : null,
+      kind: "1st Bowman Chrome Auto", kindPlural: "1st Bowman Chrome Autos",
+      // the 90-day window of the WOTC edition tickers (Mo, Sep 30 2026): a 2009 auto trades a few times a quarter, not a month
+      screen: { window: 90 },
+      ebayQuery: (name, num, product) => classQuery(product || `${year} Bowman`, name, num),
+      srcNote: "the dated ungraded eBay sales SportsCardsPro/PriceCharting lists for each card (eBay only — no TCGplayer rows for sports cards)",
+      rowCap: 30,
+    };
+  }
+  return out;
+}
+
 const BASE_SCREEN = { enter: 6, stay: 4, window: 30 };
 const ENTRY_WINDOW_DAYS = 90;   // release-window entry (Oct 8 2026): weekly entries for 90 days after release, then quarterly
 // days left in a ticker's release window, or 0 when closed / no release date (c.entryWindowDays / c.entryWindowFrom override)
@@ -408,7 +443,7 @@ async function get(url) {
 // Collection reprints keep their original numbers: Lugia #149 beside Pikachu ex #149), so the slot key is
 // name + number, never the number alone.
 const CONSOLE_CACHE = new Map();   // slug → rows, shared across tickers in one run (the Bowman trio reads the same two consoles)
-async function consoleRows(slug) { if (!CONSOLE_CACHE.has(slug)) CONSOLE_CACHE.set(slug, await consoleCards(slug)); return CONSOLE_CACHE.get(slug); }
+async function consoleRows(slug) { if (!CONSOLE_CACHE.has(slug)) CONSOLE_CACHE.set(slug, OFFLINE ? offlineConsole(slug) : await consoleCards(slug)); return CONSOLE_CACHE.get(slug); }
 async function universe(c, spec) {
   // spec = the ticker config (main universe) or a subUniverse block; both carry sources[] (or a legacy pcSlug)
   const sources = spec.sources || [{ slug: spec.pcSlug, keep: null }];
@@ -935,6 +970,264 @@ function bake(x, c) {
   console.log(`${DRY ? "would bake" : "baked"} ${c.page} block: ${x.basket.length} rows`);
 }
 
+// =====================================================================================================================
+// BOWMAN CLASS LADDER — the class model (Mo, Oct 23 2026). Contract: data/classes/README.md. Page: tools/build-class-ladder.mjs.
+// =====================================================================================================================
+const CLASS_TOP = 20;          // the publish gate reads the top 20 rows by price
+const CLASS_LOG_MAX = 90;      // classLog rows kept per ticker
+const CLASS_BASIS = "sold comps (PriceCharting ungraded, 90-day median; last clean sale carried when none in 90 days) · class model · 100 = the first live mark";
+const CLASS_BASE_RULE = "100 on the first live mark date (the build), not the release — no release-window sold tape exists for this class";
+const CLASS_RECON_BASIS = "monthly, reconstructed from PriceCharting ungraded price history for the class basket, price-weighted and uncapped, chain-linked on cards priced in both months, indexed so the first live mark reads 100; not live marks";
+const ymd = (d) => new Date(d).toISOString().slice(0, 10);
+
+// ---- offline test rig (--offline, local only — see the flag): a deterministic console and item page per path ----
+function hash32(s) { let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; } return h; }
+function offlineConsole(slug) {
+  // one row per class row of every universe file that names this console, in SportsCardsPro title form "<Player> #<code>"
+  const rows = [];
+  for (const tk of classTickers(ROOT)) {
+    let u; try { u = readClassFile(ROOT, tk); } catch { continue; }
+    const names = new Set((u.products || []).filter((p) => p && p.console === slug).map((p) => p.name));
+    for (const r of classRows(u)) if (names.has(r.product)) rows.push({ path: `${slug}/${foldName(r.player).replace(/ /g, "-")}-${String(r.code).toLowerCase()}`, title: `${r.player} #${r.code}` });
+  }
+  return rows;
+}
+function offlineClassRead(slot) {
+  const h = hash32(slot.path), mode = process.env.SIDX_OFFLINE_FRESH === "1" ? 9 : h % 10;   // 0-1 no tape · 2-3 carried (old sale) · 4-9 fresh 90-day marks (SIDX_OFFLINE_FRESH=1: all fresh, to exercise the go-live path)
+  const base = 5 + (h % 997) * (h % 7 === 0 ? 3 : 0.25);   // $5 … ~$3,000, a long right tail like a real class
+  const series = {}; for (let i = 18; i >= 1; i--) { const d = new Date(Date.parse(TODAY) - i * 30.4 * 864e5); series[d.toISOString().slice(0, 7)] = r2(base * (0.7 + ((h >> (i % 13)) & 7) / 10)); }
+  if (mode < 2) return { n: 0, all: 0, price: null, last: null, series: {} };
+  if (mode < 4) return { n: 0, all: 3, price: null, last: { d: ymd(Date.parse(TODAY) - (120 + (h % 400)) * 864e5), p: r2(base) }, series };
+  return { n: 1 + (h % 9), all: 12, price: r2(base), last: { d: ymd(Date.parse(TODAY) - (h % 60) * 864e5), p: r2(base) }, series };
+}
+// PriceCharting item page → { "YYYY-MM": price } monthly ungraded history (VGPC.chart_data.used) — the series tools/uncap-indices.mjs reads
+function seriesOf(html) {
+  const m = html.match(/VGPC\.chart_data\s*=\s*(\{[\s\S]*?\});/); if (!m) return {};
+  const out = {};
+  try { for (const [ms, cents] of (JSON.parse(m[1]).used || [])) { if (!cents) continue; out[new Date(ms + 12 * 3600e3).toISOString().slice(0, 7)] = cents / 100; } } catch {}
+  return out;
+}
+// one item-page read for a class row: 90-day clean median, the last clean sale on record, and the monthly series (same page)
+async function readClassCard(slot) {
+  const ck = "class:" + slot.path;
+  if (READ_CACHE.has(ck)) { READ_CACHE_HIT = true; return READ_CACHE.get(ck); }
+  READ_CACHE_HIT = false;
+  const r = OFFLINE ? offlineClassRead(slot) : await readClassCardUncached(slot);
+  READ_CACHE.set(ck, r); saveDisk(); return r;
+}
+async function readClassCardUncached(slot) {
+  const html = await get("https://www.pricecharting.com/game/" + slot.path);
+  const series = seriesOf(html);
+  const pg = parsePage(html, "Raw");
+  if (pg.error) return { error: pg.error, n: 0, all: 0, price: null, last: null, series };
+  // re-walk the rows with titles, in memory, for the lot filter (parsePage keeps dates+prices only; titles are never stored — R17)
+  const start = html.indexOf('<div class="completed-auctions-used"');
+  const end = html.indexOf('<div class="completed-auctions-', start + 20);
+  const body = html.slice(start, end > 0 ? end : start + 400000);
+  const rows = [];
+  for (const tr of body.split("<tr").slice(1)) {
+    const d = tr.match(/<td class="date">\s*(\d{4}-\d{2}-\d{2})\s*<\/td>/);
+    const p = tr.match(/<span class="js-price"[^>]*>\s*\$([\d,]+(?:\.\d+)?)/);
+    const t = tr.match(/<td class="title">[\s\S]*?<a[^>]*>([\s\S]*?)<\/a>/);
+    const tt = t ? t[1].replace(/<[^>]+>/g, " ") : null;
+    if (d && p) rows.push({ d: d[1], p: parseFloat(p[1].replace(/,/g, "")), clean: !(tt && TITLE_BAD.test(tt)) });
+  }
+  const clean = rows.filter((r) => r.clean), win = clean.filter((r) => days(r.d) <= SCREEN.window);
+  const last = clean.slice().sort((a, b) => a.d.localeCompare(b.d)).pop() || null;
+  return { n: win.length, all: rows.length, tabCount: pg.tabCount, price: win.length ? r2(median(win.map((r) => r.p))) : null, last: last ? { d: last.d, p: last.p } : null, series };
+}
+// a null pcPath: enumerate the product's console and match the accent-folded player name (bowmanConfigs does the same fold);
+// among name matches prefer the row whose #code is the row's code, then a bracketless print. Never a code-only match (G28).
+async function resolveClassPath(consoleSlug, row) {
+  let rows; try { rows = await consoleRows(consoleSlug); } catch (e) { console.log(`  console ${consoleSlug}: ${e.message}`); return null; }
+  const want = foldName(row.player), code = String(row.code).toUpperCase();
+  const cands = [];
+  for (const r of rows) {
+    const m = r.title.match(/^(.*?)\s+#([A-Za-z0-9\/-]+)\s*$/); if (!m) continue;
+    const name = m[1].replace(/\s*\[[^\]]*\]\s*/g, " ").replace(/&amp;/g, "&").replace(/&#39;|&#x27;/g, "'").replace(/\s+/g, " ").trim();
+    if (foldName(name) !== want) continue;
+    cands.push({ path: r.path, codeHit: m[2].toUpperCase() === code, bracket: /\[/.test(r.title) });
+  }
+  cands.sort((a, b) => (b.codeHit - a.codeHit) || (a.bracket - b.bracket));
+  return cands.length ? cands[0].path : null;
+}
+// monthly chain (tools/uncap-indices.mjs chain/link, same math): weights 1, cards priced in both months
+function classChain(cards, base, upto) {
+  const months = [...new Set(cards.flatMap((c) => Object.keys(c.s)))].sort().filter((m) => m >= base && m < upto);
+  if (!months.length || months[0] !== base) return null;
+  const L = { [base]: 100 };
+  for (let i = 1; i < months.length; i++) {
+    const a = months[i - 1], m = months[i], both = cards.filter((c) => c.s[a] && c.s[m]);
+    const num = both.reduce((s, c) => s + c.s[m], 0), den = both.reduce((s, c) => s + c.s[a], 0);
+    L[m] = den ? L[a] * (num / den) : L[a];
+  }
+  return { months, L };
+}
+function classLink(cards, L, last) {
+  const lk = cards.filter((c) => c.s[last] && c.b.price != null);
+  const num = lk.reduce((s, c) => s + c.b.price, 0), den = lk.reduce((s, c) => s + c.s[last], 0);
+  return den ? L[last] * (num / den) : null;
+}
+// sample skewness G1 and sample EXCESS kurtosis G2 of a series (null under 8 points)
+function moments(xs) {
+  const n = xs.length; if (n < 8) return { skew: null, kurt: null, n };
+  const mu = xs.reduce((s, v) => s + v, 0) / n;
+  const m2 = xs.reduce((s, v) => s + (v - mu) ** 2, 0) / n, m3 = xs.reduce((s, v) => s + (v - mu) ** 3, 0) / n, m4 = xs.reduce((s, v) => s + (v - mu) ** 4, 0) / n;
+  if (!m2) return { skew: 0, kurt: 0, n };
+  const g1 = m3 / m2 ** 1.5, g2 = m4 / (m2 * m2) - 3;
+  const G1 = g1 * Math.sqrt(n * (n - 1)) / (n - 2), G2 = ((n + 1) * g2 + 6) * (n - 1) / ((n - 2) * (n - 3));
+  return { skew: r4(G1), kurt: r4(G2), n };
+}
+function classStatsOf(x, c, uni, basket) {
+  const priced = basket.filter((b) => !b.carried), carried = basket.filter((b) => b.carried);
+  const n = uni.length, prices = basket.map((b) => b.price), cv = prices.reduce((s, p) => s + p, 0);
+  const sorted = basket.slice().sort((a, b) => b.price - a.price), top = sorted[0] || null;
+  const shares = cv ? prices.map((p) => p / cv) : [];
+  const hhi = shares.reduce((s, w) => s + w * w, 0);
+  const mo = moments(prices.filter((p) => p > 0).map((p) => Math.log(p)));
+  const rel = c.releaseDate ? (Date.parse(TODAY) - Date.parse(c.releaseDate)) / (365.25 * 864e5) : null;
+  const recon = Array.isArray(x.recon) && x.recon.length ? x.recon : null;
+  return {
+    asOf: TODAY, n, priced: priced.length, carried: carried.length, noTape: n - basket.length,
+    classValue: r2(cv), median: basket.length ? r2(median(prices)) : null, mean: basket.length ? r2(cv / basket.length) : null,
+    topCard: top ? { player: top.name, code: top.num, product: top.product, price: top.price, share: cv ? r4(top.price / cv) : null } : null,
+    top3Share: cv ? r4(sorted.slice(0, 3).reduce((s, b) => s + b.price, 0) / cv) : null,
+    effN: hhi ? r2(1 / hhi) : null,
+    hit20: n ? r4(basket.filter((b) => b.price >= 20).length / n) : null, hit100: n ? r4(basket.filter((b) => b.price >= 100).length / n) : null,
+    skew: mo.skew, kurt: mo.kurt, distN: mo.n,
+    ageYears: rel == null ? null : r2(rel),
+    retSinceFirstMonth: recon && recon[0] && recon[0].level > 0 ? { from: recon[0].month, pct: r2((100 / recon[0].level - 1) * 100) } : null,
+  };
+}
+// ---------------- the class mark: universe (file) → resolve → read → basket → gate → (level) → classStats ----------------
+async function classMark(c) {
+  const u = readClassFile(ROOT, TICKER);
+  if (c.fixture && !OFFLINE) { console.error(`${TICKER}: data/classes/${TICKER}-universe.json is a FIXTURE (fixture: true) — it is marked only by the --offline test rig and never reaches data/indices.json`); process.exit(2); }
+  const prev = IDX[TICKER] && typeof IDX[TICKER] === "object" ? IDX[TICKER] : null;
+  if (prev && prev.classStats && prev.classStats.asOf === TODAY && !has("--force")) { console.log(`${TICKER} already marked ${TODAY} — no-op`); return; }
+  if (prev && Array.isArray(prev.history) && prev.history.some((h) => h.date === TODAY) && !has("--force")) { console.log(`${TICKER} already marked ${TODAY} — no-op`); return; }
+  const live = !!(prev && prev.status === "live" && prev.divisor && Array.isArray(prev.history) && prev.history.length);
+  const byProduct = new Map(c.products.map((p) => [p.name, p]));
+  const prevUni = new Map(((prev && prev.universe) || []).map((r) => [r.key, r]));
+  const prevBasket = new Map(((prev && prev.basket) || []).map((b) => [b.key, b]));
+  // 1. universe: the file's firstAuto rows, one per key, with a sticky or freshly resolved PriceCharting path
+  const uni = [], seen = new Set(); let dup = 0, resolved = 0, unresolved = 0;
+  for (const r of classRows(u)) {
+    const key = rowKey(r);
+    if (seen.has(key)) { dup++; continue; }
+    seen.add(key);
+    const p = byProduct.get(r.product);
+    if (!p) console.log(`  ${r.player} #${r.code}: product "${r.product}" is not in products[] — no console to search`);
+    let pth = r.pcPath || null, how = pth ? "file" : null;
+    if (!pth && prevUni.get(key) && prevUni.get(key).path) { pth = prevUni.get(key).path; how = "sticky"; }
+    if (!pth && p && p.console) { pth = await resolveClassPath(p.console, r); how = pth ? "console" : null; if (pth) resolved++; }
+    if (!pth) unresolved++;
+    uni.push({ key, num: String(r.code), name: r.player, product: r.product, path: pth, ...(pth ? { resolved: how } : { unresolved: true, noTape: true }) });
+  }
+  // product release order, then code
+  const prodOrder = new Map(c.products.map((p, i) => [p.name, i]));
+  uni.sort((a, b) => ((prodOrder.get(a.product) ?? 99) - (prodOrder.get(b.product) ?? 99)) || numOf(a.num) - numOf(b.num) || a.name.localeCompare(b.name));
+  console.log(`${TICKER}: universe ${uni.length} 1st autos from ${c.products.length} product${c.products.length === 1 ? "" : "s"} (${resolved} paths resolved on the console, ${unresolved} unresolved${dup ? `, ${dup} duplicate rows skipped` : ""})`);
+  // 2. read every resolved row: fresh 90-day mark · carried last sale · no tape
+  const basket = [], SERIES = new Map(); let errors = 0;
+  for (let i = 0; i < uni.length; i++) {
+    const r = uni[i], pb = prevBasket.get(r.key) || null;
+    if (!r.path) continue;
+    let rd; try { rd = await readClassCard(r); } catch (e) { rd = { error: e.message, n: 0, all: 0, price: null, last: null, series: {} }; }
+    if (!READ_CACHE_HIT && !OFFLINE) await sleep(PAUSE);
+    if (rd.error) errors++;
+    SERIES.set(r.key, rd.series || {});
+    const b = { key: r.key, num: r.num, name: r.name, product: r.product, path: r.path, w: 1, prevPrice: pb ? pb.price : null, prevAsOf: pb ? pb.asOf : null };
+    let tag;
+    if (rd.price != null) { Object.assign(b, { price: rd.price, asOf: TODAY, n30: rd.n, win: SCREEN.window, carried: false, basis: `sold (PriceCharting ungraded, ${SCREEN.window}d median)` }); if (rd.n < SCREEN.stay) b.thin = true; tag = `$${rd.price} (n${SCREEN.window} ${rd.n})`; }
+    else if (rd.last) { Object.assign(b, { price: rd.last.p, asOf: rd.last.d, n30: 0, win: SCREEN.window, carried: true, lastSale: rd.last.d, ageDays: Math.round(days(rd.last.d)), basis: "sold (last clean ungraded sale on record, carried)" }); tag = `carried $${rd.last.p} from ${rd.last.d}`; }
+    else if (rd.error && pb && pb.price != null) { Object.assign(b, { price: pb.price, asOf: pb.asOf, n30: pb.n30 || 0, win: SCREEN.window, carried: true, lastSale: pb.lastSale || pb.asOf, ageDays: Math.round(days(pb.asOf)), basis: pb.basis, readError: rd.error }); tag = `read failed (${rd.error}) — previous mark carried`; }
+    else { r.noTape = true; if (rd.error) r.readError = rd.error; tag = rd.error ? `no tape (${rd.error})` : "no tape"; }
+    if (b.price != null) { delete r.noTape; basket.push(b); }
+    console.log(`${String(i + 1).padStart(3)}/${uni.length} ${TICKER} ${(r.name + " #" + r.num).padEnd(34)} ${tag}`);
+  }
+  // 3. the publish gate: universe complete AND the top 20 rows by price carry fresh marks
+  const topN = basket.slice().sort((a, b) => b.price - a.price).slice(0, CLASS_TOP), stale = topN.filter((b) => b.carried);
+  const complete = u.universeComplete === true;
+  const gate = { checked: TODAY, universeComplete: complete, top: CLASS_TOP, topRows: topN.length, topFresh: topN.length - stale.length, missing: stale.map((b) => `${b.name} #${b.num} (${b.product})`), passed: complete && basket.length > 0 && stale.length === 0 };
+  // 4. the ticker record (mirrors the sector field set; pre-activation = divisor null, no history, no level)
+  const x = prev || {};
+  Object.assign(x, {
+    ticker: TICKER, name: c.name, set: c.set, page: CLASS_PAGE, model: "class", status: x.status === "live" ? "live" : "pre-activation",
+    basis: "sold", basisLabel: CLASS_BASIS,
+    screen: { ...SCREEN, standing: true, source: "PriceCharting ungraded completed sales, clean single-card rows; every 1st auto is a standing constituent" },
+    cap: null, capRule: UNCAP_RULE, base: 100, inception: x.inception || null, releaseDate: c.releaseDate, universeComplete: complete,
+    pcSlug: null, sources: [...new Set(c.products.map((p) => p.console).filter(Boolean))],
+    divisor: x.divisor || null, divisorLog: x.divisorLog || [], capLog: x.capLog || [], screenLog: x.screenLog || [],
+    universe: uni, basket, history: x.history || [],
+    reconstitution: { cadence: "none — a class is a closed cohort; a universe-file change enters or exits through a logged divisor adjustment, level unchanged" },
+    sub: x.sub || {}, recon: x.recon || [], baseDate: x.baseDate || null, baseRule: "first-mark",
+    baseNote: x.inception ? `100 = ${mdy(x.inception)}, the day of the class's first live mark. The class released ${c.releaseDate ? mdy(c.releaseDate) : "years earlier"}; no dated sold tape covers that window, so no release-day level is claimed.` : `100 will be the day of the first live mark, not the ${c.releaseDate ? mdy(c.releaseDate) : ""} release — no dated sold tape covers the release window.`,
+    reconBasis: x.reconBasis || null, rebase: x.rebase || null, releaseWindowDays: null,
+    uncapped: { rule: "one copy of each priced card, weight 1; noTape rows weigh 0" },
+    board: false,   // class tickers never sit on the home board, live or not (CoS, Oct 24 2026) — /bowman-classes is their surface
+    products: c.products.map((p) => ({ name: p.name, release: p.release || null, console: p.console || null, codePrefix: p.codePrefix || null })),
+    gate,
+  });
+  let note = "";
+  if (live) {
+    // live re-mark: exits leave at previous prices (divisor-neutral), kept rows mark, entrants join at today's level (divisor-neutral)
+    const level0 = prev.history.filter((h) => h.kind !== "divisor").slice(-1)[0].level;
+    const oldKeys = new Set(prevBasket.keys()), newKeys = new Set(basket.map((b) => b.key));
+    const exits = [...prevBasket.values()].filter((b) => !newKeys.has(b.key)), entrants = basket.filter((b) => !oldKeys.has(b.key));
+    let divisor = prev.divisor;
+    if (exits.length) {
+      const allPrev = [...prevBasket.values()].reduce((s, b) => s + b.price, 0), keptPrev = [...prevBasket.values()].filter((b) => newKeys.has(b.key)).reduce((s, b) => s + b.price, 0);
+      const d2 = r6(divisor * (keptPrev / allPrev));
+      x.divisorLog.push({ date: TODAY, before: divisor, after: d2, why: `class exit (universe file changed): ${exits.map((b) => `${b.name} #${b.num} (${b.product}) $${b.price}`).join(", ")} left at the previous marks; level ${level0} unchanged` });
+      divisor = d2;
+    }
+    const kept = basket.filter((b) => oldKeys.has(b.key));
+    const level = r2(kept.reduce((s, b) => s + b.price, 0) / divisor);
+    if (entrants.length) {
+      const d3 = r6(basket.reduce((s, b) => s + b.price, 0) / level);
+      x.divisorLog.push({ date: TODAY, before: divisor, after: d3, why: `class entry: ${entrants.map((b) => `${b.name} #${b.num} (${b.product}) $${b.price}${b.carried ? " carried" : ""}`).join(", ")} joined at today's level ${level}; one copy of each, uncapped` });
+      divisor = d3;
+    }
+    x.divisor = divisor;
+    const carried = basket.filter((b) => b.carried).length;
+    x.history.push({ date: TODAY, level, basketValue: r2(basket.reduce((s, b) => s + b.price, 0)), divisor, priced: basket.length - carried, note: [carried ? `${carried} carried` : "", entrants.length ? `${entrants.length} entered` : "", exits.length ? `${exits.length} exited` : "", uni.length - basket.length ? `${uni.length - basket.length} no tape` : ""].filter(Boolean).join(" · ") });
+    x.screenLog.push({ date: TODAY, pass: basket.length, fail: uni.length - basket.length, entered: entrants.length, exited: exits.length, errors, note: "class re-mark" });
+    note = `level ${level} (prev ${level0})`;
+  } else if (gate.passed) {
+    // GO-LIVE: 100.00 today; the monthly reconstruction is attached, indexed so today's live mark reads 100
+    const cv = basket.reduce((s, b) => s + b.price, 0), divisor = r4(cv / 100);
+    x.status = "live"; x.inception = TODAY; x.divisor = divisor; x.baseDate = null; x.board = false;
+    x.history = [{ date: TODAY, level: 100, basketValue: r2(cv), divisor, priced: basket.filter((b) => !b.carried).length, note: `inception — first live mark; ${basket.filter((b) => b.carried).length} carried, ${uni.length - basket.length} no tape` }];
+    x.divisorLog.push({ date: TODAY, before: null, after: divisor, why: `inception — class value $${r2(cv)} over ${basket.length} of ${uni.length} 1st autos (${basket.filter((b) => b.carried).length} carried, ${uni.length - basket.length} no tape); one copy of each, uncapped; 100 = this date (the first live mark), universe complete, top ${CLASS_TOP} fresh` });
+    x.screenLog.push({ date: TODAY, pass: basket.length, fail: uni.length - basket.length, errors, note: "inception (class gate passed)" });
+    x.baseNote = `100 = ${mdy(TODAY)}, the day of the class's first live mark. The class released ${c.releaseDate ? mdy(c.releaseDate) : "years earlier"}; no dated sold tape covers that window, so no release-day level is claimed.`;
+    const cards = basket.map((b) => ({ b, s: SERIES.get(b.key) || {} })).filter((cd) => Object.keys(cd.s).length);
+    const incM = TODAY.slice(0, 7), relM = c.releaseDate ? c.releaseDate.slice(0, 7) : "0000-00";
+    const months = [...new Set(cards.flatMap((cd) => Object.keys(cd.s)))].sort().filter((m) => m >= relM && m < incM);
+    const minCov = Math.max(3, Math.ceil(basket.length * 0.1));
+    const base = months.find((m) => cards.filter((cd) => cd.s[m]).length >= minCov) || null;
+    const ch = base ? classChain(cards, base, incM) : null;
+    const lastM = ch ? ch.months[ch.months.length - 1] : null, lk = ch ? classLink(cards, ch.L, lastM) : null;
+    if (ch && lk) {
+      const f = 100 / lk;
+      x.recon = ch.months.map((m) => ({ month: m, level: r2(ch.L[m] * f) }));
+      x.reconBasis = CLASS_RECON_BASIS;
+      x.rebase = { date: TODAY, kind: "class-inception", reconMonths: x.recon.length, reconFrom: base, baseCoverage: r4(cards.filter((cd) => cd.s[base]).length / basket.length), note: `the chain is linked to today's live marks at ${lastM} and scaled so the first live mark (${TODAY}) reads 100` };
+      note = `LIVE at 100.00 · reconstruction ${x.recon.length} months from ${base}`;
+    } else { x.recon = []; x.reconBasis = null; note = "LIVE at 100.00 · no reconstruction (too little monthly history)"; }
+  } else {
+    note = `pre-activation — gate: universe ${complete ? "complete" : "INCOMPLETE"}, top ${CLASS_TOP} fresh ${gate.topFresh}/${gate.topRows}${stale.length ? ` (carried: ${stale.slice(0, 5).map((b) => b.name).join(", ")}${stale.length > 5 ? "…" : ""})` : ""}`;
+    x.screenLog.push({ date: TODAY, pass: basket.length, fail: uni.length - basket.length, errors, note: "pre-activation mark" });
+  }
+  x.classStats = classStatsOf(x, c, uni, basket);
+  x.classLog = (x.classLog || []).filter((r) => r.date !== TODAY).concat([{ date: TODAY, status: x.status, priced: x.classStats.priced, carried: x.classStats.carried, noTape: x.classStats.noTape, classValue: x.classStats.classValue, gate: gate.passed, level: x.history.length ? x.history[x.history.length - 1].level : null }]).slice(-CLASS_LOG_MAX);
+  IDX[TICKER] = x;
+  const s = x.classStats;
+  console.log(`${TICKER} ${TODAY}: ${note} · n ${s.n} · priced ${s.priced} · carried ${s.carried} · no tape ${s.noTape} · class value $${s.classValue} · median ${s.median == null ? "—" : "$" + s.median} · top ${s.topCard ? `${s.topCard.player} #${s.topCard.code} ${(s.topCard.share * 100).toFixed(1)}%` : "—"} · hit$20 ${s.hit20 == null ? "—" : (s.hit20 * 100).toFixed(0) + "%"} · errors ${errors}`);
+  save();
+}
+
 // ---------------- main (one or more tickers: --ticker BOW26,BB26,BCB26 share every page read) ----------------
 const idxPath = path.join(ROOT, "data/indices.json");
 const IDX = JSON.parse(fs.readFileSync(idxPath, "utf8"));
@@ -1077,6 +1370,15 @@ for (const T of String(TICKER || "").split(",").map((t) => t.trim()).filter(Bool
 async function runTicker() {
 const c = cfg();
 SCREEN = { ...BASE_SCREEN, ...(c.screen || {}) };
+if (c.classTicker) {
+  // class tickers (Oct 23 2026): --mark is the whole lifecycle — pre-activation reads, the gate, go-live at 100, weekly re-marks.
+  // No page bake here: tools/build-class-ladder.mjs renders /bowman-classes from data/indices.json. --if-mark-day is the
+  // workflow's job for classes (class-ladder.yml picks the tickers per night), so it is ignored with a note.
+  if (!has("--mark")) { console.error(`${TICKER} is a class ticker — use --mark (the page is built by tools/build-class-ladder.mjs)`); process.exit(2); }
+  if (has("--if-mark-day")) console.log(`${TICKER}: --if-mark-day does not apply to a class ticker — marking`);
+  await classMark(c);
+  return;
+}
 if (has("--init")) {
   if (IDX[TICKER] && IDX[TICKER].status === "live" && !has("--force")) { console.error(`${TICKER} is already live — use --mark / --recon (or --force to rebuild, which is a NEW inception)`); process.exit(2); }
   console.log(`universe: reading console(s) ${(c.sources || [{ slug: c.pcSlug }]).map((q) => q.slug).join(", ")} …`);

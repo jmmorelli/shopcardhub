@@ -1,5 +1,5 @@
 {
-  "_comment": "SINGLE SOURCE OF TRUTH for the site nav (desktop dropdowns + mobile accordion drawer). Edit this file, then run `node tools/build-nav.js` from the repo root to regenerate the nav region (between <!-- NAV:START --> / <!-- NAV:END -->) on every *.html page. See tools/build-nav-README.md. ITERATION 3 (Sep 29 2026, Mo: \"go\"): Indices (mega: Pokémon new · Pokémon classic · Sports, matching the home board split) / Sports (mega, guides only) / Pokémon (sets + \"worth it\" pages) / Tools & Guides (mega: trackers · research · grading & supplies) / Watchlist CTA. Iteration 2 (Jul 7): Tools + Research / Sports / Pokémon / Grading + Supplies. Panels capped at ~5 links per column; overflow routes to 'All →' hub anchors (allLink:true). Pages cut from dropdowns are listed in searchExtra so site search still finds them. Sports panel carries a COMC inventory footer link (money path).",
+  "_comment": "SINGLE SOURCE OF TRUTH for the site nav (desktop dropdowns + mobile accordion drawer). Edit this file, then run `node tools/build-nav.js` from the repo root to regenerate the nav region (between <!-- NAV:START --> / <!-- NAV:END -->) on every *.html page. See tools/build-nav-README.md. ITERATION 3 (Sep 29 2026, Mo: \"go\"): Indices (mega: Pokémon new · Pokémon classic · Sports, matching the home board split) / Sports (mega, guides only) / Pokémon (sets + \"worth it\" pages) / Tools & Guides (mega: trackers · research · grading & supplies) / Watchlist CTA. Iteration 2 (Jul 7): Tools + Research / Sports / Pokémon / Grading + Supplies. Panels capped at ~5 links per column (exception: Sports → Baseball carries 6 since Oct 24 2026 — the Bowman Classes ladder sits beside the Bangers board, Mo Oct 23); overflow routes to 'All →' hub anchors (allLink:true). Pages cut from dropdowns are listed in searchExtra so site search still finds them. Sports panel carries a COMC inventory footer link (money path).",
   "brand": {
     "href": "/",
     "html": "Shop<span>Card</span>Hub"
@@ -160,6 +160,10 @@
             {
               "href": "/bowman-bangers",
               "label": "2026 Bowman Bangers ⭐"
+            },
+            {
+              "href": "/bowman-classes",
+              "label": "Bowman 1st Auto Classes 2009–2026"
             },
             {
               "href": "/mlb-cards",

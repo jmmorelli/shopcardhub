@@ -89,7 +89,7 @@ const html = `${head}
     var el = document.getElementById('strip'); if (!el) return;
     var html = '';
     Object.keys(D).forEach(function(t){
-      var x = D[t]; if (!x || typeof x !== 'object' || !x.page) return;
+      var x = D[t]; if (!x || typeof x !== 'object' || !x.page || x.model === 'class') return;   /* class tickers (BOWyy, Oct 24 2026) live on /bowman-classes, never in the strip */
       var on = (t === 'BCS26');
       var hist = x.history || [], last = hist.length ? hist[hist.length-1] : null, prev = hist.length > 1 ? hist[hist.length-2] : null;
       var pre = (x.status === 'pre' || x.status === 'pre-activation' || !last);

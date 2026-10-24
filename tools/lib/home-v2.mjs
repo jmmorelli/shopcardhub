@@ -112,7 +112,7 @@ export function buildV2(REPO, opts = {}) {
   const T = {};
   const tabRows = Object.fromEntries(TABS.map((t) => [t.id, []]));
   for (const [tk, v] of Object.entries(idx)) {
-    if (!v || typeof v !== "object" || v.status !== "live") continue;
+    if (!v || typeof v !== "object" || v.status !== "live" || v.model === "class") continue;   // class tickers (BOWyy): /bowman-classes only, never the home board
     const h = marksOnly(v.history);
     if (!h.length) continue;
     const last = h[h.length - 1], prev = weekBase(h);
@@ -201,7 +201,7 @@ export function buildV2(REPO, opts = {}) {
 
   /* ---- set list for the search fallback ---- */
   const sets = Object.entries(T).map(([tk, v]) => ({ t: v.n, tk, u: v.p })).concat(
-    Object.entries(idx).filter(([k, v]) => v && typeof v === "object" && v.status === "pre" && v.page && exists(String(v.page).replace(/^\//, "") + ".html")).map(([k, v]) => ({ t: String(v.name || k).replace(/\s+Index$/i, ""), tk: k, u: v.page })));
+    Object.entries(idx).filter(([k, v]) => v && typeof v === "object" && v.status === "pre" && v.model !== "class" && v.page && exists(String(v.page).replace(/^\//, "") + ".html")).map(([k, v]) => ({ t: String(v.name || k).replace(/\s+Index$/i, ""), tk: k, u: v.page })));
 
   const slim = Object.fromEntries(Object.entries(T).map(([k, v]) => { const { buy, ...rest } = v; return [k, rest]; }));   // the buy link rides on the row (data-buy)
   const payload = JSON.stringify({ today: TODAY, def: DEFAULT_TK, tabs, t: slim, sets }).replace(/</g, "\\u003c");
