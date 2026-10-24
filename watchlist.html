@@ -2341,7 +2341,7 @@ function renderList() {       // cheap: just the grid / cards (search, sort, gro
   const el = document.getElementById('vlist');
   if (!list.length) {
     const msg = tab === 'watch'
-      ? { big: 'Nothing on the radar yet', p: 'Open a <a href="/indices">set index</a> and ★ the cards you\'re chasing — each lands here with its dated sold price, the Monday re-mark and live listings. Set a target and the row lights up when a listing hits it.' }
+      ? { big: 'Nothing on the radar yet', p: 'Open a <a href="/indices">set index</a> and ★ the cards you\'re chasing — each lands here with its dated sold price, its Monday update and live listings. Set a target and the row lights up when a listing hits it.' }
       : (pf !== 'all' && state.cards.some(c => c.status === 'own') ? { big: 'Nothing in ' + VS.listName(state, pf) + ' yet', p: 'Move a card here from its Edit dialog (Portfolio ▾), or add one — this portfolio starts empty.' } : { big: 'No cards marked as owned yet', p: 'Add a card you own with what you paid and the weekly mark does the rest. Advanced view adds portfolios, a COMC import and analytics.' });
     el.innerHTML = '<div class="empty-state"><div class="big">' + msg.big + '</div><p>' + msg.p + '</p>' + (tab === 'watch' ? '<a class="btn btn-primary" href="/indices">Pick a set index →</a> <button class="btn" onclick="openAdd()">+ Add a card by name</button>' : '<button class="btn btn-primary" onclick="openAdd()">+ Add a card you own</button>') + '</div>';
     return;

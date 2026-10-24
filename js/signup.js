@@ -22,13 +22,13 @@
   var COPY = {
     tape: {
       k: 'The Tuesday Tape',
-      p: 'The Monday close of every set index, the week’s movers, and the chase cards’ sold marks. One email, Tuesdays. Free.',
+      p: 'The Monday close of every set index, the week’s movers, and what the chase cards are selling for. One email, Tuesdays. Free.',
       b: 'Get the Tuesday Tape',
       ok: '✓ You’re on it — the next close lands Tuesday.'
     },
     watchlist: {
-      k: 'Your cards, re-marked',
-      p: 'An email when your watched cards re-mark on Monday — the close, then your list. No account; the address is the only thing we keep.',
+      k: 'Your cards, repriced',
+      p: 'An email when your watched cards get their Monday prices — the close, then your list. No account; the address is the only thing we keep.',
       b: 'Email me Tuesdays',
       ok: '✓ Set — Tuesday’s email opens on your list.'
     }

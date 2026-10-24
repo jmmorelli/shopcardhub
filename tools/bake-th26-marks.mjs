@@ -41,7 +41,7 @@ const val = (key) => {
 const src = fs.readFileSync(PAGE, "utf8");
 let n = 0;
 let out = src.replace(/<!-- TH26M:([\w-]+) -->[\s\S]*?<!-- \/TH26M -->/g, (_, key) => { n++; return `<!-- TH26M:${key} -->${val(key)}<!-- /TH26M -->`; });
-out = out.replace(/(<span data-prices-updated=")\d{4}-\d{2}-\d{2}(">🕐 TH26 sold marks )/, (_, a, b) => { n++; return a + iso + b; });
+out = out.replace(/(<span data-prices-updated=")\d{4}-\d{2}-\d{2}(">🕐 TH26 (?:sold marks|prices as of) )/, (_, a, b) => { n++; return a + iso + b; });
 if (n < 2) throw new Error("bake-th26-marks: markers not found");
 
 if (CHECK) {

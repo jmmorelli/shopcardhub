@@ -267,7 +267,7 @@ ${themeCss}
     <p class="hero-sub">${esc(d.intro)}</p>
     <div class="desk-toc">${toc}<a href="#notes">Collecting notes</a></div>
     <div class="hero-meta">
-      <span data-prices-updated="${updated}">&#128337; Sold marks as of ${dateLong(updated)}</span>
+      <span data-prices-updated="${updated}">&#128337; Recent sales as of ${dateLong(updated)}</span>
       <span>&#128202; ${nPrints} prints, each from its own set index</span>
       <span>&#127991;&#65039; Raw &middot; PSA 9 &middot; PSA 10 &middot; TAG 10</span>
     </div>

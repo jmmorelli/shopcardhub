@@ -160,7 +160,7 @@
     var p = (v.m + P62.allIn - vMiss) / (g10.m - vMiss);
     var pp = p < 0.01 ? 'under 1%' : Math.round(p * 100) + '%';
     var line = p > 1 ? 'Buy the slab — grading can’t win at this fee.' : p <= 0 ? 'Even a PSA 9 sale covers the cost of grading this card.' : 'Grading only beats buying the PSA 10 if you hit a 10 more than ' + pp + ' of the time.';
-    var short = p > 1 ? 'grading can’t beat the slab' : p <= 0 ? 'grading pays even on a 9' : 'grading wins above a ' + pp + ' gem rate';
+    var short = p > 1 ? 'grading can’t beat the slab' : p <= 0 ? 'grading pays even on a 9' : p < 0.01 ? 'grading pays if even 1% of copies get a 10' : 'grading pays if ' + pp + '+ of copies get a 10';
     var html = '<div class="cdp-p62"><h3>Grade it or buy the 10?</h3><p class="hl">' + line + '</p>' +
       '<ul><li>Raw copy: <b>' + money(v.m) + '</b> TCGplayer market, ' + mdShort(sf.asOf) + ' (a copy you’d actually submit usually costs more than this)</li>' +
       '<li>PSA grading: <b>' + money(P62.allIn) + '</b> a card all in (PSA Standard $59.99, plus shipping and supplies over a 20-card batch)</li>' +

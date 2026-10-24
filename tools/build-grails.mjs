@@ -235,7 +235,7 @@ body #gstar .gs-tape .sidx-tbl tbody td:nth-child(6)::before{content:"Move · ";
     <div><span class="k">Re-read</span><span class="v">MON · THU</span></div>
   </div>
   <div class="glk-bar" role="group" aria-label="Which eBay listings the buttons open"><span class="glk-k">Buy buttons open</span><button type="button" data-mode="bin" aria-pressed="true">Buy It Now</button><button type="button" data-mode="auc" aria-pressed="false">Auctions · ending soon</button><span class="glk-n">Raw · PSA 9 · PSA 10 · TAG on every row · marks are medians of dated sold rows, one sale is printed as one sale</span></div>
-  <div class="sidx-cap">All ${cards.length} cards by raw sold mark · PSA 9 · PSA 10 · TAG 10 · read ${mdy(D.day)}</div>
+  <div class="sidx-cap">All ${cards.length} cards by recent raw sales · PSA 9 · PSA 10 · TAG 10 · read ${mdy(D.day)}</div>
   <div class="sidx-tbl"><table>
     <thead><tr><th>#</th><th>Card</th><th>Raw mark</th><th>PSA 9</th><th>PSA 10</th><th>TAG 10</th><th class="th-act g">Watch · Buy raw / graded</th></tr></thead>
     <tbody>${rows}</tbody>
@@ -308,7 +308,7 @@ async function main() {
   h = h.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${esc(desc)}">`);
   h = h.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "WebPage", name: "GSTAR · Gold Star & Grails", description: desc, url: `https://www.shopcardhub.com/${PAGE}`, isPartOf: { "@type": "WebSite", name: "ShopCardHub", url: "https://www.shopcardhub.com/" } })}</script>`);
   h = h.split(`<span class="soon">live</span>`).join(`<span class="soon">board</span>`);
-  h = h.replace(/<div class="livebar">[^<]*<\/div>/, `<div class="livebar">Board · ${D.cards.length} grail cards · raw and graded sold marks · read Mon &amp; Thu</div>`);
+  h = h.replace(/<div class="livebar">[^<]*<\/div>/, `<div class="livebar">Board · ${D.cards.length} grail cards · raw and graded recent sales · read Mon &amp; Thu</div>`);
   if (DRY) { console.log(blk.slice(0, 1200)); return; }
   fs.writeFileSync(pf, h);
   console.log(`grails ${D.day}: ${D.cards.length} cards · wrote data/grails.json + /${PAGE}`);

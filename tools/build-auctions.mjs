@@ -158,7 +158,7 @@ ${nav}
   <div class="au-crumbs"><a href="/">Home</a> <span>/</span> <a href="/cards">Card Charts</a> <span>/</span> <span>Auction Desk</span></div>
   <div class="au-eyebrow"><span class="au-live" aria-hidden="true"></span> Auction desk · live · refreshes every 15 min</div>
   <h1 class="au-title">Auctions ending <em>under the mark</em></h1>
-  <p class="au-sub">Every live eBay auction that passes the exact-card filter for the ${cards.length} cards the engine tracks, with the card's nightly mark and a floor, not the sale price at recent auctions beside the current bid. Sorted by time to close. A bid under the mark is the one thing on eBay you can act on today; whether it stays under is up to the last ten seconds. Opening prices with no bids are shown, but marked as exactly that.</p>
+  <p class="au-sub">Every live eBay auction that passes the exact-card filter for the ${cards.length} cards the engine tracks, with the card's nightly mark and the last bids seen on earlier auctions (a floor, not a sale price) beside the current bid. Sorted by time to close. A bid under the mark is the one thing on eBay you can act on today; whether it stays under is up to the last ten seconds. Opening prices with no bids are shown, but marked as exactly that.</p>
 
   <div class="au-strip" id="au-strip">
     <div class="au-cell"><div class="l">Live auctions</div><div class="v" id="k-count">—</div><div class="s">verified, ${cards.length} cards</div></div>
@@ -177,7 +177,7 @@ ${nav}
 
   <div class="au-list" id="au-list"><div class="au-skel"></div><div class="au-skel"></div><div class="au-skel"></div><div class="au-skel"></div></div>
 
-  <p class="au-note" id="au-note">Mark = the engine's verified ask floor for the exact card (ask basis, re-marked nightly). Last bids = the median of the LAST BID the engine saw on auctions for that card before they ended, shown only after two or more. The engine looks once a night, so that last look is a median of ~12 hours before the close; eBay auctions do most of their bidding in the final minutes. These are a floor, not sale prices. Bid + shipping is compared to each separately; they are never blended. Auctions that fail the exact-card filter (parallels, slabs, lots, other card codes) are not shown. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
+  <p class="au-note" id="au-note">Mark = the engine's verified ask floor for the exact card (ask basis, updated nightly). Last bids = the median of the LAST BID the engine saw on auctions for that card before they ended, shown only after two or more. The engine looks once a night, so that last look is a median of ~12 hours before the close; eBay auctions do most of their bidding in the final minutes. These are a floor, not sale prices. Bid + shipping is compared to each separately; they are never blended. Auctions that fail the exact-card filter (parallels, slabs, lots, other card codes) are not shown. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
 
   <div class="au-legend">
     <div><b>Under the mark</b>Current bid + shipping is below the engine's ask floor for the card. Solid green = someone has actually bid. Dashed "opening" = the seller's starting price with no bids yet; anyone can be first, and most of these move in the last hour.</div>

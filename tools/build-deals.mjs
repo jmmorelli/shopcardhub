@@ -132,7 +132,7 @@ ${nav}
   <div class="dl-crumbs"><a href="/">Home</a> <span>/</span> <a href="/indices">Indices</a> <span>/</span> <span>Deals</span></div>
   <div class="dl-eyebrow">Deals · Buy It Now · screened twice a day</div>
   <h1 class="dl-title">Listed <em>below the mark</em></h1>
-  <p class="dl-sub">Fixed-price eBay listings under our dated sold mark for the exact card and grade, verified by title, sorted by discount. A deal is a price, not a call.</p>
+  <p class="dl-sub">Buy It Now listings on eBay priced under what that exact card and grade recently sold for, checked by title and sorted by discount. A deal is a price, not a call.</p>
 
   <div class="dl-strip" id="dl-strip">
     <div class="dl-cell"><div class="l">Live deals</div><div class="v g" id="k-count">—</div><div class="s" id="k-count-s">verified</div></div>

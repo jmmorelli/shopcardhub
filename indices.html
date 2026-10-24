@@ -1056,7 +1056,7 @@ function horizon(hist, days) { var h = hz({ history: hist }, days >= 85 ? 'q' : 
   } catch (e3) {}
   /* nav deep links (/indices#classic etc., Sep 29): sections render after load, so scroll once they exist */
   if (/^#(screener|pokemon|classic|editions|baseball)$/.test(location.hash)) { var tgt = document.getElementById(location.hash.slice(1)); if (tgt) tgt.scrollIntoView(); }
-  document.getElementById('asof').textContent = latest ? ('marks as of ' + latest + ' · chase indices re-mark Mondays, whole-set indices Monday and Thursday · levels load live from data/indices.json') : 'no marks yet';
+  document.getElementById('asof').textContent = latest ? ('marks as of ' + latest + ' · chase indices update Mondays, whole-set indices Monday and Thursday · levels load live from data/indices.json') : 'no marks yet';
 }).catch(function() {
   document.getElementById('asof').textContent = 'index data unavailable right now — try a refresh';
 });
