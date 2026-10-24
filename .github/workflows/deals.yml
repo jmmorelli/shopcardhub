@@ -3,14 +3,17 @@ name: deals
 # Deals screener — Buy It Now listings below our dated SOLD mark (CoS, Oct 23 2026; Mo in chat: "go on A1").
 # Reads: data/indices.json + data/cards/*.json (Pokémon baskets and graded ladders), data/watchlist.json +
 # data/feed/sold-marks.json (Bowman). Calls the site's own /api/comps (tool header, customid=deals), one call per
-# candidate inside a price band under the mark — ~400 Browse calls a run, 3 runs a day, under the 5k/day keyset quota
-# with the Auction Desk. Publishes ONE derived file, data/feed/deals-latest.json, onto main (served at /feed/, R19) —
+# candidate inside a price band under the mark — ~280 Browse calls a run (--max-calls 300 hard ceiling), 2 runs a day.
+# BUDGET (Oct 23 2026 evening, Mo attended): the site shares ONE 5k/day keyset quota across /api/comps, /api/auctions
+# and this lane (api/_lib/ebay-budget.js). This lane stops first — /api/comps refuses customid=deals once the keyset is
+# down to 2,600 calls, and deals.mjs checks /api/ebay-quota before and during the run. Was 3 runs x 361 calls.
+# Publishes ONE derived file, data/feed/deals-latest.json, onto main (served at /feed/, R19) —
 # the public-feed path the nightly already uses, so it needs no secret; each publish is one small Vercel build.
 # Never blocks anything: a failed run leaves the previous feed in place and /api/deals drops ended rows itself.
 
 on:
   schedule:
-    - cron: "40 2,14,20 * * *"
+    - cron: "40 9,21 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -37,7 +40,7 @@ jobs:
         timeout-minutes: 45
         run: |
           mkdir -p "$RUNNER_TEMP/deals"
-          node tools/price-engine/deals.mjs --out "$RUNNER_TEMP/deals/deals-latest.json" --pause 650
+          node tools/price-engine/deals.mjs --out "$RUNNER_TEMP/deals/deals-latest.json" --pause 650 --max-calls 300
 
       - name: Publish the feed onto main
         env:

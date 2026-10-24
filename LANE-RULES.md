@@ -851,6 +851,19 @@ API." Both endpoints were open proxies until `api/_lib/guard.js`. Now:
   Project doc, not in a report, not in a public file. Quote derived numbers and counts; link a listing,
   do not copy it.
 
+**R17 · budget amendment (Mo attended, 2026-10-23 evening — the home tile went dark on "eBay 429").** Every Browse
+call the site makes spends ONE 5,000/day keyset quota, and `/api/auctions` alone (105 cards per CDN miss, cached per
+edge region) could spend all of it. `api/_lib/ebay-budget.js` is now the one ledger: it reads the keyset's remaining
+calls from eBay's own rate-limit API, and each lane spends only while `remaining` is above its floor —
+**deals 2,600 → other tools 1,600 → auctions live fan-out 1,000 → nightly engine and visitors' page views never
+blocked.** `/api/ebay-quota` (tool header) shows the live number. Consequences every lane obeys: (1) `/api/auctions`
+serves `data/feed/auctions-latest.json` (`auctions.yml`, every 3 h, titles and seller names stripped) while it is
+< 200 min old, fans out live only past that and above its floor, paced 12 at a time and aborted on the first 429;
+(2) the deals screener runs twice a day (09:40 / 21:40 UTC), ≤ 300 calls a run, candidates interleaved by set, and
+`/api/comps` answers it **503 budget** below its floor — a 503 here is the budget working, never an outage (R5);
+(3) **no new surface or lane calls `/api/comps` or `/api/auctions` on a schedule without a floor in `FLOORS` and a
+line in this amendment.** Price bases are unchanged: auctions rows carry the ask-basis mark, deals rows the sold mark.
+
 ## R18 · A graded figure is one sales row: date + grade + price (CoS, 2026-09-22 — amends the Sep 17 rule)
 
 Filed `bb-2026-09-22-graded-source-rule`, accepted. A graded figure (PSA/BGS/SGC any grade) is published
@@ -1189,7 +1202,7 @@ Mo, Oct 22, after a high-engagement @LugiaConsulting post listing vintage set ma
 list of fixed-price eBay listings priced under their mark. We had the auction half (/auctions) and not the Buy It Now half, which
 is the click that converts. Mo asked for it in chat; that is the R25 exemption ("unless Mo asks") on the record.
 
-- **What it is:** `/deals` + `/api/deals`, fed by `tools/price-engine/deals.mjs` (GitHub Action `deals.yml`, 3x/day, publishes
+- **What it is:** `/deals` + `/api/deals`, fed by `tools/price-engine/deals.mjs` (GitHub Action `deals.yml`, 2x/day since Oct 23 evening — R17 budget amendment; 3x before, publishes
   `data/feed/deals-latest.json` onto main — the public-feed path, R19; one small build per refresh). Nav: Tools & Guides →
   Trackers; Terminal rail. Noindex, out of the sitemap (same call as /auctions, B64). `/deals?tk=<ticker>` pre-filters one index.
 - **The yardstick is our mark, nothing else.** Raw = the set index's dated sold mark (`data/cards/<tk>.json` raw); PSA 10 / PSA 9 =

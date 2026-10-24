@@ -2,7 +2,11 @@
 //
 // Public endpoint (no proxy key): it serves only public listing data, and the
 // app token never leaves the server. Quota (5,000 calls/day) is protected by
-// CDN caching — identical queries within the cache window never hit eBay.
+// CDN caching — identical queries within the cache window never hit eBay — and,
+// since Oct 23 2026, by the shared budget in api/_lib/ebay-budget.js: a scripted
+// caller (X-ShopCardHub-Client) is refused with 503 once the keyset's remaining
+// calls fall to its lane's floor (deals 2,600 / other tools 1,600), so the last
+// calls of the day always belong to visitors' page views and the nightly engine.
 //
 //   GET /api/comps?q=2025+bowman+chrome+cooper+flagg+psa+10
 //   GET /api/comps?q=...&limit=25&sort=price          (cheapest first)
@@ -25,6 +29,8 @@
 
 import { guard } from "./_lib/guard.js";
 import { getAppToken } from "./_lib/ebay-token.js";
+import { allow } from "./_lib/ebay-budget.js";
+import { TOOL_HEADER } from "./_lib/guard.js";
 
 const BROWSE_URL = "https://api.ebay.com/buy/browse/v1/item_summary/search";
 // 10-digit eBay Partner Network campaign ID (the "campid" in EPN links).
@@ -170,6 +176,18 @@ export default async function handler(req, res) {
   const customId = sanitizeCustomId(req.query.customid);
 
   try {
+    // Budget gate for scripted callers only (Oct 23 2026). A page view is never refused here: the floors exist so that
+    // the deals screener and ad-hoc tools stop first, the nightly engine (customid=price-engine) never.
+    if ((req.headers || {})[TOOL_HEADER] && customId !== "price-engine") {
+      const lane = customId === "deals" ? "deals" : "tool";
+      const b = await allow(lane, 1);
+      if (!b.ok) {
+        res.setHeader("Cache-Control", "no-store");
+        res.setHeader("Retry-After", "3600");
+        return res.status(503).json({ error: "eBay budget: lane paused.", budget: { lane, floor: b.floor, remaining: b.remaining, limit: b.limit, reset: b.reset }, detail: b.reason });
+      }
+    }
+
     const token = await getAppToken();
 
     const params = new URLSearchParams({
@@ -197,6 +215,8 @@ export default async function handler(req, res) {
 
     if (!r.ok) {
       const detail = await r.text().catch(() => "");
+      // a 429 (quota) is held at the edge for 2 min so a busy page does not re-ask eBay on every view
+      res.setHeader("Cache-Control", r.status === 429 ? "s-maxage=120" : "no-store");
       return res.status(502).json({ error: `eBay Browse API error (${r.status}).`, detail: detail.slice(0, 500) });
     }
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // tools/build-deals.mjs — generates deals.html, Deals: Buy It Now below the mark (Oct 23 2026).
 //
-// Thin client over /api/deals (the screener's feed, tools/price-engine/deals.mjs, 3x/day): every verified
+// Thin client over /api/deals (the screener's feed, tools/price-engine/deals.mjs, 2x/day since Oct 23 evening — eBay budget): every verified
 // fixed-price eBay listing priced under our own dated SOLD mark for that exact card and grade, sorted by discount.
 // Visitors buy on eBay through EPN-tagged links (customid=deals). Nothing on the page is a number the screener
 // didn't produce; the empty state is honest. Shell (tokens, nav, footer, gtag) comes from how-prices-work.html,
@@ -130,7 +130,7 @@ ${nav}
 
 <main class="dl-wrap">
   <div class="dl-crumbs"><a href="/">Home</a> <span>/</span> <a href="/indices">Indices</a> <span>/</span> <span>Deals</span></div>
-  <div class="dl-eyebrow">Deals · Buy It Now · screened three times a day</div>
+  <div class="dl-eyebrow">Deals · Buy It Now · screened twice a day</div>
   <h1 class="dl-title">Listed <em>below the mark</em></h1>
   <p class="dl-sub">Fixed-price eBay listings under our dated sold mark for the exact card and grade, verified by title, sorted by discount. A deal is a price, not a call.</p>
 

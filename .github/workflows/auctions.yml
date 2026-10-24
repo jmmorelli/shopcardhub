@@ -1,0 +1,61 @@
+name: auctions
+
+# Auction Desk snapshot (CoS, Oct 23 2026, Mo attended — the eBay budget fix). /api/auctions fanned out 105 Browse calls
+# on every CDN miss in every edge region and emptied the 5k/day keyset quota on its own; the homepage tile went dark.
+# This Action asks the function ONCE (?fresh=1, tool header) every 3 h and publishes data/feed/auctions-latest.json
+# onto main (served at /feed/, R19). The function serves that snapshot, filtered to auctions still live, in every
+# region for zero Browse calls while it is fresh (< 200 min), and only fans out live when it has aged out and the
+# budget allows (api/_lib/ebay-budget.js, auctions floor 1,000). 8 runs x 105 = ~840 Browse calls a day, fixed.
+# Never blocks anything: a failed run leaves the previous snapshot in place. No listing titles or seller names are
+# written (R17) — the builder strips them.
+
+on:
+  schedule:
+    - cron: "20 */3 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: main-feed-writers
+  cancel-in-progress: false
+
+jobs:
+  auctions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Snapshot the live desk
+        timeout-minutes: 5
+        run: |
+          mkdir -p "$RUNNER_TEMP/auctions"
+          node tools/price-engine/auctions-feed.mjs --out "$RUNNER_TEMP/auctions/auctions-latest.json"
+
+      - name: Publish the snapshot onto main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p data/feed
+          cp "$RUNNER_TEMP/auctions/auctions-latest.json" data/feed/auctions-latest.json
+          git config user.name "price-engine[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/feed/auctions-latest.json
+          if git diff --cached --quiet; then echo "No auctions change."; exit 0; fi
+          git commit -m "auctions: snapshot $(date -u +%FT%H:%MZ)" -m "Task-key: ebay-budget" -m "Authority: Mo 2026-10-23 (attended)"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            echo "push rejected (main moved) - rebasing and retrying ($attempt/3)"
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort 2>/dev/null; echo "::error::rebase onto origin/main failed - snapshot not published"; exit 1; }
+            sleep 15
+          done
+          echo "::error::could not publish the auctions snapshot after 3 attempts"; exit 1

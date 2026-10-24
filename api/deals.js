@@ -5,7 +5,7 @@
 //   GET /api/deals?card=<id>    → one card
 //   GET /api/deals?grade=raw|psa9|psa10|sealed
 //
-// The screener runs 3x/day in GitHub Actions (deals.yml) and publishes data/feed/deals-latest.json onto main, the
+// The screener runs 2x/day in GitHub Actions (deals.yml; 3x until Oct 23 — the eBay budget, api/_lib/ebay-budget.js) and publishes data/feed/deals-latest.json onto main, the
 // same way the nightly engine publishes its feed (served at /feed/<file>, R19). This function reads it from our own
 // origin (api/_lib/feed.js) and serves it with a CDN cache — no eBay call happens on a visitor's request. (First cut
 // read the private price-data branch through store.js; the Vercel GITHUB_TOKEN answered 401 on Oct 23, so the feed

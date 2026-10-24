@@ -5,14 +5,19 @@
 // listing under our own dated sold mark is the one row on the site whose only job is an eBay click with buying intent.
 // The Auction Desk covers auctions; this covers Buy It Now.
 //
-// What it does, per run (GitHub Action deals.yml, 3x/day):
+// What it does, per run (GitHub Action deals.yml, 2x/day — was 3x until Oct 23 evening, see the budget note below):
 //   1. Candidates — the cards we already mark on dated SOLD comps:
 //        • every live Pokémon set index basket (data/cards/<tk>.json): the top RAW_PER_TICKER cards by weight whose
 //          raw mark is fresh and >= RAW_MIN_MARK;
 //        • their PSA 10 / PSA 9 graded marks (data/cards/g-<tk>.json) when the mark is a 30-day median (basis "30d");
 //        • the Bowman watchlist (data/watchlist.json) against data/feed/sold-marks.json (>= 3 sales in 30 days).
 //   2. One /api/comps call per candidate (our own endpoint, tool header, customid=deals): Buy It Now only, inside the
-//      price band [FLOOR x mark .. UNDER x mark], cheapest first. The band is what keeps this at ~500 Browse calls a run.
+//      price band [FLOOR x mark .. UNDER x mark], cheapest first. The band is what keeps this at ~250 Browse calls a run.
+//      BUDGET (Oct 23 2026, Mo attended — the homepage auctions tile went dark on "eBay 429"): every Browse call on the
+//      site spends ONE 5,000/day keyset quota (api/_lib/ebay-budget.js has the ledger and the lane floors). This lane is
+//      the first to stop: /api/comps answers 503 "budget" to customid=deals once the keyset has <= 2,600 calls left, the
+//      run asks /api/ebay-quota before it starts and every 25 calls, candidates are interleaved by ticker so a cut run
+//      still covers every set, and --max-calls (default 300) is a hard ceiling per run. Two runs a day, not three.
 //   3. Verification, each stage logged by reason (the TCGBerg cascade, our rules):
 //        L1 exact card — name tokens + card number in the title (Pokémon) / the engine's verifyListings (Bowman);
 //        L2 variant — 1st Edition / Shadowless / Unlimited / language / reverse / promo must not contradict the basket;
@@ -45,9 +50,13 @@ const OUT = arg("--out", "price-data/data/deals-latest.json");
 const ONLY = (arg("--tickers", "") || "").split(",").map((s) => s.trim().toUpperCase()).filter(Boolean);
 const LIMIT = parseInt(arg("--limit", "0"), 10) || 0;          // cap candidates (testing)
 const PAUSE_MS = parseInt(arg("--pause", "650"), 10);
+const MAX_CALLS = parseInt(arg("--max-calls", "300"), 10) || 300;   // hard ceiling of Browse calls per run (budget, Oct 23)
+const COUNT_ONLY = args.includes("--count");                          // print the candidate count and exit (no calls)
+const BUDGET_EVERY = 25;                                              // re-read /api/ebay-quota every N calls
+const MIN_COVERAGE_TO_WRITE = 0.6;                                    // a budget/cap stop writes the feed only past this share
 
 // ---- tunables (all named here, all printed into the feed's `rules` block) ----
-const RAW_PER_TICKER = 8, G10_PER_TICKER = 4, G9_PER_TICKER = 3, KEEP_PER_CARD = 2;
+const RAW_PER_TICKER = 6, G10_PER_TICKER = 3, G9_PER_TICKER = 2, KEEP_PER_CARD = 2;   // 8/4/3 until Oct 23 (361 calls a run); 6/3/2 fits the budget
 const RAW_MIN_MARK = 25, GRADED_MIN_MARK = 40;
 const RAW_MAX_AGE_DAYS = 14, GRADED_MAX_AGE_DAYS = 21, BOWMAN_MAX_AGE_DAYS = 30;
 // First full read (Oct 23 2026, 105 modern-Pokémon candidates): the raw sold mark (PriceCharting ungraded) sits ~10-15% above
@@ -201,8 +210,26 @@ function candidates() {
       }
     } catch (e) { console.warn("bowman candidates skipped: " + e.message); }
   }
-  return LIMIT ? out.slice(0, LIMIT) : out;
+  // Interleave by ticker (round-robin, each ticker's own order kept) so a run cut short by the budget or --max-calls has
+  // still screened the top of every set rather than all of the first sets and none of the last.
+  const byTk = new Map();
+  for (const c of out) { if (!byTk.has(c.tk)) byTk.set(c.tk, []); byTk.get(c.tk).push(c); }
+  const mixed = [];
+  for (let depth = 0; mixed.length < out.length; depth++) for (const list of byTk.values()) if (list[depth]) mixed.push(list[depth]);
+  return LIMIT ? mixed.slice(0, LIMIT) : mixed;
 }
+
+// ---- budget (api/_lib/ebay-budget.js via /api/ebay-quota) ----
+async function budgetOk() {
+  try {
+    const r = await fetch(SITE + "/api/ebay-quota?lane=deals&need=" + BUDGET_EVERY, { headers: { Accept: "application/json", "x-shopcardhub-client": "tool" } });
+    if (!r.ok) return { ok: true, note: "quota endpoint HTTP " + r.status + " - proceeding" };
+    const j = await r.json();
+    const b = j.browse || {};
+    return { ok: !j.asked || j.asked.ok !== false, note: b.limit ? `${b.remaining} of ${b.limit} Browse calls left (resets ${b.reset || "?"})` : (j.error || "quota unknown") };
+  } catch (e) { return { ok: true, note: "quota read failed (" + e.message + ") - proceeding" }; }
+}
+class BudgetStop extends Error {}
 
 // ---- fetch ----
 async function comps(cand) {
@@ -215,6 +242,7 @@ async function comps(cand) {
   u.searchParams.set("sort", "price"); u.searchParams.set("limit", "50"); u.searchParams.set("customid", "deals");
   if (cand.categoryIds) u.searchParams.set("category_ids", cand.categoryIds);
   const r = await fetch(u, { headers: { Accept: "application/json", "x-shopcardhub-client": "tool" } });
+  if (r.status === 503) { const j = await r.json().catch(() => ({})); if (j && j.budget) throw new BudgetStop(j.detail || "budget"); }
   if (!r.ok) throw new Error(`/api/comps -> HTTP ${r.status}`);
   const j = await r.json();
   return { listings: j.listings || [], floor, under };
@@ -234,14 +262,21 @@ const MAX_CONSECUTIVE_ERRORS = 15, MAX_ERROR_SHARE = 0.25; // breaker; see main(
 
 async function main() {
   const cands = candidates();
-  const counts = { candidates: cands.length, calls: 0, scanned: 0, verified: 0, deals: 0, heldBelowFloor: 0, errors: 0, rejected: {} };
+  if (COUNT_ONLY) { const per = {}; for (const c of cands) per[c.tk] = (per[c.tk] || 0) + 1; console.log(JSON.stringify({ candidates: cands.length, perTicker: per })); return; }
+  const counts = { candidates: cands.length, calls: 0, scanned: 0, verified: 0, deals: 0, heldBelowFloor: 0, errors: 0, rejected: {}, screened: 0, stopped: null };
   const rows = [];
   const t0 = Date.now();
   let consecutiveErrors = 0;
+  const b0 = await budgetOk();
+  console.log(`budget: ${b0.note}`);
+  if (!b0.ok) { console.error(`::error::deals lane paused by the eBay budget before the first call (${b0.note}) - feed NOT written; the previous feed stays live`); process.exit(1); }
   for (const [i, cand] of cands.entries()) {
+    if (counts.calls >= MAX_CALLS) { counts.stopped = `--max-calls ${MAX_CALLS} reached`; console.warn(`! ${counts.stopped} at candidate ${i + 1}/${cands.length}`); break; }
+    if (counts.calls && counts.calls % BUDGET_EVERY === 0) { const b = await budgetOk(); if (!b.ok) { counts.stopped = "budget: " + b.note; console.warn(`! ${counts.stopped}`); break; } }
     let listings = [], floor = 0.55, under = 0.9;
     try { ({ listings, floor, under } = await comps(cand)); counts.calls++; consecutiveErrors = 0; }
     catch (e) {
+      if (e instanceof BudgetStop) { counts.stopped = "budget: " + e.message; console.warn(`! ${counts.stopped}`); break; }
       counts.errors++; consecutiveErrors++;
       console.warn(`  ! ${cand.tk} ${cand.card.name} ${cand.grade}: ${e.message}`);
       // Breaker (CoS desk, Oct 23): the Browse quota ran out twice this week (Oct 21, Oct 23) and every call then
@@ -250,6 +285,7 @@ async function main() {
       await sleep(PAUSE_MS * 2); continue;
     }
     counts.scanned += listings.length;
+    counts.screened = i + 1;
     const kept = [];
     for (const l of listings) {
       if (l.buyingOption && l.buyingOption !== "FIXED_PRICE") continue;
@@ -297,6 +333,12 @@ async function main() {
   };
   console.log(JSON.stringify({ ...counts, seconds: Math.round((Date.now() - t0) / 1000), affiliateTagged: feed.affiliateTagged }, null, 1));
   if (counts.errors > Math.max(10, cands.length * MAX_ERROR_SHARE)) { console.error(`::error::${counts.errors} of ${cands.length} candidates errored - feed NOT written; the previous feed stays live`); process.exit(1); }
+  if (counts.stopped) {
+    const share = cands.length ? counts.screened / cands.length : 0;
+    if (share < MIN_COVERAGE_TO_WRITE) { console.error(`::error::stopped (${counts.stopped}) after ${counts.screened}/${cands.length} candidates (${Math.round(share * 100)}% < ${MIN_COVERAGE_TO_WRITE * 100}%) - feed NOT written; the previous feed stays live`); process.exit(1); }
+    feed.partial = { stopped: counts.stopped, screened: counts.screened, of: cands.length };
+    console.warn(`::warning::partial screen (${counts.stopped}): ${counts.screened}/${cands.length} candidates - feed written with a partial flag`);
+  }
   if (DRY) { console.log("--dry: not written"); return; }
   fs.mkdirSync(path.dirname(path.resolve(OUT)), { recursive: true });
   fs.writeFileSync(path.resolve(OUT), JSON.stringify(feed, null, 1));
