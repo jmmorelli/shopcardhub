@@ -1,21 +1,26 @@
 {
- "_comment": "Source for the NFL-BOARD block on /nfl-rookie-cards-2026 (tools/build-nfl-cards.mjs). Raw prices: SportsCardsPro public item pages (eBay + Fanatics sold listings, ungraded tab), read 2026-10-19 in a browser, one request at a time. Range = middle half (25th-75th percentile) of in-window sales after dropping lots, parallels, foils, refractors, serial-numbered and graded titles; n = sales kept; capped = the source shows only its 30 most recent rows and all were in the window, so n is a floor (rendered 'n+'). psa9/psa10 = null: zero title-verified PSA sales on any of these items in the window (R18) -> rendered 'no sale'. A card with no in-window sale would carry an SCP price point marked 'pt' (none this read). 'spike' is filled by the Monday 'Sunday Spike -> NFL rookie board' task: [{player, line, date}]. Refresh weekly; bump asof.",
- "asof": "2026-10-19",
+ "_comment": "Source for the NFL-BOARD block on /nfl-rookie-cards-2026 (tools/build-nfl-cards.mjs). Raw prices: SportsCardsPro public item pages (eBay + Fanatics sold listings, ungraded tab), read 2026-10-26 in a browser, one request at a time. Range = middle half (25th-75th percentile) of in-window sales after dropping lots, parallels, foils, refractors, serial-numbered and graded titles; n = sales kept; capped = the source shows only its 30 most recent rows and all were in the window, so n is a floor (rendered 'n+'). psa9/psa10 = null unless a sold row's own title names that grade inside the window (R18); Oct 26 read: one, Mendoza #301 PSA 10 Oct 19. Others rendered 'no sale'. A card with no in-window sale would carry an SCP price point marked 'pt' (none this read). 'spike' is filled by the Monday 'Sunday Spike -> NFL rookie board' task: [{player, line, date}]. Refresh weekly; bump asof.",
+ "asof": "2026-10-26",
  "window": {
-  "from": "2026-09-19",
-  "to": "2026-10-19"
+  "from": "2026-09-26",
+  "to": "2026-10-26"
  },
- "source": "SportsCardsPro sold listings (ungraded), read 2026-10-19",
+ "source": "SportsCardsPro sold listings (ungraded; PSA tabs checked by title), read 2026-10-26",
  "spike": [
   {
-   "player": "Germie Bernard",
-   "line": "11 catches for 87 yards and a touchdown in the Steelers' overtime win over the Bucs",
-   "date": "2026-10-18"
+   "player": "Omar Cooper Jr.",
+   "line": "5 catches for 115 yards and a touchdown in the Jets' 28-25 loss to the Dolphins",
+   "date": "2026-10-25"
   },
   {
-   "player": "Carnell Tate",
-   "line": "6 catches for 70 yards and a touchdown in the Titans' win over the Colts",
-   "date": "2026-10-18"
+   "player": "KC Concepcion",
+   "line": "8 catches for a career-high 129 yards in the Browns' 27-24 win over the Titans",
+   "date": "2026-10-25"
+  },
+  {
+   "player": "Caleb Douglas",
+   "line": "2 catches for 70 yards and his first two NFL touchdowns in the Dolphins' win over the Jets",
+   "date": "2026-10-25"
   }
  ],
  "players": [
@@ -38,18 +43,27 @@
      "label": "Base rookie card",
      "q": "Fernando Mendoza 2026 Topps Flagship 301 rookie",
      "raw": {
-      "lo": 1.1,
-      "hi": 2.99,
-      "med": 2,
+      "lo": 1.25,
+      "hi": 2.84,
+      "med": 1.94,
       "n": 30,
       "capped": true,
-      "to": "2026-10-17",
-      "asof": "2026-10-17",
-      "from": "2026-10-16"
+      "to": "2026-10-26",
+      "asof": "2026-10-26",
+      "from": "2026-10-24"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/fernando-mendoza-301",
      "psa9": null,
-     "psa10": null
+     "psa10": {
+      "lo": 599.98,
+      "hi": 599.98,
+      "med": 599.98,
+      "n": 1,
+      "capped": false,
+      "from": "2026-10-19",
+      "to": "2026-10-19",
+      "asof": "2026-10-19"
+     }
     },
     {
      "year": 2026,
@@ -59,13 +73,13 @@
      "q": "Fernando Mendoza 2026 Topps Flagship 1991 91TR-1",
      "raw": {
       "lo": 2,
-      "hi": 2.99,
-      "med": 2.5,
+      "hi": 3,
+      "med": 2.49,
       "n": 30,
       "capped": true,
-      "to": "2026-10-17",
-      "asof": "2026-10-17",
-      "from": "2026-10-13"
+      "to": "2026-10-26",
+      "asof": "2026-10-26",
+      "from": "2026-10-20"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/fernando-mendoza-91tr-1",
      "psa9": null,
@@ -93,13 +107,13 @@
      "q": "Carnell Tate 2026 Topps Flagship 318 rookie",
      "raw": {
       "lo": 0.99,
-      "hi": 1.75,
-      "med": 1.04,
+      "hi": 1.5,
+      "med": 1.3,
       "n": 29,
       "capped": true,
-      "to": "2026-10-13",
-      "asof": "2026-10-13",
-      "from": "2026-09-26"
+      "to": "2026-10-24",
+      "asof": "2026-10-24",
+      "from": "2026-10-05"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/carnell-tate-318",
      "psa9": null,
@@ -117,9 +131,9 @@
       "med": 1.25,
       "n": 29,
       "capped": true,
-      "to": "2026-10-17",
-      "asof": "2026-10-17",
-      "from": "2026-09-19"
+      "to": "2026-10-26",
+      "asof": "2026-10-26",
+      "from": "2026-09-27"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/carnell-tate-91tr-18",
      "psa9": null,
@@ -146,14 +160,14 @@
      "label": "Base rookie card",
      "q": "Jeremiyah Love 2026 Topps Flagship 309 rookie",
      "raw": {
-      "lo": 1.11,
+      "lo": 1.25,
       "hi": 1.99,
-      "med": 1.49,
-      "n": 29,
+      "med": 1.97,
+      "n": 30,
       "capped": true,
-      "to": "2026-10-17",
-      "asof": "2026-10-17",
-      "from": "2026-10-05"
+      "to": "2026-10-24",
+      "asof": "2026-10-24",
+      "from": "2026-10-11"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/jeremiyah-love-309",
      "psa9": null,
@@ -168,12 +182,12 @@
      "raw": {
       "lo": 0.99,
       "hi": 1.99,
-      "med": 1.32,
-      "n": 28,
+      "med": 1.34,
+      "n": 20,
       "capped": false,
-      "to": "2026-10-16",
-      "asof": "2026-10-16",
-      "from": "2026-09-19"
+      "to": "2026-10-24",
+      "asof": "2026-10-24",
+      "from": "2026-09-27"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/jeremiyah-love-91tr-9",
      "psa9": null,
@@ -200,14 +214,14 @@
      "label": "Base rookie card",
      "q": "David Bailey 2026 Topps Flagship 343 rookie",
      "raw": {
-      "lo": 0.99,
-      "hi": 1.5,
-      "med": 1.29,
-      "n": 21,
+      "lo": 1,
+      "hi": 1.53,
+      "med": 1.32,
+      "n": 20,
       "capped": true,
-      "to": "2026-10-13",
-      "asof": "2026-10-13",
-      "from": "2026-10-02"
+      "to": "2026-10-25",
+      "asof": "2026-10-25",
+      "from": "2026-10-06"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/david-bailey-343",
      "psa9": null,
@@ -221,13 +235,13 @@
      "q": "David Bailey 2026 Topps Flagship 1991 91TR-43",
      "raw": {
       "lo": 0.99,
-      "hi": 1.79,
-      "med": 1.49,
-      "n": 16,
+      "hi": 1.53,
+      "med": 1,
+      "n": 12,
       "capped": false,
-      "to": "2026-10-17",
-      "asof": "2026-10-17",
-      "from": "2026-09-20"
+      "to": "2026-10-26",
+      "asof": "2026-10-26",
+      "from": "2026-09-26"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/david-bailey-91tr-43",
      "psa9": null,
@@ -255,13 +269,13 @@
      "q": "Denzel Boston 2026 Topps Flagship 322 rookie",
      "raw": {
       "lo": 0.99,
-      "hi": 1.6,
-      "med": 1.25,
-      "n": 19,
-      "capped": true,
-      "to": "2026-10-17",
-      "asof": "2026-10-17",
-      "from": "2026-09-21"
+      "hi": 1.5,
+      "med": 1,
+      "n": 16,
+      "capped": false,
+      "to": "2026-10-23",
+      "asof": "2026-10-23",
+      "from": "2026-09-27"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/denzel-boston-322",
      "psa9": null,
@@ -275,13 +289,13 @@
      "q": "Denzel Boston 2026 Topps Flagship 1991 91TR-22",
      "raw": {
       "lo": 0.99,
-      "hi": 1.61,
+      "hi": 1.62,
       "med": 1.13,
-      "n": 16,
+      "n": 18,
       "capped": false,
-      "to": "2026-10-16",
-      "asof": "2026-10-16",
-      "from": "2026-09-20"
+      "to": "2026-10-23",
+      "asof": "2026-10-23",
+      "from": "2026-09-26"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/denzel-boston-91tr-22",
      "psa9": null,
@@ -309,13 +323,13 @@
      "q": "KC Concepcion 2026 Topps Flagship 323 rookie",
      "raw": {
       "lo": 0.99,
-      "hi": 1.49,
-      "med": 1.2,
-      "n": 12,
+      "hi": 1.5,
+      "med": 1.25,
+      "n": 15,
       "capped": false,
-      "to": "2026-10-10",
-      "asof": "2026-10-10",
-      "from": "2026-09-19"
+      "to": "2026-10-25",
+      "asof": "2026-10-25",
+      "from": "2026-09-28"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/kc-concepcion-323",
      "psa9": null,
@@ -328,14 +342,14 @@
      "label": "1991 design insert",
      "q": "KC Concepcion 2026 Topps Flagship 1991 91TR-23",
      "raw": {
-      "lo": 0.99,
-      "hi": 1.29,
-      "med": 1.23,
-      "n": 17,
+      "lo": 1,
+      "hi": 1.45,
+      "med": 1.25,
+      "n": 18,
       "capped": false,
-      "to": "2026-10-15",
-      "asof": "2026-10-15",
-      "from": "2026-09-20"
+      "to": "2026-10-24",
+      "asof": "2026-10-24",
+      "from": "2026-09-27"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/kc-concepcion-91tr-23",
      "psa9": null,
@@ -362,14 +376,14 @@
      "label": "Base rookie card",
      "q": "Kenyon Sadiq 2026 Topps Flagship 338 rookie",
      "raw": {
-      "lo": 1.12,
-      "hi": 1.5,
-      "med": 1.3,
-      "n": 27,
+      "lo": 1.15,
+      "hi": 1.54,
+      "med": 1.34,
+      "n": 28,
       "capped": true,
-      "to": "2026-10-16",
-      "asof": "2026-10-16",
-      "from": "2026-09-29"
+      "to": "2026-10-24",
+      "asof": "2026-10-24",
+      "from": "2026-10-01"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/kenyon-sadiq-338",
      "psa9": null,
@@ -383,13 +397,13 @@
      "q": "Kenyon Sadiq 2026 Topps Flagship 1991 91TR-38",
      "raw": {
       "lo": 0.99,
-      "hi": 1.62,
+      "hi": 1.5,
       "med": 1,
-      "n": 29,
-      "capped": true,
-      "to": "2026-10-17",
-      "asof": "2026-10-17",
-      "from": "2026-09-23"
+      "n": 23,
+      "capped": false,
+      "to": "2026-10-20",
+      "asof": "2026-10-20",
+      "from": "2026-09-27"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/kenyon-sadiq-91tr-38",
      "psa9": null,
@@ -416,14 +430,14 @@
      "label": "Base rookie card",
      "q": "Makai Lemon 2026 Topps Flagship 319 rookie",
      "raw": {
-      "lo": 1,
+      "lo": 0.99,
       "hi": 1.75,
       "med": 1.25,
-      "n": 25,
+      "n": 23,
       "capped": false,
-      "to": "2026-10-12",
-      "asof": "2026-10-12",
-      "from": "2026-09-19"
+      "to": "2026-10-24",
+      "asof": "2026-10-24",
+      "from": "2026-09-27"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/makai-lemon-319",
      "psa9": null,
@@ -436,14 +450,14 @@
      "label": "1991 design insert",
      "q": "Makai Lemon 2026 Topps Flagship 1991 91TR-19",
      "raw": {
-      "lo": 1,
-      "hi": 1.7,
+      "lo": 1.25,
+      "hi": 1.66,
       "med": 1.5,
-      "n": 12,
+      "n": 11,
       "capped": false,
-      "to": "2026-10-14",
-      "asof": "2026-10-14",
-      "from": "2026-09-20"
+      "to": "2026-10-22",
+      "asof": "2026-10-22",
+      "from": "2026-09-30"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/makai-lemon-91tr-19",
      "psa9": null,
@@ -470,14 +484,14 @@
      "label": "Base rookie card",
      "q": "Sonny Styles 2026 Topps Flagship 347 rookie",
      "raw": {
-      "lo": 1.42,
-      "hi": 2,
-      "med": 1.53,
-      "n": 22,
-      "capped": true,
-      "to": "2026-10-13",
-      "asof": "2026-10-13",
-      "from": "2026-10-02"
+      "lo": 0.99,
+      "hi": 1.6,
+      "med": 1.44,
+      "n": 20,
+      "capped": false,
+      "to": "2026-10-24",
+      "asof": "2026-10-24",
+      "from": "2026-10-06"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/sonny-styles-347",
      "psa9": null,
@@ -491,13 +505,13 @@
      "q": "Sonny Styles 2026 Topps Flagship 1991 91TR-47",
      "raw": {
       "lo": 1,
-      "hi": 1.99,
+      "hi": 1.81,
       "med": 1.25,
-      "n": 29,
+      "n": 28,
       "capped": true,
-      "to": "2026-10-17",
-      "asof": "2026-10-17",
-      "from": "2026-09-24"
+      "to": "2026-10-22",
+      "asof": "2026-10-22",
+      "from": "2026-09-26"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/sonny-styles-91tr-47",
      "psa9": null,
@@ -524,14 +538,14 @@
      "label": "Base rookie card",
      "q": "Arvell Reese 2026 Topps Flagship 346 rookie",
      "raw": {
-      "lo": 1,
-      "hi": 1.99,
-      "med": 1.5,
-      "n": 27,
-      "capped": true,
-      "to": "2026-10-10",
-      "asof": "2026-10-10",
-      "from": "2026-09-27"
+      "lo": 0.99,
+      "hi": 1.92,
+      "med": 1.45,
+      "n": 28,
+      "capped": false,
+      "to": "2026-10-22",
+      "asof": "2026-10-22",
+      "from": "2026-09-30"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/arvell-reese-346",
      "psa9": null,
@@ -546,12 +560,12 @@
      "raw": {
       "lo": 0.99,
       "hi": 1.75,
-      "med": 1.27,
-      "n": 14,
+      "med": 1.5,
+      "n": 26,
       "capped": false,
-      "to": "2026-10-17",
-      "asof": "2026-10-17",
-      "from": "2026-09-25"
+      "to": "2026-10-25",
+      "asof": "2026-10-25",
+      "from": "2026-09-27"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/arvell-reese-91tr-46",
      "psa9": null,
@@ -580,12 +594,12 @@
      "raw": {
       "lo": 1,
       "hi": 1.5,
-      "med": 1,
-      "n": 21,
+      "med": 1.2,
+      "n": 19,
       "capped": false,
-      "to": "2026-10-13",
-      "asof": "2026-10-13",
-      "from": "2026-09-19"
+      "to": "2026-10-25",
+      "asof": "2026-10-25",
+      "from": "2026-10-09"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/germie-bernard-325",
      "psa9": null,
@@ -598,16 +612,124 @@
      "label": "1991 design insert",
      "q": "Germie Bernard 2026 Topps Flagship 1991 91TR-25",
      "raw": {
-      "lo": 1,
+      "lo": 1.09,
       "hi": 2,
-      "med": 1.5,
-      "n": 19,
+      "med": 1.51,
+      "n": 26,
       "capped": false,
-      "to": "2026-10-16",
-      "asof": "2026-10-16",
-      "from": "2026-09-19"
+      "to": "2026-10-25",
+      "asof": "2026-10-25",
+      "from": "2026-09-26"
      },
      "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/germie-bernard-91tr-25",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  },
+  {
+   "slug": "omar-cooper-jr",
+   "name": "Omar Cooper Jr.",
+   "team": "New York Jets",
+   "pos": "WR",
+   "played": {
+    "fact": "Week 7 vs MIA: 5 catches, 115 yards, 1 TD (Jets lost 28-25)",
+    "outlet": "CBS Sports",
+    "date": "2026-10-25",
+    "url": "https://www.cbssports.com/fantasy/football/news/jets-omar-cooper-two-long-catches-and-td-in-week-7/"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "321",
+     "label": "Base rookie card",
+     "q": "Omar Cooper Jr. 2026 Topps Flagship 321 rookie",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.25,
+      "med": 1,
+      "n": 19,
+      "capped": false,
+      "to": "2026-10-25",
+      "asof": "2026-10-25",
+      "from": "2026-09-26"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/omar-cooper-jr-321",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-21",
+     "label": "1991 design insert",
+     "q": "Omar Cooper Jr. 2026 Topps Flagship 1991 91TR-21",
+     "raw": {
+      "lo": 0.99,
+      "hi": 1.79,
+      "med": 1.14,
+      "n": 17,
+      "capped": false,
+      "to": "2026-10-25",
+      "asof": "2026-10-25",
+      "from": "2026-09-27"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/omar-cooper-jr-91tr-21",
+     "psa9": null,
+     "psa10": null
+    }
+   ]
+  },
+  {
+   "slug": "caleb-douglas",
+   "name": "Caleb Douglas",
+   "team": "Miami Dolphins",
+   "pos": "WR",
+   "played": {
+    "fact": "Week 7 at NYJ: 2 catches, 70 yards, first two NFL touchdowns (Dolphins won 28-25)",
+    "outlet": "NFL.com",
+    "date": "2026-10-25",
+    "url": "https://www.nfl.com/news/2026-nfl-season-week-7-what-we-learned-from-sunday-s-games"
+   },
+   "cards": [
+    {
+     "year": 2026,
+     "set": "Topps Flagship",
+     "num": "365",
+     "label": "Base rookie card",
+     "q": "Caleb Douglas 2026 Topps Flagship 365 rookie",
+     "raw": {
+      "lo": 1.22,
+      "hi": 1.52,
+      "med": 1.44,
+      "n": 12,
+      "capped": false,
+      "to": "2026-10-26",
+      "asof": "2026-10-26",
+      "from": "2026-09-27"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship/caleb-douglas-365",
+     "psa9": null,
+     "psa10": null
+    },
+    {
+     "year": 2026,
+     "set": "Topps Flagship 1991 35th",
+     "num": "91TR-16",
+     "label": "1991 design insert",
+     "q": "Caleb Douglas 2026 Topps Flagship 1991 91TR-16",
+     "raw": {
+      "lo": 1,
+      "hi": 1.75,
+      "med": 1.46,
+      "n": 12,
+      "capped": false,
+      "to": "2026-10-23",
+      "asof": "2026-10-23",
+      "from": "2026-09-26"
+     },
+     "src": "https://www.sportscardspro.com/game/football-cards-2026-topps-flagship-1991-rookie/caleb-douglas-91tr-16",
      "psa9": null,
      "psa10": null
     }
