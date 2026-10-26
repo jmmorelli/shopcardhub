@@ -3284,6 +3284,36 @@
       "severity": "LOW",
       "title": "Lane file drift (claude/lanes/bowman-bangers-tuesday.md vs LANE-RULES): STEP 0 still enables the retired Friday release-window task; STEP 2.7 BCB26 window re-mark is past its window (street Sep 9 + 21 d) and BCB26 is marked by the nightly/Monday; STEP 1 and 0.75 read raw.githubusercontent (R19 says /feed/ or a price-data clone); the coach's-note step is retired (CoS Oct 13); the MailerLite token file is 'MailerLiteAPi.rtf', not 'MailerLiteAPI.rtf'; STEP 4.5's body shape is superseded by tools/tuesday-tape-format.md (R26). Followed LANE-RULES on each.",
       "decision": "CoS desk 2026-10-20: lane file marked in e23d70f (coach note, Friday window, STEP 2.7 retired; R19 clone reads; MailerLiteAPi.rtf; R26 format file wins)."
+    },
+    {
+      "id": "iw-2026-10-26-1",
+      "status": "queued",
+      "date": "2026-10-26",
+      "area": "instruments",
+      "by": "integrity-watch",
+      "severity": "HIGH",
+      "title": "HIGH: the Monday graded ladder (build-card-ladder.mjs, price-snapshot.yml) had not landed since Oct 5 (all 34 g-*.json day Sep 30 / Oct 4); /deals graded rows fell 54 -> 2 past R42's 21-day limit; the failure branch's `git checkout -- data/cards` also discards Monday's raw card files.",
+      "decision": "CoS desk 2026-10-26: verified in a fresh clone — today's Monday nightly 543981f landed the ladder (all 34 g-*.json day 2026-10-26), so the stale marks are cleared and /deals graded rows refill on its next run. Remedies queued -> Wed Oct 28 weekly (workflow change): (a) on ladder failure restore only data/cards/g-*.json; (c) Ops heartbeat checks g-*.json day against the newest Monday. (b) own workflow / split tickers only if next Monday misses again. Retention 2026-10-25 (b) credited."
+    },
+    {
+      "id": "iw-2026-10-26-2",
+      "status": "applied",
+      "date": "2026-10-26",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "title": "MED: /world-cup-2026-soccer-cards footer said 'eBay completed/sold listings, June 2026' over figures that are asks checked Aug 25; plus 'Ranked by Value & ROI' eyebrow, 'Browse SSPs' button, 'real time on @shopcardhub' line.",
+      "decision": "CoS desk 2026-10-26: applied 52a501b — footer now mirrors the body (asks, Aug 25, not sold comps); eyebrow 'The Cards to Know'; button 'Browse Color Blast on eBay'; real-time line replaced. Cooper Flagg footer month fixed in the same commit (dated sales Jul 28). Cut/relabel only, no figure changed. Live-verified."
+    },
+    {
+      "id": "iw-2026-10-26-3",
+      "status": "queued",
+      "date": "2026-10-26",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "title": "LOW: /deals method note prints first-draft thresholds (3% under, about half) while the screen runs 10%/5% under with 65%/55% floors and the pre-2010 NM-title rule.",
+      "decision": "CoS desk 2026-10-26: accepted, queued -> Wed Oct 28 weekly: build-deals.mjs writes the sentence from the feed's rules block (generator change, not applied by the desk)."
     }
   ],
   "scoreboard": {
@@ -5342,6 +5372,19 @@
           "gates": "audit-prices 0/47 · audit-site 0/19 · audit-terminal 0/1 (= clean HEAD 543981f)",
           "liveVerified": "yes, ~17:28Z (AH26 64.23 live on /ascended-heroes-index and /data/indices.json)",
           "note": "Six chase tickers re-marked, 289/289 PriceCharting ungraded solds, no divisor change; 64 files."
+        },
+        {
+          "date": "2026-10-26",
+          "commits": [
+            "52a501b",
+            "ef77e66",
+            "fb47a9b",
+            "this commit"
+          ],
+          "by": "CoS desk (weekday 15:11 fire, Mac deploy key)",
+          "gates": "audit-prices 0/47 · audit-site 0/19 · audit-terminal 0/1 (= baseline) on each",
+          "liveVerified": "yes — 4 engine URLs 308 -> static card pages; world-cup + cooper-flagg footers live; IndexNow 4 -> 200",
+          "note": "iw-2026-10-26-2 claims fix; Traffic engine-301 patch applied (4 pages, 747-page NAV regen); class ladder BOW25 + BOW24 universe files (data only); this commit = docs (STATE, NEEDS-MO, retention LEDGER) + pipeline, does not deploy."
         }
       ]
     },

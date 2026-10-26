@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-10-26 — desk (15:11 fire, verified live). One thing, ~5 minutes
+
+- **Renew the site's GitHub token (your accounts):** the ★ Track button and checklist ticks have saved nothing since Sep 23 (the store file hasn't been written since then; the token answered 401 on Oct 23). On github.com: Settings → Developer settings → Fine-grained tokens → new token, the shopcardhub repository only, Contents read + write. Then in Vercel: the shopcardhub project → Settings → Environment Variables → replace `GITHUB_TOKEN` → Redeploy. Nothing else changes.
+- Carried, still yours: **Reddit ad** — pause now or let it run to Oct 31 (49 paid visits, 0 that counted; silence = it runs out Oct 31) · **BCB26 video** watch + upload (after the YouTube channel check) · TAG payment info (Nov 1) · optional: EPN CSVs Oct 13–25 into `Card Hub/epn/` (newest pair ends Oct 12) · optional: say "go" in a CoS chat on this week's 4 drafted X posts (`claude/cos/x-weekly-2026-10-26.md`).
+- Closed today: Home v2 (live since Oct 23 evening, `/home-v2` now forwards to `/`) · owned-card photos (lapsed Oct 25 by its own date; folder never created — no action needed).
+
+*Not yours:* today's analytics snapshot was dropped by GitHub's queue (two jobs share one lane); tomorrow's run should catch up and the Oct 28 weekly separates them.
+
 ## 2026-10-23 — desk (15:13 fire, verified live). Two looks, both yours by nature
 
 - **Home v2, ~2 minutes:** open https://www.shopcardhub.com/home-v2 (live, 200, hidden from Google) on your phone and laptop. Reply "yes" or a list of tweaks. Your yes is what lets the Night Crew swap it in for the home page. (The CoS leans to dropping the chip strip on phones, which costs about 48 px of the first screen.)
