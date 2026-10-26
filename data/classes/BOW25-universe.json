@@ -1,32 +1,35 @@
 {
- "_comment": "PIPELINE FIXTURE — not a KB file. Built Oct 24 2026 from data/sets/bowman-baseball-2025.json, bowman-chrome-baseball-2025.json and bowman-draft-baseball-2025.json CPA groups so tools/build-sector-index.mjs --ticker BOW25 --mark can be exercised. firstAuto mirrors the checklist first flag only (Checklist Insider does not mark auto 1sts — the Bowman KB agent owns 1st-auto status and must re-derive it); pcPath is null everywhere; console slugs are patterned from the 2026 (May/Sep share one console) and 2023 Draft slugs and are UNVERIFIED; universeComplete is false, so the publish gate keeps this ticker at pre-activation. Replace with the KB agent file.",
- "fixture": true,
  "ticker": "BOW25",
  "year": 2025,
+ "_comment": "Bowman KB Agent file, run 11 (Sun Oct 25 2026). universeComplete true: every Chrome prospect auto set of the 2025 products is enumerated (hobby CPA of 2025 Bowman / Chrome / Draft; the May, Sep and Draft Mega Box auto sets; the June Sapphire, Oct Chrome Sapphire and Draft Sapphire auto sets) and every row's prior history is checked against every 2019-2024 Bowman / Bowman Chrome / Bowman Draft auto list and the 2024 Mega Box lists. Derivation: claude/kb/bowman/08-classes.md §3. Replaces the pipeline fixture when the CoS desk copies it (ORG §2.14).",
  "products": [
   {
    "name": "2025 Bowman",
    "release": "2025-05-07",
    "console": "baseball-cards-2025-bowman-chrome-prospect-autograph",
    "codePrefix": "CPA",
-   "consoleVerified": false
+   "consoleVerified": true,
+   "consoleNote": "slug seen as a sportscardspro.com console URL titled 'Preise für 2025 Bowman Chrome Prospect Autograph Baseball Karten' (search result, Oct 25 2026). Whether the one console holds both May and Sep 2025 autos (as the 2026 console does) is not read; the engine matches by player name inside the console"
   },
   {
    "name": "2025 Bowman Chrome",
    "release": "2025-09-23",
    "console": "baseball-cards-2025-bowman-chrome-prospect-autograph",
    "codePrefix": "CPA",
-   "consoleVerified": false
+   "consoleVerified": true,
+   "consoleNote": "same console as May (slug seen Oct 25 2026; May+Sep coverage not read); two players share CPA-SM (Morii / Marte) — resolve by player"
   },
   {
    "name": "2025 Bowman Draft",
    "release": "2026-01-14",
-   "console": "baseball-cards-2025-bowman-draft-chrome-prospect-autographs",
+   "console": "baseball-cards-2025-bowman-draft-chrome-prospect-autograph",
    "codePrefix": "CPA",
-   "consoleVerified": false
+   "consoleVerified": true,
+   "consoleNote": "slug seen as a sportscardspro.com console URL 'Prices for 2025 Bowman Draft Chrome Prospect Autograph Baseball Cards' (search results Oct 24 and Oct 25 2026) — singular 'autograph'. Release slipped to Jan 14 2026; it is the 2025 product, so class 2025"
   }
  ],
- "universeComplete": false,
+ "universeComplete": true,
+ "note": "Derivation (08-classes.md §3): every hobby CPA of the three 2025 products (data/sets @ 2226a24: 105 / 109 / 102), matched by accent-folded player name against every Chrome prospect auto list of 2019-2023 Bowman / Bowman Chrome / Bowman Draft (Cardsmiths full checklists) and 2024 Bowman / Chrome / Draft plus the 2024 Bowman and Bowman Chrome Mega Box lists (Checklist Insider; Cardsmiths also lists 2024 Bowman Chrome Prospect Autographs as 87 cards), read Oct 24-25 2026. 14 rows have an earlier auto and are firstAuto:false. Mega and Sapphire sets: all 52 Mega-only signers of the 2025 May (47 BMA- + 7 image-variation CPA-) and Sep (57 BMA- + 8 image-variation) Mega Boxes have an earlier Bowman auto (the three oldest: Mick Abel 2021 Bowman CPA-MAB, Carson Williams 2021 Bowman Draft CDA-CW, Tink Hence 2020 Bowman Draft CDA-MH); every 2025 Draft Mega signer (45) has a hobby 2025 Draft CPA (Mega est. Jan 28 2026, after hobby); the 2025 Sapphire auto sets (June 28 + 7, Chrome Sapphire 30 + 13, Draft Sapphire 30 + 15) add no new signer (Chourio, Mayer and Sasaki in Chrome Sapphire Selections are earlier-auto or rookie-auto names). Rookie autos (CRA-/RMA-) are not class rows (RCs are out, README #14). Insert and dual autos are not counted as priors (08 §1). Open, not blocking: May+Sep console coverage; pcPath null everywhere.",
  "rows": [
   {
    "player": "Ashly Andujar",
@@ -34,7 +37,7 @@
    "code": "CPA-AA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Aroon Escobar",
@@ -42,7 +45,7 @@
    "code": "CPA-AE",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Aron Estrada",
@@ -50,7 +53,7 @@
    "code": "CPA-AES",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Alex Mooney",
@@ -58,7 +61,7 @@
    "code": "CPA-AM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Andrew Morris",
@@ -66,23 +69,23 @@
    "code": "CPA-AMO",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Brody Hopkins",
    "product": "2025 Bowman",
    "code": "CPA-BH",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Braden Montgomery",
    "product": "2025 Bowman",
    "code": "CPA-BM",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Draft CPA-BM (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Bo Walker",
@@ -90,15 +93,15 @@
    "code": "CPA-BWA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Chase Burns",
    "product": "2025 Bowman",
    "code": "CPA-CB",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Draft CPA-CB (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Charlie Condon",
@@ -106,7 +109,7 @@
    "code": "CPA-CC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Conrad Cason",
@@ -114,7 +117,7 @@
    "code": "CPA-CCN",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Cole Fontenelle",
@@ -122,7 +125,7 @@
    "code": "CPA-CF",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Cody Freeman",
@@ -130,7 +133,7 @@
    "code": "CPA-CFR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Cobb Hightower",
@@ -138,7 +141,7 @@
    "code": "CPA-CHI",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Caden Kendle",
@@ -146,7 +149,7 @@
    "code": "CPA-CKE",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Chen-Wei Lin",
@@ -154,7 +157,7 @@
    "code": "CPA-CL",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Cory Lewis",
@@ -162,7 +165,7 @@
    "code": "CPA-CLE",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Caleb Lomavita",
@@ -170,7 +173,7 @@
    "code": "CPA-CLO",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Charles McAdoo",
@@ -178,15 +181,15 @@
    "code": "CPA-CMA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Christian Moore",
    "product": "2025 Bowman",
    "code": "CPA-CMO",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Draft CPA-CM (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Chase Mobley",
@@ -194,7 +197,7 @@
    "code": "CPA-CMY",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Cameron Sullivan",
@@ -202,15 +205,15 @@
    "code": "CPA-CS",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Cam Smith",
    "product": "2025 Bowman",
    "code": "CPA-CSM",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Draft CPA-CS (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Dylan Fien",
@@ -218,7 +221,7 @@
    "code": "CPA-DF",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Didier Fuentes",
@@ -226,7 +229,7 @@
    "code": "CPA-DFU",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "D'Angelo Ortiz",
@@ -234,7 +237,7 @@
    "code": "CPA-DO",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Esteban Gonzalez",
@@ -242,7 +245,7 @@
    "code": "CPA-EGO",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Esteban Mejia",
@@ -250,7 +253,7 @@
    "code": "CPA-EM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Esmith Pineda",
@@ -258,7 +261,7 @@
    "code": "CPA-EP",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Émilien Pitre",
@@ -266,7 +269,7 @@
    "code": "CPA-EPI",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Edgleen Perez",
@@ -274,7 +277,7 @@
    "code": "CPA-EPZ",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Eduardo Quintero",
@@ -282,7 +285,7 @@
    "code": "CPA-EQ",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Engelth Urena",
@@ -290,7 +293,7 @@
    "code": "CPA-EU",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Franklin Arias",
@@ -298,7 +301,7 @@
    "code": "CPA-FA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Fabian Lopez",
@@ -306,7 +309,7 @@
    "code": "CPA-FL",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Franyerber Montilla",
@@ -314,7 +317,7 @@
    "code": "CPA-FM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Gregory Barrios",
@@ -322,7 +325,7 @@
    "code": "CPA-GB",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Gary Gill Hill",
@@ -330,7 +333,7 @@
    "code": "CPA-GG",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "George Klassen",
@@ -338,7 +341,7 @@
    "code": "CPA-GK",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Hayden Alvarez",
@@ -346,7 +349,7 @@
    "code": "CPA-HA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Humberto Cruz",
@@ -354,7 +357,7 @@
    "code": "CPA-HC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Hyun-Seok Jang",
@@ -362,7 +365,7 @@
    "code": "CPA-HJ",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Hyungchan Um",
@@ -370,7 +373,7 @@
    "code": "CPA-HU",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Ichiro Cano Hernandez",
@@ -378,7 +381,7 @@
    "code": "CPA-IC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Josue Briceno",
@@ -386,7 +389,7 @@
    "code": "CPA-JB",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jacob Bresnahan",
@@ -394,23 +397,23 @@
    "code": "CPA-JBR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jac Caglianone",
    "product": "2025 Bowman",
    "code": "CPA-JCA",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Draft CPA-JC (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Jadyn Fielder",
    "product": "2025 Bowman",
    "code": "CPA-JF",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jhostynxon Garcia",
@@ -418,7 +421,7 @@
    "code": "CPA-JGA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jackson Humphries",
@@ -426,7 +429,7 @@
    "code": "CPA-JHU",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jhonny Level",
@@ -434,7 +437,7 @@
    "code": "CPA-JL",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jonathon Long",
@@ -442,7 +445,7 @@
    "code": "CPA-JLG",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jack Lines",
@@ -450,7 +453,7 @@
    "code": "CPA-JLI",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jesus Lopez",
@@ -458,7 +461,7 @@
    "code": "CPA-JLO",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jansel Luis",
@@ -466,7 +469,7 @@
    "code": "CPA-JLU",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jesus Made",
@@ -474,7 +477,7 @@
    "code": "CPA-JM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Javier Mogollon",
@@ -482,7 +485,7 @@
    "code": "CPA-JMO",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jose Pirela",
@@ -490,7 +493,7 @@
    "code": "CPA-JP",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jack Penney",
@@ -498,7 +501,7 @@
    "code": "CPA-JPY",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jared Sundstrom",
@@ -506,7 +509,7 @@
    "code": "CPA-JSU",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jesus Tillero",
@@ -514,7 +517,7 @@
    "code": "CPA-JT",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jonah Tong",
@@ -522,7 +525,7 @@
    "code": "CPA-JTO",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jhonayker Ugarte",
@@ -530,7 +533,7 @@
    "code": "CPA-JU",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jancel Villarroel",
@@ -538,15 +541,15 @@
    "code": "CPA-JV",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Javier Vaz",
    "product": "2025 Bowman",
    "code": "CPA-JVA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "JJ Wetherholt",
@@ -554,7 +557,7 @@
    "code": "CPA-JW",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Kevyn Castillo",
@@ -562,7 +565,7 @@
    "code": "CPA-KC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Kyle DeBarge",
@@ -570,7 +573,7 @@
    "code": "CPA-KD",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Khadim Diaw",
@@ -578,15 +581,15 @@
    "code": "CPA-KDW",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Konnor Griffin",
    "product": "2025 Bowman",
    "code": "CPA-KG",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Draft CPA-KG (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Kevin McGonigle",
@@ -594,15 +597,15 @@
    "code": "CPA-KM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Leo De Vries",
    "product": "2025 Bowman",
    "code": "CPA-LD",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Chrome CPA-LD (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Luis Merejo",
@@ -610,15 +613,15 @@
    "code": "CPA-LM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Luis Pena",
    "product": "2025 Bowman",
    "code": "CPA-LP",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Lucas Ramirez",
@@ -626,7 +629,7 @@
    "code": "CPA-LR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Mitch Jebb",
@@ -634,7 +637,7 @@
    "code": "CPA-MJ",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Malcolm Moore",
@@ -642,15 +645,15 @@
    "code": "CPA-MMO",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Mike Vasil",
    "product": "2025 Bowman",
    "code": "CPA-MV",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Matt Wilkinson",
@@ -658,15 +661,15 @@
    "code": "CPA-MW",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Nick Kurtz",
    "product": "2025 Bowman",
    "code": "CPA-NK",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Draft CPA-NK (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Naibel Mariano",
@@ -674,7 +677,7 @@
    "code": "CPA-NM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Nate Nankil",
@@ -682,7 +685,7 @@
    "code": "CPA-NN",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Payton Eeles",
@@ -690,7 +693,7 @@
    "code": "CPA-PE",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "PJ Morlando",
@@ -698,7 +701,7 @@
    "code": "CPA-PM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Quinn Mathews",
@@ -706,7 +709,7 @@
    "code": "CPA-QM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Rafael Flores",
@@ -714,7 +717,7 @@
    "code": "CPA-RF",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Richard Matic",
@@ -722,7 +725,7 @@
    "code": "CPA-RM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Ricardo Yan",
@@ -730,7 +733,7 @@
    "code": "CPA-RY",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Slade Caldwell",
@@ -738,7 +741,7 @@
    "code": "CPA-SC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Steven Echavarria",
@@ -746,7 +749,7 @@
    "code": "CPA-SE",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Sean Keys",
@@ -754,7 +757,7 @@
    "code": "CPA-SK",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Sammy Stafura",
@@ -762,23 +765,23 @@
    "code": "CPA-SS",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Sebastian Walcott",
    "product": "2025 Bowman",
    "code": "CPA-SW",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman CPA-SW (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Travis Bazzana",
    "product": "2025 Bowman",
    "code": "CPA-TB",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Draft CPA-TB (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Tsung-Che Cheng",
@@ -786,7 +789,7 @@
    "code": "CPA-TC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Thomas White",
@@ -794,7 +797,7 @@
    "code": "CPA-TW",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Victor Rodrigues",
@@ -802,15 +805,15 @@
    "code": "CPA-VR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Walker Jenkins",
    "product": "2025 Bowman",
    "code": "CPA-WJ",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman CPA-WJ (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Walker Janek",
@@ -818,7 +821,7 @@
    "code": "CPA-WJA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Wen-Hui Pan",
@@ -826,7 +829,7 @@
    "code": "CPA-WP",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Winston Santos",
@@ -834,7 +837,7 @@
    "code": "CPA-WS",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Will Simpson",
@@ -842,7 +845,7 @@
    "code": "CPA-WSI",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Yeremi Cabrera",
@@ -850,7 +853,7 @@
    "code": "CPA-YC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Yophery Rodriguez",
@@ -858,15 +861,15 @@
    "code": "CPA-YR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Zyhir Hope",
    "product": "2025 Bowman",
    "code": "CPA-ZH",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Anderson Brito",
@@ -874,15 +877,15 @@
    "code": "CPA-ABR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Angel Cepeda",
    "product": "2025 Bowman Chrome",
    "code": "CPA-AC",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Alessander De La Cruz",
@@ -890,7 +893,7 @@
    "code": "CPA-AD",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Alirio Ferrebus",
@@ -898,7 +901,7 @@
    "code": "CPA-AF",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Asbel Gonzalez",
@@ -906,7 +909,7 @@
    "code": "CPA-AG",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Ayden Johnson",
@@ -914,7 +917,7 @@
    "code": "CPA-AJ",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Anyelo Marquez",
@@ -922,7 +925,7 @@
    "code": "CPA-AM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Alejandro Rosario",
@@ -930,7 +933,7 @@
    "code": "CPA-ARO",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Andrew Salas",
@@ -938,7 +941,7 @@
    "code": "CPA-AS",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Bryce Boettcher",
@@ -946,7 +949,7 @@
    "code": "CPA-BB",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Brett Bateman",
@@ -954,7 +957,7 @@
    "code": "CPA-BBA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Brayan Cortesia",
@@ -962,7 +965,7 @@
    "code": "CPA-BC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Bo Davidson",
@@ -970,15 +973,15 @@
    "code": "CPA-BD",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Braylon Payne",
    "product": "2025 Bowman Chrome",
    "code": "CPA-BP",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Draft CPA-BP (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Blake Wolters",
@@ -986,7 +989,7 @@
    "code": "CPA-BW",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Cristopher Acosta",
@@ -994,7 +997,7 @@
    "code": "CPA-CAC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Cristian Arguelles",
@@ -1002,15 +1005,15 @@
    "code": "CPA-CAR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Corey Cousin",
    "product": "2025 Bowman Chrome",
    "code": "CPA-CCO",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Chase Hampton",
@@ -1018,7 +1021,7 @@
    "code": "CPA-CHA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Ching-Hsien Ko",
@@ -1026,7 +1029,7 @@
    "code": "CPA-CK",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Carlos Lagrange",
@@ -1034,7 +1037,7 @@
    "code": "CPA-CL",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Caden Powell",
@@ -1042,23 +1045,23 @@
    "code": "CPA-CPO",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Cris Rodriguez",
    "product": "2025 Bowman Chrome",
    "code": "CPA-CR",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Cade Smith",
    "product": "2025 Bowman Chrome",
    "code": "CPA-CS",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Cam Schlittler",
@@ -1066,7 +1069,7 @@
    "code": "CPA-CSC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Christopher Suero",
@@ -1074,7 +1077,7 @@
    "code": "CPA-CSU",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Carlos Tavares",
@@ -1082,7 +1085,7 @@
    "code": "CPA-CT",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Devin Fitz-Gerald",
@@ -1090,15 +1093,15 @@
    "code": "CPA-DF",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Darison Garcia",
    "product": "2025 Bowman Chrome",
    "code": "CPA-DG",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "DJ Layton",
@@ -1106,7 +1109,7 @@
    "code": "CPA-DL",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Djean Macares",
@@ -1114,7 +1117,7 @@
    "code": "CPA-DM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "David Ortiz Jr.",
@@ -1122,7 +1125,7 @@
    "code": "CPA-DOR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "David Sandlin",
@@ -1130,7 +1133,7 @@
    "code": "CPA-DSA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Diego Tornes",
@@ -1138,7 +1141,7 @@
    "code": "CPA-DT",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Elian De La Cruz",
@@ -1146,7 +1149,7 @@
    "code": "CPA-ED",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Elvin Garcia",
@@ -1154,15 +1157,15 @@
    "code": "CPA-EG",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Emil Morales",
    "product": "2025 Bowman Chrome",
    "code": "CPA-EMO",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Chrome CPA-EM (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Elian Peña",
@@ -1170,15 +1173,15 @@
    "code": "CPA-EP",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Ethan Pecko",
    "product": "2025 Bowman Chrome",
    "code": "CPA-EPE",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Elorky Rodriguez",
@@ -1186,7 +1189,7 @@
    "code": "CPA-ER",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Enry Torres",
@@ -1194,7 +1197,7 @@
    "code": "CPA-ET",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Gabriel Davalillo",
@@ -1202,7 +1205,7 @@
    "code": "CPA-GD",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Heins Brito",
@@ -1210,15 +1213,15 @@
    "code": "CPA-HB",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Henry Baez",
    "product": "2025 Bowman Chrome",
    "code": "CPA-HBA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Haritzon Castillo",
@@ -1226,7 +1229,7 @@
    "code": "CPA-HC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Hiverson López",
@@ -1234,7 +1237,7 @@
    "code": "CPA-HL",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Harold Rivas",
@@ -1242,15 +1245,15 @@
    "code": "CPA-HR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Hagen Smith",
    "product": "2025 Bowman Chrome",
    "code": "CPA-HS",
-   "firstAuto": null,
+   "firstAuto": false,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "not a 1st auto: earlier Bowman auto 2024 Bowman Draft CPA-HS (checklist history; Checklist Insider / Cardsmiths full checklists, read Oct 24-25 2026) [MED]"
   },
   {
    "player": "Jose Anderson",
@@ -1258,7 +1261,7 @@
    "code": "CPA-JA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Justice Bigbie",
@@ -1266,7 +1269,7 @@
    "code": "CPA-JB",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Juan Cabada",
@@ -1274,7 +1277,7 @@
    "code": "CPA-JC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jakob Christian",
@@ -1282,7 +1285,7 @@
    "code": "CPA-JCH",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Josuar Gonzalez",
@@ -1290,7 +1293,7 @@
    "code": "CPA-JD",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jhoan De La Cruz",
@@ -1298,7 +1301,7 @@
    "code": "CPA-JDL",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Johan De Los Santos",
@@ -1306,7 +1309,7 @@
    "code": "CPA-JDLS",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "John Gil",
@@ -1314,7 +1317,7 @@
    "code": "CPA-JG",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jordan Sanchez",
@@ -1322,7 +1325,7 @@
    "code": "CPA-JOS",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jhonny Severino",
@@ -1330,7 +1333,7 @@
    "code": "CPA-JS",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Juan Tomas",
@@ -1338,7 +1341,7 @@
    "code": "CPA-JT",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Juneiker Caceres",
@@ -1346,7 +1349,7 @@
    "code": "CPA-JUC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Jakob Wright",
@@ -1354,7 +1357,7 @@
    "code": "CPA-JWR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Kevin Alvarez",
@@ -1362,7 +1365,7 @@
    "code": "CPA-KA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Kevin Defrank",
@@ -1370,7 +1373,7 @@
    "code": "CPA-KD",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Kenny Fenelon",
@@ -1378,7 +1381,7 @@
    "code": "CPA-KF",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Kale Fountain",
@@ -1386,15 +1389,15 @@
    "code": "CPA-KFO",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Kyle Karros",
    "product": "2025 Bowman Chrome",
    "code": "CPA-KK",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Kai Roberts",
@@ -1402,7 +1405,7 @@
    "code": "CPA-KR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Liberts Aponte",
@@ -1410,7 +1413,7 @@
    "code": "CPA-LA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Luke Dickerson",
@@ -1418,7 +1421,7 @@
    "code": "CPA-LDI",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Maykel Coret",
@@ -1426,7 +1429,7 @@
    "code": "CPA-MC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Mani Cedeno",
@@ -1434,7 +1437,7 @@
    "code": "CPA-MCE",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Marco Dinges",
@@ -1442,23 +1445,23 @@
    "code": "CPA-MD",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Matthew Etzel",
    "product": "2025 Bowman Chrome",
    "code": "CPA-ME",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Mavis Graves",
    "product": "2025 Bowman Chrome",
    "code": "CPA-MG",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Moises Marchán",
@@ -1466,15 +1469,15 @@
    "code": "CPA-MM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Miguel Ullola",
    "product": "2025 Bowman Chrome",
    "code": "CPA-MU",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Nathan Church",
@@ -1482,7 +1485,7 @@
    "code": "CPA-NCH",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Nate George",
@@ -1490,7 +1493,7 @@
    "code": "CPA-NG",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Nieves Izaguirre",
@@ -1498,15 +1501,15 @@
    "code": "CPA-NI",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Nick Lorusso",
    "product": "2025 Bowman Chrome",
    "code": "CPA-NL",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Nestor Miranda",
@@ -1514,15 +1517,15 @@
    "code": "CPA-NM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Natanael Yuten",
    "product": "2025 Bowman Chrome",
    "code": "CPA-NY",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Pedro Catuy",
@@ -1530,7 +1533,7 @@
    "code": "CPA-PC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Ramcell Medina",
@@ -1538,7 +1541,7 @@
    "code": "CPA-RA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Ronny Cruz",
@@ -1546,7 +1549,7 @@
    "code": "CPA-RCR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Robert Hipwell",
@@ -1554,7 +1557,7 @@
    "code": "CPA-RH",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Raymer Medina",
@@ -1562,7 +1565,7 @@
    "code": "CPA-RM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Rainiel Rodriguez",
@@ -1570,7 +1573,7 @@
    "code": "CPA-RR",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "RJ Schreck",
@@ -1578,7 +1581,7 @@
    "code": "CPA-RSC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Sadbiel Delzine",
@@ -1586,7 +1589,7 @@
    "code": "CPA-SD",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Spencer Giesting",
@@ -1594,7 +1597,7 @@
    "code": "CPA-SG",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Sammy Hernandez",
@@ -1602,7 +1605,7 @@
    "code": "CPA-SH",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Santiago Leon",
@@ -1610,7 +1613,7 @@
    "code": "CPA-SL",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Shotaro Morii",
@@ -1618,15 +1621,15 @@
    "code": "CPA-SM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Sabier Marte",
    "product": "2025 Bowman Chrome",
    "code": "CPA-SM",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Stiven Marinez",
@@ -1634,15 +1637,15 @@
    "code": "CPA-SMA",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Trevor Harrison",
    "product": "2025 Bowman Chrome",
    "code": "CPA-THA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Teilon Serrano",
@@ -1650,7 +1653,7 @@
    "code": "CPA-TS",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Tommy White",
@@ -1658,7 +1661,7 @@
    "code": "CPA-TWH",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Warren Calcaño",
@@ -1666,7 +1669,7 @@
    "code": "CPA-WC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Wilfri De La Cruz",
@@ -1674,7 +1677,7 @@
    "code": "CPA-WD",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Warel Solano",
@@ -1682,7 +1685,7 @@
    "code": "CPA-WS",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Will Taylor",
@@ -1690,7 +1693,7 @@
    "code": "CPA-WT",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Yorger Bautista",
@@ -1698,7 +1701,7 @@
    "code": "CPA-YB",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Yahil Melendez",
@@ -1706,7 +1709,7 @@
    "code": "CPA-YM",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Yairo Padilla",
@@ -1714,7 +1717,7 @@
    "code": "CPA-YP",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Yulian Barreto",
@@ -1722,7 +1725,7 @@
    "code": "CPA-YU",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Zach Cole",
@@ -1730,843 +1733,844 @@
    "code": "CPA-ZC",
    "firstAuto": true,
    "pcPath": null,
-   "note": "checklist first flag (data/sets/bowman-chrome-baseball-2025.json) — NOT KB-verified; fixture only"
+   "note": "1st auto: base card flagged 1st in the same release, and no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Zander Darby",
    "product": "2025 Bowman Chrome",
    "code": "CPA-ZD",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: base card not flagged 1st (returning base), but no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists [MED]"
   },
   {
    "player": "Anthony Eyanson",
    "product": "2025 Bowman Draft",
    "code": "CPA-AE",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Adonys Guzman",
    "product": "2025 Bowman Draft",
    "code": "CPA-AG",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Antonio Jimenez",
    "product": "2025 Bowman Draft",
    "code": "CPA-AJ",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "AJ Russell",
    "product": "2025 Bowman Draft",
    "code": "CPA-AR",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Aaron Watson",
    "product": "2025 Bowman Draft",
    "code": "CPA-AW",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Aaron Walton",
    "product": "2025 Bowman Draft",
    "code": "CPA-AWA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Aidan West",
    "product": "2025 Bowman Draft",
    "code": "CPA-AWE",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Billy Carlson",
    "product": "2025 Bowman Draft",
    "code": "CPA-BC",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Brandon Compton",
    "product": "2025 Bowman Draft",
    "code": "CPA-BCO",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Brady Ebel",
    "product": "2025 Bowman Draft",
    "code": "CPA-BE",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Briggs McKenzie",
    "product": "2025 Bowman Draft",
    "code": "CPA-BM",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Caden Bodine",
    "product": "2025 Bowman Draft",
    "code": "CPA-CB",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Charles Davalan",
    "product": "2025 Bowman Draft",
    "code": "CPA-CD",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Conor Essenburg",
    "product": "2025 Bowman Draft",
    "code": "CPA-CE",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Cooper Flemming",
    "product": "2025 Bowman Draft",
    "code": "CPA-CF",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Cody Miller",
    "product": "2025 Bowman Draft",
    "code": "CPA-CM",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Cameron Maldonado",
    "product": "2025 Bowman Draft",
    "code": "CPA-CMA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Cameron Millar",
    "product": "2025 Bowman Draft",
    "code": "CPA-CMI",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Cameron Nelson",
    "product": "2025 Bowman Draft",
    "code": "CPA-CN",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Cade Obermueller",
    "product": "2025 Bowman Draft",
    "code": "CPA-CO",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Chase Shores",
    "product": "2025 Bowman Draft",
    "code": "CPA-CS",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Colin Yeaman",
    "product": "2025 Bowman Draft",
    "code": "CPA-CY",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Dean Curley",
    "product": "2025 Bowman Draft",
    "code": "CPA-DC",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Dax Kilby",
    "product": "2025 Bowman Draft",
    "code": "CPA-DK",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Dean Livingston",
    "product": "2025 Bowman Draft",
    "code": "CPA-DL",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Dean Moss",
    "product": "2025 Bowman Draft",
    "code": "CPA-DM",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Devin Taylor",
    "product": "2025 Bowman Draft",
    "code": "CPA-DT",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Ethan Conrad",
    "product": "2025 Bowman Draft",
    "code": "CPA-EC",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Easton Carmichael",
    "product": "2025 Bowman Draft",
    "code": "CPA-ECA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Ethan Frey",
    "product": "2025 Bowman Draft",
    "code": "CPA-EF",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Ethan Hedges",
    "product": "2025 Bowman Draft",
    "code": "CPA-EHE",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Ethan Petry",
    "product": "2025 Bowman Draft",
    "code": "CPA-EP",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Eli Willits",
    "product": "2025 Bowman Draft",
    "code": "CPA-EW",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Gavin Fien",
    "product": "2025 Bowman Draft",
    "code": "CPA-GF",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Griffin Hugus",
    "product": "2025 Bowman Draft",
    "code": "CPA-GH",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Gavin Kilen",
    "product": "2025 Bowman Draft",
    "code": "CPA-GK",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Gustavo Melendez",
    "product": "2025 Bowman Draft",
    "code": "CPA-GM",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Gage Wood",
    "product": "2025 Bowman Draft",
    "code": "CPA-GW",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Ike Irish",
    "product": "2025 Bowman Draft",
    "code": "CPA-II",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Jamie Arnold",
    "product": "2025 Bowman Draft",
    "code": "CPA-JA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Jake Cook",
    "product": "2025 Bowman Draft",
    "code": "CPA-JC",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Joseph Dzierwa",
    "product": "2025 Bowman Draft",
    "code": "CPA-JD",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Jack Gurevitch",
    "product": "2025 Bowman Draft",
    "code": "CPA-JG",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Josh Hammond",
    "product": "2025 Bowman Draft",
    "code": "CPA-JH",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Josiah Hartshorn",
    "product": "2025 Bowman Draft",
    "code": "CPA-JHA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Justin Lamkin",
    "product": "2025 Bowman Draft",
    "code": "CPA-JLA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "JB Middleton",
    "product": "2025 Bowman Draft",
    "code": "CPA-JM",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Jacob Morrison",
    "product": "2025 Bowman Draft",
    "code": "CPA-JMO",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Jake Munroe",
    "product": "2025 Bowman Draft",
    "code": "CPA-JMU",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Josh Owens",
    "product": "2025 Bowman Draft",
    "code": "CPA-JO",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "JoJo Parker",
    "product": "2025 Bowman Draft",
    "code": "CPA-JP",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "JT Quinn",
    "product": "2025 Bowman Draft",
    "code": "CPA-JQ",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Johnny Slawinski",
    "product": "2025 Bowman Draft",
    "code": "CPA-JS",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "J.D. Thompson",
    "product": "2025 Bowman Draft",
    "code": "CPA-JT",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Jordan Yost",
    "product": "2025 Bowman Draft",
    "code": "CPA-JY",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Kade Anderson",
    "product": "2025 Bowman Draft",
    "code": "CPA-KA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Kayson Cunningham",
    "product": "2025 Bowman Draft",
    "code": "CPA-KC",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Kane Kepley",
    "product": "2025 Bowman Draft",
    "code": "CPA-KK",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Kaeden Kent",
    "product": "2025 Bowman Draft",
    "code": "CPA-KKE",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Kyle Lodise",
    "product": "2025 Bowman Draft",
    "code": "CPA-KL",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Kyson Witherspoon",
    "product": "2025 Bowman Draft",
    "code": "CPA-KW",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Liam Doyle",
    "product": "2025 Bowman Draft",
    "code": "CPA-LD",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Landon Harmon",
    "product": "2025 Bowman Draft",
    "code": "CPA-LH",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Landon Hodge",
    "product": "2025 Bowman Draft",
    "code": "CPA-LHO",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Landyn Vidourek",
    "product": "2025 Bowman Draft",
    "code": "CPA-LV",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Max Belyeu",
    "product": "2025 Bowman Draft",
    "code": "CPA-MB",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Matthew Fisher",
    "product": "2025 Bowman Draft",
    "code": "CPA-MF",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Murf Gray",
    "product": "2025 Bowman Draft",
    "code": "CPA-MG",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Michael Lombardi",
    "product": "2025 Bowman Draft",
    "code": "CPA-ML",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Mason Morris",
    "product": "2025 Bowman Draft",
    "code": "CPA-MM",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Matthew Miura",
    "product": "2025 Bowman Draft",
    "code": "CPA-MMI",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Mason Neville",
    "product": "2025 Bowman Draft",
    "code": "CPA-MN",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Michael Oliveto",
    "product": "2025 Bowman Draft",
    "code": "CPA-MO",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Marcus Phillips",
    "product": "2025 Bowman Draft",
    "code": "CPA-MP",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Miguel Sime Jr.",
    "product": "2025 Bowman Draft",
    "code": "CPA-MS",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Mitch Voit",
    "product": "2025 Bowman Draft",
    "code": "CPA-MV",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Malachi Witherspoon",
    "product": "2025 Bowman Draft",
    "code": "CPA-MW",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Max Williams",
    "product": "2025 Bowman Draft",
    "code": "CPA-MWI",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Nick Becker",
    "product": "2025 Bowman Draft",
    "code": "CPA-NB",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Nolan Schubart",
    "product": "2025 Bowman Draft",
    "code": "CPA-NS",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Nolan Sailors",
    "product": "2025 Bowman Draft",
    "code": "CPA-NSA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Nate Snead",
    "product": "2025 Bowman Draft",
    "code": "CPA-NSN",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Patrick Forbes",
    "product": "2025 Bowman Draft",
    "code": "CPA-PF",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Peter Kussow",
    "product": "2025 Bowman Draft",
    "code": "CPA-PK",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Pico Kohn",
    "product": "2025 Bowman Draft",
    "code": "CPA-PKO",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Quentin Young",
    "product": "2025 Bowman Draft",
    "code": "CPA-QY",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Riley Kelly",
    "product": "2025 Bowman Draft",
    "code": "CPA-RK",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Ryan Mitchell",
    "product": "2025 Bowman Draft",
    "code": "CPA-RM",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Riley Quick",
    "product": "2025 Bowman Draft",
    "code": "CPA-RQ",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Ryan Wideman",
    "product": "2025 Bowman Draft",
    "code": "CPA-RW",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Sean Gamble",
    "product": "2025 Bowman Draft",
    "code": "CPA-SG",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Seth Hernandez",
    "product": "2025 Bowman Draft",
    "code": "CPA-SH",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Steele Hall",
    "product": "2025 Bowman Draft",
    "code": "CPA-SHA",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Tyler Bremner",
    "product": "2025 Bowman Draft",
    "code": "CPA-TB",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Trevor Cohen",
    "product": "2025 Bowman Draft",
    "code": "CPA-TC",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Tanner Franklin",
    "product": "2025 Bowman Draft",
    "code": "CPA-TF",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Taitn Gray",
    "product": "2025 Bowman Draft",
    "code": "CPA-TG",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Ty Harvey",
    "product": "2025 Bowman Draft",
    "code": "CPA-TH",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Tim Piasentin",
    "product": "2025 Bowman Draft",
    "code": "CPA-TP",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Tate Southisene",
    "product": "2025 Bowman Draft",
    "code": "CPA-TS",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Xavier Neyens",
    "product": "2025 Bowman Draft",
    "code": "CPA-XN",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   },
   {
    "player": "Zach Root",
    "product": "2025 Bowman Draft",
    "code": "CPA-ZR",
-   "firstAuto": null,
+   "firstAuto": true,
    "pcPath": null,
-   "note": "no first flag in the checklist — 1st-auto status unknown; fixture only"
+   "note": "1st auto on checklist history: no Chrome prospect auto in any 2019-2024 Bowman / Bowman Chrome / Bowman Draft list or the 2024 Mega Box lists, and none in 2025 Bowman or Chrome [MED]; the 2025 Draft file carries no 1st flags"
   }
  ],
  "coverage": {
   "rows": 316,
-  "firstAuto": 178,
+  "firstAuto": 302,
   "withPcPath": 0,
   "sources": [
-   "FIXTURE — pipeline test only, never publish",
-   "data/sets/bowman-baseball-2025.json (Checklist Insider; TCDB/Freedom Cardboard for CPA codes)",
-   "data/sets/bowman-chrome-baseball-2025.json (Checklist Insider; Cardsmiths Breaks CPA list)",
-   "data/sets/bowman-draft-baseball-2025.json (Checklist Insider; Checklistcenter CPA list)"
+   "data/sets/bowman-baseball-2025.json, bowman-chrome-baseball-2025.json, bowman-draft-baseball-2025.json @ 2226a24",
+   "checklistinsider.com/2024-bowman-baseball/amp · /2024-bowman-chrome-baseball/amp · /2024-bowman-draft-baseball/amp · /2024-bowman-mega-box-baseball/amp · /2024-bowman-chrome-mega-box-baseball/amp (read Oct 25 2026)",
+   "checklistinsider.com/2025-bowman-mega-box-baseball/amp · /2025-bowman-chrome-mega-box-baseball/amp · /2025-bowman-draft-mega-box-baseball/amp · /2025-bowman-sapphire-baseball/amp · /2025-bowman-chrome-sapphire-baseball/amp · /2025-bowman-draft-sapphire-baseball/amp (read Oct 25 2026)",
+   "cardsmithsbreaks.com/full-checklist/ 2019-2023 bowman-baseball · bowman-chrome-baseball · bowman-draft-baseball, and 2024-bowman-baseball (read Oct 25 2026)",
+   "sportscardspro.com/console/baseball-cards-2025-bowman-draft-chrome-prospect-autograph · /de/console/baseball-cards-2025-bowman-chrome-prospect-autograph (search results Oct 24-25 2026)"
   ],
-  "date": "2026-10-24"
+  "date": "2026-10-25"
  }
 }
