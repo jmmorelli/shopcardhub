@@ -12,9 +12,10 @@
   // v9 (Night Crew Oct 23, P0-A static pages): a static /card-<slug> page carries its id on <main data-card-id>; /card?id= reads the query.
   var id = (main.getAttribute('data-card-id') || new URLSearchParams(location.search).get('id') || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40);
   var tk = id.split('-')[0];
-  // Static card pages (P0-A, Oct 23): tickers whose basket has /card-<slug> pages. Same slug rule as tools/build-card-template.mjs staticSlug().
-  var STATIC_TK = { pris25: 1 };
-  function cardUrl(x, tick) { if (!STATIC_TK[tick] || !x.path) return '/card?id=' + x.id; var p = String(x.path).split('/'), nm = p[1] || ''; try { nm = decodeURIComponent(nm); } catch (e) {} return '/card-' + (nm + '-' + (p[0] || '').replace(/^pokemon-/, '')).toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+  // Static card pages (P0-A; v10 Night Crew Oct 26): every live ticker's cards that pass the gate have a /card-<slug> page.
+  // The id → URL map is js/card-pages.json, written by tools/build-nav.js from the files on disk; a card without one stays on /card?id=.
+  var STATIC = {};
+  function cardUrl(x) { return STATIC[x.id] || '/card?id=' + x.id; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function money(n) { return n == null ? '' : '$' + Number(n).toLocaleString('en-US', n >= 100 ? { maximumFractionDigits: 0 } : { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -26,7 +27,8 @@
   // B76 re-land (Oct 19): the shop file is read here too, so the .cdp-shop block and the TCGplayer button get their space
   // on first paint; shop-spread.js fills the reserved slots instead of inserting late (the Oct 16 live CLS 0.039 at 1440).
   var NO_SHOP = { bs1e: 1 };
-  Promise.all([get('/data/cards/' + tk + '.json'), get('/data/cards/g-' + tk + '.json').catch(function () { return null; }), NO_SHOP[tk] ? null : get('/data/tcg/' + tk + '.json').catch(function () { return null; })]).then(function (res) {
+  Promise.all([get('/js/card-pages.json').then(function (m) { STATIC = (m && m.static) || {}; }, function () {}), get('/data/cards/' + tk + '.json'), get('/data/cards/g-' + tk + '.json').catch(function () { return null; }), NO_SHOP[tk] ? null : get('/data/tcg/' + tk + '.json').catch(function () { return null; })]).then(function (res) {
+    res = res.slice(1);
     var d = res[0], gd = res[1], c = null;
     window.__schShopFile = res[2];
     for (var i = 0; i < d.cards.length; i++) if (d.cards[i].id === id) { c = d.cards[i]; break; }
@@ -72,7 +74,7 @@
     }).join('');
     var p62 = grade62(d, c, G);
     var more = d.cards.filter(function (x) { return x.id !== c.id && x.raw != null; }).slice(0, 8).map(function (x) {
-      return '<a href="' + cardUrl(x, tk) + '"><b>' + esc(x.name) + ' #' + esc(x.num) + '</b>raw ' + money(x.raw) + ' · ' + (x.w === 0 ? 'own line' : x.w != null ? x.w.toFixed(1) + '% of index' : '') + '</a>';
+      return '<a href="' + cardUrl(x) + '"><b>' + esc(x.name) + ' #' + esc(x.num) + '</b>raw ' + money(x.raw) + ' · ' + (x.w === 0 ? 'own line' : x.w != null ? x.w.toFixed(1) + '% of index' : '') + '</a>';
     }).join('');
     // Sales tab: the dated rows we hold (R18) — one per grade, newest sale with its date, plus the median it sits in.
     var salesRows = G.map(function (e) {

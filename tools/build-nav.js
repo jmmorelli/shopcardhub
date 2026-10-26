@@ -43,6 +43,7 @@ const normKey = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 // B74 (phone teardown, CoS + Mo Oct 14): the baked card pages (card-*.html, e.g. /card-ethan-holliday) are searchable
 // as cards, labelled from their own <title> ("Ethan Holliday — 1st Bowman Chrome Auto"), and they list ahead of pages.
 // A card page that vercel.json redirects away is left out; nav.json's "Card chart: …" rows for the same URL are skipped.
+const STATIC_PAGES = {};
 function cardPages() {
   let redirected = new Set();
   try { redirected = new Set((JSON.parse(readFileSync(join(ROOT, 'vercel.json'), 'utf8')).redirects || []).map((r) => r.source)); } catch (e) {}
@@ -52,6 +53,11 @@ function cardPages() {
     const href = '/' + f.replace(/\.html$/, '');
     if (redirected.has(href)) continue;
     const html = readFileSync(join(ROOT, f), 'utf8');
+    // Night Crew Oct 26: the template's static pages (<main … data-card-id="…">, ~600 from Oct 26) are searched through
+    // /data/card-search.json like every other card, and opened through js/card-pages.json (written below). Listing them here
+    // too would put ~600 rows into the NAV block of every page.
+    const sid = html.match(/<main class="cdp"[^>]*data-card-id="([a-z0-9-]+)"/);
+    if (sid) { STATIC_PAGES[sid[1]] = href; continue; }
     const m = html.match(/<title>([^<]*)<\/title>/i);
     if (!m) continue;
     const parts = dec(m[1]).split(/\s+[—|]\s+/);
@@ -376,13 +382,14 @@ function buildScript(index) {
     function ga(ev, p){ try { if (typeof gtag === 'function') gtag('event', ev, Object.assign({ page: location.pathname }, p)); } catch (e) {} }
     var missT = null, missSent = {};
     function missEvent(q){ clearTimeout(missT); missT = setTimeout(function(){ var k = nk(q); if (!k || missSent[k] || nk(input.value) !== k) return; missSent[k] = 1; ga('search_miss', { query: q }); }, 1200); }
-    function loadCards(){ if (cardsP) return cardsP; cardsP = fetch('/data/card-search.json').then(function(r){ return r.json(); }).then(function(d){ CARDS = (d.cards||[]).map(function(c){ return { id:c[0], t:c[1], s:c[2], p:c[3], n:nk(c[1]+' '+c[2]) }; }); }).catch(function(){ CARDS = []; }); return cardsP; }
+    var SPAGE = {};   // card id → static /card-<slug> page (js/card-pages.json, Night Crew Oct 26)
+    function loadCards(){ if (cardsP) return cardsP; fetch('/js/card-pages.json').then(function(r){ return r.json(); }).then(function(m){ SPAGE = (m && m.static) || {}; if (input.value.trim()) render(all(input.value)); }).catch(function(){}); cardsP = fetch('/data/card-search.json').then(function(r){ return r.json(); }).then(function(d){ CARDS = (d.cards||[]).map(function(c){ return { id:c[0], t:c[1], s:c[2], p:c[3], n:nk(c[1]+' '+c[2]) }; }); }).catch(function(){ CARDS = []; }); return cardsP; }
     function money(n){ return n == null ? '' : '$'+Number(n).toLocaleString('en-US', n >= 100 ? {maximumFractionDigits:0} : {minimumFractionDigits:2, maximumFractionDigits:2}); }
     function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
     function findCards(q){ q = nk(q); if (!CARDS || q.length < 2) return []; var tk = q.split(' ');
       return CARDS.filter(function(c){ for (var i=0;i<tk.length;i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
         .sort(function(a,b){ var sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1; return sa - sb || (b.p||0) - (a.p||0); }).slice(0,8)
-        .map(function(c){ return { c:1, u:'/card?id='+c.id, t:esc(c.t), s:esc(c.s), pr:c.p == null ? '' : money(c.p) }; }); }
+        .map(function(c){ return { c:1, u:SPAGE[c.id] || '/card?id='+c.id, t:esc(c.t), s:esc(c.s), pr:c.p == null ? '' : money(c.p) }; }); }
     function find(q){ q = nk(q); if(!q) return []; return INDEX.filter(function(it){ return it.n.indexOf(q) > -1; }); }
     // B74: cards first (the baked card pages, then the card list, dearest first), pages after under one label
     function all(q){ var hit = find(q), cp = hit.filter(function(it){ return it.c; }).sort(function(a,b){ return a.u.length - b.u.length; }).slice(0,3), pg = hit.filter(function(it){ return !it.c; }).slice(0,4), cd = findCards(q), cards = cp.concat(cd);
@@ -455,6 +462,13 @@ function stripLegacy(s) {
 
 /* ---------- main ---------- */
 const index = buildSearchIndex();
+// js/card-pages.json (Night Crew Oct 26): card id → static /card-<slug> URL (the template's pages) for search and card links,
+// plus the hand-built card pages (Bowman engine pages: /card-ethan-holliday …) as search rows, so the home search box finds
+// the same cards the header search does. Rewritten on every build-nav run (after the page generators).
+{
+  const pagesOut = { _comment: 'Written by tools/build-nav.js — do not hand-edit. static: card id → URL; pages: [label, set line, URL] of the hand-built card pages.', static: STATIC_PAGES, pages: index.filter((it) => it.c).map((it) => [it.t, it.s || '', it.u]) };
+  if (!CHECK_ONLY) writeFileSync(join(ROOT, 'js/card-pages.json'), JSON.stringify(pagesOut) + '\n');
+}
 const BLOCK = `${NAV_START}
 ${buildStyle()}
 ${buildDesktop()}

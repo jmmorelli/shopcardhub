@@ -58,6 +58,10 @@ function tabOf(tk, v) {
   if (/1E$|^BSSL$/.test(tk)) return "p1e";
   return (v.releaseDate || "9999") < "2004-01-01" ? "pcl" : "pmo";
 }
+// Held marks (Night Crew Oct 26; BLOCKED P44, Pokémon KB P14/P44, PREBUILD §1 "SK03 is not a mover until P14 closes"): a one-night
+// mark built on a row the desk excluded stays out of the box's level series, its "this week" and the set movers until the Index
+// Keeper corrects the series (Oct 28 weekly). Display only; data/indices.json is untouched. Remove the entry when P14/P44 close.
+export const HELD = { SK03: ["2026-10-15"] };
 const marksOnly = (h) => (Array.isArray(h) ? h : []).filter((r) => r && r.kind !== "divisor" && r.level > 0 && r.date);
 function weekBase(h) {
   if (h.length < 2) return null;
@@ -113,7 +117,7 @@ export function buildV2(REPO, opts = {}) {
   const tabRows = Object.fromEntries(TABS.map((t) => [t.id, []]));
   for (const [tk, v] of Object.entries(idx)) {
     if (!v || typeof v !== "object" || v.status !== "live" || v.model === "class") continue;   // class tickers (BOWyy): /bowman-classes only, never the home board
-    const h = marksOnly(v.history);
+    const h = marksOnly(v.history).filter((r) => !(HELD[tk] || []).includes(r.date));
     if (!h.length) continue;
     const last = h[h.length - 1], prev = weekBase(h);
     const rc = (v.recon || []).filter((r) => r && r.level > 0 && r.month);
@@ -181,7 +185,7 @@ export function buildV2(REPO, opts = {}) {
   const movers = { up: side(1), down: side(-1), n: elig.length, screened: screened.length, fresh, withHist: screened.filter((c) => c.z != null).length, xsSd: +xsS.toFixed(4), noHistTickers: [...new Set(screened.filter((c) => !c.hist).map((c) => c.tk))] };
 
   /* ---- set view: each live index's this-week change, z against its own monthly recon history and against every live index ---- */
-  const setRows = Object.entries(T).filter(([, v]) => v.w != null).map(([tk, v]) => {
+  const setRows = Object.entries(T).filter(([tk, v]) => v.w != null && !HELD[tk]).map(([tk, v]) => {
     const pl = v.h.length >= 2 ? v.h.find((p) => p[0] === v.wd) : null;
     const r = Math.log(1 + v.w / 100);
     return { tk, set: v.n, href: v.p, l: v.l, pl: pl ? pl[1] : +(v.l / (1 + v.w / 100)).toFixed(2), d: v.d, pd: v.wd, r, chg: +v.w.toFixed(1), rets: logRets(v.r.slice(-MV.HIST_MONTHS).map((p) => p[1])), sp: shape(v.r.map((p) => [p[0] + "-15", p[1]]).concat(v.h).sort((a, b) => a[0].localeCompare(b[0])).map((p) => p[1])) };   // shape = monthly recon + the live marks, last 12 points

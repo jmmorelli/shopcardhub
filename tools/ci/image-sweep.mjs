@@ -46,6 +46,9 @@ for (const w of WIDTHS) {
   // inflated sessionsYesterday and skewed the bot-clean numbers the desk reads (same host list as
   // tools/qa/harness.cjs ABORT_HOSTS).
   await ctx.route(/(googletagmanager\.com|google-analytics\.com|analytics\.google\.com|doubleclick\.net)/, (r) => r.abort());
+  // Night Crew Oct 26 (BLOCKED eBay quota row, desk Oct 23): /api/comps is a live eBay Browse call on the shared keyset — aborted
+  // unless --comps (the name-search photo half then reads as placeholder WARNs, never FAILs).
+  if (!process.argv.includes("--comps")) await ctx.route(/\/api\/comps\b/, (r) => r.abort());
   for (const p of pages) {
     const pg = await ctx.newPage();
     const errs = [];

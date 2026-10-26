@@ -83,6 +83,8 @@ async function routeContext(ctx, { mode = "local", origin, feed, log }) {
     if (host === "127.0.0.1" || host === "localhost" || (own && hostPort === own)) return route.continue();
     if (ABORT_HOSTS.some((re) => re.test(host))) { L.aborted.push(host); return route.abort(); }
     if (mode === "prod") {
+      // Night Crew Oct 26 (BLOCKED eBay quota row): /api/comps is a live eBay Browse call — aborted in prod runs unless QA_COMPS=1
+      if (/\/api\/comps\b/.test(url) && !process.env.QA_COMPS) { L.aborted.push("comps"); return route.abort(); }
       if (host.endsWith("shopcardhub.com") || host === "raw.githubusercontent.com" || IMAGE_HOSTS.some((re) => re.test(host)) || req.resourceType() === "image") return route.continue();
       L.aborted.push(host); return route.abort();
     }

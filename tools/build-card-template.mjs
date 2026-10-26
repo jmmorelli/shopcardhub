@@ -154,7 +154,7 @@ ${o.load || DEFAULT_LOAD}  <noscript><p class="cdp-miss">This page needs JavaScr
 ${footer}
 
 <script src="/js/grade-links.js?v=2" defer></script>
-<script src="/js/card-page.js?v=9" defer></script>
+<script src="/js/card-page.js?v=10" defer></script>
 <script src="/js/shop-spread.js?v=6" defer></script>
 <script src="/js/card-img.js?v=4" defer></script>
 <script src="/js/vault-track.js?v=6" defer></script>
@@ -172,11 +172,22 @@ console.log("wrote card.html");
 // One static /card-<slug> page per basket card of the tickers in STATIC_TICKERS, on the same v2 template: the page carries
 // its id on <main data-card-id>, js/card-page.js renders it exactly like /card?id=. The build bakes what a crawler (and a
 // visitor before JS runs) needs: crumbs, H1, set + number, and the same raw figure + basis line the page shows.
-// Indexability gate (PIVOT §2): index,follow only when the card has >= 20 clean raw sales in 90 days in
-// data/feed/sold-marks.json (n90); otherwise noindex,follow. Sitemap entries are P0-D's (Traffic), not this tool's.
-// Slug rule (keep in step with cardUrl() in js/card-page.js): <card name>-<number>-<set path minus "pokemon-">.
-const STATIC_TICKERS = ["pris25"]; // Mon Oct 26: every live ticker (WOTC tickers: port the edition words from js/grade-links.js into the baked raw link first)
-const GATE_N90 = 20;
+// Indexability gate (PIVOT §2 + desk floor, CoS review Oct 23): index,follow only when the card has >= 20 clean raw sales in
+// 90 days AND a raw mark >= $25. Sales count: data/feed/sold-marks.json n90 (chase tickers); for sector tickers the card
+// file's own count (wn, else n30) over its window (win / the file's window, <= 90 d) — a lower bound on the 90-day count,
+// so a card is never let in on a guess. Sitemap entries are P0-D's (Traffic), not this tool's.
+// Mon Oct 26 (Night Crew): every live ticker with a card file. A static page is written for a card that passes the gate, and
+// for any card whose static page already exists (no URL goes dead; it turns noindex if it falls under the gate). Cards
+// under the gate stay on /card?id= — a noindex copy of the same page adds nothing (3,830 basket cards × ~110 KB).
+// The id → URL map for links and search is written by tools/build-nav.js (js/card-pages.json) from the files on disk.
+// Slug rule (keep in step with build-nav.js / js/card-page.js): <card name>-<number>-<set path minus "pokemon-">.
+const GATE_N90 = 20, GATE_RAW = 25;
+// --tickers=pris25,ah26 limits the run (the deploy's scope-cut lever if the full set is ever too big to ship).
+const ONLY = ((process.argv.find((a) => a.startsWith("--tickers=")) || "").split("=")[1] || "").split(",").filter(Boolean);
+const STATIC_TICKERS = fs.readdirSync(path.join(ROOT, "data/cards")).filter((f) => /^[a-z0-9]+\.json$/.test(f) && f !== "card-search.json").map((f) => f.replace(/\.json$/, "")).filter((t) => !ONLY.length || ONLY.includes(t)).sort();
+// WOTC edition words for the baked raw link (same rule as rawQ() in js/grade-links.js): 1st Edition index → graded words out;
+// Shadowless → also -1st; Unlimited → also -1st -shadowless.
+const edNot = (d) => !d.wotc ? "" : d.ed === "1st" ? "" : d.ed === "shadowless" ? " -1st" : " -1st -shadowless";
 const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const md = (d) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ""); return m ? `${MON[+m[2] - 1]} ${+m[3]}, ${m[1]}` : ""; };
@@ -188,22 +199,35 @@ export function staticSlug(c) {
 }
 let sold = null;
 try { sold = JSON.parse(fs.readFileSync(path.join(ROOT, "data/feed/sold-marks.json"), "utf8")); } catch { sold = null; }
-const n90Of = (c) => { const r = ((sold && sold.cards) || []).find((x) => x.key === "sold:" + c.path && x.cond === "Raw"); return r && r.n90 != null ? r.n90 : 0; };
+const SOLD90 = new Map(((sold && sold.cards) || []).filter((x) => x.cond === "Raw" && x.n90 != null).map((x) => [x.key, x.n90]));
+const n90Of = (c, d) => {
+  if (SOLD90.has("sold:" + c.path)) return SOLD90.get("sold:" + c.path);
+  const win = c.win || d.window || 30, n = c.wn != null ? c.wn : c.n30;
+  return win <= 90 && n != null ? n : 0;
+};
+// a hand-built page (engine /card-* pages from build-card-pages.mjs) is never overwritten: only files this template wrote
+const ours = (f) => { try { return /<main class="cdp" id="cdp" aria-live="polite" data-card-id=/.test(fs.readFileSync(f, "utf8")); } catch { return null; } };
+const slugsSeen = new Map();
 let nStatic = 0, nIndexed = 0;
 for (const tk of STATIC_TICKERS) {
   const d = JSON.parse(fs.readFileSync(path.join(ROOT, "data/cards", tk + ".json"), "utf8"));
   const setShort = String(d.set).replace(/^Pokémon TCG /, "");
   for (const c of d.cards) {
-    if (!c.path) continue;
-    const slug = staticSlug(c), indexable = n90Of(c) >= GATE_N90;
+    if (!c.path || c.rank == null) continue;   // basket constituents only (screened universe rows have no raw mark)
+    const slug = staticSlug(c), indexable = n90Of(c, d) >= GATE_N90 && c.raw != null && c.raw >= GATE_RAW;
+    const file = path.join(ROOT, `card-${slug}.html`), had = ours(file);
+    if (had === false) { console.warn(`skip ${c.id}: card-${slug}.html is a hand-built page`); continue; }
+    if (!indexable && !had) continue;
+    if (slugsSeen.has(slug)) throw new Error(`slug collision: card-${slug} for ${slugsSeen.get(slug)} and ${c.id}`);
+    slugsSeen.set(slug, c.id);
     // Same basis wording as js/card-page.js render() (chase: PriceCharting's ungraded value; sector: median of n raw sales).
     const basis = c.raw == null ? "Too few raw sales to mark." : d.kind === "chase" ? `PriceCharting’s ungraded value, read ${md(c.rawAsOf)}` : `Median of ${c.wn != null ? c.wn : c.n30} raw sales, ${c.win || d.window || 30} days · marked ${md(c.rawAsOf)}`;
     const nm = `${c.name} #${c.num}`;
     const load = `  <div class="cdp-crumbs"><a href="/">Home</a><span>/</span><a href="${esc(d.page)}">${esc(d.ticker)}</a><span>/</span><span>${esc(nm)}</span></div>
-  <div class="cdp-miss" id="cdp-load"><h1>${esc(nm)}</h1><p class="cdp-set"><a href="${esc(d.page)}">${esc(setShort)}</a> · #${esc(c.num)}${c.rarity ? " · " + esc(c.rarity) : ""}</p><p>Raw ${c.raw != null ? `<b>${money(c.raw)}</b> · ` : ""}${esc(basis)}. Loading PSA 9, PSA 10 and TAG 10 sales…</p><p><a href="${esc(ebaySearchUrl({ q: `${c.q || nm} ${rawNot(d.ticker)}${RAW_EXTRA[d.ticker] || ""}`, customid: "card-" + c.id, sacat: SACAT_TCG, av: c.raw >= 200 }))}" target="_blank" rel="sponsored nofollow noopener">Raw copies on eBay →</a></p></div>
+  <div class="cdp-miss" id="cdp-load"><h1>${esc(nm)}</h1><p class="cdp-set"><a href="${esc(d.page)}">${esc(setShort)}</a> · #${esc(c.num)}${c.rarity ? " · " + esc(c.rarity) : ""}</p><p>Raw ${c.raw != null ? `<b>${money(c.raw)}</b> · ` : ""}${esc(basis)}. Loading PSA 9, PSA 10 and TAG 10 sales…</p><p><a href="${esc(ebaySearchUrl({ q: `${c.q || nm} ${rawNot(d.ticker)}${edNot(d)}${RAW_EXTRA[d.ticker] || ""}`, customid: "card-" + c.id, sacat: SACAT_TCG, av: c.raw >= 200 }))}" target="_blank" rel="sponsored nofollow noopener">Raw copies on eBay →</a></p></div>
 `;
     const desc = `${nm} ${setShort} price${c.raw != null ? `: raw ${money(c.raw)} (${d.kind === "chase" ? "PriceCharting ungraded" : "median of raw sales"}, ${md(c.rawAsOf)})` : ""}, beside dated PSA 9, PSA 10 and TAG 10 sales and an eBay link for each grade.`;
-    if (!DRY) fs.writeFileSync(path.join(ROOT, `card-${slug}.html`), page({
+    if (!DRY) fs.writeFileSync(file, page({
       title: `${esc(nm)} ${esc(setShort)} Price — Raw, PSA 9, PSA 10, TAG | ShopCardHub`, desc: esc(desc),
       robots: indexable ? "index,follow" : "noindex,follow", path: `/card-${slug}`, ogTitle: `${esc(nm)} ${esc(setShort)} — Raw vs PSA 9 vs PSA 10`,
       id: esc(c.id), load,
@@ -211,4 +235,4 @@ for (const tk of STATIC_TICKERS) {
     nStatic++; if (indexable) nIndexed++;
   }
 }
-console.log(`${DRY ? "would write" : "wrote"} ${nStatic} static card pages (${nIndexed} index,follow at >= ${GATE_N90} raw sales / 90 d) for ${STATIC_TICKERS.join(", ")}`);
+console.log(`${DRY ? "would write" : "wrote"} ${nStatic} static card pages (${nIndexed} index,follow at >= ${GATE_N90} raw sales / 90 d and raw >= $${GATE_RAW}) across ${STATIC_TICKERS.length} tickers`);

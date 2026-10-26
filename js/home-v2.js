@@ -176,7 +176,16 @@
     var PK = /pok[e\u00e9]mon|pikachu|charizard|gengar|mewtwo|lugia|umbreon|eevee|darkrai|greninja|prismatic|ascended|\btcg\b/i;
     var EPN = 'mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001';
     var miss = function (q) { var pk = PK.test(q), t = pk && !/pok[e\u00e9]mon/i.test(q) ? 'pokemon ' + q : q; return 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(t.replace(/\s+/g, ' ').trim()).replace(/%20/g, '+') + '&_sacat=' + (pk ? '183454' : '212') + '&LH_BIN=1&' + EPN + '&customid=search-miss'; };
-    var load = function () { if (P) return P; P = fetch('/data/card-search.json').then(function (r) { return r.json(); }).then(function (d) { CARDS = (d.cards || []).map(function (c) { return { id: c[0], t: c[1], s: c[2], p: c[3], n: nk(c[1] + ' ' + c[2]) }; }); }).catch(function () { CARDS = []; }); return P; };
+    // Night Crew Oct 26: js/card-pages.json (tools/build-nav.js) maps a card id to its static /card-<slug> page and lists the
+    // hand-built card pages (Bowman engine pages: Ethan Holliday …) that card-search.json does not carry — the header search had
+    // them since B74, this box did not ("ethan holliday" → 0 on Oct 26).
+    var SPAGE = {}, PAGES = [];
+    var get = function (u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
+    var load = function () { if (P) return P; P = Promise.all([get('/data/card-search.json').catch(function () { return {}; }), get('/js/card-pages.json').catch(function () { return {}; })]).then(function (res) {
+      CARDS = (res[0].cards || []).map(function (c) { return { id: c[0], t: c[1], s: c[2], p: c[3], n: nk(c[1] + ' ' + c[2]) }; });
+      SPAGE = res[1].static || {}; PAGES = (res[1].pages || []).map(function (r) { return { t: r[0], s: r[1], u: r[2], n: nk(r[0] + ' ' + r[1] + ' ' + r[2].replace(/[\/-]/g, ' ')) }; }); }); return P; };
+    function pages(q) { q = nk(q); if (q.length < 2) return []; var tk = q.split(' ');
+      return PAGES.filter(function (c) { for (var i = 0; i < tk.length; i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; }).sort(function (a, b) { return a.u.length - b.u.length; }).slice(0, 3); }
     function cards(q) { q = nk(q); if (!CARDS || q.length < 2) return []; var tk = q.split(' ');
       return CARDS.filter(function (c) { for (var i = 0; i < tk.length; i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
         .sort(function (a, b) { var sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1; return sa - sb || (b.p || 0) - (a.p || 0); }).slice(0, 7); }
@@ -184,8 +193,8 @@
     function render() {
       var q = input.value.trim(); sel = -1;
       if (!q) { res.classList.remove('show'); res.innerHTML = ''; return; }
-      var c = cards(q), s = sets(q), h = '';
-      if (c.length) h += '<div class="hd">Cards</div>' + c.map(function (x) { return '<a href="/card?id=' + esc(x.id) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span>' + (x.p == null ? '' : '<b>' + esc(money(x.p)) + '<small>raw</small></b>') + '</a>'; }).join('');
+      var pg = pages(q), c = cards(q).slice(0, 7 - pg.length), s = sets(q), h = '';
+      if (pg.length || c.length) h += '<div class="hd">Cards</div>' + c.map(function (x) { return '<a href="' + esc(SPAGE[x.id] || '/card?id=' + x.id) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span>' + (x.p == null ? '' : '<b>' + esc(money(x.p)) + '<small>raw</small></b>') + '</a>'; }).join('') + pg.map(function (x) { return '<a href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span></a>'; }).join('');
       if (s.length) h += '<div class="hd">Sets</div>' + s.map(function (x) { var v = T[x.tk]; return '<a href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.tk) + '</small></span>' + (v ? '<b>' + v.l.toFixed(2) + '<small>' + esc(sgn(v.w, 1)) + '</small></b>' : '') + '</a>'; }).join('');
       if (!h) h = CARDS ? '<div class="none">Not in an index yet \u2014 <a href="' + miss(q) + '" target="_blank" rel="sponsored nofollow noopener">see it on eBay \u203a</a> \u00b7 <a href="/indices">what we track</a></div>' : '<div class="none">Looking\u2026</div>';
       res.innerHTML = h; res.classList.add('show');

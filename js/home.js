@@ -26,8 +26,9 @@
   var FEED = '/feed';
 
   /* ---------- screens (saved filters over the feed) ---------- */
+  /* board = the engine's ask-side signal on the board's cards, not the board's calls (CoS ruling, Oct 21 weekly; Night Crew Oct 26) */
   var SCREENS = {
-    board: { n: 'Bowman Bangers board', meta: 'the tracked 1st Bowman Chrome autos · raw · ask-basis', f: function (c) { return c.board; } },
+    board: { n: 'Engine signal (ask side)', meta: 'the tracked 1st Bowman Chrome autos · raw · ask-basis', f: function (c) { return c.board; } },
     under100: { n: 'Autos under $100', meta: '1st Bowman Chrome autos with a verified ask floor below $100', f: function (c) { return c.type === 'auto' && c.last != null && c.last < 100; } },
     drying: { n: 'Supply drying up', meta: 'verified asks down 20% or more vs 30 nights ago', f: function (c) { return c.supd != null && c.supd <= -20; } },
     z2: { n: 'Unusual swings', meta: 'mark more than two σ from its 30-night mean — stretched either way', f: function (c) { return c.z != null && Math.abs(c.z) >= 2; } },

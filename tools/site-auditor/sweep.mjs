@@ -37,6 +37,9 @@ const ALL = argv.includes("--all");
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), "../..");
 
 const BLOCK = /googletagmanager\.com|google-analytics\.com|analytics\.google\.com|stats\.g\.doubleclick\.net/;
+// /api/comps is aborted like a beacon (Night Crew Oct 26; BLOCKED "eBay Browse quota spent twice", desk Oct 23): every call is a
+// live eBay Browse request on the shared 5k/day keyset; a sweep of 20 pages fired dozens. --comps lets them through on purpose.
+const COMPS = argv.includes("--comps") ? null : /\/api\/comps\b/;
 
 function pageList() {
   if (DEEP) return DEEP.split(",").map(s => s.trim()).filter(Boolean);
@@ -147,7 +150,7 @@ async function metrics(page, deep) {
       let abortedBeacons = 0;
       await ctx.route("**/*", async route => {
         const url = route.request().url();
-        if (BLOCK.test(url)) { abortedBeacons++; return route.abort(); }
+        if (BLOCK.test(url) || (COMPS && COMPS.test(url))) { abortedBeacons++; return route.abort(); }
         for (let attempt = 0; attempt < 3; attempt++) {
           try {
             /* forward the page's own request headers (Sec-Fetch-Site, Referer…) so api/_lib/guard.js sees a
