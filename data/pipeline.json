@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-10-20",
+  "generated": "2026-10-26",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-10-12, STEP 3.9)",
   "agents": {
     "seeker": {
@@ -193,13 +193,9 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-10-20",
-      "nextRun": "2026-10-27",
+      "lastRun": "2026-10-26",
+      "nextRun": "2026-11-02",
       "actions": [
-        {
-          "ts": "2026-09-29",
-          "msg": "Digest 2026-09-29 SENT (MailerLite campaign 199969838099072348, finished 18:23 UTC) after the push verified; rogue-send check clean, kill switch clean; 4 active subscribers; stats not yet populated at read. First send in the R26 Monday-close shape."
-        },
         {
           "ts": "2026-10-05",
           "msg": "Price lane Oct 5: 6 chase index pages + indices.json + 37 ticker strips + 6 badges + og/indices.png + card pages + home re-bake staged behind three FAIL-0 gates."
@@ -243,6 +239,10 @@
         {
           "ts": "2026-10-20",
           "msg": "Tuesday Tape sent: MailerLite campaign 201872750894122464 'Digest 2026-10-20', instant, after push 780f555 live-verified. Rogue-send check clean (no campaign since Sep 29); kill switch clear (unsubscribes since Sep 29 = owner aliases + the vpt test record ruled by Mo Oct 6); 3 active subscribers. No ebay.com link in the email."
+        },
+        {
+          "ts": "2026-10-26",
+          "msg": "Monday lane from a fresh clone (delta 0). STEP 0: no approved audit-/polish- row to apply; 16 approved rows of other kinds, all older than 14 days, reported for the CoS."
         }
       ],
       "log": [
@@ -315,21 +315,9 @@
     "gengar": {
       "label": "GENGAR",
       "role": "Pokémon Index Specialist + conversion coverage — owned by the Monday trend-scan (STEP 3.6 index re-marks, STEP 3.65 X intel, chase-image checks) and, from 2026-09-17, the Monday conversion beat (LANE-RULES R11: every commercial page sells its product above the fold; buy-strip health against live eBay). No-new-Pokémon-calls mandate stays retired forever.",
-      "lastRun": "2026-10-19",
-      "nextRun": "2026-10-26",
+      "lastRun": "2026-10-26",
+      "nextRun": "2026-11-02",
       "actions": [
-        {
-          "ts": "2026-09-21",
-          "msg": "Images: all wired, nothing new (no new Pokémon page built this run). X intel not read — Chrome lane not exercised this run."
-        },
-        {
-          "ts": "2026-09-28",
-          "msg": "Six Pokemon tickers re-marked on PriceCharting ungraded sold reads - 289/289 universe cards matched mechanically, no card carried forward"
-        },
-        {
-          "ts": "2026-09-28",
-          "msg": "Pokemon X intel not read this run: the X sweep needs Mo’s Chrome session and this run had no browser"
-        },
         {
           "ts": "2026-09-28",
           "msg": "Card images: nothing new wired this week; no new Pokemon page built"
@@ -365,6 +353,18 @@
         {
           "ts": "2026-10-19",
           "msg": "Collector’s Desk pages, badges, home panels and og image re-baked from the new marks. Top holding changed on CR26 and AH26; the page hero images still show the old leader, filed for the CoS."
+        },
+        {
+          "ts": "2026-10-26",
+          "msg": "Six chase tickers re-marked on PriceCharting ungraded sold value, 289/289 cards, no divisor change: PB26 63.58 (+3.28%) · CR26 36.88 (−2.79%) · AH26 64.23 (−10.08%) · PRIS25 61.35 (−3.98%) · DR25 54.89 (−4.85%) · PF25 67.05 (−5.47%). Shipped d0573fb."
+        },
+        {
+          "ts": "2026-10-26",
+          "msg": "AH26 led the week down: Mega Gengar ex #284 $772.92 → $665.87 (−13.9%), Team Rocket’s Mewtwo ex #281 −18.0%. PB26 the only gainer (Mega Darkrai ex #116 $151.73 → $166.82)."
+        },
+        {
+          "ts": "2026-10-26",
+          "msg": "Badges, home panels (build-home + build-regime) and og/indices.png re-baked from the new marks. Collector’s Desk pages left to the CoS weekly (Oct 20 ruling)."
         }
       ],
       "status": "active",
@@ -5331,6 +5331,17 @@
           "gates": "audit-prices 0/47 · audit-site 0/19 · audit-terminal 0/1 (= the Night Crew Oct 26 base)",
           "liveVerified": "pending (curl after push)",
           "note": "P0-D: 22 Prismatic Evolutions card pages that pass the desk's floored gate (>= 20 raw sales / 90 d and raw >= $25) added to sitemap.xml (76 -> 98) + IndexNow; board (gen 1 scoring: not rankable, slate carried) + calendar/home day roll; 0 new URLs. The 4 Pokemon engine-page 301s are a prepared patch for the attended session (claude/handoffs/cull-batch-engine301-2026-10-26.patch.txt)."
+        },
+        {
+          "date": "2026-10-26",
+          "commits": [
+            "d0573fb",
+            "this commit"
+          ],
+          "by": "monday-scan STEP 3.98 (Task-key shopcardhub-weekly-trend-scan)",
+          "gates": "audit-prices 0/47 · audit-site 0/19 · audit-terminal 0/1 (= clean HEAD 543981f)",
+          "liveVerified": "yes, ~17:28Z (AH26 64.23 live on /ascended-heroes-index and /data/indices.json)",
+          "note": "Six chase tickers re-marked, 289/289 PriceCharting ungraded solds, no divisor change; 64 files."
         }
       ]
     },
@@ -5362,22 +5373,21 @@
     "_retired": "2026-09-22 (bb-2026-09-22-coach-note-stale): no longer a standing weekly duty; written ad hoc by the CoS desk only when a lane needs a specific correction. Stale weekOf is not a finding."
   },
   "publish": {
-    "date": "2026-10-19",
+    "date": "2026-10-26",
     "by": "monday-scan STEP 3.98",
-    "commit": "0faed75",
+    "commit": "d0573fb",
     "lane": [
       "data/indices.json",
       "6 chase index pages",
-      "6 Collector’s Desk pages",
       "data/cards/{pb26,cr26,ah26,pris25,dr25,pf25}.json + data/card-search.json",
       "badge/*.svg (6)",
       "index.html (build-home + build-regime)",
-      "og/indices.png + ?v=20261019 on index/comparison pages"
+      "og/indices.png + ?v=20261026 on index/comparison pages"
     ],
-    "gates": "audit-prices 0 FAIL/47 WARN · audit-site 0/5 (146 pages) · audit-terminal 0/1 — identical to clean HEAD 1e27d71",
-    "liveVerified": "2026-10-19 ~17:55Z: live /data/indices.json carries the 2026-10-19 rows (PB26 61.56, PRIS25 63.89, AH26 71.43); /prismatic-evolutions-index and /ascended-heroes-index serve 63.89 / 71.43",
+    "gates": "audit-prices 0 FAIL/47 WARN · audit-site 0/19 · audit-terminal 0/1 — identical to clean HEAD 543981f",
+    "liveVerified": "2026-10-26 ~17:28Z: live /data/indices.json carries the 2026-10-26 rows (AH26 64.23, PB26 63.58); /ascended-heroes-index serves 64.23",
     "notPushed": [
-      "nothing else edited this run (calls.json, guide pages untouched)"
+      "nothing else edited this run"
     ]
   },
   "decisions": [
