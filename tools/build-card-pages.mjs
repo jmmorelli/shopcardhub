@@ -64,7 +64,11 @@ const cards = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.id &&
 // Only host-less cards get a standalone /card-<id> page, and those are noindex — Google
 // crawled the 21 templated card pages and declined them (Business Read, Sep 8).
 const hostOf = (c) => c.slug && exists(c.slug + ".html") ? c.slug : null;
-const cardHref = (c) => hostOf(c) ? "/" + hostOf(c) + "#engine-" + c.id : "/card-" + c.id;
+// Oct 26 2026 (Traffic; Night Crew proposal 3, Oct 22): an engine card whose /card-<id> 301s in vercel.json to its static
+// /card-<slug> page (P0-A template, the indexable one) gets no engine page here, and its links point at the destination.
+const REDIR = (() => { try { return new Map((JSON.parse(read("vercel.json")).redirects || []).map((r) => [String(r.source), String(r.destination)])); } catch (e) { return new Map(); } })();
+const staticDest = (c) => { const d = REDIR.get("/card-" + c.id); return d && /^\/card-[a-z0-9-]+$/.test(d) ? d : null; };
+const cardHref = (c) => hostOf(c) ? "/" + hostOf(c) + "#engine-" + c.id : staticDest(c) || "/card-" + c.id;
 let latest = null;
 try {
   latest = /^https?:\/\//.test(FEED_SRC)
@@ -620,6 +624,7 @@ ${footer}
 const written = [];
 for (const c of cards) {
   if (hostOf(c)) continue; // hosted on its guide page — see build-engine-blocks.mjs
+  if (staticDest(c)) continue; // 301s to its static card page (vercel.json)
   const html = renderCard(c);
   const file = `card-${c.id}.html`;
   if (!DRY) fs.writeFileSync(path.join(REPO, file), html);

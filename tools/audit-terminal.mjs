@@ -279,6 +279,14 @@ for (const r of (vercel && vercel.redirects) || []) {
   if (!/^\/[a-z0-9-]+$/.test(dest) || !exists(slug + ".html")) { add("FAIL", "redirect-consistency", "vercel.json", `/card-${id} → ${dest}: no such page`); continue; }
   const c = cardById.get(id);
   if (!c) add("FAIL", "redirect-consistency", "vercel.json", `/card-${id} → ${dest}: no card ${id} in data/watchlist.json`);
+  // Oct 26 2026 (Traffic): an engine card may 301 to its static P0-A card page instead of a host guide. The destination must be
+  // a template page (<main class="cdp" … data-card-id>) and the card must not also name a host (slug) page.
+  if (/^\/card-[a-z0-9-]+$/.test(dest)) {
+    if (!/<main class="cdp"[^>]*data-card-id="[a-z0-9-]+"/.test(read(slug + ".html"))) add("FAIL", "redirect-consistency", "vercel.json", `/card-${id} → ${dest}: destination is not a static card page`);
+    else if (c && hostOf(c)) add("FAIL", "redirect-consistency", "vercel.json", `/card-${id} → ${dest} but the card's watchlist slug hosts it on /${hostOf(c)}`);
+    if (exists(`card-${id}.html`)) add("WARN", "redirect-consistency", `card-${id}.html`, `file still on disk but /card-${id} 301s to ${dest} — the page is unreachable; delete it`);
+    continue;
+  }
   const p = P.get(slug + ".html");
   if (!p || !p.embeds.some((e) => e.id === id)) add("FAIL", "redirect-consistency", "vercel.json", `/card-${id} → ${dest}: destination page does not host .cp-embed[data-card="${id}"]`);
   else if (c && hostOf(c) !== slug) add("FAIL", "redirect-consistency", "vercel.json", `/card-${id} → ${dest} but the card's watchlist slug is ${c.slug || "(none)"}`);

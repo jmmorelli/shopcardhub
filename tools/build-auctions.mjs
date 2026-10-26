@@ -37,7 +37,11 @@ const hostOf = (c) => (c.slug && exists(c.slug + ".html") ? c.slug : null);
 // Sep 27 2026 QA sweep: 65 auction rows linked to /card-<id> pages that were never built (404).
 // A row now links to its host page, else its own built /card-<id> page, else the set index / player
 // page its id starts with (resolved client-side from STEMS), else it renders unlinked.
-const cardHref = (c) => (hostOf(c) ? "/" + hostOf(c) + "#engine-" + c.id : exists("card-" + c.id + ".html") ? "/card-" + c.id : null);
+// Oct 26 2026 (Traffic; Night Crew proposal 3, Oct 22): an engine card whose /card-<id> 301s in vercel.json to its static
+// /card-<slug> page (P0-A template, the indexable one) gets no engine page here, and its links point at the destination.
+const REDIR = (() => { try { return new Map((JSON.parse(read("vercel.json")).redirects || []).map((r) => [String(r.source), String(r.destination)])); } catch (e) { return new Map(); } })();
+const staticDest = (c) => { const d = REDIR.get("/card-" + c.id); return d && /^\/card-[a-z0-9-]+$/.test(d) ? d : null; };
+const cardHref = (c) => (hostOf(c) ? "/" + hostOf(c) + "#engine-" + c.id : staticDest(c) || (exists("card-" + c.id + ".html") ? "/card-" + c.id : null));
 const IDX = (() => { try { const j = JSON.parse(read("data/indices.json")); const o = {}; for (const [k, v] of Object.entries(j)) if (v && v.page) o[k.toLowerCase()] = v.page; return o; } catch (e) { return {}; } })();
 const STEMS = fs.readdirSync(REPO).filter((f) => /\.html$/.test(f)).map((f) => f.slice(0, -5))
   .map((slug) => [slug.replace(/-(rookie-cards|cards|index|1st-bowman|guide|set-guide)$/, ""), "/" + slug])

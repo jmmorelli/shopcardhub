@@ -21,6 +21,8 @@
   else root.SCH_HOME = factory(root.SCH_STATS);
 })(typeof self !== 'undefined' ? self : this, function (ST) {
   'use strict';
+  /* engine cards whose /card-<id> page 301s to its static P0-A card page (vercel.json; Traffic Oct 26) — link the destination */
+  var MOVED = { 'umbreon-ex-sir-pe': '/card-umbreon-ex-161-prismatic-evolutions', 'mega-greninja-ex-sir': '/card-mega-greninja-ex-116-chaos-rising', 'tr-mewtwo-ex-sir': '/card-team-rockets-mewtwo-ex-281-ascended-heroes', 'mega-lucario-ex-sir': '/card-mega-lucario-ex-179-mega-evolution' };
   var num = ST.num, fmt = ST.fmt, pct = ST.pct, sgn = ST.sgn, cls = ST.cls, dstr = ST.dstr;
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var FEED = '/feed';
@@ -65,7 +67,7 @@
         // which entered the nightly feed 2026-09-21 with no slug and no /card-<id> page built yet — linking it
         // shipped three dead hrefs onto the home Screens table. Same rule the other generators already apply:
         // refuse the new type until it can name its page. Null href renders the name unlinked (see screen rows).
-        slug: c.slug || null, href: c.href || (c.slug ? '/' + c.slug + '#engine-' + id : /-(booster-box|etb)$/.test(id) ? indexPage(indices, id.replace(/-(booster-box|etb)$/, '')) : c.cardType === 'single' ? null : '/card-' + id),
+        slug: c.slug || null, href: c.href || MOVED[id] || (c.slug ? '/' + c.slug + '#engine-' + id : /-(booster-box|etb)$/.test(id) ? indexPage(indices, id.replace(/-(booster-box|etb)$/, '')) : c.cardType === 'single' ? null : '/card-' + id),
         last: c.last, prev5: prev5, chg: c.last != null && prev5 != null ? c.last - prev5 : null, chgp: ST.pctChange(prev5, c.last),
         lo30: last30.length ? Math.min.apply(null, last30) : null, hi30: last30.length ? Math.max.apply(null, last30) : null,
         roc: c.roc30, z: c.z, sd: m ? m.sd : null,
