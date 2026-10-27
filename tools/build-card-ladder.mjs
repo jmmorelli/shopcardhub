@@ -59,7 +59,10 @@ export function ladderFromHtml(html, wotc) {
     let m = null, basis = null, n = 0;
     if (r30.length >= 3) { m = medianOf(r30.map((r) => r.price)); basis = "30d"; n = r30.length; }
     else if (r90.length >= 2) { m = medianOf(r90.map((r) => r.price)); basis = "90d"; n = r90.length; }
-    out[k] = { m: r2(m), basis, n, n365: r365.length, last: last && days(last.date) <= 365 ? { d: last.date, p: r2(last.price) } : null };
+    // Oct 27 2026 (Mo: the high-end slabs trade a few times a year, "we should have it and not show it empty"): when neither
+    // window marks, keep a 12-month median of >= 3 title-verified sales as its own labeled figure (m365) — never the mark.
+    const m365 = n < 3 && r365.length >= 3 ? r2(medianOf(r365.map((r) => r.price))) : null;
+    out[k] = { m: r2(m), basis, n, n365: r365.length, ...(m365 ? { m365 } : {}), last: last && days(last.date) <= 365 ? { d: last.date, p: r2(last.price) } : null };
   }
   return out;
 }

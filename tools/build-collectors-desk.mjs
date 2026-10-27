@@ -57,16 +57,19 @@ function loadSet(tk) {
   const gf = path.join(ROOT, `data/cards/g-${tk}.json`);
   const g = fs.existsSync(gf) ? JSON.parse(fs.readFileSync(gf, "utf8")) : { cards: {} };
   const cards = Array.isArray(j.cards) ? j.cards : Object.values(j.cards || {});
-  return (setCache[tk] = { meta: j, cards, g });
+  const hf = path.join(ROOT, `data/cards/h-${tk}.json`);
+  const h = fs.existsSync(hf) ? JSON.parse(fs.readFileSync(hf, "utf8")) : { cards: {} };
+  return (setCache[tk] = { meta: j, cards, g, h });
 }
 function card(id) {
   const tk = id.split("-")[0];
-  const { meta, cards, g } = loadSet(tk);
+  const { meta, cards, g, h } = loadSet(tk);
   const c = cards.find((x) => x.id === id);
   if (!c) throw new Error(`card ${id} not in data/cards/${tk}.json`);
   const gr = (g.cards && g.cards[c.key || c.num]) || {};
   const ed = meta.ed === "1st" ? "1st" : meta.ed === "shadowless" ? "shadowless" : meta.wotc ? true : false;
-  return { ...c, tk, set: meta.set, setName: meta.name, page: meta.page, ticker: meta.ticker, theme: meta.theme, ed, window: meta.window || 30, gr, gAsOf: g.day || gr.asOf || null, nCards: cards.length };
+  const hist = (h.cards && h.cards[c.key || c.num]) || null;
+  return { ...c, tk, set: meta.set, setName: meta.name, page: meta.page, ticker: meta.ticker, theme: meta.theme, ed, window: meta.window || 30, gr, gAsOf: g.day || gr.asOf || null, nCards: cards.length, hist };
 }
 
 const money = (x) => x == null ? "" : x >= 1000 ? "$" + Math.round(x).toLocaleString("en-US") : "$" + x.toFixed(2);
@@ -79,6 +82,11 @@ function gradeCell(k, label, r, c) {
   // The ladder file still stores a 2-sale 90-day median — this page does not print it (Index Keeper, CoS weekly Oct 21).
   if (r.m != null && r.n >= 3) {
     return `<div class="lad-cell"><div class="lad-k">${label}</div><div class="lad-v">${money(r.m)}</div><div class="lad-s">median of ${r.n} ${r.n === 1 ? "sale" : "sales"} · ${r.basis === "90d" ? "90 days" : "30 days"}${r.asOf || c.gAsOf ? " · as of " + dateShort(r.asOf || c.gAsOf) : ""}</div></div>`;
+  }
+  // Oct 27 2026 (Mo): grail slabs trade a few times a year. When no 30/90-day mark exists but >= 3 title-verified sales do in
+  // 12 months, print that 12-month median, labeled as such (build-card-ladder.mjs m365) — the window is on its face.
+  if (r.m365 != null && r.n365 >= 3) {
+    return `<div class="lad-cell lad-thin"><div class="lad-k">${label}</div><div class="lad-v">${money(r.m365)}</div><div class="lad-s">median of ${r.n365} sales · 12 months${r.last && r.last.d ? " · last " + dateShort(r.last.d) : ""}</div></div>`;
   }
   // R18 one-row form — but a lone TAG row far above the PSA 10 mark is a mislisted slab, not a sale worth printing
   const p10 = c.gr && c.gr.psa10 && c.gr.psa10.m;
@@ -114,6 +122,22 @@ function printBlock(slug, p, multi) {
     ? `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">No mark</div><div class="lad-s">1 dated sale in ${rdays} days: ${money(c.raw)}${rAsOf}</div></div>`
     : `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">No mark</div><div class="lad-s">${rn ? rn + " dated sales" : "no dated sale"} in ${rdays} days — too few for a median${rAsOf}</div></div>`;
   const ratio = c.raw && (rn == null || rn >= 3) && c.gr.psa10 && c.gr.psa10.m && c.gr.psa10.n >= 3 ? `<span class="lad-ratio">PSA 10 = <b>${(c.gr.psa10.m / c.raw).toFixed(1)}×</b> raw</span>` : "";
+  // Past month (Mo, Oct 27 2026: "show the 30d performance of each card"). From PriceCharting's monthly series for the card
+  // (data/cards/h-<tk>.json: [month, ungraded, grade 9, PSA 10]) — their monthly estimate built from sales, labeled as theirs.
+  const pm = (() => {
+    const hs = (c.hist || []).filter((r) => Array.isArray(r) && r.length >= 4);
+    if (hs.length < 2) return "";
+    const a = hs[hs.length - 2], b = hs[hs.length - 1];
+    const pct = (i) => (a[i] > 0 && b[i] > 0 ? (b[i] / a[i] - 1) * 100 : null);
+    const fmt = (v) => `<b class="${v > 0.5 ? "pm-up" : v < -0.5 ? "pm-dn" : ""}">${v > 0.5 ? "▲" : v < -0.5 ? "▼" : ""}${Math.abs(v) < 0.5 ? "flat" : Math.abs(v).toFixed(0) + "%"}</b>`;
+    const MS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], mo = (m) => MS[+m.slice(5, 7) - 1];
+    // Only where the grade trades often enough for a monthly figure to mean something (>= 10 sales in the mark's window, or the
+    // chase-six raw value): PriceCharting's month on a 3-sale slab swings 100% on one sale, which reads as a move that isn't one.
+    const rnn = c.wn != null ? c.wn : c.n30, p10 = c.gr && c.gr.psa10;
+    const liquid = { 1: rnn == null || rnn >= 10, 3: !!(p10 && p10.m && p10.n >= 10) };
+    const parts = [[1, "raw"], [3, "PSA 10"]].map(([i, l]) => (!liquid[i] || pct(i) == null ? null : `${l} ${fmt(pct(i))}`)).filter(Boolean);
+    return parts.length ? `<span class="lad-pm" title="PriceCharting's monthly estimate for this card, ${mo(a[0])} vs ${mo(b[0])}">Past month: ${parts.join(" · ")} <i>(${mo(a[0])}→${mo(b[0])}, PriceCharting monthly)</i></span>` : "";
+  })();
   const rank = c.rank ? `<span class="lad-rank">#${c.rank} of ${c.nCards} by weight in <a href="${c.page}">${esc(c.ticker)}</a></span>` : `<span class="lad-rank">tracked outside the <a href="${c.page}">${esc(c.ticker)}</a> level</span>`;
   const imgName = `${c.name} #${c.num} ${c.set.replace(/^Pokémon TCG /, "")}`;
   return `
@@ -123,7 +147,7 @@ function printBlock(slug, p, multi) {
             <div class="print-id">
               ${multi ? `<div class="print-label">${esc(p.label)}</div>` : ""}
               <div class="print-set">${esc(c.name)} #${esc(c.num)} · ${esc(c.set.replace(/^Pokémon TCG /, ""))}</div>
-              <div class="print-meta">${rank}${ratio}</div>
+              <div class="print-meta">${rank}${ratio}${pm}</div>
             </div>
           </div>
           <div class="ladder">
@@ -387,6 +411,7 @@ const DESK_CSS = (c) => `
     .print-set { font-size:13px; color:var(--text-dim); margin-top:2px; }
     .print-meta { display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:6px; font-family:var(--fm); font-size:11px; letter-spacing:.5px; color:var(--text-dim); }
     .print-meta b { color:var(--text-head); }
+    .print-meta .lad-pm i { font-style:normal; opacity:.7; } .print-meta b.pm-up { color:var(--green,#00e07a); } .print-meta b.pm-dn { color:var(--red,#ff2e55); }
     .ladder { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:8px; }
     .lad-cell { background:var(--bg2); border:1px solid var(--border); padding:10px 12px 9px; min-width:0; }
     .lad-raw { border-top:2px solid var(--accent); }
