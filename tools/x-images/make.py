@@ -603,6 +603,31 @@ def card_release_log(idx, out):
     p = out / "release-log.png"; im.save(p); return p
 
 # ---------- one card's dated sold tape (Oct 7 2026, league F shareable) ----------
+def card_grades(out):
+    """grade-premium table (CoS, Oct 27 2026): PSA 10 vs PSA 9/8/7/5/raw, vintage vs modern, + TAG 10 vs PSA 10, from data/grade-premiums.json."""
+    g = json.load(open(ROOT / "data" / "grade-premiums.json")); V, M = g["eras"]["vintage"], g["eras"]["modern"]
+    im, d = canvas("pokemon · psa 10 vs every grade · eBay sold", "What a PSA 10 is worth", "Median multiple, card by card · 90 days of sales · " + str(V["cards"] + M["cards"]) + " cards", tag="//  GRADE PREMIUMS · SOLD COMPS ONLY")
+    x0, cols, y = 48, [48, 400, 790], 250
+    d.text((cols[1], y), "VINTAGE (WOTC 1999-2003)", font=MONO(14), fill=DIM); d.text((cols[2], y), "MODERN (2019 ON)", font=MONO(14), fill=DIM)
+    y += 34
+    rows = [("x a PSA 9", "psa9"), ("x a PSA 8", "psa8"), ("x a PSA 7", "psa7"), ("x the raw copy", "raw")]
+    for lbl, k in rows:
+        d.line([(48, y - 8), (W - 48, y - 8)], fill=GRID, width=1)
+        d.text((cols[0], y), "PSA 10 =", font=BAR4(22), fill=DIM); d.text((cols[0] + 110, y), lbl, font=BAR6(24), fill=TXT)
+        for c, e in ((cols[1], V), (cols[2], M)):
+            v = e.get(k) or {}
+            if v.get("med"):
+                d.text((c, y - 6), f"{v['med']:.1f}x", font=COND9(40), fill=CYAN)
+                d.text((c + 130, y + 8), f"{v['n']} cards", font=MONO(13), fill=DIM)
+            else:
+                d.text((c, y + 4), "too few sales", font=MONO(15), fill=DIM)
+        y += 64
+    t = M.get("tag10_vs_psa10", {})
+    if t.get("med"):
+        d.text((48, y + 6), f"Modern TAG 10 vs PSA 10: {t['med']:.1f}x (middle half {t['p25']:.1f}-{t['p75']:.1f}x, {t['n']} cards). About the same price.", font=BAR6(21), fill=GREEN)
+    footer(d, g["asOf"], "· shopcardhub.com/pokemon-grading-premiums")
+    p = os.path.join(out, "grade-premiums.png"); im.save(p); return p
+
 def card_solds(specs, card, eyebrow, url, out, name="solds.png", note=""):
     """Strip plot of one card's dated sales, one lane per grade, each dot one sale, tick = median.
     specs = [(label, path to `node tools/league/solds.mjs <path> [--grade G] --json` output)]. Prices are
@@ -663,5 +688,6 @@ if __name__ == "__main__":
     if a.kind == "call": done.append(card_call(a.ticker, out))
     if a.kind == "wall": done.append(card_wall(a.ticker, out, a.card))
     if a.kind == "drawdown": done.append(card_drawdown(idx, out))
+    if a.kind == "grades": done.append(card_grades(out))
     if a.kind == "solds": done.append(card_solds([tuple(s.split("=", 1)) for s in a.lane], a.card, a.eyebrow, a.url, out, a.name, a.note))
     for p in done: print(p)

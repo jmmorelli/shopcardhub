@@ -1,0 +1,88 @@
+{
+ "asOf": "2026-10-27",
+ "window": "90 days",
+ "method": "Random sample of 160 cards per era from the 34 Pokémon sets ShopCardHub indexes (cards with a PSA 10 sold mark). For each card: median of its last 90 days of sales in each grade, counted only when the sale title names that PSA grade (TAG 10 rows titled TAG; raw = Ungraded rows with no grading company in the title); a grade needs at least 2 sales. The multiple is computed per card (PSA 10 median / other grade median), then we report the median multiple across cards and the middle half (25th–75th percentile). Lots, proxies, customs and reprints are dropped; WOTC sets are split by edition (1st Edition / Shadowless / Unlimited). Vintage = 1999–2003 WOTC sets; modern = 2019 onward. Grading fees, shipping and selling fees are not included.",
+ "eras": {
+  "vintage": {
+   "cards": 160,
+   "psa9": {
+    "med": 6.1,
+    "p25": 4.5,
+    "p75": 9.1,
+    "n": 138
+   },
+   "psa8": {
+    "med": 11.2,
+    "p25": 8.5,
+    "p75": 16.6,
+    "n": 119
+   },
+   "psa7": {
+    "med": 15.4,
+    "p25": 10.3,
+    "p75": 28.1,
+    "n": 82
+   },
+   "psa5": {
+    "med": 30.6,
+    "p25": 17.3,
+    "p75": 72.3,
+    "n": 30
+   },
+   "raw": {
+    "med": 51.7,
+    "p25": 29.7,
+    "p75": 79.6,
+    "n": 157
+   },
+   "tag10_vs_psa10": {
+    "n": 1
+   },
+   "tag10_at_or_above_psa10": 0,
+   "raw_mean": 66.5,
+   "raw_skew": 4.76,
+   "label": "Vintage (WOTC, 1999–2003)"
+  },
+  "modern": {
+   "cards": 160,
+   "psa9": {
+    "med": 3.4,
+    "p25": 2.7,
+    "p75": 5.1,
+    "n": 141
+   },
+   "psa8": {
+    "med": 4.8,
+    "p25": 3.4,
+    "p75": 7.1,
+    "n": 89
+   },
+   "psa7": {
+    "med": 6.8,
+    "p25": 4.4,
+    "p75": 15.9,
+    "n": 21
+   },
+   "psa5": {
+    "n": 1
+   },
+   "raw": {
+    "med": 10.7,
+    "p25": 5.4,
+    "p75": 26.0,
+    "n": 160
+   },
+   "tag10_vs_psa10": {
+    "med": 1.0,
+    "p25": 0.8,
+    "p75": 1.2,
+    "n": 44
+   },
+   "tag10_at_or_above_psa10": 24,
+   "raw_mean": 25.5,
+   "raw_skew": 6.96,
+   "label": "Modern (2019 onward)"
+  }
+ },
+ "source": "eBay completed sales read on PriceCharting (graded tabs + Ungraded), titles checked for the grade and never stored"
+}
