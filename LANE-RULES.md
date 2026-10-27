@@ -321,6 +321,10 @@ Mo, Oct 7 ~08:30 PT: he deleted the bots' X replies himself — "they were terri
 - **Cadence.** One wake per bot per run day; no status posts; no weekends; everyone stops at 90% of the weekly meter until it resets. The Grok app's own routines ("PLAN V2 weekday 1:46", "weekday EOD desk line") are re-pointed to this schedule after the reset; X Desk Watch checks.
 - **Scorecard, Oct 19 desk:** count digest items that became an X post or a site page. Under ~5 → cut to Seeker alone; zero or a usage/billing prompt → the CoS cancels the bots and records it in STATE (Mo informed, not asked).
 
+
+## R10 · AMENDMENT — which Chrome browser (Mo, in chat, 2026-10-26: "for this - just always use browser 1")
+
+Two Claude in Chrome browsers are connected on Mo's Mac and an unattended run cannot pick one by itself. **Every lane that uses Claude in Chrome for X (X daily, X weekly batch, Bookmark Desk, and any later X lane) calls `select_browser` with deviceId `9ead4791-abda-486d-b805-4c1d9d861020` before its first Chrome action** — the browser logged into @shopcardhub. Do not ask which browser. If that deviceId is not connected, call `list_connected_browsers` and use the macOS browser whose x.com session shows @shopcardhub; otherwise skip the Chrome steps with a note. (The display names "Browser 1"/"Browser 2" can swap between connections; the deviceId is the rule.) This file carries the rule because scheduled-task prompt edits are refused from sessions (ORG §2.6); it outranks any lane prompt that says "Mo picks the browser".
 ## R11 · Every commercial page sells its product above the fold (Mo, 2026-09-17)
 
 **The incident:** `/pokemon-30th-anniversary-2026` is one of the site's top landing pages and it
