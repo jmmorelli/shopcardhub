@@ -3317,30 +3317,36 @@
     },
     {
       "id": "tuesday-2026-10-27-1",
-      "status": "awaiting-cos",
+      "status": "applied",
       "date": "2026-10-27",
       "area": "tuesday-lane",
       "by": "tuesday-board",
       "severity": "LOW",
-      "title": "calls.json reads for Oct 27, not written by this lane (reads only; entries, call dates and projections untouched): v-bb-gonzales-pass read 67.50, readLabel 'sold mark $67.50 (30-day median, 8 sales)'; v-bb-fischer-buy-2 read 141.50, readLabel 'sold mark $141.50 (30-day median, 18 sales)'; readDate 2026-10-27 on both; updated 2026-10-27. Gonzales PASS finalizes Nov 3 (next Tuesday read) at -25.0% on today's mark."
+      "title": "calls.json reads for Oct 27, not written by this lane (reads only; entries, call dates and projections untouched): v-bb-gonzales-pass read 67.50, readLabel 'sold mark $67.50 (30-day median, 8 sales)'; v-bb-fischer-buy-2 read 141.50, readLabel 'sold mark $141.50 (30-day median, 18 sales)'; readDate 2026-10-27 on both; updated 2026-10-27. Gonzales PASS finalizes Nov 3 (next Tuesday read) at -25.0% on today's mark.",
+      "decision": "CoS desk 2026-10-27: applied dcaca47 — read/readLabel/readDate on v-bb-gonzales-pass (67.50, 8 sales) and v-bb-fischer-buy-2 (141.50, 18 sales), verified against data/feed/sold-marks.json day 2026-10-27; entries, call dates, actions untouched. Live /data/calls.json verified.",
+      "decidedBy": "cos-desk"
     },
     {
       "id": "tuesday-2026-10-27-2",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-10-27",
       "area": "tuesday-lane",
       "by": "tuesday-board",
       "severity": "LOW",
-      "title": "Prompt drift: the scheduled-task wrapper and the lane file both say an outside vendor runs @shopcardhub and pulls the tape; LANE-RULES R10 Am. 2 (Sep 25) and Am. 6 (Oct 7) say the vendor is off, the Grok bots are read-only scouts and the CoS writes posts on Mo's go. Followed LANE-RULES: tape + feed published to their fixed URLs, no X action, nobody contacted. Separate, generator: data/x-board.json seats[].card has no space between player and label ('Andrew Fischer1st Bowman Chrome Auto'), carried since at least Oct 20 (tools/build-x-board.mjs). Not fixed here (not this lane's file)."
+      "title": "Prompt drift: the scheduled-task wrapper and the lane file both say an outside vendor runs @shopcardhub and pulls the tape; LANE-RULES R10 Am. 2 (Sep 25) and Am. 6 (Oct 7) say the vendor is off, the Grok bots are read-only scouts and the CoS writes posts on Mo's go. Followed LANE-RULES: tape + feed published to their fixed URLs, no X action, nobody contacted. Separate, generator: data/x-board.json seats[].card has no space between player and label ('Andrew Fischer1st Bowman Chrome Auto'), carried since at least Oct 20 (tools/build-x-board.mjs). Not fixed here (not this lane's file).",
+      "decision": "CoS desk 2026-10-27: prompt drift noted (LANE-RULES R10 Am. 2/6 win; the prompt edit needs an attended session). x-board.json seats[].card missing space -> queued Wed Oct 28 weekly (tools/build-x-board.mjs, generator change).",
+      "decidedBy": "cos-desk"
     },
     {
       "id": "tuesday-2026-10-27-3",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-10-27",
       "area": "bowman-kb",
       "by": "tuesday-board",
       "severity": "LOW",
-      "title": "Bowman KB GAPS question: Gage Jump's throwing hand. The watch-tier tile said RHP while the page's Scouting Grades row says LHP; neither is in the KB. Cut from the tile Oct 27; the grades row is generated (build-grades.mjs) and left alone. Also unsourced on the page: Aloy's '#31 Pick' tag (no list/date in PREBUILD)."
+      "title": "Bowman KB GAPS question: Gage Jump's throwing hand. The watch-tier tile said RHP while the page's Scouting Grades row says LHP; neither is in the KB. Cut from the tile Oct 27; the grades row is generated (build-grades.mjs) and left alone. Also unsourced on the page: Aloy's '#31 Pick' tag (no list/date in PREBUILD).",
+      "decision": "CoS desk 2026-10-27: routed to the Bowman KB as a GAPS question (Jump throwing hand; Aloy '#31 Pick' source), its Oct 28 run. The generated grades row (build-grades.mjs) stays until the KB answers; the tile line was already cut.",
+      "decidedBy": "cos-desk"
     }
   ],
   "scoreboard": {
@@ -5432,6 +5438,17 @@
           "gates": "audit-prices FAIL 0 / WARN 48 · audit-site FAIL 0 / WARN 19 · audit-terminal FAIL 0 / WARN 1 (= baseline 0/48 · 0/19 · 0/1 on a05df67; re-run on the Mac clone after git am, write-tree match 0cc1ab3)",
           "liveVerified": "2026-10-27 ~18:22 UTC: /bowman-bangers data-prices-updated 2026-10-27 + Oct 27 tape column, board rows render 5 seats at 390 px (Playwright, 0 page errors, scrollWidth 390); /data/x-board.json asOf 2026-10-27; /og/x/board-latest.png md5 matches the pushed file",
           "note": "Bangers re-mark Oct 27, no seat moved; Aloy's mark on his $50 line; watch tier KB G54/G56 fixes; Tuesday Tape campaign 202506809320146735 sent instant after the push."
+        },
+        {
+          "date": "2026-10-27",
+          "commits": [
+            "3e4da7f",
+            "dcaca47"
+          ],
+          "by": "CoS desk Oct 27 (Traffic league-floor 301 /prismatic-evolutions-vs-destined-rivals -> /prismatic-evolutions-index, nav re-run for /pokemon-grading-premiums; Tuesday calls.json reads), Task-key traffic-agent + cos-desk-2026-10-27; Authority: Mo 2026-09-26 league floor + R35, CoS desk read handoff",
+          "gates": "audit-prices 0/48 · audit-site 0/19 · audit-terminal 0/1 (= origin/main d46e145)",
+          "liveVerified": "2026-10-27 ~22:35Z: old URL 308 -> /prismatic-evolutions-index 200; /data/calls.json reads 67.5 / 141.5 dated 2026-10-27; /pokemon-grading-premiums carries no old slug; IndexNow 3 -> 200",
+          "note": "Both deploy (HTML + vercel.json + data/calls.json)."
         }
       ]
     },

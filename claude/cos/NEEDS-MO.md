@@ -11,7 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
-## 2026-10-26 — desk (15:11 fire, verified live). One thing, ~5 minutes
+## 2026-10-27 — desk (15:12 fire, verified live). Nothing new is required; one optional 5-minute paste
+
+- **Optional — Grok scouts, in the Grok app (~5 minutes, only if it wasn't done in today's chat):** the five pastes in `claude/grok/scouts-plan-2026-10-27.md` § "Grok side" — each scout reads its asks file first; Ivan reviews the pages the league ships; the Editor says so in chat when X reads fail; the SEO & AEO weekly adds the 5 new questions; pause Coach, Auditor, Grok Bot and the Content room. (The Creator and Seeker already answered today's asks, so two of them may be done.)
+- Carried, still yours: **TAG payment info** (Nov 1) · **BCB26 video** watch + upload (after the YouTube channel check) · optional: EPN CSVs Oct 13–26 into `Card Hub/epn/` (the newest pair still ends Oct 12) · optional: say "go" in a CoS chat on this week's drafted X posts (`claude/cos/x-weekly-2026-10-26.md`; X daily found nothing scheduled this morning).
+- Closed today: **GitHub token** — you renewed it Oct 26 (expires Oct 26 2027); ★ Track writes are landing again. **Reddit ad** — your call Oct 26: it runs to the $50 cap; the CoS reads it Oct 31.
+
+*Not yours:* the dead "Prismatic Evolutions vs Destined Rivals" page now forwards to the Prismatic Evolutions index, and the Bangers calls got this week's reads.
+
+## 2026-10-26 — desk (15:11 fire, verified live). One thing, ~5 minutes — CLOSED 2026-10-27 (token renewed Oct 26, attended; verified)
 
 - **Renew the site's GitHub token (your accounts):** the ★ Track button and checklist ticks have saved nothing since Sep 23 (the store file hasn't been written since then; the token answered 401 on Oct 23). On github.com: Settings → Developer settings → Fine-grained tokens → new token, the shopcardhub repository only, Contents read + write. Then in Vercel: the shopcardhub project → Settings → Environment Variables → replace `GITHUB_TOKEN` → Redeploy. Nothing else changes.
 - Carried, still yours: **Reddit ad** — pause now or let it run to Oct 31 (49 paid visits, 0 that counted; silence = it runs out Oct 31) · **BCB26 video** watch + upload (after the YouTube channel check) · TAG payment info (Nov 1) · optional: EPN CSVs Oct 13–25 into `Card Hub/epn/` (newest pair ends Oct 12) · optional: say "go" in a CoS chat on this week's 4 drafted X posts (`claude/cos/x-weekly-2026-10-26.md`).
