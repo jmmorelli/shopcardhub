@@ -198,10 +198,6 @@
       "actions": [
         {
           "ts": "2026-10-05",
-          "msg": "calls.json NOT written (not in the price lane): four trending calls re-read on dated PriceCharting solds for the record - Florentino $69.00 (30d med, n=19), Gonzales $70.00 (n=25), Fischer $155.00 (n=25), Kim $130.00 (90d med, n=5, no sale since Aug 5). Tuesday board lane owns the write."
-        },
-        {
-          "ts": "2026-10-05",
           "msg": "Prompt drift filed: this task's prompt contradicts LANE-RULES in 6 named places (prompt-drift-2026-10-05)."
         },
         {
@@ -243,6 +239,10 @@
         {
           "ts": "2026-10-27",
           "msg": "Ledger reads Oct 27 (calls.json NOT edited by this run; filed for the CoS as tuesday-2026-10-27-1): Gonzales PASS $67.50 vs $90.00 entry (-25.0%, finalizes Nov 3); Fischer re-entry $141.50 vs $146.80 (-3.6%). Board tape og/x/board-latest.png and data/x-board.json regenerated (asOf 2026-10-27)."
+        },
+        {
+          "ts": "2026-10-27",
+          "msg": "Tuesday Tape sent: MailerLite campaign 202506809320146735 'Digest 2026-10-27', instant, finished 18:27:47 UTC to 3 (all owner addresses), after push 1055d87 live-verified. Rogue-send check clean (no campaign since Digest 2026-10-20); kill switch clear (no unsubscribe or spam since Oct 20; the Sep 29 records are owner aliases + the vpt test record ruled Oct 6). Oct 20 send final: 3 delivered, 3 opens, 1 click. One non-owner address sits unconfirmed (double opt-in not completed), not on the send. No ebay.com link in the email."
         }
       ],
       "log": [
@@ -5422,6 +5422,16 @@
           "gates": "audit-prices 0/47 · audit-site 0/19 · audit-terminal 0/1 (= baseline) on each",
           "liveVerified": "yes — 4 engine URLs 308 -> static card pages; world-cup + cooper-flagg footers live; IndexNow 4 -> 200",
           "note": "iw-2026-10-26-2 claims fix; Traffic engine-301 patch applied (4 pages, 747-page NAV regen); class ladder BOW25 + BOW24 universe files (data only); this commit = docs (STATE, NEEDS-MO, retention LEDGER) + pipeline, does not deploy."
+        },
+        {
+          "date": "2026-10-27",
+          "commits": [
+            "1055d87"
+          ],
+          "by": "tuesday-board (4.8)",
+          "gates": "audit-prices FAIL 0 / WARN 48 · audit-site FAIL 0 / WARN 19 · audit-terminal FAIL 0 / WARN 1 (= baseline 0/48 · 0/19 · 0/1 on a05df67; re-run on the Mac clone after git am, write-tree match 0cc1ab3)",
+          "liveVerified": "2026-10-27 ~18:22 UTC: /bowman-bangers data-prices-updated 2026-10-27 + Oct 27 tape column, board rows render 5 seats at 390 px (Playwright, 0 page errors, scrollWidth 390); /data/x-board.json asOf 2026-10-27; /og/x/board-latest.png md5 matches the pushed file",
+          "note": "Bangers re-mark Oct 27, no seat moved; Aloy's mark on his $50 line; watch tier KB G54/G56 fixes; Tuesday Tape campaign 202506809320146735 sent instant after the push."
         }
       ]
     },
