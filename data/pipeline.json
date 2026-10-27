@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-10-26",
+  "generated": "2026-10-27",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-10-12, STEP 3.9)",
   "agents": {
     "seeker": {
@@ -67,13 +67,9 @@
     "curator": {
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-10-20",
-      "nextRun": "2026-10-27",
+      "lastRun": "2026-10-27",
+      "nextRun": "2026-11-03",
       "actions": [
-        {
-          "ts": "2026-09-25",
-          "msg": "Friday release-window board read, LOCAL PATCH (Card Hub/deploy/friday-2026-09-25/, fresh clone on 62559ae, not pushed). No seat moved: 1 Fischer $156.13 · 2 Holliday $107.16 · 3 Gonzales $79.99 · 4 Florentino $70.00 · 5 Kim $131.25 (gated). Fischer's published two-run clock resolved off (printed $144.26 Sep 23). Gonzales's published under-$71 level printed a second time ($67.00 Sep 24; guide $91.25 -> $79.99) - demotion question reopened on the page, carried to the Sep 29 Tuesday read; he holds #3 on the ladder over Florentino $70.00. No verdict moved. Price-subs, hero stamp, bb-tape strip and a Sep 25 tape column written; dated \"Sep 25 read\" sentences appended to the five verdicts."
-        },
         {
           "ts": "2026-09-25",
           "msg": "R20 applied to the seat lines: the nightly eBay ask mark (\"engine $E\") no longer prints beside the sold figure; replaced with the verified live-ask count (Fischer 7, Kim 5, Gonzales 16, Holliday 25, Florentino 28). The Friday task prompt still asks for \"engine $E\" and \"PSA 10 $Y\" in every price-sub - stale against LANE-RULES R18/R20; reported. BCB26 held at 69.52 (Sep 22) per R20, no re-mark."
@@ -117,6 +113,10 @@
         {
           "ts": "2026-10-20",
           "msg": "Oct 20 board re-mark, no seat moved: Fischer $152.85 (-0.4%) · Holliday $108.75 (-1.6%) · Gonzales $70.00 (+2.2%, top) · Florentino $56.53 (-13.7%, bottom) · Aloy $55.00 (0.0%). Florentino leads Aloy by $1.53. Fischer's $115 reworded as a mark level (CoS ruling tuesday-2026-10-13-2). Bowman KB fixes on the page: Holliday Sep cards BCP-209 + Mega Box CPA-EHO, neither a 1st (G50, dated correction); Holliday rank tile #25 · Aug 15 2026 (G51a); Arquette surgery Feb 27 + not in the 2026 AFL (G51b); Florentino's undated #44 removed. Benchmark line BB26 69.90 (Oct 19, indices.json)."
+        },
+        {
+          "ts": "2026-10-27",
+          "msg": "Oct 27 board re-mark, no seat moved: Fischer $141.50 (-7.4%) · Holliday $101.75 (-6.4%) · Gonzales $67.50 (-3.6%) · Florentino $60.50 (+7.0%, top) · Aloy $50.00 (-9.1%, bottom). Aloy's mark sits on the $50.00 line in his box (not under); no unseated card has a higher 30-day mark on 3+ sales (Arquette $42.50 on 14 closest). Rank strips: 3mo cells now read the Jul 28 week (Fischer 2, Holliday 1, Aloy 4). Bowman KB G54/G56 on the page: Houston No. 54 MLB Pipeline Oct 2; Jump MLB debut May 26 2026 (not a prospect); undated #16/#14 pick tags and 'highest-ranked arm' cut; Florentino No. 32 MLB Pipeline Jul 1 2026. Benchmark line BB26 67.10 (Oct 26, indices.json)."
         }
       ],
       "log": [
@@ -129,13 +129,9 @@
     "inspector": {
       "label": "INSPECTOR",
       "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-      "lastRun": "2026-10-20",
-      "nextRun": "2026-10-27",
+      "lastRun": "2026-10-27",
+      "nextRun": "2026-11-03",
       "actions": [
-        {
-          "ts": "2026-09-28",
-          "msg": "Filed: home page publishes a false index basis in three places after the Sep 25 Bowman reset (R5-verified live)"
-        },
         {
           "ts": "2026-09-29",
           "msg": "Comps Sep 29 from the nightly sold catalog (data/feed/sold-marks.json, generated 15:08Z): 10 board + watch-tier autos marked; SCP pages not re-read by hand this run (fetch restricted in the lane sandbox)."
@@ -179,6 +175,10 @@
         {
           "ts": "2026-10-20",
           "msg": "Sold marks read Oct 20 from the nightly sold-marks.json (feed day 2026-10-20; SportsCardsPro catalog, 448 read, 0 errors). Kim: a $73.00 sale dated Oct 13 posted after the Oct 13 read; one 30-day sale, so still no 30-day mark. Signal harvest: top track-signals count 3 (Misiorowski), none at 5, no adds."
+        },
+        {
+          "ts": "2026-10-27",
+          "msg": "Sold marks read Oct 27 from the nightly data/feed/sold-marks.json (day 2026-10-27; 448 read, 0 errors). Fischer's last sale $95.00 on Oct 27 is under his $115 mark level; mark 23% above it. Kim: 90-day median $122.50 on 3 sales, one 30-day sale, still cannot rank. Signal harvest (price-data a85dc38): top track-signals count 3 (Misiorowski), none at 5, no adds."
         }
       ],
       "log": [
@@ -193,13 +193,9 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-10-26",
+      "lastRun": "2026-10-27",
       "nextRun": "2026-11-02",
       "actions": [
-        {
-          "ts": "2026-10-05",
-          "msg": "Price lane Oct 5: 6 chase index pages + indices.json + 37 ticker strips + 6 badges + og/indices.png + card pages + home re-bake staged behind three FAIL-0 gates."
-        },
         {
           "ts": "2026-10-05",
           "msg": "calls.json NOT written (not in the price lane): four trending calls re-read on dated PriceCharting solds for the record - Florentino $69.00 (30d med, n=19), Gonzales $70.00 (n=25), Fischer $155.00 (n=25), Kim $130.00 (90d med, n=5, no sale since Aug 5). Tuesday board lane owns the write."
@@ -243,6 +239,10 @@
         {
           "ts": "2026-10-26",
           "msg": "Monday lane from a fresh clone (delta 0). STEP 0: no approved audit-/polish- row to apply; 16 approved rows of other kinds, all older than 14 days, reported for the CoS."
+        },
+        {
+          "ts": "2026-10-27",
+          "msg": "Ledger reads Oct 27 (calls.json NOT edited by this run; filed for the CoS as tuesday-2026-10-27-1): Gonzales PASS $67.50 vs $90.00 entry (-25.0%, finalizes Nov 3); Fischer re-entry $141.50 vs $146.80 (-3.6%). Board tape og/x/board-latest.png and data/x-board.json regenerated (asOf 2026-10-27)."
         }
       ],
       "log": [
@@ -3314,6 +3314,33 @@
       "severity": "LOW",
       "title": "LOW: /deals method note prints first-draft thresholds (3% under, about half) while the screen runs 10%/5% under with 65%/55% floors and the pre-2010 NM-title rule.",
       "decision": "CoS desk 2026-10-26: accepted, queued -> Wed Oct 28 weekly: build-deals.mjs writes the sentence from the feed's rules block (generator change, not applied by the desk)."
+    },
+    {
+      "id": "tuesday-2026-10-27-1",
+      "status": "awaiting-cos",
+      "date": "2026-10-27",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "calls.json reads for Oct 27, not written by this lane (reads only; entries, call dates and projections untouched): v-bb-gonzales-pass read 67.50, readLabel 'sold mark $67.50 (30-day median, 8 sales)'; v-bb-fischer-buy-2 read 141.50, readLabel 'sold mark $141.50 (30-day median, 18 sales)'; readDate 2026-10-27 on both; updated 2026-10-27. Gonzales PASS finalizes Nov 3 (next Tuesday read) at -25.0% on today's mark."
+    },
+    {
+      "id": "tuesday-2026-10-27-2",
+      "status": "awaiting-cos",
+      "date": "2026-10-27",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "Prompt drift: the scheduled-task wrapper and the lane file both say an outside vendor runs @shopcardhub and pulls the tape; LANE-RULES R10 Am. 2 (Sep 25) and Am. 6 (Oct 7) say the vendor is off, the Grok bots are read-only scouts and the CoS writes posts on Mo's go. Followed LANE-RULES: tape + feed published to their fixed URLs, no X action, nobody contacted. Separate, generator: data/x-board.json seats[].card has no space between player and label ('Andrew Fischer1st Bowman Chrome Auto'), carried since at least Oct 20 (tools/build-x-board.mjs). Not fixed here (not this lane's file)."
+    },
+    {
+      "id": "tuesday-2026-10-27-3",
+      "status": "awaiting-cos",
+      "date": "2026-10-27",
+      "area": "bowman-kb",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "Bowman KB GAPS question: Gage Jump's throwing hand. The watch-tier tile said RHP while the page's Scouting Grades row says LHP; neither is in the KB. Cut from the tile Oct 27; the grades row is generated (build-grades.mjs) and left alone. Also unsourced on the page: Aloy's '#31 Pick' tag (no list/date in PREBUILD)."
     }
   ],
   "scoreboard": {
@@ -5360,7 +5387,8 @@
           "by": "Traffic Agent (unattended, Task-key traffic-agent)",
           "gates": "audit-prices 0/47 · audit-site 0/19 · audit-terminal 0/1 (= the Night Crew Oct 26 base)",
           "liveVerified": "yes — 4/4 200 ~70 s after push; sitemap 98 <loc>; card pages index,follow (filled by Traffic Oct 27)",
-          "note": "P0-D: 22 Prismatic Evolutions card pages that pass the desk's floored gate (>= 20 raw sales / 90 d and raw >= $25) added to sitemap.xml (76 -> 98) + IndexNow; board (gen 1 scoring: not rankable, slate carried) + calendar/home day roll; 0 new URLs. The 4 Pokemon engine-page 301s are a prepared patch for the attended session (claude/handoffs/cull-batch-engine301-2026-10-26.patch.txt)."        },
+          "note": "P0-D: 22 Prismatic Evolutions card pages that pass the desk's floored gate (>= 20 raw sales / 90 d and raw >= $25) added to sitemap.xml (76 -> 98) + IndexNow; board (gen 1 scoring: not rankable, slate carried) + calendar/home day roll; 0 new URLs. The 4 Pokemon engine-page 301s are a prepared patch for the attended session (claude/handoffs/cull-batch-engine301-2026-10-26.patch.txt)."
+        },
         {
           "date": "2026-10-27",
           "commits": [
