@@ -27,6 +27,7 @@
     '.pr-v.up{color:var(--gn,#2bd17e);}.pr-v.dn{color:var(--rd,#ff4d6a);}' +
     '.pr p{margin:0;font-size:16px;line-height:1.5;color:var(--tx,#d6dde4);max-width:78ch;}' +
     '.pr p b{color:var(--th,#fff);}' +
+    '.pr .pr-sub{display:block;margin-top:4px;font-size:12px;line-height:1.4;color:var(--dim,#8a97a5);}' +
     '.pr-line{font-family:var(--fm,ui-monospace,monospace);font-size:12px;color:var(--dim,#8a97a5);margin-top:6px;line-height:1.5;white-space:nowrap;}' +
     '.pr-line b{font-weight:700;}.pr-line .up{color:var(--gn,#2bd17e);}.pr-line .dn{color:var(--rd,#ff4d6a);}.pr-line .flat{color:var(--th,#fff);}' +
     '.pr-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 0;align-items:start;}' +
@@ -120,8 +121,17 @@
       .map(function (c) { return { c: c, p: (c.price / c.prevPrice - 1) * 100 }; })
       .filter(function (m) { return Math.abs(m.p) >= 1; })
       .sort(function (a, b) { return Math.abs(b.p) - Math.abs(a.p); });
+    /* Dollars first (Mo, Oct 27 2026: "-30% from base" reads like a calculation error to a collector who then sees a box at
+     * MSRP). The level IS the one-of-each basket cost ÷ divisor, so today's cost is the basket sum and the base-month cost is
+     * that sum ÷ level × 100. Only used when the stored divisor reproduces the level (within 2%); otherwise the old wording. */
+    var cost = null, costSum = 0, i2;
+    for (i2 = 0; i2 < basket.length; i2++) costSum += basket[i2].price;
+    if (basket.length >= 2 && r.divisor > 0 && level > 0 && Math.abs(costSum / r.divisor - level) / level < 0.02) {
+      cost = { now: costSum, then: costSum / level * 100, n: basket.length, asOf: day(h[n - 1].date),
+        basis: r.basis === 'ask' ? 'eBay asking prices' : 'recent sales' };
+    }
     return { n: n, level: level, wk: wk, since: since, basket: basket, name: name, started: started, baseTxt: baseTxt, sinceLbl: sinceLbl,
-      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: verdict(wk) };
+      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: verdict(wk), cost: cost };
   }
 
   function pctTxt(v, d) { return (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(d == null ? 1 : d) + '%'; }
@@ -130,6 +140,10 @@
   /* 1 · the one line under the big level */
   function line(f) {
     var wk = f.wk == null ? 'first week of tracking' : '<b class="' + cls(f.wk) + '">' + (f.wk > 0.05 ? '▲ ' : f.wk < -0.05 ? '▼ ' : '') + (Math.abs(f.wk) < 0.05 ? 'flat' : Math.abs(f.wk).toFixed(1) + '%') + '</b> this week';
+    if (f.cost && (f.n >= 2 || f.baseTxt)) {
+      var thenLbl = f.sinceLbl === 'since release' ? 'at release' : f.sinceLbl.replace(/^since /, 'in ');
+      return '<b class="flat">' + money(f.cost.now) + '</b> now · ' + money(f.cost.then) + ' ' + thenLbl + ' · ' + wk;
+    }
     var since = f.n < 2 && !f.baseTxt ? '' : ' · <b class="' + cls(f.since) + '">' + (Math.abs(f.since) < 0.5 ? 'even' : pctTxt(f.since, 0)) + '</b> ' + f.sinceLbl;
     return wk + since;
   }
@@ -139,6 +153,14 @@
     var what = esc(f.name);
     var s;
     if (f.n < 2 && !f.baseTxt) s = 'We started tracking ' + what + ' on ' + f.started + '. There is no trend yet — the first weekly move posts after the next price update.';
+    else if (f.cost) {
+      var c = f.cost, when = f.baseTxt || 'when we started tracking on ' + f.started;
+      var chg = Math.abs(f.since) < 0.5 ? 'about the same as now' : 'so they are about ' + Math.abs(f.since).toFixed(0) + '% ' + (f.since < 0 ? 'cheaper' : 'pricier') + ' now';
+      s = '<b>' + money(c.now) + '</b> buys one raw copy of each of ' + (/^\d/.test(f.name) ? 'the ' + what + ' (' + c.n + ' cards)' : 'the ' + c.n + ' ' + what) + ' today (' + c.basis + ', ' + c.asOf + '). The same cards cost about <b>' + money(c.then) + '</b> ' + when + ', ' + chg;
+      if (f.wk != null) s += '; ' + (Math.abs(f.wk) < 0.05 ? 'flat' : (f.wk < 0 ? 'down ' : 'up ') + Math.abs(f.wk).toFixed(1) + '%') + ' this week.';
+      else s += '.';
+      s += '<span class="pr-sub">Singles only, not sealed boxes or packs.</span>';
+    }
     else {
       var vs = f.baseTxt ? 'than ' + f.baseTxt : 'than when we started on ' + f.started;
       s = what + ' are worth <b>' + (Math.abs(f.since) < 0.5 ? 'about the same' : 'about ' + Math.abs(f.since).toFixed(0) + '% ' + (f.since < 0 ? 'less' : 'more')) + '</b> ' + vs;
@@ -192,7 +214,8 @@
     var out = [];
     var key = 'How to read the big number: it started at <b>100</b>. ';
     if (f.n < 2 || Math.abs(f.since) < 0.5) key += 'Above 100 means these cards got pricier; below 100 means cheaper.';
-    else key += '<b>' + f.level.toFixed(2) + '</b> means these cards cost about ' + Math.abs(f.since).toFixed(0) + '% ' + (f.since < 0 ? 'less' : 'more') + ' than on day one.';
+    else key += '<b>' + f.level.toFixed(2) + '</b> means these cards cost about ' + Math.abs(f.since).toFixed(0) + '% ' + (f.since < 0 ? 'less' : 'more') + ' than on day one.' +
+      (f.cost ? ' It is the same one-of-each cost (' + money(f.cost.now) + ' today vs ' + money(f.cost.then) + ' then), scaled so the base month is 100.' : '');
     out.push('<p class="pr-key">' + key + '</p>');
     var fc = finishCost(k, r);
     if (fc) out.push('<p class="pr-fc" data-fc="' + fc.sum.toFixed(2) + '" data-fc-n="' + fc.n + '" data-fc-asof="' + esc(fc.asOf) + '">' + fc.html + '</p>');
