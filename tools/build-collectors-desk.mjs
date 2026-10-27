@@ -72,6 +72,11 @@ function card(id) {
   return { ...c, tk, set: meta.set, setName: meta.name, page: meta.page, ticker: meta.ticker, theme: meta.theme, ed, window: meta.window || 30, gr, gAsOf: g.day || gr.asOf || null, nCards: cards.length, hist };
 }
 
+// Latest PSA 10 sale at a major auction house (Mo, Oct 27 2026: "Doesn't PSA collect, Goldin … have this information? We should
+// have it and not show it empty"). data/house-sales.json is curated from the house's own lot page / sales history; it prints as its
+// own labeled line under the eBay ladder — never pooled into a median, never a mark. Rows older than 24 months are not printed.
+const HOUSE = (() => { try { return JSON.parse(rd("data/house-sales.json")).rows || {}; } catch { return {}; } })();
+const houseRow = (id) => { const r = HOUSE[id]; if (!r || !r.price || !r.date || !r.house || !r.src) return null; return (Date.now() - Date.parse(r.date + "T12:00:00Z")) / 864e5 > 730 ? null : r; };
 const money = (x) => x == null ? "" : x >= 1000 ? "$" + Math.round(x).toLocaleString("en-US") : "$" + x.toFixed(2);
 const dateLong = (d) => { if (!d) return ""; const [y, m, dd] = d.split("-").map(Number); return new Date(Date.UTC(y, m - 1, dd)).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }); };
 const dateShort = (d) => dateLong(d).replace(/, \d{4}$/, "");
@@ -95,7 +100,8 @@ function gradeCell(k, label, r, c) {
     const lead = r.n === 2 ? "last of 2 dated sales" : "1 dated sale";
     return `<div class="lad-cell lad-na"><div class="lad-k">${label}</div><div class="lad-v">No mark</div><div class="lad-s">${lead}, ${dateLong(r.last.d)}: ${money(r.last.p)}</div></div>`;
   }
-  return `<div class="lad-cell lad-na"><div class="lad-k">${label}</div><div class="lad-v">${k === "tag10" ? "No TAG sale" : "No verified sale"}</div><div class="lad-s">${k === "tag10" ? "TAG is a small share of graded volume" : "no title-verified sale in 90 days"}</div></div>`;
+  const hs = k === "psa10" && houseRow(c.id);
+  return `<div class="lad-cell lad-na"><div class="lad-k">${label}</div><div class="lad-v">${k === "tag10" ? "No TAG sale" : hs ? "No eBay mark" : "No verified sale"}</div><div class="lad-s">${k === "tag10" ? "TAG is a small share of graded volume" : hs ? "trades at auction houses — latest sale below" : "no title-verified sale in 90 days"}</div></div>`;
 }
 
 function printBlock(slug, p, multi) {
@@ -138,6 +144,8 @@ function printBlock(slug, p, multi) {
     const parts = [[1, "raw"], [3, "PSA 10"]].map(([i, l]) => (!liquid[i] || pct(i) == null ? null : `${l} ${fmt(pct(i))}`)).filter(Boolean);
     return parts.length ? `<span class="lad-pm" title="PriceCharting's monthly estimate for this card, ${mo(a[0])} vs ${mo(b[0])}">Past month: ${parts.join(" · ")} <i>(${mo(a[0])}→${mo(b[0])}, PriceCharting monthly)</i></span>` : "";
   })();
+  const hr = houseRow(c.id);
+  const house = hr ? `<div class="lad-house"><span class="lh-k">Auction house</span><span class="lh-v">Latest PSA 10 sale: <b>${money(hr.price)}</b> · ${esc(hr.house)} · ${dateLong(hr.date)} <a href="${attr(hr.src)}" target="_blank" rel="nofollow noopener">source&nbsp;&#8599;</a></span><span class="lh-s">${hr.bp ? "Price with buyer's premium, as the house reports it. " : ""}One sale, not part of the eBay figures above.${hr.note ? " " + esc(hr.note.charAt(0).toUpperCase() + hr.note.slice(1)) + "." : ""}</span></div>` : "";
   const rank = c.rank ? `<span class="lad-rank">#${c.rank} of ${c.nCards} by weight in <a href="${c.page}">${esc(c.ticker)}</a></span>` : `<span class="lad-rank">tracked outside the <a href="${c.page}">${esc(c.ticker)}</a> level</span>`;
   const imgName = `${c.name} #${c.num} ${c.set.replace(/^Pokémon TCG /, "")}`;
   return `
@@ -155,7 +163,7 @@ function printBlock(slug, p, multi) {
             ${gradeCell("psa9", "PSA 9", c.gr.psa9, c)}
             ${gradeCell("psa10", "PSA 10", c.gr.psa10, c)}
             ${gradeCell("tag10", "TAG 10", c.gr.tag10, c)}
-          </div>
+          </div>${house}
           <div class="print-links">
             <a class="lk lk-raw" href="${raw}" target="_blank" rel="noopener sponsored" ${track(cid)}>Raw on eBay &rarr;</a>
             <a class="lk lk-10" href="${p10}" target="_blank" rel="noopener sponsored" ${track(cid + "-psa10")}>PSA 10 &rarr;</a>
@@ -412,6 +420,10 @@ const DESK_CSS = (c) => `
     .print-meta { display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:6px; font-family:var(--fm); font-size:11px; letter-spacing:.5px; color:var(--text-dim); }
     .print-meta b { color:var(--text-head); }
     .print-meta .lad-pm i { font-style:normal; opacity:.7; } .print-meta b.pm-up { color:var(--green,#00e07a); } .print-meta b.pm-dn { color:var(--red,#ff2e55); }
+    .lad-house { margin-top:8px; padding:9px 12px; background:var(--bg2); border:1px dashed var(--border2,var(--border)); border-left:2px solid #d4af37; font-size:13px; color:var(--text); display:flex; flex-wrap:wrap; gap:4px 12px; align-items:baseline; }
+    .lad-house .lh-k { font-family:var(--fm); font-size:10px; letter-spacing:1.2px; text-transform:uppercase; color:#d4af37; }
+    .lad-house b { color:var(--text-head); font-size:15px; } .lad-house a { color:var(--text-dim); white-space:nowrap; }
+    .lad-house .lh-s { flex-basis:100%; font-size:11px; color:var(--text-dim); }
     .ladder { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:8px; }
     .lad-cell { background:var(--bg2); border:1px solid var(--border); padding:10px 12px 9px; min-width:0; }
     .lad-raw { border-top:2px solid var(--accent); }
