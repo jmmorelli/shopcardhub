@@ -87,6 +87,15 @@
     var wk = prevWk ? (last.level / prevWk.level - 1) * 100 : null;
     var base = v.baseDate ? mlabel(v.baseDate).replace('’', '20') : dstr(h[0].date);
     el.classList.toggle('dn', last.level < 100);
+    /* Site Sweep Oct 27 (R43 / DESIGN-DIRECTIVE §3): on pages with the "How this index works" toggle, the first screen keeps a plain,
+       dated legend; the base month, log-scale note and the since-base/this-week stat line fold into the toggle (nothing removed). */
+    var how0 = document.querySelector('details.pr-how > .pr-how-in');
+    var capMethod = '<b>' + esc(tk) + '</b> · 100 = ' + esc(base) + (v.baseRule === 'release' ? (String(v.releaseDate || '').slice(0, 7) === v.baseDate ? ' (release month)' : ' (first month after release)') : v.baseRule ? ' (first reliable month)' : '') + ' · log scale';
+    var capStat = 'since ' + (v.baseRule === 'release' ? 'release' : 'base') + ' <b>' + (since > 0 ? '+' : '') + num(since, 2) + '%</b> · this week <b>' + (wk == null ? '—' : (wk > 0 ? '+' : '') + num(wk, 1) + '%') + '</b> · last ' + esc(dstr(last.date));
+    if (how0) {
+      el.innerHTML = chart(rc, h, tk, v) + '<div class="ic-cap"><span>' + (rc.length ? '<i class="ic-k"></i> monthly history · <i class="ic-k ic-kl"></i> recent sales since ' + esc(dstr(h[0].date)) + ' · ' : 'recent sales · ') + 'latest ' + esc(dstr(last.date)) + '</span></div>';
+      if (!how0.querySelector('.ic-stat')) { var ps = document.createElement('p'); ps.className = 'pr-stamp ic-stat'; ps.innerHTML = 'Chart: ' + capMethod + (rc.length ? ' · dashed = monthly history, solid = our marks since ' + esc(dstr(h[0].date)) : '') + ' · ' + capStat + '.'; how0.insertBefore(ps, how0.firstChild); }
+    } else
     el.innerHTML = chart(rc, h, tk, v) + '<div class="ic-cap"><span><b>' + esc(tk) + '</b> · 100 = ' + esc(base) + (v.baseRule === 'release' ? (String(v.releaseDate || '').slice(0, 7) === v.baseDate ? ' (release month)' : ' (first month after release)') : v.baseRule ? ' (first reliable month)' : '') + ' · log scale' +
       (rc.length ? ' · <i class="ic-k"></i> monthly history · <i class="ic-k ic-kl"></i> our marks since ' + esc(dstr(h[0].date)) : '') + '</span><span>since ' + (v.baseRule === 'release' ? 'release' : 'base') + ' <b>' + (since > 0 ? '+' : '') + num(since, 2) + '%</b> · this week <b>' + (wk == null ? '—' : (wk > 0 ? '+' : '') + num(wk, 1) + '%') + '</b> · last ' + esc(dstr(last.date)) + '</span></div>';
     /* the base/method note: behind "How this index works" when the page has the toggle (P0-C, Oct 23 2026), else under the chart */

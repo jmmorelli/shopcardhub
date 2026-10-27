@@ -774,8 +774,8 @@ th.sorted { color:var(--ac); }
 <div class="eyebrow">▮ Set Indices · How each set we track is doing, in one number</div>
 <h1>Every Set We Track. One Number Each.</h1>
 <p style="font-size:16px;line-height:1.55;margin:6px 0 10px;color:var(--th,#fff);max-width:70ch;">Every index started at <b>100</b>. Above 100, the cards in that index got pricier; below 100, cheaper. Click any row to see the cards.</p>
-<div class="subline">Every live index is built from real sold prices, each dated, and every card behind them is on its page. The screener ranks every live ticker by its 1-week, 1-month and 3-month move; the sector boards below carry the detail. An index measures prices; it doesn't tell you what to buy.</div>
-<div class="asof" id="asof">loading marks…</div>
+<div class="subline">Every live index is built from real sold prices, each dated, and every card behind them is on its page. The first table ranks every live set by its 1-week, 1-month and 3-month move; the boards below carry the detail. An index measures prices; it doesn't tell you what to buy.</div>
+<div class="asof" id="asof">loading prices…</div>
 </div>
 </div>
 <!-- SCREENER: every live ticker ranked by 1W / 1M / 3M, sortable (Oct 14 2026). Rendered from data/indices.json below. -->
@@ -1048,7 +1048,7 @@ function horizon(hist, days) { var h = hz({ history: hist }, days >= 85 ? 'q' : 
       var lab = { w: '1 week', m: '1 month', q: '3 months' };
       var btn = function (k, txt) { return '<button type="button" data-k="' + k + '"' + (scrKey === k ? ' class="on"' : '') + '>' + txt + '</button>'; };
       scrEl.innerHTML =
-        '<div class="scr-head"><h2>Momentum Screener &middot; ' + SCR.length + ' live tickers, ranked by ' + lab[scrKey] + '</h2>' +
+        '<div class="scr-head"><h2>All ' + SCR.length + ' live sets, ranked by ' + lab[scrKey] + '</h2>' +
         '<div class="scr-sort"><span>Rank by</span>' + btn('w', '1W') + btn('m', '1M') + btn('q', '3M') + '</div></div>' +
         '<div class="tbl-scroll"><table><thead><tr><th>#</th><th>Ticker</th><th class="hides">Level</th>' +
         '<th' + (scrKey === 'w' ? ' class="sorted"' : '') + '>1W</th><th' + (scrKey === 'm' ? ' class="sorted"' : '') + '>1M</th><th' + (scrKey === 'q' ? ' class="sorted"' : '') + '>3M</th>' +
@@ -1065,7 +1065,7 @@ function horizon(hist, days) { var h = hz({ history: hist }, days >= 85 ? 'q' : 
   } catch (e3) {}
   /* nav deep links (/indices#classic etc., Sep 29): sections render after load, so scroll once they exist */
   if (/^#(screener|pokemon|classic|editions|baseball)$/.test(location.hash)) { var tgt = document.getElementById(location.hash.slice(1)); if (tgt) tgt.scrollIntoView(); }
-  document.getElementById('asof').textContent = latest ? ('marks as of ' + latest + ' · chase indices update Mondays, whole-set indices Monday and Thursday · levels load live from data/indices.json') : 'no marks yet';
+  document.getElementById('asof').textContent = latest ? ('Prices as of ' + (function (d) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d); return m ? ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1] : d; })(String(latest)) + ' · chase sets update Mondays, whole sets Monday and Thursday') : 'no prices yet';
 }).catch(function() {
   document.getElementById('asof').textContent = 'index data unavailable right now — try a refresh';
 });
