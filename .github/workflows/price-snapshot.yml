@@ -134,8 +134,19 @@ jobs:
           # Classic Pokémon sets (24 tickers) moved to their own job on Oct 8 2026: .github/workflows/classic-marks.yml
           # (Mon/Thu 19:30 UTC, one ticker per call). Inside this step the group timed out at 40 min (run #74); it needs ~2-3 h.
           if [ "$(date -u +%u)" = "1" ]; then
-            if timeout 50m node tools/build-card-ladder.mjs --workers 3 --pause 1400; then :
-            else echo "::warning::graded ladder failed - card pages keep the previous read"; git checkout -- data/cards; fi
+            # Oct 26 2026 (IW Oct 26 F1, Mo attended): a failed or timed-out ladder no longer runs `git checkout -- data/cards`.
+            # That reverted the Monday raw card files the TH26/SV151/SSP24/MEG25 marks wrote above, and threw away every
+            # ticker the ladder had already finished (g-*.json went Oct 4 -> Oct 26 with no automated write). Each ticker's
+            # g-/h- file is written whole after its read, so finished tickers are kept; only unreadable files are restored.
+            if timeout 50m node tools/build-card-ladder.mjs --workers 3 --pause 1400; then
+              echo "graded ladder: OK ($(date -u +%F))" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "::error::graded ladder failed or timed out - finished tickers kept, unfinished ones keep the previous read"
+              echo "graded ladder: FAILED ($(date -u +%F)) - see the error annotation" >> "$GITHUB_STEP_SUMMARY"
+              for f in $(git diff --name-only -- 'data/cards/g-*.json' 'data/cards/h-*.json'); do
+                node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" "$f" 2>/dev/null || git checkout -- "$f"
+              done
+            fi
           fi
           # iw-2026-10-08-1 (CoS, Oct 8): a group's failure restores ONLY its own ticker keys (merge-ticker-keys.mjs), never the
           # whole file - on Oct 8 one failing group's `git checkout -- data/indices.json` erased every earlier group's mark
