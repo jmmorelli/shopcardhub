@@ -865,3 +865,10 @@ Key-event rate: **organic 7.79% 7 d / 10.98% 28 d** beside blended 3.81% / 5.20%
 
 - **Oct 25 Traffic Agent:** World Cup leftovers `d69fae4` + pushLog `ae58f2b` + STATE `0427f41`; gates 0/45 · 0/19 · 0/1; organic 7 d 48. Record `claude/traffic/2026-10-25.md`.
 - **Oct 24 Traffic Agent:** E6 r8 ×3, `37b867c`; gates 0/44 · 0/19 · 0/1; organic 7 d 45. Record `claude/traffic/2026-10-24.md`.
+
+## Archive pass 2026-10-28 (Goal League Commissioner; verbatim, moved from STATE.md to keep it under 25 KB)
+
+## NOW — 2026-10-26 (Traffic Agent, unattended): **22 PRIS25 card pages added to the sitemap** (76 → 98, desk's floored gate) + IndexNow. 4 Pokémon engine-page 301s **prepared, not applied** (after the Night Crew Oct 26 deploy): `claude/handoffs/cull-batch-engine301-2026-10-26-note.md`. Record `claude/traffic/2026-10-26.md`.
+
+- **Oct 26 Traffic Agent:** gen-1 scoring not rankable (A 28 / C 11 / B 1), slate carried; sitemap +22 PRIS25 card pages; engine-301 patch prepared; no E6 round (all 7 queries → `/bowman-football`, already answered); Bing page lag = API, not tool. Gates 0/47 · 0/19 · 0/1; organic 7 d 47. Record `claude/traffic/2026-10-26.md`.
+- **Oct 26 Night Crew deploy (07:52 PT):** NC patch `234d0a9c` applied clean on `490b42c` (am -3); regen 599 static card pages (572 index,follow) across 34 tickers + NAV 751 + `js/card-pages.json` + home (SK03 held, engine-signal label, CLS reserve) + sitemap lastmod; gates 0/47 · 0/19 · 0/1 = base. Record `claude/night-crew/log-2026-10-25.md`.
