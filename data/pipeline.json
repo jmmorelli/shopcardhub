@@ -5459,6 +5459,17 @@
           "gates": "audit-prices 0/49 · audit-site 0/19 · audit-terminal 0/1 (= origin/main 7b01ae4; 49 = stale-stamp aging, no page touched)",
           "liveVerified": "pending (curl after push)",
           "note": "Goal League Season 1 setup: data/goal-league.json registry (5 agents, 37 pages + /llms.txt, pre-season claims granted 2026-10-28, baselines from GA4 day 2026-10-26), tools/goal-league/score.mjs (weekly Monday reads, bot-country cleaning, --check), LANE-RULES R27 Am. 3 + lane table row, sitemap lastmod refresh (19 URLs). 0 new URLs, no page HTML changed."
+        },
+        {
+          "date": "2026-10-28",
+          "commits": [
+            "1a4c2f26"
+          ],
+          "by": "CoS weekly (unattended, Task-key cos-weekly-2026-10-28)",
+          "gates": "audit-prices 0/49 · audit-site 0/19 · audit-terminal 0/1 (Mac, --feed data/feed); cloud --run-tests on identical tree 08efa875: interaction suite 153 scenarios FAIL 0",
+          "liveVerified": "2026-10-28 ~18:40Z curl: card page og pokemon.png?v=20261028, js/home-v2.js a[data-r], x-board.json 'Fischer 1st'; IndexNow 99 → 200",
+          "note": "Night Crew Oct 28 patch (e6391ddb, not shipped by the 07:52 deploy) applied from the Project patch + regen; x-board <br> word break; ga4-snapshot day label",
+          "rollback": "git revert 1a4c2f26"
         }
       ]
     },

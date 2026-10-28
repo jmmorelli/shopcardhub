@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-10-28 — weekly (11:05 run, verified live). One thing to know, nothing to click
+
+- **The tape disagrees with the plan (§0.3), no action asked:** the Oct 19 PIVOT's own Nov 19 test needs two of four (indexed > 3, organic week > 48, returning > 6, clicks per 100 clean ≥ 15.7). Today it is **one of four**: Google indexed fell 3 → **1**, organic week 43 → **37**, clicks/100 clean **7.4**; only returning (10) passes. The Reddit ad: 125 visits, 2 that counted (1.6% vs 10.8% organic). The CoS keeps building to the plan and reads both on Nov 1 (ad) and Nov 19 (PIVOT); if you want to change course before then, say so in a CoS chat.
+- Carried, still yours: **TAG payment info** (Nov 1) · **BCB26 video** · optional EPN CSVs Oct 13–27 into `Card Hub/epn/` (newest pair ends Oct 12) · optional "go" on the drafted X posts · optional Grok scout paste (Oct 27 block).
+- *FYI, not a sign-in request:* MailerLite showed its login page in Browser 1 this morning, so the subscriber count came from GA4 + the Oct 27 Tape send (3). Nothing waits on it.
+
+*Not yours:* the Night Crew's Wednesday fixes didn't ship at 07:52; the weekly shipped them at ~11:40 (`1a4c2f2`).
+
 ## 2026-10-27 — desk (15:12 fire, verified live). Nothing new is required; one optional 5-minute paste
 
 - **Optional — Grok scouts, in the Grok app (~5 minutes, only if it wasn't done in today's chat):** the five pastes in `claude/grok/scouts-plan-2026-10-27.md` § "Grok side" — each scout reads its asks file first; Ivan reviews the pages the league ships; the Editor says so in chat when X reads fail; the SEO & AEO weekly adds the 5 new questions; pause Coach, Auditor, Grok Bot and the Content room. (The Creator and Seeker already answered today's asks, so two of them may be done.)
