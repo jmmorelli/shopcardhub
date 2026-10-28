@@ -72,6 +72,6 @@ ${END}`;
 const a = html.indexOf(START), b = html.indexOf(END);
 if (a === -1 || b === -1) throw new Error("release-calendar.html: RELEASES markers missing");
 let next = html.slice(0, a) + block + html.slice(b + END.length);
-next = next.replace(/<div class="rc-meta" data-rc-asof>[^<]*<\/div>/, `<div class="rc-meta" data-rc-asof data-prices-updated="${esc(TODAY)}">${week.length + month.length + later.length} dated releases ahead · ${past.length} in the last 30 days · baked ${esc(TODAY)}</div>`);
+next = next.replace(/<div class="rc-meta" data-rc-asof[^>]*>[^<]*<\/div>/, `<div class="rc-meta" data-rc-asof data-prices-updated="${esc(TODAY)}">${week.length + month.length + later.length} dated releases ahead · ${past.length} in the last 30 days · baked ${esc(TODAY)}</div>`);
 if (next !== html) { if (CHECK) { console.log("check: release-calendar.html stale"); process.exit(1); } fs.writeFileSync(pageFile, next); console.log(`release-calendar: ${week.length} this week · ${month.length} next 30d · ${later.length} later · ${past.length} just released (today ${TODAY})`); }
 else console.log("release-calendar: unchanged");
