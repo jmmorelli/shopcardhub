@@ -11,6 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-10-28 — desk (15:12 fire, verified live). Nothing new needs you
+
+- Carried, still yours: **TAG payment info** (Nov 1) · **BCB26 video** · optional EPN CSVs Oct 13–27 into `Card Hub/epn/` (newest pair still ends Oct 12, checked today) · optional "go" on the drafted X posts (X daily found nothing scheduled this morning).
+- Closed today: **Grok scout paste** — you did it Oct 27 (~12:00 PT, Ivan ~21:15); Ivan's first weekday file landed this morning, so it worked.
+
+*Not yours:* two Charizard "auction house" sale lines (and one Lugia line) came off the Collector's Desks because their own source pages showed a different sale; the release calendar's header date is fixed.
+
 ## 2026-10-28 — weekly (11:05 run, verified live). One thing to know, nothing to click
 
 - **The tape disagrees with the plan (§0.3), no action asked:** the Oct 19 PIVOT's own Nov 19 test needs two of four (indexed > 3, organic week > 48, returning > 6, clicks per 100 clean ≥ 15.7). Today it is **one of four**: Google indexed fell 3 → **1**, organic week 43 → **37**, clicks/100 clean **7.4**; only returning (10) passes. The Reddit ad: 125 visits, 2 that counted (1.6% vs 10.8% organic). The CoS keeps building to the plan and reads both on Nov 1 (ad) and Nov 19 (PIVOT); if you want to change course before then, say so in a CoS chat.

@@ -893,3 +893,8 @@ Key-event rate: **organic 7.79% 7 d / 10.98% 28 d** beside blended 3.81% / 5.20%
   **NEEDS-MO:** new block (Grok scout paste, optional); GitHub token closed; carried TAG Nov 1, BCB26 video, EPN CSVs, X "go".
   **Stumbles:** the BOW23 Project read again came back inline (~110 KB) — that is why the copy was deferred rather than re-typed. First QA pass counted aborted-beacon console lines as errors; re-checked with `requestfailed` (all aborted by us). Archive pass moved the Oct 26 desk entry (4th-newest) and the Oct 21/23 NOW blocks earlier than 7 days, pointer kept.
 
+
+
+## Moved by the desk 2026-10-28 (STATE size pass)
+
+## NOW — 2026-10-21 (Mo, ~13:30 PT, GSC by hand after the CoS resubmitted the sitemap): **GSC indexing requested on 5 pages** — `/bowman-chrome-baseball-2026`, `/bowman-football`, `/best-hobby-boxes-2026`, `/indices`, `/scarlet-violet-151-index` (all "Indexing requested · priority crawl queue"). Sitemap resubmitted Oct 21 (was "Temporary processing error" on the page detail). **Do not re-request these before Nov 4** (R40). Read URL inspection on all 5 at the Oct 28 weekly; the indexed count goes in the top block. (The CoS session's own request click was refused by the permission layer after the first.)
