@@ -36,6 +36,9 @@ import { createRequire } from "node:module";
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PR = createRequire(import.meta.url)(path.join(REPO, "js/plain-read.js"));
 const CHECK = process.argv.includes("--check");
+// Oct 28 (Night Crew, BH P1): at 1440 the h1 + levelbox sat 2 px past the row while Barlow Condensed 900 was still
+// loading, so the levelbox wrapped under the title and jumped 84 px up when the font landed (CLS 0.17–0.30 on PRIS25).
+// HERO_CSS keeps the mast on one row from 761 px (nowrap, 12 px gap, title may shrink).
 
 const PAGES = ["pitch-black-index", "chaos-rising-index", "ascended-heroes-index", "prismatic-evolutions-index", "destined-rivals-index", "phantasmal-flames-index"];
 /* P0-E (Oct 24 2026): a set with a checklist worksheet (tools/build-checklist-page.mjs CONFIG) gets the third, full-width link
@@ -60,7 +63,7 @@ const WORKS_S = "<!-- PLAIN-READ:WORKS:START -->", WORKS_E = "<!-- PLAIN-READ:WO
 const FOLD_OPEN = "<!-- PLAIN-READ:FOLD -->", FOLD_CLOSE = "<!-- PLAIN-READ:FOLD-END -->";
 const idx = JSON.parse(fs.readFileSync(path.join(REPO, "data/indices.json"), "utf8"));
 
-const HERO_CSS = `<style id="hero-cf-css">.mast.hero-cf{align-items:flex-end}.mast.hero-cf .levelbox .pr-line{text-align:right;margin-top:8px}.pr-ti .hero-card-cap{display:none}@media(max-width:760px){.mast.hero-cf{display:block}.mast.hero-cf .levelbox{text-align:left;margin-top:12px}.mast.hero-cf .levelbox .pr-line{text-align:left}}</style>`;
+const HERO_CSS = `<style id="hero-cf-css">.mast.hero-cf{align-items:flex-end}.mast.hero-cf .levelbox .pr-line{text-align:right;margin-top:8px}.pr-ti .hero-card-cap{display:none}@media(min-width:761px){.mast.hero-cf{flex-wrap:nowrap;column-gap:12px}.mast.hero-cf>div:first-child{min-width:0}.mast.hero-cf .levelbox{flex:0 0 auto}}@media(max-width:760px){.mast.hero-cf{display:block}.mast.hero-cf .levelbox{text-align:left;margin-top:12px}.mast.hero-cf .levelbox .pr-line{text-align:left}}</style>`;
 
 function between(html, s, e) { const a = html.indexOf(s); if (a === -1) return null; const b = html.indexOf(e, a); if (b === -1) throw new Error(`${s} without ${e}`); return { a, b: b + e.length, inner: html.slice(a, b + e.length) }; }
 function replaceBlock(html, s, e, blk) { const m = between(html, s, e); if (!m) throw new Error(`${s} missing`); return html.slice(0, m.a) + blk + html.slice(m.b); }
@@ -125,6 +128,8 @@ function bake(html) {
   else throw new Error(`${tk}: read slot missing`);
   // 3 · the tiles
   html = replaceBlock(html, TILES_S, TILES_E, `${TILES_S}\n${parts.tiles}\n${TILES_E}`);
+  // 0 · the hero CSS travels with this tool (Night Crew Oct 28: desktop wrap fix → kept current on every run, not only at migration)
+  html = html.replace(/<style id="hero-cf-css">[\s\S]*?<\/style>/, () => HERO_CSS);
   // 4 · the toggle's data-driven text
   html = replaceBlock(html, WORKS_S, WORKS_E, `${WORKS_S}${parts.works}${WORKS_E}`);
   return { tk, html };

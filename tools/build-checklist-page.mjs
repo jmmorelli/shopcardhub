@@ -54,19 +54,19 @@ const CONFIG = {
   DR25: {
     slug: "destined-rivals-checklist", shell: "destined-rivals-index", setFile: "destined-rivals", poke: true, accent: "var(--iac)",
     ticker: "DR25", cat: "pokemon", sacat: SACAT_TCG, customid: "cl-destined-rivals",
-    name: "Destined Rivals", family: "Pokémon", crumb: "DR25", indexHref: "/destined-rivals-index", guideHref: "/prismatic-evolutions-vs-destined-rivals", guideLabel: "Prismatic Evolutions vs Destined Rivals",
+    name: "Destined Rivals", family: "Pokémon", crumb: "DR25", indexHref: "/destined-rivals-index", guideHref: "/prismatic-evolutions-index", guideLabel: "Prismatic Evolutions vs Destined Rivals",
     singlesQ: "pokemon Destined Rivals -box -case -lot -break -etb -bundle -booster", chaseCards: true, refresh: "every week",
     scopeNote: "every card pokemontcg.io lists for the set — the 182-card printed set plus the 62 secret rares, #183–244",
-    markNote: "Today the numbers cover the secret rares (#183–244, the cards the DR25 index tracks). Base-set cards (#1–182) show “no recent sales” and stay out of the range until we track them.",
+    markNote: "Today the numbers cover the secret rares (#183–244, the cards the DR25 index tracks). We don’t track the base-set cards (#1–182) yet, so they show “no recent sales” and stay out of the range.",
   },
   PRIS25: {
     slug: "prismatic-evolutions-checklist", shell: "prismatic-evolutions-index", setFile: "prismatic-evolutions", poke: true, accent: "var(--iac)",
     ticker: "PRIS25", cat: "pokemon", sacat: SACAT_TCG, customid: "cl-prismatic-evolutions",
-    name: "Prismatic Evolutions", family: "Pokémon", crumb: "PRIS25", indexHref: "/prismatic-evolutions-index", guideHref: "/prismatic-evolutions-vs-destined-rivals", guideLabel: "Prismatic Evolutions vs Destined Rivals",
+    name: "Prismatic Evolutions", family: "Pokémon", crumb: "PRIS25", indexHref: "/prismatic-evolutions-index", guideHref: "/prismatic-evolutions-index", guideLabel: "Prismatic Evolutions vs Destined Rivals",
     singlesQ: "pokemon Prismatic Evolutions -box -case -lot -break -etb -bundle -booster", chaseCards: true, refresh: "every week",
     cardPageRe: /Prismatic Evolutions Price/, cardPageNumRe: /#(\d{1,3}) Prismatic Evolutions Price/,
     scopeNote: "every card pokemontcg.io lists for the set — the 131-card printed set plus the 49 secret rares, #132–180",
-    markNote: "Today the numbers cover the secret rares (#132–180, the cards the PRIS25 index tracks). Base-set cards (#1–131) show “no recent sales” and stay out of the range until we track them.",
+    markNote: "Today the numbers cover the secret rares (#132–180, the cards the PRIS25 index tracks). We don’t track the base-set cards (#1–131) yet, so they show “no recent sales” and stay out of the range.",
   },
 };
 
@@ -186,7 +186,11 @@ ${rowsHtml}
 <!-- CHECKLIST:END -->
   <details class="clp-how" id="checklist-method"><summary>How the estimate works</summary><div>
     <p><b>The count</b> is simply the rows you tick as Have, out of the ${total} cards on this sheet (${esc(c.scopeNote)}).</p>
-    <p><b>The value is a range on purpose.</b> Each card&rsquo;s number is our latest <b>recent-sales mark</b> for the grade you picked &mdash; the median of dated eBay sales, the same figure the <a href="${c.indexHref}">${esc(c.ticker)} index page</a> shows, refreshed ${esc(c.refresh || "every week")}. We add those up for your Have rows (times quantity) and show <b>10% under to 10% over</b> that sum, with the date of the newest sale in it. Cards with no recent sales &mdash; or no recent sales in the grade you picked &mdash; say so and are left out, and the bar tells you how many were left out. Nothing here is an appraisal or an offer.${c.markNote ? " " + esc(c.markNote) : ""}</p>
+    <p><b>The value is a range on purpose.</b> ${c.cat === "pokemon"
+      // Night Crew Oct 28 (Retention 10-25 (a), IW Oct 26 + iw-2026-10-12-disagree-1): Pokémon raw rows are PriceCharting's
+      // ungraded sold value (data/cards/<tk>.json "raw"), dated by our update day, not a median of eBay sales with a sale date.
+      ? `A raw card&rsquo;s number is PriceCharting&rsquo;s ungraded sold value, the same figure the <a href="${c.indexHref}">${esc(c.ticker)} index page</a> shows. We update it ${esc(c.refresh || "every week")}, and the date beside it is the day we last did. A graded number is the median of dated eBay sales in that grade. We add those up for your Have rows (times quantity) and show <b>10% under to 10% over</b> that sum. Cards we have no number for, or none in the grade you picked, say so and are left out, and the bar tells you how many.`
+      : `Each card&rsquo;s number is our latest <b>recent-sales mark</b> for the grade you picked &mdash; the median of dated eBay sales, the same figure the <a href="${c.indexHref}">${esc(c.ticker)} index page</a> shows, refreshed ${esc(c.refresh || "every week")}. We add those up for your Have rows (times quantity) and show <b>10% under to 10% over</b> that sum, with the date of the newest sale in it. Cards with no recent sales &mdash; or no recent sales in the grade you picked &mdash; say so and are left out, and the bar tells you how many were left out.`} Nothing here is an appraisal or an offer.${c.markNote ? " " + esc(c.markNote) : ""}</p>
     <p><b>Saved on this device.</b> Ticks live in your browser (no account). Have also puts the card in <a href="/watchlist">your Vault</a> as My cards and Want as Hunting, so the two agree; untick and it leaves. <b>Export CSV</b> keeps a copy; <b>Import CSV</b> brings it back on another device or browser &mdash; it adds to what is ticked here and never clears anything. <b>Still need</b> lists every card you have not ticked, each with its eBay search.</p>
     <p><a href="/how-prices-work">How prices work &rarr;</a></p>
   </div></details>

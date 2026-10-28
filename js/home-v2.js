@@ -188,21 +188,27 @@
       return PAGES.filter(function (c) { for (var i = 0; i < tk.length; i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; }).sort(function (a, b) { return a.u.length - b.u.length; }).slice(0, 3); }
     function cards(q) { q = nk(q); if (!CARDS || q.length < 2) return []; var tk = q.split(' ');
       return CARDS.filter(function (c) { for (var i = 0; i < tk.length; i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
-        .sort(function (a, b) { var sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1; return sa - sb || (b.p || 0) - (a.p || 0); }).slice(0, 7); }
+        // Night Crew Oct 28 (BH/FTV): a card with its own static page (priced, dated, indexable) ranks above a /card?id= row;
+        // "umbreon" put the static Umbreon ex #161 page 5th behind four query pages.
+        .sort(function (a, b) { var sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1, pa = SPAGE[a.id] ? 0 : 1, pb = SPAGE[b.id] ? 0 : 1; return sa - sb || pa - pb || (b.p || 0) - (a.p || 0); }).slice(0, 7); }
     function sets(q) { q = nk(q); if (!q) return []; var tk = q.split(' '); return SETS.filter(function (s) { for (var i = 0; i < tk.length; i++) if (s.n.indexOf(tk[i]) < 0) return false; return true; }).slice(0, 4); }
     function render() {
       var q = input.value.trim(); sel = -1;
       if (!q) { res.classList.remove('show'); res.innerHTML = ''; return; }
-      var pg = pages(q), c = cards(q).slice(0, 7 - pg.length), s = sets(q), h = '';
-      if (pg.length || c.length) h += '<div class="hd">Cards</div>' + c.map(function (x) { return '<a href="' + esc(SPAGE[x.id] || '/card?id=' + x.id) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span>' + (x.p == null ? '' : '<b>' + esc(money(x.p)) + '<small>raw</small></b>') + '</a>'; }).join('') + pg.map(function (x) { return '<a href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span></a>'; }).join('');
-      if (s.length) h += '<div class="hd">Sets</div>' + s.map(function (x) { var v = T[x.tk]; return '<a href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.tk) + '</small></span>' + (v ? '<b>' + v.l.toFixed(2) + '<small>' + esc(sgn(v.w, 1)) + '</small></b>' : '') + '</a>'; }).join('');
+      var pg = pages(q), c = cards(q).slice(0, 7 - pg.length), s = sets(q), h = '', sh = '';
+      // a set row answers "is this set up or down?" (T2): when the words name a set, the Sets group leads ("prismatic" had it 8th)
+      if (s.length) sh = '<div class="hd">Sets</div>' + s.map(function (x) { var v = T[x.tk]; return '<a data-r href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.tk) + '</small></span>' + (v ? '<b>' + v.l.toFixed(2) + '<small>' + esc(sgn(v.w, 1)) + '</small></b>' : '') + '</a>'; }).join('');
+      if (s.length && nk(s[0].t).indexOf(nk(q).split(' ')[0]) >= 0) { h = sh; sh = ''; }
+      if (pg.length || c.length) h += '<div class="hd">Cards</div>' + c.map(function (x) { return '<a data-r href="' + esc(SPAGE[x.id] || '/card?id=' + x.id) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span>' + (x.p == null ? '' : '<b>' + esc(money(x.p)) + '<small>raw</small></b>') + '</a>'; }).join('') + pg.map(function (x) { return '<a data-r href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span></a>'; }).join('');
+      h += sh;
       if (!h) h = CARDS ? '<div class="none">Not in an index yet \u2014 <a href="' + miss(q) + '" target="_blank" rel="sponsored nofollow noopener">see it on eBay \u203a</a> \u00b7 <a href="/indices">what we track</a></div>' : '<div class="none">Looking\u2026</div>';
       res.innerHTML = h; res.classList.add('show');
     }
     input.addEventListener('focus', load);
     input.addEventListener('input', function () { var v = input.value; render(); if (!CARDS) load().then(function () { if (input.value === v) render(); }); });
     input.addEventListener('keydown', function (e) {
-      var links = res.querySelectorAll('a');
+      // only result rows (data-r) take Enter / arrows: a miss never leaves the site on Enter (B106; Scout Oct 28)
+      var links = res.querySelectorAll('a[data-r]');
       if (e.key === 'ArrowDown') { e.preventDefault(); sel = Math.min(sel + 1, links.length - 1); }
       else if (e.key === 'ArrowUp') { e.preventDefault(); sel = Math.max(sel - 1, 0); }
       else if (e.key === 'Enter') { var t = links[sel] || links[0]; if (t) { ga('home2_search_go', { query: input.value.slice(0, 80) }); location.href = t.getAttribute('href'); } return; }
@@ -210,7 +216,7 @@
       else return;
       Array.prototype.forEach.call(links, function (l, i) { l.classList.toggle('sel', i === sel); });
     });
-    document.getElementById('h2-go').addEventListener('click', function () { var t = res.querySelector('a'); if (t) location.href = t.getAttribute('href'); else if (input.value.trim()) load().then(render); input.focus(); });
+    document.getElementById('h2-go').addEventListener('click', function () { var t = res.querySelector('a[data-r]'); if (t) location.href = t.getAttribute('href'); else if (input.value.trim()) load().then(render); input.focus(); });
     document.addEventListener('click', function (e) { if (!res.contains(e.target) && e.target !== input) res.classList.remove('show'); });
   })();
 })();

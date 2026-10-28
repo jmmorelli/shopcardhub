@@ -27,7 +27,10 @@
   // B76 re-land (Oct 19): the shop file is read here too, so the .cdp-shop block and the TCGplayer button get their space
   // on first paint; shop-spread.js fills the reserved slots instead of inserting late (the Oct 16 live CLS 0.039 at 1440).
   var NO_SHOP = { bs1e: 1 };
-  Promise.all([get('/js/card-pages.json').then(function (m) { STATIC = (m && m.static) || {}; }, function () {}), get('/data/cards/' + tk + '.json'), get('/data/cards/g-' + tk + '.json').catch(function () { return null; }), NO_SHOP[tk] ? null : get('/data/tcg/' + tk + '.json').catch(function () { return null; })]).then(function (res) {
+  Promise.all([get('/js/card-pages.json').then(function (m) { STATIC = (m && m.static) || {};
+    // B105 (Night Crew Oct 28): /card?id=<id> carries canonical /card + noindex; when the card has its own static page, go there
+    // (replace: Back skips the query page). The static page carries data-card-id, so it never redirects again.
+    if (!main.getAttribute('data-card-id') && STATIC[id]) location.replace(STATIC[id] + location.hash); }, function () {}), get('/data/cards/' + tk + '.json'), get('/data/cards/g-' + tk + '.json').catch(function () { return null; }), NO_SHOP[tk] ? null : get('/data/tcg/' + tk + '.json').catch(function () { return null; })]).then(function (res) {
     res = res.slice(1);
     var d = res[0], gd = res[1], c = null;
     window.__schShopFile = res[2];
@@ -212,10 +215,15 @@
       R.forEach(function (r, i) { var v = r[s.k]; if (!v) { pen = false; return; } ln += (pen ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1) + ' '; pen = true; dots += '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(v).toFixed(1) + '" r="3" fill="' + col + '"><title>' + MON[+r[0].slice(5, 7) - 1] + ' ' + r[0].slice(0, 4) + ': ' + money(v) + '</title></circle>'; });
       if (ma) svg += '<path d="' + ma + '" fill="none" stroke="#a9bccf" stroke-width="1.5" stroke-dasharray="4 4"/>';
       svg += '<path d="' + ln + '" fill="none" stroke="' + col + '" stroke-opacity=".55" stroke-width="1.5" stroke-linejoin="round"/>' + dots + '</svg>';
-      var last = pts[pts.length - 1], yr = pts.length > 12 ? pts[pts.length - 13] : null, c1 = yr ? (last[s.k] / yr[s.k] - 1) * 100 : null;
-      box.innerHTML = '<div class="h"><b>' + esc(s.lbl) + '</b><span class="rg" role="group" aria-label="Range">' + ['1y', '3y', 'all'].map(function (k) { return '<button type="button" data-r="' + k + '" aria-pressed="' + (k === range) + '">' + (k === 'all' ? 'All' : k.toUpperCase()) + '</button>'; }).join('') + '</span></div>' +
-        '<div class="leg"><span><i style="background:' + col + '"></i>Monthly estimate <b>' + money(last[s.k]) + '</b> (' + MON[+last[0].slice(5, 7) - 1] + ' ' + last[0].slice(0, 4) + ')' + (c1 == null ? '' : ' <em class="' + (c1 >= 0 ? 'up' : 'dn') + '">' + (c1 >= 0 ? '+' : '') + c1.toFixed(0) + '% in a year</em>') + '</span><span><i class="ma"></i>3-month average</span></div>' + svg +
-        '<div class="src">Monthly value estimates from <a href="https://www.pricecharting.com/game/' + esc(c.path || '') + '" rel="nofollow noopener" target="_blank">PriceCharting</a>, built from their tracked sales. The number above the chart is our mark.' + (grade === 'psa9' ? ' Grade 9 mixes graders (PSA, BGS, CGC…).' : '') + '</div>';
+      // P67 (Night Crew Oct 28, FTV + Scout): the change in the legend follows the picked range ("All" printed "-8% in a year"),
+      // and a range button that would draw the same line as "All" is not shown (a Jan 2025 set had 1Y = 3Y = All).
+      var last = pts[pts.length - 1], Rp = R.filter(function (r) { return r[s.k]; }), first = Rp.length > 1 ? Rp[0] : null;
+      var c1 = first && first !== last ? (last[s.k] / first[s.k] - 1) * 100 : null;
+      var per = range === '1y' ? 'in a year' : range === '3y' ? 'in 3 years' : first ? 'since ' + MON[+first[0].slice(5, 7) - 1] + ' ' + first[0].slice(0, 4) : '';
+      var KS = ['1y', '3y', 'all'].filter(function (k) { return k === 'all' || rows.length > (k === '1y' ? 13 : 37); });
+      box.innerHTML = '<div class="h"><b>' + esc(s.lbl) + '</b>' + (KS.length < 2 ? '' : '<span class="rg" role="group" aria-label="Range">' + KS.map(function (k) { return '<button type="button" data-r="' + k + '" aria-pressed="' + (k === range) + '">' + (k === 'all' ? 'All' : k.toUpperCase()) + '</button>'; }).join('') + '</span>') + '</div>' +
+        '<div class="leg"><span><i style="background:' + col + '"></i>Monthly estimate <b>' + money(last[s.k]) + '</b> (' + MON[+last[0].slice(5, 7) - 1] + ' ' + last[0].slice(0, 4) + ')' + (c1 == null ? '' : ' <em class="' + (c1 >= 0 ? 'up' : 'dn') + '">' + (c1 >= 0 ? '+' : '') + c1.toFixed(0) + '% ' + per + '</em>') + '</span><span><i class="ma"></i>3-month average</span></div>' + svg +
+        '<div class="src">Monthly value estimates from <a href="https://www.pricecharting.com/game/' + esc(c.path || '') + '" rel="nofollow noopener" target="_blank">PriceCharting</a>, built from their tracked sales. The price at the top of this page is our own read, not this chart.' + (grade === 'psa9' ? ' Grade 9 mixes graders (PSA, BGS, CGC…).' : '') + '</div>';
     }
     get('/data/cards/h-' + d.ticker.toLowerCase() + '.json').then(function (h) {
       rows = h && h.cards ? h.cards[c.key || c.num] : null;

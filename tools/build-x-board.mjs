@@ -47,7 +47,8 @@ const read = (f) => fs.readFileSync(path.join(REPO, f), "utf8");
 
 const page = read("bowman-bangers.html");
 const strip = (t) =>
-  t.replace(/<[^>]+>/g, "")
+  // <br> is a word break on the page ("Andrew Fischer<br>1st Bowman…"); dropping it glued the words (CoS weekly Oct 28)
+  t.replace(/<br\s*\/?>/gi, " ").replace(/<[^>]+>/g, "")
     .replace(/&#x27;|&#39;/g, "'").replace(/&amp;/g, "&").replace(/&quot;/g, '"')
     .replace(/&minus;/g, "−").replace(/&mdash;/g, "—").replace(/&middot;/g, "·")
     .replace(/&nbsp;/g, " ").replace(/&lt;/g, "<").replace(/&gt;/g, ">")

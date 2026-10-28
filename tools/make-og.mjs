@@ -123,6 +123,35 @@ const CARDS = [
       <div class="foot">shopcardhub.com/watchlist</div>
     `,
   },
+  /* Night Crew Oct 28 (BLOCKED row 2026-10-27 17:18, og/dollars handoff item A): the shared
+     Pokémon link image. It sits behind ~608 pages, so it carries NO figure, date or count —
+     the old one printed an undated "$94 Darkrai ex SIR Raw" and an unsourced "12.3K Monthly
+     Searches" on every Pokémon link preview. Per-page images (card art + dated marks) ride P0-A. */
+  {
+    name: 'pokemon',
+    css: `
+      h1 { font-size:116px; top:150px; }
+      .sub { top:398px; max-width:760px; font-size:26px; }
+      .chips { top:476px; }
+      .rows { position:absolute; right:48px; top:150px; width:300px; display:flex; flex-direction:column; gap:12px; }
+      .rows div { font-family:'JetBrains Mono', monospace; font-size:14px; letter-spacing:2px; text-transform:uppercase; color:#e4f0f4; background:#0c1017; border:1px solid rgba(255,255,255,0.12); border-left:2px solid #00ccf5; padding:14px 16px; }
+      .rows small { display:block; margin-top:4px; font-size:11px; letter-spacing:1px; text-transform:none; color:#7a969e; }
+    `,
+    body: `
+      <div class="grid"></div><div class="glow"></div>
+      <div class="top"><div class="logo">Shop<span>Card</span>Hub</div><div class="tag">Pokémon TCG</div></div>
+      <div class="eyebrow">What is this card worth?</div>
+      <h1>Pokémon<span>card prices</span></h1>
+      <div class="sub">Recent sold prices with dates · raw and graded · links to eBay</div>
+      <div class="chips"><div class="chip">RAW</div><div class="chip">PSA 9</div><div class="chip">PSA 10</div><div class="chip">SET INDEX</div></div>
+      <div class="rows">
+        <div>Card pages<small>price, grades, chart</small></div>
+        <div>Set indices<small>is the set up or down?</small></div>
+        <div>eBay links<small>raw and graded copies</small></div>
+      </div>
+      <div class="foot">shopcardhub.com</div>
+    `,
+  },
 ];
 
 /* ---------------------------------------------------------------- render */

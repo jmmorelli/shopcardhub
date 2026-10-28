@@ -295,7 +295,10 @@ async function main() {
     try { rep[name] = await runReport(token, body); } catch (e) { console.error(`optional report ${name} skipped: ${String(e.message || e).slice(0, 200)}`); }
   }
   const generatedAt = new Date().toISOString();
-  const day = new Date(Date.now() - 864e5).toISOString().slice(0, 10); // the "yesterday" the ranges end on
+  // The "yesterday" the ranges end on. Oct 28 2026 (Measure Oct 27 instruments row): the UTC clock labelled an off-schedule
+  // 00:00–07:00Z run one day late, because GA4's "yesterday" is property (Pacific) time. The last daily28 row is the truth.
+  const lastD = String((rep.daily28.rows.at(-1) || {}).date || "");
+  const day = /^\d{8}$/.test(lastD) ? `${lastD.slice(0, 4)}-${lastD.slice(4, 6)}-${lastD.slice(6, 8)}` : new Date(Date.now() - 864e5).toISOString().slice(0, 10);
   const summary = derive(rep);
   const latest = { _comment: "GA4 nightly snapshot — read-only Data API pull by tools/ga4-snapshot.mjs. Windows end on 'yesterday' (GA4 finishes processing a day ~24h after it ends). Rates are percentages. Never a source of user-level data.", property: PROPERTY, generatedAt, day, summary, reports: rep };
   fs.mkdirSync(OUT, { recursive: true });

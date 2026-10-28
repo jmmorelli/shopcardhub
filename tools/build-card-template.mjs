@@ -132,8 +132,9 @@ const page = (o) => `<!DOCTYPE html>
   <meta property="og:title" content="${o.ogTitle}">${o.path !== "/card" ? `
   <meta property="og:url" content="https://www.shopcardhub.com${o.path}">` : ""}
   <meta property="og:site_name" content="ShopCardHub">
-  <meta property="og:image" content="https://www.shopcardhub.com/og/pokemon.png">
+  <meta property="og:image" content="https://www.shopcardhub.com/og/pokemon.png?v=20261028">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://www.shopcardhub.com/og/pokemon.png?v=20261028">
   <meta name="twitter:site" content="@shopcardhub">
   <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -154,7 +155,7 @@ ${o.load || DEFAULT_LOAD}  <noscript><p class="cdp-miss">This page needs JavaScr
 ${footer}
 
 <script src="/js/grade-links.js?v=2" defer></script>
-<script src="/js/card-page.js?v=10" defer></script>
+<script src="/js/card-page.js?v=11" defer></script>
 <script src="/js/shop-spread.js?v=6" defer></script>
 <script src="/js/card-img.js?v=4" defer></script>
 <script src="/js/vault-track.js?v=6" defer></script>
@@ -182,6 +183,7 @@ console.log("wrote card.html");
 // The id → URL map for links and search is written by tools/build-nav.js (js/card-pages.json) from the files on disk.
 // Slug rule (keep in step with build-nav.js / js/card-page.js): <card name>-<number>-<set path minus "pokemon-">.
 const GATE_N90 = 20, GATE_RAW = 25;
+const SITEMAP = new Set([...(fs.existsSync(path.join(ROOT, "sitemap.xml")) ? fs.readFileSync(path.join(ROOT, "sitemap.xml"), "utf8") : "").matchAll(/<loc>https:\/\/www\.shopcardhub\.com(\/[^<]*)<\/loc>/g)].map((m) => m[1]));
 // --tickers=pris25,ah26 limits the run (the deploy's scope-cut lever if the full set is ever too big to ship).
 const ONLY = ((process.argv.find((a) => a.startsWith("--tickers=")) || "").split("=")[1] || "").split(",").filter(Boolean);
 const STATIC_TICKERS = fs.readdirSync(path.join(ROOT, "data/cards")).filter((f) => /^[a-z0-9]+\.json$/.test(f) && f !== "card-search.json").map((f) => f.replace(/\.json$/, "")).filter((t) => !ONLY.length || ONLY.includes(t)).sort();
@@ -214,7 +216,12 @@ for (const tk of STATIC_TICKERS) {
   const setShort = String(d.set).replace(/^Pokémon TCG /, "");
   for (const c of d.cards) {
     if (!c.path || c.rank == null) continue;   // basket constituents only (screened universe rows have no raw mark)
-    const slug = staticSlug(c), indexable = n90Of(c, d) >= GATE_N90 && c.raw != null && c.raw >= GATE_RAW;
+    const slug = staticSlug(c), passes = n90Of(c, d) >= GATE_N90 && c.raw != null && c.raw >= GATE_RAW;
+    // Night Crew Oct 28: a page the sitemap lists keeps index,follow while it is listed (PRIS25 Iron Hands ex #154 fell to
+    // $22.45 on the Oct 26 mark, and a noindex page in sitemap.xml FAILs audit-site). The sitemap owner (Commissioner) drops
+    // it or keeps it; this build names it instead of flipping a URL that is in the GSC test.
+    const listed = !passes && SITEMAP.has(`/card-${slug}`), indexable = passes || listed;
+    if (listed) console.warn(`gate: /card-${slug} (${c.id}) is under the gate but listed in sitemap.xml: kept index,follow; sitemap owner to decide`);
     const file = path.join(ROOT, `card-${slug}.html`), had = ours(file);
     if (had === false) { console.warn(`skip ${c.id}: card-${slug}.html is a hand-built page`); continue; }
     if (!indexable && !had) continue;
