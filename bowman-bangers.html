@@ -2394,6 +2394,8 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
                    (r.building ? '<span class="sig-note">' + r.points + '/' + MIN_HISTORY + ' days of history</span>' : '');
         var name = r.slug ? '<a href="/' + esc(r.slug) + '">' + esc(r.label) + '</a>' : esc(r.label);
         var rank = r.rank ? '<span class="sig-rank">#' + r.rank + '</span>' : '';
+        // Oct 29 2026 (desk, IW iw-2026-10-29-3, R9): the label comes from cardType only; an untyped or other-type row is not printed.
+        if (r.cardType !== 'chrome-auto' && r.cardType !== 'chrome-base') return '';
         var card = r.cardType === 'chrome-base' ? '<span class="sig-noauto">Chrome · no auto</span>' : '1st Bowman Chrome Auto';
         return '<tr><td>' + rank + name + '</td><td>' + card + '</td><td>' + fmtPrice(r.last) + '</td><td>' + fmtRoc(r.roc30) + '</td><td>' + chip + '</td></tr>';
       }).join('');
