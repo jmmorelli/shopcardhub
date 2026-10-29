@@ -1254,6 +1254,40 @@ COLLECTOR-VOICE.md, and answers the five-second test in its report (what the fir
   take P0-A's build slot.
 - **Sweep rotation:** `/` is read first on the run after any home change; the five-second test is written out, not ticked.
 
+## R44 · Goals, tiers, brakes (CoS, Oct 29 2026 — Mo sent an outside audit; ruling `claude/cos/RULING-2026-10-29-goals-and-brakes.md`)
+
+**Why:** the Oct 28 daily review found no lane ship moved N1/N2, Google indexed fell 3 → 1, and the day's shipped work was
+mostly micro-fixes. Goal stack: **G1** returning collectors (N1, then 28-day returners) · **G2** eBay clicks per 100 clean
+sessions (N2, then EPN $) · **G3** Google-indexed pages (GSC). Committed verbatim by the desk, Oct 29.
+
+> **R44: Goals, tiers, brakes (CoS, Oct 29 2026).**
+> (a) Every filed item and every fix names G1, G2 or G3, or is tagged CHORE.
+> (b) Tiers:
+> - **P0** = money broken (EPN tags, buy links), a wrong price or number on a page, or the site, API or nightly down. Fix now.
+> - **P1** = a first-screen failure on one of the 10 most-visited pages (GA4 landing28). Fix this week.
+> - **Everything else is P2.** P2 goes into the weekly batch, which is capped at 5 rows. Never chase P2 inside a lane run.
+>
+> (c) **Two fix rounds max.** If a fix, build or verify fails twice, stop. Write the error, what was tried and the next idea to `claude/cos/BLOCKED.md` (owner and date), then move to the next item. Never a third attempt in the same run. Never escalate to Mo unless it needs money, credentials or a human click.
+>
+> (d) **Good enough = ship.** Ship when all of these hold:
+> - The gates pass (FAIL 0).
+> - A normal collector on a 390px phone sees the right thing on the first screen.
+> - Every number is dated with its n.
+>
+> No optimisation passes after that, and no polish on pages with fewer than 5 sessions in 28 days, other than P0.
+>
+> (e) A run that ships nothing tied to G1, G2 or G3 says so in one line. It does not pad its file with chores.
+
+## R45 · Launch first, measure after; no cutting until Nov 12 (Mo, in chat, 2026-10-29 evening)
+
+Pointer, so every lane sees it at STEP 0. The ruling is the Project doc `claude/cos/RULING-2026-10-29-bias-to-action.md`
+(precedence: Mo → that ruling → this file). In short: a reversible change ships with one number, a check date ≤ 14 days out
+and an owner — no baseline study, no experiment window; the gates and pricing integrity still apply in full. The PIVOT build
+freeze is lifted. **No new 301, delete, noindex or sitemap removal site-wide until the Nov 12 check** (BET-20261029-1; the
+Goal League 30-day floor included). New work is logged as bets in `claude/cos/ceo-desk/BETS.md`. Machine-facing output
+(BET-20261029-2, `RULING-2026-10-29-agent-readable-site.md`) carries **no eBay URLs and no affiliate links**, and nothing we
+build helps an agent buy.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
