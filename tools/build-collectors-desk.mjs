@@ -118,7 +118,11 @@ function printBlock(slug, p, multi) {
   const rn = c.wn != null ? c.wn : c.n30;
   const rdays = c.wn != null ? (c.win || c.window) : c.window;
   const rAsOf = c.rawAsOf ? " · as of " + dateShort(c.rawAsOf) : "";
-  const rawCell = c.raw == null
+  // Oct 29 2026 (CoS desk, BLOCKED Gengar row): a raw figure held for a KB data check prints "No mark" with no number.
+  const RAW_HOLD = { "nd1e-107": "Pokémon KB P40" };
+  const rawCell = RAW_HOLD[c.id]
+    ? `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">No mark</div><div class="lad-s">the one recent sale on file is being checked</div></div>`
+    : c.raw == null
     ? `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">Not priced</div><div class="lad-s">too few clean raw sales to mark — trades graded</div></div>`
     : rn == null
     ? `<div class="lad-cell lad-raw"><div class="lad-k">Raw</div><div class="lad-v">${money(c.raw)}</div><div class="lad-s">PriceCharting's ungraded value${c.rawAsOf ? ", read " + dateShort(c.rawAsOf) : ""}</div></div>`

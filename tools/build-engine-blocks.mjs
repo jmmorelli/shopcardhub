@@ -163,7 +163,7 @@ function facts(c) {
   if (type === "single") throw new Error(`${c.id}: cardType "single" is not supported by facts() yet — it would label a non-Bowman card as Bowman (idea #30 build item). Remove the slug or teach facts() the set first.`);
   const isTcg = type === "tcg-single";
   const code = (c.query.match(/\b([A-Z]{2,4}-[A-Z]{1,3}\d{0,3}|[A-Z]{2,4}-\d{1,3})\b/) || [])[1] || null;
-  let set = "Pokémon TCG", cat = "pokemon", lane = "SIR single · raw";
+  let set = "Pokémon TCG", cat = "pokemon", lane = c.lane || "SIR single · raw"; // Oct 29 2026 (desk, KB): per-card lane — TH26 #157/#158 are not SIRs
   if (!isTcg) {
     cat = "baseball";
     // Oct 1 2026 (LANE-RULES R8): name the PRODUCT. A 2026 card with no set key is May's 2026 Bowman (its Chrome Prospect
