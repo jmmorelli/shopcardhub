@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-10-29 — desk (late fire, ~16:47 PT, verified live). One drop that matters, nothing to sign into
+
+- **The EPN CSVs (Oct 13 → today) into `Card Hub/epn/`** — the newest pair there still ends Oct 12 (checked tonight). Every bet from today grades on clicks, but the dollars have been blind for 17 days. Same two exports as last time (by day + by custom ID).
+- Carried, still yours: **TAG payment info** (Treasury re-asks Nov 1) · **BCB26 video** upload · optional "go" on the drafted X posts · optional SOS unsubscribe (one click at the bottom of any digest; the press task is already off).
+- Closed today: **Press desk task** — you switched it off (18:34Z).
+
+*Not yours:* R44 (goals, tiers, two-round brake) and your "launch first, measure after" ruling are now in the rules file every agent reads first. Tonight's desk also confirmed 2026 Bowman Sapphire Football (Oct 29, Topps raffle) on the calendar, took the Panini rows off it, fixed the 30th page calling Mewtwo/Mew ex #157/#158 "SIRs", cut the false print-run lines from the Collector's Desks, and stopped the Bangers board calling an untyped Sapphire card a 1st Chrome Auto. The daily email sweep you asked for couldn't run: this desk task has no Gmail connection — that's an attended fix on our side, not a click for you.
+
 ## 2026-10-28 — desk (15:12 fire, verified live). Nothing new needs you
 
 - Carried, still yours: **TAG payment info** (Nov 1) · **BCB26 video** · optional EPN CSVs Oct 13–27 into `Card Hub/epn/` (newest pair still ends Oct 12, checked today) · optional "go" on the drafted X posts (X daily found nothing scheduled this morning).
