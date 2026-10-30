@@ -156,7 +156,7 @@ export function buildV2(REPO, opts = {}) {
     const hit = (cf.cards || []).find((c) => String(c.num) === String(b.num) && String(c.name).toLowerCase() === String(b.name).toLowerCase()) || (cf.cards || []).find((c) => String(c.num) === String(b.num));
     return hit ? hit.id : null;
   };
-  const basisShort = (b) => (/ungraded|raw/i.test(b.basis || "") ? "raw sales" : "sales") + ` · ${b.win || 30}-day median`;
+  const basisShort = (b) => (/ungraded|raw/i.test(b.basis || "") ? "raw · " : "") + `${b.win || 30}-day median`;
   const screened = []; let fresh = 0;
   for (const [tk, v] of Object.entries(idx)) {
     if (!v || typeof v !== "object" || v.status !== "live" || !T[tk]) continue;
@@ -253,7 +253,7 @@ ${rowsHtml}
   const zTitle = (c) => c.z == null ? "no price history to judge this move against" : `z ${z1(c.z)} (own history ${c.zo == null ? "—" : z1(c.zo)} · vs the others ${z1(c.zx)}${c.n != null ? " · shrunk for " + c.n + " sales" : ""})`;
   // card rows: name · set + the two prices · the two dates, n and the basis (11 px) · 12-month shape · %
   const cardLi = (c) => `<li${c.thin ? ' class="thin"' : ""} title="${esc(money(c.pp) + " on " + mdy(c.pd) + " → " + money(c.p) + " on " + mdy(c.d) + " · " + c.n + " sales in the " + c.win + "-day window · " + zTitle(c) + (c.sp ? " · line: 12-month shape, PriceCharting monthly" : ""))}">` +
-    `<span class="nm"><a href="${esc(c.href)}">${esc(c.name)} #${esc(c.num)}</a><small>${esc(c.set)} · ${esc(money(c.pp))} → ${esc(money(c.p))}</small><small class="mt">${esc(mdy(c.pd))} → ${esc(mdy(c.d))} · n = ${c.n} · ${esc(c.basis)}${c.thin ? " · thin data" : ""}</small></span>` +
+    `<span class="nm"><a href="${esc(c.href)}">${esc(c.name)} #${esc(c.num)}</a><small>${esc(c.set)} · ${esc(money(c.pp))} → ${esc(money(c.p))}</small><small class="mt">${esc(mdy(c.pd))} → ${esc(mdy(c.d))} · ${c.n} sales · ${esc(c.basis)}${c.thin ? " · thin data" : ""}</small></span>` +
     `<span class="rt">${spark(c.sp)}<span class="ch ${cls(c.chg)}">${sgn(c.chg, 1)}</span></span></li>`;
   const cardList = (dir) => { const rows = movers[dir]; const none = `Nothing moved ${dirWord(dir)} outside its usual range this week.`;
     if (!rows.length) return `<li class="empty">${none}</li>`;
@@ -265,11 +265,11 @@ ${rowsHtml}
     `<span class="nm"><a href="${esc(s.href)}">${esc(s.set)}</a><small>${esc(s.tk)} · ${s.pl.toFixed(2)} → ${s.l.toFixed(2)}</small><small class="mt">${esc(mdy(s.pd))} → ${esc(mdy(s.d))}${s.usual ? " · usual range" : " · unusual move"}</small></span>` +
     `<span class="rt">${spark(s.sp)}<span class="ch ${cls(s.chg)}">${sgn(s.chg, 1)}</span></span></li>`;
   const setList = (dir) => { const rows = setMovers[dir]; return rows.length ? rows.map(setLi).join("\n") : `<li class="empty">No set index moved ${dirWord(dir)} this week.</li>`; };
-  const how = `<details class="h2-how"><summary>How we pick these ▸</summary><div>` +
+  const how = `<details class="h2-how"><summary>Show the math ▸</summary><div>` +
     `<p><b>Cards.</b> Priced $${MV.MIN_PX} or more, with at least ${MV.MIN_N} sales behind the new price (the old price came through the same screen; we keep the count behind the newest one), and at least ${MV.MIN_HIST} months of price history. Each move is the change between two medians of the same kind of sale — raw sold prices, same window — never a sold price against an asking price or a graded one.</p>` +
     `<p>We size every move two ways: a z-score against the card's own monthly moves over the last two years, and a z-score against every other card's move this week. The smaller one counts. Thin data shrinks it: the score is multiplied by √(n ÷ (n + ${MV.N0})), so a move on ${MV.N0} sales counts about ${Math.round(Math.sqrt(0.5) * 100)}% of the same move on many. A card makes the list when it is still more than ${MV.Z_MIN === 1 ? "one standard deviation" : MV.Z_MIN + " standard deviations"} outside its usual range; up to ${MV.CAP} each way, most unusual first, ties to the bigger %. Fewer than three qualify, we say so rather than pad. A card with no history cannot take a top slot; it shows only in a labelled thin-data tail when nothing qualifies.</p>` +
-    `<p><b>Sets.</b> The same two z-scores on each index's change this week, against its own monthly history since release and against every other set. Sets are never thin data, so the ${MV.CAP} biggest each way always show and a row inside its usual range says so. The dates on each row are the two price dates it compares.</p></div></details>`;
-  const movers2 = `<div class="h2-sub"><small>sales-weighted · thin data left out</small>${how}</div>\n` +
+    `<p><b>Sets.</b> The same two z-scores on each index's change this week, against its own monthly history since release and against every other set. The ${MV.CAP} biggest each way always show, and a row inside its usual range says so. One card can carry most of a set\'s move. The dates on each row are the two price dates it compares.</p><p><a href="/how-prices-work">How prices work →</a></p></div></details>`;
+  const movers2 = `<div class="h2-sub"><small>most unusual first · thin data left out</small>${how}</div>\n` +
     `<ul data-view="cards" data-dir="up">\n${cardList("up")}\n</ul>\n<ul data-view="cards" data-dir="down" hidden>\n${cardList("down")}\n</ul>\n` +
     `<ul data-view="sets" data-dir="up" hidden>\n${setList("up")}\n</ul>\n<ul data-view="sets" data-dir="down" hidden>\n${setList("down")}\n</ul>\n` +
     `<div class="q" style="margin:8px 0 0;"><small data-view="cards">${movers.n} of ${movers.screened} screened cards moved outside their usual range</small><small data-view="sets" hidden>${setMovers.n} of ${setMovers.total} sets moved outside their usual range</small><a class="all" href="/indices">See all →</a></div>`;

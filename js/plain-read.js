@@ -84,6 +84,12 @@
     if (wk > -3) return { w: 'Cooling off', c: 'dn' };
     return { w: 'Sliding', c: 'dn' };
   }
+  /* U-F14 (Site Sweep Oct 27, ruled Oct 27): a set worth 129% more than at release read "SLIDING" on a down week. When the
+   * week and the since-base move point opposite ways, the badge names the week ("Down this week" / "Up this week"). */
+  function weekFirst(v, wk, since) {
+    if (wk == null || Math.abs(wk) < 1 || Math.abs(since) < 0.5 || (wk < 0) === (since < 0)) return v;
+    return { w: wk < 0 ? 'Down this week' : 'Up this week', c: v.c };
+  }
   /* badge rule (iw-2026-10-03-1): the prior mark is the newest one at least 5 days before the latest */
   function weekBase(h) {
     if (h.length < 2) return null;
@@ -131,7 +137,7 @@
         basis: r.basis === 'ask' ? 'eBay asking prices' : 'recent sales' };
     }
     return { n: n, level: level, wk: wk, since: since, basket: basket, name: name, started: started, baseTxt: baseTxt, sinceLbl: sinceLbl,
-      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: verdict(wk), cost: cost };
+      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: weekFirst(verdict(wk), wk, since), cost: cost };
   }
 
   function pctTxt(v, d) { return (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(d == null ? 1 : d) + '%'; }
@@ -175,7 +181,7 @@
   function tileTop(f) { return f.top ? esc(f.top.name) + (f.top.num ? ' <small>#' + esc(f.top.num) + '</small>' : '') : 'No priced card yet'; }
   function tileTopV(f) { return f.top ? money(f.top.price) + '<small>recent sales</small>' : ''; }
   function tileMv(f) { return f.mover ? esc(f.mover.c.name) + (f.mover.c.num ? ' <small>#' + esc(f.mover.c.num) + '</small>' : '') : (f.wk == null ? 'Nothing to compare yet' : 'No card moved 1% or more'); }
-  function tileMvV(f) { return f.mover ? (f.mover.p < 0 ? '▼ ' : '▲ ') + Math.abs(f.mover.p).toFixed(0) + '%<small>vs last mark</small>' : ''; }
+  function tileMvV(f) { return f.mover ? (f.mover.p < 0 ? '▼ ' : '▲ ') + Math.abs(f.mover.p).toFixed(0) + '%<small>since last update</small>' : ''; }
   function tiles(f, opts) {
     opts = opts || {};
     var img = opts.topImg ? '<span class="pr-ti">' + opts.topImg + '</span>' : '';
