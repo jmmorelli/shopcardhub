@@ -315,7 +315,7 @@ export function skeleton(carry) {
 <!-- HOME:movers2:END -->
   </section>
   <section class="h2-tile" aria-labelledby="h2-dlh">
-    <div class="q"><h2 id="h2-dlh">Listed below our price?</h2><small id="h2-dls">Buy It Now · screened twice a day</small></div>
+    <div class="q"><h2 id="h2-dlh">Listed below our price?</h2><small id="h2-dls">Buy It Now · screened once a day</small></div>
     <ul id="h2-dl"><li class="empty">Checking today’s deals…</li></ul>
     <div class="q" style="margin:8px 0 0;"><small>our price = recent sold prices for that exact card and grade</small><a class="all" href="/deals">See all →</a></div>
   </section>

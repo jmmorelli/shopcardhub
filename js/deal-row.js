@@ -82,7 +82,7 @@
             '<a class="dl-buy" href="' + esc(x.u) + '" target="_blank" rel="nofollow sponsored noopener" data-card="' + esc(r.cardId) + '" data-grade="' + esc(r.grade) + '">Buy on eBay →</a>' +
           '</div>';
         }).join('') + '</div>' +
-        '<p class="dlr-fine">Screened ' + esc(screened) + '. The screen runs twice a day. <a href="/deals">Every listing under our mark →</a> ShopCardHub earns a commission on eBay purchases made through these links.</p>';
+        '<p class="dlr-fine">Screened ' + esc(screened) + '. The screen runs once a day, each morning. <a href="/deals">Every listing under our mark →</a> ShopCardHub earns a commission on eBay purchases made through these links.</p>';
       box.hidden = false;
       Array.prototype.forEach.call(box.querySelectorAll('a.dl-buy'), function (a) {
         a.addEventListener('click', function () { if (window.gtag) gtag('event', 'click', { link_url: 'ebay', item: cid, card: a.getAttribute('data-card'), grade: a.getAttribute('data-grade'), kind: 'deal', page: location.pathname }); });

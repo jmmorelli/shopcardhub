@@ -156,7 +156,7 @@ ${nav}
 
 <main class="dl-wrap">
   <div class="dl-crumbs"><a href="/">Home</a> <span>/</span> <a href="/indices">Indices</a> <span>/</span> <span>Deals</span></div>
-  <div class="dl-eyebrow">Deals · Buy It Now · screened twice a day</div>
+  <div class="dl-eyebrow">Deals · Buy It Now · screened once a day</div>
   <h1 class="dl-title">Listed <em>below the mark</em></h1>
   <p class="dl-sub">Buy It Now listings on eBay priced under what that exact card and grade recently sold for, checked by title and sorted by discount. A deal is a price, not a call.</p>
 
@@ -213,7 +213,7 @@ ${footer}
   function sorted(rows){ var s = state.sort; return rows.slice().sort(function(a,b){ if (s==='price') return a.total-b.total; if (s==='-price') return b.total-a.total; if (s==='save') return (b.mark-b.total)-(a.mark-a.total); return a.disc-b.disc; }); }
   function render(){
     var rows = sorted(filtered());
-    if (!rows.length) { list.innerHTML = '<div class="dl-empty"><b>Nothing under the mark right now' + (state.g||state.set||state.p ? ' for this filter' : '') + '.</b> That happens \\u2014 a deal is the exception, not the shelf. The screen runs twice a day. <a href="/auctions">Auctions ending under the mark \\u2192</a></div>'; return; }
+    if (!rows.length) { list.innerHTML = '<div class="dl-empty"><b>Nothing under the mark right now' + (state.g||state.set||state.p ? ' for this filter' : '') + '.</b> That happens \\u2014 a deal is the exception, not the shelf. The screen runs once a day, each morning. <a href="/auctions">Auctions ending under the mark \\u2192</a></div>'; return; }
     var total = rows.length; rows = rows.slice(0, state.limit);
     list.innerHTML = rows.map(function(r){
       var href = r.cardHref || r.page;

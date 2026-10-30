@@ -25,7 +25,9 @@ const END = "<!-- SIGNUP:END -->";
 // Placement is wherever the markers sit; this tool rewrites the block in place and never moves it. Pages whose
 // block was deliberately moved keep an honest note here (R11 / P38, Oct 9 2026: /best-hobby-boxes-2026 sits below the
 // ranked list, not under the strip — the Retention Analyst's placement test; read Oct 21).
-const WHERE = { "best-hobby-boxes-2026": "below the ranked list (R11 / P38, Retention Analyst Oct 7 2026)" };
+const WHERE = { "best-hobby-boxes-2026": "below the ranked list (R11 / P38, Retention Analyst Oct 7 2026)",
+  "cooper-flagg-rookie-cards": "below the ranked list (Conversion Hunter, Oct 30 2026)", "lamine-yamal-rookie-cards": "below the ranked list (Conversion Hunter, Oct 30 2026)",
+  "erling-haaland-rookie-cards": "below the ranked list (Conversion Hunter, Oct 30 2026)", "cristiano-ronaldo-cards": "below the ranked list (Conversion Hunter, Oct 30 2026)" };
 // signup_page (the MailerLite field fed by data-signup) per page where it is not the slug. E13 (Mo Oct 15, Night Crew
 // P57 Oct 16): the /indices capture sits under the Collectors wall and reports as "wall"; still one capture (R26).
 const SOURCE = { indices: "wall" };
