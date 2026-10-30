@@ -26,6 +26,32 @@ const nav = (SHELL.match(/(<!-- NAV:START -->[\s\S]*?<!-- NAV:END -->)/) || [])[
 const footer = (SHELL.match(/(<footer>[\s\S]*?<\/footer>)/) || [])[1];
 if (!pageCss || !gtag || !nav || !footer) throw new Error("shell pieces not found in how-prices-work.html");
 
+// Method note from the screener's own rules block (Deal Hunter, Oct 29 2026; IW Oct 26 F3). Until Oct 29 the note was
+// hand-written and still carried the first-draft thresholds ("3% under", "about half"). The sentence is now built from
+// the `rules` object tools/price-engine/deals.mjs writes into the feed, at build time from data/feed/deals-latest.json
+// and again in the browser from /api/deals, so a threshold change in the screener reaches the page on the next load.
+// Plain function, no template literals or backslashes: its source is embedded verbatim in the page script below.
+function methodNote(R) {
+  if (!R || !R.under || !R.floor) return "";
+  var NAMES = { raw: "raw cards", psa9: "PSA 9", psa10: "PSA 10", bowman: "Bowman", sealed: "sealed" };
+  var KEYS = ["raw", "psa9", "psa10", "bowman", "sealed"];
+  var join = function (a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; };
+  var off = function (x) { return Math.round((1 - x) * 100) + "%"; };
+  var group = function (o) { var order = [], m = {}; KEYS.forEach(function (k) { if (typeof o[k] !== "number") return; var v = off(o[k]); if (!m[v]) { m[v] = []; order.push(v); } m[v].push(NAMES[k]); }); return order.map(function (v) { return v + " under on " + join(m[v]); }); };
+  var out = [];
+  var u = group(R.under), f = group(R.floor);
+  if (u.length) out.push("A row shows when price plus shipping is at least " + u.join(", and ") + ".");
+  if (f.length) out.push("Anything more than " + f.join(", or ") + (f.length > 1 ? "," : "") + " is held back as a likely mislabel or damage.");
+  if (R.vintageBefore && typeof R.vintageRawFloor === "number") out.push("Vintage raw cards (sets released before " + R.vintageBefore + ") " + (R.vintageRawNeedsNmClaim ? "need a near-mint claim in the title and " : "") + "stop at " + off(R.vintageRawFloor) + " under.");
+  var a = R.maxAgeDays;
+  if (a && a.raw && a.graded) out.push("Marks older than " + a.raw + " days (raw), " + a.graded + " days (graded)" + (a.bowman ? " or " + a.bowman + " days (Bowman)" : "") + " are skipped.");
+  if (R.rawMinMark && R.gradedMinMark) out.push("Raw marks under $" + R.rawMinMark + " and graded marks under $" + R.gradedMinMark + " are not screened.");
+  if (R.minSellerPct) out.push("Sellers under " + R.minSellerPct + "% positive feedback" + (R.minSellerScore ? " or with fewer than " + R.minSellerScore + " ratings" : "") + " are dropped.");
+  return out.join(" ");
+}
+const FEED_RULES = (() => { try { return JSON.parse(read("data/feed/deals-latest.json")).rules || null; } catch { return null; } })();
+const NOTE_RULES = methodNote(FEED_RULES);
+
 const idx = JSON.parse(read("data/indices.json"));
 const SETS = Object.entries(idx).filter(([k, v]) => v && typeof v === "object" && v.status === "live" && fs.existsSync(path.join(REPO, `data/cards/${k.toLowerCase()}.json`)))
   .map(([k, v]) => ({ tk: k, name: v.name || k, page: v.page || "/indices" }));
@@ -101,7 +127,7 @@ const html = `<!DOCTYPE html>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preload" href="/fonts/barlow-condensed-900.woff2" as="font" type="font/woff2" crossorigin>
   <title>Deals — eBay Buy It Now Listings Below the Mark | ShopCardHub</title>
-  <meta name="description" content="Fixed-price eBay listings priced under our dated sold mark for the exact Pokémon or Bowman card and grade — raw, PSA 9, PSA 10 and sealed — verified by title, sorted by discount. Refreshed three times a day.">
+  <meta name="description" content="Fixed-price eBay listings priced under our dated sold mark for the exact Pokémon or Bowman card and grade — raw, PSA 9, PSA 10 and sealed — verified by title, sorted by discount. Refreshed twice a day.">
   <link rel="canonical" href="https://www.shopcardhub.com/deals">
   <!-- a live listing screen is a utility, not a page to rank (same call as /auctions, B64) -->
   <meta name="robots" content="noindex,follow">
@@ -112,10 +138,10 @@ const html = `<!DOCTYPE html>
   <meta property="og:site_name" content="ShopCardHub">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@shopcardhub">
-  <meta property="og:image" content="https://www.shopcardhub.com/og/indices.png">
+  <meta property="og:image" content="https://www.shopcardhub.com/og/indices.png?v=20261026">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="628">
-  <meta name="twitter:image" content="https://www.shopcardhub.com/og/indices.png">
+  <meta name="twitter:image" content="https://www.shopcardhub.com/og/indices.png?v=20261026">
   <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/css/fonts.css">
@@ -160,7 +186,7 @@ ${nav}
 
   <div class="dl-list" id="dl-list"><div class="dl-skel"></div><div class="dl-skel"></div><div class="dl-skel"></div><div class="dl-skel"></div></div>
 
-  <p class="dl-note" id="dl-note">Mark = our own dated sold comp for that exact card and grade: the set index's raw mark (median of clean ungraded sales, dated), the graded ladder's 30-day PSA median, or the Bowman sold mark (3+ sales in 30 days). The listing is a live eBay ask; the two are never blended. Price + shipping must be at least 3% under the mark and no deeper than about half of it (deeper reads as a mislabel or damage and is held back). Titles must name the card, the number and, for slabs, exactly that PSA grade; parallels, lots, other languages, reverse holos, promos and damage words are rejected. Sellers under 97% feedback are dropped. We can't see the photos; read the listing. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
+  <p class="dl-note" id="dl-note">Mark = our own dated sold comp for that exact card and grade: the set index's raw mark (median of clean ungraded sales, dated), the graded ladder's 30-day PSA median, or the Bowman sold mark (3+ sales in 30 days). The listing is a live eBay ask; the two are never blended. <span id="dl-rules">${esc(NOTE_RULES)}</span> Titles must name the card, the number and, for slabs, exactly that PSA grade; parallels, lots, other languages, reverse holos, promos and damage words are rejected. We can't see the photos; read the listing. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
 
   <div class="dl-legend">
     <div><b>vs the mark</b>Price + shipping against the dated sold mark for that card and grade. The date and the sale count sit under every row.</div>
@@ -180,13 +206,14 @@ ${footer}
   var pct = function(x){ if (x==null || !isFinite(x)) return '\\u2014'; return Math.round(x*100) + '%'; };
   var esc = function(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
   var GL = { raw:'Raw', psa9:'PSA 9', psa10:'PSA 10', sealed:'Sealed' };
+  var methodNote = ${methodNote.toString()};
   function inBand(r){ if (!state.p) return true; var a = state.p.split('-'); var lo = Number(a[0]||0), hi = a[1]==='' ? Infinity : Number(a[1]); return r.total >= lo && r.total < hi; }
   function live(){ var now = Date.now(); return state.rows.filter(function(r){ return !r.ends || new Date(r.ends).getTime() > now; }); }
   function filtered(){ return live().filter(function(r){ if (state.g && r.grade !== state.g) return false; if (state.set && r.tk !== state.set) return false; return inBand(r); }); }
   function sorted(rows){ var s = state.sort; return rows.slice().sort(function(a,b){ if (s==='price') return a.total-b.total; if (s==='-price') return b.total-a.total; if (s==='save') return (b.mark-b.total)-(a.mark-a.total); return a.disc-b.disc; }); }
   function render(){
     var rows = sorted(filtered());
-    if (!rows.length) { list.innerHTML = '<div class="dl-empty"><b>Nothing under the mark right now' + (state.g||state.set||state.p ? ' for this filter' : '') + '.</b> That happens \\u2014 a deal is the exception, not the shelf. The screen runs three times a day. <a href="/auctions">Auctions ending under the mark \\u2192</a></div>'; return; }
+    if (!rows.length) { list.innerHTML = '<div class="dl-empty"><b>Nothing under the mark right now' + (state.g||state.set||state.p ? ' for this filter' : '') + '.</b> That happens \\u2014 a deal is the exception, not the shelf. The screen runs twice a day. <a href="/auctions">Auctions ending under the mark \\u2192</a></div>'; return; }
     var total = rows.length; rows = rows.slice(0, state.limit);
     list.innerHTML = rows.map(function(r){
       var href = r.cardHref || r.page;
@@ -211,7 +238,7 @@ ${footer}
     document.getElementById('k-med').textContent = d.length ? pct(d[Math.floor(d.length/2)]) : '\\u2014';
     if (rows.length) { var b = rows.slice().sort(function(a,b){ return a.disc-b.disc; })[0]; document.getElementById('k-best').textContent = pct(b.disc); document.getElementById('k-best-s').textContent = b.card + ' \\u00b7 ' + (GL[b.grade]||b.grade); }
     document.getElementById('k-gen').textContent = state.gen ? new Date(state.gen).toLocaleString('en-US',{weekday:'short',hour:'numeric',minute:'2-digit'}) : '\\u2014'; }
-  function load(){ fetch('/api/deals', {cache:'default'}).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); }).then(function(d){ state.rows = d.rows || []; state.gen = d.generated; state.day = d.day; kpis(); render(); })
+  function load(){ fetch('/api/deals', {cache:'default'}).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); }).then(function(d){ state.rows = d.rows || []; state.gen = d.generated; state.day = d.day; var rn = d.rules ? methodNote(d.rules) : ''; if (rn) document.getElementById('dl-rules').textContent = rn; kpis(); render(); })
     .catch(function(){ list.innerHTML = '<div class="dl-empty"><b>The feed didn\\u2019t answer.</b> This page shows nothing rather than a stale number. Try again in a minute.</div>'; }); }
   document.querySelectorAll('.dl-chip[data-g]').forEach(function(b){ b.addEventListener('click', function(){ document.querySelectorAll('.dl-chip[data-g]').forEach(function(x){ x.setAttribute('aria-pressed','false'); }); b.setAttribute('aria-pressed','true'); state.g = b.getAttribute('data-g'); state.limit = 60; render(); }); });
   document.querySelectorAll('.dl-chip[data-p]').forEach(function(b){ b.addEventListener('click', function(){ document.querySelectorAll('.dl-chip[data-p]').forEach(function(x){ x.setAttribute('aria-pressed','false'); }); b.setAttribute('aria-pressed','true'); state.p = b.getAttribute('data-p'); state.limit = 60; render(); }); });

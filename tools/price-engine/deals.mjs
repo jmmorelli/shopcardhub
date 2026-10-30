@@ -216,7 +216,16 @@ function candidates() {
   for (const c of out) { if (!byTk.has(c.tk)) byTk.set(c.tk, []); byTk.get(c.tk).push(c); }
   const mixed = [];
   for (let depth = 0; mixed.length < out.length; depth++) for (const list of byTk.values()) if (list[depth]) mixed.push(list[depth]);
-  return LIMIT ? mixed.slice(0, LIMIT) : mixed;
+  // Page-row cards first (Deal Hunter, Goal League S1, Oct 29 2026). The run stops at --max-calls 300 of ~367
+  // candidates, and the cut fell on the PSA 9 rows of exactly the cards /js/deal-row.js shows on the worth pages
+  // (Oct 29: Mega Darkrai ex #120 PSA 9 at 312, Charizard ex #199 PSA 9 at 317, Umbreon VMAX #215 PSA 9 at 326).
+  // ORDER only: the candidate set, --max-calls, --pause, thresholds and the output schema are unchanged.
+  // Keep in step with the data-deal-cards / data-deal-tk attributes on those pages.
+  const PRIORITY_CARDS = new Set(["evs21-215", "pb26-116", "pb26-120", "sv151-199", "sv151-183", "pf25-125", "pf25-130", "ah26-294"]);
+  const PRIORITY_TICKERS = new Set(["PB26", "CR26"]);
+  const first = (c) => PRIORITY_CARDS.has(c.card && c.card.id) || PRIORITY_TICKERS.has(c.tk);
+  const ordered = mixed.filter(first).concat(mixed.filter((c) => !first(c)));
+  return LIMIT ? ordered.slice(0, LIMIT) : ordered;
 }
 
 // ---- budget (api/_lib/ebay-budget.js via /api/ebay-quota) ----
