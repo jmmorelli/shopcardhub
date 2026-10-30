@@ -1288,6 +1288,16 @@ Goal League 30-day floor included). New work is logged as bets in `claude/cos/ce
 (BET-20261029-2, `RULING-2026-10-29-agent-readable-site.md`) carries **no eBay URLs and no affiliate links**, and nothing we
 build helps an agent buy.
 
+## R46 · The Apple lens (Mo, attended, 2026-10-30 — ruling `claude/cos/RULING-2026-10-30-apple-lens.md`)
+
+*Committed verbatim by the Oct 30 desk. The ruling titled it "R45"; R45 was already taken (bias-to-action, Oct 29), so it is
+filed as R46. Text unchanged apart from the number.*
+
+> **R46 — The Apple lens (Mo, Oct 30 2026).** (a) The site stays dark and uses the system font stack (`-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, …`); no web fonts; Barlow / Barlow Condensed / JetBrains Mono are retired. This supersedes the Night Crew "Brand stays" font rule and the page-polish skill's font/palette guard for this change only. (b) `claude/agents/cupertino/DESIGN-SYSTEM.md` is the visual authority: every lane that adds UI uses its tokens. On a visual conflict it wins. On a bug, Night Crew wins. (c) Cupertino owns the look, one change per run, through the Night Crew patch pipe. It never changes numbers, data, EPN links, generated blocks (generators only), R11, R26 or the chart-first order. (d) The R44 tiers and brakes apply to Cupertino like any lane.
+
+Cupertino: daily cloud task 03:17 PT (`trig_01WK9TVVu794NJFTXvLw5xDU`, first fire Sat Oct 31), BET-20261030-1 checked Nov 13,
+bankroll cut #3 on a `USAGE_LIMIT_REACHED`.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
