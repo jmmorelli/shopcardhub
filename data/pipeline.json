@@ -5574,6 +5574,18 @@
           "liveVerified": "2026-10-30 ~13:16Z curl: 4 deal-row pages load /js/deal-row.js (200), /deals dl-rules span, 5 Conversion pages no DEST:START, charizard-ex-worth/topps-finest-baseball/lionel-messi-cards/tag-grading-guide no noindex, sitemap.xml 133 <loc>; IndexNow 43 → 200",
           "note": "Deal Hunter patch 07b2351 + Conversion Hunter patch 39c2c47 (pre-season, under the Oct 29 bias-to-action ruling); BET-20261029-1 restore of 34 culled URLs with traffic history; rail label ×5; registry (Drop release + conditional claim granted); sitemap lastmod 41; llms.txt regen",
           "rollback": "git revert 395641a f1414a7 6f820dd ad323ef ca386cb 2000216"
+        },
+        {
+          "date": "2026-10-30",
+          "commits": [
+            "98d0a66",
+            "1c56e59"
+          ],
+          "by": "CoS desk (unattended, Mac deploy-key clone; Task-key cos-desk-2026-10-30)",
+          "gates": "audit-prices 0/49 · audit-site 0/4 (763) · audit-terminal 0/1 (--feed data/feed) = base",
+          "liveVerified": "2026-10-30 ~22:35Z curl: /, /deals, /js/deal-row.js, /home-v2 read once a day (0 twice); /cooper-flagg-rookie-cards signup marker updated; iPhone 13 /deals 200, scrollWidth 390, 0 console errors",
+          "note": "LANE-RULES R46 (Apple lens, docs only, does not deploy); deals.yml one morning screen + once-a-day copy; dest.py SKIP for the five Conversion Patch 1 pages; build-signup WHERE notes for four player guides",
+          "rollback": "git revert 1c56e59 98d0a66"
         }
       ]
     },

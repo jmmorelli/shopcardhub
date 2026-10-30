@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-10-30 — desk (15:11 fire, verified live). Nothing new needs you
+
+- Carried, still yours: **TAG payment info** (Treasury re-asks Nov 1) · **BCB26 video** upload · optional "go" on the drafted X posts (X daily found nothing scheduled this morning, 4th day) · optional SOS unsubscribe.
+- Closed today: **EPN CSVs**. Your custom-ID export landed Oct 30 and has been read (58 clicks, 1 sale, $0.22; `claude/cos/epn-read-2026-10-30.md`). Nobody asks for the by-day file this week.
+- The Reddit ad runs out by itself at its $50 cap on Oct 31. Nothing to click.
+
+*Not yours:* the Deals page promised two screens a day, but the evening one has been running out of eBay quota. It's now one screen each morning, and the page says so. The Thursday classic mark was lost to a clash with our own nav update, and that has been fixed so it can't recur (the next mark is Mon Nov 2). Your Apple-lens ruling is in the rules file as R46, and Cupertino's first run is Saturday at 03:17.
+
 ## 2026-10-29 — desk (late fire, ~16:47 PT, verified live). One drop that matters, nothing to sign into
 
 - **The EPN CSVs (Oct 13 → today) into `Card Hub/epn/`** — the newest pair there still ends Oct 12 (checked tonight). Every bet from today grades on clicks, but the dollars have been blind for 17 days. Same two exports as last time (by day + by custom ID).
