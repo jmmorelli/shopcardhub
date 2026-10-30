@@ -278,7 +278,7 @@ async function main() {
   let consecutiveErrors = 0;
   const b0 = await budgetOk();
   console.log(`budget: ${b0.note}`);
-  if (!b0.ok) { console.error(`::error::deals lane paused by the eBay budget before the first call (${b0.note}) - feed NOT written; the previous feed stays live`); process.exit(1); }
+  if (!b0.ok) { console.log(`::notice::deals lane skipped - the eBay budget floor is reached before the first call (${b0.note}); the previous feed stays live`); process.exit(0); }   // a designed skip, not a failure (desk Oct 30 2026: the evening run hit this 4 nights running and red-X'd Mo's inbox)
   for (const [i, cand] of cands.entries()) {
     if (counts.calls >= MAX_CALLS) { counts.stopped = `--max-calls ${MAX_CALLS} reached`; console.warn(`! ${counts.stopped} at candidate ${i + 1}/${cands.length}`); break; }
     if (counts.calls && counts.calls % BUDGET_EVERY === 0) { const b = await budgetOk(); if (!b.ok) { counts.stopped = "budget: " + b.note; console.warn(`! ${counts.stopped}`); break; } }

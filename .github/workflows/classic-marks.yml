@@ -105,6 +105,21 @@ jobs:
               node tools/ci/merge-ticker-keys.mjs --from "$RUNNER_TEMP/idx-marked.json" --into data/indices.json --tickers "$(paste -sd, "$RUNNER_TEMP/marked.list")"
             fi
             if [ -n "$CLASH" ]; then echo "::warning::main changed during the marks - kept main's copy of: $CLASH (indices.json keys re-applied)"; fi
+            # Desk, Oct 30 2026: a page kept from main still carries the OLD mark while indices.json now has the new one, and
+            # audit-site's finish-cost-drift gate FAILs on it (run #6, Oct 29: a nav rebuild touched all 25 pages mid-run, the
+            # whole Thursday mark was dropped). Re-bake every clashed page from the merged data - offline, keeps main's edits.
+            if [ -n "$CLASH" ]; then
+              for TK in $(cat "$RUNNER_TEMP/marked.list"); do
+                if [ "$TK" = "GSTAR" ]; then
+                  if echo "$CLASH" | grep -qx "gold-star-index.html"; then node tools/build-grails.mjs --bake > /dev/null || echo "::warning::GSTAR re-bake failed"; fi
+                  continue
+                fi
+                PG=$(node -e 'const d=require("./data/indices.json");const p=(d[process.argv[1]]||{}).page||"";process.stdout.write(p.replace(/^\//,"")+(p?".html":""))' "$TK")
+                if [ -n "$PG" ] && echo "$CLASH" | grep -qx "$PG"; then
+                  node tools/build-sector-index.mjs --ticker "$TK" --bake > /dev/null || echo "::warning::$TK re-bake on main's page failed"
+                fi
+              done
+            fi
             git add $(cat "$RUNNER_TEMP/artifacts.list")
             if FEED_BASE=price-data/data node tools/build-home.mjs; then git add index.html
             else echo "::warning::build-home failed - / keeps its previous bake"; git checkout -- index.html; fi
@@ -126,7 +141,9 @@ jobs:
             fi
             if node tools/bake-th26-marks.mjs; then git add pokemon-30th-anniversary-2026.html
             else echo "::warning::bake-th26-marks refused - the 30th page keeps its previous bake"; git checkout -- pokemon-30th-anniversary-2026.html 2>/dev/null || true; fi
-            if ! node tools/audit-prices.mjs > /dev/null || ! node tools/site-auditor/audit-site.mjs > /dev/null; then
+            # gate output is kept so a FAIL names itself in the log (Oct 29 run #6 sent it to /dev/null)
+            if ! node tools/audit-prices.mjs > "$RUNNER_TEMP/gate-prices.txt" || ! node tools/site-auditor/audit-site.mjs > "$RUNNER_TEMP/gate-site.txt"; then
+              grep -h "FAIL" "$RUNNER_TEMP"/gate-*.txt | head -20
               echo "::error::a gate FAILed on the marked tree - nothing pushed"; exit 1
             fi
             if git diff --cached --quiet; then echo "Nothing to commit."; exit 0; fi

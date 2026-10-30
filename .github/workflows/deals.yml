@@ -46,6 +46,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # deals.mjs exits 0 WITHOUT a feed when the eBay budget floor is already reached (designed skip, Oct 30 2026)
+          if [ ! -s "$RUNNER_TEMP/deals/deals-latest.json" ]; then echo "No feed this run (budget skip) - the previous feed stays live."; exit 0; fi
           mkdir -p data/feed
           cp "$RUNNER_TEMP/deals/deals-latest.json" data/feed/deals-latest.json
           git config user.name "price-engine[bot]"
