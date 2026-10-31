@@ -125,7 +125,6 @@ const html = `<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="preload" href="/fonts/barlow-condensed-900.woff2" as="font" type="font/woff2" crossorigin>
   <title>Deals — eBay Buy It Now Listings Below the Mark | ShopCardHub</title>
   <meta name="description" content="Fixed-price eBay listings priced under our dated sold mark for the exact Pokémon or Bowman card and grade — raw, PSA 9, PSA 10 and sealed — verified by title, sorted by discount. Refreshed twice a day.">
   <link rel="canonical" href="https://www.shopcardhub.com/deals">
@@ -142,9 +141,6 @@ const html = `<!DOCTYPE html>
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="628">
   <meta name="twitter:image" content="https://www.shopcardhub.com/og/indices.png?v=20261026">
-  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/fonts.css">
   <style>${pageCss}</style>
   <style>${CSS}</style>
   ${gtag}

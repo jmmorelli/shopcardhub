@@ -174,7 +174,7 @@
     '@media (max-width:540px){body.sch-cta-live{padding-bottom:60px}}' +
     '@media (prefers-reduced-motion:reduce){a#sch-track-cta{transition:none}}' +
     '.sch-track-card{display:inline-flex;align-items:center;gap:5px;background:transparent;' +
-    'border:1px solid rgba(0,204,245,0.35);color:#00ccf5;font-family:"JetBrains Mono",monospace;' +
+    'border:1px solid rgba(0,204,245,0.35);color:#00ccf5;font-family:var(--ds-font,system-ui,sans-serif);' +
     'font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;' +
     'border-radius:2px;cursor:pointer;transition:background .15s,color .15s;margin-top:6px;}' +
     '.sch-track-card:hover{background:#00ccf5;color:#000;}' +
@@ -184,7 +184,7 @@
     '.sch-track-card.sch-owned:hover{background:transparent;color:#f5c800;}' +
     '#sch-track-pop{position:absolute;z-index:10500;background:#0c1017;border:1px solid rgba(0,204,245,0.4);' +
     'border-radius:2px;padding:12px;min-width:230px;box-shadow:0 10px 34px rgba(0,0,0,0.6);' +
-    'font-family:"JetBrains Mono",monospace;}' +
+    'font-family:var(--ds-font,system-ui,sans-serif);}' +
     '#sch-track-pop .sch-pop-name{font-size:10px;color:#7a969e;letter-spacing:0.5px;margin-bottom:10px;' +
     'max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}' +
     '#sch-track-pop .sch-pop-row{display:flex;gap:8px;}' +
@@ -204,7 +204,7 @@
     'border-radius:2px;color:#e4f0f4;font-family:inherit;font-size:12px;padding:8px 10px;margin-bottom:8px;}' +
     '#sch-track-pop .sch-pop-new{display:none;}' +
     '#sch-track-snack{position:fixed;left:50%;bottom:70px;transform:translateX(-50%) translateY(20px);' +
-    'background:#0c1017;border:1px solid #00e07a;color:#e4f0f4;font-family:"JetBrains Mono",monospace;' +
+    'background:#0c1017;border:1px solid #00e07a;color:#e4f0f4;font-family:var(--ds-font,system-ui,sans-serif);' +
     'font-size:12px;padding:12px 18px;border-radius:2px;z-index:10400;opacity:0;pointer-events:none;' +
     'transition:opacity .25s,transform .25s;box-shadow:0 8px 30px rgba(0,0,0,0.5);}' +
     '#sch-track-snack.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;}' +

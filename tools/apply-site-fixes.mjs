@@ -7,12 +7,13 @@
  * Default file set: every top-level *.html in the repo except card-dungeon.html
  * (internal dashboard, no site chrome). Pass explicit paths to limit the run.
  * --check  reports what WOULD change and writes nothing.
+ * --fonts-only  runs step 2 only (strip web-font links); steps 1 and 3 still run, as no-ops on current pages.
  *
  * What it does to each page (each step is a no-op when already applied):
  *   1. <head>: adds  <meta name="view-transition" content="same-origin">
- *   2. <head>: replaces the render-blocking Google Fonts <link> (+ its preconnects)
- *      with the self-hosted /css/fonts.css sheet plus font preloads for Barlow 400
- *      (body face) and Barlow Condensed 800 (only when the page uses weight 800).
+ *   2. <head>: removes every web-font request — Google Fonts <link> + preconnects,
+ *      /css/fonts.css and the /fonts/*.woff2 preloads. The site uses the system font
+ *      stack (R46, Mo Oct 30 2026; tokens in css/site-fixes.css §0).
  *   3. <head>: appends <link rel="stylesheet" href="/css/site-fixes.css"> as the
  *      LAST stylesheet before </head> (contrast, reduced-motion, table scroll,
  *      min font-size on phones — see css/site-fixes.css).
@@ -30,10 +31,8 @@
  *
  * Zero dependencies. Safe to run repeatedly; prints a per-file change summary.
  *
- * Fonts: /fonts/*.woff2 are the latin subsets from Google Fonts css2 (Chrome UA),
- * css/fonts.css carries the @font-face rules with font-display:swap. Regenerate by
- * fetching the css2 URL with a Chrome user-agent and keeping only the blocks
- * whose subset comment reads "latin".
+ * Fonts: none. Barlow / Barlow Condensed / JetBrains Mono were retired Oct 30 2026 (R46).
+ * css/fonts.css is kept as an empty stub so a stale page that still links it loads nothing.
  */
 
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
@@ -45,6 +44,8 @@ const ROOT = join(__dirname, '..');
 
 const args = process.argv.slice(2);
 const CHECK_ONLY = args.includes('--check');
+// --fonts-only: run step 2 alone (Cupertino run 1 regen: strip the web-font links without touching gtag or tables)
+const FONTS_ONLY = args.includes('--fonts-only');
 const explicit = args.filter(a => !a.startsWith('--'));
 const SKIP = new Set(['card-dungeon.html']);
 
@@ -58,16 +59,6 @@ const files = explicit.length
 const GA_ID_DEFAULT = 'G-2Q52C5EKG7';
 const VT_META = '<meta name="view-transition" content="same-origin">';
 const FIXES_LINK = '<link rel="stylesheet" href="/css/site-fixes.css">';
-const PRELOAD_BC800 = '<link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>';
-const PRELOAD_B400 = '<link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>';
-const FONTS_LINK = '<link rel="stylesheet" href="/css/fonts.css">';
-// Barlow 400 is the body face on every page; Barlow Condensed 800 only where the
-// page actually sets weight 800 (a preload that is never used just draws a warning).
-const fontLinks = (html) => [
-  ...(/font-weight\s*:\s*800\b/.test(html) ? [PRELOAD_BC800] : []),
-  PRELOAD_B400,
-  FONTS_LINK,
-];
 
 function gtagBlock(id, withStub) {
   const stub = withStub
@@ -169,40 +160,19 @@ function fixHead(html, log) {
     log.push('+view-transition meta');
   }
 
-  // 2. self-hosted fonts
-  if (!html.includes('href="/css/fonts.css"')) {
-    const gf = html.match(/<link[^>]*href=["']https:\/\/fonts\.googleapis\.com\/css2?[^"']*["'][^>]*>/i);
-    if (gf) {
-      const ind = lineIndent(html, gf.index);
-      const sep = ind !== null ? '\n' + ind : '';
-      const links = fontLinks(html);
-      html = html.slice(0, gf.index) + links.join(sep) + html.slice(gf.index + gf[0].length);
-      log.push(`fonts: Google Fonts link -> /css/fonts.css (+${links.length - 1} preload${links.length > 2 ? 's' : ''})`);
-    } else {
-      // no Google Fonts link: put the sheet before the first <style> in head, else before </head>
-      const st = html.search(/<style[\s>]/i);
-      const at = st >= 0 && st < html.search(/<\/head\s*>/i) ? st : null;
-      const links = fontLinks(html);
-      if (at !== null) {
-        const ind = lineIndent(html, at);
-        html = html.slice(0, at) + links.join(ind !== null ? '\n' + ind : '') + (ind !== null ? '\n' + ind : '') + html.slice(at);
-      } else {
-        html = insertBeforeHeadEnd(html, links.join('\n  '));
-      }
-      log.push(`fonts: added /css/fonts.css (+${links.length - 1} preload${links.length > 2 ? 's' : ''})`);
-    }
+  // 2. no web fonts (R46, Mo Oct 30 2026 — Cupertino run 1, Oct 31). The site uses the device's system font stack
+  //    (css/site-fixes.css §0 maps --fb/--fd/--fm to it), so every font request comes out of <head>: the Google Fonts
+  //    stylesheet + its preconnects, the /css/fonts.css sheet and every /fonts/*.woff2 preload.
+  {
+    let n = 0;
+    const drop = (re) => { html = html.replace(re, () => (n++, '')); };
+    drop(/[ \t]*<link[^>]*href=["']https:\/\/fonts\.googleapis\.com\/css2?[^"']*["'][^>]*>[ \t]*\r?\n?/gi);
+    drop(/[ \t]*<link[^>]*rel=["']preconnect["'][^>]*href=["']https:\/\/fonts\.(?:googleapis|gstatic)\.com["'][^>]*>[ \t]*\r?\n?/gi);
+    drop(/[ \t]*<link[^>]*href=["']https:\/\/fonts\.(?:googleapis|gstatic)\.com["'][^>]*rel=["']preconnect["'][^>]*>[ \t]*\r?\n?/gi);
+    drop(/[ \t]*<link[^>]*rel=["']preload["'][^>]*href=["']\/fonts\/[^"']+\.woff2["'][^>]*>[ \t]*\r?\n?/gi);
+    drop(/[ \t]*<link[^>]*href=["']\/css\/fonts\.css["'][^>]*>[ \t]*\r?\n?/gi);
+    if (n) log.push(`fonts: removed ${n} web-font link${n > 1 ? 's' : ''} (system font stack, R46)`);
   }
-  // an unused Barlow Condensed 800 preload (page never sets weight 800) only draws a console warning
-  if (!/font-weight\s*:\s*800\b/.test(html) && html.includes(PRELOAD_BC800)) {
-    html = html.replace(new RegExp('[ \\t]*' + PRELOAD_BC800.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&') + '[ \\t]*\\r?\\n?'), '');
-    log.push('fonts: dropped unused Barlow Condensed 800 preload');
-  }
-  // drop Google Fonts preconnects (only meaningful with the remote stylesheet)
-  const pcRe = /[ \t]*<link[^>]*rel=["']preconnect["'][^>]*href=["']https:\/\/fonts\.(?:googleapis|gstatic)\.com["'][^>]*>[ \t]*\r?\n?/gi;
-  const pcRe2 = /[ \t]*<link[^>]*href=["']https:\/\/fonts\.(?:googleapis|gstatic)\.com["'][^>]*rel=["']preconnect["'][^>]*>[ \t]*\r?\n?/gi;
-  let n = 0;
-  html = html.replace(pcRe, () => (n++, '')).replace(pcRe2, () => (n++, ''));
-  if (n) log.push(`fonts: removed ${n} preconnect${n > 1 ? 's' : ''}`);
 
   // 3. site-fixes.css last in head
   if (!html.includes('href="/css/site-fixes.css"')) {
@@ -362,8 +332,10 @@ for (const file of files) {
   const log = [];
   let html = orig;
   html = fixHead(html, log);
-  html = fixGtag(html, log);
-  html = fixTables(html, log);
+  if (!FONTS_ONLY) {
+    html = fixGtag(html, log);
+    html = fixTables(html, log);
+  }
   if (html !== orig) {
     changed++;
     if (!CHECK_ONLY) writeFileSync(file, html);

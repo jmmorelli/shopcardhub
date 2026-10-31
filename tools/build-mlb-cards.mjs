@@ -136,10 +136,6 @@ const html = `<!DOCTYPE html>
   <script type="application/ld+json">
   ${JSON.stringify({ "@context": "https://schema.org", "@type": "Article", headline: title.replace(" | ShopCardHub", ""), url: URL, publisher: { "@type": "Organization", name: "ShopCardHub", url: "https://www.shopcardhub.com" }, datePublished: "2026-10-14", dateModified: D.asof, about: D.players.map((p) => ({ "@type": "Person", name: p.name })) })}
   </script>
-  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/barlow-condensed-900.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/fonts.css">
   <style>
 ${SHELL_CSS}
 </style>

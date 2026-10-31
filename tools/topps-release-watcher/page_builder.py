@@ -50,8 +50,12 @@ def load_shell(template_path=DEFAULT_TEMPLATE):
     with open(template_path, encoding="utf-8") as f:
         t = f.read()
     # Sep 7 2026: fonts are self-hosted since the Sep 1 site-fixes pass — the Google preconnect marker is gone.
-    start = '<link rel="preload" href="/fonts/barlow-condensed-800.woff2"' if '/fonts/barlow-condensed-800.woff2' in t \
-        else '<link rel="preconnect" href="https://fonts.googleapis.com">'
+    # Oct 31 2026 (R46): no web fonts at all, so the head slice starts at the first marker the template still has;
+    # once apply-site-fixes has stripped the font links that is the page's first <style> (same start point as before).
+    start = next(m for m in ('<link rel="preload" href="/fonts/barlow-condensed-800.woff2"',
+                             '<link rel="stylesheet" href="/css/fonts.css">',
+                             '<link rel="preconnect" href="https://fonts.googleapis.com">',
+                             '<style>') if m in t)
     head_common = _slice(t, start, '</head>', include_end=True)
     nav_block = _slice(t, '<nav class="nav">', '<section class="hero"')
     footer_block = _slice(t, '<footer>', '</html>', include_end=True)

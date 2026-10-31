@@ -56,8 +56,8 @@
       '<linearGradient id="f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".18"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient></defs>' +
       '<rect width="250" height="350" rx="14" fill="url(#g)"/><rect x="10" y="10" width="230" height="330" rx="10" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="2"/>' +
       '<rect width="250" height="350" rx="14" fill="url(#f)"/>' +
-      '<text x="125" y="185" text-anchor="middle" font-family="Barlow Condensed,Impact,sans-serif" font-weight="900" font-size="96" fill="#fff" fill-opacity=".92">' + esc(ini) + '</text>' +
-      '<text x="125" y="300" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="16" letter-spacing="3" fill="#00ccf5">' + esc(sub) + '</text></svg>';
+      '<text x="125" y="185" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,Roboto,Arial,sans-serif" font-weight="600" font-size="96" fill="#fff" fill-opacity=".92">' + esc(ini) + '</text>' +
+      '<text x="125" y="300" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,Roboto,Arial,sans-serif" font-size="16" letter-spacing="3" fill="#00ccf5">' + esc(sub) + '</text></svg>';
     return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
   }
 

@@ -254,7 +254,6 @@ const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta n
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="${SITE}/og/indices.png?v=20261019">
-<link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/css/fonts.css">
 <style>
 ${CSS}
 ${NAVCSS}

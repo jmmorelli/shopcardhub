@@ -121,7 +121,6 @@ const html = `<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="preload" href="/fonts/barlow-condensed-900.woff2" as="font" type="font/woff2" crossorigin>
   <title>Auction Desk — Live eBay Auctions Ending Under the Mark | ShopCardHub</title>
   <meta name="description" content="Every verified live eBay auction for the cards our price engine tracks — 1st Bowman Chrome autos, Sapphire, Pokémon index singles — with the nightly mark and the last bid we saw on auctions that ended, beside the current bid, sorted by time to close. Refreshed every 15 minutes.">
   <link rel="canonical" href="https://www.shopcardhub.com/auctions">
@@ -146,9 +145,6 @@ const html = `<!DOCTYPE html>
     description: "Every verified live eBay auction for the cards the ShopCardHub price engine tracks, with the nightly mark and the last bid we saw on auctions that ended, beside the current bid, sorted by time to close.",
     isPartOf: { "@type": "WebSite", name: "ShopCardHub", url: "https://www.shopcardhub.com" },
   })}</script>
-  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/fonts.css">
   <style>${pageCss}</style>
   <style>${CSS}</style>
   ${gtag}

@@ -136,9 +136,6 @@ const page = (o) => `<!DOCTYPE html>
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://www.shopcardhub.com/og/pokemon.png?v=20261028">
   <meta name="twitter:site" content="@shopcardhub">
-  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/fonts.css">
   <style>${pageCss}</style>
   <style>${CSS}</style>
   ${gtag}

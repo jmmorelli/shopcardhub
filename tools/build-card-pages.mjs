@@ -374,9 +374,6 @@ function renderCard(c) {
   <meta property="og:image:height" content="628">
   <meta name="twitter:image" content="https://www.shopcardhub.com/og/${f.isTcg ? "pokemon" : "bowman"}.png">
   <script type="application/ld+json">${JSON.stringify(ld)}</script>
-  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/fonts.css">
   <style>${pageCss}</style>
   <style>${CARD_CSS}</style>
   ${gtag}
@@ -576,9 +573,6 @@ ${items.map((c) => { const f = facts(c); const last = f.latest && f.latest.last 
       })),
     },
   })}</script>
-  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/fonts.css">
   <style>${pageCss}</style>
   <style>${CARD_CSS}${HUB_CSS}</style>
   ${gtag}

@@ -253,10 +253,6 @@ function build(d) {
   <meta property="og:image:height" content="628">
   <meta name="twitter:image" content="https://www.shopcardhub.com/og/pokemon.png">
   <script type="application/ld+json">${jsonld}</script>
-  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/barlow-condensed-900.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/fonts.css">
 <style>
 ${base}
 </style>

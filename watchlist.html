@@ -23,9 +23,6 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebApplication","name":"ShopCardHub Watchlist","url":"https://shopcardhub.com/watchlist","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"ShopCardHub","url":"https://shopcardhub.com"}}
   </script>
-  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/fonts.css">
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     :root {
@@ -1783,13 +1780,13 @@ function chartSVG(c, animate) {
     const yT = y(ref);
     out += '<rect x="' + padL + '" y="' + yT + '" width="' + plotW + '" height="' + Math.max(0, padT + plotH - yT) + '" fill="rgba(0,224,122,0.06)"/>';
     out += '<line x1="' + padL + '" x2="' + (padL + plotW) + '" y1="' + yT + '" y2="' + yT + '" stroke="#f5c800" stroke-width="1" stroke-dasharray="4 4" opacity="0.7"/>';
-    out += '<text x="' + (W - 2) + '" y="' + refLabelY(yT).toFixed(1) + '" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="8" fill="#f5c800" opacity="0.9">TGT ' + fmt$(ref, 0) + '</text>';
+    out += '<text x="' + (W - 2) + '" y="' + refLabelY(yT).toFixed(1) + '" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,Roboto,Arial,sans-serif" font-size="8" fill="#f5c800" opacity="0.9">TGT ' + fmt$(ref, 0) + '</text>';
   }
   // cost basis line (own)
   if (c.status === 'own' && ref != null && !isNaN(ref)) {
     const yC = y(ref);
     out += '<line x1="' + padL + '" x2="' + (padL + plotW) + '" y1="' + yC + '" y2="' + yC + '" stroke="#00ccf5" stroke-width="1" stroke-dasharray="4 4" opacity="0.6"/>';
-    out += '<text x="' + (W - 2) + '" y="' + refLabelY(yC).toFixed(1) + '" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="8" fill="#00ccf5" opacity="0.9">COST ' + fmt$(ref, 0) + '</text>';
+    out += '<text x="' + (W - 2) + '" y="' + refLabelY(yC).toFixed(1) + '" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,Roboto,Arial,sans-serif" font-size="8" fill="#00ccf5" opacity="0.9">COST ' + fmt$(ref, 0) + '</text>';
   }
   // connector line through closes
   let pathD = '';
@@ -1813,7 +1810,7 @@ function chartSVG(c, animate) {
   const lp = ps[ps.length-1].p, yL = y(lp);
   if (anim) out += '<circle class="cl-ring" cx="' + (padL + plotW) + '" cy="' + yL.toFixed(1) + '" r="2.5" fill="none" stroke="#e4f0f4" stroke-width="1"/>';
   out += '<circle' + (anim ? ' class="cl-last"' : '') + ' cx="' + (padL + plotW) + '" cy="' + yL.toFixed(1) + '" r="2.5" fill="#e4f0f4"/>';
-  out += '<text' + (anim ? ' class="cl-lbl"' : '') + ' x="' + (W - 2) + '" y="' + (yL + 3) + '" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" font-weight="700" fill="#e4f0f4">' + fmt$(lp, 0) + '</text>';
+  out += '<text' + (anim ? ' class="cl-lbl"' : '') + ' x="' + (W - 2) + '" y="' + (yL + 3) + '" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,Roboto,Arial,sans-serif" font-size="9" font-weight="700" fill="#e4f0f4">' + fmt$(lp, 0) + '</text>';
   out += '</svg>';
   return out;
 }
@@ -2275,16 +2272,16 @@ function renderPV(own) {
   if (cost > 0) {
     const yC = Y(cost);
     svg += '<line x1="' + padL + '" x2="' + (padL + plotW) + '" y1="' + yC.toFixed(1) + '" y2="' + yC.toFixed(1) + '" stroke="#00ccf5" stroke-width="1" stroke-dasharray="5 5" opacity="0.55"/>';
-    svg += '<text x="' + (W - 4) + '" y="' + (yC - 4).toFixed(1) + '" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" fill="#00ccf5">COST ' + fmt$(cost, 0) + '</text>';
+    svg += '<text x="' + (W - 4) + '" y="' + (yC - 4).toFixed(1) + '" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,Roboto,Arial,sans-serif" font-size="9" fill="#00ccf5">COST ' + fmt$(cost, 0) + '</text>';
   }
   svg += '<path d="' + line + '" fill="none" stroke="' + col + '" stroke-width="2"/>';
   pts.forEach(p => {
     svg += '<circle cx="' + X(p.t).toFixed(1) + '" cy="' + Y(p.v).toFixed(1) + '" r="2.5" fill="' + col + '" opacity="0.9"><title>' + dstr(p.t) + ' — $' + fmt$(p.v, 0) + '</title></circle>';
   });
   const yL = Y(cur);
-  svg += '<text x="' + (W - 4) + '" y="' + (yL + 3).toFixed(1) + '" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" fill="#e4f0f4">' + fmt$(cur, 0) + '</text>';
-  svg += '<text x="' + padL + '" y="' + (H - 3) + '" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a7880">' + dstr(t0) + '</text>';
-  svg += '<text x="' + (padL + plotW) + '" y="' + (H - 3) + '" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="8" fill="#5a7880">' + dstr(t1) + '</text>';
+  svg += '<text x="' + (W - 4) + '" y="' + (yL + 3).toFixed(1) + '" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,Roboto,Arial,sans-serif" font-size="10" font-weight="700" fill="#e4f0f4">' + fmt$(cur, 0) + '</text>';
+  svg += '<text x="' + padL + '" y="' + (H - 3) + '" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,Roboto,Arial,sans-serif" font-size="8" fill="#5a7880">' + dstr(t0) + '</text>';
+  svg += '<text x="' + (padL + plotW) + '" y="' + (H - 3) + '" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,Roboto,Arial,sans-serif" font-size="8" fill="#5a7880">' + dstr(t1) + '</text>';
   svg += '</svg>';
   const pl = cur - cost;
   const chips =
@@ -3895,14 +3892,14 @@ document.addEventListener('click', e => { const m = document.getElementById('pfM
   var W = 1200, H = 675;
   var C = { bg:'#07090c', bg2:'#0c1017', line:'rgba(255,255,255,0.07)', cyan:'#00ccf5', green:'#00e07a', red:'#ff2e55', gold:'#f5c800',
             text:'#b8cdd4', dim:'#5a7880', head:'#e4f0f4' };
-  var FD = '"Barlow Condensed", "Arial Narrow", sans-serif', FB = '"Barlow", Arial, sans-serif', FM = '"JetBrains Mono", Menlo, monospace';
+  var FD = '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Arial, sans-serif', FB = FD, FM = FD; /* R46: system font, no web fonts */
   var current = { blob:null, text:'', name:'vault-card.png' };
 
   function fontsReady() {
     if (!document.fonts || !document.fonts.load) return Promise.resolve();
     return Promise.all([
-      document.fonts.load('900 64px "Barlow Condensed"'), document.fonts.load('700 20px "Barlow Condensed"'),
-      document.fonts.load('500 16px "Barlow"'), document.fonts.load('700 14px "JetBrains Mono"'), document.fonts.load('400 14px "JetBrains Mono"')
+      document.fonts.load('900 64px system-ui'), document.fonts.load('700 20px system-ui'),
+      document.fonts.load('500 16px system-ui'), document.fonts.load('700 14px system-ui'), document.fonts.load('400 14px system-ui')
     ]).catch(function(){});
   }
   function money(n, dp) { n = Number(n) || 0; var s = n >= 1000 ? Math.round(n).toLocaleString('en-US') : (dp === 0 ? String(Math.round(n)) : (n >= 100 ? String(Math.round(n)) : n.toFixed(2))); return '$' + s; }
