@@ -91,20 +91,25 @@ function buildSearchIndex() {
 /* ---------- shared: optional target/rel attrs (external links) ---------- */
 const extAttrs = (o) => (o.target ? ` target="${o.target}"` : '') + (o.rel ? ` rel="${o.rel}"` : '');
 
+/* ---------- labels as painted (Cupertino run 2, Nov 1 2026; R46 + DESIGN-SYSTEM.md "Navigation") ----------
+   nav.json is unchanged and the search index still reads its raw labels. In the bar and the menus the labels are drawn
+   plain: no emoji (📬 ⚾ ⭐ …) and "›" instead of "→" on the "All …" links. Each link's `style` (one color per set) is
+   no longer painted either: color on this site means a move (green/red) or a link (the one accent), never decoration. */
+const navLabel = (s) => String(s).replace(/\p{Extended_Pictographic}\uFE0F?/gu, '').replace(/\s*→\s*$/, ' ›').replace(/\s+/g, ' ').trim();
+
 /* ---------- desktop nav ---------- */
 function linkAttrs(l) {
   const cls = l.allLink ? ' class="dd-all"' : (l.money ? ' class="dd-money"' : '');
-  const st = l.style ? ` style="${l.style}"` : '';
-  return cls + st + extAttrs(l);
+  return cls + extAttrs(l);
 }
 
 function buildFooter(cat) {
   if (!cat.footer) return '';
   let links = '';
   for (const l of cat.footer.links) {
-    links += `<a href="${l.href}"${linkAttrs(l)}>${l.label}</a>`;
+    links += `<a href="${l.href}"${linkAttrs(l)}>${navLabel(l.label)}</a>`;
   }
-  const lbl = cat.footer.label ? `<span class="dd-foot-label">${cat.footer.label}</span>` : '';
+  const lbl = cat.footer.label ? `<span class="dd-foot-label">${navLabel(cat.footer.label)}</span>` : '';
   return `\n          <div class="dd-foot">${lbl}${links}</div>`;
 }
 
@@ -116,9 +121,9 @@ function buildDesktop() {
       // mega panel: each group renders as a column
       dd += `\n          <div class="dd-cols">`;
       for (const g of cat.groups) {
-        dd += `\n            <div class="dd-col">\n              <div class="dd-label">${g.label}</div>`;
+        dd += `\n            <div class="dd-col">\n              <div class="dd-label">${navLabel(g.label)}</div>`;
         for (const l of g.links) {
-          dd += `\n              <a href="${l.href}"${linkAttrs(l)}>${l.label}</a>`;
+          dd += `\n              <a href="${l.href}"${linkAttrs(l)}>${navLabel(l.label)}</a>`;
         }
         dd += `\n            </div>`;
       }
@@ -126,16 +131,16 @@ function buildDesktop() {
     } else {
       cat.groups.forEach((g, gi) => {
         if (gi > 0) dd += `\n          <hr>`;
-        dd += `\n          <div class="dd-label">${g.label}</div>`;
+        dd += `\n          <div class="dd-label">${navLabel(g.label)}</div>`;
         for (const l of g.links) {
-          dd += `\n          <a href="${l.href}"${linkAttrs(l)}>${l.label}</a>`;
+          dd += `\n          <a href="${l.href}"${linkAttrs(l)}>${navLabel(l.label)}</a>`;
         }
       });
     }
     dd += buildFooter(cat);
     items += `
         <div class="nav-item">
-          <a href="${cat.href}">${cat.label} <span class="chevron">▾</span></a>
+          <a href="${cat.href}" aria-haspopup="true">${cat.label}</a>
           <div class="nav-dropdown${cat.mega ? ' nav-mega' : ''}">${dd}
           </div>
         </div>`;
@@ -153,7 +158,7 @@ function buildDesktop() {
           <input type="text" class="nav-search-input" id="nav-search-input-d" placeholder="Search cards…" aria-label="Search the site" autocomplete="off">
           <div class="nav-search-results" id="nav-search-results-d" role="listbox"></div>
         </div>
-${cfg.cta2 ? `        <a href="${cfg.cta2.href}"${extAttrs(cfg.cta2)} class="nav-cta nav-cta2" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent);">${cfg.cta2.label}</a>\n` : ""}        <a href="${cta.href}"${extAttrs(cta)} class="nav-cta">${cta.label}</a>
+${cfg.cta2 ? `        <a href="${cfg.cta2.href}"${extAttrs(cfg.cta2)} class="nav-cta nav-cta2">${navLabel(cfg.cta2.label)}</a>\n` : ""}        <a href="${cta.href}"${extAttrs(cta)} class="nav-cta">${cta.label}</a>
       </div>
       <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -170,17 +175,16 @@ function buildMobile() {
     const multi = cat.groups.length > 1;
     let body = '';
     for (const g of cat.groups) {
-      if (multi) body += `\n        <div class="m-sublabel">${g.label}</div>`;
+      if (multi) body += `\n        <div class="m-sublabel">${navLabel(g.label)}</div>`;
       for (const l of g.links) {
         const cls = l.allLink ? ' class="m-all"' : '';
-        const st = l.style ? ` style="${l.style}"` : '';
-        body += `\n        <a href="${l.href}"${cls}${st}${extAttrs(l)}>${l.label}</a>`;
+        body += `\n        <a href="${l.href}"${cls}${extAttrs(l)}>${navLabel(l.label)}</a>`;
       }
     }
     // category footer links (e.g. COMC inventory) go last in the mobile panel
     if (cat.footer) {
       for (const l of cat.footer.links) {
-        body += `\n        <a href="${l.href}" class="m-money"${l.style ? ` style="${l.style}"` : ''}${extAttrs(l)}>${l.label}</a>`;
+        body += `\n        <a href="${l.href}" class="m-money"${extAttrs(l)}>${navLabel(l.label)}</a>`;
       }
     }
     groups += `
@@ -194,7 +198,7 @@ function buildMobile() {
   return `<!-- ═══ MOBILE DRAWER ═══ -->
 <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
   <a href="${cfg.home.href}" class="m-home">${cfg.home.label}</a>${groups}
-${cfg.cta2 ? `  <a href="${cfg.cta2.href}"${extAttrs(cfg.cta2)} class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">${cfg.cta2.mobileLabel || cfg.cta2.label}</a>\n` : ""}  <a href="${cta.href}"${extAttrs(cta)} class="m-cta">${cta.mobileLabel || cta.label}</a>
+${cfg.cta2 ? `  <a href="${cfg.cta2.href}"${extAttrs(cfg.cta2)} class="m-cta m-cta-outline">${navLabel(cfg.cta2.mobileLabel || cfg.cta2.label)}</a>\n` : ""}  <a href="${cta.href}"${extAttrs(cta)} class="m-cta">${navLabel(cta.mobileLabel || cta.label)}</a>
 </div>`;
 }
 
@@ -248,7 +252,7 @@ function buildStyle() {
     .nav-inner > .nav-search-m { display:block; flex:1 1 auto; min-width:0; margin:0 10px 0 14px; }
     .nav-search-m .nav-search-input, .nav-search-m .nav-search-input:focus { width:100%; min-height:40px; font-size:16px; letter-spacing:0; padding:7px 10px; }
     .nav-search-m .nav-search-input::-webkit-search-decoration { -webkit-appearance:none; }
-    .nav-search-m .nav-search-results { position:fixed; top:64px; left:8px; right:8px; min-width:0; max-height:calc(100vh - 80px); }
+    .nav-search-m .nav-search-results { position:fixed; top:calc(var(--ds-nav-h, 58px) + 6px); left:8px; right:8px; min-width:0; max-height:calc(100vh - 80px); }
     .nav-search-m .nav-search-results a { padding:10px 14px; min-height:40px; }
   }
   /* B74: card rows lead the results, name left and the raw price right (one glance, no sub-line hunt) */
@@ -271,6 +275,66 @@ function buildStyle() {
   .nav-item:focus-within > a .chevron { transform:rotate(180deg); }
   .nav-item.dd-shut .nav-dropdown { opacity:0; visibility:hidden; }
   .nav-item.dd-shut > a .chevron { transform:none; }
+  /* === Global nav look (Cupertino run 2, Nov 1 2026 · DESIGN-SYSTEM.md "Navigation"; R46). A 44 px translucent bar
+     (48 px on phones, --ds-nav-h in css/site-fixes.css §0) with no border; six plain items in sentence case at 14 px,
+     no chevrons; the Tuesday Tape is a text link and Watchlist a quiet gray pill, so the page's own eBay button stays
+     the one filled button on screen. Menus are solid panels (a blurred panel inside the blurred bar let the page show through): gray group labels, plain links, no per-set colors, no
+     cyan rule. Same items, same links, same order, same search. Page CSS still styles the bones; these win on order. === */
+  nav.nav { background:rgba(22,22,23,.8); -webkit-backdrop-filter:saturate(180%) blur(20px); backdrop-filter:saturate(180%) blur(20px); border-bottom:0; }
+  @supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))) { nav.nav { background:rgba(22,22,23,.97); } }
+  nav.nav .nav-inner { height:var(--ds-nav-h, 44px); padding:0 var(--ds-gutter, 24px); }
+  nav.nav a.logo { font:600 19px/1 var(--ds-font, var(--fb)); letter-spacing:-.01em; text-transform:none; color:var(--text-head); margin:0; flex-shrink:0; }
+  nav.nav .nav-links { gap:0; }
+  nav.nav .nav-item > a, nav.nav .nav-links a.nav-cta2 { display:inline-flex; align-items:center; gap:0; min-height:44px; padding:0 10px; font:400 14px/1 var(--ds-font, var(--fb)) !important; letter-spacing:0; text-transform:none; color:var(--text) !important; background:none !important; border:0 !important; border-radius:0; margin:0; transition:color var(--ds-dur-ui, .2s) var(--ds-ease, ease); }
+  nav.nav .nav-item > a:hover, nav.nav .nav-item:focus-within > a, nav.nav .nav-links a.nav-cta2:hover { color:var(--text-head) !important; background:none !important; text-decoration:none; transform:none; }
+  nav.nav .nav-links a.nav-cta:not(.nav-cta2) { display:inline-flex; align-items:center; min-height:36px; padding:0 16px; margin-left:10px; border-radius:980px; background:var(--ds-surface-3, #2a2a2c) !important; color:var(--text-head) !important; font:600 14px/1 var(--ds-font, var(--fb)) !important; letter-spacing:0; text-transform:none; }
+  nav.nav .nav-links a.nav-cta:not(.nav-cta2):hover { background:#3a3a3c !important; transform:none; }
+  .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--text-head) !important; }
+  nav.nav .nav-hamburger { flex-shrink:0; width:44px; height:44px; margin-right:-10px; gap:6px; }
+  nav.nav .nav-hamburger span { width:18px; height:1.5px; background:var(--text-head); }
+  nav.nav .nav-hamburger.open span:nth-child(1) { transform:translateY(7.5px) rotate(45deg); }
+  nav.nav .nav-hamburger.open span:nth-child(3) { transform:translateY(-7.5px) rotate(-45deg); }
+  /* menus */
+  nav.nav .nav-dropdown { top:100%; border:0; border-radius:0 0 var(--ds-radius, 18px) var(--ds-radius, 18px); background:var(--ds-surface-1, #161617); -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:0 24px 48px rgba(0,0,0,.5); padding:16px 8px 14px; }
+  nav.nav .nav-dropdown a { font:400 14px/1.3 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; color:var(--text); padding:8px 12px; border-radius:8px; }
+  nav.nav .nav-dropdown a:hover, nav.nav .nav-dropdown a:focus-visible { color:var(--text-head); background:rgba(255,255,255,.06); }
+  nav.nav .nav-dropdown .dd-label, nav.nav .nav-mega .dd-col .dd-label { font:400 12px/1.33 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; color:var(--text-dim); opacity:1; border-bottom:0; padding:4px 12px 8px; margin:0; }
+  nav.nav .nav-dropdown a.dd-all { color:var(--accent); font-weight:400; }
+  nav.nav .nav-dropdown a.dd-all:hover { color:var(--accent); }
+  nav.nav .nav-dropdown a.dd-money, nav.nav .dd-foot a.dd-money { color:var(--text); font-weight:400; }
+  nav.nav .nav-dropdown a.dd-money:hover { color:var(--text-head); background:rgba(255,255,255,.06); }
+  nav.nav .dd-foot { border-top:0; margin:8px 12px 0; padding:8px 0 0; gap:8px; }
+  nav.nav .dd-foot-label { font:400 12px/1.33 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; color:var(--text-dim); opacity:1; }
+  nav.nav .nav-dropdown hr { border-top-color:var(--border); }
+  /* search: a quiet filled field, no outline until focus (the sitewide 2 px focus ring does that job) */
+  nav.nav .nav-search-input { font:400 14px/1.2 var(--ds-font, var(--fb)); letter-spacing:0; color:var(--text-head); background:rgba(255,255,255,.08); border:1px solid transparent; border-radius:8px; padding:7px 10px; }
+  nav.nav .nav-search-input:focus { border-color:transparent; background:rgba(255,255,255,.12); }
+  nav.nav .nav-search-input::placeholder { color:var(--text-dim); opacity:1; }
+  .nav-search-results { border:0; border-radius:12px; background:var(--ds-surface-1, #161617); -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:0 24px 48px rgba(0,0,0,.5); padding:6px; }
+  .nav-search-results a { font:400 14px/1.3 var(--ds-font, var(--fb)); letter-spacing:0; color:var(--text); border-radius:8px; padding:8px 12px; }
+  .nav-search-results a:hover, .nav-search-results a.sel { background:rgba(255,255,255,.08); }
+  .nav-search-results .ns-h { font:400 12px/1.33 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; color:var(--text-dim); border-top:0; padding:10px 12px 4px; }
+  .nav-search-results a small, .nav-search-results .ns-empty { font-family:var(--ds-font, var(--fb)); font-size:12px; letter-spacing:0; }
+  .nav-search-results a.ns-c .ns-p { font:600 14px/1.2 var(--ds-font, var(--fb)); }
+  @media (max-width:959px) {
+    nav.nav .nav-inner > .nav-search-m { margin:0 6px 0 14px; }
+    nav.nav .nav-search-m .nav-search-input, nav.nav .nav-search-m .nav-search-input:focus { min-height:36px; font-size:16px; padding:6px 10px; }
+  }
+  /* phone menu: big plain rows on the bar's own gray, no rules between them */
+  #mobile-nav { top:var(--ds-nav-h, 48px); background:var(--ds-surface-1, #161617); -webkit-backdrop-filter:none; backdrop-filter:none; padding:8px var(--ds-gutter, 16px) 40px; }
+  #mobile-nav a.m-home, #mobile-nav .m-group-btn { display:flex; align-items:center; min-height:48px; padding:8px 0; border:0; font:600 24px/1.17 var(--ds-font, var(--fb)); letter-spacing:-.01em; text-transform:none; color:var(--text-head); }
+  #mobile-nav .m-group { border-bottom:0; }
+  #mobile-nav .m-group-chevron { font-size:12px; opacity:.5; color:var(--text-dim); }
+  #mobile-nav .m-group-panel a { display:flex; align-items:center; min-height:44px; padding:6px 0 6px 2px; border:0; font:400 17px/1.3 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; color:var(--text); }
+  #mobile-nav .m-group-panel a:hover { color:var(--text-head); }
+  #mobile-nav .m-group-panel .m-sublabel { font:400 12px/1.33 var(--ds-font, var(--fb)) !important; letter-spacing:0; text-transform:none; color:var(--text-dim); opacity:1; padding:16px 0 2px 2px; }
+  #mobile-nav .m-group-panel a.m-all { color:var(--accent); font-weight:400; }
+  #mobile-nav .m-group-panel a.m-money { color:var(--text); font-weight:400; }
+  #mobile-nav a.m-cta { display:flex; align-items:center; justify-content:center; min-height:48px; margin-top:24px; padding:0 20px; border:0; border-radius:12px; background:var(--ds-surface-3, #2a2a2c); color:var(--text-head) !important; font:600 17px/1 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; }
+  #mobile-nav a.m-cta.m-cta-outline { margin-top:24px; margin-bottom:0; background:none; color:var(--accent) !important; font-weight:400; }
+  #mobile-nav a.m-cta-outline + a.m-cta { margin-top:8px; }
+  /* the home index board's sticky header sat under the old 58 px bar (the rail: css/terminal-shell.css) */
+  #set-indices table.ib thead th { top:var(--ds-nav-h, 44px); }
   </style>`;
 }
 

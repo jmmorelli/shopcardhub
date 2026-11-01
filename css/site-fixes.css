@@ -30,7 +30,10 @@ html:root {
   --ds-fs-num: clamp(44px, 6vw, 64px); --ds-fs-body: 17px; --ds-fs-2: 14px; --ds-fs-cap: 12px;
   --ds-section: clamp(56px, 8vw, 96px); --ds-gutter: clamp(16px, 2vw, 24px); --ds-radius: 18px;
   --ds-ease: cubic-bezier(.28,.11,.32,1); --ds-dur-ui: .2s; --ds-dur-reveal: .5s;
+  /* global nav height (run 2, Nov 1): 44 px bar, 48 px where the hamburger + search field take over (< 960 px) */
+  --ds-nav-h: 44px;
 }
+@media (max-width: 959px) { html:root { --ds-nav-h: 48px; } }
 html body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-variant-numeric: tabular-nums; }
 :where(button, input, select, textarea) { font-family: inherit; }
 body code, body pre, body kbd, body samp { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
@@ -308,7 +311,7 @@ body .focus .items a { min-height: 44px; }
   body #tapecap-form input, body #tapecap-form button { min-height: 40px; }
 }
 /* 7. Sticky rail height in dynamic-viewport units. */
-@supports (height: 100dvh) { body .rail { max-height: calc(100dvh - 58px); } }
+@supports (height: 100dvh) { body .rail { max-height: calc(100dvh - var(--ds-nav-h, 58px)); } }
 /* 7b (Site Sweep, Sep 29 2026). The DEST strip (Watchlist / Bangers tiles, tools/dest.py) has no bottom
    margin, so where the next section opens straight on its eyebrow ("THE THESIS", "RANKED BY ROI") the
    eyebrow sat flush against the tiles (15 pages on desktop). Only that case gets 24px; pages whose next
