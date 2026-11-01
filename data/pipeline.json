@@ -5597,6 +5597,17 @@
           "liveVerified": "2026-10-31 ~13:05Z curl: /data/goal-league.json 200 (standings updated 2026-10-31), /sitemap.xml 200",
           "note": "Pre-season standings preview (GA4 day Oct 29) + 38 sitemap lastmods. No page content changed, so no IndexNow ping.",
           "rollback": "git revert 785409d"
+        },
+        {
+          "date": "2026-11-01",
+          "commits": [
+            "c77b133"
+          ],
+          "by": "Goal League Commissioner (unattended, Mac deploy-key clone; Task-key goal-league-commissioner)",
+          "gates": "0/51 · 1/4 · 0/1 (base 0/50 · 0/4 · 0/1; +1 site FAIL and +1 prices WARN are dates ageing, no page touched: /pokemon-30th-anniversary-2026 badge passed 30 d, routed to its incoming owner)",
+          "liveVerified": "2026-11-01 ~14:25Z curl: /data/goal-league.json 200 (standings updated 2026-11-01)",
+          "note": "Pre-season standings preview (GA4 day Oct 30) + STATE run line and size trim. No page content changed, so no IndexNow ping.",
+          "rollback": "git revert c77b133"
         }
       ]
     },
