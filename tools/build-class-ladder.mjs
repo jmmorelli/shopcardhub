@@ -17,6 +17,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ebaySearchUrl, SACAT_SPORTS, assertClean } from "./lib/epn.mjs";
+import { keepFooter } from "./lib/footer.mjs";
 import { CLASS_PAGE, classTickers, readClassFile, classYear, classRows, classQuery, isFixture } from "./lib/bowman-class.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -354,5 +355,5 @@ if (SITEMAP) {
   else { sm = sm.replace("</urlset>", `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n</urlset>`); if (!CHECK) fs.writeFileSync(smPath, sm); smNote = `sitemap: + ${CLASS_PAGE}`; }
 }
 
-if (!CHECK) fs.writeFileSync(FILE, out);
+if (!CHECK) fs.writeFileSync(FILE, keepFooter(out, FILE));   // keeps the generated site footer (tools/build-footer.js)
 console.log(`${CHECK ? "would write" : "wrote"} ${SLUG}.html — ${nLive} live class${nLive === 1 ? "" : "es"}, ${pre.length} awaiting marks (${classes.map((c) => c.tk + (c.live ? "*" : "")).join(" ")}), BOW26 ${B26 ? "linked" : "not live"}, stamp ${stamp || "none"} · ${smNote}`);

@@ -25,6 +25,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ebaySearchUrl, SACAT_SPORTS, SACAT_TCG, assertClean } from "./lib/epn.mjs";
+import { keepFooter } from "./lib/footer.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -209,8 +210,9 @@ ${rowsHtml}
 let stale = 0;
 for (const [key, c] of Object.entries(CONFIG)) {
   if (ONLY && ONLY !== key) continue;
-  const { html, total, pageN } = build(key, c);
   const out = path.join(ROOT, c.slug + ".html");
+  const built = build(key, c), total = built.total, pageN = built.pageN;
+  const html = keepFooter(built.html, out);   // keeps the generated site footer (tools/build-footer.js)
   const before = fs.existsSync(out) ? fs.readFileSync(out, "utf8") : null;
   const changed = before !== html;
   if (CHECK) { if (changed) { stale++; console.log(`${key}: /${c.slug} is stale`); } else console.log(`${key}: /${c.slug} up to date`); continue; }

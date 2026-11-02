@@ -19,6 +19,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ebaySearchUrl, assertClean, SACAT_TCG } from "./lib/epn.mjs";
 import { THEMES, HERO_FX, HERO_JS } from "./collectors-desk/themes.mjs";
+import { carryFooter } from "./lib/footer.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -485,5 +486,7 @@ for (const f of files) {
   links.forEach((u) => assertClean(u.replace(/&amp;/g, "&")));
   if (/\$\$/.test(html)) throw new Error("placeholder price in output");
   console.log(`${CHECK ? "[check] " : ""}${d.slug}.html — ${links.length} EPN links, ${html.length} bytes`);
+  // keep the generated site footer (tools/build-footer.js) if the page already has one; else this file's own footer
+  html = html.replace(/<footer>[\s\S]*?<\/footer>/, (m) => carryFooter(out, m));
   if (!CHECK) fs.writeFileSync(out, html);
 }

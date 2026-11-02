@@ -21,9 +21,6 @@
   <meta property="og:image:height" content="628">
   <meta name="twitter:image" content="https://www.shopcardhub.com/og/bowman.png">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Daniel Pierce — 1st Bowman Chrome Auto — price chart","url":"https://www.shopcardhub.com/card-daniel-pierce","description":"Nightly price chart for Daniel Pierce — 1st Bowman Chrome Auto (engine mark $35.49 as of 2026-10-26): verified live eBay listings for this exact card, the auction bid watch, and a ★ Track button for your Vault.","isPartOf":{"@type":"WebSite","name":"ShopCardHub","url":"https://www.shopcardhub.com"}}</script>
-  <link rel="preload" href="/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/fonts.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -533,7 +530,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     .nav-inner > .nav-search-m { display:block; flex:1 1 auto; min-width:0; margin:0 10px 0 14px; }
     .nav-search-m .nav-search-input, .nav-search-m .nav-search-input:focus { width:100%; min-height:40px; font-size:16px; letter-spacing:0; padding:7px 10px; }
     .nav-search-m .nav-search-input::-webkit-search-decoration { -webkit-appearance:none; }
-    .nav-search-m .nav-search-results { position:fixed; top:64px; left:8px; right:8px; min-width:0; max-height:calc(100vh - 80px); }
+    .nav-search-m .nav-search-results { position:fixed; top:calc(var(--ds-nav-h, 58px) + 6px); left:8px; right:8px; min-width:0; max-height:calc(100vh - 80px); }
     .nav-search-m .nav-search-results a { padding:10px 14px; min-height:40px; }
   }
   /* B74: card rows lead the results, name left and the raw price right (one glance, no sub-line hunt) */
@@ -556,6 +553,66 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   .nav-item:focus-within > a .chevron { transform:rotate(180deg); }
   .nav-item.dd-shut .nav-dropdown { opacity:0; visibility:hidden; }
   .nav-item.dd-shut > a .chevron { transform:none; }
+  /* === Global nav look (Cupertino run 2, Nov 1 2026 · DESIGN-SYSTEM.md "Navigation"; R46). A 44 px translucent bar
+     (48 px on phones, --ds-nav-h in css/site-fixes.css §0) with no border; six plain items in sentence case at 14 px,
+     no chevrons; the Tuesday Tape is a text link and Watchlist a quiet gray pill, so the page's own eBay button stays
+     the one filled button on screen. Menus are solid panels (a blurred panel inside the blurred bar let the page show through): gray group labels, plain links, no per-set colors, no
+     cyan rule. Same items, same links, same order, same search. Page CSS still styles the bones; these win on order. === */
+  nav.nav { background:rgba(22,22,23,.8); -webkit-backdrop-filter:saturate(180%) blur(20px); backdrop-filter:saturate(180%) blur(20px); border-bottom:0; }
+  @supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))) { nav.nav { background:rgba(22,22,23,.97); } }
+  nav.nav .nav-inner { height:var(--ds-nav-h, 44px); padding:0 var(--ds-gutter, 24px); }
+  nav.nav a.logo { font:600 19px/1 var(--ds-font, var(--fb)); letter-spacing:-.01em; text-transform:none; color:var(--text-head); margin:0; flex-shrink:0; }
+  nav.nav .nav-links { gap:0; }
+  nav.nav .nav-item > a, nav.nav .nav-links a.nav-cta2 { display:inline-flex; align-items:center; gap:0; min-height:44px; padding:0 10px; font:400 14px/1 var(--ds-font, var(--fb)) !important; letter-spacing:0; text-transform:none; color:var(--text) !important; background:none !important; border:0 !important; border-radius:0; margin:0; transition:color var(--ds-dur-ui, .2s) var(--ds-ease, ease); }
+  nav.nav .nav-item > a:hover, nav.nav .nav-item:focus-within > a, nav.nav .nav-links a.nav-cta2:hover { color:var(--text-head) !important; background:none !important; text-decoration:none; transform:none; }
+  nav.nav .nav-links a.nav-cta:not(.nav-cta2) { display:inline-flex; align-items:center; min-height:36px; padding:0 16px; margin-left:10px; border-radius:980px; background:var(--ds-surface-3, #2a2a2c) !important; color:var(--text-head) !important; font:600 14px/1 var(--ds-font, var(--fb)) !important; letter-spacing:0; text-transform:none; }
+  nav.nav .nav-links a.nav-cta:not(.nav-cta2):hover { background:#3a3a3c !important; transform:none; }
+  .nav-links .nav-item > a.nav-active, .mobile-nav a.nav-active { color:var(--text-head) !important; }
+  nav.nav .nav-hamburger { flex-shrink:0; width:44px; height:44px; margin-right:-10px; gap:6px; }
+  nav.nav .nav-hamburger span { width:18px; height:1.5px; background:var(--text-head); }
+  nav.nav .nav-hamburger.open span:nth-child(1) { transform:translateY(7.5px) rotate(45deg); }
+  nav.nav .nav-hamburger.open span:nth-child(3) { transform:translateY(-7.5px) rotate(-45deg); }
+  /* menus */
+  nav.nav .nav-dropdown { top:100%; border:0; border-radius:0 0 var(--ds-radius, 18px) var(--ds-radius, 18px); background:var(--ds-surface-1, #161617); -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:0 24px 48px rgba(0,0,0,.5); padding:16px 8px 14px; }
+  nav.nav .nav-dropdown a { font:400 14px/1.3 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; color:var(--text); padding:8px 12px; border-radius:8px; }
+  nav.nav .nav-dropdown a:hover, nav.nav .nav-dropdown a:focus-visible { color:var(--text-head); background:rgba(255,255,255,.06); }
+  nav.nav .nav-dropdown .dd-label, nav.nav .nav-mega .dd-col .dd-label { font:400 12px/1.33 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; color:var(--text-dim); opacity:1; border-bottom:0; padding:4px 12px 8px; margin:0; }
+  nav.nav .nav-dropdown a.dd-all { color:var(--accent); font-weight:400; }
+  nav.nav .nav-dropdown a.dd-all:hover { color:var(--accent); }
+  nav.nav .nav-dropdown a.dd-money, nav.nav .dd-foot a.dd-money { color:var(--text); font-weight:400; }
+  nav.nav .nav-dropdown a.dd-money:hover { color:var(--text-head); background:rgba(255,255,255,.06); }
+  nav.nav .dd-foot { border-top:0; margin:8px 12px 0; padding:8px 0 0; gap:8px; }
+  nav.nav .dd-foot-label { font:400 12px/1.33 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; color:var(--text-dim); opacity:1; }
+  nav.nav .nav-dropdown hr { border-top-color:var(--border); }
+  /* search: a quiet filled field, no outline until focus (the sitewide 2 px focus ring does that job) */
+  nav.nav .nav-search-input { font:400 14px/1.2 var(--ds-font, var(--fb)); letter-spacing:0; color:var(--text-head); background:rgba(255,255,255,.08); border:1px solid transparent; border-radius:8px; padding:7px 10px; }
+  nav.nav .nav-search-input:focus { border-color:transparent; background:rgba(255,255,255,.12); }
+  nav.nav .nav-search-input::placeholder { color:var(--text-dim); opacity:1; }
+  .nav-search-results { border:0; border-radius:12px; background:var(--ds-surface-1, #161617); -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:0 24px 48px rgba(0,0,0,.5); padding:6px; }
+  .nav-search-results a { font:400 14px/1.3 var(--ds-font, var(--fb)); letter-spacing:0; color:var(--text); border-radius:8px; padding:8px 12px; }
+  .nav-search-results a:hover, .nav-search-results a.sel { background:rgba(255,255,255,.08); }
+  .nav-search-results .ns-h { font:400 12px/1.33 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; color:var(--text-dim); border-top:0; padding:10px 12px 4px; }
+  .nav-search-results a small, .nav-search-results .ns-empty { font-family:var(--ds-font, var(--fb)); font-size:12px; letter-spacing:0; }
+  .nav-search-results a.ns-c .ns-p { font:600 14px/1.2 var(--ds-font, var(--fb)); }
+  @media (max-width:959px) {
+    nav.nav .nav-inner > .nav-search-m { margin:0 6px 0 14px; }
+    nav.nav .nav-search-m .nav-search-input, nav.nav .nav-search-m .nav-search-input:focus { min-height:36px; font-size:16px; padding:6px 10px; }
+  }
+  /* phone menu: big plain rows on the bar's own gray, no rules between them */
+  #mobile-nav { top:var(--ds-nav-h, 48px); background:var(--ds-surface-1, #161617); -webkit-backdrop-filter:none; backdrop-filter:none; padding:8px var(--ds-gutter, 16px) 40px; }
+  #mobile-nav a.m-home, #mobile-nav .m-group-btn { display:flex; align-items:center; min-height:48px; padding:8px 0; border:0; font:600 24px/1.17 var(--ds-font, var(--fb)); letter-spacing:-.01em; text-transform:none; color:var(--text-head); }
+  #mobile-nav .m-group { border-bottom:0; }
+  #mobile-nav .m-group-chevron { font-size:12px; opacity:.5; color:var(--text-dim); }
+  #mobile-nav .m-group-panel a { display:flex; align-items:center; min-height:44px; padding:6px 0 6px 2px; border:0; font:400 17px/1.3 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; color:var(--text); }
+  #mobile-nav .m-group-panel a:hover { color:var(--text-head); }
+  #mobile-nav .m-group-panel .m-sublabel { font:400 12px/1.33 var(--ds-font, var(--fb)) !important; letter-spacing:0; text-transform:none; color:var(--text-dim); opacity:1; padding:16px 0 2px 2px; }
+  #mobile-nav .m-group-panel a.m-all { color:var(--accent); font-weight:400; }
+  #mobile-nav .m-group-panel a.m-money { color:var(--text); font-weight:400; }
+  #mobile-nav a.m-cta { display:flex; align-items:center; justify-content:center; min-height:48px; margin-top:24px; padding:0 20px; border:0; border-radius:12px; background:var(--ds-surface-3, #2a2a2c); color:var(--text-head) !important; font:600 17px/1 var(--ds-font, var(--fb)); letter-spacing:0; text-transform:none; }
+  #mobile-nav a.m-cta.m-cta-outline { margin-top:24px; margin-bottom:0; background:none; color:var(--accent) !important; font-weight:400; }
+  #mobile-nav a.m-cta-outline + a.m-cta { margin-top:8px; }
+  /* the home index board's sticky header sat under the old 58 px bar (the rail: css/terminal-shell.css) */
+  #set-indices table.ib thead th { top:var(--ds-nav-h, 44px); }
   </style>
   <nav class="nav">
     <div class="nav-inner">
@@ -566,22 +623,22 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         </div>
       <div class="nav-links">
         <div class="nav-item">
-          <a href="/indices">Indices <span class="chevron">▾</span></a>
+          <a href="/indices" aria-haspopup="true">Indices</a>
           <div class="nav-dropdown nav-mega">
           <div class="dd-cols">
             <div class="dd-col">
               <div class="dd-label">Pokémon — New Sets</div>
-              <a href="/pokemon-30th-anniversary-2026" style="color:#f5c800;">TH26 — 30th Celebration</a>
-              <a href="/pitch-black-index" style="color:#a78bfa;">PB26 — Pitch Black</a>
-              <a href="/chaos-rising-index" style="color:#00e0c0;">CR26 — Chaos Rising</a>
-              <a href="/ascended-heroes-index" style="color:#f5c800;">AH26 — Ascended Heroes</a>
-              <a href="/prismatic-evolutions-index" style="color:#e879f9;">PRIS25 — Prismatic Evolutions</a>
-              <a href="/destined-rivals-index" style="color:#ff2e55;">DR25 — Destined Rivals</a>
-              <a href="/phantasmal-flames-index" style="color:#00ccf5;">PF25 — Phantasmal Flames</a>
-              <a href="/scarlet-violet-151-index" style="color:#ff5a3c;">SV151 — Scarlet & Violet 151</a>
-              <a href="/surging-sparks-index" style="color:#f7d02c;">SSP24 — Surging Sparks</a>
-              <a href="/mega-evolution-index" style="color:#5b8cff;">MEG25 — Mega Evolution</a>
-              <a href="/indices#pokemon" class="dd-all">All Pokémon indices →</a>
+              <a href="/pokemon-30th-anniversary-2026">TH26 — 30th Celebration</a>
+              <a href="/pitch-black-index">PB26 — Pitch Black</a>
+              <a href="/chaos-rising-index">CR26 — Chaos Rising</a>
+              <a href="/ascended-heroes-index">AH26 — Ascended Heroes</a>
+              <a href="/prismatic-evolutions-index">PRIS25 — Prismatic Evolutions</a>
+              <a href="/destined-rivals-index">DR25 — Destined Rivals</a>
+              <a href="/phantasmal-flames-index">PF25 — Phantasmal Flames</a>
+              <a href="/scarlet-violet-151-index">SV151 — Scarlet & Violet 151</a>
+              <a href="/surging-sparks-index">SSP24 — Surging Sparks</a>
+              <a href="/mega-evolution-index">MEG25 — Mega Evolution</a>
+              <a href="/indices#pokemon" class="dd-all">All Pokémon indices ›</a>
             </div>
             <div class="dd-col">
               <div class="dd-label">Pokémon — Classic Sets</div>
@@ -591,93 +648,93 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
               <a href="/neo-genesis-index">NG00 — Neo Genesis</a>
               <a href="/team-rocket-index">TR00 — Team Rocket</a>
               <a href="/hidden-fates-index">HF19 — Hidden Fates</a>
-              <a href="/gold-star-index" style="color:#f5c800;">GSTAR — Gold Star & Grails</a>
-              <a href="/indices#classic" class="dd-all">All 15 classic sets →</a>
+              <a href="/gold-star-index">GSTAR — Gold Star & Grails</a>
+              <a href="/indices#classic" class="dd-all">All 15 classic sets ›</a>
             </div>
             <div class="dd-col">
               <div class="dd-label">Sports — 1st Bowman Autos</div>
-              <a href="/bowman-1st-chrome-index" style="color:#00ccf5;">BOW26 — 2026 1st Bowman Autos ⭐</a>
-              <a href="/bowman-2026-index" style="color:#00ccf5;">BB26 — Bowman (May) 1st Autos</a>
-              <a href="/bowman-chrome-2026-index" style="color:#00ccf5;">BCB26 — Bowman Chrome (Sep) 1st Autos</a>
+              <a href="/bowman-1st-chrome-index">BOW26 — 2026 1st Bowman Autos</a>
+              <a href="/bowman-2026-index">BB26 — Bowman (May) 1st Autos</a>
+              <a href="/bowman-chrome-2026-index">BCB26 — Bowman Chrome (Sep) 1st Autos</a>
               <a href="/how-prices-work">How the indices are priced</a>
-              <a href="/indices" class="dd-all">All set indices →</a>
+              <a href="/indices" class="dd-all">All set indices ›</a>
             </div>
           </div>
           </div>
         </div>
         <div class="nav-item">
-          <a href="/research">Sports <span class="chevron">▾</span></a>
+          <a href="/research" aria-haspopup="true">Sports</a>
           <div class="nav-dropdown nav-mega">
           <div class="dd-cols">
             <div class="dd-col">
-              <div class="dd-label">⚾ Baseball</div>
-              <a href="/bowman-bangers">2026 Bowman Bangers ⭐</a>
+              <div class="dd-label">Baseball</div>
+              <a href="/bowman-bangers">2026 Bowman Bangers</a>
               <a href="/bowman-classes">Bowman 1st Auto Classes 2009–2026</a>
-              <a href="/mlb-cards">MLB Cards — What to Buy ⭐</a>
-              <a href="/bowman-chrome-baseball-2026">Bowman Chrome — Sep 9 ⭐</a>
+              <a href="/mlb-cards">MLB Cards — What to Buy</a>
+              <a href="/bowman-chrome-baseball-2026">Bowman Chrome — Sep 9</a>
               <a href="/bowman-sapphire-2026">Bowman Sapphire</a>
-              <a href="/research#baseball" class="dd-all">All Baseball →</a>
+              <a href="/research#baseball" class="dd-all">All Baseball ›</a>
             </div>
             <div class="dd-col">
-              <div class="dd-label">🏀 Basketball</div>
+              <div class="dd-label">Basketball</div>
               <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
               <a href="/victor-wembanyama-rookie-cards">Victor Wembanyama</a>
               <a href="/topps-chrome-basketball-2026">Topps Chrome Basketball</a>
               <a href="/best-basketball-cards-under-50">Best Cards Under $50</a>
-              <a href="/research#basketball" class="dd-all">All Basketball →</a>
+              <a href="/research#basketball" class="dd-all">All Basketball ›</a>
             </div>
             <div class="dd-col">
-              <div class="dd-label">🏈 Football</div>
+              <div class="dd-label">Football</div>
               <a href="/nfl-rookie-cards-2026">2026 NFL Rookie Guide</a>
               <a href="/topps-cosmic-chrome-football">Cosmic Chrome</a>
               <a href="/best-football-cards-under-50">Best Cards Under $50</a>
               <a href="/topps-flagship-football">Flagship Football — Aug 21</a>
               <a href="/bowman-football">Bowman Football — Sep 30</a>
-              <a href="/research#football" class="dd-all">All Football →</a>
+              <a href="/research#football" class="dd-all">All Football ›</a>
             </div>
             <div class="dd-col">
-              <div class="dd-label">⚽ Soccer</div>
+              <div class="dd-label">Soccer</div>
               <a href="/world-cup-2026-soccer-cards">World Cup 2026 Cards</a>
               <a href="/lamine-yamal-rookie-cards">Lamine Yamal</a>
               <a href="/erling-haaland-rookie-cards">Erling Haaland</a>
               <a href="/lionel-messi-cards">Lionel Messi</a>
-              <a href="/research#soccer" class="dd-all">All Soccer →</a>
+              <a href="/research#soccer" class="dd-all">All Soccer ›</a>
             </div>
           </div>
           </div>
         </div>
         <div class="nav-item">
-          <a href="/pokemon-tcg-2026">Pokémon <span class="chevron">▾</span></a>
+          <a href="/pokemon-tcg-2026" aria-haspopup="true">Pokémon</a>
           <div class="nav-dropdown nav-mega">
           <div class="dd-cols">
             <div class="dd-col">
               <div class="dd-label">Sets & Guides</div>
-              <a href="/pokemon-30th-anniversary-2026" style="color:#f5c800;">30th Celebration — Sep 16 ★</a>
-              <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
+              <a href="/pokemon-30th-anniversary-2026">30th Celebration — Sep 16 ★</a>
+              <a href="/pitch-black-set-guide">Pitch Black — Jul 17</a>
               <a href="/pokemon-tcg-2026">2026 Pokémon TCG Guide</a>
-              <a href="/research#pokemon" class="dd-all">All Pokémon →</a>
+              <a href="/research#pokemon" class="dd-all">All Pokémon ›</a>
             </div>
             <div class="dd-col">
               <div class="dd-label">Is It Worth It?</div>
               <a href="/moonbreon-worth">How much is Moonbreon worth?</a>
               <a href="/gengar-ex-worth">How much is Gengar ex worth?</a>
               <a href="/pitch-black-vs-chaos-rising">Pitch Black vs Chaos Rising</a>
-              <a href="/indices#pokemon" class="dd-all">Pokémon set indices →</a>
+              <a href="/indices#pokemon" class="dd-all">Pokémon set indices ›</a>
             </div>
           </div>
           </div>
         </div>
         <div class="nav-item">
-          <a href="/research">Tools & Guides <span class="chevron">▾</span></a>
+          <a href="/research" aria-haspopup="true">Tools & Guides</a>
           <div class="nav-dropdown nav-mega">
           <div class="dd-cols">
             <div class="dd-col">
               <div class="dd-label">Trackers & Tools</div>
-              <a href="/bowman-bangers">Bowman Bangers ⭐</a>
+              <a href="/bowman-bangers">Bowman Bangers</a>
               <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Sold Prices by Box</a>
-              <a href="/cards" style="color:#00ccf5;">Card Charts — Every Tracked Card</a>
-              <a href="/auctions" style="color:#00e07a;">Auction Desk — Ending Under the Mark</a>
-              <a href="/deals" style="color:#00e07a;">Deals — Buy It Now Below the Mark</a>
+              <a href="/cards">Card Charts — Every Tracked Card</a>
+              <a href="/auctions">Auction Desk — Ending Under the Mark</a>
+              <a href="/deals">Deals — Buy It Now Below the Mark</a>
               <a href="/release-calendar">Release Calendar 2026</a>
             </div>
             <div class="dd-col">
@@ -690,7 +747,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
               <div class="dd-label">Grading & Supplies</div>
               <a href="/psa-grading-guide">PSA Grading Guide</a>
               <a href="/tag-grading-guide">TAG Grading Guide — AI Slabs</a>
-              <a href="/research#grading" class="dd-all">All Grading & Supplies →</a>
+              <a href="/research#grading" class="dd-all">All Grading & Supplies ›</a>
             </div>
           </div>
           </div>
@@ -699,7 +756,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           <input type="text" class="nav-search-input" id="nav-search-input-d" placeholder="Search cards…" aria-label="Search the site" autocomplete="off">
           <div class="nav-search-results" id="nav-search-results-d" role="listbox"></div>
         </div>
-        <a href="/#newsletter" class="nav-cta nav-cta2" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent);">📬 Tuesday Tape</a>
+        <a href="/#newsletter" class="nav-cta nav-cta2">Tuesday Tape</a>
         <a href="/watchlist" class="nav-cta">Watchlist</a>
       </div>
       <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
@@ -715,17 +772,17 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <button class="m-group-btn" aria-expanded="false" aria-controls="mg-0">Indices<span class="m-group-chevron">▾</span></button>
         <div class="m-group-panel" id="mg-0">
         <div class="m-sublabel">Pokémon — New Sets</div>
-        <a href="/pokemon-30th-anniversary-2026" style="color:#f5c800;">TH26 — 30th Celebration</a>
-        <a href="/pitch-black-index" style="color:#a78bfa;">PB26 — Pitch Black</a>
-        <a href="/chaos-rising-index" style="color:#00e0c0;">CR26 — Chaos Rising</a>
-        <a href="/ascended-heroes-index" style="color:#f5c800;">AH26 — Ascended Heroes</a>
-        <a href="/prismatic-evolutions-index" style="color:#e879f9;">PRIS25 — Prismatic Evolutions</a>
-        <a href="/destined-rivals-index" style="color:#ff2e55;">DR25 — Destined Rivals</a>
-        <a href="/phantasmal-flames-index" style="color:#00ccf5;">PF25 — Phantasmal Flames</a>
-        <a href="/scarlet-violet-151-index" style="color:#ff5a3c;">SV151 — Scarlet & Violet 151</a>
-        <a href="/surging-sparks-index" style="color:#f7d02c;">SSP24 — Surging Sparks</a>
-        <a href="/mega-evolution-index" style="color:#5b8cff;">MEG25 — Mega Evolution</a>
-        <a href="/indices#pokemon" class="m-all">All Pokémon indices →</a>
+        <a href="/pokemon-30th-anniversary-2026">TH26 — 30th Celebration</a>
+        <a href="/pitch-black-index">PB26 — Pitch Black</a>
+        <a href="/chaos-rising-index">CR26 — Chaos Rising</a>
+        <a href="/ascended-heroes-index">AH26 — Ascended Heroes</a>
+        <a href="/prismatic-evolutions-index">PRIS25 — Prismatic Evolutions</a>
+        <a href="/destined-rivals-index">DR25 — Destined Rivals</a>
+        <a href="/phantasmal-flames-index">PF25 — Phantasmal Flames</a>
+        <a href="/scarlet-violet-151-index">SV151 — Scarlet & Violet 151</a>
+        <a href="/surging-sparks-index">SSP24 — Surging Sparks</a>
+        <a href="/mega-evolution-index">MEG25 — Mega Evolution</a>
+        <a href="/indices#pokemon" class="m-all">All Pokémon indices ›</a>
         <div class="m-sublabel">Pokémon — Classic Sets</div>
         <a href="/pokemon-base-set-index">BS99 — Base Set</a>
         <a href="/evolving-skies-index">EVS21 — Evolving Skies</a>
@@ -733,71 +790,71 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <a href="/neo-genesis-index">NG00 — Neo Genesis</a>
         <a href="/team-rocket-index">TR00 — Team Rocket</a>
         <a href="/hidden-fates-index">HF19 — Hidden Fates</a>
-        <a href="/gold-star-index" style="color:#f5c800;">GSTAR — Gold Star & Grails</a>
-        <a href="/indices#classic" class="m-all">All 15 classic sets →</a>
+        <a href="/gold-star-index">GSTAR — Gold Star & Grails</a>
+        <a href="/indices#classic" class="m-all">All 15 classic sets ›</a>
         <div class="m-sublabel">Sports — 1st Bowman Autos</div>
-        <a href="/bowman-1st-chrome-index" style="color:#00ccf5;">BOW26 — 2026 1st Bowman Autos ⭐</a>
-        <a href="/bowman-2026-index" style="color:#00ccf5;">BB26 — Bowman (May) 1st Autos</a>
-        <a href="/bowman-chrome-2026-index" style="color:#00ccf5;">BCB26 — Bowman Chrome (Sep) 1st Autos</a>
+        <a href="/bowman-1st-chrome-index">BOW26 — 2026 1st Bowman Autos</a>
+        <a href="/bowman-2026-index">BB26 — Bowman (May) 1st Autos</a>
+        <a href="/bowman-chrome-2026-index">BCB26 — Bowman Chrome (Sep) 1st Autos</a>
         <a href="/how-prices-work">How the indices are priced</a>
-        <a href="/indices" class="m-all">All set indices →</a>
+        <a href="/indices" class="m-all">All set indices ›</a>
         </div>
       </div>
       <div class="m-group">
         <button class="m-group-btn" aria-expanded="false" aria-controls="mg-1">Sports<span class="m-group-chevron">▾</span></button>
         <div class="m-group-panel" id="mg-1">
-        <div class="m-sublabel">⚾ Baseball</div>
-        <a href="/bowman-bangers">2026 Bowman Bangers ⭐</a>
+        <div class="m-sublabel">Baseball</div>
+        <a href="/bowman-bangers">2026 Bowman Bangers</a>
         <a href="/bowman-classes">Bowman 1st Auto Classes 2009–2026</a>
-        <a href="/mlb-cards">MLB Cards — What to Buy ⭐</a>
-        <a href="/bowman-chrome-baseball-2026">Bowman Chrome — Sep 9 ⭐</a>
+        <a href="/mlb-cards">MLB Cards — What to Buy</a>
+        <a href="/bowman-chrome-baseball-2026">Bowman Chrome — Sep 9</a>
         <a href="/bowman-sapphire-2026">Bowman Sapphire</a>
-        <a href="/research#baseball" class="m-all">All Baseball →</a>
-        <div class="m-sublabel">🏀 Basketball</div>
+        <a href="/research#baseball" class="m-all">All Baseball ›</a>
+        <div class="m-sublabel">Basketball</div>
         <a href="/cooper-flagg-rookie-cards">Cooper Flagg Rookie Cards</a>
         <a href="/victor-wembanyama-rookie-cards">Victor Wembanyama</a>
         <a href="/topps-chrome-basketball-2026">Topps Chrome Basketball</a>
         <a href="/best-basketball-cards-under-50">Best Cards Under $50</a>
-        <a href="/research#basketball" class="m-all">All Basketball →</a>
-        <div class="m-sublabel">🏈 Football</div>
+        <a href="/research#basketball" class="m-all">All Basketball ›</a>
+        <div class="m-sublabel">Football</div>
         <a href="/nfl-rookie-cards-2026">2026 NFL Rookie Guide</a>
         <a href="/topps-cosmic-chrome-football">Cosmic Chrome</a>
         <a href="/best-football-cards-under-50">Best Cards Under $50</a>
         <a href="/topps-flagship-football">Flagship Football — Aug 21</a>
         <a href="/bowman-football">Bowman Football — Sep 30</a>
-        <a href="/research#football" class="m-all">All Football →</a>
-        <div class="m-sublabel">⚽ Soccer</div>
+        <a href="/research#football" class="m-all">All Football ›</a>
+        <div class="m-sublabel">Soccer</div>
         <a href="/world-cup-2026-soccer-cards">World Cup 2026 Cards</a>
         <a href="/lamine-yamal-rookie-cards">Lamine Yamal</a>
         <a href="/erling-haaland-rookie-cards">Erling Haaland</a>
         <a href="/lionel-messi-cards">Lionel Messi</a>
-        <a href="/research#soccer" class="m-all">All Soccer →</a>
+        <a href="/research#soccer" class="m-all">All Soccer ›</a>
         </div>
       </div>
       <div class="m-group">
         <button class="m-group-btn" aria-expanded="false" aria-controls="mg-2">Pokémon<span class="m-group-chevron">▾</span></button>
         <div class="m-group-panel" id="mg-2">
         <div class="m-sublabel">Sets & Guides</div>
-        <a href="/pokemon-30th-anniversary-2026" style="color:#f5c800;">30th Celebration — Sep 16 ★</a>
-        <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black — Jul 17</a>
+        <a href="/pokemon-30th-anniversary-2026">30th Celebration — Sep 16 ★</a>
+        <a href="/pitch-black-set-guide">Pitch Black — Jul 17</a>
         <a href="/pokemon-tcg-2026">2026 Pokémon TCG Guide</a>
-        <a href="/research#pokemon" class="m-all">All Pokémon →</a>
+        <a href="/research#pokemon" class="m-all">All Pokémon ›</a>
         <div class="m-sublabel">Is It Worth It?</div>
         <a href="/moonbreon-worth">How much is Moonbreon worth?</a>
         <a href="/gengar-ex-worth">How much is Gengar ex worth?</a>
         <a href="/pitch-black-vs-chaos-rising">Pitch Black vs Chaos Rising</a>
-        <a href="/indices#pokemon" class="m-all">Pokémon set indices →</a>
+        <a href="/indices#pokemon" class="m-all">Pokémon set indices ›</a>
         </div>
       </div>
       <div class="m-group">
         <button class="m-group-btn" aria-expanded="false" aria-controls="mg-3">Tools & Guides<span class="m-group-chevron">▾</span></button>
         <div class="m-group-panel" id="mg-3">
         <div class="m-sublabel">Trackers & Tools</div>
-        <a href="/bowman-bangers">Bowman Bangers ⭐</a>
+        <a href="/bowman-bangers">Bowman Bangers</a>
         <a href="/best-hobby-boxes-2026">Best Boxes 2026 — Sold Prices by Box</a>
-        <a href="/cards" style="color:#00ccf5;">Card Charts — Every Tracked Card</a>
-        <a href="/auctions" style="color:#00e07a;">Auction Desk — Ending Under the Mark</a>
-        <a href="/deals" style="color:#00e07a;">Deals — Buy It Now Below the Mark</a>
+        <a href="/cards">Card Charts — Every Tracked Card</a>
+        <a href="/auctions">Auction Desk — Ending Under the Mark</a>
+        <a href="/deals">Deals — Buy It Now Below the Mark</a>
         <a href="/release-calendar">Release Calendar 2026</a>
         <div class="m-sublabel">Research</div>
         <a href="/research">Research Hub — All Guides</a>
@@ -806,11 +863,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         <div class="m-sublabel">Grading & Supplies</div>
         <a href="/psa-grading-guide">PSA Grading Guide</a>
         <a href="/tag-grading-guide">TAG Grading Guide — AI Slabs</a>
-        <a href="/research#grading" class="m-all">All Grading & Supplies →</a>
+        <a href="/research#grading" class="m-all">All Grading & Supplies ›</a>
         </div>
       </div>
-  <a href="/#newsletter" class="m-cta m-cta-outline" style="background:transparent !important; color:var(--accent) !important; border:1px solid var(--accent); margin-bottom:8px;">📬 Tuesday Tape →</a>
-  <a href="/watchlist" class="m-cta">My Watchlist →</a>
+  <a href="/#newsletter" class="m-cta m-cta-outline">Tuesday Tape ›</a>
+  <a href="/watchlist" class="m-cta">My Watchlist ›</a>
 </div>
 <script>
 /* === NAV controller (generated) — hamburger toggle + accordion + search + active page === */
@@ -1036,24 +1093,21 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <p class="cp-note" style="margin-top:26px;">Prices are the engine's nightly marks from verified eBay asking prices (asks, not sales); they are dated, sourced, and never hand-typed. Nothing here is investment advice — cards are illiquid, think in 6–12 month holds. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
 </main>
 
-<footer>
-  <div class="footer-inner">
-    <a href="/" class="logo" style="text-decoration:none;">Shop<span>Card</span>Hub</a>
-    <nav class="footer-links">
-      <a href="/">Home</a>
-      <a href="/best-hobby-boxes-2026">Hobby Boxes</a>
-      <a href="/bowman-bangers">Baseball</a>
-      <a href="/psa-grading-guide">Grading Guide</a>
-      <a href="/pitch-black-set-guide" style="color:#9b5de5;">Pitch Black</a>
-      <a href="https://twitter.com/shopcardhub" target="_blank" rel="noopener">@shopcardhub</a>
-    </nav>
-    <div class="footer-copy">
-      <a href="/research" style="color:inherit;">All Guides</a> · <a href="/about" style="color:inherit;">About</a> · <a href="/affiliate-disclosure" style="color:inherit;">Affiliate Disclosure</a> · <a href="/privacy" style="color:inherit;">Privacy Policy</a><br>
-      © 2026 ShopCardHub · shopcardhub.com · <a href="https://twitter.com/shopcardhub" style="color:inherit;" target="_blank" rel="noopener">@shopcardhub</a><br>
-      ShopCardHub participates in the eBay Partner Network. Not affiliated with PSA or Collectors Universe.
-    </div>
+<footer><!-- FOOTER:START — site footer, generated by tools/build-footer.js (DESIGN-SYSTEM.md "Footer"). Do not hand-edit: the note below is this page's own text, carried on every rebuild. -->
+<div class="ds-foot">
+  <div class="ds-foot-about">One price index per set for Pokémon and Bowman cards, built from recent sales.</div>
+  <div class="ds-foot-dir" role="navigation" aria-label="Site directory">
+    <details class="ds-foot-col" open><summary>Indices</summary><div class="ds-foot-list"><a href="/indices">All set indices</a><a href="/destined-rivals-index">Destined Rivals</a><a href="/prismatic-evolutions-index">Prismatic Evolutions</a><a href="/chaos-rising-index">Chaos Rising</a><a href="/pitch-black-index">Pitch Black</a><a href="/bowman-1st-chrome-index">1st Bowman Autos</a><a href="/how-prices-work">How the indices are priced</a></div></details>
+    <details class="ds-foot-col" open><summary>Pokémon</summary><div class="ds-foot-list"><a href="/pokemon-tcg-2026">2026 Pokémon TCG guide</a><a href="/pokemon-30th-anniversary-2026">30th Celebration</a><a href="/pitch-black-set-guide">Pitch Black guide</a><a href="/pitch-black-vs-chaos-rising">Pitch Black vs Chaos Rising</a><a href="/cards">Card charts</a></div></details>
+    <details class="ds-foot-col" open><summary>Sports</summary><div class="ds-foot-list"><a href="/bowman-bangers">Bowman Bangers</a><a href="/mlb-cards">MLB cards</a><a href="/bowman-football">Bowman Football</a><a href="/cooper-flagg-rookie-cards">Cooper Flagg rookie cards</a><a href="/nfl-rookie-cards-2026">2026 NFL rookie guide</a><a href="/world-cup-2026-soccer-cards">World Cup 2026 cards</a></div></details>
+    <details class="ds-foot-col" open><summary>Tools</summary><div class="ds-foot-list"><a href="/best-hobby-boxes-2026">Best hobby boxes 2026</a><a href="/watchlist">Watchlist</a><a href="/deals">Deals</a><a href="/auctions">Auction desk</a><a href="/release-calendar">Release calendar</a><a href="/psa-grading-guide">PSA grading guide</a><a href="/tag-grading-guide">TAG grading guide</a></div></details>
+    <details class="ds-foot-col" open><summary>About</summary><div class="ds-foot-list"><a href="/about">About ShopCardHub</a><a href="/research">All guides</a><a href="/track-record">Track record</a><a href="/#newsletter">Tuesday Tape</a><a href="https://twitter.com/shopcardhub" target="_blank" rel="noopener">@shopcardhub on X</a></div></details>
   </div>
-</footer>
+  <div class="ds-foot-note" data-foot="note">ShopCardHub participates in the eBay Partner Network. Not affiliated with PSA or Collectors Universe.</div>
+  <div class="ds-foot-legal"><a href="/" class="ds-foot-mark">ShopCardHub</a><span>© 2026 ShopCardHub · shopcardhub.com</span><a href="/about">About</a><a href="/affiliate-disclosure">Affiliate disclosure</a><a href="/privacy">Privacy policy</a></div>
+</div>
+<script>(function(){var m=window.matchMedia&&matchMedia('(max-width:734px)');if(!m)return;function s(){var d=document.querySelectorAll('.ds-foot-col');for(var i=0;i<d.length;i++)d[i].open=!m.matches;}s();if(m.addEventListener)m.addEventListener('change',s);})();</script>
+<!-- FOOTER:END --></footer>
 
 <script>window.SCH_CARD = {"id":"daniel-pierce","label":"Daniel Pierce — 1st Bowman Chrome Auto","code":"CPA-DP","must":"Daniel","type":"chrome-auto"};</script>
 <script>

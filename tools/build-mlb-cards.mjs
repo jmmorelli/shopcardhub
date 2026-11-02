@@ -16,6 +16,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { carryFooter } from "./lib/footer.mjs";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const D = JSON.parse(fs.readFileSync(path.join(REPO, "data/mlb-cards.json"), "utf8"));
@@ -304,5 +305,7 @@ ${prospects.map((p, i) => playerBlock(p, stars.length + i)).join("\n")}
 </html>
 `;
 
-fs.writeFileSync(path.join(REPO, SLUG + ".html"), html);
+// keep the generated site footer (tools/build-footer.js) if the page already has one; else the footer above
+const OUTFILE = path.join(REPO, SLUG + ".html");
+fs.writeFileSync(OUTFILE, html.replace(/<footer>[\s\S]*?<\/footer>/, (m) => carryFooter(OUTFILE, m)));
 console.log(`build-mlb-cards: wrote ${SLUG}.html — ${D.players.length} players, ${nCards} rows, ${(html.length / 1024).toFixed(0)} KB`);
