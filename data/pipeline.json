@@ -5608,6 +5608,23 @@
           "liveVerified": "2026-11-01 ~14:25Z curl: /data/goal-league.json 200 (standings updated 2026-11-01)",
           "note": "Pre-season standings preview (GA4 day Oct 30) + STATE run line and size trim. No page content changed, so no IndexNow ping.",
           "rollback": "git revert c77b133"
+        },
+        {
+          "date": "2026-11-02",
+          "commits": [
+            "0aeb0c0",
+            "afe677f",
+            "b3e4acc",
+            "7191a6a",
+            "3657a06",
+            "914ece1",
+            "93fb968"
+          ],
+          "by": "Goal League Commissioner (unattended, Mac deploy-key clone; Task-key goal-league-commissioner)",
+          "gates": "0/51 · 0/5 · 0/1 (base 0/52 · 1/4 · 0/1; the Drop patch cleared the 30th badge FAIL and one prices WARN; +1 site WARN = sitemap-missing-page on /should-i-grade-my-pokemon-card, held out of the sitemap until the Nov 4 GSC read)",
+          "liveVerified": "2026-11-02 ~15:12Z curl: 20 changed pages + /llms.txt + /data/goal-league.json all 200; BUYSTRIP blocks unchanged vs base; new titles live",
+          "note": "First in-season push: five contestant patches (Deal gift guide, Conversion player-page cleanup, Drop Delta Reign + 30th UPC presale sold rows, AI-Search /indices static answer + llms.txt questions, Wildcard grade-or-sell tool), registry + standings preview, build-aisearch wired into the nightlies, sitemap lastmod 17. IndexNow 20 URLs -> 200.",
+          "rollback": "git revert 0aeb0c0^..93fb968"
         }
       ]
     },
