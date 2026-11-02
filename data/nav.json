@@ -1,5 +1,5 @@
 {
-  "_comment": "SINGLE SOURCE OF TRUTH for the site nav (desktop dropdowns + mobile accordion drawer). Edit this file, then run `node tools/build-nav.js` from the repo root to regenerate the nav region (between <!-- NAV:START --> / <!-- NAV:END -->) on every *.html page. See tools/build-nav-README.md. ITERATION 3 (Sep 29 2026, Mo: \"go\"): Indices (mega: Pokémon new · Pokémon classic · Sports, matching the home board split) / Sports (mega, guides only) / Pokémon (sets + \"worth it\" pages) / Tools & Guides (mega: trackers · research · grading & supplies) / Watchlist CTA. Iteration 2 (Jul 7): Tools + Research / Sports / Pokémon / Grading + Supplies. Panels capped at ~5 links per column (exception: Sports → Baseball carries 6 since Oct 24 2026 — the Bowman Classes ladder sits beside the Bangers board, Mo Oct 23); overflow routes to 'All →' hub anchors (allLink:true). Pages cut from dropdowns are listed in searchExtra so site search still finds them. Sports panel carries a COMC inventory footer link (money path).",
+  "_comment": "SINGLE SOURCE OF TRUTH for the site nav (desktop dropdowns + mobile accordion drawer). Edit this file, then run `node tools/build-nav.js` from the repo root to regenerate the nav region (between <!-- NAV:START --> / <!-- NAV:END -->) on every *.html page. See tools/build-nav-README.md. ITERATION 3 (Sep 29 2026, Mo: \"go\"): Indices (mega: Pokémon new · Pokémon classic · Sports, matching the home board split) / Sports (mega, guides only) / Pokémon (mega: sets · Gengar's Desk best-cards · worth-it · compare & grade — Nov 2 2026, Mo: \"don't we have more Pokémon content than this?\") / Tools & Guides (mega: trackers · research · grading & supplies) / Watchlist CTA. Iteration 2 (Jul 7): Tools + Research / Sports / Pokémon / Grading + Supplies. Panels capped at ~5 links per column (exception: Sports → Baseball carries 6 since Oct 24 2026 — the Bowman Classes ladder sits beside the Bangers board, Mo Oct 23); overflow routes to 'All →' hub anchors (allLink:true). Pages cut from dropdowns are listed in searchExtra so site search still finds them. Sports panel carries a COMC inventory footer link (money path).",
   "brand": {
     "href": "/",
     "html": "Shop<span>Card</span>Hub"
@@ -281,6 +281,11 @@
               "style": "color:#f5c800;"
             },
             {
+              "href": "/pokemon-delta-reign-2026",
+              "label": "Delta Reign — Nov 6 (new)",
+              "style": "color:#00e0c0;"
+            },
+            {
               "href": "/pitch-black-set-guide",
               "label": "Pitch Black — Jul 17",
               "style": "color:#9b5de5;"
@@ -297,6 +302,36 @@
           ]
         },
         {
+          "label": "Gengar's Desk — Best Cards",
+          "links": [
+            {
+              "href": "/best-charizard-cards",
+              "label": "Best Charizard cards",
+              "style": "color:#ff5a3c;"
+            },
+            {
+              "href": "/best-pikachu-cards",
+              "label": "Best Pikachu cards"
+            },
+            {
+              "href": "/best-umbreon-cards",
+              "label": "Best Umbreon cards"
+            },
+            {
+              "href": "/best-gengar-cards",
+              "label": "Best Gengar cards"
+            },
+            {
+              "href": "/best-mewtwo-cards",
+              "label": "Best Mewtwo cards"
+            },
+            {
+              "href": "/best-lugia-cards",
+              "label": "Best Lugia cards"
+            }
+          ]
+        },
+        {
           "label": "Is It Worth It?",
           "links": [
             {
@@ -304,12 +339,45 @@
               "label": "How much is Moonbreon worth?"
             },
             {
+              "href": "/charizard-ex-worth",
+              "label": "How much is Charizard ex worth?"
+            },
+            {
               "href": "/gengar-ex-worth",
               "label": "How much is Gengar ex worth?"
             },
             {
+              "href": "/mega-darkrai-ex-worth",
+              "label": "How much is Mega Darkrai ex worth?"
+            },
+            {
+              "href": "/van-gogh-pikachu-worth",
+              "label": "How much is Van Gogh Pikachu worth?"
+            }
+          ]
+        },
+        {
+          "label": "Compare & Grade",
+          "links": [
+            {
               "href": "/pitch-black-vs-chaos-rising",
               "label": "Pitch Black vs Chaos Rising"
+            },
+            {
+              "href": "/ascended-heroes-vs-destined-rivals",
+              "label": "Ascended Heroes vs Destined Rivals"
+            },
+            {
+              "href": "/should-i-grade-my-pokemon-card",
+              "label": "Should I grade my Pokémon card?"
+            },
+            {
+              "href": "/pokemon-grading-premiums",
+              "label": "PSA 10 vs 9 vs raw premiums"
+            },
+            {
+              "href": "/pokemon-card-gift-guide-2026",
+              "label": "Pokémon gift guide by budget"
             },
             {
               "href": "/indices#pokemon",
@@ -542,32 +610,12 @@
       "label": "Card chart: Mew Ex Sir Th26"
     },
     {
-      "href": "/pitch-black-vs-chaos-rising",
-      "label": "Pitch Black vs Chaos Rising"
-    },
-    {
-      "href": "/pokemon-delta-reign-2026",
-      "label": "Pokémon Delta Reign — release date Nov 6"
-    },
-    {
       "href": "/topps-update-series-2026",
       "label": "2026 Topps Update Series — release date Oct 14"
     },
     {
-      "href": "/gengar-ex-worth",
-      "label": "How much is Gengar ex worth?"
-    },
-    {
       "href": "/topps-chrome-formula-1-2026",
       "label": "2026 Topps Chrome Formula 1 — release date Oct 15"
-    },
-    {
-      "href": "/ascended-heroes-vs-destined-rivals",
-      "label": "Ascended Heroes vs Destined Rivals"
-    },
-    {
-      "href": "/moonbreon-worth",
-      "label": "How much is Moonbreon worth?"
     },
     {
       "href": "/topps-allen-ginter-2026",
@@ -634,10 +682,6 @@
       "label": "TU19 · Pokémon Team Up Set Index"
     },
     {
-      "href": "/charizard-ex-worth",
-      "label": "How much is Charizard ex worth?"
-    },
-    {
       "href": "/topps-holiday-baseball-2026",
       "label": "2026 Topps Holiday Baseball — release date Oct 21"
     },
@@ -682,10 +726,6 @@
       "label": "2026 Topps Heritage Football — release date Oct 21"
     },
     {
-      "href": "/mega-darkrai-ex-worth",
-      "label": "How much is Mega Darkrai ex worth?"
-    },
-    {
       "href": "/topps-flagship-basketball-2026-27",
       "label": "2026-27 Topps Basketball — release date Nov 5 (Topps)"
     },
@@ -700,34 +740,6 @@
     {
       "href": "/topps-cosmic-chrome-baseball-2026",
       "label": "2026 Topps Cosmic Chrome Baseball — release date Nov 4"
-    },
-    {
-      "href": "/van-gogh-pikachu-worth",
-      "label": "How much is Van Gogh Pikachu worth?"
-    },
-    {
-      "href": "/best-charizard-cards",
-      "label": "Best Charizard cards to collect (Gengar's Desk)"
-    },
-    {
-      "href": "/best-gengar-cards",
-      "label": "Best Gengar cards to collect (Gengar's Desk)"
-    },
-    {
-      "href": "/best-lugia-cards",
-      "label": "Best Lugia cards to collect (Gengar's Desk)"
-    },
-    {
-      "href": "/best-mewtwo-cards",
-      "label": "Best Mewtwo cards to collect (Gengar's Desk)"
-    },
-    {
-      "href": "/best-pikachu-cards",
-      "label": "Best Pikachu cards to collect (Gengar's Desk)"
-    },
-    {
-      "href": "/best-umbreon-cards",
-      "label": "Best Umbreon cards to collect (Gengar's Desk)"
     },
     {
       "href": "/panini-donruss-football-2026",
