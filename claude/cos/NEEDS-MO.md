@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-02 — desk (15:11 fire, verified live). One sign-in, ~5 minutes
+
+- **Sign COMC, eBay Partner Network and Impact (Fanatics) back in, in Chrome Browser 1** (the @shopcardhub one), then re-fire the Treasury task or leave it for its next run. The October close couldn't run: all three were signed out in both browsers on Nov 1, so October has no COMC read and nothing was booked (`Card Hub/treasury/treasury-2026-10.md`). The trader book hasn't been checked since Oct 8 for the same reason.
+- Carried, still yours: **TAG payment info** (Treasury re-asked Nov 1) · optional "go" on the drafted X posts in `claude/cos/x-weekly-2026-11-02.md` · optional SOS unsubscribe.
+- Closed today: **BCB26 video upload** — both breakdowns are live on @ShopCardHub (Bowman Chrome `cazPHYehupI`, 30th Celebration `BJyOxqe_uYY`, checked tonight), and your "go" on the three YouTube posts landed (#1 posted 13:47, #2 Tue, #3 Thu).
+
+*Not yours:* the Bangers board no longer calls Roman Anthony's Sapphire card a 1st Bowman Chrome Auto (the Oct 29 fix had a hole); the PSA guide now says Value reopened Oct 29 at $39.99; the grading-premiums page carries the Nov 2 numbers (vintage PSA 10 = 55.2× raw).
+
 ## 2026-10-30 — desk (15:11 fire, verified live). Nothing new needs you
 
 - Carried, still yours: **TAG payment info** (Treasury re-asks Nov 1) · **BCB26 video** upload · optional "go" on the drafted X posts (X daily found nothing scheduled this morning, 4th day) · optional SOS unsubscribe.
