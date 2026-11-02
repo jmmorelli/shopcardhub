@@ -126,7 +126,7 @@ export function buildV2(REPO, opts = {}) {
       n: String(v.name || tk).replace(/\s+Chase\s+Index$/i, "").replace(/\s+Index$/i, "").replace(/^((?!Base Set$).*)\s+Set$/i, "$1"),
       p: v.page || "/indices",
       l: +last.level.toFixed(2), d: last.date,
-      w: prev ? +((last.level / prev.level - 1) * 100).toFixed(2) : null, wd: prev ? prev.date : null,
+      w: prev ? +((last.level / prev.level - 1) * 100).toFixed(4) : null, wd: prev ? prev.date : null,   // w at 4 dp, rounded once at display: toFixed(2) then toFixed(1) printed DR25 −4.853% as −4.8 vs −4.9 on its own page (NC Nov 2, B119)
       s: +(last.level - 100).toFixed(2), sl: v.baseRule === "first-reliable" && v.baseDate ? "since " + mly(v.baseDate) : "since release",
       bd: v.baseDate || null, br: v.baseRule || null, rd,
       h: h.map((r) => [r.date, +r.level.toFixed(2)]),
