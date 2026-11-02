@@ -61,11 +61,17 @@ Every index level is a dated read of completed sales. Where a page shows a listi
 const LABEL = { '/': 'Home: the index board', '/indices': 'All indices, ranked by 1-week, 1-month and 3-month move', '/how-prices-work': 'How the indices are priced', '/cards': 'Card charts', '/release-calendar': 'Release calendar', '/track-record': 'Track record', '/about': 'About' };
 const line = (u, label, note) => `- [${label}](${SITE}${u === '/' ? '' : u})${note ? `: ${note}` : ''}`;
 
+// Questions block (AI-Search Hunter, Goal League S1): written by tools/build-aisearch.mjs from data/aisearch.json.
+// It goes in llms.txt only; llms-full.txt is unchanged. Absent file = no block.
+const qPath = path.join(ROOT, 'data/aisearch-llms.txt');
+const questions = fs.existsSync(qPath) ? fs.readFileSync(qPath, 'utf8').trim() : '';
+
 const short = [
   head,
   '## Start here',
   ...utility.map(u => line(u, LABEL[u] || u)),
   '',
+  ...(questions ? [questions, ''] : []),
   '## Set indices',
   ...live.map(t => { const m = lastMark(t); return line(t.page, entity(t), `${m.level} on ${fmtDate(m.date)}`); }),
   '',

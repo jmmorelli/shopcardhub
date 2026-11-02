@@ -1,0 +1,153 @@
+{
+ "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{}; the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base}, filled from the page's ticker in data/indices.json. No eBay URLs, prices or asks here, ever (R45).",
+ "pages": {
+  "indices": {
+   "title": "Is the Pokémon Card Market Up or Down? Every Set's Price Index, Dated",
+   "description": "Is the Pokémon card market up or down? Each set we track is one number, re-marked from dated sold prices and set to 100 at a base month, with its week, month and 3-month move. Pokémon sets from Base Set to the 30th Celebration, plus the 2026 1st Bowman Chrome Auto indices. No buy or sell calls."
+  },
+  "pokemon-base-set-index": {
+   "ticker": "BS99",
+   "title": "Pokémon Base Set Card Prices (Unlimited): Dated Sold Prices · BS99",
+   "description": "Pokémon Base Set (Unlimited) card prices from dated sales of raw singles. The BS99 index stood at {level} on {date} (100 = {base}) across {priced} cards, re-marked Monday and Thursday. Every card is listed with its price and date."
+  },
+  "pokemon-base-set-1st-edition-index": {
+   "ticker": "BS1E",
+   "title": "Pokémon Base Set 1st Edition Card Prices: Dated Sold Prices · BS1E",
+   "description": "Pokémon Base Set 1st Edition card prices from dated sales of raw singles. The BS1E index stood at {level} on {date} (100 = {base}) across {priced} cards, re-marked Monday and Thursday. Every card is listed with its price and date."
+  },
+  "scarlet-violet-151-index": {
+   "ticker": "SV151",
+   "title": "Pokémon 151 Card Prices: Scarlet & Violet 151 Dated Sold Prices · SV151",
+   "description": "Pokémon 151 (Scarlet & Violet 151) card prices from dated sales. The SV151 index stood at {level} on {date} (100 = {base}, the release month) across {priced} cards, re-marked Monday and Thursday. Every card is listed with its price and date."
+  }
+ },
+ "answer": {
+  "question": "Is the Pokémon card market up or down?",
+  "groups": [
+   {
+    "key": "new",
+    "label": "Pokémon sets released in 2025 and 2026",
+    "tickers": [
+     "TH26",
+     "PB26",
+     "CR26",
+     "AH26",
+     "PF25",
+     "MEG25",
+     "DR25",
+     "PRIS25"
+    ],
+    "short": "newer Pokémon sets"
+   },
+   {
+    "key": "wotc",
+    "label": "Unlimited WOTC sets from 1999 to 2003",
+    "tickers": [
+     "BS99",
+     "JU99",
+     "FO99",
+     "TR00",
+     "NG00",
+     "NDC01",
+     "NR01",
+     "ND02",
+     "AQ03",
+     "SK03"
+    ],
+    "short": "vintage WOTC sets"
+   },
+   {
+    "key": "bowman",
+    "label": "2026 1st Bowman Chrome Auto indices",
+    "tickers": [
+     "BOW26",
+     "BB26",
+     "BCB26"
+    ],
+    "short": "2026 1st Bowman Chrome Autos"
+   }
+  ],
+  "sections": [
+   {
+    "label": "Pokémon, modern sets (2019 on)",
+    "tickers": [
+     "TH26",
+     "PB26",
+     "CR26",
+     "AH26",
+     "PF25",
+     "MEG25",
+     "DR25",
+     "PRIS25",
+     "SSP24",
+     "SV151",
+     "CZ23",
+     "CEL21",
+     "EVS21",
+     "HF19",
+     "TU19"
+    ]
+   },
+   {
+    "label": "Pokémon, WOTC Unlimited",
+    "tickers": [
+     "BS99",
+     "JU99",
+     "FO99",
+     "TR00",
+     "NG00",
+     "NDC01",
+     "NR01",
+     "ND02",
+     "AQ03",
+     "SK03"
+    ]
+   },
+   {
+    "label": "Pokémon, 1st Edition and Shadowless",
+    "tickers": [
+     "BS1E",
+     "BSSL",
+     "JU1E",
+     "FO1E",
+     "TR1E",
+     "NG1E",
+     "NDC1E",
+     "NR1E",
+     "ND1E"
+    ]
+   },
+   {
+    "label": "Baseball, 1st Bowman Chrome Autos",
+    "tickers": [
+     "BOW26",
+     "BB26",
+     "BCB26"
+    ]
+   }
+  ]
+ },
+ "llms": [
+  {
+   "q": "Is the Pokémon card market up or down?",
+   "answer": "market",
+   "page": "/indices"
+  },
+  {
+   "q": "What are Pokémon Base Set (Unlimited) cards selling for?",
+   "ticker": "BS99"
+  },
+  {
+   "q": "What are Pokémon Base Set 1st Edition cards selling for?",
+   "ticker": "BS1E"
+  },
+  {
+   "q": "What are Pokémon 151 (Scarlet & Violet 151) cards selling for?",
+   "ticker": "SV151"
+  },
+  {
+   "q": "Are 2026 1st Bowman Chrome Auto prices going up or down?",
+   "ticker": "BOW26"
+  }
+ ]
+}
