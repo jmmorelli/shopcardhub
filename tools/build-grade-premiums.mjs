@@ -42,6 +42,7 @@ const body = `
     <div class="hero-eyebrow">Grading &middot; Sold Data &middot; ${DATE}</div>
     <h1>Is Your Pok&eacute;mon Card<br><em>Worth Grading?</em></h1>
     <p class="hero-sub gp-answer" id="answer">${ANSWER}</p>
+    <p class="gp-cta"><a href="/should-i-grade-my-pokemon-card">Check your own card: how often it has to come back a PSA 10 for grading to pay &rarr;</a></p>
   </div>
 </section>
 <div class="container">
@@ -56,7 +57,7 @@ const body = `
     <h2>Old Cards: the Grade Is the Price. New Cards: You're Paying for the Card.</h2>
     <p class="section-intro">On vintage cards the gap between grades is steep: a PSA 9 is a fraction of a 10 and a raw copy is a small fraction. On modern cards the whole ladder is flatter, so a lower grade gives up much less. The spread is lopsided in both eras: on vintage, the average PSA 10 multiple over raw is ${x(V.raw_mean)} against a middle card of ${x(V.raw.med)} (skew ${V.raw_skew}), so a handful of cards with huge premiums pull the average up. Look at the median, not the mean.</p>
     <p class="section-intro"><b>TAG 10 vs PSA 10 (modern):</b> on the ${M.tag10_vs_psa10.n} modern cards with TAG 10 and PSA 10 sales in the window, the TAG 10 sold for a median ${x(M.tag10_vs_psa10.med)} the PSA 10 (middle half ${x(M.tag10_vs_psa10.p25)}–${x(M.tag10_vs_psa10.p75)}); ${M.tag10_at_or_above_psa10} of ${M.tag10_vs_psa10.n} sold at or above it. Vintage TAG 10 sales are still too few to compare.</p>
-    <p class="section-intro">This is what slabs sold for, not advice. Grading fees, shipping, time and the odds of getting a 10 are not in these numbers. To check one card, find it in <a href="/indices">our set indices</a>: every card page shows its own Raw, PSA 9, PSA 10 and TAG 10 sales.</p>
+    <p class="section-intro">This is what slabs sold for, not advice. Grading fees, shipping, time and the odds of getting a 10 are not in these numbers. To check one card, run it through the <a href="/should-i-grade-my-pokemon-card">grade-or-sell break-even calculator</a>: it uses that card&rsquo;s own Raw, PSA 9, PSA 10 and TAG 10 sales and your grading cost.</p>
   </section>
   <section>
     <div class="section-eyebrow">Method</div>
@@ -69,7 +70,8 @@ const body = `
 const css = `<style id="gp-css">.gp-answer{max-width:70ch}.gp-answer b{color:var(--text-head)}.gp-wrap{overflow-x:auto;margin-top:18px;border:1px solid var(--border2);border-radius:3px}
 .gp-tbl{width:100%;border-collapse:collapse;font-family:var(--fm);font-size:13px;min-width:520px}.gp-tbl caption{text-align:left;padding:10px 14px;font-family:var(--fd);font-size:14px;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-dim)}
 .gp-tbl th,.gp-tbl td{padding:12px 14px;border-top:1px solid var(--border);text-align:left;vertical-align:top}.gp-tbl thead th{color:var(--text-dim);font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase}
-.gp-tbl tbody th{color:var(--text-head);font-family:var(--fb);font-weight:600}.gp-tbl td b{display:block;font-size:20px;color:var(--text-head)}.gp-rng,.gp-n{display:block;font-size:11px;color:var(--text-dim);margin-top:2px}.gp-na{color:var(--text-dim)}</style>`;
+.gp-tbl tbody th{color:var(--text-head);font-family:var(--fb);font-weight:600}.gp-tbl td b{display:block;font-size:20px;color:var(--text-head)}.gp-rng,.gp-n{display:block;font-size:11px;color:var(--text-dim);margin-top:2px}.gp-na{color:var(--text-dim)}
+.gp-cta{margin-top:14px}.gp-cta a{display:inline-block;padding:10px 14px;border:1px solid var(--border2);border-radius:3px;font-weight:600;color:var(--text-head);text-decoration:none}</style>`;
 
 const ld = { "@context": "https://schema.org", "@type": "Dataset", name: "Pokémon card grade premiums: PSA 10 vs PSA 9, 8, 7, 5, raw and TAG 10", description: DESC, url: URL, dateModified: d.asOf, creator: { "@type": "Organization", name: "ShopCardHub", url: "https://www.shopcardhub.com" }, variableMeasured: ["PSA 10 to PSA 9 price multiple", "PSA 10 to raw price multiple", "TAG 10 to PSA 10 price multiple"], measurementTechnique: d.method, isAccessibleForFree: true };
 
