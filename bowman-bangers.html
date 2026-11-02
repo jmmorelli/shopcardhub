@@ -2514,14 +2514,15 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           return {
             label: c.label || c.key,
             slug: c.slug || m.slug || null,
-            cardType: m.cardType || 'chrome-auto',
+            // Nov 2 2026 (desk, IW iw-2026-11-02-1, R9): no default type — an off-watchlist row takes the feed's own type or none.
+            cardType: m.cardType || c.cardType || null,
             rank: m.rank || null,
             last: c.last, roc30: c.roc30, points: pts,
             building: pts < MIN_HISTORY,
             signal: c.signal || 'HOLD',
             search: (c.label || '').toLowerCase()
           };
-        }).sort(function(a, b){
+        }).filter(function(r){ return r.cardType === 'chrome-auto' || r.cardType === 'chrome-base'; }).sort(function(a, b){
           if (a.rank && b.rank) return a.rank - b.rank;
           if (a.rank) return -1;
           if (b.rank) return 1;

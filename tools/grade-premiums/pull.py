@@ -4,7 +4,7 @@
 import json,glob,re,time,random,sys,urllib.request,statistics as st,datetime
 VINT={'bs99','bs1e','bssl','ju99','ju1e','fo99','fo1e','tr00','tr1e','ng00','ng1e','nd02','nd1e','ndc01','ndc1e','nr01','nr1e','aq03','sk03'}
 FIRST={'bs1e','ju1e','fo1e','tr1e','ng1e','nd1e','ndc1e','nr1e'}
-TODAY=datetime.date(2026,10,27)
+TODAY=datetime.date.today()
 cards=[]
 for gp in glob.glob('data/cards/g-*.json'):
     tk=gp.split('g-')[1][:-5]; g=json.load(open(gp)); paths=g.get('paths') or {}

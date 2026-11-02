@@ -1179,10 +1179,11 @@
     },
     {
       "id": "audit-2026-09-11-5",
-      "status": "queued-monday",
+      "status": "closed",
       "title": "LOW: the GSC weekly request budget and the noindex policy are not talking to each other — /cards was submitted for indexing on Sep 7 (one of that week's five requests) and then set to robots \"noindex,follow\" (cards.html:11) by the Sep 8 Business Read, and it is absent from sitemap.xml. With only 3 of 101 URLs indexed, a wasted request is not free. FIX: the Monday STEP 0.6 request list should read each candidate's robots meta and drop noindex URLs before submitting.",
       "resolvedOn": "2026-09-13",
-      "resolvedBy": "CoS ruling Sun Sep 13 (4.8; Mo in chat: \"i approve if the CoS approves\")"
+      "resolvedBy": "CoS ruling Sun Sep 13 (4.8; Mo in chat: \"i approve if the CoS approves\")",
+      "decision": "CoS desk 2026-11-02: closed — the Monday lane's STEP 0.6 GSC request list was removed in the Nov 2 prompt rewrite; GSC requests are attended-only (R40). Nothing left to route."
     },
     {
       "id": "bb-transition-doctrine-2026-09-11",
@@ -3410,7 +3411,8 @@
       "severity": "MED",
       "title": "MED: 6 Pokémon card-bearing pages (5 worth pages + 1 set guide) are 22-32 days past their price stamp and carry those prices in the title and meta description, so the Monday lane cannot roll them mechanically. Fresh observed values are in the report; each needs a narrative re-mark.",
       "source": "claude/cos/weekly-scan-2026-11-02.md (Project)",
-      "status": "awaiting-cos"
+      "status": "queued",
+      "decision": "CoS desk 2026-11-02: queued — Wed Nov 4 weekly batch (P2): narrative re-read of the 6 meta/title-tied pages from dated sold rows (raw medians with n + date; graded only as one dated row per R18, else 'No verified sale'). The PriceCharting PSA 10 values in the scan are direction only and are not printed."
     },
     {
       "id": "price-unread-2026-11-02",
@@ -3420,7 +3422,60 @@
       "severity": "LOW",
       "title": "LOW: 15 sports card-bearing pages are past the 21-day price-stamp limit (oldest 49 days). The Monday lane has no dated sold-comp read path for them this run (R20 bars listing-derived marks), so none were re-marked.",
       "source": "claude/cos/weekly-scan-2026-11-02.md (Project)",
-      "status": "awaiting-cos"
+      "status": "ruled",
+      "decision": "CoS desk 2026-11-02: ruled — not the Monday lane's job (no sold read path; R20). /bowman-bangers stays with the Tuesday board. The other 14 sports pages keep their dated stamps (the WARN is honest: each page says its date); R45 bars cutting them before Nov 12, and the Nov 12 check names a dated-read owner per page or culls it."
+    },
+    {
+      "id": "iw-2026-11-02-1",
+      "date": "2026-11-02",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "tier": "P1",
+      "goal": "G2",
+      "title": "MED (R9): the iw-2026-10-29-3 guard was inert — /bowman-bangers load() defaulted an off-watchlist row's cardType to 'chrome-auto', so 'Roman Anthony — 2026 Bowman Sapphire' still printed as a 1st Bowman Chrome Auto and the count read 11.",
+      "source": "claude/cos/integrity-watch-2026-11-02.md + -proposals.json (Project)",
+      "status": "applied",
+      "decision": "CoS desk 2026-11-02: applied (both remedies) — cardType = watchlist type, else the feed row's own type, else none; rows that are not chrome-auto/chrome-base are dropped before the count (reads 10). No figure touched. iw-2026-10-03-3 (engine watchlist filter) stays queued."
+    },
+    {
+      "id": "iw-2026-11-02-2",
+      "date": "2026-11-02",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "tier": "P2",
+      "goal": "CHORE",
+      "title": "LOW: home index box stamp 'Updated Oct 31 from sold prices' is indices.json `updated`, bumped by the pre-activation class-ladder Action; newest mark in the box is Oct 29.",
+      "source": "claude/cos/integrity-watch-2026-11-02.md + -proposals.json (Project)",
+      "status": "queued",
+      "decision": "CoS desk 2026-11-02: queued — Wed Nov 4 weekly batch (P2): tools/lib/home-v2.mjs stamp = newest history[-1].date among the box's tickers. Label only."
+    },
+    {
+      "id": "iw-2026-11-02-3",
+      "date": "2026-11-02",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "tier": "P2",
+      "goal": "CHORE",
+      "title": "LOW: /indices 'The Week's Tape' leader/laggard and 'Chase tier vs whole set (1 week to …)' use the last-two-marks window while the ranked table uses its 6–11 day 1W rule.",
+      "source": "claude/cos/integrity-watch-2026-11-02.md + -proposals.json (Project)",
+      "status": "queued",
+      "decision": "CoS desk 2026-11-02: queued — Night Crew Wed Nov 4 00:47 with RET-ABC (the same one-window rule as Retention side finding A / BET-20261102-2): the Tape uses the table's 1W window or labels its own dates. Wording only."
+    },
+    {
+      "id": "iw-2026-11-02-4",
+      "date": "2026-11-02",
+      "area": "instruments",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "tier": "P2",
+      "goal": "G1",
+      "title": "LOW (data quality): the WOTC reprint filter does not catch Legendary Collection (2002) reprints (a 5/110 LC Dark Dragonite row on the TR #5 page). The +76% move itself is mostly real.",
+      "source": "claude/cos/integrity-watch-2026-11-02.md + -proposals.json (Project)",
+      "status": "queued",
+      "decision": "CoS desk 2026-11-02: queued — Wed Nov 4 weekly (Index Keeper): add legendary\\s*collection to REPRINT_TITLE (+ optional /110 denominator guard on WOTC paths) BEFORE the Thu Nov 5 19:30Z classic mark; re-read BS99/JU99/FO99/TR00 and their 1st Ed/Shadowless lines at that mark. Data-quality filter, not a method change."
     }
   ],
   "scoreboard": {
