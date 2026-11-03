@@ -198,10 +198,6 @@
       "actions": [
         {
           "ts": "2026-10-06",
-          "msg": "Vendor feed rebuilt after the re-mark: data/x-board.json asOf 2026-10-06 (5 seats, callout agrees with seats) and og/x/board-latest.png regenerated and read before shipping. Ledger reads rolled locally (data/calls.json, not staged): fischer-2 $155.00 (+5.6% vs $146.80), gonzales-pass $70.00 (entry 90.00), florentino $69.00 (-13.0% vs $79.32, trending), kim-wait $130.00 (90-day median). No FINAL rows touched, projections immutable."
-        },
-        {
-          "ts": "2026-10-06",
           "msg": "Weekly digest NOT sent and NOT staged. Kill switch tripped: a non-owner gmail address (vpt…, in MailerLite) (non-owner address, looks like a test) unsubscribed Sep 29 21:00 UTC, after the Sep 29 send; four shopcardhub+ test addresses unsubscribed the same evening (owner plus-addresses, not counted). Rogue-send check clean: no campaign since Digest 2026-09-29 (delivered 4, opens 3, clicks 0, unsub 0, bounces 0, spam 0). Active subscribers: 3 (+2 unconfirmed). A tool-permission denial also blocked the digest build this run."
         },
         {
@@ -243,6 +239,10 @@
         {
           "ts": "2026-11-03",
           "msg": "Nov 3: board tape og/x/board-latest.png + data/x-board.json (asOf 2026-11-03) regenerated after the re-mark and shipped with the board push. calls.json reads filed for the CoS (tuesday-2026-11-03-1): Gonzales Pass final 8-week read 65.00 (-27.8% vs $90.00; public grade = 6-month check Mar 8 2027), Fischer re-entry 117.50 (-20.0%). No X action."
+        },
+        {
+          "ts": "2026-11-03",
+          "msg": "Nov 3 Tuesday Tape: draft written (Card Hub/digests/digest-2026-11-03.md, content gate passed against live pages after f3968fa) but NOT sent — the run could not read the MailerLite credential (permission layer refusal), so no campaign, no rogue-send or kill-switch check. Filed tuesday-2026-11-03-3."
         }
       ],
       "log": [
@@ -3494,6 +3494,15 @@
       "by": "tuesday-board",
       "severity": "LOW",
       "title": "Two trip-wires sit on their lines after the Nov 3 read and decide next Tuesday: Holliday's mark is exactly $95.00 on his $95 floor (last sale $94.00 Nov 3) and Fischer's is $117.50, 2.2% above the $115 mark level that breaks his Hold. Gonzales and Florentino are level at $65.00 (Gonzales keeps #3; the seat crosses only on a mark under). Bowman PREBUILD (Nov 2) board items NOT applied this run (R44: P2, not chased in a lane run): G36 Holliday PSA 10 $720 'restored Sep 25' line on the price-sub, tape image and x-board.json vs the Sep 22 correction text saying no PSA 10 sale exists at any date; G13 May box presale prices; G20 paper-insert chase words; G22 L1 unsourced 'most top-100 prospects never become regulars'; G31 May Mega $49.99. G36 is the one that leaves the building in the feed — recommend the desk rules on it before Nov 10. Prompt drift still open: the lane file says an outside vendor pulls the tape (R10 Am. 2/6 win; tuesday-2026-10-27-2)."
+    },
+    {
+      "id": "tuesday-2026-11-03-3",
+      "status": "awaiting-cos",
+      "date": "2026-11-03",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "MED",
+      "title": "Tuesday Tape NOT sent Nov 3. The unattended run's permission layer refused reading Card Hub/MailerLiteAPi.rtf (classified as credential exploration), so the campaign was not staged and the rogue-send / kill-switch checks did not run. Not retried or worked around. The draft is complete and passed the content gate against live pages after f3968fa: Card Hub/digests/digest-2026-11-03.md. Options: (a) send it from an attended session today (board figures valid until the Nov 10 read); (b) grant this lane a standing way to call MailerLite without reading the token file in-session; (c) skip this week. G1 (returning collectors) is the goal it serves."
     }
   ],
   "scoreboard": {
@@ -5758,6 +5767,16 @@
           "gates": "audit-prices FAIL 0 / WARN 52 · audit-site FAIL 0 / WARN 3 (765) · audit-terminal --feed data/feed FAIL 0 / WARN 1 (= base 6bc00e3)",
           "liveVerified": "pending at commit time; recorded in Project claude/cos/site-sweep-2026-11-03.md",
           "note": "Home search placeholder \"What’s it worth? Search a card or set\" → \"Search a card or set\" (it repeated the h1 and was cut to \"…or se\" at 390). index.html, home-v2.html, tools/lib/home-v2.mjs. Does not touch home-v2.css (Cupertino run 4 pending patch)."
+        },
+        {
+          "date": "2026-11-03",
+          "commits": [
+            "f3968fa"
+          ],
+          "by": "tuesday-board (4.8)",
+          "gates": "audit-prices FAIL 0 / WARN 52 · audit-site FAIL 0 / WARN 3 (765) · audit-terminal --feed data/feed FAIL 0 / WARN 1 — fresh clone, cloud and Mac VM, tree dfde5e3 identical; = baseline 52/3/1",
+          "liveVerified": "yes — /bowman-bangers data-prices-updated 2026-11-03, tape strip Nov 3, 10 rows render at 390 px, 0 page errors; og/x/board-latest.png md5 = commit; /data/x-board.json asOf 2026-11-03",
+          "note": "Nov 3 board re-mark (no seat moved), board-history week, x-board feed + tape. Digest NOT sent: the MailerLite credential read was refused by the run's permission layer (BLOCKED, tuesday-2026-11-03-3). calls.json reads filed (tuesday-2026-11-03-1), not written."
         }
       ]
     },
