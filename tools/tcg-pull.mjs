@@ -50,6 +50,14 @@ const TICKERS = {
   PRIS25: { groups: [23821] }, DR25: { groups: [24269] }, PF25: { groups: [24448] },
 };
 
+// Nov 3 2026 (Mo: Aquapolis Blissey H6 showed "shop $90.61, −28%, cheaper at the shop" while the cheapest TCGplayer listing
+// was $425 — GAPS P16(b), owed since Oct 21). A TCGplayer market price that sits far below every live listing is a stale
+// trailing average (one old, often damaged sale), not a price anyone can pay: no entry for that card (R35, no placeholder).
+const STALE_X = 1.25;          // lowest listing > 1.25 × market → the market price is not buyable → no shop price
+// WOTC + e-Card tickers: TCGplayer's market is a near-mint price, our eBay raw mark is any condition. The two are not the
+// same card, so the page shows the shop price but never a venue call ("cheaper at the shop / on eBay") — summary.vintage.
+const VINTAGE = new Set(["BS99","BSSL","JU99","JU1E","FO99","FO1E","TR00","TR1E","NG00","NG1E","NDC01","NDC1E","NR01","NR1E","ND02","ND1E","AQ03","SK03"]);
+
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 async function getJson(url, tries = 3) {
   for (let i = 1; i <= tries; i++) {
@@ -166,11 +174,12 @@ async function main() {
       }
       continue;
     }
-    let n = 0, shopSum = 0, soldSum = 0, inLevel = 0;
+    let n = 0, shopSum = 0, soldSum = 0, inLevel = 0, stale = 0;
     for (const c of cards) {
       total++;
       const hit = matchCard(c, groups, cfg);
       if (!hit || !(hit.m > 0)) continue;
+      if (hit.lo > 0 && hit.lo > STALE_X * hit.m) { stale++; continue; }   // unbuyable market price → nothing shown
       n++; matched++;
       const s = c.raw != null && c.raw > 0 ? c.raw : null;
       const row = { m: +hit.m.toFixed(2), sub: hit.sub, pid: hit.pid };
@@ -182,11 +191,11 @@ async function main() {
     }
     out.tickers[tk] = {
       groups: cfg.groups, printing: cfg.ed === "1st" ? "1st Edition" : cfg.ed === "unl" ? "Unlimited" : "modern",
-      universe: cards.length, matched: n, weighted: inLevel,
+      universe: cards.length, matched: n, weighted: inLevel, staleDropped: stale, vintage: VINTAGE.has(tk) || undefined,
       basketShop: +shopSum.toFixed(2), basketSold: +soldSum.toFixed(2),
       spread: soldSum > 0 ? +((shopSum / soldSum) - 1).toFixed(4) : null,
     };
-    console.log(`${tk.padEnd(6)} matched ${String(n).padStart(3)}/${String(cards.length).padEnd(3)} weighted ${String(inLevel).padStart(3)}  shop $${shopSum.toFixed(0).padStart(6)} vs sold $${soldSum.toFixed(0).padStart(6)}  ${soldSum ? ((shopSum / soldSum - 1) * 100).toFixed(1) + "%" : "—"}`);
+    console.log(`${tk.padEnd(6)} matched ${String(n).padStart(3)}/${String(cards.length).padEnd(3)} weighted ${String(inLevel).padStart(3)} stale-dropped ${String(stale).padStart(3)}  shop $${shopSum.toFixed(0).padStart(6)} vs sold $${soldSum.toFixed(0).padStart(6)}  ${soldSum ? ((shopSum / soldSum - 1) * 100).toFixed(1) + "%" : "—"}`);
   }
   console.log(`\n${matched}/${total} cards matched across ${tks.length} tickers`);
   if (DRY) { console.log("(dry run — nothing written)"); return; }

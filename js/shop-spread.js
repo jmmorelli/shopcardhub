@@ -1,4 +1,4 @@
-/* shop-spread.js v5 — the SHOP PRICE beside every Pokémon index card (Oct 15 2026, Mo's ruling after the Wild Things /
+/* shop-spread.js v7 (Nov 3: stale-market guard + no venue call on WOTC/e-Card) · v5 — the SHOP PRICE beside every Pokémon index card (Oct 15 2026, Mo's ruling after the Wild Things /
  * BinderPOS read: keep eBay sold as the index basis, show the TCGplayer market price and the spread on every card, and
  * let the collector pick the venue — "the arbitrage between the two").
  *
@@ -17,7 +17,22 @@
   function aff() { return AFF || (AFF = get('/data/affiliates.json').then(function (j) { return (j && j.tcgplayer) || {}; }).catch(function () { return {}; })); }
   // Tickers tools/tcg-pull.mjs never writes (BS1E: TCGplayer lists Base Set Unlimited only) — skip the fetch, no console 404.
   var NO_SHOP = { bs1e: 1 };
-  function marks(tk) { tk = String(tk || '').toLowerCase(); if (NO_SHOP[tk]) return Promise.resolve(null); return FILES[tk] || (FILES[tk] = get('/data/tcg/' + tk + '.json').catch(function () { return null; })); }
+  // Nov 3 2026 (GAPS P16b, Mo on Aquapolis Blissey H6): a market price far below the card's own lowest TCGplayer listing is a
+  // stale average nobody can buy at — drop it here too (the generator already does; this covers a day-old file). WOTC/e-Card
+  // tickers never get a venue call: TCGplayer is near-mint, our eBay raw mark is any condition.
+  var STALE_X = 1.25, VINTAGE = { bs99: 1, bssl: 1, ju99: 1, ju1e: 1, fo99: 1, fo1e: 1, tr00: 1, tr1e: 1, ng00: 1, ng1e: 1, ndc01: 1, ndc1e: 1, nr01: 1, nr1e: 1, nd02: 1, nd1e: 1, aq03: 1, sk03: 1 };
+  function clean(tk, f) {
+    if (!f || !f.marks) return f;
+    var vint = !!VINTAGE[tk] || !!(f.summary && f.summary.vintage);
+    Object.keys(f.marks).forEach(function (k) {
+      var v = f.marks[k];
+      if (!v || !(v.m > 0) || (v.lo > 0 && v.lo > STALE_X * v.m)) { delete f.marks[k]; return; }
+      if (vint) v.wide = true;
+    });
+    if (vint && f.summary) f.summary.wide = true;
+    return f;
+  }
+  function marks(tk) { tk = String(tk || '').toLowerCase(); if (NO_SHOP[tk]) return Promise.resolve(null); return FILES[tk] || (FILES[tk] = get('/data/tcg/' + tk + '.json').then(function (f) { return clean(tk, f); }).catch(function () { return null; })); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function money(n, d) { if (n == null || !isFinite(n)) return ''; var o = d != null ? { minimumFractionDigits: d, maximumFractionDigits: d } : n >= 1000 ? { maximumFractionDigits: 0 } : { minimumFractionDigits: 2, maximumFractionDigits: 2 }; return '$' + Number(n).toLocaleString('en-US', o); }
   function pct(d) { var p = Math.abs(d) * 100; return (d < 0 ? '−' : '+') + (p >= 10 ? p.toFixed(0) : p.toFixed(1)) + '%'; }
@@ -26,10 +41,10 @@
   // |spread| above this is a thin TCGplayer market (one listing setting the trailing average) or a condition gap on vintage —
   // the shop price still shows, the chip and the venue call do not.
   var WIDE = 0.6, EDGE = 0.03;
-  function side(d) { return d == null || Math.abs(d) > WIDE ? 'wide' : d <= -EDGE ? 'shop' : d >= EDGE ? 'ebay' : 'even'; }
+  function side(d, w) { return w || d == null || Math.abs(d) > WIDE ? 'wide' : d <= -EDGE ? 'shop' : d >= EDGE ? 'ebay' : 'even'; }
   // Chip text names the venue so a cold read is "the shop is 2.4% under eBay", not a daily move (Ivan review 1, Oct 17).
   function chipHtml(v, m) {
-    var s = side(v.d);
+    var s = side(v.d, v.wide);
     if (s === 'wide' || v.d == null) return '';
     var t = s === 'shop' ? 'TCGplayer market is ' + pct(v.d).replace('−', '') + ' below the eBay sold mark — cheaper at the shop' : s === 'ebay' ? 'TCGplayer market is ' + pct(v.d).replace('+', '') + ' above the eBay sold mark — cheaper on eBay' : 'TCGplayer market and the eBay sold mark are within 3% — even';
     return '<i class="shc ' + s + '" title="' + esc(t) + '">' + (m === 'm' ? pct(v.d) + ' vs eBay' : 'shop ' + pct(v.d)) + '</i>';
@@ -37,7 +52,7 @@
   // The line under the level: both venues, the same cards, in dollars; coloured by the chip rule (shop cheaper = green,
   // eBay cheaper = red) — the sector version used the move classes and painted a red arrow next to "cheaper at the shop".
   function lineHtml(S, f, basis) {
-    var s = side(S.spread), a = Math.abs(S.spread) * 100, p = (a >= 10 ? a.toFixed(0) : a.toFixed(1)) + '%';
+    var s = side(S.spread, S.wide), a = Math.abs(S.spread) * 100, p = (a >= 10 ? a.toFixed(0) : a.toFixed(1)) + '%';
     var call = s === 'shop' ? '<span class="shs shop">shop ' + p + ' lower · cheaper at the shop</span>' : s === 'ebay' ? '<span class="shs ebay">shop ' + p + ' higher · cheaper on eBay</span>' : s === 'wide' ? '<span class="shs">a condition gap, not a bargain (shop = near-mint, eBay raw = any condition)</span>' : '<span class="shs">within 3% · even</span>';
     return 'The same ' + S.weighted + ' cards: <b>' + money(S.basketShop, 0) + '</b> at TCGplayer market · <b>' + money(S.basketSold, 0) + '</b> at ' + basis + ' · ' + call + ' <span class="shk" title="TCGplayer market price via the TCGCSV daily mirror. Not part of the level.">· TCGplayer as of ' + md(f.asOf) + ', about a day behind</span>';
   }
@@ -51,7 +66,7 @@
   }
   function tcgRel(a) { return a.status === 'live' && a.base ? 'sponsored nofollow noopener' : 'nofollow noopener'; }
   function tcgLink(a, v, cid, cls, label) {
-    var s = side(v.d);
+    var s = side(v.d, v.wide);
     return '<a class="' + cls + (s === 'shop' ? ' lo' : '') + '" data-cid="' + esc(cid) + '" data-shop="' + (s === 'shop' ? 'cheaper' : s) + '" href="' + esc(tcgUrl(a, v.pid, cid)) + '" target="_blank" rel="' + tcgRel(a) + '" title="' + esc((label || 'TCGplayer') + ' · market ' + money(v.m) + (v.lo ? ' · lowest listing ' + money(v.lo) : '') + (s === 'shop' ? ' · cheaper than the eBay sold mark' : '')) + '">' + (label || 'TCG') + '</a>';
   }
   function track(root) {
@@ -183,7 +198,7 @@
         if (star) star.insertAdjacentElement('beforebegin', th); else hd.appendChild(th);
       }
       var S = f.summary, sum = tbl.querySelector('tr.sumrow td.shop');
-      if (sum && S && S.basketShop) { sum.classList.add('two'); sum.innerHTML = '<div>' + money(S.basketShop, 0) + '</div>' + (S.spread != null && side(S.spread) !== 'wide' ? '<div class="l2"><i class="shc ' + side(S.spread) + '">' + pct(S.spread) + '</i></div>' : ''); }
+      if (sum && S && S.basketShop) { sum.classList.add('two'); sum.innerHTML = '<div>' + money(S.basketShop, 0) + '</div>' + (S.spread != null && side(S.spread, S.wide) !== 'wide' ? '<div class="l2"><i class="shc ' + side(S.spread) + '">' + pct(S.spread) + '</i></div>' : ''); }
       var lb = howSlot(document) || document.querySelector('.levelbox');
       if (lb && S && S.basketSold > 0 && S.spread != null && !lb.querySelector('.sh-line')) {
         var d = document.createElement(lb.classList.contains('pr-how-in') ? 'p' : 'div'); d.className = (lb.classList.contains('pr-how-in') ? 'pr-stamp' : 'levelchg') + ' sh-line';
@@ -203,7 +218,7 @@
       // B76 re-land: card-page.js reserves .cdp-shop-wait + .tcg-slot on first paint when the file has this card
       var slot = buy.querySelector('.cdp-shop-wait'), tslot = buy.querySelector('.tcg-slot');
       if (!v) { if (slot) slot.remove(); if (tslot) tslot.remove(); return; }
-      var s = side(v.d), raw = c.raw;
+      var s = side(v.d, v.wide), raw = c.raw;
       var box = slot || document.createElement('div'); box.className = 'cdp-shop'; box.removeAttribute('aria-hidden');
       box.innerHTML =
         '<div class="g">' +
