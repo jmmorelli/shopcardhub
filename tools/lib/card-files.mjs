@@ -44,16 +44,21 @@ export function assignKeys(ROOT, tk, rows) {
   return out;
 }
 // raw = an ungraded copy; graded words out so the Raw button opens raw listings only
-export const RAW_NOT = "-psa -cgc -bgs -sgc -tag -beckett -graded -slab";
+// McDonald's Happy Meal promos (P61, Nov 3 2026: US 30th set lands Nov 10) reuse tracked names — dropped site-wide;
+// js/grade-links.js carries the same words (MCD) on its raw and graded links
+export const MCD_NOT = '-mcdonald -mcdonalds -"happy meal"';
+export const RAW_NOT = "-psa -cgc -bgs -sgc -tag -beckett -graded -slab " + MCD_NOT;
 export const WOTC = new Set(["BS99", "JU99", "FO99", "TR00", "NG00", "NDC01", "NR01", "ND02"]);
 // per-ticker words every eBay search for that index drops (Oct 4 2026, Pokémon KB G6 / audit S33, S40): Jungle "No Symbol"
 // error holos are a separate variant; Aquapolis / Skyridge reverse holos are separate items the index does not hold.
 // js/grade-links.js carries the same table (EXTRA) for the graded and auction links it builds.
-export const RAW_EXTRA = { JU99: ' -"no symbol"', AQ03: " -reverse", SK03: " -reverse" };
+// Legendary Collection (2002) reprints Base / Jungle / Fossil / Team Rocket under the same names, numbered /110 (P62, Nov 3 2026).
+const LC = ' -"legendary collection"';
+export const RAW_EXTRA = { BS99: LC, BSSL: LC, BS1E: LC, JU99: ' -"no symbol"' + LC, JU1E: LC, FO99: LC, FO1E: LC, TR00: LC, TR1E: LC, AQ03: " -reverse", SK03: " -reverse" };
 // TAG TEAM sets (Oct 4 2026, TU19): listing titles say "Tag Team", so "-tag" would drop most raw copies and '-team -"tag team"'
 // every TAG slab. These tickers drop only graded TAG slabs ("tag 10"/"tag 9"); js/grade-links.js carries the same set (TT).
 export const TAG_TEAM = new Set(["TU19"]);
-export const rawNot = (tk) => TAG_TEAM.has(tk) ? '-psa -cgc -bgs -sgc -"tag 10" -"tag 9" -beckett -graded -slab' : RAW_NOT;
+export const rawNot = (tk) => TAG_TEAM.has(tk) ? '-psa -cgc -bgs -sgc -"tag 10" -"tag 9" -beckett -graded -slab ' + MCD_NOT : RAW_NOT;
 // edition indices (Sep 30 2026, Mo: "make a respective index for those two" — 1st Edition and Shadowless are their own sets)
 export const EDITION = { BS1E: "1st", JU1E: "1st", FO1E: "1st", TR1E: "1st", NG1E: "1st", NDC1E: "1st", NR1E: "1st", ND1E: "1st", BSSL: "shadowless" };
 

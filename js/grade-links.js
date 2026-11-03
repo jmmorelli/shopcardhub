@@ -18,17 +18,23 @@
  */
 (function () {
   var P = 'mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001';
-  var RAW_NOT = ' -psa -cgc -bgs -sgc -tag -beckett -graded -slab';
+  // McDonald's Happy Meal promos (P61, Nov 3 2026: the US 30th set lands Nov 10 — Pikachu, Charmander, Gengar, Eevee…) reuse
+  // tracked names; no tracked card's title carries these words, so every Raw and graded search drops them
+  var MCD = ' -mcdonald -mcdonalds -"happy meal"';
+  var RAW_NOT = ' -psa -cgc -bgs -sgc -tag -beckett -graded -slab' + MCD;
   var KEY = 'sch_glk_mode';
   var TAG_Q = ' "TAG 10" -team -"tag team" -"all stars" -psa -cgc -bgs -sgc';
   var UNL_NOT = ' -1st -shadowless -celebrations -celebration -"base set 2" -classic -1999-2000 -japanese -reprint';
   var FIRST_NOT = ' -unlimited -celebration -celebrations';
   // keep in step with RAW_EXTRA in tools/lib/card-files.mjs (the baked raw links)
-  var EXTRA = { ju99: ' -"no symbol"', aq03: ' -reverse', sk03: ' -reverse' };
+  // Legendary Collection (2002) reprints Base / Jungle / Fossil / Team Rocket under the same names (/110) — every grade of
+  // those indices drops it (P62, Nov 3 2026; per ticker so Shadowless graded and the raw links carry it too)
+  var LC = ' -"legendary collection"';
+  var EXTRA = { bs99: LC, bssl: LC, bs1e: LC, ju99: ' -"no symbol"' + LC, ju1e: LC, fo99: LC, fo1e: LC, tr00: LC, tr1e: LC, aq03: ' -reverse', sk03: ' -reverse' };
   // TAG TEAM sets (Oct 4 2026, TU19): titles say "Tag Team", so raw drops only TAG slabs and TAG searches keep the word "team"
   // (keep in step with TAG_TEAM in tools/lib/card-files.mjs)
   var TT = { tu19: 1 };
-  var RAW_NOT_TT = ' -psa -cgc -bgs -sgc -"tag 10" -"tag 9" -beckett -graded -slab';
+  var RAW_NOT_TT = ' -psa -cgc -bgs -sgc -"tag 10" -"tag 9" -beckett -graded -slab' + MCD;
   var TAG_Q_TT = ' "TAG 10" -psa -cgc -bgs -sgc';
   function tkOf(cid) { var m = String(cid || '').replace(/^card-/, '').match(/^([a-z0-9]+)-/); return m ? m[1] : ''; }
   var G = [
@@ -40,7 +46,8 @@
   function nkw(q) { return encodeURIComponent(String(q).replace(/\s+/g, ' ').trim()).replace(/%20/g, '+').replace(/'/g, '%27').replace(/[!()*]/g, function (c) { return '%' + c.charCodeAt(0).toString(16).toUpperCase(); }); }
   // ed: false (modern) · true / "unl" (WOTC Unlimited) · "1st" (1st Edition index) · "shadowless" (Base Set Shadowless index)
   // tk: lower-case ticker (from the row's customid) for the per-ticker exclusions in EXTRA
-  function phrase(q, g, ed, tk) {
+  function phrase(q, g, ed, tk) { var s = phrase0(q, g, ed, tk); return g === 'psa9' || g === 'psa10' || g === 'tag' ? s + MCD : s; }
+  function phrase0(q, g, ed, tk) {
     q = String(q || '');
     var x = EXTRA[tk] || '';
     if (TT[tk]) return (g === 'raw' ? q + RAW_NOT_TT : g === 'psa9' ? q + ' psa 9 -"psa 10"' : g === 'psa10' ? q + ' psa 10' : g === 'tag' ? q + TAG_Q_TT : q) + x;
