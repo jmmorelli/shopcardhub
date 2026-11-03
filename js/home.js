@@ -159,19 +159,21 @@
    * carried no eBay link above the fold — R11 (Mo, Sep 17: the set's sealed product "should be easy money for us,
    * always"). One gold button per row → an eBay search for that set's flagship sealed product, the same product the
    * ticker's own page sells in its strip / SEALED row. Search links only: no price, no mark, no claim. customid is
-   * home-<ticker> so the EPN Custom ID report separates the board from the index pages. */
+   * home-<ticker> so the EPN Custom ID report separates the board from the index pages.
+   * Nov 3 2026 (Mo, attended): the MEG25 box link opened Japanese boxes. Every Pokémon query now carries the English-only
+   * exclusions (-japanese -japan -jp -korean -chinese -lot); MEG25 also drops the Japanese twins Mega Brave / Mega Symphonia (M1L/M1S). */
   var EPN_Q = 'LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001';
   var SEALED = {
-    PB26:  { l: 'Box',       q: 'pokemon pitch black booster box' },
-    CR26:  { l: 'Box',       q: 'pokemon chaos rising booster box' },
-    AH26:  { l: 'ETB',       q: 'pokemon ascended heroes elite trainer box' },
-    PRIS25:{ l: 'ETB',       q: 'pokemon prismatic evolutions elite trainer box' },
-    DR25:  { l: 'Box',       q: 'pokemon destined rivals booster box' },
-    PF25:  { l: 'Box',       q: 'pokemon phantasmal flames booster box' },
-    TH26:  { l: 'ETB',       q: 'pokemon 30th celebration elite trainer box' },
-    SV151: { l: 'ETB',       q: 'pokemon 151 elite trainer box' },
-    SSP24: { l: 'Box',       q: 'pokemon surging sparks booster box -japanese -lot' },
-    MEG25: { l: 'Box',       q: 'pokemon mega evolution booster box -japanese -lot -phantasmal -ascended -perfect -chaos -pitch -delta' },
+    PB26:  { l: 'Box',       q: 'pokemon pitch black booster box -japanese -japan -jp -korean -chinese -lot' },
+    CR26:  { l: 'Box',       q: 'pokemon chaos rising booster box -japanese -japan -jp -korean -chinese -lot' },
+    AH26:  { l: 'ETB',       q: 'pokemon ascended heroes elite trainer box -japanese -japan -jp -korean -chinese -lot' },
+    PRIS25:{ l: 'ETB',       q: 'pokemon prismatic evolutions elite trainer box -japanese -japan -jp -korean -chinese -lot' },
+    DR25:  { l: 'Box',       q: 'pokemon destined rivals booster box -japanese -japan -jp -korean -chinese -lot' },
+    PF25:  { l: 'Box',       q: 'pokemon phantasmal flames booster box -japanese -japan -jp -korean -chinese -lot' },
+    TH26:  { l: 'ETB',       q: 'pokemon 30th celebration elite trainer box -japanese -japan -jp -korean -chinese -lot' },
+    SV151: { l: 'ETB',       q: 'pokemon 151 elite trainer box -japanese -japan -jp -korean -chinese -lot' },
+    SSP24: { l: 'Box',       q: 'pokemon surging sparks booster box -japanese -japan -jp -korean -chinese -lot' },
+    MEG25: { l: 'Box',       q: 'pokemon mega evolution booster box -japanese -japan -jp -korean -chinese -lot -brave -symphonia -m1l -m1s -phantasmal -ascended -perfect -chaos -pitch -delta' },
     BOW26: { l: 'Hobby box', q: '2026 bowman chrome baseball hobby box' },
     BB26:  { l: 'Hobby box', q: '2026 bowman baseball hobby box' },
     BCB26: { l: 'Hobby box', q: '2026 bowman chrome baseball hobby box' }
