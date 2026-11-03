@@ -133,7 +133,7 @@ function printBlock(slug, p, multi) {
     : rn === 1
     ? `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">No mark</div><div class="lad-s">1 dated sale in ${rdays} days: ${money(c.raw)}${rAsOf}</div></div>`
     : `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">No mark</div><div class="lad-s">${rn ? rn + " dated sales" : "no dated sale"} in ${rdays} days — too few for a median${rAsOf}</div></div>`;
-  const ratio = c.raw && (rn == null || rn >= 3) && c.gr.psa10 && c.gr.psa10.m && c.gr.psa10.n >= 3 ? `<span class="lad-ratio">PSA 10 = <b>${(c.gr.psa10.m / c.raw).toFixed(1)}×</b> raw</span>` : "";
+  const ratio = !RAW_HOLD[c.id] && c.raw && (rn == null || rn >= 3) && c.gr.psa10 && c.gr.psa10.m && c.gr.psa10.n >= 3 ? `<span class="lad-ratio">PSA 10 = <b>${(c.gr.psa10.m / c.raw).toFixed(1)}×</b> raw</span>` : "";
   // Past month (Mo, Oct 27 2026: "show the 30d performance of each card"). From PriceCharting's monthly series for the card
   // (data/cards/h-<tk>.json: [month, ungraded, grade 9, PSA 10]) — their monthly estimate built from sales, labeled as theirs.
   const pm = (() => {
