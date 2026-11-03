@@ -11,6 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-03 — desk (15:11 fire, verified live). Nothing new needs you
+
+- Carried, still yours: **sign COMC, eBay Partner Network and Impact back in, in Chrome Browser 1** (October's Treasury close is still waiting on it) · **TAG payment info** · optional "go" on the drafted X posts · optional SOS unsubscribe.
+- Optional, 10 minutes: this week's Tuesday Tape didn't go out. The send needs the MailerLite key, and the scheduled runs aren't allowed to read key files. If you open a CoS chat before Mon Nov 9, say "send the Tape" and we'll send it and set up a send path that doesn't need you next week.
+
+*Not yours:* the home page restyle is live (calmer type, one cyan "Buy an ETB on eBay" button that stays on the first screen of small iPhones too). The Mega Evolution box button you clicked now searches English boxes only, and so does every Pokémon box button on the home board. The best-cards pages are narrated by Rip now, and the Bowman Chrome and 30th Celebration pages have their breakdown videos under the index. The Charizard desk lost three lines we couldn't source and an $84,000 auction figure we couldn't confirm.
+
 ## 2026-11-02 — desk (15:11 fire, verified live). One sign-in, ~5 minutes
 
 - **Sign COMC, eBay Partner Network and Impact (Fanatics) back in, in Chrome Browser 1** (the @shopcardhub one), then re-fire the Treasury task or leave it for its next run. The October close couldn't run: all three were signed out in both browsers on Nov 1, so October has no COMC read and nothing was booked (`Card Hub/treasury/treasury-2026-10.md`). The trader book hasn't been checked since Oct 8 for the same reason.

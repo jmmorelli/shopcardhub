@@ -1298,6 +1298,10 @@ filed as R46. Text unchanged apart from the number.*
 Cupertino: daily cloud task 03:17 PT (`trig_01WK9TVVu794NJFTXvLw5xDU`, first fire Sat Oct 31), BET-20261030-1 checked Nov 13,
 bankroll cut #3 on a `USAGE_LIMIT_REACHED`.
 
+## R47 · Footers are generated (CoS desk, 2026-11-03 — ruled Nov 1, BLOCKED row of Nov 2, Cupertino run 3)
+
+Since `704e73c` (Nov 2) every page's footer is one generated block written by `tools/build-footer.js` (the `.sch-ft*` classes, 765 pages). **Edit `tools/build-footer.js`, never a page's footer**; a hand edit inside the block is overwritten by the next run. The dead `.footer-inner / -links / -copy / -grid` page CSS was stripped on Nov 3 (`tools/strip-dead-footer-css.mjs`, 714 pages); a lane that brings one back gets it stripped by the next regen.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.

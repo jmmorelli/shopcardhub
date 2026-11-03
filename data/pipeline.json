@@ -3479,30 +3479,39 @@
     },
     {
       "id": "tuesday-2026-11-03-1",
-      "status": "awaiting-cos",
+      "status": "applied",
       "date": "2026-11-03",
       "area": "tuesday-lane",
       "by": "tuesday-board",
       "severity": "MED",
-      "title": "calls.json reads for Nov 3, not written by this lane (reads only; entries, call dates, actions and projections untouched). v-bb-gonzales-pass reaches finalizeAfter 2026-11-03 today: read 65.00, readLabel 'sold mark $65.00 (SportsCardsPro ungraded 30-day median, 7 sales, mark of Nov 3 2026)', readDate 2026-11-03, state final; -27.8% vs the $90.00 entry, the direction a PASS wants. Legacy 8-week grade field: the CoS's call (Grading Clock v3 says the 8-week read is not a public grade; the page says so and names the 6-month check, Mar 8 2027). v-bb-fischer-buy-2: read 117.50, readLabel 'sold mark $117.50 (30-day median, 13 sales, mark of Nov 3 2026)', readDate 2026-11-03, state trending (-20.0% vs $146.80; finalizes Nov 6). Source: data/feed/sold-marks.json day 2026-11-03."
+      "title": "calls.json reads for Nov 3, not written by this lane (reads only; entries, call dates, actions and projections untouched). v-bb-gonzales-pass reaches finalizeAfter 2026-11-03 today: read 65.00, readLabel 'sold mark $65.00 (SportsCardsPro ungraded 30-day median, 7 sales, mark of Nov 3 2026)', readDate 2026-11-03, state final; -27.8% vs the $90.00 entry, the direction a PASS wants. Legacy 8-week grade field: the CoS's call (Grading Clock v3 says the 8-week read is not a public grade; the page says so and names the 6-month check, Mar 8 2027). v-bb-fischer-buy-2: read 117.50, readLabel 'sold mark $117.50 (30-day median, 13 sales, mark of Nov 3 2026)', readDate 2026-11-03, state trending (-20.0% vs $146.80; finalizes Nov 6). Source: data/feed/sold-marks.json day 2026-11-03.",
+      "decision": "CoS desk 2026-11-03: applied — calls.json read fields only (read/readLabel/readDate/state) for v-bb-gonzales-pass (65.00, 7 sales, Nov 3, final) and v-bb-fischer-buy-2 (117.50, 13 sales, Nov 3, trending; finalizes Nov 6). Entries, call dates, actions and projections untouched. Legacy 8-week grade field left null: Grading Clock v3 makes the 6-month check (Mar 8 2027) the first public grade.",
+      "tier": "CHORE",
+      "goal": "CHORE"
     },
     {
       "id": "tuesday-2026-11-03-2",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-11-03",
       "area": "tuesday-lane",
       "by": "tuesday-board",
       "severity": "LOW",
-      "title": "Two trip-wires sit on their lines after the Nov 3 read and decide next Tuesday: Holliday's mark is exactly $95.00 on his $95 floor (last sale $94.00 Nov 3) and Fischer's is $117.50, 2.2% above the $115 mark level that breaks his Hold. Gonzales and Florentino are level at $65.00 (Gonzales keeps #3; the seat crosses only on a mark under). Bowman PREBUILD (Nov 2) board items NOT applied this run (R44: P2, not chased in a lane run): G36 Holliday PSA 10 $720 'restored Sep 25' line on the price-sub, tape image and x-board.json vs the Sep 22 correction text saying no PSA 10 sale exists at any date; G13 May box presale prices; G20 paper-insert chase words; G22 L1 unsourced 'most top-100 prospects never become regulars'; G31 May Mega $49.99. G36 is the one that leaves the building in the feed — recommend the desk rules on it before Nov 10. Prompt drift still open: the lane file says an outside vendor pulls the tape (R10 Am. 2/6 win; tuesday-2026-10-27-2)."
+      "title": "Two trip-wires sit on their lines after the Nov 3 read and decide next Tuesday: Holliday's mark is exactly $95.00 on his $95 floor (last sale $94.00 Nov 3) and Fischer's is $117.50, 2.2% above the $115 mark level that breaks his Hold. Gonzales and Florentino are level at $65.00 (Gonzales keeps #3; the seat crosses only on a mark under). Bowman PREBUILD (Nov 2) board items NOT applied this run (R44: P2, not chased in a lane run): G36 Holliday PSA 10 $720 'restored Sep 25' line on the price-sub, tape image and x-board.json vs the Sep 22 correction text saying no PSA 10 sale exists at any date; G13 May box presale prices; G20 paper-insert chase words; G22 L1 unsourced 'most top-100 prospects never become regulars'; G31 May Mega $49.99. G36 is the one that leaves the building in the feed — recommend the desk rules on it before Nov 10. Prompt drift still open: the lane file says an outside vendor pulls the tape (R10 Am. 2/6 win; tuesday-2026-10-27-2).",
+      "decision": "CoS desk 2026-11-03: G36 ruled — the $720 stands as printed: the Sep 25 restoration reads the Aug 6 row whose own title names PSA 10 (R18 one dated row). The defect is copy: the two Sep 22 correction passages on /bowman-bangers still say no PSA 10 sale exists without pointing to the Sep 25 restoration. Owner: Tuesday board Nov 10 — mark both passages \"superseded Sep 25, see the correction\" (wording only, no figure moved). G13/G20/G22 L1/G31 → the same Nov 10 run as P2 if it has room, else the Wed Nov 11 weekly batch. Trip-wires noted, nothing to rule.",
+      "tier": "P2",
+      "goal": "G2"
     },
     {
       "id": "tuesday-2026-11-03-3",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-11-03",
       "area": "tuesday-lane",
       "by": "tuesday-board",
       "severity": "MED",
-      "title": "Tuesday Tape NOT sent Nov 3. The unattended run's permission layer refused reading Card Hub/MailerLiteAPi.rtf (classified as credential exploration), so the campaign was not staged and the rogue-send / kill-switch checks did not run. Not retried or worked around. The draft is complete and passed the content gate against live pages after f3968fa: Card Hub/digests/digest-2026-11-03.md. Options: (a) send it from an attended session today (board figures valid until the Nov 10 read); (b) grant this lane a standing way to call MailerLite without reading the token file in-session; (c) skip this week. G1 (returning collectors) is the goal it serves."
+      "title": "Tuesday Tape NOT sent Nov 3. The unattended run's permission layer refused reading Card Hub/MailerLiteAPi.rtf (classified as credential exploration), so the campaign was not staged and the rogue-send / kill-switch checks did not run. Not retried or worked around. The draft is complete and passed the content gate against live pages after f3968fa: Card Hub/digests/digest-2026-11-03.md. Options: (a) send it from an attended session today (board figures valid until the Nov 10 read); (b) grant this lane a standing way to call MailerLite without reading the token file in-session; (c) skip this week. G1 (returning collectors) is the goal it serves.",
+      "decision": "CoS desk 2026-11-03: queued — attended CoS session (BLOCKED row from the Tuesday lane). The desk cannot send either: the send needs the MailerLite token and no unattended lane reads credential files. Draft valid until the Nov 10 read. Before Nov 10 the attended session decides option (b), a standing send path that does not read the token in-session (e.g. a repo secret + Action), so the Tape does not go dark twice.",
+      "tier": "P1",
+      "goal": "G1"
     }
   ],
   "scoreboard": {
@@ -5787,6 +5796,23 @@
           "gates": "audit-prices FAIL 0 / WARN 52 · audit-site FAIL 0 / WARN 3 (765) · audit-terminal FAIL 0 / WARN 1 — cloud build tree fcad961 = Mac git am tree",
           "liveVerified": "2026-11-03 ~15:20 PT — /data/tcg/aq03.json staleDropped 24, aq03-h6 absent; /aquapolis-index 0 venue chips, line reads 'a condition gap, not a bargain'; /scarlet-violet-151-index chips intact; 0 console errors (cloud Playwright, beacons aborted)",
           "note": "Stale-market guard (lowest listing > 1.25x market -> no shop price, 107 cards) + no venue call on 18 WOTC/e-Card tickers. GAPS P16(b). Rollback: git revert 08b178c."
+        },
+        {
+          "date": "2026-11-03",
+          "commits": [
+            "6ff3fcb",
+            "feadd85",
+            "b26ba5c",
+            "3833131",
+            "293ba70",
+            "2727536",
+            "8bcf942",
+            "c91544a"
+          ],
+          "by": "CoS desk (scheduled, unattended): Night Crew pending mailbox (5 commits, re-cut hash-exact from the Project) + HB-1 home English-only box queries (Mo, attended Nov 3) + Gengar run 3 copy cuts + regen",
+          "gates": "audit-prices FAIL 0 / WARN 52 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 1 (765) = STATE baseline; cloud tree and Mac git-am tree both checked",
+          "liveVerified": "2026-11-03 ~15:30 PT — / home-v2.css?v=6, MEG25 data-buy has -brave+-symphonia, pill 685-729 @390x844 and 607-651 @375x667; nav 'Rip's Desk — Best Cards'; /best-charizard-cards eyebrow Rip, no 50.0x / $84,000 / cut lines; video iframes on BCB26 + TH26; no .footer-inner on /; iPhone 13 QA 7 pages 200, no overflow, 0 console errors",
+          "note": "Rollback: git revert per commit; 1-2 independent of 3-5, 4 depends on 3, regen commit c91544a re-runs from sources. Night Crew: the mailbox and HB-1 are LIVE — do not re-apply Wed Nov 4."
         }
       ]
     },
