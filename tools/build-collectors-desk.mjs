@@ -85,6 +85,8 @@ const dateShort = (d) => dateLong(d).replace(/, \d{4}$/, "");
 
 function gradeCell(k, label, r, c) {
   r = r || {};
+  // Nov 3 2026: a cell the ladder guards held (build-card-ladder.mjs → tools/lib/ladder-guard.mjs) prints no figure and feeds no chip
+  if (r.held) return `<div class="lad-cell lad-na"><div class="lad-k">${label}</div><div class="lad-v">No verified sale</div><div class="lad-s">sales on file are being checked</div></div>`;
   // R18 desk ruling (Oct 8 2026): a graded median needs >= 3 dated sales rows of that grade; fewer print singly.
   // The ladder file still stores a 2-sale 90-day median — this page does not print it (Index Keeper, CoS weekly Oct 21).
   if (r.m != null && r.n >= 3) {

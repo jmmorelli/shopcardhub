@@ -121,14 +121,16 @@
     var net = function (p) { return p * (1 - f) - o; };
     var page = STATIC[c.id] || '/card?id=' + encodeURIComponent(c.id);
 
-    function cell(lbl, x, one, extra) {
+    function cell(lbl, x, one, extra, held) {
       if (x) return '<div class="sg-c"><span class="k">' + lbl + '</span><b>' + money(x.m) + '</b><span class="s">median of ' + x.n + ' sales, ' + x.days + ' days' + (extra || '') + '</span></div>';
       if (one) return '<div class="sg-c dim"><span class="k">' + lbl + '</span><b>' + money(one.p) + '</b><span class="s">1 dated sale, ' + md(one.d) + '. Fewer than 3 sales, so no median</span></div>';
+      // held by the ladder guards (build-card-ladder.mjs, Nov 3 2026): the sales on file disagree, so nothing prints or feeds the math
+      if (held) return '<div class="sg-c dim"><span class="k">' + lbl + '</span><b>No verified sale</b><span class="s">sales on file are being checked</span></div>';
       return '<div class="sg-c dim"><span class="k">' + lbl + '</span><b>—</b><span class="s">no dated sale in 12 months</span></div>';
     }
     var rawCell = screened || c.raw == null ? '<div class="sg-c dim"><span class="k">Raw</span><b>—</b><span class="s">no dated raw sales median on file; enter your copy’s raw value under “Your costs”</span></div>'
       : '<div class="sg-c"><span class="k">Raw</span><b>' + money(c.raw) + '</b><span class="s">median of ' + rawN + ' sales, ' + rawWin + ' days, marked ' + md(c.rawAsOf) + '</span></div>';
-    var ladder = '<div class="sg-lad">' + rawCell + cell('PSA 9', m9, g && g.psa9 && g.psa9.last) + cell('PSA 10', m10, g && g.psa10 && g.psa10.last) + cell('TAG 10', mT, g && g.tag10 && g.tag10.last) + '</div>';
+    var ladder = '<div class="sg-lad">' + rawCell + cell('PSA 9', m9, g && g.psa9 && g.psa9.last, '', g && g.psa9 && g.psa9.held) + cell('PSA 10', m10, g && g.psa10 && g.psa10.last, '', g && g.psa10 && g.psa10.held) + cell('TAG 10', mT, g && g.tag10 && g.tag10.last, '', g && g.tag10 && g.tag10.held) + '</div>';
 
     var head, rows = '', p = null;
     var missP = num(inp.miss, m9 ? m9.m : null);

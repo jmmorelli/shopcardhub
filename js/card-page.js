@@ -62,6 +62,8 @@
       var x = g ? g[p[0]] : null, e = { k: p[0], lbl: p[1], eb: p[2], m: null, one: null, n: x && x.n, days: x && x.basis === '30d' ? 30 : 90 };
       if (x && x.m && x.n >= 3) { e.m = x.m; e.basis = 'Median of ' + x.n + ' dated sales, ' + e.days + ' days · read ' + md(gRead) + (x.last ? ' · last sale ' + money(x.last.p) + ', ' + mdShort(x.last.d) : ''); }
       else if (x && x.last) { e.one = x.last; e.basis = '1 dated sale, ' + md(x.last.d) + ' · fewer than 3 in 90 days, so no median'; }
+      // a cell the ladder guards held (build-card-ladder.mjs, Nov 3 2026): its sales disagree with the card's other grades or the last sale
+      else if (x && x.held) e.basis = 'No verified sale';
       else e.basis = !g ? 'Graded read pending' : p[0] === 'tag10' ? 'No TAG 10 sale in 12 months' : 'No dated sale in 12 months';
       G.push(e);
     });
