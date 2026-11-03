@@ -16,6 +16,9 @@
 // HARD LINES. The shop price is NEVER written into indices.json, a level, a mark or a % move (basis stays sold comps, R20
 // untouched — this is a sold-basis venue price, not an eBay ask, and it stays a labelled second number). Unmatched cards get
 // no entry: the page shows nothing for them, never a placeholder (R35).
+// A match needs the printed number AND at least one distinctive word of our card's name in the TCGplayer product name (Nov 3:
+// a lone product on the number is no longer taken on the number alone). A market the card can't be bought at — below every
+// listing (staleDropped) or far above both the cheapest listing and our sold mark (highDropped) — gets no entry either.
 //
 // Usage: node tools/tcg-pull.mjs [--out data/tcg-marks.json] [--tickers SV151,AH26] [--dry]
 import fs from "node:fs";
@@ -34,7 +37,7 @@ const BASE = "https://tcgcsv.com/tcgplayer/3";
 // Pokémon index ticker → TCGplayer group(s) + which printing the index tracks.
 //   ed: "1st" = 1st Edition printing, "unl" = Unlimited printing (WotC groups carry both), null = modern (Normal/Holofoil).
 // BS1E has no TCGplayer group of its own (Base Set 604 lists Unlimited only) → no shop price on that page, by design.
-const TICKERS = {
+export const TICKERS = {
   SV151: { groups: [23237] }, SSP24: { groups: [23651] }, MEG25: { groups: [24380] }, EVS21: { groups: [2848] },
   CEL21: { groups: [2867, 2931, 2545] }, CZ23: { groups: [17688, 17689] }, HF19: { groups: [2480, 2594] }, TU19: { groups: [2377] },
   AQ03: { groups: [1397] }, SK03: { groups: [1372] },
@@ -54,6 +57,15 @@ const TICKERS = {
 // was $425 — GAPS P16(b), owed since Oct 21). A TCGplayer market price that sits far below every live listing is a stale
 // trailing average (one old, often damaged sale), not a price anyone can pay: no entry for that card (R35, no placeholder).
 const STALE_X = 1.25;          // lowest listing > 1.25 × market → the market price is not buyable → no shop price
+// Nov 3 2026 (price-truth sweep: Team Up #170 Latias & Latios GX alt art printed "shop $4,619.79" while the cheapest TCGplayer
+// listing was $2,399.99 and our eBay sold mark $2,299.01). The high side of the same problem: a market far ABOVE what the card
+// sells for today. m/lo alone can't tell it apart — on modern bulk the lowest listing is a $0.01 played copy (m/lo > 2 on 1,112
+// of 2,020 modern cards), and among cards ≥ $20 a 2× cut misses #170 (1.92×) while catching a $20 card whose market equals our
+// mark. So two independent prices must agree the market is high: market > HIGH_X × the lowest listing AND > HIGH_X × our eBay
+// sold mark (or no mark), on a market of at least HIGH_MIN. 1.75 sits in the gap of the Nov 3 distribution (next card 1.51×);
+// it drops 3 modern cards (TU19 #170, #10, #51). Modern only: WOTC/e-Card markets are near-mint against any-condition listings
+// and marks (R38's ~2× regime), so a high market there is the condition gap, not a stale price.
+const HIGH_X = 1.75, HIGH_MIN = 5;
 // WOTC + e-Card tickers: TCGplayer's market is a near-mint price, our eBay raw mark is any condition. The two are not the
 // same card, so the page shows the shop price but never a venue call ("cheaper at the shop / on eBay") — summary.vintage.
 const VINTAGE = new Set(["BS99","BSSL","JU99","JU1E","FO99","FO1E","TR00","TR1E","NG00","NG1E","NDC01","NDC1E","NR01","NR1E","ND02","ND1E","AQ03","SK03"]);
@@ -70,15 +82,37 @@ async function getJson(url, tries = 3) {
 }
 
 // "199/165" → "199", "GG70/GG70" → "GG70", "004/165" → "4", "H1/H32" → "H1", "SV81/SV94" → "SV81"
-const normNum = (n) => {
+export const normNum = (n) => {
   const s = String(n || "").split("/")[0].trim().toUpperCase();
   const m = /^([A-Z]*)0*(\d+)([A-Z]*)$/.exec(s);
   return m ? m[1] + m[2] + m[3] : s;
 };
-const slugName = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+// Nov 3 2026: accents folded ("Flabébé" = TCGplayer's cleanName "Flabebe"), apostrophes dropped instead of split ("Lance's" and
+// cleanName "Lances" both → "lances"), δ / ☆ spelled out so "Gardevoir ex δ" and "Gardevoir ex (Delta Species)" share tokens.
+const slugName = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/δ/g, " delta ").replace(/[☆★]/g, " star ")
+  .toLowerCase().replace(/['’`]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+// Tokens that say what KIND of card it is, not WHICH card — never enough on their own to call a TCGplayer product ours.
+const GENERIC = new Set(["ex", "gx", "v", "vmax", "vstar", "holo", "lv", "x", "prime", "break", "star", "delta", "species", "m", "mega",
+  "dark", "light", "shining", "team", "rocket", "rockets", "the", "of", "and", "s", "1st", "edition", "jumbo", "promo"]);
+// The TCGplayer name with its trailing printed number stripped: "Pikachu - 025/128" (cleanName "Pikachu 025 128"), "Grookey
+// SWSH001", "Celebi (3)", "Here Comes Team Rocket! (15)". Case-sensitive on the letter prefix so a name that ends in a digit
+// ("Dark Porygon2") keeps it.
+const theirTokens = (name) => slugName(String(name).replace(/(?:\s+-)?(?:\s+\(?[A-Z]*\d+[A-Z]*(?:\/[A-Z]*\d+[A-Z]*)?\)?)+\s*$/, "")).split(" ").filter(Boolean);
+// One-letter slip in a long word counts as the same word — TCGplayer spells Neo Destiny's #33 "Dark Exeggcutor".
+function near(a, b) {
+  if (a === b) return true;
+  if (a.length < 6 || b.length < 6 || Math.abs(a.length - b.length) > 1) return false;
+  let i = 0, j = 0, miss = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) { i++; j++; continue; }
+    if (++miss > 1) return false;
+    if (a.length > b.length) i++; else if (b.length > a.length) j++; else { i++; j++; }
+  }
+  return miss + (a.length - i) + (b.length - j) <= 1;
+}
 
 // Which TCGplayer printing is "the card the index tracks".
-function pickSub(subs, { ed, holo }) {
+export function pickSub(subs, { ed, holo }) {
   const order = ed === "1st" ? (holo ? ["1st Edition Holofoil", "1st Edition"] : ["1st Edition", "1st Edition Holofoil"])
     : ed === "unl" ? (holo ? ["Unlimited Holofoil", "Holofoil", "Unlimited", "Normal"] : ["Unlimited", "Normal", "Unlimited Holofoil", "Holofoil"])
     : (holo ? ["Holofoil", "Normal", "Reverse Holofoil"] : ["Normal", "Holofoil", "Reverse Holofoil"]);
@@ -88,12 +122,7 @@ function pickSub(subs, { ed, holo }) {
   return null;
 }
 
-async function loadGroup(gid, cache) {
-  if (cache.has(gid)) return cache.get(gid);
-  const prods = (await getJson(`${BASE}/${gid}/products`)).results || [];
-  await sleep(250);
-  const prices = (await getJson(`${BASE}/${gid}/prices`)).results || [];
-  await sleep(250);
+export function buildGroup(prods, prices) {
   const px = new Map();
   for (const p of prices) {
     if (!px.has(p.productId)) px.set(p.productId, {});
@@ -107,33 +136,51 @@ async function loadGroup(gid, cache) {
     if (!byNum.has(k)) byNum.set(k, []);
     byNum.get(k).push({ pid: p.productId, name: p.cleanName || p.name, subs: px.get(p.productId) || {} });
   }
-  const g = { byNum, n: prods.length };
+  return { byNum, n: prods.length };
+}
+
+async function loadGroup(gid, cache) {
+  if (cache.has(gid)) return cache.get(gid);
+  const prods = (await getJson(`${BASE}/${gid}/products`)).results || [];
+  await sleep(250);
+  const prices = (await getJson(`${BASE}/${gid}/prices`)).results || [];
+  await sleep(250);
+  const g = buildGroup(prods, prices);
   cache.set(gid, g);
   return g;
 }
 
-function matchCard(card, groups, cfg) {
-  const want = normNum(card.num), nm = slugName(card.name);
+// Nov 3 2026 (price-truth sweep finding 5: CEL21 jumbo Piplup showed Gardevoir ex δ's $9.50, Treecko/Chimchar M Rayquaza EX's
+// $31.63, Chikorita Mewtwo EX's $12.91). The name test used to run only when a number had 2+ TCGplayer candidates, so a lone
+// product on the number was taken on the number alone. Now EVERY candidate, single or not, must carry at least one of our
+// distinctive name tokens (GENERIC words like "ex"/"gx"/"v" don't count); no candidate passes → no entry (R35, no placeholder).
+// Among passing candidates (Classic Collection reprints beside the main set, "Pikachu 033/128" beside "Pikachu & Zekrom GX
+// 33/181") the best score wins: most of our tokens present, fewest extras.
+export function nameScore(ourName, theirName) {
+  const all = slugName(ourName).split(" ").filter(Boolean);
+  const key = all.filter(t => !GENERIC.has(t));
+  const ours = key.length ? key : all;               // a name made only of generic words keeps them all
+  const theirs = theirTokens(theirName);
+  // same letters, different spacing ("EXP. ALL" vs TCGplayer "EXP.ALL") is the same name
+  if (all.join("") === theirs.join("")) return all.length * 10 + all.length;
+  const has = (t) => theirs.some(x => near(t, x));
+  const hit = ours.filter(has).length;
+  if (!hit) return -Infinity;                        // shares no distinctive word with our card → not our card
+  return hit * 10 + all.filter(has).length - Math.abs(theirs.length - all.length);
+}
+
+export function matchCard(card, groups, cfg) {
+  const want = normNum(card.num);
   let cands = [];
   for (const g of groups) for (const c of g.byNum.get(want) || []) cands.push(c);
   if (!cands.length) return null;
-  if (cands.length > 1) {
-    // two cards on one number (Classic Collection reprints beside the main set, "Pikachu 033/128" beside "Pikachu & Zekrom GX
-    // 33/181"): score each TCGplayer name by our name's tokens — every one of ours present, fewest extras — and keep the best.
-    const ours = nm.split(" ").filter(Boolean);
-    const score = (c) => {
-      const theirs = slugName(String(c.name).replace(/\s*-?\s*\(?[A-Za-z]*\d+[A-Za-z]*\/[A-Za-z]*\d+[A-Za-z]*\)?\s*$/, "")).split(" ").filter(Boolean);
-      const hit = ours.filter(t => theirs.includes(t)).length;
-      return hit * 10 - Math.abs(theirs.length - ours.length);
-    };
-    cands = cands.map(c => ({ c, s: score(c) })).sort((a, b) => b.s - a.s);
-    const best = cands[0].s;
-    if (best < 10) return null;                      // nothing shares even one name token — don't guess
-    cands = cands.filter(x => x.s === best).map(x => x.c);
-  }
+  cands = cands.map(c => ({ c, s: nameScore(card.name, c.name) })).filter(x => x.s > -Infinity).sort((a, b) => b.s - a.s);
+  if (!cands.length) return null;                    // nothing on this number is named like our card — don't guess
+  const best = cands[0].s;
+  cands = cands.filter(x => x.s === best).map(x => x.c);
   for (const c of cands) {
     const pick = pickSub(c.subs, { ed: cfg.ed, holo: !!card.holo });
-    if (pick) return { pid: c.pid, ...pick };
+    if (pick) return { pid: c.pid, name: c.name, ...pick };
   }
   return null;
 }
@@ -174,14 +221,15 @@ async function main() {
       }
       continue;
     }
-    let n = 0, shopSum = 0, soldSum = 0, inLevel = 0, stale = 0;
+    let n = 0, shopSum = 0, soldSum = 0, inLevel = 0, stale = 0, high = 0;
     for (const c of cards) {
       total++;
       const hit = matchCard(c, groups, cfg);
       if (!hit || !(hit.m > 0)) continue;
       if (hit.lo > 0 && hit.lo > STALE_X * hit.m) { stale++; continue; }   // unbuyable market price → nothing shown
-      n++; matched++;
       const s = c.raw != null && c.raw > 0 ? c.raw : null;
+      if (!VINTAGE.has(tk) && hit.m >= HIGH_MIN && hit.lo > 0 && hit.m > HIGH_X * hit.lo && (s == null || hit.m > HIGH_X * s)) { high++; continue; }   // overstated market → nothing shown
+      n++; matched++;
       const row = { m: +hit.m.toFixed(2), sub: hit.sub, pid: hit.pid };
       if (hit.lo > 0) row.lo = +hit.lo.toFixed(2);
       if (s != null) { row.s = s; row.d = +((hit.m / s) - 1).toFixed(4); row.sAsOf = c.rawAsOf || null; }
@@ -191,11 +239,11 @@ async function main() {
     }
     out.tickers[tk] = {
       groups: cfg.groups, printing: cfg.ed === "1st" ? "1st Edition" : cfg.ed === "unl" ? "Unlimited" : "modern",
-      universe: cards.length, matched: n, weighted: inLevel, staleDropped: stale, vintage: VINTAGE.has(tk) || undefined,
+      universe: cards.length, matched: n, weighted: inLevel, staleDropped: stale, highDropped: high, vintage: VINTAGE.has(tk) || undefined,
       basketShop: +shopSum.toFixed(2), basketSold: +soldSum.toFixed(2),
       spread: soldSum > 0 ? +((shopSum / soldSum) - 1).toFixed(4) : null,
     };
-    console.log(`${tk.padEnd(6)} matched ${String(n).padStart(3)}/${String(cards.length).padEnd(3)} weighted ${String(inLevel).padStart(3)} stale-dropped ${String(stale).padStart(3)}  shop $${shopSum.toFixed(0).padStart(6)} vs sold $${soldSum.toFixed(0).padStart(6)}  ${soldSum ? ((shopSum / soldSum - 1) * 100).toFixed(1) + "%" : "—"}`);
+    console.log(`${tk.padEnd(6)} matched ${String(n).padStart(3)}/${String(cards.length).padEnd(3)} weighted ${String(inLevel).padStart(3)} stale-dropped ${String(stale).padStart(3)} high-dropped ${String(high).padStart(2)}  shop $${shopSum.toFixed(0).padStart(6)} vs sold $${soldSum.toFixed(0).padStart(6)}  ${soldSum ? ((shopSum / soldSum - 1) * 100).toFixed(1) + "%" : "—"}`);
   }
   console.log(`\n${matched}/${total} cards matched across ${tks.length} tickers`);
   if (DRY) { console.log("(dry run — nothing written)"); return; }
@@ -218,4 +266,5 @@ async function main() {
   fs.writeFileSync(OUT, JSON.stringify(summary, null, 1) + "\n");
   console.log(`wrote ${path.relative(ROOT, OUT)} + ${Object.keys(out.tickers).length} files in data/tcg/ (${(bytes / 1024).toFixed(0)} KB total)`);
 }
-main().catch(e => { console.error(e); process.exit(1); });
+// importable (tools/qa or a one-off audit can reuse matchCard / buildGroup) — runs only when called as a script
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main().catch(e => { console.error(e); process.exit(1); });

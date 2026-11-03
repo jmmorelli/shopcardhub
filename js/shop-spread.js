@@ -1,4 +1,4 @@
-/* shop-spread.js v7 (Nov 3: stale-market guard + no venue call on WOTC/e-Card) · v5 — the SHOP PRICE beside every Pokémon index card (Oct 15 2026, Mo's ruling after the Wild Things /
+/* shop-spread.js v8 (Nov 3: high-side guard, market > 1.75× lowest listing and eBay sold) · v7 (Nov 3: stale-market guard + no venue call on WOTC/e-Card) · v5 — the SHOP PRICE beside every Pokémon index card (Oct 15 2026, Mo's ruling after the Wild Things /
  * BinderPOS read: keep eBay sold as the index basis, show the TCGplayer market price and the spread on every card, and
  * let the collector pick the venue — "the arbitrage between the two").
  *
@@ -20,6 +20,9 @@
   // Nov 3 2026 (GAPS P16b, Mo on Aquapolis Blissey H6): a market price far below the card's own lowest TCGplayer listing is a
   // stale average nobody can buy at — drop it here too (the generator already does; this covers a day-old file). WOTC/e-Card
   // tickers never get a venue call: TCGplayer is near-mint, our eBay raw mark is any condition.
+  // High side (Nov 3, v8 — Team Up #170 "shop $4,619.79", cheapest listing $2,399.99, eBay sold $2,299.01): a modern market more
+  // than 1.75× both the lowest listing and the eBay sold mark (market ≥ $5) overstates what the card costs — dropped, as in the generator.
+  var HIGH_X = 1.75, HIGH_MIN = 5;
   var STALE_X = 1.25, VINTAGE = { bs99: 1, bssl: 1, ju99: 1, ju1e: 1, fo99: 1, fo1e: 1, tr00: 1, tr1e: 1, ng00: 1, ng1e: 1, ndc01: 1, ndc1e: 1, nr01: 1, nr1e: 1, nd02: 1, nd1e: 1, aq03: 1, sk03: 1 };
   function clean(tk, f) {
     if (!f || !f.marks) return f;
@@ -27,6 +30,7 @@
     Object.keys(f.marks).forEach(function (k) {
       var v = f.marks[k];
       if (!v || !(v.m > 0) || (v.lo > 0 && v.lo > STALE_X * v.m)) { delete f.marks[k]; return; }
+      if (!vint && v.m >= HIGH_MIN && v.lo > 0 && v.m > HIGH_X * v.lo && (!(v.s > 0) || v.m > HIGH_X * v.s)) { delete f.marks[k]; return; }
       if (vint) v.wide = true;
     });
     if (vint && f.summary) f.summary.wide = true;
