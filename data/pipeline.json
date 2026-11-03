@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-11-02",
+  "generated": "2026-11-03",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-10-12, STEP 3.9)",
   "agents": {
     "seeker": {
@@ -9,10 +9,6 @@
       "lastRun": "2026-11-02",
       "nextRun": "2026-11-09",
       "actions": [
-        {
-          "ts": "2026-09-28",
-          "msg": "Competitor sweep: whole-market Pokemon index +0.4% w/w / +2.1% 30d against our chase-tier down 2.3-8.5% w/w - the divergence is the week’s story"
-        },
         {
           "ts": "2026-09-28",
           "msg": "Hobby-press price claim on the 30th Celebration chase FAILED sold verification (third failure since Aug 31) - nothing reached the site"
@@ -56,6 +52,10 @@
         {
           "ts": "2026-11-02",
           "msg": "No approved audit-/polish- proposals in the ledger (0 approved rows) — the fixer had nothing to apply."
+        },
+        {
+          "ts": "2026-11-03",
+          "msg": "Nov 3 signal harvest (price-data 51c7e9e, track-signals updated Oct 26): top count 3 (Misiorowski 2022 Chrome 1st auto), Holliday CPA-EH 2; none at 5, no watchlist adds."
         }
       ],
       "log": [
@@ -67,13 +67,9 @@
     "curator": {
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-10-27",
-      "nextRun": "2026-11-03",
+      "lastRun": "2026-11-03",
+      "nextRun": "2026-11-10",
       "actions": [
-        {
-          "ts": "2026-09-25",
-          "msg": "R20 applied to the seat lines: the nightly eBay ask mark (\"engine $E\") no longer prints beside the sold figure; replaced with the verified live-ask count (Fischer 7, Kim 5, Gonzales 16, Holliday 25, Florentino 28). The Friday task prompt still asks for \"engine $E\" and \"PSA 10 $Y\" in every price-sub - stale against LANE-RULES R18/R20; reported. BCB26 held at 69.52 (Sep 22) per R20, no re-mark."
-        },
         {
           "ts": "2026-09-28",
           "msg": "No new pages built - indices-first strategy held; three pre-release scaffolds left on disk for a CoS decision"
@@ -117,6 +113,10 @@
         {
           "ts": "2026-10-27",
           "msg": "Oct 27 board re-mark, no seat moved: Fischer $141.50 (-7.4%) · Holliday $101.75 (-6.4%) · Gonzales $67.50 (-3.6%) · Florentino $60.50 (+7.0%, top) · Aloy $50.00 (-9.1%, bottom). Aloy's mark sits on the $50.00 line in his box (not under); no unseated card has a higher 30-day mark on 3+ sales (Arquette $42.50 on 14 closest). Rank strips: 3mo cells now read the Jul 28 week (Fischer 2, Holliday 1, Aloy 4). Bowman KB G54/G56 on the page: Houston No. 54 MLB Pipeline Oct 2; Jump MLB debut May 26 2026 (not a prospect); undated #16/#14 pick tags and 'highest-ranked arm' cut; Florentino No. 32 MLB Pipeline Jul 1 2026. Benchmark line BB26 67.10 (Oct 26, indices.json)."
+        },
+        {
+          "ts": "2026-11-03",
+          "msg": "Nov 3 board re-mark, no seat moved: Fischer $117.50 (-17.0%, bottom) · Holliday $95.00 (-6.6%) · Gonzales $65.00 (-3.7%) · Florentino $65.00 (+7.4%, top) · Aloy $51.45 (+2.9%). Holliday's mark on his $95 floor (not under); Fischer $2.50 above his $115 mark level, Hold stands; Gonzales and Florentino level at $65.00 (a level mark does not move a seat). Watch tier re-dated (Arquette $44.00 on 11; Jump 30-day $26.00 on 3; Kim 90-day $75.00 on 3). Benchmark line BB26 63.51 (Nov 2)."
         }
       ],
       "log": [
@@ -193,13 +193,9 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-10-27",
-      "nextRun": "2026-11-02",
+      "lastRun": "2026-11-03",
+      "nextRun": "2026-11-10",
       "actions": [
-        {
-          "ts": "2026-10-05",
-          "msg": "Prompt drift filed: this task's prompt contradicts LANE-RULES in 6 named places (prompt-drift-2026-10-05)."
-        },
         {
           "ts": "2026-10-06",
           "msg": "Vendor feed rebuilt after the re-mark: data/x-board.json asOf 2026-10-06 (5 seats, callout agrees with seats) and og/x/board-latest.png regenerated and read before shipping. Ledger reads rolled locally (data/calls.json, not staged): fischer-2 $155.00 (+5.6% vs $146.80), gonzales-pass $70.00 (entry 90.00), florentino $69.00 (-13.0% vs $79.32, trending), kim-wait $130.00 (90-day median). No FINAL rows touched, projections immutable."
@@ -243,6 +239,10 @@
         {
           "ts": "2026-10-27",
           "msg": "Tuesday Tape sent: MailerLite campaign 202506809320146735 'Digest 2026-10-27', instant, finished 18:27:47 UTC to 3 (all owner addresses), after push 1055d87 live-verified. Rogue-send check clean (no campaign since Digest 2026-10-20); kill switch clear (no unsubscribe or spam since Oct 20; the Sep 29 records are owner aliases + the vpt test record ruled Oct 6). Oct 20 send final: 3 delivered, 3 opens, 1 click. One non-owner address sits unconfirmed (double opt-in not completed), not on the send. No ebay.com link in the email."
+        },
+        {
+          "ts": "2026-11-03",
+          "msg": "Nov 3: board tape og/x/board-latest.png + data/x-board.json (asOf 2026-11-03) regenerated after the re-mark and shipped with the board push. calls.json reads filed for the CoS (tuesday-2026-11-03-1): Gonzales Pass final 8-week read 65.00 (-27.8% vs $90.00; public grade = 6-month check Mar 8 2027), Fischer re-entry 117.50 (-20.0%). No X action."
         }
       ],
       "log": [
@@ -3476,6 +3476,24 @@
       "source": "claude/cos/integrity-watch-2026-11-02.md + -proposals.json (Project)",
       "status": "queued",
       "decision": "CoS desk 2026-11-02: queued — Wed Nov 4 weekly (Index Keeper): add legendary\\s*collection to REPRINT_TITLE (+ optional /110 denominator guard on WOTC paths) BEFORE the Thu Nov 5 19:30Z classic mark; re-read BS99/JU99/FO99/TR00 and their 1st Ed/Shadowless lines at that mark. Data-quality filter, not a method change."
+    },
+    {
+      "id": "tuesday-2026-11-03-1",
+      "status": "awaiting-cos",
+      "date": "2026-11-03",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "MED",
+      "title": "calls.json reads for Nov 3, not written by this lane (reads only; entries, call dates, actions and projections untouched). v-bb-gonzales-pass reaches finalizeAfter 2026-11-03 today: read 65.00, readLabel 'sold mark $65.00 (SportsCardsPro ungraded 30-day median, 7 sales, mark of Nov 3 2026)', readDate 2026-11-03, state final; -27.8% vs the $90.00 entry, the direction a PASS wants. Legacy 8-week grade field: the CoS's call (Grading Clock v3 says the 8-week read is not a public grade; the page says so and names the 6-month check, Mar 8 2027). v-bb-fischer-buy-2: read 117.50, readLabel 'sold mark $117.50 (30-day median, 13 sales, mark of Nov 3 2026)', readDate 2026-11-03, state trending (-20.0% vs $146.80; finalizes Nov 6). Source: data/feed/sold-marks.json day 2026-11-03."
+    },
+    {
+      "id": "tuesday-2026-11-03-2",
+      "status": "awaiting-cos",
+      "date": "2026-11-03",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "LOW",
+      "title": "Two trip-wires sit on their lines after the Nov 3 read and decide next Tuesday: Holliday's mark is exactly $95.00 on his $95 floor (last sale $94.00 Nov 3) and Fischer's is $117.50, 2.2% above the $115 mark level that breaks his Hold. Gonzales and Florentino are level at $65.00 (Gonzales keeps #3; the seat crosses only on a mark under). Bowman PREBUILD (Nov 2) board items NOT applied this run (R44: P2, not chased in a lane run): G36 Holliday PSA 10 $720 'restored Sep 25' line on the price-sub, tape image and x-board.json vs the Sep 22 correction text saying no PSA 10 sale exists at any date; G13 May box presale prices; G20 paper-insert chase words; G22 L1 unsourced 'most top-100 prospects never become regulars'; G31 May Mega $49.99. G36 is the one that leaves the building in the feed — recommend the desk rules on it before Nov 10. Prompt drift still open: the lane file says an outside vendor pulls the tape (R10 Am. 2/6 win; tuesday-2026-10-27-2)."
     }
   ],
   "scoreboard": {
