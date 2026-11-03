@@ -312,7 +312,8 @@ async function genericChecks(page, slug, origin, redirects, ctxRequest) {
     await load();
     await genericChecks(page, slug, origin, redirects, ctx.request);
     for (const e of [...new Set(errors)]) add("FAIL", "console-error", slug, e);
-    for (const h of new Set(log.aborted)) if (!/google|doubleclick|fonts\./.test(h) && !PROD) add("WARN", "offbox-request", slug, `page requested ${h} (aborted by the harness — a new dependency?)`);
+    // youtube-nocookie: the lazy release-video iframe (tools/build-video-embed.mjs, CoS-approved Nov 2 2026) on pages a nav scenario lands on
+    for (const h of new Set(log.aborted)) if (!/google|doubleclick|fonts\.|youtube-nocookie\.com/.test(h) && !PROD) add("WARN", "offbox-request", slug, `page requested ${h} (aborted by the harness — a new dependency?)`);
     await ctx.close();
   }
   await browser.close();
