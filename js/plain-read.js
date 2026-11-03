@@ -123,7 +123,8 @@
       sinceLbl = 'since ' + started;
     }
     var top = basket.slice().sort(function (a, b) { return b.price - a.price; })[0] || null;
-    var movers = basket.filter(function (c) { return typeof c.prevPrice === 'number' && c.prevPrice > 0 && c.price >= 10; })
+    /* a row held by the move guard (tools/lib/move-guard.mjs, Nov 3 2026) is never the "biggest move" — its read is unconfirmed */
+    var movers = basket.filter(function (c) { return typeof c.prevPrice === 'number' && c.prevPrice > 0 && c.price >= 10 && !c.heldMove; })
       .map(function (c) { return { c: c, p: (c.price / c.prevPrice - 1) * 100 }; })
       .filter(function (m) { return Math.abs(m.p) >= 1; })
       .sort(function (a, b) { return Math.abs(b.p) - Math.abs(a.p); });

@@ -161,7 +161,7 @@ export function buildV2(REPO, opts = {}) {
   for (const [tk, v] of Object.entries(idx)) {
     if (!v || typeof v !== "object" || v.status !== "live" || !T[tk]) continue;
     for (const b of v.basket || []) {
-      if (!b || !(b.prevPrice > 0) || !(b.price > 0) || b.carried || !b.prevAsOf || b.prevAsOf === b.asOf) continue;
+      if (!b || !(b.prevPrice > 0) || !(b.price > 0) || b.carried || b.heldMove || !b.prevAsOf || b.prevAsOf === b.asOf) continue;   // heldMove: an unconfirmed read the move guard held (Nov 3 2026) is never a mover
       fresh++;
       if (b.price < MV.MIN_PX || !(b.n30 >= MV.MIN_N)) continue;
       const r = Math.log(b.price / b.prevPrice); if (!isFinite(r)) continue;

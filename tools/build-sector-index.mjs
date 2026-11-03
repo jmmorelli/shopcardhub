@@ -46,6 +46,7 @@ import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
 import { cardId, cardKey, assignKeys, rawNot, RAW_EXTRA, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
 import { holoTest, hasRarity } from "./lib/holo-tier.mjs";
 import { isReprintTitle, REPRINT_PAIRS, reprintFloor } from "./lib/reprint-filter.mjs";
+import { holdIfUnconfirmed } from "./lib/move-guard.mjs";
 import { createRequire } from "node:module";
 import { applyIndexLd, applyIndexAnswer } from "./lib/index-jsonld.mjs";
 import { CLASS_PAGE, classTickers, readClassFile, classYear, classRows, rowKey, fold as foldName, classQuery, isFixture } from "./lib/bowman-class.mjs";
@@ -626,7 +627,8 @@ async function subMark(x, date) {
     if (sx.history && sx.history.length && sx.history[sx.history.length - 1].date === date) continue;   // launched today
     if (sx.kind === "screened") {
       let carried = 0;
-      for (const b of sx.basket) { try { const r = await readCard(b); b.prevPrice = b.price; b.prevAsOf = b.asOf; if (r.price != null) { b.price = r.price; b.asOf = date; b.n30 = r.clean30; b.carried = false; } else { b.carried = true; carried++; } } catch (e) { b.carried = true; carried++; } if (!READ_CACHE_HIT) await sleep(PAUSE); }
+      const gctx = { root: ROOT, idx: IDX, ticker: x.ticker, today: date, window: SCREEN.window, bv: sx.basket.reduce((a, b) => a + (b.price || 0), 0), log: console.log };   // move guard, as in --mark
+      for (const b of sx.basket) { try { const r = await readCard(b); if (r.price != null && holdIfUnconfirmed(b, { price: r.price, win: SCREEN.window, n: r.clean30 }, gctx)) { /* held at the prior mark */ } else { b.prevPrice = b.price; b.prevAsOf = b.asOf; if (r.price != null) { b.price = r.price; b.asOf = date; b.n30 = r.clean30; b.carried = false; } else { b.carried = true; carried++; } } } catch (e) { b.carried = true; carried++; } if (!READ_CACHE_HIT) await sleep(PAUSE); }
       const v = sx.basket.reduce((a, b) => a + b.price, 0);
       sx.history.push({ date, level: r2(v / sx.divisor), basketValue: r2(v), priced: sx.basket.length - carried, note: carried ? `${carried} carried` : "" });
       continue;
@@ -701,7 +703,7 @@ function block(x, c, opt = {}) {
   // reprints in CEL21 / TH26), so its customid and /card link never collide with the first (Oct 5 2026)
   const KEYS = assignKeys(ROOT, x.ticker, rows.concat(x.universe || [])); rows.forEach((b) => { b.key = KEYS.get(b.path || `${b.name}#${b.num}`); });   // sticky keys (Oct 14 2026, lib/card-files.mjs)
   // HOLO RULE labels: a holo-tier row says so; a thin one names the window its mark came from (never a silent stale price)
-  const subLbl = (b) => `${b.holo ? " · holo" : ""}${b.thin ? ` · <span class="thin" title="fewer than ${SCREEN.stay} clean raw sales in ${SCREEN.window} days — standing constituent under the holo rule, marked on the nearest window with sales">thin · ${b.win && b.win !== SCREEN.window ? `${b.wn} sale${b.wn === 1 ? "" : "s"}, ${b.win}-day median` : `${b.n30} sale${b.n30 === 1 ? "" : "s"}`}</span>` : ""}${b.carried ? " · carried " + mdy(b.asOf) : ""}`;
+  const subLbl = (b) => `${b.holo ? " · holo" : ""}${b.thin ? ` · <span class="thin" title="fewer than ${SCREEN.stay} clean raw sales in ${SCREEN.window} days — standing constituent under the holo rule, marked on the nearest window with sales">thin · ${b.win && b.win !== SCREEN.window ? `${b.wn} sale${b.wn === 1 ? "" : "s"}, ${b.win}-day median` : `${b.n30} sale${b.n30 === 1 ? "" : "s"}`}</span>` : ""}${b.carried ? " · carried " + mdy(b.asOf) : ""}${b.heldMove ? ` · <span class="thin" title="a ${mdy(b.heldMove.since)} read proposed ${money(b.heldMove.proposed)} (${b.heldMove.why}); the prior mark stands until a second read or deeper sales confirm it">held · read ${money(b.heldMove.proposed)} unconfirmed</span>` : ""}`;
   const salesCell = (b) => `${b.n30}${b.win && b.win !== SCREEN.window ? `<small title="clean sales in the ${b.win}-day window the mark came from"> · ${b.wn} in ${b.win}d</small>` : ""}`;
   const row = (b, i) => {
     const w = (b.price * b.w) / bv;
@@ -1421,11 +1423,17 @@ if (has("--init")) {
   assertScreen(x);
   const isHolo = holoOf(c);
   let carried = 0;
+  // MOVE-CONFIRMATION GUARD (CoS, Nov 3 2026 — tools/lib/move-guard.mjs; Pokémon KB P14 / P33 (4) / P40 / P41): a material
+  // ≥ 50% move (or a 1st Edition mark leaving 1.2–30× its Unlimited twin) is held at the prior mark until ≥ 8 sales + PriceCharting
+  // agree or the next mark reads the same value again. A held row keeps its price, so the level and the movers never see it.
+  const gctx = { root: ROOT, idx: IDX, ticker: TICKER, today: TODAY, window: SCREEN.window, bv: basketValue(x.basket), log: console.log };
+  let held = 0;
   for (const b of x.basket) {
     try {
       const r = await readCard(b);
       const m = markFor(r, isHolo(b));
-      if (m) setMark(b, m, TODAY, isHolo(b));
+      if (m && holdIfUnconfirmed(b, m, gctx)) held++;
+      else if (m) setMark(b, m, TODAY, isHolo(b));
       else { b.prevPrice = b.price; b.prevAsOf = b.asOf; b.carried = true; carried++; b.n30 = r.clean30; }     // tail rule: no clean sale in the window (a holo: in a year) → carry the last mark, dated
     } catch (e) { b.carried = true; carried++; console.log(`${b.name} #${b.num}: ${e.message} — carried`); }
     if (!READ_CACHE_HIT) await sleep(PAUSE);
@@ -1457,10 +1465,10 @@ if (has("--init")) {
       x.basket = next; x.divisor = divisor;
     }
   }
-  x.history.push({ date: TODAY, level, basketValue: r2(basketValue(x.basket)), divisor: x.divisor, priced: x.basket.length - carried, note: [carried ? `${carried} carried` : "", entered.length ? `${entered.length} entered (release window)` : ""].filter(Boolean).join(" · ") });
+  x.history.push({ date: TODAY, level, basketValue: r2(basketValue(x.basket)), divisor: x.divisor, priced: x.basket.length - carried, note: [carried ? `${carried} carried` : "", held ? `${held} held (move guard)` : "", entered.length ? `${entered.length} entered (release window)` : ""].filter(Boolean).join(" · ") });
   ensureEx(x, level, TODAY);
   await subMark(x, TODAY);
-  console.log(`${TICKER} ${TODAY}: level ${level} (prev ${x.history[x.history.length - 2].level}) · ${carried} carried${entered.length ? ` · ${entered.length} entered (release window)` : ""}`);
+  console.log(`${TICKER} ${TODAY}: level ${level} (prev ${x.history[x.history.length - 2].level}) · ${carried} carried${held ? ` · ${held} held (move guard)` : ""}${entered.length ? ` · ${entered.length} entered (release window)` : ""}`);
   save(); bake(x, c);
 } else if (has("--recon")) {
   const x = IDX[TICKER]; if (!x || x.status !== "live") { console.error(`${TICKER} is not live`); process.exit(2); }

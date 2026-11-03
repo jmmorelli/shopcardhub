@@ -27,6 +27,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { holdIfUnconfirmed } from "./lib/move-guard.mjs";
 
 const REPO = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -113,9 +114,14 @@ for (const k of POKE) {
   }
   const prevRow = ix.history[ix.history.length - 1];
   let bv = 0, remarked = 0;
+  // MOVE-CONFIRMATION GUARD (Nov 3 2026, tools/lib/move-guard.mjs): the console figure carries no sales count, so a material
+  // ≥ 50% move is held at the prior mark until the next weekly read lands within 20% of it (rule b).
+  const gctx = { root: REPO, idx, ticker: k, today: DATE, window: null, bv: bvOf(ix.basket), log: console.log };
   for (const b of ix.basket) {
     const np = m[b.num];
+    if (typeof np === "number" && isFinite(np) && np > 0 && holdIfUnconfirmed(b, { price: np, win: null, n: null }, gctx)) { remarked++; continue; }
     if (typeof np === "number" && isFinite(np) && np > 0) {
+      delete b.heldMove;
       b.prevPrice = b.price; b.prevAsOf = b.asOf;
       b.price = np; b.asOf = DATE; remarked++;
     }
