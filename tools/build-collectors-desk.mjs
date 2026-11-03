@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// build-collectors-desk.mjs — Gengar's Collector's Desk: one page per big Pokémon (Mo, Oct 5 2026: "make him love
+// persona: Rip (renamed from Gengar, Nov 2 2026, trademark) — the collector voice on these pages is Rip; Gengar stays only as the Pokémon / card name (desk no. 2).
+// build-collectors-desk.mjs — Rip's Collector's Desk: one page per big Pokémon (Mo, Oct 5 2026: "make him love
 // pokemon and collecting pokemon cards … suggests cards for big pokemon … 'these cards are true collectibles' …
 // style it like the pokemon we are promoting, with animations, like the pikachu and lightning on the 30th").
 //
-// Editorial (Gengar's copy, shelves, print ids, theme) lives in data/collect/<pokemon>.json. EVERY price on the page is
+// Editorial (Rip's copy, shelves, print ids, theme) lives in data/collect/<pokemon>.json. EVERY price on the page is
 // read here from data/cards/<tk>.json (the index's own raw sold mark) and data/cards/g-<tk>.json (dated PSA 9 / PSA 10 /
 // TAG 10 marks, R18), so the page re-marks whenever the indices do — re-run after the Monday/Thursday lanes.
 // Links are built by tools/lib/epn.mjs and the grade phrases mirror js/grade-links.js (1st Ed / Shadowless / Unlimited
@@ -295,7 +296,7 @@ ${themeCss}
   <div class="hero-fx" aria-hidden="true">${HERO_FX[d.theme]()}</div>
   <div class="container">
    <div class="hero-copy">
-    <div class="hero-eyebrow">Gengar's Collector's Desk &middot; No. ${d.deskNo} &middot; ${esc(d.pokemon)}</div>
+    <div class="hero-eyebrow">Rip's Collector's Desk &middot; No. ${d.deskNo} &middot; ${esc(d.pokemon)}</div>
     <h1>${d.h1}</h1>
     <p class="hero-sub">${esc(d.intro)}</p>
     <div class="desk-toc">${toc}<a href="#notes">Collecting notes</a></div>
@@ -314,7 +315,7 @@ ${themeCss}
 <div class="container">
 
   <aside class="narrator reveal">
-    <div class="narrator-chip"><span class="narrator-eye"></span>Gengar</div>
+    <div class="narrator-chip"><span class="narrator-eye"></span>Rip</div>
     <p>${esc(d.narratorNote)}</p>
   </aside>
 ${shelves}

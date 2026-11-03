@@ -35,7 +35,7 @@ if (args.includes("--sync")) {
     const m = JSON.parse(fs.readFileSync(path.join(MAN, f), "utf8"));
     if (!m.slug || !m.agent || !m.published) throw new Error(`${f}: slug, agent, published are required`);
     if (reg.pages.some((p) => p.slug === m.slug)) continue;
-    // Not a league agent (e.g. Gengar's Collector's Desk reuses manifests for integrate.mjs only) — never registered, scored or floored (CoS, 2026-10-06).
+    // Not a league agent (e.g. Rip's Collector's Desk (agent "gengar") reuses manifests for integrate.mjs only) — never registered, scored or floored (CoS, 2026-10-06).
     if (!reg.agents || !reg.agents[m.agent]) continue;
     reg.pages.push({ slug: m.slug, agent: m.agent, query: m.query || "", published: m.published, floorFrom: m.floorFrom || m.published, hub: m.hub || "/research", week: isoWeekOf(reg.opened, m.published), status: "live" });
     added++;

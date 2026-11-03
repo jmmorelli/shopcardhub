@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// shelf-pick.mjs — "Gengar's shelf", the one-card segment of the Tuesday Tape (Mo, Oct 5 2026: the Tape is "a lot of
+// shelf-pick.mjs — "Rip's shelf" (persona renamed from Gengar, Nov 2 2026, trademark), the one-card segment of the Tuesday Tape (Mo, Oct 5 2026: the Tape is "a lot of
 // jargon … maybe we need to rethink what we are delivering every Tuesday"). One card a week from the Collector's Desk
-// pages, in Gengar's words, with its dated sold mark and a link to OUR desk page (never ebay.com in email — EPN
+// pages, in Rip's words, with its dated sold mark and a link to OUR desk page (never ebay.com in email — EPN
 // messaging rule, CoS desk Oct 1). Rotates deterministically by ISO week through every desk entry, so two runs in the
 // same week print the same card and a re-run never repeats last week's.
 //
@@ -55,7 +55,7 @@ const mark = c.raw != null
   : `No raw mark — it trades graded`;
 const graded = p10 ? `; PSA 10 ${money(p10.m)} (median of ${p10.n} dated sales, ${p10.basis === "90d" ? "90 days" : "30 days"}, as of ${dateLong(g.asOf)})` : "";
 const label = pick.entry.prints.length > 1 ? ` — ${pick.print.label}` : "";
-const para = `**Gengar's shelf — ${pick.entry.title}${label}.** ${why} ${mark}${graded}. The full ${pick.desk.pokemon} desk, every print with its ladder: ${deskUrl}`;
+const para = `**Rip's shelf — ${pick.entry.title}${label}.** ${why} ${mark}${graded}. The full ${pick.desk.pokemon} desk, every print with its ladder: ${deskUrl}`;
 
 if (JSON_OUT) console.log(JSON.stringify({ weekKey, idx, pool: pool.length, desk: pick.desk.slug, entry: pick.entry.title, card: c.id, raw: c.raw, rawAsOf: c.rawAsOf, psa10: p10 ? p10.m : null, deskUrl, cardUrl, paragraph: para }, null, 2));
-else { console.log(`# Gengar's shelf · ${weekKey} · pick ${idx + 1}/${pool.length}\n`); console.log(para); console.log(`\nCard page: ${cardUrl}`); }
+else { console.log(`# Rip's shelf · ${weekKey} · pick ${idx + 1}/${pool.length}\n`); console.log(para); console.log(`\nCard page: ${cardUrl}`); }

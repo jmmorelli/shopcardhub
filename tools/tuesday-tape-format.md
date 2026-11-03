@@ -25,7 +25,7 @@ moved; "no reason on the tape" is a valid sentence). Link: `shopcardhub.com/indi
 Three to five cards, largest absolute move first, across every index — name, set, sold mark (a median of recent dated sales — never call it "last sold") with
 its read date, the move. Each links to its index page (`?utm_source=tape…`). Nothing without a dated sale.
 
-## 2.5. Gengar's shelf (one card, in his words) — added Oct 5 2026
+## 2.5. Rip's shelf (one card, in Rip's words) — added Oct 5 2026; persona renamed Gengar → Rip Nov 2 2026 (trademark)
 
 Mo, Oct 5: the Tape is "a lot of jargon and cards are too hard to trade like stocks." This is the one section that is
 not a number table. One card a week from the Collector's Desk pages (`/best-<pokemon>-cards`), two sentences of why it
@@ -35,7 +35,7 @@ is a collectible, its dated sold mark, and a link to **our desk page** — never
 
 prints the paragraph for this ISO week (deterministic rotation through every desk entry, grails and centerpieces only)
 with the mark read from `data/cards` at run time, so it matches the page at send time. Paste it as-is under the
-heading **Gengar's shelf**; the only edit allowed is cutting it shorter. The content gate applies: the mark it prints
+heading **Rip's shelf**; the only edit allowed is cutting it shorter. The content gate applies: the mark it prints
 is the card page's mark. If the pick's set re-marked Monday, run the script AFTER the re-mark.
 
 ## 3. The chase cards
