@@ -286,7 +286,7 @@ export function skeleton(carry) {
   <div class="h2-ask" role="search" aria-label="Search">
     <h1>What’s it <em>worth?</em></h1>
     <div class="h2-sbox">
-      <input type="search" id="h2-q" placeholder="What’s it worth? Search a card or set" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Search a card or set" aria-controls="h2-sres">
+      <input type="search" id="h2-q" placeholder="Search a card or set" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Search a card or set" aria-controls="h2-sres">
       <button class="go" type="button" id="h2-go" aria-label="Search">→</button>
       <div class="h2-sres" id="h2-sres" role="listbox"></div>
     </div>

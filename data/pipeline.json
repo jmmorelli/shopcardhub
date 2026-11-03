@@ -5730,6 +5730,16 @@
           "gates": "audit-prices FAIL 0/WARN 51; audit-site FAIL 0/WARN 3; audit-terminal FAIL 0/WARN 1 — identical to the Monday lane's base",
           "liveVerified": "2026-11-02 ~23:35Z: /bowman-bangers rendered at iPhone 13 reads '10 prospects tracked', no Roman Anthony row; /psa-grading-guide serves 'reopened on October 29'; /pokemon-grading-premiums 'As of November 2, 2026'",
           "rollback": "git revert 367ed91"
+        },
+        {
+          "date": "2026-11-03",
+          "commits": [
+            "this commit (subject: sweep: home search placeholder …)"
+          ],
+          "by": "Site Sweep (Mac deploy key, unattended), Task-key site-sweep; Authority: Mo 2026-09-27",
+          "gates": "audit-prices FAIL 0 / WARN 52 · audit-site FAIL 0 / WARN 3 (765) · audit-terminal --feed data/feed FAIL 0 / WARN 1 (= base 6bc00e3)",
+          "liveVerified": "pending at commit time; recorded in Project claude/cos/site-sweep-2026-11-03.md",
+          "note": "Home search placeholder \"What’s it worth? Search a card or set\" → \"Search a card or set\" (it repeated the h1 and was cut to \"…or se\" at 390). index.html, home-v2.html, tools/lib/home-v2.mjs. Does not touch home-v2.css (Cupertino run 4 pending patch)."
         }
       ]
     },
