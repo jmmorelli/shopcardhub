@@ -145,10 +145,17 @@ ${table}
 <!-- AISEARCH:ANSWER:END -->`;
 
 // ---------- head tags ----------
+// {since}: level vs 100 at the base month ("down 42.2%"); {cost}: one raw copy of each priced card at the mark;
+// {month}: the screener's 1M move (" It moved down 21.7% in the latest month."), empty when the record is too short.
+const moveWord = v => (v > 0.05 ? 'up ' : v < -0.05 ? 'down ' : 'flat at ') + Math.abs(v).toFixed(1) + '%';
 function fill(s, r) {
   if (!r) return s;
+  const cost = typeof r.last.basketValue === 'number' ? usd(r.last.basketValue) : null;
+  if (/\{cost\}/.test(s) && !cost) throw new Error(r.k + ': {cost} used but the mark has no basketValue');
   return s.replace(/\{level\}/g, r.last.level.toFixed(2)).replace(/\{date\}/g, fmtDate(r.last.date))
-    .replace(/\{priced\}/g, String(r.n)).replace(/\{base\}/g, r.base || 'the base month');
+    .replace(/\{priced\}/g, String(r.n)).replace(/\{base\}/g, r.base || 'the base month')
+    .replace(/\{since\}/g, moveWord(r.last.level - 100)).replace(/\{cost\}/g, cost || '')
+    .replace(/\{month\}/g, r.m ? ` It moved ${moveWord(r.m.v)} in the latest month (from ${fmtDate(r.m.from)}).` : '');
 }
 function setHead(html, p) {
   const r = p.ticker ? T[p.ticker] : null;
@@ -160,6 +167,18 @@ function setHead(html, p) {
   html = once(html, /<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${title}">`);
   if (/<meta property="og:description" content="[^"]*">/.test(html))
     html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${desc}">`);
+  // Opt-in ("ld": true): the page's own hand-written WebPage JSON-LD gets the same name and description, and its
+  // "about" names this page's index (some pages were copied from another index's template and named it instead).
+  if (p.ld) {
+    const RE = /<script type="application\/ld\+json">(\{"@context": ?"https:\/\/schema\.org", ?"@type": ?"WebPage"[^<]*)<\/script>/;
+    const m = html.match(RE);
+    if (!m) throw new Error('WebPage JSON-LD not found for ' + (p.ticker || p.title));
+    const ld = JSON.parse(m[1]);
+    ld.name = p.title;
+    ld.description = fill(p.description, r);
+    if (r) ld.about = { '@type': 'Thing', name: `${r.k} · ${r.x.name}` };
+    html = html.replace(RE, () => `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>`);
+  }
   return html;
 }
 

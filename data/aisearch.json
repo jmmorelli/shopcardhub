@@ -1,5 +1,5 @@
 {
- "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{}; the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base}, filled from the page's ticker in data/indices.json. No eBay URLs, prices or asks here, ever (R45).",
+ "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json. No eBay URLs, prices or asks here, ever (R45).",
  "pages": {
   "indices": {
    "title": "Is the Pokémon Card Market Up or Down? Every Set's Price Index, Dated",
@@ -19,6 +19,36 @@
    "ticker": "SV151",
    "title": "Pokémon 151 Card Prices: Scarlet & Violet 151 Dated Sold Prices · SV151",
    "description": "Pokémon 151 (Scarlet & Violet 151) card prices from dated sales. The SV151 index stood at {level} on {date} (100 = {base}, the release month) across {priced} cards, re-marked Monday and Thursday. Every card is listed with its price and date."
+  },
+  "bowman-1st-chrome-index": {
+   "ticker": "BOW26",
+   "ld": true,
+   "title": "Are 2026 1st Bowman Chrome Autos Going Down? Dated Price Index · BOW26",
+   "description": "Are 2026 1st Bowman Chrome Autos going down? The BOW26 index stood at {level} on {date} (100 = {base}, the release month), {since} since release, across {priced} cards on dated sold prices.{month} One raw copy of each card came to about {cost}. It covers the whole 2026 class across Bowman and Bowman Chrome, re-marked Monday and Thursday."
+  },
+  "bowman-chrome-2026-index": {
+   "ticker": "BCB26",
+   "ld": true,
+   "title": "2026 Bowman Chrome 1st Auto Prices Since Release: Dated Index · BCB26",
+   "description": "Prices for every 1st Bowman Chrome Auto in 2026 Bowman Chrome (September), from dated sales of raw cards. The BCB26 index stood at {level} on {date} (100 = {base}, the release month), {since} since release, across {priced} cards.{month} One raw copy of each card came to about {cost}. Re-marked Monday and Thursday."
+  },
+  "evolving-skies-index": {
+   "ticker": "EVS21",
+   "ld": true,
+   "title": "Evolving Skies Card Prices, Umbreon VMAX #215 Included: Dated Sold Prices · EVS21",
+   "description": "Pokémon Evolving Skies card prices from dated sales of raw singles, Umbreon VMAX #215 (Moonbreon) included. The EVS21 index stood at {level} on {date} (100 = {base}), {since} since then, across {priced} cards. One raw copy of each card came to about {cost}. Every card is listed with its price and date."
+  },
+  "prismatic-evolutions-index": {
+   "ticker": "PRIS25",
+   "ld": true,
+   "title": "Are Prismatic Evolutions Chase Cards Going Down? Dated Prices · PRIS25",
+   "description": "Pokémon Scarlet & Violet: Prismatic Evolutions chase card prices from dated sales of raw singles. The PRIS25 chase index stood at {level} on {date} (100 = {base}), {since} since then, across {priced} chase cards.{month} One raw copy of each came to about {cost}. Chase cards only, not every card in the set. Re-marked weekly."
+  },
+  "ascended-heroes-index": {
+   "ticker": "AH26",
+   "ld": true,
+   "title": "Are Ascended Heroes Chase Cards Going Down? Dated Prices · AH26",
+   "description": "Pokémon Mega Evolution: Ascended Heroes chase card prices from dated sales of raw singles. The AH26 chase index stood at {level} on {date} (100 = {base}, the first full month of sales), {since} since then, across {priced} chase cards.{month} One raw copy of each came to about {cost}. Chase cards only, not every card in the set. Re-marked weekly."
   }
  },
  "answer": {
@@ -148,6 +178,22 @@
   {
    "q": "Are 2026 1st Bowman Chrome Auto prices going up or down?",
    "ticker": "BOW26"
+  },
+  {
+   "q": "Are Prismatic Evolutions chase card prices going up or down?",
+   "ticker": "PRIS25"
+  },
+  {
+   "q": "Are Ascended Heroes chase card prices going up or down?",
+   "ticker": "AH26"
+  },
+  {
+   "q": "What are Evolving Skies cards selling for, Umbreon VMAX #215 included?",
+   "ticker": "EVS21"
+  },
+  {
+   "q": "Are 2026 Bowman Chrome (September) 1st Bowman Chrome Auto prices going up or down?",
+   "ticker": "BCB26"
   }
  ]
 }
