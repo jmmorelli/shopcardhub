@@ -75,6 +75,86 @@ html body .ds-foot-legal a.ds-foot-mark { font-weight: 600; color: var(--text-he
   html body .ds-foot-also, html body .ds-foot-note { font-size: 12px; }
 }
 
+/* 0c. Local nav + the index-page template (Cupertino run 5, Nov 4 2026; DESIGN-SYSTEM.md "Local nav" / "Index pages").
+   Markup: tools/build-local-nav.mjs (LOCALNAV block after NAV:END, 37 set-index pages). `.lnav ~` = those pages only:
+   sentence case, 400/600, tiles by tone, the fills unchanged (gold stays until the Nov 13 G2 read). `html body` outranks
+   the pages' inline CSS. Kept compact on purpose (CSS budget, R46 charter). */
+ html:has(.lnav){scroll-padding-top:calc(var(--ds-nav-h) + 60px);}
+@media (prefers-reduced-motion:no-preference){html:has(.lnav){scroll-behavior:smooth;}
+}
+html body .lnav{position:sticky;top:var(--ds-nav-h);z-index:190;height:52px;background:rgba(22,22,23,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);box-shadow:inset 0 1px 0 var(--border);}
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){html body .lnav{background:rgba(22,22,23,.97);}
+}
+html body .lnav-in{display:flex;align-items:center;gap:24px;max-width:1060px;height:52px;margin:0 auto;padding:0 24px;box-sizing:border-box;}
+html body .lnav-t{flex:1 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:600 21px/1.2 var(--ds-font);letter-spacing:-.01em;color:var(--text-head);text-decoration:none;}
+html body .lnav-l{display:flex;flex:0 0 auto;gap:24px;}
+html body .lnav-l a{font:400 14px/1 var(--ds-font);color:var(--text);text-decoration:none;transition:color var(--ds-dur-ui) var(--ds-ease);}
+html body .lnav-l a:hover,html body .lnav-t:hover{color:var(--text-head);text-decoration:none;}
+html body .lnav-pill{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;min-height:36px;padding:0 16px;border-radius:980px;background:var(--accent);color:#000;font:600 14px/1 var(--ds-font);letter-spacing:0;text-decoration:none;white-space:nowrap;transition:filter var(--ds-dur-ui) var(--ds-ease),transform .1s;}
+html body .lnav-pill::after{content:"";position:absolute;inset:-4px 0;}
+html body .lnav-pill:hover{filter:brightness(1.1);color:#000;text-decoration:none;}
+html body .lnav-pill:active{transform:scale(.98);}
+@media (max-width:734px){html body .lnav-l{display:none;}
+html body .lnav-t{font-size:17px;}
+}
+@media (max-width:380px){html body .lnav-in{padding:0 16px;gap:12px;}
+}
+html body .lnav~* .crumb{font:400 12px/1.33 var(--ds-font);letter-spacing:.02em;color:var(--ds-text-3);}
+html body .lnav~* .crumb a,html body .lnav~* .crumb b{color:var(--text-dim) !important;font-weight:400;}
+html body .lnav~* .strip{border-bottom:0;}
+html body .lnav~* .strip .chip{border:0;border-radius:980px;background:var(--ds-surface-3);padding:8px 14px;font:400 12px/1 var(--ds-font);}
+html body .lnav~* .strip .chip b{letter-spacing:0;font-weight:600;}
+html body .lnav~* :is(.eyebrow,.sidx-eyebrow){font:600 12px/1.33 var(--ds-font);letter-spacing:0;text-transform:none;color:var(--text-dim);margin-bottom:8px;}
+html body .lnav~* :is(.mast h1,.sidx-ttl){font:600 clamp(28px,3.4vw,40px)/1.1 var(--ds-font);letter-spacing:-.015em;text-transform:none;color:var(--text-head);}
+html body .lnav~* :is(.mast h1 .tick,.sidx-dot){color:var(--text-dim);}
+html body .lnav~* :is(.mast .level,.sidx-level .lv){font:600 clamp(36px,4.4vw,56px)/1 var(--ds-font);letter-spacing:-.02em;animation:none;text-shadow:none;}
+html body .lnav~* .pr-line{font:400 14px/1.43 var(--ds-font);}
+html body .lnav~* .pr-line b{font-weight:600;}
+html body .lnav~* .idx-chart{border:0;border-radius:var(--ds-radius);background:var(--ds-surface-1);padding:16px 20px 12px;}
+html body .lnav~* .idx-chart .ic-cap{font:400 12px/1.33 var(--ds-font);letter-spacing:0;text-transform:none;}
+html body .lnav~* .idx-chart text{font-family:var(--ds-font);}
+html body .lnav~* .idx-chart text.ic-rwl{letter-spacing:0;text-transform:none;}
+html body .lnav~* :is(.pr,.pr-tile,.sealed,.ci-buy .bs,.bstrip,details.pr-how){border:0;border-radius:var(--ds-radius);background:var(--ds-surface-1);}
+html body .lnav~* :is(.pr,.sealed,.ci-buy .bs,.bstrip){padding:20px 24px;}
+html body .lnav~* .pr-tiles{gap:16px;}
+html body .lnav~* .pr-tile{padding:20px;}
+html body .lnav~* .pr-v{font:600 17px/1.47 var(--ds-font);letter-spacing:0;text-transform:none;}
+html body .lnav~* .pr p{font-size:17px;line-height:1.47;}
+html body .lnav~* .pr .pr-sub{font-size:14px;}
+html body .lnav~* .pr-tile .pr-tk{font:400 12px/1.33 var(--ds-font);letter-spacing:0;text-transform:none;}
+html body .lnav~* .pr-tile :is(.pr-tn,.pr-tv){font-family:var(--ds-font);font-weight:600;}
+html body .lnav~* .pr-tile :is(.pr-tn,.pr-tv) small{font:400 12px/1.33 var(--ds-font);letter-spacing:0;text-transform:none;}
+html body .lnav~* .pr-tile .pr-ti{border-radius:8px;}
+html body .lnav~* :is(.sealed .sk,.sealed .sk b,.sealed .sc,.sealed .sr,.sealed .sr .srk,.sealed .sr .srs,.idx-chart .ic-cap,.sidx-eyebrow,.bstrip .bs-k,.bs .n){font-size:12px !important;letter-spacing:0;text-transform:none;}
+html body .lnav~* .sealed :is(.sk b,.sr .srk){font-weight:600;letter-spacing:0;text-transform:none;color:var(--text-head);}
+html body .lnav~* .sealed .sv{font-weight:600;}
+html body .lnav~* .sealed .sr{border-top:1px solid var(--border);}
+html body .lnav~* :is(.ci-buy .bs,.bstrip){font:400 12px/1.5 var(--ds-font);letter-spacing:0;}
+html body .lnav~* :is(.ci-buy .bs b,.bstrip .bs-t){font:600 17px/1.3 var(--ds-font);letter-spacing:0;text-transform:none;}
+html body .lnav~* .bstrip .bs-k{font:600 12px/1.33 var(--ds-font);letter-spacing:0;text-transform:none;color:var(--text-dim);}
+html body .lnav~* .bstrip .bs-dot{box-shadow:none;}
+html body .lnav~* :is(.sealed .buy,.ci-buy .bs a,.bstrip .bs-go,.bstrip .bs-fan){display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:980px;font:600 14px/1 var(--ds-font);font-size:14px !important;letter-spacing:0;text-transform:none;}
+html body .lnav~* :is(.ci-buy .bs a.alt,.bstrip .bs-fan){border:0;background:var(--ds-surface-3);color:var(--text-head) !important;}
+html body .lnav~* :is(.ci-buy .bs a.alt,.bstrip .bs-fan):hover{background:#3a3a3c;filter:none;}
+html body .lnav~* .bstrip :is(.bs-case,.bs-rep){font:400 14px/1 var(--ds-font);font-size:14px !important;letter-spacing:0;text-transform:none;border:0;}
+html body .lnav~* details.pr-how>summary{font:600 17px/1.3 var(--ds-font);letter-spacing:0;text-transform:none;color:var(--accent);padding:12px 24px;}
+html body .lnav~* details.pr-how>summary::after{content:"\203A";color:var(--accent);margin-left:6px;}
+html body .lnav~* details.pr-how>.pr-how-in{padding:4px 24px 20px;border-top:1px solid var(--border);}
+html body .lnav~* :is(.pr p b,.pr-line b,.crumb b,.sealed b,.ci-buy .bs b){font-weight:600;}
+html:has(.lnav) body .bstrip.bs-dock{display:none;}
+@media (max-width:734px){html body .lnav~* .mast{padding-top:12px;}
+html body .lnav~* .crumb{padding-top:10px !important;}
+html body .lnav~* :is(.mast h1,.sidx-ttl){font-size:26px;}
+html body .lnav~* :is(.mast .level,.sidx-level .lv){font-size:32px;}
+html body .lnav~* .idx-chart{padding:12px 14px 8px;}
+html body .lnav~* :is(.pr,.sealed,.ci-buy .bs,.bstrip){padding:14px 16px;}
+html body .lnav~* .bstrip{gap:8px 14px;}
+html body .lnav~* .bstrip .bs-t{line-height:1.2;}
+html body .lnav~* .pr p{font-size:16px;line-height:1.45;}
+html body .lnav~* .pr .pr-sub{font-size:12px;}
+html body .lnav~* details.pr-how>summary{padding:12px 20px;}
+}
+
 /* 2. Reduced motion — one global block for the whole site. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -106,22 +186,17 @@ html body .ds-foot-legal a.ds-foot-mark { font-weight: 600; color: var(--text-he
   body .alloc-legend,
   body .asof,
   body .banner-stat-label,
-  body .banner-stat-sub,
-  body .bio-stat-label,
   body .box-label,
   body .box-sport-tag,
   body .box-stat-label,
   body .calc-field label,
   body .calc-table th,
-  body .card-hunt-label,
   body .chip,
   body .col-menu .cm-h,
   body .comps-item .ci-noimg,
   body .comps-item .ci-p span,
   body .conclbl,
   body .crumb,
-  body .dash-badge,
-  body .dash-stat .k,
   body .dd-foot-label,
   body .delta,
   body .dest-tile .dt-k,
@@ -136,19 +211,12 @@ html body .ds-foot-legal a.ds-foot-mark { font-weight: 600; color: var(--text-he
   body .evbar-tag,
   body .eyebrow,
   body .f-row label,
-  body .feature-kicker,
   body .foot,
   body .footer-col h4,
   body .formula-label,
-  body .fringe-org,
-  body .fringe-tag,
-  body .guide-stat,
-  body .guide-tag,
   body .hero-eyebrow,
   body .hist,
-  body .hunt-card-trend,
   body .insert-label,
-  body .insert-num,
   body .kpi-label,
   body .legend,
   body .livebar,
@@ -157,21 +225,12 @@ html body .ds-foot-legal a.ds-foot-mark { font-weight: 600; color: var(--text-he
   body .math-toggle,
   body .meter-label,
   body .mobile-nav .m-label,
-  body .mockbar,
   body .mv .lbl,
   body .nav-dropdown .dd-label,
   body .ob-grade,
   body .ob-table th,
   body .panel-footer a,
-  body .panel-footer-text,
-  body .panel-sub,
-  body .panel-title,
-  body .panel-updated,
-  body .parallel-print,
-  body .parallel-table thead th,
   body .pg .k,
-  body .player-tag,
-  body .poll-label,
   body .pop-foot,
   body .pop-price .basis,
   body .pop-sub,
@@ -179,13 +238,11 @@ html body .ds-foot-legal a.ds-foot-mark { font-weight: 600; color: var(--text-he
   body .product-tag,
   body .prospect-mini-tag,
   body .prospect-quote cite,
-  body .psa-table th,
   body .quick-log button,
   body .rank-hist,
   body .rar,
   body .rarity-label,
   body .related-tag,
-  body .rh .cell .k,
   body .rh-card .rh-count,
   body .rh-eyebrow,
   body .rh-sub,
@@ -200,8 +257,6 @@ html body .ds-foot-legal a.ds-foot-mark { font-weight: 600; color: var(--text-he
   body .set-tag,
   body .sig-note,
   body .sig-updated,
-  body .signal-tag,
-  body .sparklbl,
   body .spec-table th,
   body .stat .k,
   body .stat .v i,
@@ -228,8 +283,7 @@ html body .ds-foot-legal a.ds-foot-mark { font-weight: 600; color: var(--text-he
   body td .est,
   body td.card .cn,
   body td.nm .desc,
-  body thead th
-  { font-size:11px; }
+  body thead th { font-size:11px; }
   /* rules injected at runtime by js/vault-track.js and js/set-checklist.js
      (their <style> lands after this sheet, so match their specificity + body) */
   body .sch-track-card, body .schk .sch-track-card, body .schk .rc, body .schk th, body .schk .first,
@@ -252,23 +306,17 @@ body .bb-tower .beam, body .hero h1 em { animation: none !important; }
 
 @media (max-width:540px) {
   /* text that was still under 11px on phones (movers module, board chips, vault notes) */
-  body small, body .wtag, body .mv-col-h, body .mv-sub, body .mv-chip, body .bb-board-note,
-  body .bb-board th, body .bb-table th, body .bb-chip, body .kpi-note, body .ob-title, body .ob-link, body .sr-only
-  { font-size: 11px !important; }
+  body small, body .bb-board-note,
+  body .bb-board th, body .bb-table th, body .bb-chip, body .kpi-note, body .ob-title, body .ob-link, body .sr-only { font-size: 11px !important; }
   /* tap targets: the homepage feature link, board filter chips, guide "Read" buttons */
-  body .feature-link, body .hero-textlink, body .panel-foot a, body .panel-footer a { display: inline-flex; align-items: center; min-height: 40px; }
-  body .btn-secondary.seg, body .btn-sm, body .btn.btn-sm, body .guide-card .btn-secondary, body .bb-table a, body .vtools .btn, body .tb-add, body .vtoolbar .btn { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+  body .panel-footer a { display: inline-flex; align-items: center; min-height: 40px; }
+  body .btn-secondary.seg, body .btn-sm, body .btn.btn-sm, body .guide-card .btn-secondary, body .bb-table a, body .tb-add { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
   /* Vault onboarding steps + "new" pill are rendered by script with 9px inline labels */
   body #ob1 span, body #ob2 span, body #ob3 span, body #newPill b, body #newPill a { font-size: 11px !important; }
   /* The Floor: stat tiles and the movers grid overflowed by 5px once labels hit 11px */
-  body .dash-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
-  body .dash-stats > * { min-width: 0; }
-  body .mv-grid { grid-template-columns: 1fr; }
-  body .mv-grid > *, body .mv-row, body .mv-name { min-width: 0; }
-  body .mv-sub { white-space: normal; }
-  body .dash-card { min-width: 0; overflow: hidden; }
+
   /* ticker items scroll inside an overflow:hidden strip; make sure the strip clips on phones */
-  body .ticker, body .ticker-wrap, body .ticker-inner { overflow: hidden; max-width: 100vw; }
+  body .ticker { overflow: hidden; max-width: 100vw; }
 }
 
 /* EPN compliance (Sep 2026): every eBay affiliate link carries a visible "eBay" label.
@@ -372,7 +420,6 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
      nowrap label ("Shop Lamine Yamal rookie cards on eBay") pushed the gear/Fanatics button off the
      right edge. The dock state switches instantly instead. */
   body .bstrip.bs-dock .bs-go, body .bstrip.bs-dock .bs-fan, body .bstrip.bs-dock .bs-rep { transition: none; }
-  body .bs-hold { height: 0; }
   /* 8d (Night Crew, Sep 30 2026). The dock is now a fixed copy of the strip (js/buy-strip.js), so the
      real strip never leaves the flow and nothing on the page shifts when it comes back into view
      (was CLS 0.30-0.38 per scroll on /bowman-football, /best-hobby-boxes-2026, ...). The copy slides
@@ -501,7 +548,7 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body .bb-k, body .bb-badge, body .bb-retail-k, body .bb-retail-s, body .product-alt, body .product-alt a,
   body .rc-eyebrow, body .rc-fam, body .rc-act a, body .au-cell .l, body .ask-note
   { font-size: 11px !important; }
-  body .nav-logo a.logo, body nav a.logo, body header a.logo { display: inline-flex; align-items: center; min-height: 40px; }
+  body nav a.logo, body header a.logo { display: inline-flex; align-items: center; min-height: 40px; }
   body .bstrip .bs-go, body .bstrip .bs-go2, body .bstrip .bs-fan { min-height: 40px; }
   body .bstrip .bs-rep, body .bstrip .bs-case { display: inline-flex; align-items: center; min-height: 40px; }
   body a.sch-track-cta, body .go-btn:not(.ib-go) { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; }
@@ -509,7 +556,7 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body table.ib .ib-go { display: inline-block; box-sizing: border-box; min-height: 40px; padding-top: 14px; padding-bottom: 14px; }
   /* in-page controls under 40 px on the key pages: Vault tabs and toggles, the guide fold buttons, ★ Track, the index
      "Show the numbers" toggle (all <button>s: min-height only, display untouched) */
-  body .vtab, body .mode-btn, body .notify-btn, body .ob-link, body .fold-btn, body .fd-btn, body .pr-tg, body button.sch-track-card { min-height: 40px; }
+  body .vtab, body .mode-btn, body .notify-btn, body .ob-link, body .fold-btn, body .fd-btn, body button.sch-track-card { min-height: 40px; }
   body #newPill span { font-size: 11px !important; }
   body a.btn, body a.btn-primary, body a.btn-secondary { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
 }
@@ -724,10 +771,9 @@ body .strip > a.chip { display: inline-flex; align-items: center; gap: 4px; min-
   body .mlb .chips .gh, body .mlb .tools button,
   body .cmp tbody th, body .age thead th, body .age .wh,
   body td.act a.auc, body .glk-bar .glk-k,
-  body .desk-toc a, body .narrator-chip, body .lead-card .lbl, body .ocs label, body .tl-dot,
+  body .desk-toc a, body .narrator-chip, body .tl-dot,
   body .bb-also .sch-ebay-tag, body .rg-foot, body .rg-foot a, body .sealed-date-note,
-  body .statnote, body td.card .cn, body .pop-price .basis, body .tl th
-  { font-size: 11px !important; }
+  body .statnote, body td.card .cn, body .pop-price .basis, body .tl th { font-size: 11px !important; }
   body .bstrip.bs-dock .bs-go::before, body .bstrip.bs-dock .bs-fan::before { font-size: 11px; letter-spacing: 1px; }
 }
 
@@ -779,25 +825,20 @@ body .strip { display: none !important; }
    selector lists at desktop widths plus those five. Sizes only: no colour, copy, link or layout change. The 40 px tap
    half stays phone-only for now (desktop table rows would grow; next run, measured against the 1280 table check). */
 @media (min-width:541px) {
-  body .alloc-legend, body .asof, body .banner-stat-label, body .banner-stat-sub, body .bio-stat-label,
-  body .box-label, body .box-sport-tag, body .box-stat-label, body .calc-field label, body .calc-table th,
-  body .card-hunt-label, body .chip, body .col-menu .cm-h, body .comps-item .ci-noimg, body .comps-item .ci-p span,
-  body .conclbl, body .crumb, body .dash-badge, body .dash-stat .k, body .dd-foot-label, body .delta,
+  body .alloc-legend, body .asof, body .banner-stat-label,
+  body .box-label, body .box-sport-tag, body .box-stat-label, body .calc-field label, body .calc-table th, body .chip, body .col-menu .cm-h, body .comps-item .ci-noimg, body .comps-item .ci-p span,
+  body .conclbl, body .crumb, body .dd-foot-label, body .delta,
   body .dest-tile .dt-k, body .detail-h, body .ebay-link, body .entry-marquee-text, body .entry-since,
   body .entry-sport-tag, body .entry-stat-label, body .entry-tag, body .ev-label, body .evbar-tag, body .eyebrow,
-  body .f-row label, body .feature-kicker, body .foot, body .footer-col h4, body .formula-label, body .fringe-org,
-  body .fringe-tag, body .guide-stat, body .guide-tag, body .hero-eyebrow, body .hist, body .hunt-card-trend,
-  body .insert-label, body .insert-num, body .kpi-label, body .legend, body .livebar, body .log-table th,
-  body .m-group-panel .m-sublabel, body .math-toggle, body .meter-label, body .mobile-nav .m-label, body .mockbar,
-  body .mv .lbl, body .nav-dropdown .dd-label, body .ob-grade, body .ob-table th, body .panel-footer a,
-  body .panel-footer-text, body .panel-sub, body .panel-title, body .panel-updated, body .parallel-print,
-  body .parallel-table thead th, body .pg .k, body .player-tag, body .poll-label, body .pop-foot,
+  body .f-row label, body .foot, body .footer-col h4, body .formula-label, body .hero-eyebrow, body .hist,
+  body .insert-label, body .kpi-label, body .legend, body .livebar, body .log-table th,
+  body .m-group-panel .m-sublabel, body .math-toggle, body .meter-label, body .mobile-nav .m-label,
+  body .mv .lbl, body .nav-dropdown .dd-label, body .ob-grade, body .ob-table th, body .panel-footer a, body .pg .k, body .pop-foot,
   body .pop-price .basis, body .pop-sub, body .price-label, body .product-tag, body .prospect-mini-tag,
-  body .prospect-quote cite, body .psa-table th, body .quick-log button, body .rank-hist, body .rar,
-  body .rarity-label, body .related-tag, body .rh .cell .k, body .rh-card .rh-count, body .rh-eyebrow, body .rh-sub,
+  body .prospect-quote cite, body .quick-log button, body .rank-hist, body .rar,
+  body .rarity-label, body .related-tag, body .rh-card .rh-count, body .rh-eyebrow, body .rh-sub,
   body .rng, body .roi-sub, body .roi-table thead th, body .sb-head, body .sb-side, body .sch-track-cta,
-  body .section-eyebrow, body .set-stat-label, body .set-tag, body .sig-note, body .sig-updated, body .signal-tag,
-  body .sparklbl, body .spec-table th, body .stat .k, body .stat .v i, body .stat-cell .sl, body .stat-label,
+  body .section-eyebrow, body .set-stat-label, body .set-tag, body .sig-note, body .sig-updated, body .spec-table th, body .stat .k, body .stat .v i, body .stat-cell .sl, body .stat-label,
   body .statnote, body .strategy-sub, body .tab .p2, body .tl-date, body .tl-status, body .vault-eyebrow,
   body .vc-chart .no-data, body .vc-sub, body .verdict-label, body .verdict-tag, body .vgrid .act button,
   body .vgrid .gr, body .vgrid .lock, body .vgrid .st, body .vgrid th, body .vgrid tr.grp td .gsub, body .vtab .cnt,
@@ -820,8 +861,7 @@ body .strip { display: none !important; }
   body .bm .bm-eyebrow, body .bm .bm-f, body .bm .bm-f a, body .tl .tl-eyebrow, body .tl-st, body .tl .tl-f,
   body .bb-k, body .bb-badge, body .bb-retail-k, body .bb-retail-s, body .product-alt, body .product-alt a,
   body .rc-eyebrow, body .rc-fam, body .rc-act a, body .au-cell .l, body .ask-note, body #newPill span,
-  body td.p .first, body span.up sup, body span.dn sup, body .cdp-btns a small, body .chase .cn small
-  { font-size: 11px !important; }
+  body td.p .first, body span.up sup, body span.dn sup, body .cdp-btns a small, body .chase .cn small { font-size: 11px !important; }
   /* the /track-record ROI table header (nowrap, 2 px tracking) overflowed its 1012 px box at 1280 once it hit 11 px */
   body .roi-table thead th { letter-spacing: 1px; }
 }
