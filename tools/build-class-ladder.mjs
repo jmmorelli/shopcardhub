@@ -181,6 +181,11 @@ h2 { font-family:var(--fd); font-weight:900; font-size:20px; letter-spacing:1.5p
 .cl-tbl td.await .aw { font-family:var(--fd); font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); }
 .cl-tbl tr.pre td { color:var(--dim); } .cl-tbl tr.b26 td.yr small a { color:var(--ac); }
 .cl-tbl .up { color:var(--gn); } .cl-tbl .dn { color:var(--rd); }
+/* B124 (Night Crew Nov 4 2026; BLOCKED row of Nov 3): 13 columns ran 1299 px in the 1070 px box at 1280 and 1440, so the last
+   column (the level move) sat behind a sideways scroll. Tighter cell padding, wrapping headers and narrower text columns fit
+   all of them — skew and kurtosis stay on desktop. */
+.cl-tbl th { padding:10px 6px; letter-spacing:.5px; white-space:normal; } .cl-tbl td { padding:9px 6px; }
+.cl-tbl td.pr, .cl-tbl td.tc { min-width:104px; } .cl-tbl td.lv small { white-space:normal; }
 .cl-x { width:40px; height:40px; background:transparent; border:1px solid var(--bd2); color:var(--ac); border-radius:2px; cursor:pointer; font-size:14px; } .cl-x[aria-expanded="true"] { background:var(--ac); color:#000; }
 .cl-go { display:inline-flex; align-items:center; min-height:40px; padding:0 10px; font-family:var(--fd); font-weight:700; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:#000; background:var(--ac); border-radius:2px; }
 .cl-detail > td { padding:0 0 14px; white-space:normal; background:var(--bg); }

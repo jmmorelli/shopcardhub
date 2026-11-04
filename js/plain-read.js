@@ -86,11 +86,23 @@
   }
   /* U-F14 (Site Sweep Oct 27, ruled Oct 27): a set worth 129% more than at release read "SLIDING" on a down week. When the
    * week and the since-base move point opposite ways, the badge names the week ("Down this week" / "Up this week"). */
-  function weekFirst(v, wk, since) {
+  function weekFirst(v, wk, since, lbl) {
     if (wk == null || Math.abs(wk) < 1 || Math.abs(since) < 0.5 || (wk < 0) === (since < 0)) return v;
-    return { w: wk < 0 ? 'Down this week' : 'Up this week', c: v.c };
+    return { w: (wk < 0 ? 'Down ' : 'Up ') + (lbl || 'this week'), c: v.c };
   }
   /* badge rule (iw-2026-10-03-1): the prior mark is the newest one at least 5 days before the latest */
+  /* Held marks (B121, Night Crew Nov 4 2026; mirrors HELD in tools/lib/home-v2.mjs — remove both together when P14/P44 close):
+   * a one-night mark built on an excluded row is never the base of a "this week" move, here or in the ticker strip. */
+  var HELD = { SK03: ['2026-10-15'] };
+  function marksOf(k, r) {
+    var held = HELD[k] || [];
+    return (r && r.history || []).filter(function (x) { return x && x.kind !== 'divisor' && x.level > 0 && held.indexOf(String(x.date).slice(0, 10)) < 0; });
+  }
+  /* Retention A (Nov 1 2026): "this week" only when the compared marks are 5–8 days apart. A longer gap (a missed mark) prints
+   * the real window, "since Oct 22", never "this week". */
+  var WEEK_MAX_DAYS = 8;
+  function spanDays(a, b) { return Math.round((new Date(String(a).slice(0, 10)) - new Date(String(b).slice(0, 10))) / 864e5); }
+  function weekLbl(last, base) { return !base || spanDays(last.date, base.date) <= WEEK_MAX_DAYS ? 'this week' : 'since ' + day(base.date); }
   function weekBase(h) {
     if (h.length < 2) return null;
     var last = h[h.length - 1];
@@ -100,11 +112,11 @@
 
   /* the facts every part reads — null before the first mark */
   function facts(k, r) {
-    var raw = r.history || [], h = raw.filter(function (x) { return x && x.kind !== 'divisor' && x.level > 0; }), n = h.length;
+    var raw = r.history || [], h = marksOf(k, r), n = h.length;
     var measureChanged = raw.length && raw[raw.length - 1].kind === 'divisor';
     if (!n) return null;
     var level = h[n - 1].level, prevRow = weekBase(h);
-    var wk = prevRow ? (level / prevRow.level - 1) * 100 : null;
+    var wk = prevRow ? (level / prevRow.level - 1) * 100 : null, wkLbl = weekLbl(h[n - 1], prevRow);
     var since = level - 100;
     var basket = (r.basket || []).filter(function (c) { return typeof c.price === 'number' && c.price > 0 && c.w !== 0; });   // w 0 = tracked on its own line, not in the level (TH26 RGB Mews, Oct 4 2026)
     var name = subject(r), started = day(r.inception || h[0].date);
@@ -138,7 +150,7 @@
         basis: r.basis === 'ask' ? 'eBay asking prices' : 'recent sales' };
     }
     return { n: n, level: level, wk: wk, since: since, basket: basket, name: name, started: started, baseTxt: baseTxt, sinceLbl: sinceLbl,
-      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: weekFirst(verdict(wk), wk, since), cost: cost };
+      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: weekFirst(verdict(wk), wk, since, wkLbl), cost: cost, wkLbl: wkLbl };
   }
 
   function pctTxt(v, d) { return (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(d == null ? 1 : d) + '%'; }
@@ -146,7 +158,7 @@
 
   /* 1 · the one line under the big level */
   function line(f) {
-    var wk = f.wk == null ? 'first week of tracking' : '<b class="' + cls(f.wk) + '">' + (f.wk > 0.05 ? '▲ ' : f.wk < -0.05 ? '▼ ' : '') + (Math.abs(f.wk) < 0.05 ? 'flat' : Math.abs(f.wk).toFixed(1) + '%') + '</b> this week';
+    var wk = f.wk == null ? 'first week of tracking' : '<b class="' + cls(f.wk) + '">' + (f.wk > 0.05 ? '▲ ' : f.wk < -0.05 ? '▼ ' : '') + (Math.abs(f.wk) < 0.05 ? 'flat' : Math.abs(f.wk).toFixed(1) + '%') + '</b> ' + f.wkLbl;
     if (f.cost && (f.n >= 2 || f.baseTxt)) {
       var thenLbl = f.sinceLbl === 'since release' ? 'at release' : f.sinceLbl.replace(/^since /, 'in ');
       return '<b class="flat">' + money(f.cost.now) + '</b> now · ' + money(f.cost.then) + ' ' + thenLbl + ' · ' + wk;
@@ -164,14 +176,14 @@
       var c = f.cost, when = f.baseTxt || 'when we started tracking on ' + f.started;
       var chg = Math.abs(f.since) < 0.5 ? 'about the same as now' : 'so they are about ' + Math.abs(f.since).toFixed(0) + '% ' + (f.since < 0 ? 'cheaper' : 'pricier') + ' now';
       s = '<b>' + money(c.now) + '</b> buys one raw copy of each of ' + (/^\d/.test(f.name) ? 'the ' + what + ' (' + c.n + ' cards)' : 'the ' + c.n + ' ' + what) + ' today (' + c.basis + ', ' + c.asOf + '). The same cards cost about <b>' + money(c.then) + '</b> ' + when + ', ' + chg;
-      if (f.wk != null) s += '; ' + (Math.abs(f.wk) < 0.05 ? 'flat' : (f.wk < 0 ? 'down ' : 'up ') + Math.abs(f.wk).toFixed(1) + '%') + ' this week.';
+      if (f.wk != null) s += '; ' + (Math.abs(f.wk) < 0.05 ? 'flat' : (f.wk < 0 ? 'down ' : 'up ') + Math.abs(f.wk).toFixed(1) + '%') + ' ' + f.wkLbl + '.';
       else s += '.';
       s += '<span class="pr-sub">Singles only, not sealed boxes or packs.</span>';
     }
     else {
       var vs = f.baseTxt ? 'than ' + f.baseTxt : 'than when we started on ' + f.started;
       s = what + ' are worth <b>' + (Math.abs(f.since) < 0.5 ? 'about the same' : 'about ' + Math.abs(f.since).toFixed(0) + '% ' + (f.since < 0 ? 'less' : 'more')) + '</b> ' + vs;
-      if (f.wk != null) s += '; <b>' + (Math.abs(f.wk) < 0.05 ? 'flat' : (f.wk < 0 ? 'down ' : 'up ') + Math.abs(f.wk).toFixed(1) + '%') + ' this week</b>.';
+      if (f.wk != null) s += '; <b>' + (Math.abs(f.wk) < 0.05 ? 'flat' : (f.wk < 0 ? 'down ' : 'up ') + Math.abs(f.wk).toFixed(1) + '%') + ' ' + f.wkLbl + '</b>.';
       else s += '.';
     }
     return '<p><span class="pr-v ' + f.v.c + '">' + f.v.w + '</span> ' + s + '</p>';
@@ -182,12 +194,18 @@
   function tileTop(f) { return f.top ? esc(f.top.name) + (f.top.num ? ' <small>#' + esc(f.top.num) + '</small>' : '') : 'No priced card yet'; }
   function tileTopV(f) { return f.top ? money(f.top.price) + '<small>recent sales</small>' : ''; }
   function tileMv(f) { return f.mover ? esc(f.mover.c.name) + (f.mover.c.num ? ' <small>#' + esc(f.mover.c.num) + '</small>' : '') : (f.wk == null ? 'Nothing to compare yet' : 'No card moved 1% or more'); }
+  /* Retention B (Nov 1 2026): the tile compares each card with its previous mark (3–4 days on a Mon/Thu set, longer after a
+   * missed mark), so its header names that window when it is not a week — never "this week" over 4 or 11 days. */
+  function tileMvK(f) {
+    var c = f.mover && f.mover.c, d = c && c.asOf && c.prevAsOf ? spanDays(c.asOf, c.prevAsOf) : null;
+    return d == null || (d >= 5 && d <= WEEK_MAX_DAYS) ? 'Biggest move this week' : 'Biggest move since ' + day(c.prevAsOf);
+  }
   function tileMvV(f) { return f.mover ? (f.mover.p < 0 ? '▼ ' : '▲ ') + Math.abs(f.mover.p).toFixed(0) + '%<small>since last update</small>' : ''; }
   function tiles(f, opts) {
     opts = opts || {};
     var img = opts.topImg ? '<span class="pr-ti">' + opts.topImg + '</span>' : '';
     return '<div class="pr-tile' + (img ? ' has-img' : '') + '">' + img + '<span class="pr-tb"><span class="pr-tk">Priciest card</span><span class="pr-tn" data-pr-t="top">' + tileTop(f) + '</span><span class="pr-tv" data-pr-t="topv">' + tileTopV(f) + '</span></span></div>' +
-      '<div class="pr-tile"><span class="pr-tb"><span class="pr-tk">Biggest move this week</span><span class="pr-tn" data-pr-t="mv">' + tileMv(f) + '</span><span class="pr-tv ' + (f.mover ? cls(f.mover.p) : '') + '" data-pr-t="mvv">' + tileMvV(f) + '</span></span></div>' +
+      '<div class="pr-tile"><span class="pr-tb"><span class="pr-tk" data-pr-t="mvk">' + tileMvK(f) + '</span><span class="pr-tn" data-pr-t="mv">' + tileMv(f) + '</span><span class="pr-tv ' + (f.mover ? cls(f.mover.p) : '') + '" data-pr-t="mvv">' + tileMvV(f) + '</span></span></div>' +
       /* P0-E (Oct 23 2026): a set with a checklist worksheet gets a third, full-width tile that is a link — the generator passes
        * opts.link = { href, k, label, sub }. Inline layout only, so no baked page's CSS has to change for the two-tile sets. */
       (opts.link && opts.link.href ? '<a class="pr-tile pr-tile-link" href="' + esc(opts.link.href) + '" style="grid-column:1/-1;text-decoration:none;min-height:0;align-items:center" data-pr-t="link"' +
@@ -312,7 +330,25 @@
   }
 
   function setHtml(el, html) { if (el && el.innerHTML !== html) el.innerHTML = html; }
+  /* Retention C + B121 (Nov 4 2026): the chase pages' ticker strip (div.strip, baked by remark-indices.mjs on Mondays) went stale
+   * between Monday re-marks — classic tickers re-mark Mon/Thu — and printed SK03 against its held mark. Each chip's level and
+   * week move are re-read here from the same file the chart uses, on the same week rule and held list as the plain read. The
+   * sector pages' own #strip has its own live script and is left alone. Text only: the chips keep their size, nothing shifts. */
+  function stripChip(t, r) {
+    var h = marksOf(t, r); if (!h.length) return null;
+    var last = h[h.length - 1], base = weekBase(h), w = base ? (last.level / base.level - 1) * 100 : null;
+    var lbl = !base ? '' : spanDays(last.date, base.date) <= WEEK_MAX_DAYS ? ' w/w' : ' since ' + day(base.date);
+    return '<b>' + esc(t) + '</b> <span style="color:var(--tx)">' + last.level.toFixed(2) + '</span>' + (w == null ? '' : ' <span class="soon">' + (w > 0 ? '+' : w < 0 ? '−' : '') + Math.abs(w).toFixed(1) + '%' + lbl + '</span>');
+  }
+  function mountStrip(data) {
+    Array.prototype.forEach.call(document.querySelectorAll('div.strip:not(#strip) a.chip'), function (a) {
+      var b = a.querySelector('b'), t = b && b.textContent.trim(), r = t && data[t];
+      if (!r || typeof r !== 'object' || r.status === 'pre' || r.status === 'pre-activation') return;
+      var html = stripChip(t, r); if (html) setHtml(a, html);
+    });
+  }
   function mount(data) {
+    try { mountStrip(data); } catch (e) {}
     var charts = document.querySelectorAll('.idx-chart[data-ticker]');
     Array.prototype.forEach.call(charts, function (chart) {
       var k = chart.getAttribute('data-ticker'), r = data[k];
@@ -332,7 +368,7 @@
       setHtml(q('[data-pr="works"]'), works(k, r, f));
       /* tiles: text spans only — the image slot and the eBay link are the generator's */
       setHtml(q(' [data-pr-t="top"]'), tileTop(f)); setHtml(q(' [data-pr-t="topv"]'), tileTopV(f));
-      setHtml(q(' [data-pr-t="mv"]'), tileMv(f));
+      setHtml(q(' [data-pr-t="mv"]'), tileMv(f)); setHtml(q(' [data-pr-t="mvk"]'), tileMvK(f));
       var mvv = q(' [data-pr-t="mvv"]'); if (mvv) { setHtml(mvv, tileMvV(f)); mvv.className = 'pr-tv ' + (f.mover ? cls(f.mover.p) : ''); }
     });
   }
@@ -346,7 +382,7 @@
     if (!document.querySelector('.idx-chart[data-ticker]')) return;
     (window.schIdx = window.schIdx || function () { return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { window.__schIdxP = null; throw e; })); })().then(mount).catch(function () {});
   }
-  if (typeof module !== 'undefined' && module.exports) module.exports = { facts: facts, bakeParts: bakeParts, howWrap: howWrap, finishCost: finishCost, PR_CSS: css };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { facts: facts, stripChip: stripChip, bakeParts: bakeParts, howWrap: howWrap, finishCost: finishCost, PR_CSS: css };
   if (!HAS_DOM) return;
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
 })();

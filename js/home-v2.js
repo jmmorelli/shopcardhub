@@ -136,11 +136,19 @@
 
   /* ---------- below the mark: refresh from /api/deals (same feed as /deals) ---------- */
   var GL = { raw: 'Raw', psa9: 'PSA 9', psa10: 'PSA 10', sealed: 'Sealed' };
+  /* R18 (Ivan Nov 1 walk, Night Crew Nov 4 2026): a graded figure prints with its count — "$2,017 median of 9 sales · Oct 26" —
+   * from the feed's markN; one or two rows print as dated sales; a graded row the feed gives no count for is left off. */
+  var nOk = function (r) { return isFinite(r.markN) && r.markN >= 1; };
+  var markTxt = function (r) {
+    var m = esc(money(r.mark));
+    if (!nOk(r)) return 'recent sales ' + m;
+    return r.markN >= 3 ? m + ' median of ' + r.markN + ' sales' : m + ' \u00b7 ' + r.markN + ' dated sale' + (r.markN === 1 ? '' : 's');
+  };
   fetch('/api/deals').then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
-    var now = Date.now(), seen = {}, rows = (j.rows || []).filter(function (r) { return r && r.url && isFinite(r.total) && isFinite(r.mark) && (!r.ends || new Date(r.ends).getTime() > now); }).sort(function (a, b) { return a.disc - b.disc; }).filter(function (r) { var k = r.cardId + '|' + r.grade; if (seen[k]) return false; seen[k] = 1; return true; }).slice(0, 5);
+    var now = Date.now(), seen = {}, rows = (j.rows || []).filter(function (r) { return r && r.url && isFinite(r.total) && isFinite(r.mark) && (!r.ends || new Date(r.ends).getTime() > now) && (r.grade === 'raw' || r.grade === 'sealed' || nOk(r)); }).sort(function (a, b) { return a.disc - b.disc; }).filter(function (r) { var k = r.cardId + '|' + r.grade; if (seen[k]) return false; seen[k] = 1; return true; }).slice(0, 5);
     if (!rows.length) { document.getElementById('h2-dl').innerHTML = '<li class="empty">Nothing under our recent-sales price right now. A deal is the exception, not the shelf. <a href="/deals">Deals \u2192</a></li>'; return; }
     document.getElementById('h2-dl').innerHTML = rows.map(function (r) { var href = r.cardHref || r.page;
-      return '<li><span class="nm">' + (href ? '<a href="' + esc(href) + '">' : '<b>') + esc(r.card) + (r.num ? ' #' + esc(r.num) : '') + (href ? '</a>' : '</b>') + '<small><span class="h2-g ' + esc(r.grade) + '">' + esc(GL[r.grade] || r.grade) + '</span>' + esc(T[r.tk] ? T[r.tk].n : r.idx) + ' \u00b7 recent sales ' + esc(money(r.mark)) + (r.markAsOf ? ' \u00b7 ' + esc(mdy(r.markAsOf)) : '') + '</small></span>' +
+      return '<li><span class="nm">' + (href ? '<a href="' + esc(href) + '">' : '<b>') + esc(r.card) + (r.num ? ' #' + esc(r.num) : '') + (href ? '</a>' : '</b>') + '<small><span class="h2-g ' + esc(r.grade) + '">' + esc(GL[r.grade] || r.grade) + '</span>' + esc(T[r.tk] ? T[r.tk].n : r.idx) + ' \u00b7 ' + markTxt(r) + (r.markAsOf ? ' \u00b7 ' + esc(mdy(r.markAsOf)) : '') + '</small></span>' +
         '<span class="rt"><span class="px">' + esc(money(r.total)) + '</span><span class="ch up">' + Math.round(r.disc * 100) + '%</span><a class="btn" href="' + esc(r.url) + '" target="_blank" rel="noopener sponsored">Buy \u2192</a></span></li>'; }).join('');
     if (j.generated) document.getElementById('h2-dls').textContent = 'Buy It Now \u00b7 screened ' + mdy(j.generated);
   }).catch(function () { document.getElementById('h2-dl').innerHTML = '<li class="empty">Couldn\u2019t reach the deals feed just now. <a href="/deals">Deals \u2192</a></li>'; });

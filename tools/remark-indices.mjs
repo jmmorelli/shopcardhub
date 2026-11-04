@@ -28,6 +28,8 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { holdIfUnconfirmed } from "./lib/move-guard.mjs";
+import { createRequire } from "module";
+const { stripChip } = createRequire(import.meta.url)("../js/plain-read.js");
 
 const REPO = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -150,11 +152,12 @@ const stripHtml = () => {
     // every other live ticker (sector-model set indices, the Bowman trio …) straight from indices.json — never hardcoded
     for (const t of Object.keys(idx)) {
       const x = idx[t]; if (!x || typeof x !== "object" || POKE.includes(t) || x.status !== "live" || !(x.history || []).length) continue;
-      // iw-2026-10-03-1: a Mon/Thu ticker's "w/w" is vs the newest mark ≥ 5 days back (the badge rule), never the 3–4-day prior mark
-      const last = x.history[x.history.length - 1];
-      let prev = null; for (let i = x.history.length - 2; i >= 0; i--) if ((new Date(last.date) - new Date(x.history[i].date)) / 86400000 >= 5) { prev = x.history[i]; break; }
-      const w = prev ? (last.level / prev.level - 1) * 100 : null;
-      h += `<a class="chip" href="${x.page}" style="text-decoration:none;"><b>${t}</b> <span style="color:var(--tx)">${last.level.toFixed(2)}</span>${w == null ? "" : ` <span class="soon">${signed(w, 1)} w/w</span>`}</a>`;
+      // iw-2026-10-03-1: a Mon/Thu ticker's "w/w" is vs the newest mark ≥ 5 days back (the badge rule), never the 3–4-day prior mark.
+      // B121 / Retention C (Night Crew Nov 4 2026): the chip is js/plain-read.js's stripChip() — held marks excluded, divisor rows
+      // skipped, a > 8-day window labelled "since <date>" — and the page re-reads it live on load, so a classic Thursday mark
+      // no longer leaves Monday's chip standing until the next Monday bake.
+      const inner = stripChip(t, x);
+      if (inner) h += `<a class="chip" href="${x.page}" style="text-decoration:none;">${inner}</a>`;
     }
     h += `</div>`;
     return h;

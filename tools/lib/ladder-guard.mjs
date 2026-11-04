@@ -13,6 +13,7 @@
 // a cell with only a lone `last` sale is checked by (a) only, on that sale.
 //   a-raw   v below the card's raw sold mark
 //   a-psa9  PSA 10 below the same card's PSA 9 (its median, else its lone last sale)
+//   a-tag-psa9  TAG 10 below the same card's PSA 9, same basis (Nov 4)
 //   a-15x   PSA 10 more than 15x the same card's PSA 9 median when that median has >= 3 sales (another card's sales leaking in).
 //           Exempt when PriceCharting's own PSA 10 estimate for BOTH of its last two months sits within 0.5-2x of our median:
 //           WOTC PSA 10s routinely run 15-40x a PSA 9 (set medians 4.5-14x), and the literal rule held 72 cells, ~70 of them
@@ -61,6 +62,13 @@ export function guardCard(c, raw, pc) {
     else if (fig(x10) != null && p9 && p9.m != null && p9.n >= GUARD.x15MinN && fig(x10) > GUARD.x15 * p9.m &&
       !(pc && pc.v && pc.prev && inBand(fig(x10) / pc.v, GUARD.x15PcBand) && inBand(fig(x10) / pc.prev, GUARD.x15PcBand))) out.psa10 = "a-15x";
     else if (fig(x10) != null && pc && pc.v && (fig(x10) < GUARD.pcLo * pc.v || fig(x10) > GUARD.pcHi * pc.v)) out.psa10 = "b-pc";
+  }
+  // (a-tag) TAG 10 below the same card's PSA 9 (its median, else its lone last sale) — Price Truth sweep Nov 3, 20 cells;
+  // held, never restated (Night Crew Nov 4, interim for Price Truth under the CoS Nov 3 ruling)
+  const t10 = c.tag10;
+  if (t10 && !t10.held && !out.tag10) {
+    const v = fig(t10) != null ? fig(t10) : lone(t10);
+    if (v != null && p9v != null && v < p9v) out.tag10 = "a-tag-psa9";
   }
   // (c) last-sale sanity, every grade with a median
   for (const k of GR) {
