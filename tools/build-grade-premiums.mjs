@@ -25,6 +25,9 @@ const x = (v) => (v == null ? "" : Number(v).toFixed(1) + "×");
 
 const TITLE = "Is Your Pokémon Card Worth Grading? PSA 10 vs PSA 9, 8, 7, Raw and TAG 10 — Dated Sold Data";
 const DESC = `What a PSA 10 sells for against every other grade, from eBay sales as of ${DATE}: vintage PSA 10s ran ${x(V.raw.med)} raw and ${x(V.psa9.med)} a PSA 9; modern ${x(M.raw.med)} raw and ${x(M.psa9.med)} a PSA 9.`;
+// PSA Value line (Wildcard, BET-20261102-1): written by tools/build-should-i-grade.mjs from the same cards and math as the tool
+const VT = (() => { try { return JSON.parse(fs.readFileSync(path.join(REPO, "data/grade-value-tier.json"), "utf8")); } catch (e) { return null; } })();
+const VALUE_LINE = VT && VT.line ? VT.line.replace(/&/g, "&amp;").replace(/</g, "&lt;") : "";
 const ANSWER = `As of ${DATE}, a PSA 10 vintage Pokémon card (WOTC, 1999–2003) sold for a median <b>${x(V.raw.med)} its raw price</b> and <b>${x(V.psa9.med)} a PSA 9</b>; a modern card's PSA 10 sold for <b>${x(M.raw.med)} raw</b> and <b>${x(M.psa9.med)} a PSA 9</b>. TAG 10s on modern cards sold for about the same as PSA 10s (median ${x(M.tag10_vs_psa10.med)}). Based on 90 days of eBay sales of ${V.cards + M.cards} cards.`;
 
 function cell(g) {
@@ -42,6 +45,7 @@ const body = `
     <div class="hero-eyebrow">Grading &middot; Sold Data &middot; ${DATE}</div>
     <h1>Is Your Pok&eacute;mon Card<br><em>Worth Grading?</em></h1>
     <p class="hero-sub gp-answer" id="answer">${ANSWER}</p>
+    <p class="gp-value" id="psa-value">${VALUE_LINE}</p>
     <p class="gp-cta"><a href="/should-i-grade-my-pokemon-card">Check your own card: how often it has to come back a PSA 10 for grading to pay &rarr;</a></p>
   </div>
 </section>
@@ -67,7 +71,7 @@ const body = `
 </div>
 `;
 
-const css = `<style id="gp-css">.gp-answer{max-width:70ch}.gp-answer b{color:var(--text-head)}.gp-wrap{overflow-x:auto;margin-top:18px;border:1px solid var(--border2);border-radius:3px}
+const css = `<style id="gp-css">.gp-answer{max-width:70ch}.gp-value{max-width:70ch;font-size:14px;line-height:1.55;color:var(--text-dim);margin:10px 0 0}.gp-answer b{color:var(--text-head)}.gp-wrap{overflow-x:auto;margin-top:18px;border:1px solid var(--border2);border-radius:3px}
 .gp-tbl{width:100%;border-collapse:collapse;font-family:var(--fm);font-size:13px;min-width:520px}.gp-tbl caption{text-align:left;padding:10px 14px;font-family:var(--fd);font-size:14px;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-dim)}
 .gp-tbl th,.gp-tbl td{padding:12px 14px;border-top:1px solid var(--border);text-align:left;vertical-align:top}.gp-tbl thead th{color:var(--text-dim);font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase}
 .gp-tbl tbody th{color:var(--text-head);font-family:var(--fb);font-weight:600}.gp-tbl td b{display:block;font-size:20px;color:var(--text-head)}.gp-rng,.gp-n{display:block;font-size:11px;color:var(--text-dim);margin-top:2px}.gp-na{color:var(--text-dim)}

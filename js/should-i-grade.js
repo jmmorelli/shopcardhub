@@ -11,6 +11,9 @@
  *   p* = (Rn + C - Nmiss) / (N10 - Nmiss).  p* <= 0: even a miss beats selling raw. p* > 1: a 10 doesn't cover it.
  * eBay exits: existing EPN search format (SCH_GLK phrase), customid = should-i-grade-my-pokemon-card-raw|-psa10|-tag10.
  * Events: grade_check (card picked; fired only here) and grade_click (eBay exit, an OUTBOUND event per page).
+ * PSA tier (Nov 3 2026, CoS BET-20261102-1): Value $39.99 (declared value <= $500), Standard $59.99, Priority $79.99, each + $2.76
+ * shipping/supplies over a 20-card batch. "auto" = Value when the card's PSA 10 median is under $500, else Standard. Typing a cost
+ * switches the picker to "custom" and the typed cost is kept.
  */
 (function () {
   var SLUG = 'should-i-grade-my-pokemon-card';
@@ -19,6 +22,10 @@
   var q = document.getElementById('sg-q'), list = document.getElementById('sg-list'), out = document.getElementById('sg-out');
   var inp = { cost: document.getElementById('sg-cost'), fvf: document.getElementById('sg-fvf'), ord: document.getElementById('sg-ord'), raw: document.getElementById('sg-raw'), miss: document.getElementById('sg-miss') };
   var ALL = null, STATIC = {}, cur = null, files = {};
+  var tierSel = document.getElementById('sg-tier'), VALUE_CAP = 500;
+  var TIER = { value: { name: 'PSA Value', cost: 42.75 }, standard: { name: 'PSA Standard', cost: 62.75 }, priority: { name: 'PSA Priority', cost: 82.75 } };
+  // auto: PSA's declared value is the card's graded worth, so use the PSA 10 median, else the PSA 9 median, else the raw median
+  function tierNow(ref) { var t = tierSel ? tierSel.value : 'auto'; return t === 'auto' ? (ref == null || ref >= VALUE_CAP ? 'standard' : 'value') : t; }
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   function md(d) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ''); return m ? MON[+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1] : ''; }
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -69,7 +76,8 @@
   });
   list.addEventListener('click', function (e) { var li = e.target.closest('li[data-id]'); if (li) pick(li.getAttribute('data-id'), true); });
   document.addEventListener('click', function (e) { var a = e.target.closest('a[data-sg-pick]'); if (a) { e.preventDefault(); pick(a.getAttribute('data-sg-pick'), true); root.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
-  Object.keys(inp).forEach(function (k) { if (inp[k]) inp[k].addEventListener('input', function () { if (cur) render(); }); });
+  Object.keys(inp).forEach(function (k) { if (inp[k]) inp[k].addEventListener('input', function () { if (k === 'cost' && tierSel) tierSel.value = 'custom'; if (cur) render(); }); });
+  if (tierSel) tierSel.addEventListener('change', function () { var t = tierSel.value; if (TIER[t]) inp.cost.value = TIER[t].cost.toFixed(2); else if (t === 'custom') inp.cost.focus(); if (cur) render(); });
 
   function tkFile(tk) {
     if (files[tk]) return files[tk];
@@ -116,7 +124,13 @@
     var rawN = c.wn != null ? c.wn : c.n30, rawWin = c.win || d.window || 30;
     // no raw figure unless it is a dated eBay sold median with a count (chase-set raws are an outside value, not our sales)
     var screened = (c.screened && c.why === 'screen') || d.kind === 'chase' || (c.wn == null && c.n30 == null);
+    var m10early = mark(g && g.psa10), m9early = mark(g && g.psa9);
+    var ref = m10early ? m10early.m : m9early ? m9early.m : (c.raw != null && !(d.kind === 'chase') ? c.raw : null), tier = tierNow(ref);
+    if (TIER[tier] && tierSel && tierSel.value === 'auto') inp.cost.value = TIER[tier].cost.toFixed(2);
     var cost = num(inp.cost, 62.75), f = num(inp.fvf, 13.25) / 100, o = num(inp.ord, 0.40);
+    var tierName = TIER[tier] && Math.abs(cost - TIER[tier].cost) < 0.005 ? TIER[tier].name : '';
+    var atCost = 'At ' + money(cost) + ' a card' + (tierName ? ' (' + tierName + ')' : '');
+    var capNote = tier === 'value' && ref != null && ref >= VALUE_CAP ? '<p class="sg-fine">This card’s graded median is over $500, and PSA Value only takes cards declared at $500 or less. Standard or Priority is the PSA tier that fits.</p>' : '';
     var R = num(inp.raw, screened ? null : c.raw);
     var net = function (p) { return p * (1 - f) - o; };
     var page = STATIC[c.id] || '/card?id=' + encodeURIComponent(c.id);
@@ -143,9 +157,9 @@
       else {
         p = (Rn + cost - Nm) / (N10 - Nm);
         var pp = p < 0.01 ? 'under 1%' : Math.round(p * 100) + '%';
-        head = p > 1 ? 'At ' + money(cost) + ' a card, even a PSA 10 nets less than selling this copy raw.'
-          : p <= 0 ? 'At ' + money(cost) + ' a card, a copy that comes back a 9 still nets more than selling it raw.'
-          : 'At ' + money(cost) + ' a card, grading this one pays if more than <b>' + pp + '</b> of your copies come back PSA 10.';
+        head = p > 1 ? atCost + ', even a PSA 10 nets less than selling this copy raw.'
+          : p <= 0 ? atCost + ', a copy that comes back a 9 still nets more than selling it raw.'
+          : atCost + ', grading this one pays if more than <b>' + pp + '</b> of your copies come back PSA 10.';
         var vs = function (v) { var dlt = v - Rn; return ' <span class="' + (dlt >= 0 ? 'up' : 'dn') + '">' + (dlt >= 0 ? '+' : '') + money(dlt) + ' vs raw</span>'; };
         rows = '<ul class="sg-rows">' +
           '<li>Sell it raw now: <b>' + money(Rn) + '</b> after eBay fees</li>' +
@@ -157,8 +171,8 @@
     }
     var meter = p != null && p > 0 && p <= 1 ? '<div class="sg-meter" aria-hidden="true"><i style="width:' + Math.max(2, Math.round(p * 100)) + '%"></i></div>' : '';
     out.innerHTML = '<div class="sg-card"><div class="sg-top"><h3><a href="' + esc(page) + '">' + esc(c.name) + ' #' + esc(c.num) + '</a></h3><span class="sg-set">' + esc(setShort) + (gRead ? ' · graded sales read ' + md(gRead) : '') + '</span></div>' +
-      ladder + '<p class="sg-hl">' + head + '</p>' + meter + rows +
-      '<p class="sg-fine">Grading cost ' + money(cost) + ' a card, eBay fees ' + (f * 100).toFixed(2).replace(/\.?0+$/, '') + '% + ' + money(o) + '. Change them under “Your costs”.</p><div class="sg-btns">' + btn('raw', 'Raw copies', false) + btn('psa10', 'PSA 10', true) + btn('tag10', 'TAG 10', false) + '</div>' +
+      ladder + '<p class="sg-hl">' + head + '</p>' + meter + rows + capNote +
+      '<p class="sg-fine">Grading cost ' + money(cost) + ' a card' + (tierName ? ' (' + tierName + ', all in)' : '') + ', eBay fees ' + (f * 100).toFixed(2).replace(/\.?0+$/, '') + '% + ' + money(o) + '. Change them under “Your costs”.</p><div class="sg-btns">' + btn('raw', 'Raw copies', false) + btn('psa10', 'PSA 10', true) + btn('tag10', 'TAG 10', false) + '</div>' +
       '<p class="sg-fine">Live eBay searches for this card with our affiliate tag (we may earn a commission). They show listings, not prices. The math assumes misses sell at the PSA 9 median and leaves out turnaround time. The raw median includes played copies; a copy clean enough to get a 10 often sells for more raw, so put your copy’s value in the box if you know it.</p></div>';
     out.querySelectorAll('a.sg-eb').forEach(function (a) { a.addEventListener('click', function () { ga('grade_click', { grade: a.getAttribute('data-g'), mode: 'bin', item: SLUG + '-' + a.getAttribute('data-g') + ':' + c.id }); }); });
   }
