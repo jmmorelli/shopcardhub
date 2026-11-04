@@ -745,7 +745,10 @@ function block(x, c, opt = {}) {
   const outAll = x.universe.filter((u) => !inB.has(u.path)), outHolo = outAll.filter((u) => isHolo(u)), outRows = outAll.filter((u) => !isHolo(u));
   const outTxt = (!outRows.length ? (weighted < x.basket.length ? `Every non-holo card in the universe is in the basket; ${x.basket.length - weighted} card${x.basket.length - weighted === 1 ? "" : "s"} weigh 0 in the level (explained below).` : outHolo.length ? "" : "Every card in the universe is in the basket.")
     : outRows.length <= 12 ? `${outRows.length} of ${x.universe.length} cards ${outRows.length === 1 ? "is" : "are"} in the universe but not the basket — too few clean sales in the trailing ${SCREEN.window} days at the last screen: ${outRows.map((u) => `${u.name} #${u.num}`).join(", ")}.`
-    : `${outRows.length} of ${x.universe.length} cards ${outRows.length === 1 ? "is" : "are"} in the universe but not the basket (non-holo cards below the screen).`)
+    : c.sacat === SACAT_SPORTS
+      // Bowman KB G38: no holo rule for sports tickers, so the >12 branch must not use the Pokémon "non-holo" wording
+      ? `${outRows.length} of ${x.universe.length} cards ${outRows.length === 1 ? "is" : "are"} in the universe but not the basket — too few clean sales in the trailing ${SCREEN.window} days at the last screen.`
+      : `${outRows.length} of ${x.universe.length} cards ${outRows.length === 1 ? "is" : "are"} in the universe but not the basket (non-holo cards below the screen).`)
     + (outHolo.length ? ` ${outHolo.length} holo-tier card${outHolo.length === 1 ? " is" : "s are"} tracked but unpriced — no clean raw sale in the last year: ${outHolo.map((u) => `${u.name} #${u.num}`).join(", ")}.` : "");
   // RELEASE-WINDOW ENTRY (Oct 8 2026): say so on the page while the window is open or once it has admitted anyone
   const rwLeft = entryWindowLeft(c), rwRows = (x.screenLog || []).filter((r) => /release window/.test(r.note || ""));

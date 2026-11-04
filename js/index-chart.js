@@ -21,14 +21,14 @@
     '.idx-chart .ic-area{fill:var(--gn,#00e07a);opacity:.08} .idx-chart.dn .ic-area{fill:var(--rd,#ff2e55)}' +
     '.idx-chart .ic-dot{fill:var(--gn,#00e07a)} .idx-chart.dn .ic-dot{fill:var(--rd,#ff2e55)}' +
     '.idx-chart .ic-mk{fill:var(--th,#e4f0f4);opacity:.55}' +
-    '.idx-chart text{font-family:var(--fm,ui-monospace,monospace);font-size:10px;fill:var(--dim,#5a7880)}' +
+    '.idx-chart text{font-family:var(--fm,ui-monospace,monospace);font-size:11px;fill:var(--dim,#5a7880)}' +
     '.idx-chart text.ic-last{fill:var(--th,#e4f0f4);font-weight:700;font-size:11px}' +
     '.idx-chart .ic-cap{display:flex;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;font-family:var(--fm,ui-monospace,monospace);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim,#5a7880);margin-top:6px}' +
     '.idx-chart .ic-cap b{color:var(--th,#e4f0f4)}' +
     '.idx-chart .ic-rc{stroke-dasharray:5 4;opacity:.6}.idx-chart .ic-inc{stroke:var(--dim,#5a7880);stroke-width:1;stroke-dasharray:2 3;opacity:.6}' +
     '.idx-chart .ic-k{display:inline-block;width:14px;height:0;border-top:2px dashed var(--dim,#5a7880);vertical-align:middle;margin:0 3px}.idx-chart .ic-kl{border-top-style:solid;border-color:var(--th,#e4f0f4)}' +
     '.idx-chart .ic-note{font-size:11px;line-height:1.45;color:var(--dim,#5a7880);margin-top:6px;text-transform:none;letter-spacing:0}' +
-    '.idx-chart .ic-rw{fill:var(--dim,#5a7880);opacity:.13}.idx-chart text.ic-rwl{font-size:9px;letter-spacing:1px;text-transform:uppercase}' +
+    '.idx-chart .ic-rw{fill:var(--dim,#5a7880);opacity:.13}.idx-chart text.ic-rwl{font-size:11px;letter-spacing:1px;text-transform:uppercase}' +
     '.idx-chart .ic-one{font-family:var(--fm,ui-monospace,monospace);font-size:11px;color:var(--dim,#5a7880);padding:6px 0}';
   /* Sep 30 2026 (Mo): LOG scale, and the index runs from its RELEASE base (or the first reliable month for sets older than
    * PriceCharting's history), not from our inception. The reconstructed months (data/indices.json .recon, monthly,
@@ -40,8 +40,10 @@
   /* Oct 1 2026 (Mo, Bowman on the release-date base): a ticker with releaseWindowDays shades the first N days after street —
    * the release-premium window, when most 1st Bowman autos print their high and slide as supply posts (Bowman KB 04 §2).
    * A band only; it never changes a level. */
-  function chart(rc, h, tk, v) {
-    var W = 720, H = 220, pl = 10, pr = 58, pt = 16, pb = 24;
+  /* UX Auditor Nov 4 2026: the SVG used a fixed 720-unit viewBox, so on a 390 px phone (≈316 px plot) every axis label
+   * rendered at 10 × 316/720 ≈ 4.4 px. Draw in the container's own pixels below 720 so 1 unit = 1 px and labels stay ≥ 11 px. */
+  function chart(rc, h, tk, v, cw) {
+    var W = cw && cw < 720 ? Math.max(280, Math.round(cw)) : 720, H = W < 720 ? Math.max(170, Math.round(W * 0.55)) : 220, pl = 10, pr = W < 500 ? 46 : 58, pt = 16, pb = 24;
     var pts = rc.map(function (r) { return { t: t(r.month), v: r.level, rc: 1, d: r.month }; })
       .concat(h.map(function (r) { return { t: t(r.date), v: r.level, rc: 0, d: r.date }; }));
     var lv = pts.map(function (p) { return p.v; });
@@ -76,6 +78,7 @@
       '<circle class="ic-dot" cx="' + ex.toFixed(1) + '" cy="' + ey.toFixed(1) + '" r="3.5"/>' + lastLbl + xl.join('') + '</svg>';
   }
   function paint(el, v, tk) {
+    el.__ic = [v, tk]; var cs = getComputedStyle(el), cw = el.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0); el.__icW = el.clientWidth;
     var h = (v.history || []).filter(function (r) { return r && r.level != null && isFinite(r.level) && r.level > 0 && r.kind !== 'divisor'; });   // iw-2026-10-07-1: divisor ops are not marks
     var rc = (v.recon || []).filter(function (r) { return r && r.level > 0; });
     if (!h.length) { el.innerHTML = '<div class="ic-one">Pre-activation — the level starts on the first verified sold reads.</div>'; return; }
@@ -93,10 +96,10 @@
     var capMethod = '<b>' + esc(tk) + '</b> · 100 = ' + esc(base) + (v.baseRule === 'release' ? (String(v.releaseDate || '').slice(0, 7) === v.baseDate ? ' (release month)' : ' (first month after release)') : v.baseRule ? ' (first reliable month)' : '') + ' · log scale';
     var capStat = 'since ' + (v.baseRule === 'release' ? 'release' : 'base') + ' <b>' + (since > 0 ? '+' : '') + num(since, 2) + '%</b> · this week <b>' + (wk == null ? '—' : (wk > 0 ? '+' : '') + num(wk, 1) + '%') + '</b> · last ' + esc(dstr(last.date));
     if (how0) {
-      el.innerHTML = chart(rc, h, tk, v) + '<div class="ic-cap"><span>' + (rc.length ? '<i class="ic-k"></i> monthly history · <i class="ic-k ic-kl"></i> recent sales since ' + esc(dstr(h[0].date)) + ' · ' : 'recent sales · ') + 'latest ' + esc(dstr(last.date)) + '</span></div>';
+      el.innerHTML = chart(rc, h, tk, v, cw) + '<div class="ic-cap"><span>' + (rc.length ? '<i class="ic-k"></i> monthly history · <i class="ic-k ic-kl"></i> recent sales since ' + esc(dstr(h[0].date)) + ' · ' : 'recent sales · ') + 'latest ' + esc(dstr(last.date)) + '</span></div>';
       if (!how0.querySelector('.ic-stat')) { var ps = document.createElement('p'); ps.className = 'pr-stamp ic-stat'; ps.innerHTML = 'Chart: ' + capMethod + (rc.length ? ' · dashed = monthly history, solid = our marks since ' + esc(dstr(h[0].date)) : '') + ' · ' + capStat + '.'; how0.insertBefore(ps, how0.firstChild); }
     } else
-    el.innerHTML = chart(rc, h, tk, v) + '<div class="ic-cap"><span><b>' + esc(tk) + '</b> · 100 = ' + esc(base) + (v.baseRule === 'release' ? (String(v.releaseDate || '').slice(0, 7) === v.baseDate ? ' (release month)' : ' (first month after release)') : v.baseRule ? ' (first reliable month)' : '') + ' · log scale' +
+    el.innerHTML = chart(rc, h, tk, v, cw) + '<div class="ic-cap"><span><b>' + esc(tk) + '</b> · 100 = ' + esc(base) + (v.baseRule === 'release' ? (String(v.releaseDate || '').slice(0, 7) === v.baseDate ? ' (release month)' : ' (first month after release)') : v.baseRule ? ' (first reliable month)' : '') + ' · log scale' +
       (rc.length ? ' · <i class="ic-k"></i> monthly history · <i class="ic-k ic-kl"></i> our marks since ' + esc(dstr(h[0].date)) : '') + '</span><span>since ' + (v.baseRule === 'release' ? 'release' : 'base') + ' <b>' + (since > 0 ? '+' : '') + num(since, 2) + '%</b> · this week <b>' + (wk == null ? '—' : (wk > 0 ? '+' : '') + num(wk, 1) + '%') + '</b> · last ' + esc(dstr(last.date)) + '</span></div>';
     /* the base/method note: behind "How this index works" when the page has the toggle (P0-C, Oct 23 2026), else under the chart */
     if (v.baseNote) {
@@ -114,4 +117,6 @@
     }).catch(function () { Array.prototype.forEach.call(els, function (el) { el.remove(); }); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  var rzT; window.addEventListener('resize', function () { clearTimeout(rzT); rzT = setTimeout(function () {
+    Array.prototype.forEach.call(document.querySelectorAll('.idx-chart[data-ticker]'), function (el) { if (el.__ic && Math.abs(el.clientWidth - (el.__icW || 0)) > 40) try { paint(el, el.__ic[0], el.__ic[1]); } catch (e) {} }); }, 200); });
 })();
