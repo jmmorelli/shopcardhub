@@ -5842,6 +5842,16 @@
           "liveVerified": "2026-11-04 ~14:05Z curl: 17 changed pages + /llms.txt 200, bytes equal to main; BUYSTRIP blocks present on the 8 pages that carry one",
           "note": "Four contestant patches (AI-Search patch 2 question titles + WebPage JSON-LD fix on 5 index pages, Conversion patch 3 player-page cleanup, Drop McDonald's 2026 page + Delta Reign/30th Nov 3 re-read, Deal sealed booster box/ETB/bundle price page + PB vs CR sealed sold rows + gift guide refresh), registry +2 new URLs, nightly git add for the patch-2 pages, sitemap lastmod 27. IndexNow 18 URLs -> 200.",
           "rollback": "git revert 01271b7^..72f68e9"
+        },
+        {
+          "date": "2026-11-04",
+          "commits": [
+            "37d6f90"
+          ],
+          "by": "CoS weekly (scheduled, unattended) — cloud build, Mac push from a fresh /tmp clone (tree 22fed45 matched)",
+          "gates": "audit-prices FAIL 0/WARN 54; audit-site FAIL 0/WARN 4; audit-terminal FAIL 0/WARN 1 (cloud --run-tests: 153 scenarios FAIL 0, WARN 15)",
+          "liveVerified": "2026-11-04 ~19:58Z curl: js/index-chart.js, home hobby-box tag, BCB26 count, buy-strip queries; /destined-rivals-index 200. IndexNow 137 -> 200",
+          "rollback": "git revert 37d6f90"
         }
       ]
     },

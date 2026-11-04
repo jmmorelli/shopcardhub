@@ -11,6 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-04 — weekly (11:00 run, verified live). Nothing new needs a click; one thing to know
+
+- **The tape disagrees with the plan (§0.3), no action asked:** search traffic fell ~80% after the Oct 15/21 page culls (organic visits ~10/day → ~2/day; Google 4 clicks in 28 days; Bing down too). The PIVOT's own Nov 19 test now reads 0 of 4. The CoS leans toward restoring the culled pages that had Bing clicks at the Nov 12 check. If you'd rather call it sooner, say so in a CoS chat.
+- Carried, still yours (checked today): **eBay Partner Network shows the login page in Browser 1** — sign EPN, COMC and Impact back in when convenient (October's Treasury close waits on it) · **TAG payment info** · optional "send the Tape" in a CoS chat before Mon Nov 9 · optional "go" on drafted X posts.
+
+*Not yours:* your first outside subscriber joined Oct 31. The index charts are readable on phones now, three dead eBay box buttons work again, and the hobby-box link no longer promises an ROI ranking the page doesn't have.
+
 ## 2026-11-03 — desk (15:11 fire, verified live). Nothing new needs you
 
 - Carried, still yours: **sign COMC, eBay Partner Network and Impact back in, in Chrome Browser 1** (October's Treasury close is still waiting on it) · **TAG payment info** · optional "go" on the drafted X posts · optional SOS unsubscribe.
