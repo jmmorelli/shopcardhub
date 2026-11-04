@@ -11,6 +11,12 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-04 — desk (15:11 fire, verified live). Nothing new needs you
+
+- Carried, still yours: **sign COMC and Impact (Fanatics) back in, in Chrome Browser 1**, and EPN too if today's sign-in for the CSV export didn't stick (October's Treasury close waits on COMC) · **TAG payment info** · optional "send the Tape" in a CoS chat before Mon Nov 9 · optional "go" on drafted X posts.
+
+*Not yours:* thanks for the EPN exports. Oct 21–Nov 3 earned $5.76 on 48 clicks, and both sales came through our tagged links. One Pitch Black booster box bought from the Pitch Black vs Chaos Rising page paid $5.55, more than the prior ~300 clicks combined. A Delta Reign vs Pitch Black page ships Friday for the street date. The Celebrations and 30th pages now label the Classic Collection reprints, so they no longer read as the originals.
+
 ## 2026-11-04 — weekly (11:00 run, verified live). Nothing new needs a click; one thing to know
 
 - **The tape disagrees with the plan (§0.3), no action asked:** search traffic fell ~80% after the Oct 15/21 page culls (organic visits ~10/day → ~2/day; Google 4 clicks in 28 days; Bing down too). The PIVOT's own Nov 19 test now reads 0 of 4. The CoS leans toward restoring the culled pages that had Bing clicks at the Nov 12 check. If you'd rather call it sooner, say so in a CoS chat.

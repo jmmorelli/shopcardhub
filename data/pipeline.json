@@ -5860,9 +5860,19 @@
           ],
           "by": "Price Truth desk (scheduled, unattended) — cloud build, Mac push from a fresh /tmp clone (tree 16f5559 matched)",
           "gates": "audit-prices FAIL 0/WARN 54; audit-site FAIL 0/WARN 4; audit-terminal FAIL 0/WARN 1 (cloud --run-tests FAIL 0/WARN 15 = base); price-truth sweep RED 0 (main before: RED 2)",
-          "liveVerified": "pending curl after Vercel (Price Truth LATEST 2026-11-04)",
+          "liveVerified": "2026-11-04 ~22:15Z curl by Price Truth (LATEST); re-checked by the CoS desk ~23:15Z: /celebrations-index prints \"Classic Collection reprint\" x29",
           "rollback": "git revert 6ab18c0",
           "note": "tools/price-truth/sweep.mjs (daily sweep); Classic Collection reprint labels CEL21/TH26 (KB P42, red by 3-day rule); GSTAR graded medians need >= 3 sales (R18, P50 residual); /pitch-black-set-guide hero re-dated (P45). No level, weight, divisor or mark changed."
+        },
+        {
+          "date": "2026-11-04",
+          "commits": [
+            "(this docs commit)"
+          ],
+          "by": "CoS desk (scheduled, unattended) — Mac /tmp deploy-key clone",
+          "gates": "audit-prices FAIL 0/WARN 54; audit-site FAIL 0/WARN 4; audit-terminal FAIL 0/WARN 1 (= baseline)",
+          "liveVerified": "docs-only (STATE trim + run log + MILESTONES, NEEDS-MO, this pushLog); skipped by the ignoreCommand by design, nothing on the site changes",
+          "rollback": "git revert HEAD (docs only)"
         }
       ]
     },
