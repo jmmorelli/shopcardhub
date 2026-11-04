@@ -980,34 +980,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <h1>PSA Grading Guide<br><em>Every Tier, Real Costs &amp; Payoff</em></h1>
     <p class="section-intro">All six PSA tiers with real turnaround times, hidden fees, and whether grading pays — updated after the February 10, 2026 price increase.</p>
   </section>
-<!-- DEST:START — destination strip (Aug 21, 2026). Vault + Bowman Bangers are the destinations; this page is the on-ramp. Managed by tools/dest.py -->
-<style>
-  .dest-strip { display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:1060px; margin:28px auto 0; padding:0 24px; }
-  .dest-tile { display:flex; align-items:center; gap:14px; background:var(--bg2); border:1px solid var(--border2); border-left:3px solid var(--accent); padding:14px 18px; text-decoration:none !important; color:var(--text); transition:border-color .15s, background .15s; }
-  .dest-tile:hover { background:var(--bg3); border-color:var(--accent); }
-  .dest-tile .dt-ico { font-size:22px; line-height:1; flex-shrink:0; }
-  .dest-tile .dt-k { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); }
-  .dest-tile .dt-t { font-family:var(--fd); font-size:18px; font-weight:800; text-transform:uppercase; color:var(--text-head); line-height:1.1; margin-top:2px; }
-  .dest-tile .dt-s { font-size:12px; color:var(--text-dim); margin-top:3px; line-height:1.4; }
-  .dest-tile .dt-arrow { margin-left:auto; color:var(--accent); font-size:18px; flex-shrink:0; }
-  .dest-tile.bangers { border-left-color:var(--gold, #f5c800); }
-  .dest-tile.bangers .dt-k, .dest-tile.bangers .dt-arrow { color:var(--gold, #f5c800); }
-  .container .dest-strip { padding:0; }
-  @media (max-width:720px) { .dest-strip { grid-template-columns:1fr; gap:10px; padding:0 16px; } .dest-tile { padding:12px 14px; } .dest-tile .dt-t { font-size:16px; } }
-</style>
-<div class="dest-strip">
-  <a class="dest-tile" href="/watchlist" onclick="if(typeof gtag==='function')gtag('event','dest_strip',{dest:'vault',page:location.pathname})">
-    <span class="dt-ico">&#9733;</span>
-    <span><span class="dt-k">Your Vault</span><span class="dt-t" style="display:block;">Open your Vault</span><span class="dt-s" style="display:block;">Your free watchlist with live prices. No account — your list stays on your device.</span></span>
-    <span class="dt-arrow">&rarr;</span>
-  </a>
-  <a class="dest-tile bangers" href="/bowman-bangers" onclick="if(typeof gtag==='function')gtag('event','dest_strip',{dest:'bangers',page:location.pathname})">
-    <span class="dt-ico">&#9918;</span>
-    <span><span class="dt-k">The Board</span><span class="dt-t" style="display:block;">2026 Bowman Bangers</span><span class="dt-s" style="display:block;">The prospect cards we&rsquo;d be glad to own a year from now &mdash; ranked by real sold prices, graded in public.</span></span>
-    <span class="dt-arrow">&rarr;</span>
-  </a>
-</div>
-<!-- DEST:END -->
+
 
 
 
@@ -1052,7 +1025,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     </div>
 
     <div class="verdict-banner">
-      <strong>The biggest hidden cost:</strong> The tier price assumes every card comes back PSA 10. They won't. If 30% of your cards grade PSA 7 or 8 — typical for modern chrome without pre-screening — those cards just cost you $60 in fees on cards that <strong>lost value</strong> compared to raw. A raw PSA 8 Bowman Chrome auto typically sells for less than ungraded. You paid $60 to grade it, waited 90–100 business days, and came out behind. <strong>Pre-grade every card before submitting.</strong>
+      <strong>The biggest hidden cost:</strong> The tier price assumes every card comes back PSA 10. They won't. If 30% of your cards grade PSA 7 or 8 — typical for modern chrome without pre-screening — those cards just cost you $60 in fees on cards that <strong>lost value</strong> compared to raw. A PSA 8 Bowman Chrome auto often sells for less than a raw copy. You paid $60 to grade it, waited 70–80 business days, and came out behind. <strong>Pre-grade every card before submitting.</strong>
     </div>
   </section>
 
@@ -1066,24 +1039,23 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       <div class="formula-label">Break-Even Formula</div>
       <div class="formula-line">PSA 10 sale price</div>
       <div class="formula-line">− Raw sale price</div>
-      <div class="formula-line">− All-in grading cost (~$85 in a 20-card batch)</div>
+      <div class="formula-line">− All-in grading cost (~$63 a card in a 20-card Standard batch)</div>
       <div class="formula-line result">= Your profit (or loss)</div>
     </div>
 
     <div class="formula" style="border-left-color:var(--green);">
       <div class="formula-label">Example — Ethan Holliday Chrome Auto</div>
-      <div class="formula-line">Raw price: ~$90 (post-injury)</div>
-      <div class="formula-line">Last PSA 10 sale: $720 (Aug 6, 2026, one sale) · PSA 9: $155 (5 dated sales)</div>
-      <div class="formula-line">All-in Standard grading cost: ~$85 (part of a batch)</div>
-      <div class="formula-line">Break-even PSA 10 needed: $175</div>
-      <div class="formula-line result">✓ Worth it only on a likely 10 — a PSA 9 ($155) lands below the $175 break-even</div>
+      <div class="formula-line">Last PSA 10 sale: $720 (Aug 6, 2026, one sale)</div>
+      <div class="formula-line">All-in Standard grading cost: ~$63 (20-card batch, above)</div>
+      <div class="formula-line">Break-even: the slab has to sell for the raw price plus ~$63</div>
+      <div class="formula-line result">✓ A 10 clears that easily. Anything less is a coin flip, so check what raw copies sell for before you send it</div>
     </div>
 
     <div class="stats-grid" style="margin-top:32px;">
       <div class="stat-card"><div class="stat-label">PSA 10 Premium</div><div class="stat-value">Varies</div><div class="stat-sub">card by card — use a dated PSA 10 sale for the exact card</div></div>
-      <div class="stat-card"><div class="stat-label">Break-even on Standard</div><div class="stat-value">$85</div><div class="stat-sub">all-in per card in 20-card batch</div></div>
+      <div class="stat-card"><div class="stat-label">Break-even on Standard</div><div class="stat-value">$63</div><div class="stat-sub">all-in per card in 20-card batch</div></div>
       <div class="stat-card"><div class="stat-label">Min Raw Value to Grade</div><div class="stat-value gold">$40</div><div class="stat-sub">below this, rarely pencils out</div></div>
-      <div class="stat-card"><div class="stat-label">Standard Wait Time</div><div class="stat-value red">90–100</div><div class="stat-sub">business days + 3–4 weeks intake</div></div>
+      <div class="stat-card"><div class="stat-label">Standard Wait Time</div><div class="stat-value red">70–80</div><div class="stat-sub">business days + 3–4 weeks intake</div></div>
     </div>
   </section>
 
@@ -1103,11 +1075,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       </div>
       <div class="grade-col no">
         <div class="grade-col-title">✗ Don't Grade These</div>
-        <div class="grade-item"><span class="icon" style="color:var(--red);">✗</span><div><strong>Cards worth under $40 raw</strong> — Standard grading costs ~$85 all-in. The math almost never works below $40.</div></div>
+        <div class="grade-item"><span class="icon" style="color:var(--red);">✗</span><div><strong>Cards worth under $40 raw</strong> — Standard grading costs ~$63 all-in. The math almost never works below $40.</div></div>
         <div class="grade-item"><span class="icon" style="color:var(--red);">✗</span><div><strong>Mass-produced modern base cards</strong> — High PSA 10 populations kill the premium. Check pop reports before submitting anything post-2015 in large runs.</div></div>
         <div class="grade-item"><span class="icon" style="color:var(--red);">✗</span><div><strong>Cards with visible print defects</strong> — A surface flaw barely visible raw will drop you to a 7 or 8 every time.</div></div>
         <div class="grade-item"><span class="icon" style="color:var(--red);">✗</span><div><strong>Off-center cards</strong> — Anything worse than 65/35 centering will grade PSA 7 or below. Never submit these.</div></div>
-        <div class="grade-item"><span class="icon" style="color:var(--red);">✗</span><div><strong>Cards you need to sell quickly</strong> — Standard is 90–100 business days before intake. You're locking capital for 5–7 months.</div></div>
+        <div class="grade-item"><span class="icon" style="color:var(--red);">✗</span><div><strong>Cards you need to sell quickly</strong> — Standard is 70–80 business days, plus 3–4 weeks of intake. Your money is tied up for 4–5 months.</div></div>
       </div>
     </div>
   </section>
@@ -1116,14 +1088,14 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <section>
     <div class="section-eyebrow">Step by Step</div>
     <h2>How to Submit to PSA in 2026</h2>
-    <p class="section-intro">The process from raw card to slab. 30 minutes of work + 5–7 months of waiting.</p>
+    <p class="section-intro">The process from raw card to slab. About 30 minutes of work, then 4–5 months of waiting at Standard.</p>
 
     <div class="steps">
       <div class="step"><div class="step-num">01</div><div class="step-body"><div class="step-title">Pre-grade your cards honestly</div><div class="step-desc">Under bright light, examine corners, edges, surface, and centering. Only submit cards where you genuinely believe a PSA 9 or 10 is likely. <strong>If in doubt, don't submit.</strong> A PSA 8 on a modern card is often worth less than raw.</div></div></div>
       <div class="step"><div class="step-num">02</div><div class="step-body"><div class="step-title">Create your PSA account and choose your tier</div><div class="step-desc">Go to <strong>psacard.com/submissioncenter</strong>. For a card worth under $500, <strong>Value ($39.99)</strong> reopened on October 29, 2026 (about 90–100 business days); above $500, <strong>Standard ($59.99)</strong> is the next tier. Value Bulk, Value Plus and Value Max are still paused. <strong>Priority ($79.99)</strong> buys roughly 20 business days and a $1,500 cap. Avoid Express and above unless the card genuinely demands speed.</div></div></div>
       <div class="step"><div class="step-num">03</div><div class="step-body"><div class="step-title">Fill out your submission form online</div><div class="step-desc">Log each card individually. Set your declared value conservatively — this is for insurance only. Print the form and include it with your submission.</div></div></div>
       <div class="step"><div class="step-num">04</div><div class="step-body"><div class="step-title">Pack your cards correctly</div><div class="step-desc">Each card in a <strong>card saver</strong> (not a rigid top loader — PSA prefers card savers). Pack in bubble wrap. Ship via FedEx or USPS with tracking and insurance. <strong>Insure for the raw value of every card in the submission.</strong></div></div></div>
-      <div class="step"><div class="step-num">05</div><div class="step-body"><div class="step-title">Track and wait</div><div class="step-desc">PSA's tracker: Received → Research & ID → Grading → Assembly → QC → Shipped. Standard typically shows movement at 12–16 weeks. Add 3–4 weeks intake. Realistic total wait: <strong>5–7 months at Standard.</strong></div></div></div>
+      <div class="step"><div class="step-num">05</div><div class="step-body"><div class="step-title">Track and wait</div><div class="step-desc">PSA's tracker: Received → Research & ID → Grading → Assembly → QC → Shipped. Standard typically shows movement at 12–16 weeks. Add 3–4 weeks intake. Realistic total wait: <strong>4–5 months at Standard.</strong></div></div></div>
     </div>
 
     <a href="https://www.psacard.com/submissioncenter" class="btn-primary" target="_blank" rel="noopener" style="margin-bottom:32px; display:inline-flex;">Submit to PSA →</a>
