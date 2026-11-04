@@ -47,6 +47,7 @@ import { cardId, cardKey, assignKeys, rawNot, RAW_EXTRA, WOTC, EDITION, writeCar
 import { holoTest, hasRarity } from "./lib/holo-tier.mjs";
 import { isReprintTitle, REPRINT_PAIRS, reprintFloor } from "./lib/reprint-filter.mjs";
 import { holdIfUnconfirmed } from "./lib/move-guard.mjs";
+import { tagClassicCollection, CC_LABEL } from "./lib/classic-collection.mjs";
 import { createRequire } from "node:module";
 import { applyIndexLd, applyIndexAnswer } from "./lib/index-jsonld.mjs";
 import { CLASS_PAGE, classTickers, readClassFile, classYear, classRows, rowKey, fold as foldName, classQuery, isFixture } from "./lib/bowman-class.mjs";
@@ -703,7 +704,7 @@ function block(x, c, opt = {}) {
   // reprints in CEL21 / TH26), so its customid and /card link never collide with the first (Oct 5 2026)
   const KEYS = assignKeys(ROOT, x.ticker, rows.concat(x.universe || [])); rows.forEach((b) => { b.key = KEYS.get(b.path || `${b.name}#${b.num}`); });   // sticky keys (Oct 14 2026, lib/card-files.mjs)
   // HOLO RULE labels: a holo-tier row says so; a thin one names the window its mark came from (never a silent stale price)
-  const subLbl = (b) => `${b.holo ? " · holo" : ""}${b.thin ? ` · <span class="thin" title="fewer than ${SCREEN.stay} clean raw sales in ${SCREEN.window} days — standing constituent under the holo rule, marked on the nearest window with sales">thin · ${b.win && b.win !== SCREEN.window ? `${b.wn} sale${b.wn === 1 ? "" : "s"}, ${b.win}-day median` : `${b.n30} sale${b.n30 === 1 ? "" : "s"}`}</span>` : ""}${b.carried ? " · carried " + mdy(b.asOf) : ""}${b.heldMove ? ` · <span class="thin" title="a ${mdy(b.heldMove.since)} read proposed ${money(b.heldMove.proposed)} (${b.heldMove.why}); the prior mark stands until a second read or deeper sales confirm it">held · read ${money(b.heldMove.proposed)} unconfirmed</span>` : ""}`;
+  const subLbl = (b) => `${b.cc ? ` · <span class="cc" title="a reprint of an older card on its original number — not the original card">${CC_LABEL}</span>` : ""}${b.holo ? " · holo" : ""}${b.thin ? ` · <span class="thin" title="fewer than ${SCREEN.stay} clean raw sales in ${SCREEN.window} days — standing constituent under the holo rule, marked on the nearest window with sales">thin · ${b.win && b.win !== SCREEN.window ? `${b.wn} sale${b.wn === 1 ? "" : "s"}, ${b.win}-day median` : `${b.n30} sale${b.n30 === 1 ? "" : "s"}`}</span>` : ""}${b.carried ? " · carried " + mdy(b.asOf) : ""}${b.heldMove ? ` · <span class="thin" title="a ${mdy(b.heldMove.since)} read proposed ${money(b.heldMove.proposed)} (${b.heldMove.why}); the prior mark stands until a second read or deeper sales confirm it">held · read ${money(b.heldMove.proposed)} unconfirmed</span>` : ""}`;
   const salesCell = (b) => `${b.n30}${b.win && b.win !== SCREEN.window ? `<small title="clean sales in the ${b.win}-day window the mark came from"> · ${b.wn} in ${b.win}d</small>` : ""}`;
   const row = (b, i) => {
     const w = (b.price * b.w) / bv;
@@ -734,7 +735,7 @@ function block(x, c, opt = {}) {
     <div class="cg">${chaseTop.map((b, i) => {
       const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}-chase`;
       const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
-      return `<a class="cc" href="${url}" target="_blank" rel="noopener sponsored" title="${esc(b.name)} #${esc(b.num)} — live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(cid)}',page:location.pathname})"><span class="ci" data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="row" data-card-surface="${x.ticker.toLowerCase()}-chase" data-card-link="off"></span><span class="cn">${esc(b.name)} #${esc(b.num)}</span><span class="cp"><b>${b.price >= 100 ? "$" + Math.round(b.price).toLocaleString("en-US") : money(b.price)}</b><small>recent sales · ${mdShort(b.asOf || (last && last.date))}</small></span><span class="cgo">${b.price >= 200 ? "Authenticated on eBay" : "Listings on eBay"} &rarr;</span></a>`;
+      return `<a class="cc" href="${url}" target="_blank" rel="noopener sponsored" title="${esc(b.name)} #${esc(b.num)} — live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(cid)}',page:location.pathname})"><span class="ci" data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="row" data-card-surface="${x.ticker.toLowerCase()}-chase" data-card-link="off"></span><span class="cn">${esc(b.name)} #${esc(b.num)}${b.cc ? " · " + CC_LABEL : ""}</span><span class="cp"><b>${b.price >= 100 ? "$" + Math.round(b.price).toLocaleString("en-US") : money(b.price)}</b><small>recent sales · ${mdShort(b.asOf || (last && last.date))}</small></span><span class="cgo">${b.price >= 200 ? "Authenticated on eBay" : "Listings on eBay"} &rarr;</span></a>`;
     }).join("")}</div>
     <div class="cf">Price per card, from the table below: a median of recent dated sales (not one sale), dated to the read. Links open live eBay listings (affiliate; ShopCardHub earns a commission at no cost to you).</div>
   </div>`;
@@ -939,6 +940,9 @@ ${PR.PR_CSS}
 </style>`;
 
 function bake(x, c) {
+  // Classic Collection reprint label (Price Truth, Nov 4 2026, KB GAPS P42): CEL21 / TH26 rows that reprint an older card on its
+  // original number carry cc:true in data/indices.json (the client plain read reads it there) and say so on every surface.
+  if (tagClassicCollection(x) && !DRY) { fs.writeFileSync(idxPath, JSON.stringify(IDX, null, 1) + "\n"); console.log(`${x.ticker}: Classic Collection labels written to data/indices.json`); }
   const file = path.join(ROOT, c.page.slice(1) + ".html");
   let html = fs.readFileSync(file, "utf8");
   const S = `<!-- ${x.ticker}:START -->`, E = `<!-- ${x.ticker}:END -->`;
@@ -1243,7 +1247,7 @@ async function classMark(c) {
 // ---------------- main (one or more tickers: --ticker BOW26,BB26,BCB26 share every page read) ----------------
 const idxPath = path.join(ROOT, "data/indices.json");
 const IDX = JSON.parse(fs.readFileSync(idxPath, "utf8"));
-const save = () => { if (DRY) { console.log("--dry: indices.json not written"); return; } IDX.updated = TODAY; fs.writeFileSync(idxPath, JSON.stringify(IDX, null, 1) + "\n"); console.log("wrote data/indices.json"); };
+const save = () => { if (DRY) { console.log("--dry: indices.json not written"); return; } for (const t of Object.values(IDX)) if (t && typeof t === "object") tagClassicCollection(t); IDX.updated = TODAY; fs.writeFileSync(idxPath, JSON.stringify(IDX, null, 1) + "\n"); console.log("wrote data/indices.json"); };
 const ORIG = JSON.parse(JSON.stringify(IDX));   // pre-run snapshot: --rescope draws sibling rows from it, so ticker order in one run never matters
 const r6 = (v) => Math.round(v * 1e6) / 1e6;
 

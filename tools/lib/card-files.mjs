@@ -73,7 +73,7 @@ export function writeCardFile(ROOT, x, c, rows, imgAttr, dry) {
   const h = x.history || [], last = h[h.length - 1];
   const bv = rows.reduce((s, b) => s + b.price * b.w, 0);
   const KEYS = assignKeys(ROOT, x.ticker, rows.concat(x.universe || []));
-  const cards = rows.map((b, i) => ({ id: cardId(x.ticker, (b.key = KEYS.get(rowId(b)))), key: b.key, num: String(b.num), name: b.name, path: b.path, rank: i + 1, raw: b.price, n30: b.n30, rawAsOf: b.asOf || (last && last.date), w: bv ? Math.round((b.price * b.w / bv) * 10000) / 100 : null, ...(b.w === 0 ? { screened: true, why: "line" } : {}), ...(b.holo ? { holo: true } : {}), ...(b.thin ? { thin: true } : {}), ...(b.win ? { win: b.win } : {}), ...(b.wn != null ? { wn: b.wn } : {}), q: c.ebayQuery(b.name, b.num), img: imgAttr(b, c) }));
+  const cards = rows.map((b, i) => ({ id: cardId(x.ticker, (b.key = KEYS.get(rowId(b)))), key: b.key, num: String(b.num), name: b.name, path: b.path, rank: i + 1, raw: b.price, n30: b.n30, rawAsOf: b.asOf || (last && last.date), w: bv ? Math.round((b.price * b.w / bv) * 10000) / 100 : null, ...(b.w === 0 ? { screened: true, why: "line" } : {}), ...(b.holo ? { holo: true } : {}), ...(b.cc ? { cc: true } : {}), ...(b.thin ? { thin: true } : {}), ...(b.win ? { win: b.win } : {}), ...(b.wn != null ? { wn: b.wn } : {}), q: c.ebayQuery(b.name, b.num), img: imgAttr(b, c) }));
   // universe rows outside the basket: tracked, below the liquidity screen at the last read (no raw mark is published for them)
   const inB = new Set(rows.map((b) => b.path || `${b.name}#${b.num}`)), ids = new Set(cards.map((cd) => cd.id));
   let dup = 0, dupKeyed = 0;

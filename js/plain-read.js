@@ -191,9 +191,9 @@
 
   /* 3 · two tiles. opts.topImg = image slot HTML (the generator's data-card-img span). No buy link of its own: the chase strip
    * and the table carry this card's eBay links already (R33 link-type freeze). */
-  function tileTop(f) { return f.top ? esc(f.top.name) + (f.top.num ? ' <small>#' + esc(f.top.num) + '</small>' : '') : 'No priced card yet'; }
+  function tileTop(f) { return f.top ? esc(f.top.name) + (f.top.num ? ' <small>#' + esc(f.top.num) + (f.top.cc ? ' · Classic Collection reprint' : '') + '</small>' : '') : 'No priced card yet'; }
   function tileTopV(f) { return f.top ? money(f.top.price) + '<small>recent sales</small>' : ''; }
-  function tileMv(f) { return f.mover ? esc(f.mover.c.name) + (f.mover.c.num ? ' <small>#' + esc(f.mover.c.num) + '</small>' : '') : (f.wk == null ? 'Nothing to compare yet' : 'No card moved 1% or more'); }
+  function tileMv(f) { return f.mover ? esc(f.mover.c.name) + (f.mover.c.num ? ' <small>#' + esc(f.mover.c.num) + (f.mover.c.cc ? ' · Classic Collection reprint' : '') + '</small>' : '') : (f.wk == null ? 'Nothing to compare yet' : 'No card moved 1% or more'); }
   /* Retention B (Nov 1 2026): the tile compares each card with its previous mark (3–4 days on a Mon/Thu set, longer after a
    * missed mark), so its header names that window when it is not a week — never "this week" over 4 or 11 days. */
   function tileMvK(f) {
