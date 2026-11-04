@@ -83,7 +83,16 @@
 /* the one filled pill (CoS Oct 31: gold → accent on / only; G2 read Nov 13) */
 .h2-buy { display:inline-flex; align-items:center; justify-content:center; font:600 17px/1 var(--ds-font); text-transform:none; background:var(--accent); color:#000; padding:0 22px; min-height:44px; border-radius:980px; transition:filter .2s var(--ds-ease), transform .1s; }
 .h2-buy:hover { filter:brightness(1.1); color:#000; } .h2-buy:active { transform:scale(.98); }
-.h2-open { font:400 14px/1.43 var(--ds-font); text-transform:none; color:var(--accent); padding:10px 0; }
+/* "See all <N> cards ›" (Cupertino run 5, Mo Nov 3: the way into a set has to look like a way in): a neutral outline
+   button the pill's height, never filled and never cyan, so the eBay pill stays the one fill. Beside the pill on desktop,
+   full width under it on phones (after it in the markup, so the pill keeps its place on the first screen). */
+.h2-open { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 22px; border-radius:980px; font:600 17px/1 var(--ds-font); text-transform:none; color:var(--text-head); background:none; box-shadow:inset 0 0 0 1px rgba(255,255,255,.24); text-decoration:none; transition:background-color .2s var(--ds-ease); }
+.h2-open:hover { color:var(--text-head); background:rgba(255,255,255,.06); text-decoration:none; }
+/* the selected row's "›": opens that set's page (the row click still re-points the chart) */
+.h2-list td.go { width:44px; padding:0; text-align:center; }
+.h2-list .h2-rgo { display:flex; align-items:center; justify-content:center; width:44px; min-height:44px; font:400 21px/1 var(--ds-font); color:var(--accent); text-decoration:none; visibility:hidden; }
+.h2-list tr[aria-selected="true"] .h2-rgo { visibility:visible; }
+@media (hover:hover) and (pointer:fine) { .h2-list td.go, .h2-list .h2-rgo { width:24px; } }
 .h2-foot { font-size:12px; line-height:1.33; color:var(--text-dim); padding:12px 20px 16px; border-top:1px solid var(--border); display:flex; justify-content:space-between; gap:6px 16px; flex-wrap:wrap; }
 .h2-foot a { color:var(--accent); }
 .h2-rel { background:var(--ds-surface-1); border:0; border-radius:var(--ds-radius,18px); padding:4px 20px 0; display:flex; flex-direction:column; min-height:0; }
@@ -202,3 +211,4 @@
   .h2-r2 > section > .q { margin-bottom:8px; } .h2-rng { margin:4px 0 2px; } .h2-act { margin-top:8px; }
 }
 @media (prefers-reduced-motion: reduce) { .h2 * { animation:none !important; transition:none !important; } }
+@media (max-width:734px) { .h2-act .h2-open { flex:1 1 100%; } }

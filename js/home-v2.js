@@ -90,10 +90,12 @@
     chart(v);
     var buy = document.getElementById('h2-buy'), row = rowsEl.querySelector('tr[data-tk="' + cur + '"]'), bh = row && row.getAttribute('data-buy');
     if (bh) { buy.hidden = false; buy.href = bh; buy.textContent = row.getAttribute('data-buy-l') || 'Buy on eBay \u2192'; } else buy.hidden = true;
-    var op = document.getElementById('h2-open'); op.href = v.p; op.textContent = 'Every card in ' + v.n + ' \u2192';
+    var op = document.getElementById('h2-open'); op.href = v.p; op.textContent = v.u ? 'See all ' + v.u + ' cards \u203a' : 'See every card \u203a'; op.setAttribute('aria-label', 'Every card in ' + v.n);
   }
   function select(tk) { if (!T[tk]) return; cur = tk; Array.prototype.forEach.call(rowsEl.querySelectorAll('tr'), function (tr) { tr.setAttribute('aria-selected', String(tr.getAttribute('data-tk') === tk)); }); paintViz(false); ga('home2_index_pick', { ticker: tk }); }
-  rowsEl.addEventListener('click', function (e) { var tr = e.target.closest('tr[data-tk]'); if (tr) select(tr.getAttribute('data-tk')); });
+  rowsEl.addEventListener('click', function (e) { if (e.target.closest('.h2-rgo')) return; var tr = e.target.closest('tr[data-tk]'); if (tr) select(tr.getAttribute('data-tk')); });
+  // opens of a set's page from the box: the "See all <N> cards" button and the selected row's "›" (Measurement counts these from Nov 5)
+  document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('#h2-open, .h2-rgo'); if (!a) return; var tr = a.closest('tr[data-tk]'); ga('home2_index_open', { tk: tr ? tr.getAttribute('data-tk') : cur, from: tr ? 'row' : 'button' }); });
   rowsEl.addEventListener('keydown', function (e) { var tr = e.target.closest('tr[data-tk]'); if (tr && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); select(tr.getAttribute('data-tk')); } });
   Array.prototype.forEach.call(document.querySelectorAll('.h2-tab'), function (b) {
     b.addEventListener('click', function () {

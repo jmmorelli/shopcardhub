@@ -132,6 +132,7 @@ export function buildV2(REPO, opts = {}) {
       h: h.map((r) => [r.date, +r.level.toFixed(2)]),
       r: rc.map((r) => [r.month, +Number(r.level).toFixed(2)]),
       buy: buyFor(tk, v),
+      u: Array.isArray(v.universe) && v.universe.length ? v.universe.length : null,   // the set's card count, for "See all <N> cards ›" (Cupertino run 5, Mo Nov 3)
     };
     tabRows[tabOf(tk, v)].push({ tk, rd });
   }
@@ -211,6 +212,7 @@ export function buildV2(REPO, opts = {}) {
   const payload = JSON.stringify({ today: TODAY, def: DEFAULT_TK, tabs, t: slim, sets }).replace(/</g, "\\u003c");
   const stamp = idx.updated || TODAY;
 
+  const openLabel = (v) => v.u ? `See all ${v.u} cards ›` : "See every card ›";   // js/home-v2.js paintViz() says the same on a re-point
   /* ---- block: HOME:idxbox (the whole left section's inner: question row, tabs, every row of every tab, viz defaults, foot, payload) ---- */
   const d0 = T[DEFAULT_TK];
   const rowsHtml = tabs.map((t, ti) => t.rows.map((tk) => { const v = T[tk];
@@ -218,7 +220,10 @@ export function buildV2(REPO, opts = {}) {
     return `<tr role="option" data-tk="${tk}" data-tab="${t.id}" aria-selected="${tk === DEFAULT_TK}" tabindex="0"${ti ? " hidden" : ""}${v.buy ? ` data-buy="${esc(v.buy.h)}" data-buy-l="${esc(v.buy.l)}"` : ""} title="as of ${esc(mdy(v.d))}${v.wd ? " · this week vs " + esc(mdy(v.wd)) : ""}">` +
       `<td class="nm">${esc(v.n)}<small><b>${esc(tk)}</b></small></td>` +
       `<td class="num ib-lvl">${v.l.toFixed(2)}</td>` +
-      `<td class="wk ${cls(v.w)}">${v.w == null ? "—" : (v.w > 0 ? "▲ " : v.w < 0 ? "▼ " : "") + sgn(v.w, 1)}<small>${(v.s > 0 ? "+" : "") + v.s.toFixed(0)}% ${esc(v.sl)}</small></td></tr>`; }).join("")).join("\n");
+      `<td class="wk ${cls(v.w)}">${v.w == null ? "—" : (v.w > 0 ? "▲ " : v.w < 0 ? "▼ " : "") + sgn(v.w, 1)}<small>${(v.s > 0 ? "+" : "") + v.s.toFixed(0)}% ${esc(v.sl)}</small></td>` +
+      // Cupertino run 5 (Mo, Nov 3: "I didn't see I could click into each index"): the selected row carries a "›" that opens
+      // the set's page; the row click still re-points the chart. Keyboard users open it with the "See all" button.
+      `<td class="go"><a class="h2-rgo" href="${esc(v.p)}" tabindex="-1" aria-label="Every card in ${esc(v.n)}">›</a></td></tr>`; }).join("")).join("\n");
   const idxbox = `<div class="q"><h2 id="h2-ixh">How are the sets doing?</h2><a class="all" href="/indices">All ${liveN} sets →</a></div>
 <div class="h2-box">
   <div class="h2-tabs" role="tablist" aria-label="Category">${tabs.map((t, i) => `<button class="h2-tab" role="tab" id="h2-tab-${t.id}" data-tab="${t.id}" aria-selected="${i === 0}" aria-controls="h2-list">${esc(t.label)}</button>`).join("")}</div>
@@ -234,7 +239,7 @@ ${rowsHtml}
       <div class="h2-rng" role="group" aria-label="Range" id="h2-rng"><button data-r="1M" aria-pressed="false">1M</button><button data-r="6M" aria-pressed="false">6M</button><button data-r="1Y" aria-pressed="false">1Y</button><button data-r="MAX" aria-pressed="true">Max</button></div>
       <div class="h2-chart" id="h2-chart" aria-live="polite"></div>
       <div class="h2-cap" id="h2-cap"></div>
-      <div class="h2-act"><a class="h2-buy" id="h2-buy" href="${esc(d0.buy.h)}" target="_blank" rel="noopener sponsored">${esc(d0.buy.l)}</a><a class="h2-open" id="h2-open" href="${esc(d0.p)}">Every card in the set →</a></div>
+      <div class="h2-act"><a class="h2-buy" id="h2-buy" href="${esc(d0.buy.h)}" target="_blank" rel="noopener sponsored">${esc(d0.buy.l)}</a><a class="h2-open" id="h2-open" href="${esc(d0.p)}" aria-label="Every card in ${esc(d0.n)}">${openLabel(d0)}</a></div>
     </div>
   </div>
   <div class="h2-foot"><span>100 = the month the set came out. Above 100 = pricier since. <a href="/how-prices-work">How it works →</a></span><span>Updated ${esc(mdy(stamp))} from sold prices</span></div>
