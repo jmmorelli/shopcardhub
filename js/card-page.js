@@ -46,7 +46,8 @@
   var P62 = { allIn: 62.75, fee: 59.99, fvf: 0.1325, perOrder: 0.40, sets: { pf25: 1, dr25: 1, sv151: 1, pris25: 1, pb26: 1, cr26: 1, ah26: 1, meg25: 1, ssp24: 1, th26: 1 } };
 
   function render(d, c, g, gd) {
-    var setShort = String(d.set).replace(/^Pokémon TCG /, '');
+    // c.set: a card file that spans sets (TRK tracked cards, the GSTAR board — tools/build-coverage-cards.mjs, Nov 5 2026)
+    var setShort = String(c.set || d.set).replace(/^Pokémon TCG /, ''), offIx = d.kind === 'tracked' || d.kind === 'board';
     document.title = c.name + ' #' + c.num + ' ' + setShort + ' price — Raw, PSA 9, PSA 10, TAG | ShopCardHub';
     main.style.setProperty('--ac', d.theme || '#00ccf5');
     var raw = c.raw;
@@ -55,9 +56,9 @@
     // One entry per grade: m = the number we print (a median of ≥ 3 dated rows), one = a single dated sale when there is no median.
     var G = [{ k: 'raw', lbl: 'Raw', eb: 'raw', m: scr ? null : raw }];
     if (scr) G[0].basis = 'Not priced: ' + (c.n30 != null ? c.n30 + ' clean raw sales in the last ' + win + ' days' : 'below the liquidity screen') + '. It enters the index at ' + ((d.screen && d.screen.enter) || 6) + ' in ' + win + ' days.';
-    else if (raw == null) G[0].basis = 'Too few raw sales to mark.';
+    else if (raw == null) G[0].basis = c.nv ? 'No verified sale yet: ' + (c.wn || 0) + ' clean raw sales in ' + (c.win || 90) + ' days (3 needed)' : 'Too few raw sales to mark.';
     else if (chase) G[0].basis = 'PriceCharting’s ungraded value, read ' + md(c.rawAsOf);
-    else G[0].basis = 'Median of ' + (c.wn != null ? c.wn : c.n30) + ' raw sales, ' + (c.win || d.window || 30) + ' days · marked ' + md(c.rawAsOf);
+    else G[0].basis = 'Median of ' + (c.wn != null ? c.wn : c.n30) + ' raw sales' + (c.lo != null && c.hi != null ? ' (middle half ' + money(c.lo) + '–' + money(c.hi) + ')' : '') + ', ' + (c.win || d.window || 30) + ' days · marked ' + md(c.rawAsOf);
     [['psa9', 'PSA 9', 'psa9'], ['psa10', 'PSA 10', 'psa10'], ['tag10', 'TAG 10', 'tag']].forEach(function (p) {
       var x = g ? g[p[0]] : null, e = { k: p[0], lbl: p[1], eb: p[2], m: null, one: null, n: x && x.n, days: x && x.basis === '30d' ? 30 : 90 };
       if (x && x.m && x.n >= 3) { e.m = x.m; e.basis = 'Median of ' + x.n + ' dated sales, ' + e.days + ' days · read ' + md(gRead) + (x.last ? ' · last sale ' + money(x.last.p) + ', ' + mdShort(x.last.d) : ''); }
@@ -79,7 +80,7 @@
     }).join('');
     var p62 = grade62(d, c, G);
     var more = d.cards.filter(function (x) { return x.id !== c.id && x.raw != null; }).slice(0, 8).map(function (x) {
-      return '<a href="' + cardUrl(x) + '"><b>' + esc(x.name) + ' #' + esc(x.num) + '</b>raw ' + money(x.raw) + ' · ' + (x.w === 0 ? 'own line' : x.w != null ? x.w.toFixed(1) + '% of index' : '') + '</a>';
+      return '<a href="' + cardUrl(x) + '"><b>' + esc(x.name) + ' #' + esc(x.num) + '</b>raw ' + money(x.raw) + ' · ' + (offIx ? esc(String(x.set || '').replace(/^Pokémon TCG /, '')) : x.w === 0 ? 'own line' : x.w != null ? x.w.toFixed(1) + '% of index' : '') + '</a>';
     }).join('');
     // Sales tab: the dated rows we hold (R18) — one per grade, newest sale with its date, plus the median it sits in.
     var salesRows = G.map(function (e) {
@@ -110,8 +111,8 @@
       '<p class="cdp-note">PSA 9, PSA 10 and TAG 10 count only sales whose own listing title names that grade (PriceCharting’s dated completed sales).</p></section>' +
       '<section class="cdp-panel" id="cdp-p-grades" role="tabpanel" aria-labelledby="cdp-tab-grades" hidden><dl class="cdp-kv">' + gradeList + '</dl>' + (p62 ? p62.html : '') + '</section>' +
       '<section class="cdp-panel" id="cdp-p-index" role="tabpanel" aria-labelledby="cdp-tab-index" hidden><div class="cdp-ix"><a class="go" href="' + esc(d.page) + '">' + esc(d.ticker) + ' ' + esc(d.name) + (d.level != null ? ' · ' + Number(d.level).toFixed(2) : '') + ' →</a>' +
-      '<p>' + (scr ? 'Tracked in this index, outside the level (below the liquidity screen).' : c.w === 0 ? 'Tracked as its own line, not in the weighted basket.' : '#' + c.rank + ' by weight' + (c.w != null ? ' · ' + c.w.toFixed(1) + '% of the index' : '') + (d.asOf ? ' · index marked ' + md(d.asOf) : '')) + '</p></div>' +
-      (more ? '<div class="cdp-more"><h2>More from the ' + esc(d.ticker) + ' basket</h2><div class="g">' + more + '</div></div>' : '') + '</section>' +
+      '<p>' + (d.kind === 'tracked' ? 'Tracked card: its set has no index on this site, so there is no level or weight. The price is this card’s own dated sales.' : d.kind === 'board' ? 'On the ' + esc(d.ticker) + ' ' + esc(d.name) + ' board: a board, not an index, so there is no level or weight.' : scr ? 'Tracked in this index, outside the level (below the liquidity screen).' : c.w === 0 ? 'Tracked as its own line, not in the weighted basket.' : '#' + c.rank + ' by weight' + (c.w != null ? ' · ' + c.w.toFixed(1) + '% of the index' : '') + (d.asOf ? ' · index marked ' + md(d.asOf) : '')) + '</p></div>' +
+      (more ? '<div class="cdp-more"><h2>' + (d.kind === 'tracked' ? 'More tracked cards' : 'More from the ' + esc(d.ticker) + (d.kind === 'board' ? ' board' : ' basket')) + '</h2><div class="g">' + more + '</div></div>' : '') + '</section>' +
       '<div class="cdp-buy"><div class="h"><b>Other places to buy</b></div>' +
       (shopMark() ? '<div class="cdp-shop cdp-shop-wait" aria-hidden="true"></div>' : '') + '<div class="cdp-btns" id="cdp-btns">' + (shopMark() ? '<span class="tcg-slot" aria-hidden="true"></span>' : '') + '</div>' +
       '<div class="f">eBay searches for this exact card in each grade, with our affiliate tag (ShopCardHub earns a commission at no cost to you) — live listings, not prices. ' + (d.ed === '1st' ? 'Searches are for the 1st Edition print this index tracks. ' : d.ed === 'shadowless' ? 'Searches are for Shadowless copies and exclude 1st Edition. ' : d.wotc ? 'Searches exclude 1st Edition and Shadowless copies: this index tracks the Unlimited print. ' : '') + '<b>TAG:</b> we link TAG because it publishes its measurements. PSA is the reference grade. Our view: machine grading wins over time. <a href="/tag-grading-guide">How TAG grading works →</a></div></div>' +

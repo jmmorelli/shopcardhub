@@ -210,9 +210,10 @@ const slugsSeen = new Map();
 let nStatic = 0, nIndexed = 0;
 for (const tk of STATIC_TICKERS) {
   const d = JSON.parse(fs.readFileSync(path.join(ROOT, "data/cards", tk + ".json"), "utf8"));
-  const setShort = String(d.set).replace(/^Pokémon TCG /, "");
+  const setShortOf = (c) => String(c.set || d.set).replace(/^Pokémon TCG /, "");   // c.set: TRK / GSTAR card files span sets (build-coverage-cards.mjs)
   for (const c of d.cards) {
-    if (!c.path || c.rank == null) continue;   // basket constituents only (screened universe rows have no raw mark)
+    if (!c.path || c.rank == null) continue;
+    const setShort = setShortOf(c);   // basket constituents only (screened universe rows have no raw mark)
     const slug = staticSlug(c), passes = n90Of(c, d) >= GATE_N90 && c.raw != null && c.raw >= GATE_RAW;
     // Night Crew Oct 28: a page the sitemap lists keeps index,follow while it is listed (PRIS25 Iron Hands ex #154 fell to
     // $22.45 on the Oct 26 mark, and a noindex page in sitemap.xml FAILs audit-site). The sitemap owner (Commissioner) drops
@@ -225,7 +226,7 @@ for (const tk of STATIC_TICKERS) {
     if (slugsSeen.has(slug)) throw new Error(`slug collision: card-${slug} for ${slugsSeen.get(slug)} and ${c.id}`);
     slugsSeen.set(slug, c.id);
     // Same basis wording as js/card-page.js render() (chase: PriceCharting's ungraded value; sector: median of n raw sales).
-    const basis = c.raw == null ? "Too few raw sales to mark." : d.kind === "chase" ? `PriceCharting’s ungraded value, read ${md(c.rawAsOf)}` : `Median of ${c.wn != null ? c.wn : c.n30} raw sales, ${c.win || d.window || 30} days · marked ${md(c.rawAsOf)}`;
+    const basis = c.raw == null ? (c.nv ? `No verified sale yet: ${c.wn || 0} clean raw sales in ${c.win || 90} days (3 needed)` : "Too few raw sales to mark.") : d.kind === "chase" ? `PriceCharting’s ungraded value, read ${md(c.rawAsOf)}` : `Median of ${c.wn != null ? c.wn : c.n30} raw sales${c.lo != null && c.hi != null ? ` (middle half ${money(c.lo)}–${money(c.hi)})` : ""}, ${c.win || d.window || 30} days · marked ${md(c.rawAsOf)}`;
     const nm = `${c.name} #${c.num}`;
     const load = `  <div class="cdp-crumbs"><a href="/">Home</a><span>/</span><a href="${esc(d.page)}">${esc(d.ticker)}</a><span>/</span><span>${esc(nm)}</span></div>
   <div class="cdp-miss" id="cdp-load"><h1>${esc(nm)}</h1><p class="cdp-set"><a href="${esc(d.page)}">${esc(setShort)}</a> · #${esc(c.num)}${c.rarity ? " · " + esc(c.rarity) : ""}</p><p>Raw ${c.raw != null ? `<b>${money(c.raw)}</b> · ` : ""}${esc(basis)}. Loading PSA 9, PSA 10 and TAG 10 sales…</p><p><a href="${esc(ebaySearchUrl({ q: `${c.q || nm} ${rawNot(d.ticker)}${edNot(d)}${RAW_EXTRA[d.ticker] || ""}`, customid: "card-" + c.id, sacat: SACAT_TCG, av: c.raw >= 200 }))}" target="_blank" rel="sponsored nofollow noopener">Raw copies on eBay →</a></p></div>

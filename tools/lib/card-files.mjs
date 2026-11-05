@@ -106,7 +106,8 @@ export function writeSearch(ROOT) {
   for (const f of fs.readdirSync(dir).filter((f) => /^[a-z0-9]+\.json$/.test(f)).sort()) {
     const d = JSON.parse(fs.readFileSync(path.join(dir, f), "utf8"));
     const short = String(d.set).replace(/^Pokémon TCG /, "").replace(/ \(Unlimited\)$/, "");
-    for (const cd of d.cards) out.push([cd.id, `${cd.name} #${cd.num}`, short + (cd.screened ? OUTSIDE : ""), cd.raw == null ? null : cd.raw]);
+    // a card file that spans sets (TRK tracked cards, the GSTAR board — tools/build-coverage-cards.mjs) names each card's own set
+    for (const cd of d.cards) out.push([cd.id, `${cd.name} #${cd.num}`, (cd.set ? String(cd.set) : short) + (cd.screened ? OUTSIDE : ""), cd.raw == null ? null : cd.raw]);
   }
   fs.writeFileSync(path.join(ROOT, "data/card-search.json"), JSON.stringify({ _comment: "GENERATED from data/cards/*.json — nav card search: [id, card, set, raw sold mark or null]. Set ending \"· tracked, outside the level\" = a universe card below the liquidity screen or held at weight 0.", cards: out }) + "\n");
 }

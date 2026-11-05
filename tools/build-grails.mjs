@@ -330,6 +330,9 @@ async function main() {
     D = await read();
     if (D.errs && D.cards.length < UNIVERSE.length) throw new Error(`${D.errs} cards failed to read and had no previous read — not writing`);
     if (!DRY) fs.writeFileSync(path.join(ROOT, "data/grails.json"), JSON.stringify({ _comment: GJ_COMMENT, ticker: TICKER, page: "/" + PAGE, model: "board", status: "live", day: D.day, cards: D.cards }, null, 0) + "\n");
+    // Coverage Builder, Nov 5 2026: the board's cards are searchable through data/cards/gstar.json (+ g-/h-), rebuilt from the
+    // file just written so card pages and search carry the same read as the board. Offline; a failure never fails the board.
+    if (!DRY) { try { (await import("node:child_process")).execFileSync(process.execPath, [path.join(ROOT, "tools/build-coverage-cards.mjs"), "--gstar"], { stdio: "inherit" }); } catch (e) { console.warn("GSTAR card file not rebuilt: " + e.message); } }
   }
   const pf = path.join(ROOT, PAGE + ".html");
   let h = fs.readFileSync(pf, "utf8");
