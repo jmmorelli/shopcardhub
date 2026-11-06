@@ -5873,6 +5873,18 @@
           "gates": "audit-prices FAIL 0/WARN 54; audit-site FAIL 0/WARN 4; audit-terminal FAIL 0/WARN 1 (= baseline)",
           "liveVerified": "docs-only (STATE trim + run log + MILESTONES, NEEDS-MO, this pushLog); skipped by the ignoreCommand by design, nothing on the site changes",
           "rollback": "git revert HEAD (docs only)"
+        },
+        {
+          "date": "2026-11-05",
+          "commits": [
+            "4894387"
+          ],
+          "by": "Price Truth Desk (CoS charter, task price-truth-2026-11-05)",
+          "what": "re-read tag: a mark catching up with PriceCharting (prior outside 1.5x, new inside) is never narrated as a move - home movers, plain read, tape; sweep check 1b; NDC1E Hitmontop #3 $30->$67 '+123%' off / and /neo-discovery-1st-edition-index",
+          "gates": "audit-prices 0/56 . audit-site 0/4 . audit-terminal 0/1 (= base 7b222c0); cloud --run-tests FAIL 5 / WARN 20 = base; sweep RED 0",
+          "liveVerified": "2026-11-06 ~08:10Z curl: / movers 'Nothing moved up outside its usual range this week'; NDC1E 'Biggest move' Butterfree #19; /data/indices.json NDC1E #3 reread; js live",
+          "deploy": "cloud build -> Card Hub/deploy/price-truth-2026-11-05.patch -> /tmp clone on the Mac, git am -3, tree 2c3f348 matched, gates re-run, fast-forward",
+          "rollback": "git revert 4894387"
         }
       ]
     },
