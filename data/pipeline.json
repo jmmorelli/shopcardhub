@@ -5889,12 +5889,12 @@
         {
           "date": "2026-11-06",
           "commits": [
-            "(this commit)"
+            "8a56e3c"
           ],
           "by": "Site Sweep (task site-sweep, Authority: Mo 2026-09-27)",
           "what": "home: 44 px tap area on 'All N sets →' (was 20 px at 390; DESIGN-SYSTEM tap-target token); css/home-v2.css v=7->v=8 in index.html, home-v2.html, build-home.mjs. Layout unchanged (h2/box tops identical at 320/390/1366).",
           "gates": "audit-prices 0/56 . audit-site 0/4 . audit-terminal 0/1 (= base)",
-          "liveVerified": "pending (sweep live check)"
+          "liveVerified": "2026-11-06 ~22:50Z curl / -> home-v2.css?v=8, css carries the rule; Playwright 390/1366: link 44 px high, .h2-box top 272/271 (unchanged), scrollWidth = viewport, 0 page errors"
         }
       ]
     },
