@@ -22,10 +22,13 @@
   var q = document.getElementById('sg-q'), list = document.getElementById('sg-list'), out = document.getElementById('sg-out');
   var inp = { cost: document.getElementById('sg-cost'), fvf: document.getElementById('sg-fvf'), ord: document.getElementById('sg-ord'), raw: document.getElementById('sg-raw'), miss: document.getElementById('sg-miss') };
   var ALL = null, STATIC = {}, cur = null, files = {};
-  var tierSel = document.getElementById('sg-tier'), VALUE_CAP = 500;
-  var TIER = { value: { name: 'PSA Value', cost: 42.75 }, standard: { name: 'PSA Standard', cost: 62.75 }, priority: { name: 'PSA Priority', cost: 82.75 } };
+  var tierSel = document.getElementById('sg-tier');
+  // caps = max declared value per card (PSA notices Sep 9 and Oct 28 2026, read Nov 5 2026); cost = fee + $2.76 shipping/supplies
+  var TIER = { value: { name: 'PSA Value', cost: 42.75, cap: 500 }, standard: { name: 'PSA Standard', cost: 62.75, cap: 1000 }, priority: { name: 'PSA Priority', cost: 82.75, cap: 1500 }, express: { name: 'PSA Express', cost: 201.76, cap: 2500 }, premier: { name: 'PSA Premier', cost: 601.76, cap: 10000 } };
+  var ORDER = ['value', 'standard', 'priority', 'express', 'premier'];
+  function fitTier(ref) { if (ref == null) return 'standard'; for (var i = 0; i < ORDER.length; i++) if (ref <= TIER[ORDER[i]].cap) return ORDER[i]; return 'over'; }
   // auto: PSA's declared value is the card's graded worth, so use the PSA 10 median, else the PSA 9 median, else the raw median
-  function tierNow(ref) { var t = tierSel ? tierSel.value : 'auto'; return t === 'auto' ? (ref == null || ref >= VALUE_CAP ? 'standard' : 'value') : t; }
+  function tierNow(ref) { var t = tierSel ? tierSel.value : 'auto'; return t === 'auto' ? fitTier(ref) : t; }
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   function md(d) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ''); return m ? MON[+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1] : ''; }
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -130,7 +133,9 @@
     var cost = num(inp.cost, 62.75), f = num(inp.fvf, 13.25) / 100, o = num(inp.ord, 0.40);
     var tierName = TIER[tier] && Math.abs(cost - TIER[tier].cost) < 0.005 ? TIER[tier].name : '';
     var atCost = 'At ' + money(cost) + ' a card' + (tierName ? ' (' + tierName + ')' : '');
-    var capNote = tier === 'value' && ref != null && ref >= VALUE_CAP ? '<p class="sg-fine">This card’s graded median is over $500, and PSA Value only takes cards declared at $500 or less. Standard or Priority is the PSA tier that fits.</p>' : '';
+    var fit = fitTier(ref), capFmt = function (n) { return '$' + n.toLocaleString('en-US'); };
+    var capNote = tier === 'over' ? '<p class="sg-fine">This card’s graded median is over $10,000. PSA has tiers above that, but we couldn’t read their limits, so type your PSA cost under “Your costs”.</p>'
+      : TIER[tier] && ref != null && ref > TIER[tier].cap ? '<p class="sg-fine">This card’s graded median is over ' + capFmt(TIER[tier].cap) + ', and ' + TIER[tier].name + ' only takes cards declared at ' + capFmt(TIER[tier].cap) + ' or less. ' + (TIER[fit] ? TIER[fit].name + ' is the cheapest PSA tier that fits.' : 'Its PSA tier is above the ones we list.') + '</p>' : '';
     var R = num(inp.raw, screened ? null : c.raw);
     var net = function (p) { return p * (1 - f) - o; };
     var page = STATIC[c.id] || '/card?id=' + encodeURIComponent(c.id);

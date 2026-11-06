@@ -26,10 +26,19 @@ const SLUG = "should-i-grade-my-pokemon-card";
 const URL = `https://www.shopcardhub.com/${SLUG}`;
 const EPN = "mkcid=1&mkrid=711-53200-19255-0&siteid=0&mkevt=1&campid=5339155990&toolid=10001";
 const FVF = 0.1325, ORD = 0.40, SHIP = 2.76, VALUE_CAP = 500;
-const TIERS = { value: { name: "Value", fee: 39.99, tat: "90–100" }, standard: { name: "Standard", fee: 59.99, tat: "70–80" }, priority: { name: "Priority", fee: 79.99, tat: "50–60" } };
+// Max declared (insured) value per card (Wildcard, Nov 5 2026): PSA's Sep 9 2026 notice "PSA Opens New Standard Service Level"
+// (psacard.com/articles/articleview/15763, read Nov 5 2026) gives Standard $59.99 up to $1,000, Priority $79.99 up to $1,500,
+// Express $199 up to $2,500 (20-30 business days), Premier $599 up to $10,000 (7-10). Value $39.99 up to $500 and the Oct 28
+// Standard/Priority turnarounds are from PSA's Oct 28 notice as reported by SI (si.com, Oct 28 2026). PSA lists tiers above $10,000
+// whose limits we could not read, so a card over $10,000 as a PSA 10 gets no default tier and no break-even in the baked counts.
+const TIERS = { value: { name: "Value", fee: 39.99, cap: 500, tat: "90–100" }, standard: { name: "Standard", fee: 59.99, cap: 1000, tat: "70–80" }, priority: { name: "Priority", fee: 79.99, cap: 1500, tat: "50–60" }, express: { name: "Express", fee: 199, cap: 2500, tat: "20–30" }, premier: { name: "Premier", fee: 599, cap: 10000, tat: "7–10" } };
+const ORDER = ["value", "standard", "priority", "express", "premier"];
+const TIER_READ = "Nov 5, 2026";
 const allIn = (t) => Math.round((TIERS[t].fee + SHIP) * 100) / 100;
 const COST = allIn("standard"), VCOST = allIn("value");
-const tierFor = (x) => (x.m10.m < VALUE_CAP ? "value" : "standard");
+const tierFor = (x) => ORDER.find((t) => x.m10.m <= TIERS[t].cap) || null;   // the cheapest tier whose limit covers the PSA 10 median
+const usd = (n) => "$" + n.toFixed(2);
+const capTxt = (n) => "$" + n.toLocaleString("en-US");
 const FEE_READ = "Nov 3, 2026";
 const MN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const long = (s) => { const t = new Date(s + "T12:00:00Z"); return `${MN[t.getUTCMonth()]} ${t.getUTCDate()}, ${t.getUTCFullYear()}`; };
@@ -73,7 +82,7 @@ for (const tk of tks) {
 const N = ok.size;
 if (N < 100) { console.error(`only ${N} cards qualify — refusing to write`); process.exit(1); }
 const net = (p) => p * (1 - FVF) - ORD;
-const be = (x, C = allIn(tierFor(x))) => { const Rn = net(x.c.raw), N9 = net(x.m9.m), N10 = net(x.m10.m); return N10 > N9 ? (Rn + C - N9) / (N10 - N9) : null; };
+const be = (x, C = tierFor(x) ? allIn(tierFor(x)) : null) => { if (C == null) return null; const Rn = net(x.c.raw), N9 = net(x.m9.m), N10 = net(x.m10.m); return N10 > N9 ? (Rn + C - N9) / (N10 - N9) : null; };
 const beTxt = (p) => (p == null ? "no break-even" : p > 1 ? "a 10 doesn’t cover it" : p <= 0 ? "pays even on a 9" : (p < 0.01 ? "under 1%" : Math.round(p * 100) + "%"));
 
 // worked examples: the cards collectors ask about by name (Grok SEO/AEO ideas #13, #14, #17, #19), when they qualify today
@@ -85,16 +94,32 @@ const counts = { pays9: 0, mid: 0, never: 0 };
 for (const x of ok.values()) { const p = be(x); if (p == null) continue; if (p <= 0) counts.pays9++; else if (p > 1) counts.never++; else counts.mid++; }
 // What reopening Value changes (BET-20261102-1): same cards, Standard vs Value cost, only where Value is allowed (PSA 10 median < $500)
 const med = (a) => { a = [...a].sort((p, q) => p - q); const n = a.length; return n ? (n % 2 ? a[(n - 1) / 2] : (a[n / 2 - 1] + a[n / 2]) / 2) : null; };
-const elig = [...ok.values()].filter((x) => x.m10.m < VALUE_CAP && be(x, COST) != null);
+const elig = [...ok.values()].filter((x) => x.m10.m <= VALUE_CAP);   // same set as the Value row of the tier table
 const vLower = elig.filter((x) => be(x, COST) > 0).length;
 const vMid = elig.filter((x) => { const p = be(x, COST); return p > 0 && p <= 1; });
 const vMedS = med(vMid.map((x) => be(x, COST))), vMedV = med(vMid.map((x) => be(x, VCOST)));
 const vFlip = elig.filter((x) => be(x, COST) > 1 && be(x, VCOST) <= 1).length;
 const pct = (p) => Math.round(p * 100) + "%";
 const fmt = (n) => n.toLocaleString("en-US");
-const VALUE_LINE = `PSA Value is open again: $39.99 a card for cards declared at $500 or less (PSA’s change of Oct 29, 2026; fees read ${FEE_READ}). Of the ${fmt(N)} cards we can run, ${fmt(elig.length)} have a median under $500 as a PSA 10. At Value instead of Standard, ${fmt(vLower)} of them break even at a lower PSA 10 rate, and for the ${fmt(vMid.length)} that needed between 1% and 100% at Standard, the median break-even falls from ${pct(vMedS)} to ${pct(vMedV)}. Another ${fmt(vFlip)} that didn’t pay even on a 10 at Standard now break even below 100%.`;
+const VALUE_LINE = `PSA Value is open again: $39.99 a card for cards declared at $500 or less (PSA’s change of Oct 29, 2026; fees read ${FEE_READ}). Of the ${fmt(N)} cards we can run, ${fmt(elig.length)} have a median of $500 or less as a PSA 10. At Value instead of Standard, ${fmt(vLower)} of them break even at a lower PSA 10 rate, and for the ${fmt(vMid.length)} that needed between 1% and 100% at Standard, the median break-even falls from ${pct(vMedS)} to ${pct(vMedV)}. Another ${fmt(vFlip)} that didn’t pay even on a 10 at Standard now break even below 100%.`;
 // one export for build-grade-premiums.mjs so the two pages print the same line from the same math
 fs.writeFileSync(path.join(REPO, "data/grade-value-tier.json"), JSON.stringify({ _comment: "Written by tools/build-should-i-grade.mjs (Wildcard, BET-20261102-1). Standard vs Value break-even on the tool's cards; read by tools/build-grade-premiums.mjs.", asOf: AS_OF, feeRead: "2026-11-03", cards: N, eligible: elig.length, lower: vLower, mid: vMid.length, medianStandard: Math.round(vMedS * 1000) / 1000, medianValue: Math.round(vMedV * 1000) / 1000, flipped: vFlip, line: VALUE_LINE }, null, 1) + "\n");
+
+// Which tier each card needs: PSA 10 median bands against the tier limits (the declared value is the graded worth)
+const over = [...ok.values()].filter((x) => !tierFor(x)).length;
+const band = Object.fromEntries(ORDER.map((t) => [t, [...ok.values()].filter((x) => tierFor(x) === t).length]));
+const TIER_ANSWER = `PSA prices grading by declared value, which is what the card is worth once graded. Read ${TIER_READ}: ${ORDER.map((t) => `${TIERS[t].name} ${usd(TIERS[t].fee).replace(".00", "")} up to ${capTxt(TIERS[t].cap)}`).join(", ")}. In sales read ${DATE}, of the ${fmt(N)} Pokémon cards we can run, ${ORDER.map((t, i) => `${fmt(band[t])} sell for ${i ? "over " + capTxt(TIERS[ORDER[i - 1]].cap) + " and up to " : ""}${capTxt(TIERS[t].cap)}${i ? "" : " or less"} (${TIERS[t].name})`).join(", ")}${over ? `, and ${fmt(over)} for more than $10,000` : ""}, going by each card’s median as a PSA 10.`;
+const TIER_ROWS = ORDER.map((t, i) => `<tr><th scope="row">${TIERS[t].name}</th><td>${usd(TIERS[t].fee).replace(".00", "")}<span class="sg-sub">${usd(allIn(t))} all in</span></td><td>${capTxt(TIERS[t].cap)}</td><td>${TIERS[t].tat} business days</td><td>${fmt(band[t])}<span class="sg-sub">cards with a median ${i ? "over " + capTxt(TIERS[ORDER[i - 1]].cap) + ", up to " : "up to "}${capTxt(TIERS[t].cap)}</span></td></tr>`).join("\n");
+const TIER_SECTION = `  <section id="psa-tiers">
+    <div class="section-eyebrow">PSA tiers</div>
+    <h2>Which PSA Tier Does My Card Need?</h2>
+    <p class="section-intro">${TIER_ANSWER.replace(/&/g, "&amp;")}</p>
+    <div class="sg-wrap"><table class="sg-tbl"><thead><tr><th scope="col">Tier</th><th scope="col">Per card</th><th scope="col">Declared value up to</th><th scope="col">Turnaround</th><th scope="col">Our cards that fit</th></tr></thead>
+<tbody>
+${TIER_ROWS}
+</tbody></table></div>
+    <p class="sg-fine">Fees and limits from PSA&rsquo;s Sep 9, 2026 and Oct 28, 2026 service notices, read ${TIER_READ}. The counts go by each card&rsquo;s own graded median and sale count as a PSA 10, shown in the tool above.</p>
+  </section>`;
 
 const TITLE = "Should I Grade My Pokémon Card? Break-Even Calculator With Each Card’s Own Sold Prices";
 const DESC = `Pick your Pokémon card and see how often it has to come back a PSA 10 for grading to beat selling it raw, from its own dated eBay sold prices. ${N.toLocaleString("en-US")} cards, read ${DATE}.`;
@@ -105,7 +130,7 @@ const exRows = ex.map((x) => {
   const oc = (g) => ` onclick="if(typeof gtag==='function')gtag('event','grade_click',{grade:'${g}',mode:'bin',item:'${SLUG}-${g}:${c.id}',page:location.pathname})"`;
   return `<tr><th scope="row"><a href="#${esc(c.id)}" data-sg-pick="${esc(c.id)}">${esc(c.name)} #${esc(c.num)}</a><span class="sg-sub">${esc(set)}</span></th>` +
     `<td>${money(c.raw)}<span class="sg-sub">${c.wn != null ? c.wn : c.n30} sales to ${short(c.rawAsOf)}</span></td><td>${money(m9.m)}<span class="sg-sub">PSA 9 median, ${m9.n} sales, ${m9.days} d to ${short(x.gAsOf)}</span></td><td>${money(m10.m)}<span class="sg-sub">PSA 10 median, ${m10.n} sales, ${m10.days} d to ${short(x.gAsOf)}</span></td>` +
-    `<td class="sg-be">${beTxt(p)}<span class="sg-sub">at PSA ${TIERS[tierFor(x)].name}, ${money(allIn(tierFor(x)))} all in</span></td>` +
+    `<td class="sg-be">${tierFor(x) ? `${beTxt(p)}<span class="sg-sub">at PSA ${TIERS[tierFor(x)].name}, ${usd(allIn(tierFor(x)))} all in</span>` : `type your PSA cost<span class="sg-sub">over $10,000 as a PSA 10, above the tiers we list</span>`}</td>` +
     `<td class="sg-x"><a class="sg-mini" href="${esc(ebay(d, c, "raw"))}" target="_blank" rel="sponsored nofollow noopener"${oc("raw")}>Raw on eBay</a><a class="sg-mini" href="${esc(ebay(d, c, "psa10"))}" target="_blank" rel="sponsored nofollow noopener"${oc("psa10")}>PSA 10 on eBay</a></td></tr>`;
 }).join("\n");
 
@@ -126,27 +151,28 @@ const body = `
       <div id="sg-out"><p class="sg-wait">Type a Pok&eacute;mon name and number, or tap a card in the table below.</p></div>
       <details class="sg-costs"><summary>Your costs (change these to yours)</summary>
         <div class="sg-grid">
-          <label>PSA tier<select id="sg-tier"><option value="auto">Value under $500 as a PSA 10. Standard above.</option><option value="value">Value · $39.99 · up to $500 · ${TIERS.value.tat} business days</option><option value="standard">Standard · $59.99 · ${TIERS.standard.tat} business days</option><option value="priority">Priority · $79.99 · ${TIERS.priority.tat} business days</option><option value="custom">My own cost (TAG, another grader, a special)</option></select></label>
+          <label>PSA tier<select id="sg-tier"><option value="auto">Auto: the cheapest tier that takes the card</option>${ORDER.map((t) => `<option value="${t}">${TIERS[t].name} · ${usd(TIERS[t].fee).replace(".00", "")} · up to ${capTxt(TIERS[t].cap)} · ${TIERS[t].tat} business days</option>`).join("")}<option value="custom">My own cost (TAG, another grader, a special)</option></select></label>
           <label>Grading, per card, all in ($)<input id="sg-cost" inputmode="decimal" value="${COST.toFixed(2)}"></label>
           <label>eBay selling fee (%)<input id="sg-fvf" inputmode="decimal" value="13.25"></label>
           <label>Per-order fee ($)<input id="sg-ord" inputmode="decimal" value="0.40"></label>
           <label>Your copy, raw ($, optional)<input id="sg-raw" inputmode="decimal" placeholder="uses the raw median"></label>
           <label>A miss sells for ($, optional)<input id="sg-miss" inputmode="decimal" placeholder="uses the PSA 9 median"></label>
         </div>
-        <p class="sg-note">PSA fees as of Oct 29, 2026 (read ${FEE_READ}): Value $39.99 a card, declared value up to $500, about ${TIERS.value.tat} business days; Standard $59.99, about ${TIERS.standard.tat}; Priority $79.99, about ${TIERS.priority.tat}. Each all-in figure adds $2.76 for shipping and supplies spread over a 20-card batch (Value ${money(VCOST)}, Standard ${money(COST)}, Priority ${money(allIn("priority"))}). PSA&rsquo;s declared value is what the card is worth graded, so a card that sells for more than $500 as a PSA 10 can&rsquo;t go in at Value. eBay fees are 13.25% plus $0.40 an order (eBay Seller Center). If you send to TAG, pick &ldquo;My own cost&rdquo; and type TAG&rsquo;s price.</p>
+        <p class="sg-note">PSA&rsquo;s per-card fees and limits, read ${TIER_READ}: ${ORDER.map((t) => `${TIERS[t].name} ${usd(TIERS[t].fee).replace(".00", "")} for cards declared at up to ${capTxt(TIERS[t].cap)} (about ${TIERS[t].tat} business days)`).join("; ")}. Value reopened on Oct 29, 2026. We add $2.76 a card for shipping and supplies spread over a 20-card batch. The declared value is what the card is worth once graded, so &ldquo;Auto&rdquo; uses the cheapest tier whose limit is at or above the card&rsquo;s graded median. PSA has tiers above $10,000 whose limits we couldn&rsquo;t read; for those cards, type your own cost. eBay fees are 13.25% plus $0.40 an order (eBay Seller Center). If you send to TAG, pick &ldquo;My own cost&rdquo; and type TAG&rsquo;s price.</p>
       </details>
     </div>
   </section>
   <section>
     <div class="section-eyebrow green">Worked examples</div>
     <h2>Break-Even PSA 10 Rate for Cards People Ask About</h2>
-    <p class="section-intro">At each card&rsquo;s default PSA tier (Value when it sells under $500 as a PSA 10, Standard above): the share of copies that would have to come back PSA 10 for grading to beat selling raw. &ldquo;Pays even on a 9&rdquo; means the PSA 9 median, after fees and grading, is already above the raw median. Tap a card to run it with your own numbers.</p>
+    <p class="section-intro">At each card&rsquo;s default PSA tier, the cheapest one whose limit covers its graded median: the share of copies that would have to come back PSA 10 for grading to beat selling raw. &ldquo;Pays even on a 9&rdquo; means the PSA 9 median, after fees and grading, is already above the raw median. Tap a card to run it with your own numbers.</p>
     <div class="sg-wrap"><table class="sg-tbl"><thead><tr><th scope="col">Card</th><th scope="col">Raw</th><th scope="col">PSA 9</th><th scope="col">PSA 10</th><th scope="col">Pays if 10s are over</th><th scope="col">eBay</th></tr></thead>
 <tbody>
 ${exRows}
 </tbody></table></div>
-    <p class="section-intro">Across all ${N.toLocaleString("en-US")} cards at those tiers: ${counts.pays9.toLocaleString("en-US")} clear the bar even on a PSA 9, ${counts.mid.toLocaleString("en-US")} need some share of 10s, and ${counts.never.toLocaleString("en-US")} don&rsquo;t pay even on a 10. Most of the &ldquo;pays on a 9&rdquo; cards are vintage, where the raw median is pulled down by played copies. If your copy is clean, its raw value is higher than the median, so enter it.</p>
+    <p class="section-intro">Across all ${N.toLocaleString("en-US")} cards at those tiers: ${counts.pays9.toLocaleString("en-US")} clear the bar even on a PSA 9, ${counts.mid.toLocaleString("en-US")} need some share of 10s, and ${counts.never.toLocaleString("en-US")} don&rsquo;t pay even on a 10. ${over ? `${over} more sell for over $10,000 as a PSA 10 and are left out, since their PSA tier is above the ones we list.` : ""} Most of the &ldquo;pays on a 9&rdquo; cards are vintage, where the raw median is pulled down by played copies. If your copy is clean, its raw value is higher than the median, so enter it.</p>
   </section>
+${TIER_SECTION}
   <section>
     <div class="section-eyebrow">The math</div>
     <h2>How the Break-Even Works</h2>
@@ -160,7 +186,7 @@ ${exRows}
   </section>
 </div>
 <script src="/js/grade-links.js?v=2" defer></script>
-<script src="/js/should-i-grade.js?v=2" defer></script>
+<script src="/js/should-i-grade.js?v=3" defer></script>
 `;
 
 const css = `<style id="sg-css">.sg-answer{max-width:70ch}.sg-value{max-width:70ch;font-size:14px;line-height:1.55;color:var(--text-dim);margin:10px 0 0}
@@ -194,7 +220,7 @@ const css = `<style id="sg-css">.sg-answer{max-width:70ch}.sg-value{max-width:70
 
 const ld = [
   { "@context": "https://schema.org", "@type": "WebApplication", name: "Should I grade my Pokémon card? Break-even calculator", url: URL, applicationCategory: "FinanceApplication", operatingSystem: "Any", isAccessibleForFree: true, description: DESC, dateModified: AS_OF, creator: { "@type": "Organization", name: "ShopCardHub", url: "https://www.shopcardhub.com" } },
-  { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: "Should I grade my Pokémon card?", acceptedAnswer: { "@type": "Answer", text: ANSWER.replace(/<[^>]+>/g, "") } }, { "@type": "Question", name: "Is PSA Value worth it for my Pokémon card?", acceptedAnswer: { "@type": "Answer", text: VALUE_LINE } }] },
+  { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: "Should I grade my Pokémon card?", acceptedAnswer: { "@type": "Answer", text: ANSWER.replace(/<[^>]+>/g, "") } }, { "@type": "Question", name: "Is PSA Value worth it for my Pokémon card?", acceptedAnswer: { "@type": "Answer", text: VALUE_LINE } }, { "@type": "Question", name: "Which PSA tier does my Pokémon card need?", acceptedAnswer: { "@type": "Answer", text: TIER_ANSWER } }] },
 ];
 
 const tpl = fs.readFileSync(path.join(REPO, "how-prices-work.html"), "utf8");
