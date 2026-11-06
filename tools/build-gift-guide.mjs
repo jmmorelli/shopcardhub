@@ -30,7 +30,7 @@ const ebay = (p) => {
   const q = encodeURIComponent(p.q.replace(/\s+/g, ' ').trim()).replace(/'/g, '%27');
   return `https://www.ebay.com/sch/i.html?_nkw=${q}${p.cat ? '&_sacat=' + p.cat : ''}&${EPN}&customid=${cfg.slug}`;
 };
-const basis = (p, grade) => `${grade ? grade + ' ' : ''}median of ${p.n} sales, ${p.basis === '90d' ? '90' : '30'} days to ${day(p.asOf)}`;
+const basis = (p, grade) => p.from ? `median of ${p.n} eBay sales, ${day(p.from)}–${day(p.asOf)}` : `${grade ? grade + ' ' : ''}median of ${p.n} sales, ${p.basis === '90d' ? '90' : '30'} days to ${day(p.asOf)}`;
 
 // sanity: every pick carries a mark, a count >= 3 and a date; bands run high to low
 for (const b of cfg.bands) for (const p of b.picks) {
