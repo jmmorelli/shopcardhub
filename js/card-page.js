@@ -6,7 +6,12 @@
  * swap one big number, its dated basis line and the chart line; the raw→PSA 10 spread in %; ONE eBay button that follows
  * the chip (P63/P59). Tabs below: Chart · Sales · Grades · Index. Grades carries the grade-or-slab block (P62, spec
  * Amendment 3: implied break-even gem rate only, net miss, assumptions printed; no Edge). Method = a link.
- * R18 (Oct 8 ruling): a median needs ≥ 3 dated rows; fewer prints as one dated sale. */
+ * R18 (Oct 8 ruling): a median needs ≥ 3 dated rows; fewer prints as one dated sale.
+ *
+ * Cupertino run 7 (Nov 6 2026, R46): the grade compare row — Raw · PSA 9 · PSA 10 · TAG 10 side by side under the
+ * tabs, each tile from the same G entry the chips print (no new number, no new source). A grade with no dated mark says
+ * so in words (never $0, never a guess). Each tile's eBay link is the page's own grade link (ebUrl → js/grade-links.js).
+ * The row steps in with js/scroll-flow.js, loaded here after the render (DESIGN-SYSTEM.md "Card pages"). */
 (function () {
   var main = document.getElementById('cdp'); if (!main) return;
   // v9 (Night Crew Oct 23, P0-A static pages): a static /card-<slug> page carries its id on <main data-card-id>; /card?id= reads the query.
@@ -92,6 +97,18 @@
       var x = e.k !== 'raw' && e.m && raw ? (e.m / raw) : null;
       return '<div><dt>' + e.lbl + '</dt><dd><b>' + bigOf(e) + '</b>' + (x ? ' <em>' + x.toFixed(x >= 10 ? 0 : x < 2 ? 2 : 1) + '× raw</em>' : '') + '<small>' + esc(e.basis) + '</small></dd></div>';
     }).join('');
+    // the compare row (run 7): one tile per grade, the same entry as its chip; words where there is no dated mark
+    var cmp = G.map(function (e) {
+      var x = e.k !== 'raw' && g ? g[e.k] : null, v, cap = e.basis;
+      if (e.m != null) { v = money(e.m); cap = e.k === 'raw' ? (chase ? 'PriceCharting’s ungraded value' : 'Median of ' + (c.wn != null ? c.wn : c.n30) + ' raw sales, ' + (c.win || d.window || 30) + ' days') : 'Median of ' + e.n + ' sales, ' + e.days + ' days'; }
+      else if (e.one) { v = money(e.one.p); cap = '1 sale, ' + md(e.one.d); }
+      else v = e.k === 'raw' ? (scr ? 'Not priced' : c.nv ? 'No verified sale yet' : 'Too few sales') : x && x.held ? 'No verified sale' : !g ? 'Not read yet' : 'No recent sale';
+      if (cap === v || cap === 'Graded read pending') cap = ''; else if (cap.indexOf(v + ': ') === 0) cap = cap.slice(v.length + 2);
+      var r = e.k !== 'raw' && e.m && raw ? e.m / raw : null;
+      return '<div class="cdp-cmp-c' + (e.m != null || e.one ? '' : ' na') + '"><h3>' + e.lbl + '</h3><p class="v">' + v + '</p>' +
+        (r ? '<p class="x">' + r.toFixed(r >= 10 ? 0 : r < 2 ? 2 : 1) + '× raw</p>' : '') + (cap ? '<p class="b">' + esc(cap) + '</p>' : '') +
+        '<a class="ds-more" href="' + esc(ebUrl(e, 'bin')) + '" data-cid="' + cid + '" data-g="' + e.eb + '" data-mode="bin" target="_blank" rel="sponsored nofollow noopener" aria-label="Shop ' + e.lbl + ' copies on eBay">Shop on eBay</a></div>';
+    }).join('');
     var setLink = '<a href="' + esc(d.page) + '">' + esc(setShort) + '</a>';
     main.innerHTML =
       '<div class="cdp-crumbs"><a href="/">Home</a><span>/</span><a href="' + esc(d.page) + '">' + esc(d.ticker) + '</a><span>/</span><span>' + esc(c.name) + ' #' + esc(c.num) + '</span></div>' +
@@ -113,6 +130,8 @@
       '<section class="cdp-panel" id="cdp-p-index" role="tabpanel" aria-labelledby="cdp-tab-index" hidden><div class="cdp-ix"><a class="go" href="' + esc(d.page) + '">' + esc(d.ticker) + ' ' + esc(d.name) + (d.level != null ? ' · ' + Number(d.level).toFixed(2) : '') + ' →</a>' +
       '<p>' + (d.kind === 'tracked' ? 'Tracked card: its set has no index on this site, so there is no level or weight. The price is this card’s own dated sales.' : d.kind === 'board' ? 'On the ' + esc(d.ticker) + ' ' + esc(d.name) + ' board: a board, not an index, so there is no level or weight.' : scr ? 'Tracked in this index, outside the level (below the liquidity screen).' : c.w === 0 ? 'Tracked as its own line, not in the weighted basket.' : '#' + c.rank + ' by weight' + (c.w != null ? ' · ' + c.w.toFixed(1) + '% of the index' : '') + (d.asOf ? ' · index marked ' + md(d.asOf) : '')) + '</p></div>' +
       (more ? '<div class="cdp-more"><h2>' + (d.kind === 'tracked' ? 'More tracked cards' : 'More from the ' + esc(d.ticker) + (d.kind === 'board' ? ' board' : ' basket')) + '</h2><div class="g">' + more + '</div></div>' : '') + '</section>' +
+      '<section class="cdp-cmp" id="cdp-cmp" aria-labelledby="cdp-cmp-h"><h2 id="cdp-cmp-h">Raw, PSA or TAG?</h2><p class="s">What each grade of this card sold for, side by side.</p>' +
+      '<div class="cdp-cmp-g">' + cmp + '</div><p class="n">Each grade is priced from its own sales and its own count. Grades are never mixed.</p></section>' +
       '<div class="cdp-buy"><div class="h"><b>Other places to buy</b></div>' +
       (shopMark() ? '<div class="cdp-shop cdp-shop-wait" aria-hidden="true"></div>' : '') + '<div class="cdp-btns" id="cdp-btns">' + (shopMark() ? '<span class="tcg-slot" aria-hidden="true"></span>' : '') + '</div>' +
       '<div class="f">eBay searches for this exact card in each grade, with our affiliate tag (ShopCardHub earns a commission at no cost to you) — live listings, not prices. ' + (d.ed === '1st' ? 'Searches are for the 1st Edition print this index tracks. ' : d.ed === 'shadowless' ? 'Searches are for Shadowless copies and exclude 1st Edition. ' : d.wotc ? 'Searches exclude 1st Edition and Shadowless copies: this index tracks the Unlimited print. ' : '') + '<b>TAG:</b> we link TAG because it publishes its measurements. PSA is the reference grade. Our view: machine grading wins over time. <a href="/tag-grading-guide">How TAG grading works →</a></div></div>' +
@@ -144,7 +163,9 @@
       if (b.tagName === 'A') { var tb = document.getElementById('cdp-tab-' + b.getAttribute('data-tab')); if (tb) { tb.focus({ preventScroll: true }); tb.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); } }
     });
     setGrade('raw');
-    [eb, auc].forEach(function (a) { if (window.SCH_GLK && SCH_GLK.track) SCH_GLK.track(a); });
+    [eb, auc].concat([].slice.call(main.querySelectorAll('.cdp-cmp-c a'))).forEach(function (a) { if (window.SCH_GLK && SCH_GLK.track) SCH_GLK.track(a); });
+    // run 7: the scroll flow (blocks below the first screen step in once; off under reduced motion; nothing hidden without JS)
+    if (!document.querySelector('script[src^="/js/scroll-flow.js"]')) { var sf = document.createElement('script'); sf.src = '/js/scroll-flow.js?v=2'; sf.defer = true; document.body.appendChild(sf); }
     if (window.SCHVault && SCHVault.mark) SCHVault.mark(main);
     chartApi = chart(d, c, gOf);
     if (chartApi) chartApi.grade(pick);
