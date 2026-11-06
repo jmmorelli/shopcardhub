@@ -16,7 +16,7 @@
   function get(u) { return fetch(u + '?t=' + T, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
   function aff() { return AFF || (AFF = get('/data/affiliates.json').then(function (j) { return (j && j.tcgplayer) || {}; }).catch(function () { return {}; })); }
   // Tickers tools/tcg-pull.mjs never writes (BS1E: TCGplayer lists Base Set Unlimited only) — skip the fetch, no console 404.
-  var NO_SHOP = { bs1e: 1 };
+  var NO_SHOP = { bs1e: 1, trk: 1, gstar: 1 };   // trk / gstar (Nov 6 deploy): no TCGplayer shop file
   // Nov 3 2026 (GAPS P16b, Mo on Aquapolis Blissey H6): a market price far below the card's own lowest TCGplayer listing is a
   // stale average nobody can buy at — drop it here too (the generator already does; this covers a day-old file). WOTC/e-Card
   // tickers never get a venue call: TCGplayer is near-mint, our eBay raw mark is any condition.
