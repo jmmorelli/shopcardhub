@@ -212,6 +212,9 @@ for (const q of cfg.llms) {
   if (!r) continue;
   llms.push(`- [${q.q}](${SITE}${r.page}): ${tickerAnswer(r)}`);
 }
+// Optional pointer to the machine-readable feed (tools/build-index-feed.mjs), one line, only if the file exists.
+if (cfg.feed && fs.existsSync(path.join(ROOT, cfg.feed.path.replace(/^\//, ''))))
+  llms.push(`- ${cfg.feed.text} → [${cfg.feed.path}](${SITE}${cfg.feed.path})`);
 out.set(path.join(ROOT, 'data/aisearch-llms.txt'), llms.join('\n') + '\n');
 
 let stale = 0;

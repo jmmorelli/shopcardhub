@@ -1,5 +1,5 @@
 {
- "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json. No eBay URLs, prices or asks here, ever (R45).",
+ "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json. Optional \"feed\" adds one line under the question block pointing at /index-feed.json (built by tools/build-index-feed.mjs). No eBay URLs, prices or asks here, ever (R45).",
  "pages": {
   "indices": {
    "title": "Is the Pokémon Card Market Up or Down? Every Set's Price Index, Dated",
@@ -18,7 +18,8 @@
   "scarlet-violet-151-index": {
    "ticker": "SV151",
    "title": "Pokémon 151 Card Prices: Scarlet & Violet 151 Dated Sold Prices · SV151",
-   "description": "Pokémon 151 (Scarlet & Violet 151) card prices from dated sales. The SV151 index stood at {level} on {date} (100 = {base}, the release month) across {priced} cards, re-marked Monday and Thursday. Every card is listed with its price and date."
+   "description": "Pokémon 151 (Scarlet & Violet 151) card prices from dated sales. The SV151 index stood at {level} on {date} (100 = {base}, the release month) across {priced} cards, re-marked Monday and Thursday. Every card is listed with its price and date.",
+   "ld": true
   },
   "bowman-1st-chrome-index": {
    "ticker": "BOW26",
@@ -49,6 +50,18 @@
    "ld": true,
    "title": "Are Ascended Heroes Chase Cards Going Down? Dated Prices · AH26",
    "description": "Pokémon Mega Evolution: Ascended Heroes chase card prices from dated sales of raw singles. The AH26 chase index stood at {level} on {date} (100 = {base}, the first full month of sales), {since} since then, across {priced} chase cards.{month} One raw copy of each came to about {cost}. Chase cards only, not every card in the set. Re-marked weekly."
+  },
+  "pokemon-base-set-shadowless-index": {
+   "ticker": "BSSL",
+   "ld": true,
+   "title": "Pokémon Base Set Shadowless Card Prices, Charizard #4 Included: Dated Sold Prices · BSSL",
+   "description": "The BSSL index of Pokémon Base Set Shadowless card prices stood at {level} on {date} (100 = {base}), {since} since then, across {priced} cards on dated sales of raw singles.{month} One raw copy of each card came to about {cost}. Every card is listed with its price and date, Charizard #4 included."
+  },
+  "neo-genesis-1st-edition-index": {
+   "ticker": "NG1E",
+   "ld": true,
+   "title": "Pokémon Neo Genesis 1st Edition Card Prices, Lugia #9 Included: Dated Sold Prices · NG1E",
+   "description": "The NG1E index of Pokémon Neo Genesis 1st Edition card prices stood at {level} on {date} (100 = {base}), {since} since then, across {priced} cards on dated sales of raw singles.{month} One raw copy of each card came to about {cost}. Every card is listed with its price and date, Lugia #9 included."
   }
  },
  "answer": {
@@ -194,6 +207,18 @@
   {
    "q": "Are 2026 Bowman Chrome (September) 1st Bowman Chrome Auto prices going up or down?",
    "ticker": "BCB26"
+  },
+  {
+   "q": "What are Pokémon Base Set Shadowless cards selling for?",
+   "ticker": "BSSL"
+  },
+  {
+   "q": "What are Pokémon Neo Genesis 1st Edition cards selling for, Lugia #9 included?",
+   "ticker": "NG1E"
   }
- ]
+ ],
+ "feed": {
+  "text": "Machine-readable: every index level, dated",
+  "path": "/index-feed.json"
+ }
 }
