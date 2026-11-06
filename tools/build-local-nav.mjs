@@ -25,6 +25,10 @@
 // tools/bake-plain-read.mjs) · Cards → #<tk>-chase or #chase (the priciest-cards strip; left out when a page has
 // none) · How it works → #<tk>-method.
 //
+// Run 6 (Nov 5 2026): the block also loads js/scroll-flow.js (deferred, one file, no library) — the scroll flow: blocks
+// below the first screen fade up once as they come into view. It never touches the first screen or a buy block, is off
+// under prefers-reduced-motion, and hides nothing when JS is off (DESIGN-SYSTEM.md "Motion → Scroll flow").
+//
 // Usage: node tools/build-local-nav.mjs [--check]   (idempotent; --check exits 1 if a page would change)
 import fs from "node:fs";
 import path from "node:path";
@@ -90,6 +94,7 @@ function block(tk, html) {
 <div class="lnav-l" role="navigation" aria-label="On this page">${links.join("")}</div>
 <a class="lnav-pill" href="${link.href}"${tgt}${rel}${aria} onclick="if(typeof gtag==='function')gtag('event','localnav_click',{tk:'${tk}',page:location.pathname})">Shop on eBay</a>
 </div></div>
+<script src="/js/scroll-flow.js?v=1" defer></script>
 ${E}`;
   return { out, link };
 }
