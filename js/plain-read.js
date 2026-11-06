@@ -151,8 +151,42 @@
       cost = { now: costSum, then: costSum / level * 100, n: basket.length, asOf: day(h[n - 1].date),
         basis: r.basis === 'ask' ? 'eBay asking prices' : 'recent sales' };
     }
+    var br = cost && prevRow && wk != null && !measureChanged ? breadth(basket, String(prevRow.date).slice(0, 10)) : null;
     return { n: n, level: level, wk: wk, since: since, basket: basket, name: name, started: started, baseTxt: baseTxt, sinceLbl: sinceLbl,
-      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: weekFirst(verdict(wk), wk, since, wkLbl), cost: cost, wkLbl: wkLbl };
+      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: weekFirst(verdict(wk), wk, since, wkLbl), cost: cost, wkLbl: wkLbl, br: br };
+  }
+
+  /* BET-20261102-2 (R23, Night Crew Nov 6 2026): "whole set or one card?". Only on a dollar-basket index (f.cost: the level is the
+   * one-of-each sum / divisor, so each card's dollar change is its exact share of the move) and only when every card's previous
+   * mark is the same mark the week clause compares against (the Retention A window). On a Mon/Thu set the cards' previous mark
+   * is 3-4 days back, so there it stays the plain clause. Held (heldMove) and corrected (reread) rows are left out of the counts
+   * and the share. Counts and dollars only, no call. Concentrated: the top card is >= 50% of the summed |$ change|; broad: <= 25%
+   * and one direction at least twice the other; else mixed. A card within 0.5% of its previous mark counts as unchanged. */
+  function breadth(basket, baseDate) {
+    var cs = basket.filter(function (c) { return !c.heldMove && !c.reread; });
+    if (cs.length < 5 || !cs.every(function (c) { return typeof c.prevPrice === 'number' && c.prevPrice > 0 && String(c.prevAsOf || '').slice(0, 10) === baseDate; })) return null;
+    var tot = 0, up = 0, dn = 0, top = null;
+    cs.forEach(function (c) {
+      var d = c.price - c.prevPrice, p = d / c.prevPrice * 100;
+      tot += Math.abs(d); if (p >= 0.5) up++; else if (p <= -0.5) dn++;
+      if (!top || Math.abs(d) > Math.abs(top.d)) top = { c: c, d: d, p: p };
+    });
+    if (!(tot > 0)) return null;
+    var share = Math.abs(top.d) / tot;
+    return { n: cs.length, up: up, dn: dn, flat: cs.length - up - dn, top: top, share: share,
+      kind: share >= 0.5 ? 'one' : share <= 0.25 && (up >= 2 * dn || dn >= 2 * up) && (up + dn) > 0 ? 'broad' : 'mixed' };
+  }
+  function cardNm(c, sm) { return esc(c.name) + (c.num ? ' ' + (sm ? '<small>' : '') + (/^\d/.test(String(c.num)) ? '#' : '') + esc(c.num) + (sm ? '</small>' : '') : ''); }
+  function nCards(x) { return x + (x === 1 ? ' card' : ' cards'); }
+  function brTxt(f) {
+    var b = f.br; if (!b) return '';
+    var rest = function (up, dn, fl) { return up + ' up, ' + dn + ' down' + (fl ? ', ' + fl + ' unchanged' : ''); };
+    if (b.kind === 'one') {
+      var t = b.top, oUp = b.up - (t.p >= 0.5 ? 1 : 0), oDn = b.dn - (t.p <= -0.5 ? 1 : 0);
+      return ' Mostly one card: ' + cardNm(t.c) + ' made up ' + Math.round(b.share * 10) + ' of every 10 dollars of the move. The other ' + nCards(b.n - 1) + ': ' + rest(oUp, oDn, b.n - 1 - oUp - oDn) + '.';
+    }
+    if (b.kind === 'broad' && (b.dn > b.up) === (f.wk < 0)) return ' It was most of the set: ' + (b.dn > b.up ? b.dn + ' of ' + b.n + ' cards fell, ' + b.up + ' rose' : b.up + ' of ' + b.n + ' cards rose, ' + b.dn + ' fell') + (b.flat ? ', ' + b.flat + ' unchanged' : '') + '.';
+    return ' Across the ' + nCards(b.n) + ': ' + rest(b.up, b.dn, b.flat) + '.';
   }
 
   function pctTxt(v, d) { return (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(d == null ? 1 : d) + '%'; }
@@ -178,7 +212,7 @@
       var c = f.cost, when = f.baseTxt || 'when we started tracking on ' + f.started;
       var chg = Math.abs(f.since) < 0.5 ? 'about the same as now' : 'so they are about ' + Math.abs(f.since).toFixed(0) + '% ' + (f.since < 0 ? 'cheaper' : 'pricier') + ' now';
       s = '<b>' + money(c.now) + '</b> buys one raw copy of each of ' + (/^\d/.test(f.name) ? 'the ' + what + ' (' + c.n + ' cards)' : 'the ' + c.n + ' ' + what) + ' today (' + c.basis + ', ' + c.asOf + '). The same cards cost about <b>' + money(c.then) + '</b> ' + when + ', ' + chg;
-      if (f.wk != null) s += '; ' + (Math.abs(f.wk) < 0.05 ? 'flat' : (f.wk < 0 ? 'down ' : 'up ') + Math.abs(f.wk).toFixed(1) + '%') + ' ' + f.wkLbl + '.';
+      if (f.wk != null) s += '; ' + (Math.abs(f.wk) < 0.05 ? 'flat' : (f.wk < 0 ? 'down ' : 'up ') + Math.abs(f.wk).toFixed(1) + '%') + ' ' + f.wkLbl + '.' + brTxt(f);
       else s += '.';
       s += '<span class="pr-sub">Singles only, not sealed boxes or packs.</span>';
     }
@@ -195,19 +229,22 @@
    * and the table carry this card's eBay links already (R33 link-type freeze). */
   function tileTop(f) { return f.top ? esc(f.top.name) + (f.top.num ? ' <small>#' + esc(f.top.num) + (f.top.cc ? ' · Classic Collection reprint' : '') + '</small>' : '') : 'No priced card yet'; }
   function tileTopV(f) { return f.top ? money(f.top.price) + '<small>recent sales</small>' : ''; }
-  function tileMv(f) { return f.mover ? esc(f.mover.c.name) + (f.mover.c.num ? ' <small>#' + esc(f.mover.c.num) + (f.mover.c.cc ? ' · Classic Collection reprint' : '') + '</small>' : '') : (f.wk == null ? 'Nothing to compare yet' : 'No card moved 1% or more'); }
+  /* R23: on a dollar basket with the shared week window, the tile names the card that moved the index most (largest $ change) */
+  function mvOf(f) { return f.br ? f.br.top : f.mover; }
+  function tileMv(f) { if (f.br) return cardNm(f.br.top.c, true); return f.mover ? esc(f.mover.c.name) + (f.mover.c.num ? ' <small>#' + esc(f.mover.c.num) + (f.mover.c.cc ? ' · Classic Collection reprint' : '') + '</small>' : '') : (f.wk == null ? 'Nothing to compare yet' : 'No card moved 1% or more'); }
   /* Retention B (Nov 1 2026): the tile compares each card with its previous mark (3–4 days on a Mon/Thu set, longer after a
    * missed mark), so its header names that window when it is not a week — never "this week" over 4 or 11 days. */
   function tileMvK(f) {
+    if (f.br) return 'Moved the index most ' + f.wkLbl;
     var c = f.mover && f.mover.c, d = c && c.asOf && c.prevAsOf ? spanDays(c.asOf, c.prevAsOf) : null;
     return d == null || (d >= 5 && d <= WEEK_MAX_DAYS) ? 'Biggest move this week' : 'Biggest move since ' + day(c.prevAsOf);
   }
-  function tileMvV(f) { return f.mover ? (f.mover.p < 0 ? '▼ ' : '▲ ') + Math.abs(f.mover.p).toFixed(0) + '%<small>since last update</small>' : ''; }
+  function tileMvV(f) { if (f.br) { var t = f.br.top; return (t.d < 0 ? '▼ ' : '▲ ') + money(Math.abs(t.d)) + '<small>' + (t.p < 0 ? '−' : '+') + Math.abs(t.p).toFixed(0) + '% ' + f.wkLbl + '</small>'; } return f.mover ? (f.mover.p < 0 ? '▼ ' : '▲ ') + Math.abs(f.mover.p).toFixed(0) + '%<small>since last update</small>' : ''; }
   function tiles(f, opts) {
     opts = opts || {};
     var img = opts.topImg ? '<span class="pr-ti">' + opts.topImg + '</span>' : '';
     return '<div class="pr-tile' + (img ? ' has-img' : '') + '">' + img + '<span class="pr-tb"><span class="pr-tk">Priciest card</span><span class="pr-tn" data-pr-t="top">' + tileTop(f) + '</span><span class="pr-tv" data-pr-t="topv">' + tileTopV(f) + '</span></span></div>' +
-      '<div class="pr-tile"><span class="pr-tb"><span class="pr-tk" data-pr-t="mvk">' + tileMvK(f) + '</span><span class="pr-tn" data-pr-t="mv">' + tileMv(f) + '</span><span class="pr-tv ' + (f.mover ? cls(f.mover.p) : '') + '" data-pr-t="mvv">' + tileMvV(f) + '</span></span></div>' +
+      '<div class="pr-tile"><span class="pr-tb"><span class="pr-tk" data-pr-t="mvk">' + tileMvK(f) + '</span><span class="pr-tn" data-pr-t="mv">' + tileMv(f) + '</span><span class="pr-tv ' + (mvOf(f) ? cls(mvOf(f).p) : '') + '" data-pr-t="mvv">' + tileMvV(f) + '</span></span></div>' +
       /* P0-E (Oct 23 2026): a set with a checklist worksheet gets a third, full-width tile that is a link — the generator passes
        * opts.link = { href, k, label, sub }. Inline layout only, so no baked page's CSS has to change for the two-tile sets. */
       (opts.link && opts.link.href ? '<a class="pr-tile pr-tile-link" href="' + esc(opts.link.href) + '" style="grid-column:1/-1;text-decoration:none;min-height:0;align-items:center" data-pr-t="link"' +
@@ -371,7 +408,7 @@
       /* tiles: text spans only — the image slot and the eBay link are the generator's */
       setHtml(q(' [data-pr-t="top"]'), tileTop(f)); setHtml(q(' [data-pr-t="topv"]'), tileTopV(f));
       setHtml(q(' [data-pr-t="mv"]'), tileMv(f)); setHtml(q(' [data-pr-t="mvk"]'), tileMvK(f));
-      var mvv = q(' [data-pr-t="mvv"]'); if (mvv) { setHtml(mvv, tileMvV(f)); mvv.className = 'pr-tv ' + (f.mover ? cls(f.mover.p) : ''); }
+      var mvv = q(' [data-pr-t="mvv"]'); if (mvv) { setHtml(mvv, tileMvV(f)); mvv.className = 'pr-tv ' + (mvOf(f) ? cls(mvOf(f).p) : ''); }
     });
   }
 
@@ -384,7 +421,7 @@
     if (!document.querySelector('.idx-chart[data-ticker]')) return;
     (window.schIdx = window.schIdx || function () { return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { window.__schIdxP = null; throw e; })); })().then(mount).catch(function () {});
   }
-  if (typeof module !== 'undefined' && module.exports) module.exports = { facts: facts, stripChip: stripChip, bakeParts: bakeParts, howWrap: howWrap, finishCost: finishCost, PR_CSS: css };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { facts: facts, marksOf: marksOf, stripChip: stripChip, bakeParts: bakeParts, howWrap: howWrap, finishCost: finishCost, PR_CSS: css };
   if (!HAS_DOM) return;
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
 })();
