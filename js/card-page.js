@@ -31,7 +31,7 @@
   function get(u) { return fetch(u, { cache: 'default' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
   // B76 re-land (Oct 19): the shop file is read here too, so the .cdp-shop block and the TCGplayer button get their space
   // on first paint; shop-spread.js fills the reserved slots instead of inserting late (the Oct 16 live CLS 0.039 at 1440).
-  var NO_SHOP = { bs1e: 1 };
+  var NO_SHOP = { bs1e: 1, trk: 1, gstar: 1 };   // trk / gstar (Nov 6 deploy): no TCGplayer shop file, so no 404 fetch
   Promise.all([get('/js/card-pages.json').then(function (m) { STATIC = (m && m.static) || {};
     // B105 (Night Crew Oct 28): /card?id=<id> carries canonical /card + noindex; when the card has its own static page, go there
     // (replace: Back skips the query page). The static page carries data-card-id, so it never redirects again.
