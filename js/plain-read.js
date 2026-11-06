@@ -135,8 +135,10 @@
       sinceLbl = 'since ' + started;
     }
     var top = basket.slice().sort(function (a, b) { return b.price - a.price; })[0] || null;
-    /* a row held by the move guard (tools/lib/move-guard.mjs, Nov 3 2026) is never the "biggest move" — its read is unconfirmed */
-    var movers = basket.filter(function (c) { return typeof c.prevPrice === 'number' && c.prevPrice > 0 && c.price >= 10 && !c.heldMove; })
+    /* a row held by the move guard (tools/lib/move-guard.mjs, Nov 3 2026) is never the "biggest move" — its read is unconfirmed;
+     * nor is a reread row (Price Truth, Nov 5 2026): the prior mark sat outside PriceCharting's band and the new one inside it, so the
+     * "move" is the mark correcting, not the card moving (NDC1E Hitmontop #3 $30 → $67) */
+    var movers = basket.filter(function (c) { return typeof c.prevPrice === 'number' && c.prevPrice > 0 && c.price >= 10 && !c.heldMove && !c.reread; })
       .map(function (c) { return { c: c, p: (c.price / c.prevPrice - 1) * 100 }; })
       .filter(function (m) { return Math.abs(m.p) >= 1; })
       .sort(function (a, b) { return Math.abs(b.p) - Math.abs(a.p); });

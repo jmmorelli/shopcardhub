@@ -132,3 +132,33 @@ export function holdIfUnconfirmed(b, m, ctx) {
   if (ctx.log) ctx.log(`  move guard: ${b.name} #${b.num} HELD at $${prior} (proposed $${m.price}, n ${n}${pc ? `, PriceCharting $${pc.value} ${pc.month}` : ""}) — ${g.why.join("; ")}`);
   return true;
 }
+
+// ---- RE-READ TAG (Price Truth, Nov 5 2026; IW iw-2026-11-05-2 class) ------------------------------------------------------
+// A confirmed move is not always a market move. When the PRIOR mark sat outside PC_BAND of PriceCharting's ungraded value and
+// the NEW mark sits inside it, the "move" is the mark catching up with the market (a thin or mixed prior window), not the card
+// moving: NDC1E Hitmontop #3 $30 → $67 on Nov 5 (PriceCharting Oct $58.25; 2026 months $45–$90) printed "+123%" as the home's
+// top card mover and the page's "Biggest move". Such a row is tagged reread: { prior, pc, pcMonth } in data/indices.json at save /
+// bake (price, level, weights untouched) and is never narrated as a move (home movers, plain read). Cleared when it no longer
+// holds (the next mark makes prevPrice the corrected mark). Same materiality gate and ±50% trigger as guardMove.
+export function rereadOf(root, ticker, b) {
+  const G = MOVE_GUARD;
+  if (!b || b.heldMove || !(b.prevPrice > 0) || !(b.price > 0) || !b.prevAsOf || !b.asOf || b.prevAsOf === b.asOf) return null;
+  const r = b.price / b.prevPrice;
+  if (!(r >= 1 + G.MOVE || r <= 1 - G.MOVE)) return null;
+  if (Math.max(b.price, b.prevPrice) < G.NARRATE_PX) return null;
+  const pc = pcRef(root, ticker, b, b.asOf);
+  if (!pc) return null;
+  const inBand = (v) => v <= pc.value * G.PC_BAND && v >= pc.value / G.PC_BAND;
+  if (inBand(b.price) && !inBand(b.prevPrice)) return { prior: b.prevPrice, pc: pc.value, pcMonth: pc.month };
+  return null;
+}
+export function tagReread(root, x) {
+  if (!x || !Array.isArray(x.basket)) return 0;
+  let changed = 0;
+  for (const b of x.basket) {
+    const t = rereadOf(root, x.ticker, b);
+    if (t) { if (!b.reread || b.reread.prior !== t.prior || b.reread.pc !== t.pc) { b.reread = t; changed++; } }
+    else if (b.reread) { delete b.reread; changed++; }
+  }
+  return changed;
+}

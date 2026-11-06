@@ -87,6 +87,22 @@ for (const [tk, v] of Object.entries(IDX)) {
   for (const [sk, sv] of Object.entries(v.sub || {})) if (sv && Array.isArray(sv.basket) && sv.divisor) moves(`${tk}.${sk}`, v.page, sv.basket, sv.divisor, tk);
 }
 
+// 1b · corrections narrated as moves (Nov 5 2026; IW iw-2026-11-05-2 class): a ±50% material move whose PRIOR mark sat outside
+// 1.5x of PriceCharting's ungraded value and whose NEW mark sits inside it is the mark catching up, not the card moving. The
+// re-read tag (tools/lib/move-guard.mjs rereadOf / tagReread, written at save/bake) keeps it out of the home movers and the plain
+// read. RED when such a row carries no reread tag (it would be narrated as a "biggest move"); GREEN per tagged row.
+{
+  const { rereadOf } = await import(path.join(ROOT, "tools/lib/move-guard.mjs"));
+  for (const [tk, v] of Object.entries(IDX)) {
+    if (!v || typeof v !== "object" || !Array.isArray(v.basket) || v.status !== "live") continue;
+    for (const b of v.basket) {
+      const t = rereadOf(ROOT, v.ticker || tk, b); if (!t) continue;
+      if (b.reread) add(1, G, `reread-${tk}#${b.num}`, `${tk} ${b.name} #${b.num} $${b.prevPrice}→$${b.price} tagged re-read (prior outside 1.5x of PC $${t.pc} ${t.pcMonth}); not narrated`, { page: v.page });
+      else add(1, R, `reread-${tk}#${b.num}`, `${tk} ${b.name} #${b.num} $${b.prevPrice}→$${b.price} is a correction (prior outside 1.5x of PC $${t.pc} ${t.pcMonth}) with no reread tag — narrated as a move`, { page: v.page });
+    }
+  }
+}
+
 // ---------------- 2 · 1st Edition vs Unlimited ----------------
 const PAIRS = [["bs1e", "bs99"], ["ju1e", "ju99"], ["fo1e", "fo99"], ["tr1e", "tr00"], ["ng1e", "ng00"], ["ndc1e", "ndc01"], ["nr1e", "nr01"], ["nd1e", "nd02"], ["bssl", "bs99"]];
 let pairsCompared = 0;

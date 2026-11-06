@@ -46,7 +46,7 @@ import { ebaySearchUrl, SACAT_TCG, SACAT_SPORTS } from "./lib/epn.mjs";
 import { cardId, cardKey, assignKeys, rawNot, RAW_EXTRA, WOTC, EDITION, writeCardFile } from "./lib/card-files.mjs";
 import { holoTest, hasRarity } from "./lib/holo-tier.mjs";
 import { isReprintTitle, REPRINT_PAIRS, reprintFloor } from "./lib/reprint-filter.mjs";
-import { holdIfUnconfirmed } from "./lib/move-guard.mjs";
+import { holdIfUnconfirmed, tagReread } from "./lib/move-guard.mjs";
 import { tagClassicCollection, CC_LABEL } from "./lib/classic-collection.mjs";
 import { createRequire } from "node:module";
 import { applyIndexLd, applyIndexAnswer } from "./lib/index-jsonld.mjs";
@@ -942,7 +942,10 @@ ${PR.PR_CSS}
 function bake(x, c) {
   // Classic Collection reprint label (Price Truth, Nov 4 2026, KB GAPS P42): CEL21 / TH26 rows that reprint an older card on its
   // original number carry cc:true in data/indices.json (the client plain read reads it there) and say so on every surface.
-  if (tagClassicCollection(x) && !DRY) { fs.writeFileSync(idxPath, JSON.stringify(IDX, null, 1) + "\n"); console.log(`${x.ticker}: Classic Collection labels written to data/indices.json`); }
+  // Re-read tag (Price Truth, Nov 5 2026; tools/lib/move-guard.mjs tagReread): a mark that corrects into PriceCharting's band from
+  // outside it carries reread:{prior,pc,pcMonth} and is never narrated as a move (plain read here, home movers). Prices untouched.
+  const ccN = tagClassicCollection(x), rrN = tagReread(ROOT, x);
+  if ((ccN || rrN) && !DRY) { fs.writeFileSync(idxPath, JSON.stringify(IDX, null, 1) + "\n"); console.log(`${x.ticker}: ${ccN ? "Classic Collection labels" : ""}${ccN && rrN ? " + " : ""}${rrN ? `${rrN} re-read tag(s)` : ""} written to data/indices.json`); }
   const file = path.join(ROOT, c.page.slice(1) + ".html");
   let html = fs.readFileSync(file, "utf8");
   const S = `<!-- ${x.ticker}:START -->`, E = `<!-- ${x.ticker}:END -->`;
@@ -1247,7 +1250,7 @@ async function classMark(c) {
 // ---------------- main (one or more tickers: --ticker BOW26,BB26,BCB26 share every page read) ----------------
 const idxPath = path.join(ROOT, "data/indices.json");
 const IDX = JSON.parse(fs.readFileSync(idxPath, "utf8"));
-const save = () => { if (DRY) { console.log("--dry: indices.json not written"); return; } for (const t of Object.values(IDX)) if (t && typeof t === "object") tagClassicCollection(t); IDX.updated = TODAY; fs.writeFileSync(idxPath, JSON.stringify(IDX, null, 1) + "\n"); console.log("wrote data/indices.json"); };
+const save = () => { if (DRY) { console.log("--dry: indices.json not written"); return; } for (const t of Object.values(IDX)) if (t && typeof t === "object") { tagClassicCollection(t); tagReread(ROOT, t); } IDX.updated = TODAY; fs.writeFileSync(idxPath, JSON.stringify(IDX, null, 1) + "\n"); console.log("wrote data/indices.json"); };
 const ORIG = JSON.parse(JSON.stringify(IDX));   // pre-run snapshot: --rescope draws sibling rows from it, so ticker order in one run never matters
 const r6 = (v) => Math.round(v * 1e6) / 1e6;
 

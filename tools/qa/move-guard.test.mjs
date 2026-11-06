@@ -2,7 +2,7 @@
 // move-guard.test.mjs — both-way tests for the move-confirmation guard (tools/lib/move-guard.mjs, Nov 3 2026).
 // Run: node tools/qa/move-guard.test.mjs   (exit 1 on any miss). Cases are the live shapes from Pokémon KB P14 / P40 / P41
 // plus the clean cases the guard must let through. Synthetic inputs — nothing here is published.
-import { guardMove, holdIfUnconfirmed } from "../lib/move-guard.mjs";
+import { guardMove, holdIfUnconfirmed, rereadOf, tagReread } from "../lib/move-guard.mjs";
 
 let fail = 0;
 const t = (name, got, want) => { const ok = got === want; if (!ok) fail++; console.log(`${ok ? "ok  " : "FAIL"} ${name}${ok ? "" : ` — got ${got}, want ${want}`}`); };
@@ -36,6 +36,21 @@ t("held row carries heldMove.proposed", row.heldMove && row.heldMove.proposed, 8
 t("held row is dated to this read", row.asOf, "2026-11-02");
 t("second read within 20% releases the hold", holdIfUnconfirmed(row, { price: 790, win: 90, n: 5 }, { ...ctx, today: "2026-11-05" }), false);
 t("released row drops heldMove", row.heldMove, undefined);
+
+// re-read tag (Price Truth, Nov 5 2026) — live shape NDC1E Hitmontop #3 $30 → $67, PriceCharting Oct $58.25 (repo data)
+const ROOT = new URL("../..", import.meta.url).pathname;
+const hit = { num: "3", key: "3", name: "Hitmontop", path: "pokemon-neo-discovery/hitmontop-1st-edition-3", price: 67, prevPrice: 30, asOf: "2026-11-05", prevAsOf: "2026-11-02", n30: 9 };
+const rr = rereadOf(ROOT, "NDC1E", hit);
+t("correction into PriceCharting's band is a re-read", rr && rr.prior, 30);
+t("a move between two in-band marks is not a re-read", rereadOf(ROOT, "NDC1E", { ...hit, prevPrice: 45, price: 70 }), null);
+t("a move out of the band is not a re-read (the move guard's job)", rereadOf(ROOT, "NDC1E", { ...hit, prevPrice: 58, price: 120 }), null);
+t("a held row is never a re-read", rereadOf(ROOT, "NDC1E", { ...hit, heldMove: { proposed: 67 } }), null);
+t("no PriceCharting reference → not a re-read", rereadOf(ROOT, "ZZ99", hit), null);
+const xx = { ticker: "NDC1E", basket: [{ ...hit }] };
+t("tagReread writes the tag", tagReread(ROOT, xx), 1);
+t("tagReread is idempotent", tagReread(ROOT, xx), 0);
+xx.basket[0].prevPrice = 67; xx.basket[0].prevAsOf = "2026-11-05"; xx.basket[0].asOf = "2026-11-09";
+t("next ordinary mark clears the tag", tagReread(ROOT, xx) === 1 && xx.basket[0].reread === undefined, true);
 
 console.log(fail ? `\n${fail} FAILED` : "\nall passed");
 process.exit(fail ? 1 : 0);

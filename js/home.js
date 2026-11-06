@@ -354,8 +354,8 @@
       basket.filter(function (b) { return b && b.price != null && isFinite(b.price); }).sort(function (a, b) { return b.price - a.price; }).slice(0, 5).forEach(function (b) {
         var name = b.name || b.player || b.id || '';
         var tag = b.rarity || (b.tab === 'autos' ? 'Auto' : b.tab === 'base' ? 'Base' : '') || '';
-        var p = b.prevPrice != null && b.prevPrice > 0 ? ST.pctChange(b.prevPrice, b.price) : null;
-        items.push({ k: k, label: name + (tag ? ' ' + tag : ''), sub: k + ' · last mark', href: v.page || '/indices', v: fmt(b.price), d: p, dtext: p == null ? 'first mark' : pct(p, 1) });
+        var p = b.prevPrice != null && b.prevPrice > 0 && !b.reread ? ST.pctChange(b.prevPrice, b.price) : null;   // reread: a correction, not a move (Price Truth, Nov 5 2026)
+        items.push({ k: k, label: name + (tag ? ' ' + tag : ''), sub: k + ' · last mark', href: v.page || '/indices', v: fmt(b.price), d: p, dtext: p == null ? (b.reread ? 'corrected' : 'first mark') : pct(p, 1) });
       });
     }
     return items;
