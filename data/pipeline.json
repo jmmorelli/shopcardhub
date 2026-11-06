@@ -5885,6 +5885,16 @@
           "liveVerified": "2026-11-06 ~08:10Z curl: / movers 'Nothing moved up outside its usual range this week'; NDC1E 'Biggest move' Butterfree #19; /data/indices.json NDC1E #3 reread; js live",
           "deploy": "cloud build -> Card Hub/deploy/price-truth-2026-11-05.patch -> /tmp clone on the Mac, git am -3, tree 2c3f348 matched, gates re-run, fast-forward",
           "rollback": "git revert 4894387"
+        },
+        {
+          "date": "2026-11-06",
+          "commits": [
+            "(this commit)"
+          ],
+          "by": "Site Sweep (task site-sweep, Authority: Mo 2026-09-27)",
+          "what": "home: 44 px tap area on 'All N sets →' (was 20 px at 390; DESIGN-SYSTEM tap-target token); css/home-v2.css v=7->v=8 in index.html, home-v2.html, build-home.mjs. Layout unchanged (h2/box tops identical at 320/390/1366).",
+          "gates": "audit-prices 0/56 . audit-site 0/4 . audit-terminal 0/1 (= base)",
+          "liveVerified": "pending (sweep live check)"
         }
       ]
     },

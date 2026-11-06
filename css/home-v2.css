@@ -5,7 +5,9 @@
 .h2 h2 { font:600 var(--ds-fs-tile,24px)/1.17 var(--ds-font); letter-spacing:-.01em; text-transform:none; color:var(--text-head); margin:0; }
 .h2 .q { display:flex; align-items:baseline; justify-content:space-between; gap:8px 16px; flex-wrap:wrap; margin-bottom:12px; min-height:28px; }
 .h2 .q a.all, .h2 .q small { font:400 14px/1.43 var(--ds-font); text-transform:none; }
-.h2 .q a.all { color:var(--accent); white-space:nowrap; } .h2 .q small { color:var(--text-dim); }
+.h2 .q a.all { color:var(--accent); white-space:nowrap; }
+/* Site Sweep Nov 6: 44 px tap area on "All N sets →" (DESIGN-SYSTEM "Tap targets ≥ 44 px"; was 20 px at 390). Padding + equal negative margin, so nothing moves. */
+.h2 .q a.all { display:inline-block; padding:12px 0; margin:-12px 0; } .h2 .q small { color:var(--text-dim); }
 .up { color:var(--green); } .dn { color:var(--red); } .fl { color:var(--text-dim); }
 .h2 a:hover { text-decoration:none; } .h2 b, .h2 strong { font-weight:600; }
 
