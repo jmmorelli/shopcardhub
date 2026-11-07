@@ -5945,6 +5945,23 @@
           "gates": "audit-prices 0/56 . audit-site 0/4 . audit-terminal 0/1 (= base)",
           "liveVerified": "2026-11-07 ~05:40Z Playwright iPhone 13 /bowman-bangers: hero-sub reads 'The top five are ranked on their 30-day sold mark; the other five … show the engine's ask.'; 200, scrollWidth 390, 0 console errors, photos 20/20",
           "rollback": "git revert 091a111"
+        },
+        {
+          "date": "2026-11-07",
+          "commits": [
+            "53c2514",
+            "4fbaefa",
+            "0e180ce",
+            "1076054",
+            "d03fb9d",
+            "4e2a78a",
+            "50816c6"
+          ],
+          "by": "Goal League Commissioner (unattended, Mac deploy-key clone under /tmp; Task-key goal-league-commissioner)",
+          "gates": "0/56 · 0/4 · 0/1 = base 0/56 · 0/4 · 0/1 (one nav-drift FAIL on 4 Deal pages cleared by build-nav.js before commit)",
+          "liveVerified": "2026-11-07 ~07:45Z curl: 19 changed URLs + sitemap.xml 200, bytes equal to main",
+          "note": "Five contestant patches + Wildcard's queued commit 2: ROY finalists page + PSA Value tier + tier-by-declared-value (Wildcard), BSSL/NG1E question titles + SV151 LD + new /index-feed.json (AI-Search), Flagg/World Cup cleanup (Conversion), Delta Reign + 30th Nov 5 re-read (Drop), new /delta-reign-vs-pitch-black on street date + eBay-only sealed re-read (Deal; 4 conflicts with the Nov 6 sealed-label commit resolved to the owner's side, generators re-run). Registry +3, sitemap +3 under event exceptions (ROY, DR vs PB, October market report), nightly wiring for build-index-feed and the BSSL/NG1E pages. IndexNow 19 URLs -> 200.",
+          "rollback": "git revert 53c2514^..50816c6"
         }
       ]
     },
