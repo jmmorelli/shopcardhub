@@ -11,6 +11,12 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-06 — desk (Fri 21:11 fire, travel shift). Nothing new needs you
+
+- Carried, still yours (not re-checked tonight while you travel; the Mon Nov 9 desk re-checks in Browser 1): **sign COMC, Impact (Fanatics) and EPN back in, in Chrome Browser 1** · **TAG payment info + link** · optional "send the Tape" in a CoS chat before Mon Nov 9 · optional "go" on drafted X posts.
+
+*Not yours:* the McDonald's Pokémon page brought the first rise in search visits in four weeks (organic 22 → 28, half from Canada). Clicks to eBay per 100 real visitors are 14.5, up from 5.9 a week ago. The Bowman Bangers intro no longer claims all ten autos rank on sales; only the top five have a sale in 30 days and it now says so.
+
 ## 2026-11-04 — desk (15:11 fire, verified live). Nothing new needs you
 
 - Carried, still yours: **sign COMC and Impact (Fanatics) back in, in Chrome Browser 1**, and EPN too if today's sign-in for the CSV export didn't stick (October's Treasury close waits on COMC) · **TAG payment info** · optional "send the Tape" in a CoS chat before Mon Nov 9 · optional "go" on drafted X posts.
