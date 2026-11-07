@@ -3478,6 +3478,45 @@
       "decision": "CoS desk 2026-11-02: queued — Wed Nov 4 weekly (Index Keeper): add legendary\\s*collection to REPRINT_TITLE (+ optional /110 denominator guard on WOTC paths) BEFORE the Thu Nov 5 19:30Z classic mark; re-read BS99/JU99/FO99/TR00 and their 1st Ed/Shadowless lines at that mark. Data-quality filter, not a method change."
     },
     {
+      "id": "iw-2026-11-05-1",
+      "date": "2026-11-05",
+      "area": "sealed-prices",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "tier": "P1",
+      "goal": "G2",
+      "title": "MED: /pokemon-booster-box-prices said 'median of completed eBay sales … 30 days to Nov 4'; the rows mix TCGplayer sales and the eBay part covers ~9 days.",
+      "source": "claude/cos/integrity-watch-2026-11-05.md + -proposals.json (Project)",
+      "status": "applied",
+      "decision": "CoS desk 2026-11-06 (Fri 21:11 PT fire): applied by Night Crew ffa0b740 (sealed source label, 'IW Nov 5 F1'). Verified live 05:2xZ Nov 7: meta + FAQ JSON-LD read 'completed sales listed by PriceCharting (eBay and TCGplayer)'. Per-row date span not printed — rides the Deal Hunter sealed re-read (eBay rows only) in its Nov 6 patch, Commissioner ships."
+    },
+    {
+      "id": "iw-2026-11-05-2",
+      "date": "2026-11-05",
+      "area": "home",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "tier": "P1",
+      "goal": "G1",
+      "title": "MED: home 'What moved this week?' Mewtwo #10 BS1E $373 → $800 (+114.8%) with no sale inside the week; the Oct 26 mark read 4 rows.",
+      "source": "claude/cos/integrity-watch-2026-11-05.md + -proposals.json (Project)",
+      "status": "applied",
+      "decision": "CoS desk 2026-11-06: applied by Price Truth 4894387 (re-read tag: a mark catching up with PriceCharting is never narrated as a move). Verified live Nov 7: no Mewtwo row on / movers. prevN-in-basket remedy not separately built; the re-read tag covers the failure."
+    },
+    {
+      "id": "iw-2026-11-05-3",
+      "date": "2026-11-05",
+      "area": "bowman-bangers",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "tier": "CHORE",
+      "goal": "G1",
+      "title": "LOW (R9.1): /bowman-bangers lead + meta said all ten autos are ranked on 30-day sales; only the top five have a 30-day sale; plain read used bare '1st Bowman autographs'.",
+      "source": "claude/cos/integrity-watch-2026-11-05.md + -proposals.json (Project)",
+      "status": "applied",
+      "decision": "CoS desk 2026-11-06: applied this run — hero-sub, plain read ('1st Bowman Chrome autos', no-sale cards show the engine's ask), meta + og description. Hand copy outside generated blocks."
+    },
+    {
       "id": "tuesday-2026-11-03-1",
       "status": "applied",
       "date": "2026-11-03",
@@ -5895,6 +5934,17 @@
           "what": "home: 44 px tap area on 'All N sets →' (was 20 px at 390; DESIGN-SYSTEM tap-target token); css/home-v2.css v=7->v=8 in index.html, home-v2.html, build-home.mjs. Layout unchanged (h2/box tops identical at 320/390/1366).",
           "gates": "audit-prices 0/56 . audit-site 0/4 . audit-terminal 0/1 (= base)",
           "liveVerified": "2026-11-06 ~22:50Z curl / -> home-v2.css?v=8, css carries the rule; Playwright 390/1366: link 44 px high, .h2-box top 272/271 (unchanged), scrollWidth = viewport, 0 page errors"
+        },
+        {
+          "date": "2026-11-06",
+          "commits": [
+            "(this commit)"
+          ],
+          "by": "CoS desk (scheduled Fri 21:11 PT fire, unattended) — Mac /tmp deploy-key clone",
+          "what": "iw-2026-11-05-3: /bowman-bangers hero-sub, plain read, meta + og description say the top five rank on the 30-day sold mark and the other five show the engine's ask; '1st Bowman Chrome autos' (R9.1). Ledgers iw-2026-11-05-1..3.",
+          "gates": "audit-prices 0/56 . audit-site 0/4 . audit-terminal 0/1 (= base)",
+          "liveVerified": "pending (filled by the docs commit after the live curl)",
+          "rollback": "git revert <sha>"
         }
       ]
     },
