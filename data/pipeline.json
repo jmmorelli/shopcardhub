@@ -5966,12 +5966,14 @@
         {
           "date": "2026-11-07",
           "commits": [
-            "(this commit)"
+            "afa8a81"
           ],
           "by": "Price Truth Desk (CoS charter, task price-truth-2026-11-07)",
           "what": "reprint filter: 'legendary collection' in REPRINT_TITLE + a '/110' set-total guard on the Base/Jungle/Fossil/Team Rocket consoles (KB P62 sold half, IW iw-2026-11-02-4; 🔴 by age, applies from the Mon Nov 9 classic mark; no level restated); GSTAR tape: Torchic PSA 10 $2.7M prints 'Private sale · reported Sep 12 (TheGamer)' instead of 'ALT Sep 10' (KB P63), the duplicate Oct 11 Goldin Pikachu $1,037,000 row dropped (KB P64)",
           "gates": "audit-prices 0/56 . audit-site 0/4 . audit-terminal 0/1 (= base fa1fb23); reprint-filter self-test 83/83; sweep RED 0",
-          "rollback": "git revert <this commit>"
+          "liveVerified": "2026-11-07 ~06:52Z curl /gold-star-index: Torchic tape cell 'Private sale · reported Sep 12 (TheGamer)', no 'ALT' on that row, one $1,037,000 row; served tools/lib/reprint-filter.mjs carries the LC term (marks apply from Mon Nov 9)",
+          "deploy": "cloud build -> Card Hub/deploy/price-truth-2026-11-07.patch -> /tmp clone on the Mac, git am -3, tree 7c11351 matched, gates re-run, fast-forward",
+          "rollback": "git revert afa8a81"
         }
       ]
     },
