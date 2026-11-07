@@ -18,7 +18,8 @@
 // DATA: one PriceCharting item page per card — ungraded sold rows (90-day median, widened to 180/365 and flagged thin
 // below 4 sales, the holo-rule window ladder), grade tabs by title, monthly history for the data file. Titles are read in
 // memory for the filters and never stored (R17). Asks are never used (R20). The Graded Tape rows (auction-house record
-// prints) live in data/graded-tape.json, each with house, date, grade, price and source — one sales row each (R18).
+// prints) live in data/graded-tape.json, each with house, date, grade, price and source — one sales row each (R18). A row whose
+// house and day no source names carries `reported: <outlet>` with the report date and prints "reported <date> (<outlet>)" (Nov 7 2026, Price Truth, KB P63).
 //
 // Usage:  node tools/build-grails.mjs            read PriceCharting, write data/grails.json, bake the page block
 //         node tools/build-grails.mjs --bake     re-bake the page block from data/grails.json only (no network)
@@ -211,7 +212,7 @@ function block(D, tape) {
       gcell(c.psa9, "PSA 9") + gcell(c.psa10, "PSA 10") + gcell(c.tag10, "TAG 10") +
       `<td class="act g"><span class="act-w g"><button type="button" class="sch-track-card" data-name="${esc(c.label)} #${c.num} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="pokemon" data-grade="Raw" data-price="${c.raw.m || ""}" title="Watch this card">★</button><span class="glk"><a class="ebay g-raw" data-g="raw" href="${L(c.q + RAW_NOT, cid)}" target="_blank" rel="sponsored nofollow noopener" title="Raw (ungraded) copies on eBay — Authenticity Guarantee filter on">Raw</a></span><span class="sidx-auc-slot"></span></span></td></tr>`;
   }).join("\n    ");
-  const tapeRows = tape.rows.map((r, i) => `<tr><td class="rk">${i + 1}</td><td class="nm"><b>${esc(r.card)}</b><small>${esc(r.set)} · ${esc(r.grade)}</small></td><td class="num">${money(r.price)}</td><td class="dim">${esc(r.house)}<br><small>${md(r.date)}</small></td><td class="num dim">${r.prior ? money(r.prior.price) + `<small>${esc(r.prior.when)}</small>` : "—"}</td><td class="num ${r.prior ? (r.price >= r.prior.price ? "up" : "dn") : "dim"}">${r.prior ? (r.price / r.prior.price >= 3 ? (r.price / r.prior.price).toFixed(0) + "×" : ((r.price / r.prior.price - 1) * 100).toFixed(0) + "%") : "—"}</td><td class="act g"><span class="glk"><a class="ebay g-psa10" href="${L(r.q + " psa 10", "gstar-tape-" + r.id)}" target="_blank" rel="sponsored nofollow noopener" title="PSA 10 copies on eBay — Authenticity Guarantee filter on">PSA 10 &rarr;</a></span></td></tr>`).join("\n    ");
+  const tapeRows = tape.rows.map((r, i) => `<tr><td class="rk">${i + 1}</td><td class="nm"><b>${esc(r.card)}</b><small>${esc(r.set)} · ${esc(r.grade)}</small></td><td class="num">${money(r.price)}</td><td class="dim">${esc(r.house)}<br><small>${r.reported ? `reported ${md(r.date)} (${esc(r.reported)})` : md(r.date)}</small></td><td class="num dim">${r.prior ? money(r.prior.price) + `<small>${esc(r.prior.when)}</small>` : "—"}</td><td class="num ${r.prior ? (r.price >= r.prior.price ? "up" : "dn") : "dim"}">${r.prior ? (r.price / r.prior.price >= 3 ? (r.price / r.prior.price).toFixed(0) + "×" : ((r.price / r.prior.price - 1) * 100).toFixed(0) + "%") : "—"}</td><td class="act g"><span class="glk"><a class="ebay g-psa10" href="${L(r.q + " psa 10", "gstar-tape-" + r.id)}" target="_blank" rel="sponsored nofollow noopener" title="PSA 10 copies on eBay — Authenticity Guarantee filter on">PSA 10 &rarr;</a></span></td></tr>`).join("\n    ");
   const tapeDates = tape.rows.map((r) => r.date).sort();
   return `<!-- GSTAR:START -->
 ${sidxCss}

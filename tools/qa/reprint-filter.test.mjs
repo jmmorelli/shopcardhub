@@ -40,6 +40,13 @@ const REPRINT = [
   [ZARD, "Pokemon Charizard 4/102 Base Set 25th Anniversary Celebrations reprint"],
   [ZARD1E, "Charizard 4/102 Base Set 1st Edition 30th Celebration reprint"],
   [PIKA, "Pikachu 58/102 Base Set Holo Classic"],
+  // Legendary Collection (2002) reprints (Nov 7 2026, GAPS P62; titles shaped on the PriceCharting TR Dark Dragonite #5 rows, Nov 3)
+  ["pokemon-team-rocket/dark-dragonite-5", "Dark Dragonite 5/110 Legendary Collection Holo Pokemon 2002 WOTC"],
+  ["pokemon-team-rocket/dark-dragonite-5", "Pokemon Dark Dragonite 5/110 Holo Rare LP"],
+  [ZARD, "Charizard 3/110 Legendary Collection Holo Rare WOTC"],
+  [ZARD, "Pokemon Charizard Holo Legendary  Collection NM"],
+  ["pokemon-jungle/flareon-3", "Flareon 19/110 Holo Rare Pokemon 2002"],
+  ["pokemon-fossil/gengar-5", "Gengar 5/62 Fossil Holo (Legendary Collection)"],
 ];
 const ORIGINAL = [
   [LUGIA, "Pokemon TCG Lugia Aquapolis 149/147 Secret Rare Holo English 80 HP 149/147"],
@@ -66,6 +73,11 @@ const ORIGINAL = [
   ["pokemon-neo-revelation/celebi-3", "Celebi 3/64 Neo Revelation Holo"],
   ["pokemon-team-up/nita-180", "2026 Pokemon Nita 180/181 Team Up Sun &amp; Moon Full Art Ultra Rare Card NM"],
   ["pokemon-base-set/blastoise-2", "Blastoise 2/102 Base Set Unlimited Holo listed 2026"],
+  ["pokemon-team-rocket/dark-dragonite-5", "Dark Dragonite 5/82 Team Rocket Holo Unlimited WOTC 2000 NM"],
+  ["pokemon-team-rocket/dark-dragonite-5", "Dark Dragonite 5/82 Team Rocket Holo - original, not Legendary Collection"],
+  ["pokemon-jungle/flareon-3", "Flareon 3/64 Jungle Holo Unlimited 1999"],
+  ["pokemon-neo-genesis/lugia-9", "Lugia 9/111 Neo Genesis Holo PSA 10 cert 110"],
+  ["pokemon-aquapolis/lugia-149", "Lugia 149/147 Aquapolis - not /110"],
 ];
 for (const [p, t] of REPRINT) ok(isReprintTitle(t, p) === true, `reprint kept: [${p}] ${t}`);
 for (const [p, t] of ORIGINAL) ok(isReprintTitle(t, p) === false, `original dropped: [${p}] ${t}`);

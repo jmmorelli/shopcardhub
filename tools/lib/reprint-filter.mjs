@@ -18,13 +18,20 @@ export const REPRINT_SCOPE = /^pokemon-(base-set|jungle|fossil|team-rocket|neo-g
 // Celebrations and the truncated "30th Celebr" (and not Celebi). Plain "gold" is NOT a reprint word: Team Up has genuine gold
 // secret rares, so only "gold stamp(ed)" / "gold border(ed)" count. "1st Edition", "Unlimited", "Holo", "Shadowless" are never
 // reprint words.
-export const REPRINT_TITLE = /(\b30th\b|\b25th\b|\bcelebr|\bclassic\s*collection\b|\breprint(s|ed)?\b|\bgold[\s-]*(stamp|stamped|border|bordered)\b)/i;
+// "Legendary Collection" (Nov 7 2026, Price Truth; Integrity Watch iw-2026-11-02-4, Pokémon KB GAPS P62): the 2002 WOTC reprint
+// set of Base, Jungle, Fossil and Team Rocket. Sellers title it with the original card's name and PriceCharting files some of
+// those sales on the original's page (five "Dark Dragonite 5/110 … Legendary Collection … 2002" rows on TR #5, Nov 3).
+export const REPRINT_TITLE = /(\b30th\b|\b25th\b|\bcelebr|\bclassic\s*collection\b|\blegendary\s*collection\b|\breprint(s|ed)?\b|\bgold[\s-]*(stamp|stamped|border|bordered)\b)/i;
+// Legendary Collection is numbered /110; the four sets it reprinted stop at /102, /64, /62 and /82. On those four consoles only, a
+// title printing a "/110" set total is the reprint (LC sellers often give the reprint's number and no set word).
+export const LC_SCOPE = /^pokemon-(base-set|jungle|fossil|team-rocket)\//;
+const LC_TOTAL = /\/\s*110\b/;
 // "2026" counts only on the six reprinted slots (REPRINT_PAIRS): sellers of genuine originals sometimes title with the year
 // they list in (Team Up Nita #180, Jun 26 2026: "2026 Pokemon Nita 180/181 Team Up …" — Nita was never reprinted).
 const YEAR_2026 = /\b2026\b/;
 
 // "Not a reprint", "no reprints", "NOT Celebrations", "non-reprint" are originals saying so: removed before the test.
-const NEGATED = /\b(not|no|non|never)[\s-]+(an?\s+|the\s+)?(30th\s+|25th\s+)?(reprints?|reprinted|celebrations?|classic\s*collection)\b/gi;
+const NEGATED = /\b(not|no|non|never)[\s-]+(an?\s+|the\s+)?(30th\s+|25th\s+)?(reprints?|reprinted|celebrations?|classic\s*collection|legendary\s*collection)\b/gi;
 
 // Slots whose original print is NOT holo while the Classic Collection reprint is (rarity: data/kb/pokemon-rarity.json —
 // neo1 #25 Sneasel "Rare", base1 #58 Pikachu "Common"). On these pages a title calling the card holo is the reprint;
@@ -50,6 +57,7 @@ export function isReprintTitle(title, path) {
   if (!title || !inReprintScope(path)) return false;
   const t = String(title).replace(/&amp;/g, "&").replace(/&#43;/g, "+").replace(NEGATED, " ");
   if (REPRINT_TITLE.test(t)) return true;
+  if (LC_SCOPE.test(String(path)) && LC_TOTAL.test(t)) return true;
   if (REPRINT_PAIRS[String(path)] && YEAR_2026.test(t)) return true;
   if (HOLO_MEANS_REPRINT.has(String(path)) && HOLO_WORD.test(t)) return true;
   return false;

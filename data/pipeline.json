@@ -5962,6 +5962,16 @@
           "liveVerified": "2026-11-07 ~07:45Z curl: 19 changed URLs + sitemap.xml 200, bytes equal to main",
           "note": "Five contestant patches + Wildcard's queued commit 2: ROY finalists page + PSA Value tier + tier-by-declared-value (Wildcard), BSSL/NG1E question titles + SV151 LD + new /index-feed.json (AI-Search), Flagg/World Cup cleanup (Conversion), Delta Reign + 30th Nov 5 re-read (Drop), new /delta-reign-vs-pitch-black on street date + eBay-only sealed re-read (Deal; 4 conflicts with the Nov 6 sealed-label commit resolved to the owner's side, generators re-run). Registry +3, sitemap +3 under event exceptions (ROY, DR vs PB, October market report), nightly wiring for build-index-feed and the BSSL/NG1E pages. IndexNow 19 URLs -> 200.",
           "rollback": "git revert 53c2514^..50816c6"
+        },
+        {
+          "date": "2026-11-07",
+          "commits": [
+            "(this commit)"
+          ],
+          "by": "Price Truth Desk (CoS charter, task price-truth-2026-11-07)",
+          "what": "reprint filter: 'legendary collection' in REPRINT_TITLE + a '/110' set-total guard on the Base/Jungle/Fossil/Team Rocket consoles (KB P62 sold half, IW iw-2026-11-02-4; 🔴 by age, applies from the Mon Nov 9 classic mark; no level restated); GSTAR tape: Torchic PSA 10 $2.7M prints 'Private sale · reported Sep 12 (TheGamer)' instead of 'ALT Sep 10' (KB P63), the duplicate Oct 11 Goldin Pikachu $1,037,000 row dropped (KB P64)",
+          "gates": "audit-prices 0/56 . audit-site 0/4 . audit-terminal 0/1 (= base fa1fb23); reprint-filter self-test 83/83; sweep RED 0",
+          "rollback": "git revert <this commit>"
         }
       ]
     },
