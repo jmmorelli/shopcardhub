@@ -231,7 +231,10 @@ jobs:
             # from the index date (one read date per page, R35) - that refusal is a warning, the page keeps its last good bake.
             # AI-Search Hunter (Goal League S1; Commissioner wired 2026-11-02): re-date the /indices answer, the BS99/BS1E/SV151 head
             # tags and data/aisearch-llms.txt before build-llms reads it. Warn-only: the tool writes nothing when it fails.
-            if node tools/build-aisearch.mjs > /dev/null; then git add indices.html pokemon-base-set-index.html pokemon-base-set-1st-edition-index.html scarlet-violet-151-index.html bowman-1st-chrome-index.html bowman-chrome-2026-index.html evolving-skies-index.html prismatic-evolutions-index.html ascended-heroes-index.html data/aisearch-llms.txt
+            # AI-Search patch 3 (Commissioner wired 2026-11-07): /index-feed.json first, so build-aisearch sees it for the llms pointer.
+            if node tools/build-index-feed.mjs > /dev/null; then git add index-feed.json
+            else echo "::warning::build-index-feed failed - index-feed.json keeps its previous bake"; git checkout -- index-feed.json 2>/dev/null || true; fi
+            if node tools/build-aisearch.mjs > /dev/null; then git add indices.html pokemon-base-set-index.html pokemon-base-set-1st-edition-index.html scarlet-violet-151-index.html bowman-1st-chrome-index.html bowman-chrome-2026-index.html evolving-skies-index.html prismatic-evolutions-index.html ascended-heroes-index.html pokemon-base-set-shadowless-index.html neo-genesis-1st-edition-index.html data/aisearch-llms.txt
             else echo "::warning::build-aisearch failed - aisearch blocks keep their previous bake"; fi
             if node tools/build-llms.mjs > /dev/null; then git add llms.txt llms-full.txt
             else echo "::warning::build-llms failed - llms files keep their previous bake"; git checkout -- llms.txt llms-full.txt 2>/dev/null || true; fi
