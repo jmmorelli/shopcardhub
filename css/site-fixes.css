@@ -5,49 +5,34 @@
    Keep this file small and generic — nothing page-specific belongs here.
    ========================================================================== */
 
-/* 0. Design system v1 (Cupertino run 1, Oct 31 2026; R46, Mo Oct 30: stay dark, system font, no web fonts).
-   Source of truth: claude/agents/cupertino/DESIGN-SYSTEM.md. `html:root` outranks every page's own `:root`, so the
-   whole site picks these up with no page edits. Pages already style through --fb/--fd/--fm and the palette vars;
-   those names are remapped here, new code uses the --ds-* names.
-   Contrast (WCAG): --text-head 19.3:1 on #000 · --text 13.9:1 · --text-dim 8.2:1 (6.5:1 on --bg3) ·
-   accent #00ccf5 11.0:1 · pill text #000 on accent 11.0:1 · --red 6.2:1 · --green 10.4:1.
-   Replaces old §1 (--text-dim #7a969e) and §21 (Barlow fallback faces; no font swap left to cushion). */
+/* 0. Design system tokens (Cupertino, R46: dark, system font, no web fonts). Spec + contrast: DESIGN-SYSTEM.md.
+   `html:root` outranks every page :root; old var names are remapped, new code uses --ds-*. */
 html:root {
   --ds-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
   --fb: var(--ds-font); --fd: var(--ds-font); --fm: var(--ds-font);
-  /* surfaces: neutral near-black, separated by tone, not lines */
   --bg: #000; --bg2: #161617; --bg3: #1d1d1f; --bg4: #2a2a2c; --p1: #161617; --p2: #1d1d1f;
   --ds-surface-1: #161617; --ds-surface-2: #1d1d1f; --ds-surface-3: #2a2a2c;
-  /* text: one neutral gray family */
   --text-head: #f5f5f7; --th: #f5f5f7; --text: #d2d2d7; --tx: #d2d2d7;
   --text-dim: #a1a1a6; --dim: #a1a1a6; --ds-text-3: #6e6e73;
-  /* moves only */
   --green: #30d158; --gn: #30d158; --red: #ff453a; --rd: #ff453a;
-  /* lines: hairlines, and no glow */
   --border: rgba(255,255,255,.08); --border2: rgba(255,255,255,.12); --accent-glow: transparent;
-  /* scale, space, shape, motion (used by the page runs) */
   --ds-fs-hero: clamp(34px, 5.2vw, 56px); --ds-fs-h2: clamp(28px, 3.7vw, 40px); --ds-fs-tile: clamp(21px, 2.2vw, 24px);
   --ds-fs-num: clamp(44px, 6vw, 64px); --ds-fs-body: 17px; --ds-fs-2: 14px; --ds-fs-cap: 12px;
   --ds-section: clamp(56px, 8vw, 96px); --ds-gutter: clamp(16px, 2vw, 24px); --ds-radius: 18px;
   --ds-ease: cubic-bezier(.28,.11,.32,1); --ds-dur-ui: .2s; --ds-dur-reveal: .5s;
-  /* global nav height (run 2, Nov 1): 44 px bar, 48 px where the hamburger + search field take over (< 960 px) */
   --ds-nav-h: 44px;
 }
 @media (max-width: 959px) { html:root { --ds-nav-h: 48px; } }
 html body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-variant-numeric: tabular-nums; }
 :where(button, input, select, textarea) { font-family: inherit; }
 body code, body pre, body kbd, body samp { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-/* the one filled pill, and the "Learn more ›" text link (DESIGN-SYSTEM.md · Controls) */
 .ds-pill { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 22px;
   border-radius: 980px; background: var(--accent); color: #000; font: 600 17px/1 var(--ds-font); text-decoration: none;
   transition: filter var(--ds-dur-ui) var(--ds-ease), transform .1s; }
 .ds-pill:hover { filter: brightness(1.1); } .ds-pill:active { transform: scale(.98); }
 .ds-more { color: var(--accent); text-decoration: none; } .ds-more::after { content: " \203A"; }
 .ds-more:hover { text-decoration: underline; }
-/* 0b. Site footer (Cupertino run 3, Nov 2 2026 · DESIGN-SYSTEM.md "Footer"). Markup: tools/build-footer.js, between
-   FOOTER markers inside every page's <footer>. One plain line, a five-column directory (native <details> rows on
-   phones), the page's own note verbatim, the legal row. Tone, not lines: one hairline above the directory and above the
-   note. Selectors carry `html body` so the 716 pages' old `footer { … }` rules and any page-wide a/details rules lose. */
+/* 0b. Footer (run 3). Markup: tools/build-footer.js (FOOTER markers). `html body` beats the pages' old footer rules. */
 html body footer:has(> .ds-foot) { background: var(--ds-surface-1); border: 0; padding: 0; margin: 0; text-align: left; }
 html body .ds-foot { max-width: 980px; margin: 0 auto; padding: 32px var(--ds-gutter) 24px; font: 400 12px/1.33 var(--ds-font); letter-spacing: 0; text-transform: none; color: var(--text-dim); }
 html body .ds-foot a { color: var(--text); font: inherit; text-decoration: none; background: none; border: 0; }
@@ -75,10 +60,7 @@ html body .ds-foot-legal a.ds-foot-mark { font-weight: 600; color: var(--text-he
   html body .ds-foot-also, html body .ds-foot-note { font-size: 12px; }
 }
 
-/* 0c. Local nav + the index-page template (Cupertino run 5, Nov 4 2026; DESIGN-SYSTEM.md "Local nav" / "Index pages").
-   Markup: tools/build-local-nav.mjs (LOCALNAV block after NAV:END, 37 set-index pages). `.lnav ~` = those pages only:
-   sentence case, 400/600, tiles by tone, the fills unchanged (gold stays until the Nov 13 G2 read). `html body` outranks
-   the pages' inline CSS. Kept compact on purpose (CSS budget, R46 charter). */
+/* 0c. Local nav + index-page template (run 5). Markup: tools/build-local-nav.mjs. `.lnav ~` = the 37 set-index pages. */
  html:has(.lnav){scroll-padding-top:calc(var(--ds-nav-h) + 60px);}
 @media (prefers-reduced-motion:no-preference){html:has(.lnav){scroll-behavior:smooth;}
 }
@@ -101,9 +83,6 @@ html body .lnav-t{font-size:17px;}
 }
 html body .lnav~* .crumb{font:400 12px/1.33 var(--ds-font);letter-spacing:.02em;color:var(--ds-text-3);}
 html body .lnav~* .crumb a,html body .lnav~* .crumb b{color:var(--text-dim) !important;font-weight:400;}
-html body .lnav~* .strip{border-bottom:0;}
-html body .lnav~* .strip .chip{border:0;border-radius:980px;background:var(--ds-surface-3);padding:8px 14px;font:400 12px/1 var(--ds-font);}
-html body .lnav~* .strip .chip b{letter-spacing:0;font-weight:600;}
 html body .lnav~* :is(.eyebrow,.sidx-eyebrow){font:600 12px/1.33 var(--ds-font);letter-spacing:0;text-transform:none;color:var(--text-dim);margin-bottom:8px;}
 html body .lnav~* :is(.mast h1,.sidx-ttl){font:600 clamp(28px,3.4vw,40px)/1.1 var(--ds-font);letter-spacing:-.015em;text-transform:none;color:var(--text-head);}
 html body .lnav~* :is(.mast h1 .tick,.sidx-dot){color:var(--text-dim);}
@@ -154,10 +133,7 @@ html body .lnav~* .pr p{font-size:16px;line-height:1.45;}
 html body .lnav~* .pr .pr-sub{font-size:12px;}
 html body .lnav~* details.pr-how>summary{padding:12px 20px;}
 }
-/* 0d. The card-page template + the grade compare row (Cupertino run 7, Nov 6 2026; DESIGN-SYSTEM.md "Card pages").
-   Markup: js/card-page.js (every /card-<slug> page and /card?id=). Sentence case, 400/600, tiles by tone, one accent for
-   text links (the set colour stays on the chart line only), the grade chips as a segmented control. Fills unchanged:
-   the eBay and TCGplayer buttons stay gold until the Nov 13 G2 read, only their shape and case change. */
+/* 0d. Card-page template + grade compare row (run 7). Markup: js/card-page.js. Fills stay to the Nov 13 G2 read. */
 html body .cdp section{padding:0;border-top:0;animation:none;}
 html body .cdp section.cdp-panel{padding-top:14px;}
 html body .cdp-photo{min-height:280px;}
@@ -219,6 +195,22 @@ html body .cdp-cmp .s{font-size:14px;line-height:1.43;margin-bottom:16px;}
 html body .cdp-buy{padding:20px 16px;}
 }
 
+/* 0e. Data tables (run 8, Nov 7): sentence-case 12 px heads, table buttons in sentence case, 8 px desktop cells.
+   Fits .sidx-tbl/.chase-tbl/.bx-t/.vgrid in their box at 1280 with DejaVu Sans (the daily sweep's font). */
+html body :is(.sidx-tbl,.chase-tbl table,.vgrid) th,html body .bx-t th :is(button,.bx-th){font:600 12px/1.33 var(--ds-font);font-size:12px !important;letter-spacing:0;text-transform:none;color:var(--text-dim);}
+html body .vgrid th.sorted,html body .bx-t th:is([aria-sort=ascending],[aria-sort=descending]) button,html body .bx-t th button:hover{color:var(--text-head);}
+html body .bx-t thead tr{background:none;border-bottom:1px solid var(--border2);}
+html body .bx-t thead .c-box{background:var(--bg);}
+html body .bx-t .bx-name{font-weight:600;text-transform:none;letter-spacing:0;}
+html body :is(.sidx-tbl td.act .glk,.sidx-tbl td.act,.chase-tbl td) :is(a.ebay,a.auc),html body .bx-t :is(.tbl-buy,.fit-tag),html body .vgrid .gr{letter-spacing:0;text-transform:none;font-weight:600;}
+@media (min-width:761px){html body :is(.sidx-tbl,.chase-tbl table,.vgrid) th{white-space:normal;}
+html body :is(.sidx-tbl,.chase-tbl table) :is(th,td){padding-left:8px;padding-right:8px;}
+html body .bx-t td{padding-left:8px;padding-right:8px;}
+html body .bx-t th :is(button,.bx-th){padding-left:8px;padding-right:8px;white-space:normal;}
+html body .vgrid :is(th,td){padding-left:5px;padding-right:5px;}
+html body .vgrid :is(.nm,.st){white-space:normal;max-width:160px;}
+html body .vgrid .nm{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+}
 /* 2. Reduced motion — one global block for the whole site. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
