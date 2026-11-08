@@ -5978,13 +5978,14 @@
         {
           "date": "2026-11-08",
           "commits": [
-            "price-truth-2026-11-08"
+            "14aad73"
           ],
           "by": "Price Truth Desk (CoS charter, task price-truth-2026-11-08)",
           "what": "/deals: a graded row more than 40% under its mark now prints only against a yardstick at most 10 days old whose fresh last sale sits no more than 25% under it (tools/price-engine/deals.mjs slabCheck, screen + --refilter; rules printed in the feed and the /deals method note). Held today: SK03 Kabutops #150 PSA 10 x2 (-44% vs a $35,999.50 median dated Oct 27; last sale Oct 24 $22,100) and TH26 Charizard #4 PSA 10 $1,200 (-41% vs $2,017.43 dated Oct 26). Rows logged Nov 4/5/7 unchanged = red by age. Sweep check 8 now rates a deep row on a stale yardstick red. Hold only: no mark re-priced, no level touched.",
           "gates": "audit-prices 0/56 . audit-site 0/4 . audit-terminal 0/1 (= base 18e6124); sweep RED 4 -> 0",
-          "liveVerified": "pending",
-          "rollback": "git revert <sha>"
+          "liveVerified": "2026-11-08 ~15:40Z curl /feed/deals-latest.json: rules carry slabDeepMaxMarkAgeDays 10 / slabDeepLastSaleGap 0.25, refiltered 3 dropped, no sk03-150 row, no graded row > 40% under; /deals method note prints the new sentence",
+          "deploy": "cloud build -> Card Hub/deploy/price-truth-2026-11-08.patch -> /tmp clone on the Mac, git am -3 on 18e6124, tree b7a17b1 matched, rebased over 834f5c3, gates re-run 0/56 . 0/4 . 0/1, fast-forward",
+          "rollback": "git revert 14aad73"
         }
       ]
     },
