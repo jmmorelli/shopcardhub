@@ -81,6 +81,7 @@ html body .lnav-t{font-size:17px;}
 }
 @media (max-width:380px){html body .lnav-in{padding:0 16px;gap:12px;}
 }
+html body .lnav-card .lnav-in{max-width:1100px;padding:0 20px;}
 html body .lnav~* .crumb{font:400 12px/1.33 var(--ds-font);letter-spacing:.02em;color:var(--ds-text-3);}
 html body .lnav~* .crumb a,html body .lnav~* .crumb b{color:var(--text-dim) !important;font-weight:400;}
 html body .lnav~* :is(.eyebrow,.sidx-eyebrow){font:600 12px/1.33 var(--ds-font);letter-spacing:0;text-transform:none;color:var(--text-dim);margin-bottom:8px;}
@@ -137,6 +138,7 @@ html body .lnav~* details.pr-how>summary{padding:12px 20px;}
 html body .cdp section{padding:0;border-top:0;animation:none;}
 html body .cdp section.cdp-panel{padding-top:14px;}
 html body .cdp-photo{min-height:280px;}
+html body .cdp b{font-weight:600;}
 html body .cdp-crumbs{font:400 12px/1.33 var(--ds-font);letter-spacing:.02em;text-transform:none;color:var(--ds-text-3);}
 html body .cdp-crumbs a{color:var(--text-dim);}
 html body .cdp h1{font:600 clamp(28px,3.4vw,40px)/1.1 var(--ds-font);letter-spacing:-.015em;text-transform:none;}
@@ -147,7 +149,7 @@ html body .cdp-gr button{border:0;border-radius:12px;font:600 14px/1.15 var(--ds
 html body .cdp-gr button small{font:400 12px/1.33 var(--ds-font);color:var(--text-dim);}
 html body .cdp-gr button[aria-selected="true"]{background:#48484a;color:var(--text-head);}
 html body .cdp-gr button[aria-selected="true"] small{color:var(--text);opacity:1;}
-html body .cdp-big{font-family:var(--ds-font);font-weight:600;letter-spacing:-.02em;}
+html body .cdp-big{font-weight:600;letter-spacing:-.02em;}
 html body .cdp-big.na{font:600 21px/1.2 var(--ds-font);letter-spacing:0;text-transform:none;}
 html body .cdp :is(.cdp-basis,.cdp-spread,.cdp-auc,.cdp-chart .leg,.cdp-chart .src,.cdp-buy .f,.cdp-note,.cdp-none,.cdp-ix p){font-family:var(--ds-font);font-size:12px;letter-spacing:0;}
 html body .cdp .cdp-ebay{border-radius:980px;font:600 17px/1 var(--ds-font);letter-spacing:0;text-transform:none;}
@@ -168,9 +170,8 @@ html body .cdp-btns a{border:0;border-radius:980px;font:600 17px/1.2 var(--ds-fo
 html body .cdp-btns a small{font:400 12px/1.33 var(--ds-font);letter-spacing:0;}
 html body .cdp .cdp-shop{border:0;border-radius:12px;background:var(--ds-surface-2);padding:14px 16px;}
 html body .cdp .cdp-shop .r .k{font:600 12px/1.33 var(--ds-font);letter-spacing:0;text-transform:none;}
-html body .cdp .cdp-shop .r b{font-family:var(--ds-font);font-weight:600;}
+html body .cdp .cdp-shop .r b{font-weight:600;}
 html body .cdp :is(.cdp-kv dt,.cdp-sales thead th){font:600 12px/1.33 var(--ds-font);letter-spacing:0;text-transform:none;}
-html body .cdp :is(.cdp-kv dd b,.cdp-sales){font-family:var(--ds-font);}
 html body .cdp-more a{border:0;border-radius:12px;background:var(--ds-surface-1);font:400 12px/1.4 var(--ds-font);}
 html body .cdp-more a:hover{background:var(--ds-surface-3);}
 html body .cdp-ix .go{border:0;border-radius:980px;background:var(--ds-surface-3);color:var(--text-head);font:600 14px/1 var(--ds-font);letter-spacing:0;text-transform:none;}

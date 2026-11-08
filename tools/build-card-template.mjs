@@ -11,6 +11,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ebaySearchUrl, SACAT_TCG } from "./lib/epn.mjs";
 import { rawNot, RAW_EXTRA } from "./lib/card-files.mjs";
+import { cardLocalNav, stubRawLink } from "./lib/local-nav.mjs";   // run 9: the sticky local nav on static card pages
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
 const SHELL = fs.readFileSync(path.join(ROOT, "how-prices-work.html"), "utf8");
@@ -143,7 +144,7 @@ const page = (o) => `<!DOCTYPE html>
 </head>
 <body>
 
-${nav}
+${nav}${o.lnav ? "\n" + o.lnav : ""}
 
 <main class="cdp" id="cdp" aria-live="polite"${o.id ? ` data-card-id="${o.id}"` : ""}>
 ${o.load || DEFAULT_LOAD}  <noscript><p class="cdp-miss">This page needs JavaScript to read the card's price ladder. Every card is also listed on its set's index page — <a href="/indices">open the indices</a>.</p></noscript>
@@ -206,6 +207,8 @@ const n90Of = (c, d) => {
 };
 // a hand-built page (engine /card-* pages from build-card-pages.mjs) is never overwritten: only files this template wrote
 const ours = (f) => { try { return /<main class="cdp" id="cdp" aria-live="polite" data-card-id=/.test(fs.readFileSync(f, "utf8")); } catch { return null; } };
+// run 9 (Cupertino): the card's local nav, its pill = the stub's raw eBay link byte for byte (tools/lib/local-nav.mjs)
+const lnavOf = (id, nameHtml, load) => { const l = stubRawLink(load); if (!l) throw new Error(`no raw eBay link in the stub for ${id}`); return cardLocalNav(id, nameHtml, l); };
 const slugsSeen = new Map();
 let nStatic = 0, nIndexed = 0;
 for (const tk of STATIC_TICKERS) {
@@ -235,7 +238,7 @@ for (const tk of STATIC_TICKERS) {
     if (!DRY) fs.writeFileSync(file, page({
       title: `${esc(nm)} ${esc(setShort)} Price — Raw, PSA 9, PSA 10, TAG | ShopCardHub`, desc: esc(desc),
       robots: indexable ? "index,follow" : "noindex,follow", path: `/card-${slug}`, ogTitle: `${esc(nm)} ${esc(setShort)} — Raw vs PSA 9 vs PSA 10`,
-      id: esc(c.id), load,
+      id: esc(c.id), load, lnav: lnavOf(esc(c.id), esc(nm), load),
     }));
     nStatic++; if (indexable) nIndexed++;
   }

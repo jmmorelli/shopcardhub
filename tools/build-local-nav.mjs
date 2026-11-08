@@ -29,10 +29,17 @@
 // below the first screen fade up once as they come into view. It never touches the first screen or a buy block, is off
 // under prefers-reduced-motion, and hides nothing when JS is off (DESIGN-SYSTEM.md "Motion → Scroll flow").
 //
+// Run 9 (Nov 8 2026): the card pages too. Every static /card-<slug> page written by tools/build-card-template.mjs (its
+// <main class="cdp" … data-card-id=…>) gets the card version of the bar from tools/lib/local-nav.mjs: the card's name ·
+// Chart · Sales · Grades (its own tabs) · a "Buy Raw on eBay" pill whose href/target/rel are the stub's raw eBay link,
+// byte for byte. The template prints the same block, so a template run and this run agree. Hand-built /card-* pages
+// (tools/build-card-pages.mjs, the Bowman engine pages) are not this template and are skipped.
+//
 // Usage: node tools/build-local-nav.mjs [--check]   (idempotent; --check exits 1 if a page would change)
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { cardLocalNav, stubRawLink, stubName, placeLocalNav } from "./lib/local-nav.mjs";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECK = process.argv.includes("--check");
@@ -128,6 +135,21 @@ for (const [tk, r] of Object.entries(idx)) {
   done.push(`${tk} ${b.link.block}`);
   if (html !== before) { changed.push(file); if (!CHECK) fs.writeFileSync(f, html); }
 }
-console.log(`local nav ${CHECK ? "check" : "build"}: ${done.length} page(s) carry it, ${changed.length} ${CHECK ? "stale" : "written"}`);
+// run 9: the card pages
+const CARD_MAIN = /<main class="cdp" id="cdp" aria-live="polite" data-card-id="([a-z0-9-]+)"/;
+let cards = 0;
+for (const file of fs.readdirSync(REPO).filter((f) => /^card-.+\.html$/.test(f)).sort()) {
+  const f = path.join(REPO, file);
+  const before = fs.readFileSync(f, "utf8");
+  const m = CARD_MAIN.exec(before);
+  if (!m) continue;   // a hand-built card page, not the template
+  const link = stubRawLink(before), name = stubName(before);
+  if (!link || !name) { skipped.push(`${file} — no raw eBay link or name in the stub`); continue; }
+  const html = placeLocalNav(before, cardLocalNav(m[1], name, link));
+  if (html == null) { skipped.push(`${file} — no NAV:END marker`); continue; }
+  cards++;
+  if (html !== before) { changed.push(file); if (!CHECK) fs.writeFileSync(f, html); }
+}
+console.log(`local nav ${CHECK ? "check" : "build"}: ${done.length} index page(s) + ${cards} card page(s) carry it, ${changed.length} ${CHECK ? "stale" : "written"}`);
 for (const s of skipped) console.log("  skip " + s);
 if (CHECK && changed.length) { console.log("  stale: " + changed.join(", ")); process.exit(1); }

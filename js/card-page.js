@@ -116,7 +116,7 @@
       '<div class="cdp-info"><h1>' + esc(c.name) + ' #' + esc(c.num) + '</h1><p class="cdp-set">' + setLink + ' · #' + esc(c.num) + (c.rarity ? ' · ' + esc(c.rarity) : '') + '</p></div>' +
       '<div class="cdp-q" id="cdp-q"><div class="cdp-gr" role="tablist" aria-label="Grade">' + chips + '</div>' +
       '<div class="cdp-big" id="cdp-big"></div><div class="cdp-basis" id="cdp-basis"></div>' +
-      (spread != null ? '<div class="cdp-spread">Raw → PSA 10: <b>' + (spread >= 0 ? '+' : '−') + Math.abs(spread).toFixed(0) + '%</b>' + (p62 ? ' · <a href="#cdp-tab-grades" data-tab="grades">' + esc(p62.short) + ' →</a>' : '') + '</div>' : '') +
+      (spread != null ? '<div class="cdp-spread">Raw → PSA 10: <b>' + (spread >= 0 ? '+' : '−') + Math.abs(spread).toFixed(0) + '%</b>' + (p62 ? ' · <a href="#cdp-tab-grades" data-tab="grades">' + esc(p62.short) + '&nbsp;›</a>' : '') + '</div>' : '') +
       '<div class="cdp-cta"><a class="cdp-ebay" id="cdp-ebay" data-cid="' + cid + '" target="_blank" rel="sponsored nofollow noopener"></a>' +
       '<a class="cdp-auc" id="cdp-auc" data-cid="' + cid + '" data-mode="auc" target="_blank" rel="sponsored nofollow noopener">Auctions ending soon</a>' +
       '<button type="button" class="sch-track-card" data-name="' + esc(c.name) + ' #' + esc(c.num) + ' — ' + esc(d.set) + '" data-set="' + esc(d.set) + '" data-cat="pokemon" data-grade="Raw" data-price="' + (raw == null ? '' : raw) + '">★ Watch</button></div></div></div>' +
@@ -127,15 +127,15 @@
       '<section class="cdp-panel" id="cdp-p-sales" role="tabpanel" aria-labelledby="cdp-tab-sales" hidden><table class="cdp-sales"><thead><tr><th>Grade</th><th>Price</th><th>What it is</th></tr></thead><tbody>' + salesRows + '</tbody></table>' +
       '<p class="cdp-note">PSA 9, PSA 10 and TAG 10 count only sales whose own listing title names that grade (PriceCharting’s dated completed sales).</p></section>' +
       '<section class="cdp-panel" id="cdp-p-grades" role="tabpanel" aria-labelledby="cdp-tab-grades" hidden><dl class="cdp-kv">' + gradeList + '</dl>' + (p62 ? p62.html : '') + '</section>' +
-      '<section class="cdp-panel" id="cdp-p-index" role="tabpanel" aria-labelledby="cdp-tab-index" hidden><div class="cdp-ix"><a class="go" href="' + esc(d.page) + '">' + esc(d.ticker) + ' ' + esc(d.name) + (d.level != null ? ' · ' + Number(d.level).toFixed(2) : '') + ' →</a>' +
+      '<section class="cdp-panel" id="cdp-p-index" role="tabpanel" aria-labelledby="cdp-tab-index" hidden><div class="cdp-ix"><a class="go" href="' + esc(d.page) + '">' + esc(d.ticker) + ' ' + esc(d.name) + (d.level != null ? ' · ' + Number(d.level).toFixed(2) : '') + '&nbsp;›</a>' +
       '<p>' + (d.kind === 'tracked' ? 'Tracked card: its set has no index on this site, so there is no level or weight. The price is this card’s own dated sales.' : d.kind === 'board' ? 'On the ' + esc(d.ticker) + ' ' + esc(d.name) + ' board: a board, not an index, so there is no level or weight.' : scr ? 'Tracked in this index, outside the level (below the liquidity screen).' : c.w === 0 ? 'Tracked as its own line, not in the weighted basket.' : '#' + c.rank + ' by weight' + (c.w != null ? ' · ' + c.w.toFixed(1) + '% of the index' : '') + (d.asOf ? ' · index marked ' + md(d.asOf) : '')) + '</p></div>' +
       (more ? '<div class="cdp-more"><h2>' + (d.kind === 'tracked' ? 'More tracked cards' : 'More from the ' + esc(d.ticker) + (d.kind === 'board' ? ' board' : ' basket')) + '</h2><div class="g">' + more + '</div></div>' : '') + '</section>' +
       '<section class="cdp-cmp" id="cdp-cmp" aria-labelledby="cdp-cmp-h"><h2 id="cdp-cmp-h">Raw, PSA or TAG?</h2><p class="s">What each grade of this card sold for, side by side.</p>' +
       '<div class="cdp-cmp-g">' + cmp + '</div><p class="n">Each grade is priced from its own sales and its own count. Grades are never mixed.</p></section>' +
       '<div class="cdp-buy"><div class="h"><b>Other places to buy</b></div>' +
       (shopMark() ? '<div class="cdp-shop cdp-shop-wait" aria-hidden="true"></div>' : '') + '<div class="cdp-btns" id="cdp-btns">' + (shopMark() ? '<span class="tcg-slot" aria-hidden="true"></span>' : '') + '</div>' +
-      '<div class="f">eBay searches for this exact card in each grade, with our affiliate tag (ShopCardHub earns a commission at no cost to you) — live listings, not prices. ' + (d.ed === '1st' ? 'Searches are for the 1st Edition print this index tracks. ' : d.ed === 'shadowless' ? 'Searches are for Shadowless copies and exclude 1st Edition. ' : d.wotc ? 'Searches exclude 1st Edition and Shadowless copies: this index tracks the Unlimited print. ' : '') + '<b>TAG:</b> we link TAG because it publishes its measurements. PSA is the reference grade. Our view: machine grading wins over time. <a href="/tag-grading-guide">How TAG grading works →</a></div></div>' +
-      '<p class="cdp-method"><a href="/how-prices-work">How we price a card →</a></p>';
+      '<div class="f">eBay searches for this exact card in each grade, with our affiliate tag (ShopCardHub earns a commission at no cost to you) — live listings, not prices. ' + (d.ed === '1st' ? 'Searches are for the 1st Edition print this index tracks. ' : d.ed === 'shadowless' ? 'Searches are for Shadowless copies and exclude 1st Edition. ' : d.wotc ? 'Searches exclude 1st Edition and Shadowless copies: this index tracks the Unlimited print. ' : '') + '<b>TAG:</b> we link TAG because it publishes its measurements. PSA is the reference grade. Our view: machine grading wins over time. <a href="/tag-grading-guide">How TAG grading works&nbsp;›</a></div></div>' +
+      '<p class="cdp-method"><a href="/how-prices-work">How we price a card&nbsp;›</a></p>';
     function shopMark() { var sf = window.__schShopFile; return !!(sf && sf.marks && sf.marks[c.id]); }
 
     var big = document.getElementById('cdp-big'), basis = document.getElementById('cdp-basis'), eb = document.getElementById('cdp-ebay'), auc = document.getElementById('cdp-auc');
@@ -157,11 +157,15 @@
       main.querySelectorAll('.cdp-panel').forEach(function (p) { p.hidden = p.id !== 'cdp-p-' + t; });
       if (t === 'chart' && chartApi) chartApi.redraw();
     }
-    main.addEventListener('click', function (ev) {
+    // run 9: the sticky local nav (LOCALNAV block, tools/lib/local-nav.mjs) sits outside <main>; its Chart · Sales · Grades
+    // links carry the same data-tab as the tabs, so one handler opens the tab and scrolls to it from either place.
+    function onTab(ev) {
       var b = ev.target.closest('[data-tab]'); if (!b) return;
       ev.preventDefault(); tab(b.getAttribute('data-tab'));
       if (b.tagName === 'A') { var tb = document.getElementById('cdp-tab-' + b.getAttribute('data-tab')); if (tb) { tb.focus({ preventScroll: true }); tb.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); } }
-    });
+    }
+    main.addEventListener('click', onTab);
+    var lnav = document.querySelector('.lnav[data-lnav-card]'); if (lnav) lnav.addEventListener('click', onTab);
     setGrade('raw');
     [eb, auc].concat([].slice.call(main.querySelectorAll('.cdp-cmp-c a'))).forEach(function (a) { if (window.SCH_GLK && SCH_GLK.track) SCH_GLK.track(a); });
     // run 7: the scroll flow (blocks below the first screen step in once; off under reduced motion; nothing hidden without JS)
