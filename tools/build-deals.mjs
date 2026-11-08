@@ -45,6 +45,7 @@ function methodNote(R) {
   if (R.vintageBefore && typeof R.vintageRawFloor === "number") out.push("Vintage raw cards (sets released before " + R.vintageBefore + ") " + (R.vintageRawNeedsNmClaim ? "need a near-mint claim in the title and " : "") + "stop at " + off(R.vintageRawFloor) + " under.");
   var a = R.maxAgeDays;
   if (a && a.raw && a.graded) out.push("Marks older than " + a.raw + " days (raw), " + a.graded + " days (graded)" + (a.bowman ? " or " + a.bowman + " days (Bowman)" : "") + " are skipped.");
+  if (typeof R.slabDeepMaxMarkAgeDays === "number" && typeof R.slabDeepLastSaleGap === "number" && typeof R.slabDeepNeedsGuard === "number") out.push("A graded row more than " + Math.round(R.slabDeepNeedsGuard * 100) + "% under prints only while its mark is at most " + R.slabDeepMaxMarkAgeDays + " days old and the card's last sale in that grade sits no more than " + Math.round(R.slabDeepLastSaleGap * 100) + "% under it.");
   if (R.rawMinMark && R.gradedMinMark) out.push("Raw marks under $" + R.rawMinMark + " and graded marks under $" + R.gradedMinMark + " are not screened.");
   if (R.minSellerPct) out.push("Sellers under " + R.minSellerPct + "% positive feedback" + (R.minSellerScore ? " or with fewer than " + R.minSellerScore + " ratings" : "") + " are dropped.");
   return out.join(" ");

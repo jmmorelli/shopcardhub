@@ -247,6 +247,13 @@ if (has("data/feed/deals-latest.json")) {
     }
     if (cur === 0) add(8, R, id, `/deals ${r.tk} ${r.card} #${r.num} ${r.grade}: yardstick $${r.mark} is now HELD by the ladder guard`);
     else if (cur != null && r.mark && Math.abs(cur / r.mark - 1) > 0.25) add(8, A, id, `/deals ${r.tk} ${r.card} #${r.num} ${r.grade}: row mark $${r.mark} vs current $${cur}`);
+    // deep rows need a fresh, uncontradicted yardstick (deals.mjs DEEP_MAX_MARK_AGE_DAYS / DEEP_LAST_SALE_GAP, Nov 7 2026);
+    // age is read against the feed's own day, so the sweep stays deterministic
+    if (r.mark && r.total != null && r.total / r.mark - 1 < -0.4 && r.grade !== "raw" && r.kind === "pokemon") {
+      const day = Date.parse(D.day || String(D.generated || "").slice(0, 10)), asOf = Date.parse(r.markAsOf || "");
+      const maxAge = (D.rules && D.rules.slabDeepMaxMarkAgeDays) || 10;
+      if (Number.isFinite(day) && Number.isFinite(asOf) && (day - asOf) / 864e5 > maxAge) add(8, R, id, `/deals ${r.tk} ${r.card} #${r.num} ${r.grade}: ${(r.disc * 100).toFixed(0)}% vs a yardstick ${Math.round((day - asOf) / 864e5)} days old (${r.markAsOf})`);
+    }
     if (r.disc != null && r.disc <= -0.4) add(8, A, id, `/deals ${r.tk} ${r.card} #${r.num} ${r.grade}: $${r.total} = ${(r.disc * 100).toFixed(0)}% vs mark $${r.mark} (${r.markBasis || ""})`);
   }
 }

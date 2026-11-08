@@ -34,14 +34,16 @@
    "raw": 14,
    "graded": 21,
    "bowman": 30
-  }
+  },
+  "slabDeepMaxMarkAgeDays": 10,
+  "slabDeepLastSaleGap": 0.25
  },
  "counts": {
   "candidates": 365,
   "calls": 300,
   "scanned": 1552,
   "verified": 227,
-  "deals": 93,
+  "deals": 90,
   "heldBelowFloor": 1,
   "errors": 0,
   "rejected": {
@@ -68,99 +70,6 @@
  "customId": "deals",
  "affiliateTagged": true,
  "rows": [
-  {
-   "tk": "SK03",
-   "idx": "Skyridge Set Index",
-   "page": "/skyridge-index",
-   "kind": "pokemon",
-   "grade": "psa10",
-   "cardId": "sk03-150",
-   "card": "Kabutops",
-   "num": "150",
-   "cardHref": "/card?id=sk03-150",
-   "price": 20000,
-   "ship": 5.99,
-   "shipUnknown": false,
-   "total": 20005.99,
-   "mark": 35999.5,
-   "markAsOf": "2026-10-27",
-   "markN": 6,
-   "markBasis": "30d median of 6 PSA 10 sales",
-   "disc": -0.44,
-   "url": "https://www.ebay.com/itm/117507241645?_skw=pokemon+skyridge+Kabutops+150+psa+10&hash=item1b5bfa36ad%3Ag%3A%7EN0AAeSwyIJq5deP&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&campid=5339155990&customid=deals&toolid=10049",
-   "image": "https://i.ebayimg.com/images/g/~N0AAeSwyIJq5deP/s-l225.jpg",
-   "ends": null,
-   "vintage": true,
-   "cond": "Graded",
-   "condStated": true,
-   "seller": {
-    "pct": "99.9",
-    "score": 878111
-   },
-   "score": 93
-  },
-  {
-   "tk": "SK03",
-   "idx": "Skyridge Set Index",
-   "page": "/skyridge-index",
-   "kind": "pokemon",
-   "grade": "psa10",
-   "cardId": "sk03-150",
-   "card": "Kabutops",
-   "num": "150",
-   "cardHref": "/card?id=sk03-150",
-   "price": 20000,
-   "ship": 10,
-   "shipUnknown": false,
-   "total": 20010,
-   "mark": 35999.5,
-   "markAsOf": "2026-10-27",
-   "markN": 6,
-   "markBasis": "30d median of 6 PSA 10 sales",
-   "disc": -0.44,
-   "url": "https://www.ebay.com/itm/840097172213?_skw=pokemon+skyridge+Kabutops+150+psa+10&hash=itemc399b18af5%3Ag%3AyeQAAeSwk8BqznkI&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&campid=5339155990&customid=deals&toolid=10049",
-   "image": "https://i.ebayimg.com/images/g/yeQAAeSwk8BqznkI/s-l225.jpg",
-   "ends": null,
-   "vintage": true,
-   "cond": "Graded",
-   "condStated": true,
-   "seller": {
-    "pct": "100.0",
-    "score": 1824
-   },
-   "score": 93
-  },
-  {
-   "tk": "TH26",
-   "idx": "30th Celebration Set Index",
-   "page": "/pokemon-30th-anniversary-2026",
-   "kind": "pokemon",
-   "grade": "psa10",
-   "cardId": "th26-4",
-   "card": "Charizard",
-   "num": "4",
-   "cardHref": "/card?id=th26-4",
-   "price": 1200,
-   "ship": null,
-   "shipUnknown": true,
-   "total": 1200,
-   "mark": 2017.43,
-   "markAsOf": "2026-10-26",
-   "markN": 9,
-   "markBasis": "30d median of 9 PSA 10 sales",
-   "disc": -0.41,
-   "url": "https://www.ebay.com/itm/960154916433?_skw=pokemon+30th+celebration+Charizard+4+psa+10&hash=itemdf8db15651%3Ag%3Ah34AAeSw6glq5BGH&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&campid=5339155990&customid=deals&toolid=10049",
-   "image": "https://i.ebayimg.com/images/g/h34AAeSw6glq5BGH/s-l225.jpg",
-   "ends": null,
-   "vintage": false,
-   "cond": "Graded",
-   "condStated": true,
-   "seller": {
-    "pct": "100.0",
-    "score": 414
-   },
-   "score": 77
-  },
   {
    "tk": "TH26",
    "idx": "30th Celebration Set Index",
@@ -2956,5 +2865,12 @@
   "stopped": "--max-calls 300 reached",
   "screened": 300,
   "of": 365
+ },
+ "refiltered": {
+  "at": "2026-11-08T04:49:20.658Z",
+  "dropped": 3,
+  "by": {
+   "G deep vs a stale mark": 3
+  }
  }
 }
