@@ -82,7 +82,7 @@ ${g.products.map((p) => row(p, g)).join('\n')}
   </div>`).join('\n')}
 
   <p class="sp-call">These are what each product has sold for. A price here is not a call on where it goes next. Check the photos for a sealed wrap before you pay.</p>
-  <p class="sp-src">Every price is the median of the most recent completed eBay sales for that exact sealed product, read ${longDay(cfg.read)} from PriceCharting's sales list, with the sale count and the dates of the first and last sale counted on each row. Sales from other marketplaces, multi-box lots and opened product are left out, and so are products whose sales looked mixed with Pokémon Center or other editions. The eBay buttons open live listings. Those are asks, and they can sit above or below these numbers.</p>
+  <p class="sp-src">Every price is the median of the most recent completed eBay sales for that exact sealed product, read ${longDay(cfg.read)} from PriceCharting's sales list, with the sale count and the dates of the first and last sale counted on each row. A sale has to name its own set, and no other set, in its title. Sales from other marketplaces, Pokémon Center editions, multi-box lots and combos, damaged wrap and opened product are left out, and so are products whose sales looked mixed with other editions. The eBay buttons open live listings. Those are asks, and they can sit above or below these numbers.</p>
 <!-- SEALED:END -->`;
 
 const faq = [

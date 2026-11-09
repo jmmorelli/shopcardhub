@@ -55,8 +55,12 @@ const box = cfg.sealed.find((s) => s.id === 'box');
 const pp = (c, packs) => (c.price != null ? c.price / packs : null);
 const sum = (k) => cfg.chase[k].reduce((a, c) => a + c.price, 0);
 const topL = cfg.chase.left[0], topR = cfg.chase.right[0];
-const answer = `eBay sold prices to ${day(cfg.read)}: a ${box.left.name} sold for a median ${money(box.left.price)} on ${box.left.n} ${L.phase} sales, a ${box.right.name} ${money(box.right.price)} on ${box.right.n}. That works out to ${money(pp(box.left, 36))} a pack against ${money(pp(box.right, 36))}. ${L.set}'s top chase, ${topL.name} ${topL.num}, sits at ${money(topL.price)}; ${R.set}'s, ${topR.name} ${topR.num}, at ${money(topR.price)}.`;
-const hook = `${L.set} streets ${longDay(L.release)}, so its numbers so far are ${L.phase} sales and can move fast once boxes are opened. We re-mark this page ${day(cfg.remark)}. A listing under these numbers is under what buyers have been paying.`;
+// after the left set's street date the left numbers are release-day-on sales; `pre` keeps the presale read for the before/after line
+const AFTER = cfg.read >= L.release;
+const answer = `eBay sold prices to ${day(cfg.read)}: a ${box.left.name} sold for a median ${money(box.left.price)} on ${box.left.n} ${AFTER ? 'sales since its ' + day(L.release) + ' release' : L.phase + ' sales'}, a ${box.right.name} ${money(box.right.price)} on ${box.right.n}. That works out to ${money(pp(box.left, 36))} a pack against ${money(pp(box.right, 36))}. ${L.set}'s top chase, ${topL.name} ${topL.num}, sits at ${money(topL.price)}; ${R.set}'s, ${topR.name} ${topR.num}, at ${money(topR.price)}.`;
+const hook = AFTER && box.left.pre && box.left.pre.price != null
+  ? `${L.set} came out ${longDay(L.release)}. Before release its booster box sold for a median ${money(box.left.pre.price)} on ${box.left.pre.n} presale sales; since release, ${money(box.left.price)} on ${box.left.n}. We re-mark this page ${day(cfg.remark)}. A listing under these numbers is under what buyers have been paying.`
+  : `${L.set} streets ${longDay(L.release)}, so its numbers so far are ${L.phase} sales and can move fast once boxes are opened. We re-mark this page ${day(cfg.remark)}. A listing under these numbers is under what buyers have been paying.`;
 
 const cell = (c, s, set) => {
   const packs = s.packs;
@@ -70,7 +74,8 @@ const cell = (c, s, set) => {
   }
   const extra = [];
   if (c.latest && c.price != null) extra.push(`Latest sale ${day(c.latest[0])}: ${money(c.latest[1])}.`);
-  if (c.launch != null) extra.push(`Since the ${day(L.release)} release: ${c.post >= 3 ? c.post + ' sales' : 'not enough dated sales yet'}. US retail launch price ${money(c.launch)}${c.launchNote ? ' (' + c.launchNote + ')' : ''}.`);
+  if (c.pre && AFTER) extra.push(c.pre.price != null ? `Before release: ${money(c.pre.price)}, median of ${c.pre.n} presale sales, ${span(c.pre.from, c.pre.to)}.` : `Before release: ${c.pre.n} presale ${c.pre.n === 1 ? 'sale' : 'sales'}, ` + c.pre.sales.map(([d, p]) => `${money(p)} (${day(d)})`).join(', ') + '.');
+  if (c.launch != null) extra.push(`${AFTER ? '' : `Since the ${day(L.release)} release: ${c.post >= 3 ? c.post + ' sales' : 'not enough dated sales yet'}. `}US retail launch price ${money(c.launch)}${c.launchNote ? ' (' + c.launchNote + ')' : ''}.`);
   return `      <div class="vs-side">
         <span class="vs-set">${esc(set)}</span>
         ${px}
@@ -126,7 +131,7 @@ ${chaseCol('left', L)}
 ${chaseCol('right', R)}
     </div>
     <p class="vs-call">This page compares prices. It is not a call on which set to open or buy, or where either one goes next.</p>
-    <p class="vs-src">Every price is the median of the most recent completed eBay sales for that exact item, read ${longDay(cfg.read)} from PriceCharting's sales list, with the sale count and the dates of the first and last sale counted. Sales from other marketplaces, multi-box lots, Pokémon Center editions, sleeved packs and blisters, opened product, graded copies and card listings without the card's own number are left out. The eBay buttons open live listings. Those are asks, and they can sit above or below these numbers.</p>
+    <p class="vs-src">Every price is the median of the most recent completed eBay sales for that exact item, read ${longDay(cfg.read)} from PriceCharting's sales list, with the sale count and the dates of the first and last sale counted. Sales from other marketplaces, multi-box lots, Pokémon Center editions, sleeved packs and blisters, opened product, graded copies and card listings without the card's own number are left out. A sale also has to name its own set, and no other set, in its title, so the counts here can run lower than a table that reads every listed sale. The eBay buttons open live listings. Those are asks, and they can sit above or below these numbers.</p>
 <!-- VS:END -->`;
 
 const faq = [
