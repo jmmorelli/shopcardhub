@@ -158,13 +158,27 @@ export function buildV2(REPO, opts = {}) {
     return hit ? hit.id : null;
   };
   const basisShort = (b) => (/ungraded|raw/i.test(b.basis || "") ? "raw · " : "") + `${b.win || 30}-day median`;
-  const screened = []; let fresh = 0;
+  // IW 2026-11-05 F2 (Night Crew Nov 9 2026): a move needs real sales on both ends. (a) When the basket row stores the prior
+  // mark's count (prevN, a price-lane field — not stored yet), it must pass the same MIN_N screen as the current count, so a
+  // thin prior mark (Mewtwo #10 BS1E: n 4 on Oct 26 → n 11 on Nov 2, "+114.8%") is never a mover. (b) When the newest sale
+  // date is known (b.lastSale, or data/feed/sold-marks.json lastSale for the same path), it must fall inside (prevAsOf, asOf]:
+  // a mark with no sale since the last one is a re-read, not a move. Unknown stays as before (we never guess).
+  let soldLast = null;
+  const lastSaleOf = (b) => {
+    if (b.lastSale) return String(b.lastSale).slice(0, 10);
+    if (soldLast == null) { soldLast = new Map(); try { for (const x of JSON.parse(read("data/feed/sold-marks.json")).cards || []) if (x && x.cond === "Raw" && x.lastSale) soldLast.set(x.key, String(x.lastSale).slice(0, 10)); } catch {} }
+    return soldLast.get("sold:" + b.path) || null;
+  };
+  const thinPrior = (b) => b.prevN != null && !(b.prevN >= MV.MIN_N);
+  const noNewSale = (b) => { const ls = lastSaleOf(b); return ls != null && !(ls > String(b.prevAsOf).slice(0, 10)); };
+  const screened = []; let fresh = 0, priorOut = 0;
   for (const [tk, v] of Object.entries(idx)) {
     if (!v || typeof v !== "object" || v.status !== "live" || !T[tk]) continue;
     for (const b of v.basket || []) {
       if (!b || !(b.prevPrice > 0) || !(b.price > 0) || b.carried || b.heldMove || b.reread || !b.prevAsOf || b.prevAsOf === b.asOf) continue;   // heldMove: an unconfirmed read the move guard held (Nov 3 2026) is never a mover; reread (Price Truth, Nov 5 2026): a mark catching up with PriceCharting is a correction, not a move
       fresh++;
       if (b.price < MV.MIN_PX || !(b.n30 >= MV.MIN_N)) continue;
+      if (thinPrior(b) || noNewSale(b)) { priorOut++; continue; }
       const r = Math.log(b.price / b.prevPrice); if (!isFinite(r)) continue;
       const pts = monthly(tk, b.num);
       const id = cardIdOf(tk, b);
@@ -183,7 +197,7 @@ export function buildV2(REPO, opts = {}) {
   const byZ = (dir) => elig.filter((c) => dir > 0 ? c.z > 0 : c.z < 0).sort((a, b) => dir * (b.z - a.z) || Math.abs(b.chg) - Math.abs(a.chg)).slice(0, MV.CAP);
   const thin = (dir) => screened.filter((c) => c.z == null && dir * c.chg >= MV.THIN_MIN_PCT).sort((a, b) => Math.abs(b.chg) - Math.abs(a.chg)).slice(0, MV.THIN).map((c) => ({ ...c, thin: true }));
   const side = (dir) => { const rows = byZ(dir); return rows.length ? rows : thin(dir); };
-  const movers = { up: side(1), down: side(-1), n: elig.length, screened: screened.length, fresh, withHist: screened.filter((c) => c.z != null).length, xsSd: +xsS.toFixed(4), noHistTickers: [...new Set(screened.filter((c) => !c.hist).map((c) => c.tk))] };
+  const movers = { up: side(1), down: side(-1), n: elig.length, screened: screened.length, fresh, priorOut, withHist: screened.filter((c) => c.z != null).length, xsSd: +xsS.toFixed(4), noHistTickers: [...new Set(screened.filter((c) => !c.hist).map((c) => c.tk))] };
 
   /* ---- set view: each live index's this-week change, z against its own monthly recon history and against every live index ---- */
   const setRows = Object.entries(T).filter(([tk, v]) => v.w != null && !HELD[tk]).map(([tk, v]) => {

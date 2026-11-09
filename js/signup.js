@@ -66,6 +66,9 @@
       var em = (inp.value || '').trim();
       if (!/^[^\s@]+@[^\s@.]+\.[^\s@]+$/.test(em)) { msg.textContent = 'That doesn’t look like an email.'; msg.className = 'ss-msg err'; inp.focus(); return; }
       btn.disabled = true; msg.textContent = ''; msg.className = 'ss-msg';
+      // Night Crew Nov 9 2026 (signup-event row): the attempt is counted before the network call, so GA4 can tell a lost
+      // event (signup_submit with no newsletter_signup) from a signup that never came through this form at all.
+      if (typeof gtag === 'function') gtag('event', 'signup_submit', { location: src, variant: v });
       fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: em, source: src }) })
         .then(function (r) {
           if (!r.ok) throw new Error(String(r.status));

@@ -219,6 +219,7 @@ ${sidxCss}
 <style>
 .sidx-tbl td small{display:block;font-size:10px;color:var(--sidx-dim);font-weight:400;line-height:1.3;margin-top:2px;white-space:normal}
 .sidx-tbl td.nm{white-space:normal;min-width:180px} .sidx-tbl td.nm b{white-space:nowrap}
+@media(max-width:760px){.sidx-tbl td.nm b{white-space:normal}}   /* Night Crew Nov 9: a long Graded Tape name (Pikachu Raincoat … second copy, 372 px) ran 51 px past a 390 screen and over its price */
 .sidx-tbl td.num small{white-space:nowrap}
 @media(min-width:761px){.sidx-tbl td.act .glk{flex-wrap:nowrap}}
 .sidx-tbl td.act .act-w.g .sidx-auc-slot{min-width:0}

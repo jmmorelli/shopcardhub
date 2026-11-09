@@ -184,6 +184,12 @@ const GATE_N90 = 20, GATE_RAW = 25;
 const SITEMAP = new Set([...(fs.existsSync(path.join(ROOT, "sitemap.xml")) ? fs.readFileSync(path.join(ROOT, "sitemap.xml"), "utf8") : "").matchAll(/<loc>https:\/\/www\.shopcardhub\.com(\/[^<]*)<\/loc>/g)].map((m) => m[1]));
 // --tickers=pris25,ah26 limits the run (the deploy's scope-cut lever if the full set is ever too big to ship).
 const ONLY = ((process.argv.find((a) => a.startsWith("--tickers=")) || "").split("=")[1] || "").split(",").filter(Boolean);
+// --keep-robots (Night Crew Nov 9 2026; CoS ruling Nov 6, BLOCKED "Price Truth rulings" (4), BET-20261029-1 freeze): re-bake
+// only the static pages already on disk, each keeping the robots value it carries now; write no new page. This is the
+// path that puts the -mcdonald words (P61) and the current raw marks on the existing pages without flipping a URL's
+// index state or adding a URL while the Nov 12 freeze holds. Without the flag the gate decides robots, as before.
+const KEEP_ROBOTS = process.argv.includes("--keep-robots");
+const robotsOnDisk = (f) => { try { const m = /<meta name="robots" content="([^"]+)"/.exec(fs.readFileSync(f, "utf8")); return m ? m[1] : null; } catch { return null; } };
 const STATIC_TICKERS = fs.readdirSync(path.join(ROOT, "data/cards")).filter((f) => /^[a-z0-9]+\.json$/.test(f) && f !== "card-search.json").map((f) => f.replace(/\.json$/, "")).filter((t) => !ONLY.length || ONLY.includes(t)).sort();
 // WOTC edition words for the baked raw link (same rule as rawQ() in js/grade-links.js): 1st Edition index → graded words out;
 // Shadowless → also -1st; Unlimited → also -1st -shadowless.
@@ -221,8 +227,10 @@ for (const tk of STATIC_TICKERS) {
     // Night Crew Oct 28: a page the sitemap lists keeps index,follow while it is listed (PRIS25 Iron Hands ex #154 fell to
     // $22.45 on the Oct 26 mark, and a noindex page in sitemap.xml FAILs audit-site). The sitemap owner (Commissioner) drops
     // it or keeps it; this build names it instead of flipping a URL that is in the GSC test.
-    const listed = !passes && SITEMAP.has(`/card-${slug}`), indexable = passes || listed;
-    if (listed) console.warn(`gate: /card-${slug} (${c.id}) is under the gate but listed in sitemap.xml: kept index,follow; sitemap owner to decide`);
+    const kept = KEEP_ROBOTS ? robotsOnDisk(path.join(ROOT, `card-${slug}.html`)) : null;
+    if (KEEP_ROBOTS && !kept) continue;   // --keep-robots: no page on disk (or no robots tag) → no new page tonight
+    const listed = !passes && SITEMAP.has(`/card-${slug}`), indexable = kept ? kept === "index,follow" : passes || listed;
+    if (listed && !kept) console.warn(`gate: /card-${slug} (${c.id}) is under the gate but listed in sitemap.xml: kept index,follow; sitemap owner to decide`);
     const file = path.join(ROOT, `card-${slug}.html`), had = ours(file);
     if (had === false) { console.warn(`skip ${c.id}: card-${slug}.html is a hand-built page`); continue; }
     if (!indexable && !had) continue;
