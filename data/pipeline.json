@@ -5986,6 +5986,18 @@
           "liveVerified": "2026-11-08 ~15:40Z curl /feed/deals-latest.json: rules carry slabDeepMaxMarkAgeDays 10 / slabDeepLastSaleGap 0.25, refiltered 3 dropped, no sk03-150 row, no graded row > 40% under; /deals method note prints the new sentence",
           "deploy": "cloud build -> Card Hub/deploy/price-truth-2026-11-08.patch -> /tmp clone on the Mac, git am -3 on 18e6124, tree b7a17b1 matched, rebased over 834f5c3, gates re-run 0/56 . 0/4 . 0/1, fast-forward",
           "rollback": "git revert 14aad73"
+        },
+        {
+          "date": "2026-11-09",
+          "commits": [
+            "c3ca706"
+          ],
+          "by": "Price Truth Desk (CoS charter, task price-truth-2026-11-09)",
+          "what": "Bowman KB GAPS G67 (red): 2026 Bowman BCP-83 Josue De Paula (1st Bowman Chrome = 2023 Bowman Chrome Prospects BCP-111) removed from BB26·BASE and BOW26·BASE as a logged universe correction. tools/build-sector-index.mjs: De Paula in the sourced pre-2025 base priors; --rescope now applies the subUniverse scope to screened sub-lines offline (subRescope, logged in sub.divisorLog, sub level unchanged; runs before every --mark). BB26·BASE 63/8 -> 62/7, divisor 0.167241 -> 0.143473, level 62.66 unchanged; BOW26·BASE 106/11 -> 105/10, 0.288559 -> 0.263086, level 58.46 unchanged. No basket rule, weight, base date or published level changed.",
+          "gates": "audit-prices 0/57 . audit-site 0/4 . audit-terminal 0/1 (= base 8e04ea4; cloud --run-tests interaction suite FAIL 0); Price Truth sweep RED 0",
+          "liveVerified": "2026-11-09 ~05:20Z curl: /bowman-2026-index and /bowman-1st-chrome-index print no De Paula (BB26·BASE top 3 Hartman, Gonzales, Chourio; 62.66); /data/indices.json BB26·BASE 62/7 divisor 0.143473, BOW26·BASE 105/10 divisor 0.263086, no BCP-83 row",
+          "deploy": "cloud build (tree fe80187) -> Card Hub/deploy/price-truth-2026-11-09.patch -> /tmp clone on the Mac, git am -3 on 8e04ea4, tree fe80187 matched, gates re-run, fast-forward",
+          "rollback": "git revert c3ca706"
         }
       ]
     },
