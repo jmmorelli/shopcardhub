@@ -236,6 +236,9 @@ jobs:
             else echo "::warning::build-index-feed failed - index-feed.json keeps its previous bake"; git checkout -- index-feed.json 2>/dev/null || true; fi
             if node tools/build-aisearch.mjs > /dev/null; then git add indices.html pokemon-base-set-index.html pokemon-base-set-1st-edition-index.html scarlet-violet-151-index.html bowman-1st-chrome-index.html bowman-chrome-2026-index.html evolving-skies-index.html prismatic-evolutions-index.html ascended-heroes-index.html pokemon-base-set-shadowless-index.html neo-genesis-1st-edition-index.html data/aisearch-llms.txt
             else echo "::warning::build-aisearch failed - aisearch blocks keep their previous bake"; fi
+            # AI-Search patch 4 (Commissioner wired 2026-11-09): /what-is-a-1st-bowman-card re-reads BOW26/BCB26 after the mark.
+            if node tools/build-first-bowman-page.mjs > /dev/null; then git add what-is-a-1st-bowman-card.html
+            else echo "::warning::build-first-bowman-page failed - the page keeps its previous bake"; git checkout -- what-is-a-1st-bowman-card.html 2>/dev/null || true; fi
             if node tools/build-llms.mjs > /dev/null; then git add llms.txt llms-full.txt
             else echo "::warning::build-llms failed - llms files keep their previous bake"; git checkout -- llms.txt llms-full.txt 2>/dev/null || true; fi
             LDSTALE=$(node tools/build-index-jsonld.mjs --check 2>/dev/null | sed -n 's/^stale: //p')
