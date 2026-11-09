@@ -10,6 +10,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ebaySearchUrl, SACAT_TCG, assertClean } from "./lib/epn.mjs";
+import { placeCrumb } from "./lib/local-nav.mjs";   // run 10 (Cupertino): the breadcrumb
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 const TK = args[args.indexOf("--ticker") + 1];
@@ -70,7 +71,7 @@ h = h.replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:
 h = h.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${esc(ogd)}">`);
 h = h.replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="https://www.shopcardhub.com/${slug}">`);
 h = h.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "WebPage", name: `${TK} · ${s.set} Set Index`, description: desc, url: `https://www.shopcardhub.com/${slug}`, isPartOf: { "@type": "WebSite", name: "ShopCardHub", url: "https://www.shopcardhub.com/" } })}</script>`);
-rep(`<b>SV151</b></div>`, `<b>${TK}</b></div>`);
+{ const c = placeCrumb(h, [["Set indices", "/indices"], [setE]]); if (c == null) throw new Error("anchor missing: the set-index crumb"); h = c; }   // run 10 (Cupertino): "Set indices › <set>"
 rep(`<div class="strip" id="strip"><a class="chip on" href="/scarlet-violet-151-index"><b>SV151</b> <span class="soon">live</span></a></div>`, `<div class="strip" id="strip"><a class="chip on" href="/${slug}"><b>${TK}</b> <span class="soon">live</span></a></div>`);
 // the SIGNUP block (Oct 9 2026, R11) names its page: repoint it (TU19 was scaffolded before the block existed)
 h = h.split(`data-signup="scarlet-violet-151-index"`).join(`data-signup="${slug}"`);

@@ -17,6 +17,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ebaySearchUrl, SACAT_SPORTS, assertClean } from "./lib/epn.mjs";
+import { crumbHtml } from "./lib/local-nav.mjs";   // run 10 (Cupertino): the breadcrumb
 import { keepFooter } from "./lib/footer.mjs";
 import { CLASS_PAGE, classTickers, readClassFile, classYear, classRows, classQuery, isFixture } from "./lib/bowman-class.mjs";
 
@@ -295,7 +296,7 @@ ${NAVCSS}
 <!-- SIGNUP:END -->
 
 <div class="wrap">
-<div class="crumb">RESEARCH / <a href="/indices" style="color:var(--dim);">SET INDICES</a> / <b>BOWMAN CLASSES</b></div>
+${crumbHtml([["Set indices", "/indices"], ["Bowman classes"]])}
 
 <section class="cl-top"${stamp ? ` data-prices-updated="${stamp}"` : ""}>
   <div class="mast">

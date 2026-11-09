@@ -35,11 +35,16 @@
 // byte for byte. The template prints the same block, so a template run and this run agree. Hand-built /card-* pages
 // (tools/build-card-pages.mjs, the Bowman engine pages) are not this template and are skipped.
 //
+// Run 10 (Nov 9 2026): the breadcrumb under the bar on the set-index pages: "Set indices › Destined Rivals" (sentence
+// case, "›", the page last and unlinked, a <nav aria-label="Breadcrumb">), re-stamped from the bar's own name each run.
+// The scaffolders (new-sector-page, new-bcs26-page, new-bf26-page) and the checklist / class-ladder generators print
+// the same markup through tools/lib/local-nav.mjs crumbHtml().
+//
 // Usage: node tools/build-local-nav.mjs [--check]   (idempotent; --check exits 1 if a page would change)
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { cardLocalNav, stubRawLink, stubName, placeLocalNav } from "./lib/local-nav.mjs";
+import { cardLocalNav, stubRawLink, stubName, placeLocalNav, placeCrumb } from "./lib/local-nav.mjs";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECK = process.argv.includes("--check");
@@ -132,6 +137,9 @@ for (const [tk, r] of Object.entries(idx)) {
     const at = nav + "<!-- NAV:END -->".length;
     html = before.slice(0, at) + "\n" + b.out + before.slice(at);
   }
+  // run 10: the breadcrumb under the bar, "Set indices › <the bar's name>" (tools/lib/local-nav.mjs crumbHtml)
+  const withCrumb = placeCrumb(html, [["Set indices", "/indices"], [esc(shortName(r.name || tk))]]);
+  if (withCrumb == null) skipped.push(`${file} — no set-index crumb (kept as it is)`); else html = withCrumb;
   done.push(`${tk} ${b.link.block}`);
   if (html !== before) { changed.push(file); if (!CHECK) fs.writeFileSync(f, html); }
 }

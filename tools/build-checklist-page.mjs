@@ -25,6 +25,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ebaySearchUrl, SACAT_SPORTS, SACAT_TCG, assertClean } from "./lib/epn.mjs";
+import { crumbHtml } from "./lib/local-nav.mjs";   // run 10 (Cupertino): the breadcrumb
 import { keepFooter } from "./lib/footer.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -166,7 +167,7 @@ details.clp-how>div{padding:4px 16px 16px;border-top:1px solid var(--bd,rgba(255
 <!-- SIGNUP:END -->
 
 <div class="wrap">
-<div class="crumb" style="padding:14px 0 0;">RESEARCH / <a href="/indices" style="color:var(--dim);">SET INDICES</a> / <a href="${c.indexHref}" style="color:var(--dim);">${esc(c.crumb)}</a> / <b>CHECKLIST</b></div>
+${crumbHtml([["Set indices", "/indices"], [esc(c.name), c.indexHref], ["Checklist"]], "padding:14px 0 0;")}
 ${css}
 <section class="clp" id="checklist">
   <div class="clp-top">

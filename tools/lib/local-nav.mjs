@@ -59,3 +59,27 @@ export function placeLocalNav(html, block) {
   const at = nav + "<!-- NAV:END -->".length;
   return html.slice(0, at) + "\n" + block + html.slice(at);
 }
+
+// ── The breadcrumb (Cupertino run 10, Nov 9 2026; DESIGN-SYSTEM.md "Navigation → Breadcrumb") ──────────────────────
+// Plain words in sentence case, "›" between steps, the page itself last and unlinked: "Set indices › Destined Rivals".
+// Was "RESEARCH / SET INDICES / DR25" (caps, a step that links nowhere, the ticker for a name). One builder for every
+// writer: tools/build-local-nav.mjs (the set-index pages, re-stamped on each run), the page scaffolders and the
+// checklist / class-ladder generators. trail: [[label, href], …, [label]]; labels arrive HTML-escaped. Look: site-fixes §0c.
+export function crumbHtml(trail, style) {
+  const steps = trail.map(([label, href], i) => (i === trail.length - 1 && !href)
+    ? `<span aria-current="page">${label}</span>`
+    : `<a href="${href}">${label}</a>`);
+  return `<nav class="crumb"${style ? ` style="${style}"` : ""} aria-label="Breadcrumb">${steps.join('<span class="sep" aria-hidden="true"> › </span>')}</nav>`;
+}
+
+// replace the page's set-index crumb (the first <div|nav class="crumb"> after NAV:END that links to /indices), keeping
+// its inline style; returns the new html, or null when the page has no such crumb (named by the caller, never guessed)
+export function placeCrumb(html, trail) {
+  const from = Math.max(0, html.indexOf("<!-- NAV:END -->"));
+  const re = /<(div|nav) class="crumb"([^>]*)>([\s\S]*?)<\/\1>/g;
+  re.lastIndex = from;
+  const m = re.exec(html);
+  if (!m || !m[3].includes('href="/indices"')) return null;
+  const st = /\bstyle="([^"]*)"/.exec(m[2]);
+  return html.slice(0, m.index) + crumbHtml(trail, st ? st[1] : null) + html.slice(m.index + m[0].length);
+}

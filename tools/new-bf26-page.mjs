@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ebaySearchUrl, SACAT_SPORTS, assertClean } from "./lib/epn.mjs";
+import { crumbHtml } from "./lib/local-nav.mjs";   // run 10 (Cupertino): the breadcrumb
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SLUG = "bowman-football-2026-index";
 const out = path.join(ROOT, SLUG + ".html");
@@ -40,7 +41,7 @@ const html = `${head}
 <script src="/js/signup.js?v=3" defer></script>
 <!-- SIGNUP:END -->
 <div class="wrap">
-<div class="crumb" style="padding:14px 0 0;">RESEARCH / <a href="/indices" style="color:var(--dim);">SET INDICES</a> / <b>BF26</b></div>
+${crumbHtml([["Set indices", "/indices"], ["2026 Bowman Football"]], "padding:14px 0 0;")}
 <div class="strip" id="strip"><a class="chip on" href="/${SLUG}"><b>BF26</b> <span class="soon">pre · streets 09/30</span></a></div>
 </div>
 <!-- BF26:START -->
