@@ -1,13 +1,13 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-11-03",
+  "generated": "2026-11-09",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-10-12, STEP 3.9)",
   "agents": {
     "seeker": {
       "label": "SEEKER",
       "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
-      "lastRun": "2026-11-02",
-      "nextRun": "2026-11-09",
+      "lastRun": "2026-11-09",
+      "nextRun": "2026-11-16",
       "actions": [
         {
           "ts": "2026-09-28",
@@ -56,6 +56,18 @@
         {
           "ts": "2026-11-03",
           "msg": "Nov 3 signal harvest (price-data 51c7e9e, track-signals updated Oct 26): top count 3 (Misiorowski 2022 Chrome 1st auto), Holliday CPA-EH 2; none at 5, no watchlist adds."
+        },
+        {
+          "ts": "2026-11-09",
+          "msg": "Index pipeline (read-only): DLR26 (Delta Reign) is still PRE with an empty basket, but PriceCharting now lists the set with ungraded values (Mega Rayquaza ex #138 $333.97, #141 $324.00, read Nov 9). It is 3 days past the Nov 6 street date, so the data is thin; the --init build is the CoS's (KB P53 query rules)."
+        },
+        {
+          "ts": "2026-11-09",
+          "msg": "BCS26 and BF26 stay PRE (no ship date / returner question open); BOW25 and BOW24 are pre-activation class tickers owned by the class-ladder Action."
+        },
+        {
+          "ts": "2026-11-09",
+          "msg": "Fixer: 0 approved audit-/polish- proposals in the ledger, nothing applied; no approved item is older than 14 days."
         }
       ],
       "log": [
@@ -129,8 +141,8 @@
     "inspector": {
       "label": "INSPECTOR",
       "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-      "lastRun": "2026-11-02",
-      "nextRun": "2026-11-09",
+      "lastRun": "2026-11-09",
+      "nextRun": "2026-11-16",
       "actions": [
         {
           "ts": "2026-10-05",
@@ -179,6 +191,18 @@
         {
           "ts": "2026-11-02",
           "msg": "Calls ledger re-read locally from the Oct 29 sold marks: 2 trending calls, 1 read changed, 0 finalized, 0 new. calls.json left unstaged for the CoS."
+        },
+        {
+          "ts": "2026-11-09",
+          "msg": "Mechanical price sweep: 0 cells applied by hand. The 6 meta/title-tied Pokémon pages from the Nov 2 exception are still unchanged (stamps 29-38 days old); refiled with fresh PriceCharting reads as price-exceptions-2026-11-09."
+        },
+        {
+          "ts": "2026-11-09",
+          "msg": "Gates after the re-mark: audit-prices 0 FAIL/56 WARN, audit-site 0/4, audit-terminal 0/1 — identical to clean HEAD 8bd7962."
+        },
+        {
+          "ts": "2026-11-09",
+          "msg": "Calls ledger re-read locally: 1 trending call (v-bb-fischer-buy-2) read $117.50 on the Nov 5 sold mark (n 13), unchanged; finalize deferred because no sold read dated on or after its Nov 6 finalizeAfter was available to this run. calls.json not staged."
         }
       ],
       "log": [
@@ -315,8 +339,8 @@
     "gengar": {
       "label": "GENGAR",
       "role": "Pokémon Index Specialist + conversion coverage — owned by the Monday trend-scan (STEP 3.6 index re-marks, STEP 3.65 X intel, chase-image checks) and, from 2026-09-17, the Monday conversion beat (LANE-RULES R11: every commercial page sells its product above the fold; buy-strip health against live eBay). No-new-Pokémon-calls mandate stays retired forever.",
-      "lastRun": "2026-11-02",
-      "nextRun": "2026-11-09",
+      "lastRun": "2026-11-09",
+      "nextRun": "2026-11-16",
       "actions": [
         {
           "ts": "2026-10-05",
@@ -365,6 +389,18 @@
         {
           "ts": "2026-11-02",
           "msg": "Re-baked from the new marks: 6 index pages, data/cards + card-search, 5 Collector's Desk pages (build-collectors-desk), 23 card pages + /cards (build-card-pages), og/indices.png, index.html (build-home). The classic and whole-set tickers mark in the 19:30Z classic-marks job, not here."
+        },
+        {
+          "ts": "2026-11-09",
+          "msg": "Weekly re-mark of the 6 modern chase tickers on PriceCharting ungraded sold values (Nov 9): 288 of 289 cards took the new read; Piplup #98 (PF25) was HELD at $8.52 by the move guard (+51% proposed). No divisor change, one history row each."
+        },
+        {
+          "ts": "2026-11-09",
+          "msg": "Levels: PB26 55.77 (−5.41%) · CR26 33.13 (−5.99%) · AH26 58.70 (−4.37%) · PRIS25 61.10 (+0.78%) · DR25 49.59 (−5.88%) · PF25 62.36 (−4.03%)."
+        },
+        {
+          "ts": "2026-11-09",
+          "msg": "Re-baked from the new marks: 6 index pages, data/cards + card-search, 6 Collector's Desk pages, 23 card pages + /cards, og/indices.png (?v=20261109 on 47 pages), index.html + home-v2.html."
         }
       ],
       "status": "active",
@@ -484,8 +520,8 @@
       "slug": "set-indices",
       "title": "Set Indices (ETF-style, per set)",
       "stage": "live",
-      "note": "7 tickers: PB26/CR26/AH26/PRIS25/DR25 live (sold basis, weekly), BOW26 live (ask), BCB26 live — activated Sep 14 at 100.00, re-marked Sep 22 at 69.52 (−4.95% w/w, −30.48% since inception, ask basis, 8/9 chase cards); SAPH26/DRAFT26 next.",
-      "ts": "2026-09-22"
+      "note": "Live set indices on dated sold marks. Modern chase six re-marked Mon Nov 9 (PriceCharting ungraded): PB26 55.77 · CR26 33.13 · AH26 58.70 · PRIS25 61.10 · DR25 49.59 · PF25 62.36. Classic/WOTC/whole-set and Bowman tickers mark Mon/Thu in the Actions (last Nov 5). DLR26 PRE — PriceCharting now lists Delta Reign; --init is the CoS's.",
+      "ts": "2026-11-09"
     },
     {
       "stage": "live",
@@ -3551,21 +3587,31 @@
       "decision": "CoS desk 2026-11-03: queued — attended CoS session (BLOCKED row from the Tuesday lane). The desk cannot send either: the send needs the MailerLite token and no unattended lane reads credential files. Draft valid until the Nov 10 read. Before Nov 10 the attended session decides option (b), a standing send path that does not read the token in-session (e.g. a repo secret + Action), so the Tape does not go dark twice.",
       "tier": "P1",
       "goal": "G1"
+    },
+    {
+      "id": "price-exceptions-2026-11-09",
+      "date": "2026-11-09",
+      "area": "prices",
+      "by": "monday-price-lane",
+      "severity": "MED",
+      "title": "MED: the same 6 meta/title-tied Pokémon pages as price-exceptions-2026-11-02 are still unchanged, now 29-38 days past stamp. Nov 9 PriceCharting reads: Mega Gengar ex 284 $668.08 vs page $792.50 (−15.7%); Pitch Black guide #116 $147.47 vs $184.01 (−19.9%); Mega Darkrai ex 116 $147.47 (console) / $138.05 (card page) vs $162.50; Moonbreon $1,675 vs $1,908.71 (−12.2%); Charizard ex 199 $296 vs $332.25 (−10.9%); Van Gogh Pikachu $958.51 vs $925 (+3.6%). Each needs a narrative re-read from dated sold rows (R18 for any graded figure).",
+      "source": "claude/cos/weekly-scan-2026-11-09.md (Project)",
+      "status": "awaiting-cos"
     }
   ],
   "scoreboard": {
-    "updated": "2026-11-02",
-    "final": 21,
-    "trending": 2,
+    "updated": "2026-11-09",
+    "final": 22,
+    "trending": 1,
     "open": 0,
     "finalGrades": {
       "miss_high": 8,
       "hit": 1,
       "wrong": 7,
-      "None": 3,
+      "None": 4,
       "right": 2
     },
-    "note": "Monday price lane Nov 2: final grades unchanged. 2 trending calls re-read on the Oct 29 sold marks and WRITTEN LOCALLY ONLY (calls.json is outside the lane): 1 read moved, 1 unchanged; 0 finalized (finalizeAfter Nov 3 and Nov 6). Public grades stay the 6- and 12-month thesis checks."
+    "note": "Monday price lane Nov 9: v-bb-gonzales-pass is now final (finalized by the Nov 3 board read, grade at the thesis horizons). 1 trending call (v-bb-fischer-buy-2) re-read at $117.50 on the Nov 5 sold mark, unchanged; its finalize waits for a sold read dated on or after Nov 6. Public grades stay the 6- and 12-month thesis checks."
   },
   "chiefOfStaff": {
     "generated": "2026-10-11T14:45:00-07:00",
@@ -6045,24 +6091,24 @@
     "_retired": "2026-09-22 (bb-2026-09-22-coach-note-stale): no longer a standing weekly duty; written ad hoc by the CoS desk only when a lane needs a specific correction. Stale weekOf is not a finding."
   },
   "publish": {
-    "date": "2026-11-02",
+    "date": "2026-11-09",
     "by": "monday price lane (charter 4.8)",
     "lane": [
       "data/indices.json",
       "6 chase index pages",
       "data/cards/{pb26,cr26,ah26,pris25,dr25,pf25}.json + data/card-search.json",
-      "5 Collector's Desk pages",
+      "6 Collector's Desk pages (best-*-cards)",
       "23 card pages + cards.html",
-      "og/indices.png",
-      "index.html (build-home)",
+      "og/indices.png (+ ?v=20261109 on 47 pages)",
+      "index.html + home-v2.html (build-home)",
       "data/pipeline.json",
       "claude/cos/STATE.md (NOW line)"
     ],
-    "gates": "audit-prices 0 FAIL/51 WARN · audit-site 0/3 · audit-terminal 0/1 — identical to clean HEAD bb3e8e4",
+    "gates": "audit-prices 0 FAIL/56 WARN · audit-site 0/4 · audit-terminal 0/1 — identical to clean HEAD 8bd7962",
     "notPushed": [
-      "data/calls.json (local re-read, patch in Card Hub/calls-regrade-2026-11-02.patch)"
+      "data/calls.json (no change this run: Fischer re-read unchanged, finalize deferred)"
     ],
-    "commit": "904fd6f"
+    "commit": "pending"
   },
   "decisions": [
     {
