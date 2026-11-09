@@ -135,7 +135,9 @@
     var atCost = 'At ' + money(cost) + ' a card' + (tierName ? ' (' + tierName + ')' : '');
     var fit = fitTier(ref), capFmt = function (n) { return '$' + n.toLocaleString('en-US'); };
     var capNote = tier === 'over' ? '<p class="sg-fine">This card’s graded median is over $10,000. PSA has tiers above that, but we couldn’t read their limits, so type your PSA cost under “Your costs”.</p>'
-      : TIER[tier] && ref != null && ref > TIER[tier].cap ? '<p class="sg-fine">This card’s graded median is over ' + capFmt(TIER[tier].cap) + ', and ' + TIER[tier].name + ' only takes cards declared at ' + capFmt(TIER[tier].cap) + ' or less. ' + (TIER[fit] ? TIER[fit].name + ' is the cheapest PSA tier that fits.' : 'Its PSA tier is above the ones we list.') + '</p>' : '';
+      : TIER[tier] && ref != null && ref > TIER[tier].cap ? '<p class="sg-fine">This card’s graded median is over ' + capFmt(TIER[tier].cap) + ', and ' + TIER[tier].name + ' only takes cards declared at ' + capFmt(TIER[tier].cap) + ' or less. ' + (TIER[fit] ? TIER[fit].name + ' is the cheapest PSA tier that fits' + (fit === 'premier' ? ' among the ones we can price.' : '.') : 'Its PSA tier is above the ones we list.') + '</p>' : '';
+    // Super Express sits between Express and Premier (unchanged on Sep 9 2026, per SI's report that day); we couldn't read its fee or limit
+    if (tier === 'premier' && ref != null && ref > TIER.express.cap) capNote += '<p class="sg-fine">PSA also has Super Express, between Express and Premier. We couldn’t read its fee or limit, so this uses Premier. If your card fits Super Express, type that cost under “Your costs”; it’s lower than Premier.</p>';
     var R = num(inp.raw, screened ? null : c.raw);
     var net = function (p) { return p * (1 - f) - o; };
     var page = STATIC[c.id] || '/card?id=' + encodeURIComponent(c.id);

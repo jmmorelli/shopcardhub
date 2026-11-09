@@ -12,6 +12,13 @@
 // repo, so it prints "not enough dated sales". No PSA 10 figure exists in the repo for any of the six cards: none is printed (R18).
 // No price is fetched here and nothing is estimated. Math only; no buy/sell call.
 //
+// Nov 8 2026 (Wildcard): phone layout stacks the table into one block per player (the 680 px table hung off a 390 px screen,
+// image-sweep FAIL); Bowman KB G66 wording (Sal Stewart's first Bowman auto is 2022 Bowman Draft #CDA-SS [MED, checklists],
+// and the four 1st labels say "per the checklists"); the pre-award row is frozen in data/roy-2026-pre.json the first time the
+// builder runs on or after Nov 8, so the after-award read compares like with like. Optional data/roy-2026-winners.json
+// ({"al":"<finalist>","nl":"<finalist>","source":"<url>","read":"YYYY-MM-DD"}) adds the winner line once the BBWAA announces;
+// absent, nothing about winners is printed. A name that isn't a finalist, or a source that isn't mlb.com / bbwaa.com, throws.
+//
 // Usage: node tools/build-roy-2026.mjs     (idempotent)
 import fs from "node:fs";
 import path from "node:path";
@@ -33,7 +40,7 @@ const FINALISTS = [
   { lg: "AL", name: "Parker Messick", team: "Cleveland Guardians", tc: true },
   { lg: "AL", name: "Payton Tolle", team: "Boston Red Sox", cls: "BOW24", code: "CPA-PT" },
   { lg: "NL", name: "Carson Benge", team: "New York Mets", cls: "BOW24", code: "CPA-CBG" },
-  { lg: "NL", name: "Sal Stewart", team: "Cincinnati Reds", tc: true },
+  { lg: "NL", name: "Sal Stewart", team: "Cincinnati Reds", tc: true, firstNote: "His first Bowman auto is #CDA-SS in 2022 Bowman Draft (per the checklists), which our baskets don't track yet." },
   { lg: "NL", name: "JJ Wetherholt", team: "St. Louis Cardinals", cls: "BOW25", code: "CPA-JW" },
 ];
 
@@ -50,12 +57,12 @@ const rows = FINALISTS.map((f) => {
     if (!u || !u.firstAuto || !b) throw new Error(`${f.name}: ${f.cls} ${f.code} not a 1st auto in the KB universe or not in the basket`);
     const priced = b.price != null && b.n30 >= 3 && !b.carried && !b.heldMove;
     if (priced && b.asOf > asOf) asOf = b.asOf;
-    return { ...f, card: `Chrome Prospect Auto #${f.code}, ${b.product}`, tag: "1st Bowman Chrome Auto", raw: priced ? { m: b.price, n: b.n30, asOf: b.asOf } : null,
+    return { ...f, card: `Chrome Prospect Auto #${f.code}, ${b.product}`, tag: "1st Bowman Chrome Auto, per the checklists", raw: priced ? { m: b.price, n: b.n30, asOf: b.asOf } : null,
       q: `${f.name} ${b.product} Chrome ${f.code} auto` };
   }
   const base = (tc.groups[0].cards || []).find((c) => c.player === f.name && c.rc);
   if (!base) throw new Error(`${f.name}: no 2026 Topps Chrome RC in data/sets/topps-chrome-baseball-2026.json`);
-  return { ...f, card: `2026 Topps Chrome #${base.n}`, tag: "Rookie card (RC)", raw: null, q: `${f.name} 2026 Topps Chrome ${base.n} rookie` };
+  return { ...f, card: `2026 Topps Chrome #${base.n}`, tag: "Rookie card (RC)" + (f.firstNote ? ". " + f.firstNote : ""), raw: null, q: `${f.name} 2026 Topps Chrome ${base.n} rookie` };
 });
 if (!asOf) throw new Error("no priced row — refusing to write");
 const DATE = long(asOf);
@@ -63,14 +70,34 @@ const priced = rows.filter((r) => r.raw);
 const lo = Math.min(...priced.map((r) => r.raw.m)), hi = Math.max(...priced.map((r) => r.raw.m));
 const top = priced.find((r) => r.raw.m === hi);
 
+// Pre-award read, frozen once (first build on or after Nov 8, the last basket mark before the Nov 9 announcement)
+const PRE_F = path.join(REPO, "data/roy-2026-pre.json");
+let pre = fs.existsSync(PRE_F) ? JSON.parse(fs.readFileSync(PRE_F, "utf8")) : null;
+if (!pre && asOf >= "2026-11-08" && asOf <= "2026-11-09") {
+  pre = { _comment: "Written once by tools/build-roy-2026.mjs (Wildcard): each finalist's 1st Bowman Chrome Auto basket median before the Nov 9 2026 award. Never rewritten.", asOf, cards: Object.fromEntries(priced.map((r) => [r.name, { code: r.code, median: r.raw.m, n: r.raw.n, asOf: r.raw.asOf }])) };
+  fs.writeFileSync(PRE_F, JSON.stringify(pre, null, 1) + "\n");
+}
+// Winners (optional; only from the BBWAA's own announcement on mlb.com or bbwaa.com)
+const WIN_F = path.join(REPO, "data/roy-2026-winners.json");
+const win = fs.existsSync(WIN_F) ? JSON.parse(fs.readFileSync(WIN_F, "utf8")) : null;
+if (win) {
+  for (const lg of ["al", "nl"]) if (!rows.some((r) => r.lg === lg.toUpperCase() && r.name === win[lg])) throw new Error(`winners: ${lg} "${win[lg]}" is not a ${lg.toUpperCase()} finalist`);
+  if (!/^https:\/\/(www\.)?(mlb\.com|bbwaa\.com)\//.test(win.source || "") || !/^\d{4}-\d{2}-\d{2}$/.test(win.read || "")) throw new Error("winners: source must be an mlb.com or bbwaa.com URL with a read date");
+  for (const r of rows) r.won = r.name === win.al || r.name === win.nl;
+}
+const wr = (lg) => rows.find((r) => r.name === win[lg.toLowerCase()]);
+const winCard = (r) => (r.raw ? `${r.name}'s 1st Bowman Chrome Auto has a 90-day raw median of ${money(r.raw.m)} (${r.raw.n} sales)` : `${r.name}'s ${r.card} rookie card doesn't have enough dated sales for a median yet`);
+const WIN_LINE = win ? `${wr("AL").name} won the American League Rookie of the Year award and ${wr("NL").name} won in the National League, announced by the BBWAA on Nov. 9 (MLB.com, read ${long(win.read)}). ${winCard(wr("AL"))}, and ${winCard(wr("NL"))}. Sales read ${DATE}.` : "";
+
 const TITLE = "2026 MLB Rookie of the Year Finalists: Their Cards and Sold Prices";
 const DESC = `The six 2026 Rookie of the Year finalists and what each one's key card has sold for on eBay: 1st Bowman Chrome autos for McGonigle, Tolle, Benge and Wetherholt, with sale counts. Read ${DATE}.`;
-const ANSWER = `The BBWAA named the 2026 Rookie of the Year finalists on Nov. 2: Kevin McGonigle, Parker Messick and Payton Tolle in the American League, and Carson Benge, Sal Stewart and JJ Wetherholt in the National League. Both winners are announced Nov. 9. Four of the six have a 1st Bowman Chrome Auto in our class baskets. Their raw copies sold for a median of ${money(lo)} to ${money(hi)} over the last 90 days (${top.name}'s is the highest), read ${DATE}.`;
+const ANSWER = `The BBWAA named the 2026 Rookie of the Year finalists on Nov. 2: Kevin McGonigle, Parker Messick and Payton Tolle in the American League, and Carson Benge, Sal Stewart and JJ Wetherholt in the National League. ${win ? "" : "Both winners are announced Nov. 9. "}Four of the six have their 1st Bowman Chrome Auto in one of our class baskets, going by the checklists; Sal Stewart's first Bowman auto is from 2022 Bowman Draft, which we don't track yet. Those four raw copies sold for a median of ${money(lo)} to ${money(hi)} over the last 90 days (${top.name}'s is the highest), read ${DATE}.`;
 
+const ANSWER_FULL = win ? `${WIN_LINE} ${ANSWER}` : ANSWER;
 const tr = rows.map((r) => {
   const rawCell = r.raw ? `${money(r.raw.m)}<span class="ry-sub">median of ${r.raw.n} sales, 90 days to ${short(r.raw.asOf)}</span>` : `<span class="ry-none">Not enough dated sales</span><span class="ry-sub">no sold median on file for this card</span>`;
   const oc = ` onclick="if(typeof gtag==='function')gtag('event','roy_click',{item:'${SLUG}:${esc(r.name)}',page:location.pathname})"`;
-  return `<tr><td class="ry-lg">${r.lg}</td><th scope="row">${esc(r.name)}<span class="ry-sub">${esc(r.team)}</span></th><td>${esc(r.card)}<span class="ry-sub">${esc(r.tag)}</span></td><td class="ry-n">${rawCell}</td><td class="ry-n"><span class="ry-none">Not enough dated sales</span></td><td class="ry-x"><a class="ry-eb" href="${esc(ebay(r.q))}" target="_blank" rel="sponsored nofollow noopener"${oc}>Find it on eBay</a></td></tr>`;
+  return `<tr${r.won ? ' class="ry-won"' : ""}><td class="ry-lg">${r.lg}${r.won ? '<span class="ry-badge">Winner</span>' : ""}</td><th scope="row">${esc(r.name)}<span class="ry-sub">${esc(r.team)}</span></th><td data-l="Card">${esc(r.card)}<span class="ry-sub">${esc(r.tag)}</span></td><td class="ry-n" data-l="Raw sold">${rawCell}</td><td class="ry-n" data-l="PSA 10"><span class="ry-none">Not enough dated sales</span></td><td class="ry-x"><a class="ry-eb" href="${esc(ebay(r.q))}" target="_blank" rel="sponsored nofollow noopener"${oc}>Find it on eBay</a></td></tr>`;
 }).join("\n");
 
 const body = `
@@ -78,14 +105,14 @@ const body = `
   <div class="container">
     <div class="hero-eyebrow">MLB &middot; Awards &middot; ${DATE}</div>
     <h1>2026 Rookie of the Year<br><em>Finalists&rsquo; Cards</em></h1>
-    <p class="hero-sub ry-answer" id="answer">${ANSWER}</p>
+    <p class="hero-sub ry-answer" id="answer">${ANSWER_FULL}</p>
   </div>
 </section>
 <div class="container">
   <section style="border-top:none; padding-top:0;">
     <div class="section-eyebrow green">The six finalists</div>
     <h2>Each Finalist&rsquo;s Key Card and What It Sold For</h2>
-    <p class="section-intro">The card is the player&rsquo;s 1st Bowman Chrome Auto when our Bowman class files hold one, otherwise his 2026 Topps Chrome rookie card. Raw means ungraded. We print a median only when there are at least 3 dated sales.</p>
+    <p class="section-intro">The card is the player&rsquo;s 1st Bowman Chrome Auto (per the checklists) when one of our Bowman class baskets holds it, otherwise his 2026 Topps Chrome rookie card. Raw means ungraded. We print a median only when there are at least 3 dated sales.</p>
     <div class="ry-wrap"><table class="ry-tbl"><thead><tr><th scope="col">Lg</th><th scope="col">Player</th><th scope="col">Card</th><th scope="col">Raw sold</th><th scope="col">PSA 10</th><th scope="col">eBay</th></tr></thead>
 <tbody>
 ${tr}
@@ -95,7 +122,7 @@ ${tr}
   <section>
     <div class="section-eyebrow">After Nov. 9</div>
     <h2>Before and After the Award</h2>
-    <p class="section-intro">The winners are announced Monday, Nov. 9. The week after, we&rsquo;ll add a read of these same cards from Nov. 10 to 12 next to the numbers above, with the sale count on both sides, so you can see whether winning moved the price.</p>
+    <p class="section-intro">${pre ? `Before the announcement, on ${long(pre.asOf)}, the four 1st Bowman Chrome Autos had 90-day raw medians of ${Object.entries(pre.cards).map(([nm, c]) => `${nm} ${money(c.median)} (${c.n} sales)`).join(", ")}. ` : ""}${win ? "" : "The winners are announced Monday, Nov. 9. "}After the award we&rsquo;ll put a fresh read of the same four cards next to those numbers, with the sale count on both sides. A 90-day median moves slowly, so a few days after the award it shows the first sales only in part.</p>
     <p class="section-intro">More 1st Bowman Chrome Autos by draft class: <a href="/bowman-classes">Bowman 1st auto classes</a>. Bigger names and their key cards: <a href="/mlb-cards">MLB cards</a>.</p>
   </section>
   <section>
@@ -112,11 +139,16 @@ const css = `<style id="ry-css">.ry-answer{max-width:70ch}
 .ry-tbl thead th{color:var(--text-dim);font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:600;border-top:none}.ry-tbl tbody th{color:var(--text-head);font-weight:600}
 .ry-sub{display:block;font-size:11px;color:var(--text-dim);font-weight:400}.ry-n{font-family:var(--fm)}.ry-none{color:var(--text-dim)}.ry-lg{font-family:var(--fd);color:var(--text-dim)}
 .ry-x{white-space:nowrap}.ry-eb{display:inline-block;padding:7px 10px;border:1px solid var(--border2);border-radius:3px;font-weight:600;font-size:12px;text-decoration:none;color:var(--text-head)}
-.ry-fine{font-size:12px;color:var(--text-dim);line-height:1.5;margin:8px 0 0}</style>`;
+.ry-fine{font-size:12px;color:var(--text-dim);line-height:1.5;margin:8px 0 0}
+.ry-badge{display:block;margin-top:4px;font-family:var(--fb,inherit);font-size:11px;font-weight:600;color:var(--text-head)}.ry-won th{color:var(--text-head)}
+@media (max-width:640px){.ry-wrap{overflow:visible;border:none}.ry-tbl{min-width:0}.ry-tbl thead{display:none}.ry-tbl,.ry-tbl tbody,.ry-tbl tr,.ry-tbl td,.ry-tbl th{display:block;width:auto}
+.ry-tbl tr{border:1px solid var(--border2);border-radius:3px;padding:12px 14px;margin:0 0 10px}.ry-tbl th,.ry-tbl td{border:none;padding:0}
+.ry-tbl tbody th{font-size:15px;margin:2px 0 8px}.ry-tbl .ry-lg{font-size:11px;letter-spacing:1px}.ry-tbl td[data-l]{display:grid;grid-template-columns:76px 1fr;column-gap:8px;row-gap:2px;margin:0 0 10px}.ry-tbl td[data-l] .ry-sub{grid-column:2}
+.ry-tbl td[data-l]::before{content:attr(data-l);font-size:11px;color:var(--text-dim);text-transform:none;font-family:var(--fb,inherit)}.ry-x{white-space:normal;margin-top:4px}.ry-eb{display:block;text-align:center;padding:11px 10px}}</style>`;
 
 const ld = [
   { "@context": "https://schema.org", "@type": "Article", headline: TITLE, url: URL, dateModified: asOf, description: DESC, author: { "@type": "Organization", name: "ShopCardHub", url: "https://www.shopcardhub.com" } },
-  { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: "Who are the 2026 MLB Rookie of the Year finalists, and what are their cards worth?", acceptedAnswer: { "@type": "Answer", text: ANSWER } }] },
+  { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: "Who are the 2026 MLB Rookie of the Year finalists, and what are their cards worth?", acceptedAnswer: { "@type": "Answer", text: ANSWER_FULL } }] },
 ];
 
 const tpl = fs.readFileSync(path.join(REPO, "how-prices-work.html"), "utf8");
