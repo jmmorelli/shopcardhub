@@ -5998,6 +5998,22 @@
           "liveVerified": "2026-11-09 ~05:20Z curl: /bowman-2026-index and /bowman-1st-chrome-index print no De Paula (BB26·BASE top 3 Hartman, Gonzales, Chourio; 62.66); /data/indices.json BB26·BASE 62/7 divisor 0.143473, BOW26·BASE 105/10 divisor 0.263086, no BCP-83 row",
           "deploy": "cloud build (tree fe80187) -> Card Hub/deploy/price-truth-2026-11-09.patch -> /tmp clone on the Mac, git am -3 on 8e04ea4, tree fe80187 matched, gates re-run, fast-forward",
           "rollback": "git revert c3ca706"
+        },
+        {
+          "date": "2026-11-09",
+          "commits": [
+            "ac32d41",
+            "c2754c9",
+            "3a4a098",
+            "e637f07",
+            "493200e",
+            "4eef93d"
+          ],
+          "by": "Goal League Commissioner (unattended, Mac deploy-key clone under /tmp; Task-key goal-league-commissioner)",
+          "gates": "0/56 · 0/4 · 0/1 against base 0/57 · 0/4 · 0/1 (Conversion cleared one Mbappé unsourced-graded WARN)",
+          "liveVerified": "2026-11-09 ~06:40Z curl: 10 changed pages + llms.txt, sitemap.xml, js/should-i-grade.js 200, bytes equal to main; renders 390/1280 clean (scrollWidth = viewport, 0 console errors)",
+          "note": "Five contestant patches, oldest first, all clean on 77b9ee8: new /pokemon-black-friday-2026 + Delta Reign post-release re-mark across 4 sealed pages (Deal), McDonald's 2026 checklist corrected to the 2026 list + dates by country + worth FAQ (Drop), new /what-is-a-1st-bowman-card (AI-Search; page built by its generator after apply), ROY phone layout + pre-award row + grade tool Super Express note (Wildcard), Mbappé undated graded figures and buy verdicts out (Conversion). Registry +3 (2 new URLs, 1 claim), nightly wiring for the 1st Bowman page, sitemap lastmod. IndexNow 11 URLs -> 200.",
+          "rollback": "git revert ac32d41^..4eef93d"
         }
       ]
     },
