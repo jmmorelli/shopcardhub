@@ -210,7 +210,8 @@ for (const q of cfg.llms) {
   if (q.answer === 'market') { llms.push(`- [${q.q}](${SITE}${q.page}): ${answerText} ${method}`); continue; }
   const r = T[q.ticker];
   if (!r) continue;
-  llms.push(`- [${q.q}](${SITE}${r.page}): ${tickerAnswer(r)}`);
+  // Optional: q.page points the question at another owned page; q.lead is a plain sentence before the dated answer.
+  llms.push(`- [${q.q}](${SITE}${q.page || r.page}): ${q.lead ? q.lead + ' ' : ''}${tickerAnswer(r)}`);
 }
 // Optional pointer to the machine-readable feed (tools/build-index-feed.mjs), one line, only if the file exists.
 if (cfg.feed && fs.existsSync(path.join(ROOT, cfg.feed.path.replace(/^\//, ''))))
