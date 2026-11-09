@@ -6064,12 +6064,13 @@
         {
           "date": "2026-11-09",
           "commits": [
-            "ced2716"
+            "ced2716",
+            "dec4423"
           ],
           "by": "Monday price lane (automated, charter 4.8) — 6 chase tickers re-marked on PriceCharting ungraded sold values (288/289, PF25 Piplup #98 held by the move guard; no divisor change); index pages, card files, 6 Collector’s Desk pages, 23 card pages + /cards, og/indices.png (+ ?v=20261109 on 47 pages), home re-baked; fresh deploy-key clone under /tmp on the Mac VM ($HOME disk full)",
           "gates": "audit-prices FAIL 0/WARN 56; audit-site FAIL 0/WARN 4; audit-terminal FAIL 0/WARN 1 — identical to clean HEAD 8bd7962",
-          "liveVerified": "pending (filled after the Vercel deploy check)",
-          "rollback": "git revert ced2716 (indices.json history rows for 2026-11-09 drop out with it)"
+          "liveVerified": "2026-11-09 ~18:14Z: /pitch-black-index serves 55.77; live /data/indices.json carries the 2026-11-09 rows; IndexNow 142 URLs HTTP 200",
+          "rollback": "git revert dec4423 ced2716"
         }
       ]
     },
