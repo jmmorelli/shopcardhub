@@ -254,6 +254,24 @@ if (has("data/feed/deals-latest.json")) {
       const maxAge = (D.rules && D.rules.slabDeepMaxMarkAgeDays) || 10;
       if (Number.isFinite(day) && Number.isFinite(asOf) && (day - asOf) / 864e5 > maxAge) add(8, R, id, `/deals ${r.tk} ${r.card} #${r.num} ${r.grade}: ${(r.disc * 100).toFixed(0)}% vs a yardstick ${Math.round((day - asOf) / 864e5)} days old (${r.markAsOf})`);
     }
+    // stale yardstick (deals.mjs STALE_SLAB_UNDER / STALE_SET_DROP, Nov 9 2026): TH26 Charizard #4 PSA 10 "$1,220 · 40% under" a
+    // 14-day-old median while PSA 10 sales ran $820-$1,180 — more than 25% under a stale mark, or any row on a set whose index fell
+    // more than 10% since the mark date, is a wrong-money label
+    if (r.mark && r.total != null && r.grade !== "raw" && r.kind === "pokemon") {
+      const day = Date.parse(D.day || String(D.generated || "").slice(0, 10)), asOf = Date.parse(r.markAsOf || "");
+      const maxAge = (D.rules && D.rules.slabDeepMaxMarkAgeDays) || 10, su = (D.rules && D.rules.slabStaleUnder) || 0.25, sd = (D.rules && D.rules.slabStaleSetDrop) || 0.10;
+      if (Number.isFinite(day) && Number.isFinite(asOf) && (day - asOf) / 864e5 > maxAge) {
+        const age = Math.round((day - asOf) / 864e5);
+        if (r.total / r.mark - 1 < -su) add(8, R, id, `/deals ${r.tk} ${r.card} #${r.num} ${r.grade}: ${(r.disc * 100).toFixed(0)}% under a yardstick ${age} days old (${r.markAsOf})`);
+        else {
+          const h = IDX[r.tk] && IDX[r.tk].history;
+          if (Array.isArray(h) && h.length) {
+            const b = h.filter((e) => e && e.date <= r.markAsOf && e.level > 0), last = h[h.length - 1];
+            if (b.length && last.level > 0 && last.level / b[b.length - 1].level - 1 < -sd) add(8, R, id, `/deals ${r.tk} ${r.card} #${r.num} ${r.grade}: ${(r.disc * 100).toFixed(0)}% vs a ${age}-day-old yardstick while ${r.tk} fell ${((1 - last.level / b[b.length - 1].level) * 100).toFixed(1)}% since`);
+          }
+        }
+      }
+    }
     if (r.disc != null && r.disc <= -0.4) add(8, A, id, `/deals ${r.tk} ${r.card} #${r.num} ${r.grade}: $${r.total} = ${(r.disc * 100).toFixed(0)}% vs mark $${r.mark} (${r.markBasis || ""})`);
   }
 }

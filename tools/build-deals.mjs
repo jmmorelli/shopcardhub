@@ -46,10 +46,14 @@ function methodNote(R) {
   var a = R.maxAgeDays;
   if (a && a.raw && a.graded) out.push("Marks older than " + a.raw + " days (raw), " + a.graded + " days (graded)" + (a.bowman ? " or " + a.bowman + " days (Bowman)" : "") + " are skipped.");
   if (typeof R.slabDeepMaxMarkAgeDays === "number" && typeof R.slabDeepLastSaleGap === "number" && typeof R.slabDeepNeedsGuard === "number") out.push("A graded row more than " + Math.round(R.slabDeepNeedsGuard * 100) + "% under prints only while its mark is at most " + R.slabDeepMaxMarkAgeDays + " days old and the card's last sale in that grade sits no more than " + Math.round(R.slabDeepLastSaleGap * 100) + "% under it.");
+  if (typeof R.slabStaleUnder === "number" && typeof R.slabStaleSetDrop === "number" && typeof R.slabDeepMaxMarkAgeDays === "number") out.push("Once a graded mark is more than " + R.slabDeepMaxMarkAgeDays + " days old, rows more than " + Math.round(R.slabStaleUnder * 100) + "% under it are held, and so is every row on a set whose index has fallen more than " + Math.round(R.slabStaleSetDrop * 100) + "% since that mark.");
   if (R.rawMinMark && R.gradedMinMark) out.push("Raw marks under $" + R.rawMinMark + " and graded marks under $" + R.gradedMinMark + " are not screened.");
   if (R.minSellerPct) out.push("Sellers under " + R.minSellerPct + "% positive feedback" + (R.minSellerScore ? " or with fewer than " + R.minSellerScore + " ratings" : "") + " are dropped.");
   return out.join(" ");
 }
+// og image cache-buster: keep the newest ?v= already on the page (the price lane bumps og/indices.png on every re-mark; a
+// rebuild here must never roll the share image back — Price Truth, Nov 9 2026).
+const OGV = (() => { let v = "20261026"; try { const m = fs.readFileSync(path.join(REPO, "deals.html"), "utf8").match(/og\/indices\.png\?v=(\d{8})/); if (m && m[1] > v) v = m[1]; } catch {} return v; })();
 const FEED_RULES = (() => { try { return JSON.parse(read("data/feed/deals-latest.json")).rules || null; } catch { return null; } })();
 const NOTE_RULES = methodNote(FEED_RULES);
 
@@ -138,10 +142,10 @@ const html = `<!DOCTYPE html>
   <meta property="og:site_name" content="ShopCardHub">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@shopcardhub">
-  <meta property="og:image" content="https://www.shopcardhub.com/og/indices.png?v=20261026">
+  <meta property="og:image" content="https://www.shopcardhub.com/og/indices.png?v=${OGV}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="628">
-  <meta name="twitter:image" content="https://www.shopcardhub.com/og/indices.png?v=20261026">
+  <meta name="twitter:image" content="https://www.shopcardhub.com/og/indices.png?v=${OGV}">
   <style>${pageCss}</style>
   <style>${CSS}</style>
   ${gtag}
