@@ -353,6 +353,11 @@ function bowmanConfigs() {
   // Oct 2 2026 (desk, iw-2026-10-02-1): returning May autos whose prior auto predates the 2025 sets above, each sourced.
   // George Lombard Jr. — 1st Bowman Chrome is 2024 Bowman BCP-79; CPA in 2024 Bowman (#CPA-GLO).
   for (const n of ["George Lombard Jr."]) prior.auto.add(norm(n));
+  // Nov 9 2026 (Price Truth Desk, Bowman KB GAPS G67 🔴): returning May BASE cards whose prior Bowman Chrome card predates the
+  // 2025 sets above, each sourced. Josue De Paula — 1st Bowman Chrome is 2023 Bowman Chrome Prospects BCP-111 (Dodgers)
+  // [sportscardinvestor.com "2023 Bowman Chrome Prospects 1st BCP-111"; monmouthcards.com BCP-111 listing], so 2026 Bowman
+  // BCP-83 carries no 1st logo and is not a 1st Bowman Chrome (base) card. Applied offline by --rescope (sub-line aware).
+  for (const n of ["Josue De Paula"]) prior.base.add(norm(n));
   const may = { auto: (name, num) => !isSepAuto(name) && !prior.auto.has(norm(name)), base: (name, num) => bcpNum(num) <= 150 && !prior.base.has(norm(name)) };
   const sept = { auto: (name, num) => isSepAuto(name) && sepFirstAuto(name), base: (name, num) => bcpNum(num) > 150 && sepFirstBase(name) };
   const common = {
@@ -1334,6 +1339,31 @@ function scopeKeep(c, u) {
   if (!c.offlineKeep) return true;
   return (c.sources || []).some((src) => String(u.path).startsWith(src.slug + "/") && (!src.keep || src.keep(`${u.name} #${u.num}`, u.name, u.num)));
 }
+// SUB-LINE RESCOPE (Price Truth Desk, Nov 9 2026 — Bowman KB G67 🔴): apply the subUniverse keep predicates to a screened
+// sub-line's stored universe and basket, offline. Rows out of scope leave both; divisor = new Σ(mark) ÷ the sub's current level,
+// so the sub level is unchanged (the published history is never restated). Logged in sub.divisorLog. Idempotent.
+function subRescope(x, c, why) {
+  const d = c.subUniverse; if (!c.offlineKeep || !d || !x.sub) return false;
+  const sx = x.sub[d.key]; if (!sx || sx.kind !== "screened" || !Array.isArray(sx.universe)) return false;
+  const keep = (u) => (d.sources || []).some((src) => String(u.path).startsWith(src.slug + "/") && (!src.keep || src.keep(`${u.name} #${u.num}`, u.name, u.num)));
+  const uniOut = sx.universe.filter((u) => !keep(u));
+  if (!uniOut.length) return false;
+  const sh = sx.history || [], level = sh.length ? sh[sh.length - 1].level : null;
+  if (level == null) { console.error(`${x.ticker}·${d.key}: no history — refusing to rescope the sub-line`); process.exit(3); }
+  const sum = (bk) => bk.reduce((a, b) => a + (typeof b.price === "number" ? b.price : 0), 0);
+  const before = sx.divisor, bvBefore = sum(sx.basket || []);
+  if (Math.abs(r2(bvBefore / before) - level) > 0.005) { console.error(`${x.ticker}·${d.key}: stored level ${level} ≠ Σ/divisor ${r2(bvBefore / before)} — refusing to rescope an inconsistent sub-line`); process.exit(3); }
+  const out = new Set(uniOut.map((u) => u.path));
+  const exits = (sx.basket || []).filter((b) => out.has(b.path)), basket = (sx.basket || []).filter((b) => !out.has(b.path));
+  if (!basket.length) { console.error(`${x.ticker}·${d.key}: rescope would empty the sub-line basket — refusing`); process.exit(3); }
+  const bv = sum(basket), divisor = exits.length ? r6(bv / level) : before, lvlAfter = r2(bv / divisor);
+  if (Math.abs(lvlAfter - level) > 0.005) { console.error(`${x.ticker}·${d.key}: level would move ${level} → ${lvlAfter} — refusing`); process.exit(3); }
+  sx.divisorLog = sx.divisorLog || [];
+  sx.divisorLog.push({ date: TODAY, before, after: divisor, why: `${why || "SCOPE CORRECTION (CONFIG)"} — sub-line ${d.key}: out of the universe: ${uniOut.map((u) => `${u.name} #${u.num}`).join("; ")} — ${exits.length ? exits.map((b) => `${b.name} #${b.num} was in the basket at $${b.price}`).join(", ") : "none was in the basket"}. universe ${sx.universe.length}→${sx.universe.length - uniOut.length}, basket ${sx.basket.length}→${basket.length}, basket value $${r2(bvBefore)}→$${r2(bv)}; ${exits.length ? "logged divisor adjustment" : "divisor unchanged"}, level ${level} unchanged.` });
+  sx.universe = sx.universe.filter((u) => !out.has(u.path)); sx.basket = basket; sx.divisor = divisor;
+  console.log(`${x.ticker}·${d.key} sub rescope ${TODAY}: universe −${uniOut.length} (${uniOut.map((u) => u.num).join(", ")}) · basket −${exits.length} · divisor ${before}→${divisor} · level ${level} → ${lvlAfter}`);
+  return true;
+}
 function rescope(x, c, why) {
   if (x.status !== "live") { console.log(`${x.ticker}: ${x.status || "not live"} — nothing to rescope`); return false; }
   const h = x.history || [], level = h.length ? h[h.length - 1].level : null;
@@ -1354,9 +1384,11 @@ function rescope(x, c, why) {
   const ex = exW(c);
   const wrongW = x.basket.filter((b) => uniSet.has(b.path) && (ex.has(String(b.num)) ? b.w !== 0 : b.w === 0));
   const subDiff = c.subUniverse && x.sub && x.sub[c.subUniverse.key] && x.sub[c.subUniverse.key].universe ? x.sub[c.subUniverse.key].universe.filter((u) => c.offlineKeep && !c.subUniverse.sources.some((src) => String(u.path).startsWith(src.slug + "/") && src.keep(`${u.name} #${u.num}`, u.name, u.num))) : [];
-  if (subDiff.length) console.warn(`${x.ticker}: WARNING — ${subDiff.length} sub ${c.subUniverse.key} rows fall out of scope (${subDiff.map((u) => u.num).join(", ")}); --rescope does not adjust sub-indices — run --recon`);
+  // Nov 9 2026 (Price Truth, G67): a screened sub-line's rows that fall out of the CONFIG scope leave offline too — logged
+  // divisor adjustment in the sub's own divisorLog, sub level unchanged (subRescope). Entries still wait for a read (--recon).
+  const subChanged = subDiff.length ? subRescope(x, c, why) : false;
   if (c.syncLabels) { x.name = c.name; x.set = c.set; }   // opt-in: a retitled ticker's stored labels follow CONFIG (the hub, the home board and card search read them)
-  if (!uniIn.length && !uniOut.length && !entrants.length && !exits.length && !wrongW.length) { console.log(`${x.ticker}: scope already matches CONFIG — no change`); return false; }
+  if (!uniIn.length && !uniOut.length && !entrants.length && !exits.length && !wrongW.length) { console.log(`${x.ticker}: ${subChanged ? "main universe" : "scope"} already matches CONFIG — no change${subChanged ? " (sub-line rescoped)" : ""}`); return subChanged; }
   const before = x.divisor, bvBefore = basketValue(x.basket), lvlNow = r2(bvBefore / before);
   if (Math.abs(lvlNow - level) > 0.005) { console.error(`${x.ticker}: stored level ${level} ≠ Σ/divisor ${lvlNow} — refusing to rescope an inconsistent ticker`); process.exit(3); }
   const basket = x.basket.filter((b) => uniSet.has(b.path)).concat(entrants);
