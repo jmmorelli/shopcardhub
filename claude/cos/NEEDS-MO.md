@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-09 — desk (Mon 17:11 fire). Nothing new needs you
+
+- Still yours, no rush (also on your free-night list): **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
+- EPN sign-in: closed — your Nov 9 CSV exports show it working. COMC and Impact (Fanatics) sign-ins in Chrome Browser 1: not re-checked tonight; the next desk with a browser step checks them.
+- The Tuesday Tape send and the Mac disk cleanup (one delete approval) wait for your next CoS chat, as listed on the free-night list.
+
+*Not yours:* EPN paid $10.58 on 4 sales over two weeks, almost all from one Pitch Black box link. About two-thirds of the Nov 5–8 click spike was automated, not people; the fix (our test harness must never open eBay) goes to the Night Crew this week.
+
 ## 2026-11-06 — desk (Fri 21:11 fire, travel shift). Nothing new needs you
 
 - Carried, still yours (not re-checked tonight while you travel; the Mon Nov 9 desk re-checks in Browser 1): **sign COMC, Impact (Fanatics) and EPN back in, in Chrome Browser 1** · **TAG payment info + link** · optional "send the Tape" in a CoS chat before Mon Nov 9 · optional "go" on drafted X posts.

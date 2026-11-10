@@ -3447,8 +3447,8 @@
       "severity": "MED",
       "title": "MED: 6 Pokémon card-bearing pages (5 worth pages + 1 set guide) are 22-32 days past their price stamp and carry those prices in the title and meta description, so the Monday lane cannot roll them mechanically. Fresh observed values are in the report; each needs a narrative re-mark.",
       "source": "claude/cos/weekly-scan-2026-11-02.md (Project)",
-      "status": "queued",
-      "decision": "CoS desk 2026-11-02: queued — Wed Nov 4 weekly batch (P2): narrative re-read of the 6 meta/title-tied pages from dated sold rows (raw medians with n + date; graded only as one dated row per R18, else 'No verified sale'). The PriceCharting PSA 10 values in the scan are direction only and are not printed."
+      "status": "closed",
+      "decision": "CoS desk 2026-11-02: queued — Wed Nov 4 weekly batch (P2): narrative re-read of the 6 meta/title-tied pages from dated sold rows (raw medians with n + date; graded only as one dated row per R18, else 'No verified sale'). The PriceCharting PSA 10 values in the scan are direction only and are not printed. | CoS desk 2026-11-09: superseded by price-exceptions-2026-11-09 (queued, Wed Nov 11 weekly)."
     },
     {
       "id": "price-unread-2026-11-02",
@@ -3596,7 +3596,47 @@
       "severity": "MED",
       "title": "MED: the same 6 meta/title-tied Pokémon pages as price-exceptions-2026-11-02 are still unchanged, now 29-38 days past stamp. Nov 9 PriceCharting reads: Mega Gengar ex 284 $668.08 vs page $792.50 (−15.7%); Pitch Black guide #116 $147.47 vs $184.01 (−19.9%); Mega Darkrai ex 116 $147.47 (console) / $138.05 (card page) vs $162.50; Moonbreon $1,675 vs $1,908.71 (−12.2%); Charizard ex 199 $296 vs $332.25 (−10.9%); Van Gogh Pikachu $958.51 vs $925 (+3.6%). Each needs a narrative re-read from dated sold rows (R18 for any graded figure).",
       "source": "claude/cos/weekly-scan-2026-11-09.md (Project)",
-      "status": "awaiting-cos"
+      "status": "queued",
+      "decision": "CoS desk 2026-11-09: queued → Wed Nov 11 CoS weekly (6 pages, title/meta-tied narrative re-marks = more than one page, so not a desk edit). Supersedes price-exceptions-2026-11-02 (same 6 pages, missed by the Nov 4 weekly). If the Nov 11 weekly misses it again it goes to BLOCKED with Price Truth as owner."
+    },
+    {
+      "id": "iw-2026-11-09-1",
+      "date": "2026-11-09",
+      "area": "home",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "tier": "P1",
+      "goal": "G1",
+      "title": "MED: home 'What moved this week?' labels ND1E +20.8% (Oct 26 → Nov 5) an 'unusual move'; 67% of it is Shining Charizard #107 correcting $1,600 → $4,000 (n 3–4) from the one-sale Oct 22 low. Step 1 (+75%) predates the move guard, step 2 (+43%) is under its 50% line; home set rows check neither tag.",
+      "source": "claude/cos/integrity-watch-2026-11-09.md + -proposals.json (Project)",
+      "status": "queued",
+      "decision": "CoS desk 2026-11-09 (Mon 17:11 PT fire): adopted (b)+(c) → Night Crew Wed Nov 11 (home-v2.mjs set rows + the index page's 'Biggest move' read 're-read' when reread/corrected cards carry > 50% of the set's move; Night Crew's own Nov 8 proposal asked for (b)). (a) tagReread gate → Price Truth (methodology-adjacent: data-quality tag, not the index method; its next run). Not a wrong level — narration only."
+    },
+    {
+      "id": "iw-2026-11-09-2",
+      "date": "2026-11-09",
+      "area": "guides",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "tier": "CHORE",
+      "goal": "G1",
+      "title": "LOW: /what-is-a-1st-bowman-card prints 'median of 30 sales, 30 days to Nov 5' on three rows where n30 = 30 is the source's row cap.",
+      "source": "claude/cos/integrity-watch-2026-11-09.md + -proposals.json (Project)",
+      "status": "queued",
+      "decision": "CoS desk 2026-11-09: queued → AI-Search (page owner, Goal League; Commissioner ships) — tools/build-first-bowman-page.mjs prints 'median of the last 30 sales (the source lists 30)' when n ≥ 29."
+    },
+    {
+      "id": "iw-2026-11-09-3",
+      "date": "2026-11-09",
+      "area": "guides",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "tier": "CHORE",
+      "goal": "G1",
+      "title": "LOW: /kylian-mbappe-rookie-cards footer says 'Headline figures are attributed public auction/private sales'; the page carries only Aug 31 eBay asks and no data-prices-updated stamp.",
+      "source": "claude/cos/integrity-watch-2026-11-09.md + -proposals.json (Project)",
+      "status": "queued",
+      "decision": "CoS desk 2026-11-09: queued → Conversion (page owner; Commissioner ships) with the IW footer text + data-prices-updated=\"2026-08-31\"; same patch fixes Ivan Nov 9's 'Five of his key rookie cards' that lists four. Re-read stays with audit-2026-09-07-1."
     }
   ],
   "scoreboard": {
@@ -6071,6 +6111,37 @@
           "gates": "audit-prices FAIL 0/WARN 56; audit-site FAIL 0/WARN 4; audit-terminal FAIL 0/WARN 1 — identical to clean HEAD 8bd7962",
           "liveVerified": "2026-11-09 ~18:14Z: /pitch-black-index serves 55.77; live /data/indices.json carries the 2026-11-09 rows; IndexNow 142 URLs HTTP 200",
           "rollback": "git revert dec4423 ced2716"
+        },
+        {
+          "date": "2026-11-09",
+          "commits": [
+            "c84aca3"
+          ],
+          "by": "CoS NFL rookie board weekly refresh (Mac deploy-key clone under /tmp; entry written by the CoS desk, which the lane left owed)",
+          "what": "data/nfl-cards.json + nfl-rookie-cards-2026.html: SCP raw sold Oct 10–Nov 9, Mendoza PSA 9/10 rows, strip Reese/Concepcion/Bailey",
+          "gates": "0/56 · 0/4 · 0/1 = base (lane report)",
+          "liveVerified": "2026-11-10 ~02:0xZ curl by the CoS desk: /nfl-rookie-cards-2026 200, bytes equal to main",
+          "note": "IndexNow ping not sent (lane's 'not done' list); the board task is disabled since the Nov 9 attended sitting."
+        },
+        {
+          "date": "2026-11-09",
+          "commits": [
+            "8bd7962"
+          ],
+          "by": "CoS (Mo attended, Nov 9)",
+          "what": "data/card-images.json: SV151 Charizard ex 199 image pinned to the official SIR scan (eBay mislisted an Obsidian Flames Tera Charizard)",
+          "gates": "0/56 · 0/4 · 0/1 (the Monday price lane ran its gates on clean HEAD 8bd7962)",
+          "liveVerified": "2026-11-10 ~02:0xZ curl by the CoS desk: /data/card-images.json bytes equal to main"
+        },
+        {
+          "date": "2026-11-09",
+          "commits": [
+            "(this docs commit)"
+          ],
+          "by": "CoS desk (scheduled Mon 17:11 PT fire, unattended) — Mac /tmp deploy-key clone",
+          "what": "STATE run log + MILESTONES (EPN Nov 9), NEEDS-MO, retention LEDGER R24 parked, pipeline IW Nov 9 rows + price-exceptions ruling + 2 owed pushLog entries",
+          "gates": "0/57 · 0/4 · 0/1 (+1 prices WARN vs the 56 base: pokemon-tcg-2026.html stamp 2026-10-19 crossed 21 days on the UTC date roll; no page touched)",
+          "liveVerified": "n/a — docs/tooling only, skipped by vercel ignoreCommand"
         }
       ]
     },
