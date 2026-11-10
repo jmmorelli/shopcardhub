@@ -1,30 +1,14 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-11-09",
+  "generated": "2026-11-10",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-10-12, STEP 3.9)",
   "agents": {
     "seeker": {
       "label": "SEEKER",
       "role": "Release watcher + trend scan (Monday run, STEP 0-2)",
-      "lastRun": "2026-11-09",
+      "lastRun": "2026-11-10",
       "nextRun": "2026-11-16",
       "actions": [
-        {
-          "ts": "2026-09-28",
-          "msg": "Hobby-press price claim on the 30th Celebration chase FAILED sold verification (third failure since Aug 31) - nothing reached the site"
-        },
-        {
-          "ts": "2026-09-29",
-          "msg": "Signal harvest Sep 29 (track-signals read from a price-data clone, R19): 30 cards, none at count 5 or more (top: Misiorowski 2022 Bowman Chrome 1st auto, 3, last seen Sep 11); nothing auto-added. Newest signal on file: Sep 16."
-        },
-        {
-          "ts": "2026-10-05",
-          "msg": "Trends Oct 5 (hobby press): Flagg RPA $8.04M Sept; Caleb Wilson Blue Chrome Prospect Auto +261% raw post-Summer League; Herbert Silver Prizm -39%/30d (0-3 start); Jaxson Dart -32% (season-ending knee); Pete Crow-Armstrong NL MVP favourite, 2026 Chrome refractors ~$30. PSA backlog under 10M, new Standard tier $59.99/100 days."
-        },
-        {
-          "ts": "2026-10-05",
-          "msg": "Competitor sweep Oct 5 (first since Sep 7): the HIGH-overlap index competitor now publishes a quantified track record - 54.9% hit rate, +17.4% avg return, 346 resolved picks, 259,680 indexed cards. A competitor tracker app shipped an iOS app (Android in dev) and a <3-sales/30d volume filter; still NO set-level index. Filed comp-2026-10-05."
-        },
         {
           "ts": "2026-10-05",
           "msg": "Release calendar Oct: A&G + UD Series 1 Hockey Oct 7, Update Series Oct 14, Heritage FB + Holiday Oct 21, Flagship Basketball Oct 22, Five Star Oct 28. Covered-set check: no chase index gap created this week."
@@ -68,6 +52,10 @@
         {
           "ts": "2026-11-09",
           "msg": "Fixer: 0 approved audit-/polish- proposals in the ledger, nothing applied; no approved item is older than 14 days."
+        },
+        {
+          "ts": "2026-11-10",
+          "msg": "Nov 10 (Tuesday board): track-signals (price-data 1b06a1f, file updated 2026-10-26) top count 3 (Misiorowski 2022 Chrome 1st auto), Holliday CPA-EH 2; none at 5, no watchlist adds."
         }
       ],
       "log": [
@@ -79,13 +67,9 @@
     "curator": {
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-11-03",
-      "nextRun": "2026-11-10",
+      "lastRun": "2026-11-10",
+      "nextRun": "2026-11-17",
       "actions": [
-        {
-          "ts": "2026-09-28",
-          "msg": "No new pages built - indices-first strategy held; three pre-release scaffolds left on disk for a CoS decision"
-        },
         {
           "ts": "2026-09-28",
           "msg": "Bowman tickers not re-marked by this lane: the Sep 25 reset moved them onto the nightly sector tool (Mon/Thu Action)"
@@ -129,6 +113,10 @@
         {
           "ts": "2026-11-03",
           "msg": "Nov 3 board re-mark, no seat moved: Fischer $117.50 (-17.0%, bottom) · Holliday $95.00 (-6.6%) · Gonzales $65.00 (-3.7%) · Florentino $65.00 (+7.4%, top) · Aloy $51.45 (+2.9%). Holliday's mark on his $95 floor (not under); Fischer $2.50 above his $115 mark level, Hold stands; Gonzales and Florentino level at $65.00 (a level mark does not move a seat). Watch tier re-dated (Arquette $44.00 on 11; Jump 30-day $26.00 on 3; Kim 90-day $75.00 on 3). Benchmark line BB26 63.51 (Nov 2)."
+        },
+        {
+          "ts": "2026-11-10",
+          "msg": "Nov 10 board re-mark, one seat moved: Arquette $50.00 (+13.6% vs his Nov 3 watch-tier $44.00, 10 sales, top) takes #5; Aloy $47.76 (-7.2%, 10 sales, bottom) under the $50.00 line in his box -> Off the Board + watch tier (departure recorded, no published call). Fischer $120.50 (+2.6%) · Holliday $91.00 (-4.2%, under his $95 floor: Hold under review, call re-set at the Nov 17 read) · Gonzales $65.00 · Florentino $65.00 (level, no seat move). Bowman PREBUILD G64/G13/G31/G20 applied on the May set section; G36 'superseded Sep 25' notes on the three Sep 22 passages (desk ruling of Nov 3). BB26 benchmark line 61.51 (Nov 9)."
         }
       ],
       "log": [
@@ -141,25 +129,9 @@
     "inspector": {
       "label": "INSPECTOR",
       "role": "Price checker + verification (Monday STEP 3, post-deploy checks)",
-      "lastRun": "2026-11-09",
+      "lastRun": "2026-11-10",
       "nextRun": "2026-11-16",
       "actions": [
-        {
-          "ts": "2026-10-05",
-          "msg": "Monday nightly had NOT published at 17:22Z: live /feed/prices-latest.json still day 2026-10-04 and no 'feed: nightly 2026-10-05' commit. Monday is the long run (ladder ~50 min; Sep 28 landed 17:28Z) so possibly in flight - filed monday-nightly-2026-10-05 for the desk to confirm, not asserted as broken."
-        },
-        {
-          "ts": "2026-10-05",
-          "msg": "Ledger reconcile: audit-2026-09-07-3 and lane-reads-cos-state-2026-09-15 verified DONE in the tree and marked applied; 20 of 22 remaining 'approved' items are ruled to other owners (Wed weekly / Wed build / desk), 9 of them now 20-41 days old."
-        },
-        {
-          "ts": "2026-10-12",
-          "msg": "HIGH, filed not fixed: every schedule-triggered GitHub workflow has stopped firing since Oct 11 ~15:00 UTC - price-snapshot (no run #78; last #77 Oct 11 14:54Z), ga4-snapshot (last Oct 11 15:09Z), price-audit (Mon 15:00 UTC slot missed), site-gates (daily 15:30 UTC independent check missed). All five report state=active and push-triggered runs are green, so Actions is healthy and the cron is what dropped. classic-marks.yml has never run since it was created Oct 8 (0 runs)."
-        },
-        {
-          "ts": "2026-10-12",
-          "msg": "Consequences verified live: /feed/prices-latest.json serves day 2026-10-11 (generated 14:56Z), so the 08:30 PT feed-freshness gate fails tomorrow if nothing lands; 31 of 37 live tickers missed Monday's mark - 8 classics are 11 days old (last Oct 1) and 7 are 6 days old (Oct 6). The Oct 5 lane logged the same non-publish at 17:22Z, so this is the second Monday running."
-        },
         {
           "ts": "2026-10-12",
           "msg": "Ledger reconcile: audit-2026-09-07-1 (approved, 35 days) part-applied only - 8 of 25 named pages now carry data-prices-updated, 17 still do not, and their human stamps read June 2026 (6 pages), Jul 6 2026 (7), Jul 28 / Aug 17 / Aug 25. Left approved; the item's own note says the premise failed and a whole-page rewrite is needed, not a stamp roll."
@@ -203,6 +175,10 @@
         {
           "ts": "2026-11-09",
           "msg": "Calls ledger re-read locally: 1 trending call (v-bb-fischer-buy-2) read $117.50 on the Nov 5 sold mark (n 13), unchanged; finalize deferred because no sold read dated on or after its Nov 6 finalizeAfter was available to this run. calls.json not staged."
+        },
+        {
+          "ts": "2026-11-10",
+          "msg": "Nov 10 (Tuesday board): comps from data/feed/sold-marks.json day 2026-11-10 (448/448 read, 0 errors); engine asks not used (R20). Gates after the re-mark: audit-prices 0/57, audit-site 0/4, audit-terminal 0/1 = clean-HEAD baseline."
         }
       ],
       "log": [
@@ -217,13 +193,9 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-11-03",
-      "nextRun": "2026-11-10",
+      "lastRun": "2026-11-10",
+      "nextRun": "2026-11-17",
       "actions": [
-        {
-          "ts": "2026-10-06",
-          "msg": "Weekly digest NOT sent and NOT staged. Kill switch tripped: a non-owner gmail address (vpt…, in MailerLite) (non-owner address, looks like a test) unsubscribed Sep 29 21:00 UTC, after the Sep 29 send; four shopcardhub+ test addresses unsubscribed the same evening (owner plus-addresses, not counted). Rogue-send check clean: no campaign since Digest 2026-09-29 (delivered 4, opens 3, clicks 0, unsub 0, bounces 0, spam 0). Active subscribers: 3 (+2 unconfirmed). A tool-permission denial also blocked the digest build this run."
-        },
         {
           "ts": "2026-10-12",
           "msg": "Calls ledger re-read on fresh dated PriceCharting ungraded solds (accessory/graded/lot-filtered), written locally and NOT pushed (calls.json is outside the price lane): Florentino $65.50 (30d median, n=12) from $69.50; Gonzales $69.99 (n=19) from $79.44; Fischer $154.25 (n=20) from $148.75; Kim $130.00 (90d median, n=5) unchanged. updated -> 2026-10-12. Patch staged for the desk."
@@ -267,6 +239,10 @@
         {
           "ts": "2026-11-03",
           "msg": "Nov 3 Tuesday Tape: draft written (Card Hub/digests/digest-2026-11-03.md, content gate passed against live pages after f3968fa) but NOT sent — the run could not read the MailerLite credential (permission layer refusal), so no campaign, no rogue-send or kill-switch check. Filed tuesday-2026-11-03-3."
+        },
+        {
+          "ts": "2026-11-10",
+          "msg": "Nov 10: board tape og/x/board-latest.png (+ bangers-tape-2026-11-10.png) and data/x-board.json (asOf 2026-11-10) regenerated after the re-mark and shipped with the board push. calls.json read filed for the CoS (tuesday-2026-11-10-1): Fischer re-entry final 8-week read 120.50 (-17.9% vs $146.80). Tuesday Tape drafted only (BLOCKED row of Nov 3: no unattended MailerLite path) - not staged, not sent. No X action."
         }
       ],
       "log": [
@@ -3637,6 +3613,39 @@
       "source": "claude/cos/integrity-watch-2026-11-09.md + -proposals.json (Project)",
       "status": "queued",
       "decision": "CoS desk 2026-11-09: queued → Conversion (page owner; Commissioner ships) with the IW footer text + data-prices-updated=\"2026-08-31\"; same patch fixes Ivan Nov 9's 'Five of his key rookie cards' that lists four. Re-read stays with audit-2026-09-07-1."
+    },
+    {
+      "id": "tuesday-2026-11-10-1",
+      "status": "awaiting-cos",
+      "date": "2026-11-10",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "MED",
+      "tier": "P2",
+      "goal": "G2",
+      "title": "calls.json read for Nov 10, not written by this lane (entries, call dates, actions and projections untouched). v-bb-fischer-buy-2 is past finalizeAfter (Nov 6) and this is the first sold read on or after it: read 120.50, readLabel 'sold mark $120.50 (SportsCardsPro ungraded 30-day median, 14 sales, mark of Nov 10 2026)', readDate 2026-11-10, state final; -17.9% vs the $146.80 entry (a BUY under -10% on the legacy 8-week band). Legacy grade field: the CoS's call (Grading Clock v3: the 8-week read is not a public grade); the page names the 6-month check, Mar 11 2027. No other /bowman-bangers row is due."
+    },
+    {
+      "id": "tuesday-2026-11-10-2",
+      "status": "awaiting-cos",
+      "date": "2026-11-10",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "MED",
+      "tier": "P2",
+      "goal": "G1",
+      "title": "Holliday's $95 floor broke on the Nov 10 read (sold mark $91.00 on 11 sales, last sale $90.00 Nov 8). The page now says so in his verdict and box: 'Hold, under review', call re-set at the Nov 17 read; his seat (#2) is unchanged because seats follow the mark. Needs a ruling before Nov 17: the replacement call (e.g. Pass, Watch, or a Hold with a new stated level), and whether it is logged as a new calls.json row. Note for anything that reads the feed: data/x-board.json carries currentSignal HOLD for Holliday (the builder reads the verdict's first word); the callout beside it says he is under his floor. Also this run: Arquette took #5 from Aloy on the mechanical rule in Aloy's box (Arquette $50.00 on 10 vs Aloy $47.76 on 10); Aloy's departure recorded (no call), Arquette re-seated with no new call (June Buy -28.6% at the mark, 6-month check Dec 12 2026)."
+    },
+    {
+      "id": "tuesday-2026-11-10-3",
+      "status": "awaiting-cos",
+      "date": "2026-11-10",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "MED",
+      "tier": "P2",
+      "goal": "G1",
+      "title": "Tuesday Tape NOT sent Nov 10 (second week). Per the BLOCKED row of Nov 3 (updated Nov 9: 'the Nov 10 Tape is drafted only'), this run did not read the MailerLite credential and did not stage a campaign; rogue-send and kill-switch checks not run. Draft with the content gate checked against the pushed page: Card Hub/digests/digest-2026-11-10.md. Still needs the attended decision: a send path that does not read the token in-session, or the Tape becomes an attended step."
     }
   ],
   "scoreboard": {
