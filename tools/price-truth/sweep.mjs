@@ -137,6 +137,15 @@ for (const [tk, Gf] of Object.entries(G_)) {
     if (p10 && raw && p10 < raw) add(3, R, id, `${nm} PSA 10 $${p10} < raw $${raw}`, { page: C.page });
     if (p9 && raw && p9 < raw) add(3, raw >= 50 && p9 < 0.75 * raw ? A : G, id, `${nm} PSA 9 $${p9} < raw $${raw}`, { page: C.page });
     if (p10 && p9 && p9 >= 20 && p10 > 15 * p9) add(3, A, id, `${nm} PSA 10 $${p10} = ${(p10 / p9).toFixed(0)}x PSA 9 $${p9}`, { page: C.page });
+    // a printed cell on a read > 10 days old in a set whose index fell > 10% since (ladder-guard.mjs STALE, CoS ADOPT Nov 9 2026;
+    // TH26 Charizard #4 PSA 10 $2,017.43 "Oct 26" vs a $927 market) — age read against indices.updated, so the sweep stays deterministic
+    if (p9 || p10 || t10) {
+      const asOf = g.asOf || Gf.day, day = Date.parse(String((IDX && IDX.updated) || "").slice(0, 10)), h = IDX && IDX[tk.toUpperCase()] && IDX[tk.toUpperCase()].history;
+      if (asOf && Number.isFinite(day) && (day - Date.parse(asOf)) / 864e5 > 10 && Array.isArray(h) && h.length) {
+        const b = h.filter((e) => e && e.date <= asOf && e.level > 0), last = h[h.length - 1];
+        if (b.length && last.level > 0 && last.level / b[b.length - 1].level - 1 < -0.10) add(3, R, id, `${nm} graded cell read ${asOf} printed while ${tk.toUpperCase()} fell ${((1 - last.level / b[b.length - 1].level) * 100).toFixed(1)}% since (PSA 10 ${p10 ? "$" + p10 : "—"})`, { page: C.page });
+      }
+    }
   }
 }
 // GSTAR board: build-grails.mjs gcell() prints any non-held median; R18 needs >= 3 dated sales for a median

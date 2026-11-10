@@ -88,6 +88,38 @@ export function holdCell(x, why) {
   return { ...rest, m: null, basis: null, last: null, held };
 }
 
+// (d) stale yardstick in a falling set — temporary display hold (CoS, BLOCKED row "Graded ladder 14 days old", Price Truth
+// proposal 3 ruled ADOPT Nov 9 2026). The ladder read was missed Nov 2 and Nov 9, so card pages printed Oct 26 medians in sets
+// that have fallen since: TH26 Charizard #4 PSA 10 $2,017.43 while PSA 10 sales Nov 2-10 ran a $927 median (PriceCharting
+// $955.99; Price Truth verifier Nov 9 + Nov 10). A cell whose card read (asOf, else the file's day) is more than
+// STALE.maxAgeDays old is held when the card's own set index fell more than STALE.setDrop from its last level on or before
+// that read to its newest level. Hold only: no mark, level or basket changes. It lifts by itself at the next ladder read
+// (a fresh read is never stale and replaces the row). Applied by `build-card-ladder.mjs --guard`.
+export const STALE = { maxAgeDays: 10, setDrop: 0.10, why: "d-stale-set" };
+export function setDropSince(history, since) {
+  if (!Array.isArray(history) || !history.length || !since) return null;
+  const before = history.filter((e) => e && e.date <= since && e.level > 0), last = history[history.length - 1];
+  if (!before.length || !(last && last.level > 0)) return null;
+  return last.level / before[before.length - 1].level - 1;
+}
+// holds every live cell of one ticker's cards that fails (d), in place; today = "YYYY-MM-DD". Returns [{ key, grade, why, m, last, drop }].
+export function staleHoldTicker(cards, history, today, fileDay) {
+  const held = [];
+  for (const [key, c] of Object.entries(cards || {})) {
+    if (!c || typeof c !== "object") continue;
+    const asOf = c.asOf || fileDay;
+    if (!asOf || (Date.parse(today) - Date.parse(asOf)) / 864e5 <= STALE.maxAgeDays) continue;
+    const drop = setDropSince(history, asOf);
+    if (drop == null || drop >= -STALE.setDrop) continue;
+    for (const k of GR) {
+      const x = c[k]; if (!x || x.held || (x.m == null && x.m365 == null && !x.last)) continue;
+      held.push({ key, grade: k, why: STALE.why, m: x.m, m365: x.m365, last: x.last, drop });
+      c[k] = holdCell(x, STALE.why);
+    }
+  }
+  return held;
+}
+
 // applies the guards to every card of one ticker in place. raws: Map(key -> raw mark), hists: { key: [[month, …, psa10]] }.
 // Returns the list of held cells [{ key, grade, why, m, last }].
 export function guardTicker(cards, raws, hists) {

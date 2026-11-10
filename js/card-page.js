@@ -79,6 +79,8 @@
       if (x && x.m && x.n >= 3) { e.m = x.m; e.basis = 'Median of ' + x.n + ' dated sales, ' + e.days + ' days · read ' + md(gRead) + (x.last ? ' · last sale ' + money(x.last.p) + ', ' + mdShort(x.last.d) : ''); }
       else if (x && x.last) { e.one = x.last; e.basis = '1 dated sale, ' + md(x.last.d) + ' · fewer than 3 in 90 days, so no median'; }
       // a cell the ladder guards held (build-card-ladder.mjs, Nov 3 2026): its sales disagree with the card's other grades or the last sale
+      // Price Truth Nov 10 2026 (CoS ADOPT Nov 9): a cell held because its read is old and the set has fallen since (ladder-guard.mjs STALE)
+      else if (x && x.held && x.held.why === 'd-stale-set') e.basis = 'Being re-read: these sales are more than 10 days old and the set has fallen since';
       else if (x && x.held) e.basis = 'No verified sale';
       else e.basis = !g ? 'Graded read pending' : p[0] === 'tag10' ? 'No TAG 10 sale in 12 months' : 'No dated sale in 12 months';
       G.push(e);
@@ -112,7 +114,7 @@
       var x = e.k !== 'raw' && g ? g[e.k] : null, v, cap = e.basis;
       if (e.m != null) { v = money(e.m); cap = e.k === 'raw' ? (chase ? 'PriceCharting’s ungraded value' : 'Median of ' + (c.wn != null ? c.wn : c.n30) + ' raw sales, ' + (c.win || d.window || 30) + ' days') : 'Median of ' + e.n + ' sales, ' + e.days + ' days'; }
       else if (e.one) { v = money(e.one.p); cap = '1 sale, ' + md(e.one.d); }
-      else v = e.k === 'raw' ? (scr ? 'Not priced' : c.nv ? 'No verified sale yet' : 'Too few sales') : x && x.held ? 'No verified sale' : !g ? 'Not read yet' : 'No recent sale';
+      else v = e.k === 'raw' ? (scr ? 'Not priced' : c.nv ? 'No verified sale yet' : 'Too few sales') : x && x.held ? (x.held.why === 'd-stale-set' ? 'Being re-read' : 'No verified sale') : !g ? 'Not read yet' : 'No recent sale';
       if (cap === v || cap === 'Graded read pending') cap = ''; else if (cap.indexOf(v + ': ') === 0) cap = cap.slice(v.length + 2);
       var r = e.k !== 'raw' && e.m && raw ? e.m / raw : null;
       return '<div class="cdp-cmp-c' + (e.m != null || e.one ? '' : ' na') + '"><h3>' + e.lbl + '</h3><p class="v">' + v + '</p>' +
