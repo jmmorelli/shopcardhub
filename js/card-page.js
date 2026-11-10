@@ -50,6 +50,16 @@
    * Scope v1 = SV/MEG-era sets (spec: modern Pokémon only). */
   var P62 = { allIn: 62.75, fee: 59.99, fvf: 0.1325, perOrder: 0.40, sets: { pf25: 1, dr25: 1, sv151: 1, pris25: 1, pb26: 1, cr26: 1, ah26: 1, meg25: 1, ssp24: 1, th26: 1 } };
 
+  // Cupertino run 11 (Nov 10 2026): the breadcrumb, "Set indices › Prismatic Evolutions › Umbreon ex #161" — the same markup
+  // and words as tools/lib/local-nav.mjs cardCrumbHtml() prints into the static stub, so the first paint and the render match.
+  // The set's step is named the way its own index page names itself; a tracked card (no index) skips it.
+  function shortName(n) { return String(n).replace(/\s+(Chase|1st Auto|Class|Sector)?\s*Index$/i, '').replace(/^((?!Base Set$).*)\s+Set$/i, '$1').trim(); }
+  function crumb(d, nameHtml) {
+    var sep = '<span class="sep" aria-hidden="true"> › </span>', out = '<a href="/indices">Set indices</a>';
+    if (d.kind !== 'tracked' && d.page && d.page !== '/indices') out += sep + '<a href="' + esc(d.page) + '">' + esc(shortName(d.name || d.ticker || '')) + '</a>';
+    return '<nav class="crumb" aria-label="Breadcrumb">' + out + sep + '<span aria-current="page">' + nameHtml + '</span></nav>';
+  }
+
   function render(d, c, g, gd) {
     // c.set: a card file that spans sets (TRK tracked cards, the GSTAR board — tools/build-coverage-cards.mjs, Nov 5 2026)
     var setShort = String(c.set || d.set).replace(/^Pokémon TCG /, ''), offIx = d.kind === 'tracked' || d.kind === 'board';
@@ -111,7 +121,7 @@
     }).join('');
     var setLink = '<a href="' + esc(d.page) + '">' + esc(setShort) + '</a>';
     main.innerHTML =
-      '<div class="cdp-crumbs"><a href="/">Home</a><span>/</span><a href="' + esc(d.page) + '">' + esc(d.ticker) + '</a><span>/</span><span>' + esc(c.name) + ' #' + esc(c.num) + '</span></div>' +
+      crumb(d, esc(c.name) + ' #' + esc(c.num)) +
       '<div class="cdp-top"><div class="cdp-photo"><span data-card-img="' + esc(c.img) + '" data-card-name="' + esc(c.name) + ' #' + esc(c.num) + ' ' + esc(d.set) + '" data-card-sub="pokemon" data-card-size="hero" data-card-surface="card-page" data-card-link="off"></span></div>' +
       '<div class="cdp-info"><h1>' + esc(c.name) + ' #' + esc(c.num) + '</h1><p class="cdp-set">' + setLink + ' · #' + esc(c.num) + (c.rarity ? ' · ' + esc(c.rarity) : '') + '</p></div>' +
       '<div class="cdp-q" id="cdp-q"><div class="cdp-gr" role="tablist" aria-label="Grade">' + chips + '</div>' +

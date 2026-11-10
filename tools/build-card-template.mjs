@@ -11,7 +11,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { ebaySearchUrl, SACAT_TCG } from "./lib/epn.mjs";
 import { rawNot, RAW_EXTRA } from "./lib/card-files.mjs";
-import { cardLocalNav, stubRawLink } from "./lib/local-nav.mjs";   // run 9: the sticky local nav on static card pages
+import { cardLocalNav, stubRawLink, cardCrumbHtml } from "./lib/local-nav.mjs";   // run 9: the sticky local nav on static card pages; run 11: the crumb
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
 const SHELL = fs.readFileSync(path.join(ROOT, "how-prices-work.html"), "utf8");
@@ -115,7 +115,7 @@ const CSS = `
 .cdp-chart.cdp-wait{min-height:299px}.cdp-more .g{grid-template-columns:repeat(2,minmax(0,1fr))}.cdp-big{font-size:36px}.cdp-tabs button{padding:8px 10px;font-size:14px}.cdp-kv{grid-template-columns:1fr}.cdp-btns{grid-template-columns:1fr}}
 `;
 
-const DEFAULT_LOAD = `  <div class="cdp-crumbs"><a href="/">Home</a><span>/</span><a href="/indices">Indices</a><span>/</span><span>Card</span></div>
+const DEFAULT_LOAD = `  ${cardCrumbHtml(null, "Card")}
   <div class="cdp-miss" id="cdp-load">Loading card… <a href="${ebaySearchUrl({ q: "pokemon card", customid: "card-page", sacat: SACAT_TCG })}" target="_blank" rel="sponsored nofollow noopener">Pokémon singles on eBay →</a></div>
 `;
 const page = (o) => `<!DOCTYPE html>
@@ -239,7 +239,7 @@ for (const tk of STATIC_TICKERS) {
     // Same basis wording as js/card-page.js render() (chase: PriceCharting's ungraded value; sector: median of n raw sales).
     const basis = c.raw == null ? (c.nv ? `No verified sale yet: ${c.wn || 0} clean raw sales in ${c.win || 90} days (3 needed)` : "Too few raw sales to mark.") : d.kind === "chase" ? `PriceCharting’s ungraded value, read ${md(c.rawAsOf)}` : `Median of ${c.wn != null ? c.wn : c.n30} raw sales${c.lo != null && c.hi != null ? ` (middle half ${money(c.lo)}–${money(c.hi)})` : ""}, ${c.win || d.window || 30} days · marked ${md(c.rawAsOf)}`;
     const nm = `${c.name} #${c.num}`;
-    const load = `  <div class="cdp-crumbs"><a href="/">Home</a><span>/</span><a href="${esc(d.page)}">${esc(d.ticker)}</a><span>/</span><span>${esc(nm)}</span></div>
+    const load = `  ${cardCrumbHtml(d, esc(nm))}
   <div class="cdp-miss" id="cdp-load"><h1>${esc(nm)}</h1><p class="cdp-set"><a href="${esc(d.page)}">${esc(setShort)}</a> · #${esc(c.num)}${c.rarity ? " · " + esc(c.rarity) : ""}</p><p>Raw ${c.raw != null ? `<b>${money(c.raw)}</b> · ` : ""}${esc(basis)}. Loading PSA 9, PSA 10 and TAG 10 sales…</p><p><a href="${esc(ebaySearchUrl({ q: `${c.q || nm} ${rawNot(d.ticker)}${edNot(d)}${RAW_EXTRA[d.ticker] || ""}`, customid: "card-" + c.id, sacat: SACAT_TCG, av: c.raw >= 200 }))}" target="_blank" rel="sponsored nofollow noopener">Raw copies on eBay →</a></p></div>
 `;
     const desc = `${nm} ${setShort} price${c.raw != null ? `: raw ${money(c.raw)} (${d.kind === "chase" ? "PriceCharting ungraded" : "median of raw sales"}, ${md(c.rawAsOf)})` : ""}, beside dated PSA 9, PSA 10 and TAG 10 sales and an eBay link for each grade.`;

@@ -72,6 +72,35 @@ export function crumbHtml(trail, style) {
   return `<nav class="crumb"${style ? ` style="${style}"` : ""} aria-label="Breadcrumb">${steps.join('<span class="sep" aria-hidden="true"> › </span>')}</nav>`;
 }
 
+// the set's name as a collector says it: "Destined Rivals Chase Index" → "Destined Rivals" (the home box's rule: "Base Set"
+// keeps its "Set"). The set-index bar and crumb use it, and so does the card page's crumb, so both pages say the same name.
+export const shortName = (n) => String(n).replace(/\s+(Chase|1st Auto|Class|Sector)?\s*Index$/i, "").replace(/^((?!Base Set$).*)\s+Set$/i, "$1").trim();
+
+// ── The card page's breadcrumb (Cupertino run 11, Nov 10 2026; CoS ADOPT Nov 9) ──────────────────────────────────────
+// "Set indices › Prismatic Evolutions › Umbreon ex #161": the same grammar as the set-index crumb, the set's step named the
+// way its own page names itself and linked to it, the card last and unlinked. Was "HOME / PRIS25 / Umbreon ex #161" (the
+// ticker for the set, slashes, the card dimmest of all). d = the card file's head (data/cards/<tk>.json: name, page, kind);
+// a tracked card (kind "tracked", its set has no index) goes straight from "Set indices" to the card. js/card-page.js
+// prints the same markup when it renders, so the stub and the rendered page match. nameHtml arrives HTML-escaped.
+const escHtml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+export function cardCrumbHtml(d, nameHtml) {
+  const trail = [["Set indices", "/indices"]];
+  if (d && d.kind !== "tracked" && d.page && d.page !== "/indices") trail.push([escHtml(shortName(d.name || d.ticker || "")), escHtml(d.page)]);
+  trail.push([nameHtml]);
+  return crumbHtml(trail);
+}
+// swap the card stub's crumb (the old <div class="cdp-crumbs"> or a crumb this builder wrote) inside <main id="cdp">;
+// returns the new html, or null when the page has no card stub crumb (named by the caller, never guessed)
+export function placeCardCrumb(html, crumb) {
+  const from = html.indexOf('id="cdp"');
+  if (from === -1) return null;
+  const re = /<div class="cdp-crumbs">[\s\S]*?<\/div>|<nav class="crumb" aria-label="Breadcrumb">[\s\S]*?<\/nav>/g;
+  re.lastIndex = from;
+  const m = re.exec(html);
+  if (!m || m.index - from > 400) return null;
+  return html.slice(0, m.index) + crumb + html.slice(m.index + m[0].length);
+}
+
 // replace the page's set-index crumb (the first <div|nav class="crumb"> after NAV:END that links to /indices), keeping
 // its inline style; returns the new html, or null when the page has no such crumb (named by the caller, never guessed)
 export function placeCrumb(html, trail) {

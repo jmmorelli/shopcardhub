@@ -44,7 +44,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { cardLocalNav, stubRawLink, stubName, placeLocalNav, placeCrumb } from "./lib/local-nav.mjs";
+import { cardLocalNav, stubRawLink, stubName, placeLocalNav, placeCrumb, shortName, cardCrumbHtml, placeCardCrumb } from "./lib/local-nav.mjs";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECK = process.argv.includes("--check");
@@ -53,9 +53,7 @@ const S = "<!-- LOCALNAV:START", E = "<!-- LOCALNAV:END -->";
 const BUY_BLOCKS = ["SEALED", "BUYBOX", "BUYSTRIP"];
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 
-// the set's name as a collector says it: "Destined Rivals Chase Index" → "Destined Rivals"
-// (the home box's rule: "Base Set" keeps its "Set")
-const shortName = (n) => String(n).replace(/\s+(Chase|1st Auto|Class|Sector)?\s*Index$/i, "").replace(/^((?!Base Set$).*)\s+Set$/i, "$1").trim();
+// the set's name as a collector says it: shortName() in tools/lib/local-nav.mjs (shared with the card page's crumb, run 11)
 
 function buyLink(html) {
   const navEnd = html.indexOf("<!-- NAV:END");
@@ -144,6 +142,16 @@ for (const [tk, r] of Object.entries(idx)) {
   if (html !== before) { changed.push(file); if (!CHECK) fs.writeFileSync(f, html); }
 }
 // run 9: the card pages
+// run 11: each card file's head (name, page, kind) for the crumb, read once per ticker
+const heads = new Map();
+function cardHead(tk) {
+  if (!heads.has(tk)) {
+    let h = null;
+    try { const d = JSON.parse(fs.readFileSync(path.join(REPO, `data/cards/${tk}.json`), "utf8")); h = { name: d.name, page: d.page, kind: d.kind, ticker: d.ticker }; } catch {}
+    heads.set(tk, h);
+  }
+  return heads.get(tk);
+}
 const CARD_MAIN = /<main class="cdp" id="cdp" aria-live="polite" data-card-id="([a-z0-9-]+)"/;
 let cards = 0;
 for (const file of fs.readdirSync(REPO).filter((f) => /^card-.+\.html$/.test(f)).sort()) {
@@ -153,10 +161,24 @@ for (const file of fs.readdirSync(REPO).filter((f) => /^card-.+\.html$/.test(f))
   if (!m) continue;   // a hand-built card page, not the template
   const link = stubRawLink(before), name = stubName(before);
   if (!link || !name) { skipped.push(`${file} — no raw eBay link or name in the stub`); continue; }
-  const html = placeLocalNav(before, cardLocalNav(m[1], name, link));
+  let html = placeLocalNav(before, cardLocalNav(m[1], name, link));
   if (html == null) { skipped.push(`${file} — no NAV:END marker`); continue; }
+  // run 11: the stub's breadcrumb, "Set indices › <set> › <card>" (tools/lib/local-nav.mjs cardCrumbHtml)
+  const head = cardHead(m[1].split("-")[0]);
+  const withCrumb = head ? placeCardCrumb(html, cardCrumbHtml(head, name)) : null;
+  if (withCrumb == null) skipped.push(`${file} — no card file or no stub crumb (crumb kept as it is)`); else html = withCrumb;
   cards++;
   if (html !== before) { changed.push(file); if (!CHECK) fs.writeFileSync(f, html); }
+}
+// run 11: the /card?id= shell (card.html) gets the same crumb grammar for its first paint ("Set indices › Card")
+{
+  const f = path.join(REPO, "card.html");
+  if (fs.existsSync(f)) {
+    const before = fs.readFileSync(f, "utf8");
+    const html = /<main class="cdp" id="cdp"/.test(before) && !/data-card-id=/.test(before) ? placeCardCrumb(before, cardCrumbHtml(null, "Card")) : null;
+    if (html == null) skipped.push("card.html — no card shell crumb (kept as it is)");
+    else if (html !== before) { changed.push("card.html"); if (!CHECK) fs.writeFileSync(f, html); }
+  }
 }
 console.log(`local nav ${CHECK ? "check" : "build"}: ${done.length} index page(s) + ${cards} card page(s) carry it, ${changed.length} ${CHECK ? "stale" : "written"}`);
 for (const s of skipped) console.log("  skip " + s);
