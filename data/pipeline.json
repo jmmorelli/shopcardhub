@@ -6102,6 +6102,17 @@
           "rollback": "git revert ac32d41^..4eef93d"
         },
         {
+          "date": "2026-11-10",
+          "commits": [
+            "f9dac7a"
+          ],
+          "by": "Goal League Commissioner (unattended, Mac deploy-key clone under /tmp; Task-key goal-league-commissioner)",
+          "gates": "0/57 · 0/4 · 0/1 (prices WARN 56 -> 57 on base a942520 before this push: one more stale price stamp aged past 21 days; this commit touches no page)",
+          "liveVerified": "2026-11-10 ~14:10Z curl: sitemap.xml and data/goal-league.json 200, bytes equal to main",
+          "note": "Week 1 scored read recorded (week ending Sun Nov 8, GA4 window Nov 2-8, score.mjs --record): drop +4.21, aisearch +3.91, deal +3.25, wildcard 0, conversion -6.07 attributed clicks. Standings block refreshed; Black Friday grant text corrected (2nd new URL of week Nov 9-15). sitemap-lastmod: 27 lastmods from the Nov 9 classic-marks commit. No page changed, so no IndexNow ping.",
+          "rollback": "git revert f9dac7a"
+        },
+        {
           "date": "2026-11-09",
           "commits": [
             "ced2716",
