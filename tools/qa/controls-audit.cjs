@@ -41,7 +41,9 @@ const CONTROLS = {
   const b = await chromium.launch(); const results = [];
   for (const [page, controls] of Object.entries(CONTROLS)) {
     for (const [label, sel, expect] of controls) {
-      const ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, acceptDownloads: true }); const pg = await ctx.newPage();
+      const ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, acceptDownloads: true });
+      await ctx.route((u) => /(^|\.)ebay(\.[a-z]{2,3}){1,2}$/i.test(u.hostname), (r) => r.abort()); // popups too: eBay never loads (CoS review Nov 9, EPN row)
+      const pg = await ctx.newPage();
       const errs = []; pg.on('pageerror', e => errs.push(e.message)); pg.on('console', m => { if (m.type() === 'error' && !/ERR_FAILED/.test(m.text())) errs.push(m.text()); });
       await pg.route('**/*', async route => { const u = route.request().url(); const m = u.match(/(?:price-data\/data|\/feed)\/([a-z0-9-]+\.json)/); if (m) return NOFEED ? route.abort() : route.fulfill({ status: 200, contentType: 'application/json', body: fs.readFileSync(path.join(SCRATCH, 'pd/data', m[1]), 'utf8') }); if (/\/api\/auctions/.test(u)) return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(auctions) }); if (/\/api\//.test(u)) return route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true,"verified":[],"listings":[],"rows":[]}' }); if (/^https?:\/\/127\.0\.0\.1/.test(u)) return route.continue(); return route.abort(); });
       pg.on('dialog', async d => { await d.accept(d.type() === 'prompt' ? 'Renamed box' : undefined); });

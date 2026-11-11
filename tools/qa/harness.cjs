@@ -19,6 +19,8 @@ const { execSync } = require("node:child_process");
 
 const ABORT_HOSTS = [/(^|\.)googletagmanager\.com$/, /(^|\.)google-analytics\.com$/, /\.analytics\.google\.com$/, /^stats\.g\.doubleclick\.net$/, /(^|\.)doubleclick\.net$/, /^fonts\.googleapis\.com$/, /^fonts\.gstatic\.com$/];
 const IMAGE_HOSTS = [/^i\.ebayimg\.com$/, /^images\./];
+// eBay hosts are never loaded by a harness, in a page or a popup (CoS review Nov 9, EPN artificial-clicks row).
+const EBAY_HOST = /(^|\.)ebay(\.[a-z]{2,3}){1,2}$/i;
 // the feed: our own /feed/<file> (since 2026-09-22, api/feed.js) or the legacy raw.githubusercontent URL
 const FEED_RE = /^https?:\/\/[^/]+\/(?:feed|[^/]+\/shopcardhub\/price-data\/data)\/([a-z0-9-]+\.json)/;
 const PNG_1x1 = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
@@ -80,6 +82,7 @@ async function routeContext(ctx, { mode = "local", origin, feed, log }) {
       if (f && fs.existsSync(f)) { L.feed.push(fm0[1]); return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: fs.readFileSync(f) }); }
       L.aborted.push("feed"); return route.abort();
     }
+    if (EBAY_HOST.test(host)) { L.aborted.push(host); return route.abort(); }
     if (host === "127.0.0.1" || host === "localhost" || (own && hostPort === own)) return route.continue();
     if (ABORT_HOSTS.some((re) => re.test(host))) { L.aborted.push(host); return route.abort(); }
     if (mode === "prod") {

@@ -37,6 +37,10 @@ const ALL = argv.includes("--all");
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), "../..");
 
 const BLOCK = /googletagmanager\.com|google-analytics\.com|analytics\.google\.com|stats\.g\.doubleclick\.net/;
+// eBay hosts are aborted too (CoS review Nov 9, EPN artificial-clicks row): a sweep must never load an EPN link,
+// in the page or in a popup. Host match only; i.ebayimg.com / ebaystatic.com photos still load.
+const EBAY_HOST = /(^|\.)ebay(\.[a-z]{2,3}){1,2}$/i;
+const isEbay = (u) => { try { return EBAY_HOST.test(new URL(u).hostname); } catch { return false; } };
 // /api/comps is aborted like a beacon (Night Crew Oct 26; BLOCKED "eBay Browse quota spent twice", desk Oct 23): every call is a
 // live eBay Browse request on the shared 5k/day keyset; a sweep of 20 pages fired dozens. --comps lets them through on purpose.
 const COMPS = argv.includes("--comps") ? null : /\/api\/comps\b/;
@@ -147,10 +151,11 @@ async function metrics(page, deep) {
     for (const vp of viewports) {
       const ctx = await browser.newContext({ viewport: vp.viewport, userAgent: vp.ua || undefined, deviceScaleFactor: vp.scale || 1, isMobile: !!vp.mobile, hasTouch: !!vp.mobile });
       const bytes = { html: 0, js: 0, css: 0, img: 0, font: 0, other: 0, total: 0 };
-      let abortedBeacons = 0;
+      let abortedBeacons = 0; const ebayAborted = [];
       await ctx.route("**/*", async route => {
         const url = route.request().url();
         if (BLOCK.test(url) || (COMPS && COMPS.test(url))) { abortedBeacons++; return route.abort(); }
+        if (isEbay(url)) { ebayAborted.push(url.slice(0, 120)); return route.abort(); }
         for (let attempt = 0; attempt < 3; attempt++) {
           try {
             /* forward the page's own request headers (Sec-Fetch-Site, Referer…) so api/_lib/guard.js sees a
@@ -181,7 +186,7 @@ async function metrics(page, deep) {
       await page.waitForTimeout(WAIT);
       let m = {};
       try { m = await metrics(page, deep); } catch (e) { entry[vp.name + "_metricsError"] = String(e).slice(0, 120); }
-      entry[vp.name] = { status, ...m, consoleErrors: errors, abortedBeacons, beaconNoise, bytes: deep ? bytes : undefined };
+      entry[vp.name] = { status, ...m, consoleErrors: errors, abortedBeacons, ebayAborted: ebayAborted.length ? ebayAborted : undefined, beaconNoise, bytes: deep ? bytes : undefined };
       await ctx.close();
     }
     results.push(entry);

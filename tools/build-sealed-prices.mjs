@@ -105,6 +105,8 @@ html = swap(swap(html, 'SEALEDLD', ld), 'SEALED', block);
 html = html.replace(/data-prices-updated="[^"]*"/, `data-prices-updated="${cfg.read}"`);
 html = html.replace(/(<span data-prices-updated="[^"]*">)[^<]*(<\/span>)/, `$1Sold prices read ${longDay(cfg.read)}$2`);
 html = html.replace(/data-deal-tk="[^"]*"/, `data-deal-tk="${cfg.dealTk}"`);
+// Night Crew Nov 11 (desk route, Ivan Nov 10): the deals block on this sealed page lists sealed rows only, never singles.
+if (!/data-deal-grades=/.test(html)) html = html.replace(/(data-deal-tk="[^"]*")/, '$1 data-deal-grades="sealed"');
 if (DRY) console.log(block.slice(0, 1200));
 else fs.writeFileSync(PAGE, html);
 console.log(`build-sealed-prices: ${all.length} rows in ${cfg.groups.length} tables, read ${cfg.read}${DRY ? ' (dry)' : ''} -> ${path.relative(REPO, PAGE)}`);

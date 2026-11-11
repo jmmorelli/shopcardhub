@@ -49,6 +49,8 @@ for (const w of WIDTHS) {
   // Night Crew Oct 26 (BLOCKED eBay quota row, desk Oct 23): /api/comps is a live eBay Browse call on the shared keyset — aborted
   // unless --comps (the name-search photo half then reads as placeholder WARNs, never FAILs).
   if (!process.argv.includes("--comps")) await ctx.route(/\/api\/comps\b/, (r) => r.abort());
+  // eBay hosts are never loaded, in a page or a popup (CoS review Nov 9, EPN artificial-clicks row); photos on i.ebayimg.com still load.
+  await ctx.route((u) => /(^|\.)ebay(\.[a-z]{2,3}){1,2}$/i.test(u.hostname), (r) => r.abort());
   for (const p of pages) {
     const pg = await ctx.newPage();
     const errs = [];

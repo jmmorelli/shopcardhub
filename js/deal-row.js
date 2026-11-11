@@ -63,9 +63,15 @@
     Array.prototype.forEach.call(boxes, function (box) {
       var cards = list(box.getAttribute('data-deal-cards')), tks = list(box.getAttribute('data-deal-tk')).map(function (t) { return t.toUpperCase(); });
       var cid = box.getAttribute('data-deal-cid'), max = parseInt(box.getAttribute('data-deal-max'), 10) || 3;
-      var rows = live.filter(function (r) { return cards.indexOf(r.cardId) >= 0 || tks.indexOf(r.tk) >= 0; })
+      // data-deal-grades (Night Crew Nov 11, desk route): a sealed page lists only sealed rows, never singles.
+      var grades = list(box.getAttribute('data-deal-grades'));
+      // One row per card + grade (the deepest discount); the same slab twice read as two deals (desk route Nov 10).
+      var seen = {};
+      var rows = live.filter(function (r) { return (cards.indexOf(r.cardId) >= 0 || tks.indexOf(r.tk) >= 0) && (!grades.length || grades.indexOf(r.grade) >= 0); })
         .map(function (r) { var u = tagged(r.url, cid); return u ? { r: r, u: u } : null; }).filter(Boolean)
-        .sort(function (a, b) { return a.r.disc - b.r.disc; }).slice(0, max);
+        .sort(function (a, b) { return a.r.disc - b.r.disc; })
+        .filter(function (x) { var k = (x.r.cardId || x.r.card + '#' + x.r.num) + '|' + x.r.grade; if (seen[k]) return false; seen[k] = 1; return true; })
+        .slice(0, max);
       if (!rows.length) return;
       var b = band(d.rules);
       var screened = new Date(d.generated).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
