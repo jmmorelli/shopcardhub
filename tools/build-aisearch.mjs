@@ -5,7 +5,9 @@
 //   1. <title>, meta description, og:title, og:description on the pages listed in data/aisearch.json pages{}
 //   2. the <!-- AISEARCH:ANSWER:START --> … END block on /indices: a dated answer to "is the Pokémon card market
 //      up or down?" plus a plain static table of every live index, in the HTML itself (the /indices board is
-//      otherwise rendered client-side, so fetchers that don't run JavaScript saw no index levels)
+//      otherwise rendered client-side, so fetchers that don't run JavaScript saw no index levels); optional
+//      answer.crash adds "is it crashing?" (each group's levels against its base-month 100) and answer.links adds
+//      plain internal links under the answer; {crash} in a description is that answer's one-line form
 //   3. data/aisearch-llms.txt, the "Questions answered here" block tools/build-llms.mjs puts in llms.txt only
 // Every number comes from data/indices.json at build time: a live mark, its date and its n. Nothing here carries
 // an eBay URL, a listing price or an ask (R45). Run it after any mark, before tools/build-llms.mjs.
@@ -108,6 +110,51 @@ const timeTag = s => `<time datetime="${s}">${fmtDay(s)}</time>`;
 const methodHtml = methodWith(markDates.map(timeTag).join(' or ')).replace(/'/g, '&#39;');
 const answerText = `${headline} ${detail}`.trim();
 
+// ---------- "is it crashing?" (optional cfg.answer.crash) ----------
+// Where each group's indices stand against 100 (the level in each index's own base month), at the latest live mark.
+// A level, not a call: below 100 means under its base month, above means over it. Every figure is a live mark.
+const pct2 = v => Math.abs(v).toFixed(1) + '%';
+const spanOf = rows => { const b = rows.map(r => r.x.baseDate).filter(Boolean).sort(); if (!b.length) return null;
+  return b[0] === b[b.length - 1] ? fmtMonth(b[0]) : `${fmtMonth(b[0])} to ${fmtMonth(b[b.length - 1])}`; };
+let crash = null;
+if (cfg.answer.crash) {
+  const cg = cfg.answer.crash.groups.map(key => {
+    const g = cfg.answer.groups.find(x => x.key === key);
+    if (!g) throw new Error('crash group not in answer.groups: ' + key);
+    const rows = g.tickers.map(t => T[t]).filter(Boolean);
+    const lv = rows.map(r => r.last.level), lo = Math.min(...lv), hi = Math.max(...lv);
+    return { ...g, rows, lo, hi, below: lv.filter(v => v < 100).length, above: lv.filter(v => v > 100).length, span: spanOf(rows) };
+  }).filter(g => g.rows.length);
+  const cDates = [...new Set(cg.flatMap(g => g.rows.map(r => r.last.date)))].sort();
+  const cWhen = cDates.length === 1 ? `On ${fmtDate(cDates[0])}` : `At marks from ${fmtDay(cDates[0])} to ${fmtDate(cDates[cDates.length - 1])}`;
+  const range = g => `${g.lo.toFixed(2)} to ${g.hi.toFixed(2)}`;
+  // On the page the date is a <time> element with no year (as in the method line; the year sits in the table summary).
+  const cWhenHtml = cDates.length === 1 ? `On <time datetime="${cDates[0]}">${fmtDay(cDates[0])}</time>`
+    : `At marks from <time datetime="${cDates[0]}">${fmtDay(cDates[0])}</time> to <time datetime="${cDates[cDates.length - 1]}">${fmtDay(cDates[cDates.length - 1])}</time>`;
+  const MARK = '\u0000WHEN\u0000';
+  const long = cg.map((g, i) => {
+    const n = g.rows.length, all = n === 1 ? `The one index among the ${g.label}` : `All ${num(n)} ${g.label}`;
+    const pre = i === 0 ? `${MARK}, ` : '';
+    const lc = s => (pre ? s[0].toLowerCase() + s.slice(1) : s);
+    if (g.below === n) return pre + lc(`${all} stood below 100, at ${range(g)}, which puts each ${pct2(100 - g.hi)} to ${pct2(100 - g.lo)} under its base month (${g.span}).`);
+    if (g.above === n) return pre + lc(`${all} stood above 100, at ${range(g)}, against base months from ${g.span}.`);
+    return pre + lc(`Of the ${num(n)} ${g.label}, ${num(g.above)} stood above 100 and ${num(g.below)} below, at ${range(g)} (base months ${g.span}).`);
+  }).join(' ');
+  const short = cg.map((g, i) => {
+    const n = g.rows.length, w = i === 0 ? 'their base-month level of 100' : 'theirs';
+    if (g.below === n) return `all ${num(n)} ${i === 0 ? g.label : g.short} sat ${pct2(100 - g.hi)} to ${pct2(100 - g.lo)} under ${w}`;
+    if (g.above === n) return `all ${num(n)} ${i === 0 ? g.label : g.short} sat ${pct2(g.lo - 100)} to ${pct2(g.hi - 100)} over ${w}`;
+    return `${num(g.above)} of ${num(n)} ${i === 0 ? g.label : g.short} sat over ${w} and ${num(g.below)} under`;
+  });
+  const tail = ` 100 is each index's level in its own base month, and every level comes from dated sold prices.`;
+  crash = {
+    q: cfg.answer.crash.question,
+    text: long.replace(MARK, cWhen) + tail,
+    html: esc(long + tail).replace(MARK, cWhenHtml).replace(/'/g, '&#39;'),
+    desc: `${cWhen}, ${short.join(', and ')}.`,
+  };
+}
+
 // ---------- /indices block ----------
 const cell = h => (h ? `<span class="${h.v > 0.05 ? 'up' : h.v < -0.05 ? 'dn' : 'fl'}">${sgn(h.v)}</span>` : '<span class="fl">not yet</span>');
 const listed = new Set();
@@ -125,13 +172,16 @@ const table = sections.map(s =>
 const faq = {
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: [{ '@type': 'Question', name: cfg.answer.question,
-    acceptedAnswer: { '@type': 'Answer', text: `${answerText} ${method}` } }],
+    acceptedAnswer: { '@type': 'Answer', text: `${answerText} ${method}` } }]
+    .concat(crash ? [{ '@type': 'Question', name: crash.q, acceptedAnswer: { '@type': 'Answer', text: crash.text } }] : []),
 };
+const crashHtml = crash ? `\n<h3 id="aisa-crash" style="font-size:15px;margin:12px 0 4px;color:var(--th);">${esc(crash.q)}</h3>\n<p style="font-size:15px;line-height:1.55;color:var(--th);max-width:72ch;margin:0 0 8px;">${crash.html}</p>` : '';
+const linksHtml = (cfg.answer.links || []).map(l => `\n<p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:0 0 10px;">${esc(l.lead)} <a href="${esc(l.href)}">${esc(l.text)}</a>.</p>`).join('');
 const block = `<!-- AISEARCH:ANSWER:START — built by tools/build-aisearch.mjs from data/indices.json + data/aisearch.json (AI-Search Hunter). Do not hand-edit. -->
 <section class="panel" id="market-answer" aria-labelledby="aisa-q" style="scroll-margin-top:80px;">
 <h2 id="aisa-q">${esc(cfg.answer.question)}</h2>
 <p style="font-size:15px;line-height:1.55;color:var(--th);max-width:72ch;margin:0 0 8px;">${esc(answerText)}</p>
-<p style="font-size:12px;line-height:1.5;color:var(--dim);max-width:72ch;margin:0 0 10px;">${methodHtml} <a href="/how-prices-work">How the indices are priced</a>.</p>
+<p style="font-size:12px;line-height:1.5;color:var(--dim);max-width:72ch;margin:0 0 10px;">${methodHtml} <a href="/how-prices-work">How the indices are priced</a>.</p>${crashHtml}${linksHtml}
 <details><summary style="cursor:pointer;font-size:13px;color:var(--ac);">All ${total} indices in one plain table, dated (${yearOf})</summary>
 <div style="overflow-x:auto;margin-top:8px;"><table>
 <thead><tr><th scope="col">Index</th><th scope="col" ${th}>Level</th><th scope="col" ${th}>Marked</th><th scope="col" ${th}>1 week</th><th scope="col" ${th}>1 month</th><th scope="col" ${th}>Cards</th></tr></thead>
@@ -149,6 +199,7 @@ ${table}
 // {month}: the screener's 1M move (" It moved down 21.7% in the latest month."), empty when the record is too short.
 const moveWord = v => (v > 0.05 ? 'up ' : v < -0.05 ? 'down ' : 'flat at ') + Math.abs(v).toFixed(1) + '%';
 function fill(s, r) {
+  if (/\{crash\}/.test(s)) { if (!crash) throw new Error('{crash} used but answer.crash is not set'); s = s.replace(/\{crash\}/g, crash.desc); }
   if (!r) return s;
   const cost = typeof r.last.basketValue === 'number' ? usd(r.last.basketValue) : null;
   if (/\{cost\}/.test(s) && !cost) throw new Error(r.k + ': {cost} used but the mark has no basketValue');
@@ -208,6 +259,7 @@ function tickerAnswer(r) {
 const llms = ['## Questions answered here'];
 for (const q of cfg.llms) {
   if (q.answer === 'market') { llms.push(`- [${q.q}](${SITE}${q.page}): ${answerText} ${method}`); continue; }
+  if (q.answer === 'crash') { if (crash) llms.push(`- [${q.q}](${SITE}${q.page}): ${crash.text}`); continue; }
   const r = T[q.ticker];
   if (!r) continue;
   // Optional: q.page points the question at another owned page; q.lead is a plain sentence before the dated answer.

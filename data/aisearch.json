@@ -1,9 +1,9 @@
 {
- "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json. Optional \"feed\" adds one line under the question block pointing at /index-feed.json (built by tools/build-index-feed.mjs). No eBay URLs, prices or asks here, ever (R45).",
+ "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json; {crash} (no ticker) is the one-line form of answer.crash. answer.crash = where each named group's indices stand against their base-month 100; answer.links = internal links printed under the answer. Optional \"feed\" adds one line under the question block pointing at /index-feed.json (built by tools/build-index-feed.mjs). No eBay URLs, prices or asks here, ever (R45).",
  "pages": {
   "indices": {
-   "title": "Is the Pokémon Card Market Up or Down? Every Set's Price Index, Dated",
-   "description": "Is the Pokémon card market up or down? Each set we track is one number, re-marked from dated sold prices and set to 100 at a base month, with its week, month and 3-month move. Pokémon sets from Base Set to the 30th Celebration, plus the 2026 1st Bowman Chrome Auto indices. No buy or sell calls."
+   "title": "Is the Pokémon Card Market Crashing? Up or Down by Set, Dated",
+   "description": "Is the Pokémon card market crashing? {crash} Each set we track is one index from dated sold prices, with its week, month and 3-month move. No buy or sell calls."
   },
   "pokemon-base-set-index": {
    "ticker": "BS99",
@@ -168,12 +168,31 @@
      "BCB26"
     ]
    }
+  ],
+  "crash": {
+   "question": "Is the Pokémon card market crashing?",
+   "groups": [
+    "new",
+    "wotc"
+   ]
+  },
+  "links": [
+   {
+    "lead": "New to Bowman?",
+    "href": "/what-is-a-1st-bowman-card",
+    "text": "What a 1st Bowman card is, with dated 2026 auto prices"
+   }
   ]
  },
  "llms": [
   {
    "q": "Is the Pokémon card market up or down?",
    "answer": "market",
+   "page": "/indices"
+  },
+  {
+   "q": "Is the Pokémon card market crashing?",
+   "answer": "crash",
    "page": "/indices"
   },
   {
