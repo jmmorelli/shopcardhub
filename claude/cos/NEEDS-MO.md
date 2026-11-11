@@ -11,6 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-11 — weekly (11:00 run, verified live). One small thing
+
+- **Pick one Chrome for the scheduled runs (~1 minute).** Two Chrome browsers are connected again (Browser 1 and Browser 2), and an unattended run isn't allowed to choose, so today's weekly couldn't read Search Console, MailerLite or EPN. Action: disconnect the Claude extension in the Chrome profile you don't use (Browser 2), or answer the browser picker the next time you're in a CoS chat. The rules already say "always Browser 1"; the tool just won't take that from a file.
+- Still yours, no rush: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
+
+*Not yours:* search came back this week (organic visits 16 → 71), mostly from the McDonald's Pokémon page. Money hasn't followed yet: the top Bing page (best hobby boxes) got 16 visits and no clicks, and its prices are three weeks old; Monday's price run re-reads them. Live today: the Bowman menu says "1st Bowman Chrome Autos", the 30th page no longer calls the Ultra-Premium box a presale, and the shop-price chips stopped telling people which store is cheaper.
+
 ## 2026-11-10 — desk (Tue 17:11 fire). Nothing new needs you
 
 - Still yours, no rush: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard) — the one money item.

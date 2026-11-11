@@ -6220,6 +6220,18 @@
           "liveVerified": "2026-11-11 ~14:40Z curl: 9 pages + llms.txt + sitemap.xml + data/goal-league.json 200, bytes equal to main",
           "note": "Five contestant patches, oldest first, all git am -3 clean on 12e4507: Black Friday page leads with booster boxes + new Pokemon Center ETB table, Nov 11 re-mark of BF, booster box page and DR vs PB (Deal); /indices answers 'is the Pokemon card market crashing?' with dated levels + eBay strip (AI-Search); McDonald's US-live + set/holo rows + toys, Delta Reign release-week sold read (Drop); hobby-box answer up on phones + Mbappe copy (Conversion); ROY winners line + after-award read (Wildcard, regen by its builder). Registry 50 -> 39 (14-day rule + owner releases). sitemap lastmod. IndexNow 10 URLs -> 200.",
           "rollback": "git revert 12e4507..3e77415"
+        },
+        {
+          "date": "2026-11-11",
+          "commits": [
+            "4ef9902"
+          ],
+          "pushed": "88558b6..4ef9902",
+          "by": "CoS weekly (unattended, Mac deploy-key clone under /tmp/wk1111; Task-key cos-weekly-2026-11-11)",
+          "gates": "0/58 · 0/4 · 0/1 (= base 88558b6); audit-terminal --run-tests on base tree in cloud: 153 scenarios FAIL 0",
+          "liveVerified": "2026-11-11 curl: /pokemon-30th-anniversary-2026, /about nav, /bowman-2026-index, js/shop-spread.js?v=9 byte-equal to main; IndexNow 142 → 200",
+          "note": "R9 '1st Bowman Chrome Autos' nav/footer/llms label; 30th page post-release copy + '188 of 191 cards in the level'; shop-spread venue call removed (R38). No price/call/signal/methodology/affiliate change.",
+          "rollback": "git revert 4ef9902"
         }
       ]
     },
