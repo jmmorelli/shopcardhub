@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-10 — desk (Tue 17:11 fire). Nothing new needs you
+
+- Still yours, no rush: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard) — the one money item.
+- Checked tonight in Chrome (read-only): **COMC is signed out** (its home page shows "Sign In / Sign Up"). It is the side business, so sign in only when convenient. Impact (Fanatics) could not be read from here, so it is not checked.
+- Queued for your next CoS chat, unchanged: the two Grok pastes from Nov 10, the Tuesday Tape send, and the Mac disk cleanup (that disk was full again tonight; the runs work around it).
+
+*Not yours:* the $2,017 Charizard PSA 10 price that was two weeks stale is off the site tonight. Card pages in four falling Pokémon sets now say "Being re-read" until the graded prices are read again, and /deals no longer calls a slab cheap against an old price. Card pages also open with "Set indices › set › card" now.
+
 ## 2026-11-09 — desk (Mon 17:11 fire). Nothing new needs you
 
 - Still yours, no rush (also on your free-night list): **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).

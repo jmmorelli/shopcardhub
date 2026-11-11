@@ -3616,36 +3616,39 @@
     },
     {
       "id": "tuesday-2026-11-10-1",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-11-10",
       "area": "tuesday-lane",
       "by": "tuesday-board",
       "severity": "MED",
       "tier": "P2",
       "goal": "G2",
-      "title": "calls.json read for Nov 10, not written by this lane (entries, call dates, actions and projections untouched). v-bb-fischer-buy-2 is past finalizeAfter (Nov 6) and this is the first sold read on or after it: read 120.50, readLabel 'sold mark $120.50 (SportsCardsPro ungraded 30-day median, 14 sales, mark of Nov 10 2026)', readDate 2026-11-10, state final; -17.9% vs the $146.80 entry (a BUY under -10% on the legacy 8-week band). Legacy grade field: the CoS's call (Grading Clock v3: the 8-week read is not a public grade); the page names the 6-month check, Mar 11 2027. No other /bowman-bangers row is due."
+      "title": "calls.json read for Nov 10, not written by this lane (entries, call dates, actions and projections untouched). v-bb-fischer-buy-2 is past finalizeAfter (Nov 6) and this is the first sold read on or after it: read 120.50, readLabel 'sold mark $120.50 (SportsCardsPro ungraded 30-day median, 14 sales, mark of Nov 10 2026)', readDate 2026-11-10, state final; -17.9% vs the $146.80 entry (a BUY under -10% on the legacy 8-week band). Legacy grade field: the CoS's call (Grading Clock v3: the 8-week read is not a public grade); the page names the 6-month check, Mar 11 2027. No other /bowman-bangers row is due.",
+      "decision": "CoS desk 2026-11-10 (17:11 PT fire): queued → CoS weekly Wed Nov 11 (else Nov 16), with -2, per the Nov 10 review. The Fischer final read stands as filed; whether the legacy 8-week grade field is written in calls.json is the weekly's call (projections immutable; nothing written tonight)."
     },
     {
       "id": "tuesday-2026-11-10-2",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-11-10",
       "area": "tuesday-lane",
       "by": "tuesday-board",
       "severity": "MED",
       "tier": "P2",
       "goal": "G1",
-      "title": "Holliday's $95 floor broke on the Nov 10 read (sold mark $91.00 on 11 sales, last sale $90.00 Nov 8). The page now says so in his verdict and box: 'Hold, under review', call re-set at the Nov 17 read; his seat (#2) is unchanged because seats follow the mark. Needs a ruling before Nov 17: the replacement call (e.g. Pass, Watch, or a Hold with a new stated level), and whether it is logged as a new calls.json row. Note for anything that reads the feed: data/x-board.json carries currentSignal HOLD for Holliday (the builder reads the verdict's first word); the callout beside it says he is under his floor. Also this run: Arquette took #5 from Aloy on the mechanical rule in Aloy's box (Arquette $50.00 on 10 vs Aloy $47.76 on 10); Aloy's departure recorded (no call), Arquette re-seated with no new call (June Buy -28.6% at the mark, 6-month check Dec 12 2026)."
+      "title": "Holliday's $95 floor broke on the Nov 10 read (sold mark $91.00 on 11 sales, last sale $90.00 Nov 8). The page now says so in his verdict and box: 'Hold, under review', call re-set at the Nov 17 read; his seat (#2) is unchanged because seats follow the mark. Needs a ruling before Nov 17: the replacement call (e.g. Pass, Watch, or a Hold with a new stated level), and whether it is logged as a new calls.json row. Note for anything that reads the feed: data/x-board.json carries currentSignal HOLD for Holliday (the builder reads the verdict's first word); the callout beside it says he is under his floor. Also this run: Arquette took #5 from Aloy on the mechanical rule in Aloy's box (Arquette $50.00 on 10 vs Aloy $47.76 on 10); Aloy's departure recorded (no call), Arquette re-seated with no new call (June Buy -28.6% at the mark, 6-month check Dec 12 2026).",
+      "decision": "CoS desk 2026-11-10: queued → CoS weekly Wed Nov 11, deadline the Nov 17 read: Holliday's replacement call (Pass / Watch / Hold with a new stated level) and whether it is a new calls.json row. Page wording \"Hold, under review\" stands meanwhile; x-board HOLD + the under-floor callout read consistently (verified in the lane file, not re-ruled)."
     },
     {
       "id": "tuesday-2026-11-10-3",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-11-10",
       "area": "tuesday-lane",
       "by": "tuesday-board",
       "severity": "MED",
       "tier": "P2",
       "goal": "G1",
-      "title": "Tuesday Tape NOT sent Nov 10 (second week). Per the BLOCKED row of Nov 3 (updated Nov 9: 'the Nov 10 Tape is drafted only'), this run did not read the MailerLite credential and did not stage a campaign; rogue-send and kill-switch checks not run. Draft with the content gate checked against the pushed page: Card Hub/digests/digest-2026-11-10.md. Still needs the attended decision: a send path that does not read the token in-session, or the Tape becomes an attended step."
+      "title": "Tuesday Tape NOT sent Nov 10 (second week). Per the BLOCKED row of Nov 3 (updated Nov 9: 'the Nov 10 Tape is drafted only'), this run did not read the MailerLite credential and did not stage a campaign; rogue-send and kill-switch checks not run. Draft with the content gate checked against the pushed page: Card Hub/digests/digest-2026-11-10.md. Still needs the attended decision: a send path that does not read the token in-session, or the Tape becomes an attended step.",
+      "decision": "CoS desk 2026-11-10: queued → attended CoS session (daily review Nov 10 attended item 4, Tape send path, 2nd unsent week). Not Mo's by nature (a send path, not a sign-in). Draft stays at Card Hub/digests/digest-2026-11-10.md."
     }
   ],
   "scoreboard": {
@@ -6184,6 +6187,21 @@
           "gates": "0/57 · 0/4 · 0/1 = baseline (cloud and Mac, same tree 5502006)",
           "liveVerified": "yes — /bowman-bangers stamp 2026-11-10, 10 rows at 390 px, 0 page errors; /data/x-board.json asOf 2026-11-10; og/x/board-latest.png md5 = commit",
           "note": "Tuesday Tape drafted only (Card Hub/digests/digest-2026-11-10.md); not sent per the BLOCKED row of Nov 3."
+        },
+        {
+          "date": "2026-11-10",
+          "commits": [
+            "9eab734",
+            "b92599b",
+            "f3e1219",
+            "226e639"
+          ],
+          "by": "CoS desk (17:11 PT fire, Mac /tmp deploy-key clone, unattended) — NC mailbox applied for Price Truth Desk (af60a53 Nov 9, f3e1219 Nov 10) and Cupertino run 11 (35c4b17) via Night Crew rules",
+          "what": "Price Truth /deals stale-yardstick hold (16 slab rows held, 60 left; th26-4 PSA 10 row gone) + card-ladder rule (d) d-stale-set (397 cells newly held in BS99/CR26/PB26/TH26 + 1 a-raw TU19; card pages read \"Being re-read\") + Cupertino card-page breadcrumb \"Set indices › <set> › <card>\" on 645 card pages + card.html. Patch bytes verified against every post-image blob hash in both patches.",
+          "gates": "audit-prices 0/58 (base 57 +1 = best-hobby-boxes-2026.html stamp Oct 20 crossed 21 d on the Nov 11 UTC roll, untouched) · audit-site 0/4 · audit-terminal 0/1; price-truth sweep RED 0 ([3] 0, [8] 0)",
+          "liveVerified": "yes, ~2 min after push: g-th26.json d-stale-set ×64, js/card-page.js \"Being re-read\" present, deals feed rules.slabStaleUnder 0.25 / slabStaleSetDrop 0.1 with no th26-4 graded row, /deals method sentence present; iPhone 13: /card-charizard-4-30th-celebration shows \"Being re-read\", no $2,017, crumb \"Set indices › 30th Celebration › Charizard #4\"; Umbreon #161 crumb as specified; 0 console errors, scrollWidth 390",
+          "rollback": "git revert 226e639 f3e1219 b92599b 9eab734 && node tools/build-local-nav.mjs (then git checkout 0dfba77 -- data/cards/g-*.json data/feed/deals-latest.json deals.html if needed)",
+          "note": "Project pending pairs (pending.*, pending-pt.*) deleted after ship per their own notes; byte copies kept at Card Hub/desk-mirror/patches/. Leftover .cdp-crumbs rules in each card page's inline template CSS are dead (full template run is the Monday lane's)."
         }
       ]
     },
