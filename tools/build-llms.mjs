@@ -53,7 +53,7 @@ const guides = locs.filter(u => !indexPages.has(u) && !utility.includes(u) && !u
 
 const head = `# ShopCardHub
 
-> Price indices for Pokémon TCG sets and Bowman 1st autos. Each index is the cost of one copy of every card in a set, set to 100 at a base month and re-marked on sold prices. Last mark: ${fmtDate(lastDate)}.
+> Price indices for Pokémon TCG sets and 1st Bowman Chrome autos. Each index is the cost of one copy of every card in a set, set to 100 at a base month and re-marked on sold prices. Last mark: ${fmtDate(lastDate)}.
 
 Every index level is a dated read of completed sales. Where a page shows a listing price it is labelled an ask. Pages track prices; they do not tell anyone to buy or sell.
 `;

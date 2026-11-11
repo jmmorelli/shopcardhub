@@ -56,7 +56,7 @@ export function applyCatalogLd(html, idx) {
   const live = liveTickers(idx).sort((a, b) => a.ticker.localeCompare(b.ticker));
   const last = live.map((t) => lastMark(t).date).sort().pop();
   const cat = { "@type": "DataCatalog", "@id": SITE + "/indices#catalog", name: "ShopCardHub price indices", url: SITE + "/indices", publisher: { "@id": ORG["@id"] }, dateModified: last,
-    description: `${live.length} card price indices for Pokémon TCG sets and Bowman 1st autos. Each one is the cost of one copy of every card in a set, set to 100 at a base month and re-marked on dated sold prices.`,
+    description: `${live.length} card price indices for Pokémon TCG sets and 1st Bowman Chrome autos. Each one is the cost of one copy of every card in a set, set to 100 at a base month and re-marked on dated sold prices.`,
     dataset: live.map((t) => ({ "@type": "Dataset", "@id": SITE + t.page + "#dataset-" + t.ticker.toLowerCase(), name: entity(t), url: SITE + t.page, dateModified: lastMark(t).date })) };
   return put(html, "CATALOG", tag("CATALOG", [ORG, cat]));
 }

@@ -785,7 +785,7 @@ function block(x, c, opt = {}) {
   // goes behind one toggle (directive §2.4 "behind the index"). Nothing is removed and no figure changes.
   const how = PR.howWrap(x.ticker, `
     <p class="sidx-sub">${c.kindPlural ? `Every ${esc(c.kindPlural.replace(/s$/, ""))} in ${esc(c.set)} — ${x.universe.length} cards, ${weighted} trading — priced` : `${esc(countLine)}, priced`} from dated sold comps and re-marked Monday and Thursday. ${baseSentence(x)} This block tracks the ${c.kindPlural ? "class" : "set"}; it does not recommend cards.</p>
-    <p class="pr-stamp"><b class="sidx-cost" title="what one copy of every priced card in the basket costs at the latest sold marks — the number the level indexes">${money(bv, 0)} for one of each</b> · ${weighted} cards · ${baseLine(x)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</p>
+    <p class="pr-stamp"><b class="sidx-cost" title="what one copy of every priced card in the basket costs at the latest sold marks — the number the level indexes">${money(bv, 0)} for one of each</b> · ${weighted < rows.length ? `${weighted} of ${rows.length} cards in the level` : `${weighted} cards`} · ${baseLine(x)} · re-marked ${last ? mdy(last.date) : "—"}${wow == null ? "" : ` · <span class="${cls(wow)}">${wow >= 0 ? "▲" : "▼"} ${pct(wow)} w/w</span>`}</p>
     ${parts ? parts.works : ""}
     <div class="sidx-stats">
     <div><span class="k">Basket / Universe</span><span class="v">${weighted} <i>/ ${x.universe.length}</i></span></div>
@@ -984,7 +984,7 @@ function bake(x, c) {
   if ((c.imgSub || "pokemon") === "pokemon" && !c.kindPlural) {
     if (!html.includes('src="/js/grade-links.js')) html = html.replace("</body>", '<script src="/js/grade-links.js?v=2" defer></script>\n</body>');
     // shop price + spread column (Oct 15 2026, js/shop-spread.js reads data/tcg/<tk>.json — beside the index, never in it)
-    if (!html.includes('src="/js/shop-spread.js')) html = html.replace("</body>", '<script src="/js/shop-spread.js?v=8" defer></script>\n</body>');
+    if (!html.includes('src="/js/shop-spread.js')) html = html.replace("</body>", '<script src="/js/shop-spread.js?v=9" defer></script>\n</body>');
     const bv = x.basket.reduce((a, b) => a + b.price * b.w, 0);
     writeCardFile(ROOT, x, c, x.basket.slice().sort((a, b) => b.price * b.w - a.price * a.w), imgAttr, DRY);
   }

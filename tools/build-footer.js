@@ -49,7 +49,7 @@ const DIR = [
     ['/prismatic-evolutions-index', 'Prismatic Evolutions'],
     ['/chaos-rising-index', 'Chaos Rising'],
     ['/pitch-black-index', 'Pitch Black'],
-    ['/bowman-1st-chrome-index', '1st Bowman Autos'],
+    ['/bowman-1st-chrome-index', '1st Bowman Chrome Autos'],
     ['/how-prices-work', 'How the indices are priced'],
   ]],
   ['Pokémon', [

@@ -50,14 +50,14 @@
   function chipHtml(v, m) {
     var s = side(v.d, v.wide);
     if (s === 'wide' || v.d == null) return '';
-    var t = s === 'shop' ? 'TCGplayer market is ' + pct(v.d).replace('−', '') + ' below the eBay sold mark — cheaper at the shop' : s === 'ebay' ? 'TCGplayer market is ' + pct(v.d).replace('+', '') + ' above the eBay sold mark — cheaper on eBay' : 'TCGplayer market and the eBay sold mark are within 3% — even';
+    var t = s === 'shop' ? 'TCGplayer market is ' + pct(v.d).replace('−', '') + ' below the eBay sold mark (shop = near-mint, eBay raw = any condition)' : s === 'ebay' ? 'TCGplayer market is ' + pct(v.d).replace('+', '') + ' above the eBay sold mark (shop = near-mint, eBay raw = any condition)' : 'TCGplayer market and the eBay sold mark are within 3% — even';
     return '<i class="shc ' + s + '" title="' + esc(t) + '">' + (m === 'm' ? pct(v.d) + ' vs eBay' : 'shop ' + pct(v.d)) + '</i>';
   }
   // The line under the level: both venues, the same cards, in dollars; coloured by the chip rule (shop cheaper = green,
   // eBay cheaper = red) — the sector version used the move classes and painted a red arrow next to "cheaper at the shop".
   function lineHtml(S, f, basis) {
     var s = side(S.spread, S.wide), a = Math.abs(S.spread) * 100, p = (a >= 10 ? a.toFixed(0) : a.toFixed(1)) + '%';
-    var call = s === 'shop' ? '<span class="shs shop">shop ' + p + ' lower · cheaper at the shop</span>' : s === 'ebay' ? '<span class="shs ebay">shop ' + p + ' higher · cheaper on eBay</span>' : s === 'wide' ? '<span class="shs">a condition gap, not a bargain (shop = near-mint, eBay raw = any condition)</span>' : '<span class="shs">within 3% · even</span>';
+    var call = s === 'shop' ? '<span class="shs shop">shop ' + p + ' lower than our sold mark</span>' : s === 'ebay' ? '<span class="shs ebay">shop ' + p + ' higher than our sold mark</span>' : s === 'wide' ? '<span class="shs">a condition gap, not a bargain (shop = near-mint, eBay raw = any condition)</span>' : '<span class="shs">within 3% · even</span>';
     return 'The same ' + S.weighted + ' cards: <b>' + money(S.basketShop, 0) + '</b> at TCGplayer market · <b>' + money(S.basketSold, 0) + '</b> at ' + basis + ' · ' + call + ' <span class="shk" title="TCGplayer market price via the TCGCSV daily mirror. Not part of the level.">· TCGplayer as of ' + md(f.asOf) + ', about a day behind</span>';
   }
   /* the "How this index works" body on a chart-first index page (P0-C); null on pages without it */
@@ -148,7 +148,7 @@
       sec.querySelectorAll('.sidx-tbl thead tr').forEach(function (tr) {
         if (tr.querySelector('th.shop')) return;
         var th = document.createElement('th'); th.className = 'shop';
-        th.title = 'TCGplayer market price (the "shop price" most card shops sell at), mirrored daily with about a 24-hour lag. Tap the price to open the card on TCGplayer. Chip = shop vs the eBay sold mark: green, cheaper at the shop; red, cheaper on eBay. Shown beside the index, never used in it.';
+        th.title = 'TCGplayer market price (the "shop price" most card shops sell at), mirrored daily with about a 24-hour lag. Tap the price to open the card on TCGplayer. Chip = shop vs the eBay sold mark: green, the shop is lower; red, the shop is higher (near-mint vs any-condition raw, so not a bargain call). Shown beside the index, never used in it.';
         th.textContent = 'Shop (TCG)';
         tr.children[2].insertAdjacentElement('afterend', th);
         tr.classList.add('has-shop');
@@ -198,7 +198,7 @@
         var ths = hd.children, star = null;
         for (var i = 0; i < ths.length; i++) if (ths[i].textContent.trim() === '★') star = ths[i];
         var th = document.createElement('th'); th.className = 'shop'; th.textContent = 'Shop';
-        th.title = 'TCGplayer market price (the shop price), mirrored daily with ~24h lag. Tap the price to open the card on TCGplayer. Chip = shop vs our sold mark: green, cheaper at the shop; red, cheaper on eBay. Beside the index, never in it.';
+        th.title = 'TCGplayer market price (the shop price), mirrored daily with ~24h lag. Tap the price to open the card on TCGplayer. Chip = shop vs our sold mark: green, the shop is lower; red, the shop is higher (near-mint vs any-condition raw). Beside the index, never in it.';
         if (star) star.insertAdjacentElement('beforebegin', th); else hd.appendChild(th);
       }
       var S = f.summary, sum = tbl.querySelector('tr.sumrow td.shop');
