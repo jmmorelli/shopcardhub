@@ -60,7 +60,7 @@ const ans = cfg.answer.map((id) => byId[id]);
 if (ans.some((p) => !p)) throw new Error('answer names a row that does not exist');
 const seen = all.filter((p) => p.bf);
 
-const answer = `eBay sold prices to ${day(cfg.read)}: a ${ans[0].name} sold for a median ${money(ans[0].price)} on ${ans[0].n} sales, a ${ans[1].name} ${money(ans[1].price)} on ${ans[1].n}, a ${ans[2].name} ${money(ans[2].price)} on ${ans[2].n} and a ${ans[3].name} ${money(ans[3].price)} on ${ans[3].n}.`;
+const answer = `eBay sold prices to ${day(cfg.read)}: a ${ans[0].name} sold for a median ${money(ans[0].price)} on ${ans[0].n} sales (${span(ans[0].from, ans[0].asOf)}), a ${ans[1].name} ${money(ans[1].price)} on ${ans[1].n}, a ${ans[2].name} ${money(ans[2].price)} on ${ans[2].n} and a ${ans[3].name} ${money(ans[3].price)} on ${ans[3].n}.`;
 const status = seen.length
   ? `We've seen a Black Friday price on ${seen.length} of the ${all.length} products below so far (last checked ${day(cfg.checked)}). Each one sits next to what the same product sold for.`
   : `No store's Black Friday price for any of these had shown up when we last checked, on ${longDay(cfg.checked)}. When one does, it goes next to what the same product sold for.`;
@@ -73,16 +73,18 @@ const bfCell = (p) => {
   return `<span class="bf-ad">Black Friday price ${money(p.bf.price)}: advertised, ${esc(p.bf.retailer)}, seen ${esc(day(p.bf.seen))}. That is ${gapTxt}.</span>`;
 };
 const launchTxt = (g) => g.launch.note.startsWith('no published') ? `Launch: ${g.launch.note} = ${money(g.launch.price)}` : `${g.launch.note[0].toUpperCase() + g.launch.note.slice(1)} ${money(g.launch.price)}`;
+// a row with launch: null prints no launch line (sets older than the launch prices the Pokémon KB holds)
+const launchSpan = (p, g) => (p.launch === null ? '' : `<span class="sp-b bf-launch">${esc(launchTxt(g))}</span>`);
 
 const row = (p, g) => `      <li class="sp-row bf-row">
-        <div class="sp-nm"><h3>${esc(p.name)}</h3><span class="sp-b">median of ${p.n} eBay sales, ${span(p.from, p.asOf)} · ${money(p.price / g.packs)} a pack</span><span class="sp-b bf-launch">${esc(launchTxt(g))}</span>${bfCell(p)}</div>
+        <div class="sp-nm"><h3>${esc(p.name)}</h3><span class="sp-b">median of ${p.n} eBay sales, ${span(p.from, p.asOf)} · ${money(p.price / g.packs)} a pack</span>${launchSpan(p, g)}${bfCell(p)}</div>
         <b class="sp-px">${money(p.price)}</b>
         ${link(p)}
         <a class="sp-more" href="${p.href}">${esc(p.set)} ${p.href.endsWith('-index') ? 'index' : 'guide'} ›</a>
       </li>`;
 
 const groupNote = (g) => {
-  const what = { 'elite-trainer-box': '9 booster packs plus sleeves, dice, markers and a promo card', 'booster-bundle': '6 booster packs and nothing else', 'booster-box': '36 booster packs', upc: g.packNote || g.packs + ' packs' }[g.id] || g.packs + ' packs';
+  const what = { 'elite-trainer-box': '9 booster packs plus sleeves, dice, markers and a promo card', 'booster-bundle': '6 booster packs and nothing else', 'pokemon-center-etb': '11 booster packs plus a promo card with the Pokémon Center stamp, sleeves, dice and markers. Pokémon Center sells this edition itself', 'booster-box': '36 booster packs', upc: g.packNote || g.packs + ' packs' }[g.id] || g.packs + ' packs';
   return `Each one holds ${what}. Per pack counts ${g.packs} packs. Highest sold price first.`;
 };
 
@@ -101,13 +103,13 @@ ${g.products.map((p) => row(p, g)).join('\n')}
   </div>`).join('\n')}
 
   <p class="sp-call">These are what each product has sold for. A price here is not a call on where it goes next. Check the photos for a sealed wrap before you pay.</p>
-  <p class="sp-src">Every sold price is the median of the most recent completed eBay sales for that exact sealed product, read ${longDay(cfg.read)} from PriceCharting's sales list, with the sale count and the dates of the first and last sale counted. A sale has to name its own set, and no other set, in its title. Sales from other marketplaces, Pokémon Center editions, multi-box lots and combos, sleeved packs, blisters, damaged wrap and opened product are left out. Launch prices are US launch prices, not sale prices. A Black Friday price is what a store advertised, with the store and the date we saw it. It is an asking price, and we don't link to it. The eBay buttons open live listings. Those are asks too, and they can sit above or below these numbers.</p>
+  <p class="sp-src">Every sold price is the median of the most recent completed eBay sales for that exact sealed product, read ${longDay(cfg.read)} from PriceCharting's sales list, with the sale count and the dates of the first and last sale counted. A sale has to name its own set, and no other set, in its title. Pokémon Center editions count only in their own table, and only when the title says so. Sales from other marketplaces, multi-box lots and combos, half boxes, graded copies, sleeved packs, blisters, damaged wrap and opened product are left out. Launch prices are US launch prices, not sale prices. A Black Friday price is what a store advertised, with the store and the date we saw it. It is an asking price, and we don't link to it. The eBay buttons open live listings. Those are asks too, and they can sit above or below these numbers.</p>
 <!-- BF:END -->`;
 
 const faq = [
   { '@type': 'Question', name: 'What do Pokémon Elite Trainer Boxes, booster bundles and booster boxes sell for before Black Friday 2026?', acceptedAnswer: { '@type': 'Answer', text: answer + ' Each price is a median of completed eBay sales, with the sale count shown on the page.' } },
   { '@type': 'Question', name: 'Has any store announced a Black Friday 2026 price for Pokémon boxes?', acceptedAnswer: { '@type': 'Answer', text: status } },
-  ...cfg.groups.map((g) => ({ '@type': 'Question', name: `What do ${g.id === 'upc' ? 'the 30th Celebration Ultra-Premium Collections' : 'Pokémon ' + g.label.toLowerCase().replace('elite trainer boxes', 'Elite Trainer Boxes')} sell for?`, acceptedAnswer: { '@type': 'Answer', text: g.products.map((p) => `${p.name}: ${money(p.price)}, median of ${p.n} eBay sales, ${span(p.from, p.asOf)}`).join('; ') + '.' } })),
+  ...cfg.groups.map((g) => ({ '@type': 'Question', name: `What do ${{ upc: 'the 30th Celebration Ultra-Premium Collections', 'pokemon-center-etb': 'Pokémon Center Elite Trainer Boxes', 'elite-trainer-box': 'Pokémon Elite Trainer Boxes' }[g.id] || 'Pokémon ' + g.label.toLowerCase()} sell for?`, acceptedAnswer: { '@type': 'Answer', text: g.products.map((p) => `${p.name}: ${money(p.price)}, median of ${p.n} eBay sales, ${span(p.from, p.asOf)}`).join('; ') + '.' } })),
 ];
 const ld = `<!-- BFLD:START — generated by tools/build-black-friday.mjs. Do not hand-edit. -->
   <script type="application/ld+json">
