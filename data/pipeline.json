@@ -6202,6 +6202,24 @@
           "liveVerified": "yes, ~2 min after push: g-th26.json d-stale-set ×64, js/card-page.js \"Being re-read\" present, deals feed rules.slabStaleUnder 0.25 / slabStaleSetDrop 0.1 with no th26-4 graded row, /deals method sentence present; iPhone 13: /card-charizard-4-30th-celebration shows \"Being re-read\", no $2,017, crumb \"Set indices › 30th Celebration › Charizard #4\"; Umbreon #161 crumb as specified; 0 console errors, scrollWidth 390",
           "rollback": "git revert 226e639 f3e1219 b92599b 9eab734 && node tools/build-local-nav.mjs (then git checkout 0dfba77 -- data/cards/g-*.json data/feed/deals-latest.json deals.html if needed)",
           "note": "Project pending pairs (pending.*, pending-pt.*) deleted after ship per their own notes; byte copies kept at Card Hub/desk-mirror/patches/. Leftover .cdp-crumbs rules in each card page's inline template CSS are dead (full template run is the Monday lane's)."
+        },
+        {
+          "date": "2026-11-11",
+          "commits": [
+            "38ab6e0",
+            "5454bd8",
+            "1a69de4",
+            "77408af",
+            "89d186f",
+            "1837ef1",
+            "3e77415"
+          ],
+          "pushed": "12e4507..3e77415",
+          "by": "Goal League Commissioner (unattended, Mac deploy-key clone under /tmp; Task-key goal-league-commissioner)",
+          "gates": "0/58 · 0/4 · 0/1 (= base 12e4507)",
+          "liveVerified": "2026-11-11 ~14:40Z curl: 9 pages + llms.txt + sitemap.xml + data/goal-league.json 200, bytes equal to main",
+          "note": "Five contestant patches, oldest first, all git am -3 clean on 12e4507: Black Friday page leads with booster boxes + new Pokemon Center ETB table, Nov 11 re-mark of BF, booster box page and DR vs PB (Deal); /indices answers 'is the Pokemon card market crashing?' with dated levels + eBay strip (AI-Search); McDonald's US-live + set/holo rows + toys, Delta Reign release-week sold read (Drop); hobby-box answer up on phones + Mbappe copy (Conversion); ROY winners line + after-award read (Wildcard, regen by its builder). Registry 50 -> 39 (14-day rule + owner releases). sitemap lastmod. IndexNow 10 URLs -> 200.",
+          "rollback": "git revert 12e4507..3e77415"
         }
       ]
     },
