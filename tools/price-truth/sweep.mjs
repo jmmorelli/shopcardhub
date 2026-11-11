@@ -136,7 +136,13 @@ for (const [tk, Gf] of Object.entries(G_)) {
     if (p9 && t10 && t10 < p9) add(3, R, id, `${nm} TAG 10 $${t10} < PSA 9 $${p9} (both printed)`, { page: C.page });
     if (p10 && raw && p10 < raw) add(3, R, id, `${nm} PSA 10 $${p10} < raw $${raw}`, { page: C.page });
     if (p9 && raw && p9 < raw) add(3, raw >= 50 && p9 < 0.75 * raw ? A : G, id, `${nm} PSA 9 $${p9} < raw $${raw}`, { page: C.page });
-    if (p10 && p9 && p9 >= 20 && p10 > 15 * p9) add(3, A, id, `${nm} PSA 10 $${p10} = ${(p10 / p9).toFixed(0)}x PSA 9 $${p9}`, { page: C.page });
+    // > 15x PSA 9: the ladder guard exempts a cell PriceCharting corroborates in two different monthly reads (ladder-guard a-15x);
+    // such a cell is a WOTC/promo premium, not a leak (GREEN). A flat identical PriceCharting figure is no corroboration (AMBER).
+    const pc15 = (() => { const hr = H[tk] && ((H[tk].cards && H[tk].cards[k]) || H[tk][k]); if (!Array.isArray(hr)) return false;
+      const r10 = hr.filter((x) => Array.isArray(x) && x[3] > 0); if (r10.length < 2) return false;
+      const a = r10[r10.length - 1][3], b = r10[r10.length - 2][3];
+      return a !== b && p10 / a >= 0.5 && p10 / a <= 2 && p10 / b >= 0.5 && p10 / b <= 2; })();
+    if (p10 && p9 && p9 >= 20 && p10 > 15 * p9) add(3, pc15 ? G : A, id, `${nm} PSA 10 $${p10} = ${(p10 / p9).toFixed(0)}x PSA 9 $${p9}`, { page: C.page });
     // a printed cell on a read > 10 days old in a set whose index fell > 10% since (ladder-guard.mjs STALE, CoS ADOPT Nov 9 2026;
     // TH26 Charizard #4 PSA 10 $2,017.43 "Oct 26" vs a $927 market) — age read against indices.updated, so the sweep stays deterministic
     if (p9 || p10 || t10) {
@@ -221,7 +227,9 @@ for (const [tk, T] of Object.entries(TCG)) {
   if (VINT.has(tk)) continue;
   for (const [cid, x] of Object.entries(T.marks || {})) {
     const c = (BYID.get(cid) || {}).c; if (!c || c.raw == null || !(x.m > 0) || c.raw < 20) continue;
-    const r = x.m / c.raw; if (r > 2 || r < 0.5) add(6, A, cid, `${tk.toUpperCase()} ${c.name} #${c.num}: raw $${c.raw} vs TCGplayer $${x.m} (${r.toFixed(2)}x)`);
+    // GREEN when TCGplayer's own cheapest listing backs its market (m <= 1.5x lo): the shop is dearer, not wrong (TU19 #170, Nov 11:
+    // market $4,619.79, cheapest listing $3,799.99, eBay sold $2,254.59 — no chip prints at |d| > 60%)
+    const r = x.m / c.raw; if (r > 2 || r < 0.5) add(6, x.lo > 0 && x.m <= 1.5 * x.lo ? G : A, cid, `${tk.toUpperCase()} ${c.name} #${c.num}: raw $${c.raw} vs TCGplayer $${x.m} (${r.toFixed(2)}x${x.lo ? ", cheapest listing $" + x.lo : ""})`);
   }
 }
 for (const [tk, C] of Object.entries(CARDS)) {
@@ -270,8 +278,10 @@ if (has("data/feed/deals-latest.json")) {
       const day = Date.parse(D.day || String(D.generated || "").slice(0, 10)), asOf = Date.parse(r.markAsOf || "");
       const maxAge = (D.rules && D.rules.slabDeepMaxMarkAgeDays) || 10, su = (D.rules && D.rules.slabStaleUnder) || 0.25, sd = (D.rules && D.rules.slabStaleSetDrop) || 0.10;
       if (Number.isFinite(day) && Number.isFinite(asOf) && (day - asOf) / 864e5 > maxAge) {
-        const age = Math.round((day - asOf) / 864e5);
-        if (r.total / r.mark - 1 < -su) add(8, R, id, `/deals ${r.tk} ${r.card} #${r.num} ${r.grade}: ${(r.disc * 100).toFixed(0)}% under a yardstick ${age} days old (${r.markAsOf})`);
+        const age = Math.round((day - asOf) / 864e5), allDays = (D.rules && D.rules.slabStaleAllDays) || 14;
+        // (c) Nov 11 2026: any slab row on a yardstick older than 14 days (verifier: 6 of 9 such rows sat at or above the market)
+        if (age > allDays) add(8, R, id, `/deals ${r.tk} ${r.card} #${r.num} ${r.grade}: ${(r.disc * 100).toFixed(0)}% under a yardstick ${age} days old (${r.markAsOf}); nothing under 14 days backs it`);
+        else if (r.total / r.mark - 1 < -su) add(8, R, id, `/deals ${r.tk} ${r.card} #${r.num} ${r.grade}: ${(r.disc * 100).toFixed(0)}% under a yardstick ${age} days old (${r.markAsOf})`);
         else {
           const h = IDX[r.tk] && IDX[r.tk].history;
           if (Array.isArray(h) && h.length) {

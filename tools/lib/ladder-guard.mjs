@@ -18,6 +18,9 @@
 //           Exempt when PriceCharting's own PSA 10 estimate for BOTH of its last two months sits within 0.5-2x of our median:
 //           WOTC PSA 10s routinely run 15-40x a PSA 9 (set medians 4.5-14x), and the literal rule held 72 cells, ~70 of them
 //           matching PriceCharting. A leak shows as a level PriceCharting did not have the month before (TU19 #113: $850 -> $6,537).
+//           A PriceCharting PSA 10 that is the identical figure in both months is a carried estimate, not two reads, and does not
+//           exempt (Price Truth, Nov 11 2026: CEL21 Light Toxtricity SWSH137 PSA 10 $2,499 on 3 sales = 57x PSA 9, PriceCharting
+//           $2,499 Sep and Oct on ~4 sales a year; Scrydex PSA 10 sales Jul-Oct ran $204-$1,025, last $500 Oct 13).
 //   b-pc    a PSA 10 median under 0.4x or over 2.5x PriceCharting's own PSA 10 estimate for the card (h-<tk>.json, its latest
 //           month within 62 days of the read). PriceCharting's Grade 9 column mixes graders, so PSA 9 has no external check.
 //   c-last  a median when the most recent title-verified sale of that grade is over 3x or under 0.33x it. Exempt: a median
@@ -60,7 +63,7 @@ export function guardCard(c, raw, pc) {
     const v = fig(x10) != null ? fig(x10) : lone(x10);
     if (v != null && p9v != null && v < p9v) out.psa10 = "a-psa9";
     else if (fig(x10) != null && p9 && p9.m != null && p9.n >= GUARD.x15MinN && fig(x10) > GUARD.x15 * p9.m &&
-      !(pc && pc.v && pc.prev && inBand(fig(x10) / pc.v, GUARD.x15PcBand) && inBand(fig(x10) / pc.prev, GUARD.x15PcBand))) out.psa10 = "a-15x";
+      !(pc && pc.v && pc.prev && pc.v !== pc.prev && inBand(fig(x10) / pc.v, GUARD.x15PcBand) && inBand(fig(x10) / pc.prev, GUARD.x15PcBand))) out.psa10 = "a-15x";
     else if (fig(x10) != null && pc && pc.v && (fig(x10) < GUARD.pcLo * pc.v || fig(x10) > GUARD.pcHi * pc.v)) out.psa10 = "b-pc";
   }
   // (a-tag) TAG 10 below the same card's PSA 9 (its median, else its lone last sale) — Price Truth sweep Nov 3, 20 cells;
