@@ -135,10 +135,11 @@ html body .lnav~* .pr p{font-size:16px;line-height:1.45;}
 html body .lnav~* .pr .pr-sub{font-size:12px;}
 html body .lnav~* details.pr-how>summary{padding:12px 20px;}
 }
-/* 0d. Card-page template + grade compare row (run 7). Markup: js/card-page.js. Fills stay to the Nov 13 G2 read. */
+/* 0d. Card-page template (run 7). Markup: js/card-page.js. Fills stay to the Nov 13 G2 read. */
 html body .cdp section{padding:0;border-top:0;animation:none}
 html body .cdp section.cdp-panel{padding-top:14px}
 html body .cdp-photo{min-height:280px}
+html body .cdp-photo .sch-cimg{box-shadow:none;background:var(--ds-surface-1)}
 html body .cdp b{font-weight:600}
 html body .cdp nav.crumb{display:flex;white-space:nowrap;margin:0 0 16px;padding-top:0!important}html body .cdp nav.crumb>:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis}
 html body .cdp h1{font:600 clamp(28px,3.4vw,40px)/1.1 var(--ds-font);letter-spacing:-.015em;text-transform:none}
@@ -196,8 +197,7 @@ html body .cdp-cmp .s{font-size:14px;line-height:1.43;margin-bottom:16px}
 html body .cdp-buy{padding:20px 16px}
 }
 
-/* 0e. Data tables (run 8, Nov 7): sentence-case 12 px heads, table buttons in sentence case, 8 px desktop cells.
-   Fits .sidx-tbl/.chase-tbl/.bx-t/.vgrid in their box at 1280 with DejaVu Sans (the daily sweep's font). */
+/* 0e. Data tables (run 8): fit at 1280 in DejaVu Sans, the daily sweep's font. Spec: DESIGN-SYSTEM.md. */
 html body :is(.sidx-tbl,.chase-tbl table,.vgrid) th,html body .bx-t th :is(button,.bx-th){font:600 12px/1.33 var(--ds-font);font-size:12px !important;letter-spacing:0;text-transform:none;color:var(--text-dim);}
 html body .vgrid th.sorted,html body .bx-t th:is([aria-sort=ascending],[aria-sort=descending]) button,html body .bx-t th button:hover{color:var(--text-head);}
 html body .bx-t thead tr{background:none;border-bottom:1px solid var(--border2);}
