@@ -40,7 +40,9 @@ const FINALISTS = [
   { lg: "AL", name: "Parker Messick", team: "Cleveland Guardians", tc: true },
   { lg: "AL", name: "Payton Tolle", team: "Boston Red Sox", cls: "BOW24", code: "CPA-PT" },
   { lg: "NL", name: "Carson Benge", team: "New York Mets", cls: "BOW24", code: "CPA-CBG" },
-  { lg: "NL", name: "Sal Stewart", team: "Cincinnati Reds", tc: true, firstNote: "His first Bowman auto is #CDA-SS in 2022 Bowman Draft (per the checklists), which our baskets don't track yet." },
+  { lg: "NL", name: "Sal Stewart", team: "Cincinnati Reds", tc: true, firstNote: "His first Bowman auto is #CDA-SS in 2022 Bowman Draft (per the checklists), which our baskets don't track yet.",
+    firstShort: "his first Bowman auto, #CDA-SS in 2022 Bowman Draft (per the checklists), isn't in our baskets yet",
+    alt: { label: "His 2022 Bowman Draft auto on eBay", q: "Sal Stewart 2022 Bowman Draft Chrome CDA-SS auto", item: "Sal Stewart CDA-SS" } },
   { lg: "NL", name: "JJ Wetherholt", team: "St. Louis Cardinals", cls: "BOW25", code: "CPA-JW" },
 ];
 
@@ -86,25 +88,33 @@ if (win) {
   for (const r of rows) r.won = r.name === win.al || r.name === win.nl;
 }
 const wr = (lg) => rows.find((r) => r.name === win[lg.toLowerCase()]);
-const winCard = (r) => (r.raw ? `${r.name}'s 1st Bowman Chrome Auto has a 90-day raw median of ${money(r.raw.m)} (${r.raw.n} sales)` : `${r.name}'s ${r.card} rookie card doesn't have enough dated sales for a median yet`);
-const WIN_LINE = win ? `${wr("AL").name} won the American League Rookie of the Year award and ${wr("NL").name} won in the National League, announced by the BBWAA on Nov. 9 (MLB.com, read ${long(win.read)}). ${winCard(wr("AL"))}, and ${winCard(wr("NL"))}. Sales read ${DATE}.` : "";
+const winCard = (r) => (r.raw ? `${r.name}'s 1st Bowman Chrome Auto has a 90-day raw median of ${money(r.raw.m)} (${r.raw.n} sales)` : `${r.name}'s ${r.card} rookie card doesn't have enough dated sales for a median yet${r.firstShort ? ", and " + r.firstShort : ""}`);
+const SRC = win && /bbwaa\.com/.test(win.source) ? "BBWAA.com" : "MLB.com";
+const WIN_LINE = win ? `${wr("AL").name} won the American League Rookie of the Year award and ${wr("NL").name} won in the National League, announced by the BBWAA on Nov. 9 (${SRC}, read ${long(win.read)}). ${winCard(wr("AL"))}. ${winCard(wr("NL"))[0].toUpperCase() + winCard(wr("NL")).slice(1)}. Sales read ${DATE}.` : "";
+// After-award read (Nov 10 2026, Wildcard): once the winners file exists and the basket has a mark newer than the frozen
+// pre-award day, print both reads side by side with n on each side. Same basket, same 90-day median, so like with like.
+const after = win && pre && asOf > pre.asOf ? priced.filter((r) => pre.cards[r.name]).map((r) => ({ r, b: pre.cards[r.name] })) : [];
+const pct = (a, b) => { const v = ((a - b) / b) * 100; return Math.abs(v) < 0.05 ? "no change" : `${v > 0 ? "+" : "&minus;"}${Math.abs(v).toFixed(1)}%`; };
+const AFTER = after.length ? `<div class="ry-wrap" style="overflow-x:auto"><table class="ry-tbl ry-aft"><thead><tr><th scope="col">Player</th><th scope="col">${short(pre.asOf)}</th><th scope="col">${short(asOf)}</th><th scope="col">Change</th></tr></thead><tbody>
+${after.map(({ r, b }) => `<tr${r.won ? ' class="ry-won"' : ""}><th scope="row">${esc(r.name)}${r.won ? '<span class="ry-badge">Winner</span>' : ""}<span class="ry-sub">#${esc(r.code)}</span></th><td class="ry-n" data-l="${short(pre.asOf)}">${money(b.median)}<span class="ry-sub">median of ${b.n} sales</span></td><td class="ry-n" data-l="${short(asOf)}">${money(r.raw.m)}<span class="ry-sub">median of ${r.raw.n} sales</span></td><td class="ry-n" data-l="Change">${pct(r.raw.m, b.median)}</td></tr>`).join("\n")}
+</tbody></table></div>` : "";
 
-const TITLE = "2026 MLB Rookie of the Year Finalists: Their Cards and Sold Prices";
-const DESC = `The six 2026 Rookie of the Year finalists and what each one's key card has sold for on eBay: 1st Bowman Chrome autos for McGonigle, Tolle, Benge and Wetherholt, with sale counts. Read ${DATE}.`;
-const ANSWER = `The BBWAA named the 2026 Rookie of the Year finalists on Nov. 2: Kevin McGonigle, Parker Messick and Payton Tolle in the American League, and Carson Benge, Sal Stewart and JJ Wetherholt in the National League. ${win ? "" : "Both winners are announced Nov. 9. "}Four of the six have their 1st Bowman Chrome Auto in one of our class baskets, going by the checklists; Sal Stewart's first Bowman auto is from 2022 Bowman Draft, which we don't track yet. Those four raw copies sold for a median of ${money(lo)} to ${money(hi)} over the last 90 days (${top.name}'s is the highest), read ${DATE}.`;
+const TITLE = win ? `2026 Rookie of the Year Cards: ${win.al.split(" ").pop()}, ${win.nl.split(" ").pop()} and the Finalists' Sold Prices` : "2026 MLB Rookie of the Year Finalists: Their Cards and Sold Prices";
+const DESC = win ? `${win.al} and ${win.nl} won 2026 Rookie of the Year. What each finalist's key card has sold for on eBay, with sale counts: 1st Bowman Chrome Autos for McGonigle, Tolle, Benge and Wetherholt. Read ${DATE}.` : `The six 2026 Rookie of the Year finalists and what each one's key card has sold for on eBay: 1st Bowman Chrome autos for McGonigle, Tolle, Benge and Wetherholt, with sale counts. Read ${DATE}.`;
+const ANSWER = `The BBWAA named the 2026 Rookie of the Year finalists on Nov. 2: Kevin McGonigle, Parker Messick and Payton Tolle in the American League, and Carson Benge, Sal Stewart and JJ Wetherholt in the National League. ${win ? "" : "Both winners are announced Nov. 9. "}Four of the six have their 1st Bowman Chrome Auto in one of our class baskets, going by the checklists${win ? "" : "; Sal Stewart's first Bowman auto is from 2022 Bowman Draft, which we don't track yet"}. Those four raw copies sold for a median of ${money(lo)} to ${money(hi)} over the last 90 days (${top.name}'s is the highest), read ${DATE}.`;
 
 const ANSWER_FULL = win ? `${WIN_LINE} ${ANSWER}` : ANSWER;
 const tr = rows.map((r) => {
   const rawCell = r.raw ? `${money(r.raw.m)}<span class="ry-sub">median of ${r.raw.n} sales, 90 days to ${short(r.raw.asOf)}</span>` : `<span class="ry-none">Not enough dated sales</span><span class="ry-sub">no sold median on file for this card</span>`;
   const oc = ` onclick="if(typeof gtag==='function')gtag('event','roy_click',{item:'${SLUG}:${esc(r.name)}',page:location.pathname})"`;
-  return `<tr${r.won ? ' class="ry-won"' : ""}><td class="ry-lg">${r.lg}${r.won ? '<span class="ry-badge">Winner</span>' : ""}</td><th scope="row">${esc(r.name)}<span class="ry-sub">${esc(r.team)}</span></th><td data-l="Card">${esc(r.card)}<span class="ry-sub">${esc(r.tag)}</span></td><td class="ry-n" data-l="Raw sold">${rawCell}</td><td class="ry-n" data-l="PSA 10"><span class="ry-none">Not enough dated sales</span></td><td class="ry-x"><a class="ry-eb" href="${esc(ebay(r.q))}" target="_blank" rel="sponsored nofollow noopener"${oc}>Find it on eBay</a></td></tr>`;
+  return `<tr${r.won ? ' class="ry-won"' : ""}><td class="ry-lg">${r.lg}${r.won ? '<span class="ry-badge">Winner</span>' : ""}</td><th scope="row">${esc(r.name)}<span class="ry-sub">${esc(r.team)}</span></th><td data-l="Card">${esc(r.card)}<span class="ry-sub">${esc(r.tag)}</span></td><td class="ry-n" data-l="Raw sold">${rawCell}</td><td class="ry-n" data-l="PSA 10"><span class="ry-none">Not enough dated sales</span></td><td class="ry-x"><a class="ry-eb" href="${esc(ebay(r.q))}" target="_blank" rel="sponsored nofollow noopener"${oc}>Find it on eBay</a>${r.alt ? `<a class="ry-eb ry-eb2" href="${esc(ebay(r.alt.q))}" target="_blank" rel="sponsored nofollow noopener" onclick="if(typeof gtag==='function')gtag('event','roy_click',{item:'${SLUG}:${esc(r.alt.item)}',page:location.pathname})">${esc(r.alt.label)}</a>` : ""}</td></tr>`;
 }).join("\n");
 
 const body = `
 <section class="hero" style="border-top:none; padding-bottom:0;">
   <div class="container">
     <div class="hero-eyebrow">MLB &middot; Awards &middot; ${DATE}</div>
-    <h1>2026 Rookie of the Year<br><em>Finalists&rsquo; Cards</em></h1>
+    <h1>2026 Rookie of the Year<br><em>${win ? `${esc(win.al.split(" ").pop())} and ${esc(win.nl.split(" ").pop())}` : "Finalists&rsquo; Cards"}</em></h1>
     <p class="hero-sub ry-answer" id="answer">${ANSWER_FULL}</p>
   </div>
 </section>
@@ -122,7 +132,8 @@ ${tr}
   <section>
     <div class="section-eyebrow">After Nov. 9</div>
     <h2>Before and After the Award</h2>
-    <p class="section-intro">${pre ? `Before the announcement, on ${long(pre.asOf)}, the four 1st Bowman Chrome Autos had 90-day raw medians of ${Object.entries(pre.cards).map(([nm, c]) => `${nm} ${money(c.median)} (${c.n} sales)`).join(", ")}. ` : ""}${win ? "" : "The winners are announced Monday, Nov. 9. "}After the award we&rsquo;ll put a fresh read of the same four cards next to those numbers, with the sale count on both sides. A 90-day median moves slowly, so a few days after the award it shows the first sales only in part.</p>
+    ${after.length ? `<p class="section-intro">On ${long(pre.asOf)}, the day before the announcement, we saved the 90-day raw median of each of the four 1st Bowman Chrome Autos. The table puts them next to the same read on ${long(asOf)}, with the sale count on both sides. A 90-day median moves slowly, so this soon after the award it takes in only the first sales since the announcement.</p>
+    ${AFTER}` : `<p class="section-intro">${pre ? `Before the announcement, on ${long(pre.asOf)}, the four 1st Bowman Chrome Autos had 90-day raw medians of ${Object.entries(pre.cards).map(([nm, c]) => `${nm} ${money(c.median)} (${c.n} sales)`).join(", ")}. ` : ""}${win ? "" : "The winners are announced Monday, Nov. 9. "}After the award we&rsquo;ll put a fresh read of the same four cards next to those numbers, with the sale count on both sides. A 90-day median moves slowly, so a few days after the award it shows the first sales only in part.</p>`}
     <p class="section-intro">More 1st Bowman Chrome Autos by draft class: <a href="/bowman-classes">Bowman 1st auto classes</a>. Bigger names and their key cards: <a href="/mlb-cards">MLB cards</a>.</p>
   </section>
   <section>
@@ -141,14 +152,15 @@ const css = `<style id="ry-css">.ry-answer{max-width:70ch}
 .ry-x{white-space:nowrap}.ry-eb{display:inline-block;padding:7px 10px;border:1px solid var(--border2);border-radius:3px;font-weight:600;font-size:12px;text-decoration:none;color:var(--text-head)}
 .ry-fine{font-size:12px;color:var(--text-dim);line-height:1.5;margin:8px 0 0}
 .ry-badge{display:block;margin-top:4px;font-family:var(--fb,inherit);font-size:11px;font-weight:600;color:var(--text-head)}.ry-won th{color:var(--text-head)}
+.ry-eb2{margin-left:6px}.ry-aft{min-width:0;max-width:640px}
 @media (max-width:640px){.ry-wrap{overflow:visible;border:none}.ry-tbl{min-width:0}.ry-tbl thead{display:none}.ry-tbl,.ry-tbl tbody,.ry-tbl tr,.ry-tbl td,.ry-tbl th{display:block;width:auto}
 .ry-tbl tr{border:1px solid var(--border2);border-radius:3px;padding:12px 14px;margin:0 0 10px}.ry-tbl th,.ry-tbl td{border:none;padding:0}
 .ry-tbl tbody th{font-size:15px;margin:2px 0 8px}.ry-tbl .ry-lg{font-size:11px;letter-spacing:1px}.ry-tbl td[data-l]{display:grid;grid-template-columns:76px 1fr;column-gap:8px;row-gap:2px;margin:0 0 10px}.ry-tbl td[data-l] .ry-sub{grid-column:2}
-.ry-tbl td[data-l]::before{content:attr(data-l);font-size:11px;color:var(--text-dim);text-transform:none;font-family:var(--fb,inherit)}.ry-x{white-space:normal;margin-top:4px}.ry-eb{display:block;text-align:center;padding:11px 10px}}</style>`;
+.ry-tbl td[data-l]::before{content:attr(data-l);font-size:11px;color:var(--text-dim);text-transform:none;font-family:var(--fb,inherit)}.ry-x{white-space:normal;margin-top:4px}.ry-eb2{margin:8px 0 0}.ry-eb{display:block;text-align:center;padding:11px 10px}}</style>`;
 
 const ld = [
   { "@context": "https://schema.org", "@type": "Article", headline: TITLE, url: URL, dateModified: asOf, description: DESC, author: { "@type": "Organization", name: "ShopCardHub", url: "https://www.shopcardhub.com" } },
-  { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: "Who are the 2026 MLB Rookie of the Year finalists, and what are their cards worth?", acceptedAnswer: { "@type": "Answer", text: ANSWER_FULL } }] },
+  { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: win ? "Who won 2026 MLB Rookie of the Year, and what are the finalists' cards worth?" : "Who are the 2026 MLB Rookie of the Year finalists, and what are their cards worth?", acceptedAnswer: { "@type": "Answer", text: ANSWER_FULL } }] },
 ];
 
 const tpl = fs.readFileSync(path.join(REPO, "how-prices-work.html"), "utf8");
