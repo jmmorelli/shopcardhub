@@ -321,6 +321,7 @@ details.bx-how[open]>summary::after{content:' \\2212';}
   .bx-t th button,.bx-t th .bx-th{padding:11px 8px 9px;letter-spacing:1px;white-space:normal;line-height:1.3;}
   .bx-t .tbl-buy{white-space:normal;text-align:center;justify-content:center;padding:8px 8px;font-size:10px;letter-spacing:.8px;max-width:76px;line-height:1.25;}
   .bx-ctl{gap:8px 10px;}
+  .bx-chip{flex:1 1 auto;padding:8px 8px;letter-spacing:.5px;}
   .bx-ctl select{font-size:12px;}
   .bx-wt td:first-child{white-space:normal;}
 }
@@ -333,7 +334,8 @@ const metricLabel = boxes.profiles.metrics;
 const covLine = (p) => { const c = coverage[p.id]; return `Every figure on file for ${c.onFile} of ${rows.length}; ${c.qualify} qualify.`; };
 const howRows = profiles.map((p) => `<tr><td>${esc(p.name)}</td><td>${p.needsMonths ? esc(p.note) : p.weights.map(([k, w]) => `<code>${sign(w)}</code> ${esc(metricLabel[k] || k)}`).join("<br>")}<span class="bx-gate">Gate: ${esc(p.gate || "none")}. ${p.needsMonths ? "" : covLine(p)}</span></td></tr>`).join("");
 
-const intro = `Each price is the median of single-box sales on SportsCardsPro in the 30 days to the read date. If a box sold fewer than five times, the window stretches to 60 or 90 days. Cases, lots, breaks and presales before street date are left out, and every row shows its sale count and dates. Jumbos have their own rows. Tap a column to sort it, or pick a buying goal to rank the boxes for it. To run your own numbers, use the <a href="/hobby-box-roi-calculator">Hobby Box ROI Calculator</a>.`;
+const intro = `Cheapest first, with the sale count and dates on every row. Tap a column to sort, or pick a buying goal. How each price is read is under the table.`;
+const method = `Each price is the median of single-box sales on SportsCardsPro in the 30 days to the read date. If a box sold fewer than five times, the window stretches to 60 or 90 days. Cases, lots, breaks and presales before street date are left out. Jumbos have their own rows. To run your own numbers, use the <a href="/hobby-box-roi-calculator">Hobby Box ROI Calculator</a>.`;
 
 const legendIdx = statIdx.map((s) => `${s.ticker} (${esc(s.set)})`).join(" and ");
 const legend = `The hit columns come from our ${legendIdx} 1st auto indexes: PriceCharting ungraded 30-day sold medians for each base 1st auto, marked ${dLong(markDate)}. Parallels aren't in them. Lottery ratio is the mean hit price over the median one, so a high number means a few cards carry the set. Skew and excess kurtosis say the same thing in stats terms. "Hits ≥ $/hit" counts the cards in the index whose median is at least what one hit costs you from that box. Stats only print when ${MIN_N} or more cards are priced${shyIdx.length ? `, so ${shyIdx.map((x) => `${esc(x.r.product.replace(/ (Hobby|Jumbo)$/, ""))} (${x.idx.ticker})`).join(", ")} shows none yet` : ""}. MSRP is Topps' release-day price from Checklist Insider, or the presale price where no release-day price is listed.`;
@@ -352,7 +354,7 @@ const controls = `<div class="bx-ctl" id="bx-ctl">
       <label>Format <select id="bx-format"><option value="">All</option>${formatsPresent.map((f) => `<option value="${f}">${FORMAT_LABEL[f]}</option>`).join("")}</select></label>
       <label>Price <select id="bx-band">${BANDS.map(([v, t]) => `<option value="${v}">${esc(t)}</option>`).join("")}</select></label>
       <label><input type="checkbox" id="bx-recent"> Out in the last 90 days</label>
-      <label>Goal <select id="bx-profile"><option value="">Price, low to high</option>${profiles.map((p) => { const off = !coverage[p.id].qualify; return `<option value="${p.id}"${off ? " disabled" : ""}>${esc(p.name)}${off ? " (not yet)" : ""}</option>`; }).join("")}</select></label>
+      <label>Goal <select id="bx-profile"><option value="">Price, low to high</option>${profiles.filter((p) => coverage[p.id].qualify).map((p) => `<option value="${p.id}">${esc(p.name)}</option>`).join("")}</select></label>
       <details class="bx-cols"><summary>More columns</summary><div class="bx-colbox">${COLS.filter((c) => c.k !== "box").map((c) => `<label><input type="checkbox" data-col="${c.k}"> ${esc(c.label)}</label>`).join("")}</div></details>
       <div class="bx-count" id="bx-count" aria-live="polite">${rows.length} boxes, sorted by sold price</div>
     </div>`;
@@ -372,6 +374,7 @@ ${css}
       </table>
     </div>
     <button type="button" class="bx-more" id="bx-more"></button>
+    <p class="bx-legend">${method}</p>
     <p class="bx-legend">${legend}</p>
     ${how}
   </section>
