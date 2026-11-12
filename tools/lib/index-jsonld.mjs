@@ -20,13 +20,22 @@ export function entity(t) {
 export function liveTickers(idx) {
   return Object.values(idx).filter((v) => v && typeof v === "object" && v.ticker && v.page && v.status === "live" && lastMark(v));
 }
+// Rows at w 0 (a ticker's `sub` line, e.g. TH26's three RGB Mews) are priced but sit outside basketValue, so the card
+// count beside basketValue is the weighted rows only (Integrity Watch iw-2026-11-12-1, Price Truth Nov 12 2026: TH26 said
+// "one raw copy of each of the 191 cards … about $1,431" while $1,431 bought the 188 weighted cards; the 191 cost ~$12,658).
+function counts(t, m) {
+  const all = m.priced ?? (t.basket || []).length;
+  const off = (t.basket || []).filter((b) => b && b.w === 0 && b.price != null).length;
+  return { all, inLevel: Math.max(0, all - off), off };
+}
+const offNote = (c) => (c.off ? ` (${c.off} more ${c.off === 1 ? "is" : "are"} tracked as ${c.off === 1 ? "its" : "their"} own line)` : "");
 function dataset(t) {
   const m = lastMark(t);
   const first = (t.history || []).find((r) => r && r.date);
-  const n = m.priced ?? (t.basket || []).length;
+  const c = counts(t, m), n = c.all;
   const basis = t.basis === "sold" ? "sold prices" : t.basis ? `${t.basis} prices` : "prices";
   const base = t.baseDate ? `100 = ${fmtMonth(t.baseDate)}` : "base 100";
-  const cost = typeof m.basketValue === "number" ? `; one raw copy of each card cost about ${usd(m.basketValue)}` : "";
+  const cost = typeof m.basketValue === "number" ? `; one raw copy of each ${c.off ? `of the ${c.inLevel} cards in the level` : "card"} cost about ${usd(m.basketValue)}${offNote(c)}` : "";
   return {
     "@type": "Dataset",
     "@id": SITE + t.page + "#dataset-" + t.ticker.toLowerCase(),
@@ -70,12 +79,12 @@ export function applyCatalogLd(html, idx) {
 export const ANSWER_HOLD = new Set([]);
 export function answerSentence(t) {
   const m = lastMark(t);
-  const n = m.priced ?? (t.basket || []).length;
+  const c = counts(t, m), n = c.all;
   const set = (t.set || t.name || t.ticker).replace(/^Pokémon TCG /, "").replace(/\s+Set Index$/i, "");
   const base = t.baseDate ? ` (${fmtMonth(t.baseDate)} = 100)` : "";
   const lv = typeof m.level === "number" ? m.level.toFixed(2) : m.level;
   const src = /PriceCharting/i.test(t.basisLabel || "") ? "eBay sold prices read on PriceCharting" : "dated sold prices";
-  const cost = typeof m.basketValue === "number" ? `, and one raw copy of each of the ${n} cards it prices cost about ${usd(m.basketValue)} at ${src}` : `, across ${n} cards at ${src}`;
+  const cost = typeof m.basketValue === "number" ? `, and one raw copy of each of the ${c.inLevel} cards ${c.off ? "in the level" : "it prices"} cost about ${usd(m.basketValue)} at ${src}${offNote(c)}` : `, across ${n} cards at ${src}`;
   return `On ${fmtDate(m.date)} the ${set} index (${t.ticker}) stood at ${lv}${base}${cost}. It is re-marked every Monday and Thursday.`;
 }
 export function applyIndexAnswer(html, t) {

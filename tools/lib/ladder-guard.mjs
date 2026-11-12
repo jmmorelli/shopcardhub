@@ -123,6 +123,51 @@ export function staleHoldTicker(cards, history, today, fileDay) {
   return held;
 }
 
+// (d') any graded read more than 21 days old — temporary display hold (CoS ruling Nov 11 2026 on Price Truth run 9 "For the
+// CoS" 1, BLOCKED row "Graded ladder 16 days old"; built by Price Truth Nov 12). The Monday ladder read missed Nov 2 and Nov 9,
+// so every graded cell is on the Oct 26-27 read; the verifier found CZ23 Mew GG10 PSA 10 printed at $1,087.50 against
+// ~$700 of sales (Nov 6). From STALE_AGE.from (Tue Nov 17 2026) a cell whose card read (asOf, else the file's day) is more than
+// STALE_AGE.maxAgeDays old is held "Being re-read", in any set. Hold only: no mark, level or basket changes. It lifts by itself
+// at the next ladder read (a fresh read replaces the row). Before `from` it holds nothing. Mirrored client-side (same dates)
+// in js/card-page.js, js/should-i-grade.js and js/checklist-sheet.js so it engages on Nov 17 without a rebuild.
+export const STALE_AGE = { maxAgeDays: 21, from: "2026-11-17", why: "d-stale-age" };
+export function staleAgeHoldTicker(cards, today, fileDay) {
+  const held = [];
+  if (!today || today < STALE_AGE.from) return held;
+  for (const [key, c] of Object.entries(cards || {})) {
+    if (!c || typeof c !== "object") continue;
+    const asOf = c.asOf || fileDay;
+    if (!asOf || (Date.parse(today) - Date.parse(asOf)) / 864e5 <= STALE_AGE.maxAgeDays) continue;
+    for (const k of GR) {
+      const x = c[k]; if (!x || x.held || (x.m == null && x.m365 == null && !x.last)) continue;
+      held.push({ key, grade: k, why: STALE_AGE.why, m: x.m, m365: x.m365, last: x.last, age: Math.round((Date.parse(today) - Date.parse(asOf)) / 864e5) });
+      c[k] = holdCell(x, STALE_AGE.why);
+    }
+  }
+  return held;
+}
+
+// (v) verifier holds — one cell the Price Truth verifier (charter step 2b: a fresh agent re-pulls PriceCharting / eBay sold and
+// confirms the printed figure is wrong) found off the market, held until the card's next ladder read. Each entry names the read
+// it holds (`read`): a cell whose asOf is newer is a fresh read and is never held. Hold only, no figure changes.
+//   CZ23 Mew GG10 PSA 10 $1,087.50 (30 sales, read Oct 26 2026): PriceCharting $679.74 Nov 12, eBay PSA 10 sold $695-$720
+//   Nov 6 (verifier Nov 11 + Nov 12; PriceCharting's own Oct figure was $1,099.99, so no data rule here can see the drop).
+export const VERIFIER_HOLDS = [
+  { tk: "cz23", key: "GG10", grade: "psa10", read: "2026-10-26", why: "v-verifier", note: "Price Truth Nov 12 2026: PC $679.74, sold $695-720 Nov 6" },
+];
+export function verifierHoldTicker(tk, cards, fileDay) {
+  const held = [];
+  for (const h of VERIFIER_HOLDS) {
+    if (h.tk !== String(tk).toLowerCase()) continue;
+    const c = cards && cards[h.key]; if (!c || typeof c !== "object") continue;
+    const asOf = c.asOf || fileDay; if (!asOf || asOf > h.read) continue;
+    const x = c[h.grade]; if (!x || x.held || (x.m == null && x.m365 == null && !x.last)) continue;
+    held.push({ key: h.key, grade: h.grade, why: h.why, m: x.m, m365: x.m365, last: x.last });
+    c[h.grade] = holdCell(x, h.why);
+  }
+  return held;
+}
+
 // applies the guards to every card of one ticker in place. raws: Map(key -> raw mark), hists: { key: [[month, …, psa10]] }.
 // Returns the list of held cells [{ key, grade, why, m, last }].
 export function guardTicker(cards, raws, hists) {

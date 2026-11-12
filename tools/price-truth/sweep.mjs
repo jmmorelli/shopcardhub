@@ -154,6 +154,22 @@ for (const [tk, Gf] of Object.entries(G_)) {
     }
   }
 }
+// (d') any printed graded cell on a read > 21 days old (ladder-guard.mjs STALE_AGE, CoS ruling Nov 11 2026; Price Truth Nov 12).
+// From Tue Nov 17 2026 the client mirrors hide them on card pages / should-i-grade / checklists, but the static builders (desks,
+// coverage pages) print what the g-file holds until `build-card-ladder.mjs --guard` + regen runs: RED per ticker from Nov 17,
+// AMBER (one line per ticker, dated, the ruling's lead time) before. Age read against indices.updated, like (d).
+{
+  const day = String((IDX && IDX.updated) || "").slice(0, 10), dms = Date.parse(day);
+  for (const [tk, Gf] of Object.entries(G_)) {
+    const C = CARDS[tk]; if (!C || !Gf.cards || !Number.isFinite(dms)) continue;
+    let n = 0, oldest = null;
+    for (const g of Object.values(Gf.cards)) {
+      const asOf = String(g.asOf || Gf.day || "").slice(0, 10); if (!asOf || (dms - Date.parse(asOf)) / 864e5 <= 21) continue;
+      for (const lab of ["psa9", "psa10", "tag10"]) { const x = g[lab]; if (x && !x.held && ((x.m != null && x.n >= 3) || x.last)) { n++; if (!oldest || asOf < oldest) oldest = asOf; } }
+    }
+    if (n) add(3, day >= "2026-11-17" ? R : A, `d-age-${tk}`, `${tk.toUpperCase()}: ${n} graded cell(s) printed on a read more than 21 days old (oldest ${oldest}) — rule (d') holds them from Nov 17`, { page: C.page, n });
+  }
+}
 // GSTAR board: build-grails.mjs gcell() prints any non-held median; R18 needs >= 3 dated sales for a median
 if (has("data/grails.json")) {
   const GR = rd("data/grails.json");

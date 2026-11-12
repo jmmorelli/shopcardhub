@@ -68,6 +68,10 @@
     var raw = c.raw;
     var scr = c.screened && c.why === 'screen', chase = d.kind === 'chase', win = (d.screen && d.screen.window) || d.window || 30;
     var gRead = (g && g.asOf) || (gd && gd.day) || null;
+    // (d') Price Truth Nov 12 2026, CoS ruling Nov 11: from Tue Nov 17 2026 a graded read more than 21 days old prints nothing
+    // ("Being re-read") until the ladder is read again — mirror of tools/lib/ladder-guard.mjs STALE_AGE, so it engages on the day
+    var ptDay = new Date(Date.now() - 8 * 3600e3).toISOString().slice(0, 10);   // the Pacific day, like the guard's TODAY
+    var gOld = !!gRead && ptDay >= '2026-11-17' && (Date.parse(ptDay) - Date.parse(String(gRead).slice(0, 10))) / 864e5 > 21;
     // One entry per grade: m = the number we print (a median of ≥ 3 dated rows), one = a single dated sale when there is no median.
     var G = [{ k: 'raw', lbl: 'Raw', eb: 'raw', m: scr ? null : raw }];
     if (scr) G[0].basis = 'Not priced: ' + (c.n30 != null ? c.n30 + ' clean raw sales in the last ' + win + ' days' : 'below the liquidity screen') + '. It enters the index at ' + ((d.screen && d.screen.enter) || 6) + ' in ' + win + ' days.';
@@ -76,10 +80,13 @@
     else G[0].basis = 'Median of ' + (c.wn != null ? c.wn : c.n30) + ' raw sales' + (c.lo != null && c.hi != null ? ' (middle half ' + money(c.lo) + '–' + money(c.hi) + ')' : '') + ', ' + (c.win || d.window || 30) + ' days · marked ' + md(c.rawAsOf);
     [['psa9', 'PSA 9', 'psa9'], ['psa10', 'PSA 10', 'psa10'], ['tag10', 'TAG 10', 'tag']].forEach(function (p) {
       var x = g ? g[p[0]] : null, e = { k: p[0], lbl: p[1], eb: p[2], m: null, one: null, n: x && x.n, days: x && x.basis === '30d' ? 30 : 90 };
-      if (x && x.m && x.n >= 3) { e.m = x.m; e.basis = 'Median of ' + x.n + ' dated sales, ' + e.days + ' days · read ' + md(gRead) + (x.last ? ' · last sale ' + money(x.last.p) + ', ' + mdShort(x.last.d) : ''); }
+      if (x && !x.held && gOld && (x.m != null || x.last)) { e.reread = true; e.basis = 'Being re-read: this graded read (' + md(gRead) + ') is more than 21 days old'; }
+      else if (x && x.m && x.n >= 3) { e.m = x.m; e.basis = 'Median of ' + x.n + ' dated sales, ' + e.days + ' days · read ' + md(gRead) + (x.last ? ' · last sale ' + money(x.last.p) + ', ' + mdShort(x.last.d) : ''); }
       else if (x && x.last) { e.one = x.last; e.basis = '1 dated sale, ' + md(x.last.d) + ' · fewer than 3 in 90 days, so no median'; }
       // a cell the ladder guards held (build-card-ladder.mjs, Nov 3 2026): its sales disagree with the card's other grades or the last sale
       // Price Truth Nov 10 2026 (CoS ADOPT Nov 9): a cell held because its read is old and the set has fallen since (ladder-guard.mjs STALE)
+      else if (x && x.held && x.held.why === 'v-verifier') e.basis = 'Being re-read: sales since this read run well below it';
+      else if (x && x.held && x.held.why === 'd-stale-age') e.basis = 'Being re-read: this graded read is more than 21 days old';
       else if (x && x.held && x.held.why === 'd-stale-set') e.basis = 'Being re-read: these sales are more than 10 days old and the set has fallen since';
       else if (x && x.held) e.basis = 'No verified sale';
       else e.basis = !g ? 'Graded read pending' : p[0] === 'tag10' ? 'No TAG 10 sale in 12 months' : 'No dated sale in 12 months';
@@ -103,6 +110,7 @@
     var salesRows = G.map(function (e) {
       if (e.k === 'raw') return '<tr><th>Raw</th><td>' + (e.m != null ? money(e.m) : '') + '</td><td>' + esc(e.basis) + '</td></tr>';
       var x = g && g[e.k];
+      if (e.reread) return '<tr><th>' + e.lbl + '</th><td></td><td>' + esc(e.basis) + '</td></tr>';
       return '<tr><th>' + e.lbl + '</th><td>' + (x && x.last ? money(x.last.p) : '') + '</td><td>' + (x && x.last ? 'last dated sale, ' + md(x.last.d) + (e.m != null ? ' · in a median of ' + e.n + ' sales, ' + e.days + ' days: ' + money(e.m) : '') : esc(e.basis)) + '</td></tr>';
     }).join('');
     var gradeList = G.map(function (e) {
@@ -114,7 +122,7 @@
       var x = e.k !== 'raw' && g ? g[e.k] : null, v, cap = e.basis;
       if (e.m != null) { v = money(e.m); cap = e.k === 'raw' ? (chase ? 'PriceCharting’s ungraded value' : 'Median of ' + (c.wn != null ? c.wn : c.n30) + ' raw sales, ' + (c.win || d.window || 30) + ' days') : 'Median of ' + e.n + ' sales, ' + e.days + ' days'; }
       else if (e.one) { v = money(e.one.p); cap = '1 sale, ' + md(e.one.d); }
-      else v = e.k === 'raw' ? (scr ? 'Not priced' : c.nv ? 'No verified sale yet' : 'Too few sales') : x && x.held ? (x.held.why === 'd-stale-set' ? 'Being re-read' : 'No verified sale') : !g ? 'Not read yet' : 'No recent sale';
+      else v = e.k === 'raw' ? (scr ? 'Not priced' : c.nv ? 'No verified sale yet' : 'Too few sales') : e.reread || (x && x.held && /^(d-stale|v-)/.test(x.held.why)) ? 'Being re-read' : x && x.held ? 'No verified sale' : !g ? 'Not read yet' : 'No recent sale';
       if (cap === v || cap === 'Graded read pending') cap = ''; else if (cap.indexOf(v + ': ') === 0) cap = cap.slice(v.length + 2);
       var r = e.k !== 'raw' && e.m && raw ? e.m / raw : null;
       return '<div class="cdp-cmp-c' + (e.m != null || e.one ? '' : ' na') + '"><h3>' + e.lbl + '</h3><p class="v">' + v + '</p>' +

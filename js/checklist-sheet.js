@@ -153,6 +153,10 @@
       var k = num(n);
       if (!g || g === 'Raw') return marks[k] || null;
       var gc = grades && grades.cards && (grades.cards[k] || grades.cards[k.toLowerCase()]); var gg = gc && gc[GKEY[g]];
+      // (d') Price Truth Nov 12 2026, CoS ruling Nov 11: from Tue Nov 17 2026 a graded read more than 21 days old prints no mark
+      // until the ladder is read again — mirror of tools/lib/ladder-guard.mjs STALE_AGE
+      var gAs = gg ? String(gc.asOf || grades.day || '').slice(0, 10) : '', ptDay = new Date(Date.now() - 8 * 3600e3).toISOString().slice(0, 10);
+      if (gAs && ptDay >= '2026-11-17' && (Date.parse(ptDay) - Date.parse(gAs)) / 864e5 > 21) return null;
       return (gg && typeof gg.m === 'number' && gg.m > 0) ? { p: gg.m, asOf: gc.asOf || grades.day, graded: true } : null;
     }
 

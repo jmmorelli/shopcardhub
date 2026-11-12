@@ -123,6 +123,13 @@
     var d = cur.d, c = cur.c, g = cur.g, gd = cur.gd;
     var setShort = String(d.set).replace(/^Pokémon TCG /, '');
     var gRead = (g && g.asOf) || (gd && gd.day) || '';
+    // (d') Price Truth Nov 12 2026, CoS ruling Nov 11: from Tue Nov 17 2026 a graded read more than 21 days old feeds nothing and
+    // prints "Being re-read" until the ladder is read again — mirror of tools/lib/ladder-guard.mjs STALE_AGE
+    var ptDay = new Date(Date.now() - 8 * 3600e3).toISOString().slice(0, 10);
+    if (g && gRead && ptDay >= '2026-11-17' && (Date.parse(ptDay) - Date.parse(String(gRead).slice(0, 10))) / 864e5 > 21) {
+      var g2 = {}; ['psa9', 'psa10', 'tag10'].forEach(function (k) { var x = g[k]; g2[k] = x && !x.held && (x.m != null || x.last) ? { n: x.n, held: { why: 'd-stale-age' } } : x; });
+      g = g2;
+    }
     var m9 = mark(g && g.psa9), m10 = mark(g && g.psa10), mT = mark(g && g.tag10);
     var rawN = c.wn != null ? c.wn : c.n30, rawWin = c.win || d.window || 30;
     // no raw figure unless it is a dated eBay sold median with a count (chase-set raws are an outside value, not our sales)
@@ -146,6 +153,7 @@
       if (x) return '<div class="sg-c"><span class="k">' + lbl + '</span><b>' + money(x.m) + '</b><span class="s">median of ' + x.n + ' sales, ' + x.days + ' days' + (extra || '') + '</span></div>';
       if (one) return '<div class="sg-c dim"><span class="k">' + lbl + '</span><b>' + money(one.p) + '</b><span class="s">1 dated sale, ' + md(one.d) + '. Fewer than 3 sales, so no median</span></div>';
       // held by the ladder guards (build-card-ladder.mjs, Nov 3 2026): the sales on file disagree, so nothing prints or feeds the math
+      if (held && /^(d-stale|v-)/.test(held.why || '')) return '<div class="sg-c dim"><span class="k">' + lbl + '</span><b>Being re-read</b><span class="s">' + (held.why === 'd-stale-age' ? 'this graded read is more than 21 days old' : held.why === 'v-verifier' ? 'sales since this read run well below it' : 'these sales are more than 10 days old and the set has fallen since') + '</span></div>';
       if (held) return '<div class="sg-c dim"><span class="k">' + lbl + '</span><b>No verified sale</b><span class="s">sales on file are being checked</span></div>';
       return '<div class="sg-c dim"><span class="k">' + lbl + '</span><b>—</b><span class="s">no dated sale in 12 months</span></div>';
     }
