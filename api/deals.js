@@ -10,13 +10,14 @@
 // origin (api/_lib/feed.js) and serves it with a CDN cache — no eBay call happens on a visitor's request. (First cut
 // read the private price-data branch through store.js; the Vercel GITHUB_TOKEN answered 401 on Oct 23, so the feed
 // moved to the public-feed path, which needs no secret.) Rows whose listing has ended (`ends` in the past) are
-// dropped here. Every URL already carries the EPN tag with customid=deals.
+// dropped here. Every URL carries customid=deals; the EPN tracking half is added in the browser on a real click (api/_lib/epn-link.js, Nov 12 2026).
 //
 // Basis, printed in the response: mark = our dated SOLD comp for the exact card and grade; the listing is a live
 // eBay ask. Never blended. R17 guard applies (our pages and our tools only).
 
 import { guard } from "./_lib/guard.js";
 import { readFeedJson } from "./_lib/feed.js";
+import { lateUrl, lateTagged } from "./_lib/epn-link.js";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -38,6 +39,7 @@ export default async function handler(req, res) {
     if (tk) rows = rows.filter((r) => r.tk === tk);
     if (card) rows = rows.filter((r) => r.cardId === card);
     if (grade) rows = rows.filter((r) => r.grade === grade);
+    rows = rows.map((r) => ({ ...r, url: lateUrl(r.url, "deals") }));   // tracking half added in the browser on a real click (api/_lib/epn-link.js)
     res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=1800");
     return res.status(200).json({
       generated: feed.generated || null,
@@ -46,7 +48,7 @@ export default async function handler(req, res) {
       rules: feed.rules || null,
       counts: feed.counts || null,
       customId: "deals",
-      affiliateTagged: rows.some((r) => r.url && r.url.includes("mkevt=")),
+      affiliateTagged: lateTagged(rows), linkTag: "click-time",
       count: rows.length,
       rows,
     });

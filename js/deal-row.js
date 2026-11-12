@@ -45,9 +45,9 @@
   var pct = function (x) { return Math.round(x * 100) + '%'; };
   var day = function (s) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ''); if (!m) return ''; return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m[2] - 1] + ' ' + (+m[3]); };
   var list = function (s) { return String(s || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean); };
-  // The feed's link with only customid changed. Rows without the EPN tag (campid + mkevt=1) are skipped, never shown untagged.
+  // The feed's link with only customid changed. Rows without a customid are skipped: the late-tag block at the foot of this file needs it to finish the EPN tag on a real click.
   function tagged(url, cid) {
-    if (!url || url.indexOf('campid=') < 0 || url.indexOf('mkevt=1') < 0 || url.indexOf('customid=') < 0) return null;
+    if (!url || url.indexOf('customid=') < 0) return null;
     return url.replace(/([?&])customid=[^&]*/, '$1customid=' + encodeURIComponent(cid));
   }
   function band(rules) {
@@ -95,4 +95,17 @@
       });
     });
   }).catch(function () { /* feed didn't answer: the block stays hidden, never a stale number */ });
+})();
+
+/* EPN late tag (Nov 12 2026): listing links arrive with customid only (api/_lib/epn-link.js). The tracking half is added here on a real
+   pointer or keyboard interaction, so a crawler that harvests or loads the href never registers an EPN click. */
+(function(){ if (typeof window === 'undefined' || typeof document === 'undefined' || window.__schEpnLate) return; window.__schEpnLate = 1;
+  var T = 'mkevt=1&mkcid=1&mkrid=711-53200-19255-0&campid=5339155990&toolid=10049';
+  function tag(e){ if (e.isTrusted === false || navigator.webdriver) return;
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null; if (!a) return;
+    var h = a.getAttribute('href') || '';
+    if (h.indexOf('https://www.ebay.com/') !== 0 || h.indexOf('customid=') < 0 || h.indexOf('campid=') > -1) return;
+    var i = h.indexOf('#'), f = i > -1 ? h.slice(i) : ''; if (i > -1) h = h.slice(0, i);
+    a.setAttribute('href', h + '&' + T + f); }
+  ['pointerdown','mousedown','touchstart','keydown','contextmenu','auxclick','click','focusin'].forEach(function(t){ document.addEventListener(t, tag, true); });
 })();

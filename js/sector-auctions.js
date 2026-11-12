@@ -55,3 +55,16 @@
   });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
 })();
+
+/* EPN late tag (Nov 12 2026): listing links arrive with customid only (api/_lib/epn-link.js). The tracking half is added here on a real
+   pointer or keyboard interaction, so a crawler that harvests or loads the href never registers an EPN click. */
+(function(){ if (typeof window === 'undefined' || typeof document === 'undefined' || window.__schEpnLate) return; window.__schEpnLate = 1;
+  var T = 'mkevt=1&mkcid=1&mkrid=711-53200-19255-0&campid=5339155990&toolid=10049';
+  function tag(e){ if (e.isTrusted === false || navigator.webdriver) return;
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null; if (!a) return;
+    var h = a.getAttribute('href') || '';
+    if (h.indexOf('https://www.ebay.com/') !== 0 || h.indexOf('customid=') < 0 || h.indexOf('campid=') > -1) return;
+    var i = h.indexOf('#'), f = i > -1 ? h.slice(i) : ''; if (i > -1) h = h.slice(0, i);
+    a.setAttribute('href', h + '&' + T + f); }
+  ['pointerdown','mousedown','touchstart','keydown','contextmenu','auxclick','click','focusin'].forEach(function(t){ document.addEventListener(t, tag, true); });
+})();

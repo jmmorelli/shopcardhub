@@ -40,6 +40,7 @@ import { readFeedJson } from "./_lib/feed.js";
 import { getAppToken } from "./_lib/ebay-token.js";
 import { allow } from "./_lib/ebay-budget.js";
 import { TOOL_HEADER } from "./_lib/guard.js";
+import { lateUrl, lateTagged } from "./_lib/epn-link.js";
 
 const BROWSE_URL = "https://api.ebay.com/buy/browse/v1/item_summary/search";
 const EPN_CAMPAIGN_ID = "5339155990";
@@ -65,7 +66,7 @@ function trimListing(item) {
     bid: item.currentBidPrice ? Number(item.currentBidPrice.value) : null,
     bidCount: Number.isFinite(item.bidCount) ? item.bidCount : null,
     endDate: item.itemEndDate || null,
-    url: item.itemAffiliateWebUrl || item.itemWebUrl,
+    url: lateUrl(item.itemAffiliateWebUrl || item.itemWebUrl, CUSTOM_ID),   // tracking half added in the browser on a real click (api/_lib/epn-link.js)
     image: item.image ? item.image.imageUrl : null,
     seller: item.seller ? { username: item.seller.username, feedbackPct: item.seller.feedbackPercentage, feedbackScore: item.seller.feedbackScore } : null,
     itemId: item.itemId,
@@ -114,11 +115,11 @@ const liveRows = (rows, now) => (rows || []).filter((r) => r && r.endDate && new
 // The committed snapshot carries no listing titles or seller names (R17: no raw eBay content in a public file); the
 // page prints the card's own label in the title slot when it serves one.
 function snapshotPayload(snap, quota, now, note) {
-  const rows = liveRows(snap.rows, now).map((r) => ({ ...r, title: r.title || r.label, seller: r.seller ? { username: r.seller.username || null, feedbackPct: r.seller.feedbackPct ?? null, feedbackScore: r.seller.feedbackScore ?? null } : null }));
+  const rows = liveRows(snap.rows, now).map((r) => ({ ...r, url: lateUrl(r.url, CUSTOM_ID), title: r.title || r.label, seller: r.seller ? { username: r.seller.username || null, feedbackPct: r.seller.feedbackPct ?? null, feedbackScore: r.seller.feedbackScore ?? null } : null }));
   return {
     generated: snap.generated, source: "snapshot", servedAt: new Date(now).toISOString(),
     basis: snap.basis, markDay: snap.markDay || null, customId: CUSTOM_ID,
-    affiliateTagged: rows.some((r) => r.url && r.url.includes("mkevt=")),
+    affiliateTagged: lateTagged(rows), linkTag: "click-time",
     cards: snap.cards || [], count: rows.length, underMark: rows.filter((r) => r.vsMark != null && r.vsMark < 0).length,
     quota: quota ? { remaining: quota.remaining, limit: quota.limit, reset: quota.reset } : null, note, rows,
   };
@@ -240,7 +241,7 @@ export default async function handler(req, res) {
       basis: "mark = engine verified ask floor (ask basis), hammerMedian = median of watched auction closes (sold side); never blended",
       markDay: (latest && latest.day) || null,
       customId: CUSTOM_ID,
-      affiliateTagged: rows.some((r) => r.url && r.url.includes("mkevt=")),
+      affiliateTagged: lateTagged(rows), linkTag: "click-time",
       cards: perCard.map(({ rows: _r, ...c }) => c),
       count: rows.length,
       underMark: rows.filter((r) => r.vsMark != null && r.vsMark < 0).length,

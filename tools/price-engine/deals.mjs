@@ -45,6 +45,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { lateUrl, lateTagged } from "../../api/_lib/epn-link.js";
 import { fileURLToPath } from "node:url";
 import { verifyListings } from "./snapshot-free.mjs";
 
@@ -391,7 +392,7 @@ async function main() {
         price, ship: shipUnknown ? null : ship, shipUnknown, total,
         mark: round2(cand.mark), markAsOf: cand.markAsOf, markN: cand.markN, markBasis: cand.markBasis,
         disc: round2(total / cand.mark - 1),
-        url: l.url, image: l.image || null, ends: l.endDate || null,
+        url: lateUrl(l.url, "deals"), image: l.image || null, ends: l.endDate || null,   // no finished EPN link in a public file (api/_lib/epn-link.js)
         vintage: !!cand.vintage, cond: l.condition || null, condStated: /near mint|like new|new|graded/i.test(String(l.condition || "")),
         seller: l.seller ? { pct: l.seller.feedbackPct ?? null, score: l.seller.feedbackScore ?? null } : null,
       };
@@ -411,7 +412,7 @@ async function main() {
     generated: new Date().toISOString(), day: today(),
     rules: { under: UNDER, floor: FLOOR, slabUnderLastSaleDays: LAST_SALE_MAX_AGE_DAYS, slabDeepNeedsGuard: DEEP_NEEDS_GUARD, slabDeepMaxMarkAgeDays: DEEP_MAX_MARK_AGE_DAYS, slabDeepLastSaleGap: DEEP_LAST_SALE_GAP, slabStaleUnder: STALE_SLAB_UNDER, slabStaleSetDrop: STALE_SET_DROP, slabStaleAllDays: STALE_SLAB_ALL_DAYS, vintageBefore: VINTAGE_BEFORE, vintageRawFloor: VINTAGE_RAW_FLOOR, vintageRawNeedsNmClaim: true, minSellerPct: MIN_SELLER_PCT, minSellerScore: MIN_SELLER_SCORE, rawPerTicker: RAW_PER_TICKER, g10PerTicker: G10_PER_TICKER, g9PerTicker: G9_PER_TICKER, keepPerCard: KEEP_PER_CARD, rawMinMark: RAW_MIN_MARK, gradedMinMark: GRADED_MIN_MARK, maxAgeDays: { raw: RAW_MAX_AGE_DAYS, graded: GRADED_MAX_AGE_DAYS, bowman: BOWMAN_MAX_AGE_DAYS } },
     counts, customId: "deals",
-    affiliateTagged: rows.some((r) => r.url && r.url.includes("mkevt=")),
+    affiliateTagged: lateTagged(rows), linkTag: "click-time",
     rows,
   };
   console.log(JSON.stringify({ ...counts, seconds: Math.round((Date.now() - t0) / 1000), affiliateTagged: feed.affiliateTagged }, null, 1));
@@ -444,6 +445,8 @@ function refilter(file) {
     if (why) dropped.push({ cardId: r.cardId, grade: r.grade, total: r.total, mark: r.mark, disc: r.disc, why });
     return !why;
   });
+  feed.rows = feed.rows.map((r) => ({ ...r, url: lateUrl(r.url, "deals") }));
+  feed.affiliateTagged = lateTagged(feed.rows); feed.linkTag = "click-time";
   feed.counts = { ...(feed.counts || {}), deals: feed.rows.length };
   feed.refiltered = { at: new Date().toISOString(), dropped: dropped.length, by: dropped.reduce((o, d) => ((o[d.why] = (o[d.why] || 0) + 1), o), {}) };
   feed.rules = { ...(feed.rules || {}), slabUnderLastSaleDays: LAST_SALE_MAX_AGE_DAYS, slabDeepNeedsGuard: DEEP_NEEDS_GUARD, slabDeepMaxMarkAgeDays: DEEP_MAX_MARK_AGE_DAYS, slabDeepLastSaleGap: DEEP_LAST_SALE_GAP, slabStaleUnder: STALE_SLAB_UNDER, slabStaleSetDrop: STALE_SET_DROP, slabStaleAllDays: STALE_SLAB_ALL_DAYS };
