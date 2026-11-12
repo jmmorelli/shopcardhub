@@ -80,7 +80,7 @@ export function ladderFromHtml(html, wotc, opts = null) {
   for (const [k, g] of Object.entries(GRADES)) {
     const t = tabs.find((x) => x.label.toLowerCase() === g.tab.toLowerCase());
     if (!t) { out[k] = null; continue; }
-    const rows = soldRows(html, t.cls).filter((r) => g.title(r.title) && !/\blot\b|proxy|custom|reprint/i.test(r.title) && edOk(r.title, wotc) && !(wotc && WOTC_REPRINT.test(r.title)) && numOk(r.title, opts));
+    const rows = soldRows(html, t.cls).filter((r) => g.title(r.title) && !/\blot\b|proxy|custom|reprint/i.test(r.title) && edOk(r.title, wotc) && !(wotc && WOTC_REPRINT.test(r.title)) && numOk(r.title, opts) && !(opts && opts.xt && opts.xt.test(r.title)));
     const r30 = rows.filter((r) => days(r.date) <= 30), r90 = rows.filter((r) => days(r.date) <= 90), r365 = rows.filter((r) => days(r.date) <= 365);
     const last = rows.slice().sort((a, b) => b.date.localeCompare(a.date))[0] || null;
     let m = null, basis = null, n = 0;

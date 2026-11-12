@@ -51,8 +51,11 @@ async function get(url) {
   }
   throw new Error("rate limited after 4 attempts");
 }
-function rawMark(html, ed) {
-  const rows = soldRows(html, "used").filter((r) => !NOT_RAW.test(r.title) && (ed === "1st" ? isFirst(r.title) : !isFirst(r.title)) && days(r.date) <= WIN && days(r.date) >= 0);
+// xt (data/coverage-cards.json, optional): the KB's title traps for one card — a reprint on the same number (TH26 Classic
+// Collection Gengar #94), a reverse holo that is its own card (Expedition), stamped promos (Unova Heavy Hitters, Dec 4).
+const xtOf = (c) => (c.xt ? new RegExp(c.xt, "i") : null);
+function rawMark(html, ed, xt = null) {
+  const rows = soldRows(html, "used").filter((r) => !NOT_RAW.test(r.title) && !(xt && xt.test(r.title)) && (ed === "1st" ? isFirst(r.title) : !isFirst(r.title)) && days(r.date) <= WIN && days(r.date) >= 0);
   if (rows.length < MIN_N) return { m: null, n: rows.length, lo: null, hi: null, last: null };
   // lo/hi = the middle half of the sales (25th–75th percentile), so one mislabelled slab or proxy does not set the range
   const ps = rows.map((r) => r.price).sort((a, b) => a - b), last = rows.slice().sort((a, b) => b.date.localeCompare(a.date))[0];
@@ -80,7 +83,7 @@ async function buildTrk() {
     let card;
     try {
       const html = await get("https://www.pricecharting.com/game/" + c.pcPath);
-      const raw = rawMark(html, c.ed), lad = ladderFromHtml(html, c.ed === "1st" ? "1st" : false, { num: String(c.num).replace(/^0+/, "") }), hist = histFromHtml(html, "2021-01");
+      const raw = rawMark(html, c.ed, xtOf(c)), lad = ladderFromHtml(html, c.ed === "1st" ? "1st" : false, { num: String(c.num).replace(/^0+/, ""), xt: xtOf(c) }), hist = histFromHtml(html, "2021-01");
       card = { id: "trk-" + c.key, key: c.key, num: c.num, name: c.name, set: c.set, path: c.pcPath, raw: raw.m, n30: null, wn: raw.n, win: WIN, lo: raw.lo, hi: raw.hi, rawAsOf: TODAY, w: null, q: c.q, img: "src:https://images.pokemontcg.io/" + c.img + ".png", ...(raw.m == null ? { nv: true } : {}) };
       g[c.key] = { ...gOut(lad), asOf: TODAY }; gp[c.key] = c.pcPath;
       if (hist && hist.length) h[c.key] = hist;

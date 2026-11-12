@@ -8,7 +8,8 @@
 //   C  the set is tracked but the card is missing from the universe (slug / row / variant problem → Index Keeper)
 //   D  the set is not tracked (grouped by set; sets ranked by Σ demand raw $ × card count)
 //   P  the set is being built (ticker listed in the demand file's "pending" and not yet in indices.json)
-// plus a SEARCH-MISS list: demand cards whose name has no substring hit in card-search.json (the "shining gyarados" case),
+// plus a SEARCH-MISS list: demand cards with no card-search.json row of the same name in the same set + edition (+ number)
+// (the "shining gyarados" case; name + set since Nov 12 2026 — the name-only count is printed beside it),
 // and NOT-SEARCHABLE: cards that are tracked but have no row in card-search.json (0 expected since build E, Oct 4 2026: universe rows and the six chase indices write card files).
 //
 // Usage:  node tools/kb/coverage-scan.mjs [--json] [--root <repo>] [--demand <file>] [--out <md>] [--no-write]
@@ -75,6 +76,21 @@ for (const [t, s] of Object.entries(demand.pendingSets || {})) if (!IX[t]) PENDI
 
 const searchIds = new Set(search.map((c) => c[0]));
 const searchNames = search.map((c) => nameKey(c[1].replace(/\s+#\S+$/, "")));
+// name + set match (CoS daily review Nov 6 2026: a same-name card from another print or set is not a hit — Sabrina's Gengar
+// Unlimited was "found" by the 1st Edition row). A search row [id, "Name #num", "Set label", raw] hits a demand card when its
+// name contains the demand name, its set label (edition read from "1st Edition" / "Shadowless", " · …" suffix and other
+// parentheticals dropped) equals the demand set + edition, and its printed number matches when the demand row has one.
+function setLabelKey(s) {
+  const t = String(s ?? "").replace(/\s+·.*$/, "");
+  const ed = /1st\s*edition/i.test(t) ? "1st" : /shadowless/i.test(t) ? "shadowless" : "unlimited";
+  return { key: nk(t.replace(/\([^)]*\)/g, " ").replace(/\b(1st\s*edition|shadowless|unlimited)\b/gi, " ")), ed };
+}
+const searchRows = search.map((c) => {
+  const m = String(c[1]).match(/\s+#(\S+)$/), sl = setLabelKey(c[2]);
+  return { name: nameKey(String(c[1]).replace(/\s+#\S+$/, "")), num: m ? numKey(m[1]) : null, set: sl.key, ed: sl.ed };
+});
+const searchSetHit = (d, nKey) => nKey.length > 0 && searchRows.some((s) => s.name.includes(nKey) && s.set === nk(d.set) &&
+  s.ed === EDN(d.edition) && (!d.num || d.num === "—" || s.num === numKey(d.num)));
 
 // ---------- classify ----------
 const rows = [];
@@ -85,7 +101,8 @@ for (const d of demand.cards) {
   const key = `${nk(d.set)}|${EDN(d.edition)}`;
   const t = SETMAP.get(key);
   const nKey = nameKey(d.name);
-  r.searchNameHit = nKey.length > 0 && searchNames.some((s) => s.includes(nKey));
+  r.nameOnlyHit = nKey.length > 0 && searchNames.some((s) => s.includes(nKey));
+  r.searchNameHit = searchSetHit(d, nKey);
   if (!t) {
     const p = PENDING.get(key);
     if (p) { r.bucket = "P"; r.ticker = p; }
@@ -135,11 +152,12 @@ for (const r of D) { const s = sets.get(r.set) || { set: r.set, n: 0, sum: 0, ca
 const dSets = [...sets.values()].map((s) => ({ ...s, sum: Math.round(s.sum), score: Math.round(s.sum * s.n), cards: s.cards.sort(desc) }))
   .sort((a, b) => b.score - a.score || a.set.localeCompare(b.set));
 const misses = rows.filter((r) => !r.searchNameHit).sort(desc);
+const nameOnlyMisses = rows.filter((r) => !r.nameOnlyHit).length; // the pre-Nov 12 count, kept for the trend line
 const notSearchable = rows.filter((r) => ["A", "B"].includes(r.bucket) && !r.searchable).sort(desc);
 const counts = Object.fromEntries(["A", "B", "C", "D", "P"].map((b) => [b, by(b).length]));
 const result = {
   inputs: { demand: path.relative(ROOT, DEMAND), demandBuiltAt: demand.builtAt || null, indicesUpdated: IX.updated || null, searchCards: search.length },
-  counts: { total: rows.length, ...counts, searchMiss: misses.length, notSearchable: notSearchable.length, untrackedSets: dSets.length },
+  counts: { total: rows.length, ...counts, searchMiss: misses.length, searchMissNameOnly: nameOnlyMisses, notSearchable: notSearchable.length, untrackedSets: dSets.length },
   A: by("A").sort(desc), B: by("B").sort(desc), C: by("C").sort(desc), P: by("P").sort(desc), D: dSets, searchMiss: misses, notSearchable,
 };
 
@@ -147,7 +165,7 @@ const result = {
 if (flag("--json")) { process.stdout.write(JSON.stringify(result, null, 1) + "\n"); }
 else {
   const c = result.counts;
-  console.log(`coverage-scan: ${c.total} demand cards → A ${c.A} · B ${c.B} · C ${c.C} · D ${c.D} · P ${c.P} | search-miss ${c.searchMiss} · tracked-not-searchable ${c.notSearchable} | ${c.untrackedSets} untracked sets`);
+  console.log(`coverage-scan: ${c.total} demand cards → A ${c.A} · B ${c.B} · C ${c.C} · D ${c.D} · P ${c.P} | search-miss ${c.searchMiss} (name only: ${c.searchMissNameOnly}) · tracked-not-searchable ${c.notSearchable} | ${c.untrackedSets} untracked sets`);
   console.log("\nTop untracked sets (Σ raw × count):");
   for (const s of dSets.slice(0, 15)) console.log(`  ${s.set.padEnd(34)} ${String(s.n).padStart(3)} cards  ${money(s.sum).padStart(9)}  score ${s.score.toLocaleString("en-US")}`);
   console.log("\nTop search misses:");
@@ -165,7 +183,7 @@ function md() {
   L.push(`| Bucket | Meaning | Cards |`, `|---|---|---|`,
     `| A | in a basket | ${c.A} |`, `| B | in a universe, screened out or weight 0 | ${c.B} |`, `| C | set tracked, card missing from the universe (or a variant we don't hold) | ${c.C} |`,
     `| D | set not tracked | ${c.D} (${c.untrackedSets} sets) |`, `| P | set being built (pending ticker) | ${c.P} |`,
-    `| search-miss | name has no substring hit in card-search.json | ${c.searchMiss} |`, `| not searchable | in A/B but no card-search row | ${c.notSearchable} |`, "");
+    `| search-miss | no card-search row with that name in that set (+ edition, + number) | ${c.searchMiss} (name only: ${c.searchMissNameOnly}) |`, `| not searchable | in A/B but no card-search row | ${c.notSearchable} |`, "");
   L.push(`#### A — in a basket (${c.A})`, "", "| Card | Set | Ticker | w | Share | Raw (demand) |", "|---|---|---|---|---|---|");
   for (const r of result.A) L.push(`| ${label(r)} | ${r.set} | ${r.ticker} | ${r.w} | ${r.share ?? "—"}% | ${money(r.rawUSD)} |`);
   L.push("", `#### B — tracked, not in the level (${c.B})`, "", "| Card | Set | Ticker | Why | Raw (demand) |", "|---|---|---|---|---|");
@@ -176,7 +194,7 @@ function md() {
   for (const r of result.P) L.push(`| ${label(r)} | ${r.set} | ${r.ticker}${r.note ? ` (${r.note})` : ""} | ${money(r.rawUSD)} |`);
   L.push("", `#### D — set not tracked (${c.D} cards in ${c.untrackedSets} sets), ranked by Σ raw × card count`, "", "| # | Set | Cards | Σ raw | Score | Demand cards (raw) |", "|---|---|---|---|---|---|");
   dSets.forEach((s, i) => L.push(`| ${i + 1} | ${s.set} | ${s.n} | ${money(s.sum)} | ${s.score.toLocaleString("en-US")} | ${s.cards.map((r) => `${label(r)} ${money(r.rawUSD)}`).join("; ")} |`));
-  L.push("", `#### Search-miss (${c.searchMiss}) — typed into our search, nothing with that name comes back`, "", "| Card | Set | Bucket | Raw (demand) |", "|---|---|---|---|");
+  L.push("", `#### Search-miss (${c.searchMiss}) — typed into our search, that card (name + set) does not come back`, "", "| Card | Set | Bucket | Raw (demand) |", "|---|---|---|---|");
   for (const r of misses) L.push(`| ${label(r)} | ${r.set} | ${r.bucket}${r.ticker ? " " + r.ticker : ""} | ${money(r.rawUSD)} |`);
   L.push("", `#### Tracked but not searchable (${c.notSearchable}) — in an index, no card-search row (should be 0 since Oct 4 2026: universe + chase cards have card files)`, "", "| Card | Set | Ticker | Bucket | Raw (demand) |", "|---|---|---|---|---|");
   for (const r of notSearchable) L.push(`| ${label(r)} | ${r.set} | ${r.ticker} | ${r.bucket} | ${money(r.rawUSD)} |`);
