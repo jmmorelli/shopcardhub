@@ -11,6 +11,13 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-12 — desk (Nov 11 evening slot, ran ~20:40 PT, verified live). Nothing new needs you
+
+- Still open from the weekly, still yours: **pick one Chrome for the scheduled runs** (disconnect the Claude extension in the profile you don't use, Browser 2) · **TAG affiliate payment info + link** (~10 min).
+- The desk and the daily review switched themselves off yesterday afternoon while the Mac was away. The desk is back on (this run). The review wasn't re-checked tonight; Ops checks it in the morning.
+
+*Not yours:* the two fixes that sat waiting yesterday are live. /deals stopped calling 28 graded slabs cheap against a price that was 16 days old, deal boxes no longer list the same card twice, the booster-box page stopped showing single cards as box deals, and the Pitch Black vs Chaos Rising headline now reads 55.77 vs 33.13 as of Nov 9. Our own test tools can no longer open eBay links, which closes the click-spike leak.
+
 ## 2026-11-11 — weekly (11:00 run, verified live). One small thing
 
 - **Pick one Chrome for the scheduled runs (~1 minute).** Two Chrome browsers are connected again (Browser 1 and Browser 2), and an unattended run isn't allowed to choose, so today's weekly couldn't read Search Console, MailerLite or EPN. Action: disconnect the Claude extension in the Chrome profile you don't use (Browser 2), or answer the browser picker the next time you're in a CoS chat. The rules already say "always Browser 1"; the tool just won't take that from a file.
