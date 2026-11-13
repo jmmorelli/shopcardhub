@@ -141,11 +141,30 @@ function block(slug, e) {
 }
 
 // Where the strip goes: directly under the hero, above the destination strip.
+// The end of the hero box that holds the page's <h1>: the <div class="mast…"> it sits in, closed by depth count. Sector index
+// pages and /indices open that box after the left rail, more than 9000 characters past NAV:END, so the NAV:END fallback below
+// put the strip above the rail and the h1 (Bug Hunter, Nov 13 2026: /indices phone first screen = the eBay strip, no number).
+function heroEnd(html, from) {
+  const h1 = html.indexOf("<h1", from);
+  if (h1 < 0) return -1;
+  const open = html.lastIndexOf('<div class="mast', h1);
+  if (open < from) return -1;
+  const re = /<div\b|<\/div>/g; re.lastIndex = open; let depth = 0, m;
+  while ((m = re.exec(html))) { depth += m[0] === "</div>" ? -1 : 1; if (depth === 0) return m.index + 6; }
+  return -1;
+}
 function insert(html, blk) {
   if (html.includes(START)) {
     const a = html.indexOf(START);
     const b = html.indexOf(END, a);
     if (b === -1) throw new Error("BUYSTRIP:START without END");
+    const h1 = html.indexOf("<h1");
+    if (h1 > b) {
+      // the strip sits above the page heading: move it under the hero box when there is one
+      const rest = html.slice(0, a) + html.slice(b + END.length).replace(/^\n/, "");
+      const at = heroEnd(rest, a);
+      if (at > -1) return rest.slice(0, at) + "\n" + blk + rest.slice(at);
+    }
     return html.slice(0, a) + blk + html.slice(b + END.length);
   }
   const dest = html.indexOf("<!-- DEST:START");
