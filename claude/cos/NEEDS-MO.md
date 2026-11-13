@@ -11,6 +11,12 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-13 — desk (Nov 12 evening slot, ran ~17:11 PT, verified live). Nothing new needs you
+
+- Still yours: **pick one Chrome for the scheduled runs** — re-checked tonight, two are still connected (disconnect the Claude extension in the profile you don't use) · **TAG affiliate payment info + link** (~10 min).
+
+*Not yours:* the Pitch Black vs Chaos Rising page (where nearly all eBay earnings came from) now shows its eBay button on the first laptop screen with a calmer headline. The 30th Celebration page no longer says $1,431 buys all 191 cards (it buys the 188 in the index). A Mew PSA 10 price that ran ~$400 over recent sales is held. The Black Friday page stopped showing single cards as box deals.
+
 ## 2026-11-12 — desk (Nov 11 evening slot, ran ~20:40 PT, verified live). Nothing new needs you
 
 - Still open from the weekly, still yours: **pick one Chrome for the scheduled runs** (disconnect the Claude extension in the profile you don't use, Browser 2) · **TAG affiliate payment info + link** (~10 min).

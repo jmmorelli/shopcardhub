@@ -3649,6 +3649,45 @@
       "goal": "G1",
       "title": "Tuesday Tape NOT sent Nov 10 (second week). Per the BLOCKED row of Nov 3 (updated Nov 9: 'the Nov 10 Tape is drafted only'), this run did not read the MailerLite credential and did not stage a campaign; rogue-send and kill-switch checks not run. Draft with the content gate checked against the pushed page: Card Hub/digests/digest-2026-11-10.md. Still needs the attended decision: a send path that does not read the token in-session, or the Tape becomes an attended step.",
       "decision": "CoS desk 2026-11-10: queued → attended CoS session (daily review Nov 10 attended item 4, Tape send path, 2nd unsent week). Not Mo's by nature (a send path, not a sign-in). Draft stays at Card Hub/digests/digest-2026-11-10.md."
+    },
+    {
+      "id": "iw-2026-11-12-1",
+      "date": "2026-11-12",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "tier": "P1",
+      "goal": "G1",
+      "title": "MED: /pokemon-30th-anniversary-2026 answer sentence + Dataset JSON-LD paired 'the 191 cards it prices' with the 188-card basketValue.",
+      "source": "claude/cos/integrity-watch-2026-11-12.md + -proposals.json (Project)",
+      "status": "applied",
+      "decision": "CoS desk 2026-11-13: applied — Price Truth patch 9d0d07eb + regen 5f662308 (Task-key price-truth-2026-11-12), live-verified 01:20Z. Live: 'one raw copy of each of the 188 cards in the level cost about $1,398 … (3 more are tracked as their own line)'."
+    },
+    {
+      "id": "iw-2026-11-12-2",
+      "date": "2026-11-12",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "tier": "P2",
+      "goal": "G1",
+      "title": "LOW: /pitch-black-vs-chaos-rising undated Oct 19 prose (62%/38%, '9 Monday marks both indices have') under the Nov 9 headline.",
+      "source": "claude/cos/integrity-watch-2026-11-12.md + -proposals.json (Project)",
+      "status": "applied",
+      "decision": "CoS desk 2026-11-13: applied — Price Truth patch 9d0d07eb + regen 5f662308 (Task-key price-truth-2026-11-12), live-verified 01:20Z. Both sentences dated (Nov 9 56%/33%; table read Oct 23). Re-running the tables on Nov 9 stays with the page's next price re-read (Monday price lane Nov 16, BLOCKED price-exceptions)."
+    },
+    {
+      "id": "iw-2026-11-12-3",
+      "date": "2026-11-12",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "tier": "CHORE",
+      "goal": "CHORE",
+      "title": "LOW: /deals legend promised a sale count on every row; meta said 'Refreshed twice a day'.",
+      "source": "claude/cos/integrity-watch-2026-11-12.md + -proposals.json (Project)",
+      "status": "applied",
+      "decision": "CoS desk 2026-11-13: applied — Price Truth patch 9d0d07eb + regen 5f662308 (Task-key price-truth-2026-11-12), live-verified 01:20Z. Rows print '· n sales' where markN is set; legend reworded; meta 'Refreshed once a day.'"
     }
   ],
   "scoreboard": {
@@ -6247,6 +6286,32 @@
           "liveVerified": "2026-11-12 ~04:45Z: deals-latest.json 53 rows, 0 slab rows on markAsOf 2026-10-26, refiltered 28; g-cel21 a-15x held; /pitch-black-vs-chaos-rising 4x \"55.77 vs 33.13\"; /pokemon-booster-box-prices data-deal-grades=sealed; deal-row.js dedupe live; iPhone 13 render of the PB vs CR deals block shows 3 distinct rows",
           "note": "NC mailbox e2f09e08 (DL-1 deal-row dedupe, DL-2 sealed-only booster-box block, EPN-H harness eBay abort) + Price Truth pair Nov 11 (rule (c) 14-day slab hold, a-15x exemption needs two different monthly guide figures, U-F20 PB vs CR headline to the Nov 9 mark). Holds and labels only; no mark, level, weight, basket, divisor or call changed.",
           "rollback": "git revert fd96d65 da45fc6 664ea5d 3248caf"
+        },
+        {
+          "date": "2026-11-12",
+          "commits": [
+            "dbebabf"
+          ],
+          "pushed": "64e9202..dbebabf",
+          "by": "CoS (attended, Mo: \"ok do it - we need to fix this\"; EPN read claude/cos/epn-read-2026-11-12.md) — entry written by the Nov 13 desk",
+          "gates": "0/61 · 0/4 · 0/1 (= base, as reported by the pushing session)",
+          "liveVerified": "2026-11-12: feed files mkevt 0 / campid 0 / customid 1,097 + 53; /api/auctions + /api/deals mkevt 0; Chromium on production (eBay + analytics aborted): 0 tagged listing links in the DOM on /, /auctions, /deals; a trusted click opens the fully tagged link",
+          "note": "EPN click-time tag: listing links leave the server with customid only and get the tracking half on a trusted pointer/touch/keyboard event; robots.txt disallows the two listing feeds. Money-link plumbing only; no price, mark or call changed.",
+          "rollback": "git revert dbebabf"
+        },
+        {
+          "date": "2026-11-13",
+          "commits": [
+            "dd573c62",
+            "9d0d07eb",
+            "5f662308"
+          ],
+          "pushed": "f3c4d71b..5f662308",
+          "by": "CoS desk (unattended, Mac deploy-key clone under /tmp/desk-1113; Task-key desk-2026-11-13 / price-truth-2026-11-12)",
+          "gates": "0/64 · 0/4 · 0/1 (prices 64 = untouched base tree f3c4d71b today; +3 vs 61 is the UTC day roll); Price Truth sweep RED 0",
+          "liveVerified": "2026-11-13 ~01:20Z curl + Chromium: /pitch-black-vs-chaos-rising first eBay button y 442 at 1440x900, h1 600/no caps, Oct 23 table line dated; /pokemon-30th-anniversary-2026 '188 cards in the level … $1,398'; /deals 'Refreshed once a day'; iPhone 13 QA 6 pages 200, scrollWidth 390, 0 console errors",
+          "note": "NC mailbox: Cupertino run 13 (U-F21/22, money-page first screen; patch 2/2 only — Coverage Builder 1/2 left for the NC deploy, no byte-exact path for its data lines) + Price Truth Nov 12 (rule (d') engages Nov 17; CZ23 Mew GG10 PSA 10 verifier hold; iw-2026-11-12-1/-2/-3). Holds, labels and layout only; no mark, level, weight, basket, divisor or call changed.",
+          "rollback": "git revert 5f662308 9d0d07eb dd573c62"
         }
       ]
     },
