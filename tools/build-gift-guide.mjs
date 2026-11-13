@@ -30,7 +30,7 @@ const ebay = (p) => {
   const q = encodeURIComponent(p.q.replace(/\s+/g, ' ').trim()).replace(/'/g, '%27');
   return `https://www.ebay.com/sch/i.html?_nkw=${q}${p.cat ? '&_sacat=' + p.cat : ''}&${EPN}&customid=${cfg.slug}`;
 };
-const basis = (p, grade) => p.from ? `median of ${p.n} eBay sales, ${day(p.from)}–${day(p.asOf)}` : `${grade ? grade + ' ' : ''}median of ${p.n} sales, ${p.basis === '90d' ? '90' : '30'} days to ${day(p.asOf)}`;
+const basis = (p, grade) => p.from ? `median of ${p.n} eBay sales, ${p.from === p.asOf ? day(p.asOf) : day(p.from) + '–' + day(p.asOf)}` : `${grade ? grade + ' ' : ''}median of ${p.n} sales, ${p.basis === '90d' ? '90' : '30'} days to ${day(p.asOf)}`;
 
 // sanity: every pick carries a mark, a count >= 3 and a date; bands run high to low
 for (const b of cfg.bands) for (const p of b.picks) {
@@ -42,7 +42,7 @@ function pick(p) {
   const grade = p.kind === 'graded' ? 'PSA 10' : null;
   const tagLine = p.kind !== 'graded' ? '' : p.tag
     ? `<span class="gg-tag">TAG 10: ${money(p.tag.price)}, median of ${p.tag.n} sales, ${p.tag.basis === '90d' ? '90' : '30'} days to ${day(p.asOf)}</span>`
-    : `<span class="gg-tag">TAG 10: no verified sale in 90 days</span>`;
+    : `<span class="gg-tag">TAG 10: fewer than two sales in 90 days</span>`;
   const kind = p.kind === 'sealed' ? 'Sealed' : p.kind === 'graded' ? 'Graded' : 'Raw card';
   const sub = [p.set && p.kind !== 'sealed' ? p.set : null, p.what].filter(Boolean).join(' · ');
   return `

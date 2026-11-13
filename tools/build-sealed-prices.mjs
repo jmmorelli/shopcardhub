@@ -32,7 +32,7 @@ const ebay = (p) => {
   return `https://www.ebay.com/sch/i.html?_nkw=${q}${p.cat ? '&_sacat=' + p.cat : ''}&${EPN}&customid=${cfg.slug}`;
 };
 // window = first and last sale counted (Nov 6 2026: the source lists the most recent sales, so a liquid product's 30 days is often one week)
-const basis = (p) => p.from ? `median of ${p.n} eBay sales, ${day(p.from)}–${day(p.asOf)}` : `median of ${p.n} sales, 30 days to ${day(p.asOf)}`;
+const basis = (p) => p.from ? `median of ${p.n} eBay sales, ${p.from === p.asOf ? day(p.asOf) : day(p.from) + '–' + day(p.asOf)}` : `median of ${p.n} sales, 30 days to ${day(p.asOf)}`;
 
 // sanity: every row carries a mark, a count >= 3 and a date; tables run high to low
 const all = [];
