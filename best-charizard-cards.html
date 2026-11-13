@@ -219,125 +219,7 @@
       .mobile-nav { display:block !important; }
     }
   
-/* ═══ DUNGEON EFFECTS — The Seeker → The Curator ═══ */
 
-/* 1. Corner bracket accents on card/roi entries */
-.card-entry,.roy-entry{position:relative;}
-.card-entry::before,.card-entry::after,
-.roy-entry::before,.roy-entry::after{
-  content:'';position:absolute;width:12px;height:12px;pointer-events:none;z-index:1;
-}
-.card-entry::before,.roy-entry::before{top:-2px;left:-2px;border-top:2px solid;border-left:2px solid;}
-.card-entry::after,.roy-entry::after{bottom:-2px;right:-2px;border-bottom:2px solid;border-right:2px solid;}
-.card-entry::before,.card-entry::after{border-color:var(--orange);}
-.card-entry.gold-tier::before,.card-entry.gold-tier::after{border-color:var(--gold);}
-.card-entry.watch-tier::before,.card-entry.watch-tier::after{border-color:var(--accent);}
-.card-entry.emotional::before,.card-entry.emotional::after{border-color:var(--purple);}
-.roy-entry::before,.roy-entry::after{border-color:var(--accent);}
-.roy-entry.nl-entry::before,.roy-entry.nl-entry::after{border-color:var(--green);}
-.roy-entry.il-entry::before,.roy-entry.il-entry::after{border-color:var(--red);}
-.roy-entry.watch-entry::before,.roy-entry.watch-entry::after{border-color:var(--gold);}
-
-/* 2. Neon glow on prices and key labels */
-.price-main{text-shadow:0 0 16px rgba(0,224,122,0.45);}
-.price-main.orange{text-shadow:0 0 16px rgba(255,140,0,0.45);}
-.price-main.gold{text-shadow:0 0 16px rgba(245,200,0,0.45);}
-.price-main.purple{text-shadow:0 0 16px rgba(155,93,229,0.45);}
-.poll-pts{text-shadow:0 0 16px rgba(0,204,245,0.45);}
-.poll-pts.nl{text-shadow:0 0 16px rgba(0,224,122,0.45);}
-.stat-num span{text-shadow:0 0 20px rgba(0,204,245,0.4);}
-.panel-price.hot{text-shadow:0 0 12px rgba(0,224,122,0.5);}
-.panel-price.mid{text-shadow:0 0 12px rgba(255,140,0,0.5);}
-.hero-eyebrow{text-shadow:0 0 8px rgba(0,204,245,0.5);}
-.section-eyebrow{text-shadow:0 0 6px rgba(0,204,245,0.35);}
-.entry-tag{text-shadow:0 0 8px rgba(255,140,0,0.4);}
-.entry-tag.gold{text-shadow:0 0 8px rgba(245,200,0,0.5);}
-.entry-tag.cyan{text-shadow:0 0 8px rgba(0,204,245,0.5);}
-.entry-tag.purple{text-shadow:0 0 8px rgba(155,93,229,0.5);}
-
-/* 3. Glitch entrance on hero H1 */
-@keyframes glitch-entrance{
-  0%{transform:translate(0,0);filter:none;opacity:0}
-  8%{transform:translate(-4px,0);filter:hue-rotate(90deg) saturate(2);opacity:1}
-  16%{transform:translate(4px,0);filter:none}
-  24%{transform:translate(-2px,0);filter:hue-rotate(-30deg)}
-  32%{transform:translate(2px,0);filter:none}
-  40%,100%{transform:translate(0,0);filter:none;opacity:1}
-}
-.hero h1{animation:glitch-entrance 1.4s ease-out 0.1s both;}
-
-/* 4. Hotspot ring pulse on live status dots */
-@keyframes hotspot-ring{
-  0%{box-shadow:0 0 0 0 rgba(0,224,122,0.7),0 0 8px var(--green);}
-  100%{box-shadow:0 0 0 10px rgba(0,224,122,0),0 0 8px var(--green);}
-}
-.panel-dot{animation:hotspot-ring 2s ease-out infinite!important;}
-
-/* 5. CRT scanline overlay */
-body::before{
-  content:'';position:fixed;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.045) 2px,rgba(0,0,0,0.045) 4px);
-  pointer-events:none;z-index:9998;
-}
-
-/* 6. Hero scan line sweep — injected by JS below */
-@keyframes hero-scan{
-  0%{top:0;opacity:0.7}90%{opacity:0.5}100%{top:100%;opacity:0}
-}
-.hero{overflow:hidden;}
-.hero-scan-line{
-  position:absolute;left:0;right:0;height:1px;top:0;
-  background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);
-  pointer-events:none;z-index:2;
-  animation:hero-scan 3.5s ease-in-out 0.8s 1 forwards;
-}
-
-/* 7. Blinking cursor — class added by JS below */
-@keyframes blink-cur{0%,100%{opacity:1}50%{opacity:0}}
-.blink-cursor::after{
-  content:'\25AE';display:inline-block;margin-left:3px;
-  font-size:0.8em;animation:blink-cur 1s step-end infinite;
-  color:var(--accent);opacity:0.7;
-}
-
-/* 8. Wire pulse on section borders */
-@keyframes wire-pulse{
-  0%,100%{border-top-color:rgba(255,255,255,0.07)}
-  50%{border-top-color:rgba(0,204,245,0.18)}
-}
-section{animation:wire-pulse 5s ease-in-out infinite;}
-
-/* 9. Log-in slide entry on card entries */
-@keyframes log-in{
-  from{opacity:0;transform:translateX(14px)}
-  to{opacity:1;transform:translateX(0)}
-}
-.card-entry,.roy-entry{animation:log-in 0.4s ease-out both;}
-.card-entry:nth-child(1),.roy-entry:nth-child(1){animation-delay:0.05s}
-.card-entry:nth-child(2),.roy-entry:nth-child(2){animation-delay:0.12s}
-.card-entry:nth-child(3),.roy-entry:nth-child(3){animation-delay:0.19s}
-.card-entry:nth-child(4),.roy-entry:nth-child(4){animation-delay:0.26s}
-.card-entry:nth-child(5),.roy-entry:nth-child(5){animation-delay:0.33s}
-.card-entry:nth-child(6),.roy-entry:nth-child(6){animation-delay:0.40s}
-
-/* 10. Marquee strip in card entries */
-@keyframes entry-marquee{
-  from{transform:translateX(0)}to{transform:translateX(-50%)}
-}
-.entry-marquee-wrap{
-  overflow:hidden;height:18px;
-  border-top:1px solid var(--border);
-  margin-top:16px;margin-bottom:-4px;
-  background:rgba(0,204,245,0.02);
-}
-.entry-marquee-text{
-  display:inline-block;white-space:nowrap;
-  font-family:var(--fm);font-size:9px;
-  color:rgba(0,204,245,0.35);
-  letter-spacing:2px;text-transform:uppercase;
-  animation:entry-marquee 18s linear infinite;
-  line-height:18px;
-}
 
 
     /* ===== CARD PHOTOS (Sep 2026) — hero photo + ranked-list thumbs via /js/card-img.js ===== */
@@ -479,40 +361,96 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       .ck-grail::before, .narrator-eye { animation:none; }
     }
 
-    .hero h1 em { background:linear-gradient(100deg, #fff1b8 0%, #ffb347 28%, #ff6a1f 55%, #ff3d1f 100%); background-size:200% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
-      animation:heat-shift 6s ease-in-out infinite; filter:drop-shadow(0 0 22px rgba(255,106,31,0.35)); }
-    @keyframes heat-shift { 0%,100% { background-position:0% 0; } 50% { background-position:100% 0; } }
-    .ember { position:absolute; bottom:-12px; width:5px; height:5px; border-radius:50%; background:radial-gradient(circle, #fff3c4 0%, #ffb347 35%, #ff6a1f 70%, transparent 100%);
-      box-shadow:0 0 8px 2px rgba(255,106,31,0.55); opacity:0; animation:ember-rise var(--d, 7s) ease-out var(--t, 0s) infinite; }
-    .ember.s { width:3px; height:3px; } .ember.l { width:7px; height:7px; }
-    @keyframes ember-rise {
-      0%   { opacity:0; transform:translate(0, 0) scale(0.6); }
-      10%  { opacity:0.95; }
-      50%  { opacity:0.7; transform:translate(var(--x, 14px), -46vh) scale(1); }
-      85%  { opacity:0.35; }
-      100% { opacity:0; transform:translate(calc(var(--x, 14px) * -0.6), -92vh) scale(0.4); }
+    /* Cupertino run 14 (P2): DESIGN-SYSTEM.md "Best-cards pages" */
+    html:root { --accent:#00ccf5; --accent-dim:rgba(0,204,245,.1); --accent-glow:transparent; }
+    body::after, .hero::before, .hero-eyebrow::before, .section-eyebrow::after, .ck-grail::before { display:none !important; }
+    .narrator-eye { animation:none; }
+    .lad-v, .ck-tag { text-shadow:none; }
+    .hero.desk-hero { padding:56px 0 40px; }
+    .hero-eyebrow { font:600 12px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-dim); margin-bottom:12px; }
+    .hero h1 { font-size:var(--ds-fs-h2); font-weight:600; line-height:1.1; letter-spacing:-.015em; text-transform:none; max-width:14em; margin-bottom:16px; }
+    .hero h1 em { color:var(--text-dim); }
+    .hero-sub { font-size:17px; line-height:1.47; color:var(--text); max-width:640px; margin-bottom:0; }
+    .desk-toc { gap:8px; margin:24px 0 0; }
+    .desk-toc a { display:inline-flex; align-items:center; min-height:36px; padding:0 16px; border:0; border-radius:980px; background:var(--ds-surface-1); font:400 14px/1 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text); transition:background var(--ds-dur-ui) var(--ds-ease), color var(--ds-dur-ui) var(--ds-ease); }
+    .desk-toc a:hover { background:var(--ds-surface-3); color:var(--text-head); }
+    .hero-meta { gap:4px 20px; margin-top:16px; font:400 12px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; }
+    .hero-card { filter:none; }
+    .hero-card .sch-cimg-hero { box-shadow:none !important; }
+    .hero-card-cap { font:400 12px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; }
+    .bstrip-wrap { margin-top:8px; }
+    .bstrip:not(.bs-dock) { border:0; border-radius:var(--ds-radius); background:var(--ds-surface-1); padding:20px 24px; gap:8px 16px; }
+    .bstrip:not(.bs-dock) .bs-k { font:600 12px/1.33 var(--ds-font); font-size:12px !important; letter-spacing:0; text-transform:none; color:var(--text-dim); }
+    .bstrip:not(.bs-dock) .bs-dot { box-shadow:none; }
+    .bstrip:not(.bs-dock) .bs-t { font:600 17px/1.3 var(--ds-font); letter-spacing:0; text-transform:none; }
+    .bstrip:not(.bs-dock) :is(.bs-go,.bs-go2) { justify-content:center; min-height:44px; padding:0 20px; border:0; border-radius:980px; font:600 14px/1 var(--ds-font); font-size:14px !important; letter-spacing:0; text-transform:none; }
+    .bstrip:not(.bs-dock) .bs-go2 { background:var(--ds-surface-3); color:var(--text-head) !important; }
+    .bstrip:not(.bs-dock) .bs-go2:hover { background:#3a3a3c; }
+    .bs-fine { font-size:12px; line-height:1.5; }
+    /* the signup now sits on the first screen at >= 1000 px: reserve its widest render (3 lines of tape copy, 76 px) loaded or not */
+    @media (min-width: 1000px) { .sch-signup[data-signup] { min-height:76px !important; } }
+    .narrator { margin:48px 0 0; padding:24px; border:0; border-radius:var(--ds-radius); background:var(--ds-surface-1); }
+    .narrator p { font-size:17px; line-height:1.47; max-width:44em; }
+    .narrator-chip { font:600 12px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-dim); }
+    .narrator-eye { width:8px; height:8px; background:var(--ds-text-3); box-shadow:none; }
+    section, section.shelf { border-top:0; }
+    section.shelf { padding:72px 0 0; }
+    section#notes, section.means { padding:72px 0 0; }
+    .section-eyebrow { font:600 12px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-dim); margin-bottom:8px; }
+    h2 { font-size:var(--ds-fs-h2); font-weight:600; line-height:1.1; letter-spacing:-.015em; text-transform:none; margin-bottom:12px; }
+    h3 { font-weight:600; text-transform:none; }
+    .section-intro { font-size:17px; line-height:1.47; color:var(--text-dim); max-width:640px; margin-bottom:32px; }
+    .ck-grid { gap:24px; margin-top:0; }
+    .ck { padding:32px; border:0; border-radius:var(--ds-radius); background:var(--ds-surface-1); transition:none; }
+    .ck:hover { box-shadow:none; }
+    .ck-top { display:block; margin-bottom:12px; }
+    .ck-tag { display:block; margin-bottom:4px; padding:0; background:none !important; font:600 12px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-dim); }
+    .ck-top h3 { font-size:var(--ds-fs-tile); line-height:1.17; letter-spacing:0; }
+    .ck-why { font-size:17px; line-height:1.47; max-width:40em; margin-bottom:0; }
+    .ck-note { font-size:14px; line-height:1.43; border-left:0; padding-left:0; max-width:48em; margin:12px 0 0; }
+    .prints { gap:40px; margin-top:32px; }
+    .print { padding:0; border:0; border-radius:0; background:none; }
+    .print-head { gap:16px; margin-bottom:16px; }
+    .print-label { font:600 21px/1.17 var(--ds-font); text-transform:none; }
+    .print-set { font-size:14px; line-height:1.43; margin-top:4px; }
+    .print-meta { gap:4px 16px; margin-top:4px; font:400 12px/1.33 var(--ds-font); letter-spacing:0; }
+    .print-meta b { font-weight:600; }
+    .print-meta .lad-pm i { opacity:1; }
+    .lad-house { margin-top:8px; padding:12px 16px; border:0; border-radius:12px; background:var(--ds-surface-2); gap:4px 12px; font-size:14px; }
+    .lad-house .lh-k { font:600 12px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-dim); }
+    .lad-house b { font-size:14px; font-weight:600; } .lad-house .lh-s { font-size:12px; }
+    .ladder { gap:8px; }
+    .lad-cell { padding:12px 16px; border:0; border-radius:12px; background:var(--ds-surface-2); }
+    .lad-raw { border-top:0; }
+    .lad-k { font:600 12px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; margin-bottom:4px; }
+    .lad-v { font:600 24px/1.1 var(--ds-font); letter-spacing:-.01em; }
+    .lad-na .lad-v { font-size:17px; font-weight:600; padding-top:2px; }
+    .lad-s { font-size:12px; line-height:1.33; margin-top:4px; }
+    .print-links { gap:8px; margin-top:16px; align-items:center; }
+    .lk { justify-content:center; min-height:44px; padding:0 18px; border:0; border-radius:980px; background:var(--ds-surface-3); font:600 14px/1 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-head); transition:background var(--ds-dur-ui) var(--ds-ease); }
+    .lk:hover { background:#3a3a3c; color:var(--text-head); }
+    .lk:active { transform:scale(.98); }
+    .lk-raw { background:var(--accent); color:#000; }
+    .lk-raw:hover { background:#33d6f7; color:#000; }
+    .lk-10, .lk-tag { border:0; } .lk-10:hover, .lk-tag:hover { background:#3a3a3c; }
+    .lk-card { background:none; padding:0 8px; font-weight:400; color:var(--accent); }
+    .lk-card:hover { background:none; color:var(--accent); text-decoration:underline; }
+    .cn-grid { gap:24px; margin-top:24px; }
+    .cn { padding:24px; border:0; border-radius:var(--ds-radius); background:var(--ds-surface-1); }
+    .cn h3 { font-size:21px; line-height:1.19; margin-bottom:8px; }
+    .cn p { font-size:17px; line-height:1.47; }
+    .disclosure { margin:48px 0; padding:16px 20px; border:0; border-radius:12px; background:var(--ds-surface-1); font-size:12px; line-height:1.5; }
+    .reveal { transition:opacity var(--ds-dur-reveal) var(--ds-ease), transform var(--ds-dur-reveal) var(--ds-ease); }
+    @media (max-width: 760px) {
+      .hero.desk-hero { padding:32px 0 24px; }
+      .ck { padding:24px 20px; }
+      .ck-top h3 { font-size:var(--ds-fs-tile); }
+      .lad-v { font-size:21px; }
+      .print-links { display:grid; grid-template-columns:1fr 1fr; }
+      .lk-raw, .lk-card { grid-column:1 / -1; } .lk-card { justify-self:start; }
+      section.shelf, section#notes, section.means { padding-top:56px; }
     }
-    #desk-breath { position:absolute; top:18%; left:-40%; width:46%; height:64%; opacity:0; pointer-events:none; filter:blur(14px);
-      background:radial-gradient(ellipse at 50% 50%, rgba(255,241,184,0.55) 0%, rgba(255,179,71,0.5) 22%, rgba(255,106,31,0.42) 48%, rgba(255,61,31,0.18) 70%, transparent 82%); }
-    #desk-breath.breathing { animation:flame-breath 1.6s cubic-bezier(.3,.8,.4,1) forwards; }
-    @keyframes flame-breath { 0% { opacity:0; transform:translateX(0) scaleY(0.6); } 12% { opacity:1; } 60% { opacity:0.85; transform:translateX(220%) scaleY(1); } 100% { opacity:0; transform:translateX(320%) scaleY(0.7); } }
-    #desk-breath-overlay { position:absolute; inset:0; opacity:0; pointer-events:none; background:radial-gradient(ellipse at 30% 40%, rgba(255,106,31,0.22) 0%, transparent 55%); }
-    #desk-breath-overlay.breathing { animation:heat-flash 1.6s ease-out forwards; }
-    @keyframes heat-flash { 0% { opacity:0; } 15% { opacity:1; } 50% { opacity:0.45; } 100% { opacity:0; } }
-    #desk-sprite { position:fixed; bottom:10px; left:-90px; width:36px; height:26px; z-index:900; pointer-events:none; opacity:0; }
-    #desk-sprite.running { animation:sprite-fly 8s cubic-bezier(.4,0,.6,1) 1; }
-    @keyframes sprite-fly { 0% { transform:translateX(0) translateY(0); opacity:0; } 4% { opacity:1; } 25% { transform:translateX(25vw) translateY(-14px); } 50% { transform:translateX(50vw) translateY(4px); } 75% { transform:translateX(75vw) translateY(-18px); } 96% { opacity:1; } 100% { transform:translateX(calc(100vw + 160px)) translateY(0); opacity:0; } }
-    #desk-sprite .core { position:absolute; right:0; top:3px; width:22px; height:20px; border-radius:55% 45% 50% 50%;
-      background:radial-gradient(circle at 40% 40%, #fff6d0 0%, #ffb347 35%, #ff6a1f 70%, #ff3d1f 100%); box-shadow:0 0 16px 4px rgba(255,106,31,0.6); animation:core-flicker 0.16s steps(2) infinite; }
-    @keyframes core-flicker { 0% { transform:scale(1,1); } 100% { transform:scale(1.08,0.92); } }
-    #desk-sprite .tail { position:absolute; right:14px; top:5px; width:64px; height:16px; background:linear-gradient(90deg, transparent 0%, rgba(255,61,31,0.5) 30%, #ff6a1f 70%, #ffb347 100%);
-      clip-path:polygon(0 50%, 18% 30%, 30% 48%, 48% 22%, 58% 50%, 76% 28%, 100% 42%, 100% 60%, 74% 72%, 56% 58%, 46% 80%, 28% 56%, 16% 72%); animation:tail-lick 0.22s steps(2) infinite; filter:blur(0.4px); }
-    @keyframes tail-lick { 0% { transform:scaleY(1); opacity:0.95; } 100% { transform:scaleY(-1) translateY(2px); opacity:0.7; } }
-    #desk-sprite:not(.running) .core, #desk-sprite:not(.running) .tail { animation:none; }
-    .ck-grail:hover { border-left-color:#ffb347; }
-    .lad-raw .lad-v { text-shadow:0 0 18px rgba(255,106,31,0.35); }
-    @media (max-width: 760px) { .hero-fx, #desk-sprite { display:none !important; } }
-    @media (prefers-reduced-motion: reduce) { .hero-fx, #desk-sprite { display:none !important; } .hero h1 em { animation:none !important; } }
+    @media (max-width: 734px) { .bstrip:not(.bs-dock) { padding:16px; } }
   </style>
 </head>
 <body>
@@ -1076,7 +1014,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <!-- NAV:END -->
 
 <section class="hero desk-hero" style="border-top:none;">
-  <div class="hero-fx" aria-hidden="true"><span class="ember l" style="left:72.0%;--d:7.79s;--t:-1.50s;--x:25px"></span><span class="ember" style="left:64.2%;--d:7.38s;--t:-0.85s;--x:20px"></span><span class="ember" style="left:56.4%;--d:6.98s;--t:-0.20s;--x:15px"></span><span class="ember s" style="left:48.7%;--d:6.58s;--t:-7.55s;--x:10px"></span><span class="ember" style="left:40.9%;--d:6.17s;--t:-6.90s;--x:6px"></span><span class="ember l" style="left:33.1%;--d:5.76s;--t:-6.26s;--x:1px"></span><span class="ember s" style="left:25.3%;--d:10.36s;--t:-5.61s;--x:-4px"></span><span class="ember" style="left:17.6%;--d:9.96s;--t:-4.96s;--x:-9px"></span><span class="ember" style="left:9.8%;--d:9.55s;--t:-4.31s;--x:-14px"></span><span class="ember s" style="left:2.0%;--d:9.14s;--t:-3.66s;--x:-19px"></span><span class="ember l" style="left:90.2%;--d:8.74s;--t:-3.02s;--x:-24px"></span><span class="ember" style="left:82.4%;--d:8.34s;--t:-2.37s;--x:-29px"></span><span class="ember s" style="left:74.7%;--d:7.93s;--t:-1.72s;--x:27px"></span><span class="ember" style="left:66.9%;--d:7.53s;--t:-1.07s;--x:22px"></span><span class="ember" style="left:59.1%;--d:7.12s;--t:-0.42s;--x:17px"></span><span class="ember l" style="left:51.3%;--d:6.71s;--t:-7.78s;--x:12px"></span><span class="ember" style="left:43.6%;--d:6.31s;--t:-7.13s;--x:7px"></span><span class="ember" style="left:35.8%;--d:5.91s;--t:-6.48s;--x:2px"></span><span class="ember s" style="left:28.0%;--d:5.50s;--t:-5.83s;--x:-3px"></span><span class="ember" style="left:20.2%;--d:10.10s;--t:-5.18s;--x:-7px"></span><span class="ember l" style="left:12.5%;--d:9.69s;--t:-4.54s;--x:-12px"></span><span class="ember s" style="left:4.7%;--d:9.29s;--t:-3.89s;--x:-17px"></span><div id="desk-breath-overlay"></div><div id="desk-breath"></div></div>
   <div class="container">
    <div class="hero-copy">
     <div class="hero-eyebrow">Rip's Collector's Desk &middot; No. 1 &middot; Charizard</div>
@@ -1084,9 +1021,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <p class="hero-sub">Charizard is the card that made this hobby. Every era since 1999 has printed one that collectors still chase, and most of the rest is filler with a dragon on it. These are the ones I'd put in the binder, from a $13 Radiant to a six-figure Crystal, with what each one actually sells for.</p>
     <div class="desk-toc"><a href="#grail">The grails</a><a href="#centerpiece">The centerpieces</a><a href="#starter">The starter shelf</a><a href="#notes">Collecting notes</a></div>
     <div class="hero-meta">
-      <span data-prices-updated="2026-11-09">&#128337; Recent sales as of Nov 9, 2026</span>
-      <span>&#128202; 20 prints, each from its own set index</span>
-      <span>&#127991;&#65039; Raw &middot; PSA 9 &middot; PSA 10 &middot; TAG 10</span>
+      <span data-prices-updated="2026-11-09">Recent sales as of Nov 9, 2026</span>
+      <span>20 prints, each from its own set index</span>
+      <span>Raw &middot; PSA 9 &middot; PSA 10 &middot; TAG 10</span>
     </div>
    </div>
    <div class="hero-card-photo hero-card"><span data-card-img="name:Charizard ex 199/165 Pokemon 151" data-card-name="Charizard ex #199" data-card-sub="pokemon" data-card-size="hero" data-card-tilt="1"></span><div class="hero-card-cap">Charizard ex #199 &middot; Scarlet &amp; Violet 151</div></div>
@@ -1794,17 +1731,6 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   els.forEach(function(e){ io.observe(e); });
 })();
 
-(function(){
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (window.innerWidth < 761) return;
-  var sw = document.getElementById('desk-breath'), ho = document.getElementById('desk-breath-overlay');
-  setTimeout(function(){ if (sw) sw.classList.add('breathing'); if (ho) ho.classList.add('breathing'); }, 500);
-  var sp = document.createElement('div'); sp.id = 'desk-sprite'; sp.setAttribute('aria-hidden','true');
-  sp.innerHTML = "<div class=\"tail\"></div><div class=\"core\"></div>";
-  document.body.appendChild(sp);
-  setTimeout(function(){ sp.classList.add('running'); }, 2200);
-  sp.addEventListener('animationend', function(e){ if (e.target === sp) sp.classList.remove('running'); });
-})();
 </script>
 <script src="/js/card-img.js?v=4" defer></script>
 </body>

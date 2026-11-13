@@ -32,6 +32,7 @@ body code, body pre, body kbd, body samp{font-family:ui-monospace, SFMono-Regula
 .ds-pill:hover{filter:brightness(1.1);} .ds-pill:active{transform:scale(.98);}
 .ds-more{color:var(--accent);text-decoration:none;} .ds-more::after{content:" \203A";}
 .ds-more:hover{text-decoration:underline;}
+html body :is(.sch-cimg-card,.sch-cimg-hero){box-shadow:none} /* run 14, P5 */
 /* 0b. Footer (run 3). Markup: tools/build-footer.js (FOOTER markers). `html body` beats the pages' old footer rules. */
 html body footer:has(> .ds-foot){background:var(--ds-surface-1);border:0;padding:0;margin:0;text-align:left;}
 html body .ds-foot{max-width:980px;margin:0 auto;padding:32px var(--ds-gutter) 24px;font:400 12px/1.33 var(--ds-font);letter-spacing:0;text-transform:none;color:var(--text-dim);}
@@ -390,7 +391,7 @@ body .bb-tower .beam, body .hero h1 em { animation: none !important; }
 .sch-cimg-thumb .sch-ebay-tag { font-size: 9px; padding: 0 2px; right: 1px; bottom: 1px; }
 a[href*="ebay.com"] { position: relative; }
 
-/* ===== Sep 18 2026 polish pass (page-polish + accessibility audit) — additive only; selectors verified on /, /bowman-bangers, /pokemon-30th ===== */
+/* ===== Sep 18 2026 polish pass (a11y audit), additive ===== */
 /* 1. Keyboard focus ring (nothing on the site declared :focus-visible). */
 body a:focus-visible, body button:focus-visible, body summary:focus-visible,
 body input:focus-visible, body select:focus-visible, body textarea:focus-visible,
