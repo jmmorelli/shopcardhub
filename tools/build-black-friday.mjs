@@ -127,6 +127,8 @@ html = swap(swap(html, 'BFLD', ld), 'BF', block);
 html = html.replace(/data-prices-updated="[^"]*"/, `data-prices-updated="${cfg.read}"`);
 html = html.replace(/(<span data-prices-updated="[^"]*">)[^<]*(<\/span>)/, `$1Sold prices read ${longDay(cfg.read)}$2`);
 html = html.replace(/data-deal-tk="[^"]*"/, `data-deal-tk="${cfg.dealTk}"`);
+// a sealed-box page lists only sealed deal rows, never singles (desk Nov 13, Ivan Nov 12; same rule as build-sealed-prices DL-2)
+if (!/data-deal-grades=/.test(html)) html = html.replace(/(data-deal-tk="[^"]*")/, '$1 data-deal-grades="sealed"');
 if (DRY) console.log(block.slice(0, 2000));
 else fs.writeFileSync(PAGE, html);
 console.log(`build-black-friday: ${all.length} rows in ${cfg.groups.length} tables · ${seq} eBay links · ${seen.length} Black Friday prices seen · read ${cfg.read}${DRY ? ' (dry)' : ''}`);
