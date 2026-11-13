@@ -265,6 +265,12 @@ const css = `<style>
 .bx-ctl label{display:inline-flex;align-items:center;gap:6px;color:var(--text-dim);letter-spacing:.5px;}
 .bx-ctl select{font-family:var(--fm);font-size:11px;background:var(--bg2);color:var(--text-head);border:1px solid var(--border2);border-radius:2px;padding:7px 8px;min-height:36px;max-width:100%;}
 .bx-ctl input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;}
+.bx-filt{width:100%;}
+.bx-fb{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;}
+.bx-filt>summary{list-style:none;cursor:pointer;font-family:var(--fm);font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);border:1px dashed rgba(0,204,245,.45);padding:8px 12px;min-height:36px;display:inline-flex;align-items:center;border-radius:2px;}
+.bx-filt>summary::-webkit-details-marker{display:none;}
+.bx-filt[open]>summary{background:var(--accent-dim);margin-bottom:10px;}
+@media(min-width:761px){.bx-filt>summary{display:none;}}
 .bx-cols{position:relative;}
 .bx-cols>summary{list-style:none;cursor:pointer;font-family:var(--fm);font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);border:1px dashed rgba(0,204,245,.45);padding:8px 12px;min-height:36px;display:inline-flex;align-items:center;border-radius:2px;}
 .bx-cols>summary::-webkit-details-marker{display:none;}
@@ -334,7 +340,7 @@ const metricLabel = boxes.profiles.metrics;
 const covLine = (p) => { const c = coverage[p.id]; return `Every figure on file for ${c.onFile} of ${rows.length}; ${c.qualify} qualify.`; };
 const howRows = profiles.map((p) => `<tr><td>${esc(p.name)}</td><td>${p.needsMonths ? esc(p.note) : p.weights.map(([k, w]) => `<code>${sign(w)}</code> ${esc(metricLabel[k] || k)}`).join("<br>")}<span class="bx-gate">Gate: ${esc(p.gate || "none")}. ${p.needsMonths ? "" : covLine(p)}</span></td></tr>`).join("");
 
-const intro = `Cheapest first, with the sale count and dates on every row. Tap a column to sort, or pick a buying goal. How each price is read is under the table.`;
+const intro = `Cheapest first, each row with its sale count and dates. Tap a column to sort. The method is under the table.`;
 const method = `Each price is the median of single-box sales on SportsCardsPro in the 30 days to the read date. If a box sold fewer than five times, the window stretches to 60 or 90 days. Cases, lots, breaks and presales before street date are left out. Jumbos have their own rows. To run your own numbers, use the <a href="/hobby-box-roi-calculator">Hobby Box ROI Calculator</a>.`;
 
 const legendIdx = statIdx.map((s) => `${s.ticker} (${esc(s.set)})`).join(" and ");
@@ -351,11 +357,14 @@ const how = `<details class="bx-how" id="fit-how">
 
 const controls = `<div class="bx-ctl" id="bx-ctl">
       <div class="bx-chips" role="group" aria-label="Sport">${["All", ...sportsPresent].map((s) => `<button type="button" class="bx-chip" data-sport="${s === "All" ? "" : esc(s)}" aria-pressed="${s === "All"}">${esc(s)}</button>`).join("")}</div>
-      <label>Format <select id="bx-format"><option value="">All</option>${formatsPresent.map((f) => `<option value="${f}">${FORMAT_LABEL[f]}</option>`).join("")}</select></label>
-      <label>Price <select id="bx-band">${BANDS.map(([v, t]) => `<option value="${v}">${esc(t)}</option>`).join("")}</select></label>
-      <label><input type="checkbox" id="bx-recent"> Out in the last 90 days</label>
-      <label>Goal <select id="bx-profile"><option value="">Price, low to high</option>${profiles.filter((p) => coverage[p.id].qualify).map((p) => `<option value="${p.id}">${esc(p.name)}</option>`).join("")}</select></label>
-      <details class="bx-cols"><summary>More columns</summary><div class="bx-colbox">${COLS.filter((c) => c.k !== "box").map((c) => `<label><input type="checkbox" data-col="${c.k}"> ${esc(c.label)}</label>`).join("")}</div></details>
+      <details class="bx-filt" id="bx-filt" open><summary>Filter and sort</summary><div class="bx-fb">
+        <label>Format <select id="bx-format"><option value="">All</option>${formatsPresent.map((f) => `<option value="${f}">${FORMAT_LABEL[f]}</option>`).join("")}</select></label>
+        <label>Price <select id="bx-band">${BANDS.map(([v, t]) => `<option value="${v}">${esc(t)}</option>`).join("")}</select></label>
+        <label><input type="checkbox" id="bx-recent"> Out in the last 90 days</label>
+        <label>Goal <select id="bx-profile"><option value="">Price, low to high</option>${profiles.filter((p) => coverage[p.id].qualify).map((p) => `<option value="${p.id}">${esc(p.name)}</option>`).join("")}</select></label>
+        <details class="bx-cols"><summary>More columns</summary><div class="bx-colbox">${COLS.filter((c) => c.k !== "box").map((c) => `<label><input type="checkbox" data-col="${c.k}"> ${esc(c.label)}</label>`).join("")}</div></details>
+      </div></details>
+      <script>if(window.matchMedia&&matchMedia("(max-width:760px)").matches)document.getElementById("bx-filt").open=false;</script>
       <div class="bx-count" id="bx-count" aria-live="polite">${rows.length} boxes, sorted by sold price</div>
     </div>`;
 
