@@ -9,6 +9,11 @@
 //      answer.crash adds "is it crashing?" (each group's levels against its base-month 100) and answer.links adds
 //      plain internal links under the answer; {crash} in a description is that answer's one-line form
 //   3. data/aisearch-llms.txt, the "Questions answered here" block tools/build-llms.mjs puts in llms.txt only
+//   4. opt-in per page ("card": <id in cfg.cards>): the <!-- AISEARCH:CARD:START --> … END block, placed just above
+//      the page's own <!-- TICKER:START --> index block. One dated sentence: what one card sold for, raw, in each
+//      printing named in cfg.cards[id].prints (each a live basket mark, not carried), plus a FAQPage JSON-LD of the
+//      same answer. Internal links only (the other printings' index pages, and this page's own chase row).
+//      {card} in a description is the page's own printing as one sentence.
 // Every number comes from data/indices.json at build time: a live mark, its date and its n. Nothing here carries
 // an eBay URL, a listing price or an ask (R45). Run it after any mark, before tools/build-llms.mjs.
 //   node tools/build-aisearch.mjs           write
@@ -155,6 +160,57 @@ if (cfg.answer.crash) {
   };
 }
 
+// ---------- one card across printings (optional cfg.cards, opt-in per page via pages[slug].card) ----------
+// Every figure is the card's live basket mark in each printing's index: price, asOf and window from data/indices.json.
+// A print whose index is not live, whose card is missing, unpriced or carried is left out; under two prints, no block.
+function cardAcross(id) {
+  const c = (cfg.cards || {})[id];
+  if (!c) throw new Error('unknown card answer: ' + id);
+  const prints = c.prints.map(p => {
+    const r = T[p.ticker];
+    if (!r) return null;
+    const b = (r.x.basket || []).find(b => String(b.num) === String(c.num) && b.name === c.name);
+    if (!b || b.carried || typeof b.price !== 'number' || !b.asOf || !b.win) return null;
+    return { ...p, r, b };
+  }).filter(Boolean);
+  if (prints.length < 2) return null;
+  const dates = [...new Set(prints.map(p => p.b.asOf))].sort();
+  const wins = [...new Set(prints.map(p => p.b.win))];
+  const same = dates.length === 1;
+  const list = ps => ps.map((p, i) => `${i === ps.length - 1 ? 'and ' : ''}${usd(p.b.price)} ${p.as}${same ? '' : ` (${'\u0000D' + p.b.asOf + '\u0000'})`}`).join(ps.length > 2 ? ', ' : ' ');
+  const hi = prints.reduce((a, p) => (p.b.price > a.b.price ? p : a)), lo = prints.reduce((a, p) => (p.b.price < a.b.price ? p : a));
+  const x = hi.b.price / lo.b.price;
+  const an = w => (/^[aeiou]/i.test(w) ? 'an' : 'a');
+  const ratio = x >= 3 ? ` ${an(hi.label).replace(/^a/, 'A')} ${hi.label} copy sold for about ${Math.round(x)} times ${an(lo.label)} ${lo.label} one.` : '';
+  const win = wins.length === 1 ? `the last ${wins[0]} days` : 'its window';
+  const body = `${same ? '\u0000D' + dates[0] + '\u0000, a' : 'A'} raw ${c.title} sold for a median of ${list(prints)}. Each figure is the median of that printing's ungraded sales over ${win}.${ratio}`;
+  const withDates = (s, f) => s.replace(/\u0000D(\d{4}-\d{2}-\d{2})\u0000/g, (_, d) => f(d));
+  return {
+    c, prints,
+    text: withDates(body, d => (same ? `On ${fmtDate(d)}` : fmtDate(d))),
+    html: withDates(esc(body), d => (same ? `On <time datetime="${d}">${fmtDay(d)}</time>` : `<time datetime="${d}">${fmtDay(d)}</time>`)),
+    one: t => { const p = prints.find(p => p.ticker === t); return p ? `A raw ${p.label} ${c.title} sold for a median ${usd(p.b.price)} on ${fmtDate(p.b.asOf)}.` : ''; },
+  };
+}
+function cardBlock(id, ticker, slug) {
+  const a = cardAcross(id);
+  if (!a) return null;
+  const here = a.prints.find(p => p.ticker === ticker);
+  const others = a.prints.filter(p => p.ticker !== ticker);
+  const hereTxt = here ? `This page is the ${esc(here.label)} print. <a href="#${esc(ticker.toLowerCase())}-chase">${esc(a.c.name)}'s row and its eBay links are just below</a>. ` : '';
+  const otherTxt = others.length ? `Other prints: ${others.map(p => `<a href="${esc(p.r.page)}">${esc(p.label)} (${esc(p.ticker)})</a>`).join(' · ')}.` : '';
+  const faq = { '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: [{ '@type': 'Question', name: a.c.question, acceptedAnswer: { '@type': 'Answer', text: `${a.text}${a.c.tell ? ' ' + a.c.tell : ''}` } }] };
+  return `<!-- AISEARCH:CARD:START — built by tools/build-aisearch.mjs from data/indices.json + data/aisearch.json (AI-Search Hunter). Do not hand-edit. -->
+<div class="wrap"><section id="card-answer" aria-labelledby="aisc-q" style="margin:12px 0 0;padding:12px 14px;border:1px solid var(--bd,#23303d);border-radius:8px;scroll-margin-top:80px;">
+<h2 id="aisc-q" style="font-size:16px;line-height:1.3;margin:0 0 6px;color:var(--th);text-wrap:balance;">${esc(a.c.question)}</h2>
+<p style="font-size:15px;line-height:1.55;color:var(--th);max-width:72ch;margin:0 0 6px;text-wrap:pretty;">${a.html.replace(/'/g, '&#39;')}</p>${a.c.tell ? `\n<details style="margin:0 0 6px;"><summary style="cursor:pointer;font-size:13px;line-height:1.5;color:var(--ac);min-height:24px;">${esc(a.c.tellLabel || 'How to tell the prints apart')}</summary><p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:4px 0 0;">${esc(a.c.tell)}</p></details>` : ''}
+<p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:0;">${hereTxt}${otherTxt}</p>
+</section></div>
+<script type="application/ld+json">${JSON.stringify(faq).replace(/</g, '\\u003c')}</script>
+<!-- AISEARCH:CARD:END -->`;
+}
+
 // ---------- /indices block ----------
 const cell = h => (h ? `<span class="${h.v > 0.05 ? 'up' : h.v < -0.05 ? 'dn' : 'fl'}">${sgn(h.v)}</span>` : '<span class="fl">not yet</span>');
 const listed = new Set();
@@ -198,7 +254,8 @@ ${table}
 // {since}: level vs 100 at the base month ("down 42.2%"); {cost}: one raw copy of each priced card at the mark;
 // {month}: the screener's 1M move (" It moved down 21.7% in the latest month."), empty when the record is too short.
 const moveWord = v => (v > 0.05 ? 'up ' : v < -0.05 ? 'down ' : 'flat at ') + Math.abs(v).toFixed(1) + '%';
-function fill(s, r) {
+function fill(s, r, p = {}) {
+  if (/\{card\}/.test(s)) { const a = p.card && r ? cardAcross(p.card) : null; const t = a ? a.one(r.k) : ''; if (!t) throw new Error((r ? r.k : '?') + ': {card} used but no live card answer for this ticker'); s = s.replace(/\{card\}/g, t); }
   if (/\{crash\}/.test(s)) { if (!crash) throw new Error('{crash} used but answer.crash is not set'); s = s.replace(/\{crash\}/g, crash.desc); }
   if (!r) return s;
   const cost = typeof r.last.basketValue === 'number' ? usd(r.last.basketValue) : null;
@@ -211,7 +268,7 @@ function fill(s, r) {
 function setHead(html, p) {
   const r = p.ticker ? T[p.ticker] : null;
   if (p.ticker && !r) return html;
-  const title = esc(p.title), desc = esc(fill(p.description, r));
+  const title = esc(p.title), desc = esc(fill(p.description, r, p));
   const once = (h, re, rep) => { if (!re.test(h)) throw new Error('head tag not found: ' + re); return h.replace(re, rep); };
   html = once(html, /<title>[^<]*<\/title>/, `<title>${title} | ShopCardHub</title>`);
   html = once(html, /<meta name="description" content="[^"]*">/, `<meta name="description" content="${desc}">`);
@@ -226,7 +283,7 @@ function setHead(html, p) {
     if (!m) throw new Error('WebPage JSON-LD not found for ' + (p.ticker || p.title));
     const ld = JSON.parse(m[1]);
     ld.name = p.title;
-    ld.description = fill(p.description, r);
+    ld.description = fill(p.description, r, p);
     if (r) ld.about = { '@type': 'Thing', name: `${r.k} · ${r.x.name}` };
     html = html.replace(RE, () => `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>`);
   }
@@ -247,6 +304,16 @@ for (const [slug, p] of Object.entries(cfg.pages)) {
       html = html.replace(anchor, () => block + '\n' + anchor);
     }
   }
+  if (p.card || /<!-- AISEARCH:CARD:START/.test(html)) {
+    const RE = /<!-- AISEARCH:CARD:START[\s\S]*?<!-- AISEARCH:CARD:END -->\n?/;
+    html = html.replace(RE, '');
+    const blk = p.card && p.ticker ? cardBlock(p.card, p.ticker, slug) : null;
+    if (blk) {
+      const anchor = `<!-- ${p.ticker}:START -->`;
+      if (html.split(anchor).length !== 2) throw new Error(slug + ': expected one ' + anchor + ' anchor for the card answer');
+      html = html.replace(anchor, () => blk + '\n' + anchor);
+    }
+  }
   out.set(f, html);
 }
 
@@ -260,6 +327,11 @@ const llms = ['## Questions answered here'];
 for (const q of cfg.llms) {
   if (q.answer === 'market') { llms.push(`- [${q.q}](${SITE}${q.page}): ${answerText} ${method}`); continue; }
   if (q.answer === 'crash') { if (crash) llms.push(`- [${q.q}](${SITE}${q.page}): ${crash.text}`); continue; }
+  if (typeof q.answer === 'string' && q.answer.startsWith('card:')) {
+    const a = cardAcross(q.answer.slice(5));
+    if (a) llms.push(`- [${q.q}](${SITE}${q.page}): ${a.text}${a.c.tell ? ' ' + a.c.tell : ''}`);
+    continue;
+  }
   const r = T[q.ticker];
   if (!r) continue;
   // Optional: q.page points the question at another owned page; q.lead is a plain sentence before the dated answer.

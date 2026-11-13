@@ -1,5 +1,5 @@
 {
- "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json; {crash} (no ticker) is the one-line form of answer.crash. answer.crash = where each named group's indices stand against their base-month 100; answer.links = internal links printed under the answer. Optional \"feed\" adds one line under the question block pointing at /index-feed.json (built by tools/build-index-feed.mjs). No eBay URLs, prices or asks here, ever (R45).",
+ "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json; {crash} (no ticker) is the one-line form of answer.crash. answer.crash = where each named group's indices stand against their base-month 100; answer.links = internal links printed under the answer. Optional cards{} + pages[slug].card: the AISEARCH:CARD block (one card's dated raw mark in each printing listed, above the page's index block, with a FAQPage); {card} in a description is the page's own printing as one sentence; an llms entry with \"answer\": \"card:<id>\" prints the same answer. Optional \"feed\" adds one line under the question block pointing at /index-feed.json (built by tools/build-index-feed.mjs). No eBay URLs, prices or asks here, ever (R45).",
  "pages": {
   "indices": {
    "title": "Is the Pokémon Card Market Crashing? Up or Down by Set, Dated",
@@ -7,13 +7,15 @@
   },
   "pokemon-base-set-index": {
    "ticker": "BS99",
-   "title": "Pokémon Base Set Card Prices (Unlimited): Dated Sold Prices · BS99",
-   "description": "Pokémon Base Set (Unlimited) card prices from dated sales of raw singles. The BS99 index stood at {level} on {date} (100 = {base}) across {priced} cards, re-marked Monday and Thursday. Every card is listed with its price and date."
+   "title": "Pokémon Base Set Card Prices (Unlimited), Charizard #4 Included: Dated Sold Prices · BS99",
+   "description": "{card} The BS99 index of Pokémon Base Set (Unlimited) card prices stood at {level} on {date} (100 = {base}) across {priced} cards on dated sales of raw singles. Every card is listed with its price and date.",
+   "card": "charizard-base"
   },
   "pokemon-base-set-1st-edition-index": {
    "ticker": "BS1E",
-   "title": "Pokémon Base Set 1st Edition Card Prices: Dated Sold Prices · BS1E",
-   "description": "Pokémon Base Set 1st Edition card prices from dated sales of raw singles. The BS1E index stood at {level} on {date} (100 = {base}) across {priced} cards, re-marked Monday and Thursday. Every card is listed with its price and date."
+   "title": "Pokémon Base Set 1st Edition Card Prices, Charizard #4 Included: Dated Sold Prices · BS1E",
+   "description": "{card} The BS1E index of Pokémon Base Set 1st Edition card prices stood at {level} on {date} (100 = {base}) across {priced} cards on dated sales of raw singles. Every card is listed with its price and date.",
+   "card": "charizard-base"
   },
   "scarlet-violet-151-index": {
    "ticker": "SV151",
@@ -55,7 +57,8 @@
    "ticker": "BSSL",
    "ld": true,
    "title": "Pokémon Base Set Shadowless Card Prices, Charizard #4 Included: Dated Sold Prices · BSSL",
-   "description": "The BSSL index of Pokémon Base Set Shadowless card prices stood at {level} on {date} (100 = {base}), {since} since then, across {priced} cards on dated sales of raw singles.{month} One raw copy of each card came to about {cost}. Every card is listed with its price and date, Charizard #4 included."
+   "description": "{card} The BSSL index of Pokémon Base Set Shadowless card prices stood at {level} on {date} (100 = {base}), {since} since then, across {priced} cards on dated sales of raw singles.{month} Every card is listed with its price and date.",
+   "card": "charizard-base"
   },
   "neo-genesis-1st-edition-index": {
    "ticker": "NG1E",
@@ -196,6 +199,11 @@
    "page": "/indices"
   },
   {
+   "q": "What is a Base Set Charizard worth (1st Edition, Shadowless, Unlimited)?",
+   "answer": "card:charizard-base",
+   "page": "/pokemon-base-set-index"
+  },
+  {
    "q": "What are Pokémon Base Set (Unlimited) cards selling for?",
    "ticker": "BS99"
   },
@@ -245,5 +253,32 @@
  "feed": {
   "text": "Machine-readable: every index level, dated",
   "path": "/index-feed.json"
+ },
+ "cards": {
+  "charizard-base": {
+   "question": "What is a Base Set Charizard worth?",
+   "num": "4",
+   "name": "Charizard",
+   "title": "Base Set Charizard #4",
+   "prints": [
+    {
+     "ticker": "BS1E",
+     "label": "1st Edition",
+     "as": "in 1st Edition"
+    },
+    {
+     "ticker": "BSSL",
+     "label": "Shadowless",
+     "as": "in Shadowless"
+    },
+    {
+     "ticker": "BS99",
+     "label": "Unlimited",
+     "as": "in Unlimited"
+    }
+   ],
+   "tell": "To tell them apart: 1st Edition has the black 1st Edition stamp just under the picture on the left. Shadowless has no stamp and no drop shadow along the right edge of the picture frame. Unlimited has that shadow and no stamp.",
+   "tellLabel": "How to tell 1st Edition, Shadowless and Unlimited apart"
+  }
  }
 }
