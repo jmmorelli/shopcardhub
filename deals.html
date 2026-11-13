@@ -6,7 +6,7 @@
   <meta name="view-transition" content="same-origin">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <title>Deals — eBay Buy It Now Listings Below the Mark | ShopCardHub</title>
-  <meta name="description" content="Fixed-price eBay listings priced under our dated sold mark for the exact Pokémon or Bowman card and grade — raw, PSA 9, PSA 10 and sealed — verified by title, sorted by discount. Refreshed twice a day.">
+  <meta name="description" content="Fixed-price eBay listings priced under our dated sold mark for the exact Pokémon or Bowman card and grade — raw, PSA 9, PSA 10 and sealed — verified by title, sorted by discount. Refreshed once a day.">
   <link rel="canonical" href="https://www.shopcardhub.com/deals">
   <!-- a live listing screen is a utility, not a page to rank (same call as /auctions, B64) -->
   <meta name="robots" content="noindex,follow">
@@ -1043,7 +1043,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <p class="dl-note" id="dl-note">Mark = our own dated sold comp for that exact card and grade: the set index's raw mark (median of clean ungraded sales, dated), the graded ladder's 30-day PSA median, or the Bowman sold mark (3+ sales in 30 days). The listing is a live eBay ask; the two are never blended. <span id="dl-rules">A row shows when price plus shipping is at least 10% under on raw cards and Bowman, and 5% under on PSA 9, PSA 10 and sealed. Anything more than 35% under on raw cards and sealed, or 45% under on PSA 9, PSA 10 and Bowman, is held back as a likely mislabel or damage. Vintage raw cards (sets released before 2010) need a near-mint claim in the title and stop at 25% under. Marks older than 14 days (raw), 21 days (graded) or 30 days (Bowman) are skipped. A graded row more than 40% under prints only while its mark is at most 10 days old and the card's last sale in that grade sits no more than 25% under it. Once a graded mark is more than 10 days old, rows more than 25% under it are held, and so is every row on a set whose index has fallen more than 10% since that mark. Raw marks under $25 and graded marks under $40 are not screened. Sellers under 97% positive feedback or with fewer than 10 ratings are dropped.</span> Titles must name the card, the number and, for slabs, exactly that PSA grade; parallels, lots, other languages, reverse holos, promos and damage words are rejected. We can't see the photos; read the listing. ShopCardHub earns a commission on eBay purchases made through links on this page.</p>
 
   <div class="dl-legend">
-    <div><b>vs the mark</b>Price + shipping against the dated sold mark for that card and grade. The date and the sale count sit under every row.</div>
+    <div><b>vs the mark</b>Price + shipping against the dated sold mark for that card and grade. The date sits under every row, and the sale count wherever the mark has one.</div>
     <div><b>Verified</b>Card name and number in the title, edition words that agree with the index (1st Edition / Shadowless / Unlimited), no grading words on a raw row, exactly one PSA grade on a slab row.</div>
     <div><b>Shipping</b>Counted when eBay states it. "+ ship" means the seller calculates it at checkout, so the all-in number can move.</div>
     <div><b>What we don't know</b>Centering, the back, whether the photo is the card. Three minutes on the listing is the rest of the screen.</div>
@@ -1121,7 +1121,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         (href ? '<a class="ph" href="' + esc(href) + '">' : '<span class="ph">') + (r.image ? '<img src="' + esc(r.image) + '" alt="" loading="lazy">' : '') + (href ? '</a>' : '</span>') +
         '<div class="nm">' + (href ? '<a class="c" href="' + esc(href) + '">' : '<span class="c">') + name + (href ? '</a>' : '</span>') +
           '<span class="t"><span class="dl-g ' + esc(r.grade) + '">' + (GL[r.grade]||r.grade) + '</span>' + esc(r.idx) + (r.tk && r.tk !== 'BOWMAN' && r.tk !== 'SEALED' ? ' \u00b7 ' + esc(r.tk) : '') + '</span>' +
-          '<span class="sl">mark ' + fmt(r.mark) + '<span class="basis"> \u00b7 ' + esc(r.markBasis || '') + '</span>' + (r.markAsOf ? ' \u00b7 ' + esc(r.markAsOf) : '') + '</span></div>' +
+          '<span class="sl">mark ' + fmt(r.mark) + '<span class="basis"> \u00b7 ' + esc(r.markBasis || '') + '</span>' + (isFinite(r.markN) && r.markN > 0 && !/\d+ sales/.test(r.markBasis || '') ? ' \u00b7 ' + r.markN + ' sale' + (r.markN === 1 ? '' : 's') : '') + (r.markAsOf ? ' \u00b7 ' + esc(r.markAsOf) : '') + '</span></div>' +
         '<div class="dl-num"><b>' + fmt(r.total) + '</b><span>' + fmt(r.price) + (r.shipUnknown ? ' + ship' : r.ship===0 ? ' \u00b7 free ship' : ' + ' + fmt(r.ship) + ' ship') + (r.seller && r.seller.pct ? ' \u00b7 ' + esc(r.seller.pct) + '%' : '') + '</span></div>' +
         '<div class="dl-vs"><b>' + pct(r.disc) + ' vs mark</b><span>save ' + fmt(r.mark - r.total) + '</span></div>' +
         '<a class="dl-buy" href="' + esc(r.url) + '" target="_blank" rel="nofollow sponsored noopener" data-card="' + esc(r.cardId) + '" data-grade="' + esc(r.grade) + '">Buy on eBay \u2192</a>' +
