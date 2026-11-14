@@ -977,3 +977,10 @@ body .strip { display: none !important; }
    visibility:hidden takes them out; the switch waits for the 0.2 s fade on close and is instant on open. */
 body .mobile-nav:not(.open) { visibility: hidden; transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s; }
 body .mobile-nav.open { visibility: visible; transition: opacity .2s ease, transform .2s ease, visibility 0s; }
+
+/* Desk Nov 14 (site-gates FAIL 2 days running, gate-fail-roy-overflow-2026-11-13): a buy-strip button label set
+   nowrap ran 2–5 px past a 390 px phone when the system font is a wide fallback (DejaVu on the CI runner; some
+   Android skins). The label may wrap inside the button instead; no copy, link or price change. */
+@media (max-width: 480px) {
+  body .bstrip .bs-go, body .bstrip .bs-go2 { max-width: 100%; white-space: normal; text-align: center; }
+}
