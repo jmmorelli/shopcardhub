@@ -8,7 +8,7 @@
 // generalised to the guards that shipped since — ladder-guard `held`, move-guard `heldMove`, tcg-pull stale/high/name guards):
 //   1 one-card moves · 2 1st Edition vs Unlimited · 3 graded inversions + medians on < 3 sales · 4 thin marks narrated as
 //   "recent sales" · 5 shop-price residuals · 6 raw vs TCGplayer / PriceCharting > 2x · 7 placeholders (R35) · 8 deals /
-//   auctions > 40% under the mark.
+//   auctions > 40% under the mark · 9 static card-page shells baked behind the data (Nov 14 2026).
 // Each finding is rated: RED = a visitor would act on a wrong number (fix today) · AMBER = misleading · GREEN = cosmetic.
 // Prints the counts and the worst examples per check; --json <file> writes every finding. Exit code 1 when any RED is found,
 // 0 otherwise (2 on a read error).
@@ -58,6 +58,11 @@ function pcRaw(tk, key, asOf) {
   if (asOf && (Date.parse(asOf) - Date.parse(r[0] + "-01")) / 864e5 > 75) return null;
   return r[1];
 }
+
+// Check-6 exemptions, each with the verifier's evidence and an expiry (the next ladder read refreshes the h-file).
+const PC6_SKIP = {
+  "tr00-5": { until: "2026-11-23", why: "h-file Oct month $55 is stale; PriceCharting Nov 14: Dark Dragonite #5 $129.92, [Holo] #5 $107.25 ungraded; Holo #5 eBay sales Oct 19-Nov 12 median ~$106-130 (verifier Nov 13)" },
+};
 
 // ---------------- 1 · one-card moves ----------------
 // A card that moved > 50% on fewer than 5 sales and drives > 50% of its index's last move. RED when the new mark is also
@@ -252,7 +257,10 @@ for (const [tk, C] of Object.entries(CARDS)) {
   for (const c of C.cards) {
     if (c.raw == null || c.raw < 20 || c.screened) continue;
     const pc = pcRaw(tk, String(c.key ?? c.num), c.rawAsOf); if (!pc) continue;
-    const r = c.raw / pc; if (r > 2 || r < 0.5) add(6, A, c.id, `${tk.toUpperCase()} ${c.name} #${c.num}: raw $${c.raw} vs PriceCharting monthly $${pc} (${r.toFixed(2)}x)`, { page: C.page });
+    // PC6_SKIP (Price Truth Nov 14 2026): a row a verifier already rejected keeps printing GREEN until its expiry date, so it
+    // stops re-logging as AMBER every day but can never hide for good. Add only with the verifier's evidence.
+    const sk = PC6_SKIP[c.id], skip = sk && (IDX.updated || "") <= sk.until;
+    const r = c.raw / pc; if (r > 2 || r < 0.5) add(6, skip ? G : A, c.id, `${tk.toUpperCase()} ${c.name} #${c.num}: raw $${c.raw} vs PriceCharting monthly $${pc} (${r.toFixed(2)}x)${skip ? ` — verifier-rejected until ${sk.until}: ${sk.why}` : ""}`, { page: C.page });
   }
 }
 
@@ -316,14 +324,37 @@ if (has("data/feed/auctions-latest.json")) {
   if (deep.length) add(8, A, "auctions", `/auctions: ${deep.length} of ${(AU.rows || []).filter((r) => r.mark).length} marked rows show > 40% under our price (early bids, not prices)`);
 }
 
+// ---------------- 9 · static card shells behind the data (Price Truth Nov 14 2026) ----------------
+// tools/build-card-template.mjs bakes each static /card-<slug> page's meta description and first-paint line ("Raw $958 ·
+// read Nov 2") from data/cards/<tk>.json, but no price lane re-bakes after a mark (UMB-META: Umbreon #161 told Google $958 on
+// Nov 9-14 while the page rendered $1,075). The shell is dated, so a one-mark lag is AMBER; RED when the baked figure is
+// more than 2x off the current mark or names a different date than a mark 3+ weeks newer. Fix: build-card-template --keep-robots.
+let shellLag = 0, shellN = 0, shellWorst = [];
+for (const f of HTML.filter((f) => f.startsWith("card-"))) {
+  const t = fs.readFileSync(path.join(ROOT, f), "utf8");
+  const id = (/<main class="cdp" id="cdp" aria-live="polite" data-card-id="([^"]+)"/.exec(t) || [])[1]; if (!id) continue;
+  const m = /<meta name="description" content="[^"]*?: raw \$([\d,.]+) \([^,)]*, ([A-Z][a-z]{2} \d{1,2}, \d{4})\)/.exec(t); if (!m) continue;
+  const b = BYID.get(id); if (!b || b.c.raw == null) continue;
+  shellN++;
+  const baked = +m[1].replace(/,/g, ""), cur = b.c.raw, bakedDay = Date.parse(m[2] + " UTC"), curDay = Date.parse((b.c.rawAsOf || "") + "T00:00:00Z");
+  const near = Math.abs(baked - cur) <= Math.max(0.01, cur * 0.005) || (cur >= 100 && Math.round(cur) === baked);
+  if (near) continue;
+  shellLag++;
+  const r = baked / cur, age = Number.isFinite(bakedDay) && Number.isFinite(curDay) ? Math.round((curDay - bakedDay) / 864e5) : 0;
+  shellWorst.push({ f, id, baked, cur, r, age, asOf: b.c.rawAsOf, bakedOn: m[2] });
+}
+shellWorst.sort((a, b) => Math.abs(Math.log(b.r)) - Math.abs(Math.log(a.r)));
+for (const w of shellWorst) if (w.r > 2 || w.r < 0.5 || w.age >= 21) add(9, R, w.id, `/${w.f.replace(/\.html$/, "")}: shell says raw $${w.baked} (${w.bakedOn}) vs current mark $${w.cur} (${w.asOf}), ${w.r.toFixed(2)}x`);
+if (shellLag && !findings.some((x) => x.check === 9 && x.sev === R)) add(9, A, "shells", `${shellLag} of ${shellN} static card pages bake a raw figure one mark behind data/cards (worst /${shellWorst[0].f.replace(/\.html$/, "")}: $${shellWorst[0].baked} ${shellWorst[0].bakedOn} vs $${shellWorst[0].cur} ${shellWorst[0].asOf}) — re-bake: node tools/build-card-template.mjs --keep-robots`);
+
 // ---------------- report ----------------
-const NAMES = { 1: "one-card moves", 2: "1st Ed vs Unlimited", 3: "graded inversions / n<3", 4: "thin marks as recent sales", 5: "shop-price residuals", 6: "raw vs TCG/PC >2x", 7: "placeholders", 8: "deals/auctions >40% under" };
+const NAMES = { 1: "one-card moves", 2: "1st Ed vs Unlimited", 3: "graded inversions / n<3", 4: "thin marks as recent sales", 5: "shop-price residuals", 6: "raw vs TCG/PC >2x", 7: "placeholders", 9: "static card shells", 8: "deals/auctions >40% under" };
 const cnt = (sev, ch) => findings.filter((f) => f.sev === sev && (ch == null || f.check === ch)).length;
 const red = cnt(R), amber = cnt(A), green = cnt(G);
 if (!QUIET) {
   console.log(`PRICE TRUTH sweep · ${ROOT} · indices.updated ${IDX.updated || "?"}`);
   console.log(`scope: ${Object.keys(CARDS).length} card files · ${gradedCells} graded cells (${n2Stored} stored on n<3) · ${tcgMarks} TCG marks · ${pairsCompared} edition pairs · ${HTML.length} html`);
-  for (let ch = 1; ch <= 8; ch++) {
+  for (let ch = 1; ch <= 9; ch++) {
     const fs_ = findings.filter((f) => f.check === ch);
     console.log(`\n[${ch}] ${NAMES[ch]}: RED ${cnt(R, ch)} · AMBER ${cnt(A, ch)} · GREEN ${cnt(G, ch)}`);
     for (const sev of [R, A]) for (const f of fs_.filter((f) => f.sev === sev).slice(0, TOP)) console.log(`  ${sev === R ? "🔴" : "🟡"} ${f.msg}${f.page ? "  " + f.page : ""}`);
