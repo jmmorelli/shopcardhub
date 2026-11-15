@@ -87,6 +87,12 @@ function zScores(r, ownRets, xsMean, xsSd) {
 }
 const z1 = (z) => (z > 0 ? "+" : "") + Number(z).toFixed(1);
 
+// Cupertino run 16 (home second pass, DESIGN-SYSTEM "Home"): the level's unit beside it, in the index pages' own words
+// ("100 = Sep 2026 (release month)" / "100 = Jan 2021"), from the payload's own base label; and the pill's words without the
+// trailing "→" (an arrow means "to", not "go": DESIGN-SYSTEM "Labels"). data-buy-l keeps its bytes; only the shown text drops it.
+const unitOf = (v) => (v.sl === "since release" ? "100 = release month" : "100 = " + String(v.sl).replace(/^since /, ""));
+const pillText = (l) => String(l).replace(/\s*→$/, "");
+
 export function buildV2(REPO, opts = {}) {
   const read = (f) => fs.readFileSync(path.join(REPO, f), "utf8");
   const exists = (f) => fs.existsSync(path.join(REPO, f));
@@ -238,7 +244,7 @@ export function buildV2(REPO, opts = {}) {
       // Cupertino run 5 (Mo, Nov 3: "I didn't see I could click into each index"): the selected row carries a "›" that opens
       // the set's page; the row click still re-points the chart. Keyboard users open it with the "See all" button.
       `<td class="go"><a class="h2-rgo" href="${esc(v.p)}" tabindex="-1" aria-label="Every card in ${esc(v.n)}">›</a></td></tr>`; }).join("")).join("\n");
-  const idxbox = `<div class="q"><h2 id="h2-ixh">How are the sets doing?</h2><a class="all" href="/indices">All ${liveN} sets →</a></div>
+  const idxbox = `<div class="q"><h2 id="h2-ixh">How are the sets doing?</h2><a class="all" href="/indices">All ${liveN} sets ›</a></div>
 <div class="h2-box">
   <div class="h2-tabs" role="tablist" aria-label="Category">${tabs.map((t, i) => `<button class="h2-tab" role="tab" id="h2-tab-${t.id}" data-tab="${t.id}" aria-selected="${i === 0}" aria-controls="h2-list">${esc(t.label)}</button>`).join("")}</div>
   <div class="h2-body">
@@ -248,15 +254,15 @@ ${rowsHtml}
     <div class="h2-viz">
       <div class="h2-vh">
         <div class="nm" id="h2-vnm">${esc(d0.n)}<small id="h2-vtk">${esc(DEFAULT_TK)} · as of ${esc(mdy(d0.d))}</small></div>
-        <div class="lv"><b id="h2-vlv" data-v="${d0.l}">${d0.l.toFixed(2)}</b><span id="h2-vwk" class="${cls(d0.w)}">${d0.w == null ? "first week" : (d0.w > 0 ? "▲ " : d0.w < 0 ? "▼ " : "") + sgn(d0.w, 1) + " this week"}</span><small id="h2-vsn">${(d0.s > 0 ? "+" : "") + d0.s.toFixed(0)}% ${esc(d0.sl)}</small></div>
+        <div class="lv"><b id="h2-vlv" data-v="${d0.l}">${d0.l.toFixed(2)}</b><small class="u" id="h2-vu">${esc(unitOf(d0))}</small><span id="h2-vwk" class="${cls(d0.w)}">${d0.w == null ? "first week" : (d0.w > 0 ? "▲ " : d0.w < 0 ? "▼ " : "") + sgn(d0.w, 1) + " this week"}</span><small id="h2-vsn">${(d0.s > 0 ? "+" : "") + d0.s.toFixed(0)}% ${esc(d0.sl)}</small></div>
       </div>
       <div class="h2-rng" role="group" aria-label="Range" id="h2-rng"><button data-r="1M" aria-pressed="false">1M</button><button data-r="6M" aria-pressed="false">6M</button><button data-r="1Y" aria-pressed="false">1Y</button><button data-r="MAX" aria-pressed="true">Max</button></div>
       <div class="h2-chart" id="h2-chart" aria-live="polite"></div>
       <div class="h2-cap" id="h2-cap"></div>
-      <div class="h2-act"><a class="h2-buy" id="h2-buy" href="${esc(d0.buy.h)}" target="_blank" rel="noopener sponsored">${esc(d0.buy.l)}</a><a class="h2-open" id="h2-open" href="${esc(d0.p)}" aria-label="Every card in ${esc(d0.n)}">${openLabel(d0)}</a></div>
+      <div class="h2-act"><a class="h2-buy" id="h2-buy" href="${esc(d0.buy.h)}" target="_blank" rel="noopener sponsored">${esc(pillText(d0.buy.l))}</a><a class="h2-open" id="h2-open" href="${esc(d0.p)}" aria-label="Every card in ${esc(d0.n)}">${openLabel(d0)}</a></div>
     </div>
   </div>
-  <div class="h2-foot"><span>100 = the month the set came out. Above 100 = pricier since. <a href="/how-prices-work">How it works →</a></span><span>Updated ${esc(mdy(stamp))} from sold prices</span></div>
+  <div class="h2-foot"><span>100 = the month the set came out. Above 100 = pricier since. <a href="/how-prices-work">How it works ›</a></span><span>Updated ${esc(mdy(stamp))} from sold prices</span></div>
 </div>
 <script id="h2-data" type="application/json">${payload}</script>`;
 
@@ -291,7 +297,7 @@ ${rowsHtml}
   const movers2 = `<div class="h2-sub"><small>most unusual first · thin data left out</small>${how}</div>\n` +
     `<ul data-view="cards" data-dir="up">\n${cardList("up")}\n</ul>\n<ul data-view="cards" data-dir="down" hidden>\n${cardList("down")}\n</ul>\n` +
     `<ul data-view="sets" data-dir="up" hidden>\n${setList("up")}\n</ul>\n<ul data-view="sets" data-dir="down" hidden>\n${setList("down")}\n</ul>\n` +
-    `<div class="q" style="margin:8px 0 0;"><small data-view="cards">${movers.n} of ${movers.screened} screened cards moved outside their usual range</small><small data-view="sets" hidden>${setMovers.n} of ${setMovers.total} sets moved outside their usual range</small><a class="all" href="/indices">See all →</a></div>`;
+    `<div class="q" style="margin:8px 0 0;"><small data-view="cards">${movers.n} of ${movers.screened} screened cards moved outside their usual range</small><small data-view="sets" hidden>${setMovers.n} of ${setMovers.total} sets moved outside their usual range</small><a class="all" href="/indices">See all ›</a></div>`;
 
   return { tabs, T, DEFAULT_TK, liveN, dropped, movers, setMovers, RELEASES, stamp, blocks: { idxbox, releases: releasesHtml, movers2 }, summary: `default ${DEFAULT_TK} · tabs: ${tabs.map((t) => `${t.label} ${t.rows.length}`).join(" · ")}${dropped.length ? " · dropped (no live index): " + dropped.join(", ") : ""} · movers: ${movers.fresh} fresh → ${movers.screened} screened → ${movers.withHist} with history → ${movers.n} outside the usual range (${movers.up.length} up${movers.up[0] && movers.up[0].thin ? " thin" : ""} / ${movers.down.length} down${movers.down[0] && movers.down[0].thin ? " thin" : ""})${movers.noHistTickers.length ? " · no monthly history: " + movers.noHistTickers.join(", ") : ""} · sets ${setMovers.n}/${setMovers.total} outside the usual range · releases ${RELEASES.length} (${RELEASES.filter((r) => r.page).length} with a page)` };
 }
@@ -323,7 +329,7 @@ export function skeleton(carry) {
     <div class="h2-rel"><ol data-home="releases">
 <!-- HOME:releases:START -->
 <!-- HOME:releases:END -->
-    </ol><div class="ft"><span>Dates from the makers’ calendars</span><a href="/release-calendar">Full calendar →</a></div></div>
+    </ol><div class="ft"><span>Dates from the makers’ calendars</span><a href="/release-calendar">Full calendar ›</a></div></div>
   </section>
   </div>
 
@@ -336,17 +342,17 @@ export function skeleton(carry) {
   <section class="h2-tile" aria-labelledby="h2-dlh">
     <div class="q"><h2 id="h2-dlh">Listed below our price?</h2><small id="h2-dls">Buy It Now · screened once a day</small></div>
     <ul id="h2-dl"><li class="empty">Checking today’s deals…</li></ul>
-    <div class="q" style="margin:8px 0 0;"><small>our price = recent sold prices for that exact card and grade</small><a class="all" href="/deals">See all →</a></div>
+    <div class="q" style="margin:8px 0 0;"><small>our price = recent sold prices for that exact card and grade</small><a class="all" href="/deals">See all ›</a></div>
   </section>
   <section class="h2-tile" aria-labelledby="h2-auh">
     <div class="q"><h2 id="h2-auh">Auctions ending soon?</h2><small id="h2-aus">live on eBay</small></div>
     <ul id="h2-au"><li class="empty">Checking live auctions…</li></ul>
-    <div class="q" style="margin:8px 0 0;"><small>current bid, not a final price</small><a class="all" href="/auctions">See all →</a></div>
+    <div class="q" style="margin:8px 0 0;"><small>current bid, not a final price</small><a class="all" href="/auctions">See all ›</a></div>
   </section>
   <section class="h2-tile" aria-labelledby="h2-wlh">
     <div class="q"><h2 id="h2-wlh">Your watchlist</h2><small>stays on your device</small></div>
     <ul id="h2-wl"></ul>
-    <div class="q" style="margin:8px 0 0;"><small>★ any card on the site to watch it here</small><a class="all" href="/watchlist">Open the Vault →</a></div>
+    <div class="q" style="margin:8px 0 0;"><small>★ any card on the site to watch it here</small><a class="all" href="/watchlist">Open the Vault ›</a></div>
   </section>
   </div>
 

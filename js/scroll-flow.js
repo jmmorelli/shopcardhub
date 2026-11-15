@@ -15,14 +15,16 @@
    .lnav ~ .container > section.sidx; tile rows (.pr-tiles, .cg, .sidx-subidx) step in tile by tile.
    Run 7 (Nov 6 2026): card pages too. js/card-page.js loads this file after it renders main.cdp; the hooks are the
    children of .cdp, and the grade compare row (.cdp-cmp-g) steps in tile by tile. The quote header, the tabs and the
-   "Other places to buy" box (.cdp-buy) never move. */
+   "Other places to buy" box (.cdp-buy) never move.
+   Run 16 (Nov 15 2026): home / too (index.html loads it). The hooks are the children of main.h2; the four tiles (.h2-tiles)
+   step in one by one. The search, the index box with its eBay pill and Coming out are on the first screen and never move. */
 (function () {
   var w = window, d = document;
   if (!('IntersectionObserver' in w) || !w.matchMedia || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var BOX = '.lnav ~ .wrap, .lnav ~ .container > section.sidx, main.cdp', ROW = '.pr-tiles, .cg, .sidx-subidx, .cdp-cmp-g';
+  var BOX = '.lnav ~ .wrap, .lnav ~ .container > section.sidx, main.cdp, main.h2', ROW = '.pr-tiles, .cg, .sidx-subidx, .cdp-cmp-g, .h2-tiles';
   // the card tables are scroll boxes (.tbl-scroll) and run their own row scripts: they stay as they are
   var SKIP = 'script, style, link, template, [hidden], .crumb, .strip, .sealed, .ci-buy, .bs, .bstrip, .bstrip-wrap, .lnav, .ovl, .tbl-scroll, .sidx-tbl, table, .cdp-crumbs, .cdp-top, .cdp-tabs, .cdp-buy';
-  var BUY = '.sealed, .ci-buy, .bstrip, .lnav-pill, .cdp-ebay, .cdp-btns';
+  var BUY = '.sealed, .ci-buy, .bstrip, .lnav-pill, .cdp-ebay, .cdp-btns, .h2-buy';
   var LEVEL = '.mast .level, .sidx-level .lv', NUM = /^(\d{1,3}(,\d{3})+|\d+)(\.(\d+))?$/;
   var jump = Date.now();   // a restored scroll or a #hash on load lands where the reader asked: no fade there
   function hop() { jump = Date.now(); }

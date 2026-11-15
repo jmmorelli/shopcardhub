@@ -9,6 +9,8 @@
   var D = JSON.parse(document.getElementById('h2-data').textContent);
   var T = D.t, MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var RM = false; try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  // short phones (iPhone SE 375x667): a 160 px chart keeps the eBay pill on the first screen (R11); css/home-v2.css reserves the same box
+  var SHORT = false; try { SHORT = window.matchMedia('(max-width:380px) and (max-height:700px)').matches; } catch (e) {}
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var mdy = function (d) { if (!d) return ''; var p = String(d).slice(0, 10).split('-'); return MON[+p[1] - 1] + ' ' + (+p[2]); };
   var mly = function (ym) { var p = String(ym).split('-'); return MON[+p[1] - 1] + ' \u2019' + p[0].slice(2); };
@@ -23,10 +25,10 @@
   var tab = selTab ? selTab.getAttribute('data-tab') : D.tabs[0].id, cur = D.def, range = 'MAX', firstPaint = true;
   function countUp(el, to, dec) {
     if (RM || !(to > 0)) { el.textContent = to.toFixed(dec); return; }
-    var t0 = null, from = 0, done = false;
-    function step(ts) { if (done) return; if (!t0) t0 = ts; var k = Math.min(1, (ts - t0) / 600), e = 1 - Math.pow(1 - k, 3); el.textContent = (from + (to - from) * e).toFixed(dec); if (k < 1) requestAnimationFrame(step); else done = true; }
+    var t0 = null, from = 0, done = false, tok = el._cu = {};   // a later write (a pick within 0.9 s) retires this count (run 16: it used to land the first set's level over the picked one)
+    function step(ts) { if (done || el._cu !== tok) return; if (!t0) t0 = ts; var k = Math.min(1, (ts - t0) / 600), e = 1 - Math.pow(1 - k, 3); el.textContent = (from + (to - from) * e).toFixed(dec); if (k < 1) requestAnimationFrame(step); else done = true; }
     requestAnimationFrame(step);
-    setTimeout(function () { done = true; el.textContent = to.toFixed(dec); }, 900);   // a background tab gets no animation frames; the real number lands anyway
+    setTimeout(function () { done = true; if (el._cu === tok) el.textContent = to.toFixed(dec); }, 900);   // a background tab gets no animation frames; the real number lands anyway
   }
   function renderRows() {
     Array.prototype.forEach.call(rowsEl.querySelectorAll('tr[data-tk]'), function (tr) {
@@ -54,7 +56,7 @@
     var all = pts(v), last = all[all.length - 1];
     var sel = range === 'MAX' ? all : all.filter(function (p) { return p.t >= last.t - DAYS[range] * 864e5; });
     if (sel.length < 2) sel = all.slice(-2);
-    var el = document.getElementById('h2-chart'); var W = Math.max(260, Math.round(el.clientWidth || 560)), H = W < 420 ? 190 : 210, pl = 8, pr = 46, pt = 14, pb = 22;
+    var el = document.getElementById('h2-chart'); var W = Math.max(260, Math.round(el.clientWidth || 560)), H = W < 420 ? (SHORT ? 160 : 190) : 210, pl = 8, pr = 46, pt = 14, pb = 22;
     var lv = sel.map(function (p) { return p.v; }).concat([100]);
     var lo = Math.log(Math.min.apply(null, lv)), hi = Math.log(Math.max.apply(null, lv)), pad = Math.max((hi - lo) * 0.12, 0.03), y0 = lo - pad, y1 = hi + pad;
     var t0 = sel[0].t, t1 = sel[sel.length - 1].t;
@@ -80,16 +82,17 @@
   function paintViz(animate) {
     var v = T[cur];
     document.getElementById('h2-vnm').innerHTML = esc(v.n) + '<small>' + esc(cur) + ' \u00b7 as of ' + esc(mdy(v.d)) + '</small>';
-    var lvEl = document.getElementById('h2-vlv'); if (animate) countUp(lvEl, v.l, 2); else lvEl.textContent = v.l.toFixed(2);
+    var lvEl = document.getElementById('h2-vlv'); if (animate) countUp(lvEl, v.l, 2); else { lvEl._cu = null; lvEl.textContent = v.l.toFixed(2); }
     var wk = document.getElementById('h2-vwk'); wk.className = cls(v.w); wk.textContent = v.w == null ? 'first week' : (v.w > 0 ? '\u25b2 ' : v.w < 0 ? '\u25bc ' : '') + sgn(v.w, 1) + ' this week';
     wk.title = v.wd ? 'vs the ' + mdy(v.wd) + ' mark' : '';
     document.getElementById('h2-vsn').textContent = (v.s > 0 ? '+' : '') + v.s.toFixed(0) + '% ' + v.sl;
+    var u = document.getElementById('h2-vu'); if (u) u.textContent = v.sl === 'since release' ? '100 = release month' : '100 = ' + String(v.sl).replace(/^since /, '');   // the level's unit (Cupertino run 16; lib/home-v2.mjs unitOf says the same)
     Array.prototype.forEach.call(document.querySelectorAll('#h2-rng button'), function (b) { var r = b.getAttribute('data-r'); b.hidden = !rangeOk(v, r); });
     if (!rangeOk(v, range)) range = 'MAX';
     Array.prototype.forEach.call(document.querySelectorAll('#h2-rng button'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-r') === range)); });
     chart(v);
     var buy = document.getElementById('h2-buy'), row = rowsEl.querySelector('tr[data-tk="' + cur + '"]'), bh = row && row.getAttribute('data-buy');
-    if (bh) { buy.hidden = false; buy.href = bh; buy.textContent = row.getAttribute('data-buy-l') || 'Buy on eBay \u2192'; } else buy.hidden = true;
+    if (bh) { buy.hidden = false; buy.href = bh; buy.textContent = (row.getAttribute('data-buy-l') || 'Buy on eBay').replace(/\s*\u2192$/, ''); } else buy.hidden = true;   // the pill's words without the arrow (run 16; lib/home-v2.mjs pillText)
     var op = document.getElementById('h2-open'); op.href = v.p; op.textContent = v.u ? 'See all ' + v.u + ' cards \u203a' : 'See every card \u203a'; op.setAttribute('aria-label', 'Every card in ' + v.n);
   }
   function select(tk) { if (!T[tk]) return; cur = tk; Array.prototype.forEach.call(rowsEl.querySelectorAll('tr'), function (tr) { tr.setAttribute('aria-selected', String(tr.getAttribute('data-tk') === tk)); }); paintViz(false); ga('home2_index_pick', { ticker: tk }); }
@@ -146,25 +149,26 @@
   };
   fetch('/api/deals').then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
     var now = Date.now(), seen = {}, rows = (j.rows || []).filter(function (r) { return r && r.url && isFinite(r.total) && isFinite(r.mark) && (!r.ends || new Date(r.ends).getTime() > now) && (r.grade === 'raw' || r.grade === 'sealed' || nOk(r)); }).sort(function (a, b) { return a.disc - b.disc; }).filter(function (r) { var k = r.cardId + '|' + r.grade; if (seen[k]) return false; seen[k] = 1; return true; }).slice(0, 5);
-    if (!rows.length) { document.getElementById('h2-dl').innerHTML = '<li class="empty">Nothing under our recent-sales price right now. A deal is the exception, not the shelf. <a href="/deals">Deals \u2192</a></li>'; return; }
+    if (!rows.length) { document.getElementById('h2-dl').innerHTML = '<li class="empty">Nothing under our recent-sales price right now. A deal is the exception, not the shelf.</li>'; return; }
     document.getElementById('h2-dl').innerHTML = rows.map(function (r) { var href = r.cardHref || r.page;
       return '<li><span class="nm">' + (href ? '<a href="' + esc(href) + '">' : '<b>') + esc(r.card) + (r.num ? ' #' + esc(r.num) : '') + (href ? '</a>' : '</b>') + '<small><span class="h2-g ' + esc(r.grade) + '">' + esc(GL[r.grade] || r.grade) + '</span>' + esc(T[r.tk] ? T[r.tk].n : r.idx) + ' \u00b7 ' + markTxt(r) + (r.markAsOf ? ' \u00b7 ' + esc(mdy(r.markAsOf)) : '') + '</small></span>' +
         '<span class="rt"><span class="px">' + esc(money(r.total)) + '</span><span class="ch up">' + Math.round(r.disc * 100) + '%</span><a class="btn" href="' + esc(r.url) + '" target="_blank" rel="noopener sponsored">Buy \u2192</a></span></li>'; }).join('');
     if (j.generated) document.getElementById('h2-dls').textContent = 'Buy It Now \u00b7 screened ' + mdy(j.generated);
-  }).catch(function () { document.getElementById('h2-dl').innerHTML = '<li class="empty">Couldn\u2019t reach the deals feed just now. <a href="/deals">Deals \u2192</a></li>'; });
+  }).catch(function () { document.getElementById('h2-dl').innerHTML = '<li class="empty">Couldn\u2019t reach the deals feed just now.</li>'; });
 
+  /* run 16 (goldfish): an empty or failed tile says so in one line; its "See all ›" under it is the one way on */
   /* ---------- auctions ending soon: /api/auctions (the Auction Desk feed) ---------- */
   var au = document.getElementById('h2-au');
   var ends = function (iso) { var ms = new Date(iso).getTime() - Date.now(); if (!(ms > 0)) return 'ending'; var h = ms / 36e5; return h < 1 ? Math.max(1, Math.round(ms / 6e4)) + 'm' : h < 48 ? Math.round(h) + 'h' : Math.round(h / 24) + 'd'; };
   fetch('/api/auctions').then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
     var now = Date.now(), rows = (j.rows || []).filter(function (r) { return r && r.url && r.endDate && new Date(r.endDate).getTime() > now && isFinite(r.total); }).sort(function (a, b) { return new Date(a.endDate) - new Date(b.endDate); }).slice(0, 5);
-    if (!rows.length) { au.innerHTML = '<li class="empty">' + (j.source === 'empty' || j.tripped ? 'The live auction feed is resting (eBay call limit for today). ' : 'No verified auction is live right now. ') + '<a href="/auctions">Auction Desk \u2192</a></li>'; return; }
+    if (!rows.length) { au.innerHTML = '<li class="empty">' + (j.source === 'empty' || j.tripped ? 'The live auction feed is resting (eBay call limit for today). ' : 'No verified auction is live right now. ') + '</li>'; return; }
     au.innerHTML = rows.map(function (r) { var nm = String(r.label || '').split(' \u2014 ')[0];
       return '<li title="' + esc((r.bidCount || 0) + ' bids \u00b7 ends ' + new Date(r.endDate).toLocaleString()) + '"><span class="nm"><b>' + esc(nm) + '</b><small>' + esc(String(r.label || '').split(' \u2014 ')[1] || r.cardType || '') + ' \u00b7 ends in ' + ends(r.endDate) + (r.bidCount != null ? ' \u00b7 ' + r.bidCount + ' bid' + (r.bidCount === 1 ? '' : 's') : '') + '</small></span>' +
         '<span class="rt"><span class="px">' + esc(money(r.total)) + '</span><a class="btn bid" href="' + esc(r.url) + '" target="_blank" rel="noopener sponsored">Bid \u2192</a></span></li>'; }).join('');
     var asOf = j.generated && (Date.now() - new Date(j.generated).getTime()) > 20 * 60000 ? ' \u00b7 as of ' + new Date(j.generated).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '';
     document.getElementById('h2-aus').textContent = rows.length + ' of ' + (j.count || rows.length) + ' live' + asOf;
-  }).catch(function () { au.innerHTML = '<li class="empty">Couldn\u2019t reach the live auction feed just now. <a href="/auctions">Auction Desk \u2192</a></li>'; });
+  }).catch(function () { au.innerHTML = '<li class="empty">Couldn\u2019t reach the live auction feed just now.</li>'; });
 
   /* ---------- your watchlist: localStorage sch_vault_v1 (written by js/vault-track.js and /watchlist; nothing leaves the device) ---------- */
   (function () {
@@ -175,7 +179,7 @@
     var rows = cards.map(function (c) { var ps = (c.prices || []).filter(function (p) { return p && isFinite(p.p) && p.p > 0; }); return { name: c.name, set: c.set || '', last: ps.length ? ps[ps.length - 1].p : null, move: ps.length > 1 ? (ps[ps.length - 1].p / ps[0].p - 1) * 100 : null }; })
       .sort(function (a, b) { return Math.abs(b.move || 0) - Math.abs(a.move || 0); }).slice(0, 5);
     wl.innerHTML = rows.map(function (r) { return '<li><span class="nm"><b>' + esc(r.name) + '</b><small>' + esc(r.set || 'on your watchlist') + '</small></span><span class="rt"><span class="px">' + (r.last == null ? '' : esc(money(r.last))) + '</span><span class="ch ' + cls(r.move) + '">' + (r.move == null ? 'new' : sgn(r.move, 1)) + '</span></span></li>'; }).join('');
-    if (cards.length > 5) wl.insertAdjacentHTML('beforeend', '<li class="empty"><a href="/watchlist">' + cards.length + ' cards on your watchlist \u2192</a></li>');
+    if (cards.length > 5) wl.insertAdjacentHTML('beforeend', '<li class="empty"><a href="/watchlist">' + cards.length + ' cards on your watchlist\u00a0\u203a</a></li>');
   })();
 
   /* ---------- search: cards (/data/card-search.json, the header's list) first, set pages after, eBay on a miss ---------- */
