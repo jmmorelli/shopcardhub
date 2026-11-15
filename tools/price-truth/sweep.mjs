@@ -347,14 +347,29 @@ shellWorst.sort((a, b) => Math.abs(Math.log(b.r)) - Math.abs(Math.log(a.r)));
 for (const w of shellWorst) if (w.r > 2 || w.r < 0.5 || w.age >= 21) add(9, R, w.id, `/${w.f.replace(/\.html$/, "")}: shell says raw $${w.baked} (${w.bakedOn}) vs current mark $${w.cur} (${w.asOf}), ${w.r.toFixed(2)}x`);
 if (shellLag && !findings.some((x) => x.check === 9 && x.sev === R)) add(9, A, "shells", `${shellLag} of ${shellN} static card pages bake a raw figure one mark behind data/cards (worst /${shellWorst[0].f.replace(/\.html$/, "")}: $${shellWorst[0].baked} ${shellWorst[0].bakedOn} vs $${shellWorst[0].cur} ${shellWorst[0].asOf}) — re-bake: node tools/build-card-template.mjs --keep-robots`);
 
+// ---------------- 10 · printed concentration vs the live basket (Price Truth Nov 15 2026, KB P75) ----------------
+// An EX sub-line printed "<card> is N% of the index" from its launch day (Oct 12 uncap) beside the method text's live
+// "the top card is M%". build-sector-index now computes the clause at bake; this check holds it there. AMBER at > 0.2 pt.
+for (const [tk, v] of Object.entries(IDX)) {
+  if (!v || !v.sub || !v.sub.EX || !Array.isArray(v.basket) || !v.page) continue;
+  const f = v.page.replace(/^\//, "") + ".html"; if (!HTML.includes(f)) continue;
+  const t = fs.readFileSync(path.join(ROOT, f), "utf8");
+  const m = / is ([\d.]+)% of the index; this line is what the rest of the set did/.exec(t); if (!m) continue;
+  const val = (b) => (typeof b.price === "number" ? b.price * (b.w == null ? 1 : b.w) : 0);
+  const bv = v.basket.reduce((s, b) => s + val(b), 0), ex = v.basket.filter((b) => v.sub.EX.nums.includes(String(b.num))).reduce((s, b) => s + val(b), 0);
+  if (!(bv > 0)) continue;
+  const live = (ex / bv) * 100, shown = +m[1];
+  if (Math.abs(live - shown) > 0.2) add(10, A, tk + "-ex", `${tk}: EX line prints ${shown}% of the index vs ${live.toFixed(1)}% on the live basket`, { page: v.page });
+}
+
 // ---------------- report ----------------
-const NAMES = { 1: "one-card moves", 2: "1st Ed vs Unlimited", 3: "graded inversions / n<3", 4: "thin marks as recent sales", 5: "shop-price residuals", 6: "raw vs TCG/PC >2x", 7: "placeholders", 9: "static card shells", 8: "deals/auctions >40% under" };
+const NAMES = { 1: "one-card moves", 2: "1st Ed vs Unlimited", 3: "graded inversions / n<3", 4: "thin marks as recent sales", 5: "shop-price residuals", 6: "raw vs TCG/PC >2x", 7: "placeholders", 9: "static card shells", 8: "deals/auctions >40% under", 10: "printed weight vs live basket" };
 const cnt = (sev, ch) => findings.filter((f) => f.sev === sev && (ch == null || f.check === ch)).length;
 const red = cnt(R), amber = cnt(A), green = cnt(G);
 if (!QUIET) {
   console.log(`PRICE TRUTH sweep · ${ROOT} · indices.updated ${IDX.updated || "?"}`);
   console.log(`scope: ${Object.keys(CARDS).length} card files · ${gradedCells} graded cells (${n2Stored} stored on n<3) · ${tcgMarks} TCG marks · ${pairsCompared} edition pairs · ${HTML.length} html`);
-  for (let ch = 1; ch <= 9; ch++) {
+  for (let ch = 1; ch <= 10; ch++) {
     const fs_ = findings.filter((f) => f.check === ch);
     console.log(`\n[${ch}] ${NAMES[ch]}: RED ${cnt(R, ch)} · AMBER ${cnt(A, ch)} · GREEN ${cnt(G, ch)}`);
     for (const sev of [R, A]) for (const f of fs_.filter((f) => f.sev === sev).slice(0, TOP)) console.log(`  ${sev === R ? "🔴" : "🟡"} ${f.msg}${f.page ? "  " + f.page : ""}`);
