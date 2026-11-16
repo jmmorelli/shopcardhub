@@ -168,7 +168,11 @@ for (const [tk, Gf] of Object.entries(G_)) {
   for (const [tk, Gf] of Object.entries(G_)) {
     const C = CARDS[tk]; if (!C || !Gf.cards || !Number.isFinite(dms)) continue;
     let n = 0, oldest = null;
-    for (const g of Object.values(Gf.cards)) {
+    // Price Truth Nov 16 (verifier): a g-file key with no row in data/cards/<tk>.json (HF19 Metagross GX #157a, left out of
+    // the universe on purpose) has no card page or table row, so its cells print nowhere and are not counted.
+    const shown = new Set((C.cards || []).map((c) => String(c.key != null ? c.key : c.num)));
+    for (const [k, g] of Object.entries(Gf.cards)) {
+      if (!shown.has(String(k))) continue;
       const asOf = String(g.asOf || Gf.day || "").slice(0, 10); if (!asOf || (dms - Date.parse(asOf)) / 864e5 <= 21) continue;
       for (const lab of ["psa9", "psa10", "tag10"]) { const x = g[lab]; if (x && !x.held && ((x.m != null && x.n >= 3) || x.last)) { n++; if (!oldest || asOf < oldest) oldest = asOf; } }
     }

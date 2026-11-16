@@ -49,6 +49,7 @@ import { isReprintTitle, REPRINT_PAIRS, reprintFloor } from "./lib/reprint-filte
 import { holdIfUnconfirmed, tagReread } from "./lib/move-guard.mjs";
 import { tagClassicCollection, CC_LABEL } from "./lib/classic-collection.mjs";
 import { createRequire } from "node:module";
+import { spawnSync } from "node:child_process";
 import { applyIndexLd, applyIndexAnswer } from "./lib/index-jsonld.mjs";
 import { CLASS_PAGE, classTickers, readClassFile, classYear, classRows, rowKey, fold as foldName, classQuery, isFixture } from "./lib/bowman-class.mjs";
 // The plain read is baked, not injected after paint (Night Crew Oct 3 2026, B29: load CLS 0.1-0.24 at 1024). Same renderer as the browser.
@@ -957,6 +958,18 @@ ${PR.PR_CSS}
 @media(max-width:760px){body .sidx-tbl td.act.g{text-align:center}body .sidx-tbl td.act .act-w.g{display:inline-flex;width:auto;justify-content:center}body .sidx-tbl td.act .glk a.ebay{flex:0 0 auto;min-width:0;height:40px;padding:0 10px;font-size:11px;letter-spacing:.5px}.glk-bar .glk-n{display:none}}
 </style>`;
 
+// Price Truth Nov 16 2026 (sweep check 9): the static /card-* pages bake the raw mark into their meta description and
+// first paint. The nightly marks (TH26, SV151, SSP24, MEG25) rewrote data/cards/<tk>.json but never the shells, so 48 pages
+// printed the previous mark until someone re-baked by hand (Nov 14: Umbreon ex #161 $1,075 vs $1,370 meta). Every bake now
+// re-bakes that ticker's existing shells from the card file it just wrote (--keep-robots: no new URL, no robots flip).
+// A failed shell bake never fails the mark: the shells keep their last bake and sweep check 9 names them.
+function rebakeShells(tk) {
+  const r = spawnSync(process.execPath, [path.join(ROOT, "tools/build-card-template.mjs"), "--keep-robots", `--tickers=${String(tk).toLowerCase()}`], { cwd: ROOT, encoding: "utf8" });
+  if (r.status !== 0) { console.log(`${tk}: static card shells not re-baked (exit ${r.status}): ${String(r.stderr || "").trim().split("\n").pop()}`); return; }
+  const n = (/wrote (\d+) static card pages/.exec(r.stdout || "") || [])[1];
+  console.log(`${tk}: ${n || 0} static card shells re-baked from data/cards`);
+}
+
 function bake(x, c) {
   // Classic Collection reprint label (Price Truth, Nov 4 2026, KB GAPS P42): CEL21 / TH26 rows that reprint an older card on its
   // original number carry cc:true in data/indices.json (the client plain read reads it there) and say so on every surface.
@@ -1000,6 +1013,7 @@ function bake(x, c) {
     if (!html.includes('src="/js/shop-spread.js')) html = html.replace("</body>", '<script src="/js/shop-spread.js?v=9" defer></script>\n</body>');
     const bv = x.basket.reduce((a, b) => a + b.price * b.w, 0);
     writeCardFile(ROOT, x, c, x.basket.slice().sort((a, b) => b.price * b.w - a.price * a.w), imgAttr, DRY);
+    if (!DRY) rebakeShells(x.ticker);
   }
   // E7 slice 2: Dataset + Organization JSON-LD, dateModified = this mark (tools/lib/index-jsonld.mjs)
   try { html = applyIndexAnswer(applyIndexLd(html, { ...x, page: x.page || c.page }), { ...x, page: x.page || c.page }); } catch (e) { console.log(`LD skipped ${c.page}: ${e.message}`); }
