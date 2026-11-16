@@ -160,7 +160,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // other card. The g-/h- files now record each key's PriceCharting path (`paths`), and a previous row is carried into a
   // new file only when its key still points at the same card. Legacy rows (no `paths`) on a shared number are dropped.
   const curPaths = {}, sharedNum = {}, keyNum = {};
-  for (const tk of tks) {
+  // STALEST FIRST (Nov 16 2026, CoS): the read order is the ticker whose stored read is oldest, first. With the per-ticker
+  // flush below, a run that is cut short refreshes the files that needed it most and the next run starts where this one stopped.
+  const dayOf = (tk) => { const d = rd(`data/cards/g-${tk.toLowerCase()}.json`); return (d && d.day) || ""; };
+  const readOrder = tks.map((tk, i) => [tk, dayOf(tk), i]).sort((x, y) => (x[1] < y[1] ? -1 : x[1] > y[1] ? 1 : x[2] - y[2])).map((x) => x[0]);
+  for (const tk of readOrder) {
     let src = null; try { src = JSON.parse(fs.readFileSync(path.join(ROOT, `data/cards/${tk.toLowerCase()}.json`), "utf8")).cards; } catch (e) {}
     if (!src) src = (IDX[tk] && IDX[tk].basket) || [];
     let have = {}; if (MISSING) try { have = JSON.parse(fs.readFileSync(path.join(ROOT, `data/cards/g-${tk.toLowerCase()}.json`), "utf8")).cards || {}; } catch (e) {}
@@ -203,11 +207,23 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         }
       } catch (e) { errs++; console.error(key, e.message); }
       if (++done % 50 === 0) console.log(`  ${done} read · ${errs} errors`);
+      if (--left[j.tk] === 0) flushTicker(j.tk);
     }
   }
+  // PER-TICKER FLUSH (Nov 16 2026, CoS): each ticker's g-/h- file is written the moment its last card is read. Until today every
+  // file was written after ALL reads, so the Monday job (3,865 cards at ~57/min = 68 min, under a 50-minute timeout) was killed
+  // at ~3,200 cards three Mondays running and saved nothing: no g-file moved from Oct 26 to Nov 16.
+  const left = {}; for (const j of jobs) left[j.tk] = (left[j.tk] || 0) + 1;
+  const flushed = new Set();
+  function flushTicker(tk) {
+    if (flushed.has(tk)) return; flushed.add(tk);
+    writeG(tk); writeH(tk);
+    console.log(`  wrote ${tk} (${flushed.size} ticker file(s) so far)`);
+  }
   await Promise.all(Array.from({ length: WORKERS }, worker));
+  for (const tk of tks) if (!flushed.has(tk)) { flushed.add(tk); writeG(tk); writeH(tk); }
   // one small file per ticker (a card page loads its own set only); a card that failed to read keeps its previous ladder
-  for (const tk of tks) {
+  function writeG(tk) {
     const f = path.join(ROOT, `data/cards/g-${tk.toLowerCase()}.json`);
     let prevDoc = null; try { prevDoc = JSON.parse(fs.readFileSync(f, "utf8")); } catch (e) {}
     const prev = carryPrev(tk, prevDoc);
@@ -216,7 +232,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const paths = { ...((prevDoc && prevDoc.paths) || {}) };
     for (const [k, v] of Object.entries(cards)) if (k.startsWith(tk + ":")) { const kk = k.slice(tk.length + 1); mine[kk] = v; if (curPaths[tk][kk]) paths[kk] = curPaths[tk][kk]; fresh++; }
     for (const k of Object.keys(paths)) if (!(k in mine)) delete paths[k];
-    if (!fresh) continue;   // nothing read for this ticker: leave its file (and its read date) alone
+    if (!fresh) return;   // nothing read for this ticker: leave its file (and its read date) alone
     // guards (tools/lib/ladder-guard.mjs) on every row before it is written; PriceCharting's PSA 10 history = this read's, else the file's
     const hPrev = ((rd(`data/cards/h-${tk.toLowerCase()}.json`) || {}).cards) || {}, hNow = { ...hPrev };
     for (const [k, v] of Object.entries(hist)) if (k.startsWith(tk + ":")) hNow[k.slice(tk.length + 1)] = v;
@@ -227,9 +243,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const day = MISSING && prevDoc && prevDoc.day ? prevDoc.day : TODAY;
     fs.writeFileSync(f, JSON.stringify({ _comment: G_COMMENT, ticker: tk, day, paths, guard: { v: GUARD.v, day: TODAY, held: nHeld }, cards: mine }) + "\n");
   }
-  for (const tk of tks) {
+  function writeH(tk) {
     const fresh = {}; for (const [k, v] of Object.entries(hist)) if (k.startsWith(tk + ":")) fresh[k.slice(tk.length + 1)] = v;
-    if (!Object.keys(fresh).length) continue;
+    if (!Object.keys(fresh).length) return;
     // merge onto the previous file: a --missing (or partly failed) run must not drop the histories it did not re-read
     let prevHDoc = null; try { prevHDoc = JSON.parse(fs.readFileSync(path.join(ROOT, `data/cards/h-${tk.toLowerCase()}.json`), "utf8")); } catch (e) {}
     const mine = { ...carryPrev(tk, prevHDoc), ...fresh };
