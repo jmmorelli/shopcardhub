@@ -7,7 +7,9 @@
 //      up or down?" plus a plain static table of every live index, in the HTML itself (the /indices board is
 //      otherwise rendered client-side, so fetchers that don't run JavaScript saw no index levels); optional
 //      answer.crash adds "is it crashing?" (each group's levels against its base-month 100) and answer.links adds
-//      plain internal links under the answer; {crash} in a description is that answer's one-line form
+//      plain internal links under the answer; {crash} in a description is that answer's one-line form; optional
+//      answer.cards adds a short table of the cards collectors ask about most (raw mark, date, set index 1-month move),
+//      each linked to its row in its index page's chase strip
 //   3. data/aisearch-llms.txt, the "Questions answered here" block tools/build-llms.mjs puts in llms.txt only
 //   4. opt-in per page ("card": <id in cfg.cards>): the <!-- AISEARCH:CARD:START --> … END block, placed just above
 //      the page's own <!-- TICKER:START --> index block. One dated sentence: what one card sold for, raw, in each
@@ -213,6 +215,44 @@ function cardBlock(id, ticker, slug) {
 
 // ---------- /indices block ----------
 const cell = h => (h ? `<span class="${h.v > 0.05 ? 'up' : h.v < -0.05 ? 'dn' : 'fl'}">${sgn(h.v)}</span>` : '<span class="fl">not yet</span>');
+
+// ---------- the cards collectors ask about most (optional cfg.answer.cards) ----------
+// One row per named card: its live raw basket mark (price, asOf, window) in that ticker's index, and the index's own
+// 1-month move. A card whose index is not live, or whose basket row is missing, carried, unpriced or has no window,
+// is left out; under three rows, no table. The card links to its row in the index page's chase strip when that strip
+// carries it (customid=<tk>-<num>-chase in the page), else to the page. Internal links only; no eBay URL here.
+let asked = null;
+if (cfg.answer.cards) {
+  const ac = cfg.answer.cards;
+  const rows = ac.rows.map(c => {
+    const r = T[c.ticker];
+    if (!r) return null;
+    const b = (r.x.basket || []).find(b => String(b.num) === String(c.num) && b.name === c.name);
+    if (!b || b.carried || typeof b.price !== 'number' || !b.asOf || !b.win) return null;
+    const tk = c.ticker.toLowerCase(), n = String(c.num).toLowerCase();
+    const page = fs.readFileSync(path.join(ROOT, r.page.replace(/^\//, '') + '.html'), 'utf8');
+    const href = page.includes(`customid=${tk}-${n}-chase`) && page.includes(`id="${tk}-chase"`) ? `${r.page}#${tk}-chase` : r.page;
+    return { ...c, r, b, href };
+  }).filter(Boolean);
+  if (rows.length >= 3) {
+    const dates = [...new Set(rows.map(x => x.b.asOf))].sort();
+    const lineOf = x => `${x.name} #${x.num} ${x.label}, ${usd(x.b.price)}`;
+    const when = dates.length === 1 ? `On ${fmtDate(dates[0])}` : `At marks from ${fmtDate(dates[0])} to ${fmtDate(dates[dates.length - 1])}`;
+    const text = `${when}, the raw (ungraded) median sold prices were: ${rows.map(lineOf).join('; ')}. Each is the median of that card's ungraded sales over its index's window (30 or 90 days).`;
+    const tr = rows.map(x => `<tr><td class="nm"><a href="${esc(x.href)}">${esc(x.name)} #${esc(x.num)}</a><span style="display:block;color:var(--tx);font-size:11px;letter-spacing:0;">${esc(x.label)}</span></td><td class="lv">${usd(x.b.price)}<span style="display:block;color:var(--dim);font-size:11px;">${x.b.win} days</span></td><td><time datetime="${x.b.asOf}">${fmtDay(x.b.asOf)}</time></td><td>${cell(x.r.m)}</td></tr>`).join('\n');
+    asked = {
+      q: ac.question, text,
+      html: `\n<h3 id="aisa-cards" style="font-size:15px;margin:12px 0 4px;color:var(--th);scroll-margin-top:80px;">${esc(ac.question)}</h3>
+<p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:0 0 6px;">${esc(ac.lead)}</p>
+<style>#aisa-cards-t th,#aisa-cards-t td{padding-left:6px;padding-right:6px}#aisa-cards-t td.nm{white-space:normal}</style>
+<div style="overflow-x:auto;margin:0 0 10px;"><table id="aisa-cards-t">
+<thead><tr><th scope="col">Card</th><th scope="col" style="text-align:right">Raw median</th><th scope="col" style="text-align:right">Marked</th><th scope="col" style="text-align:right">1 month</th></tr></thead>
+<tbody>
+${tr}
+</tbody></table></div>`,
+    };
+  }
+}
 const listed = new Set();
 const sections = cfg.answer.sections.map(s => ({ label: s.label, rows: s.tickers.map(t => T[t]).filter(Boolean) }));
 sections.forEach(s => s.rows.forEach(r => listed.add(r.k)));
@@ -229,7 +269,8 @@ const faq = {
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: [{ '@type': 'Question', name: cfg.answer.question,
     acceptedAnswer: { '@type': 'Answer', text: `${answerText} ${method}` } }]
-    .concat(crash ? [{ '@type': 'Question', name: crash.q, acceptedAnswer: { '@type': 'Answer', text: crash.text } }] : []),
+    .concat(crash ? [{ '@type': 'Question', name: crash.q, acceptedAnswer: { '@type': 'Answer', text: crash.text } }] : [])
+    .concat(asked ? [{ '@type': 'Question', name: asked.q, acceptedAnswer: { '@type': 'Answer', text: asked.text } }] : []),
 };
 const crashHtml = crash ? `\n<h3 id="aisa-crash" style="font-size:15px;margin:12px 0 4px;color:var(--th);">${esc(crash.q)}</h3>\n<p style="font-size:15px;line-height:1.55;color:var(--th);max-width:72ch;margin:0 0 8px;">${crash.html}</p>` : '';
 const linksHtml = (cfg.answer.links || []).map(l => `\n<p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:0 0 10px;">${esc(l.lead)} <a href="${esc(l.href)}">${esc(l.text)}</a>.</p>`).join('');
@@ -237,7 +278,7 @@ const block = `<!-- AISEARCH:ANSWER:START — built by tools/build-aisearch.mjs 
 <section class="panel" id="market-answer" aria-labelledby="aisa-q" style="scroll-margin-top:80px;">
 <h2 id="aisa-q">${esc(cfg.answer.question)}</h2>
 <p style="font-size:15px;line-height:1.55;color:var(--th);max-width:72ch;margin:0 0 8px;">${esc(answerText)}</p>
-<p style="font-size:12px;line-height:1.5;color:var(--dim);max-width:72ch;margin:0 0 10px;">${methodHtml} <a href="/how-prices-work">How the indices are priced</a>.</p>${crashHtml}${linksHtml}
+<p style="font-size:12px;line-height:1.5;color:var(--dim);max-width:72ch;margin:0 0 10px;">${methodHtml} <a href="/how-prices-work">How the indices are priced</a>.</p>${crashHtml}${asked ? asked.html : ''}${linksHtml}
 <details><summary style="cursor:pointer;font-size:13px;color:var(--ac);">All ${total} indices in one plain table, dated (${yearOf})</summary>
 <div style="overflow-x:auto;margin-top:8px;"><table>
 <thead><tr><th scope="col">Index</th><th scope="col" ${th}>Level</th><th scope="col" ${th}>Marked</th><th scope="col" ${th}>1 week</th><th scope="col" ${th}>1 month</th><th scope="col" ${th}>Cards</th></tr></thead>
@@ -327,6 +368,7 @@ const llms = ['## Questions answered here'];
 for (const q of cfg.llms) {
   if (q.answer === 'market') { llms.push(`- [${q.q}](${SITE}${q.page}): ${answerText} ${method}`); continue; }
   if (q.answer === 'crash') { if (crash) llms.push(`- [${q.q}](${SITE}${q.page}): ${crash.text}`); continue; }
+  if (q.answer === 'cards') { if (asked) llms.push(`- [${q.q}](${SITE}${q.page}): ${asked.text}`); continue; }
   if (typeof q.answer === 'string' && q.answer.startsWith('card:')) {
     const a = cardAcross(q.answer.slice(5));
     if (a) llms.push(`- [${q.q}](${SITE}${q.page}): ${a.text}${a.c.tell ? ' ' + a.c.tell : ''}`);

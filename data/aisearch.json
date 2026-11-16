@@ -1,5 +1,5 @@
 {
- "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json; {crash} (no ticker) is the one-line form of answer.crash. answer.crash = where each named group's indices stand against their base-month 100; answer.links = internal links printed under the answer. Optional cards{} + pages[slug].card: the AISEARCH:CARD block (one card's dated raw mark in each printing listed, above the page's index block, with a FAQPage); {card} in a description is the page's own printing as one sentence; an llms entry with \"answer\": \"card:<id>\" prints the same answer. Optional \"feed\" adds one line under the question block pointing at /index-feed.json (built by tools/build-index-feed.mjs). No eBay URLs, prices or asks here, ever (R45).",
+ "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json; {crash} (no ticker) is the one-line form of answer.crash. answer.crash = where each named group's indices stand against their base-month 100; answer.cards = a short table on /indices of the cards collectors ask about most (each row: ticker, num, name exactly as in the basket, label), with each card's raw mark, date and its index's 1-month move, linked to its chase row; an llms entry with \"answer\": \"cards\" prints the same answer. answer.links = internal links printed under the answer. Optional cards{} + pages[slug].card: the AISEARCH:CARD block (one card's dated raw mark in each printing listed, above the page's index block, with a FAQPage); {card} in a description is the page's own printing as one sentence; an llms entry with \"answer\": \"card:<id>\" prints the same answer. Optional \"feed\" adds one line under the question block pointing at /index-feed.json (built by tools/build-index-feed.mjs). No eBay URLs, prices or asks here, ever (R45).",
  "pages": {
   "indices": {
    "title": "Is the Pokémon Card Market Crashing? Up or Down by Set, Dated",
@@ -179,6 +179,48 @@
     "wotc"
    ]
   },
+  "cards": {
+   "question": "What did the Pokémon cards people ask about most sell for?",
+   "lead": "Raw (ungraded) median sold price for each card, over its index's window of 30 or 90 days. The last column is how the card's whole set index moved over the latest month. Each card links to its row on its index page, where the eBay links are.",
+   "rows": [
+    {
+     "ticker": "BS1E",
+     "num": "4",
+     "name": "Charizard",
+     "label": "Base Set 1st Edition"
+    },
+    {
+     "ticker": "BSSL",
+     "num": "4",
+     "name": "Charizard",
+     "label": "Base Set Shadowless"
+    },
+    {
+     "ticker": "BS99",
+     "num": "4",
+     "name": "Charizard",
+     "label": "Base Set Unlimited"
+    },
+    {
+     "ticker": "NG1E",
+     "num": "9",
+     "name": "Lugia",
+     "label": "Neo Genesis 1st Edition"
+    },
+    {
+     "ticker": "EVS21",
+     "num": "215",
+     "name": "Umbreon VMAX",
+     "label": "Evolving Skies"
+    },
+    {
+     "ticker": "SV151",
+     "num": "199",
+     "name": "Charizard ex",
+     "label": "Scarlet & Violet 151"
+    }
+   ]
+  },
   "links": [
    {
     "lead": "New to Bowman?",
@@ -196,6 +238,11 @@
   {
    "q": "Is the Pokémon card market crashing?",
    "answer": "crash",
+   "page": "/indices"
+  },
+  {
+   "q": "What do Base Set Charizard, Neo Genesis Lugia, Evolving Skies Umbreon VMAX and 151 Charizard ex sell for raw?",
+   "answer": "cards",
    "page": "/indices"
   },
   {
