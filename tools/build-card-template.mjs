@@ -140,7 +140,8 @@ const page = (o) => `<!DOCTYPE html>
   <style>${pageCss}</style>
   <style>${CSS}</style>
   ${gtag}
-  <link rel="stylesheet" href="/css/site-fixes.css">
+  <link rel="stylesheet" href="/css/site-fixes.css">${o.id ? `
+  <link rel="expect" href="#cdp-load" blocking="render">` : ""}
 </head>
 <body>
 
@@ -239,7 +240,11 @@ for (const tk of STATIC_TICKERS) {
     // Same basis wording as js/card-page.js render() (chase: PriceCharting's ungraded value; sector: median of n raw sales).
     const basis = c.raw == null ? (c.nv ? `No verified sale yet: ${c.wn || 0} clean raw sales in ${c.win || 90} days (3 needed)` : "Too few raw sales to mark.") : d.kind === "chase" ? `PriceCharting’s ungraded value, read ${md(c.rawAsOf)}` : `Median of ${c.wn != null ? c.wn : c.n30} raw sales${c.lo != null && c.hi != null ? ` (middle half ${money(c.lo)}–${money(c.hi)})` : ""}, ${c.win || d.window || 30} days · marked ${md(c.rawAsOf)}`;
     const nm = `${c.name} #${c.num}`;
+    // P4 (motion seat Nov 16): the stub's photo box, where the render's .cdp-photo lands, carries view-transition-name card-photo
+    // (css/site-fixes.css §0e); js/card-page.js keeps this node through the render. Its own line BEFORE #cdp-load: stubRawLink()
+    // reads #cdp-load up to its first </div>, so the eBay link and the local-nav pill copy are untouched.
     const load = `  ${cardCrumbHtml(d, esc(nm))}
+  <div class="cdp-photo cdp-stub" aria-hidden="true"><span class="sch-cimg"></span></div>
   <div class="cdp-miss" id="cdp-load"><h1>${esc(nm)}</h1><p class="cdp-set"><a href="${esc(d.page)}">${esc(setShort)}</a> · #${esc(c.num)}${c.rarity ? " · " + esc(c.rarity) : ""}</p><p>Raw ${c.raw != null ? `<b>${money(c.raw)}</b> · ` : ""}${esc(basis)}. Loading PSA 9, PSA 10 and TAG 10 sales…</p><p><a href="${esc(ebaySearchUrl({ q: `${c.q || nm} ${rawNot(d.ticker)}${edNot(d)}${RAW_EXTRA[d.ticker] || ""}`, customid: "card-" + c.id, sacat: SACAT_TCG, av: c.raw >= 200 }))}" target="_blank" rel="sponsored nofollow noopener">Raw copies on eBay →</a></p></div>
 `;
     const desc = `${nm} ${setShort} price${c.raw != null ? `: raw ${money(c.raw)} (${d.kind === "chase" ? "PriceCharting ungraded" : "median of raw sales"}, ${md(c.rawAsOf)})` : ""}, beside dated PSA 9, PSA 10 and TAG 10 sales and an eBay link for each grade.`;

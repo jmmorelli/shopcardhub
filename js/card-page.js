@@ -130,6 +130,7 @@
         '<a class="ds-more" href="' + esc(ebUrl(e, 'bin')) + '" data-cid="' + cid + '" data-g="' + e.eb + '" data-mode="bin" target="_blank" rel="sponsored nofollow noopener" aria-label="Shop ' + e.lbl + ' copies on eBay">Shop on eBay</a></div>';
     }).join('');
     var setLink = '<a href="' + esc(d.page) + '">' + esc(setShort) + '</a>';
+    var keep = main.querySelector('.cdp-photo.cdp-stub');   // P4: the stub's photo box carries the view-transition name; keep the node
     main.innerHTML =
       crumb(d, esc(c.name) + ' #' + esc(c.num)) +
       '<div class="cdp-top"><div class="cdp-photo"><span data-card-img="' + esc(c.img) + '" data-card-name="' + esc(c.name) + ' #' + esc(c.num) + ' ' + esc(d.set) + '" data-card-sub="pokemon" data-card-size="hero" data-card-surface="card-page" data-card-link="off"></span></div>' +
@@ -156,6 +157,10 @@
       (shopMark() ? '<div class="cdp-shop cdp-shop-wait" aria-hidden="true"></div>' : '') + '<div class="cdp-btns" id="cdp-btns">' + (shopMark() ? '<span class="tcg-slot" aria-hidden="true"></span>' : '') + '</div>' +
       '<div class="f">eBay searches for this exact card in each grade, with our affiliate tag (ShopCardHub earns a commission at no cost to you) — live listings, not prices. ' + (d.ed === '1st' ? 'Searches are for the 1st Edition print this index tracks. ' : d.ed === 'shadowless' ? 'Searches are for Shadowless copies and exclude 1st Edition. ' : d.wotc ? 'Searches exclude 1st Edition and Shadowless copies: this index tracks the Unlimited print. ' : '') + '<b>TAG:</b> we link TAG because it publishes its measurements. PSA is the reference grade. Our view: machine grading wins over time. <a href="/tag-grading-guide">How TAG grading works&nbsp;›</a></div></div>' +
       '<p class="cdp-method"><a href="/how-prices-work">How we price a card&nbsp;›</a></p>';
+    if (keep) { var np = main.querySelector('.cdp-photo'); if (np) { keep.removeAttribute('aria-hidden'); keep.classList.remove('cdp-stub');
+      // a flown-in photo stays on top (.cdp-fly) until card-img.js has decoded the hero under it; an empty stub goes now
+      var fs = keep.querySelector('.sch-cimg'); if (fs && fs.querySelector('img')) fs.classList.add('cdp-fly'); else if (fs) keep.removeChild(fs);
+      while (np.firstChild) keep.insertBefore(np.firstChild, keep.firstChild); np.parentNode.replaceChild(keep, np); } }
     function shopMark() { var sf = window.__schShopFile; return !!(sf && sf.marks && sf.marks[c.id]); }
 
     var big = document.getElementById('cdp-big'), basis = document.getElementById('cdp-basis'), eb = document.getElementById('cdp-ebay'), auc = document.getElementById('cdp-auc');

@@ -198,6 +198,20 @@ html body .cdp-cmp .s{font-size:14px;line-height:1.43;margin-bottom:16px}
 html body .cdp-buy{padding:20px 16px}
 }
 
+/* 0d+. The card flight (P4, run 17): one photo carried from a list row into the card page. Spec: DESIGN-SYSTEM.md Motion. */
+@media (prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
+:root{view-transition-name:none}
+html body .cdp-photo{position:relative;view-transition-name:card-photo}
+html body .cdp-stub{float:left;width:200px;margin-right:28px}html body .cdp-stub+.cdp-miss{padding-top:0}
+html body .cdp-stub>.sch-cimg,html body .cdp-fly{display:block;width:200px;height:280px;border-radius:8px;overflow:hidden;background:var(--ds-surface-1)}
+html body .cdp-fly{position:absolute;left:0;top:0}
+@media (max-width:760px){html body .cdp-stub{width:96px;margin-right:14px}html body .cdp-stub>.sch-cimg,html body .cdp-fly{width:96px;height:134px}}
+::view-transition-group(card-photo){animation-duration:.42s;animation-timing-function:cubic-bezier(.28,.11,.32,1)}
+::view-transition-old(card-photo),::view-transition-new(card-photo){height:100%}
+::view-transition-old(card-photo){animation:none}
+::view-transition-new(card-photo){animation:ds-vt-in .42s cubic-bezier(.28,.11,.32,1) both}
+@keyframes ds-vt-in{0%,55%{opacity:0}to{opacity:1}}
+::view-transition-old(card-photo):only-child,::view-transition-new(card-photo):only-child{animation:none}
 /* 0e. Data tables (run 8): fit at 1280 in DejaVu Sans, the daily sweep's font. Spec: DESIGN-SYSTEM.md. */
 html body :is(.sidx-tbl,.chase-tbl table,.vgrid) th,html body .bx-t th :is(button,.bx-th){font:600 12px/1.33 var(--ds-font);font-size:12px !important;letter-spacing:0;text-transform:none;color:var(--text-dim);}
 html body .vgrid th.sorted,html body .bx-t th:is([aria-sort=ascending],[aria-sort=descending]) button,html body .bx-t th button:hover{color:var(--text-head);}
@@ -823,12 +837,7 @@ body .strip > a.chip { display: inline-flex; align-items: center; gap: 4px; min-
   html body .sidx-tbl td.act .glk a.ebay { min-width: 44px; }
 }
 
-/* 24 (UX Auditor, CoS weekly Oct 14 2026). The phone text floor again (brief-to-green: no text < 11 px). The Oct 14
-   production sweep counted ~1,100 visible text elements under 11 px on 54 pages, 836 of them on /mlb-cards (new
-   Oct 13: grade links 10 px, tier badges 9.5 px, footnote marks 8 px). The rest is the long tail the §12 list missed:
-   comparison-table row heads and the age table, the sector "auctions" links and grade-bar keys, the best-* desk
-   contents and narrator chip, a few guide labels, the 9 px notes on the Bowman/Gold Star index pages, the home
-   "where to start" foot, and the docked buy button's own label (a 10.5 px ::before). Size only; no layout change. */
+/* 24 (UX Auditor, Oct 14 2026): the phone 11 px text floor, the long tail; size only. History: git log. */
 @media (max-width:540px) {
   body .mlb .glk a.ebay, body .mlb .glk .gl, body .mlb .tb, body .mlb .pl-note .pl-d, body .mlb sup.pt,
   body .mlb .chips .gh, body .mlb .tools button,
@@ -851,22 +860,10 @@ body .strip > a.chip { display: inline-flex; align-items: center; gap: 4px; min-
   body .sidx-tbl td.act .act-w.g .glk { flex-wrap: nowrap; }
 }
 
-/* 26 — B77 (Night Crew Oct 16; phone teardown, CoS with Mo Oct 14 "the site is kind of clunky"). The set-index pages
-   opened with a ticker strip of every other index (37 chips, each "x% w/w") above the page's own level and plain
-   read, the words a phone reader scrolled past before the answer. The strip stays in the HTML because the Mon/Thu
-   re-mark (tools/remark-indices.mjs, a price-lane tool) rewrites it in place and requires it; it is simply not shown.
-   Every index is one tap away on /indices. The "Live · real sold prices" bar and the cohort footnote above the plain
-   read were removed from the pages themselves. */
+/* 26 — B77 (Night Crew Oct 16): the set-index ticker strip stays in the HTML (the re-mark needs it) but is not shown. History: git log. */
 body .strip { display: none !important; }
 
-/* 27 (site-gates run 38951174085, Oct 16 2026). The nightly image-sweep's new desktop table-overflow check (fcee4e4)
-   failed 7 pages at 1280 px once the Shop (TCG) column landed: the four chase pages (AH26, PRE, DR, PFL — 1018 > 1012),
-   SV151 (1020 > 1010) and Gold Star (1036 > 1010) index tables, and the home screener (min-width 1000 px in a 986 px box,
-   1084 wide). Causes: a fixed 176 px Bid slot (td.lst grid track, build-index-listings-col; .act-w.g slot min-width,
-   build-sector-index) holding "Bid $X" and "N bids · 2d" on one line; Gold Star's "no verified sale" / "1 sale · Feb 17"
-   notes held nowrap; the screener's 1000 px floor and 44 px range tracks. Desktop only (phones keep §10/§10b): the bid
-   count sits under the Bid label, the slot grows from 120 px only as far as its content, grade-cell notes wrap, and
-   the screener fits its box. Overrides the inline page CSS so no generated block changes. */
+/* 27 (site-gates run 38951174085, Oct 16 2026): desktop table-overflow fits at 1280 (Bid slot, Gold Star notes, screener floor). History: git log. */
 @media (min-width: 761px) {
   body .sidx-auc-slot a.auc { line-height: 1.25; }
   body .sidx-auc-slot a.auc small { display: block; margin-left: 0; margin-top: 1px; }
@@ -882,11 +879,7 @@ body .strip { display: none !important; }
   body table.scr .rng { grid-template-columns: auto 24px auto; gap: 3px; }
 }
 
-/* 28 (Night Crew B69, Oct 19 2026; desk approval Oct 12). The 11 px text floor was phone-only (sections 4 and 12), so
-   desktop kept 1,185 sub-11px text nodes on 12 deep pages (Bug Hunter Oct 19: chase-table rarity tags 8.5 px, card
-   numbers and 1st tags 9 px, the % signs in move cells, the card page's button notes 9.5 px). This applies the same
-   selector lists at desktop widths plus those five. Sizes only: no colour, copy, link or layout change. The 40 px tap
-   half stays phone-only for now (desktop table rows would grow; next run, measured against the 1280 table check). */
+/* 28 (Night Crew B69, Oct 19 2026): the 11 px floor at desktop widths too; sizes only. History: git log. */
 @media (min-width:541px) {
   body .alloc-legend, body .asof, body .banner-stat-label,
   body .box-label, body .box-sport-tag, body .box-stat-label, body .calc-field label, body .calc-table th, body .chip, body .col-menu .cm-h, body .comps-item .ci-noimg, body .comps-item .ci-p span,
@@ -948,14 +941,7 @@ body .strip { display: none !important; }
   body .chase-tbl tbody tr:has(.sidx-auc-slot:not(:empty)) td.lst, body .chase-tbl tbody tr:has(.sch-vs-sold) td.lst { padding-top: 6px; }
 }
 
-/* 30 (Gate Keeper, Oct 20 2026; site-gates #331/#344, gate-watch issue #4). The home Set Indices board, the home engine
-   screener and the /track-record scorecard all measured exactly their box at 1280 (986/986, 1012/1012) — zero slack, so
-   a runner whose fonts render a few % wider tipped them over (1012 > 986, 1020 > 1012), and any real desktop window a
-   little under 1280 (1180–1265, or Windows Chrome with a visible scrollbar) already got a sideways scrollbar on the
-   home tables; the screener's other screens (Autos under $100, Drying up, Sealed …) ran 1050–1102 wide at 1280.
-   Desktop only — phones (≤ 760 px) keep their sideways scroll / stacked rows by design. Sizes and wrapping only:
-   no font family, colour, copy, data or column change. Card/set names may wrap to a second line when the box is
-   tight; at wide windows the tables lay out exactly as before. */
+/* 30 (Gate Keeper, Oct 20 2026; site-gates #331/#344): slack for the home board, screener and /track-record at 1280; desktop only. History: git log. */
 @media (min-width: 761px) {
   body table.scr td.sym, body table.scr td.sym small { white-space: normal; }
   body table.scr td.sym { min-width: 100px; }

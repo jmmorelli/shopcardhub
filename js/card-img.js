@@ -154,6 +154,11 @@
     return item.replace(/customid=[^&]*/, 'customid=img-' + (surface || 'site').replace(/[^a-z0-9-]/gi, '').slice(0, 24).toLowerCase());
   }
 
+  // P4 card flight: the photo the tapped row's thumb carried into this card page (js/card-img.js pageswap below), read once.
+  var FLY_OK = /^https:\/\/(i\.ebayimg\.com|images\.pokemontcg\.io)\/[^"'()\s<>]+$/, FLY = null;
+  try { var fl = JSON.parse(sessionStorage.getItem('sch_fly') || 'null'); sessionStorage.removeItem('sch_fly'); if (fl && fl.p === location.pathname && FLY_OK.test(fl.s)) FLY = fl.s; } catch (x) {}
+  if (FLY) { var stub = document.querySelector('.cdp-stub > .sch-cimg'); if (stub) stub.innerHTML = '<img src="' + FLY + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">'; }
+
   // Renders into `el` (replaces its content). Returns el.
   function render(el, key, o) {
     o = o || {};
@@ -163,9 +168,11 @@
     var ph = placeholder({ name: name, sub: o.sub || el.getAttribute('data-card-sub') || (key && /^ebay:.*(ex|sir|mega)/i.test(key) ? 'POKEMON' : '1ST BOWMAN') });
     el.classList.add('sch-cimg', 'sch-cimg-' + (o.size || 'thumb'));
     el.style.width = w + 'px'; el.style.height = h + 'px';
-    var img = '<img src="' + ph + '" width="' + w + '" height="' + h + '" alt="' + esc(name) + '" loading="' + (o.eager ? 'eager' : 'lazy') + '" decoding="async">';
+    var fly = FLY && o.size === 'hero' && el.closest && el.closest('.cdp-photo');   // P4: the landed card stays on screen until its photo loads
+    var img = '<img src="' + (fly ? FLY : ph) + '" width="' + w + '" height="' + h + '" alt="' + esc(name) + '" loading="' + (o.eager ? 'eager' : 'lazy') + '" decoding="async">';
     el.innerHTML = img;
     var imgEl = el.querySelector('img');
+    if (fly) { var drop = function () { var f = fly.querySelector('.cdp-fly'); if (f) f.parentNode.removeChild(f); }; if (imgEl.decode) imgEl.decode().then(drop, drop); else drop(); }
     // Holographic tilt: on for hero photos and anything that opts in — works on the placeholder too.
     if (o.tilt || o.size === 'hero' || el.getAttribute('data-card-tilt') === '1') tilt(el);
     load().then(function (map) {
@@ -434,6 +441,34 @@
       new MutationObserver(function () { if (pending) return; pending = true; requestAnimationFrame(function () { pending = false; enhance(); }); })
         .observe(document.body, { childList: true, subtree: true });
     }
+  }
+
+  // P4 card flight (Cupertino run 17, Motion seat, Nov 16 2026; DESIGN-SYSTEM.md Motion → "The card flight"): on a same-origin navigation to a static /card-<slug> page, name the
+  // thumb in the tapped link's row card-photo so it flies into the card page's photo box (css/site-fixes.css §0e).
+  // One element ever holds the name; it is cleared when this page is shown again (bfcache / back).
+  if ('onpageswap' in window) {
+    var flown = null;
+    var unname = function () { if (flown) { flown.style.viewTransitionName = ''; flown = null; } var ph = document.querySelector('.cdp-photo'); if (ph) ph.style.viewTransitionName = ''; };
+    window.addEventListener('pageswap', function (e) {
+      if (!e.viewTransition || !e.activation || !e.activation.entry) return;
+      var ph = document.querySelector('.cdp-photo'); if (ph) ph.style.viewTransitionName = 'none';   // a card page sends no flight of its own
+      var to; try { to = new URL(e.activation.entry.url); } catch (x) { return; }
+      if (to.origin !== location.origin || !/^\/card-[a-z0-9-]+$/.test(to.pathname)) return;
+      var as = document.querySelectorAll('a[href="' + to.pathname + '"]'), vh = innerHeight, vw = innerWidth;
+      for (var i = 0; i < as.length && !flown; i++) {
+        for (var el = as[i].parentElement, k = 0; el && el !== document.body && k < 6; el = el.parentElement, k++) {
+          var other = false, ls = el.querySelectorAll('a[href^="/card"]');
+          for (var j = 0; j < ls.length; j++) if (ls[j].getAttribute('href') !== to.pathname) { other = true; break; }
+          if (other) break;
+          var im = el.querySelector('.sch-cimg');
+          if (im) { var r = im.getBoundingClientRect(); if (r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw && r.width) { flown = im.querySelector('img') || im; flown.style.viewTransitionName = 'card-photo';   /* the photo only, not its eBay tag */
+            // The photo it lands as: the card page shows this (already cached) image until its own hero photo loads.
+            if (flown.classList.contains('is-photo') && FLY_OK.test(flown.currentSrc || flown.src)) try { sessionStorage.setItem('sch_fly', JSON.stringify({ p: to.pathname, s: flown.currentSrc || flown.src })); } catch (x) {} } break; }
+        }
+      }
+    });
+    window.addEventListener('pagereveal', unname);
+    window.addEventListener('pageshow', function (e) { if (e.persisted) unname(); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
