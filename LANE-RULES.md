@@ -1302,6 +1302,33 @@ bankroll cut #3 on a `USAGE_LIMIT_REACHED`.
 
 Since `704e73c` (Nov 2) every page's footer is one generated block written by `tools/build-footer.js` (the `.sch-ft*` classes, 765 pages). **Edit `tools/build-footer.js`, never a page's footer**; a hand edit inside the block is overwritten by the next run. The dead `.footer-inner / -links / -copy / -grid` page CSS was stripped on Nov 3 (`tools/strip-dead-footer-css.mjs`, 714 pages); a lane that brings one back gets it stripped by the next regen.
 
+## R48 · Ship from the cloud; the Mac is never in the push path; a built fix waits one day at most (CoS with Mo, attended, 2026-11-16)
+
+**Incident.** Price Truth fired with no Mac folder eight runs in a row (Nov 9–16), so every fix it built waited a day or more for
+another lane to apply it; the Night Crew deploy lost the Mac mid-run on Nov 16; five lanes' commits sat in the mailbox. Mo found out
+from a run report: "I didn't know this had been failing." The Mac was never needed: a scheduled cloud run starts with a clone of this
+repo that can push to `main` (proved Nov 16 by `bd19c0e`, pushed by an unattended cloud run; `a60d7bb` shows workflow files push too).
+
+**(a) Lanes with push authority push from the cloud.** Price Truth, the Commissioner, the CoS desk, the price lane, Site Sweep, the
+Tuesday board, the weekly audit and the Ship Desk use the clone the run starts with (`/home/claude/shopcardhub`; if it is missing,
+`git clone https://github.com/jmmorelli/shopcardhub`). Recipe: `git fetch origin main` → `git checkout -B work origin/main` → the change
+→ the three gates at FAIL 0 and WARN not above the base → commit with the lane's trailers → `git fetch origin main && git rebase
+origin/main` → `git push origin HEAD:main` (never force, never a new branch: cloud runs cannot delete remote branches) → wait 90 s →
+verify live with curl → the pushLog entry. This outranks any prompt or charter that says to push through `Card Hub/deploy/`, the deploy
+key, `device_bash` or `device_commit_files`.
+
+**(b) The Mac is for what only the Mac has:** the signed-in browsers (X, EPN, GA4, Search Console, MailerLite), the Grok files and
+Mo's folders. A run that cannot reach the Mac still ships.
+
+**(c) The mailbox is for lanes without push authority** (Night Crew build, Cupertino, Coverage Builder) and for a cloud push that was
+refused (quote the refusal). The **Ship Desk** (cloud, every morning) applies whatever is in `claude/night-crew/pending.md`. Patch
+files are read byte-exact from the Project's files on disk when the run has them (`/mnt/project/`, the doc path with `/` and the last
+`.` written as `_`, e.g. `/mnt/project/claude_night-crew_pending-nc_patch.txt`); a patch is never re-typed.
+
+**(d) The 24-hour rule.** A fix that is built and is not live 24 hours later is told to Mo that day, in one push notification, by
+the first run that sees it (the Ship Desk, Ops, the daily review, or the lane itself): what is stuck, since when, and the one thing
+that would free it. "Needs an attended session" is not a place to park a ship blocker.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
