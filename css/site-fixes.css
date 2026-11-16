@@ -731,9 +731,14 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
    - .bs-live in the guide buy strip ("ask from $X · N live", buy-strip.js after /api/comps): when it filled on
      production at 1440 the CTA row wrapped and the strip grew 103 -> 161 px (BCB guide CLS 0.228). The empty slot now
      takes the text's width on desktop and its line on phones, so the row wraps the same way before and after. */
-.idx-chart[data-ticker]:empty { min-height: 344px; }
-@media (max-width: 767px) { .idx-chart[data-ticker]:empty { min-height: 300px; } }
-.sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { display: block; margin-top: 10px; min-height: 62px; }
+/* Nov 16 2026 (Night Crew, BOW-CLS / Bug Hunter): the chart now draws 290 px at >= 768 and 206-282 px on phones (36 index
+   pages measured at 320-1280, identical on every page), so the old 344 / 300 slots collapsed 54-69 px after the draw
+   (1440 CLS 0.009 on the Bowman pages, 0.014 / phone 0.025 on Prismatic). The phone slot follows the svg's width-driven
+   height: 64 px of label rows + 0.43 x the viewport, capped at the 282 px a 600 px+ phone draws. The filled signup row is
+   76 px at >= 1040 (was reserved 62: a 14 px jump, CLS 0.006 on BF26/BCS26/Prismatic). */
+.idx-chart[data-ticker]:empty { min-height: 290px; }
+@media (max-width: 767px) { .idx-chart[data-ticker]:empty { min-height: min(282px, calc(64px + 43vw)); } }
+.sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { display: block; margin-top: 10px; min-height: 76px; }
 @media (max-width: 999px) { .sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { min-height: 106px; } }
 @media (max-width: 760px) { .sch-signup[data-signup]:empty:not([data-signup="home-board"]):not([data-variant="watchlist"]) { min-height: 131px; } }
 /* B54 (Night Crew, Oct 8): at <= 420 px §20 stacks the field and the button, so the filled box is 177 px (195 at

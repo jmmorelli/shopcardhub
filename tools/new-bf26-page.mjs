@@ -26,6 +26,9 @@ let head = src.slice(0, navEnd)
   .replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${esc(desc)}">`)
   .replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${canon}">`)
   .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "WebPage", name: ogt, description: desc, url: canon, publisher: { "@type": "Organization", name: "ShopCardHub", url: "https://www.shopcardhub.com" } })}</script>`);
+// The "PRE" level box is the only .level on a pre-launch page; the copied head gives it the template's infinite flame.
+// One pass, then still (Night Crew Nov 16 2026, BF-ANIM: the sweep flags infinite animations).
+head = head.replace(".level { animation:pf-blueflame 6s ease-in-out infinite;", ".level { animation:pf-blueflame 6s ease-in-out 1;");
 if (/BOW26 ·/.test(head.slice(0, head.indexOf("<!-- NAV:START")))) throw new Error("head still carries BOW26 strings");
 const L = (q, id) => assertClean(ebaySearchUrl({ q, customid: "bf26-" + id, sacat: SACAT_SPORTS }));
 const shops = [

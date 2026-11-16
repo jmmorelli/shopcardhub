@@ -17,6 +17,7 @@
 //
 // USAGE:  node tools/ga4-snapshot.mjs --out price-data/data        (writes ga4-latest.json + ga4-history.json)
 //         node tools/ga4-snapshot.mjs --dry                        (prints the report requests, no network)
+//         node tools/ga4-snapshot.mjs --out … --end 2026-11-14     (re-pull a past night: windows end on that Pacific date)
 //
 // WHAT IT NEVER DOES: change any GA4 setting (the Data API cannot; the account is Viewer anyway), read
 // user-level data, or write anywhere but --out.
@@ -30,11 +31,21 @@ const args = Object.fromEntries(process.argv.slice(2).map((a, i, arr) => a.start
 const OUT = args.out || "price-data/data";
 const DRY = !!args.dry;
 
+// FIXED DATE RANGES (Night Crew, Nov 16 2026; BLOCKED row 2026-11-14 "GA4 snapshot drops one recent data day per pull").
+// The Nov 14 pull lost Nov 11 and the Nov 15 pull lost Nov 12 from daily28 (27 rows, a hole mid-window), so 7-day reads ran on
+// six days. The windows are now explicit dates in the property's time zone (Pacific), the same days "28daysAgo".."yesterday"
+// named, so a re-pull of a past night (--end YYYY-MM-DD) gives the same window. daily28 is checked row by row below.
+const TZ = "America/Los_Angeles";
+const ymd = (dt) => new Intl.DateTimeFormat("en-CA", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(dt);
+const addDays = (iso, n) => { const t = new Date(iso + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };
+const END = /^\d{4}-\d{2}-\d{2}$/.test(String(args.end || "")) ? String(args.end) : addDays(ymd(new Date()), -1);
 const RANGES = {
-  d28: [{ startDate: "28daysAgo", endDate: "yesterday" }],
-  d7: [{ startDate: "7daysAgo", endDate: "yesterday" }],
-  d1: [{ startDate: "yesterday", endDate: "yesterday" }],
+  d28: [{ startDate: addDays(END, -27), endDate: END }],
+  d7: [{ startDate: addDays(END, -6), endDate: END }],
+  d1: [{ startDate: END, endDate: END }],
 };
+const DAYS28 = Array.from({ length: 28 }, (_, i) => addDays(END, i - 27).replace(/-/g, ""));
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const m = (...names) => names.map((name) => ({ name }));
 const d = (...names) => names.map((name) => ({ name }));
 
@@ -46,7 +57,10 @@ const CARD_PATH = /^\/card(?:$|[?\/.-])/;
 
 // The reports. Names are the GA4 Data API's own (metrics/dimensions), not the UI labels.
 const REPORTS = {
-  daily28: { dateRanges: RANGES.d28, dimensions: d("date"), metrics: m("sessions", "activeUsers", "newUsers", "keyEvents", "engagementRate", "averageSessionDuration"), orderBys: [{ dimension: { dimensionName: "date" } }], limit: 100 },
+  daily28: { dateRanges: RANGES.d28, dimensions: d("date"), metrics: m("sessions", "activeUsers", "newUsers", "keyEvents", "engagementRate", "averageSessionDuration"), orderBys: [{ dimension: { dimensionName: "date" } }], keepEmptyRows: true, limit: 100 },
+  // Instrument read (Nov 16 2026, BLOCKED row 2026-11-13): the events Measurement grades, per day, so "absent" is a dated zero
+  // and never a row that fell off a top-N list. Optional.
+  instruments7: { dateRanges: RANGES.d7, dimensions: d("eventName", "date"), metrics: m("eventCount", "totalUsers"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["home2_index_pick", "home2_index_open", "signup_view", "signup_submit", "newsletter_signup", "track_card_from_page"] } } }, orderBys: [{ dimension: { dimensionName: "date" } }], limit: 500 },
   channels28: { dateRanges: RANGES.d28, dimensions: d("sessionDefaultChannelGroup"), metrics: m("sessions", "engagedSessions", "engagementRate", "averageSessionDuration", "keyEvents", "sessionKeyEventRate"), limit: 25 },
   channels7: { dateRanges: RANGES.d7, dimensions: d("sessionDefaultChannelGroup"), metrics: m("sessions", "engagedSessions", "keyEvents", "sessionKeyEventRate"), limit: 25 },
   sources7: { dateRanges: RANGES.d7, dimensions: d("sessionSourceMedium"), metrics: m("sessions", "keyEvents"), orderBys: [{ metric: { metricName: "sessions" }, desc: true }], limit: 25 },
@@ -289,11 +303,32 @@ async function main() {
   const rep = {};
   // The two distribution reports (added 2026-09-29) are optional: if GA4 rejects one, the snapshot still ships.
   // The Oct 21 2026 instrument reports are optional too: a rejected new report must never cost the nightly file.
-  const OPTIONAL = new Set(["leagueCampaignDaily28", "referralDaily28", "pageClicks7", "cardClicks7", "pageCountry7", "landingCountry7"]);
+  const OPTIONAL = new Set(["leagueCampaignDaily28", "referralDaily28", "pageClicks7", "cardClicks7", "pageCountry7", "landingCountry7", "instruments7"]);
   for (const [name, body] of Object.entries(REPORTS)) {
     if (!OPTIONAL.has(name)) { rep[name] = await runReport(token, body); continue; }
     try { rep[name] = await runReport(token, body); } catch (e) { console.error(`optional report ${name} skipped: ${String(e.message || e).slice(0, 200)}`); }
   }
+  // daily28 completeness (Nov 16 2026): 28 rows, one per date. A short pull is retried twice (10 s, 30 s); a date still missing
+  // is read alone and spliced in (marked backfilled); a date GA4 still won't return is listed, so readers state the gap.
+  const missingDays = () => { const have = new Set(rep.daily28.rows.map((r) => r.date)); return DAYS28.filter((x) => !have.has(x)); };
+  for (const wait of [10000, 30000]) {
+    if (!missingDays().length) break;
+    console.error(`daily28 short (${rep.daily28.rows.length}/28, missing ${missingDays().join(",")}) — retry in ${wait / 1000}s`);
+    await sleep(wait);
+    try { const again = await runReport(token, REPORTS.daily28); if (again.rows.length >= rep.daily28.rows.length) rep.daily28 = again; } catch (e) { console.error(`daily28 retry failed: ${String(e.message || e).slice(0, 200)}`); }
+  }
+  const backfilled = [];
+  for (const day8 of missingDays()) {
+    const iso = `${day8.slice(0, 4)}-${day8.slice(4, 6)}-${day8.slice(6, 8)}`;
+    try {
+      const one = await runReport(token, { ...REPORTS.daily28, dateRanges: [{ startDate: iso, endDate: iso }] });
+      const row = one.rows.find((r) => r.date === day8);
+      if (row) { rep.daily28.rows.push({ ...row, _backfilled: true }); backfilled.push(day8); }
+    } catch (e) { console.error(`daily28 backfill ${iso} failed: ${String(e.message || e).slice(0, 200)}`); }
+  }
+  rep.daily28.rows.sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  rep.daily28.check = { start: RANGES.d28[0].startDate, end: END, expected: 28, got: rep.daily28.rows.length, backfilled, missing: missingDays() };
+  if (rep.daily28.check.missing.length) console.error(`daily28 still missing ${rep.daily28.check.missing.join(",")} after retries — written to reports.daily28.check.missing`);
   const generatedAt = new Date().toISOString();
   // The "yesterday" the ranges end on. Oct 28 2026 (Measure Oct 27 instruments row): the UTC clock labelled an off-schedule
   // 00:00–07:00Z run one day late, because GA4's "yesterday" is property (Pacific) time. The last daily28 row is the truth.

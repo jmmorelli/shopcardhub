@@ -190,10 +190,13 @@ async function metrics(page, deep) {
       await ctx.close();
     }
     results.push(entry);
+    // Nov 16 2026 (Night Crew): --all takes ~35 min; a run stopped early used to leave nothing. Every page now lands in
+    // <out>.partial as it finishes (removed when the full report is written).
+    if (OUT) { try { fs.writeFileSync(OUT + ".partial", JSON.stringify(results)); } catch {} }
     process.stderr.write(`${entry.page} ok\n`);
   }
   await browser.close();
   await req.dispose();
   const out = JSON.stringify(results, null, 1);
-  if (OUT) fs.writeFileSync(OUT, out); else console.log(out);
+  if (OUT) { fs.writeFileSync(OUT, out); try { fs.unlinkSync(OUT + ".partial"); } catch {} } else console.log(out);
 })();
