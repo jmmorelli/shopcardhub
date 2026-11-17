@@ -6536,6 +6536,16 @@
           "gates": "audit-prices FAIL 0 / WARN 66 · audit-site FAIL 0 / WARN 3 (817 pages) · audit-terminal --feed price-data FAIL 0 / WARN 1 · price-truth sweep RED 0 (= base)",
           "liveVerified": "see the two entries above — both live by curl + Playwright at 390/1440; no revert",
           "note": "Shipped Site Sweep Nov 17 (Deal-page 'index ›' links 41–43 px hit area) and Tuesday board Nov 17 (no seat moved; Fischer $125.00 top, Holliday $90.50). pipeline.json pushLog conflict resolved as union per pending.md. Site Sweep patch came back inline from project_read; bytes taken from the tool result, sha256 e9b3ca1382f95c0e verified."
+        },
+        {
+          "date": "2026-11-17",
+          "commits": [
+            "09fd010"
+          ],
+          "by": "Price Truth Desk run 15 (unattended cloud run, ~21:30Z)",
+          "gates": "audit-prices FAIL 0 / WARN 66 · audit-site FAIL 0 / WARN 3 (817 pages) · audit-terminal FAIL 0 / WARN 1 · price-truth sweep RED 0 / AMBER 21",
+          "liveVerified": "tooling only (tools/price-truth/sweep.mjs); curl confirms served file matches main",
+          "note": "Check-6 dated exemption for aq03-149 until 2026-11-24 (verifier Nov 17: PC Nov partial-month $936.89 outlier vs raw eBay sold median ~$2,600). Live wrong-money signals 0."
         }
       ]
     },
