@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-16 — desk (Mon Nov 16 evening slot, ran ~17:12 PT, verified live). Nothing new needs you
+
+- Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
+- Chrome pick: probably no longer yours. A run picked Browser 1 on its own on Nov 16; the Wednesday weekly tests it. If that fails, it comes back here.
+- Optional, unchanged: the Mac disk is still full (the runs work around it), and the leftover GitHub branch `cos/cloud-push-test-20261116` can be deleted on GitHub whenever you like.
+
+*Not yours:* this week's Pokémon index prices (read Monday) and the wording fixes on the six "best cards" pages are built and checked but not live yet. This run couldn't push to GitHub from the cloud, so the morning Ship Desk (6:41 AM) puts them live and tells you if it can't. The fix for this run's push is a setting on the run itself, which the next CoS chat changes.
+
 ## 2026-11-14 — desk (Fri Nov 13 evening slot, ran ~17:12 PT, verified live). Nothing new needs you
 
 - Still yours: **pick one Chrome for the scheduled runs** — re-checked tonight, Browser 1 and Browser 2 are both still connected (disconnect the Claude extension in the Chrome profile you don't use) · **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).

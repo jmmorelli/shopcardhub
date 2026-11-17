@@ -3737,7 +3737,34 @@
       "severity": "MED",
       "title": "MED: 8 pages whose prices are tied to titles, metas or narrative, re-read Nov 16 and not applied. (1) Six Pokemon pages: Mega Gengar ex 284 $583.82 vs page $792.50 (-26.3%); Pitch Black guide #116 $134.50 vs $184.01 (-26.9%) and #120 $121.49 vs $155.03 (-21.6%); Mega Darkrai ex 116 $134.50 vs $162.50 (-17.2%); Moonbreon $1,825 (Nov 12 mark) vs $1,908.71 (-4.4%); Charizard ex 199 $296.49 (Nov 12) vs $332.25 (-10.8%); Van Gogh Pikachu $924.34 vs $925 (stamp only). (2) /best-hobby-boxes-2026 (data/boxes.json read 2026-10-20): 12 rows re-read to Nov 16; Bowman Football hobby $394.00 -> $315.50 (22 sales, Oct 26-Nov 14), Series 2 hobby $139.98 -> $126.75 (10 sales, Oct 22-Nov 16), Bowman Chrome hobby $509.99 -> $531.55 (9), others within +/-6%; the box notes print the medians in break-even prose. (3) /pitch-black-vs-chaos-rising: tables still read Oct 23; title/meta carry the Nov 9 levels. Nov 16: PB26 53.88 vs CR26 33.31 (PB still higher; CR beat PB this week, +0.54% vs -3.39%); 13 shared marks since Aug 24, PB better in 5 of 12 weeks.",
       "source": "claude/cos/weekly-scan-2026-11-16.md (Project)",
-      "status": "awaiting-cos"
+      "status": "queued",
+      "decision": "CoS desk 2026-11-16: queued. (A) six meta/title-tied Pokémon pages (Mega Gengar ex, PB guide, Mega Darkrai ex, Moonbreon, Charizard ex, Van Gogh Pikachu) + (B) /best-hobby-boxes-2026 table (12 rows, Nov 16 sold medians; Bowman FB note $197 → about $158 per auto) → Price Truth Tue Nov 17 (cloud, ships itself). (C) /pitch-black-vs-chaos-rising tables (PB26 53.88 vs CR26 33.31 Nov 16; PB better 5 of 12 weeks) → Deal, Commissioner Tue Nov 17. Chase six marks themselves applied by the desk (00233cb carried onto main, mailbox for the Ship Desk Nov 17 06:41)."
+    },
+    {
+      "id": "iw-2026-11-16-1",
+      "date": "2026-11-16",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "MED",
+      "tier": "P1",
+      "goal": "G1",
+      "title": "MED: home regime block 'Vintage up, modern down.' + causal 'anniversary money is going into the old cards' rests on a vintage median of +1.1% with 10 up / 9 down (sign test p ~1.0); build-regime.mjs calls any positive median 'up'.",
+      "source": "claude/cos/integrity-watch-2026-11-16.md + -proposals.json (Project)",
+      "status": "queued",
+      "decision": "CoS desk 2026-11-16: verified live 01:30Z (home serves 'Vintage up, modern down.'). Queued → Night Crew Wed Nov 18: dead band in tools/build-regime.mjs (up/down only when |median| >= 1 SE and split >= 2/3, else 'flat'; causal sentence only on that test), folded with iw-2026-10-15-5 (SV151 in the modern group); re-bake home."
+    },
+    {
+      "id": "iw-2026-11-16-2",
+      "date": "2026-11-16",
+      "area": "claims",
+      "by": "integrity-watch",
+      "severity": "LOW",
+      "tier": "P2",
+      "goal": "G1",
+      "title": "LOW: home 'What moved this week?' screens 2026 Bowman autos twice (BOW26 contains BB26 + BCB26): Roldy Brito #CPA-RB prints as two rows under two product names; rail pill 'Set indices 38' counts BF26 (pre).",
+      "source": "claude/cos/integrity-watch-2026-11-16.md + -proposals.json (Project)",
+      "status": "queued",
+      "decision": "CoS desk 2026-11-16: queued → Night Crew Wed Nov 18 with iw-2026-11-02-2: dedupe movers on card id keeping the set ticker (R8), rail pill counts status 'live' only. Ivan's Nov 15 walk saw the same duplicate."
     }
   ],
   "scoreboard": {
