@@ -62,6 +62,7 @@ function pcRaw(tk, key, asOf) {
 // Check-6 exemptions, each with the verifier's evidence and an expiry (the next ladder read refreshes the h-file).
 const PC6_SKIP = {
   "tr00-5": { until: "2026-11-23", why: "h-file Oct month $55 is stale; PriceCharting Nov 14: Dark Dragonite #5 $129.92, [Holo] #5 $107.25 ungraded; Holo #5 eBay sales Oct 19-Nov 12 median ~$106-130 (verifier Nov 13)" },
+  "aq03-149": { until: "2026-11-24", why: "h-file Nov partial month $936.89 is an outlier (PC Oct $3,113.64); raw eBay sold Oct 18-Nov 17: 12 sales $1,621-$6,898, median ~$2,600; Nov sales median ~$2,114 (drifting lower, watch) (verifier Nov 17)" },
 };
 
 // ---------------- 1 · one-card moves ----------------
