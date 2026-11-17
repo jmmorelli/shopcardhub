@@ -410,14 +410,6 @@ const DS_CSS = `
     .hero-card .sch-cimg-hero { box-shadow:none !important; }
     .hero-card-cap { font:400 12px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; }
     .bstrip-wrap { margin-top:8px; }
-    .bstrip:not(.bs-dock) { border:0; border-radius:var(--ds-radius); background:var(--ds-surface-1); padding:20px 24px; gap:8px 16px; }
-    .bstrip:not(.bs-dock) .bs-k { font:600 12px/1.33 var(--ds-font); font-size:12px !important; letter-spacing:0; text-transform:none; color:var(--text-dim); }
-    .bstrip:not(.bs-dock) .bs-dot { box-shadow:none; }
-    .bstrip:not(.bs-dock) .bs-t { font:600 17px/1.3 var(--ds-font); letter-spacing:0; text-transform:none; }
-    .bstrip:not(.bs-dock) :is(.bs-go,.bs-go2) { justify-content:center; min-height:44px; padding:0 20px; border:0; border-radius:980px; font:600 14px/1 var(--ds-font); font-size:14px !important; letter-spacing:0; text-transform:none; }
-    .bstrip:not(.bs-dock) .bs-go2 { background:var(--ds-surface-3); color:var(--text-head) !important; }
-    .bstrip:not(.bs-dock) .bs-go2:hover { background:#3a3a3c; }
-    .bs-fine { font-size:12px; line-height:1.5; }
     /* the signup now sits on the first screen at >= 1000 px: reserve its widest render (3 lines of tape copy, 76 px) loaded or not */
     @media (min-width: 1000px) { .sch-signup[data-signup] { min-height:76px !important; } }
     .narrator { margin:48px 0 0; padding:24px; border:0; border-radius:var(--ds-radius); background:var(--ds-surface-1); }
@@ -480,8 +472,7 @@ const DS_CSS = `
       .print-links { display:grid; grid-template-columns:1fr 1fr; }
       .lk-raw, .lk-card { grid-column:1 / -1; } .lk-card { justify-self:start; }
       section.shelf, section#notes, section.means { padding-top:56px; }
-    }
-    @media (max-width: 734px) { .bstrip:not(.bs-dock) { padding:16px; } }`;
+    }`;
 
 // ---- desk layout CSS (theme-independent; colors come in as tokens) ----------------------------------------------
 const DESK_CSS = (c) => `

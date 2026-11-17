@@ -61,37 +61,43 @@ const fan = (q, sub) =>
 
 const attr = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 const text = s => String(s).replace(/&(?!(?:[a-zA-Z]+|#\d+);)/g, "&amp;").replace(/</g, "&lt;");
+// DESIGN-SYSTEM Type → Labels: a button's words carry no arrow; a text link ends in "›" on a no-break space.
+// Only the trailing arrow in the config label is touched; the words and the link stay as written.
+const ARROW = /\s*(?:&rarr;|\u2192)\s*$/;
+const pill = s => text(String(s).replace(ARROW, ""));
+const more = s => text(String(s).replace(ARROW, "")) + "&nbsp;&rsaquo;";
 
+// The look (Cupertino run 18, Nov 17 2026; DESIGN-SYSTEM.md "The buy strip"): one surface-1 tile, no border or rule;
+// name, eyebrow and live ask on the left, the buttons on the right (stacked on phones). One filled pill (eBay), the
+// second store and second search as neutral pills, the case / gear / release searches as accent text links. The
+// phone dock (.bs-dock, a copy made by js/buy-strip.js) keeps its own layout in css/site-fixes.css §8.
 const CSS = `<style>
-  .bstrip-wrap { max-width:1060px; margin:22px auto 0; padding:0 24px; }
-  .bstrip { display:flex; align-items:center; gap:14px; flex-wrap:wrap; background:var(--bg2,#0c1017); border:1px solid var(--border2,rgba(255,255,255,0.12)); border-left:3px solid var(--accent,#00ccf5); padding:13px 18px; }
-  .bstrip .bs-k { display:inline-flex; align-items:center; gap:7px; font-family:var(--fm,monospace); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent,#00ccf5); white-space:nowrap; }
-  .bstrip .bs-dot { width:7px; height:7px; border-radius:50%; background:var(--green,#00e07a); box-shadow:0 0 0 3px rgba(0,224,122,0.18); }
-  .bstrip .bs-t { font-family:var(--fd,sans-serif); font-size:17px; font-weight:800; text-transform:uppercase; letter-spacing:0.3px; color:var(--text-head,#e4f0f4); line-height:1.15; }
-  .bstrip .bs-live { font-family:var(--fm,monospace); font-size:11.5px; letter-spacing:0.4px; color:var(--gold,#f5c800); white-space:nowrap; }
-  .bstrip .bs-live .bs-n { color:var(--text-dim,#5a7880); }
-  .bstrip .bs-cta { margin-left:auto; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-  .bstrip .bs-go, .bstrip .bs-go2 { display:inline-flex; align-items:center; gap:7px; font-family:var(--fm,monospace); font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; padding:10px 18px; border-radius:2px; white-space:nowrap; transition:all .15s; }
+  .bstrip-wrap { max-width:1060px; margin:24px auto 0; padding:0 24px; }
+  .bstrip { background:var(--ds-surface-1,#161617); border:0; border-radius:var(--ds-radius,18px); font:400 14px/1.43 var(--ds-font,system-ui,sans-serif); letter-spacing:0; }
+  .bstrip:not(.bs-dock) { display:grid; grid-template-columns:fit-content(50%) minmax(0,1fr); grid-template-areas:"k cta" "t cta" "live cta"; align-items:center; gap:2px 24px; padding:20px 24px; }
+  .bstrip .bs-k { grid-area:k; font-size:12px; font-weight:600; line-height:1.33; color:var(--text-dim,#a1a1a6); }
+  .bstrip .bs-t { grid-area:t; font-size:17px; font-weight:600; line-height:1.3; color:var(--text-head,#f5f5f7); text-wrap:balance; }
+  .bstrip .bs-live { grid-area:live; color:var(--text,#d2d2d7); white-space:nowrap; }
+  .bstrip .bs-live .bs-n { color:var(--text-dim,#a1a1a6); }
+  .bstrip .bs-cta { grid-area:cta; display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:8px 16px; }
+  .bstrip :is(.bs-go,.bs-go2,.bs-fan) { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 20px; border:0; border-radius:980px; font-size:14px; font-weight:600; line-height:1.2; white-space:nowrap; text-wrap-style:balance; transition:background-color .2s var(--ds-ease,ease), transform .2s var(--ds-ease,ease); }
   .bstrip .bs-go { background:var(--accent,#00ccf5); color:#000 !important; }
-  .bstrip .bs-go:hover { background:#fff; text-decoration:none; }
-  .bstrip .bs-go2 { background:transparent; color:var(--text-dim,#5a7880) !important; border:1px solid var(--border2,rgba(255,255,255,0.12)); }
-  .bstrip .bs-go2:hover { color:var(--text-head,#e4f0f4) !important; border-color:var(--accent,#00ccf5); text-decoration:none; }
-  .bstrip .bs-case { font-family:var(--fm,monospace); font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text-dim,#5a7880) !important; white-space:nowrap; padding:10px 4px; border-bottom:1px dotted var(--border2,rgba(255,255,255,0.22)); }
-  .bstrip .bs-fan { display:inline-flex; align-items:center; gap:7px; font-family:var(--fm,monospace); font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; padding:10px 16px; border-radius:2px; white-space:nowrap; background:transparent; color:var(--text-head,#e4f0f4) !important; border:1px solid var(--gold,#f5c800); }
-  .bstrip .bs-fan:hover { background:var(--gold,#f5c800); color:#000 !important; text-decoration:none; }
-  .bstrip .bs-rep { font-family:var(--fm,monospace); font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--gold,#f5c800) !important; white-space:nowrap; padding:10px 4px; border-bottom:1px dotted var(--gold,#f5c800); }
-  .bstrip .bs-rep:hover { color:#fff !important; border-bottom-color:#fff; text-decoration:none; }
-  .bstrip .bs-case:hover { color:var(--gold,#f5c800) !important; border-bottom-color:var(--gold,#f5c800); text-decoration:none; }
-  .bs-fine { max-width:1060px; margin:8px auto 0; font-size:11px; line-height:1.55; color:var(--text-dim,#5a7880); }
+  .bstrip .bs-go:hover { background:#5cdcf8; text-decoration:none; }
+  .bstrip :is(.bs-go2,.bs-fan) { background:var(--ds-surface-3,#2a2a2c); color:var(--text-head,#f5f5f7) !important; }
+  .bstrip :is(.bs-go2,.bs-fan):hover { background:#3a3a3c; text-decoration:none; }
+  .bstrip :is(.bs-go,.bs-go2,.bs-fan):active { transform:scale(.98); }
+  .bstrip :is(.bs-case,.bs-rep) { order:1; display:inline-flex; align-items:center; min-height:44px; border:0; font-size:14px; font-weight:400; white-space:nowrap; color:var(--accent,#00ccf5) !important; }
+  .bstrip :is(.bs-case,.bs-rep):hover { text-decoration:underline; }
+  .bstrip [hidden] { display:none !important; }
+  .bs-fine { max-width:1060px; margin:12px auto 0; font-size:12px; line-height:1.5; color:var(--text-dim,#a1a1a6); }
   @media (max-width:760px) {
     .bstrip-wrap { padding:0 16px; }
-    .bstrip { gap:9px; padding:12px 14px; }
-    .bstrip .bs-t { font-size:15px; width:100%; }
-    .bstrip .bs-cta { margin-left:0; width:100%; }
-    .bstrip .bs-go, .bstrip .bs-go2 { flex:1 1 auto; justify-content:center; }
-    .bstrip .bs-case { flex:0 0 auto; padding:6px 2px; }
-    .bstrip .bs-fan { flex:1 1 auto; justify-content:center; }
+    .bstrip:not(.bs-dock) { grid-template-columns:minmax(0,1fr); grid-template-areas:"k" "t" "live" "cta"; padding:16px; }
+    .bstrip:not(.bs-dock) .bs-cta { justify-content:flex-start; gap:8px 16px; margin-top:12px; }
+    .bstrip:not(.bs-dock) .bs-go { flex:1 1 100%; }
+    .bstrip:not(.bs-dock) :is(.bs-go2,.bs-fan) { flex:1 1 0; }
   }
+  @media (prefers-reduced-motion:reduce) { .bstrip :is(.bs-go,.bs-go2,.bs-fan) { transition:none; } .bstrip :is(.bs-go,.bs-go2,.bs-fan):active { transform:none; } }
 </style>`;
 
 function block(slug, e) {
@@ -101,29 +107,29 @@ function block(slug, e) {
   lines.push(CSS);
   lines.push(`<div class="bstrip-wrap">`);
   lines.push(`  <div class="bstrip" data-bs-q="${attr(p.q)}" data-bs-cid="${attr(p.customid)}"${e.msrp ? ` data-bs-msrp="${attr(e.msrp)}"` : ""}${e.req ? ` data-bs-req="${attr(e.req)}"` : ""}${e.cat ? ` data-bs-cat="${attr(e.cat)}"` : ""}${e.deny ? ` data-bs-deny="${attr(e.deny)}"` : ""}>`);
-  lines.push(`    <span class="bs-k"><span class="bs-dot"></span>Buy it now</span>`);
+  lines.push(`    <span class="bs-k">Buy it now</span>`);
   lines.push(`    <span class="bs-t">${text(e.product)}</span>`);
   if (e.live) lines.push(`    <span class="bs-live" data-bs-live></span>`);
   lines.push(`    <span class="bs-cta">`);
-  lines.push(`      <a class="bs-go" href="${attr(epn(p.q, p.customid))}" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'primary',page:location.pathname})">${text(p.label)}</a>`);
-  if (s) lines.push(`      <a class="bs-go2" href="${attr(epn(s.q, s.customid, s.ag ? AG_FILTER : ""))}" target="_blank" rel="noopener sponsored"${s.title ? ` title="${attr(s.title)}"` : ""} onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'${s.ag ? "secondary-ag" : "secondary"}',page:location.pathname})">${text(s.label)}</a>`);
+  lines.push(`      <a class="bs-go" href="${attr(epn(p.q, p.customid))}" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'primary',page:location.pathname})">${pill(p.label)}</a>`);
+  if (s) lines.push(`      <a class="bs-go2" href="${attr(epn(s.q, s.customid, s.ag ? AG_FILTER : ""))}" target="_blank" rel="noopener sponsored"${s.title ? ` title="${attr(s.title)}"` : ""} onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'${s.ag ? "secondary-ag" : "secondary"}',page:location.pathname})">${pill(s.label)}</a>`);
   // The case link: a sealed CASE is 4-12x the basket of the box beside it, and until
   // now the site had no link to one — every sealed query excludes cases on purpose,
   // because a case would corrupt a per-box mark. This is a LINK, never a mark: no
   // figure is rendered from it and nothing it returns reaches the engine or an index.
-  if (c) lines.push(`      <a class="bs-case" href="${attr(epn(c.q, c.customid))}" target="_blank" rel="noopener sponsored" title="Sealed cases of ${attr(e.product)} on eBay &mdash; a search, not a price" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'case',page:location.pathname})">Sealed cases &rarr;</a>`);
+  if (c) lines.push(`      <a class="bs-case" href="${attr(epn(c.q, c.customid))}" target="_blank" rel="noopener sponsored" title="Sealed cases of ${attr(e.product)} on eBay &mdash; a search, not a price" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'case',page:location.pathname})">Sealed cases&nbsp;&rsaquo;</a>`);
   // Release-window line (Ledger #54, Oct 5 2026). A product that streets soon gets ONE extra link on
   // the pages that already carry the traffic. It ships HIDDEN: js/release-link.js shows it only between
   // release.from and release.until, and only while production /api/comps holds >= 3 clean single-unit
   // listings of the exact product (req/deny, the same guard as the strip). A LINK ONLY: no figure (R20).
   const rl = e.release;
-  if (rl) lines.push(`      <a class="bs-case bs-rel" hidden href="${attr(epn(rl.q, rl.customid))}" target="_blank" rel="noopener sponsored" data-rel-q="${attr(rl.q)}" data-rel-cid="${attr(rl.customid)}" data-rel-from="${attr(rl.from)}" data-rel-until="${attr(rl.until)}"${rl.req ? ` data-rel-req="${attr(rl.req)}"` : ""}${rl.deny ? ` data-rel-deny="${attr(rl.deny)}"` : ""}${rl.cat ? ` data-rel-cat="${attr(rl.cat)}"` : ""} title="${attr(rl.title || rl.label)} &mdash; a search, not a price" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'release',page:location.pathname})">${text(rl.label)}</a>`);
+  if (rl) lines.push(`      <a class="bs-case bs-rel" hidden href="${attr(epn(rl.q, rl.customid))}" target="_blank" rel="noopener sponsored" data-rel-q="${attr(rl.q)}" data-rel-cid="${attr(rl.customid)}" data-rel-from="${attr(rl.from)}" data-rel-until="${attr(rl.until)}"${rl.req ? ` data-rel-req="${attr(rl.req)}"` : ""}${rl.deny ? ` data-rel-deny="${attr(rl.deny)}"` : ""}${rl.cat ? ` data-rel-cat="${attr(rl.cat)}"` : ""} title="${attr(rl.title || rl.label)} &mdash; a search, not a price" onclick="if(typeof gtag==='function')gtag('event','buystrip_click',{item:'release',page:location.pathname})">${more(rl.label)}</a>`);
   const fz = e.fanatics;
-  if (fz) lines.push(`      <a class="bs-fan" href="${attr(fan(fz.q, slug))}" target="_blank" rel="sponsored nofollow noopener" title="${attr(fz.title || "Search fanatics.com")}" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}',page:location.pathname})">${text(fz.label || "At Fanatics &rarr;")}</a>`);
+  if (fz) lines.push(`      <a class="bs-fan" href="${attr(fan(fz.q, slug))}" target="_blank" rel="sponsored nofollow noopener" title="${attr(fz.title || "Search fanatics.com")}" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}',page:location.pathname})">${pill(fz.label || "At Fanatics")}</a>`);
   // Rep-the-player TEST (Sep 27 2026, Mo: "add some test rep the player links… give people options and see").
   // Fanatics gear search for the player; subId1 = <slug>-rep so Impact separates gear from box clicks.
   const rp = e.rep;
-  if (rp) lines.push(`      <a class="bs-rep" href="${attr(fan(rp.q, slug + "-rep"))}" target="_blank" rel="sponsored nofollow noopener" title="${attr(rp.q)} jerseys and gear on fanatics.com" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}-rep',page:location.pathname})">${text(rp.label)}</a>`);
+  if (rp) lines.push(`      <a class="bs-rep" href="${attr(fan(rp.q, slug + "-rep"))}" target="_blank" rel="sponsored nofollow noopener" title="${attr(rp.q)} jerseys and gear on fanatics.com" onclick="if(typeof gtag==='function')gtag('event','fanatics_click',{item:'${attr(slug)}-rep',page:location.pathname})">${more(rp.label)}</a>`);
   lines.push(`    </span>`);
   lines.push(`  </div>`);
   const fine = [`Affiliate links &mdash; ShopCardHub earns an eBay Partner Network commission on qualifying purchases at no extra cost to you. Any figure shown is the lowest live single-unit <em>ask</em>, not a sold comp.`];
