@@ -6509,22 +6509,33 @@
         {
           "date": "2026-11-17",
           "commits": [
-            "(this commit)"
+            "257fd6f"
           ],
           "by": "Site Sweep (cloud clone, unattended) — Task-key site-sweep; Authority: Mo 2026-09-27. Cloud push refused by the git proxy (session sources) → mailbox claude/night-crew/pending.md for the Ship Desk Wed Nov 18 (R48(c))",
           "gates": "audit-prices FAIL 0 / WARN 66 · audit-site FAIL 0 / WARN 3 (817 pages) · audit-terminal --feed data/feed FAIL 0 / WARN 1 (= base 906494e/25656be)",
-          "liveVerified": "pending — Ship Desk verifies on push; sweep record in Project claude/cos/site-sweep-2026-11-17.md",
+          "liveVerified": "2026-11-17 ~20:00Z curl: /css/site-fixes.css 'a.sp-more, body a.gg-more' 1. Playwright 390 /pokemon-booster-box-prices (GA/eBay aborted): a.sp-more height 41.4 (was 21), first eBay button top 757 unchanged, no sideways scroll; sweep --deep 1440+phone CLS 0. No revert.",
           "note": "css/site-fixes.css +6: '<Set> index ›' links on the four Deal pages 21–23 px → 41–43 px hit area (padding + equal negative margin); layout, buttons, doc height identical at 390 and 1366, no overlap with any visible control."
         },
         {
           "date": "2026-11-17",
           "commits": [
-            "(this commit)"
+            "c35e24a"
           ],
           "by": "tuesday-board (4.8) — cloud clone, unattended. Task-key tuesday-board. Cloud push refused by the git proxy (session sources) → Ship Desk mailbox claude/night-crew/pending.md (R48(c)); deploy key not used (R48(a))",
           "gates": "audit-prices FAIL 0 / WARN 66 · audit-site FAIL 0 / WARN 3 (817 pages) · audit-terminal --feed data/feed FAIL 0 / WARN 1 (= base 9ff2e73)",
-          "liveVerified": "pending — Ship Desk verifies on push: /bowman-bangers stamp 'Updated Nov 17, 2026', /data/x-board.json asOf 2026-11-17, /og/x/board-latest.png md5 = commit",
+          "liveVerified": "2026-11-17 ~20:00Z curl: /bowman-bangers 'Updated Nov 17, 2026' + 'Nov 17 board'; /data/x-board.json asOf 2026-11-17; /og/x/board-latest.png md5 19221f480ae08b7aa82ec2c712d85567 = committed blob. sweep --deep 1440+phone: no sideways scroll, CLS 0. No revert.",
           "note": "Board Nov 17: no seat moved; Fischer +3.7% $125.00 top, Holliday -0.5% $90.50 bottom (under $95 floor, call re-set not made — tuesday-2026-11-17-1). Tape + feed regenerated. No X action; Tape digest drafted only."
+        },
+        {
+          "date": "2026-11-17",
+          "commits": [
+            "257fd6f",
+            "c35e24a"
+          ],
+          "by": "Ship Desk (unattended cloud run, ~19:50Z) — mailbox claude/night-crew/pending.md",
+          "gates": "audit-prices FAIL 0 / WARN 66 · audit-site FAIL 0 / WARN 3 (817 pages) · audit-terminal --feed price-data FAIL 0 / WARN 1 · price-truth sweep RED 0 (= base)",
+          "liveVerified": "see the two entries above — both live by curl + Playwright at 390/1440; no revert",
+          "note": "Shipped Site Sweep Nov 17 (Deal-page 'index ›' links 41–43 px hit area) and Tuesday board Nov 17 (no seat moved; Fischer $125.00 top, Holliday $90.50). pipeline.json pushLog conflict resolved as union per pending.md. Site Sweep patch came back inline from project_read; bytes taken from the tool result, sha256 e9b3ca1382f95c0e verified."
         }
       ]
     },
