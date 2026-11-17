@@ -6474,6 +6474,16 @@
           "gates": "audit-prices FAIL 0 / WARN 66; audit-site 0/3; audit-terminal 0/1; price-truth sweep RED 0",
           "liveVerified": "2026-11-16 ~15:05 PT (curl: card page meta shows the Nov 16 raw mark; / prints the level's unit; /best-charizard-cards carries the rip block; card pages carry the photo stub)",
           "note": "this entry was pushed to main by an unattended cloud run: scheduled cloud runs can ship without the Mac"
+        },
+        {
+          "date": "2026-11-17",
+          "commits": [
+            "bb72e0cb"
+          ],
+          "by": "Goal League Commissioner (unattended; its cloud push was refused by the git proxy — repo not in the task's sources — so the Ship Desk applies it per R48(c))",
+          "what": "Goal League week 2 scored read (week ending Nov 15) recorded in data/goal-league.json + click standings. No contestant patches pending.",
+          "gates": "audit-prices FAIL 0 WARN 66 (base 66) · audit-site FAIL 0 WARN 3 (base 3) · audit-terminal FAIL 0 WARN 1 (base 1)",
+          "liveVerified": "by the Ship Desk on apply (curl /data/goal-league.json: weeklyReads 2)"
         }
       ]
     },
