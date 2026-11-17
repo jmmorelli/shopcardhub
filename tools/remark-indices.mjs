@@ -37,7 +37,7 @@ const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const DRY = args.includes("--dry");
 // --bake (Sep 30 2026, the release-date rebase): re-bake every chase page from data/indices.json as it stands — no marks,
 // no history row, indices.json untouched. The strip, level, levelchg, stats, table and CARDS all follow the file.
-const BAKE = args.includes("--bake") || args.includes("--cap") || args.includes("--rebalance");   // --cap / --rebalance are retired (Oct 12 2026) and now just bake
+const BAKE = args.includes("--strip-only") || args.includes("--bake") || args.includes("--cap") || args.includes("--rebalance");   // --cap / --rebalance are retired (Oct 12 2026) and now just bake
 // RETIRED Oct 12 2026 (Mo: "Change the cap now") — every index is uncapped, one copy of every card; see tools/uncap-indices.mjs.
 // --cap / --rebalance are kept as aliases of --bake so the LANE-RULES cadence line keeps working; they reset no weights.
 // History of the retired op — --rebalance (alias --cap; Oct 7 2026, Mo: "it should only be 25% of the index" + "the only time they can exceed the 25% cap
@@ -45,6 +45,12 @@ const BAKE = args.includes("--bake") || args.includes("--cap") || args.includes(
 // 25% single-card cap as a logged, level-neutral divisor adjustment (no marks, no history row), then re-bake the pages.
 // Run it at the QUARTERLY REBALANCE — the first Monday of Jan/Apr/Jul/Oct, after that Monday's re-mark (LANE-RULES cadence).
 // Weekly re-marks leave the weights alone, so a card that runs between rebalances can sit above 25% until the next one.
+// --strip-only (Price Truth, Nov 17 2026; Pokémon KB P70): re-bake ONLY the ticker strip on the six chase pages from
+// data/indices.json — nothing else on the page, no indices.json write, no chase strip / card-file passes. Called by
+// tools/build-sector-index.mjs after every classic/sector bake, so a Monday or Thursday classic mark (19:30Z, after the
+// chase re-mark) no longer leaves the chase pages' baked chips one to three marks behind for crawlers and JS-off readers.
+const STRIP_ONLY = args.includes("--strip-only");
+if (STRIP_ONLY && !args.includes("--bake")) args.push("--bake");
 const CAPOP = false;   // retired Oct 12 2026 — see above
 if (args.includes("--cap") || args.includes("--rebalance")) console.log("--cap/--rebalance: retired Oct 12 2026 (indices are uncapped) — baking only, no weights reset");
 const marksFile = opt("--marks", BAKE || CAPOP ? "/dev/null" : null);
@@ -180,6 +186,7 @@ for (const k of POKE) {
   const STRIP = /<div class="strip">(?:(?!<\/div>)[\s\S])*<\/div>/;
   must(STRIP, "strip");
   html = html.replace(STRIP, () => strip(k));
+  if (STRIP_ONLY) { if (html !== before) pageEdits[file] = html; continue; }
 
   // level + levelchg
   must(/<div class="level">[\d.]+<\/div>/, "level");
@@ -327,6 +334,11 @@ for (const k of POKE) {
   pageEdits[file] = html;
 }
 
+if (STRIP_ONLY) {
+  if (!DRY) for (const [f, h] of Object.entries(pageEdits)) fs.writeFileSync(f, h);
+  console.log(`chase-page ticker strips: ${Object.keys(pageEdits).length} page(s) re-baked from data/indices.json${DRY ? " (dry run)" : ""}`);
+  process.exit(0);
+}
 // ---- report ----
 for (const k of POKE) {
   const s = summary[k];

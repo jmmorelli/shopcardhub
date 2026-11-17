@@ -50,7 +50,7 @@
     var day = (latest && latest.day) || '';
     var cards = ((latest && latest.cards) || []).map(function (c) {
       var id = String(c.key).split(':')[1];
-      var e = history && history[c.key];
+      var e = c.held ? null : history && history[c.key];   /* Price Truth Nov 17 (G25): a held row (engine markHold) draws nothing from its history either */
       var ys = ((e && e.series) || []).filter(function (p) { return p && p.p != null && isFinite(p.p); }).map(function (p) { return p.p; });
       var m = ST.moments(ST.returns(ys));
       var last30 = ys.slice(-30);

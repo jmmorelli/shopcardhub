@@ -104,7 +104,7 @@ function facts(c) {
   const year = (q.match(/\b(20\d{2})\b/) || [])[1] || "";
   const type = c.cardType || "chrome-auto";
   const isTcg = type === "tcg-single";
-  const code = (c.query.match(/\b([A-Z]{2,4}-[A-Z]{1,3}\d{0,3}|[A-Z]{2,4}-\d{1,3})\b/) || [])[1] || null;
+  const code = (c.code ? String(c.code).toUpperCase() : null) || (c.query.match(/\b([A-Z]{2,4}-[A-Z]{1,3}\d{0,3}|[A-Z]{2,4}-\d{1,3})\b/) || [])[1] || null;
   let set = "Pokémon TCG", cat = "pokemon", setHref = null, indexHref = null, ticker = null, lane = "Pokémon single";
   if (!isTcg) {
     cat = "baseball";
@@ -249,7 +249,7 @@ const CLIENT_JS = `
     if (c.supplyChange30 != null) $('cp-sup-s').textContent = (c.supplyChange30>0?'+':'') + c.supplyChange30.toFixed(0) + '% vs 30d';
     var sig = $('cp-sig'); var s = String(c.signal||'HOLD').toUpperCase(); var gated = !!c.gated || (c.signalRaw && c.signalRaw !== c.signal);
     sig.className = 'cp-sig ' + s.toLowerCase();
-    sig.innerHTML = '<span>engine \\u00b7 ' + esc(s) + '</span>' + (gated ? '<span style="opacity:.7">\\u00b7 gated, thin sample</span>' : '');
+    sig.innerHTML = '<span>engine \\u00b7 ' + esc(s) + '</span>' + (C.hold ? '<span style="opacity:.7">\\u00b7 mark held</span>' : gated ? '<span style="opacity:.7">\\u00b7 gated, thin sample</span>' : '');
     var why = (c.reasons||[])[0]; if (why) $('cp-why').textContent = why + (c.confidence!=null ? ' \\u00b7 confidence ' + Math.round(c.confidence*100) + '%' : '');
     if (c.image && c.image.url) { var im = $('cp-img'); if (im && im.tagName==='IMG') im.src = c.image.url;
       var ph = $('cp-photo'); if (ph && c.image.item) ph.href = c.image.item.replace(/customid=[^&]*/, 'customid=card-' + C.id); }
@@ -258,6 +258,7 @@ const CLIENT_JS = `
   /* 2. history chart */
   getJSON(FEED + '/prices-history.json?t=' + Math.floor(Date.now() / 600000)).then(function(h){
     var e = h[KEY]; var box = $('cp-chart'); if(!e || !box) return;
+    if (C.hold) { $('cp-chart-n').textContent = ''; box.innerHTML = '<div class="cp-empty">Price line held since ' + esc(dstr(C.hold.since)) + ': earlier nights were marked partly from a different card. It returns' + (C.hold.until ? ' on ' + esc(dstr(C.hold.until)) : '') + ' with clean nights only.</div>'; return; }
     var pts = (e.series||[]).filter(function(p){ return p && p.p != null && isFinite(p.p); });
     $('cp-chart-n').textContent = pts.length + ' nightly point' + (pts.length===1?'':'s') + (pts.length ? ' \\u00b7 ' + dstr(pts[0].d) + ' \\u2192 ' + dstr(pts[pts.length-1].d) : '');
     if (pts.length < 2) { box.innerHTML = '<div class="cp-empty">' + pts.length + ' point so far \\u2014 the line fills in one point per night as the engine re-marks this card.</div>'; return; }
@@ -349,7 +350,12 @@ function renderCard(c) {
   const photo = f.img
     ? `<a class="cp-photo" id="cp-photo" href="${attr(f.ebaySearch)}" target="_blank" rel="noopener sponsored" aria-label="${attr(c.label)} on eBay"><img id="cp-img" src="${attr(f.img.url)}" alt="${attr(c.label)}" loading="eager"><span class="sch-ebay-tag" aria-hidden="true">eBay</span></a>`
     : `<a class="cp-photo" href="${attr(f.ebaySearch)}" target="_blank" rel="noopener sponsored" aria-label="${attr(c.label)} on eBay"><span class="cp-noimg">NO PHOTO YET</span><span class="sch-ebay-tag" aria-hidden="true">eBay</span></a>`;
-  const cardObj = { id: c.id, label: c.label, code: f.code, must, type: f.type };
+  // markHold (Price Truth Nov 17 2026, G25): while a watchlist hold is active the page prints no mark, no call and no
+  // price line — the nightly series behind it was built partly from a different card. The feed row is held by the engine
+  // (applyMarkHold); this keeps the chart, which reads the raw history, from drawing the held series.
+  const hold = c.markHold && (!c.markHold.until || String((latest && latest.day) || "") < String(c.markHold.until))
+    ? { since: c.markHold.since || null, until: c.markHold.until || null } : null;
+  const cardObj = { id: c.id, label: c.label, code: f.code, must, type: f.type, ...(hold ? { hold } : {}) };
 
   return `<!DOCTYPE html>
 <html lang="en">

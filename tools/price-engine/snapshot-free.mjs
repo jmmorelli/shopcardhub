@@ -419,6 +419,30 @@ export function summarizeListings(store, days = 30) {
   return byKey;
 }
 
+// MARK HOLD (Price Truth, Nov 17 2026 — Bowman KB G25): a watchlist row may carry
+// markHold {since, until, why} when its published mark was built from the wrong card
+// (the June Sapphire queries matched October Chrome Sapphire RC listings). While
+// day < until (or with no until), the feed row prints no number and no call: last,
+// signal, ROC, supply and the TA fields go null/HOLD, and `held` carries the dated
+// reason. The nightly series keeps recording (from the fixed query), so when the hold
+// expires the 30-night math rests on clean points only. One function, two callers:
+// main() below and tools/price-truth/feed-holds.mjs (applies it to the served feed
+// the same day the hold is set). Exported for both. Idempotent.
+export function applyMarkHold(row, wlCard, day) {
+  const h = wlCard && wlCard.markHold;
+  if (!h || (h.until && String(day) >= String(h.until))) return row;
+  const why = "held by Price Truth since " + (h.since || "?") + ": " + (h.why || "mark under review") + (h.until ? " - re-marked from clean nights on " + h.until : "");
+  return {
+    ...row,
+    last: null, signal: "HOLD", signalRaw: "HOLD", gated: [why], confidence: null,
+    roc30: null, sma30: null, z: null, retSkew: null, retKurtosis: null,
+    supply: null, supply30: null, supplyChange30: null, askQ1: null, askQ3: null,
+    // the photo is kept only once a night after the hold picked it with the fixed query (the held nights' photo may be the other card)
+    image: row.image && h.since && String(row.image.d || "") > String(h.since) ? row.image : null,
+    reasons: [why], held: { since: h.since || null, until: h.until || null, why: h.why || null },
+  };
+}
+
 async function main() {
   const wl = readJsonFile(WATCHLIST, null);
   const cards = (wl?.cards || []).filter((c) => c && c.source === "ebay" && c.id && c.query);
@@ -524,7 +548,7 @@ async function main() {
       askQ3: lastPt ? (lastPt.q3 ?? null) : null,
       points: ta.points, reasons: ta.reasons,
     };
-  }).sort((a, b) => a.label.localeCompare(b.label));
+  }).map((row) => applyMarkHold(row, byKey.get(row.key), day)).sort((a, b) => a.label.localeCompare(b.label));
 
   fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2));
   try {

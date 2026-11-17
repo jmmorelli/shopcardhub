@@ -970,6 +970,17 @@ function rebakeShells(tk) {
   console.log(`${tk}: ${n || 0} static card shells re-baked from data/cards`);
 }
 
+// Price Truth Nov 17 2026 (Pokémon KB P70, 8 runs unchanged): the six chase pages bake every live ticker's chip into a static
+// strip at the chase re-mark (~18:00Z Mon). The classic/sector marks land later (19:30Z Mon/Thu), so the baked chips sat one to
+// three marks behind all week (BS1E +8.2% printed after a -15.6% mark). After every bake the chase strips are re-baked from the
+// data/indices.json just written (remark-indices --strip-only: the strip only, no indices.json write; ~6 small page edits, so
+// a multi-ticker run re-bakes after each ticker and the last one wins). A failed strip bake never fails the mark; the page
+// script still re-reads the chips live.
+function rebakeChaseStrips() {
+  const r = spawnSync(process.execPath, [path.join(ROOT, "tools/remark-indices.mjs"), "--strip-only"], { cwd: ROOT, encoding: "utf8" });
+  console.log(r.status === 0 ? String(r.stdout || "").trim().split("\n").pop() : `chase-page ticker strips not re-baked (exit ${r.status}): ${String(r.stderr || "").trim().split("\n").pop()}`);
+}
+
 function bake(x, c) {
   // Classic Collection reprint label (Price Truth, Nov 4 2026, KB GAPS P42): CEL21 / TH26 rows that reprint an older card on its
   // original number carry cc:true in data/indices.json (the client plain read reads it there) and say so on every surface.
@@ -1018,6 +1029,7 @@ function bake(x, c) {
   // E7 slice 2: Dataset + Organization JSON-LD, dateModified = this mark (tools/lib/index-jsonld.mjs)
   try { html = applyIndexAnswer(applyIndexLd(html, { ...x, page: x.page || c.page }), { ...x, page: x.page || c.page }); } catch (e) { console.log(`LD skipped ${c.page}: ${e.message}`); }
   if (!DRY) fs.writeFileSync(file, html);
+  if (!DRY) rebakeChaseStrips();
   console.log(`${DRY ? "would bake" : "baked"} ${c.page} block: ${x.basket.length} rows`);
 }
 
