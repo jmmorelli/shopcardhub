@@ -951,3 +951,9 @@ body .mobile-nav.open { visibility: visible; transition: opacity .2s ease, trans
 @media (max-width: 480px) {
   body .bstrip .bs-go, body .bstrip .bs-go2 { max-width: 100%; white-space: normal; text-align: center; }
 }
+
+/* Site Sweep Nov 17 (U6, WCAG 2.2 target size): the "<Set> index ›" links under each product card on the four
+   Deal pages (box prices, Black Friday, gift guide, stocking stuffers) were 21–23 px tall. Padding plus an equal
+   negative margin makes the hit area 41–43 px; text position, card height and every button stay where they were. */
+body a.sp-more, body a.gg-more { padding-block: 10px; margin-block: -10px; }
+body a.gg-more { margin-top: -6px; }
