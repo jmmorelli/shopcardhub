@@ -6484,6 +6484,23 @@
           "what": "Goal League week 2 scored read (week ending Nov 15) recorded in data/goal-league.json + click standings. No contestant patches pending.",
           "gates": "audit-prices FAIL 0 WARN 66 (base 66) · audit-site FAIL 0 WARN 3 (base 3) · audit-terminal FAIL 0 WARN 1 (base 1)",
           "liveVerified": "by the Ship Desk on apply (curl /data/goal-league.json: weeklyReads 2)"
+        },
+        {
+          "date": "2026-11-17",
+          "commits": [
+            "9baf8bb",
+            "674532f",
+            "e5e08ce",
+            "8522df1",
+            "8054b04",
+            "b14bbea",
+            "75aed60"
+          ],
+          "by": "Ship Desk (unattended cloud, R48): mailbox cleared — CoS desk Nov 16 patch (carries price lane 00233cb: chase six re-marked Nov 16; Gengar's false-copy pass; desk docs) + Ship Desk regen; Cupertino run 18 (buy strip onto the design system, 72 pages); Goal League Commissioner Nov 17 (week 2 read, original bb72e0cb, both commits applied clean)",
+          "conflicts": "desk 1/3: 3 classic index pages (evolving-skies, neo-genesis-1st-edition, pokemon-base-set-shadowless) kept main's (--ours) per pending.md; data/indices.json merged clean",
+          "gates": "audit-prices FAIL 0 / WARN 66 (base 66) · audit-site FAIL 0 / WARN 3 (base 3) · audit-terminal FAIL 0 / WARN 1 (base 1, +feed) · price-truth sweep RED 0 · build-buy-strip --check 2 stale (= main)",
+          "liveVerified": "2026-11-17 ~15:10Z curl: /pitch-black-index 53.88 · /phantasmal-flames-index 64.51 · /best-lugia-cards 'Classic Collection reprint' · /best-pikachu-cards old 'Too new…' line gone · /best-hobby-boxes-2026 fit-content(50%) 1, bs-dot 0 · /pitch-black-vs-chaos-rising old run-13 CSS 0 · /data/goal-league.json weeklyReads 2, ga4Day 2026-11-15. Cloud sweep --deep 6 pages at 1440 + phone (GA/eBay aborted): no sideways scroll, eBay pill on first screen where it was before; CLS phone 0 by sweep.mjs (pitch-black-vs-chaos-rising desktop 0.054 = pre-existing 0.052, source container|P, not the strip). No revert.",
+          "note": "bowman-chrome-2026-index: the 'New Oct 7' release link now hides on phones as designed (data-rel-until 2026-11-06 + the strip's [hidden] rule); before it showed past its date"
         }
       ]
     },
