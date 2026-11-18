@@ -124,6 +124,7 @@ for (const f of files) {
 }
 out.generated = new Date().toISOString();
 // R17 (2026-09-23): no raw eBay listing title or listing price is ever written to this public file.
-for (const c of Object.values(out.cards || {})) { if (c) { delete c.title; delete c.price; } }
+// R17 (CoS weekly 2026-11-18, ruling of Nov 4): no listing price as `px` either — the "vs sold mark" chip stays dark until it reads a labelled ask from our own feed.
+for (const c of Object.values(out.cards || {})) { if (c) { delete c.title; delete c.price; delete c.px; } }
 fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
 console.log(JSON.stringify({ ok, miss, cached, total: Object.keys(out.cards).length }));
