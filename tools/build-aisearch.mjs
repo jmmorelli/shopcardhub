@@ -173,7 +173,7 @@ function cardAcross(id) {
     const r = T[p.ticker];
     if (!r) return null;
     const b = (r.x.basket || []).find(b => String(b.num) === String(c.num) && b.name === c.name);
-    if (!b || b.carried || typeof b.price !== 'number' || !b.asOf || !b.win) return null;
+    if (!b || b.carried || b.ptHold || typeof b.price !== 'number' || !b.asOf || !b.win) return null;
     return { ...p, r, b };
   }).filter(Boolean);
   const single = c.prints.length === 1;
@@ -195,6 +195,11 @@ function cardAcross(id) {
     html: withDates(esc(body), d => (same ? `On <time datetime="${d}">${fmtDay(d)}</time>` : `<time datetime="${d}">${fmtDay(d)}</time>`)),
     one: t => { const p = prints.find(p => p.ticker === t); return p ? `A raw ${single ? '' : p.label + ' '}${c.title} sold for a median ${usd(p.b.price)} on ${fmtDate(p.b.asOf)}.` : ''; },
   };
+}
+function heldPrint(id, ticker) {
+  const c = (cfg.cards || {})[id], r = T[ticker]; if (!c || !r) return false;
+  const b = (r.x.basket || []).find(b => String(b.num) === String(c.num) && b.name === c.name);
+  return !!(b && b.ptHold);
 }
 function cardBlock(id, ticker, slug) {
   const a = cardAcross(id);
@@ -230,7 +235,7 @@ if (cfg.answer.cards) {
     const r = T[c.ticker];
     if (!r) return null;
     const b = (r.x.basket || []).find(b => String(b.num) === String(c.num) && b.name === c.name);
-    if (!b || b.carried || typeof b.price !== 'number' || !b.asOf || !b.win) return null;
+    if (!b || b.carried || b.ptHold || typeof b.price !== 'number' || !b.asOf || !b.win) return null;
     const tk = c.ticker.toLowerCase(), n = String(c.num).toLowerCase();
     const page = fs.readFileSync(path.join(ROOT, r.page.replace(/^\//, '') + '.html'), 'utf8');
     const href = page.includes(`customid=${tk}-${n}-chase`) && page.includes(`id="${tk}-chase"`) ? `${r.page}#${tk}-chase` : r.page;
@@ -298,6 +303,8 @@ ${table}
 // {month}: the screener's 1M move (" It moved down 21.7% in the latest month."), empty when the record is too short.
 const moveWord = v => (v > 0.05 ? 'up ' : v < -0.05 ? 'down ' : 'flat at ') + Math.abs(v).toFixed(1) + '%';
 function fill(s, r, p = {}) {
+  // Price Truth hold (Nov 18 2026, tools/lib/pt-holds.mjs): the page's own print held (ptHold) → the {card} sentence is dropped, not thrown.
+  if (/\{card\}/.test(s) && p.card && r && heldPrint(p.card, r.k)) s = s.replace(/\{card\}\s*/g, '');
   if (/\{card\}/.test(s)) { const a = p.card && r ? cardAcross(p.card) : null; const t = a ? a.one(r.k) : ''; if (!t) throw new Error((r ? r.k : '?') + ': {card} used but no live card answer for this ticker'); s = s.replace(/\{card\}/g, t); }
   if (/\{crash\}/.test(s)) { if (!crash) throw new Error('{crash} used but answer.crash is not set'); s = s.replace(/\{crash\}/g, crash.desc); }
   if (!r) return s;

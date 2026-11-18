@@ -94,6 +94,7 @@
     tkFile(tk).then(function (r) {
       var d = r[0], gd = r[1], c = null;
       for (var i = 0; i < d.cards.length; i++) if (d.cards[i].id === id) { c = d.cards[i]; break; }
+      if (c && c.ptHold) c = Object.assign({}, c, { raw: null });   // Price Truth hold (tools/lib/pt-holds.mjs): no raw number while re-read
       if (!c) { out.innerHTML = '<p class="sg-wait">That card isn’t in our files right now. Try another.</p>'; return; }
       var g = gd && gd.cards ? gd.cards[c.key || c.num] || null : null;
       cur = { d: d, c: c, g: g, gd: gd };

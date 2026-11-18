@@ -138,7 +138,7 @@
     /* a row held by the move guard (tools/lib/move-guard.mjs, Nov 3 2026) is never the "biggest move" — its read is unconfirmed;
      * nor is a reread row (Price Truth, Nov 5 2026): the prior mark sat outside PriceCharting's band and the new one inside it, so the
      * "move" is the mark correcting, not the card moving (NDC1E Hitmontop #3 $30 → $67) */
-    var movers = basket.filter(function (c) { return typeof c.prevPrice === 'number' && c.prevPrice > 0 && c.price >= 10 && !c.heldMove && !c.reread; })
+    var movers = basket.filter(function (c) { return typeof c.prevPrice === 'number' && c.prevPrice > 0 && c.price >= 10 && !c.heldMove && !c.reread && !c.ptHold; })
       .map(function (c) { return { c: c, p: (c.price / c.prevPrice - 1) * 100 }; })
       .filter(function (m) { return Math.abs(m.p) >= 1; })
       .sort(function (a, b) { return Math.abs(b.p) - Math.abs(a.p); });
@@ -163,7 +163,7 @@
    * and the share. Counts and dollars only, no call. Concentrated: the top card is >= 50% of the summed |$ change|; broad: <= 25%
    * and one direction at least twice the other; else mixed. A card within 0.5% of its previous mark counts as unchanged. */
   function breadth(basket, baseDate) {
-    var cs = basket.filter(function (c) { return !c.heldMove && !c.reread; });
+    var cs = basket.filter(function (c) { return !c.heldMove && !c.reread && !c.ptHold; });
     if (cs.length < 5 || !cs.every(function (c) { return typeof c.prevPrice === 'number' && c.prevPrice > 0 && String(c.prevAsOf || '').slice(0, 10) === baseDate; })) return null;
     var tot = 0, up = 0, dn = 0, top = null;
     cs.forEach(function (c) {
@@ -228,7 +228,7 @@
   /* 3 · two tiles. opts.topImg = image slot HTML (the generator's data-card-img span). No buy link of its own: the chase strip
    * and the table carry this card's eBay links already (R33 link-type freeze). */
   function tileTop(f) { return f.top ? esc(f.top.name) + (f.top.num ? ' <small>#' + esc(f.top.num) + (f.top.cc ? ' · Classic Collection reprint' : '') + '</small>' : '') : 'No priced card yet'; }
-  function tileTopV(f) { return f.top ? money(f.top.price) + '<small>recent sales</small>' : ''; }
+  function tileTopV(f) { return f.top ? (f.top.ptHold ? '<small>raw mark being re-read</small>' : money(f.top.price) + '<small>recent sales</small>') : ''; }   // ptHold: Price Truth hold (tools/lib/pt-holds.mjs)
   /* R23: on a dollar basket with the shared week window, the tile names the card that moved the index most (largest $ change) */
   function mvOf(f) { return f.br ? f.br.top : f.mover; }
   function tileMv(f) { if (f.br) return cardNm(f.br.top.c, true); return f.mover ? esc(f.mover.c.name) + (f.mover.c.num ? ' <small>#' + esc(f.mover.c.num) + (f.mover.c.cc ? ' · Classic Collection reprint' : '') + '</small>' : '') : (f.wk == null ? 'Nothing to compare yet' : 'No card moved 1% or more'); }

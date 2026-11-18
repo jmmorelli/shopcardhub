@@ -22,12 +22,14 @@ import { ebaySearchUrl, assertClean, SACAT_TCG } from "./lib/epn.mjs";
 import { THEMES, HERO_FX, HERO_JS } from "./collectors-desk/themes.mjs";
 import { carryFooter } from "./lib/footer.mjs";
 import { ripBlock, RIP_HEAD, RIP_CSS, darken } from "./lib/rip-shelf.mjs";
+import { rawHolds } from "./lib/pt-holds.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 const CHECK = args.includes("--check");
 const ONLY = args.includes("--only") ? args[args.indexOf("--only") + 1] : null;
 const rd = (f) => fs.readFileSync(path.join(ROOT, f), "utf8");
+const PT_HOLDS = Object.fromEntries(Object.keys(rawHolds(ROOT)).map((id) => [id, "Price Truth hold"]));   // data/price-truth/raw-holds.json
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const attr = (s) => esc(s).replace(/'/g, "&#39;");
 
@@ -124,7 +126,7 @@ function printBlock(slug, p, multi) {
   const rdays = c.wn != null ? (c.win || c.window) : c.window;
   const rAsOf = c.rawAsOf ? " · as of " + dateShort(c.rawAsOf) : "";
   // Oct 29 2026 (CoS desk, BLOCKED Gengar row): a raw figure held for a KB data check prints "No mark" with no number.
-  const RAW_HOLD = { "nd1e-107": "Pokémon KB P40" };
+  const RAW_HOLD = { "nd1e-107": "Pokémon KB P40", ...PT_HOLDS };
   const rawCell = RAW_HOLD[c.id]
     ? `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">No mark</div><div class="lad-s">the one recent sale on file is being checked</div></div>`
     : c.raw == null
@@ -150,7 +152,12 @@ function printBlock(slug, p, multi) {
     // chase-six raw value): PriceCharting's month on a 3-sale slab swings 100% on one sale, which reads as a move that isn't one.
     const rnn = c.wn != null ? c.wn : c.n30, p10 = c.gr && c.gr.psa10;
     const liquid = { 1: rnn == null || rnn >= 10, 3: !!(p10 && p10.m && p10.n >= 10) };
-    const parts = [[1, "raw"], [3, "PSA 10"]].map(([i, l]) => (!liquid[i] || pct(i) == null ? null : `${l} ${fmt(pct(i))}`)).filter(Boolean);
+    // Price Truth 2026-11-18 (KB P81, ledger O-34; provisional O-18 rule): PriceCharting's newest month is often a partial or
+    // pooled month (AQ03 Lugia #149: Nov $936.89 vs Oct $3,113.64 while 26 raw sales median $2,800 → "raw ▼70%"). A month that
+    // breaks more than 2x from the prior month, or (raw) sits more than 2x from our own sold mark, is not printed as a move.
+    const off2 = (x) => !(x > 0) || x > 2 || x < 0.5;
+    const sane = (i) => !off2(b[i] / a[i]) && !(i === 1 && c.raw > 0 && off2(b[1] / c.raw));
+    const parts = [[1, "raw"], [3, "PSA 10"]].map(([i, l]) => (!liquid[i] || pct(i) == null || !sane(i) ? null : `${l} ${fmt(pct(i))}`)).filter(Boolean);
     return parts.length ? `<span class="lad-pm" title="PriceCharting's monthly estimate for this card, ${mo(a[0])} vs ${mo(b[0])}">Past month: ${parts.join(" · ")} <i>(${mo(a[0])}→${mo(b[0])}, PriceCharting monthly)</i></span>` : "";
   })();
   const hr = houseRow(c.id);

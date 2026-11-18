@@ -65,7 +65,8 @@
     var setShort = String(c.set || d.set).replace(/^Pokémon TCG /, ''), offIx = d.kind === 'tracked' || d.kind === 'board';
     document.title = c.name + ' #' + c.num + ' ' + setShort + ' price — Raw, PSA 9, PSA 10, TAG | ShopCardHub';
     main.style.setProperty('--ac', d.theme || '#00ccf5');
-    var raw = c.raw;
+    // Price Truth hold (Nov 18 2026, tools/lib/pt-holds.mjs): a raw mark under review prints no number.
+    var raw = c.ptHold ? null : c.raw;
     var scr = c.screened && c.why === 'screen', chase = d.kind === 'chase', win = (d.screen && d.screen.window) || d.window || 30;
     var gRead = (g && g.asOf) || (gd && gd.day) || null;
     // (d') Price Truth Nov 12 2026, CoS ruling Nov 11: from Tue Nov 17 2026 a graded read more than 21 days old prints nothing
@@ -75,6 +76,7 @@
     // One entry per grade: m = the number we print (a median of ≥ 3 dated rows), one = a single dated sale when there is no median.
     var G = [{ k: 'raw', lbl: 'Raw', eb: 'raw', m: scr ? null : raw }];
     if (scr) G[0].basis = 'Not priced: ' + (c.n30 != null ? c.n30 + ' clean raw sales in the last ' + win + ' days' : 'below the liquidity screen') + '. It enters the index at ' + ((d.screen && d.screen.enter) || 6) + ' in ' + win + ' days.';
+    else if (c.ptHold) G[0].basis = 'Being re-read: the latest raw sales on file may include a different printing.';
     else if (raw == null) G[0].basis = c.nv ? 'No verified sale yet: ' + (c.wn || 0) + ' clean raw sales in ' + (c.win || 90) + ' days (3 needed)' : 'Too few raw sales to mark.';
     else if (chase) G[0].basis = 'PriceCharting’s ungraded value, read ' + md(c.rawAsOf);
     else G[0].basis = 'Median of ' + (c.wn != null ? c.wn : c.n30) + ' raw sales' + (c.lo != null && c.hi != null ? ' (middle half ' + money(c.lo) + '–' + money(c.hi) + ')' : '') + ', ' + (c.win || d.window || 30) + ' days · marked ' + md(c.rawAsOf);
@@ -122,7 +124,7 @@
       var x = e.k !== 'raw' && g ? g[e.k] : null, v, cap = e.basis;
       if (e.m != null) { v = money(e.m); cap = e.k === 'raw' ? (chase ? 'PriceCharting’s ungraded value' : 'Median of ' + (c.wn != null ? c.wn : c.n30) + ' raw sales, ' + (c.win || d.window || 30) + ' days') : 'Median of ' + e.n + ' sales, ' + e.days + ' days'; }
       else if (e.one) { v = money(e.one.p); cap = '1 sale, ' + md(e.one.d); }
-      else v = e.k === 'raw' ? (scr ? 'Not priced' : c.nv ? 'No verified sale yet' : 'Too few sales') : e.reread || (x && x.held && /^(d-stale|v-)/.test(x.held.why)) ? 'Being re-read' : x && x.held ? 'No verified sale' : !g ? 'Not read yet' : 'No recent sale';
+      else v = e.k === 'raw' ? (c.ptHold ? 'Being re-read' : scr ? 'Not priced' : c.nv ? 'No verified sale yet' : 'Too few sales') : e.reread || (x && x.held && /^(d-stale|v-)/.test(x.held.why)) ? 'Being re-read' : x && x.held ? 'No verified sale' : !g ? 'Not read yet' : 'No recent sale';
       if (cap === v || cap === 'Graded read pending') cap = ''; else if (cap.indexOf(v + ': ') === 0) cap = cap.slice(v.length + 2);
       var r = e.k !== 'raw' && e.m && raw ? e.m / raw : null;
       return '<div class="cdp-cmp-c' + (e.m != null || e.one ? '' : ' na') + '"><h3>' + e.lbl + '</h3><p class="v">' + v + '</p>' +

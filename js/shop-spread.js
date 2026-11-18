@@ -222,7 +222,7 @@
       // B76 re-land: card-page.js reserves .cdp-shop-wait + .tcg-slot on first paint when the file has this card
       var slot = buy.querySelector('.cdp-shop-wait'), tslot = buy.querySelector('.tcg-slot');
       if (!v) { if (slot) slot.remove(); if (tslot) tslot.remove(); return; }
-      var s = side(v.d, v.wide), raw = c.raw;
+      var s = side(v.d, v.wide), raw = c.ptHold ? null : c.raw;
       var box = slot || document.createElement('div'); box.className = 'cdp-shop'; box.removeAttribute('aria-hidden');
       box.innerHTML =
         '<div class="g">' +

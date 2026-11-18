@@ -1,0 +1,11 @@
+{
+  "_comment": "Price Truth raw-mark display holds (charter step 3, 'hold first'). A held card's raw mark stays in data/indices.json and in the index level (no restatement); every surface that prints it as a price, a move or a ratio prints 'being re-read' instead until `until`, or until the line is removed. Applied by tools/lib/pt-holds.mjs (tagPtHold at every sector bake/save).",
+  "raw": {
+    "bs1e-4": {
+      "since": "2026-11-18",
+      "until": "2026-12-03",
+      "shown": 4500,
+      "why": "KB P78 / ledger O-14: the Nov 16 90-day median ($4,500) rests on PriceCharting rows whose titles never say 1st Edition (6 of 10; $500–$4,500); the 4 clean 1st Edition rows median ~$10,100. No sale after Nov 12, so the 'down 36%' move is not a market move. Verifier confirmed Nov 18. Root cause: 1st Edition title check in tools/build-sector-index.mjs (from the Nov 19 mark)."
+    }
+  }
+}
