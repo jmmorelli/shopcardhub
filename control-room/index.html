@@ -15,22 +15,14 @@
    behind a password and adds the answer buttons in "Waiting on Mo".
    Data comes only from /api/room; nothing about the project is in this file. */
 :root{
-  --bg:#eef0f6; --bg2:#e4e7f1; --panel:#ffffff; --ink:#161b2c; --muted:#59617c; --line:#dcdfe9;
-  --accent:#9a6a12; --accent-soft:#f6ecd8; --glow:rgba(168,116,26,.14); --grid:rgba(22,27,44,.045);
-  --good:#1f7a4d; --good-soft:#e1f2e9; --warn:#9a5600; --warn-soft:#fbeed6; --bad:#b3261e; --bad-soft:#fbe4e2;
-  --shadow:0 1px 2px rgba(22,27,44,.06),0 6px 18px rgba(22,27,44,.05);
+  color-scheme:dark;
+  --bg:#0b0e19; --bg2:#0f1322; --panel:#151a2b; --ink:#eceef6; --muted:#9ca4bf; --line:#262c43;
+  --accent:#e6b85c; --accent-soft:#3a2f17; --glow:rgba(230,184,92,.12); --grid:rgba(236,238,246,.035);
+  --good:#5fcf97; --good-soft:#173326; --warn:#f0b35a; --warn-soft:#3a2a10; --bad:#ff8c84; --bad-soft:#40201e;
+  --shadow:0 1px 0 rgba(255,255,255,.03) inset,0 10px 30px rgba(0,0,0,.35);
   --display:"Bricolage Grotesque","IBM Plex Sans",system-ui,sans-serif;
   --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root{
-    color-scheme:dark;
-    --bg:#0b0e19; --bg2:#0f1322; --panel:#151a2b; --ink:#eceef6; --muted:#9ca4bf; --line:#262c43;
-    --accent:#e6b85c; --accent-soft:#3a2f17; --glow:rgba(230,184,92,.12); --grid:rgba(236,238,246,.035);
-    --good:#5fcf97; --good-soft:#173326; --warn:#f0b35a; --warn-soft:#3a2a10; --bad:#ff8c84; --bad-soft:#40201e;
-    --shadow:0 1px 0 rgba(255,255,255,.03) inset,0 10px 30px rgba(0,0,0,.35);
-  }
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -115,7 +107,7 @@ h2{font-family:var(--display);font-weight:500;font-size:18px;margin:0;text-wrap:
 .btn.yes{background:var(--good);border-color:var(--good);color:#fff}
 .btn.no{background:var(--panel);border-color:var(--bad);color:var(--bad)}
 .btn.gold{background:var(--accent);border-color:var(--accent);color:#fff}
-@media (prefers-color-scheme: dark){.btn.yes{color:#08130d}.btn.gold{color:#1a1304}}
+.btn.yes{color:#08130d}.btn.gold{color:#1a1304}
 .btn.link{border:0;background:transparent;color:var(--muted);text-decoration:underline;padding:6px 4px;min-height:0;font-weight:500;font-size:13px}
 .btn[disabled]{opacity:.55;cursor:default}
 .ans{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13.5px}
@@ -221,6 +213,35 @@ td.wide{min-width:280px}
 footer{color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;gap:4px}
 #design{font-family:var(--mono);font-size:11.5px;opacity:.85}
 
+
+/* The Floor: the working dungeon. One canvas, drawn only from the room state. */
+.floorwrap{padding:10px 10px 12px;overflow:hidden}
+.floorwrap .head{margin:4px 6px 8px}
+#floor{display:block;width:100%;border-radius:8px;border:1px solid var(--line);background:#0d1120;cursor:pointer;image-rendering:pixelated;touch-action:manipulation}
+.ticker{font-family:var(--mono);font-size:12.5px;color:var(--accent);margin:10px 6px 0;min-height:2.9em;overflow-wrap:anywhere}
+.floorcap{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin:6px 6px 0}
+#floor-info{margin:10px 6px 0;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;background:var(--bg2);padding:10px 12px;font-size:14px;display:flex;flex-direction:column;gap:5px}
+#floor-info b{font-family:var(--display);font-size:16px}
+.fi-head{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.fi-line{overflow-wrap:anywhere}
+.fi-sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.fi-order{display:grid;grid-template-columns:3.4em minmax(0,1fr);gap:8px;font-size:13.5px;overflow-wrap:anywhere}
+.fi-id{font-family:var(--mono);color:var(--accent);font-size:12.5px}
+.fi-link{color:var(--accent);font-size:13.5px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--mono);font-size:11px;color:var(--muted);margin:8px 6px 0}
+.legend i{display:inline-block;width:9px;height:8px;margin-right:5px;vertical-align:-1px}
+/* Last 24 hours */
+.shift{display:flex;flex-direction:column;gap:5px}
+.sh-row{display:grid;grid-template-columns:9.5em minmax(0,1fr);gap:10px;align-items:center}
+.sh-name{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sh-track{position:relative;height:16px;border-radius:4px;background:linear-gradient(90deg,transparent 0,transparent calc(25% - 1px),var(--line) calc(25% - 1px),var(--line) 25%,transparent 25%) 0 0/100% 100%,var(--bg2);background-size:25% 100%,auto}
+.sh-dot{position:absolute;top:4px;width:8px;height:8px;border-radius:2px;transform:translateX(-50%);opacity:.75}
+.sh-dot.act{top:2px;width:12px;height:12px;opacity:1}
+.sh-dot.open{outline:1px solid var(--ink);outline-offset:1px}
+.sh-axis .sh-track{background:none;height:14px}
+.sh-tick{position:absolute;top:0;font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap}
+@media (max-width:600px){.sh-row{grid-template-columns:5.6em minmax(0,1fr);gap:6px}.sh-name{font-size:9px}}
+
 /* Sign-in */
 .gate{min-height:100vh;display:grid;place-items:center;padding:20px}
 .gatebox{width:100%;max-width:380px;display:flex;flex-direction:column;gap:14px}
@@ -323,6 +344,33 @@ footer{color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;ga
 
   <section class="wall rise" id="wall" aria-label="At a glance" hidden></section>
 
+  <section class="panel floorwrap rise" aria-labelledby="h-floor">
+    <div class="head">
+      <h2 id="h-floor">The floor</h2>
+      <span class="live">LIVE STATE</span>
+    </div>
+    <canvas id="floor" role="img" aria-label="A map of the six teams at work, the Chief's hall, the vault and Mo's gate. The same facts are in the sections below."></canvas>
+    <div class="ticker" id="floor-ticker" aria-hidden="true"></div>
+    <div id="floor-info" hidden></div>
+    <div class="floorcap" id="floor-cap"></div>
+    <div class="legend" aria-hidden="true">
+      <span><i style="background:#9a6a12"></i>crate = an open order going to its team</span>
+      <span><i style="background:#eadfbd"></i>scroll = a report brought to the Chief</span>
+      <span><i style="background:#e6b85c"></i>orb = waiting on you</span>
+      <span>z = has not run today</span>
+      <span>! = late or down</span>
+    </div>
+  </section>
+
+  <section class="panel rise" id="shift-sec" aria-labelledby="h-shift" hidden>
+    <div class="head">
+      <h2 id="h-shift">The last 24 hours</h2>
+      <span class="meta" id="shift-count"></span>
+    </div>
+    <div class="shift" id="shift"></div>
+    <div class="srcline">One mark per report the Chief ruled on, by team. Bigger marks needed a decision; outlined marks are still open. Hover or tap and hold for what it said.</div>
+  </section>
+
   <div class="note" id="notice" hidden></div>
 
   <section class="panel mission rise" id="mission" aria-labelledby="h-mission" hidden>
@@ -415,11 +463,286 @@ footer{color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;ga
 
   <footer>
     <span id="foot">The Chief of Staff updates this page each time it reads and rules on agent reports. The page refreshes itself while open.</span>
-    <span id="design">Design updated Nov 18, 2026: moved to shopcardhub.com behind a password; "Waiting on Mo" now takes answers.</span>
+    <span id="design">Design updated Nov 18, 2026: the floor. A working map of the six teams, the Chief's hall, the vault and your gate, plus the last 24 hours by team.</span>
     <span><button class="btn link" id="signout" type="button">Sign out</button></span>
   </footer>
 </div>
 
+<script>
+/* THE FLOOR — a working dungeon drawn from the real room state.
+   Every figure is a real lane, every crate a real open order, every scroll a report ruled in the
+   last 24 hours, every orb a thing waiting on Mo. The walking is a loop that replays where things
+   sit; it is not a live camera. Nothing here is invented: no state, no figures. */
+(function(){
+  var cv=document.getElementById("floor"); if(!cv||!cv.getContext)return;
+  var ctx=cv.getContext("2d"), info=document.getElementById("floor-info"), cap=document.getElementById("floor-cap"), tick=document.getElementById("floor-ticker");
+  var S=null, D={}, L=null, W=960, H=560, dpr=1, scale=1, t0=performance.now(), sel=null, bg=null, raf=0, lastDraw=0;
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var TEAM={growth:{c:"#e6b85c",n:"GROWTH"},site:{c:"#6aa8ff",n:"SITE + SHIPPING"},prices:{c:"#5fcf97",n:"PRICES"},intel:{c:"#b98cff",n:"INTEL + X"},studio:{c:"#ff8c84",n:"STUDIO"},office:{c:"#dfe3f2",n:"CHIEF'S OFFICE"}};
+  var ORDER=["growth","site","prices","intel","studio","office"];
+  var COL={floor:"#0d1120",tile:"#11162a",tile2:"#0f1426",room:"#171d33",room2:"#1b2240",wall:"#2b3353",ink:"#eceef6",mute:"#8f98b6",gold:"#e6b85c",good:"#5fcf97",warn:"#f0b35a",bad:"#ff8c84",crate:"#9a6a12",crate2:"#c98f2b",scroll:"#eadfbd"};
+  function arr(v){return Array.isArray(v)?v:[]}
+  function norm(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
+  function hash(s){var h=7;s=String(s);for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h}
+
+  function layout(){
+    var box=cv.parentNode.getBoundingClientRect().width||960;
+    var portrait=box<640;
+    W=portrait?480:960; H=portrait?660:560;
+    scale=box/W; dpr=Math.min(window.devicePixelRatio||1,2);
+    cv.style.height=Math.round(H*scale)+"px";
+    cv.width=Math.round(box*dpr); cv.height=Math.round(H*scale*dpr);
+    var rooms={}, rw, rh;
+    if(portrait){
+      rw=220; rh=150;
+      var pos=[[14,14],[246,14],[14,174],[246,174],[14,496],[246,496]];
+      ORDER.forEach(function(id,i){rooms[id]={x:pos[i][0],y:pos[i][1],w:rw,h:rh,door:i<4?"b":"t"}});
+      L={portrait:true,rooms:rooms,hall:{x:160,y:346,w:160,h:128},vault:{x:14,y:346,w:132,h:128},gate:{x:334,y:346,w:132,h:128},lane:{y1:334,y2:486}};
+    }else{
+      rw=288; rh=176;
+      var xs=[24,336,648];
+      ORDER.forEach(function(id,i){rooms[id]={x:xs[i%3],y:i<3?16:368,w:rw,h:rh,door:i<3?"b":"t"}});
+      L={portrait:false,rooms:rooms,hall:{x:336,y:216,w:288,h:128},vault:{x:24,y:216,w:230,h:128},gate:{x:706,y:216,w:230,h:128},lane:{y1:204,y2:356}};
+    }
+    bg=null;
+  }
+
+  /* ── what the state says ── */
+  var model={agents:{},crates:{},scrolls:[],couriers:[],orbs:[],answered:0,teamOf:{}};
+  function teamForName(name){
+    var n=norm(name); if(!n)return null;
+    if(/^mo\b/.test(n))return "mo";
+    var best=null,bl=0;
+    arr(S&&S.teams).forEach(function(t){arr(t.agents).forEach(function(a){
+      var an=norm(a).replace(/\(.*$/,"").trim(); if(!an)return;
+      var key=an.split(" ").slice(0,2).join(" ");
+      if(n.indexOf(key)>=0||an.indexOf(n.split(" ").slice(0,2).join(" "))>=0){if(key.length>bl){bl=key.length;best=t.id}}
+    })});
+    if(best)return best;
+    if(/cos|chief|ops|measurement|coo|intake|review|desk/.test(n))return "office";
+    if(/night crew|ship|sweep|cupertino|coverage|tuesday/.test(n))return "site";
+    if(/price|kb|knowledge|gengar|integrity/.test(n))return "prices";
+    if(/league|commissioner|deal|drop|conversion|wildcard|ai search|ceo|controller|retention/.test(n))return "growth";
+    if(/studio|youtube/.test(n))return "studio";
+    if(/x |grok|pull/.test(n+" "))return "intel";
+    return null;
+  }
+  function rebuild(){
+    model={agents:{},crates:{},scrolls:[],couriers:[],orbs:[],answered:0};
+    if(!S)return;
+    var byName={}; arr(S.agents).forEach(function(a){if(a&&a.name)byName[norm(a.name)]=a});
+    arr(S.teams).forEach(function(t){
+      if(!TEAM[t.id])return;
+      model.agents[t.id]=arr(t.agents).slice(0,8).map(function(n){var a=byName[norm(n)]||{};
+        var last=String(a.last||"");
+        return {name:n,state:a.state||"ok",active:/today|just|run \d/i.test(last),note:a.note||"",last:last,cadence:a.cadence||""}});
+      model.crates[t.id]=[];
+    });
+    arr(S.orders).forEach(function(o){
+      if(!o||o.status==="done")return;
+      var owners=String(o.owner||"").split(/→|->/), tm=teamForName(owners[owners.length-1]);
+      if(tm==="mo")return;
+      if(tm&&model.crates[tm])model.crates[tm].push(o);
+    });
+    var now=Date.now();
+    arr(S.rulings).forEach(function(r){
+      if(!r||!r.at)return; var age=now-new Date(r.at).getTime(); if(!(age>=0&&age<864e5))return;
+      var tm=teamForName(r.agent); if(tm&&tm!=="mo"&&model.crates[tm])model.scrolls.push({team:tm,r:r});
+    });
+    arr(S.asks).forEach(function(a){if(a&&a.id)model.orbs.push({id:String(a.id),kind:"ask",text:a.title||a.text||""})});
+    arr(S.needsMo).forEach(function(n){if(n&&n.text)model.orbs.push({id:String(n.id||""),kind:"todo",text:n.text})});
+    model.orbs.forEach(function(o){var d=D[o.id];o.answered=!!d;o.acted=!!(d&&d.acted)});
+    /* walkers: crates leave the hall for their room, scrolls come back */
+    var list=[];
+    ORDER.forEach(function(id){arr(model.crates[id]).forEach(function(o){list.push({kind:"crate",team:id,label:o.id||"",text:o.order||"",due:o.due||""})})});
+    model.scrolls.forEach(function(s){list.push({kind:"scroll",team:s.team,label:"",text:s.r.said||""})});
+    var P=Math.max(18,list.length*0.9);
+    list.forEach(function(w,i){w.period=P;w.offset=((i*7)%list.length/list.length)*P;w.trip=9});
+    model.couriers=list; model.period=P;
+    if(cap){
+      var nC=list.filter(function(w){return w.kind==="crate"}).length,nS=list.length-nC,nO=model.orbs.filter(function(o){return !o.answered}).length;
+      cap.textContent=nC+" open orders out on the floor · "+nS+" reports brought in over the last 24 h · "+nO+" waiting at your gate. Tap a room.";
+    }
+  }
+
+  /* ── drawing ── */
+  function px(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h))}
+  function text(s,x,y,c,size,align,bold){ctx.fillStyle=c;ctx.font=(bold?"600 ":"")+size+'px "IBM Plex Mono",ui-monospace,Menlo,monospace';ctx.textAlign=align||"left";ctx.textBaseline="top";ctx.fillText(s,Math.round(x),Math.round(y))}
+  function drawBg(){
+    bg=document.createElement("canvas");bg.width=W;bg.height=H;var b=bg.getContext("2d");
+    b.fillStyle=COL.floor;b.fillRect(0,0,W,H);
+    for(var y=0;y<H;y+=16)for(var x=0;x<W;x+=16){b.fillStyle=((x/16+y/16)%2)?COL.tile:COL.tile2;b.fillRect(x,y,15,15);if(hash(x+"_"+y)%19===0){b.fillStyle="rgba(255,255,255,.035)";b.fillRect(x+4,y+6,5,2)}}
+    function room(r,accent){
+      b.fillStyle=COL.wall;b.fillRect(r.x-3,r.y-3,r.w+6,r.h+6);
+      for(var yy=0;yy<r.h;yy+=16)for(var xx=0;xx<r.w;xx+=16){b.fillStyle=((xx/16+yy/16)%2)?COL.room:COL.room2;b.fillRect(r.x+xx,r.y+yy,Math.min(16,r.w-xx),Math.min(16,r.h-yy))}
+      b.fillStyle=accent;b.fillRect(r.x-3,r.y-3,r.w+6,3);
+    }
+    ORDER.forEach(function(id){var r=L.rooms[id];room(r,TEAM[id].c);
+      b.fillStyle=COL.room;var dx=r.x+r.w/2-14,dy=r.door==="b"?r.y+r.h:r.y-3;b.fillRect(dx,dy,28,3)});
+    room(L.hall,COL.gold);room(L.vault,COL.gold);room(L.gate,COL.gold);
+  }
+  function sprite(x,y,color,o){
+    o=o||{};var step=o.walk?Math.floor(o.t*6)%2:0, bob=o.work?Math.round(Math.sin(o.t*5+(o.seed||0))*1):0;
+    px(x-4,y-13+bob,8,7,"#f1c9a5");                       /* head */
+    px(x-4,y-14+bob,8,2,o.hair||"#2a2f45");               /* hair */
+    px(x-5,y-6+bob,10,7,color);                           /* body */
+    px(x-5,y+1,4,step?4:3,"#23283d");px(x+1,y+1,4,step?3:4,"#23283d"); /* legs */
+    if(o.work){var a=Math.sin(o.t*8+(o.seed||0))>0;px(x+5,y-(a?8:4)+bob,3,3,"#f1c9a5")}
+    if(o.crown){px(x-5,y-17,10,2,COL.gold);px(x-5,y-19,2,2,COL.gold);px(x-1,y-19,2,2,COL.gold);px(x+3,y-19,2,2,COL.gold)}
+    if(o.carry==="crate"){px(x-5,y-22,10,8,COL.crate);px(x-5,y-22,10,2,COL.crate2);px(x-1,y-22,2,8,COL.crate2)}
+    if(o.carry==="scroll"){px(x-4,y-20,8,5,COL.scroll);px(x-5,y-20,1,5,"#b9a977");px(x+4,y-20,1,5,"#b9a977")}
+  }
+  function crateStack(x,y,n){
+    var shown=Math.min(n,6);for(var i=0;i<shown;i++){var cx=x+(i%3)*11,cy=y-Math.floor(i/3)*9;px(cx,cy,10,8,COL.crate);px(cx,cy,10,2,COL.crate2);px(cx+4,cy,2,8,COL.crate2)}
+  }
+  function torch(x,y,c,t,alarm){
+    px(x-1,y,3,8,"#4a4f69");var f=alarm?(Math.floor(t*4)%2?5:2):3+Math.round(Math.sin(t*9+x)*1);
+    ctx.globalAlpha=.25;px(x-6,y-9,13,11,c);ctx.globalAlpha=1;px(x-2,y-f-1,5,f+1,c);px(x-1,y-f-3,3,2,"#fff3c4");
+  }
+  function door(r){var x=r.x+r.w/2,y=r.door==="b"?r.y+r.h+8:r.y-8;return {x:x,y:y}}
+  function hallPt(){return {x:L.hall.x+L.hall.w/2,y:L.hall.y+L.hall.h/2+10}}
+  function pathPt(team,u){ /* u 0..1 from hall to room door, L-shaped along the corridor */
+    var a=hallPt(), r=L.rooms[team], d=door(r), ly=r.door==="b"?L.lane.y1:L.lane.y2;
+    var pts=[a,{x:a.x,y:ly},{x:d.x,y:ly},{x:d.x,y:r.door==="b"?r.y+r.h-22:r.y+34}], seg=[],tot=0,i;
+    for(i=0;i<3;i++){var l=Math.abs(pts[i+1].x-pts[i].x)+Math.abs(pts[i+1].y-pts[i].y);seg.push(l);tot+=l}
+    var dist=u*tot;for(i=0;i<3;i++){if(dist<=seg[i]||i===2){var k=seg[i]?Math.min(1,dist/seg[i]):0;return {x:pts[i].x+(pts[i+1].x-pts[i].x)*k,y:pts[i].y+(pts[i+1].y-pts[i].y)*k}}dist-=seg[i]}
+    return pts[3];
+  }
+  function draw(now){
+    raf=0;
+    if(!L)layout(); if(!bg)drawBg();
+    var t=reduce?3.3:(now-t0)/1000;
+    ctx.setTransform(scale*dpr,0,0,scale*dpr,0,0);ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(bg,0,0);
+    var teams={};arr(S&&S.teams).forEach(function(x){teams[x.id]=x});
+
+    /* rooms */
+    ORDER.forEach(function(id){
+      var r=L.rooms[id],tm=teams[id]||{},st=tm.status||"ok",c=st==="blocked"?COL.bad:st==="watch"?COL.warn:COL.good;
+      if(sel===id){ctx.strokeStyle=TEAM[id].c;ctx.lineWidth=2;ctx.strokeRect(r.x-5,r.y-5,r.w+10,r.h+10)}
+      text(TEAM[id].n,r.x+8,r.y+7,TEAM[id].c,11,"left",true);
+      torch(r.x+r.w-14,r.y+10,c,t,st==="blocked");torch(r.x+r.w-30,r.y+10,c,t+1,st==="blocked");
+      var ag=arr(model.agents[id]),cols=L.portrait?4:4,gx=(r.w-40)/cols;
+      ag.forEach(function(a,i){
+        var x=r.x+26+(i%cols)*gx+((Math.floor(i/cols)%2)?gx/2:0),y=r.y+62+Math.floor(i/cols)*44;
+        px(x-9,y+5,18,5,"#3a2f17");px(x-9,y+5,18,1,"#6b5a2c");            /* desk */
+        var down=a.state==="down",late=a.state==="late"||a.state==="blocked";
+        sprite(x,y,down?"#555b74":TEAM[id].c,{work:a.active&&!down,t:t,seed:hash(a.name)%7});
+        if(down||late){if(Math.floor(t*3)%2)text("!",x,y-28,down?COL.bad:COL.warn,12,"center",true)}
+        else if(!a.active){var z=(t*0.6+hash(a.name)%5/5)%1;ctx.globalAlpha=1-z;text("z",x+6,y-20-z*8,COL.mute,9,"left");ctx.globalAlpha=1}
+        else if((Math.floor(t*2+hash(a.name))%9)===0){px(x+7,y-18,2,2,COL.gold)}
+      });
+      var n=arr(model.crates[id]).length;
+      if(n){crateStack(r.x+r.w-44,r.y+r.h-16,n);text("×"+n,r.x+r.w-48,r.y+r.h-17,COL.ink,10,"right",true)}
+      text(st==="blocked"?"BLOCKED":st==="watch"?"WATCH":"READY",r.x+8,r.y+r.h-16,c,9,"left",true);
+    });
+
+    /* the hall and the Chief */
+    var h=L.hall,hc=hallPt();
+    text("THE CHIEF'S HALL",h.x+8,h.y+7,COL.gold,11,"left",true);
+    for(var k=0;k<3;k++){var rr=((t*14+k*18)%54);ctx.globalAlpha=Math.max(0,.5-rr/108);ctx.strokeStyle=COL.gold;ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(hc.x,hc.y+2,rr,rr*.45,0,0,Math.PI*2);ctx.stroke()}ctx.globalAlpha=1;
+    px(hc.x-16,hc.y+6,32,6,"#3a2f17");px(hc.x-16,hc.y+6,32,1,"#6b5a2c");
+    sprite(hc.x,hc.y,"#e6b85c",{work:true,t:t,crown:true,hair:"#1a1304"});
+    if(S&&S.asOf){var m=Math.round((Date.now()-new Date(S.asOf).getTime())/60000);text("last pass "+(m<1?"just now":m<60?m+" min ago":Math.round(m/60)+" h ago"),h.x+h.w/2,h.y+h.h-16,COL.mute,9,"center")}
+
+    /* the vault: earnings against the first rung */
+    var v=L.vault,g=(S&&S.goal)||{},cur=g.current&&typeof g.current.value==="number"?g.current.value:null,rung=arr(g.ladder)[0]||{},tg=Number(rung.target)||0;
+    text("THE VAULT",v.x+8,v.y+7,COL.gold,11,"left",true);
+    var cxv=v.x+34,cyv=v.y+66;px(cxv-16,cyv-10,32,22,"#5b3d10");px(cxv-16,cyv-10,32,5,COL.crate2);px(cxv-2,cyv-2,4,6,COL.gold);
+    if(cur!=null&&cur>0){var gl=.5+.5*Math.sin(t*3);ctx.globalAlpha=.25+.3*gl;px(cxv-10,cyv-18,20,6,COL.gold);ctx.globalAlpha=1;px(cxv-7,cyv-15,4,3,COL.gold);px(cxv+2,cyv-16,4,3,COL.gold)}
+    text(cur==null?"no fresh read":"$"+cur.toFixed(2)+" / mo",v.x+(L.portrait?58:62),v.y+44,COL.ink,L.portrait?9:14,"left",true);
+    if(tg){var bw=v.w-78,pc=cur==null?0:Math.min(1,cur/tg);px(v.x+62,v.y+66,bw,6,"#262c43");px(v.x+62,v.y+66,Math.max(cur?2:0,bw*pc),6,COL.gold);text("of "+(rung.label||"$"+tg)+" · "+Math.floor(pc*100)+"%",v.x+62,v.y+78,COL.mute,9,"left")}
+    if(g.current&&g.current.asOf)text("as of "+g.current.asOf,v.x+8,v.y+v.h-16,COL.mute,9,"left");
+
+    /* Mo's gate: what waits on him */
+    var gt=L.gate,waiting=model.orbs.filter(function(o){return !o.answered}),sent=model.orbs.filter(function(o){return o.answered&&!o.acted});
+    text("MO'S GATE",gt.x+8,gt.y+7,COL.gold,11,"left",true);
+    var gx0=gt.x+gt.w-40,gy0=gt.y+34;px(gx0,gy0,26,60,"#2b3353");px(gx0+3,gy0+3,20,57,waiting.length?"#3a2f17":"#141a2e");px(gx0+17,gy0+32,3,3,COL.gold);
+    if(waiting.length){ctx.globalAlpha=.35+.35*Math.sin(t*4);px(gx0+3,gy0+3,20,57,COL.gold);ctx.globalAlpha=1}
+    waiting.slice(0,6).forEach(function(o,i){var ox=gt.x+22+(i%3)*30,oy=gt.y+52+Math.floor(i/3)*30+Math.sin(t*3+i)*3;ctx.globalAlpha=.3;px(ox-7,oy-7,14,14,COL.gold);ctx.globalAlpha=1;px(ox-4,oy-4,8,8,o.kind==="ask"?COL.gold:"#6aa8ff");px(ox-2,oy-2,3,3,"#fff3c4")});
+    text(waiting.length?waiting.length+" waiting on you":"nothing waiting",gt.x+8,gt.y+gt.h-16,waiting.length?COL.warn:COL.good,9,"left",true);
+    /* answered, not yet picked up: the orb floats to the hall */
+    sent.forEach(function(o,i){var u=((t/9+i*.37)%1),sx=gt.x+10,ex=hc.x+24;px(sx+(ex-sx)*u-3,hc.y-14+Math.sin(u*Math.PI)*-10,6,6,COL.good)});
+
+    /* walkers: crates out, scrolls in */
+    if(!reduce)model.couriers.forEach(function(w){
+      var ph=((t+w.offset)%w.period);if(ph>w.trip)return;
+      var u=ph/w.trip;if(w.kind==="scroll")u=1-u;
+      var p=pathPt(w.team,u);
+      sprite(p.x,p.y,w.kind==="crate"?"#c9cde0":TEAM[w.team].c,{walk:true,t:t+w.offset,carry:w.kind});
+      if(w.label)text(w.label,p.x,p.y-33,COL.ink,8,"center");
+    });
+    if(!reduce)schedule();
+  }
+  function schedule(){if(!raf&&!document.hidden)raf=requestAnimationFrame(function(n){if(n-lastDraw<45){raf=0;schedule();return}lastDraw=n;draw(n)})}
+
+  /* ── tapping a room ── */
+  function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=String(txt);return e}
+  function showInfo(id){
+    sel=id; if(!info)return; while(info.firstChild)info.removeChild(info.firstChild);
+    if(!id){info.hidden=true;return}
+    info.hidden=false;
+    if(id==="gate"||id==="vault"||id==="hall"){
+      var t2={gate:"Mo's gate",vault:"The vault",hall:"The Chief's hall"}[id];info.appendChild(el("b",null,t2));
+      if(id==="gate"){var w=model.orbs.filter(function(o){return !o.answered});if(!w.length)info.appendChild(el("div","fi-line","Nothing is waiting on you."));w.forEach(function(o){info.appendChild(el("div","fi-line",(o.kind==="ask"?"Decision: ":"Only you: ")+o.text))});var a=el("a","fi-link","Answer them below ↓");a.href="#h-mo";info.appendChild(a)}
+      if(id==="vault"){var g=(S&&S.goal)||{};info.appendChild(el("div","fi-line",g.note||""));var a2=el("a","fi-link","See the mission ↓");a2.href="#mission";info.appendChild(a2)}
+      if(id==="hall"){info.appendChild(el("div","fi-line",(S&&S.status&&S.status.text)||""))}
+      return;
+    }
+    var tm=null;arr(S&&S.teams).forEach(function(x){if(x.id===id)tm=x});if(!tm)return;
+    var head=el("div","fi-head");head.appendChild(el("b",null,tm.name||id));head.appendChild(el("span","pill "+(tm.status==="blocked"?"bad":tm.status==="watch"?"warn":"ok"),tm.status==="blocked"?"Blocked":tm.status==="watch"?"Watch":"Ready"));info.appendChild(head);
+    if(tm.now)info.appendChild(el("div","fi-line","Now: "+tm.now));
+    if(tm.next)info.appendChild(el("div","fi-line","Next: "+tm.next));
+    var cr=arr(model.crates[id]);
+    if(cr.length){info.appendChild(el("div","fi-sub",cr.length+" open "+(cr.length===1?"order":"orders")+" in this room"));cr.forEach(function(o){var d=el("div","fi-order");d.appendChild(el("span","fi-id",o.id||""));d.appendChild(el("span",null,(o.order||"")+(o.due?"  · due "+o.due:"")));info.appendChild(d)})}
+    var ag=arr(model.agents[id]);
+    if(ag.length){info.appendChild(el("div","fi-sub","Crew"));ag.forEach(function(a){info.appendChild(el("div","fi-line",a.name+" · "+(a.state==="ok"?(a.active?"working today":"resting"):a.state)+(a.last?" · last "+a.last:"")+(a.note?" · "+a.note:"")))})}
+  }
+  cv.addEventListener("click",function(ev){
+    if(!L)return;var b=cv.getBoundingClientRect(),x=(ev.clientX-b.left)/scale,y=(ev.clientY-b.top)/scale,hit=null;
+    function inside(r){return x>=r.x&&x<=r.x+r.w&&y>=r.y&&y<=r.y+r.h}
+    ORDER.forEach(function(id){if(inside(L.rooms[id]))hit=id});
+    if(!hit&&inside(L.gate))hit="gate";if(!hit&&inside(L.vault))hit="vault";if(!hit&&inside(L.hall))hit="hall";
+    showInfo(hit===sel?null:hit);if(reduce)draw(performance.now());
+  });
+
+  /* ── the ticker: newest events, typed out ── */
+  var tk={i:0,c:0,list:[],timer:0};
+  function runTicker(){
+    if(!tick)return;clearInterval(tk.timer);
+    tk.list=arr(S&&S.feed).filter(function(f){return f&&f.text}).slice(0,6);tk.i=0;tk.c=0;
+    if(!tk.list.length){tick.textContent="";return}
+    if(reduce){tick.textContent="▸ "+tk.list[0].text;return}
+    tk.timer=setInterval(function(){
+      var s=tk.list[tk.i].text;tk.c+=2;tick.textContent="▸ "+s.slice(0,tk.c)+(tk.c<s.length?"▌":"");
+      if(tk.c>s.length+90){tk.c=0;tk.i=(tk.i+1)%tk.list.length}
+    },45);
+  }
+
+
+  /* ── the last 24 hours, one row per team: each dot is a report the Chief ruled on ── */
+  function drawShift(){
+    var box=document.getElementById("shift");if(!box)return;while(box.firstChild)box.removeChild(box.firstChild);
+    var sec=document.getElementById("shift-sec"),now=Date.now(),n=0;
+    ORDER.forEach(function(id){
+      var row=el("div","sh-row");row.appendChild(el("span","sh-name",TEAM[id].n));var track=el("div","sh-track");
+      model.scrolls.forEach(function(s){if(s.team!==id)return;n++;
+        var u=1-(now-new Date(s.r.at).getTime())/864e5,d=el("i","sh-dot"+(s.r.ruling==="ACT"||s.r.ruling==="KILL"?" act":"")+(s.r.status==="open"?" open":""));
+        d.style.left=(Math.max(0,Math.min(1,u))*100)+"%";d.style.background=TEAM[id].c;d.title=(s.r.ruling||"")+": "+(s.r.said||"");track.appendChild(d)});
+      row.appendChild(track);box.appendChild(row);
+    });
+    var ax=el("div","sh-row sh-axis");ax.appendChild(el("span","sh-name",""));var tr=el("div","sh-track");
+    [["24 h ago",0],["18 h",25],["12 h",50],["6 h",75],["now",100]].forEach(function(a){var l=el("span","sh-tick",a[0]);l.style.left=a[1]+"%";if(a[1]===100)l.style.transform="translateX(-100%)";else if(a[1])l.style.transform="translateX(-50%)";tr.appendChild(l)});
+    ax.appendChild(tr);box.appendChild(ax);
+    if(sec)sec.hidden=!S;
+    var c=document.getElementById("shift-count");if(c)c.textContent=n+" reports ruled in the last 24 hours";
+  }
+
+  window.Floor={update:function(state,decisions){S=state||null;D=decisions||{};if(!L)layout();rebuild();runTicker();drawShift();if(sel&&sel!=="gate"&&sel!=="vault"&&sel!=="hall")showInfo(sel);if(reduce)draw(performance.now());else schedule()}};
+  var rz=0;window.addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(function(){layout();if(reduce)draw(performance.now());else schedule()},150)});
+  document.addEventListener("visibilitychange",function(){if(!document.hidden&&!reduce)schedule()});
+})();
+</script>
 <script>
 (function(){
   var state=null, decisions={}, filter="all", lastVals={}, showAll=false, LIMIT=8, busy=false, drafts={}, loadedOnce=false;
@@ -718,6 +1041,7 @@ footer{color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;ga
     });
 
     renderFeed(s.feed);
+    if(window.Floor)window.Floor.update(state,decisions);
   }
   ["all","act","open"].forEach(function(k){
     $("f-"+k).addEventListener("click",function(){filter=k;showAll=false;["all","act","open"].forEach(function(j){$("f-"+j).setAttribute("aria-pressed",String(j===k))});render()});
