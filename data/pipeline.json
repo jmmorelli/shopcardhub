@@ -3636,7 +3636,7 @@
     },
     {
       "id": "tuesday-2026-11-10-2",
-      "status": "queued",
+      "status": "closed",
       "date": "2026-11-10",
       "area": "tuesday-lane",
       "by": "tuesday-board",
@@ -3644,11 +3644,11 @@
       "tier": "P2",
       "goal": "G1",
       "title": "Holliday's $95 floor broke on the Nov 10 read (sold mark $91.00 on 11 sales, last sale $90.00 Nov 8). The page now says so in his verdict and box: 'Hold, under review', call re-set at the Nov 17 read; his seat (#2) is unchanged because seats follow the mark. Needs a ruling before Nov 17: the replacement call (e.g. Pass, Watch, or a Hold with a new stated level), and whether it is logged as a new calls.json row. Note for anything that reads the feed: data/x-board.json carries currentSignal HOLD for Holliday (the builder reads the verdict's first word); the callout beside it says he is under his floor. Also this run: Arquette took #5 from Aloy on the mechanical rule in Aloy's box (Arquette $50.00 on 10 vs Aloy $47.76 on 10); Aloy's departure recorded (no call), Arquette re-seated with no new call (June Buy -28.6% at the mark, 6-month check Dec 12 2026).",
-      "decision": "CoS desk 2026-11-10: queued → CoS weekly Wed Nov 11, deadline the Nov 17 read: Holliday's replacement call (Pass / Watch / Hold with a new stated level) and whether it is a new calls.json row. Page wording \"Hold, under review\" stands meanwhile; x-board HOLD + the under-floor callout read consistently (verified in the lane file, not re-ruled)."
+      "decision": "CoS desk 2026-11-18: closed — superseded by tuesday-2026-11-17-1 (ruled: WATCH as a new calls.json row at the Nov 24 read). The Nov 11 weekly missed the deadline; the desk ruled it."
     },
     {
       "id": "tuesday-2026-11-10-3",
-      "status": "queued",
+      "status": "closed",
       "date": "2026-11-10",
       "area": "tuesday-lane",
       "by": "tuesday-board",
@@ -3656,7 +3656,7 @@
       "tier": "P2",
       "goal": "G1",
       "title": "Tuesday Tape NOT sent Nov 10 (second week). Per the BLOCKED row of Nov 3 (updated Nov 9: 'the Nov 10 Tape is drafted only'), this run did not read the MailerLite credential and did not stage a campaign; rogue-send and kill-switch checks not run. Draft with the content gate checked against the pushed page: Card Hub/digests/digest-2026-11-10.md. Still needs the attended decision: a send path that does not read the token in-session, or the Tape becomes an attended step.",
-      "decision": "CoS desk 2026-11-10: queued → attended CoS session (daily review Nov 10 attended item 4, Tape send path, 2nd unsent week). Not Mo's by nature (a send path, not a sign-in). Draft stays at Card Hub/digests/digest-2026-11-10.md."
+      "decision": "CoS desk 2026-11-18: closed with tuesday-2026-11-17-2 — Tape parked by Mo Nov 17 (42276bc)."
     },
     {
       "id": "iw-2026-11-12-1",
@@ -3736,7 +3736,7 @@
     },
     {
       "id": "tuesday-2026-11-17-1",
-      "status": "awaiting-cos",
+      "status": "ruled",
       "date": "2026-11-17",
       "area": "tuesday-lane",
       "by": "tuesday-board",
@@ -3744,11 +3744,11 @@
       "tier": "P2",
       "goal": "G1",
       "title": "Holliday's call was promised a re-set 'at the Nov 17 read' on the live page and in the Nov 10 feed; tuesday-2026-11-10-2 is still unruled, so this run did not make one. His sold mark is $90.50 on 12 sales (Oct 18-Nov 17), still $4.50 under the $95 floor (last sale $102.50 Nov 15). Page now says the re-set has not been made and the Hold stays under review, not renewed. data/x-board.json still carries currentSignal HOLD for him (build-x-board.mjs reads the verdict's first word); the callout beside it says he is under his floor. Second week the page carries a call it says it is reviewing.",
-      "decision": "Needs a ruling before the Nov 24 read: Pass / Watch / Hold at a new stated level, and whether it is a new calls.json row. Optional generator fix: let build-x-board.mjs emit a qualifier (e.g. HOLD-UNDER-REVIEW) so the feed cannot be quoted as a plain Hold."
+      "decision": "CoS desk 2026-11-18: ruled. Holliday's Hold is retired: his sold mark sat under the stated $95 floor on two reads running ($91.00 on 11, Nov 10; $90.50 on 12, Nov 17), so the Hold's own condition failed and it is not renewed. Replacement call WATCH (toward the investor: no new Buy, never SELL), logged as a NEW calls.json row at the Nov 24 read; the old Hold row is untouched and graded as it stands (projections immutable). The Tuesday board applies it Tue Nov 24 (page verdict, box, legend line dated; build-x-board then emits WATCH from the verdict's first word, so the optional HOLD-UNDER-REVIEW qualifier is declined as moot). Supersedes tuesday-2026-11-10-2."
     },
     {
       "id": "tuesday-2026-11-17-2",
-      "status": "awaiting-cos",
+      "status": "closed",
       "date": "2026-11-17",
       "area": "tuesday-lane",
       "by": "tuesday-board",
@@ -3756,11 +3756,11 @@
       "tier": "P2",
       "goal": "G1",
       "title": "Tuesday Tape NOT sent Nov 17 (third straight week). This unattended run did not read the MailerLite credential (BLOCKED row of Nov 3, tuesday-2026-11-10-3 still queued), staged no campaign, and ran no rogue-send or kill-switch check. Draft written to Card Hub/digests/digest-2026-11-17.md; board figures in it match this run's staged page, which is not live until the Ship Desk applies the patch.",
-      "decision": "Attended decision still owed: a send path that does not read the token in-session, or move the Tape to an attended step and stop drafting it here."
+      "decision": "CoS desk 2026-11-18: closed — the Tuesday Tape is PARKED by Mo (attended Nov 17, 42276bc: 'Pause until we rethink the tape'). No send path to build; the lane no longer drafts it. Cause of the 3 unsent weeks recorded in claude/cos/attended-2026-11-17b-tape-paused.md."
     },
     {
       "id": "tuesday-2026-11-17-3",
-      "status": "awaiting-cos",
+      "status": "queued",
       "date": "2026-11-17",
       "area": "tuesday-lane",
       "by": "tuesday-board",
@@ -3768,7 +3768,7 @@
       "tier": "CHORE",
       "goal": "CHORE",
       "title": "Prompt drift, wrapper vs LANE-RULES R48: the scheduled-task wrapper and the lane file say push on the 'auto' remote with the deploy key; R48 (Nov 16) says push from the cloud clone to origin and, if refused, use the Ship Desk mailbox, never the deploy key. Followed R48. The cloud push was refused ('jmmorelli/shopcardhub is not in this session's authorized repository set'); the Tuesday task needs the repo added to its sources or every Tuesday ships a day late through the mailbox. Lane file also still says a vendor reads the tape (tuesday-2026-10-27-2).",
-      "decision": "Add the repo to the Tuesday task's sources (scheduled-task config), and update the wrapper + lane file STEP 5 to the R48 recipe."
+      "decision": "CoS desk 2026-11-18: queued → next attended CoS sitting (daily review 11-17 'needs an attended session' item 2, R48 cloud rewrites of Mac-worded prompts). The Tuesday board stays Mac-linked by CoS decision (attended 11-17b); its patch ships through the intake's same-day Ship Desk fire, so the late day is already closed in practice. Lane-file STEP 5 + the vendor line (tuesday-2026-10-27-2) are rewritten in the same sitting."
     }
   ],
   "scoreboard": {

@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-18 — desk (Tue Nov 17 evening slot, ran ~17:12 PT, verified live). Nothing new needs you
+
+- Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
+- Next time you're in a CoS chat (not urgent): sign in to the eBay Partner Network so the CoS can pull the earnings export from Nov 13 on. That is the only way to see whether the Nov 12 bot-click fix worked.
+- Optional, unchanged: the Mac disk is still full (the runs work around it), and the leftover GitHub branch `cos/cloud-push-test-20261116` can be deleted whenever you like.
+
+*Not yours:* everything built on Monday is live (the Ship Desk shipped it Tuesday morning and again Tuesday midday). Tonight's desk changed only notes and rulings: Holliday's Hold on the Bowman board becomes a Watch at the Nov 24 read, since his price sat under his $95 floor two weeks running, and Grok's daily pull check now looks only at sets we can price. This run still can't push to GitHub from the cloud (a setting on the run itself, already on the CoS's list), so the morning Ship Desk carries tonight's notes.
+
 ## 2026-11-16 — desk (Mon Nov 16 evening slot, ran ~17:12 PT, verified live). Nothing new needs you
 
 - Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
