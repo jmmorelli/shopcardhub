@@ -6601,6 +6601,16 @@
           "what": "Night Crew Nov 18 patch (orig cb874858, sha256 434c7478dc782559 ✓) applied clean on 3c89ceb with git am -3, regen per pending.md and amended as 3940c77: /search?q= page (BET-20261117-1, O-16), PRIS25 YouTube tile on /prismatic-evolutions-index (O-21), /bowman-1st-chrome-index strip names the Sep Chrome and May Bowman boxes + release window prints its close date Dec 8, 2026 (O-15), home regime dead band (now 'Vintage flat, modern down.', 2023–26 label), home movers screen each BOW26 auto once (706 screened).",
           "gates": "audit-prices FAIL 0 / WARN 67 (base 67) · audit-site FAIL 0 / WARN 3 (base 3; 818 pages) · audit-terminal --feed price-data FAIL 0 / WARN 1 (base 1) · price-truth sweep RED 0 · build-video-embed --check 0 stale · build-buy-strip --check 0 stale",
           "liveVerified": "2026-11-18 ~14:58Z: /search?q=umbreon 200, 21 card rows with 'raw · Nov 16, 2026' (Umbreon ex #161 $1,015 row 2) at 390 and 1440; /search?q=zzqx miss block with customid=search-miss; llms.txt search line; PRIS25 #video + 6-A39NdUl0A, first eBay y 56/52 unchanged; BOW26 May pill customid + 'it closes Dec 8, 2026', no 'days left'; home 'Vintage flat, modern down.', '2023–26 sets', 'of 706 screened'. sweep --deep 4 pages at 390+1440: 0 console errors, no sideways scroll, CLS 0 except PRIS25 desktop 0.005 (= before 0.0048). No revert."
+        },
+        {
+          "date": "2026-11-18",
+          "commits": [
+            "35d773e"
+          ],
+          "by": "CoS attended chat with Mo (control room on the site; Mo: \"let's go ahead and build it\")",
+          "gates": "audit-prices FAIL 0 / WARN 67 · audit-site FAIL 0 / WARN 3 (818 pages) · audit-terminal FAIL 0 / WARN 1 (= base)",
+          "liveVerified": "2026-11-18 17:38Z: /control-room 200 with noindex + X-Frame-Options DENY; /api/room 401 without a session; wrong password refused; sign-in, answer, Chief read and clear round-trip passed; data/room/* on price-data is ciphertext",
+          "note": "New page lives in control-room/ so root-page generators and audits skip it. /api/room is the 10th serverless function (Hobby cap 12)."
         }
       ]
     },
