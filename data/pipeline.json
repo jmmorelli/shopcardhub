@@ -6611,6 +6611,17 @@
           "gates": "audit-prices FAIL 0 / WARN 67 · audit-site FAIL 0 / WARN 3 (818 pages) · audit-terminal FAIL 0 / WARN 1 (= base)",
           "liveVerified": "2026-11-18 17:38Z: /control-room 200 with noindex + X-Frame-Options DENY; /api/room 401 without a session; wrong password refused; sign-in, answer, Chief read and clear round-trip passed; data/room/* on price-data is ciphertext",
           "note": "New page lives in control-room/ so root-page generators and audits skip it. /api/room is the 10th serverless function (Hobby cap 12)."
+        },
+        {
+          "date": "2026-11-18",
+          "commits": [
+            "5a559f3",
+            "1b60de7"
+          ],
+          "by": "CoS weekly 2026-11-18 via Ship Desk",
+          "gates": "audit-prices FAIL 0 / WARN 67 · audit-site FAIL 0 / WARN 3 (818 pages) · audit-terminal --feed price-data FAIL 0 / WARN 1 (= base) · price-truth sweep RED 0",
+          "liveVerified": "2026-11-18: / and /release-calendar show Dec 9 + Jan 14; /topps-museum-collection-baseball hero 'came out November 11, 2026' + chip 'Out since Nov 11, 2026'; /pokemon-booster-box-prices 'Black Friday is Fri, Nov 27, 2026.'; IndexNow 175 URLs 200",
+          "note": "Mailbox patch (sha256 2d0b165354eb2425) applied clean with git am -3 on c00bc63; tree f4e0029 = expected. Weekly's own cloud push had been refused by the git proxy."
         }
       ]
     },
