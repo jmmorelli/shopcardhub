@@ -515,6 +515,19 @@ const index = buildSearchIndex();
 // the same cards the header search does. Rewritten on every build-nav run (after the page generators).
 {
   const pagesOut = { _comment: 'Written by tools/build-nav.js — do not hand-edit. static: card id → URL; pages: [label, set line, URL] of the hand-built card pages.', static: STATIC_PAGES, pages: index.filter((it) => it.c).map((it) => [it.t, it.s || '', it.u]) };
+  // BET-20261117-1 (Night Crew Nov 18): /search (js/search-page.js) reads this same file. site: [label, URL] of every
+  // non-card search row (set indices, guides, tools), so the page lists what the header search lists. asOf: card-file
+  // ticker → the date of its last mark (data/cards/<tk>.json asOf, read only), printed beside each card's raw sold mark;
+  // cardAsOf: a card marked on its own date (rawAsOf ≠ the file's) by id.
+  pagesOut.site = index.filter((it) => !it.c).map((it) => [it.t, it.u]);
+  pagesOut.asOf = {};
+  try {
+    for (const f of readdirSync(join(ROOT, 'data/cards')).filter((x) => /^[a-z0-9]+\.json$/.test(x)).sort()) {
+      const d = JSON.parse(readFileSync(join(ROOT, 'data/cards', f), 'utf8'));
+      if (d && d.asOf) pagesOut.asOf[f.replace(/\.json$/, '')] = d.asOf;
+      for (const cd of (d && d.cards) || []) if (cd.raw != null && cd.rawAsOf && cd.rawAsOf !== d.asOf) (pagesOut.cardAsOf = pagesOut.cardAsOf || {})[cd.id] = cd.rawAsOf;
+    }
+  } catch (e) {}
   if (!CHECK_ONLY) writeFileSync(join(ROOT, 'js/card-pages.json'), JSON.stringify(pagesOut) + '\n');
 }
 const BLOCK = `${NAV_START}

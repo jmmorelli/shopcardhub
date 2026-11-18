@@ -177,10 +177,21 @@ export function buildV2(REPO, opts = {}) {
   };
   const thinPrior = (b) => b.prevN != null && !(b.prevN >= MV.MIN_N);
   const noNewSale = (b) => { const ls = lastSaleOf(b); return ls != null && !(ls > String(b.prevAsOf).slice(0, 10)); };
+  // iw-2026-11-16-2 (a) (Night Crew Nov 18): BOW26 is the year cohort of BB26 (May) + BCB26 (Sep) — the same autos. A card
+  // that also sits in a live set ticker is screened once, under the set ticker, so its row names May vs September (R8);
+  // Roldy Brito #CPA-RB printed twice ("736 screened" counted 20 such cards twice).
+  const COHORT = { BOW26: ["BB26", "BCB26"] };
+  const inSetTicker = {};
+  for (const [ck, sets] of Object.entries(COHORT)) {
+    const paths = new Set();
+    for (const st of sets) { const sv = idx[st]; if (sv && sv.status === "live" && T[st]) for (const sb of sv.basket || []) if (sb && sb.path) paths.add(sb.path); }
+    inSetTicker[ck] = paths;
+  }
   const screened = []; let fresh = 0, priorOut = 0;
   for (const [tk, v] of Object.entries(idx)) {
     if (!v || typeof v !== "object" || v.status !== "live" || !T[tk]) continue;
     for (const b of v.basket || []) {
+      if (b && inSetTicker[tk] && b.path && inSetTicker[tk].has(b.path)) continue;
       if (!b || !(b.prevPrice > 0) || !(b.price > 0) || b.carried || b.heldMove || b.reread || !b.prevAsOf || b.prevAsOf === b.asOf) continue;   // heldMove: an unconfirmed read the move guard held (Nov 3 2026) is never a mover; reread (Price Truth, Nov 5 2026): a mark catching up with PriceCharting is a correction, not a move
       fresh++;
       if (b.price < MV.MIN_PX || !(b.n30 >= MV.MIN_N)) continue;

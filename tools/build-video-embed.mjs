@@ -68,15 +68,26 @@ function block(videos) {
 // under that block (BCB26). So on BCB26 the tile sits between the signup and the BREAKS section; on the 30th page
 // between TH26:END and the DEST strip. Everything below (breaks, engine blocks, guide folds, related, footer) stays
 // below it. A page with no chart, or no END marker below its chart, is skipped and named (never guessed).
+// Night Crew Nov 18 (O-21, PRIS25): the sector pages built by bake-plain-read close their HERO block above the chart, so
+// no TK:END follows it. There the tile goes right after <!-- PLAIN-READ:HOW:END --> (chart → plain read → sealed → chase →
+// card table → "How this index works", then the tile), so no eBay link on the page moves; <!-- CHASE:END --> is the
+// fallback when a page has no method block.
 function insertionPoint(html) {
   const chart = html.indexOf('class="idx-chart"');
   if (chart === -1) return -1;
   const starts = [...html.slice(0, chart).matchAll(/<!-- ([A-Z0-9]+):START -->/g)];
   if (!starts.length) return -1;
   const endTag = `<!-- ${starts[starts.length - 1][1]}:END -->`;
-  const e = html.indexOf(endTag, chart);
-  if (e === -1) return -1;
-  let at = e + endTag.length;
+  let e = html.indexOf(endTag, chart);
+  let at;
+  if (e === -1) {
+    const tag = ["<!-- PLAIN-READ:HOW:END -->", "<!-- CHASE:END -->"].find((t) => html.indexOf(t, chart) !== -1);
+    if (!tag) return -1;
+    at = html.indexOf(tag, chart) + tag.length;
+    const nl0 = html.indexOf("\n", at);
+    return nl0 === -1 ? html.length : nl0 + 1;
+  }
+  at = e + endTag.length;
   const m = /^\s*<!-- SIGNUP:START[\s\S]*?<!-- SIGNUP:END -->/.exec(html.slice(at));
   if (m) at += m[0].length;
   // start the block on its own line

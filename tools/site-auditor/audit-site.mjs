@@ -27,7 +27,9 @@ const SITEMAP_EXEMPT = new Set(["card-dungeon", "welcome-email", "index", "set-i
   // Oct 9 2026 (B64, Google index fixes): the live auction list is a utility — noindexed, out of the sitemap.
   "auctions",
   // Oct 23 2026: the deals screen is the same shape — a live listing list, noindexed, out of the sitemap.
-  "deals"]);
+  "deals",
+  // Nov 18 2026 (BET-20261117-1): /search?q= is the SearchAction target — a results page per query, out of the sitemap by spec.
+  "search"]);
 const SITEMAP_EXEMPT_RE = /^card-/;
 
 // THE mandatory EPN param set (see memory: Jul 28 2026 mkevt=1 incident —

@@ -70,6 +70,8 @@ const short = [
   head,
   '## Start here',
   ...utility.map(u => line(u, LABEL[u] || u)),
+  // BET-20261117-1 (Night Crew Nov 18): /search reads q; out of the sitemap by design, so it is listed here by hand
+  `- Search any card or set: ${SITE}/search?q=<card or set>`,
   '',
   ...(questions ? [questions, ''] : []),
   '## Set indices',

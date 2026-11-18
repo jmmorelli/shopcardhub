@@ -426,6 +426,13 @@ function entryWindowLeft(c) {
   const left = (c.entryWindowDays == null ? ENTRY_WINDOW_DAYS : c.entryWindowDays) - days(from);
   return left > 0 ? Math.ceil(left) : 0;
 }
+// R10 Am. (durations decay, dates don't; Night Crew Nov 18, desk route 11-16 / O-15): the page prints the day the window
+// closes, not a count of days left that is wrong the morning after the bake. Same arithmetic as entryWindowLeft.
+function rwClose(c) {
+  const from = c.entryWindowFrom || c.releaseDate; if (!from) return "";
+  const d = new Date(Date.parse(from) + (c.entryWindowDays == null ? ENTRY_WINDOW_DAYS : c.entryWindowDays) * 864e5);
+  return `${MONS[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
+}
 // per-ticker override (Sep 30 2026, Mo chose the 90-day window for the WOTC 1st Edition / Shadowless indices: raw 1st Ed holos sell 2–5×/month)
 let SCREEN = BASE_SCREEN;
 // Oct 12 2026 (Mo: "Change the cap now"): NO caps. The 25% single-card cap (Sep 15) and the 5/50 group cap (Sep 25) are retired;
@@ -765,7 +772,7 @@ function block(x, c, opt = {}) {
     + (outHolo.length ? ` ${outHolo.length} holo-tier card${outHolo.length === 1 ? " is" : "s are"} tracked but unpriced — no clean raw sale in the last year: ${outHolo.map((u) => `${u.name} #${u.num}`).join(", ")}.` : "");
   // RELEASE-WINDOW ENTRY (Oct 8 2026): say so on the page while the window is open or once it has admitted anyone
   const rwLeft = entryWindowLeft(c), rwRows = (x.screenLog || []).filter((r) => /release window/.test(r.note || ""));
-  const rwTxt = rwLeft || rwRows.length ? ` Release window: for the first ${c.entryWindowDays == null ? ENTRY_WINDOW_DAYS : c.entryWindowDays} days after release${rwLeft ? ` (${rwLeft} day${rwLeft === 1 ? "" : "s"} left)` : ""}, a card that newly clears the screen enters at the next mark rather than waiting for the quarter — a new set's chase cards list their sales late, so a one-time screen at inception would leave them out; exits still wait for the reconstitution${rwRows.length ? ` (${rwRows.reduce((n, r) => n + (r.entered || 0), 0)} entered this way so far, last ${mdy(rwRows[rwRows.length - 1].date)})` : ""}.` : "";
+  const rwTxt = rwLeft || rwRows.length ? ` Release window: for the first ${c.entryWindowDays == null ? ENTRY_WINDOW_DAYS : c.entryWindowDays} days after release${rwLeft ? ` (it closes ${rwClose(c)})` : ""}, a card that newly clears the screen enters at the next mark rather than waiting for the quarter — a new set's chase cards list their sales late, so a one-time screen at inception would leave them out; exits still wait for the reconstitution${rwRows.length ? ` (${rwRows.reduce((n, r) => n + (r.entered || 0), 0)} entered this way so far, last ${mdy(rwRows[rwRows.length - 1].date)})` : ""}.` : "";
   const holoTxt = holoN ? ` The holo rule: ${holoN} holo-tier cards (holos, Shinings, Crystals, secret and illustration rares — by printed rarity) are standing constituents. They are never screened out, because a set's value sits in its holos and raw holos trade slower than commons precisely because they cost more; ${thinN ? `${thinN} of them currently sell fewer than ${SCREEN.stay} times in ${SCREEN.window} days and are marked on the nearest window with clean sales (90, 180 or 365 days), flagged thin and dated in the table` : `all of them currently clear the screen on their own`}.` : "";
   const exTxt = (c.exclude || []).filter((r) => r.label).length ? `Left out of the universe on purpose: ${(c.exclude || []).filter((r) => r.label).map((r) => r.label).join("; ")}.` : "";
   const noteTxt = typeof c.note === "function" ? c.note(x) : c.note;
