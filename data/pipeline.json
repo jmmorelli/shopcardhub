@@ -6591,6 +6591,16 @@
           "what": "Goal League contestant patches: Deal d07bb2f (phone eBay dock on five Deal pages, O-09; Black Friday week block on the box page, BET-20261116-1; sealed re-mark Nov 18), Drop fa4455f (Delta Reign second sold read; /dlr to the price page; /delta-reign-index pre-order copy retired, KB P68), AI-Search b84cf7b (dated card answers on NG1E, EVS21, SV151), Conversion f288f41 (O-08: Donruss FB and Flagship Bkb 26-27 out-since, box button first; Cosmic hero count dated). Registry: /delta-reign-index released to the pool. Wildcard 0ae2ab3 returned (broken H1), not shipped.",
           "gates": "audit-prices FAIL 0 WARN 67 (base 67) · audit-site FAIL 0 WARN 3 (base 3) · audit-terminal FAIL 0 WARN 1 (base 1) · score --check OK",
           "liveVerified": "2026-11-18 ~14:20Z: 14 changed URLs 200 with their new content (box page #black-friday-week, card-answer on 3 index pages, Donruss 'Out since Oct 28', DR 'Week Two', delta-reign-index released state); /dlr 308 to /pokemon-delta-reign-2026; IndexNow 13 URLs 200"
+        },
+        {
+          "date": "2026-11-18",
+          "commits": [
+            "3940c77"
+          ],
+          "by": "Ship Desk (unattended cloud run; pushed from the cloud per R48(a))",
+          "what": "Night Crew Nov 18 patch (orig cb874858, sha256 434c7478dc782559 ✓) applied clean on 3c89ceb with git am -3, regen per pending.md and amended as 3940c77: /search?q= page (BET-20261117-1, O-16), PRIS25 YouTube tile on /prismatic-evolutions-index (O-21), /bowman-1st-chrome-index strip names the Sep Chrome and May Bowman boxes + release window prints its close date Dec 8, 2026 (O-15), home regime dead band (now 'Vintage flat, modern down.', 2023–26 label), home movers screen each BOW26 auto once (706 screened).",
+          "gates": "audit-prices FAIL 0 / WARN 67 (base 67) · audit-site FAIL 0 / WARN 3 (base 3; 818 pages) · audit-terminal --feed price-data FAIL 0 / WARN 1 (base 1) · price-truth sweep RED 0 · build-video-embed --check 0 stale · build-buy-strip --check 0 stale",
+          "liveVerified": "2026-11-18 ~14:58Z: /search?q=umbreon 200, 21 card rows with 'raw · Nov 16, 2026' (Umbreon ex #161 $1,015 row 2) at 390 and 1440; /search?q=zzqx miss block with customid=search-miss; llms.txt search line; PRIS25 #video + 6-A39NdUl0A, first eBay y 56/52 unchanged; BOW26 May pill customid + 'it closes Dec 8, 2026', no 'days left'; home 'Vintage flat, modern down.', '2023–26 sets', 'of 706 screened'. sweep --deep 4 pages at 390+1440: 0 console errors, no sideways scroll, CLS 0 except PRIS25 desktop 0.005 (= before 0.0048). No revert."
         }
       ]
     },
