@@ -164,7 +164,8 @@ if (cfg.answer.crash) {
 
 // ---------- one card across printings (optional cfg.cards, opt-in per page via pages[slug].card) ----------
 // Every figure is the card's live basket mark in each printing's index: price, asOf and window from data/indices.json.
-// A print whose index is not live, whose card is missing, unpriced or carried is left out; under two prints, no block.
+// A print whose index is not live, whose card is missing, unpriced or carried is left out; under two prints, no block
+// (a card configured with one print only — a modern card printed in one set — needs that one print live).
 function cardAcross(id) {
   const c = (cfg.cards || {})[id];
   if (!c) throw new Error('unknown card answer: ' + id);
@@ -175,23 +176,24 @@ function cardAcross(id) {
     if (!b || b.carried || typeof b.price !== 'number' || !b.asOf || !b.win) return null;
     return { ...p, r, b };
   }).filter(Boolean);
-  if (prints.length < 2) return null;
+  const single = c.prints.length === 1;
+  if (prints.length < (single ? 1 : 2)) return null;
   const dates = [...new Set(prints.map(p => p.b.asOf))].sort();
   const wins = [...new Set(prints.map(p => p.b.win))];
   const same = dates.length === 1;
-  const list = ps => ps.map((p, i) => `${i === ps.length - 1 ? 'and ' : ''}${usd(p.b.price)} ${p.as}${same ? '' : ` (${'\u0000D' + p.b.asOf + '\u0000'})`}`).join(ps.length > 2 ? ', ' : ' ');
+  const list = ps => ps.map((p, i) => `${ps.length > 1 && i === ps.length - 1 ? 'and ' : ''}${usd(p.b.price)}${p.as ? ' ' + p.as : ''}${same ? '' : ` (${'\u0000D' + p.b.asOf + '\u0000'})`}`).join(ps.length > 2 ? ', ' : ' ');
   const hi = prints.reduce((a, p) => (p.b.price > a.b.price ? p : a)), lo = prints.reduce((a, p) => (p.b.price < a.b.price ? p : a));
   const x = hi.b.price / lo.b.price;
   const an = w => (/^[aeiou]/i.test(w) ? 'an' : 'a');
   const ratio = x >= 3 ? ` ${an(hi.label).replace(/^a/, 'A')} ${hi.label} copy sold for about ${Math.round(x)} times ${an(lo.label)} ${lo.label} one.` : '';
   const win = wins.length === 1 ? `the last ${wins[0]} days` : 'its window';
-  const body = `${same ? '\u0000D' + dates[0] + '\u0000, a' : 'A'} raw ${c.title} sold for a median of ${list(prints)}. Each figure is the median of that printing's ungraded sales over ${win}.${ratio}`;
+  const body = `${same ? '\u0000D' + dates[0] + '\u0000, a' : 'A'} raw ${c.title} sold for a median of ${list(prints)}. ${single ? 'That is the median of its' : 'Each figure is the median of that printing\'s'} ungraded sales over ${win}.${single ? '' : ratio}`;
   const withDates = (s, f) => s.replace(/\u0000D(\d{4}-\d{2}-\d{2})\u0000/g, (_, d) => f(d));
   return {
     c, prints,
     text: withDates(body, d => (same ? `On ${fmtDate(d)}` : fmtDate(d))),
     html: withDates(esc(body), d => (same ? `On <time datetime="${d}">${fmtDay(d)}</time>` : `<time datetime="${d}">${fmtDay(d)}</time>`)),
-    one: t => { const p = prints.find(p => p.ticker === t); return p ? `A raw ${p.label} ${c.title} sold for a median ${usd(p.b.price)} on ${fmtDate(p.b.asOf)}.` : ''; },
+    one: t => { const p = prints.find(p => p.ticker === t); return p ? `A raw ${single ? '' : p.label + ' '}${c.title} sold for a median ${usd(p.b.price)} on ${fmtDate(p.b.asOf)}.` : ''; },
   };
 }
 function cardBlock(id, ticker, slug) {
@@ -199,7 +201,7 @@ function cardBlock(id, ticker, slug) {
   if (!a) return null;
   const here = a.prints.find(p => p.ticker === ticker);
   const others = a.prints.filter(p => p.ticker !== ticker);
-  const hereTxt = here ? `This page is the ${esc(here.label)} print. <a href="#${esc(ticker.toLowerCase())}-chase">${esc(a.c.name)}'s row and its eBay links are just below</a>. ` : '';
+  const hereTxt = here ? `${a.prints.length > 1 ? `This page is the ${esc(here.label)} print. ` : ''}<a href="#${esc(ticker.toLowerCase())}-chase">${esc(a.c.name)}'s row and its eBay links are just below</a>. ` : '';
   const otherTxt = others.length ? `Other prints: ${others.map(p => `<a href="${esc(p.r.page)}">${esc(p.label)} (${esc(p.ticker)})</a>`).join(' · ')}.` : '';
   const faq = { '@context': 'https://schema.org', '@type': 'FAQPage',
     mainEntity: [{ '@type': 'Question', name: a.c.question, acceptedAnswer: { '@type': 'Answer', text: `${a.text}${a.c.tell ? ' ' + a.c.tell : ''}` } }] };
@@ -207,7 +209,7 @@ function cardBlock(id, ticker, slug) {
 <div class="wrap"><section id="card-answer" aria-labelledby="aisc-q" style="margin:12px 0 0;padding:12px 14px;border:1px solid var(--bd,#23303d);border-radius:8px;scroll-margin-top:80px;">
 <h2 id="aisc-q" style="font-size:16px;line-height:1.3;margin:0 0 6px;color:var(--th);text-wrap:balance;">${esc(a.c.question)}</h2>
 <p style="font-size:15px;line-height:1.55;color:var(--th);max-width:72ch;margin:0 0 6px;text-wrap:pretty;">${a.html.replace(/'/g, '&#39;')}</p>${a.c.tell ? `\n<details style="margin:0 0 6px;"><summary style="cursor:pointer;font-size:13px;line-height:1.5;color:var(--ac);min-height:24px;">${esc(a.c.tellLabel || 'How to tell the prints apart')}</summary><p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:4px 0 0;">${esc(a.c.tell)}</p></details>` : ''}
-<p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:0;">${hereTxt}${otherTxt}</p>
+<p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:0;">${(hereTxt + otherTxt).trim()}</p>
 </section></div>
 <script type="application/ld+json">${JSON.stringify(faq).replace(/</g, '\\u003c')}</script>
 <!-- AISEARCH:CARD:END -->`;

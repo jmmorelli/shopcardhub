@@ -1,5 +1,5 @@
 {
- "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json; {crash} (no ticker) is the one-line form of answer.crash. answer.crash = where each named group's indices stand against their base-month 100; answer.cards = a short table on /indices of the cards collectors ask about most (each row: ticker, num, name exactly as in the basket, label), with each card's raw mark, date and its index's 1-month move, linked to its chase row; an llms entry with \"answer\": \"cards\" prints the same answer. answer.links = internal links printed under the answer. Optional cards{} + pages[slug].card: the AISEARCH:CARD block (one card's dated raw mark in each printing listed, above the page's index block, with a FAQPage); {card} in a description is the page's own printing as one sentence; an llms entry with \"answer\": \"card:<id>\" prints the same answer. Optional \"feed\" adds one line under the question block pointing at /index-feed.json (built by tools/build-index-feed.mjs). No eBay URLs, prices or asks here, ever (R45).",
+ "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json; {crash} (no ticker) is the one-line form of answer.crash. answer.crash = where each named group's indices stand against their base-month 100; answer.cards = a short table on /indices of the cards collectors ask about most (each row: ticker, num, name exactly as in the basket, label), with each card's raw mark, date and its index's 1-month move, linked to its chase row; an llms entry with \"answer\": \"cards\" prints the same answer. answer.links = internal links printed under the answer. Optional cards{} + pages[slug].card: the AISEARCH:CARD block (one card's dated raw mark in each printing listed, or in its one set for a card listed with a single print, above the page's index block, with a FAQPage); {card} in a description is the page's own printing as one sentence; an llms entry with \"answer\": \"card:<id>\" prints the same answer. Optional \"feed\" adds one line under the question block pointing at /index-feed.json (built by tools/build-index-feed.mjs). No eBay URLs, prices or asks here, ever (R45).",
  "pages": {
   "indices": {
    "title": "Is the Pokémon Card Market Crashing? Up or Down by Set, Dated",
@@ -20,8 +20,9 @@
   "scarlet-violet-151-index": {
    "ticker": "SV151",
    "title": "Pokémon 151 Card Prices: Scarlet & Violet 151 Dated Sold Prices · SV151",
-   "description": "Pokémon 151 (Scarlet & Violet 151) card prices from dated sales. The SV151 index stood at {level} on {date} (100 = {base}, the release month) across {priced} cards, re-marked Monday and Thursday. Every card is listed with its price and date.",
-   "ld": true
+   "description": "{card} Pokémon 151 (Scarlet & Violet 151) card prices from dated sales. The SV151 index stood at {level} on {date} (100 = {base}, the release month) across {priced} cards, re-marked Monday and Thursday. Every card is listed with its price and date.",
+   "ld": true,
+   "card": "charizard-ex-199"
   },
   "bowman-1st-chrome-index": {
    "ticker": "BOW26",
@@ -39,7 +40,8 @@
    "ticker": "EVS21",
    "ld": true,
    "title": "Evolving Skies Card Prices, Umbreon VMAX #215 Included: Dated Sold Prices · EVS21",
-   "description": "Pokémon Evolving Skies card prices from dated sales of raw singles, Umbreon VMAX #215 (Moonbreon) included. The EVS21 index stood at {level} on {date} (100 = {base}), {since} since then, across {priced} cards. One raw copy of each card came to about {cost}. Every card is listed with its price and date."
+   "description": "{card} Pokémon Evolving Skies card prices from dated sales of raw singles, Umbreon VMAX #215 (Moonbreon) included. The EVS21 index stood at {level} on {date} (100 = {base}), {since} since then, across {priced} cards. One raw copy of each card came to about {cost}. Every card is listed with its price and date.",
+   "card": "umbreon-vmax-215"
   },
   "prismatic-evolutions-index": {
    "ticker": "PRIS25",
@@ -64,7 +66,8 @@
    "ticker": "NG1E",
    "ld": true,
    "title": "Pokémon Neo Genesis 1st Edition Card Prices, Lugia #9 Included: Dated Sold Prices · NG1E",
-   "description": "The NG1E index of Pokémon Neo Genesis 1st Edition card prices stood at {level} on {date} (100 = {base}), {since} since then, across {priced} cards on dated sales of raw singles.{month} One raw copy of each card came to about {cost}. Every card is listed with its price and date, Lugia #9 included."
+   "description": "{card} The NG1E index of Pokémon Neo Genesis 1st Edition card prices stood at {level} on {date} (100 = {base}), {since} since then, across {priced} cards on dated sales of raw singles.{month} One raw copy of each card came to about {cost}. Every card is listed with its price and date, Lugia #9 included.",
+   "card": "lugia-neo"
   }
  },
  "answer": {
@@ -251,6 +254,21 @@
    "page": "/pokemon-base-set-index"
   },
   {
+   "q": "What is a Neo Genesis Lugia #9 worth (1st Edition and Unlimited)?",
+   "answer": "card:lugia-neo",
+   "page": "/neo-genesis-1st-edition-index"
+  },
+  {
+   "q": "What is Moonbreon (Evolving Skies Umbreon VMAX #215) worth raw?",
+   "answer": "card:umbreon-vmax-215",
+   "page": "/evolving-skies-index"
+  },
+  {
+   "q": "What is the Scarlet & Violet 151 Charizard ex #199 worth raw?",
+   "answer": "card:charizard-ex-199",
+   "page": "/scarlet-violet-151-index"
+  },
+  {
    "q": "What are Pokémon Base Set (Unlimited) cards selling for?",
    "ticker": "BS99"
   },
@@ -326,6 +344,52 @@
    ],
    "tell": "To tell them apart: 1st Edition has the black 1st Edition stamp just under the picture on the left. Shadowless has no stamp and no drop shadow along the right edge of the picture frame. Unlimited has that shadow and no stamp.",
    "tellLabel": "How to tell 1st Edition, Shadowless and Unlimited apart"
+  },
+  "lugia-neo": {
+   "question": "What is a Neo Genesis Lugia worth?",
+   "num": "9",
+   "name": "Lugia",
+   "title": "Neo Genesis Lugia #9",
+   "prints": [
+    {
+     "ticker": "NG1E",
+     "label": "1st Edition",
+     "as": "in 1st Edition"
+    },
+    {
+     "ticker": "NG00",
+     "label": "Unlimited",
+     "as": "in Unlimited"
+    }
+   ],
+   "tell": "A 1st Edition copy has the black 1st Edition stamp just under the picture on the left. An Unlimited copy has no stamp.",
+   "tellLabel": "How to tell 1st Edition from Unlimited"
+  },
+  "umbreon-vmax-215": {
+   "question": "What is Moonbreon (Umbreon VMAX #215) worth raw?",
+   "num": "215",
+   "name": "Umbreon VMAX",
+   "title": "Evolving Skies Umbreon VMAX #215",
+   "prints": [
+    {
+     "ticker": "EVS21",
+     "label": "Evolving Skies",
+     "as": ""
+    }
+   ]
+  },
+  "charizard-ex-199": {
+   "question": "What is the 151 Charizard ex #199 worth raw?",
+   "num": "199",
+   "name": "Charizard ex",
+   "title": "Scarlet & Violet 151 Charizard ex #199",
+   "prints": [
+    {
+     "ticker": "SV151",
+     "label": "Scarlet & Violet 151",
+     "as": ""
+    }
+   ]
   }
  }
 }
