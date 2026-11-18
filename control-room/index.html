@@ -290,6 +290,14 @@ footer{color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;ga
 @media (max-width:900px){.trio{grid-template-columns:1fr}}
 @media (max-width:760px){.wire{grid-template-columns:22px minmax(0,1fr)}.wire-src{grid-column:1/-1;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}.wire-bus{grid-column:1;grid-row:2;justify-self:start;width:8px}.wire-bus span{display:none}.wire .teams{grid-column:2;grid-row:2;grid-template-columns:1fr}}
 
+/* This week on one page (written by the Chief on Fridays) */
+.week{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.week h3{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin:0 0 6px}
+.week .wk-m h3{color:var(--good)} .week .wk-d h3{color:var(--warn)} .week .wk-p h3{color:var(--accent)}
+.week ul,.week ol{margin:0;padding-left:1.15em;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.week li{overflow-wrap:anywhere}
+@media (max-width:760px){.week{grid-template-columns:1fr}}
+
 /* Sign-in */
 .gate{min-height:100vh;display:grid;place-items:center;padding:20px}
 .gatebox{width:100%;max-width:380px;display:flex;flex-direction:column;gap:14px}
@@ -416,6 +424,19 @@ footer{color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;ga
     <div class="panel term"><div class="tbar">OUTPUT / YOUR GATE</div><div id="gatebox"></div></div>
   </section>
 
+  <section class="panel rise" id="week-sec" aria-labelledby="h-week" hidden>
+    <div class="head">
+      <h2 id="h-week">This week on one page</h2>
+      <span class="meta" id="week-meta"></span>
+    </div>
+    <div class="week">
+      <div class="wk-m"><h3>What moved</h3><ul id="wk-moved"></ul></div>
+      <div class="wk-d"><h3>What didn't</h3><ul id="wk-didnt"></ul></div>
+      <div class="wk-p"><h3>Next week, three lines</h3><ol id="wk-plan"></ol></div>
+    </div>
+    <div class="srcline" id="week-src"></div>
+  </section>
+
   <section class="panel rise" id="shift-sec" aria-labelledby="h-shift" hidden>
     <div class="head">
       <h2 id="h-shift">The last 24 hours</h2>
@@ -523,7 +544,7 @@ footer{color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;ga
 
   <footer>
     <span id="foot">The Chief of Staff updates this page each time it reads and rules on agent reports. The page refreshes itself while open.</span>
-    <span id="design">Design updated Nov 18, 2026: Grok scouts join the floor; run log, dispatch and gate panels; teams now hang off "the wire" with their orders in motion.</span>
+    <span id="design">Design updated Nov 18, 2026: Grok scouts on the floor; run log, dispatch and gate panels; the wire; a Friday one-page week report.</span>
     <span><button class="btn link" id="signout" type="button">Sign out</button></span>
   </footer>
 </div>
@@ -1093,6 +1114,16 @@ footer{color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;ga
     });
   }
 
+  function renderWeek(w){
+    var sec=$("week-sec");w=obj(w);
+    var m=arr(w&&w.moved).filter(Boolean),d=arr(w&&w.didnt).filter(Boolean),pl=arr(w&&w.plan).filter(Boolean);
+    if(!w||!(m.length||d.length||pl.length)){sec.hidden=true;return}
+    sec.hidden=false;
+    [["wk-moved",m],["wk-didnt",d],["wk-plan",pl.slice(0,3)]].forEach(function(x){var u=$(x[0]);clear(u);if(!x[1].length)u.appendChild(el("li","empty","Nothing to report."));x[1].forEach(function(t){u.appendChild(el("li",null,t))})});
+    $("week-meta").textContent=w.weekOf?"week of "+fday(w.weekOf):"";
+    $("week-src").textContent="Written by "+(w.by||"the Chief of Staff")+(w.at?" · "+fmt(w.at):"")+". Every line comes from that week's reports.";
+  }
+
   function renderFeed(list){
     var sec=$("feed-sec");list=arr(list).filter(obj).filter(function(f){return f.text});
     if(!list.length){sec.hidden=true;return}
@@ -1184,6 +1215,7 @@ footer{color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;ga
     });
 
     renderFeed(s.feed);
+    renderWeek(s.week);
     if(window.Floor)window.Floor.update(state,decisions);
   }
   ["all","act","open"].forEach(function(k){
