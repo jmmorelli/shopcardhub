@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-18 — weekly (Wed 11:00 PT, unattended). Two things need you
+
+- **The signup boxes still promise the Tuesday email you paused.** 114 pages say "One email, Tuesdays. Free." and nobody is sending it (you paused the Tape on Nov 17). Anyone who signs up now gets nothing. Pick one in your next CoS chat: **(a)** reword the boxes to a promise we keep, e.g. "Email me when a set index moves" (the CoS writes it, you OK the line), or **(b)** hide the boxes until the Tape comes back. If you say nothing, the boxes stay as they are and no new box goes up.
+- **This weekly run can't push to GitHub.** The run itself isn't allowed the repo (`jmmorelli/shopcardhub is not in this session's authorized repository set`). Fix: in a new claude.ai chat, ask Claude to add the shopcardhub repo to the scheduled tasks that ship (weekly audit, desk), then recreate those tasks from that chat. Not urgent: the 6:41 AM Ship Desk carries today's changes live tomorrow.
+- Still yours, unchanged: **TAG affiliate payment info + link** (~10 min) · sign in to the eBay Partner Network next time you're in a CoS chat so the earnings since Nov 13 can be read.
+
+*Not yours:* the release calendar now shows Topps Chrome Update on Dec 9 and 2026 Bowman Draft on Jan 14, 2027 (it said Dec 15 with no source). The Museum Collection page stopped saying "pre-release". The hobby-box page, the top Black Friday page, still has Oct 20 prices; the Monday price run re-reads it Nov 23, before Black Friday.
+
 ## 2026-11-18 — desk (Tue Nov 17 evening slot, ran ~17:12 PT, verified live). Nothing new needs you
 
 - Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).

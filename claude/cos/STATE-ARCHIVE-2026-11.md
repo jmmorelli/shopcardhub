@@ -256,3 +256,20 @@ Verbatim blocks moved out of `claude/cos/STATE.md` to keep it under its size cap
   **Deliveries:** none (R10 Am. 6).
   **Instruments:** feed day **Nov 16** · 41 cards · 37 numeric · 40 images · GA4 18:59Z Nov 16: KE yesterday **14 / 45** · organic KE7 **18.99%** vs blended 11.42% (61/534) · returningShare7 1.93% · clicks7 **61** · bots 55.9% (SG 261, CN 38) → clean 236 / 60 KE · `cardPageClicks7` 0 · iPhone 13 QA 5/5 200, sw 390, 0 errors, photos 0/0 · 3/3 · 20/20 · 66/66 · 5/5.
   **Stumbles:** cloud push refused (session sources, not R48's recipe) → one more night for the chase six; a `git stash` mid-merge dropped MERGE_HEAD, so the bundle lands as a squashed commit.
+
+
+---
+
+## Archive pass of 2026-11-18 (CoS weekly) — the Nov 17 NOW block and the Nov 11 top 3, verbatim
+
+## NOW — 2026-11-17 (Tuesday board + Ship Desk): **`c35e24a` + `257fd6f` live** (main `f55cb13`, Ship Desk off-schedule fire 11:50 PT) — board read Nov 17 (no seat moved; Fischer +3.7% $125.00; Holliday $90.50 under his $95 floor → ruled WATCH by the Nov 18 desk, applied at the Nov 24 read, `tuesday-2026-11-17-1`). Later the same day: Price Truth `09fd010` + `d3c99b8` (G25 Sapphire holds, P70 chips) and the Tape pause `42276bc` (Mo). Gates 0/66 · 0/3 · 0/1 at `42276bc` (0/67 on the Nov 18 UTC day roll: `track-record.html` Oct 27 stamp crossed 21 d).
+
+## TOP 3 PROBLEMS IN THE BUSINESS — weekly read 2026-11-11 (Chrome NOT read: two browsers connected again and an unattended run may not pick one → GA4 nightly snapshot, data day Nov 10, 16:43Z; Bing API nightly, 4 weeks to Nov 6; GSC, MailerLite and EPN unread this run — last values carried and labelled)
+
+1. **Money is still ~$0.** EPN trailing 30 d ≈ **$11 = 3.7% of M0** (Nov 9 CSV read; 97% from one Pitch Black box link). GA4 outbound `click` **45 / 7 d** (21 a week ago) but buy strips **2**, card pages **0 clicks on 168 card views**. The #1 Bing page `/best-hobby-boxes-2026` (403 impressions, 24 clicks in 4 weeks, avg pos 4.2) took **16 landings and 0 key events** this week, and its prices are stamped **Oct 20 (22 d, now a WARN)**. *Doing:* the hobby-box re-read is price data → Monday price lane Nov 16 (BLOCKED row); this run fixed no money surface.
+2. **Search came back, but one seasonal page carries it.** Organic sessions 7 d **71** (16 a week ago); **organic key-event rate 21.1%** beside blended **4.57%** (28 d: 15.5% vs 1.13%). `/mcdonalds-pokemon-cards-2026` = **47** of the week's landings at a 25.5% KE rate, and the promo ends Dec 14. Google: **4** sessions / 7 d (GSC unread; indexed was 1/91 Nov 4). Bing API: **92 clicks / 761 impressions** in 4 weeks to Nov 6 (110 / 746 the read before). *Doing:* no GSC spend (§0 ruling); the Nov 12 cull check (BET-20261029-1) is tomorrow.
+3. **Returners and the list are still unreadable as a business.** Returning users **9 / 7 d** (2), share **1.68%**; GA4 `newsletter_signup` **0** on **172** `signup_view` — the client event is still broken, so MailerLite (4 active Nov 4, unread today) stays the only truth. Bots still **69%** of sessions (SG 366 @ 0.5 s; 240 of 248 `/card` landings). *Doing:* event fix stays with the Night Crew; Retention Analyst read owed.
+
+**§0.3 (data vs the CoS's own lean):** the PIVOT Nov 19 test now reads **organic 71 > 48 ✓ · returning 9 > 6 ✓ · clicks/100 clean 45/169 = 26.6 ≥ 15.7 ✓ · indexed unread (1 on Nov 4 ✗) → 3 of 4** (0 of 4 a week ago). Organic recovered **without** restoring culled pages, mostly on one new release page — so the Nov 4 lean "restore the culled pages with Bing history" is weaker than it was. The CoS now leans: restore only culled pages with ≥ 5 Bing clicks in their last 28 live days; let the Nov 12 check rule.
+
+
