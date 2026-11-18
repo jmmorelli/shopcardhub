@@ -6662,6 +6662,16 @@
           "gates": "control-room/ is outside the root-page audits; audit-site FAIL 0 / WARN 3 on the base an hour earlier",
           "liveVerified": "2026-11-18 ~22:00Z: /control-room serves the week panel markup; it stays hidden until the Chief writes state.week (tested locally with and without the field, 0 page errors)",
           "note": "One file changed: control-room/index.html."
+        },
+        {
+          "date": "2026-11-18",
+          "commits": [
+            "8e400c6"
+          ],
+          "by": "CoS attended design chat with Mo (control room: isometric floor, answers moved up, long lists fold; Mo: \"Ship real changes to the live page and send me screenshots\")",
+          "gates": "audit-prices FAIL 0 / WARN 67, audit-site FAIL 0 / WARN 3, audit-terminal FAIL 0 / WARN 1 (feed not cloned) = base; control-room/ is outside the root-page audits",
+          "liveVerified": "2026-11-18 ~22:25Z: /control-room is byte-identical to main (md5 14012447...); rendered with today's room state on 1440 px and 390 px, 0 page errors, no sideways scroll, reduced-motion still frame, 44 px targets",
+          "note": "One file changed: control-room/index.html. No change to how the page talks to /api/room."
         }
       ]
     },
