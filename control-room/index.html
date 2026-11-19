@@ -113,6 +113,12 @@ h2{font-family:var(--display);font-weight:500;font-size:18px;margin:0;text-wrap:
 .ans .said{flex:1 1 100%;color:var(--muted)}
 .ans .chief{flex:1 1 100%}
 .ans .chief b{color:var(--good)}
+.ideain{display:flex;flex-direction:column;gap:8px}
+.ideain textarea{font:inherit;font-size:15px;line-height:1.4;min-height:84px;resize:vertical;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);width:100%;box-sizing:border-box}
+.ideain textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ideain .row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.ideain .left{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.item .who{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
 .sub2{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:8px 0 0}
 
 /* Mission strip */
@@ -461,6 +467,31 @@ details.fold>summary{min-height:44px}
     <div class="srcline">Your answer is saved at once. The Chief of Staff picks it up on its next pass (four a day) and the result shows here.</div>
   </section>
 
+  <section class="panel rise" id="ideas-sec" aria-labelledby="h-ideas">
+    <div class="head">
+      <h2 id="h-ideas">Idea board</h2>
+      <span class="meta" id="ideas-count"></span>
+    </div>
+    <form class="ideain" id="idea-form">
+      <label class="sub2" for="idea-text" style="margin:0">Drop an idea</label>
+      <textarea id="idea-text" maxlength="1000" placeholder="Anything you want tried or looked at. Plain words are fine."></textarea>
+      <div class="row">
+        <button class="btn gold" type="submit" id="idea-btn">Send to the Chief</button>
+        <span class="left" id="idea-left"></span>
+      </div>
+    </form>
+    <div id="myideas-sec" hidden>
+      <div class="sub2">Your ideas, and what the Chief did</div>
+      <div class="desk" id="myideas" style="margin-top:8px"></div>
+    </div>
+    <div id="board-sec" hidden>
+      <div class="sub2" id="board-title">On the board</div>
+      <div class="desk" id="board" style="margin-top:8px"></div>
+      <button class="btn link" type="button" id="board-more" hidden></button>
+    </div>
+    <div class="srcline">An idea you send is saved at once. The Chief of Staff reads it on its next pass (four a day), puts it on the board and rules on it within 48 hours: adopt, decline or park. The agents' ideas land on the same board.</div>
+  </section>
+
   <section class="trio rise" id="trio" aria-label="Run log, dispatch and your gate" hidden>
     <div class="panel term"><div class="tbar">RUN LOG <span>newest first</span></div><ol id="runlog"></ol></div>
     <div class="panel term"><div class="tbar">DISPATCH <span>one block per lane</span></div><div id="dispatch"></div><div class="srcline" id="dispatch-src"></div></div>
@@ -564,7 +595,7 @@ details.fold>summary{min-height:44px}
 
   <footer>
     <span id="foot">The Chief of Staff updates this page each time it reads and rules on agent reports. The page refreshes itself while open.</span>
-    <span id="design">Design updated Nov 19, 2026: each team card on the wire now has two small charts, reports per day this week and open orders by age.</span>
+    <span id="design">Design updated Nov 19, 2026: new Idea board with a box to send the Chief an idea, plus each team card on the wire has two small charts.</span>
     <span><button class="btn link" id="signout" type="button">Sign out</button></span>
   </footer>
 </div>
@@ -1142,7 +1173,7 @@ details.fold>summary{min-height:44px}
     $("mo-count").textContent=(asks.length+needs.length)?(open?open+" waiting for your answer":"all answered"):"";
 
     /* answers whose item has left the list: show what the Chief did with them */
-    var past=Object.keys(decisions).filter(function(id){return !live[id]&&obj(decisions[id])}).sort(function(a,b){return String(decisions[b].at||"").localeCompare(String(decisions[a].at||""))}).slice(0,6);
+    var past=Object.keys(decisions).filter(function(id){return !live[id]&&obj(decisions[id])&&decisions[id].decision!=="idea"}).sort(function(a,b){return String(decisions[b].at||"").localeCompare(String(decisions[a].at||""))}).slice(0,6);
     var box=$("answered");clear(box);$("answered-sec").hidden=!past.length;
     past.forEach(function(id){
       var d=decisions[id],it=el("div","item answered");
@@ -1151,6 +1182,58 @@ details.fold>summary{min-height:44px}
       box.appendChild(it);
     });
     return open;
+  }
+
+  /* ── Idea board ── */
+  var boardAll=false,BOARD_LIMIT=6,ideaBusy=false;
+  var RULE={adopt:["ok","Adopted"],adopted:["ok","Adopted"],decline:["bad","Declined"],declined:["bad","Declined"],park:["warn","Parked"],parked:["warn","Parked"]};
+  function ideaLeft(){var t=$("idea-text"),n=t.value.length;$("idea-left").textContent=n>800?(1000-n)+" characters left":""}
+  function sendIdea(){
+    var t=$("idea-text"),text=t.value.replace(/\s+/g," ").trim();
+    if(ideaBusy)return;
+    if(text.length<3){$("idea-left").textContent="Type the idea first.";t.focus();return}
+    ideaBusy=true;$("idea-btn").disabled=true;$("idea-left").textContent="Sending…";
+    api("POST",{op:"idea",text:text}).then(function(r){
+      ideaBusy=false;$("idea-btn").disabled=false;
+      if(r.status===200){decisions=obj(r.j.decisions)||decisions;t.value="";$("idea-left").textContent="Sent. It shows below.";notice("");renderIdeas(state||{})}
+      else if(r.status===401){showGate("Signed out. Sign in again.")}
+      else{$("idea-left").textContent=(r.j&&r.j.error)||"That idea was not saved. Try again."}
+    },function(){ideaBusy=false;$("idea-btn").disabled=false;$("idea-left").textContent="That idea was not saved (offline?). Try again."});
+  }
+  $("idea-form").addEventListener("submit",function(ev){ev.preventDefault();sendIdea()});
+  $("idea-text").addEventListener("input",ideaLeft);
+  $("board-more").addEventListener("click",function(){boardAll=!boardAll;renderIdeas(state||{})});
+  function renderIdeas(s){
+    var mine=Object.keys(decisions).filter(function(id){var d=obj(decisions[id]);return d&&d.decision==="idea"&&d.note}).sort(function(a,b){return String(decisions[b].at||"").localeCompare(String(decisions[a].at||""))}).slice(0,8);
+    var box=$("myideas");clear(box);$("myideas-sec").hidden=!mine.length;
+    mine.forEach(function(id){
+      var d=decisions[id],act=obj(d.acted),it=el("div","item"+(act?" answered":""));
+      it.appendChild(el("div","d",d.note));
+      var a=el("div","ans");a.appendChild(el("span","when","sent "+fmt(d.at)));
+      var c=el("span","chief");
+      if(act){c.appendChild(el("b",null,"Chief: "));c.appendChild(document.createTextNode((act.text||"On the board.")+" ("+fmt(act.at)+")"))}
+      else{c.appendChild(document.createTextNode("Waiting for the Chief's next pass."))}
+      a.appendChild(c);
+      if(!act){var u=el("button","btn link","Take it back");u.type="button";u.disabled=busy;u.addEventListener("click",function(){decide(id,"clear","Idea from Mo")});a.appendChild(u)}
+      it.appendChild(a);box.appendChild(it);
+    });
+    var list=arr(s.ideas).filter(obj).filter(function(i){return i.idea||i.text});
+    var bd=$("board");clear(bd);$("board-sec").hidden=!list.length;
+    var open=0;list.forEach(function(i){if(!RULE[String(i.ruling||"").toLowerCase()])open++});
+    (boardAll?list:list.slice(0,BOARD_LIMIT)).forEach(function(i){
+      var r=RULE[String(i.ruling||"").toLowerCase()],it=el("div","item");
+      var top=el("div","ans");
+      top.appendChild(el("span","pill "+(r?r[0]:"plain"),r?r[1]:"Not ruled yet"));
+      top.appendChild(el("span","who",[i.id,i.from?("from "+i.from):"",i.date?fday(i.date):""].filter(Boolean).join(" · ")));
+      it.appendChild(top);
+      it.appendChild(el("div","d",i.idea||i.text));
+      if(i.detail){var rc=el("div","rec");rc.appendChild(el("b",null,"Chief: "));rc.appendChild(document.createTextNode(i.detail));it.appendChild(rc)}
+      bd.appendChild(it);
+    });
+    $("board-title").textContent="On the board"+(list.length?" ("+list.length+")":"");
+    var more=$("board-more");more.hidden=list.length<=BOARD_LIMIT;more.textContent=boardAll?"Show fewer":"Show all "+list.length;
+    var waiting=mine.filter(function(id){return !obj(decisions[id].acted)}).length;
+    $("ideas-count").textContent=[waiting?waiting+" of yours waiting for the Chief":"",open?open+" not ruled yet":""].filter(Boolean).join(" · ");
   }
 
   function tile(id,n){
@@ -1326,6 +1409,7 @@ details.fold>summary{min-height:44px}
     var ul=el("ul");bits.forEach(function(x){ul.appendChild(el("li",null,x))});p.appendChild(ul);
     var fa=$("floor-asof");if(fa)fa.textContent=s.asOf?"As the Chief left it "+ago(s.asOf):"";
     var waiting=renderDesk(s);
+    renderIdeas(s);
     if(typeof waiting==="number")renderWall(s,waiting);
     renderMission(obj(s.goal));
     var nums=arr(s.numbers);tile("n0",nums[0]);tile("n1",nums[1]);

@@ -15,6 +15,9 @@
 //     POST {op:"logout"}
 //     GET  /api/room                             → { state, decisions }
 //     POST {op:"decide", id, decision, note?, label?}   decision: approved | declined | done | clear
+//     POST {op:"idea", text}                     → an idea for the idea board (Nov 19 2026). Stored beside the
+//                                                  decisions as { decision:"idea", note:<text> } under an IDEA-… id,
+//                                                  so the Chief reads and acks it the same way as an answer.
 //   THE CHIEF OF STAFF (header x-room-key; its sha256 is the constant below, the key is not in the repo)
 //     POST {op:"publish", state}                 → replaces the room state
 //     GET  /api/room?op=state                    → { state, decisions }  (read, edit, publish back)
@@ -36,6 +39,7 @@ const COOKIE = "sch_room";
 const SESSION_DAYS = 30;
 const MAX_STATE_BYTES = 300_000;
 const MAX_DECISIONS = 400;
+const MAX_IDEAS_WAITING = 25;
 const HOSTS = new Set(["www.shopcardhub.com", "shopcardhub.com", "localhost", "127.0.0.1"]);
 
 const hmac = (key, msg) => crypto.createHmac("sha256", key).update(msg).digest();
@@ -219,6 +223,23 @@ export default async function handler(req, res) {
         d[id] = { decision, note: note || undefined, label: label || undefined, at: new Date().toISOString() };
       }, "room: decision");
       res.status(200).json({ ok: true, decisions }); return;
+    }
+
+    if (req.method === "POST" && op === "idea") {
+      if (!sameOrigin(req)) { res.status(403).json({ error: "forbidden" }); return; }
+      const { data: auth } = await readJson(P_AUTH);
+      if (!sessionOk(req, auth)) { res.status(401).json({ error: "sign in" }); return; }
+      const text = clean(body.text, 1000);
+      if (text.length < 3) { res.status(400).json({ error: "Type the idea first." }); return; }
+      const id = `IDEA-${Date.now().toString(36)}`;
+      let full = false;
+      const decisions = await saveDecisions((d) => {
+        const waiting = Object.values(d).filter((x) => x && x.decision === "idea" && !x.acted).length;
+        if (waiting >= MAX_IDEAS_WAITING) { full = true; return; }
+        d[id] = { decision: "idea", note: text, label: "Idea from Mo", at: new Date().toISOString() };
+      }, "room: idea");
+      if (full) { res.status(429).json({ error: "The Chief has 25 of your ideas still to read. Try again after its next pass." }); return; }
+      res.status(200).json({ ok: true, id, decisions }); return;
     }
 
     res.status(400).json({ error: "unknown request" });
