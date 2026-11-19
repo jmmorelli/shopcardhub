@@ -300,6 +300,22 @@ details.fold>summary:focus-visible{outline:2px solid var(--accent);outline-offse
 .team dd.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .team .pipe{margin:6px 10px 0}.team .srcline{margin:6px 10px 0}
 .team.blocked,.team.watch{border-color:var(--line)}
+/* Mini charts in each team card: reports per day over 7 days, open orders by age */
+.team .minis{margin:8px 10px 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:start}
+.mini .ml{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;overflow-wrap:anywhere}
+.mini .ml b{color:var(--ink);font-weight:500;letter-spacing:0}
+.bars{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;align-items:end;height:30px;border-bottom:1px solid var(--line)}
+.bars i{display:block;min-height:2px;border-radius:2px 2px 0 0;background:color-mix(in srgb,var(--tc) 55%,transparent);transform-origin:bottom}
+.bars i.zero{background:var(--line)}
+.bars i.today{background:var(--tc)}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin-top:2px;font-family:var(--mono);font-size:9px;color:var(--muted);text-align:center}
+.days span.today{color:var(--ink)}
+.sq{display:flex;flex-wrap:wrap;gap:3px;min-height:12px}
+.sq i{display:block;width:9px;height:9px;border-radius:2px;background:var(--good)}
+.sq i.a1{background:var(--warn)}.sq i.a2{background:var(--bad)}
+.sq .none{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.mini .key{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
+@media (prefers-reduced-motion: no-preference){.bars i{animation:grow .3s cubic-bezier(.2,.8,.2,1) both}.bars i:nth-child(2){animation-delay:.04s}.bars i:nth-child(3){animation-delay:.08s}.bars i:nth-child(4){animation-delay:.12s}.bars i:nth-child(5){animation-delay:.16s}.bars i:nth-child(6){animation-delay:.2s}.bars i:nth-child(7){animation-delay:.24s}@keyframes grow{from{transform:scaleY(.15)}to{transform:none}}}
 @keyframes wl{to{stroke-dashoffset:-16}}
 @media (prefers-reduced-motion: no-preference){.wl{animation:wl 1.2s linear infinite}.dp-bar i.in{animation:dpin 2.4s ease-in-out infinite}@keyframes dpin{50%{opacity:.55}}}
 @media (max-width:900px){.trio{grid-template-columns:1fr}}
@@ -504,7 +520,7 @@ details.fold>summary{min-height:44px}
       <div class="teams" id="teams"></div>
       <svg id="wire-svg" aria-hidden="true"></svg>
     </div>
-    <div class="srcline">Every team hangs off the ledger. A coloured dot is one of its open orders going out; a pale dot is a report coming back in the last 24 hours.</div>
+    <div class="srcline">Every team hangs off the ledger. A coloured dot is one of its open orders going out; a pale dot is a report coming back in the last 24 hours. The small charts in each card count the Chief's rulings per day and the open orders by age (green under 4 days, amber up to 14, red older).</div>
   </section>
 
   <details class="panel fold rise" >
@@ -548,7 +564,7 @@ details.fold>summary{min-height:44px}
 
   <footer>
     <span id="foot">The Chief of Staff updates this page each time it reads and rules on agent reports. The page refreshes itself while open.</span>
-    <span id="design">Design updated Nov 18, 2026: the floor is now a dungeon you look down into; your answers sit right under it; the long lists fold away.</span>
+    <span id="design">Design updated Nov 19, 2026: each team card on the wire now has two small charts, reports per day this week and open orders by age.</span>
     <span><button class="btn link" id="signout" type="button">Sign out</button></span>
   </footer>
 </div>
@@ -1175,12 +1191,71 @@ details.fold>summary{min-height:44px}
     $("m-src").textContent=src.join(" · ");
   }
 
+  /* ── mini charts for the wire's team cards, only from rulings and orders ── */
+  function nm(x){return String(x||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
+  function teamOfName(name,teams){ /* same matching as the floor, so a card counts what its room shows */
+    var n=nm(name);if(!n||/^mo\b/.test(n))return null;
+    var best=null,bl=0;
+    teams.forEach(function(t){arr(t.agents).forEach(function(a){
+      var an=nm(a).replace(/\(.*$/,"").trim();if(!an)return;var key=an.split(" ").slice(0,2).join(" ");
+      if(n.indexOf(key)>=0||an.indexOf(n.split(" ").slice(0,2).join(" "))>=0){if(key.length>bl){bl=key.length;best=t.id}}
+    })});
+    if(best)return best;
+    var has=function(id){return teams.some(function(t){return t.id===id})};
+    if(/cos|chief|ops|measurement|coo|intake|review|desk/.test(n))return "office";
+    if(/night crew|ship|sweep|cupertino|coverage|tuesday/.test(n))return "site";
+    if(/price|kb|knowledge|gengar|integrity/.test(n))return "prices";
+    if(/league|commissioner|deal|drop|conversion|wildcard|ai search|ceo|controller|retention/.test(n))return "growth";
+    if(/studio|youtube/.test(n))return "studio";
+    if(/grok|stalk|ivan|seeker|creator|editor|seo/.test(n))return has("grok")?"grok":"intel";
+    if(/x |pull/.test(n+" "))return "intel";
+    return null;
+  }
+  function teamMinis(teams){
+    var s=state||{},out={},now=new Date(),mid=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+    teams.forEach(function(t){out[t.id]={per:[0,0,0,0,0,0,0],ages:[]}});
+    arr(s.rulings).forEach(function(r){
+      if(!obj(r)||!r.at)return;var d=new Date(r.at);if(isNaN(d))return;
+      var day=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime(),back=Math.round((mid-day)/864e5);
+      if(back<0||back>6)return;var tm=teamOfName(r.agent,teams);if(tm&&out[tm])out[tm].per[6-back]++;
+    });
+    arr(s.orders).forEach(function(o){
+      if(!obj(o)||o.status==="done")return;var ow=String(o.owner||"").split(/→|->/),tm=teamOfName(ow[ow.length-1],teams);
+      if(tm&&out[tm])out[tm].ages.push(days(o.since));
+    });
+    return out;
+  }
+  function minisEl(m){
+    var wrap=el("div","minis"),DN=["S","M","T","W","T","F","S"],today=new Date().getDay();
+    var tot=m.per.reduce(function(a,b){return a+b},0),max=Math.max.apply(null,m.per.concat([1]));
+    var a=el("div","mini");
+    var l=el("div","ml","Reports, 7 days ");l.appendChild(el("b",null,tot));a.appendChild(l);
+    var bars=el("div","bars");bars.setAttribute("role","img");
+    bars.setAttribute("aria-label",tot+" reports ruled in the last 7 days; "+m.per[6]+" today");
+    m.per.forEach(function(v,i){var b=el("i",(v?"":"zero")+(i===6?" today":""));b.style.height=(v?Math.max(12,Math.round(v/max*100)):6)+"%";b.title=v+(v===1?" report":" reports");bars.appendChild(b)});
+    a.appendChild(bars);
+    var dn=el("div","days");dn.setAttribute("aria-hidden","true");
+    for(var i=0;i<7;i++)dn.appendChild(el("span",i===6?"today":null,DN[(today-6+i+7)%7]));
+    a.appendChild(dn);wrap.appendChild(a);
+    var b2=el("div","mini"),ages=m.ages.slice().sort(function(x,y){return (y==null?-1:y)-(x==null?-1:x)});
+    var l2=el("div","ml","Open orders ");l2.appendChild(el("b",null,ages.length));b2.appendChild(l2);
+    var sq=el("div","sq");
+    var c=[0,0,0];ages.forEach(function(d){var k=d==null?0:d>14?2:d>3?1:0;c[k]++;var q=el("i","a"+k);q.title=d==null?"age unknown":d+(d===1?" day":" days")+" old";sq.appendChild(q)});
+    if(!ages.length)sq.appendChild(el("span","none","none open"));
+    sq.setAttribute("role","img");sq.setAttribute("aria-label",ages.length+" open orders: "+c[0]+" under 4 days, "+c[1]+" 4 to 14 days, "+c[2]+" older");
+    b2.appendChild(sq);
+    if(ages.length){var k=[];if(c[0])k.push(c[0]+" new");if(c[1])k.push(c[1]+" aging");if(c[2])k.push(c[2]+" old");b2.appendChild(el("div","key",k.join(" · ")))}
+    wrap.appendChild(b2);
+    return wrap;
+  }
+
   function renderTeams(list){
     var sec=$("teams-sec");list=arr(list).filter(obj);
     if(!list.length){sec.hidden=true;return}
     sec.hidden=false;
     var box=$("teams");clear(box);
     var att=list.filter(function(t){return t.status==="watch"||t.status==="blocked"}).length;
+    var minis=teamMinis(list);
     $("teams-count").textContent=list.length+" teams · "+(att?att+" need a look":"all ready");
     list.forEach(function(t){
       var st=t.status==="blocked"?"blocked":t.status==="watch"?"watch":"ok";
@@ -1197,6 +1272,7 @@ details.fold>summary{min-height:44px}
       if(typeof t.openOrders==="number")row("Orders",t.openOrders+" open","metric");
       if(arr(t.agents).length)row("Crew",arr(t.agents).length+(arr(t.agents).length===1?" agent":" agents"));
       card.appendChild(dl);
+      if(minis[t.id])card.appendChild(minisEl(minis[t.id]));
       var pl=arr(t.pipeline).filter(obj);
       if(pl.length){
         var p=el("div","pipe");
