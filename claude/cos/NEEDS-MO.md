@@ -11,6 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-19 — desk (Wed Nov 18 evening slot, ran ~17:12 PT, verified live). Nothing new needs you
+
+- Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
+- Still open from the weekly: **the signup boxes promise a Tuesday email you paused** — pick (a) reword to a promise we keep, or (b) hide them, in your next CoS chat.
+- Closed: the eBay Partner Network sign-in. You did the read on Nov 18 (the bot-click fix works; no sale since Nov 4).
+- Still open: this run still can't push to GitHub from the cloud (same setting on the run, already on the CoS's list). The morning Ship Desk carries tonight's notes.
+
+*Not yours:* the Prismatic Evolutions video link is now in the X draft, waiting on your "go" in the control room. A Skyridge Charizard row is missing the "thin market" flag its own page promises; Price Truth fixes it Thursday.
+
 ## 2026-11-18 — weekly (Wed 11:00 PT, unattended). Two things need you
 
 - **The signup boxes still promise the Tuesday email you paused.** 114 pages say "One email, Tuesdays. Free." and nobody is sending it (you paused the Tape on Nov 17). Anyone who signs up now gets nothing. Pick one in your next CoS chat: **(a)** reword the boxes to a promise we keep, e.g. "Email me when a set index moves" (the CoS writes it, you OK the line), or **(b)** hide the boxes until the Tape comes back. If you say nothing, the boxes stay as they are and no new box goes up.
