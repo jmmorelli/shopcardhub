@@ -61,11 +61,21 @@ const month = items.filter((r) => { const n = days(TODAY, r.date); return n > 7 
 const later = items.filter((r) => days(TODAY, r.date) > 30);
 const past = items.filter((r) => { const n = days(TODAY, r.date); return n < 0 && n >= -30; }).reverse();
 const src = Object.entries(data.sources || {}).map(([k, v]) => `<b>${esc(k)}</b> — ${esc(v)}`).join("<br>");
+// An empty section at the TOP of the page is written as one plain line, not as a section with its own
+// heading. Nov 19 2026: a week with nothing dated pushed the first "Sealed on eBay" button two headings
+// down, site-auditor 15 (conversion-below-fold) FAILed, and every lane's push gate went red with it.
+const parts = [
+  ["This week", `${TODAY} → +7 days`, week, "Nothing dated in the next seven days on the calendars we read."],
+  ["Next 30 days", "", month, "Nothing further dated inside 30 days."],
+  ["Later in 2026", "", later, "Nothing dated beyond 30 days yet."],
+  ["Just released", "last 30 days — the singles are printing, the sealed asks are settling", past, "No release in the last 30 days."],
+];
+const firstFull = parts.findIndex((p) => p[2].length);
+const secs = parts.map((p, i) => (firstFull > -1 && i < firstFull)
+  ? `<div class="rc-empty"><b>${p[0]}:</b> ${p[3].charAt(0).toLowerCase()}${p[3].slice(1)}</div>`
+  : sec(...p));
 const block = `${START}
-${sec("This week", `${TODAY} → +7 days`, week, "Nothing dated in the next seven days on the calendars we read.")}
-${sec("Next 30 days", "", month, "Nothing further dated inside 30 days.")}
-${sec("Later in 2026", "", later, "Nothing dated beyond 30 days yet.")}
-${sec("Just released", "last 30 days — the singles are printing, the sealed asks are settling", past, "No release in the last 30 days.")}
+${secs.join("\n")}
 <p class="rc-src">"Sealed on eBay" is a live eBay search; "At Fanatics" (Topps and Bowman rows) is a fanatics.com search. ShopCardHub earns an affiliate commission on qualifying purchases from either. No Fanatics price or stock is shown here.</p>
 <p class="rc-src"><b>Sources</b> (as of ${esc(data.asOf || TODAY)}; page baked ${esc(TODAY)}):<br>${src}</p>
 ${END}`;
