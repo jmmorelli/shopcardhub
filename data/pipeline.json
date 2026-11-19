@@ -6706,6 +6706,16 @@
           "gates": "audit-prices FAIL 0 / WARN 67, audit-site FAIL 0 / WARN 3 (829 pages), audit-terminal FAIL 0 / WARN 1 (price-data feed worktree), price-truth sweep RED 0 / AMBER 21 = base",
           "liveVerified": "2026-11-19 ~14:50Z: /control-room design line 1; /card-gengar-13-expedition 'Gengar #13' 7; card-search.json trk-rr111 1; /indices hub-num 1 and terminal-shell.css?v=3 1. Playwright --deep 390+1440 on /indices, /, /home-v2, /watchlist, /bowman-bangers, /card-gengar-13-expedition (GA + eBay aborted): 0 console errors, 0 overflow, CLS 0 everywhere, /watchlist 2/3 photos = base",
           "note": "Mailbox cleared, 3 files: CoS desk docs patch (f2687c8f -> fd80772, held since Nov 19 01:18Z), Control Room mini charts (39c81f13 -> ab9525f), Coverage Builder 12 TRK cards (8b1ad279 -> bfdca76) + Cupertino run 20 /indices first screen + rail (a94da157 -> c5e3d14), regen 7e1ef45 (card-search +12, 11 new card pages). Inline patches lifted byte-exact from this session's transcript, sha256 verified; never re-typed. Rollback: git revert c5e3d14 (Cupertino); git revert bfdca76 7e1ef45 (CB)."
+        },
+        {
+          "date": "2026-11-19",
+          "commits": [
+            "80bd596"
+          ],
+          "by": "CoS (attended, Mo in chat: \"yea go for it\")",
+          "gates": "audit-prices FAIL 0 / WARN 67 and audit-site FAIL 1 / WARN 3, both identical to the base tree (the 1 FAIL is release-calendar.html conversion-below-fold, already on main; control-room/ and api/ are outside the audits)",
+          "liveVerified": "2026-11-19: /control-room serves the new 'Design updated' line; POST /api/room op idea answers 'sign in' without a session",
+          "note": "Control room: Idea board + a box for Mo to send the Chief an idea (api/room.js op idea; state.ideas)."
         }
       ]
     },
