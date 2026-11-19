@@ -6672,6 +6672,14 @@
           "gates": "audit-prices FAIL 0 / WARN 67, audit-site FAIL 0 / WARN 3, audit-terminal FAIL 0 / WARN 1 (feed not cloned) = base; control-room/ is outside the root-page audits",
           "liveVerified": "2026-11-18 ~22:25Z: /control-room is byte-identical to main (md5 14012447...); rendered with today's room state on 1440 px and 390 px, 0 page errors, no sideways scroll, reduced-motion still frame, 44 px targets",
           "note": "One file changed: control-room/index.html. No change to how the page talks to /api/room."
+        },
+        {
+          "date": "2026-11-19",
+          "commits": [],
+          "by": "Ship Desk (scheduled, cloud, 06:41 run)",
+          "gates": "not run: no file applied, tree = origin/main 4dccfc1 plus this entry",
+          "liveVerified": "n/a (nothing shipped)",
+          "note": "Mailbox held 1 file: CoS desk 2026-11-19 docs-only patch (f2687c8f, claude/cos/ only). Not applied: /mnt/project/ absent and project_read returned the patch inline, not as a saved file; the Ship Desk prompt forbids re-typing, and reading the session's tool-result log was refused this run. Left in the mailbox; filed 2026-11-19 ~01:18Z (24 h line ~01:18Z Nov 20)."
         }
       ]
     },
