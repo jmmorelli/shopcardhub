@@ -19,13 +19,16 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
 const read = (f) => fs.readFileSync(path.join(REPO, f), "utf8");
 const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+// Cupertino run 19 (DESIGN-SYSTEM "Labels"): the rail prints the nav's words the way build-nav.js shows them: no emoji
+// (⚾ ⭐ …) and a trailing "→" becomes " ›" on a no-break space. data/nav.json and data/rail.json keep their words.
+const lbl = (s) => String(s == null ? "" : s).replace(/\p{Extended_Pictographic}\uFE0F?/gu, "").replace(/\s*→\s*$/, "\u00a0›").replace(/[ \t]+/g, " ").trim();
 
 const rail = JSON.parse(read("data/rail.json"));
 const nav = JSON.parse(read("data/nav.json"));
 // pills from the data files (Terminal step 4): board = the tracked 1st Bowman Chrome autos, indices = every ticker in indices.json
 let boardN = null, indicesN = null;
 try { const wl = JSON.parse(read("data/watchlist.json")); boardN = (wl.cards || []).filter((c) => c && c.source === "ebay" && c.cardType === "chrome-auto" && !c.boardHide).length; } catch {}
-try { const idx = JSON.parse(read("data/indices.json")); indicesN = Object.keys(idx).filter((k) => k !== "_comment" && k !== "updated" && idx[k] && typeof idx[k] === "object" && idx[k].board !== false).length; } catch {}   // board:false = a pre shell kept off the board (DLR26, Oct 4 2026)
+try { const idx = JSON.parse(read("data/indices.json")); indicesN = Object.keys(idx).filter((k) => k !== "_comment" && k !== "updated" && idx[k] && typeof idx[k] === "object" && idx[k].board !== false && idx[k].status === "live").length; } catch {}   // board:false = a pre shell kept off the board (DLR26, Oct 4 2026); live only (Cupertino run 19, IW-2 b): a "pre" shell (BF26) has no page row yet, so the pill says what /indices and home's "All N sets" say
 // record (CoS, Oct 2 2026 — outside brief: the scorecard is the trust signal, put it in the rail): "R–W" once any
 // 6/12-month thesis leg is graded; until then the first due date, so the pill never claims a grade that does not exist.
 let recordPill = null;
@@ -41,19 +44,21 @@ const allowed = new Set(["/", "/watchlist", "/indices", "/auctions"]);
 for (const m of JSON.stringify(nav).matchAll(/"href"\s*:\s*"([^"]+)"/g)) allowed.add(m[1].split("#")[0]);
 const check = (h) => { const p = h.split("#")[0].split("?")[0].replace(/\/$/, "") || "/"; if (!p.startsWith("/") || !allowed.has(p)) throw new Error(`rail href ${h} is not a nav.json path`); return h; };
 
-const item = (href, label, ico, pill, extra) => `      <a class="rl${extra ? " " + extra : ""}" href="${esc(check(href))}"${extra === "sc" ? ` data-screen="${esc(href.split("screen=")[1] || "")}"` : ""}><span class="ico">${esc(ico || "")}</span><span class="lbl">${esc(label)}</span>${pill ? `<span class="pill">${esc(pill)}</span>` : ""}</a>`;
+const item = (href, label, ico, pill, extra) => `      <a class="rl${extra ? " " + extra : ""}" href="${esc(check(href))}"${/\bsc\b/.test(extra || "") ? ` data-screen="${esc(href.split("screen=")[1] || "")}"` : ""}><span class="ico">${esc(ico || "")}</span><span class="lbl">${esc(lbl(label))}</span>${pill ? `<span class="pill">${esc(pill)}</span>` : ""}</a>`;
 
 const navRows = rail.nav.map((n) => item(n.href, n.label, n.ico, n.pill in PILLS ? PILLS[n.pill] : n.pill));
 const cats = nav.categories.filter((c) => rail.guides.guideCategories.includes(c.label));
 const guides = cats.map((c, i) => `      <details class="rl-grp"${i === 0 ? "" : ""}>
-        <summary class="rl"><span class="ico">▸</span><span class="lbl">${esc(c.label)}</span><span class="pill">${c.groups.reduce((n, g) => n + g.links.filter((l) => !l.allLink).length, 0)}</span></summary>
-${c.groups.map((g) => `        <div class="rl-glabel">${esc(g.label)}</div>\n` + g.links.filter((l) => !l.allLink).map((l) => `        <a class="rl sub" href="${esc(check(l.href))}"><span class="lbl">${esc(l.label)}</span></a>`).join("\n")).join("\n")}
-        <a class="rl sub all" href="${esc(check(c.href))}"><span class="lbl">All ${esc(c.label)} →</span></a>
+        <summary class="rl"><span class="ico">▸</span><span class="lbl">${esc(lbl(c.label))}</span><span class="pill">${c.groups.reduce((n, g) => n + g.links.filter((l) => !l.allLink).length, 0)}</span></summary>
+${c.groups.map((g) => `        <div class="rl-glabel">${esc(lbl(g.label))}</div>\n` + g.links.filter((l) => !l.allLink).map((l) => `        <a class="rl sub" href="${esc(check(l.href))}"><span class="lbl">${esc(lbl(l.label))}</span></a>`).join("\n")).join("\n")}
+        <a class="rl sub all" href="${esc(check(c.href))}"><span class="lbl">All ${esc(lbl(c.label))}\u00a0›</span></a>
       </details>`);
 const pfCfg = { rows: rail.portfolios.rows, vaultHref: check(rail.portfolios.vaultHref), empty: rail.portfolios.empty };
 const pfRows = rail.portfolios.rows.map((r) => `      <a class="rl pf" href="${esc(pfCfg.vaultHref)}" data-status="${esc(r.status)}"><span class="ico">${esc(r.ico)}</span><span class="lbl">${esc(r.label)}</span><span class="pill">—</span></a>`).join("\n") +
-  `\n      <a class="rl pf-empty" href="${esc(pfCfg.vaultHref)}"><span class="ico">→</span><span class="lbl">${esc(rail.portfolios.empty)}</span></a>`;
-const screens = rail.screens.rows.map((s) => item(`/#screen=${s.id}`, s.label, "⌁", null, "sc"));
+  `\n      <a class="rl pf-empty" href="${esc(pfCfg.vaultHref)}"><span class="ico">→</span><span class="lbl">${esc(lbl(rail.portfolios.empty))}</span></a>`;
+// Saved screens fold into a disclosure like the Guides groups (Cupertino run 19): five rows that only answer on / sit
+// closed under one row; the inline script below opens it when the page is showing a screen (/#screen=…).
+const screens = rail.screens.rows.map((s) => item(`/#screen=${s.id}`, s.label, "⌁", null, "sub sc"));
 
 const block = `<!-- RAIL:START -->
 <aside class="rail" id="rail" aria-label="Terminal rail">
@@ -61,19 +66,21 @@ const block = `<!-- RAIL:START -->
 ${navRows.join("\n")}
   </nav>
   <div class="rl-sec rl-guides">
-    <h4>${esc(rail.guides.label)} <a href="${esc(check(rail.guides.allHref))}">all →</a></h4>
+    <h4>${esc(rail.guides.label)} <a href="${esc(check(rail.guides.allHref))}">All\u00a0›</a></h4>
     <a class="rl rl-guides-chip" href="${esc(check(rail.guides.allHref))}"><span class="ico">✎</span><span class="lbl">${esc(rail.guides.label)}</span></a>
 ${guides.join("\n")}
   </div>
   <div class="rl-sec">
-    <h4>${esc(rail.portfolios.label)} <a href="${esc(pfCfg.vaultHref)}">open →</a></h4>
+    <h4>${esc(rail.portfolios.label)} <a href="${esc(pfCfg.vaultHref)}">Open\u00a0›</a></h4>
     <div data-rail="portfolios" data-cfg="${esc(JSON.stringify(pfCfg))}">
 ${pfRows}
     </div>
   </div>
-  <div class="rl-sec">
-    <h4>${esc(rail.screens.label)}</h4>
-${screens.join("\n")}
+  <div class="rl-sec rl-screens">
+    <details class="rl-grp" id="rl-screens">
+      <summary class="rl"><span class="ico">▸</span><span class="lbl">${esc(lbl(rail.screens.label))}</span><span class="pill">${rail.screens.rows.length}</span></summary>
+${screens.map((r) => "  " + r).join("\n")}
+    </details>
   </div>
   <div class="rail-foot">${esc(rail.foot)}</div>
 </aside>
@@ -87,6 +94,10 @@ ${screens.join("\n")}
     var p = h; if (p.length > 1 && p.slice(-1) === "/") p = p.slice(0, -1);
     if (p === here) rows[i].classList.add("on");
   }
+  if (/screen=/.test(location.hash || "")) { var sd = document.getElementById("rl-screens"); if (sd) sd.open = true; }
+  /* the phone chip row scrolls sideways: bring this page's chip into view (inside the row only, so nothing on the page moves) */
+  var rl = document.getElementById("rail"), on = rl && rl.querySelector(".rl.on");
+  if (on && rl.scrollWidth > rl.clientWidth && getComputedStyle(rl).display === "flex") { var pv = on.previousElementSibling && on.previousElementSibling.offsetWidth ? on.previousElementSibling : on, x = pv.offsetLeft - rl.offsetLeft - 16; if (on.offsetLeft - rl.offsetLeft + on.offsetWidth > rl.clientWidth - 16 && x > 0) rl.scrollLeft = x; }
 })();
 </script>
 <!-- RAIL:END -->`;
