@@ -6716,6 +6716,16 @@
           "gates": "audit-prices FAIL 0 / WARN 67 and audit-site FAIL 1 / WARN 3, both identical to the base tree (the 1 FAIL is release-calendar.html conversion-below-fold, already on main; control-room/ and api/ are outside the audits)",
           "liveVerified": "2026-11-19: /control-room serves the new 'Design updated' line; POST /api/room op idea answers 'sign in' without a session",
           "note": "Control room: Idea board + a box for Mo to send the Chief an idea (api/room.js op idea; state.ideas)."
+        },
+        {
+          "date": "2026-11-19",
+          "commits": [
+            "50b73b9"
+          ],
+          "by": "CoS (attended; Mo saw the failed-run emails)",
+          "gates": "audit-prices FAIL 0 / WARN 67 · audit-site FAIL 0 / WARN 3 (was FAIL 1 since the 18:14Z nightly feed)",
+          "liveVerified": "see site-gates run on this push",
+          "note": "Release calendar generator: an empty leading section is one plain line, so the first eBay link is not pushed below the fold. Cleared the red site-gates and class-ladder runs."
         }
       ]
     },
