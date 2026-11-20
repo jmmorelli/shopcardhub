@@ -6736,6 +6736,16 @@
           "gates": "audit-prices FAIL 0 / WARN 67 · audit-site FAIL 0 / WARN 3 (was FAIL 1 since the 18:14Z nightly feed)",
           "liveVerified": "see site-gates run on this push",
           "note": "Release calendar generator: an empty leading section is one plain line, so the first eBay link is not pushed below the fold. Cleared the red site-gates and class-ladder runs."
+        },
+        {
+          "date": "2026-11-20",
+          "commits": [
+            "a07b530"
+          ],
+          "by": "Ship Desk (scheduled, cloud, LANE-RULES R48) — mailbox: CoS desk 2026-11-20 (3c25c22f)",
+          "gates": "audit-prices FAIL 0 / WARN 69 (= pending.md base; +2 calendar aging) · audit-site FAIL 0 / WARN 3 (829 pages) · audit-terminal FAIL 0 / WARN 1 (price-data worktree) · price-truth sweep RED 0 / AMBER 23 / GREEN 78",
+          "liveVerified": "2026-11-20 ~14:5xZ curl raw main claude/cos/STATE.md contains 'Nov 20 ~01:10–01:50 UTC' (1)",
+          "note": "Docs-only (STATE run log + archive pass, NEEDS-MO block); does not deploy. Patch sha256 90c4cead… verified, git am -3 clean on 01e25a8."
         }
       ]
     },
