@@ -6613,6 +6613,16 @@
           "note": "New page lives in control-room/ so root-page generators and audits skip it. /api/room is the 10th serverless function (Hobby cap 12)."
         },
         {
+          "date": "2026-11-20",
+          "commits": [
+            "b46cb2e"
+          ],
+          "by": "Price Truth Desk (cloud, run 18; task-key price-truth-2026-11-20)",
+          "what": "Raw-mark display holds on BS1E Blastoise #2 ($1,250, 'biggest move +39%') and ND1E Shining Kabutops #108 ($365.50 on 2 sales, 'biggest move -53%'), verifier-confirmed vs PriceCharting; plain-read + home movers skip marks on < 3 sales; sweep check 1c.",
+          "gates": "audit-prices FAIL 0 / WARN 66 (base 67) · audit-site FAIL 0 / WARN 3 · audit-terminal --feed data/feed FAIL 0 / WARN 1 · price-truth sweep RED 0 · aisearch --check 0 stale · stale-guides --check 0",
+          "liveVerified": "see claude/agents/price-truth/LATEST.md (2026-11-20)"
+        },
+        {
           "date": "2026-11-19",
           "commits": [
             "e0af055"
