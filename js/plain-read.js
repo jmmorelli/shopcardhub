@@ -138,7 +138,10 @@
     /* a row held by the move guard (tools/lib/move-guard.mjs, Nov 3 2026) is never the "biggest move" — its read is unconfirmed;
      * nor is a reread row (Price Truth, Nov 5 2026): the prior mark sat outside PriceCharting's band and the new one inside it, so the
      * "move" is the mark correcting, not the card moving (NDC1E Hitmontop #3 $30 → $67) */
-    var movers = basket.filter(function (c) { return typeof c.prevPrice === 'number' && c.prevPrice > 0 && c.price >= 10 && !c.heldMove && !c.reread && !c.ptHold; })
+    /* Price Truth Nov 20 2026: a mark on fewer than 3 sales (thin holo row, wn/n30 < 3) is never the "biggest move" — ND1E Shining
+     * Kabutops #108 printed "▼ 53%" on two September sales when the 1st Edition title check thinned its rows. */
+    function thinN(c) { var nn = c.wn != null ? c.wn : c.n30; return typeof nn === 'number' && nn < 3; }
+    var movers = basket.filter(function (c) { return typeof c.prevPrice === 'number' && c.prevPrice > 0 && c.price >= 10 && !c.heldMove && !c.reread && !c.ptHold && !thinN(c); })
       .map(function (c) { return { c: c, p: (c.price / c.prevPrice - 1) * 100 }; })
       .filter(function (m) { return Math.abs(m.p) >= 1; })
       .sort(function (a, b) { return Math.abs(b.p) - Math.abs(a.p); });

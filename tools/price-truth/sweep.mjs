@@ -117,7 +117,7 @@ for (const [a, b] of PAIRS) {
   const bm = new Map(CARDS[b].cards.map((x) => [x.num, x]));
   for (const x of CARDS[a].cards) {
     const y = bm.get(x.num);
-    if (!y || x.raw == null || y.raw == null || x.screened || y.screened) continue;
+    if (!y || x.raw == null || y.raw == null || x.screened || y.screened || x.ptHold || y.ptHold) continue;   // ptHold: the raw prints "being re-read" (Nov 20)
     pairsCompared++;
     const r = x.raw / y.raw;
     if (r < 1) add(2, x.raw >= 20 ? A : G, x.id, `${a.toUpperCase()} ${x.name} #${x.num} $${x.raw} (n${x.n30}) below ${b.toUpperCase()} $${y.raw} (n${y.n30}) — ${r.toFixed(2)}x`, { page: CARDS[a].page });
@@ -327,6 +327,19 @@ if (has("data/feed/auctions-latest.json")) {
   const AU = rd("data/feed/auctions-latest.json");
   const deep = (AU.rows || []).filter((r) => r.mark && r.total != null && r.total / r.mark - 1 <= -0.4);
   if (deep.length) add(8, A, "auctions", `/auctions: ${deep.length} of ${(AU.rows || []).filter((r) => r.mark).length} marked rows show > 40% under our price (early bids, not prices)`);
+}
+
+// 1c · printed "Biggest move" on a mark of fewer than 3 sales (Price Truth Nov 20 2026): ND1E Shining Kabutops #108 printed
+// "▼ 53%" on two September sales after the 1st Edition title check thinned its rows. js/plain-read.js (thinN) and
+// lib/home-v2.mjs now skip such rows; RED if a baked page still names one, or names a ptHold row.
+for (const [tk, v] of Object.entries(IDX)) {
+  if (!v || typeof v !== "object" || !Array.isArray(v.basket) || !v.page || v.status === "retired") continue;
+  const f = v.page.replace(/^\//, "") + ".html"; if (!HTML.includes(f)) continue;
+  const t = fs.readFileSync(path.join(ROOT, f), "utf8").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  const m = /Biggest move since [A-Z][a-z]{2} \d{1,2} (.+?) #([\w-]+) [▲▼]/.exec(t); if (!m) continue;
+  const b = v.basket.find((x) => String(x.num) === m[2] && x.name === m[1].trim()); if (!b) continue;
+  const nn = b.wn != null ? b.wn : b.n30;
+  if (b.ptHold || (typeof nn === "number" && nn < 3)) add(1, R, `${tk}#${b.num}`, `${tk} prints "Biggest move" on ${b.name} #${b.num} (${b.ptHold ? "ptHold" : "n" + nn})`, { page: v.page });
 }
 
 // ---------------- 9 · static card shells behind the data (Price Truth Nov 14 2026) ----------------
