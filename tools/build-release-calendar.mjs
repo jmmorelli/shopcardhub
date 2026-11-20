@@ -64,10 +64,17 @@ const src = Object.entries(data.sources || {}).map(([k, v]) => `<b>${esc(k)}</b>
 // An empty section at the TOP of the page is written as one plain line, not as a section with its own
 // heading. Nov 19 2026: a week with nothing dated pushed the first "Sealed on eBay" button two headings
 // down, site-auditor 15 (conversion-below-fold) FAILed, and every lane's push gate went red with it.
+const thisYear = TODAY.slice(0, 4);
+const laterYears = [...new Set(later.map((r) => r.date.slice(0, 4)))].sort();
+const laterParts = laterYears.length
+  ? laterYears.map((y) => [y === thisYear ? `Later in ${y}` : `In ${y}`, "", later.filter((r) => r.date.slice(0, 4) === y), "Nothing dated beyond 30 days yet."])
+  : [[`Later in ${thisYear}`, "", later, "Nothing dated beyond 30 days yet."]];
 const parts = [
   ["This week", `${TODAY} → +7 days`, week, "Nothing dated in the next seven days on the calendars we read."],
   ["Next 30 days", "", month, "Nothing further dated inside 30 days."],
-  ["Later in 2026", "", later, "Nothing dated beyond 30 days yet."],
+  // Nov 20 2026 (O-58 item 2, IW 11-19 finding 1): the "Later" heading is built from the rows' years, so a January
+  // 2027 row is filed under "In 2027", never under "Later in 2026".
+  ...laterParts,
   ["Just released", "last 30 days — the singles are printing, the sealed asks are settling", past, "No release in the last 30 days."],
 ];
 const firstFull = parts.findIndex((p) => p[2].length);

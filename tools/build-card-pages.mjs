@@ -127,7 +127,10 @@ function facts(c) {
   }
   const guideHref = c.slug && exists(c.slug + ".html") ? "/" + c.slug : null;
   const positive = c.query.split(/\s+/).filter((t) => t && !t.startsWith("-")).join(" ");
-  const ebaySearch = `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(positive)}&LH_BIN=1&${EPN}&customid=card-${c.id}`;
+  // Nov 20 2026 (CoS O-35, Bowman KB G25 link half): a Sapphire base row searches with its card code and "-chrome",
+  // or eBay returns October 2026 Bowman Chrome Sapphire listings (a different card). Query only; customid unchanged.
+  const nkwQ = type === "sapphire-base" && code ? `${positive} ${code} -chrome` : positive;
+  const ebaySearch = `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(nkwQ)}&LH_BIN=1&${EPN}&customid=card-${c.id}`;
   const l = latestBy.get("ebay:" + c.id) || null;
   const img = l && l.image && l.image.url ? l.image : null;
   const imgHref = img && img.item ? img.item.replace(/customid=[^&]*/, "customid=card-" + c.id) : ebaySearch;

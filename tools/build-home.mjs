@@ -119,7 +119,8 @@ if (INIT_V2 || !/<!-- HOME:idxbox:START -->/.test(html)) {
   // · css v=7 / js v=6 Nov 4 2026: Cupertino run 5, "See all <N> cards ›" button + the selected row's "›" + home2_index_open
   // · css v=8 Nov 6 2026: Site Sweep, 44 px tap area on "All N sets →"
   // · css v=10 / js v=7 Nov 15 2026: Cupertino run 16, the home second pass (the level's unit, "›", the scroll flow on /)
-  html = html.replace(/\/css\/home-v2\.css\?v=\d+/, "/css/home-v2.css?v=10").replace(/\/js\/home-v2\.js\?v=\d+/, "/js/home-v2.js?v=7");
+  // · js v=8 Nov 20 2026: Night Crew INSTR-HOME2, home2_index_open sent as a beacon before a first-tap navigation
+  html = html.replace(/\/css\/home-v2\.css\?v=\d+/, "/css/home-v2.css?v=10").replace(/\/js\/home-v2\.js\?v=\d+/, "/js/home-v2.js?v=8");
   if (!/\/js\/scroll-flow\.js/.test(html)) html = html.replace(/(<script src="\/js\/home-v2\.js[^"]*" defer><\/script>)/, '$1\n<script src="/js/scroll-flow.js?v=3" defer></script>');
   html = html.replace(/\n\s*<script src="\/js\/home-you\.js[^"]*" defer><\/script>/, "");
   html = html.replace(/\n\s*<!-- Night Crew Oct 8 \(NEW-1\)[\s\S]*?<\/script>(?=\n\s*<\/head>)/, "");

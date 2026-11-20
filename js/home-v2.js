@@ -98,7 +98,19 @@
   function select(tk) { if (!T[tk]) return; cur = tk; Array.prototype.forEach.call(rowsEl.querySelectorAll('tr'), function (tr) { tr.setAttribute('aria-selected', String(tr.getAttribute('data-tk') === tk)); }); paintViz(false); ga('home2_index_pick', { ticker: tk }); }
   rowsEl.addEventListener('click', function (e) { if (e.target.closest('.h2-rgo')) return; var tr = e.target.closest('tr[data-tk]'); if (tr) select(tr.getAttribute('data-tk')); });
   // opens of a set's page from the box: the "See all <N> cards" button and the selected row's "›" (Measurement counts these from Nov 5)
-  document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('#h2-open, .h2-rgo'); if (!a) return; var tr = a.closest('tr[data-tk]'); ga('home2_index_open', { tk: tr ? tr.getAttribute('data-tk') : cur, from: tr ? 'row' : 'button' }); });
+  // INSTR-HOME2 (Night Crew Nov 20 2026): when "See all" is the visitor's first tap, gtag.js (deferred until first
+  // interaction) has not loaded yet and the page navigates before the event leaves. Send it as a beacon and, only while
+  // gtag.js is still loading, hold the same-tab navigation until the hit is sent or 600 ms pass.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('#h2-open, .h2-rgo'); if (!a) return;
+    var tr = a.closest('tr[data-tk]'), p = { tk: tr ? tr.getAttribute('data-tk') : cur, from: tr ? 'row' : 'button', transport_type: 'beacon' };
+    var plain = !e.defaultPrevented && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey && a.href && (!a.target || a.target === '_self');
+    var loaded = !!(window.google_tag_manager && window.google_tag_manager['G-2Q52C5EKG7']);
+    if (!plain || loaded || typeof gtag !== 'function' || navigator.webdriver) { ga('home2_index_open', p); return; }
+    e.preventDefault();
+    var href = a.href, gone = false, go = function () { if (gone) return; gone = true; location.href = href; };
+    p.event_callback = go; ga('home2_index_open', p); setTimeout(go, 600);
+  });
   rowsEl.addEventListener('keydown', function (e) { var tr = e.target.closest('tr[data-tk]'); if (tr && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); select(tr.getAttribute('data-tk')); } });
   Array.prototype.forEach.call(document.querySelectorAll('.h2-tab'), function (b) {
     b.addEventListener('click', function () {
