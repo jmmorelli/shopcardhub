@@ -6761,6 +6761,18 @@
           "gates": "audit-prices FAIL 0 / WARN 66 (base 69: three stale-stamp WARNs cleared on best-hobby-boxes-2026, panini-donruss-football-2026, topps-flagship-basketball-2026-27) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 · renders 390/1280 on 10 pages: no overflow, no console errors",
           "liveVerified": "2026-11-20 ~14:3xZ curl: 10 changed URLs 200; new /topps-chrome-update-2026-rookies one h1; /indices 7 customid=indices; IndexNow 10 URLs HTTP 200",
           "note": "Five contestant patches: hobby box re-mark + Black Friday line, McDonald's Nov 19 read, /indices eBay column, post-release box asks on two release pages, new Chrome Update rookies page. Registry: one claim granted, one page released, one new URL registered."
+        },
+        {
+          "date": "2026-11-20",
+          "commits": [
+            "25ec0df",
+            "071863b",
+            "f5246ca"
+          ],
+          "by": "Ship Desk (scheduled, cloud, LANE-RULES R48) — Night Crew 77747b94 (+ regen: build-card-pages, build-local-nav, build-release-calendar, build-home), Cupertino run 21 07f84da4, Control Room Designer 2e3e1c4",
+          "gates": "audit-prices FAIL 0 / WARN 66 (base 69) · audit-site FAIL 0 / WARN 1 (830 pages, base 3) · audit-terminal FAIL 0 / WARN 1 (price-data worktree) · price-truth sweep RED 0 / AMBER 23 / GREEN 78",
+          "liveVerified": "2026-11-20 ~15:2xZ curl, 90 s after push: 3 Sapphire card pages _nkw has BCP-n -chrome (2 links each); PRIS25 pill 'Shop ETBs'; /release-calendar 'In 2027'; / home-v2.js?v=8; /harry-kane-cards new line; /pitch-black-vs-chaos-rising 'Cupertino run 21 (Proposal 6' = 1; /control-room 'Design updated Nov 20' = 1. Deep sweep 390+1440 (GA + eBay aborted) on /, PRIS25, /release-calendar, Holliday Sapphire, Pitch Black: no overflow, 0 console errors.",
+          "note": "Patch bytes taken byte-exact from this session's own project_read tool result (no /mnt/project); sha256 c8f84fd5… (26,786 B) and a35c71b3… (5,178 B) matched pending.md. CLS at 1440 live: Pitch Black 0.042 = pre-existing shift (base tree 0.054 under the same probe, so Cupertino improved it); Sapphire card pages 0.018 from the live price line filling in under the photo (also 0.0009 on /card-ethan-holliday) — under 0.1, kept, routed to Night Crew/Site Sweep to reserve that line's height. Rollback: git revert 25ec0df (+ 4 regen) / 071863b / f5246ca."
         }
       ]
     },
