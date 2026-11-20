@@ -1,7 +1,7 @@
 {
-  "_comment": "Box screener rows for /best-hobby-boxes-2026 (spec claude/handoffs/box-screener-2026-10-20.md §3A). One row per product × format. sold = SportsCardsPro single-box sold median (read rule: 30 d, widen to 60 then 90 d below 5 sales; post-street-date only; jumbo, case, lot, break excluded). eBay is a buy link only, never a mark. Config fields (packs, cardsPerPack, hits, msrp, variety) only from a cited source; null otherwise. Note tokens {IDX.median} {IDX.n} {IDX.top} {IDX.topPrice} {IDX.k} {IDX.mark} {ROW.perHit} are filled by tools/build-box-screener.mjs from data/indices.json. Edit here, then run the generator; never hand-edit the BOXSCREENER / BOXNOTES blocks.",
-  "read": "2026-10-20",
-  "readRule": "single-box hobby (or jumbo) sales on SportsCardsPro in the 30 days to the read date; under 5 sales, widen to 60 then 90 days; sales before street date, cases, lots, breaks, packs and other products excluded by title",
+  "_comment": "Box screener rows for /best-hobby-boxes-2026 (spec claude/handoffs/box-screener-2026-10-20.md §3A). One row per product × format. sold = median of single-box eBay sales listed on SportsCardsPro (Deal Hunter re-mark Nov 19 2026, BET-20261118-1; n < 5 → no price) (read rule: 30 d, widen to 60 then 90 d below 5 sales; post-street-date only; jumbo, case, lot, break excluded). eBay is a buy link only, never a mark. Config fields (packs, cardsPerPack, hits, msrp, variety) only from a cited source; null otherwise. Note tokens {IDX.median} {IDX.n} {IDX.top} {IDX.topPrice} {IDX.k} {IDX.mark} {ROW.perHit} are filled by tools/build-box-screener.mjs from data/indices.json. Edit here, then run the generator; never hand-edit the BOXSCREENER / BOXNOTES blocks.",
+  "read": "2026-11-19",
+  "readRule": "single-box hobby (or jumbo) eBay sales listed on SportsCardsPro in the 30 days to the read date; under 5 sales, widen to 60 then 90 days; under 5 even then, no price (\"Not enough dated sales yet\"). Title must name the product and the sport; other marketplaces, presales, cases, lots, breaks, packs, damaged boxes and other products excluded; sales > 1.4x or < 0.7x the window median set aside (BET-20261118-1, Deal Hunter Nov 19 2026)",
   "rows": [
     {
       "anchor": "bowman-baseball",
@@ -36,13 +36,13 @@
         "bowman": true
       },
       "sold": {
-        "median": 377.5,
-        "n": 10,
-        "from": "2026-08-25",
-        "to": "2026-10-09",
+        "median": 379.99,
+        "n": 5,
+        "from": "2026-09-25",
+        "to": "2026-11-02",
         "windowDays": 60,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
         "scpPath": "/game/baseball-cards-2026-bowman/hobby-box"
       },
       "indexTicker": "BB26",
@@ -57,7 +57,7 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/baseball-cards-2026-bowman/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         },
         {
           "name": "Bowman KB 02 §1, 04 §5",
@@ -67,7 +67,8 @@
       "id": "best-hobby-boxes-2026-bowman-baseball",
       "ebayQuery": "Sealed Hobby Box Bowman Baseball 2026 -chrome -sapphire -draft -\"best of\" -mega -case -pack -packs -jumbo -blaster -lot",
       "tag": "⚾ Baseball · Prospect · Topps",
-      "note": "<strong>2026 Bowman Baseball is the best prospect box of the year and it's not particularly close.</strong> It came out May 13, 2026 at $239.99 on presale ($259.99 on release day, per Checklist Insider) with one auto per box. The checklist has 150 Chrome Prospects and 87 signed versions, and 76 of those are 1st Bowman autos (per Checklist Insider). Ethan Holliday's 1st Bowman Chrome, BCP-1, is in this set. <br><br> One auto at a $377.50 box means your auto has to be worth about $380 to break even. On our {BB26.mark} BB26 mark, the median 2026 Bowman (May) 1st auto was {BB26.median}, and {BB26.k} of the {BB26.n} we track reached {ROW.perHit}. The top one was {BB26.top} at {BB26.topPrice}. So a box comes out ahead on a numbered parallel or a top name. A jumbo sold for a $659.00 median (5 sales, Aug 14–Sep 26) with three autos."
+      "note": "<strong>2026 Bowman Baseball is the best prospect box of the year and it's not particularly close.</strong> It came out May 13, 2026 at $239.99 on presale ($259.99 on release day, per Checklist Insider) with one auto per box. The checklist has 150 Chrome Prospects and 87 signed versions, and 76 of those are 1st Bowman autos (per Checklist Insider). Ethan Holliday's 1st Bowman Chrome, BCP-1, is in this set. <br><br> Hobby boxes sold for a median of {SOLD.median} ({SOLD.n} sales, {SOLD.span}). With one auto per box, your auto has to be worth about {SOLD.perHitR} to break even. On our {BB26.mark} BB26 mark, the median 2026 Bowman (May) 1st auto was {BB26.median}, and {BB26.k} of the {BB26.n} we track reached {ROW.perHit}. The top one was {BB26.top} at {BB26.topPrice}. So a box comes out ahead on a numbered parallel or a top name. Jumbos, with three autos, haven't sold often enough in the last 90 days for a median.",
+      "bf": null
     },
     {
       "anchor": "bowman-baseball",
@@ -103,14 +104,15 @@
         "bowman": true
       },
       "sold": {
-        "median": 659,
-        "n": 5,
-        "from": "2026-08-14",
+        "median": null,
+        "n": 2,
+        "from": "2026-09-13",
         "to": "2026-09-26",
         "windowDays": 90,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
-        "scpPath": "/game/baseball-cards-2026-bowman/hobby-box (jumbos misfiled there)"
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
+        "scpPath": "/game/baseball-cards-2026-bowman/hobby-box (jumbos misfiled there)",
+        "note": "under 5 dated sales in 90 days; no price printed"
       },
       "indexTicker": "BB26",
       "indexPage": "/bowman-2026-index",
@@ -123,12 +125,13 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/baseball-cards-2026-bowman/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         }
       ],
       "id": "best-hobby-boxes-2026-bowman-baseball-jumbo",
       "ebayQuery": "Jumbo Hobby Box Bowman Baseball 2026 -chrome -sapphire -draft -mega -case -pack -packs -blaster -lot",
-      "note": null
+      "note": null,
+      "bf": null
     },
     {
       "anchor": "bowman-chrome-baseball",
@@ -164,13 +167,13 @@
         "bowman": true
       },
       "sold": {
-        "median": 509.99,
-        "n": 29,
-        "from": "2026-09-26",
-        "to": "2026-10-18",
+        "median": 541.27,
+        "n": 8,
+        "from": "2026-10-22",
+        "to": "2026-11-19",
         "windowDays": 30,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
         "scpPath": "/game/baseball-cards-2026-bowman-chrome/hobby-box"
       },
       "indexTicker": "BCB26",
@@ -184,7 +187,7 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/baseball-cards-2026-bowman-chrome/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         },
         {
           "name": "Bowman KB 02 §1",
@@ -194,7 +197,8 @@
       "id": "best-hobby-boxes-2026-bowman-chrome-baseball",
       "ebayQuery": "Sealed Hobby Box Bowman Chrome Baseball 2026 -sapphire -draft -mega -case -pack -packs -jumbo -blaster -lot -break",
       "tag": "⚾ Baseball · Prospect · Topps",
-      "note": "2026 Bowman Chrome came out Sep 9, 2026. A hobby box is 6 packs of 10 with 2 on-card autos, and it was $329.99 at release. It's a different set from May's 2026 Bowman. The 1st class here is mostly the 2026 international signings, and the checklist has 104 Chrome Prospect Autographs, 97 of them 1st Bowman autos. See the <a href=\"/bowman-chrome-baseball-2026\">2026 Bowman Chrome guide</a> and the <a href=\"/bowman-chrome-2026-index\">BCB26 index</a>. <br><br> At the $509.99 median, each auto costs about $255. On our {BCB26.mark} BCB26 mark, {BCB26.k} of the {BCB26.n} base 1st autos had a 30-day median that high. The top one was {BCB26.top} at {BCB26.topPrice}, so a box comes out ahead on the parallels and the rare big hit."
+      "note": "2026 Bowman Chrome came out Sep 9, 2026. A hobby box is 6 packs of 10 with 2 on-card autos, and it was $329.99 at release. It's a different set from May's 2026 Bowman. The 1st class here is mostly the 2026 international signings, and the checklist has 104 Chrome Prospect Autographs, 97 of them 1st Bowman autos. See the <a href=\"/bowman-chrome-baseball-2026\">2026 Bowman Chrome guide</a> and the <a href=\"/bowman-chrome-2026-index\">BCB26 index</a>. <br><br> At a median of {SOLD.median} ({SOLD.n} sales, {SOLD.span}), each auto costs about {SOLD.perHitR}. On our {BCB26.mark} BCB26 mark, {BCB26.k} of the {BCB26.n} base 1st autos had a 30-day median that high. The top one was {BCB26.top} at {BCB26.topPrice}, so a box comes out ahead on the parallels and the rare big hit.",
+      "bf": null
     },
     {
       "anchor": "topps-chrome-baseball",
@@ -235,13 +239,13 @@
         "bowman": false
       },
       "sold": {
-        "median": 466,
+        "median": 466.0,
         "n": 5,
-        "from": "2026-09-15",
-        "to": "2026-10-15",
-        "windowDays": 60,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
+        "from": "2026-09-19",
+        "to": "2026-11-07",
+        "windowDays": 90,
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
         "scpPath": "/game/baseball-cards-2026-topps-chrome/hobby-box"
       },
       "indexTicker": null,
@@ -254,7 +258,7 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         },
         {
           "name": "Cardsmiths Breaks box guide",
@@ -265,7 +269,8 @@
       "id": "best-hobby-boxes-2026-topps-chrome-baseball",
       "ebayQuery": "Sealed Hobby Box Topps Chrome Baseball 2026 -bowman -sapphire -update -black -cosmic -mega -case -pack -packs -jumbo -blaster -lot -break",
       "tag": "⚾ Baseball · Rookie Chrome · Topps",
-      "note": "2026 Topps Chrome Baseball came out Aug 5, 2026 with one auto per hobby box. The draw is the refractor rainbow and the year's rookie autos. Hobby boxes sold for a $466.00 median (5 sales, Sep 15–Oct 15), and jumbos for $765.00 (7 sales, Sep 20–28). More in the <a href=\"/topps-chrome-baseball-2026\">2026 Topps Chrome guide</a>."
+      "note": "2026 Topps Chrome Baseball came out Aug 5, 2026 with one auto per hobby box. The draw is the refractor rainbow and the year's rookie autos. Hobby boxes sold for a median of {SOLD.median} ({SOLD.n} sales, {SOLD.span}), and jumbos for {JUMBO.median} ({JUMBO.n} sales, {JUMBO.span}). More in the <a href=\"/topps-chrome-baseball-2026\">2026 Topps Chrome guide</a>.",
+      "bf": null
     },
     {
       "anchor": "topps-chrome-baseball",
@@ -306,13 +311,13 @@
         "bowman": false
       },
       "sold": {
-        "median": 765,
-        "n": 7,
+        "median": 765.0,
+        "n": 9,
         "from": "2026-09-20",
-        "to": "2026-09-28",
-        "windowDays": 30,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
+        "to": "2026-11-14",
+        "windowDays": 60,
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
         "scpPath": "/game/baseball-cards-2026-topps-chrome/hobby-box (jumbos misfiled there)"
       },
       "indexTicker": null,
@@ -325,7 +330,7 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-chrome/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         },
         {
           "name": "Cardsmiths Breaks box guide",
@@ -335,7 +340,8 @@
       ],
       "id": "best-hobby-boxes-2026-topps-chrome-baseball-jumbo",
       "ebayQuery": "Jumbo Hobby Box Topps Chrome Baseball 2026 -bowman -sapphire -update -black -cosmic -mega -case -pack -packs -blaster -lot -break",
-      "note": null
+      "note": null,
+      "bf": null
     },
     {
       "anchor": "series-1",
@@ -369,14 +375,15 @@
         "bowman": false
       },
       "sold": {
-        "median": 199.99,
-        "n": 17,
-        "from": "2026-09-21",
-        "to": "2026-10-05",
-        "windowDays": 30,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
-        "scpPath": "/game/baseball-cards-2026-topps/hobby-box"
+        "median": null,
+        "n": 2,
+        "from": "2026-09-26",
+        "to": "2026-09-26",
+        "windowDays": 90,
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
+        "scpPath": "/game/baseball-cards-2026-topps/hobby-box",
+        "note": "under 5 dated sales in 90 days; no price printed"
       },
       "indexTicker": null,
       "sources": [
@@ -388,13 +395,14 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/baseball-cards-2026-topps/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         }
       ],
       "id": "best-hobby-boxes-2026-series-1",
       "ebayQuery": "Sealed Hobby Box Topps Series 1 Baseball 2026 -\"series 2\" -chrome -heritage -mega -complete -japan -case -pack -packs -jumbo -blaster -lot",
       "tag": "⚾ Baseball · Flagship · Topps",
-      "note": "Series 1 came out Feb 11, 2026 with one auto or relic per box. Roman Anthony's MLB Rookie Card is here, with Jac Caglianone and Jacob Misiorowski. Flagship is the set people build, and the parallel rainbow gives set builders plenty to chase. The box has held near $200: 17 sales from Sep 21 to Oct 5 had a $199.99 median. See the <a href=\"/topps-series-1-2026\">2026 Topps Series 1 guide</a>."
+      "note": "Series 1 came out Feb 11, 2026 with one auto or relic per box. Roman Anthony's MLB Rookie Card is here, with Jac Caglianone and Jacob Misiorowski. Flagship is the set people build, and the parallel rainbow gives set builders plenty to chase. Hobby boxes have sold fewer than five times on eBay in the 90 days to {READ.date}, so the table shows no price for now. See the <a href=\"/topps-series-1-2026\">2026 Topps Series 1 guide</a>.",
+      "bf": null
     },
     {
       "anchor": "series-2",
@@ -428,13 +436,13 @@
         "bowman": false
       },
       "sold": {
-        "median": 139.98,
-        "n": 16,
-        "from": "2026-09-22",
-        "to": "2026-10-16",
+        "median": 124.0,
+        "n": 10,
+        "from": "2026-10-29",
+        "to": "2026-11-17",
         "windowDays": 30,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
         "scpPath": "/game/baseball-cards-2026-topps-series-2/hobby-box"
       },
       "indexTicker": null,
@@ -447,13 +455,14 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-series-2/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         }
       ],
       "id": "best-hobby-boxes-2026-series-2",
       "ebayQuery": "Sealed Hobby Box Topps Series 2 Baseball 2026 -chrome -heritage -mega -complete -sets -japan -case -pack -packs -jumbo -blaster -lot -qty -quantity",
       "tag": "⚾ Baseball · Flagship · Topps",
-      "note": "Series 2 came out Jun 10, 2026 at $127.99: 20 packs of 12 and one auto or relic per box. It carries most of the year's rookie call-ups that missed Series 1. Four months on, it still sells close to that price, a $139.98 median over 16 sales (Sep 22–Oct 16). That makes it the cheapest guaranteed hit on this page. Jumbos sold for $245.00 (8 sales, Sep 15–Oct 16). See the <a href=\"/topps-series-2-2026\">2026 Topps Series 2 guide</a>."
+      "note": "Series 2 came out Jun 10, 2026 at $127.99: 20 packs of 12 and one auto or relic per box. It carries most of the year's rookie call-ups that missed Series 1. Five months on, hobby boxes sell for a median of {SOLD.median} ({SOLD.n} sales, {SOLD.span}), next to that $127.99 release price. Jumbos haven't sold often enough in the last 90 days for a median. See the <a href=\"/topps-series-2-2026\">2026 Topps Series 2 guide</a>.",
+      "bf": null
     },
     {
       "anchor": "series-2",
@@ -488,14 +497,15 @@
         "bowman": false
       },
       "sold": {
-        "median": 245,
-        "n": 8,
-        "from": "2026-09-15",
-        "to": "2026-10-16",
-        "windowDays": 60,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
-        "scpPath": "/game/baseball-cards-2026-topps-series-2/hobby-box (jumbos misfiled there)"
+        "median": null,
+        "n": 2,
+        "from": "2026-09-22",
+        "to": "2026-09-22",
+        "windowDays": 90,
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
+        "scpPath": "/game/baseball-cards-2026-topps-series-2/hobby-box (jumbos misfiled there)",
+        "note": "under 5 dated sales in 90 days; no price printed"
       },
       "indexTicker": null,
       "sources": [
@@ -507,12 +517,13 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/baseball-cards-2026-topps-series-2/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         }
       ],
       "id": "best-hobby-boxes-2026-series-2-jumbo",
       "ebayQuery": "Jumbo Hobby Box Topps Series 2 Baseball 2026 -chrome -heritage -mega -complete -sets -japan -case -pack -packs -blaster -lot",
-      "note": null
+      "note": null,
+      "bf": null
     },
     {
       "anchor": "bowman-football",
@@ -547,13 +558,13 @@
         "bowman": true
       },
       "sold": {
-        "median": 394,
-        "n": 11,
-        "from": "2026-09-30",
-        "to": "2026-10-19",
+        "median": 316.55,
+        "n": 19,
+        "from": "2026-10-26",
+        "to": "2026-11-19",
         "windowDays": 30,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
         "scpPath": "/game/football-cards-2026-bowman/hobby-box"
       },
       "indexTicker": "BF26",
@@ -567,7 +578,7 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/football-cards-2026-bowman/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         },
         {
           "name": "Bowman KB 02 §5",
@@ -577,7 +588,8 @@
       "id": "best-hobby-boxes-2026-bowman-football",
       "ebayQuery": "Sealed Hobby Box 2026 Bowman Football -chrome -university -\"bowman u\" -best -mega -case -pack -packs -jumbo -blaster -lot -break",
       "tag": "🏈 Football · Prospect · Topps",
-      "note": "2026 Bowman Football came out Sep 30, 2026. It puts a 200-card NFL set next to a 200-card Bowman Prospect set of college players, and a hobby box is 20 packs of 8 with 2 autos. Topps listed it at $309.99 on release day. Since street date, 11 hobby boxes sold at a $394.00 median (Sep 30–Oct 19), about $197 per auto. More in the <a href=\"/bowman-football\">2026 Bowman Football guide</a>."
+      "note": "2026 Bowman Football came out Sep 30, 2026. It puts a 200-card NFL set next to a 200-card Bowman Prospect set of college players, and a hobby box is 20 packs of 8 with 2 autos. Topps listed it at $309.99 on release day. Hobby boxes sold for a median of {SOLD.median} ({SOLD.n} sales, {SOLD.span}), about {SOLD.perHitR} per auto. More in the <a href=\"/bowman-football\">2026 Bowman Football guide</a>.",
+      "bf": null
     },
     {
       "anchor": "prizm-football",
@@ -610,13 +622,13 @@
         "bowman": false
       },
       "sold": {
-        "median": 842,
-        "n": 10,
-        "from": "2026-09-08",
-        "to": "2026-09-25",
+        "median": 843.0,
+        "n": 5,
+        "from": "2026-09-22",
+        "to": "2026-11-16",
         "windowDays": 60,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
         "scpPath": "/game/football-cards-2025-panini-prizm/hobby-box"
       },
       "indexTicker": null,
@@ -629,13 +641,14 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/football-cards-2025-panini-prizm/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         }
       ],
       "id": "best-hobby-boxes-2026-prizm-football",
       "ebayQuery": "Sealed Hobby Box Panini Prizm Football 2025 -draft -blaster -mega -collegiate -h2 -choice -fotl -huddle -black -international -\"off the line\" -case -pack -packs -jumbo -lot",
       "tag": "🏈 Football · Flagship Rookie · Panini",
-      "note": "Prizm is still the NFL's flagship rookie chase. This set's rookies are the 2025 draft class, the box has 2 autos, and the top pull is a Black Finite 1/1. At an $842.00 median (10 sales, Sep 8–25) that's about $421 per auto, so most boxes come out behind unless you hit one of the big rookies or a low-numbered Prizm."
+      "note": "Prizm is still the NFL's flagship rookie chase. This set's rookies are the 2025 draft class, the box has 2 autos, and the top pull is a Black Finite 1/1. At a median of {SOLD.median} ({SOLD.n} sales, {SOLD.span}) that's about {SOLD.perHitR} per auto, so most boxes come out behind unless you hit one of the big rookies or a low-numbered Prizm.",
+      "bf": null
     },
     {
       "anchor": "chrome-basketball",
@@ -673,13 +686,13 @@
         "bowman": false
       },
       "sold": {
-        "median": 1005,
-        "n": 5,
+        "median": 1042.0,
+        "n": 9,
         "from": "2026-09-21",
-        "to": "2026-10-02",
-        "windowDays": 30,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
+        "to": "2026-11-04",
+        "windowDays": 60,
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
         "scpPath": "/game/basketball-cards-2025-topps-chrome/hobby-box"
       },
       "indexTicker": null,
@@ -692,13 +705,14 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/basketball-cards-2025-topps-chrome/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         }
       ],
       "id": "best-hobby-boxes-2026-topps-chrome-basketball",
       "ebayQuery": "Sealed Hobby Box Topps Chrome Basketball 2025-26 -black -updates -update -cactus -cosmic -sapphire -pristine -case -pack -packs -jumbo -blaster -lot",
       "tag": "🏀 Basketball · Rookie Chrome · Topps",
-      "note": "This is Cooper Flagg's Chrome rookie year, with Ace Bailey, Dylan Harper and Kon Knueppel in the class too. The box was $379.99 on release day ($369.99 on presale) with one auto, and it now sells for a $1,005.00 median (5 sales, Sep 21–Oct 2). At that price you need a Flagg hit or a low-numbered parallel to come out ahead. If you only want Flagg, his singles are the cheaper way in."
+      "note": "This is Cooper Flagg's Chrome rookie year, with Ace Bailey, Dylan Harper and Kon Knueppel in the class too. The box was $379.99 on release day ($369.99 on presale) with one auto, and it now sells for a median of {SOLD.median} ({SOLD.n} sales, {SOLD.span}). At that price you need a Flagg hit or a low-numbered parallel to come out ahead. If you only want Flagg, his singles are the cheaper way in.",
+      "bf": null
     },
     {
       "anchor": "bowman-basketball",
@@ -737,13 +751,13 @@
         "bowman": true
       },
       "sold": {
-        "median": 489,
-        "n": 5,
+        "median": 481.55,
+        "n": 9,
         "from": "2026-09-24",
-        "to": "2026-10-17",
-        "windowDays": 30,
-        "source": "SportsCardsPro",
-        "read": "2026-10-20",
+        "to": "2026-11-16",
+        "windowDays": 60,
+        "source": "eBay sales listed on SportsCardsPro",
+        "read": "2026-11-19",
         "scpPath": "/game/basketball-cards-2025-bowman/hobby-box"
       },
       "indexTicker": null,
@@ -756,13 +770,14 @@
         {
           "name": "SportsCardsPro sold rows",
           "url": "https://www.sportscardspro.com/game/basketball-cards-2025-bowman/hobby-box",
-          "read": "2026-10-20"
+          "read": "2026-11-19"
         }
       ],
       "id": "best-hobby-boxes-2026-bowman-basketball",
       "ebayQuery": "Sealed Hobby Box Bowman Basketball 2025-26 -chrome -sapphire -university -\"bowman u\" -case -pack -packs -jumbo -blaster -lot",
       "tag": "🏀 Basketball · Prospect Chrome · Topps",
-      "note": "Bowman Basketball came out Apr 22, 2026 at $359.99 ($339.99 on presale) with 2 autos per box. It mixes Cooper Flagg, AJ Dybantsa and Cameron Boozer with NCAA women's stars like JuJu Watkins and Ta'Niya Latson, so a box gives you a wide spread of players. Boxes sold for a $489.00 median (5 sales, Sep 24–Oct 17), about $245 per auto."
+      "note": "Bowman Basketball came out Apr 22, 2026 at $359.99 ($339.99 on presale) with 2 autos per box. It mixes Cooper Flagg, AJ Dybantsa and Cameron Boozer with NCAA women's stars like JuJu Watkins and Ta'Niya Latson, so a box gives you a wide spread of players. Boxes sold for a median of {SOLD.median} ({SOLD.n} sales, {SOLD.span}), about {SOLD.perHitR} per auto.",
+      "bf": null
     }
   ],
   "profiles": {
@@ -896,5 +911,12 @@
       "msrpHistory": "sold history against MSRP (3 months or more)"
     },
     "_tuning": "v2 (Box Desk rev 2 after CoS review, rebuilt Oct 22): full-coverage rule + printed gates (gate logic in the generator, GATES). Index-only figures (median 1st auto ÷ $/hit, skew) left Prospector and base share left Set builder so a missing index cannot lock a box out; they stay as table columns."
+  },
+  "blackFriday": {
+    "bfDate": "2026-11-27",
+    "cyberMonday": "2026-11-30",
+    "checked": "2026-11-19",
+    "remark": "2026-11-24",
+    "_comment": "checked = last date we looked for a store's own dated Black Friday ad pricing a box in this table; remark = next look. A row's bf: {price, retailer, seen} only from a retailer's own dated ad or listing, re-read by us."
   }
 }

@@ -83,6 +83,7 @@
   /* ---------- filters ---------- */
   function inBand(p) {
     if (!state.band) return true;
+    if (p == null) return false;
     var lo = state.band.split('-')[0], hi = state.band.split('-')[1];
     return (lo === '' || p >= +lo) && (hi === '' || p < +hi);
   }

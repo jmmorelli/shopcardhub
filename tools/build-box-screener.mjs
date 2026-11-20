@@ -26,7 +26,8 @@ const read = (f) => fs.readFileSync(path.join(REPO, f), "utf8");
 const boxes = JSON.parse(read("data/boxes.json"));
 const indices = JSON.parse(read("data/indices.json"));
 const MIN_N = 20; // stats print only on 20+ priced cards (spec §3B)
-const PHONE_ROWS = 6; // rows shown on a phone before "Show all" (keeps the page under 8 screens, R35)
+const PHONE_ROWS = 6;
+const MIN_SALES = 5; // BET-20261118-1 (Nov 19 2026): under 5 dated sales in the widest window, a row prints "Not enough dated sales yet" and no price // rows shown on a phone before "Show all" (keeps the page under 8 screens, R35)
 
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -66,17 +67,17 @@ function idxStats(ticker) {
 // ---------- per-row metrics ----------
 const READ = boxes.read;
 const rows = boxes.rows.map((r) => {
-  const price = r.sold.median;
+  const price = r.sold && r.sold.n >= MIN_SALES && r.sold.median > 0 ? r.sold.median : null;
   const cards = r.packs && r.cardsPerPack ? r.packs * r.cardsPerPack : null;
   const hitsN = r.hits?.total ?? null;
   const idx = r.indexTicker ? idxStats(r.indexTicker) : null;
-  const perHit = hitsN ? price / hitsN : null;
+  const perHit = hitsN && price != null ? price / hitsN : null;
   const ck = r.checklist || {};
   const firstAutosPerBox = ck.bowman === false ? 0 : r.hits?.autos && ck.autos && ck.firstAutos ? r.hits.autos * (ck.firstAutos / ck.autos) : null;
   const ok = idx && idx.ok;
   const m = {
-    price, cards, perCard: cards ? price / cards : null, perPack: r.packs ? price / r.packs : null, perHit,
-    vsMsrp: r.msrp?.value ? price / r.msrp.value - 1 : null, days: days(r.releaseDate, READ),
+    price, cards, perCard: cards && price != null ? price / cards : null, perPack: r.packs && price != null ? price / r.packs : null, perHit,
+    vsMsrp: r.msrp?.value && price != null ? price / r.msrp.value - 1 : null, days: days(r.releaseDate, READ),
     firstAutosPerBox, firstAutoMedOverPerHit: ok && idx.firstAutos && perHit ? idx.median / perHit : null,
     skew: ok ? idx.skew : null, lottery: ok ? idx.lottery : null, topShare: ok ? idx.topShare : null,
     variety: r.variety?.looks ?? null, checklistSize: ck.base ?? null, baseShare: null,
@@ -115,7 +116,7 @@ const GATES = {
   collector: (x) => x.m.variety != null,
   ripper: (x) => x.idx && x.idx.ok && (x.idx.lottery >= 3 || x.idx.topShare >= 0.25),
   "set-builder": (x) => cheapCard(x.m.perCard),
-  budget: (x) => cheapPrice(x.m.price) || x.m.price <= 200,
+  budget: (x) => x.m.price != null && (cheapPrice(x.m.price) || x.m.price <= 200),
 };
 const scores = {}; // profileId → [score per row] (null = not scored)
 const coverage = {}; // profileId → { onFile, qualify }
@@ -145,10 +146,23 @@ rows.forEach((x, i) => {
 });
 
 // ---------- note tokens ----------
+// {SOLD.x} = this row's own sold mark, {JUMBO.x} = its jumbo row's, {READ.date} = the read date. A token on a row without
+// MIN_SALES dated sales throws, so a re-mark that thins a row out can't leave an old figure standing in the prose.
+const soldTok = (y, f, all) => {
+  if (!y) throw new Error(`no row for ${all}`);
+  if (y.m.price == null) throw new Error(`${y.r.id}: ${all} but the row has under ${MIN_SALES} dated sales; reword the note`);
+  const map = { median: money(y.m.price), n: String(y.r.sold.n), span: span(y.r.sold.from, y.r.sold.to), perHitR: y.m.perHit == null ? null : "$" + Math.round(y.m.perHit).toLocaleString("en-US") };
+  if (map[f] == null) throw new Error(`unknown token ${all}`);
+  return map[f];
+};
+const jumboOf = (x) => rows.find((j) => j.r.parent && x.r.id === "best-hobby-boxes-2026-" + j.r.parent && j.r.format === "jumbo");
 function fillNote(x) {
   if (!x.r.note) return null;
   return x.r.note.replace(/\{([A-Z0-9]+|ROW)\.([a-zA-Z]+)\}/g, (all, t, f) => {
-    if (t === "ROW") { if (f === "perHit") return money(x.m.perHit); throw new Error(`unknown token ${all}`); }
+    if (t === "SOLD") return soldTok(x, f, all);
+    if (t === "JUMBO") return soldTok(jumboOf(x), f, all);
+    if (t === "READ") { if (f === "date") return dLong(READ); throw new Error(`unknown token ${all}`); }
+    if (t === "ROW") { if (f === "perHit") { if (x.m.perHit == null) throw new Error(`${x.r.id}: ${all} without a price`); return money(x.m.perHit); } throw new Error(`unknown token ${all}`); }
     const s = idxStats(t);
     if (!s || !s.ok) throw new Error(`${x.r.id}: ${all} but ${t} has no stats (n < ${MIN_N})`);
     const ph = x.m.perHit;
@@ -201,14 +215,14 @@ function cellHTML(c, x) {
       return `<a class="bx-name" href="#${esc(r.anchor)}">${esc(r.product)}</a><span class="roi-sub">${esc(r.sport)} · ${r.format === "jumbo" ? "Jumbo" : "Hobby"}<span class="bx-out"> · out ${esc(dLong(r.releaseDate))}</span>${ix}</span><span class="fit-tag fit-m${x.fit.muted ? " fit-na" : ""}">${esc(x.fit.name)}</span>`;
     }
     case "sport": return esc(r.sport);
-    case "sold": return `<span class="roi-price">${money(m.price)}</span>${sub(`${r.sold.n} sales, ${span(r.sold.from, r.sold.to)}`)}`;
+    case "sold": return m.price == null ? `${dim("Not enough dated sales yet")}${sub(`Under ${MIN_SALES} sales in 90 days to ${dShort(READ)}`)}` : `<span class="roi-price">${money(m.price)}</span>${sub(`${r.sold.n} sales, ${span(r.sold.from, r.sold.to)}`)}`;
     case "vsMsrp": return m.vsMsrp == null ? dim("No list price") : `${m.vsMsrp >= 0 ? "+" : "−"}${Math.abs(Math.round(m.vsMsrp * 100))}%${sub(`vs ${money(r.msrp.value)}${r.msrp.basis === "presale" ? " presale" : ""}`)}`;
     case "packs": return r.packs ? `${r.packs} × ${r.cardsPerPack}` : dim("Not listed");
     case "cards": return m.cards ?? dim("Not listed");
     case "hits": return esc(r.hits.guaranteedText);
     case "perCard": return m.perCard == null ? dim("Not listed") : money(m.perCard);
     case "perPack": return m.perPack == null ? dim("Not listed") : money(m.perPack);
-    case "perHit": return money(m.perHit);
+    case "perHit": return m.perHit == null ? dim("No price") : money(m.perHit);
     case "days": return String(m.days);
     case "idxMedian": return idxCell(x, (s) => `${money(s.median)}${sub(`${s.n} priced · ${dShort(s.mark)}`)}`);
     case "idxMean": return idxCell(x, (s) => money(s.mean));
@@ -217,7 +231,7 @@ function cellHTML(c, x) {
     case "kurt": return idxCell(x, (s) => s.kurt.toFixed(1));
     case "topShare": return idxCell(x, (s) => pct(s.topShare) + sub(esc(s.top)));
     case "top5": return idxCell(x, (s) => pct(s.top5Share));
-    case "kAbove": return idxCell(x, (s) => `${m.kAbove} of ${s.n}`);
+    case "kAbove": return m.kAbove == null ? dim("No price") : idxCell(x, (s) => `${m.kAbove} of ${s.n}`);
     case "fit": return `<span class="fit-tag${x.fit.muted ? " fit-na" : ""}">${esc(x.fit.name)}</span>`;
     case "score": return `<span class="bx-score">${x.fit.score ?? "n/a"}</span>`;
     case "buy": return `<a class="tbl-buy" href="${esc(buyHref(r))}" target="_blank" rel="noopener sponsored">Buy on eBay</a>`;
@@ -247,7 +261,7 @@ const shyIdx = [...new Map(rows.filter((x) => x.idx && !x.idx.ok).map((x) => [x.
 const markDate = statIdx.map((s) => s.mark).sort().at(-1);
 const sign = (w) => (w > 0 ? "+" : "−") + Math.abs(w);
 
-const order = rows.map((x, i) => i).sort((a, b) => rows[a].m.price - rows[b].m.price); // baked order: price, low to high
+const order = rows.map((x, i) => i).sort((a, b) => { const pa = rows[a].m.price, pb = rows[b].m.price; return (pa == null) - (pb == null) || (pa ?? 0) - (pb ?? 0); }); // baked order: price, low to high; rows without a price last
 const blob = {
   read: READ, phoneRows: PHONE_ROWS, cols: COLS.map(({ k, label, show, dir, nosort }) => ({ k, label, show, dir, nosort: !!nosort })),
   profiles: profiles.map((p) => ({ id: p.id, name: p.name, scorable: coverage[p.id].qualify > 0 })),
@@ -341,7 +355,7 @@ const covLine = (p) => { const c = coverage[p.id]; return `Every figure on file 
 const howRows = profiles.map((p) => `<tr><td>${esc(p.name)}</td><td>${p.needsMonths ? esc(p.note) : p.weights.map(([k, w]) => `<code>${sign(w)}</code> ${esc(metricLabel[k] || k)}`).join("<br>")}<span class="bx-gate">Gate: ${esc(p.gate || "none")}. ${p.needsMonths ? "" : covLine(p)}</span></td></tr>`).join("");
 
 const intro = `Cheapest first, each row with its sale count and dates. Tap a column to sort. The method is under the table.`;
-const method = `Each price is the median of single-box sales on SportsCardsPro in the 30 days to the read date. If a box sold fewer than five times, the window stretches to 60 or 90 days. Cases, lots, breaks and presales before street date are left out. Jumbos have their own rows. To run your own numbers, use the <a href="/hobby-box-roi-calculator">Hobby Box ROI Calculator</a>.`;
+const method = `Each price is the median of single-box eBay sales in the 30 days to ${dLong(READ)}, read from SportsCardsPro's sales list. If a box sold fewer than five times, the window stretches to 60 or 90 days, and a box with fewer than five sales even then shows no price. A sale counts only if its title names the product and the sport. Sales from other marketplaces, cases, lots, breaks, presales, damaged boxes and sales more than 40% above or 30% below the row's median are left out. Jumbos have their own rows. To run your own numbers, use the <a href="/hobby-box-roi-calculator">Hobby Box ROI Calculator</a>.`;
 
 const legendIdx = statIdx.map((s) => `${s.ticker} (${esc(s.set)})`).join(" and ");
 const legend = `The hit columns come from our ${legendIdx} 1st auto indexes: PriceCharting ungraded 30-day sold medians for each base 1st auto, marked ${dLong(markDate)}. Parallels aren't in them. Lottery ratio is the mean hit price over the median one, so a high number means a few cards carry the set. Skew and excess kurtosis say the same thing in stats terms. "Hits ≥ $/hit" counts the cards in the index whose median is at least what one hit costs you from that box. Stats only print when ${MIN_N} or more cards are priced${shyIdx.length ? `, so ${shyIdx.map((x) => `${esc(x.r.product.replace(/ (Hobby|Jumbo)$/, ""))} (${x.idx.ticker})`).join(", ")} shows none yet` : ""}. MSRP is Topps' release-day price from Checklist Insider, or the presale price where no release-day price is listed.`;
@@ -388,7 +402,7 @@ ${css}
     ${how}
   </section>
 <script type="application/json" id="bx-data">${JSON.stringify(blob).replace(/</g, "\\u003c")}</script>
-<script src="/js/box-screener.js?v=1" defer></script>
+<script src="/js/box-screener.js?v=2" defer></script>
 <!-- BOXSCREENER:END -->`;
 
 // ---------- the notes block ----------
@@ -403,7 +417,7 @@ ${noteRows.map((x) => {
   const jumbo = rows.find((j) => j.r.parent && r.id === "best-hobby-boxes-2026-" + j.r.parent && j.r.format === "jumbo");
   return `
     <details class="box-more" id="${esc(r.anchor)}">
-      <summary><span class="bm-name">${esc(r.product)}</span><span class="bm-meta">${money(x.m.price)} · ${esc(x.fit.name)}</span></summary>
+      <summary><span class="bm-name">${esc(r.product)}</span><span class="bm-meta">${x.m.price == null ? "No recent median" : money(x.m.price)} · ${esc(x.fit.name)}</span></summary>
       <div class="box-card${r.category === "baseball" ? "" : " " + r.category}">
         <div class="box-sport-tag ${esc(r.category)}">${esc(r.tag)}</div>
         <div class="box-body">
@@ -421,6 +435,42 @@ ${noteRows.map((x) => {
   </section>
 <!-- BOXNOTES:END -->`;
 
+// ---------- Black Friday week (BET-20261118-1, CEO Desk Nov 18 2026; Deal Hunter Nov 19 PT) ----------
+// Same pattern as /pokemon-booster-box-prices#black-friday-week. data/boxes.json → blackFriday: {bfDate, cyberMonday,
+// checked, remark} and, per row, bf: null or {price, retailer, seen} (a store's dated ad price: an ask, labelled, never
+// linked). With no ad the block is one line and no h2 (an h2 here would sit above the first eBay row: site-auditor §15).
+const BFW = boxes.blackFriday;
+const isoOk = (v) => /^\d{4}-\d{2}-\d{2}$/.test(v || "");
+if (!BFW || !isoOk(BFW.bfDate) || !isoOk(BFW.cyberMonday) || !isoOk(BFW.checked) || !isoOk(BFW.remark)) throw new Error("data/boxes.json blackFriday needs bfDate, cyberMonday, checked, remark (YYYY-MM-DD)");
+const WD = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const wLong = (iso) => `${WD[d0(iso).getUTCDay()]}, ${dLong(iso)}`;
+const bfRows = rows.filter((x) => x.r.bf);
+for (const x of bfRows) {
+  const b = x.r.bf;
+  if (!(b.price > 0) || !b.retailer || !isoOk(b.seen)) throw new Error(`${x.r.id}: bf needs price, retailer, seen`);
+  if (x.m.price == null) throw new Error(`${x.r.id}: bf row without ${MIN_SALES} dated sales`);
+}
+const bfLi = (x) => `      <li class="bx-bfr"><div><b>${esc(x.r.product)}</b><span class="roi-sub">Black Friday price ${money(x.r.bf.price)}: advertised by ${esc(x.r.bf.retailer)}, seen ${dShort(x.r.bf.seen)}. That is a store's asking price, not a sale.</span><span class="roi-sub">Sold on eBay: median of ${x.r.sold.n} sales, ${span(x.r.sold.from, x.r.sold.to)}</span></div><span class="roi-price">${money(x.m.price)}</span><a class="tbl-buy" href="${esc(buyHref(x.r))}" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag==='function')gtag('event','click',{item:'${esc(x.r.id)}',band:'black-friday',page:location.pathname})">Buy on eBay</a></li>`;
+const bfBlock = `<!-- BOXBF:START — Black Friday week. Generated by tools/build-box-screener.mjs from data/boxes.json (blackFriday, bf). Do not hand-edit. -->
+<style>
+.bx-bfw{margin:28px 0 0;padding:14px 16px;border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--bg2);max-width:860px;}
+.bx-bfw p{margin:0;font-size:14px;line-height:1.6;color:var(--text);}
+.bx-bfw p+p{margin-top:8px;color:var(--text-dim);font-size:13px;}
+.bx-bfw ul{list-style:none;margin:10px 0 0;padding:0;}
+.bx-bfr{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px 14px;align-items:center;padding:10px 0;border-top:1px solid var(--border);}
+.bx-bfr .roi-sub{display:block;margin-top:3px;}
+@media(max-width:600px){.bx-bfr{grid-template-columns:minmax(0,1fr) auto;}.bx-bfr .tbl-buy{grid-column:1/-1;}}
+</style>
+  <div class="bx-bfw" id="black-friday-week">
+${bfRows.length ? `    <h2>Black Friday week</h2>
+    <p>Store prices for Black Friday, ${wLong(BFW.bfDate)}, each next to what the same box sold for on eBay. Last checked ${dLong(BFW.checked)}.</p>
+    <ul>
+${bfRows.map(bfLi).join("\n")}
+    </ul>` : `    <p><b>Black Friday is ${wLong(BFW.bfDate)}, and Cyber Monday is ${wLong(BFW.cyberMonday).replace(/, \d{4}$/, "")}.</b> No store has posted a Black Friday price for any box in this table yet. We last checked on ${dLong(BFW.checked)} and will look again ${dShort(BFW.remark)}. When a price shows up, it goes here next to what the same box sold for on eBay.</p>`}
+    <p>Shopping for Pokémon instead? The same check sits on <a href="/pokemon-booster-box-prices#black-friday-week">Pokémon booster box and ETB sold prices</a>.</p>
+  </div>
+<!-- BOXBF:END -->`;
+
 // keep-line guard (spec §2): it must survive verbatim on the 2026 Bowman (May) row
 for (const x of rows) if (x.r.keepLine && !(x.r.note || "").includes(x.r.keepLine)) throw new Error(`${x.r.id}: keep-line missing from its note`);
 
@@ -436,6 +486,10 @@ function put(name, block, firstRunRe) {
 // first run only: the Phase 1 hand-written table section and the notes section
 put("BOXSCREENER", screener, /<!-- BOX TABLE \(Box Desk[\s\S]*?<\/section>\n/);
 put("BOXNOTES", notes, /  <section class="box-notes">[\s\S]*?<\/section>\n/);
+put("BOXBF", bfBlock, /(?=<!-- BOXSCREENER:START)/);
+// the hero's read line and the Article dateModified follow the read date (BET-20261118-1)
+html = html.replace(/<span data-prices-updated="[^"]*">[^<]*<\/span>/, `<span data-prices-updated="${READ}">read ${dLong(READ)}</span>`);
+html = html.replace(/"dateModified": "[^"]*"/, `"dateModified": "${READ}"`);
 
 if (PRINT) {
   console.log("box | sold | n | $/hit | lottery | skew | kurt | k≥$/hit | best fit (pos, score) | " + profiles.filter((p) => !p.needsMonths).map((p) => p.name).join(" | "));
