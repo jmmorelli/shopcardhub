@@ -227,7 +227,8 @@ const cell = h => (h ? `<span class="${h.v > 0.05 ? 'up' : h.v < -0.05 ? 'dn' : 
 // One row per named card: its live raw basket mark (price, asOf, window) in that ticker's index, and the index's own
 // 1-month move. A card whose index is not live, or whose basket row is missing, carried, unpriced or has no window,
 // is left out; under three rows, no table. The card links to its row in the index page's chase strip when that strip
-// carries it (customid=<tk>-<num>-chase in the page), else to the page. Internal links only; no eBay URL here.
+// carries it (customid=<tk>-<num>-chase in the page), else to the page. A last cell carries that chase row's own eBay
+// search re-tagged customid=indices (P9); the FAQ JSON-LD and llms text carry no eBay URL (R45).
 let asked = null;
 if (cfg.answer.cards) {
   const ac = cfg.answer.cards;
@@ -239,21 +240,25 @@ if (cfg.answer.cards) {
     const tk = c.ticker.toLowerCase(), n = String(c.num).toLowerCase();
     const page = fs.readFileSync(path.join(ROOT, r.page.replace(/^\//, '') + '.html'), 'utf8');
     const href = page.includes(`customid=${tk}-${n}-chase`) && page.includes(`id="${tk}-chase"`) ? `${r.page}#${tk}-chase` : r.page;
-    return { ...c, r, b, href };
+    // P9 (Nov 19): the same eBay search the chase row carries (its exact href, read from the page), re-tagged
+    // customid=indices so the click lands on /indices. No new link family: same URL shape, chase_click event.
+    const m = page.match(new RegExp(`href="(https://www\\.ebay\\.com/sch/i\\.html\\?[^"]*customid=${tk}-${n}-chase)"`));
+    const ebay = m ? m[1].replace(/&amp;/g, '&').replace(/customid=[^&"]*/, 'customid=indices') : null;
+    return { ...c, r, b, href, ebay, cid: `${tk}-${n}` };
   }).filter(Boolean);
   if (rows.length >= 3) {
     const dates = [...new Set(rows.map(x => x.b.asOf))].sort();
     const lineOf = x => `${x.name} #${x.num} ${x.label}, ${usd(x.b.price)}`;
     const when = dates.length === 1 ? `On ${fmtDate(dates[0])}` : `At marks from ${fmtDate(dates[0])} to ${fmtDate(dates[dates.length - 1])}`;
     const text = `${when}, the raw (ungraded) median sold prices were: ${rows.map(lineOf).join('; ')}. Each is the median of that card's ungraded sales over its index's window (30 or 90 days).`;
-    const tr = rows.map(x => `<tr><td class="nm"><a href="${esc(x.href)}">${esc(x.name)} #${esc(x.num)}</a><span style="display:block;color:var(--tx);font-size:11px;letter-spacing:0;">${esc(x.label)}</span></td><td class="lv">${usd(x.b.price)}<span style="display:block;color:var(--dim);font-size:11px;">${x.b.win} days</span></td><td><time datetime="${x.b.asOf}">${fmtDay(x.b.asOf)}</time></td><td>${cell(x.r.m)}</td></tr>`).join('\n');
+    const tr = rows.map(x => `<tr><td class="nm"><a href="${esc(x.href)}">${esc(x.name)} #${esc(x.num)}</a><span style="display:block;color:var(--tx);font-size:11px;letter-spacing:0;">${esc(x.label)}</span></td><td class="lv">${usd(x.b.price)}<span style="display:block;color:var(--dim);font-size:11px;">${x.b.win} days</span></td><td><time datetime="${x.b.asOf}">${fmtDay(x.b.asOf)}</time></td><td>${cell(x.r.m)}</td><td>${x.ebay ? `<a href="${esc(x.ebay)}" target="_blank" rel="noopener sponsored" title="${esc(x.name)} #${esc(x.num)} ${esc(x.label)}, live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'indices:${esc(x.cid)}',page:location.pathname})">eBay&nbsp;&rsaquo;</a>` : ''}</td></tr>`).join('\n');
     asked = {
       q: ac.question, text,
       html: `\n<h3 id="aisa-cards" style="font-size:15px;margin:12px 0 4px;color:var(--th);scroll-margin-top:80px;">${esc(ac.question)}</h3>
 <p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:0 0 6px;">${esc(ac.lead)}</p>
 <style>#aisa-cards-t th,#aisa-cards-t td{padding-left:6px;padding-right:6px}#aisa-cards-t td.nm{white-space:normal}</style>
 <div style="overflow-x:auto;margin:0 0 10px;"><table id="aisa-cards-t">
-<thead><tr><th scope="col">Card</th><th scope="col" style="text-align:right">Raw median</th><th scope="col" style="text-align:right">Marked</th><th scope="col" style="text-align:right">1 month</th></tr></thead>
+<thead><tr><th scope="col">Card</th><th scope="col" style="text-align:right">Raw median</th><th scope="col" style="text-align:right">Marked</th><th scope="col" style="text-align:right">1 month</th><th scope="col" aria-label="eBay listings"></th></tr></thead>
 <tbody>
 ${tr}
 </tbody></table></div>`,
