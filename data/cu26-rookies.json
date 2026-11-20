@@ -1,0 +1,103 @@
+{
+ "_comment": "Input for tools/build-cu26-rookies.mjs (Wildcard, Goal League S1; CoS BET-20261116-2). The four 2026 award winners and their 1st Bowman Chrome cards. Every price on the page comes from repo data at build time (data/feed/sold-marks.json key, else the class basket in data/indices.json, else a dated row in data/mlb-cards.json); none is typed here. 'updateFirstSold' per player is filled by the Dec 10 and Dec 14 re-marks with {median, n, window, asOf} from dated sold Chrome Update sales, never asks; null prints 'Starts after Dec. 9'.",
+ "release": {
+  "product": "2026 Topps Chrome Update Series Baseball",
+  "date": "2026-12-09",
+  "source": "https://www.si.com/collectibles/2026-topps-chrome-update-baseball-features-fewer-rookie-debut-patches",
+  "sourceName": "Sports Illustrated",
+  "sourceDate": "2026-11-04",
+  "read": "2026-11-18",
+  "note": "SI: pre-orders 'started Monday ahead of release day on Dec. 9'; Misiorowski, Schlittler, McGonigle and Stewart each have a rookie debut patch card, 'one-of-one cards that merge a player's autograph with the debut patch'. Second read: otia.com (Nov 6 2026), 'arrives Dec. 9'. topps.com refuses cloud fetches (403), so not re-read there."
+ },
+ "awards": {
+  "source": "https://www.mlb.com/news/when-are-2026-mlb-awards-announced-mvp-cy-young-rookie-of-the-year",
+  "sourceDate": "2026-11-13",
+  "read": "2026-11-18"
+ },
+ "players": [
+  {
+   "id": "misiorowski",
+   "name": "Jacob Misiorowski",
+   "team": "Milwaukee Brewers",
+   "award": "NL Cy Young",
+   "announced": "Nov. 11",
+   "cards": [
+    {
+     "role": "auto",
+     "title": "2022 Bowman Draft Chrome Auto #CDA-JMI",
+     "tag": "1st Bowman Chrome Auto, per the checklists",
+     "soldKey": "sold:baseball-cards-2022-bowman-draft-chrome-autographs/jacob-misiorowski-cda-jmi",
+     "mlbCards": { "player": "jacob-misiorowski", "num": "CDA-JMI", "parallel": "Base" },
+     "rawThin": { "price": 750, "date": "2026-09-20" },
+     "q": "Jacob Misiorowski 2022 Bowman Draft Chrome auto -lot -break -reprint",
+     "cta": "His 1st Bowman auto on eBay"
+    },
+    {
+     "role": "parallel",
+     "title": "2022 Bowman Draft Chrome Refractor #BDC-132",
+     "tag": "1st Bowman Chrome Refractor (no autograph), per the checklists",
+     "soldKey": "sold:baseball-cards-2022-bowman-draft-chrome/jacob-misiorowski-refractor-bdc-132",
+     "mlbCards": { "player": "jacob-misiorowski", "num": "BDC-132", "parallel": "Refractor" },
+     "q": "Jacob Misiorowski 2022 Bowman Draft Chrome Refractor -auto -lot -break -reprint",
+     "cta": "Refractor on eBay"
+    }
+   ],
+   "updateFirstSold": null
+  },
+  {
+   "id": "schlittler",
+   "name": "Cam Schlittler",
+   "team": "New York Yankees",
+   "award": "AL Cy Young",
+   "announced": "Nov. 11",
+   "cards": [
+    {
+     "role": "auto",
+     "title": "Chrome Prospect Auto #CPA-CSC, 2025 Bowman Chrome",
+     "tag": "1st Bowman Chrome Auto, per the checklists",
+     "soldKey": null,
+     "q": "Cam Schlittler 2025 Bowman Chrome auto -lot -break -reprint",
+     "cta": "His 1st Bowman auto on eBay"
+    }
+   ],
+   "updateFirstSold": null
+  },
+  {
+   "id": "mcgonigle",
+   "name": "Kevin McGonigle",
+   "team": "Detroit Tigers",
+   "award": "AL Rookie of the Year",
+   "announced": "Nov. 9",
+   "cards": [
+    {
+     "role": "auto",
+     "title": "Chrome Prospect Auto #CPA-KM, 2025 Bowman",
+     "tag": "1st Bowman Chrome Auto, per the checklists",
+     "soldKey": "sold:baseball-cards-2025-bowman-chrome-prospect-autograph/kevin-mcgonigle-cpa-km",
+     "basket": { "ticker": "BOW25", "num": "CPA-KM" },
+     "q": "Kevin McGonigle 2025 Bowman Chrome auto -lot -break -reprint",
+     "cta": "His 1st Bowman auto on eBay"
+    }
+   ],
+   "updateFirstSold": null
+  },
+  {
+   "id": "stewart",
+   "name": "Sal Stewart",
+   "team": "Cincinnati Reds",
+   "award": "NL Rookie of the Year",
+   "announced": "Nov. 9",
+   "cards": [
+    {
+     "role": "auto",
+     "title": "2022 Bowman Draft Chrome Auto #CDA-SS",
+     "tag": "1st Bowman Chrome Auto, per the checklists",
+     "soldKey": null,
+     "q": "Sal Stewart 2022 Bowman Draft Chrome auto -lot -break -reprint",
+     "cta": "His 1st Bowman auto on eBay"
+    }
+   ],
+   "updateFirstSold": null
+  }
+ ]
+}

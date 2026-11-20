@@ -19,6 +19,8 @@
 // ({"al":"<finalist>","nl":"<finalist>","source":"<url>","read":"YYYY-MM-DD"}) adds the winner line once the BBWAA announces;
 // absent, nothing about winners is printed. A name that isn't a finalist, or a source that isn't mlb.com / bbwaa.com, throws.
 //
+// Nov 18 2026 (Wildcard, BET-20261116-2): one line linking /topps-chrome-update-2026-rookies under the before/after table.
+//
 // Usage: node tools/build-roy-2026.mjs     (idempotent)
 import fs from "node:fs";
 import path from "node:path";
@@ -134,6 +136,7 @@ ${tr}
     <h2>Before and After the Award</h2>
     ${after.length ? `<p class="section-intro">On ${long(pre.asOf)}, the day before the announcement, we saved the 90-day raw median of each of the four 1st Bowman Chrome Autos. The table puts them next to the same read on ${long(asOf)}, with the sale count on both sides. A 90-day median moves slowly, so this soon after the award it takes in only the first sales since the announcement.</p>
     ${AFTER}` : `<p class="section-intro">${pre ? `Before the announcement, on ${long(pre.asOf)}, the four 1st Bowman Chrome Autos had 90-day raw medians of ${Object.entries(pre.cards).map(([nm, c]) => `${nm} ${money(c.median)} (${c.n} sales)`).join(", ")}. ` : ""}${win ? "" : "The winners are announced Monday, Nov. 9. "}After the award we&rsquo;ll put a fresh read of the same four cards next to those numbers, with the sale count on both sides. A 90-day median moves slowly, so a few days after the award it shows the first sales only in part.</p>`}
+    <p class="section-intro">McGonigle and Stewart, with both Cy Young winners, have rookie debut patch cards in 2026 Topps Chrome Update Series Baseball (Dec. 9): <a href="/topps-chrome-update-2026-rookies">the four winners&rsquo; 1st Bowman Chrome Autos, sold</a>.</p>
     <p class="section-intro">More 1st Bowman Chrome Autos by draft class: <a href="/bowman-classes">Bowman 1st auto classes</a>. Bigger names and their key cards: <a href="/mlb-cards">MLB cards</a>.</p>
   </section>
   <section>
