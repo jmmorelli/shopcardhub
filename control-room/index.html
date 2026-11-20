@@ -242,6 +242,8 @@ details.fold>summary:focus-visible{outline:2px solid var(--accent);outline-offse
 .floorcap{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin:6px 6px 0}
 #floor-info{margin:10px 6px 0;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;background:var(--bg2);padding:10px 12px;font-size:14px;display:flex;flex-direction:column;gap:5px}
 #floor-info b{font-family:var(--display);font-size:16px}
+#floor-info{position:relative;transform-origin:top center}
+
 .fi-head{display:flex;gap:10px;align-items:center;justify-content:space-between}
 .fi-line{overflow-wrap:anywhere}
 .fi-sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px}
@@ -595,7 +597,7 @@ details.fold>summary{min-height:44px}
 
   <footer>
     <span id="foot">The Chief of Staff updates this page each time it reads and rules on agent reports. The page refreshes itself while open.</span>
-    <span id="design">Design updated Nov 19, 2026: new Idea board with a box to send the Chief an idea, plus each team card on the wire has two small charts.</span>
+    <span id="design">Design updated Nov 20, 2026: tapping a room now slides its card open and shut, with the lines following in.</span>
     <span><button class="btn link" id="signout" type="button">Sign out</button></span>
   </footer>
 </div>
@@ -912,7 +914,29 @@ details.fold>summary{min-height:44px}
     var ag=arr(model.agents[id]);
     if(ag.length){info.appendChild(el("div","fi-sub","Crew"));ag.forEach(function(a){info.appendChild(el("div","fi-line",a.name+" · "+(a.state==="ok"?(a.active?"working today":"resting"):a.state)+(a.last?" · last "+a.last:"")+(a.note?" · "+a.note:"")))})}
   }
-  function pick(id){showInfo(id===sel?null:id);chips();if(sel)panTo(sel);if(reduce)draw(performance.now())}
+  /* the room card opens with motion: 280 ms ease-out in, about 70% of that (200 ms) ease-in out, lines follow 60 ms behind; a still swap under reduced motion */
+  var infoAnim=null, OPEN_MS=280, SWAP_MS=240, CLOSE_MS=200, EASE_IN_OUT="cubic-bezier(.2,.8,.2,1)", EASE_LEAVE="cubic-bezier(.4,0,1,1)";
+  function settle(){if(infoAnim){try{infoAnim.cancel()}catch(e){}infoAnim=null}if(info){info.style.overflow="";info.classList.remove("fi-moving")}}
+  function lines(){if(!info||!info.animate)return;var k=info.children;for(var i=0;i<k.length;i++){try{k[i].animate([{opacity:0,transform:"translateX(-6px)"},{opacity:1,transform:"none"}],{duration:180,delay:Math.min(60+i*35,300),easing:EASE_IN_OUT,fill:"backwards"})}catch(e){}}}
+  function pick(id){
+    var next=id===sel?null:id, open=!!info&&!info.hidden, still=reduce||!info||!info.animate;
+    settle();
+    if(still){showInfo(next);chips();if(sel)panTo(sel);if(reduce)draw(performance.now());return}
+    if(!next){
+      if(!open){showInfo(null);chips();return}
+      sel=null;chips();var h=info.offsetHeight;info.style.overflow="hidden";info.classList.add("fi-moving");
+      try{infoAnim=info.animate([{height:h+"px",opacity:1,transform:"none"},{height:"0px",paddingTop:"0px",paddingBottom:"0px",marginTop:"0px",opacity:0,transform:"translateY(-4px)"}],{duration:CLOSE_MS,easing:EASE_LEAVE})}catch(e){infoAnim=null}
+      var me=infoAnim;function done(){if(me&&infoAnim!==me)return;infoAnim=null;info.style.overflow="";info.classList.remove("fi-moving");if(!sel)showInfo(null)}
+      if(me)me.onfinish=done;else done();
+      return;
+    }
+    var h0=open?info.offsetHeight:0;showInfo(next);chips();if(sel)panTo(sel);
+    if(info.hidden)return;var h1=info.offsetHeight;info.style.overflow="hidden";info.classList.add("fi-moving");
+    var from=open?{height:h0+"px"}:{height:"0px",paddingTop:"0px",paddingBottom:"0px",marginTop:"0px",opacity:0,transform:"translateY(-6px)"};
+    try{infoAnim=info.animate([from,{height:h1+"px",opacity:1,transform:"none"}],{duration:open?SWAP_MS:OPEN_MS,easing:EASE_IN_OUT})}catch(e){infoAnim=null}
+    var me2=infoAnim;if(me2)me2.onfinish=function(){if(infoAnim!==me2)return;infoAnim=null;info.style.overflow="";info.classList.remove("fi-moving")};else settle();
+    lines();
+  }
   cv.addEventListener("click",function(ev){
     if(!L)return;var b=cv.getBoundingClientRect(),x=(ev.clientX-b.left)/scale,y=(ev.clientY-b.top)/scale,hit=null;
     function inside(id,g){var o=origin(id);return g.gx>=o.x-.3&&g.gx<=o.x+RS+.3&&g.gy>=o.y-.3&&g.gy<=o.y+RS+.3}
