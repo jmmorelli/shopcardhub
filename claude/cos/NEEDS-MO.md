@@ -11,6 +11,14 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-21 — desk (Fri Nov 20 evening slot, ran ~17:11 PT, verified live). Nothing new needs you
+
+- Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
+- Still open from the weekly: **the signup boxes promise a Tuesday email you paused** (7 page files still say "One email, Tuesdays") — pick (a) reword or (b) hide, in your next CoS chat. The per-page price alert you approved Nov 18 is the planned replacement (live by Dec 1).
+- Still open: this run still can't push to GitHub from the cloud (same setting on the run, on the CoS's attended list). The morning Ship Desk carries tonight's notes.
+
+*Not yours:* the CoS notes file was trimmed back under its size limit. Two scheduling questions (how many card pages the Coverage Builder adds a run, whether the Data Desk keeps running) were settled by the CoS without you.
+
 ## 2026-11-20 — desk (Thu Nov 19 evening slot, ran ~17:10 PT, verified live). Nothing new needs you
 
 - Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
