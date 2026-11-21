@@ -6793,6 +6793,17 @@
           "gates": "audit-prices FAIL 0 / WARN 66 (base 66) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 (price-data worktree) · price-truth sweep RED 0 / AMBER 22 / GREEN 47",
           "liveVerified": "2026-11-21 ~06:3xZ curl, 90 s after push: raw main claude/cos/STATE.md RUN LOG starts 'Nov 21 ~01:11'; STATE.md 20,877 B (< 21,000). Docs-only, no site deploy (vercel-ignore).",
           "note": "Patch bytes taken byte-exact from this session's own project_read tool result (no /mnt/project); sha256 d7566888… (28,107 B) matched pending.md. Applied clean with git am -3. Rollback: git revert 8f65655."
+        },
+        {
+          "date": "2026-11-21",
+          "commits": [
+            "b208a1b",
+            "91534d4"
+          ],
+          "by": "Ship Desk (cloud, R48) — Control Room Designer f51094d + Cupertino run 22 f20521cc",
+          "gates": "audit-prices FAIL 0 / WARN 66 · audit-site FAIL 0 / WARN 3 (830) · audit-terminal --feed price-data FAIL 0 / WARN 1 · price-truth sweep RED 0",
+          "liveVerified": "2026-11-21 ~14:55Z: /control-room 'Design updated Nov 21, 2026…' = 1; /watchlist id=\"ds-watchlist\" = 1; sweep --deep 390+1440 (GA/eBay aborted): no sideways scroll, CLS 0, 0 console errors on /watchlist; /control-room only the signed-out /api/room 401 (expected)",
+          "note": "Patches taken byte-exact from the session transcript (no /mnt/project); sha256 prefixes ebc09965e6a86c9b and 15d856319f3630b2 matched; git am -3 clean on 47873bf."
         }
       ]
     },
