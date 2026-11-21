@@ -623,6 +623,101 @@
     @media (max-width:900px) { .pf-tiles { grid-template-columns:1fr 1fr; } .pf-tape { grid-template-columns:1fr; } }
     @media (max-width:640px) { .pf-name { font-size:26px; } .pf-val .big { font-size:22px; } .pf-tiles { gap:6px; } .pf-dist { grid-template-columns:1fr; } }
   </style>
+  <style id="ds-watchlist">
+    /* Cupertino run 22: the watchlist, calm (DESIGN-SYSTEM.md "The watchlist"). Tone and space, not boxes; one filled pill (+ Add card). */
+    html body .term .vault-hero { padding:24px 0 0; }
+    html body .vault-h1row { align-items:center; gap:8px 16px; }
+    html body .term .vault-hero h1 { font:600 40px/1.1 var(--ds-font); letter-spacing:-0.015em; text-transform:none; color:var(--text-head); }
+    html body .vault-hero h1 .accent { color:inherit; }
+    html body .vault-eyebrow { font:400 14px/1.43 var(--ds-font); font-size:14px !important; letter-spacing:0; text-transform:none; color:var(--text-dim); margin:0; }
+    html body .vault-eyebrow::before { display:none; }
+    html body #feedPill, html body #feedPill b { letter-spacing:0 !important; }
+    html body #feedPill b { color:var(--text-dim) !important; font-weight:400; }
+    html body .vault-h1row .mode-btn { font:400 14px/1.43 var(--ds-font); font-size:14px !important; letter-spacing:0; text-transform:none; border:0; background:none; color:var(--accent); padding:0; min-height:44px; border-radius:0; }
+    html body .vault-h1row .mode-btn:hover { background:none; color:var(--accent); border:0; text-decoration:underline; }
+    html body .btn { font:600 14px/1.2 var(--ds-font); letter-spacing:0; text-transform:none; border:0; border-radius:980px; background:var(--ds-surface-3); color:var(--text-head); min-height:36px; padding:8px 16px; box-shadow:none; transition:background-color .2s var(--ds-ease), transform .2s var(--ds-ease); }
+    html body .btn:hover { background:#3a3a3c; color:var(--text-head); border:0; box-shadow:none; }
+    html body .btn-primary { background:var(--accent); color:#000; min-height:44px; padding:10px 20px; }
+    html body .btn-primary:hover { background:#5cdcf8; color:#000; }
+    html body .btn-ghost { background:transparent; color:var(--text-dim); }
+    html body .btn-ghost:hover { background:transparent; color:var(--red); }
+    html body :is(.btn, .mode-btn, .vtab, .vview button, .ob-link):active { transform:scale(.98); }
+    html body .term .sch-signup { margin:24px 0 0 !important; max-width:none; }
+    html body .term .sch-signup .ss-row { border:0; background:var(--ds-surface-1); border-radius:18px; padding:16px 20px; gap:8px 16px; }
+    html body .term .sch-signup .ss-k { font:600 14px/1.43 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-head); }
+    html body .term .sch-signup .ss-p { font:400 14px/1.43 var(--ds-font); color:var(--text-dim); }
+    html body .term .sch-signup input { background:rgba(255,255,255,.08); border:0; border-radius:12px; min-height:44px; font:400 16px/1.3 var(--ds-font); color:var(--text-head); }
+    html body .term .sch-signup input:focus { box-shadow:0 0 0 2px var(--accent); }
+    html body .term .sch-signup button { font:600 14px/1 var(--ds-font); letter-spacing:0; text-transform:none; background:var(--ds-surface-3); color:var(--text-head); border-radius:980px; padding:0 16px; min-height:44px; transition:background-color .2s var(--ds-ease); }
+    html body .term .sch-signup button:hover { background:#3a3a3c; }
+    html body .term .sch-signup :is(.ss-ok, .ss-msg) { font:400 14px/1.43 var(--ds-font); }
+    html body #pfWarns:not(:empty) { display:flex; flex-direction:column; gap:1px; margin:16px 0 0; border-radius:18px; overflow:hidden; }
+    html body .pf-warn { margin:0; border:0; border-radius:0; background:var(--ds-surface-1); color:var(--text); font:400 14px/1.43 var(--ds-font); padding:12px 20px; }
+    html body .pf-warn.red, html body .pf-warn.gold, html body .pf-warn.cyan { background:var(--ds-surface-1); color:var(--text); }
+    html body .pf-warn b { font-family:var(--ds-font); font-weight:600; color:var(--text-head); }
+    html body .pf-warn a { font:400 14px/1.43 var(--ds-font); color:var(--accent); }
+    html body .pf-warn .x { color:var(--text-dim); opacity:1; font-family:var(--ds-font); }
+    html body .vault-toolbar { gap:8px 12px; margin:24px 0 16px; }
+    html body .vtabs { border:0; border-radius:980px; background:var(--ds-surface-3); padding:2px; gap:2px; }
+    html body .vtab { font:600 14px/1.2 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-dim); border-radius:980px; padding:8px 18px; min-height:36px; display:inline-flex; align-items:center; gap:8px; transition:background-color .2s var(--ds-ease), color .2s var(--ds-ease); }
+    html body .vtab.active { background:#48484a; color:var(--text-head); }
+    html body .vtab .cnt, html body .vtab.active .cnt { font:600 12px/1.4 var(--ds-font); font-size:12px !important; background:rgba(255,255,255,.08); color:var(--text-dim); border-radius:980px; padding:0 8px; }
+    html body .vsearch input, html body .vsort select { background:rgba(255,255,255,.08); border:0; border-radius:8px; color:var(--text-head); font:400 14px/1.3 var(--ds-font); min-height:36px; padding:8px 12px; box-shadow:none; }
+    html body .vsearch input:focus { border:0; box-shadow:0 0 0 2px var(--accent); }
+    html body .vview { border:0; border-radius:980px; background:var(--ds-surface-3); padding:2px; }
+    html body .vview button { font:600 13px/1.2 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-dim); border-radius:980px; padding:8px 14px; }
+    html body .vview button.active { background:#48484a; color:var(--text-head); }
+    html body .onboard { border:0; background:var(--ds-surface-1); border-radius:18px; padding:20px 24px 24px; margin:0 0 24px; }
+    html body .ob-head { margin-bottom:16px; }
+    html body .ob-title { font:600 17px/1.3 var(--ds-font); font-size:17px !important; letter-spacing:0; text-transform:none; color:var(--text-head); }
+    html body .ob-link { font:400 14px/1.43 var(--ds-font); font-size:14px !important; letter-spacing:0; text-transform:none; color:var(--accent); border:0; padding:0; }
+    html body .ob-link:hover { color:var(--accent); text-decoration:underline; }
+    html body .ob-steps { gap:16px; }
+    html body .ob-step { border:0; background:var(--ds-surface-2); border-radius:12px; padding:16px; gap:12px; transition:background-color .2s var(--ds-ease); }
+    html body .ob-step:hover { border:0; background:var(--ds-surface-3); }
+    html body .ob-n { width:24px; height:24px; border:0; background:var(--ds-surface-3); font:600 12px/1 var(--ds-font); color:var(--text-head); }
+    html body #ob1 .ob-n span, html body #ob2 .ob-n span, html body #ob3 .ob-n span { font-size:12px !important; }
+    html body .ob-step b { font:600 17px/1.24 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-head); }
+    html body .ob-step small { font:400 12px/1.33 var(--ds-font); color:var(--text-dim); margin-top:4px; }
+    html body .vgrid-foot { font:400 12px/1.33 var(--ds-font); padding:12px 4px; }
+    html body .new-pill { border:0; background:var(--ds-surface-1); border-radius:12px; padding:8px 8px 8px 16px; font:400 12px/1.5 var(--ds-font); color:var(--text-dim); }
+    html body .new-pill b { font:600 12px/1.5 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--accent); }
+    html body #newPill span, html body #newPill b, html body #newPill a { font-size:12px !important; }
+    html body .new-pill a { color:var(--text); border:0; text-decoration:underline; text-decoration-color:rgba(255,255,255,.24); }
+    html body .vault-how { border:0; background:var(--ds-surface-1); border-radius:18px; margin:48px 0 16px; }
+    html body .vault-how summary { font:600 17px/1.3 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-head); padding:0 24px; min-height:56px; justify-content:space-between; }
+    html body .vault-how summary::before { display:none; }
+    html body .vault-how summary::after { content:''; width:7px; height:7px; border:solid var(--text-dim); border-width:0 1.5px 1.5px 0; transform:rotate(45deg); margin:-4px 4px 0 16px; transition:transform .2s var(--ds-ease); }
+    html body .vault-how[open] summary::after { transform:rotate(-135deg); margin-top:4px; }
+    html body .vault-how .vault-sub { margin:0 24px 16px; max-width:680px; font-size:14px; color:var(--text); }
+    html body .an-toggle { font:600 14px/1.43 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-dim); border:0; padding:12px 4px; }
+    html body .data-bar { border:0; background:var(--ds-surface-1); border-radius:18px; padding:16px 20px; gap:8px 12px; font:400 14px/1.43 var(--ds-font); color:var(--text-dim); margin-bottom:96px; }
+    @media (prefers-reduced-motion:reduce) { html body :is(.btn, .mode-btn, .vtab, .vview button, .ob-link):active { transform:none; } }
+    @media (max-width:640px) {
+      html body .term .vault-hero { padding:16px 0 0; }
+      html body .term .vault-hero h1 { font-size:28px; }
+      html body .vault-eyebrow { font-size:12px !important; }
+      html body .vault-h1row .mode-btn { margin:0; min-height:36px; }
+      html body .term .sch-signup { margin-top:16px !important; }
+      html body .term .sch-signup .ss-row { padding:16px; }
+      html body .pf-warn { padding:12px 16px; }
+      html body #pfWarns:not(:empty) { margin-top:12px; border-radius:12px; }
+      html body .vault-toolbar { gap:8px; margin:16px 0 12px; }
+      html body .vault-toolbar .vtab { padding:8px 10px; }
+      html body .vault-toolbar .tb-add, html body .vault-toolbar .tb-sheet { padding:12px 8px; font-size:14px; }
+      html body .onboard { padding:16px; border-radius:12px; margin-bottom:16px; }
+      html body .ob-head { margin-bottom:12px; }
+      html body .ob-title { font-size:14px !important; }
+      html body .ob-steps { grid-template-columns:1fr; gap:8px; }
+      html body .ob-step { flex-direction:row; align-items:center; text-align:left; padding:12px 16px; gap:12px; }
+      html body .ob-step b { font-size:14px; line-height:1.3; }
+      html body .ob-step small { display:block; }
+      html body .vault-how { margin-top:32px; }
+      html body .vault-how summary { padding:0 16px; }
+      html body .vault-how .vault-sub { margin:0 16px 16px; }
+      html body .data-bar { padding:16px; margin-bottom:56px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -1313,8 +1408,8 @@
   <div class="container vault-pending">
     <div class="vault-hero">
       <div class="vault-h1row">
-        <h1>Your <span class="accent">Watchlist</span></h1>
-        <div class="vault-eyebrow">Free · No Account<span class="eb-long"> · Stays On Your Device</span><span id="feedPill" style="visibility:hidden"> · <b style="color:var(--green)">● live price engine on</b></span></div>
+        <h1>Your <span class="accent">watchlist</span></h1>
+        <div class="vault-eyebrow">Free · No account<span class="eb-long"> · Stays on your device</span><span id="feedPill" style="visibility:hidden"> · <b style="color:var(--green)">● live price engine on</b></span></div>
         <button type="button" class="mode-btn" id="modeBtn" onclick="toggleMode()" title="Show the full toolset: portfolios, imports, analytics, columns">Advanced view</button>
       </div>
     </div>
@@ -1340,7 +1435,7 @@
     <div class="vault-toolbar" id="vaultToolbar">
       <div class="vtabs">
         <button class="vtab active" id="tabWatch" onclick="setTab('watch')">Hunting <span class="cnt" id="cntWatch">0</span></button>
-        <button class="vtab" id="tabOwn" onclick="setTab('own')">My Cards <span class="cnt" id="cntOwn">0</span></button>
+        <button class="vtab" id="tabOwn" onclick="setTab('own')">My cards <span class="cnt" id="cntOwn">0</span></button>
       </div>
       <div class="tool-more" id="toolMore">
       <div class="vsearch"><input type="text" id="searchBox" placeholder="Search cards…" oninput="searchChanged()"></div>
@@ -1370,9 +1465,9 @@
         <button id="viewTable" class="active" onclick="setView('table')">Table</button><button id="viewCards" onclick="setView('cards')">Cards</button>
       </div>
       </div>
-      <button class="btn btn-primary tb-add" id="addBtn" onclick="openAdd()">+ Add Card</button>
+      <button class="btn btn-primary tb-add" id="addBtn" onclick="openAdd()">+ Add card</button>
       <div class="tool-more" id="toolMore2">
-      <button class="btn" onclick="closeSheet();openBulk()" title="Paste a whole list at once">⇪ Paste a List</button>
+      <button class="btn" onclick="closeSheet();openBulk()" title="Paste a whole list at once">⇪ Paste a list</button>
       <button class="btn" onclick="closeSheet();shareVaultImg()" title="Make a shareable image of your vault">&#120143; Share</button>
       </div>
       <button class="btn tb-sheet" id="sheetBtn" onclick="openSheet()" aria-haspopup="dialog">Sort &amp; columns ▾</button>
@@ -1381,7 +1476,7 @@
     <!-- Onboarding checklist — replaces the old yellow Demo banner; visible only while the vault is demo or empty -->
     <div id="onboard" class="onboard">
       <div class="ob-head">
-        <span class="ob-title" id="obTitle">◈ Demo cards — here's how a watchlist fills up</span>
+        <span class="ob-title" id="obTitle">Demo cards — here's how a watchlist fills up</span>
         <button class="ob-link" id="obFresh" onclick="clearDemo()">Start fresh</button>
       </div>
       <ol class="ob-steps">
@@ -1411,7 +1506,7 @@
     </div>
 
     <div class="data-bar">
-      <span>◈ Your watchlist lives in this browser only — nothing is uploaded anywhere. Back it up:</span>
+      <span>Your watchlist lives in this browser only — nothing is uploaded anywhere. Back it up:</span>
       <span class="spacer"></span>
       <button class="btn btn-sm" onclick="exportData()">Export JSON</button>
       <button class="btn btn-sm" id="importBtn" onclick="document.getElementById('importFile').click()" title="Watchlist JSON backup or a COMC inventory CSV">Import (JSON / COMC CSV)</button>
@@ -1975,7 +2070,7 @@ function renderOnboard() {
   document.getElementById('ob2').classList.toggle('done', real && state.cards.some(c => c.target != null));
   document.getElementById('ob3').classList.toggle('done', imported);
   document.getElementById('obFresh').style.display = state.demo && state.cards.length ? '' : 'none';
-  document.getElementById('obTitle').textContent = state.demo && state.cards.length ? '◈ Demo cards — here\'s how a watchlist fills up' : '◈ Empty watchlist — three steps to a real one';
+  document.getElementById('obTitle').textContent = state.demo && state.cards.length ? 'Demo cards — here\'s how a watchlist fills up' : 'Empty watchlist — three steps to a real one';
 }
 
 /* ---------- allocation (portfolio tab) ---------- */
