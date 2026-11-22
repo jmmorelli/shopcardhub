@@ -275,6 +275,38 @@ details.fold>summary:focus-visible{outline:2px solid var(--accent);outline-offse
 .fi-link{color:var(--accent);font-size:13.5px}
 .legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--mono);font-size:11px;color:var(--muted);margin:8px 6px 0}
 .legend i{display:inline-block;width:9px;height:8px;margin-right:5px;vertical-align:-1px}
+/* Today's tally: a second view of the floor panel. Reports ruled since midnight stack up by team. */
+.viewsw{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--bg2);margin-right:auto}
+.viewsw button{font:inherit;font-size:12.5px;font-weight:600;min-height:32px;padding:4px 12px;border:0;border-radius:999px;background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap}
+.viewsw button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent)}
+.viewsw button:focus-visible,.ty-tile:focus-visible,.ty-replay:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tally{border:1px solid var(--line);border-radius:8px;padding:12px 12px 10px;background-color:var(--term);background-image:linear-gradient(var(--grid) 1px,transparent 1px);background-size:100% 24px}
+.ty-top{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.ty-sum{font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+.ty-sum b{font-family:var(--display);font-size:22px;color:var(--accent);margin-right:6px;font-variant-numeric:tabular-nums}
+.ty-replay{font:inherit;font-size:13px;font-weight:600;min-height:36px;padding:5px 13px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.ty-replay:hover{border-color:var(--accent)}
+.ty-cols{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;align-items:end}
+.ty-col{display:flex;flex-direction:column;align-items:stretch;gap:5px;min-width:0}
+.ty-n{font-family:var(--mono);font-size:15px;font-weight:500;text-align:center;color:var(--ink);font-variant-numeric:tabular-nums}
+.ty-n.zero{color:var(--muted);opacity:.6}
+.ty-well{height:190px;display:flex;flex-direction:column-reverse;gap:2px;padding:3px;border-radius:5px;background:color-mix(in srgb,var(--bg2) 70%,transparent);border-bottom:2px solid var(--line);overflow:hidden}
+.ty-tile{display:block;width:100%;min-height:3px;padding:0;border:0;border-radius:2px;cursor:pointer;flex:none;opacity:.78}
+.ty-tile.act{opacity:1}
+.ty-tile.open{opacity:1;background:transparent!important;box-shadow:inset 0 0 0 1.5px var(--tc)}
+.ty-tile.on{outline:2px solid var(--ink);outline-offset:1px}
+.day .ty-tile:not(.open),.day .ty-lab i{box-shadow:inset 0 0 0 1px rgba(20,24,40,.28)}
+.ty-lab{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-align:center;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ty-lab i{display:block;height:3px;border-radius:2px;margin:0 auto 4px;width:60%}
+.ty-read{font-size:13.5px;margin-top:10px;min-height:1.5em;overflow-wrap:anywhere;color:var(--ink)}
+.ty-read time{font-family:var(--mono);color:var(--accent);margin-right:6px}
+.ty-key{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px}
+.ty-empty{grid-column:1/-1;font-size:14px;color:var(--muted);padding:6px 0 2px}
+@media (prefers-reduced-motion: no-preference){
+  .ty-tile.drop{animation:tydrop .46s cubic-bezier(.3,1.35,.5,1) both}
+  @keyframes tydrop{from{transform:translateY(-200px)}to{transform:none}}
+}
+@media (max-width:600px){.ty-cols{gap:4px}.ty-well{height:150px}.ty-lab{font-size:8.5px;letter-spacing:0}.viewsw button{min-height:40px}.ty-replay{min-height:44px}}
 /* Last 24 hours */
 .shift{display:flex;flex-direction:column;gap:5px}
 .sh-row{display:grid;grid-template-columns:9.5em minmax(0,1fr);gap:10px;align-items:center}
@@ -475,10 +507,17 @@ details.fold>summary{min-height:44px}
   <section class="panel floorwrap rise" aria-labelledby="h-floor">
     <div class="head">
       <h2 id="h-floor">The floor</h2>
+      <div class="viewsw" id="viewsw" role="group" aria-label="Choose a view"><button type="button" data-view="floor" aria-pressed="true">Floor</button><button type="button" data-view="tally" aria-pressed="false">Today's tally</button></div>
       <span class="meta" id="floor-asof"></span>
     </div>
     <div class="floorscroll" id="floor-scroll" tabindex="0" role="group" aria-label="The floor. Swipe sideways to look around.">
       <canvas id="floor" role="img" aria-label="A picture of the seven teams at work in their rooms, the Chief's hall, the vault and Mo's desk. The buttons under it open each room, and the same facts are in the sections below."></canvas>
+    </div>
+    <div class="tally" id="tally" hidden>
+      <div class="ty-top"><span class="ty-sum" id="ty-sum"></span><button class="ty-replay" id="ty-replay" type="button">Replay the day</button></div>
+      <div class="ty-cols" id="ty-cols"></div>
+      <div class="ty-read" id="ty-read" aria-live="polite"></div>
+      <div class="ty-key">One block per report the Chief ruled on since midnight, dropped into its team's column in the order it landed. Tall blocks needed a decision; outlined blocks are still open. Tap a block to read it.</div>
     </div>
     <div class="rooms" id="floor-rooms" role="group" aria-label="Open a room"></div>
     <div id="floor-info" hidden></div>
@@ -634,7 +673,7 @@ details.fold>summary{min-height:44px}
 
   <footer>
     <span id="foot">The Chief of Staff updates this page each time it reads and rules on agent reports. The page refreshes itself while open.</span>
-    <span id="design">Design updated Nov 21, 2026: a day shift look for light screens, with a night and day switch at the top.</span>
+    <span id="design">Design updated Nov 22, 2026: a Today's tally view on the floor, where each report ruled today drops into its team's column.</span>
     <span><button class="btn link" id="signout" type="button">Sign out</button></span>
   </footer>
 </div>
@@ -1011,6 +1050,73 @@ details.fold>summary{min-height:44px}
 
 
   /* ── the last 24 hours, one row per team: each dot is a report the Chief ruled on ── */
+  /* ── Today's tally: each report ruled since midnight drops into its team's column, in the order it landed.
+     Replays real rows only; new rows drop in when the state refreshes; still under reduced motion. ── */
+  var SHORT={growth:"GROWTH",site:"SITE",prices:"PRICES",intel:"INTEL",studio:"STUDIO",office:"CHIEF",grok:"GROK"};
+  var tySeen=null,tyView="floor",tyPick=null;
+  function tyKey(r){return String(r.at)+"|"+String(r.agent||"")+"|"+String(r.said||"").slice(0,40)}
+  function drawTally(replay){
+    var cols=document.getElementById("ty-cols"),sum=document.getElementById("ty-sum"),rd=document.getElementById("ty-read"),rp=document.getElementById("ty-replay");
+    if(!cols||!sum)return;while(cols.firstChild)cols.removeChild(cols.firstChild);while(sum.firstChild)sum.removeChild(sum.firstChild);
+    var now=new Date(),mid=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime(),rows=[],yest=0;
+    if(S)arr(S.rulings).forEach(function(r){
+      if(!r||!r.at)return;var t=new Date(r.at).getTime();if(isNaN(t))return;
+      if(t<mid){if(t>=mid-864e5)yest++;return}
+      var tm=teamForName(r.agent);if(tm&&TEAM[tm])rows.push({t:t,team:tm,r:r,k:tyKey(r)});
+    });
+    rows.sort(function(a,b){return a.t-b.t});
+    var visible=tyView==="tally",first=tySeen===null,seen=tySeen||{},animate=!reduce&&visible&&(replay||!first),step=Math.min(110,1500/Math.max(1,rows.length)),q=0;
+    var b=el("b",null,String(rows.length));sum.appendChild(b);
+    sum.appendChild(document.createTextNode(rows.length===1?"report ruled today":"reports ruled today"));
+    if(rows.length)sum.appendChild(document.createTextNode(" · newest "+hhmm(new Date(rows[rows.length-1].t).toISOString())));
+    if(rp)rp.hidden=reduce||!rows.length;
+    if(!S){cols.appendChild(el("div","ty-empty","Nothing to show until the room state loads."));if(rd)rd.textContent="";return}
+    if(!rows.length){cols.appendChild(el("div","ty-empty","No reports ruled yet today."+(yest?" Yesterday: "+yest+".":"")));if(rd)rd.textContent="";if(visible)tySeen={};return}
+    var per={};ORDER.forEach(function(id){per[id]=[]});rows.forEach(function(x){per[x.team].push(x)});
+    var most=Math.max.apply(null,ORDER.map(function(id){return per[id].length}).concat([1]));
+    var wellH=window.matchMedia&&matchMedia("(max-width:600px)").matches?150:190,unit=Math.max(3,Math.min(14,(wellH-6-2*most)/most));
+    ORDER.forEach(function(id){
+      if(!S.teams||!arr(S.teams).some(function(t){return t&&t.id===id}))if(!per[id].length)return;
+      var c=el("div","ty-col"),n=per[id].length;
+      c.appendChild(el("div","ty-n"+(n?"":" zero"),String(n)));
+      var w=el("div","ty-well");
+      per[id].forEach(function(x){
+        var r=x.r,big=r.ruling==="ACT"||r.ruling==="KILL",tl=el("button","ty-tile"+(big?" act":"")+(r.status==="open"?" open":""));
+        tl.type="button";tl.style.background=TEAM[id].c;tl.style.setProperty("--tc",TEAM[id].c);tl.style.height=(big?Math.min(unit*1.6,unit+6):unit)+"px";
+        var line=hhmm(new Date(x.t).toISOString())+" · "+SHORT[id]+" · "+(r.ruling?r.ruling+": ":"")+(r.said||"");
+        tl.title=line;tl.setAttribute("aria-label",line);
+        if(tyPick===x.k)tl.classList.add("on");
+        tl.addEventListener("click",function(){tyPick=x.k;Array.prototype.forEach.call(cols.querySelectorAll(".ty-tile.on"),function(e){e.classList.remove("on")});tl.classList.add("on");tyRead(x)});
+        if(animate&&(replay||!seen[x.k])){tl.classList.add("drop");tl.style.animationDelay=(rows.indexOf(x)*step|0)+"ms";q++}
+        w.appendChild(tl);
+      });
+      c.appendChild(w);
+      var lab=el("div","ty-lab");var bar=el("i");bar.style.background=TEAM[id].c;lab.appendChild(bar);lab.appendChild(document.createTextNode(SHORT[id]));lab.title=TEAM[id].n;c.appendChild(lab);
+      cols.appendChild(c);
+    });
+    if(visible){tySeen={};rows.forEach(function(x){tySeen[x.k]=1})}
+    var pick=null;rows.forEach(function(x){if(x.k===tyPick)pick=x});
+    if(pick)tyRead(pick);else if(rd){tyPick=null;tyRead(rows[rows.length-1],true)}
+  }
+  function tyRead(x,latest){var rd=document.getElementById("ty-read");if(!rd||!x)return;while(rd.firstChild)rd.removeChild(rd.firstChild);
+    rd.appendChild(el("time",null,hhmm(new Date(x.t).toISOString())));
+    rd.appendChild(document.createTextNode((latest?"Latest · ":"")+TEAM[x.team].n+" · "+(x.r.agent?x.r.agent+" · ":"")+(x.r.ruling?x.r.ruling+": ":"")+(x.r.said||"")))}
+  function setView(v,save){
+    tyView=v==="tally"?"tally":"floor";
+    var fs=document.getElementById("floor-scroll"),ty=document.getElementById("tally"),lg=document.querySelector(".floorwrap .legend"),tk=document.getElementById("floor-ticker");
+    if(fs)fs.hidden=tyView!=="floor";if(ty)ty.hidden=tyView!=="tally";if(lg)lg.hidden=tyView!=="floor";if(tk)tk.hidden=tyView!=="floor";
+    Array.prototype.forEach.call(document.querySelectorAll("#viewsw button"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-view")===tyView))});
+    if(save){try{localStorage.setItem("cr-view",tyView)}catch(e){}}
+    if(tyView==="tally")drawTally(true);else{layout();if(reduce)draw(performance.now());else schedule()}
+  }
+  (function(){
+    Array.prototype.forEach.call(document.querySelectorAll("#viewsw button"),function(b){b.addEventListener("click",function(){setView(b.getAttribute("data-view"),true)})});
+    var rp=document.getElementById("ty-replay");if(rp)rp.addEventListener("click",function(){drawTally(true)});
+    var v=null;try{v=localStorage.getItem("cr-view")}catch(e){}
+    if(v==="tally"){tyView="tally";var fs=document.getElementById("floor-scroll"),ty=document.getElementById("tally");if(fs)fs.hidden=true;if(ty)ty.hidden=false;
+      var lg=document.querySelector(".floorwrap .legend"),tk=document.getElementById("floor-ticker");if(lg)lg.hidden=true;if(tk)tk.hidden=true;
+      Array.prototype.forEach.call(document.querySelectorAll("#viewsw button"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-view")==="tally"))})}
+  })();
   function drawShift(){
     var box=document.getElementById("shift");if(!box)return;while(box.firstChild)box.removeChild(box.firstChild);
     var sec=document.getElementById("shift-sec"),now=Date.now(),n=0;
@@ -1104,7 +1210,7 @@ details.fold>summary{min-height:44px}
     });
   }
 
-  window.Floor={update:function(state,decisions){S=state||null;D=decisions||{};if(!L)layout();rebuild();chips();runTicker();drawShift();drawPanels();drawSources();requestAnimationFrame(drawWire);if(sel&&sel!=="gate"&&sel!=="vault"&&sel!=="hall")showInfo(sel);if(reduce)draw(performance.now());else schedule()}};
+  window.Floor={update:function(state,decisions){S=state||null;D=decisions||{};if(!L)layout();rebuild();chips();runTicker();drawShift();drawTally(false);drawPanels();drawSources();requestAnimationFrame(drawWire);if(sel&&sel!=="gate"&&sel!=="vault"&&sel!=="hall")showInfo(sel);if(reduce)draw(performance.now());else schedule()}};
   var rz=0;window.addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(function(){layout();drawWire();if(reduce)draw(performance.now());else schedule()},150)});
   document.addEventListener("visibilitychange",function(){if(!document.hidden&&!reduce)schedule()});
 })();
