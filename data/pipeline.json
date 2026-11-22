@@ -6804,6 +6804,17 @@
           "gates": "audit-prices FAIL 0 / WARN 66 · audit-site FAIL 0 / WARN 3 (830) · audit-terminal --feed price-data FAIL 0 / WARN 1 · price-truth sweep RED 0",
           "liveVerified": "2026-11-21 ~14:55Z: /control-room 'Design updated Nov 21, 2026…' = 1; /watchlist id=\"ds-watchlist\" = 1; sweep --deep 390+1440 (GA/eBay aborted): no sideways scroll, CLS 0, 0 console errors on /watchlist; /control-room only the signed-out /api/room 401 (expected)",
           "note": "Patches taken byte-exact from the session transcript (no /mnt/project); sha256 prefixes ebc09965e6a86c9b and 15d856319f3630b2 matched; git am -3 clean on 47873bf."
+        },
+        {
+          "date": "2026-11-22",
+          "commits": [
+            "52c8e0a",
+            "6f83e2a"
+          ],
+          "by": "Ship Desk (cloud, R48) — Control Room Designer 7b10ed9 + Cupertino run 23 ba8a2d76",
+          "gates": "audit-prices FAIL 0 / WARN 66 · audit-site FAIL 0 / WARN 3 (830) · audit-terminal --feed price-data FAIL 0 / WARN 1 · price-truth sweep RED 0",
+          "liveVerified": "2026-11-22: /control-room 'Design updated Nov 22, 2026: a Today's tally view…' = 1; /css/site-fixes.css '0f. The guide hero (run 23)' = 1; sweep --deep 390+1440 (GA/eBay aborted) on TFB, McDonald's, Cooper Flagg, Pitch Black vs Chaos Rising, PSA guide: no sideways scroll, 0 console errors, CLS 0 except Pitch Black desktop 0.04 (live-data; local ce0796e vs 6f83e2a identical: CLS 0, smallText 44, smallTaps 2 both)",
+          "note": "Patches taken byte-exact from the session transcript (no /mnt/project); sha256 prefixes b7099fdf64026da8 and b9e876a99c39d154 matched; git am -3 clean on ce0796e."
         }
       ]
     },
