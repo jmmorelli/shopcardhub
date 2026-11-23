@@ -16,6 +16,12 @@
 //      printing named in cfg.cards[id].prints (each a live basket mark, not carried), plus a FAQPage JSON-LD of the
 //      same answer. Internal links only (the other printings' index pages, and this page's own chase row).
 //      {card} in a description is the page's own printing as one sentence.
+//   5. opt-in per page ("move": {...}, P10 Nov 22): the <!-- AISEARCH:MOVE:START --> … END block, placed just above
+//      move.anchor. A dated answer to "have this set's prices dropped?": the index level against its base month, its
+//      latest week and month (same horizons as /indices) and its run of falling or rising marks, then a short table of
+//      the set's top raw cards (live basket mark, change since that card's previous mark), each row ending in the
+//      exact eBay search the page's own index table already carries for that card, re-tagged customid=<page slug>
+//      (P9 pattern, chase_click). FAQPage JSON-LD and llms text carry the answer with no eBay URL (R45).
 // Every number comes from data/indices.json at build time: a live mark, its date and its n. Nothing here carries
 // an eBay URL, a listing price or an ask (R45). Run it after any mark, before tools/build-llms.mjs.
 //   node tools/build-aisearch.mjs           write
@@ -220,6 +226,94 @@ function cardBlock(id, ticker, slug) {
 <!-- AISEARCH:CARD:END -->`;
 }
 
+// ---------- "have this set's prices dropped?" (optional pages[slug].move, P10 Nov 22) ----------
+// Every figure is a live mark from data/indices.json: the level, its week and month moves (hz), the run of consecutive
+// marks in one direction, and each listed card's basket price against its own previous mark (prevPrice/prevAsOf).
+// A card that is missing, carried, held, unpriced or has no eBay search on the page is left out; under three, no table.
+const pct1 = v => Math.abs(v).toFixed(1) + '%';
+function moveAnswer(slug, p) {
+  const r = T[p.ticker], mv = p.move;
+  if (!r) return null;
+  const H = HELD[r.k] || {};
+  const hist = (r.x.history || []).filter(h => h && h.date && typeof h.level === 'number' && !H[h.date]);
+  let run = 0, dirn = 0;
+  for (let i = hist.length - 1; i > 0; i--) {
+    const d = Math.sign(hist[i].level - hist[i - 1].level);
+    if (!d || (dirn && d !== dirn)) break;
+    dirn = d; run++;
+  }
+  const from = hist[hist.length - 1 - run];
+  const lv = r.last.level, base = r.base || 'its base month';
+  const lead = r.m ? (r.m.v < -0.05 ? 'Yes.' : r.m.v > 0.05 ? 'No, not in the latest month.' : 'Not by much in the latest month.') : '';
+  const vsBase = lv < 100 ? `${pct1(100 - lv)} below` : lv > 100 ? `${pct1(lv - 100)} above` : 'level with';
+  const D = s => '\u0000D' + s + '\u0000';
+  const vb = h => (h.v < -0.05 ? 'fell' : h.v > 0.05 ? 'rose' : 'held within'), parts = [];
+  if (r.m) parts.push({ v: vb(r.m), t: `${pct1(r.m.v)} in the latest month (from ${D(r.m.from)})` });
+  if (r.w) parts.push({ v: vb(r.w), t: `${pct1(r.w.v)} in the latest week (from ${D(r.w.from)})` });
+  const moves = parts.length ? ' It ' + parts.map((x, i) => (i && x.v === parts[i - 1].v ? x.t : `${x.v} ${x.t}`)).join(' and ') + '.' : '';
+  const runTxt = run >= 3 ? ` It has ${dirn < 0 ? 'fallen' : 'risen'} at each of its last ${num(run)} marks, from ${from.level.toFixed(2)} on ${D(from.date)}.` : '';
+  const body = `${lead ? lead + ' ' : ''}On ${D(r.last.date)} the ${mv.setName} index (${r.k}) stood at ${lv.toFixed(2)}, ${vsBase} its ${base} release-month level of 100.${moves}${runTxt}`;
+  const withDates = (s, f) => s.replace(/\u0000D(\d{4}-\d{2}-\d{2})\u0000/g, (_, d) => f(d));
+  const text = withDates(body, fmtDate);
+  const html = withDates(esc(body), d => `<time datetime="${d}">${fmtDay(d)}</time>`).replace(/'/g, '&#39;');
+  // the top cards: live raw basket marks, each with the page's own raw eBay search for that card
+  const page = fs.readFileSync(path.join(ROOT, slug + '.html'), 'utf8');
+  const rows = (mv.cards || []).map(c => {
+    const b = (r.x.basket || []).find(b => String(b.num) === String(c.num) && b.name === c.name);
+    if (!b || b.carried || b.ptHold || typeof b.price !== 'number' || !b.asOf || !b.win) return null;
+    if (b.asOf !== r.last.date) return null; // one read date per block (R35)
+    const m = page.match(new RegExp(`href="(https://www\\.ebay\\.com/sch/i\\.html\\?[^"]*customid=${c.cid}(?:-chase)?)"`));
+    if (!m) return null;
+    const ebay = m[1].replace(/&amp;/g, '&').replace(/customid=[^&"]*/, 'customid=' + slug);
+    const chg = typeof b.prevPrice === 'number' && b.prevPrice > 0 && b.prevAsOf ? { v: (b.price / b.prevPrice - 1) * 100, from: b.prevAsOf } : null;
+    return { ...c, b, ebay, chg };
+  }).filter(Boolean);
+  const showTable = rows.length >= 3;
+  const lineOf = x => `${x.label} ${usd2(x.b.price)}`;
+  const cardsText = showTable ? ` On the same day the top raw cards sold for a median of: ${rows.map(lineOf).join('; ')} (each the median of that card's ungraded sales over the last ${rows[0].b.win} days).` : '';
+  const tr = rows.map(x => {
+    const ch = x.chg ? `<span class="${x.chg.v > 0.05 ? 'up' : x.chg.v < -0.05 ? 'dn' : 'fl'}">${sgn(x.chg.v)}</span><small>from <time datetime="${x.chg.from}">${fmtDay(x.chg.from)}</time></small>` : '<span class="fl">new</span>';
+    return `<tr><td class="nm">${esc(x.label)}${x.note ? `<small>${esc(x.note)}</small>` : ''}</td><td class="px">${usd2(x.b.price)}</td><td class="ch">${ch}</td><td class="go"><a href="${esc(x.ebay)}" target="_blank" rel="noopener sponsored" title="${esc(x.label)}, live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(slug)}:${esc(x.cid)}',page:location.pathname})">eBay&nbsp;&rsaquo;</a></td></tr>`;
+  }).join('\n');
+  const faq = { '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: [{ '@type': 'Question', name: mv.question, acceptedAnswer: { '@type': 'Answer', text: text + cardsText } }] };
+  const block = `<!-- AISEARCH:MOVE:START — built by tools/build-aisearch.mjs from data/indices.json + data/aisearch.json (AI-Search Hunter). Do not hand-edit. -->
+<style>
+  .aism-wrap{max-width:1060px;margin:28px auto 0;padding:0 24px}
+  .aism{background:var(--bg2);border:1px solid var(--border2);border-left:3px solid var(--gold);padding:18px 22px 16px;scroll-margin-top:80px}
+  .aism h2{font-family:var(--fd);font-size:clamp(20px,2.8vw,28px);font-weight:900;text-transform:uppercase;color:var(--text-head);line-height:1.1;margin:0 0 10px;text-wrap:balance}
+  .aism-a{font-size:15px;line-height:1.6;color:var(--text);margin:0 0 12px;max-width:72ch;text-wrap:pretty}
+  .aism-l{font-size:13px;line-height:1.5;color:var(--text-dim);margin:0 0 6px;max-width:72ch}
+  .aism-t{width:100%;max-width:640px;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums}
+  .aism-t th{font-family:var(--fm);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);font-weight:700}
+  .aism-t th.r,.aism-t td.px,.aism-t td.ch{text-align:right}
+  .aism-t td{padding:9px 8px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text)}
+  .aism-t small{display:block;font-size:11px;color:var(--text-dim);margin-top:2px}
+  .aism-t td.px{font-family:var(--fd);font-size:17px;font-weight:800;color:var(--text-head);white-space:nowrap}
+  .aism-t td.ch{white-space:nowrap}
+  .aism-t .dn{color:var(--red)} .aism-t .up{color:var(--green)} .aism-t .fl{color:var(--text-dim)}
+  .aism-t td.go{text-align:right;white-space:nowrap}
+  .aism-t td.go a{font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);display:inline-block;min-height:24px;line-height:24px;transition:opacity .15s}
+  .aism-t td.go a:hover{opacity:.8} .aism-t td.go a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  @media (max-width:720px){.aism-wrap{padding:0 16px}.aism{padding:16px 14px 12px}.aism-t{font-size:12.5px}.aism-t th,.aism-t td{padding:8px 5px}.aism-t td.px{font-size:15px}}
+</style>
+<div class="aism-wrap"><section class="aism" id="price-drop" aria-labelledby="aism-q">
+<h2 id="aism-q">${esc(mv.question)}</h2>
+<p class="aism-a">${html}</p>${showTable ? `
+<p class="aism-l">${esc(mv.lead)}</p>
+<div style="overflow-x:auto;"><table class="aism-t">
+<thead><tr><th scope="col">Card</th><th scope="col" class="r">Raw median</th><th scope="col" class="r">Last mark</th><th scope="col" aria-label="eBay listings"></th></tr></thead>
+<tbody>
+${tr}
+</tbody></table></div>` : ''}
+</section></div>
+<script type="application/ld+json">${JSON.stringify(faq).replace(/</g, '\\u003c')}</script>
+<!-- AISEARCH:MOVE:END -->`;
+  return { block, text: text + cardsText, q: mv.question };
+}
+const usd2 = n => (n >= 1000 ? usd(n) : '$' + n.toFixed(2));
+const MOVES = {};
+
 // ---------- /indices block ----------
 const cell = h => (h ? `<span class="${h.v > 0.05 ? 'up' : h.v < -0.05 ? 'dn' : 'fl'}">${sgn(h.v)}</span>` : '<span class="fl">not yet</span>');
 
@@ -369,6 +463,17 @@ for (const [slug, p] of Object.entries(cfg.pages)) {
       html = html.replace(anchor, () => blk + '\n' + anchor);
     }
   }
+  if (p.move || /<!-- AISEARCH:MOVE:START/.test(html)) {
+    const RE = /<!-- AISEARCH:MOVE:START[\s\S]*?<!-- AISEARCH:MOVE:END -->\n?/;
+    html = html.replace(RE, '');
+    const a = p.move ? moveAnswer(slug, p) : null;
+    if (a) {
+      MOVES[slug] = a;
+      const anchor = p.move.anchor;
+      if (html.split(anchor).length !== 2) throw new Error(slug + ': expected one ' + anchor + ' anchor for the move answer');
+      html = html.replace(anchor, () => a.block + '\n' + anchor);
+    }
+  }
   out.set(f, html);
 }
 
@@ -383,6 +488,11 @@ for (const q of cfg.llms) {
   if (q.answer === 'market') { llms.push(`- [${q.q}](${SITE}${q.page}): ${answerText} ${method}`); continue; }
   if (q.answer === 'crash') { if (crash) llms.push(`- [${q.q}](${SITE}${q.page}): ${crash.text}`); continue; }
   if (q.answer === 'cards') { if (asked) llms.push(`- [${q.q}](${SITE}${q.page}): ${asked.text}`); continue; }
+  if (typeof q.answer === 'string' && q.answer.startsWith('move:')) {
+    const a = MOVES[q.answer.slice(5)];
+    if (a) llms.push(`- [${q.q}](${SITE}${q.page}): ${a.text}`);
+    continue;
+  }
   if (typeof q.answer === 'string' && q.answer.startsWith('card:')) {
     const a = cardAcross(q.answer.slice(5));
     if (a) llms.push(`- [${q.q}](${SITE}${q.page}): ${a.text}${a.c.tell ? ' ' + a.c.tell : ''}`);

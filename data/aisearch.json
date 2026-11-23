@@ -1,5 +1,5 @@
 {
- "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json; {crash} (no ticker) is the one-line form of answer.crash. answer.crash = where each named group's indices stand against their base-month 100; answer.cards = a short table on /indices of the cards collectors ask about most (each row: ticker, num, name exactly as in the basket, label), with each card's raw mark, date and its index's 1-month move, linked to its chase row; an llms entry with \"answer\": \"cards\" prints the same answer. answer.links = internal links printed under the answer. Optional cards{} + pages[slug].card: the AISEARCH:CARD block (one card's dated raw mark in each printing listed, or in its one set for a card listed with a single print, above the page's index block, with a FAQPage); {card} in a description is the page's own printing as one sentence; an llms entry with \"answer\": \"card:<id>\" prints the same answer. Optional \"feed\" adds one line under the question block pointing at /index-feed.json (built by tools/build-index-feed.mjs). No eBay URLs, prices or asks here, ever (R45).",
+ "_comment": "AI-Search Hunter input (Goal League S1, owner aisearch). Read only by tools/build-aisearch.mjs, which writes: <title>, meta description, og:title and og:description for the slugs in pages{} (and, where \"ld\": true, the page's own WebPage JSON-LD name, description and about); the AISEARCH:ANSWER block on /indices; and data/aisearch-llms.txt, which tools/build-llms.mjs puts into llms.txt only (llms-full.txt is untouched). Tokens in descriptions: {level} {date} {priced} {base} {since} {cost} {month}, filled from the page's ticker in data/indices.json; {crash} (no ticker) is the one-line form of answer.crash. answer.crash = where each named group's indices stand against their base-month 100; answer.cards = a short table on /indices of the cards collectors ask about most (each row: ticker, num, name exactly as in the basket, label), with each card's raw mark, date and its index's 1-month move, linked to its chase row; an llms entry with \"answer\": \"cards\" prints the same answer. answer.links = internal links printed under the answer. Optional cards{} + pages[slug].card: the AISEARCH:CARD block (one card's dated raw mark in each printing listed, or in its one set for a card listed with a single print, above the page's index block, with a FAQPage); {card} in a description is the page's own printing as one sentence; an llms entry with \"answer\": \"card:<id>\" prints the same answer. Optional \"feed\" adds one line under the question block pointing at /index-feed.json (built by tools/build-index-feed.mjs). No eBay URLs, prices or asks here, ever (R45). P10 (Nov 22): pages[slug].move adds the AISEARCH:MOVE block (have this set's prices dropped?) above move.anchor; llms answer \"move:<slug>\" carries its text.",
  "pages": {
   "indices": {
    "title": "Is the Pokémon Card Market Crashing? Up or Down by Set, Dated",
@@ -68,6 +68,52 @@
    "title": "Pokémon Neo Genesis 1st Edition Card Prices, Lugia #9 Included: Dated Sold Prices · NG1E",
    "description": "{card} The NG1E index of Pokémon Neo Genesis 1st Edition card prices stood at {level} on {date} (100 = {base}), {since} since then, across {priced} cards on dated sales of raw singles.{month} One raw copy of each card came to about {cost}. Every card is listed with its price and date, Lugia #9 included.",
    "card": "lugia-neo"
+  },
+  "pokemon-30th-anniversary-2026": {
+   "ticker": "TH26",
+   "title": "Pokémon 30th Celebration Prices: Has the Set Dropped? Top Cards & Guide",
+   "description": "On {date} the 30th Celebration index (TH26) stood at {level}, {since} from its {base} release level of 100.{month} Top cards by dated sold price, all 199 cards and every product with its MSRP.",
+   "move": {
+    "anchor": "<!-- BUYBOX:START",
+    "setName": "30th Celebration",
+    "question": "Have 30th Celebration card prices dropped?",
+    "lead": "The set's top cards, raw (ungraded), at the same mark. Last mark is the change since that card's previous mark. eBay opens live listings for that card (affiliate links).",
+    "cards": [
+     {
+      "num": "R/RGB",
+      "name": "Mew",
+      "cid": "th26-r-rgb",
+      "label": "Mew R/RGB"
+     },
+     {
+      "num": "4",
+      "name": "Charizard",
+      "cid": "th26-4",
+      "label": "Charizard #4",
+      "note": "Classic Collection"
+     },
+     {
+      "num": "149",
+      "name": "Lugia",
+      "cid": "th26-149",
+      "label": "Lugia #149",
+      "note": "Classic Collection"
+     },
+     {
+      "num": "203",
+      "name": "Magikarp",
+      "cid": "th26-203",
+      "label": "Magikarp #203",
+      "note": "Classic Collection"
+     },
+     {
+      "num": "152",
+      "name": "Mew Ex",
+      "cid": "th26-152",
+      "label": "Mew ex #152"
+     }
+    ]
+   }
   }
  },
  "answer": {
@@ -313,6 +359,11 @@
   {
    "q": "What are Pokémon Neo Genesis 1st Edition cards selling for, Lugia #9 included?",
    "ticker": "NG1E"
+  },
+  {
+   "q": "Have Pokémon 30th Celebration card prices dropped?",
+   "answer": "move:pokemon-30th-anniversary-2026",
+   "page": "/pokemon-30th-anniversary-2026"
   }
  ],
  "feed": {
