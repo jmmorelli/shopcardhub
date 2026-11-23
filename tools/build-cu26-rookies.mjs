@@ -91,7 +91,9 @@ const say = (id) => {
 };
 const none = ["schlittler", "stewart"].filter((id) => !autoOf(id).raw);
 const tail = none.length === 2 ? `${none.map((id) => `${pBy[id].name}'s ${autoOf(id).title.match(/#[A-Z0-9-]+/)[0]}`).join(" and ")} have no dated sold read on our side yet` : `${say("schlittler")}. ${say("stewart")}`;
-const ANSWER = `Both 2026 Cy Young winners, Jacob Misiorowski and Cam Schlittler, and both Rookies of the Year, Kevin McGonigle and Sal Stewart, have a rookie debut patch autograph in ${esc(REL.product)}, which comes out ${relShort} (${esc(REL.sourceName)}, ${short(REL.sourceDate)}). Each of those is a one-of-one. The card most collectors can buy is the 1st Bowman Chrome Auto. ${say("mcgonigle")}. ${say("misiorowski")}. ${tail}.`;
+// Nov 22: the hero keeps the short answer so the buy strip sits on the first phone screen; the other three reads open the cards section.
+const ANSWER = `Both 2026 Cy Young winners (Jacob Misiorowski, Cam Schlittler) and both Rookies of the Year (Kevin McGonigle, Sal Stewart) have a one-of-one rookie debut patch autograph in ${esc(REL.product)}, out ${relShort} (${esc(REL.sourceName)}, ${short(REL.sourceDate)}). The card most collectors can buy is each player's 1st Bowman Chrome Auto. ${say("mcgonigle")}.`;
+const READS = `${say("misiorowski")}. ${tail}.`;
 const TITLE = "2026 Topps Chrome Update Rookies: Cy Young and ROY Winners' 1st Bowman Autos, Sold";
 const DESC = `Misiorowski, Schlittler, McGonigle and Stewart each have a rookie debut patch auto in 2026 Topps Chrome Update (Dec. 9). What their 1st Bowman Chrome Autos sold for, with sale counts and dates.`;
 
@@ -125,6 +127,7 @@ const body = `
   <section style="border-top:none; padding-top:0;">
     <div class="section-eyebrow green">Four winners</div>
     <h2>Each Winner&rsquo;s 1st Bowman Chrome Card and What It Sold For</h2>
+    <p class="section-intro">${READS}</p>
     <p class="section-intro">Raw means ungraded. A median prints only when there are at least 3 dated sales; fewer are marked thin. Misiorowski&rsquo;s figures are the last read we hold, from before his Cy Young win on Nov. 11, so they show his market before the award. The bottom line of each card fills in once ${esc(REL.product)} sells.</p>
     <div class="cu-grid">
 ${players.map(card).join("\n")}
