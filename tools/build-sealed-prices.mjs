@@ -63,7 +63,7 @@ const row = (p, g) => `      <li class="sp-row">
 
 const groupNote = (g) => {
   const what = g.id === 'booster-box' ? '36 booster packs' : g.id === 'elite-trainer-box' ? '9 booster packs plus sleeves, dice, markers and a promo card' : g.id === 'pokemon-center-etb' ? '11 booster packs plus a promo card with the Pokémon Center stamp, sleeves, dice and markers' : '6 booster packs and nothing else';
-  const msrp = g.id === 'pokemon-center-etb' ? ` Pokémon Center sells this edition itself, for ${money(g.msrp)} at launch.` : g.id === 'elite-trainer-box' ? ` A new one retails for ${money(g.msrp)}.` : g.id === 'booster-bundle' ? ` A Mega Evolution era bundle retails for ${money(g.msrp)}.` : ' The Pokémon Company doesn\'t publish a booster box retail price.';
+  const msrp = g.id === 'pokemon-center-etb' ? ` Pokémon Center sells this edition itself, for ${money(g.msrp)} at launch.` : g.id === 'elite-trainer-box' ? ` This is the retail edition, which launched at ${money(g.msrp)}. The Pokémon Center edition has its own table above.` : g.id === 'booster-bundle' ? ` A Mega Evolution era bundle retails for ${money(g.msrp)}.` : ' The Pokémon Company doesn\'t publish a booster box retail price.';
   return `Each one holds ${what}.${msrp} Highest sold price first.`;
 };
 
