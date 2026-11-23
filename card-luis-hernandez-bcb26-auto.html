@@ -398,7 +398,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 /* Night Crew Oct 23 (B89/B92): the chart box is drawn at the SVG's final height (viewBox 640×260) before the series loads,
    so the line replacing "Loading…" no longer pushes the page down (1440: #chart grew 156 → 300 px at ~0.6 s). */
 .cp-chart { box-sizing:border-box; min-height:calc((min(100vw - 40px, 720px) - 18px) * 0.40625 + 48px); } /* + padding, border and the one-line legend */
-#cp-why { min-height:18px; }
+#cp-why { min-height:36px; } /* Night Crew Nov 23 (CARD-CLS): the Price Truth hold reason fills to 2 lines at 1440 too (35 px; Sapphire CLS 0.017-0.018) */
 @media (min-width:641px) { .cp-actions .cp-sig { white-space:nowrap; } } /* B92 residual: the label growing to "engine · HOLD · gated, thin sample" wrapped the chip to 2 lines (+6 px) */
 .cp-chart .axis { font-family:var(--fm); font-size:11px; fill:var(--text-dim); }
 .cp-chart .grid { stroke:rgba(255,255,255,0.06); }
@@ -1033,7 +1033,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </script>
 <!-- NAV:END -->
 
-<main class="cp-wrap" data-prices-updated="2026-11-19">
+<main class="cp-wrap" data-prices-updated="2026-11-22">
   <div class="cp-crumbs"><a href="/">Home</a> <span>/</span> <a href="/cards">Card Charts</a> <span>/</span> <span>Luis Hernandez</span></div>
 
   <div class="cp-head">
@@ -1124,7 +1124,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <script>(function(){var m=window.matchMedia&&matchMedia('(max-width:734px)');if(!m)return;function s(){var d=document.querySelectorAll('.ds-foot-col');for(var i=0;i<d.length;i++)d[i].open=!m.matches;}s();if(m.addEventListener)m.addEventListener('change',s);})();</script>
 <!-- FOOTER:END --></footer>
 
-<script>window.SCH_CARD = {"id":"luis-hernandez-bcb26-auto","label":"Luis Hernandez — 2026 Bowman Chrome 1st Bowman Auto CPA-LH","code":"CPA-LH","must":"Hernandez","type":"chrome-auto"};</script>
+<script>window.SCH_CARD = {"id":"luis-hernandez-bcb26-auto","label":"Luis Hernandez — 2026 Bowman Chrome 1st Bowman Auto CPA-LH","code":"CPA-LH","must":"Hernandez","type":"chrome-auto"};
+  /* O-77 (a), Night Crew Nov 23: the card-page exposure event fires on every engine card page too (it fired only on the template pages) */
+  try { if (typeof gtag === 'function') gtag('event', 'card_page_view', { item: window.SCH_CARD.id }); } catch (e) {}</script>
 <script>
 (function(){
   'use strict';

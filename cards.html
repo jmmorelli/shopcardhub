@@ -398,7 +398,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 /* Night Crew Oct 23 (B89/B92): the chart box is drawn at the SVG's final height (viewBox 640×260) before the series loads,
    so the line replacing "Loading…" no longer pushes the page down (1440: #chart grew 156 → 300 px at ~0.6 s). */
 .cp-chart { box-sizing:border-box; min-height:calc((min(100vw - 40px, 720px) - 18px) * 0.40625 + 48px); } /* + padding, border and the one-line legend */
-#cp-why { min-height:18px; }
+#cp-why { min-height:36px; } /* Night Crew Nov 23 (CARD-CLS): the Price Truth hold reason fills to 2 lines at 1440 too (35 px; Sapphire CLS 0.017-0.018) */
 @media (min-width:641px) { .cp-actions .cp-sig { white-space:nowrap; } } /* B92 residual: the label growing to "engine · HOLD · gated, thin sample" wrapped the chip to 2 lines (+6 px) */
 .cp-chart .axis { font-family:var(--fm); font-size:11px; fill:var(--text-dim); }
 .cp-chart .grid { stroke:rgba(255,255,255,0.06); }
@@ -1043,7 +1043,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </script>
 <!-- NAV:END -->
 
-<main class="cp-wrap" data-prices-updated="2026-11-19">
+<main class="cp-wrap" data-prices-updated="2026-11-22">
   <div class="cp-crumbs"><a href="/">Home</a> <span>/</span> <span>Card Charts</span></div>
   <div class="cp-eyebrow">Card charts · re-priced nightly</div>
   <h1 class="cp-title">Every tracked card,<br>one page each</h1>
@@ -1056,9 +1056,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <span class="p"><b data-last>$155</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-andrew-fischer" data-key="ebay:andrew-fischer">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/trIAAeSwHYBqrB15/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/QIQAAeSwy1FqtJZn/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Andrew Fischer</span><span class="m">1st Bowman Chrome Auto · raw · CPA-AF</span></span>
-    <span class="p"><b data-last>$190</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$180</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-aiva-arquette" data-key="ebay:aiva-arquette">
     <span class="ph"><img src="https://i.ebayimg.com/images/g/SvIAAeSwp21qRJ-U/s-l500.jpg" alt="" loading="lazy"></span>
@@ -1066,9 +1066,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <span class="p"><b data-last>$125</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-wehiwa-aloy" data-key="ebay:wehiwa-aloy">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/G4kAAeSwFSFqKX-z/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/9O8AAeSwm5Nq1XLj/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Wehiwa Aloy</span><span class="m">1st Bowman Chrome Auto · raw · CPA-WA</span></span>
-    <span class="p"><b data-last>$68.50</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$65.00</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-daniel-pierce" data-key="ebay:daniel-pierce">
     <span class="ph"><img src="https://i.ebayimg.com/images/g/-wwAAeSw0UlqENj7/s-l500.jpg" alt="" loading="lazy"></span>
@@ -1086,14 +1086,14 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <span class="p"><b data-last>$57.45</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-justin-gonzalez" data-key="ebay:justin-gonzalez">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/rTkAAeSwhrJqs~ZK/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/APgAAeSwndxqlMND/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Justin Gonzales</span><span class="m">1st Bowman Chrome Auto · raw · CPA-JG</span></span>
-    <span class="p"><b data-last>$118</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$120</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-edward-florentino" data-key="ebay:edward-florentino">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/jNAAAeSw72hqlFcZ/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/2zoAAeSwy7BqSu5A/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Edward Florentino</span><span class="m">1st Bowman Chrome Auto · raw · CPA-EF</span></span>
-    <span class="p"><b data-last>$99.99</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$105</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-seong-jun-kim" data-key="ebay:seong-jun-kim">
     <span class="ph"><img src="https://i.ebayimg.com/images/g/q4UAAeSwwdtqTroc/s-l500.jpg" alt="" loading="lazy"></span>
@@ -1106,9 +1106,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <span class="p"><b data-last>—</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-wandy-asigen-bcb26-auto" data-key="ebay:wandy-asigen-bcb26-auto">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/K5EAAeSwrgBqt9GE/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/eegAAeSwIHRq1sJS/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Wandy Asigen</span><span class="m">1st Bowman Chrome Auto · raw · CPA-WA</span></span>
-    <span class="p"><b data-last>$70.74</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$71.55</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-francisco-renteria-bcb26-auto" data-key="ebay:francisco-renteria-bcb26-auto">
     <span class="ph"><img src="https://i.ebayimg.com/images/g/RVIAAeSwahRqzAVW/s-l500.jpg" alt="" loading="lazy"></span>
@@ -1116,9 +1116,9 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <span class="p"><b data-last>$200</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-angeibel-gomez-bcb26-auto" data-key="ebay:angeibel-gomez-bcb26-auto">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/U3QAAeSw87Bq8iOM/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/tyYAAeSwJOtqxVuv/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Angeibel Gomez</span><span class="m">1st Bowman Chrome Auto · raw · CPA-AG</span></span>
-    <span class="p"><b data-last>$133</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$130</b><span data-roc>&nbsp;</span></span>
   </a>
 </div>
 <h2 class="cp-sec-h">2026 Bowman · Sapphire &amp; Chrome base</h2>
@@ -1151,7 +1151,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
   <a class="hub-row" href="/card-luis-hernandez-bcb26-base" data-key="ebay:luis-hernandez-bcb26-base">
     <span class="ph"><img src="https://i.ebayimg.com/images/g/QggAAeSwJflq1rFu/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Luis Hernandez</span><span class="m">1st Bowman Chrome · raw base · BCP-200</span></span>
-    <span class="p"><b data-last>$3.59</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$3.44</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-wandy-asigen-bcb26-base" data-key="ebay:wandy-asigen-bcb26-base">
     <span class="ph"><img src="https://i.ebayimg.com/images/g/CdUAAeSwEK9qv~qC/s-l500.jpg" alt="" loading="lazy"></span>
@@ -1159,7 +1159,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     <span class="p"><b data-last>$3.37</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-francisco-renteria-bcb26-base" data-key="ebay:francisco-renteria-bcb26-base">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/eJwAAeSwvAdq8nIn/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/YAkAAeSwOy9rAOVW/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Francisco Renteria</span><span class="m">1st Bowman Chrome · raw base · BCP-163</span></span>
     <span class="p"><b data-last>$3.63</b><span data-roc>&nbsp;</span></span>
   </a>
@@ -1172,42 +1172,42 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 <h2 class="cp-sec-h">Pokémon · index singles</h2>
 <div class="hub-list">
   <a class="hub-row" href="/card-umbreon-ex-161-prismatic-evolutions" data-key="ebay:umbreon-ex-sir-pe">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/stkAAeSwbIFq-BMS/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/JksAAeSw~yJrAP7E/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Umbreon ex SIR #161</span><span class="m">SIR single · raw</span></span>
-    <span class="p"><b data-last>$1,125</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$1,100</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/pitch-black-set-guide#engine-mega-darkrai-ex-sir" data-key="ebay:mega-darkrai-ex-sir">
     <span class="ph"><img src="https://i.ebayimg.com/images/g/rocAAeSwiORqvAxr/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Mega Darkrai ex SIR #116/084</span><span class="m">SIR single · raw</span></span>
-    <span class="p"><b data-last>$158</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$160</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-mega-greninja-ex-116-chaos-rising" data-key="ebay:mega-greninja-ex-sir">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/XKMAAeSwWOBqnI1j/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/ynEAAeSwrmRqRFgZ/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Mega Greninja ex SIR #116/086</span><span class="m">SIR single · raw</span></span>
-    <span class="p"><b data-last>$146</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$135</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-team-rockets-mewtwo-ex-281-ascended-heroes" data-key="ebay:tr-mewtwo-ex-sir">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/59oAAeSwxMpqXbb2/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/NC0AAeSwLGBqD5oF/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">T.R.'s Mewtwo ex SIR</span><span class="m">SIR single · raw</span></span>
-    <span class="p"><b data-last>$211</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$221</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/card-mega-lucario-ex-179-mega-evolution" data-key="ebay:mega-lucario-ex-sir">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/A3gAAeSw0jpql19N/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/QlYAAeSwd9tq0MIs/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Mega Lucario ex SIR #179/132</span><span class="m">SIR single · raw</span></span>
     <span class="p"><b data-last>$170</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/pokemon-30th-anniversary-2026#engine-mewtwo-ex-sir-th26" data-key="ebay:mewtwo-ex-sir-th26">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/IM4AAeSwFhRq6f0N/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/3xIAAeSw~gBq~8~x/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Mewtwo ex #157/128</span><span class="m">SIR single · raw</span></span>
-    <span class="p"><b data-last>$32.04</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$29.80</b><span data-roc>&nbsp;</span></span>
   </a>
   <a class="hub-row" href="/pokemon-30th-anniversary-2026#engine-mew-ex-sir-th26" data-key="ebay:mew-ex-sir-th26">
-    <span class="ph"><img src="https://i.ebayimg.com/images/g/lxwAAeSwNuFquu7S/s-l500.jpg" alt="" loading="lazy"></span>
+    <span class="ph"><img src="https://i.ebayimg.com/images/g/HI4AAeSwEF9rAaTX/s-l500.jpg" alt="" loading="lazy"></span>
     <span class="nm"><span class="t">Mew ex #158/128</span><span class="m">SIR single · raw</span></span>
-    <span class="p"><b data-last>$39.73</b><span data-roc>&nbsp;</span></span>
+    <span class="p"><b data-last>$38.55</b><span data-roc>&nbsp;</span></span>
   </a>
 </div>
-  <p class="cp-note" style="margin-top:26px;">Marks as of <span data-day>2026-11-19</span>. Asks, not solds, until hammers accumulate. ShopCardHub earns a commission on eBay purchases made through links on these pages.</p>
+  <p class="cp-note" style="margin-top:26px;">Marks as of <span data-day>2026-11-22</span>. Asks, not solds, until hammers accumulate. ShopCardHub earns a commission on eBay purchases made through links on these pages.</p>
 </main>
 
 <footer><!-- FOOTER:START — site footer, generated by tools/build-footer.js (DESIGN-SYSTEM.md "Footer"). Do not hand-edit: the note below is this page's own text, carried on every rebuild. -->
