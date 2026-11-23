@@ -246,6 +246,32 @@ html:has(section.hero:not(.desk-hero)) :is(.btn-primary,.btn-secondary):active{t
 :where(html:has(section.hero:not(.desk-hero))) body .section-intro{font-size:17px;line-height:1.47;max-width:640px}
 @media (max-width:734px){html body section.hero:not(.desk-hero) .hero-cta :is(.btn-primary,.btn-secondary){flex:1 1 100%}}
 @media (prefers-reduced-motion:reduce){html:has(section.hero:not(.desk-hero)) :is(.btn-primary,.btn-secondary):active{transform:none}}
+/* 0f+. The ranked entry (run 24): .card-entry on the 10 player and board guides. Spec: DESIGN-SYSTEM.md. */
+html body .card-entry{background:var(--ds-surface-1);border:0;border-radius:var(--ds-radius);padding:40px;margin-bottom:24px;box-shadow:none;animation:none}
+html body .card-entry:hover{box-shadow:none}
+html body .card-entry::before,html body .card-entry::after{display:none}
+html body .card-entry .entry-rank{position:static;font:600 12px/1.33 var(--ds-font);color:var(--text-dim);margin:0 0 12px}
+html body .card-entry .entry-header{gap:16px 32px;margin-bottom:24px}
+html body .card-entry :is(.entry-sport-tag,.price-label,.entry-stat-label,.entry-since){font:400 12px/1.33 var(--ds-font);font-size:12px !important;letter-spacing:0;text-transform:none;color:var(--text-dim);text-shadow:none}
+html body .card-entry .entry-sport-tag{font-weight:600;margin-bottom:8px}
+html body .card-entry .entry-title{font:600 var(--ds-fs-tile)/1.17 var(--ds-font);letter-spacing:0;text-transform:none;color:var(--text-head)}
+html body .card-entry .price-main{font:600 clamp(28px,3vw,36px)/1.05 var(--ds-font);letter-spacing:-.02em;color:var(--text-head) !important;text-shadow:none}
+html body .card-entry .price-main.nodata{font-size:17px;color:var(--text-dim) !important}
+html body .card-entry .price-sub{font:400 12px/1.33 var(--ds-font);color:var(--text-dim)}
+html body .card-entry .entry-stats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+html body .card-entry .entry-stat{flex:1 1 160px;background:var(--ds-surface-2);border:0;border-radius:12px;padding:16px}
+html body .card-entry .entry-stat[style*="grid-column"]{flex-basis:100%}
+html body .card-entry .entry-stat-label{margin-bottom:4px}
+html body .card-entry .entry-stat-value{font:600 21px/1.2 var(--ds-font);letter-spacing:0;color:var(--text-head)}
+html body .card-entry .entry-body{font-size:17px;line-height:1.47;color:var(--text);max-width:42em}
+html body .card-entry :is(.entry-body,.entry-verdict) strong{font-weight:600;color:var(--text-head)}
+html body .card-entry .entry-verdict{background:var(--ds-surface-2);border:0;border-radius:12px;padding:16px 20px;font-size:14px;line-height:1.43;color:var(--text)}
+html body .card-entry .entry-ctas{gap:12px 16px}
+html body .card-entry .sch-track-card{position:relative;min-height:32px;margin-top:12px;padding:0 14px;border:0;border-radius:980px;background:var(--ds-surface-3);color:var(--text-head);font:600 12px/1 var(--ds-font);letter-spacing:0;text-transform:none}
+html body .card-entry .sch-track-card::after{content:"";position:absolute;inset:-6px 0}
+html body .card-entry .sch-track-card:hover{background:#3a3a3c;color:var(--text-head)}
+html body .card-entry .sch-track-card:is(.sch-tracked,.sch-owned){background:transparent;color:var(--text-dim);padding:0}
+@media (max-width:734px){html body .card-entry{padding:24px 20px}}
 /* 2. Reduced motion — one global block for the whole site. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -266,13 +292,7 @@ html:has(section.hero:not(.desk-hero)) :is(.btn-primary,.btn-secondary):active{t
 .tbl-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; }
 .tbl-scroll--mg > table { margin-top:0; margin-bottom:0; }
 
-/* 4. Minimum legible text size on phones.
-   The list below is every selector on the site whose inline CSS sets a
-   font-size under 11px (tickers, chips, eyebrows, table headers, stat labels…).
-   Each selector is prefixed with `body` (+1 type specificity) so it beats the
-   original rule even when that rule lives in a <style> injected later in <body>
-   (the generated nav block). No !important needed.
-   Purely decorative glyph selectors (.chevron, .tl-dot, .vc-caret) are left out. */
+/* 4. Minimum legible text size on phones. History: git log. */
 @media (max-width:540px) {
   body .alloc-legend,
   body .asof,
@@ -479,10 +499,7 @@ body .focus .items a { min-height: 44px; }
 }
 /* 7. Sticky rail height in dynamic-viewport units. */
 @supports (height: 100dvh) { body .rail { max-height: calc(100dvh - var(--ds-nav-h, 58px)); } }
-/* 7b (Site Sweep, Sep 29 2026). The DEST strip (Watchlist / Bangers tiles, tools/dest.py) has no bottom
-   margin, so where the next section opens straight on its eyebrow ("THE THESIS", "RANKED BY ROI") the
-   eyebrow sat flush against the tiles (15 pages on desktop). Only that case gets 24px; pages whose next
-   block brings its own spacing (alert bars, the ROI calculator) do not move. */
+/* 7b (Site Sweep, Sep 29 2026). History: git log. */
 body .dest-strip:has(+ .container > section:first-child:not(#calc) > .section-eyebrow:first-child),
 body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 24px; }
 /* 8. Phone dock for the buy strip (Sep 26; NC 8b–8d Sep 28–30; Cupertino run 18 look). js/buy-strip.js shows a fixed
@@ -550,10 +567,7 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body .sidx-tbl .sidx-auc-slot:empty { display: none; }
 }
 
-/* 10b (CoS, Sep 29 2026). §10's phone row put ★ · Listing · the "vs sold mark" chip · the Bid slot on one
-   flex line; on rows with a live auction the chip took the room and the Bid button shrank to 18 px wide
-   (site-gates image-sweep, run 36624474019: clipped Bid CTAs on 5 sector pages). The row now wraps:
-   ★ · Listing · Bid on the first line, the chip on its own line under them — the order b797907 set. */
+/* 10b (CoS, Sep 29 2026). History: git log. */
 @media (max-width: 560px) {
   body .sidx-tbl td.act .act-w { flex-wrap: wrap; row-gap: 6px; }
   body .sidx-tbl .sidx-auc-slot { flex: 1 1 120px; min-width: 120px; }
@@ -620,10 +634,7 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body a.btn, body a.btn-primary, body a.btn-secondary { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
 }
 
-/* 13 (Site Sweep, Oct 2 2026). Set-index stats grid on a phone. Under 900 px .sidx-stats is 4 × 1fr, and 1fr won't
-   shrink below its widest word ("$10,399 Σpx·w", "28.784355"), so 16 sector pages painted 3–35 px wider than a
-   390 px phone until fold-dense.js folded the grid (a sideways wobble at load, longer on slow phones). Columns may
-   now shrink; on a phone the values drop to 12 px so they fit their cell. No content or order change. */
+/* 13 (Site Sweep, Oct 2 2026). History: git log. */
 @media (max-width: 900px) {
   body .sidx-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   body .sidx-stats > div { min-width: 0; }
@@ -634,11 +645,7 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body .sidx-stats .v { font-size: 12px; }
 }
 
-/* 14. Hero card photo: hold its box before js/card-img.js runs (Night Crew, Oct 2 — B26 load CLS).
-   The loader only sizes the span when it runs, so on desktop the hero column grew 0 → 336 px after first
-   paint and pushed the headline, buy strip and meta down (BCB26 guide 0.23 at 1024/1440, /indices 0.28).
-   These mirror the pages' own .sch-cimg sizes; once the loader adds .sch-cimg, the page rules take over.
-   css/terminal-page.css and indices.html carry their own sizes the same way. */
+/* 14. Hero card photo: hold its box before js/card-img.js runs (Night Crew, Oct 2 — B26 load CLS). History: git log. */
 .hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { display:block; margin:0 auto; width:240px; height:336px; }
 .mast.hero-grid .hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { width:150px; height:210px; }
 @media (max-width:700px) {
@@ -646,10 +653,7 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   .mast.hero-grid .hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { width:90px; height:126px; }
 }
 
-/* 15. Set "at a glance" tiles two to a row on phones (Night Crew, Oct 2 — backlog P10, First-Time Visitor Oct 1/2).
-   minmax(140px) fit one tile per row in the 268 px column, so twelve tiles ran 1,289 px on the Bowman Chrome guide
-   (587 px now) and the four on /bowman-football 422 px (177). Values step down to 18 px so a date stays on one line.
-   The guide-fold variant in terminal-page.css keeps its own grid. */
+/* 15. Set "at a glance" tiles two to a row on phones (Night Crew, Oct 2 — backlog P10, First-Time Visitor Oct 1/2). History: git log. */
 @media (max-width:480px) {
   .set-banner-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
   .set-banner-grid .banner-stat { padding:12px 10px; min-width:0; overflow-wrap:anywhere; }
@@ -691,11 +695,7 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   body .chase-tbl td.card .cn { font-size: 11px; }
 }
 
-/* 17 (CoS, Oct 2 2026 — same brief, "freeze the signal column"). The Bangers board on a phone scrolled
-   sideways and the Signal chip — the one column a collector opens the page for — was clipped to "HOL" /
-   "PAS" at the right edge (Oct 2 production render at 390). Under 700 px each seat is one block: rank ·
-   photo · name over price · signal chip, no sideways scroll. The sortable header is desktop-only (the
-   board is already in rank order). The deep-dive links were hidden on phones already (page CSS). */
+/* 17 (CoS, Oct 2 2026 — same brief, "freeze the signal column"). History: git log. */
 @media (max-width: 700px) {
   body .bb-board .tbl-scroll { overflow-x: visible; }
   body .bb-table, body .bb-table tbody { display: block; width: 100%; }
@@ -732,10 +732,7 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   .bstrip[data-bs-msrp] .bs-live:empty { min-width: 260px; }
 }
 
-/* 19 (Night Crew, Oct 3 2026 — First-Time Visitor). The "dungeon effects" script on ~100 guide pages injects a 1 px
-   cyan line that sweeps down the hero for 3.5 s at load, across the headline a first-time visitor is reading. It
-   animates `top`, so it also logs a layout-shift entry every frame. terminal-page.css already hid it on the card
-   pages; now it is hidden everywhere. The blink cursor was stopped Sep 1 (above). */
+/* 19 (Night Crew, Oct 3 2026 — First-Time Visitor). History: git log. */
 body .hero-scan-line { display: none !important; }
 
 /* 20 (Night Crew, Oct 5 2026 — B46). The eBay box on the 27 sector-index pages (BUYBOX, from new-sector-page.mjs) puts its title and three buttons on one flex row. History: git log. */
@@ -771,18 +768,12 @@ body .strip > a.chip { display: inline-flex; align-items: center; gap: 4px; min-
   body .mobile-nav { display: block !important; }
 }
 
-/* P42 (First-Time Visitor Oct 9 + Oct 12) — Best Hobby Boxes "At a Glance" on a phone stacked ~201–224 px per box
-   (1,473 px for seven), because the Sport cell pushed Sold / Autos / Verdict onto a second label row. The box name's
-   sub-line already says what it is; on a stacked ranking row the Sport cell is dropped so the three numbers sit on
-   one line. Only rows that carry a Verdict (the ranking), only on phones; desktop keeps the full table. */
+/* P42 (First-Time Visitor Oct 9 + Oct 12) History: git log. */
 @media (max-width: 600px) {
   body table.roi-table.rt-stack tr:has(> td[data-label="Verdict"]) > td[data-label="Sport"] { display: none; }
 }
 
-/* P46 (First-Time Visitor Oct 12) — guide heroes (104 pages share .hero { padding:72px 0 56px }) opened with a 72 px
-   empty band under the sticky nav on a phone. 24 px is enough air; the headline and the buy box move up 48 px.
-   Plain .hero on purpose: it beats the earlier per-page rule but not css/terminal-page.css (16 px, loaded after this
-   sheet on the 8 terminal guides), which is already tighter. */
+/* P46 (First-Time Visitor Oct 12) History: git log. */
 @media (max-width: 600px) {
   .hero { padding-top: 24px; }
 }
@@ -873,20 +864,14 @@ body .strip { display: none !important; }
   body .roi-table thead th { letter-spacing: 1px; }
 }
 
-/* 29 (Night Crew B88, Oct 19 2026). Chase-index phone rows (§16) were placed by column number. shop-spread.js (R38)
-   inserts a Shop cell before the ★ on every chase row, so under 560 px the Shop cell took the ★ slot, the ★ took the
-   Listings slot and the Listings button fell into an implicit column hanging off the left edge (Design Scout and lead,
-   Oct 19, PRIS25 at 390). Place the last three cells by class instead: ★ · shop price · Listings on the third line. */
+/* 29 (Night Crew B88, Oct 19 2026). History: git log. */
 @media (max-width: 560px) {
   body .chase-tbl tbody tr { grid-template-areas: "rk card price" "rk rar since" "star shop act"; }
   body .chase-tbl tr td.trk { grid-area: star; }
   body .chase-tbl tr td.shop { grid-area: shop; text-align: left; white-space: nowrap; }
   body .chase-tbl tr td.lst { grid-area: act; }
   body .chase-tbl thead th:nth-child(n+8) { display: none; }
-  /* B91 (Night Crew, Oct 21 2026): the act cell is an auto track. When a live auction fills the Bid slot (and the
-     "vs sold mark" note), it grows to ~350 px and the shop price + chip slide under the Listings button (live CR
-     59-66 px, AH 16 px, PRIS 10 px at 390). Rows with a filled Bid slot get a fourth line: the actions go full width
-     under ★ · shop. Rows without one keep the three-line layout. */
+  /* B91 (Night Crew, Oct 21 2026): the act cell is an auto track. History: git log. */
   body .chase-tbl tbody tr:has(.sidx-auc-slot:not(:empty)), body .chase-tbl tbody tr:has(.sch-vs-sold) {
     grid-template-areas: "rk card price" "rk rar since" "star shop shop" "act act act"; }
   body .chase-tbl tbody tr:has(.sidx-auc-slot:not(:empty)) td.lst, body .chase-tbl tbody tr:has(.sch-vs-sold) td.lst { padding-top: 6px; }
