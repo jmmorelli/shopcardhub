@@ -307,6 +307,29 @@ details.fold>summary:focus-visible{outline:2px solid var(--accent);outline-offse
   @keyframes tydrop{from{transform:translateY(-200px)}to{transform:none}}
 }
 @media (max-width:600px){.ty-cols{gap:4px}.ty-well{height:150px}.ty-lab{font-size:8.5px;letter-spacing:0}.viewsw button{min-height:40px}.ty-replay{min-height:44px}}
+/* Since you last looked: what changed between Mo's visits, kept per browser (cr-seen). */
+.back{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:-2px 0 0;padding:8px 12px;border:1px dashed color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:10px;background:color-mix(in srgb,var(--accent) 6%,var(--panel));font-size:13.5px;min-width:0}
+.back .bk-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-right:2px}
+.back .bk-t{font-family:var(--mono);font-size:12px;color:var(--muted);margin-right:4px}
+.back .bk-c{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:3px 10px;color:var(--ink);text-decoration:none;white-space:nowrap}
+.back .bk-c b{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:600;color:var(--accent)}
+.back a.bk-c{border-color:var(--accent)}
+.back .bk-q{color:var(--muted)}
+.readout em.dl{font-style:normal;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:11px;font-weight:600;line-height:1;padding:3px 6px;border-radius:999px;border:1px solid color-mix(in srgb,var(--accent) 55%,var(--line));color:var(--accent);white-space:nowrap;flex:none}
+.readout em.dl.down{border-color:color-mix(in srgb,var(--good) 55%,var(--line));color:var(--good)}
+a.readout.hot em.dl{border-color:#1a1304;color:#1a1304}
+.day a.readout.hot em.dl{border-color:#fff;color:#fff}
+.item .newtag{display:inline-block;margin-left:8px;vertical-align:1px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:2px 7px;border-radius:999px;background:var(--accent);color:#1a1304}
+.day .item .newtag{color:#fff}
+@media (prefers-reduced-motion: no-preference){
+  .fresh .dl,.back.fresh .bk-c{animation:bkin .34s cubic-bezier(.2,.8,.2,1) both}
+  .back.fresh .bk-c:nth-of-type(2){animation-delay:.05s}.back.fresh .bk-c:nth-of-type(3){animation-delay:.1s}.back.fresh .bk-c:nth-of-type(4){animation-delay:.15s}.back.fresh .bk-c:nth-of-type(5){animation-delay:.2s}
+  .item .newtag{animation:bkglow 1.6s ease-out 2}
+  @keyframes bkin{from{opacity:.35;transform:translateY(5px) scale(.94)}to{opacity:1;transform:none}}
+  @keyframes bkglow{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 60%,transparent)}100%{box-shadow:0 0 0 8px transparent}}
+}
+@media (max-width:600px){.back .bk-c{white-space:normal}}
+@media (max-width:700px){.readout{gap:7px;padding:9px 10px}a.readout.hot::after{content:"\2193"}}
 /* Last 24 hours */
 .shift{display:flex;flex-direction:column;gap:5px}
 .sh-row{display:grid;grid-template-columns:9.5em minmax(0,1fr);gap:10px;align-items:center}
@@ -503,6 +526,7 @@ details.fold>summary{min-height:44px}
   </header>
 
   <section class="wall rise" id="wall" aria-label="At a glance" hidden></section>
+  <div class="back" id="back" role="status" aria-label="Since you last looked" hidden></div>
 
   <section class="panel floorwrap rise" aria-labelledby="h-floor">
     <div class="head">
@@ -673,7 +697,7 @@ details.fold>summary{min-height:44px}
 
   <footer>
     <span id="foot">The Chief of Staff updates this page each time it reads and rules on agent reports. The page refreshes itself while open.</span>
-    <span id="design">Design updated Nov 22, 2026: a Today's tally view on the floor, where each report ruled today drops into its team's column.</span>
+    <span id="design">Design updated Nov 23, 2026: a "Since you last looked" line, with what changed while you were away.</span>
     <span><button class="btn link" id="signout" type="button">Sign out</button></span>
   </footer>
 </div>
@@ -1306,7 +1330,7 @@ details.fold>summary{min-height:44px}
     asks.forEach(function(a){
       var id=String(a.id),d=obj(decisions[id]),label=String(a.title||a.text);live[id]=1;
       var it=el("div","item"+(d?" answered":""));
-      it.appendChild(el("div","kind","Decision"));
+      var kd=el("div","kind","Decision");if(!d&&isNewItem(id)){var nt=el("span","newtag","New");nt.title="New since you last looked";kd.appendChild(nt)}it.appendChild(kd);
       it.appendChild(el("div","q",label));
       if(a.detail)it.appendChild(el("div","d",a.detail));
       if(a.recommend){var r=el("div","rec");r.appendChild(el("b",null,"Chief recommends: "));r.appendChild(document.createTextNode(a.recommend));it.appendChild(r)}
@@ -1324,7 +1348,7 @@ details.fold>summary{min-height:44px}
     needs.forEach(function(n){
       var id=String(n.id||hashId(n.text)),d=obj(decisions[id]),label=String(n.text);live[id]=1;
       var it=el("div","item"+(d?" answered":""));
-      it.appendChild(el("div","kind","Only you can do this"));
+      var kd=el("div","kind","Only you can do this");if(!d&&isNewItem(id)){var nt=el("span","newtag","New");nt.title="New since you last looked";kd.appendChild(nt)}it.appendChild(kd);
       it.appendChild(el("div","d",n.text));
       if(n.since){var dd=days(n.since);it.appendChild(el("span","since","since "+fday(n.since)+(dd!=null?" · "+dd+" days":"")))}
       if(d){it.appendChild(answerLine(id,d,true,label))}
@@ -1554,15 +1578,69 @@ details.fold>summary{min-height:44px}
     var s=state||{};$("feed-src").textContent="Written by "+(s.updatedBy||"the Chief of Staff")+(s.asOf?" · "+fmt(s.asOf):"");
   }
 
+  /* Since you last looked. A snapshot of the counts is kept in this browser only (cr-seen).
+     Visits less than 20 minutes apart count as one, so a reload keeps the same "last time". */
+  var seenBase,seenFresh=true,SEEN_GAP=20*60000;
+  var reduce=!!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  function openIds(s){
+    var out=[];
+    arr(s.asks).filter(obj).forEach(function(a){if(a.id&&(a.title||a.text)&&!obj(decisions[String(a.id)]))out.push(String(a.id))});
+    arr(s.needsMo).filter(obj).forEach(function(n){if(!n.text)return;var id=String(n.id||hashId(n.text));if(!obj(decisions[id]))out.push(id)});
+    return out;
+  }
+  function snapNow(s){
+    var ids=openIds(s);
+    return {t:Date.now(),w:ids.length,ids:ids,
+      o:arr(s.orders).filter(function(o){return o&&o.status!=="done"}).length,
+      r:arr(s.rulings).filter(function(r){return r&&r.status==="open"}).length,
+      a:arr(s.agents).filter(function(a){return a&&a.state&&a.state!=="ok"}).length};
+  }
+  function seenUpdate(s){
+    var cur=snapNow(s),now=cur.t,st=null;
+    if(seenBase===undefined){
+      try{st=JSON.parse(localStorage.getItem("cr-seen")||"null")}catch(e){st=null}
+      st=obj(st);
+      if(st&&obj(st.cur)&&typeof st.at==="number"){seenBase=(now-st.at<SEEN_GAP)?(obj(st.base)||null):st.cur}else seenBase=null;
+      if(seenBase&&(typeof seenBase.t!=="number"||!Array.isArray(seenBase.ids)))seenBase=null;
+    }
+    try{localStorage.setItem("cr-seen",JSON.stringify({base:seenBase,cur:cur,at:now}))}catch(e){}
+    return cur;
+  }
+  function isNewItem(id){return !!(seenBase&&seenBase.ids.indexOf(String(id))<0)}
+  function after(iso){var d=new Date(iso);return seenBase&&!isNaN(d)&&d.getTime()>seenBase.t}
+  function deltaChip(n,what){
+    var e=el("em","dl"+(n<0?" down":""),(n>0?"+":"\u2212")+Math.abs(n));
+    e.title=(n>0?n+" more ":Math.abs(n)+" fewer ")+what+" than when you last looked";return e;
+  }
+  function renderBack(s,cur){
+    var b=$("back");clear(b);
+    if(!state){b.hidden=true;return}
+    b.hidden=false;b.classList.toggle("fresh",seenFresh&&!reduce);
+    b.appendChild(el("span","bk-h","Since you last looked"));
+    if(!seenBase){b.appendChild(el("span","bk-q","First visit on this browser. From the next one, this line shows what changed while you were away."));return}
+    b.appendChild(el("span","bk-t",ago(new Date(seenBase.t).toISOString())));
+    var rul=arr(s.rulings).filter(function(r){return r&&after(r.at)}).length;
+    var fd=arr(s.feed).filter(function(f){return obj(f)&&f.text&&after(f.at)}).length;
+    var act=Object.keys(decisions).filter(function(k){var d=obj(decisions[k]);return d&&obj(d.acted)&&after(d.acted.at)}).length;
+    var nw=cur.ids.filter(function(id){return isNewItem(id)}).length;
+    var parts=[[nw,nw===1?"new thing waits on you":"new things wait on you","#h-mo"],[act,act===1?"of your answers acted on":"of your answers acted on"],[rul,rul===1?"report ruled":"reports ruled"],[fd,fd===1?"thing on the feed":"things on the feed"]];
+    var any=0;
+    parts.forEach(function(x){if(!x[0])return;any++;var c=el(x[2]?"a":"span","bk-c");if(x[2])c.href=x[2];c.appendChild(el("b",null,x[0]));c.appendChild(document.createTextNode(x[1]));b.appendChild(c)});
+    if(!any)b.appendChild(el("span","bk-q","Nothing new. The room is as you left it."));
+  }
+
   function renderWall(s,waiting){
     var w=$("wall");if(!state){w.hidden=true;return}
     w.hidden=false;clear(w);
     var openO=arr(s.orders).filter(function(o){return o&&o.status!=="done"}).length;
     var openR=arr(s.rulings).filter(function(r){return r&&r.status==="open"}).length;
     var badA=arr(s.agents).filter(function(a){return a&&a.state&&a.state!=="ok"}).length;
-    [[waiting,"waiting on Mo",waiting?"watch":"ok","#h-mo"],[openO,"open orders",openO>10?"watch":"ok"],[openR,"reports still open",openR?"watch":"ok"],[badA,"agents need attention",badA?"blocked":"ok"]].forEach(function(x){
+    var B=seenBase;w.classList.toggle("fresh",seenFresh&&!reduce);
+    [[waiting,"waiting on Mo",waiting?"watch":"ok","#h-mo","w"],[openO,"open orders",openO>10?"watch":"ok",null,"o"],[openR,"reports still open",openR?"watch":"ok",null,"r"],[badA,"agents need attention",badA?"blocked":"ok",null,"a"]].forEach(function(x){
       var r=el(x[3]?"a":"div","readout"+(x[3]&&x[0]?" hot":""));if(x[3])r.href=x[3];var l=el("span","light "+x[2]);l.setAttribute("aria-hidden","true");r.appendChild(l);
-      r.appendChild(el("b",null,x[0]));r.appendChild(el("span",null,x[1]));w.appendChild(r);
+      r.appendChild(el("b",null,x[0]));
+      var dn=B&&typeof B[x[4]]==="number"?x[0]-B[x[4]]:0;if(dn)r.appendChild(deltaChip(dn,x[1].replace(/^waiting on Mo$/,"things waiting on you")));
+      r.appendChild(el("span",null,x[1]));w.appendChild(r);
     });
   }
 
@@ -1575,9 +1653,12 @@ details.fold>summary{min-height:44px}
     p.appendChild(el("b",null,st.level==="down"?"Problem":st.level==="warn"?"Watch":st.level==="ok"?"All clear":"Status"));
     var ul=el("ul");bits.forEach(function(x){ul.appendChild(el("li",null,x))});p.appendChild(ul);
     var fa=$("floor-asof");if(fa)fa.textContent=s.asOf?"As the Chief left it "+ago(s.asOf):"";
+    var seenCur=state?seenUpdate(s):null;
     var waiting=renderDesk(s);
     renderIdeas(s);
     if(typeof waiting==="number")renderWall(s,waiting);
+    if(seenCur)renderBack(s,seenCur);else $("back").hidden=true;
+    if(state)seenFresh=false;
     renderMission(obj(s.goal));
     var nums=arr(s.numbers);tile("n0",nums[0]);tile("n1",nums[1]);
 
