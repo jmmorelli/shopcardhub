@@ -38,6 +38,7 @@
     '.pr-tile .pr-tn{font-family:var(--fd,inherit);font-size:15px;line-height:1.2;color:var(--th,#fff);font-weight:700;min-width:0;}' +
     '.pr-tile .pr-tn small{display:block;font-family:var(--fm,ui-monospace,monospace);font-size:10px;font-weight:400;color:var(--dim,#8a97a5);margin-top:3px;letter-spacing:.5px;}' +
     '.pr-tile .pr-tv{font-family:var(--fm,ui-monospace,monospace);font-size:20px;font-weight:700;color:var(--th,#fff);white-space:nowrap;text-align:right;}' +
+    '.pr-tile .pr-mvb{grid-column:1/-1;justify-self:start;display:inline-flex;align-items:center;min-height:40px;margin-top:10px;padding:0 12px;border:1px solid var(--pr-acc,var(--bd,#23303d));border-radius:3px;font-size:13px;font-weight:600;color:var(--th,#fff);text-decoration:none;}.pr-tile .pr-mvb:hover{background:rgba(255,255,255,.05);}.pr-tile .pr-mvb[hidden]{display:none;}' +
     '.pr-tile .pr-tv.up{color:var(--gn,#2bd17e);}.pr-tile .pr-tv.dn{color:var(--rd,#ff4d6a);}' +
     '.pr-tile .pr-tv small{display:block;font-size:9.5px;font-weight:400;color:var(--dim,#8a97a5);letter-spacing:1px;text-transform:uppercase;margin-top:3px;}' +
     '.pr-tile .pr-ti{flex:0 0 120px;width:120px;height:168px;display:block;overflow:hidden;border-radius:3px;background:rgba(255,255,255,.04);}' +
@@ -243,11 +244,19 @@
     return d == null || (d >= 5 && d <= WEEK_MAX_DAYS) ? 'Biggest move this week' : 'Biggest move since ' + day(c.prevAsOf);
   }
   function tileMvV(f) { if (f.br) { var t = f.br.top; return (t.d < 0 ? '▼ ' : '▲ ') + money(Math.abs(t.d)) + '<small>' + (t.p < 0 ? '−' : '+') + Math.abs(t.p).toFixed(0) + '% ' + f.wkLbl + '</small>'; } return f.mover ? (f.mover.p < 0 ? '▼ ' : '▲ ') + Math.abs(f.mover.p).toFixed(0) + '%<small>since last update</small>' : ''; }
+  /* BET-20261120-1 (CEO Desk Nov 20; Night Crew Nov 23): in a concentrated week (one card made up half the move or more) the
+   * "moved the index most" tile gets one eBay button for that card. The generator passes opts.mvUrl(card) = the exact search
+   * its own table row uses, with customid=index-mover-<page slug>; no opts.mvUrl or a broad/mixed week = no button. */
+  function mvOne(f) { return f.br && f.br.kind === 'one' && f.br.top && f.br.top.c ? f.br.top.c : null; }
+  function mvBtn(f, opts) {
+    var c = mvOne(f), u = c && opts && typeof opts.mvUrl === 'function' ? opts.mvUrl(c) : null; if (!u) return '';
+    return '<a class="pr-mvb" data-pr-t="mvb" data-card="' + esc(c.name) + '" href="' + esc(u) + '" target="_blank" rel="sponsored nofollow noopener">See ' + esc(c.name) + ' sales on eBay</a>';
+  }
   function tiles(f, opts) {
     opts = opts || {};
     var img = opts.topImg ? '<span class="pr-ti">' + opts.topImg + '</span>' : '';
     return '<div class="pr-tile' + (img ? ' has-img' : '') + '">' + img + '<span class="pr-tb"><span class="pr-tk">Priciest card</span><span class="pr-tn" data-pr-t="top">' + tileTop(f) + '</span><span class="pr-tv" data-pr-t="topv">' + tileTopV(f) + '</span></span></div>' +
-      '<div class="pr-tile"><span class="pr-tb"><span class="pr-tk" data-pr-t="mvk">' + tileMvK(f) + '</span><span class="pr-tn" data-pr-t="mv">' + tileMv(f) + '</span><span class="pr-tv ' + (mvOf(f) ? cls(mvOf(f).p) : '') + '" data-pr-t="mvv">' + tileMvV(f) + '</span></span></div>' +
+      '<div class="pr-tile"><span class="pr-tb"><span class="pr-tk" data-pr-t="mvk">' + tileMvK(f) + '</span><span class="pr-tn" data-pr-t="mv">' + tileMv(f) + '</span><span class="pr-tv ' + (mvOf(f) ? cls(mvOf(f).p) : '') + '" data-pr-t="mvv">' + tileMvV(f) + '</span>' + mvBtn(f, opts) + '</span></div>' +
       /* P0-E (Oct 23 2026): a set with a checklist worksheet gets a third, full-width tile that is a link — the generator passes
        * opts.link = { href, k, label, sub }. Inline layout only, so no baked page's CSS has to change for the two-tile sets. */
       (opts.link && opts.link.href ? '<a class="pr-tile pr-tile-link" href="' + esc(opts.link.href) + '" style="grid-column:1/-1;text-decoration:none;min-height:0;align-items:center" data-pr-t="link"' +
@@ -412,6 +421,8 @@
       setHtml(q(' [data-pr-t="top"]'), tileTop(f)); setHtml(q(' [data-pr-t="topv"]'), tileTopV(f));
       setHtml(q(' [data-pr-t="mv"]'), tileMv(f)); setHtml(q(' [data-pr-t="mvk"]'), tileMvK(f));
       var mvv = q(' [data-pr-t="mvv"]'); if (mvv) { setHtml(mvv, tileMvV(f)); mvv.className = 'pr-tv ' + (mvOf(f) ? cls(mvOf(f).p) : ''); }
+      /* the baked mover button stays only while the live read names the same card in a concentrated week */
+      var mvb = q(' [data-pr-t="mvb"]'); if (mvb) { var one = mvOne(f); mvb.hidden = !(one && one.name === mvb.getAttribute('data-card')); }
     });
   }
 

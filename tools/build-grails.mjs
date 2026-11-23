@@ -204,10 +204,16 @@ function block(D, tape) {
   const stars = cards.filter((c) => c.kind === "star").length;
   const sidxCss = (fs.readFileSync(path.join(ROOT, "skyridge-index.html"), "utf8").match(/<style id="sidx-css">[\s\S]*?<\/style>/) || [""])[0];
   if (!sidxCss) throw new Error("sidx-css not found in skyridge-index.html");
+  // BET-20261119-1 (Night Crew Nov 23): the name links to the card's static /card-<slug> page when js/card-pages.json has one
+  // and sitemap.xml lists it; otherwise plain text. The sector boards' .cardlk style (sidx-css) applies.
+  let STATICP = {}, SMAP = new Set();
+  try { STATICP = JSON.parse(fs.readFileSync(path.join(ROOT, "js/card-pages.json"), "utf8")).static || {}; } catch (e) {}
+  try { SMAP = new Set([...fs.readFileSync(path.join(ROOT, "sitemap.xml"), "utf8").matchAll(/<loc>https:\/\/www\.shopcardhub\.com(\/[^<]*)<\/loc>/g)].map((m) => m[1])); } catch (e) {}
+  const cardHref = (id) => (STATICP[id] && SMAP.has(STATICP[id]) ? STATICP[id] : null);
   const rows = cards.map((c, i) => {
     const cid = `gstar-${c.key}`;
     const sub = `${esc(c.set)} · ${c.year}${c.raw.thin ? ` · <span class="thin" title="fewer than 4 clean raw sales in ${c.raw.win} days">thin · ${c.raw.n} sale${c.raw.n === 1 ? "" : "s"} / ${c.raw.win}d</span>` : ` · ${c.raw.n} sales / ${c.raw.win}d`}`;
-    return `<tr data-q="${esc(c.q)}" data-cid="${cid}" data-av="1"><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell"><span data-card-img="src:${c.img}" data-card-name="${esc(c.label)} #${c.num} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="gstar-list" data-card-link="off"></span><div><b>${esc(c.label)}</b> <span class="dim">#${c.num}</span><small>${sub}</small></div></div></td>` +
+    return `<tr data-q="${esc(c.q)}" data-cid="${cid}" data-av="1"><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell"><span data-card-img="src:${c.img}" data-card-name="${esc(c.label)} #${c.num} ${esc(c.set)}" data-card-sub="pokemon" data-card-size="thumb" data-card-surface="gstar-list" data-card-link="off"></span><div><b>${cardHref(cid) ? `<a class="cardlk" href="${cardHref(cid)}">${esc(c.label)}</a>` : esc(c.label)}</b> <span class="dim">#${c.num}</span><small>${sub}</small></div></div></td>` +
       `<td class="num">${c.raw.m != null ? money2(c.raw.m) : `<span class="dim">${c.raw.last ? money(c.raw.last.p) + "<small>1 dated sale, " + md(c.raw.last.d) + "</small>" : "No verified sale"}</span>`}</td>` +
       gcell(c.psa9, "PSA 9") + gcell(c.psa10, "PSA 10") + gcell(c.tag10, "TAG 10") +
       `<td class="act g"><span class="act-w g"><button type="button" class="sch-track-card" data-name="${esc(c.label)} #${c.num} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="pokemon" data-grade="Raw" data-price="${c.raw.m || ""}" title="Watch this card">★</button><span class="glk"><a class="ebay g-raw" data-g="raw" href="${L(c.q + RAW_NOT, cid)}" target="_blank" rel="sponsored nofollow noopener" title="Raw (ungraded) copies on eBay — Authenticity Guarantee filter on">Raw</a></span><span class="sidx-auc-slot"></span></span></td></tr>`;

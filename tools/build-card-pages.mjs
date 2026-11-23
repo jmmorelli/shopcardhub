@@ -174,7 +174,7 @@ const CARD_CSS = `
 /* Night Crew Oct 23 (B89/B92): the chart box is drawn at the SVG's final height (viewBox 640×260) before the series loads,
    so the line replacing "Loading…" no longer pushes the page down (1440: #chart grew 156 → 300 px at ~0.6 s). */
 .cp-chart { box-sizing:border-box; min-height:calc((min(100vw - 40px, 720px) - 18px) * 0.40625 + 48px); } /* + padding, border and the one-line legend */
-#cp-why { min-height:18px; }
+#cp-why { min-height:36px; } /* Night Crew Nov 23 (CARD-CLS): the Price Truth hold reason fills to 2 lines at 1440 too (35 px; Sapphire CLS 0.017-0.018) */
 @media (min-width:641px) { .cp-actions .cp-sig { white-space:nowrap; } } /* B92 residual: the label growing to "engine · HOLD · gated, thin sample" wrapped the chip to 2 lines (+6 px) */
 .cp-chart .axis { font-family:var(--fm); font-size:11px; fill:var(--text-dim); }
 .cp-chart .grid { stroke:rgba(255,255,255,0.06); }
@@ -465,7 +465,9 @@ ${nav}
 
 ${footer}
 
-<script>window.SCH_CARD = ${JSON.stringify(cardObj)};</script>
+<script>window.SCH_CARD = ${JSON.stringify(cardObj)};
+  /* O-77 (a), Night Crew Nov 23: the card-page exposure event fires on every engine card page too (it fired only on the template pages) */
+  try { if (typeof gtag === 'function') gtag('event', 'card_page_view', { item: window.SCH_CARD.id }); } catch (e) {}</script>
 <script>${CLIENT_JS}</script>
 <script>
   /* Signal Alerts signup — activates when data/newsletter.json lists this page (key = data-schsub). */

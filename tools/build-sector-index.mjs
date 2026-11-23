@@ -733,11 +733,14 @@ function block(x, c, opt = {}) {
   const PROD = new Map(); if (/^BOW\d/.test(x.ticker)) for (const [t, lbl] of [["BB" + x.ticker.slice(3), "2026 Bowman"], ["BCB" + x.ticker.slice(3), "2026 Bowman Chrome"]]) { const s = IDX[t]; if (s) for (const u of [s, ...Object.values(s.sub || {})].flatMap((v) => (v.basket || []).concat(v.universe || []))) if (u.path && !PROD.has(u.path)) PROD.set(u.path, lbl.replace("2026", "20" + x.ticker.slice(3))); }
   const dupLbl = (b) => { const set = DUP.get(b.num); if (!set || set.size < 2) return ""; const p = PROD.get(b.path); const others = [...set].map((k) => PROD.get(k)); return p && others.some((o) => o && o !== p) ? ` · ${esc(p)}` : ""; };
   const salesCell = (b) => `${b.n30}${b.win && b.win !== SCREEN.window ? `<small title="clean sales in the ${b.win}-day window the mark came from"> · ${b.wn} in ${b.win}d</small>` : ""}`;
+  // BET-20261120-1 (Night Crew Nov 23): the row's eBay search as one function, so the "moved the index most" tile's button
+  // (js/plain-read.js tiles(), opts.mvUrl) uses the exact search its row uses, only with customid=index-mover-<page slug>.
+  const rowUrl = (b, customid) => { const q0 = c.ebayQuery(b.name, b.num); return ebaySearchUrl({ q: GL ? q0 + " " + rawNot(x.ticker) + (wotc ? " -1st -shadowless" : ed === "shadowless" ? " -1st" : "") + (RAW_EXTRA[x.ticker] || "") : q0, customid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 }); };
   const row = (b, i) => {
     const w = (b.price * b.w) / bv;
     const cid = cardId(x.ticker, b.key || b.num);
     const q0 = c.ebayQuery(b.name, b.num);
-    const url = ebaySearchUrl({ q: GL ? q0 + " " + rawNot(x.ticker) + (wotc ? " -1st -shadowless" : ed === "shadowless" ? " -1st" : "") + (RAW_EXTRA[x.ticker] || "") : q0, customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
+    const url = rowUrl(b, cid);
     if (GL) {
       const thumbG = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
       const dkG = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slotG = desk[dkG] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dkG])}"></span>` : '<span class="sidx-auc-slot"></span>';
@@ -812,7 +815,7 @@ function block(x, c, opt = {}) {
   const topImg = `<span data-card-img="${esc(imgAttr(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="card" data-card-surface="${x.ticker.toLowerCase()}-hero"></span>`;
   // P0-C chart-first (Mo, Oct 23 2026 — DESIGN-DIRECTIVE-2026-10-23 §4): the plain read is four baked parts (line under the
   // level, one sentence under the chart, two tiles, the "how to read" text for the toggle); null for a pre-activation ticker.
-  const parts = PR.bakeParts(x.ticker, x, { accent: "var(--sidx)", topImg, link: c.checklist ? clLink(c.checklist) : null });
+  const parts = PR.bakeParts(x.ticker, x, { accent: "var(--sidx)", topImg, link: c.checklist ? clLink(c.checklist) : null, mvUrl: (b) => (b && b.name ? rowUrl(b, "index-mover-" + String(x.page || c.page || "").replace(/^\//, "")) : null) });
   const family = c.cat === "baseball" ? "Bowman Baseball" : c.cat === "football" ? "Bowman Football" : c.cat === "basketball" ? "Bowman Basketball" : "Pokémon";
   const levelLine = parts ? parts.line : `<div class="pr-line">${baseLine(x)}</div>`;
   // everything that used to sit in the hero — the set description, the base/stamp line, the quant strip and the method —

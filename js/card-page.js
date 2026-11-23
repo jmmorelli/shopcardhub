@@ -17,6 +17,9 @@
   // v9 (Night Crew Oct 23, P0-A static pages): a static /card-<slug> page carries its id on <main data-card-id>; /card?id= reads the query.
   var id = (main.getAttribute('data-card-id') || new URLSearchParams(location.search).get('id') || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40);
   var tk = id.split('-')[0];
+  // O-77 (a), Night Crew Nov 23: card_page_view fires once on arrival (the gtag stub queues it), not after the render — a visitor
+  // who left before the ~4 s data load, or a card whose data failed to load, was never counted (13 events vs 41 views, Nov 20).
+  try { if (id && typeof gtag === 'function') gtag('event', 'card_page_view', { item: id }); } catch (e) {}
   // Static card pages (P0-A; v10 Night Crew Oct 26): every live ticker's cards that pass the gate have a /card-<slug> page.
   // The id → URL map is js/card-pages.json, written by tools/build-nav.js from the files on disk; a card without one stays on /card?id=.
   var STATIC = {};
@@ -105,7 +108,11 @@
       return '<button type="button" role="tab" data-g="' + e.k + '" aria-selected="' + (e.k === pick) + '" aria-controls="cdp-q">' + e.lbl + '<small>' + (e.m != null ? money(e.m) : e.one ? '1 sale' : '&nbsp;') + '</small></button>';
     }).join('');
     var p62 = grade62(d, c, G);
-    var more = d.cards.filter(function (x) { return x.id !== c.id && x.raw != null; }).slice(0, 8).map(function (x) {
+    // BET-20261119-1 (Night Crew Nov 23): a static card page bakes its own "More from" block (#cdp-sib, after <main>);
+    // there this grid is skipped and the baked tiles get their raw price line from the same card file.
+    var sib = document.getElementById('cdp-sib');
+    if (sib) d.cards.forEach(function (x) { if (x.raw == null || !STATIC[x.id]) return; var a = sib.querySelector('a[href="' + STATIC[x.id] + '"]'); if (a && !a.querySelector('i.r')) { var r = document.createElement('i'); r.className = 'r'; r.textContent = ' · raw ' + money(x.raw); a.appendChild(r); } });
+    var more = sib ? '' : d.cards.filter(function (x) { return x.id !== c.id && x.raw != null; }).slice(0, 8).map(function (x) {
       return '<a href="' + cardUrl(x) + '"><b>' + esc(x.name) + ' #' + esc(x.num) + '</b>raw ' + money(x.raw) + ' · ' + (offIx ? esc(String(x.set || '').replace(/^Pokémon TCG /, '')) : x.w === 0 ? 'own line' : x.w != null ? x.w.toFixed(1) + '% of index' : '') + '</a>';
     }).join('');
     // Sales tab: the dated rows we hold (R18) — one per grade, newest sale with its date, plus the median it sits in.
@@ -203,7 +210,6 @@
     // shop-spread.js (Oct 15 2026) fills the TCGplayer shop price / spread block into .cdp-buy once the card is on the page
     window.__schCard = { d: d, c: c };
     try { document.dispatchEvent(new CustomEvent('sch:card-rendered', { detail: window.__schCard })); } catch (e) {}
-    try { if (typeof gtag === 'function') gtag('event', 'card_page_view', { item: c.id }); } catch (e) {}
   }
 
   /* P62 — grade it or buy the 10 (spec claude/cos/grade-or-slab-spec-2026-10-16.md + Amendment 3).

@@ -60,6 +60,7 @@ const CSS = `
 .cdp-more .g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .cdp-more a{display:block;padding:10px 12px;border:1px solid var(--border,rgba(255,255,255,.08));background:var(--bg2,#0c1017);text-decoration:none;color:var(--text);font-family:var(--fm);font-size:11px;line-height:1.4}
 .cdp-more a b{display:block;font-family:var(--fb);font-size:13px;color:var(--text-head)} .cdp-more a:hover{border-color:var(--ac)}
+.cdp-sibw{max-width:1100px;margin:0 auto;padding:0 20px 40px}.cdp-sib{margin-top:0}.cdp-sib a b{margin-bottom:2px}.cdp-sib a i.r{font-style:normal}.cdp-sib p{margin:12px 0 0}.cdp-sib a.ix{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:none;color:var(--ac);font-size:12px}
 .cdp-method{font-size:11px;line-height:1.7;color:var(--text-dim);margin-top:24px;max-width:820px}
 .cdp-method b{color:var(--text)}
 .cdp-miss{padding:40px 0;font-family:var(--fm);color:var(--text-dim)}
@@ -150,11 +151,11 @@ ${nav}${o.lnav ? "\n" + o.lnav : ""}
 <main class="cdp" id="cdp" aria-live="polite"${o.id ? ` data-card-id="${o.id}"` : ""}>
 ${o.load || DEFAULT_LOAD}  <noscript><p class="cdp-miss">This page needs JavaScript to read the card's price ladder. Every card is also listed on its set's index page — <a href="/indices">open the indices</a>.</p></noscript>
 </main>
-
+${o.sib ? `<div class="cdp-sibw">${o.sib}</div>\n` : ""}
 ${footer}
 
 <script src="/js/grade-links.js?v=2" defer></script>
-<script src="/js/card-page.js?v=11" defer></script>
+<script src="/js/card-page.js?v=12" defer></script>
 <script src="/js/shop-spread.js?v=9" defer></script>
 <script src="/js/card-img.js?v=4" defer></script>
 <script src="/js/vault-track.js?v=6" defer></script>
@@ -217,6 +218,7 @@ const ours = (f) => { try { return /<main class="cdp" id="cdp" aria-live="polite
 // run 9 (Cupertino): the card's local nav, its pill = the stub's raw eBay link byte for byte (tools/lib/local-nav.mjs)
 const lnavOf = (id, nameHtml, load) => { const l = stubRawLink(load); if (!l) throw new Error(`no raw eBay link in the stub for ${id}`); return cardLocalNav(id, nameHtml, l); };
 const slugsSeen = new Map();
+const JOBS = [];   // BET-20261119-1: written after the loop, once every sibling page is known
 let nStatic = 0, nIndexed = 0;
 for (const tk of STATIC_TICKERS) {
   const d = JSON.parse(fs.readFileSync(path.join(ROOT, "data/cards", tk + ".json"), "utf8"));
@@ -248,12 +250,27 @@ for (const tk of STATIC_TICKERS) {
   <div class="cdp-miss" id="cdp-load"><h1>${esc(nm)}</h1><p class="cdp-set"><a href="${esc(d.page)}">${esc(setShort)}</a> · #${esc(c.num)}${c.rarity ? " · " + esc(c.rarity) : ""}</p><p>Raw ${c.raw != null ? `<b>${money(c.raw)}</b> · ` : ""}${esc(basis)}. Loading PSA 9, PSA 10 and TAG 10 sales…</p><p><a href="${esc(ebaySearchUrl({ q: `${c.q || nm} ${rawNot(d.ticker)}${edNot(d)}${RAW_EXTRA[d.ticker] || ""}`, customid: "card-" + c.id, sacat: SACAT_TCG, av: c.raw >= 200 }))}" target="_blank" rel="sponsored nofollow noopener">Raw copies on eBay →</a></p></div>
 `;
     const desc = `${nm} ${setShort} price${c.raw != null ? `: raw ${money(c.raw)} (${d.kind === "chase" ? "PriceCharting ungraded" : "median of raw sales"}, ${md(c.rawAsOf)})` : ""}, beside dated PSA 9, PSA 10 and TAG 10 sales and an eBay link for each grade.`;
-    if (!DRY) fs.writeFileSync(file, page({
+    JOBS.push({ tk, d, c, slug, file, o: {
       title: `${esc(nm)} ${esc(setShort)} Price — Raw, PSA 9, PSA 10, TAG | ShopCardHub`, desc: esc(desc),
       robots: indexable ? "index,follow" : "noindex,follow", path: `/card-${slug}`, ogTitle: `${esc(nm)} ${esc(setShort)} — Raw vs PSA 9 vs PSA 10`,
       id: esc(c.id), load, lnav: lnavOf(esc(c.id), esc(nm), load),
-    }));
+    } });
     nStatic++; if (indexable) nIndexed++;
   }
+}
+// BET-20261119-1 (CEO Desk Nov 19; Night Crew Nov 23): every static card page carries one baked "More from <index>" block
+// of up to 6 sibling static card pages from the same index (highest weight first = lowest rank), plus one link back to the
+// index (sitemap-listed siblings only) — plain HTML outside <main>, so a crawler that does not run js/card-page.js still reaches the siblings. Only pages
+// written by this run are linked (no /card?id= links, no new URL). js/card-page.js skips its own "More from" grid when
+// #cdp-sib is on the page, so the visitor sees one list. Names and numbers only: no price is baked here.
+const byTk = new Map();
+for (const j of JOBS) { if (!byTk.has(j.tk)) byTk.set(j.tk, []); byTk.get(j.tk).push(j); }
+for (const j of JOBS) {
+  const sibs = byTk.get(j.tk).filter((x) => x !== j && SITEMAP.has(`/card-${x.slug}`)).sort((a, b) => (a.c.rank - b.c.rank) || String(a.slug).localeCompare(b.slug)).slice(0, 6);
+  const tracked = j.d.kind === "tracked", ixName = String(j.d.name || j.d.ticker);
+  const head = tracked ? "More tracked cards" : `More from the ${esc(ixName)}`;
+  const back = tracked ? `<a class="ix" href="/indices">All set indices →</a>` : `<a class="ix" href="${esc(j.d.page)}">All cards in the ${esc(ixName)} →</a>`;
+  j.o.sib = `<section class="cdp-more cdp-sib" id="cdp-sib" aria-label="${head}"><h2>${head}</h2>${sibs.length ? `<div class="g">${sibs.map((x) => `<a href="/card-${x.slug}"><b>${esc(x.c.name)} #${esc(x.c.num)}</b>${esc(tracked || j.d.kind === "board" || !x.c.rarity ? String(x.c.set || j.d.set || "").replace(/^Pokémon TCG /, "") : x.c.rarity)}</a>`).join("")}</div>` : ""}<p>${back}</p></section>`;
+  if (!DRY) fs.writeFileSync(j.file, page(j.o));
 }
 console.log(`${DRY ? "would write" : "wrote"} ${nStatic} static card pages (${nIndexed} index,follow at >= ${GATE_N90} raw sales / 90 d and raw >= $${GATE_RAW}) across ${STATIC_TICKERS.length} tickers`);

@@ -126,9 +126,12 @@ function printBlock(slug, p, multi) {
   const rdays = c.wn != null ? (c.win || c.window) : c.window;
   const rAsOf = c.rawAsOf ? " · as of " + dateShort(c.rawAsOf) : "";
   // Oct 29 2026 (CoS desk, BLOCKED Gengar row): a raw figure held for a KB data check prints "No mark" with no number.
-  const RAW_HOLD = { "nd1e-107": "Pokémon KB P40", ...PT_HOLDS };
+  // Night Crew Nov 23 (ledger O-60 (a), KB P82): the hard-coded ND1E #107 hold (KB P40, closed Nov 6) is gone, so that card
+  // prints its own mark; only Price Truth's live holds (data/price-truth/raw-holds.json) print "No mark", and the line under
+  // it gives the card's real sale count instead of "the one recent sale" (BS1E #4 sat beside 11).
+  const RAW_HOLD = { ...PT_HOLDS };
   const rawCell = RAW_HOLD[c.id]
-    ? `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">No mark</div><div class="lad-s">the one recent sale on file is being checked</div></div>`
+    ? `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">No mark</div><div class="lad-s">${rn ? `${rn} dated sale${rn === 1 ? "" : "s"} in ${rdays} days, being re-checked` : "raw sales being re-checked"}</div></div>`
     : c.raw == null
     ? `<div class="lad-cell lad-na"><div class="lad-k">Raw</div><div class="lad-v">Not priced</div><div class="lad-s">too few clean raw sales to mark — trades graded</div></div>`
     : rn == null

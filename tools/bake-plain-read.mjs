@@ -114,7 +114,17 @@ function bake(html) {
   const tiles = between(html, TILES_S, TILES_E);
   const slot = /<span class="pr-ti">([\s\S]*?)<\/span>\s*<span class="pr-t[bn]"/.exec(tiles.inner);
   if (slot) img = slot[1];
-  const parts = PR.bakeParts(tk, r, { accent: "var(--iac)", topImg: img, link: clLink(tk) });
+  // BET-20261120-1 (Night Crew Nov 23): the mover tile's eBay button reuses this page's own holdings-row search for the card
+  // (the row whose number cell reads #<num>/), customid swapped to index-mover-<page slug>. No row found = no button.
+  const slugOf = String(r.page || "").replace(/^\//, "");
+  const mvUrl = (c) => {
+    if (!c || c.num == null || !slugOf) return null;
+    const blk = [...html.matchAll(/<tr class="hrow" data-i="\d+"[^>]*>[\s\S]*?<\/tr>/g)].map((x) => x[0]).find((b) => b.includes(`<span class="cn">#${c.num}/`) || b.includes(`<span class="cn">#${c.num}<`));
+    const href = blk && (/<a class="ebay"[^>]*href="([^"]+)"/.exec(blk) || [])[1];
+    if (!href || !/customid=[^&"]+/.test(href)) return null;
+    return href.replace(/&amp;/g, "&").replace(/customid=[^&"]+/, "customid=index-mover-" + slugOf);
+  };
+  const parts = PR.bakeParts(tk, r, { accent: "var(--iac)", topImg: img, link: clLink(tk), mvUrl });
   if (!parts) return { skip: `${tk} has no read yet (pre-activation)` };
   const css = `<style id="pr-css">${PR.PR_CSS}</style>`;
   // 1 · line under the level
