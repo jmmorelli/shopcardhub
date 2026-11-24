@@ -307,6 +307,29 @@ details.fold>summary:focus-visible{outline:2px solid var(--accent);outline-offse
   @keyframes tydrop{from{transform:translateY(-200px)}to{transform:none}}
 }
 @media (max-width:600px){.ty-cols{gap:4px}.ty-well{height:150px}.ty-lab{font-size:8.5px;letter-spacing:0}.viewsw button{min-height:40px}.ty-replay{min-height:44px}}
+/* Constellation: a third view of the floor panel. The same teams as a star map around the Chief's hall. */
+.sky{border:1px solid var(--line);border-radius:8px;padding:10px 10px 10px;background:var(--term)}
+.sky-top{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;margin:2px 2px 8px}
+.sky-sum{font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+.sky-sum b{font-family:var(--display);font-size:22px;color:var(--accent);margin-right:6px;font-variant-numeric:tabular-nums}
+.sky-sum span{color:var(--muted);margin-left:10px;white-space:nowrap}
+.sky-box{border-radius:8px;background:radial-gradient(ellipse at 50% 50%,#121a33 0%,#090c16 70%);border:1px solid #1c2238;overflow:hidden;line-height:0}
+.day .sky-box{border-color:#2a3048;box-shadow:0 6px 18px rgba(20,24,40,.16)}
+.sky-box svg{display:block;width:100%;height:auto}
+.sky-box .nd{cursor:pointer;outline:none}
+.sky-box .nd:focus-visible .ring,.sky-box .nd.on .ring{stroke:#fff;stroke-width:2;opacity:1}
+.sky-box .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;fill:#c9cfe3;paint-order:stroke;stroke:#090c16;stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+.sky-box .lab.big{font-size:11.5px;font-weight:600;fill:#eceef6}
+.sky-read{font-size:13.5px;margin-top:10px;min-height:1.5em;overflow-wrap:anywhere;color:var(--ink)}
+.sky-read b{font-family:var(--mono);font-weight:500;color:var(--accent);margin-right:6px}
+.sky-key{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px}
+@media (prefers-reduced-motion: no-preference){
+  .sky-box .pop{animation:skypop .5s cubic-bezier(.2,.9,.3,1.2) both;transform-box:fill-box;transform-origin:center}
+  @keyframes skypop{from{transform:scale(.4);opacity:.3}to{transform:none;opacity:1}}
+  .sky-box .lit .halo{animation:skylit 3.2s ease-in-out infinite}
+  @keyframes skylit{50%{opacity:.12}}
+}
+@media (max-width:600px){.sky{padding:8px}.sky-sum span{margin-left:0;display:block}}
 /* Since you last looked: what changed between Mo's visits, kept per browser (cr-seen). */
 .back{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:-2px 0 0;padding:8px 12px;border:1px dashed color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:10px;background:color-mix(in srgb,var(--accent) 6%,var(--panel));font-size:13.5px;min-width:0}
 .back .bk-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-right:2px}
@@ -531,7 +554,7 @@ details.fold>summary{min-height:44px}
   <section class="panel floorwrap rise" aria-labelledby="h-floor">
     <div class="head">
       <h2 id="h-floor">The floor</h2>
-      <div class="viewsw" id="viewsw" role="group" aria-label="Choose a view"><button type="button" data-view="floor" aria-pressed="true">Floor</button><button type="button" data-view="tally" aria-pressed="false">Today's tally</button></div>
+      <div class="viewsw" id="viewsw" role="group" aria-label="Choose a view"><button type="button" data-view="floor" aria-pressed="true">Floor</button><button type="button" data-view="tally" aria-pressed="false">Today's tally</button><button type="button" data-view="sky" aria-pressed="false">Constellation</button></div>
       <span class="meta" id="floor-asof"></span>
     </div>
     <div class="floorscroll" id="floor-scroll" tabindex="0" role="group" aria-label="The floor. Swipe sideways to look around.">
@@ -542,6 +565,12 @@ details.fold>summary{min-height:44px}
       <div class="ty-cols" id="ty-cols"></div>
       <div class="ty-read" id="ty-read" aria-live="polite"></div>
       <div class="ty-key">One block per report the Chief ruled on since midnight, dropped into its team's column in the order it landed. Tall blocks needed a decision; outlined blocks are still open. Tap a block to read it.</div>
+    </div>
+    <div class="sky" id="sky" hidden>
+      <div class="sky-top"><span class="sky-sum" id="sky-sum"></span></div>
+      <div class="sky-box" id="sky-box"></div>
+      <div class="sky-read" id="sky-read" aria-live="polite"></div>
+      <div class="sky-key">The Chief's hall is in the middle and Mo's desk at the top. Each team is a star with its lanes around it. A lane glows when it reported today or yesterday, gets an amber ring when late and a red one when down. Dots going out are open orders; dots coming back are reports from the last 24 hours. Tap any star to read it.</div>
     </div>
     <div class="rooms" id="floor-rooms" role="group" aria-label="Open a room"></div>
     <div id="floor-info" hidden></div>
@@ -697,7 +726,7 @@ details.fold>summary{min-height:44px}
 
   <footer>
     <span id="foot">The Chief of Staff updates this page each time it reads and rules on agent reports. The page refreshes itself while open.</span>
-    <span id="design">Design updated Nov 23, 2026: a "Since you last looked" line, with what changed while you were away.</span>
+    <span id="design">Design updated Nov 24, 2026: a Constellation view of the floor, every team as a star.</span>
     <span><button class="btn link" id="signout" type="button">Sign out</button></span>
   </footer>
 </div>
@@ -1125,21 +1154,111 @@ details.fold>summary{min-height:44px}
   function tyRead(x,latest){var rd=document.getElementById("ty-read");if(!rd||!x)return;while(rd.firstChild)rd.removeChild(rd.firstChild);
     rd.appendChild(el("time",null,hhmm(new Date(x.t).toISOString())));
     rd.appendChild(document.createTextNode((latest?"Latest · ":"")+TEAM[x.team].n+" · "+(x.r.agent?x.r.agent+" · ":"")+(x.r.ruling?x.r.ruling+": ":"")+(x.r.said||"")))}
+  /* ── Constellation: the same state as a star map. The Chief's hall in the middle, Mo's desk at the top, each team a star
+     with its lanes around it. Every light and moving dot is a row in the state; still under reduced motion. ── */
+  var SVGNS="http://www.w3.org/2000/svg",skyRaf=0,skyPick=null,skyDots=[],skyW=0;
+  function skv(tag,at,par){var e=document.createElementNS(SVGNS,tag);for(var k in at)e.setAttribute(k,String(at[k]));if(par)par.appendChild(e);return e}
+  function skyRead(parts){var rd=document.getElementById("sky-read");if(!rd)return;while(rd.firstChild)rd.removeChild(rd.firstChild);
+    rd.appendChild(el("b",null,parts[0]));rd.appendChild(document.createTextNode(parts.slice(1).filter(Boolean).join(" · ")))}
+  function skyTick(now){
+    skyRaf=0;var sk=document.getElementById("sky");if(!sk||sk.hidden||document.hidden)return;
+    skyDots.forEach(function(d){var u=((now/1000)/d.p+d.ph)%1;
+      if(d.orbit){var a=u*6.2832;d.e.setAttribute("cx",(d.x0+Math.cos(a)*d.r).toFixed(1));d.e.setAttribute("cy",(d.y0+Math.sin(a)*d.r).toFixed(1))}
+      else{var k=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;d.e.setAttribute("cx",(d.x0+(d.x1-d.x0)*k).toFixed(1));d.e.setAttribute("cy",(d.y0+(d.y1-d.y0)*k).toFixed(1));d.e.setAttribute("opacity",(Math.sin(u*3.1416)*.9+.1).toFixed(2))}});
+    if(skyDots.length)skyRaf=requestAnimationFrame(skyTick);
+  }
+  function drawSky(enter){
+    var sk=document.getElementById("sky"),box=document.getElementById("sky-box"),sum=document.getElementById("sky-sum");
+    if(!sk||!box||!sum)return;cancelAnimationFrame(skyRaf);skyRaf=0;skyDots=[];
+    if(sk.hidden)return;
+    while(box.firstChild)box.removeChild(box.firstChild);while(sum.firstChild)sum.removeChild(sum.firstChild);
+    if(!S){box.hidden=true;sum.textContent="Nothing to show until the room state loads.";skyRead(["",""]);return}
+    var W=Math.round(box.clientWidth||sk.clientWidth||800);if(W<200)W=box.parentNode.clientWidth||800;box.hidden=false;
+    var phone=W<600,H=phone?Math.round(W*1.12):Math.round(Math.min(560,Math.max(420,W*.5))),cx=W/2,cy=H/2+(phone?6:8);
+    var Rx=phone?W*.34:Math.min(W*.34,H*.9),Ry=H*(phone?.35:.37),rr=phone?30:44,anim=!reduce,svg=skv("svg",{viewBox:"0 0 "+W+" "+H,role:"img","aria-label":"A star map of the teams. The buttons under it open each room, and the same facts are in the sections below."},box);
+    skyW=W;
+    var gL=skv("g",{},svg),gD=skv("g",{},svg),gN=skv("g",{},svg),pop=0;
+    skv("ellipse",{cx:cx,cy:cy,rx:Rx,ry:Ry,fill:"none",stroke:"#2a3352","stroke-width":1,"stroke-dasharray":"2 6"},gL);
+    function node(x,y,label,parts,cls){var g=skv("g",{"class":"nd"+(cls?" "+cls:""),tabindex:0,role:"button","aria-label":label},gN);
+      if(anim&&enter){g.classList.add("pop");g.style.animationDelay=(pop++*28)+"ms"}
+      var key=label;if(skyPick===key)g.classList.add("on");
+      function go(){skyPick=key;Array.prototype.forEach.call(svg.querySelectorAll(".nd.on"),function(n){n.classList.remove("on")});g.classList.add("on");skyRead(parts)}
+      g.addEventListener("click",go);g.addEventListener("keydown",function(ev){if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();go()}});
+      if(skyPick===key)setTimeout(function(){skyRead(parts)},0);
+      return g}
+    function dot(x0,y0,x1,y1,c,r,p,ph){var e=skv("circle",{cx:x0+(x1-x0)*ph,cy:y0+(y1-y0)*ph,r:r,fill:c},gD);if(anim)skyDots.push({e:e,x0:x0,y0:y0,x1:x1,y1:y1,p:p,ph:ph})}
+    /* the eight seats on the ring: Mo's desk at the top, then the seven teams clockwise */
+    var seat={};seat.mo=-90;ORDER.forEach(function(id,i){seat[id]=-90+45*(i+1)});
+    function at(deg,rx,ry){var a=deg*Math.PI/180;return [cx+Math.cos(a)*rx,cy+Math.sin(a)*ry]}
+    var teams={};arr(S.teams).forEach(function(t){if(t&&t.id)teams[t.id]=t});
+    var lanes=0,lit=0,out=0,back=0;
+    ORDER.forEach(function(id){
+      if(!teams[id])return;var tm=teams[id],ag=arr(model.agents[id]),cr=arr(model.crates[id]),sc=model.scrolls.filter(function(s){return s.team===id});
+      var p=at(seat[id],Rx,Ry),hx=p[0],hy=p[1],a=Math.atan2(hy-cy,hx-cx),c=TEAM[id].c,on=ag.filter(function(x){return x.active&&x.state!=="down"}).length,share=ag.length?on/ag.length:0;
+      lanes+=ag.length;lit+=on;out+=cr.length;back+=sc.length;
+      skv("line",{x1:cx,y1:cy,x2:hx,y2:hy,stroke:c,"stroke-opacity":(.18+.4*share).toFixed(2),"stroke-width":1.4},gL);
+      cr.forEach(function(o,i){dot(cx,cy,hx,hy,"#c98f2b",3,7,i/Math.max(1,cr.length))});
+      sc.forEach(function(s,i){dot(hx,hy,cx,cy,"#eadfbd",2.6,7,(i/Math.max(1,sc.length)+.5)%1)});
+      /* lanes fan out away from the middle */
+      var n=ag.length,spread=Math.min(phone?2.6:2.9,Math.max(.6,(n-1)*.42));
+      ag.forEach(function(x,j){
+        var aa=n>1?a-spread/2+spread*j/(n-1):a,ax=hx+Math.cos(aa)*rr,ay=hy+Math.sin(aa)*rr*(phone?1:.92);
+        skv("line",{x1:hx,y1:hy,x2:ax,y2:ay,stroke:c,"stroke-opacity":.28,"stroke-width":1},gL);
+        var down=x.state==="down",late=x.state==="late"||x.state==="blocked",glow=x.active&&!down;
+        var st=down?"Down":late?(x.state==="blocked"?"Blocked":"Late"):glow?"Reported today or yesterday":"Quiet";
+        var g=node(ax,ay,x.name,[x.name,TEAM[id].n,st,x.last?"last "+x.last:"",x.note||""],glow?"lit":"");
+        if(glow)skv("circle",{"class":"halo",cx:ax,cy:ay,r:phone?9:11,fill:c,opacity:.28},g);
+        skv("circle",{cx:ax,cy:ay,r:phone?4:5,fill:glow?c:"#0b0f1c",stroke:down?"#ff8c84":late?"#f0b35a":c,"stroke-width":down||late?2:1.3,"stroke-opacity":glow||down||late?1:.55},g);
+        skv("circle",{"class":"ring",cx:ax,cy:ay,r:phone?8:9,fill:"transparent",stroke:"transparent"},g);
+      });
+      var st=tm.status||"ok",hr=(phone?8:10)+Math.min(7,cr.length*1.2);
+      var lbl=tm.name||TEAM[id].n,g=node(hx,hy,lbl,[lbl,st==="blocked"?"Blocked":st==="watch"?"Watch":"Ready",tm.now||"",on+" of "+ag.length+" lanes lit",cr.length+(cr.length===1?" order out":" orders out"),sc.length+(sc.length===1?" report back in 24 h":" reports back in 24 h")]);
+      skv("circle",{cx:hx,cy:hy,r:hr+7,fill:c,opacity:(.06+.16*share).toFixed(2)},g);
+      skv("circle",{cx:hx,cy:hy,r:hr,fill:c,"fill-opacity":(.35+.65*share).toFixed(2),stroke:st==="blocked"?"#ff8c84":st==="watch"?"#f0b35a":c,"stroke-width":st==="ok"?1:2.4,"stroke-dasharray":st==="watch"?"4 3":"none"},g);
+      skv("circle",{"class":"ring",cx:hx,cy:hy,r:hr+4,fill:"transparent",stroke:"transparent"},g);
+      /* the team's name sits on the side toward the middle, so the lanes keep the outside */
+      var lx=hx-Math.cos(a)*(hr+16),ly=hy-Math.sin(a)*(hr+16)+4;if(Math.abs(Math.cos(a))>.9)ly+=hr+12;
+      var t=skv("text",{"class":"lab",x:Math.max(26,Math.min(W-26,lx)).toFixed(1),y:ly.toFixed(1),"text-anchor":"middle"},gN);t.textContent=SHORT[id];
+    });
+    /* the Chief's hall */
+    var hall=node(cx,cy,"Chief's hall",["Chief's hall","every order goes out from here and every report comes back here",out+" orders out",back+" reports back in 24 h"]);
+    skv("circle",{cx:cx,cy:cy,r:phone?20:26,fill:"#e6b85c",opacity:.08},hall);
+    skv("circle",{cx:cx,cy:cy,r:phone?11:14,fill:"#151a2b",stroke:"#e6b85c","stroke-width":1.6},hall);
+    skv("circle",{"class":"ring",cx:cx,cy:cy,r:phone?15:18,fill:"transparent",stroke:"transparent"},hall);
+    var th=skv("text",{"class":"lab big",x:cx,y:cy+(phone?28:34),"text-anchor":"middle"},gN);th.textContent="CHIEF'S HALL";
+    /* Mo's desk: one gold moon per thing waiting on him; a green dot heads to the hall for each answer not picked up yet */
+    var mp=at(-90,Rx,Ry),mx=mp[0],my=mp[1],wait=model.orbs.filter(function(o){return !o.answered}),sent=model.orbs.filter(function(o){return o.answered&&!o.acted});
+    skv("line",{x1:cx,y1:cy,x2:mx,y2:my,stroke:"#e6b85c","stroke-opacity":wait.length?.5:.22,"stroke-width":1.4},gL);
+    sent.forEach(function(o,i){dot(mx,my,cx,cy,"#5fcf97",3,6,(i/Math.max(1,sent.length)+.25)%1)});
+    var mo=node(mx,my,"Mo's desk",["Mo's desk",wait.length?wait.length+" waiting on you, answers are just below the floor":"nothing waiting on you",sent.length?sent.length+" answered, not picked up yet":""]);
+    skv("circle",{cx:mx,cy:my,r:phone?11:13,fill:"#e6b85c","fill-opacity":wait.length?.9:.35,stroke:"#e6b85c"},mo);
+    skv("circle",{"class":"ring",cx:mx,cy:my,r:phone?15:17,fill:"transparent",stroke:"transparent"},mo);
+    wait.forEach(function(o,i){var ph=i/wait.length,rad=phone?19:22,e=skv("circle",{cx:mx+Math.cos(ph*6.2832)*rad,cy:my+Math.sin(ph*6.2832)*rad,r:3.2,fill:"#ffd987"},gD);if(anim)skyDots.push({e:e,orbit:1,x0:mx,y0:my,r:rad,p:12,ph:ph})});
+    var tm2=skv("text",{"class":"lab big",x:mx+(phone?20:24),y:my+4,"text-anchor":"start"},gN);tm2.textContent="MO'S DESK"+(wait.length?" · "+wait.length:"");
+    if(phone)tm2.setAttribute("x",mx+(phone?26:30));
+    var b=el("b",null,String(lit));sum.appendChild(b);sum.appendChild(document.createTextNode("of "+lanes+" lanes lit"));
+    sum.appendChild(el("span",null,out+" out · "+back+" back · "+wait.length+" waiting on you"));
+    if(!skyPick)skyRead(["Chief's hall",out+" orders out",back+" reports back in 24 h",wait.length+" waiting on you"]);
+    if(skyDots.length)skyRaf=requestAnimationFrame(skyTick);
+  }
+  document.addEventListener("visibilitychange",function(){if(!document.hidden&&skyDots.length&&!skyRaf)skyRaf=requestAnimationFrame(skyTick)});
+  var skz=0;window.addEventListener("resize",function(){clearTimeout(skz);skz=setTimeout(function(){var b=document.getElementById("sky-box");if(b&&Math.abs((b.clientWidth||0)-skyW)>4)drawSky(false)},160)});
   function setView(v,save){
-    tyView=v==="tally"?"tally":"floor";
-    var fs=document.getElementById("floor-scroll"),ty=document.getElementById("tally"),lg=document.querySelector(".floorwrap .legend"),tk=document.getElementById("floor-ticker");
-    if(fs)fs.hidden=tyView!=="floor";if(ty)ty.hidden=tyView!=="tally";if(lg)lg.hidden=tyView!=="floor";if(tk)tk.hidden=tyView!=="floor";
+    tyView=v==="tally"||v==="sky"?v:"floor";
+    var fs=document.getElementById("floor-scroll"),ty=document.getElementById("tally"),sk=document.getElementById("sky"),lg=document.querySelector(".floorwrap .legend"),tk=document.getElementById("floor-ticker");
+    if(fs)fs.hidden=tyView!=="floor";if(ty)ty.hidden=tyView!=="tally";if(sk)sk.hidden=tyView!=="sky";if(lg)lg.hidden=tyView!=="floor";if(tk)tk.hidden=tyView!=="floor";
     Array.prototype.forEach.call(document.querySelectorAll("#viewsw button"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-view")===tyView))});
     if(save){try{localStorage.setItem("cr-view",tyView)}catch(e){}}
-    if(tyView==="tally")drawTally(true);else{layout();if(reduce)draw(performance.now());else schedule()}
+    if(tyView!=="sky"){cancelAnimationFrame(skyRaf);skyRaf=0}
+    if(tyView==="tally")drawTally(true);else if(tyView==="sky")drawSky(true);else{layout();if(reduce)draw(performance.now());else schedule()}
   }
   (function(){
     Array.prototype.forEach.call(document.querySelectorAll("#viewsw button"),function(b){b.addEventListener("click",function(){setView(b.getAttribute("data-view"),true)})});
     var rp=document.getElementById("ty-replay");if(rp)rp.addEventListener("click",function(){drawTally(true)});
     var v=null;try{v=localStorage.getItem("cr-view")}catch(e){}
-    if(v==="tally"){tyView="tally";var fs=document.getElementById("floor-scroll"),ty=document.getElementById("tally");if(fs)fs.hidden=true;if(ty)ty.hidden=false;
+    if(v==="tally"||v==="sky"){tyView=v;var fs=document.getElementById("floor-scroll"),ty=document.getElementById("tally"),sk=document.getElementById("sky");if(fs)fs.hidden=true;if(ty)ty.hidden=v!=="tally";if(sk)sk.hidden=v!=="sky";
       var lg=document.querySelector(".floorwrap .legend"),tk=document.getElementById("floor-ticker");if(lg)lg.hidden=true;if(tk)tk.hidden=true;
-      Array.prototype.forEach.call(document.querySelectorAll("#viewsw button"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-view")==="tally"))})}
+      Array.prototype.forEach.call(document.querySelectorAll("#viewsw button"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-view")===v))})}
   })();
   function drawShift(){
     var box=document.getElementById("shift");if(!box)return;while(box.firstChild)box.removeChild(box.firstChild);
@@ -1234,7 +1353,7 @@ details.fold>summary{min-height:44px}
     });
   }
 
-  window.Floor={update:function(state,decisions){S=state||null;D=decisions||{};if(!L)layout();rebuild();chips();runTicker();drawShift();drawTally(false);drawPanels();drawSources();requestAnimationFrame(drawWire);if(sel&&sel!=="gate"&&sel!=="vault"&&sel!=="hall")showInfo(sel);if(reduce)draw(performance.now());else schedule()}};
+  window.Floor={update:function(state,decisions){S=state||null;D=decisions||{};if(!L)layout();rebuild();chips();runTicker();drawShift();drawTally(false);drawSky(!skyW);drawPanels();drawSources();requestAnimationFrame(drawWire);if(sel&&sel!=="gate"&&sel!=="vault"&&sel!=="hall")showInfo(sel);if(reduce)draw(performance.now());else schedule()}};
   var rz=0;window.addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(function(){layout();drawWire();if(reduce)draw(performance.now());else schedule()},150)});
   document.addEventListener("visibilitychange",function(){if(!document.hidden&&!reduce)schedule()});
 })();
