@@ -1,6 +1,6 @@
 {
   "_comment": "LIVE SYSTEM STATE for /card-dungeon (Phase 1, Aug 10 2026). Written by the scheduled runs (Monday shopcardhub-weekly-trend-scan + Tuesday bowman-bangers-tuesday-update + Thursday comc-trader) as part of their normal repo edits; deployed by Vercel like calls.json. The dungeon reads this client-side and renders REAL pipeline state alongside the sim. SCHEMA: agents{key:{label,role,lastRun,nextRun,actions[{ts,msg}]}} — keys are dm|seeker|curator|inspector|gengar|trader (first five map to sprites; trader added Aug 19, feed-only; append newest action LAST, keep ~12 max per agent). TRADER REDACTION RULE: trader actions must NEVER contain card names, prices, quantities, costs, or budget figures — counts, lanes, hit rates and lessons only; this file is public and the trader's book is not. items[{slug,title,stage,note,ts}] — stage enum: discovered (on the radar, no work yet) | proposed (new-page idea awaiting Mo) | scaffolded (draft stub exists) | built (page built locally, unpushed) | live (deployed) | skipped (with reason). Keep live to the ~8 most recent; prune stale discovered/proposed when resolved. proposals[{id,area,summary,status}] — status: awaiting-mo | approved | applied | declined. scoreboard mirrors data/calls.json rollup. Update 'generated' every write.",
-  "generated": "2026-11-23",
+  "generated": "2026-11-24",
   "generator": "shopcardhub-weekly-trend-scan (Monday 2026-10-12, STEP 3.9)",
   "agents": {
     "seeker": {
@@ -67,13 +67,9 @@
     "curator": {
       "label": "CURATOR",
       "role": "Page builder + Bangers board (Monday builds, Tuesday board update)",
-      "lastRun": "2026-11-17",
-      "nextRun": "2026-11-24",
+      "lastRun": "2026-11-24",
+      "nextRun": "2026-12-01",
       "actions": [
-        {
-          "ts": "2026-09-29",
-          "msg": "Friday release-window task disabled (Bowman Chrome street Sep 9 + 21 days). BCB26 not marked by this lane: the Sep 25 reset put it on the nightly sector tool."
-        },
         {
           "ts": "2026-10-06",
           "msg": "Board re-marked on the 30-day sold mark (nightly sold catalog, read Oct 6): Fischer $155.00 (+4.2%), Holliday $105.00 (-2.6%), Gonzales $70.00 (-11.9%, bottom), Florentino $69.00 (-0.7%). Kim comes off the board (no sale since Aug 5, no 30-day mark; the CoS kim-gate ruling applied) with a departures row; Aloy takes #5 at $57.00 on 19 sales, the highest mark of any unseated card (Jump $50.00 is a 90-day median on 1 sale in 30 days, Arquette $41.00 on 5). Seat choice differs from the ruling's named Arquette: filed awaiting-cos."
@@ -117,6 +113,10 @@
         {
           "ts": "2026-11-23",
           "msg": "Monday lane: v-bb-fischer-buy-2 finalize prepared locally on the Nov 19 BB26 sold mark ($127.50, 19 sales, -13.1% vs the $146.80 entry). calls.json not pushed; left for the Tuesday board."
+        },
+        {
+          "ts": "2026-11-24",
+          "msg": "Board re-marked on the sold marks of Nov 23: Florentino $69.50 (+6.9%, top) takes #3 from Gonzales $66.66 (-0.1%); Holliday $90.00 (-0.6%, bottom) under his $95 floor a third read, Hold retired and call re-set to WATCH dated Nov 24 (desk ruling 11-18 / O-27); Fischer $126.25 (+1.0%), Arquette $50.50 (+1.0%). board-history Nov 24 week prepended; PREBUILD G73 Value Blaster copy fixed."
         }
       ],
       "log": [
@@ -132,10 +132,6 @@
       "lastRun": "2026-11-23",
       "nextRun": "2026-11-30",
       "actions": [
-        {
-          "ts": "2026-11-09",
-          "msg": "Mechanical price sweep: 0 cells applied by hand. The 6 meta/title-tied Pokémon pages from the Nov 2 exception are still unchanged (stamps 29-38 days old); refiled with fresh PriceCharting reads as price-exceptions-2026-11-09."
-        },
         {
           "ts": "2026-11-09",
           "msg": "Gates after the re-mark: audit-prices 0 FAIL/56 WARN, audit-site 0/4, audit-terminal 0/1 — identical to clean HEAD 8bd7962."
@@ -179,6 +175,10 @@
         {
           "ts": "2026-11-23",
           "msg": "Price exceptions re-read for the fourth week (six title/meta-tied Pokemon pages): filed price-exceptions-2026-11-23 for the CoS, nothing applied."
+        },
+        {
+          "ts": "2026-11-24",
+          "msg": "Tuesday board read the nightly sold catalog (day 2026-11-23; the Nov 24 nightly had not landed by 19:10Z): 5 seats priced on 30-day medians of 7-20 dated SCP sales; Kim 90-day only (2 sales), still gated."
         }
       ],
       "log": [
@@ -193,13 +193,9 @@
     "dm": {
       "label": "DM",
       "role": "Ledger keeper + orchestration (/track-record, calls.json)",
-      "lastRun": "2026-11-17",
-      "nextRun": "2026-11-24",
+      "lastRun": "2026-11-24",
+      "nextRun": "2026-12-01",
       "actions": [
-        {
-          "ts": "2026-10-13",
-          "msg": "Ledger Oct 13 (calls.json LOCAL, unpushed): Florentino BUY final, wrong at -17.4% (entry 79.32 -> mark 65.50); Kim WAIT final, inside band, not graded; Gonzales PASS read $68.50; Fischer re-entry read $153.50 (+4.6%). Board tape og/x/board-latest.png and data/x-board.json regenerated (asOf 2026-10-13)."
-        },
         {
           "ts": "2026-10-20",
           "msg": "Ledger reads Oct 20 (calls.json NOT edited by this run; reads filed for the CoS): Gonzales PASS $70.00 vs $90.00 entry (-22.2%, finalizes Nov 3); Fischer re-entry $152.85 vs $146.80 (+4.1%). Board tape og/x/board-latest.png and data/x-board.json regenerated (asOf 2026-10-20)."
@@ -243,6 +239,10 @@
         {
           "ts": "2026-11-23",
           "msg": "Monday lane: og/indices.png regenerated on the Nov 23 marks (og ?v=20261123 on the pages that carry it). No X action."
+        },
+        {
+          "ts": "2026-11-24",
+          "msg": "Board tape og/x/board-latest.png + data/x-board.json regenerated (asOf 2026-11-23; Holliday WATCH, seats 1 Fischer, 2 Holliday, 3 Florentino, 4 Gonzales, 5 Arquette). Tuesday Tape not drafted: paused by Mo, Nov 17. calls.json Holliday WATCH row + Fischer finalize filed for the CoS (tuesday-2026-11-24-1), not staged."
         }
       ],
       "log": [
@@ -3760,6 +3760,18 @@
       "source": "claude/cos/weekly-scan-2026-11-23.md (Project)",
       "status": "queued",
       "decision": "CoS desk 2026-11-24: queued, as the intake ruled it Nov 23 12:22 (O-91). Night Crew takes the dollar figure out of the title and meta of /gengar-ex-worth, /pitch-black-set-guide and /mega-darkrai-ex-worth, or prints the newest dated sold mark from the data, never a typed figure, in the Wed Nov 25 build; /charizard-ex-worth, /van-gogh-pikachu-worth and /moonbreon-worth follow Fri Nov 27 with O-03 (A); Deal re-sets the /pitch-black-vs-chaos-rising title from indices.json in its Tue Nov 24 patch. Price Truth verifies live."
+    },
+    {
+      "id": "tuesday-2026-11-24-1",
+      "status": "awaiting-cos",
+      "date": "2026-11-24",
+      "area": "tuesday-lane",
+      "by": "tuesday-board",
+      "severity": "MED",
+      "tier": "P2",
+      "goal": "G1",
+      "title": "calls.json for O-27, not staged by this lane (wrapper: never git add calls.json). (a) New row v-bb-holliday-watch: WATCH, callDate 2026-11-24, entry $90.00 = sold mark of Nov 23 (13 sales Oct 24-Nov 23), basis sold; the page verdict already reads Watch, dated Nov 24, so the Scorecard lags the page until this lands. Note: the retired Hold was never a calls.json row (Holliday's only row is the final Jun 12 BUY), so 'the old row stays and is graded as written' has no row to act on. (b) v-bb-fischer-buy-2 finalize: three different finals are on file -- price lane Nov 16 prepared $118.50 (BB26 mark Nov 12, -19.3%), price lane Nov 23 prepared $127.50 (BB26 mark Nov 19, -13.1%), and the page has published since Nov 10 'final 8-week read -17.9%' at the board's own $120.50 Nov 10 mark (first read after finalizeAfter Nov 6). Recommend $120.50 / 2026-11-10 so the ledger matches what the page has printed for two weeks; grade null (6/12-month grading). Exact JSON in Project claude/cos/tuesday-board-2026-11-24-calls-patch.json.",
+      "decision": null
     }
   ],
   "scoreboard": {
