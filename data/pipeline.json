@@ -6844,6 +6844,16 @@
           "gates": "audit-prices FAIL 0 / WARN 66 (= base); audit-site FAIL 0 / WARN 3 (830 pages); audit-terminal FAIL 0 / WARN 1 (price-data worktree); price-truth sweep RED 0 / AMBER 22 / GREEN 76",
           "liveVerified": "2026-11-23 ~20:40Z curl: /pitch-black-index shows 50.54, /phantasmal-flames-index shows 57.44; home 200. IndexNow 699 URLs HTTP 200.",
           "note": "Recipe inputs read from the session's own project_read results (no /mnt/project), sha256 0adeb518…735dc 2,671 B and b12dfbd1…b70aa 22,285 B, both match. remark-indices --date 2026-11-23 gave the six expected levels; generators 3-6 run; pipeline patch applied clean; 65 files (55 pages). calls.json untouched."
+        },
+        {
+          "date": "2026-11-24",
+          "commits": [
+            "54da14d"
+          ],
+          "by": "Ship Desk (cloud, R48): mailbox apply — CoS desk 2026-11-24 (Mon Nov 23 evening slot), local ce9901c9 on 1acb5e3e",
+          "gates": "audit-prices FAIL 0 / WARN 66 (= base); audit-site FAIL 0 / WARN 3 (830 pages); audit-terminal FAIL 0 / WARN 1 (price-data worktree, = base); price-truth sweep RED 2 / AMBER 32 / GREEN 109 — RED 2 pre-existing on origin/main before the patch (Wei-En Lin #CPA-WL $115 on 2 sales narrated as 'recent sales' on /bowman-1st-chrome-index and /bowman-2026-index; also present at 1acb5e3~1), not caused by this docs-only commit",
+          "liveVerified": "2026-11-24 ~06:55Z curl: raw main claude/cos/STATE.md contains 'Nov 24 ~01:11–02:00 UTC'. Docs + pipeline.json only; no deploy, no UI sweep.",
+          "note": "Patch read from the session's own project_read result (no /mnt/project), sha256 2809141a…268e90b 29,278 B matches; git am -3 clean on 7474518. Regen: none. Price Truth to take the RED 2 (thin-mark narration) — flagged in ship-desk-LATEST."
         }
       ]
     },
