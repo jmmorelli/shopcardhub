@@ -202,13 +202,13 @@
     {
       "slug": "best-hobby-boxes-2026",
       "path": "/best-hobby-boxes-2026",
-      "owner": "conversion",
-      "claimedAt": "2026-10-28",
-      "baselineClicks": 8,
+      "owner": "deal",
+      "claimedAt": "2026-11-24",
+      "baselineClicks": 4,
       "baselineDays": 28,
-      "baselinePerDay": 0.2857,
+      "baselinePerDay": 0.1429,
       "isNew": false,
-      "grant": "pre-season claim, LOG 2026-10-27"
+      "grant": "transfer conversion -> deal, CoS ruling, executed 2026-11-24 after week-3 --record; baseline 0.1429/day as set at the ruling"
     },
     {
       "slug": "world-cup-2026-soccer-cards",
@@ -629,57 +629,98 @@
           "flagged": []
         }
       }
+    },
+    {
+      "weekEnding": "2026-11-22",
+      "snapshot": "2026-11-23T20:40:10.316Z",
+      "agents": {
+        "deal": {
+          "attributed": -1.61,
+          "clicks": 0,
+          "baseline": 1.61,
+          "cleanSessions": 21,
+          "flagged": []
+        },
+        "drop": {
+          "attributed": 23,
+          "clicks": 23,
+          "baseline": 0,
+          "cleanSessions": 45,
+          "flagged": []
+        },
+        "aisearch": {
+          "attributed": -1.91,
+          "clicks": 7,
+          "baseline": 6.05,
+          "cleanSessions": 33,
+          "flagged": []
+        },
+        "conversion": {
+          "attributed": -4.75,
+          "clicks": 0,
+          "baseline": 4.75,
+          "cleanSessions": 54,
+          "flagged": []
+        },
+        "wildcard": {
+          "attributed": 0,
+          "clicks": 0,
+          "baseline": 0,
+          "cleanSessions": 13,
+          "flagged": []
+        }
+      }
     }
   ],
   "standings": {
-    "updated": "2026-11-17",
-    "ga4Day": "2026-11-15",
-    "ga4GeneratedAt": "2026-11-16T18:59:48.284Z",
+    "updated": "2026-11-24",
+    "ga4Day": "2026-11-22",
+    "ga4GeneratedAt": "2026-11-23T20:40:10.316Z",
     "preseason": false,
-    "note": "Week 2 scored read (week ending Sun 2026-11-15, window 2026-11-09..2026-11-15), recorded with --record. Season = sum of the four Sunday-ending weekly reads (2 of 4 recorded). Clicks only; dollars never appear here.",
+    "note": "Week 3 scored read (week ending Sun 2026-11-22, window 2026-11-16..2026-11-22), recorded with --record. Season = sum of the four Sunday-ending weekly reads (3 of 4 recorded). Page counts are after the 2026-11-24 /best-hobby-boxes-2026 transfer (conversion -> deal). Clicks only; dollars never appear here.",
     "window7": [
-      "2026-11-09",
-      "2026-11-15"
+      "2026-11-16",
+      "2026-11-22"
     ],
     "agents": {
       "deal": {
-        "pages": 10,
-        "clicks7": 6,
+        "pages": 11,
+        "clicks7": 0,
         "baseline7": 1.61,
-        "attributed7": 4.39,
-        "cleanSessions7": 38,
-        "season": 7.64
+        "attributed7": -1.61,
+        "cleanSessions7": 21,
+        "season": 6.03
       },
       "drop": {
         "pages": 4,
-        "clicks7": 42,
+        "clicks7": 23,
         "baseline7": 0,
-        "attributed7": 42,
-        "cleanSessions7": 80,
-        "season": 46.21
+        "attributed7": 23,
+        "cleanSessions7": 45,
+        "season": 69.21
       },
       "aisearch": {
         "pages": 12,
-        "clicks7": 8,
-        "baseline7": 5.09,
-        "attributed7": 2.91,
-        "cleanSessions7": 30,
-        "season": 6.82
+        "clicks7": 7,
+        "baseline7": 6.05,
+        "attributed7": -1.91,
+        "cleanSessions7": 33,
+        "season": 4.91
       },
       "conversion": {
-        "pages": 12,
-        "clicks7": 2,
+        "pages": 11,
+        "clicks7": 0,
         "baseline7": 4.75,
-        "attributed7": -2.75,
-        "cleanSessions7": 45,
-        "season": -8.82
+        "attributed7": -4.75,
+        "cleanSessions7": 54,
+        "season": -13.57
       },
       "wildcard": {
-        "pages": 5,
+        "pages": 7,
         "clicks7": 0,
         "baseline7": 0,
         "attributed7": 0,
-        "cleanSessions7": 7,
+        "cleanSessions7": 13,
         "season": 0
       }
     }
@@ -768,6 +809,12 @@
       "owner": "aisearch",
       "releasedAt": "2026-11-20",
       "reason": "released by its owner (aisearch LOG 2026-11-19, with the /pokemon-30th-anniversary-2026 claim); back to the pool"
+    },
+    {
+      "slug": "best-hobby-boxes-2026",
+      "owner": "conversion",
+      "releasedAt": "2026-11-24",
+      "reason": "transferred to deal (CoS ruling; executed after the week-3 --record so week 3 scores under conversion)"
     }
   ]
 }
