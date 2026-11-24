@@ -6887,6 +6887,16 @@
           "gates": "audit-prices FAIL 0 / WARN 66 (= base) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 (= base) · price-truth sweep RED 2 / AMBER 32 / GREEN 109 (RED 2 identical on origin/main 9cfe705 before these patches: Wei-En Lin #CPA-WL thin marks on BOW26/BB26)",
           "liveVerified": "2026-11-24 curl after 90 s: /control-room Constellation footer line 1 · /mlb-cards 'Cupertino run 25' marker 1; Playwright --deep 390 + 1440 (GA + ebay aborted): no sideways scroll on either page, no console errors on /mlb-cards (control-room 401 = signed-out gate)",
           "note": "Patches from claude/night-crew/pending-control-room.patch.txt (sha256 dc305c94…, 20,547 B, bytes from transcript) and pending.patch.txt (sha256 49774642…, 276,170 B); git am -3 clean on 9cfe705. Rollback: git revert 97e55ad / e0c8a0d."
+        },
+        {
+          "date": "2026-11-24",
+          "commits": [
+            "9b2641c"
+          ],
+          "by": "Ship Desk for tuesday-board (4.8) — scheduled, cloud, LANE-RULES R48",
+          "gates": "audit-prices FAIL 0 / WARN 66 (= base) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 (price-data feed, = base) · price-truth sweep RED 2 / AMBER 32 / GREEN 47 (RED 2 identical on origin/main before this commit: Wei-En Lin #CPA-WL thin marks on /bowman-1st-chrome-index and /bowman-2026-index; not touched)",
+          "liveVerified": "2026-11-24 curl after 90 s: /bowman-bangers data-prices-updated=\"2026-11-23\" ×2 and 'Nov 24 board' ×2 · /data/x-board.json asOf 2026-11-23, seat 2 WATCH · /og/x/board-latest.png sha 64e2a715… ✓; Playwright --deep /bowman-bangers 390 + 1440: scrollWidth = viewport, no console errors",
+          "note": "Tuesday board 2026-11-24 from claude/night-crew/pending-tuesday-board.recipe.txt (sha256 89c0be4c…, 22,593 B ✓). Replayed on ba577d1: bowman-bangers.html 5e0d39db…, board-history.json fe7068e2…, board-latest.png 64e2a715… all = expected. Rebased onto 305154d before push. calls.json not staged (tuesday-2026-11-24-1 awaits CoS). Rollback: git revert 9b2641c."
         }
       ]
     },
