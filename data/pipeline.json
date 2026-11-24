@@ -6897,6 +6897,16 @@
           "gates": "audit-prices FAIL 0 / WARN 66 (= base) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 (price-data feed, = base) · price-truth sweep RED 2 / AMBER 32 / GREEN 47 (RED 2 identical on origin/main before this commit: Wei-En Lin #CPA-WL thin marks on /bowman-1st-chrome-index and /bowman-2026-index; not touched)",
           "liveVerified": "2026-11-24 curl after 90 s: /bowman-bangers data-prices-updated=\"2026-11-23\" ×2 and 'Nov 24 board' ×2 · /data/x-board.json asOf 2026-11-23, seat 2 WATCH · /og/x/board-latest.png sha 64e2a715… ✓; Playwright --deep /bowman-bangers 390 + 1440: scrollWidth = viewport, no console errors",
           "note": "Tuesday board 2026-11-24 from claude/night-crew/pending-tuesday-board.recipe.txt (sha256 89c0be4c…, 22,593 B ✓). Replayed on ba577d1: bowman-bangers.html 5e0d39db…, board-history.json fe7068e2…, board-latest.png 64e2a715… all = expected. Rebased onto 305154d before push. calls.json not staged (tuesday-2026-11-24-1 awaits CoS). Rollback: git revert 9b2641c."
+        },
+        {
+          "date": "2026-11-24",
+          "commits": [
+            "bbae0fb"
+          ],
+          "by": "Price Truth Desk (charter step 4) — scheduled, cloud, LANE-RULES R48",
+          "gates": "audit-prices FAIL 0 / WARN 66 (= base) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 (= base) · price-truth sweep RED 0 / AMBER 29 / GREEN 47 (was RED 2: Wei-En Lin #CPA-WL thin strip marks)",
+          "liveVerified": "2026-11-24 curl after 90 s: /bowman-1st-chrome-index and /bowman-2026-index strip 'thin · 2 sales · Nov 23' = 1 each; /pokemon-base-set-1st-edition-index Mewtwo #10 're-read'; home mover tile bs1e-10 = 0; /data/price-truth/raw-holds.json carries bs1e-10",
+          "note": "Hold bs1e-10 until 2026-12-08 (level unchanged). Root cause: European-language titles out of TITLE_BAD from the Nov 26 mark. Rollback: git revert bbae0fb."
         }
       ]
     },
