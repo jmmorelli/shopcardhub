@@ -6718,6 +6718,122 @@
     ],
     "rule": "landingPage matches /card* (7d, landingCountry7 top 500); bot = country flagged by summary.bots (countries7)"
    }
+  },
+  {
+   "day": "2026-11-23",
+   "generatedAt": "2026-11-24T19:46:15.256Z",
+   "sessions28": 2094,
+   "keyEvents28": 142,
+   "blendedKeyEventRate28": 3.63,
+   "blendedKeyEventRate7": 5.58,
+   "sessions7": 269,
+   "keyEvents7": 25,
+   "organicKeyEventRate28": 17.71,
+   "organicKeyEventRate7": 10.34,
+   "organicSessions28": 175,
+   "directSessions28": 1660,
+   "directAvgSessionDurationSec28": 6,
+   "returningUsers28": 24,
+   "returningShare28": 1.18,
+   "returningShare7": 1.89,
+   "clicks7": 25,
+   "buystripClicks7": 1,
+   "buyboxClicks7": 0,
+   "trackCardFromPage7": 0,
+   "newsletterSignup7": 0,
+   "boxSort7": 0,
+   "boxFilter7": 5,
+   "boxProfile7": 0,
+   "keyEventsYesterday": 0,
+   "sessionsYesterday": 53,
+   "topCountry7": "United States",
+   "nonUSTopCountry7": {
+    "country": "Singapore",
+    "activeUsers": 103,
+    "sessions": 103,
+    "keyEvents": 0,
+    "averageSessionDuration": 0.5492382621359223
+   },
+   "bots": {
+    "rule": "avg session < 2s over >= 10 sessions, OR 0 key events + avg < 10s over >= 30 sessions; 7d, by country",
+    "suspects": [
+     {
+      "country": "Singapore",
+      "sessions": 103,
+      "keyEvents": 0,
+      "avgSessionSec": 0.549
+     }
+    ],
+    "botSessions7": 103,
+    "botShare7": 37.32,
+    "cleanSessions7": 173,
+    "cleanKeyEvents7": 25,
+    "cleanKeyEventsPerSession7": 14.45,
+    "rawKeyEventsPerSession7": 9.06
+   },
+   "retentionSplit28": {
+    "surfaces": {
+     "views": 472,
+     "returningViews": 128,
+     "keyEvents": 27,
+     "landings": 343,
+     "returningLandings": 23,
+     "views7": 56,
+     "engagementSec7": 504,
+     "returningViewShare": 27.12,
+     "returningLandingShare": 6.71,
+     "engagementSecPerView7": 9,
+     "keyEventsPer100Views": 5.72
+    },
+    "guides": {
+     "views": 1960,
+     "returningViews": 58,
+     "keyEvents": 115,
+     "landings": 1747,
+     "returningLandings": 29,
+     "views7": 364,
+     "engagementSec7": 2254,
+     "returningViewShare": 2.96,
+     "returningLandingShare": 1.66,
+     "engagementSecPerView7": 6.2,
+     "keyEventsPer100Views": 5.87
+    },
+    "rule": "surfaces = / · /indices · *-index · /watchlist · /bowman-bangers; guides = every other path; 28d unless noted"
+   },
+   "activeUsers7": 261,
+   "activeUsers28": 2021,
+   "returningUsers7": 5,
+   "cardPageClicks7": 0,
+   "cardPageViews7": 10,
+   "cardPageClicksByEvent7": {},
+   "cardLanding7": {
+    "sessions": 32,
+    "keyEvents": 0,
+    "botSessions": 28,
+    "cleanSessions": 4,
+    "cleanKeyEvents": 0,
+    "cleanCountries": [
+     {
+      "country": "China",
+      "sessions": 2,
+      "keyEvents": 0,
+      "avgSessionSec": 0
+     },
+     {
+      "country": "Indonesia",
+      "sessions": 1,
+      "keyEvents": 0,
+      "avgSessionSec": 1.083
+     },
+     {
+      "country": "United States",
+      "sessions": 1,
+      "keyEvents": 0,
+      "avgSessionSec": 0.289
+     }
+    ],
+    "rule": "landingPage matches /card* (7d, landingCountry7 top 500); bot = country flagged by summary.bots (countries7)"
+   }
   }
  ]
 }
