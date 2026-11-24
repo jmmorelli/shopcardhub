@@ -6854,6 +6854,16 @@
           "gates": "audit-prices FAIL 0 / WARN 66 (= base); audit-site FAIL 0 / WARN 3 (830 pages); audit-terminal FAIL 0 / WARN 1 (price-data worktree, = base); price-truth sweep RED 2 / AMBER 32 / GREEN 109 — RED 2 pre-existing on origin/main before the patch (Wei-En Lin #CPA-WL $115 on 2 sales narrated as 'recent sales' on /bowman-1st-chrome-index and /bowman-2026-index; also present at 1acb5e3~1), not caused by this docs-only commit",
           "liveVerified": "2026-11-24 ~06:55Z curl: raw main claude/cos/STATE.md contains 'Nov 24 ~01:11–02:00 UTC'. Docs + pipeline.json only; no deploy, no UI sweep.",
           "note": "Patch read from the session's own project_read result (no /mnt/project), sha256 2809141a…268e90b 29,278 B matches; git am -3 clean on 7474518. Regen: none. Price Truth to take the RED 2 (thin-mark narration) — flagged in ship-desk-LATEST."
+        },
+        {
+          "date": "2026-11-24",
+          "commits": [
+            "4d952dd"
+          ],
+          "by": "Goal League Commissioner (scheduled, cloud, LANE-RULES R48) — registry week-3 read + /best-hobby-boxes-2026 transfer conversion -> deal + sitemap lastmod",
+          "gates": "audit-prices FAIL 0 / WARN 66 (= base) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 · score.mjs --check OK (47 entries)",
+          "liveVerified": "2026-11-24 curl after 90 s: /data/goal-league.json 200 (week ending 2026-11-22 present), /sitemap.xml 200",
+          "note": "No contestant patch pending this run. Week-3 scored read recorded; sitemap lastmod moved 453 card URLs to the Nov 23 classic-marks commit."
         }
       ]
     },
