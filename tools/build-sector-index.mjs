@@ -442,7 +442,9 @@ const UNCAP_RULE = "uncapped — price-weighted: the index is the cost of one co
 const EX_AT = 0.25;   // a sector ticker whose top weighted card is at or above this share carries an EX sub-line (the set without that card)
 
 // titles that are not one ungraded single of this card (read in memory only — never stored)
-const TITLE_BAD = /\b(lot|lots|bundle|x\s?\d+|\d+\s*(cards?|pcs?|pack)|set of|complete set|master set|playset|proxy|custom|sealed|booster|etb|elite trainer|box|tin|japanese|japan|korean|chinese|jpn|kor|psa|cgc|bgs|sgc|tag\s*\d|graded|slab|reverse holo|rev holo|cosmos|stamp)\b/i;
+// Price Truth Nov 24 2026: European-language copies excluded like Japanese/Korean (BS1E Mewtwo #10 Nov 23 median $400 carried a
+// German and a French copy; without them ~$750 vs PriceCharting ~$821).
+const TITLE_BAD = /\b(lot|lots|bundle|x\s?\d+|\d+\s*(cards?|pcs?|pack)|set of|complete set|master set|playset|proxy|custom|sealed|booster|etb|elite trainer|box|tin|japanese|japan|korean|chinese|jpn|kor|german|deutsch|french|fran[cç]ais|italian|italiano|spanish|espa[nñ]ol|portuguese|portugu[eê]s|dutch|nederlands|polish|polski|psa|cgc|bgs|sgc|tag\s*\d|graded|slab|reverse holo|rev holo|cosmos|stamp)\b/i;
 
 function cfg() { const c = CONFIG[TICKER]; if (!c) { console.error(`no config for ticker ${TICKER}`); process.exit(2); } return c; }
 async function get(url) {
@@ -760,12 +762,16 @@ function block(x, c, opt = {}) {
   const chaseTop = chasePool.filter((b) => typeof b.price === "number" && b.price >= 50).sort((a, b) => b.price - a.price).slice(0, 3);
   const MONS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const mdShort = (d) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d || "")); return m ? `${MONS[+m[2] - 1]} ${+m[3]}` : ""; };
+  // Price Truth, Nov 24 2026 (sweep check 4): a strip card marked on fewer than 3 sales is never narrated as "recent sales" —
+  // it says "thin · N sales" the way the table does (BOW26/BB26 Wei-En Lin #CPA-WL $115 on 2 sales, Nov 23 mark).
+  const chaseN = (b) => (b.win && b.win !== SCREEN.window && b.wn != null ? b.wn : b.n30);
+  const chaseBasis = (b) => { const n = chaseN(b); return n != null && n < 3 ? `thin · ${n} sale${n === 1 ? "" : "s"}` : "recent sales"; };
   const chase = chaseTop.length < 2 ? "" : `<div class="chase" id="${x.ticker.toLowerCase()}-chase" data-chase="${x.ticker}">
     <div class="ck"><b>Chase</b> · the ${chaseTop.length} priciest · dated · the cards that carry this set</div>
     <div class="cg">${chaseTop.map((b, i) => {
       const cid = `${x.ticker.toLowerCase()}-${String(b.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}-chase`;
       const url = ebaySearchUrl({ q: c.ebayQuery(b.name, b.num), customid: cid, sacat: c.sacat || SACAT_TCG, av: b.price >= 200 });
-      return `<a class="cc" href="${url}" target="_blank" rel="noopener sponsored" title="${esc(b.name)} #${esc(b.num)} — live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(cid)}',page:location.pathname})"><span class="ci" data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="row" data-card-surface="${x.ticker.toLowerCase()}-chase" data-card-link="off"></span><span class="cn">${esc(b.name)} #${esc(b.num)}${b.cc ? " · " + CC_LABEL : ""}</span><span class="cp">${b.ptHold ? `<b>—</b><small>raw mark being re-read</small>` : `<b>${b.price >= 100 ? "$" + Math.round(b.price).toLocaleString("en-US") : money(b.price)}</b><small>recent sales · ${mdShort(b.asOf || (last && last.date))}</small>`}</span><span class="cgo">${b.price >= 200 ? "Authenticated on eBay" : "Listings on eBay"} &rarr;</span></a>`;
+      return `<a class="cc" href="${url}" target="_blank" rel="noopener sponsored" title="${esc(b.name)} #${esc(b.num)} — live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(cid)}',page:location.pathname})"><span class="ci" data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="row" data-card-surface="${x.ticker.toLowerCase()}-chase" data-card-link="off"></span><span class="cn">${esc(b.name)} #${esc(b.num)}${b.cc ? " · " + CC_LABEL : ""}</span><span class="cp">${b.ptHold ? `<b>—</b><small>raw mark being re-read</small>` : `<b>${b.price >= 100 ? "$" + Math.round(b.price).toLocaleString("en-US") : money(b.price)}</b><small>${chaseBasis(b)} · ${mdShort(b.asOf || (last && last.date))}</small>`}</span><span class="cgo">${b.price >= 200 ? "Authenticated on eBay" : "Listings on eBay"} &rarr;</span></a>`;
     }).join("")}</div>
     <div class="cf">Price per card, from the table below: a median of recent dated sales (not one sale), dated to the read. Links open live eBay listings (affiliate; ShopCardHub earns a commission at no cost to you).</div>
   </div>`;

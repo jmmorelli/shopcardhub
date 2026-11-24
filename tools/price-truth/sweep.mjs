@@ -206,7 +206,16 @@ let thinRows = 0;
 for (const [tk, v] of Object.entries(IDX)) {
   if (!v || !Array.isArray(v.basket) || v.model !== "sector" || v.status === "retired") continue;
   const top3 = v.basket.filter((b) => b.price != null && (b.w == null || b.w > 0)).sort((a, b) => b.price - a.price).slice(0, 3);
-  for (const b of top3) if (b.n30 != null && b.n30 < 3) add(4, R, `${tk}#${b.num}`, `${tk} strip/plain read: ${b.name} #${b.num} $${b.price} narrated as "recent sales" on ${b.n30} sale(s)`, { page: v.page });
+  // Nov 24 2026: RED only when the page actually narrates the thin card as "recent sales"; a strip cell that discloses
+  // "thin · N sales" (tools/build-sector-index.mjs chaseBasis) is AMBER, like the table.
+  let html = ""; try { html = fs.readFileSync(path.join(ROOT, String(v.page || "").replace(/^\//, "") + ".html"), "utf8"); } catch (e) { html = ""; }
+  for (const b of top3) if (b.n30 != null && b.n30 < 3) {
+    const esc = String(b.name).replace(/&/g, "&amp;").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const cell = new RegExp(`<span class="cn">${esc} #${String(b.num).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[^]*?</small>`).exec(html);
+    const narrated = !cell || /recent sales/.test(cell[0]);
+    if (narrated) add(4, R, `${tk}#${b.num}`, `${tk} strip/plain read: ${b.name} #${b.num} $${b.price} narrated as "recent sales" on ${b.n30} sale(s)`, { page: v.page });
+    else add(4, A, `${tk}#${b.num}-thin`, `${tk} strip: ${b.name} #${b.num} $${b.price} on ${b.n30} sale(s), disclosed "thin" in the strip`, { page: v.page });
+  }
 }
 // Classic Collection reprints (CEL21 / TH26) printed without the reprint label (KB GAPS P42): the strip/table/plain read must say
 // "Classic Collection reprint" (tools/lib/classic-collection.mjs sets cc:true). RED when a top-3 card is an unlabelled reprint.
