@@ -6864,6 +6864,17 @@
           "gates": "audit-prices FAIL 0 / WARN 66 (= base) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 · score.mjs --check OK (47 entries)",
           "liveVerified": "2026-11-24 curl after 90 s: /data/goal-league.json 200 (week ending 2026-11-22 present), /sitemap.xml 200",
           "note": "No contestant patch pending this run. Week-3 scored read recorded; sitemap lastmod moved 453 card URLs to the Nov 23 classic-marks commit."
+        },
+        {
+          "date": "2026-11-24",
+          "commits": [
+            "e0c8a0d",
+            "97e55ad"
+          ],
+          "by": "Ship Desk (scheduled, cloud, LANE-RULES R48) — Control Room Designer Constellation view + Cupertino run 25 /mlb-cards board on the design system",
+          "gates": "audit-prices FAIL 0 / WARN 66 (= base) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 (= base) · price-truth sweep RED 2 / AMBER 32 / GREEN 109 (RED 2 identical on origin/main 9cfe705 before these patches: Wei-En Lin #CPA-WL thin marks on BOW26/BB26)",
+          "liveVerified": "2026-11-24 curl after 90 s: /control-room Constellation footer line 1 · /mlb-cards 'Cupertino run 25' marker 1; Playwright --deep 390 + 1440 (GA + ebay aborted): no sideways scroll on either page, no console errors on /mlb-cards (control-room 401 = signed-out gate)",
+          "note": "Patches from claude/night-crew/pending-control-room.patch.txt (sha256 dc305c94…, 20,547 B, bytes from transcript) and pending.patch.txt (sha256 49774642…, 276,170 B); git am -3 clean on 9cfe705. Rollback: git revert 97e55ad / e0c8a0d."
         }
       ]
     },
