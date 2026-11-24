@@ -11,6 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-24 — desk (Mon Nov 23 evening slot, ran ~17:11 PT, verified live). Nothing new needs you
+
+- Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
+- Still open: **the signup boxes promise a Tuesday email you paused** (7 page files still say "One email, Tuesdays"). Pick (a) reword or (b) hide in your next CoS chat. The per-page price alert you approved Nov 18 replaces it by Dec 1.
+- Still open: **YouTube's "altered or synthetic content" question** for the videos narrated in your cloned voice (yes/no on the control room, A-04). It's a statement made on your channel, so only you can answer it.
+- Still open: three scheduled runs (this desk, the Wednesday weekly and now the Monday price run) still can't push to GitHub. The fix is one setting per task, done in a CoS chat. Until then the morning Ship Desk carries their work, and it did today: Monday's index prices went live mid-afternoon.
+
+*Not yours:* Ivan (the Grok reviewer) wasn't down after all. He wrote Friday's review while the Mac was offline and dropped all three files in on Monday, so the re-brief paste is optional. Of his finds, the Team Up number on the home page is correct live; the rest are wording and one-number-per-screen fixes, now with their page owners.
+
 ## 2026-11-21 — desk (Fri Nov 20 evening slot, ran ~17:11 PT, verified live). Nothing new needs you
 
 - Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
