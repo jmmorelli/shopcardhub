@@ -47,16 +47,17 @@ const money = (v) => {
   if (n >= 10) return "$" + (Math.round(n * 2) / 2).toString().replace(/\.0$/, "");
   return "$" + (Math.round(n * 4) / 4).toString().replace(/\.0+$/, "");
 };
+const nb = (t) => t.replace(/ /g, "&nbsp;");   // keep "to Oct 10" on one line (Cupertino run 25)
 function range(x, pt, lab) {
   if (!x) return `<td class="num none" data-l="${lab}" aria-label="no sales in window"><span class="dot">·</span><span class="nos">no sale</span></td>`;
   // R18 + IW 2026-10-15 F1 (CoS ruling Oct 15): a guide point is never printed as a price; a cell needs 3+ in-window
   // sales to carry a number; a median (x.med) prints when the data file has one, else the middle half of the sales.
   if (x.n === 0 || pt) return `<td class="num none" data-l="${lab}"><span class="nos">${lab === "Raw" ? "No sale in 30 days" : "No verified sale"}</span></td>`;
-  if (x.n < 3) return `<td class="num none" data-l="${lab}"><span class="nos">Too few sales</span><small>${x.n} sale${x.n === 1 ? "" : "s"} &middot; last ${fmtDate(x.asof)}</small></td>`;
+  if (x.n < 3) return `<td class="num none" data-l="${lab}"><span class="nos">Too few sales</span><small>${x.n} sale${x.n === 1 ? "" : "s"} &middot; last&nbsp;${nb(fmtDate(x.asof))}</small></td>`;
   const cnt = x.n >= 30 ? "30+" : x.n;
-  if (x.med != null) return `<td class="num" data-l="${lab}">${money(x.med)}<small>median of ${cnt} &middot; to ${fmtDate(x.asof)}</small></td>`;
+  if (x.med != null) return `<td class="num" data-l="${lab}">${money(x.med)}<small>median of ${cnt} &middot; to&nbsp;${nb(fmtDate(x.asof))}</small></td>`;
   const txt = Math.abs(x.hi - x.lo) < 0.01 ? money(x.lo) : money(x.lo) + "&ndash;" + money(x.hi);
-  return `<td class="num" data-l="${lab}">${txt}<small>mid of ${cnt} sales &middot; to ${fmtDate(x.asof)}</small></td>`;
+  return `<td class="num" data-l="${lab}">${txt}<small>mid of ${cnt} sales &middot; to&nbsp;${nb(fmtDate(x.asof))}</small></td>`;
 }
 // Bowman KB G32 (Oct 15): paper Bowman (BP-/BD-/BDPP codes, flagship Bowman base) gets no tier and no buy links.
 const PAPER_SET = /^Bowman( Draft| Prospects| Paper Prospects)?$/;
@@ -143,92 +144,94 @@ ${SHELL_CSS}
 ${GTAG}
   <link rel="stylesheet" href="/css/site-fixes.css">
   <style>
-/* /mlb-cards — page styles (additive, scoped) */
-.mlb .intro { max-width:760px; font-size:16px; line-height:1.7; color:var(--text); margin:0 0 14px; }
-.mlb .legend { display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; font-family:var(--fm); font-size:11px; letter-spacing:0.6px; color:var(--text-dim); margin:0 0 22px; }
-.mlb .legend .tb { margin:0; }
-.mlb .chips { display:flex; flex-wrap:wrap; gap:7px; margin:0 0 10px; }
-.mlb .chips .gh { flex-basis:100%; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin:8px 0 0; }
-.mlb .chip { display:inline-block; font-family:var(--fd); font-size:15px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-head); background:var(--bg2); border:1px solid var(--border2); padding:6px 12px; border-radius:2px; transition:border-color .15s, color .15s; }
-.mlb .chip:hover { border-color:var(--accent); color:var(--accent); text-decoration:none; }
-.mlb .tools { display:flex; gap:8px; justify-content:flex-end; margin:4px 0 18px; }
-.mlb .tools button { font-family:var(--fm); font-size:10.5px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:var(--text-dim); background:transparent; border:1px solid var(--border2); padding:7px 12px; border-radius:2px; cursor:pointer; }
-.mlb .tools button:hover { color:var(--text-head); border-color:var(--accent); }
-.mlb .grp { font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); border-top:1px solid var(--border2); padding-top:22px; margin:34px 0 10px; }
-.mlb .grp:first-of-type { border-top:none; padding-top:0; margin-top:6px; }
-.mlb .plr { border:1px solid var(--border2); background:var(--bg2); margin:0 0 10px; border-radius:2px; }
-.mlb .plr[open] { border-color:rgba(0,204,245,0.35); }
-.mlb .plr summary { list-style:none; display:flex; align-items:center; gap:16px; padding:14px 18px; cursor:pointer; }
+/* /mlb-cards — page styles (scoped). Cupertino run 25: the board on the design system (DESIGN-SYSTEM.md "The player board"). */
+.mlb .intro, .mlb .close { max-width:42em; font-size:17px; line-height:1.47; color:var(--text); margin:0 0 24px; }
+.mlb .close { margin:48px 0 0; }
+html body .mlb .legend { display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; font:400 12px/1.33 var(--ds-font); font-size:12px !important; color:var(--text-dim); margin:0 0 40px; }
+.mlb .legend .tb { margin:0; color:var(--text); }
+.mlb .legend .tb + .tb::before { content:"· "; color:var(--text-dim); }
+.mlb .chips { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 8px; }
+.mlb .chips .gh { flex-basis:100%; font:600 12px/1.33 var(--ds-font); color:var(--text-dim); margin:16px 0 0; }
+.mlb .chips .gh:first-child { margin-top:0; }
+html body .mlb .chip { display:inline-flex; align-items:center; min-height:36px; padding:0 14px; border-radius:980px; background:var(--ds-surface-1); color:var(--text); font:400 14px/1 var(--ds-font); font-size:14px !important; letter-spacing:0; text-transform:none; transition:background .2s var(--ds-ease), color .2s var(--ds-ease); }
+.mlb .chip:hover { background:var(--ds-surface-3); color:var(--text-head); text-decoration:none; }
+.mlb .tools { display:flex; gap:16px; justify-content:flex-end; margin:16px 0 0; }
+.mlb .tools button { min-height:44px; padding:0; border:0; background:none; color:var(--accent); font:400 14px/1 var(--ds-font); letter-spacing:0; text-transform:none; cursor:pointer; }
+.mlb .tools button:hover { text-decoration:underline; }
+.mlb .grp { font:600 var(--ds-fs-h2)/1.1 var(--ds-font); letter-spacing:-0.015em; color:var(--text-head); text-wrap:balance; margin:72px 0 16px; }
+.mlb .plr { border-bottom:1px solid var(--border2); }
+.mlb .plr summary { list-style:none; display:flex; align-items:center; gap:16px; min-height:44px; padding:20px 0; cursor:pointer; }
 .mlb .plr summary::-webkit-details-marker { display:none; }
-.mlb .plr summary:hover { background:var(--bg3); }
-.mlb .pl-n { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; min-width:0; }
-.mlb .pl-i { font-family:var(--fm); font-size:11px; color:var(--text-dim); min-width:20px; }
-.mlb .plr h2 { font-family:var(--fd); font-size:24px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-head); margin:0; line-height:1.1; }
-.mlb .pl-t { font-size:13px; color:var(--text-dim); }
-.mlb .pl-m { margin-left:auto; font-family:var(--fm); font-size:11px; letter-spacing:0.6px; color:var(--text-dim); white-space:nowrap; }
-.mlb .pl-c { width:9px; height:9px; border-right:2px solid var(--accent); border-bottom:2px solid var(--accent); transform:rotate(45deg); transition:transform .15s; flex-shrink:0; margin-left:4px; }
-.mlb .plr[open] .pl-c { transform:rotate(-135deg); }
-.mlb .pl-b { padding:0 18px 16px; border-top:1px solid var(--border); }
-.mlb .pl-note { font-size:14.5px; line-height:1.6; color:var(--text); max-width:820px; margin:14px 0 12px; }
-.mlb .pl-d { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:var(--accent); margin-right:6px; }
-.mlb .pl-src { font-size:11px; color:var(--text-dim); }
+.mlb .pl-n { display:grid; grid-template-columns:32px minmax(0,1fr); align-items:baseline; column-gap:8px; min-width:0; }
+.mlb .pl-i { font:400 14px/1 var(--ds-font); color:var(--ds-text-3); }
+.mlb .plr h2 { font:600 var(--ds-fs-tile)/1.17 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-head); margin:0; }
+.mlb .pl-t { grid-column:2; font-size:14px; color:var(--text-dim); margin-top:4px; }
+.mlb .pl-m { margin-left:auto; font-size:14px; color:var(--text-dim); white-space:nowrap; }
+.mlb .pl-c { width:7px; height:7px; border-right:1.5px solid var(--text-dim); border-bottom:1.5px solid var(--text-dim); transform:rotate(45deg) translate(-2px,-2px); transition:transform .2s var(--ds-ease); flex-shrink:0; margin:0 4px 0 8px; }
+.mlb .plr[open] .pl-c { transform:rotate(-135deg) translate(-2px,-2px); }
+.mlb .plr summary:hover .pl-c { border-color:var(--text-head); }
+.mlb .pl-b { margin:0 0 32px; padding:8px 24px 16px; background:var(--ds-surface-1); border-radius:18px; }
+.mlb .pl-note { font-size:17px; line-height:1.47; color:var(--text); max-width:42em; margin:16px 0 16px; }
+.mlb .pl-d { display:block; font:600 12px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-dim); margin-bottom:4px; }
+.mlb .pl-src { font-size:12px; color:var(--text-dim); }
 .mlb .tw { overflow-x:auto; }
-.mlb table { width:100%; border-collapse:collapse; font-size:13.5px; }
-.mlb th { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--text-dim); text-align:left; padding:8px 10px 8px 0; border-bottom:1px solid var(--border2); white-space:nowrap; }
-.mlb td { padding:9px 10px 9px 0; border-bottom:1px solid var(--border); vertical-align:middle; }
+.mlb table { width:100%; border-collapse:collapse; font-size:14px; }
+html body .mlb th { font:600 12px/1.33 var(--ds-font); font-size:12px !important; letter-spacing:0; text-transform:none; color:var(--text-dim); text-align:left; padding:8px 8px 8px 0; border-bottom:1px solid var(--border2); white-space:nowrap; }
+.mlb td { padding:14px 8px 14px 0; border-bottom:1px solid var(--border); vertical-align:middle; }
 .mlb tr:last-child td { border-bottom:none; }
-.mlb td.cd b { display:block; font-family:var(--fd); font-size:16px; font-weight:700; letter-spacing:0.3px; color:var(--text-head); line-height:1.15; }
-.mlb td.cd .lb { display:block; font-size:12px; color:var(--text-dim); margin-top:2px; }
-.mlb td.cd .tb { display:none; }
-.mlb .tb { display:inline-block; font-family:var(--fm); font-size:9.5px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; padding:3px 7px; border-radius:2px; border:1px solid var(--border2); color:var(--text-dim); white-space:nowrap; }
-.mlb .tb.t-grail { color:var(--gold); border-color:rgba(245,200,0,0.45); }
-.mlb .tb.t-core { color:var(--accent); border-color:rgba(0,204,245,0.4); }
-.mlb .tb.t-value { color:var(--green); border-color:rgba(0,224,122,0.4); }
-.mlb th.num, .mlb td.num { text-align:right; font-family:var(--fm); white-space:nowrap; }
-.mlb td.num { font-size:13px; color:var(--text-head); }
-.mlb td.num small { display:block; font-size:10px; color:var(--text-dim); letter-spacing:0.3px; }
-.mlb td.num.none { color:var(--text-dim); opacity:.5; }
+.mlb td.cd b { display:block; font-size:17px; font-weight:600; letter-spacing:0; color:var(--text-head); line-height:1.24; }
+.mlb td.cd .lb { font-size:14px; color:var(--text-dim); margin:2px 4px 0 0; }
+.mlb .tier { display:none; }
+.mlb td.cd { min-width:200px; }
+.mlb td.cd .tb::before { content:"· "; }
+.mlb .tb { display:inline; font:400 14px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-dim); white-space:nowrap; }
+.mlb th.num, .mlb td.num { text-align:right; white-space:nowrap; }
+.mlb td.num { font-size:15px; font-weight:600; color:var(--text-head); }
+.mlb td.num { width:16%; min-width:132px; }
+.mlb td.num small { display:block; white-space:normal; font-size:12px; line-height:1.33; font-weight:400; color:var(--text-dim); margin-top:2px; }
+.mlb td.num.none { color:var(--ds-text-3); font-weight:400; }
 .mlb td.num .nos { display:none; }
-.mlb td.num.pt { color:var(--text); }
-.mlb sup.pt { font-size:8px; color:var(--orange); margin-left:2px; letter-spacing:0.5px; }
 .mlb th.act, .mlb td.act { text-align:right; padding-right:0; }
-.mlb .act-w { display:inline-flex; align-items:center; gap:6px; justify-content:flex-end; flex-wrap:nowrap; }
-.mlb .glk { display:inline-flex; gap:4px; }
-.mlb .glk a.ebay { display:inline-flex; align-items:center; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; padding:6px 9px; border-radius:2px; white-space:nowrap; transition:background .15s, color .15s; }
+.mlb .act-w { display:inline-flex; align-items:center; gap:8px; justify-content:flex-end; flex-wrap:nowrap; }
+.mlb .glk { display:inline-flex; gap:8px; }
+.mlb .glk a.ebay, html body .mlb .sch-track-card { position:relative; display:inline-flex; align-items:center; justify-content:center; min-height:32px; padding:0 12px; border:0; border-radius:980px; background:var(--ds-surface-3); color:var(--text-head); font:600 12px/1 var(--ds-font); letter-spacing:0; text-transform:none; white-space:nowrap; transition:background .2s var(--ds-ease); }
+.mlb .glk a.ebay::after, html body .mlb .sch-track-card::after { content:""; position:absolute; inset:-6px 0; }
+.mlb .glk a.ebay:hover, html body .mlb .sch-track-card:hover { background:#3a3a3c; color:var(--text-head); text-decoration:none; }
 .mlb .glk a.g-raw { background:var(--accent); color:#000; }
-.mlb .glk a.g-raw:hover { background:#fff; }
-.mlb .glk a.g-psa9, .mlb .glk a.g-psa10 { background:transparent; color:var(--text-head); border:1px solid var(--border2); }
-.mlb .glk a.g-psa9:hover, .mlb .glk a.g-psa10:hover { border-color:var(--accent); color:var(--accent); }
-.mlb .glk a.g-tag { background:transparent; color:var(--gold); border:1px solid rgba(245,200,0,0.45); }
-.mlb .glk a.g-tag:hover { background:var(--gold); color:#000; }
-.mlb .sch-track-card { font-size:13px; line-height:1; padding:5px 7px; }
-.mlb .price-asof { font-size:12px; color:var(--text-dim); margin:10px 2px 0; }
-.mlb .close { max-width:760px; font-size:15px; line-height:1.7; color:var(--text); margin:30px 0 0; }
+.mlb .glk a.g-raw:hover { background:#5cdcf8; color:#000; }
+html body .mlb .sch-track-card { padding:0; width:32px; font-size:14px; }
+html body .mlb .sch-track-card.sch-tracked { width:auto; padding:0 12px; background:none; color:var(--text-dim); }
+.mlb :is(.glk a.ebay, .chip):active { transform:scale(.98); }
+.mlb .price-asof { max-width:75ch; font-size:12px; line-height:1.5; color:var(--text-dim); margin:24px 0 0; }
+@media (prefers-reduced-motion:reduce) { .mlb .pl-c, .mlb .chip, .mlb .glk a.ebay { transition:none; } .mlb :is(.glk a.ebay, .chip):active { transform:none; } }
 @media (max-width:760px) {
-  .mlb .plr summary { padding:12px 14px; gap:10px; }
-  .mlb .plr h2 { font-size:20px; }
+  .mlb .grp { margin-top:48px; }
+  .mlb .plr summary { padding:16px 0; gap:8px; }
+  .mlb .pl-n { grid-template-columns:24px minmax(0,1fr); }
   .mlb .pl-m { display:none; }
-  .mlb .pl-b { padding:0 12px 12px; }
+  .mlb .pl-c { margin-left:auto; }
+  .mlb .pl-b { padding:4px 16px 8px; border-radius:12px; margin-bottom:24px; }
+  .mlb .pl-note { font-size:15px; }
   .mlb .tw { overflow:visible; }
   .mlb table, .mlb tbody { display:block; width:100%; }
   .mlb thead { display:none; }
-  .mlb tr { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px 8px; padding:11px 0; border-bottom:1px solid var(--border); }
+  .mlb tr { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; padding:16px 0; border-bottom:1px solid var(--border); }
   .mlb tr:last-child { border-bottom:none; }
   .mlb td { display:block; border:none; padding:0; }
   .mlb td.cd { grid-column:1 / -1; }
-  .mlb td.cd b { font-size:15px; display:inline; margin-right:8px; }
-  .mlb td.cd .lb { display:inline; }
-  .mlb td.cd .tb { display:inline-block; margin-left:8px; vertical-align:1px; }
-  .mlb td.tier { display:none; }
-  .mlb td.num { text-align:left; font-size:13px; white-space:normal; min-width:0; }
-  .mlb td.num small { white-space:normal; font-size:9.5px; line-height:1.3; }
-  .mlb td.num::before { content:attr(data-l); display:block; font-family:var(--fm); font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); margin-bottom:1px; }
+  .mlb td.cd b { display:block; }
+  .mlb td.cd .lb { display:inline; font-size:14px; }
+  .mlb td.num { text-align:left; font-size:15px; white-space:normal; width:auto; min-width:0; }
+  .mlb td.num small { white-space:normal; line-height:1.33; }
+  .mlb td.num::before { content:attr(data-l); display:block; font:600 12px/1.33 var(--ds-font); letter-spacing:0; text-transform:none; color:var(--text-dim); margin-bottom:2px; }
   .mlb td.num.none .dot { display:none; }
-  .mlb td.num.none .nos { display:inline; font-family:var(--fb); font-size:12px; }
-  .mlb td.act { grid-column:1 / -1; text-align:left; margin-top:2px; }
-  .mlb .act-w { justify-content:flex-start; flex-wrap:wrap; }
-  .mlb .glk a.ebay { padding:7px 9px; font-size:10px; }
-  .mlb .chip { font-size:14px; padding:5px 10px; }
+  .mlb td.num.none .nos { display:inline; font-size:14px; }
+  .mlb td.act { grid-column:1 / -1; text-align:left; margin-top:4px; }
+  .mlb .act-w { display:flex; justify-content:flex-start; }
+  .mlb .glk { flex-wrap:wrap; gap:6px; }
+  .mlb .glk a.ebay { padding:0 11px; }
+  .mlb .glk a.ebay, html body .mlb .sch-track-card { min-height:44px; }
+  html body .mlb .sch-track-card { width:44px; }
 }
   </style>
 </head>
