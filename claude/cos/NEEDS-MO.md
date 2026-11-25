@@ -11,6 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-25 — desk (Tue Nov 24 evening slot, ran ~17:11 PT, verified live). Nothing new needs you
+
+- Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
+- Still open: **the signup boxes promise a Tuesday email you paused** (7 page files still say "One email, Tuesdays"). Pick (a) reword or (b) hide in your next CoS chat. The per-page price alert you approved Nov 18 replaces it by Dec 1.
+- Still open: **YouTube's "altered or synthetic content" question** for the videos narrated in your cloned voice (yes/no on the control room, A-04).
+- Still open: four scheduled runs (this desk, the Wednesday weekly, the Monday price run and now the Tuesday board) can't push to GitHub. One setting per task, done in a CoS chat. The morning Ship Desk carries their work meanwhile.
+
+*Not yours:* the Bowman scorecard now has Holliday's Watch call and Fischer's final read, matching what the board page already shows. The hobby-box page, your #2 landing page, still promised a "Nov 24" re-check that never came; its owner fixes that line tonight, before Black Friday. Monday's site traffic had zero eBay clicks; the click tracking was tested tonight and works, so that was a quiet day, not a broken tag.
+
 ## 2026-11-24 — desk (Mon Nov 23 evening slot, ran ~17:11 PT, verified live). Nothing new needs you
 
 - Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
