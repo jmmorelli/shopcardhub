@@ -6878,6 +6878,22 @@
           "note": "No contestant patch pending this run. Week-3 scored read recorded; sitemap lastmod moved 453 card URLs to the Nov 23 classic-marks commit."
         },
         {
+          "date": "2026-11-25",
+          "commits": [
+            "81a1e459",
+            "b14ca880",
+            "dbef5925",
+            "77f9e017",
+            "9b94e55c",
+            "e928ef1a",
+            "6dcae828"
+          ],
+          "by": "Goal League Commissioner (scheduled, cloud, LANE-RULES R48) — five contestant patches: deal 7160ed2 (gift guide ranked list BET-20261124-1, BF-week re-mark, O-05, O-91b), drop 92f6d9c (new /pokemon-winter-releases, BET-20261123-1), aisearch dbb5dd7 (most-searched block on TH26, O-86), conversion 5bafff3 (O-94a), wildcard d9469c7 (O-94b); registry + llms.txt regen; sitemap lastmod 18 URLs",
+          "gates": "audit-prices FAIL 0 / WARN 64 (base 66; -2 = Update Series stale-prices + stale-prose-stamp cleared by wildcard) · audit-site FAIL 0 / WARN 3 (831 pages) · audit-terminal FAIL 0 / WARN 1 · score.mjs --check OK (48 entries) · renders 390/1280 on 14 pages: no overflow, no page errors",
+          "liveVerified": "2026-11-25 curl after 90 s: 14 changed URLs 200, buy strip present where expected, new content strings present; /data/goal-league.json carries the new registry row. IndexNow 14 URLs HTTP 200.",
+          "note": "All five patches applied clean with git am -3 on b20a9f3 (filed against f4dd14e; no overlapping files). Regen commands from each pending.md re-run: 0 changes except llms.txt picking up the new URL."
+        },
+        {
           "date": "2026-11-24",
           "commits": [
             "e0c8a0d",
