@@ -6907,6 +6907,16 @@
           "gates": "audit-prices FAIL 0 / WARN 66 (= base) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 (= base) · price-truth sweep RED 0 / AMBER 29 / GREEN 47 (was RED 2: Wei-En Lin #CPA-WL thin strip marks)",
           "liveVerified": "2026-11-24 curl after 90 s: /bowman-1st-chrome-index and /bowman-2026-index strip 'thin · 2 sales · Nov 23' = 1 each; /pokemon-base-set-1st-edition-index Mewtwo #10 're-read'; home mover tile bs1e-10 = 0; /data/price-truth/raw-holds.json carries bs1e-10",
           "note": "Hold bs1e-10 until 2026-12-08 (level unchanged). Root cause: European-language titles out of TITLE_BAD from the Nov 26 mark. Rollback: git revert bbae0fb."
+        },
+        {
+          "date": "2026-11-25",
+          "commits": [
+            "6277cd0"
+          ],
+          "by": "Ship Desk (scheduled, cloud, LANE-RULES R48 c) — applied the CoS desk's mailboxed commit (desk cloud push refused, O-25)",
+          "gates": "audit-prices FAIL 0 / WARN 66 (= base) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 (= base) · price-truth sweep RED 0 / AMBER 29 / GREEN 47",
+          "liveVerified": "2026-11-25 ~06:28Z curl after 90 s: /data/calls.json v-bb-holliday-watch = 1; v-bb-fischer-buy-2 state final, read 120.5, readDate 2026-11-10; /track-record 200, /bowman-bangers 200",
+          "note": "cos desk 2026-11-25 (O-27 calls.json: Holliday WATCH row + Fischer final; BOW12 class file, universeComplete false; pipeline tuesday-2026-11-24-1 applied; STATE/NEEDS-MO). Patch sha256 e76bbb74 matched; git am -3 clean on f4dd14e. Rollback: git revert 6277cd0."
         }
       ]
     },
