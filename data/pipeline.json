@@ -6933,6 +6933,19 @@
           "gates": "audit-prices FAIL 0 / WARN 66 (= base) · audit-site FAIL 0 / WARN 3 (830 pages) · audit-terminal FAIL 0 / WARN 1 (= base) · price-truth sweep RED 0 / AMBER 29 / GREEN 47",
           "liveVerified": "2026-11-25 ~06:28Z curl after 90 s: /data/calls.json v-bb-holliday-watch = 1; v-bb-fischer-buy-2 state final, read 120.5, readDate 2026-11-10; /track-record 200, /bowman-bangers 200",
           "note": "cos desk 2026-11-25 (O-27 calls.json: Holliday WATCH row + Fischer final; BOW12 class file, universeComplete false; pipeline tuesday-2026-11-24-1 applied; STATE/NEEDS-MO). Patch sha256 e76bbb74 matched; git am -3 clean on f4dd14e. Rollback: git revert 6277cd0."
+        },
+        {
+          "date": "2026-11-25",
+          "commits": [
+            "8f0e572",
+            "2597760",
+            "aad74e9",
+            "5fcc0df"
+          ],
+          "by": "Ship Desk (scheduled, cloud, LANE-RULES R48 c) — applied Night Crew 1e64ac82, Cupertino run 26 26056261 and Control Room Designer 375aafb from the mailbox, plus the build-card-pages regen",
+          "gates": "audit-prices FAIL 0 / WARN 64 (base 66) · audit-site FAIL 0 / WARN 3 (831 pages) · audit-terminal FAIL 0 / WARN 1 (= base) · price-truth sweep RED 0 / AMBER 29 / GREEN 47 · audit-sealed-reads exit 0 (6/6)",
+          "liveVerified": "2026-11-25 ~14:52Z curl after 95 s: worth metas 0 '$' ×3; 'Price paused while we re-check' on 3 Sapphire pages; data/collect charizard+lugia 0 'handful'; control-room design line = 1; site-fixes '0e+. The guide tables (run 26)' = 1. Playwright (GA + eBay aborted) /watchlist iPhone 13: #pfWarns empty, no buy zone, no −80%; Holliday #cp-why plain, 0 'held by Price Truth'. Deep sweep 390+1440 on /watchlist, Holliday Sapphire, Gengar, McDonald's, F1: no overflow, 0 console errors, CLS 0 except Holliday 1440 0.002 (before 0.0007, under 0.1, not reverted)",
+          "note": "Patches sha256 70a3bd77 (52,254 B) and 85d139b0 (9,874 B) matched; bytes lifted from this session's transcript, never re-typed; git am -3 clean on 85b91d5 (base in pending.md was b20a9f30). Rollback: git revert 5fcc0df 8f0e572 (+ node tools/build-card-pages.mjs) · git revert 2597760 · git revert aad74e9."
         }
       ]
     },
