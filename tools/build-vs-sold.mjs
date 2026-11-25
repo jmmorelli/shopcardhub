@@ -60,9 +60,12 @@ const topL = cfg.chase.left[0], topR = cfg.chase.right[0];
 // after the left set's street date the left numbers are release-day-on sales; `pre` keeps the presale read for the before/after line
 const AFTER = cfg.read >= L.release;
 const answer = `eBay sold prices to ${day(cfg.read)}: a ${box.left.name} sold for a median ${money(box.left.price)} on ${box.left.n} ${AFTER ? 'sales since its ' + day(L.release) + ' release' : L.phase + ' sales'}, a ${box.right.name} ${money(box.right.price)} on ${box.right.n}. That works out to ${money(pp(box.left, 36))} a pack against ${money(pp(box.right, 36))}. ${L.set}'s top chase, ${topL.name} ${topL.num}, sits at ${money(topL.price)}; ${R.set}'s, ${topR.name} ${topR.num}, at ${money(topR.price)}.`;
+// a re-mark date that has passed is a broken promise on the page: print it only while it is still ahead (PT)
+const TODAY_PT = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
+const REMARK = cfg.remark && cfg.remark >= TODAY_PT ? `We re-mark this page ${day(cfg.remark)}. ` : '';
 const hook = AFTER && box.left.pre && box.left.pre.price != null
-  ? `${L.set} came out ${longDay(L.release)}. Before release its booster box sold for a median ${money(box.left.pre.price)} on ${box.left.pre.n} presale sales; since release, ${money(box.left.price)} on ${box.left.n}. We re-mark this page ${day(cfg.remark)}. A listing under these numbers is under what buyers have been paying.`
-  : `${L.set} streets ${longDay(L.release)}, so its numbers so far are ${L.phase} sales and can move fast once boxes are opened. We re-mark this page ${day(cfg.remark)}. A listing under these numbers is under what buyers have been paying.`;
+  ? `${L.set} came out ${longDay(L.release)}. Before release its booster box sold for a median ${money(box.left.pre.price)} on ${box.left.pre.n} presale sales; since release, ${money(box.left.price)} on ${box.left.n}. ${REMARK}A listing under these numbers is under what buyers have been paying.`
+  : `${L.set} streets ${longDay(L.release)}, so its numbers so far are ${L.phase} sales and can move fast once boxes are opened. ${REMARK}A listing under these numbers is under what buyers have been paying.`;
 
 const cell = (c, s, set) => {
   const packs = s.packs;
