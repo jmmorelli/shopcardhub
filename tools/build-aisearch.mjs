@@ -22,6 +22,14 @@
 //      the set's top raw cards (live basket mark, change since that card's previous mark), each row ending in the
 //      exact eBay search the page's own index table already carries for that card, re-tagged customid=<page slug>
 //      (P9 pattern, chase_click). FAQPage JSON-LD and llms text carry the answer with no eBay URL (R45).
+//   6. opt-in per page ("searched": {...}, P11 Nov 24, BET-20261122-1 / O-86): the <!-- AISEARCH:SEARCHED:START --> … END
+//      block, placed just above searched.anchor (after the MOVE block when both use the same anchor). A named list (eBay's
+//      most-searched Pokémon of 2026, eBay Collected report, Nov 17 2026), one row per Pokémon: the highest-priced raw
+//      basket card featuring it in our live Pokémon indices that is marked on the page's own read date, weighted in its
+//      level (w ≠ 0), not carried, not under a Price Truth hold, with a sale count (wn, else n30) ≥ 3 and a window, not
+//      already a row of the page's MOVE table, and with an eBay search on its own index page. Its last cell is that exact
+//      href re-tagged customid=<page slug> (P9 pattern, chase_click). No eligible card → a plain "not in our indices" row.
+//      Its question rides in the MOVE block's FAQPage (one FAQPage per page); llms text carries no eBay URL (R45).
 // Every number comes from data/indices.json at build time: a live mark, its date and its n. Nothing here carries
 // an eBay URL, a listing price or an ask (R45). Run it after any mark, before tools/build-llms.mjs.
 //   node tools/build-aisearch.mjs           write
@@ -275,8 +283,10 @@ function moveAnswer(slug, p) {
     const ch = x.chg ? `<span class="${x.chg.v > 0.05 ? 'up' : x.chg.v < -0.05 ? 'dn' : 'fl'}">${sgn(x.chg.v)}</span><small>from <time datetime="${x.chg.from}">${fmtDay(x.chg.from)}</time></small>` : '<span class="fl">new</span>';
     return `<tr><td class="nm">${esc(x.label)}${x.note ? `<small>${esc(x.note)}</small>` : ''}</td><td class="px">${usd2(x.b.price)}</td><td class="ch">${ch}</td><td class="go"><a href="${esc(x.ebay)}" target="_blank" rel="noopener sponsored" title="${esc(x.label)}, live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(slug)}:${esc(x.cid)}',page:location.pathname})">eBay&nbsp;&rsaquo;</a></td></tr>`;
   }).join('\n');
+  const sq = SEARCHED[slug];
   const faq = { '@context': 'https://schema.org', '@type': 'FAQPage',
-    mainEntity: [{ '@type': 'Question', name: mv.question, acceptedAnswer: { '@type': 'Answer', text: text + cardsText } }] };
+    mainEntity: [{ '@type': 'Question', name: mv.question, acceptedAnswer: { '@type': 'Answer', text: text + cardsText } }]
+      .concat(sq ? [{ '@type': 'Question', name: sq.q, acceptedAnswer: { '@type': 'Answer', text: sq.text } }] : []) };
   const block = `<!-- AISEARCH:MOVE:START — built by tools/build-aisearch.mjs from data/indices.json + data/aisearch.json (AI-Search Hunter). Do not hand-edit. -->
 <style>
   .aism-wrap{max-width:1060px;margin:28px auto 0;padding:0 24px}
@@ -311,6 +321,73 @@ ${tr}
 <!-- AISEARCH:MOVE:END -->`;
   return { block, text: text + cardsText, q: mv.question };
 }
+// ---------- a named list of Pokémon, one priced card each (optional pages[slug].searched, P11 Nov 24) ----------
+const SITEMAP = fs.existsSync(path.join(ROOT, 'sitemap.xml')) ? fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8') : '';
+const slugify = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const ROW_CAP = 60; // the sold source caps its table at 60 rows: a count at the cap prints as "60+"
+function searchedAnswer(slug, p) {
+  const sr = p.searched, home = T[p.ticker];
+  if (!home) return null;
+  const day = home.last.date; // one read date per page (R35): rows must be marked on the page's own date
+  const skip = new Set((p.move && p.move.cards || []).map(c => `${p.ticker}|${c.num}`));
+  const pages = {};
+  const pageOf = r => (pages[r.k] ??= fs.readFileSync(path.join(ROOT, r.page.replace(/^\//, '') + '.html'), 'utf8'));
+  const pool = Object.values(T).filter(r => !/bowman/i.test(r.x.name || '') && !/^B(OW|B|CB)\d/.test(r.k) && r.x.set && /^Pokémon TCG /.test(r.x.set));
+  const rows = sr.pokemon.map(pk => {
+    const re = new RegExp(`\\b${pk.name}\\b`);
+    const cands = [];
+    for (const r of pool) for (const b of r.x.basket || []) if (re.test(b.name || '')) cands.push({ r, b });
+    cands.sort((a, b) => (b.b.price || 0) - (a.b.price || 0));
+    const pick = cands.find(({ r, b }) => {
+      if (b.carried || b.ptHold || b.heldMove || b.w === 0 || typeof b.price !== 'number' || !b.win || b.asOf !== day) return false;
+      const n = b.wn ?? b.n30; if (typeof n !== 'number' || n < 3) return false;
+      if (skip.has(`${r.k}|${b.num}`) || (sr.exclude || []).includes(`${r.k}|${b.num}`)) return false;
+      return true;
+    });
+    if (!pick) return { pk, none: cands.length ? 'none-eligible' : 'none' };
+    const { r, b } = pick, tk = r.k.toLowerCase(), nm = String(b.num).toLowerCase();
+    const html = pageOf(r);
+    const m = html.match(new RegExp(`href="(https://www\\.ebay\\.com/sch/i\\.html\\?[^"]*customid=${tk}-${nm}-chase)"`))
+      || html.match(new RegExp(`href="(https://www\\.ebay\\.com/sch/i\\.html\\?[^"]*customid=${tk}-${nm})"`));
+    if (!m) return { pk, none: 'none-eligible' };
+    const ebay = m[1].replace(/&amp;/g, '&').replace(/customid=[^&"]*/, 'customid=' + slug);
+    const setName = r.x.set.replace(/^Pokémon TCG /, '').replace(/ \(set \+ 25th-anniversary promos\)$/, '');
+    const cslug = `card-${slugify(b.name)}-${slugify(b.num)}-${slugify(setName)}`;
+    const card = fs.existsSync(path.join(ROOT, cslug + '.html')) && SITEMAP.includes(`${SITE}/${cslug}<`) ? '/' + cslug : null;
+    const n = b.wn ?? b.n30;
+    return { pk, r, b, ebay, card, setName, n: n >= ROW_CAP ? `${ROW_CAP}+` : String(n), label: `${setName} ${b.name} #${b.num}` };
+  });
+  const got = rows.filter(x => !x.none);
+  if (got.length < 3) return null;
+  const names = sr.pokemon.map(x => x.name);
+  const list = names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+  const intro = `${sr.source.replace('{list}', list)}`;
+  const lineOf = x => x.none ? `${x.pk.name}: not in our indices yet` : `${x.pk.name}, ${x.label}, ${usd2(x.b.price)} (median of ${x.n} sales over ${x.b.win} days)`;
+  const text = `${intro} On ${fmtDate(day)}, the highest-priced raw card of each in our Pokémon indices with at least three sales in its window sold for: ${rows.map(lineOf).join('; ')}.`;
+  const tr = rows.map(x => {
+    if (x.none) return `<tr><td class="nm"><b>${esc(x.pk.name)}</b><small>Not in our indices yet</small></td><td class="px"></td><td class="go"></td></tr>`;
+    const cid = 'searched-' + slugify(x.pk.name);
+    const nameLink = `<a href="${esc(x.card || x.r.page)}">${esc(x.label)}</a>`;
+    const idxLink = x.card ? ` · <a href="${esc(x.r.page)}">${esc(x.r.k)} index</a>` : ` · ${esc(x.r.k)} index`;
+    return `<tr><td class="nm"><b>${esc(x.pk.name)}</b><small>${nameLink}${idxLink}</small></td><td class="px">${usd2(x.b.price)}<small>${esc(x.n)} sales · ${x.b.win} days</small></td><td class="go"><a href="${esc(x.ebay)}" target="_blank" rel="noopener sponsored" title="${esc(x.label)}, live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(slug)}:${esc(cid)}',page:location.pathname})">eBay&nbsp;&rsaquo;</a></td></tr>`;
+  }).join('\n');
+  const answerHtml = `${esc(intro)} On <time datetime="${day}">${fmtDay(day)}</time>, here is what the highest-priced raw card of each in our Pokémon indices sold for.`.replace(/'/g, '&#39;');
+  const block = `<!-- AISEARCH:SEARCHED:START — built by tools/build-aisearch.mjs from data/indices.json + data/aisearch.json (AI-Search Hunter). Do not hand-edit. -->
+<style>.aiss .aism-t td.px small{font-family:var(--fm);font-weight:400;letter-spacing:0}.aiss .aism-t td.nm small a{color:var(--text-dim);text-decoration:underline;text-underline-offset:2px}.aiss .aism-t td.nm b{color:var(--text-head)}</style>
+<div class="aism-wrap"><section class="aism aiss" id="most-searched" aria-labelledby="aiss-q">
+<h2 id="aiss-q">${esc(sr.question)}</h2>
+<p class="aism-a">${answerHtml}</p>
+<p class="aism-l">${esc(sr.lead)}</p>
+<div style="overflow-x:auto;"><table class="aism-t">
+<thead><tr><th scope="col">Pokémon · card</th><th scope="col" class="r">Raw median</th><th scope="col" aria-label="eBay listings"></th></tr></thead>
+<tbody>
+${tr}
+</tbody></table></div>
+</section></div>
+<!-- AISEARCH:SEARCHED:END -->`;
+  return { block, text, q: sr.question };
+}
+const SEARCHED = {};
 const usd2 = n => (n >= 1000 ? usd(n) : '$' + n.toFixed(2));
 const MOVES = {};
 
@@ -463,6 +540,10 @@ for (const [slug, p] of Object.entries(cfg.pages)) {
       html = html.replace(anchor, () => blk + '\n' + anchor);
     }
   }
+  html = html.replace(/<!-- AISEARCH:SEARCHED:START[\s\S]*?<!-- AISEARCH:SEARCHED:END -->\n?/, '');
+  const sa = p.searched ? searchedAnswer(slug, p) : null;
+  if (p.searched && !p.move) throw new Error(slug + ': searched needs the move block (it carries the styles and the FAQPage)');
+  if (sa) SEARCHED[slug] = sa;
   if (p.move || /<!-- AISEARCH:MOVE:START/.test(html)) {
     const RE = /<!-- AISEARCH:MOVE:START[\s\S]*?<!-- AISEARCH:MOVE:END -->\n?/;
     html = html.replace(RE, '');
@@ -473,6 +554,17 @@ for (const [slug, p] of Object.entries(cfg.pages)) {
       if (html.split(anchor).length !== 2) throw new Error(slug + ': expected one ' + anchor + ' anchor for the move answer');
       html = html.replace(anchor, () => a.block + '\n' + anchor);
     }
+  }
+  if (sa) {
+    const anchor = p.searched.anchor;
+    if (html.split(anchor).length !== 2) throw new Error(slug + ': expected one ' + anchor + ' anchor for the searched answer');
+    html = html.replace(anchor, () => sa.block + '\n' + anchor);
+  }
+  // Opt-in ("articleModified": true): the page's hand-written Article JSON-LD dateModified follows its read date.
+  if (p.articleModified && T[p.ticker]) {
+    const RE = /("@type":\s?"Article"[^<]*?"dateModified":\s?")\d{4}-\d{2}-\d{2}(")/;
+    if (!RE.test(html)) throw new Error(slug + ': Article dateModified not found');
+    html = html.replace(RE, (_, a, b) => a + T[p.ticker].last.date + b);
   }
   out.set(f, html);
 }
@@ -490,6 +582,11 @@ for (const q of cfg.llms) {
   if (q.answer === 'cards') { if (asked) llms.push(`- [${q.q}](${SITE}${q.page}): ${asked.text}`); continue; }
   if (typeof q.answer === 'string' && q.answer.startsWith('move:')) {
     const a = MOVES[q.answer.slice(5)];
+    if (a) llms.push(`- [${q.q}](${SITE}${q.page}): ${a.text}`);
+    continue;
+  }
+  if (typeof q.answer === 'string' && q.answer.startsWith('searched:')) {
+    const a = SEARCHED[q.answer.slice(9)];
     if (a) llms.push(`- [${q.q}](${SITE}${q.page}): ${a.text}`);
     continue;
   }
