@@ -1,134 +1,539 @@
 {
  "_comment": "GA4 nightly snapshot — read-only Data API pull by tools/ga4-snapshot.mjs. Windows end on 'yesterday' (GA4 finishes processing a day ~24h after it ends). Rates are percentages. Never a source of user-level data.",
  "property": "541047014",
- "generatedAt": "2026-11-24T19:46:15.256Z",
- "day": "2026-11-23",
+ "generatedAt": "2026-11-25T18:53:18.571Z",
+ "day": "2026-11-24",
  "summary": {
-  "sessions28": 2094,
-  "keyEvents28": 142,
-  "blendedKeyEventRate28": 3.63,
-  "blendedKeyEventRate7": 5.58,
-  "sessions7": 269,
-  "keyEvents7": 25,
-  "organicKeyEventRate28": 17.71,
-  "organicKeyEventRate7": 10.34,
+  "sessions28": 2067,
+  "keyEvents28": 146,
+  "blendedKeyEventRate28": 3.77,
+  "blendedKeyEventRate7": 5.11,
+  "sessions7": 274,
+  "keyEvents7": 24,
+  "organicKeyEventRate28": 18.29,
+  "organicKeyEventRate7": 13.79,
   "organicSessions28": 175,
-  "directSessions28": 1660,
+  "directSessions28": 1665,
   "directAvgSessionDurationSec28": 6,
   "returningUsers28": 24,
-  "returningShare28": 1.18,
-  "returningShare7": 1.89,
-  "clicks7": 25,
-  "buystripClicks7": 1,
+  "returningShare28": 1.19,
+  "returningShare7": 2.21,
+  "clicks7": 24,
+  "buystripClicks7": 2,
   "buyboxClicks7": 0,
   "trackCardFromPage7": 0,
   "newsletterSignup7": 0,
   "boxSort7": 0,
-  "boxFilter7": 5,
+  "boxFilter7": 8,
   "boxProfile7": 0,
-  "keyEventsYesterday": 0,
-  "sessionsYesterday": 53,
+  "keyEventsYesterday": 4,
+  "sessionsYesterday": 43,
   "topCountry7": "United States",
   "nonUSTopCountry7": {
    "country": "Singapore",
-   "activeUsers": 103,
-   "sessions": 103,
+   "activeUsers": 113,
+   "sessions": 113,
    "keyEvents": 0,
-   "averageSessionDuration": 0.5492382621359223
+   "averageSessionDuration": 0.5040624867256637
   },
   "bots": {
    "rule": "avg session < 2s over >= 10 sessions, OR 0 key events + avg < 10s over >= 30 sessions; 7d, by country",
    "suspects": [
     {
      "country": "Singapore",
-     "sessions": 103,
+     "sessions": 113,
      "keyEvents": 0,
-     "avgSessionSec": 0.549
+     "avgSessionSec": 0.504
     }
    ],
-   "botSessions7": 103,
-   "botShare7": 37.32,
-   "cleanSessions7": 173,
-   "cleanKeyEvents7": 25,
-   "cleanKeyEventsPerSession7": 14.45,
-   "rawKeyEventsPerSession7": 9.06
+   "botSessions7": 113,
+   "botShare7": 40.36,
+   "cleanSessions7": 167,
+   "cleanKeyEvents7": 24,
+   "cleanKeyEventsPerSession7": 14.37,
+   "rawKeyEventsPerSession7": 8.57
   },
   "retentionSplit28": {
    "surfaces": {
-    "views": 472,
-    "returningViews": 128,
-    "keyEvents": 27,
-    "landings": 343,
-    "returningLandings": 23,
-    "views7": 56,
-    "engagementSec7": 504,
-    "returningViewShare": 27.12,
-    "returningLandingShare": 6.71,
-    "engagementSecPerView7": 9,
-    "keyEventsPer100Views": 5.72
+    "views": 443,
+    "returningViews": 123,
+    "keyEvents": 28,
+    "landings": 315,
+    "returningLandings": 22,
+    "views7": 58,
+    "engagementSec7": 622,
+    "returningViewShare": 27.77,
+    "returningLandingShare": 6.98,
+    "engagementSecPerView7": 10.7,
+    "keyEventsPer100Views": 6.32
    },
    "guides": {
-    "views": 1960,
-    "returningViews": 58,
-    "keyEvents": 115,
-    "landings": 1747,
-    "returningLandings": 29,
-    "views7": 364,
-    "engagementSec7": 2254,
-    "returningViewShare": 2.96,
-    "returningLandingShare": 1.66,
-    "engagementSecPerView7": 6.2,
-    "keyEventsPer100Views": 5.87
+    "views": 1961,
+    "returningViews": 47,
+    "keyEvents": 118,
+    "landings": 1749,
+    "returningLandings": 26,
+    "views7": 373,
+    "engagementSec7": 2200,
+    "returningViewShare": 2.4,
+    "returningLandingShare": 1.49,
+    "engagementSecPerView7": 5.9,
+    "keyEventsPer100Views": 6.02
    },
    "rule": "surfaces = / · /indices · *-index · /watchlist · /bowman-bangers; guides = every other path; 28d unless noted"
   },
-  "activeUsers7": 261,
-  "activeUsers28": 2021,
-  "returningUsers7": 5,
+  "activeUsers7": 268,
+  "activeUsers28": 2000,
+  "returningUsers7": 6,
   "cardPageClicks7": 0,
-  "cardPageViews7": 10,
+  "cardPageViews7": 15,
   "cardPageClicksByEvent7": {},
   "cardLanding7": {
-   "sessions": 32,
+   "sessions": 43,
    "keyEvents": 0,
-   "botSessions": 28,
-   "cleanSessions": 4,
+   "botSessions": 38,
+   "cleanSessions": 5,
    "cleanKeyEvents": 0,
    "cleanCountries": [
     {
      "country": "China",
-     "sessions": 2,
+     "sessions": 4,
      "keyEvents": 0,
-     "avgSessionSec": 0
+     "avgSessionSec": 0.427
     },
     {
      "country": "Indonesia",
      "sessions": 1,
      "keyEvents": 0,
      "avgSessionSec": 1.083
-    },
-    {
-     "country": "United States",
-     "sessions": 1,
-     "keyEvents": 0,
-     "avgSessionSec": 0.289
     }
    ],
    "rule": "landingPage matches /card* (7d, landingCountry7 top 500); bot = country flagged by summary.bots (countries7)"
+  },
+  "o66": {
+   "buystripByPage7": [
+    {
+     "page": "/indices",
+     "n": 1
+    },
+    {
+     "page": "/nfl-rookie-cards-2026",
+     "n": 1
+    }
+   ],
+   "buystripByPage28": [
+    {
+     "page": "/pokemon-base-set-1st-edition-index",
+     "n": 2
+    },
+    {
+     "page": "/bowman-chrome-2026-index",
+     "n": 1
+    },
+    {
+     "page": "/indices",
+     "n": 1
+    },
+    {
+     "page": "/lionel-messi-cards",
+     "n": 1
+    },
+    {
+     "page": "/nfl-rookie-cards-2026",
+     "n": 1
+    },
+    {
+     "page": "/pokemon-base-set-index",
+     "n": 1
+    },
+    {
+     "page": "/pokemon-delta-reign-2026",
+     "n": 1
+    },
+    {
+     "page": "/scarlet-violet-151-index",
+     "n": 1
+    }
+   ],
+   "ebayClicksByLanding7": [
+    {
+     "page": "/mcdonalds-pokemon-cards-2026",
+     "n": 16
+    },
+    {
+     "page": "/best-hobby-boxes-2026",
+     "n": 4
+    },
+    {
+     "page": "/pokemon-30th-anniversary-2026",
+     "n": 3
+    },
+    {
+     "page": "/neo-genesis-1st-edition-index",
+     "n": 2
+    },
+    {
+     "page": "/nfl-rookie-cards-2026",
+     "n": 2
+    },
+    {
+     "page": "/bowman-2026-index",
+     "n": 1
+    },
+    {
+     "page": "/lionel-messi-cards",
+     "n": 1
+    }
+   ],
+   "ebayClicksByLanding28": [
+    {
+     "page": "/mcdonalds-pokemon-cards-2026",
+     "n": 75
+    },
+    {
+     "page": "/pokemon-30th-anniversary-2026",
+     "n": 15
+    },
+    {
+     "page": "/indices",
+     "n": 10
+    },
+    {
+     "page": "/pokemon-base-set-1st-edition-index",
+     "n": 9
+    },
+    {
+     "page": "/pokemon-booster-box-prices",
+     "n": 8
+    },
+    {
+     "page": "/best-hobby-boxes-2026",
+     "n": 7
+    },
+    {
+     "page": "/destined-rivals-index",
+     "n": 4
+    },
+    {
+     "page": "/mlb-cards",
+     "n": 4
+    },
+    {
+     "page": "/pokemon-base-set-shadowless-index",
+     "n": 4
+    },
+    {
+     "page": "/pokemon-fossil-index",
+     "n": 4
+    },
+    {
+     "page": "/best-football-cards-under-50",
+     "n": 3
+    },
+    {
+     "page": "/lionel-messi-cards",
+     "n": 3
+    },
+    {
+     "page": "/",
+     "n": 2
+    },
+    {
+     "page": "/cristiano-ronaldo-cards",
+     "n": 2
+    },
+    {
+     "page": "/delta-reign-vs-pitch-black",
+     "n": 2
+    },
+    {
+     "page": "/kylian-mbappe-rookie-cards",
+     "n": 2
+    },
+    {
+     "page": "/panini-obsidian-football-2026",
+     "n": 2
+    },
+    {
+     "page": "/pitch-black-vs-chaos-rising",
+     "n": 2
+    },
+    {
+     "page": "/pokemon-delta-reign-2026",
+     "n": 2
+    },
+    {
+     "page": "/tag-grading-guide",
+     "n": 2
+    },
+    {
+     "page": "(not set)",
+     "n": 2
+    },
+    {
+     "page": "/bowman-chrome-2026-index",
+     "n": 2
+    },
+    {
+     "page": "/celebrations-index",
+     "n": 2
+    },
+    {
+     "page": "/neo-genesis-1st-edition-index",
+     "n": 2
+    },
+    {
+     "page": "/nfl-rookie-cards-2026",
+     "n": 2
+    },
+    {
+     "page": "/pokemon-base-set-index",
+     "n": 2
+    },
+    {
+     "page": "/pokemon-black-friday-2026",
+     "n": 2
+    },
+    {
+     "page": "/bowman-2026-index",
+     "n": 1
+    }
+   ],
+   "aiByLanding": {
+    "sessions28": 107,
+    "keyEvents28": 67,
+    "bySource28": [
+     {
+      "source": "chatgpt.com",
+      "sessions": 94
+     },
+     {
+      "source": "l.meta.ai",
+      "sessions": 12
+     },
+     {
+      "source": "perplexity.ai",
+      "sessions": 1
+     }
+    ],
+    "byLanding28": [
+     {
+      "page": "/mcdonalds-pokemon-cards-2026",
+      "sessions": 50,
+      "engagedSessions": 30,
+      "keyEvents": 33,
+      "sources": {
+       "chatgpt.com": 50
+      }
+     },
+     {
+      "page": "/indices",
+      "sessions": 9,
+      "engagedSessions": 7,
+      "keyEvents": 7,
+      "sources": {
+       "l.meta.ai": 9
+      }
+     },
+     {
+      "page": "/bowman-chrome-2026-index",
+      "sessions": 8,
+      "engagedSessions": 2,
+      "keyEvents": 1,
+      "sources": {
+       "chatgpt.com": 8
+      }
+     },
+     {
+      "page": "/pokemon-booster-box-prices",
+      "sessions": 7,
+      "engagedSessions": 6,
+      "keyEvents": 6,
+      "sources": {
+       "chatgpt.com": 7
+      }
+     },
+     {
+      "page": "/pokemon-delta-reign-2026",
+      "sessions": 5,
+      "engagedSessions": 2,
+      "keyEvents": 2,
+      "sources": {
+       "chatgpt.com": 5
+      }
+     },
+     {
+      "page": "/pokemon-base-set-index",
+      "sessions": 4,
+      "engagedSessions": 2,
+      "keyEvents": 1,
+      "sources": {
+       "chatgpt.com": 4
+      }
+     },
+     {
+      "page": "(not set)",
+      "sessions": 4,
+      "engagedSessions": 1,
+      "keyEvents": 1,
+      "sources": {
+       "chatgpt.com": 3,
+       "l.meta.ai": 1
+      }
+     },
+     {
+      "page": "/pokemon-base-set-1st-edition-index",
+      "sessions": 3,
+      "engagedSessions": 1,
+      "keyEvents": 0,
+      "sources": {
+       "chatgpt.com": 3
+      }
+     },
+     {
+      "page": "/topps-chrome-updates-basketball",
+      "sessions": 2,
+      "engagedSessions": 1,
+      "keyEvents": 0,
+      "sources": {
+       "chatgpt.com": 2
+      }
+     },
+     {
+      "page": "/pokemon-30th-anniversary-2026",
+      "sessions": 2,
+      "engagedSessions": 2,
+      "keyEvents": 7,
+      "sources": {
+       "l.meta.ai": 1,
+       "perplexity.ai": 1
+      }
+     },
+     {
+      "page": "/best-umbreon-cards",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 0,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/bowman-1st-chrome-index",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 0,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/card-latios-203-surging-sparks",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 0,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/card-vulpix-1st-edition-68-base-set",
+      "sessions": 1,
+      "engagedSessions": 0,
+      "keyEvents": 0,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/celebrations-index",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 1,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/gengar-ex-worth",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 0,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/mlb-cards",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 2,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/neo-genesis-1st-edition-index",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 1,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/pokemon-base-set-shadowless-index",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 2,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/pokemon-black-friday-2026",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 1,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/pokemon-fossil-1st-edition-index",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 0,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/pokemon-grading-premiums",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 0,
+      "sources": {
+       "chatgpt.com": 1
+      }
+     },
+     {
+      "page": "/pokemon-fossil-index",
+      "sessions": 1,
+      "engagedSessions": 1,
+      "keyEvents": 2,
+      "sources": {
+       "l.meta.ai": 1
+      }
+     }
+    ]
+   },
+   "rule": "outbound = OUTBOUND_EVENTS; by landing = the page the session started on; AI = sessionSource matching AI_SOURCE_RE (28d); raw counts, no bot filter (apply summary.bots when reading)"
   }
  },
  "reports": {
   "daily28": {
    "rows": [
-    {
-     "date": "20261027",
-     "sessions": 68,
-     "activeUsers": 66,
-     "newUsers": 63,
-     "keyEvents": 0,
-     "engagementRate": 0.10294117647058823,
-     "averageSessionDuration": 12.7935895
-    },
     {
      "date": "20261028",
      "sessions": 77,
@@ -369,14 +774,23 @@
      "activeUsers": 52,
      "newUsers": 52,
      "keyEvents": 0,
-     "engagementRate": 0.1320754716981132,
-     "averageSessionDuration": 18.93932613207547
+     "engagementRate": 0.1509433962264151,
+     "averageSessionDuration": 32.594301566037736
+    },
+    {
+     "date": "20261124",
+     "sessions": 43,
+     "activeUsers": 43,
+     "newUsers": 43,
+     "keyEvents": 4,
+     "engagementRate": 0.11627906976744186,
+     "averageSessionDuration": 11.78887576744186
     }
    ],
    "rowCount": 28,
    "check": {
-    "start": "2026-10-27",
-    "end": "2026-11-23",
+    "start": "2026-10-28",
+    "end": "2026-11-24",
     "expected": 28,
     "got": 28,
     "backfilled": [],
@@ -385,12 +799,6 @@
   },
   "instruments7": {
    "rows": [
-    {
-     "eventName": "signup_view",
-     "date": "20261117",
-     "eventCount": 9,
-     "totalUsers": 9
-    },
     {
      "eventName": "signup_view",
      "date": "20261118",
@@ -444,6 +852,12 @@
      "date": "20261123",
      "eventCount": 19,
      "totalUsers": 19
+    },
+    {
+     "eventName": "signup_view",
+     "date": "20261124",
+     "eventCount": 16,
+     "totalUsers": 12
     }
    ],
    "rowCount": 10
@@ -452,39 +866,39 @@
    "rows": [
     {
      "sessionDefaultChannelGroup": "Direct",
-     "sessions": 1660,
+     "sessions": 1665,
      "engagedSessions": 56,
-     "engagementRate": 0.033734939759036145,
-     "averageSessionDuration": 6.252399955421686,
+     "engagementRate": 0.033633633633633635,
+     "averageSessionDuration": 6.239214302102102,
      "keyEvents": 16,
-     "sessionKeyEventRate": 0.005421686746987952
+     "sessionKeyEventRate": 0.005405405405405406
     },
     {
      "sessionDefaultChannelGroup": "Organic Search",
      "sessions": 175,
-     "engagedSessions": 116,
-     "engagementRate": 0.6628571428571428,
-     "averageSessionDuration": 91.17683698857144,
-     "keyEvents": 56,
-     "sessionKeyEventRate": 0.17714285714285713
+     "engagedSessions": 117,
+     "engagementRate": 0.6685714285714286,
+     "averageSessionDuration": 90.99526293142857,
+     "keyEvents": 58,
+     "sessionKeyEventRate": 0.18285714285714286
     },
     {
      "sessionDefaultChannelGroup": "Paid Social",
-     "sessions": 126,
-     "engagedSessions": 10,
-     "engagementRate": 0.07936507936507936,
-     "averageSessionDuration": 3.98154753968254,
+     "sessions": 99,
+     "engagedSessions": 9,
+     "engagementRate": 0.09090909090909091,
+     "averageSessionDuration": 4.805604191919192,
      "keyEvents": 3,
-     "sessionKeyEventRate": 0.023809523809523808
+     "sessionKeyEventRate": 0.030303030303030304
     },
     {
      "sessionDefaultChannelGroup": "AI Assistant",
-     "sessions": 94,
-     "engagedSessions": 55,
-     "engagementRate": 0.5851063829787234,
-     "averageSessionDuration": 60.76041086170213,
-     "keyEvents": 50,
-     "sessionKeyEventRate": 0.2872340425531915
+     "sessions": 95,
+     "engagedSessions": 57,
+     "engagementRate": 0.6,
+     "averageSessionDuration": 67.02923622105263,
+     "keyEvents": 52,
+     "sessionKeyEventRate": 0.29473684210526313
     },
     {
      "sessionDefaultChannelGroup": "Referral",
@@ -497,56 +911,47 @@
     },
     {
      "sessionDefaultChannelGroup": "Organic Social",
-     "sessions": 15,
-     "engagedSessions": 10,
-     "engagementRate": 0.6666666666666666,
-     "averageSessionDuration": 194.16019899999998,
+     "sessions": 13,
+     "engagedSessions": 8,
+     "engagementRate": 0.6153846153846154,
+     "averageSessionDuration": 212.29896776923076,
      "keyEvents": 2,
-     "sessionKeyEventRate": 0.06666666666666667
-    },
-    {
-     "sessionDefaultChannelGroup": "Email",
-     "sessions": 3,
-     "engagedSessions": 1,
-     "engagementRate": 0.3333333333333333,
-     "averageSessionDuration": 31.574465999999997,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
+     "sessionKeyEventRate": 0.07692307692307693
     },
     {
      "sessionDefaultChannelGroup": "Unassigned",
-     "sessions": 3,
+     "sessions": 2,
      "engagedSessions": 0,
      "engagementRate": 0,
-     "averageSessionDuration": 1.6825133333333333,
+     "averageSessionDuration": 2.52377,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     }
    ],
-   "rowCount": 8
+   "rowCount": 7
   },
   "channels7": {
    "rows": [
     {
      "sessionDefaultChannelGroup": "Direct",
-     "sessions": 193,
+     "sessions": 199,
      "engagedSessions": 10,
      "keyEvents": 2,
-     "sessionKeyEventRate": 0.010362694300518135
+     "sessionKeyEventRate": 0.010050251256281407
     },
     {
      "sessionDefaultChannelGroup": "AI Assistant",
      "sessions": 39,
      "engagedSessions": 22,
-     "keyEvents": 20,
-     "sessionKeyEventRate": 0.2564102564102564
+     "keyEvents": 17,
+     "sessionKeyEventRate": 0.20512820512820512
     },
     {
      "sessionDefaultChannelGroup": "Organic Search",
      "sessions": 29,
      "engagedSessions": 24,
-     "keyEvents": 3,
-     "sessionKeyEventRate": 0.10344827586206896
+     "keyEvents": 5,
+     "sessionKeyEventRate": 0.13793103448275862
     },
     {
      "sessionDefaultChannelGroup": "Organic Social",
@@ -557,47 +962,30 @@
     },
     {
      "sessionDefaultChannelGroup": "Referral",
-     "sessions": 4,
-     "engagedSessions": 2,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "sessionDefaultChannelGroup": "Unassigned",
-     "sessions": 1,
-     "engagedSessions": 0,
+     "sessions": 3,
+     "engagedSessions": 1,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     }
    ],
-   "rowCount": 6
+   "rowCount": 5
   },
   "sources7": {
    "rows": [
     {
      "sessionSourceMedium": "(direct) / (none)",
-     "sessions": 193,
+     "sessions": 199,
      "keyEvents": 2
     },
     {
      "sessionSourceMedium": "chatgpt.com / ai-assistant",
      "sessions": 39,
-     "keyEvents": 20
+     "keyEvents": 17
     },
     {
      "sessionSourceMedium": "bing / organic",
-     "sessions": 22,
-     "keyEvents": 3
-    },
-    {
-     "sessionSourceMedium": "yahoo / organic",
-     "sessions": 4,
-     "keyEvents": 0
-    },
-    {
-     "sessionSourceMedium": "duckduckgo / organic",
-     "sessions": 3,
-     "keyEvents": 0
+     "sessions": 24,
+     "keyEvents": 5
     },
     {
      "sessionSourceMedium": "x / social",
@@ -605,13 +993,13 @@
      "keyEvents": 0
     },
     {
-     "sessionSourceMedium": "l.meta.ai / referral",
-     "sessions": 2,
+     "sessionSourceMedium": "yahoo / organic",
+     "sessions": 3,
      "keyEvents": 0
     },
     {
-     "sessionSourceMedium": "(not set)",
-     "sessions": 1,
+     "sessionSourceMedium": "duckduckgo / organic",
+     "sessions": 2,
      "keyEvents": 0
     },
     {
@@ -625,54 +1013,67 @@
      "keyEvents": 0
     },
     {
+     "sessionSourceMedium": "l.meta.ai / referral",
+     "sessions": 1,
+     "keyEvents": 0
+    },
+    {
      "sessionSourceMedium": "t.co / referral",
      "sessions": 1,
      "keyEvents": 0
     }
    ],
-   "rowCount": 11
+   "rowCount": 10
   },
   "landing28": {
    "rows": [
     {
      "landingPage": "/card",
-     "sessions": 292,
-     "activeUsers": 292,
-     "averageSessionDuration": 0.37790609589041096,
+     "sessions": 290,
+     "activeUsers": 290,
+     "averageSessionDuration": 0.3787940310344827,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     },
     {
      "landingPage": "/mcdonalds-pokemon-cards-2026",
-     "sessions": 134,
-     "activeUsers": 128,
-     "averageSessionDuration": 97.20292248507464,
-     "keyEvents": 73,
-     "sessionKeyEventRate": 0.2537313432835821
+     "sessions": 140,
+     "activeUsers": 134,
+     "averageSessionDuration": 98.74076820714285,
+     "keyEvents": 75,
+     "sessionKeyEventRate": 0.25
     },
     {
      "landingPage": "/destined-rivals-index",
-     "sessions": 126,
-     "activeUsers": 125,
-     "averageSessionDuration": 3.98154753968254,
+     "sessions": 99,
+     "activeUsers": 98,
+     "averageSessionDuration": 4.805604191919192,
      "keyEvents": 3,
-     "sessionKeyEventRate": 0.023809523809523808
+     "sessionKeyEventRate": 0.030303030303030304
     },
     {
      "landingPage": "/best-hobby-boxes-2026",
-     "sessions": 67,
-     "activeUsers": 66,
-     "averageSessionDuration": 28.48232247761194,
-     "keyEvents": 3,
-     "sessionKeyEventRate": 0.04477611940298507
+     "sessions": 69,
+     "activeUsers": 68,
+     "averageSessionDuration": 33.34119036231884,
+     "keyEvents": 5,
+     "sessionKeyEventRate": 0.057971014492753624
     },
     {
      "landingPage": "/watchlist",
-     "sessions": 40,
-     "activeUsers": 40,
-     "averageSessionDuration": 0.38610920000000004,
+     "sessions": 41,
+     "activeUsers": 41,
+     "averageSessionDuration": 0.3906790975609756,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
+    },
+    {
+     "landingPage": "/",
+     "sessions": 38,
+     "activeUsers": 28,
+     "averageSessionDuration": 71.81167973684211,
+     "keyEvents": 2,
+     "sessionKeyEventRate": 0.05263157894736842
     },
     {
      "landingPage": "/topps-flagship-basketball-2026-27",
@@ -681,14 +1082,6 @@
      "averageSessionDuration": 3.396402486486487,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/",
-     "sessions": 36,
-     "activeUsers": 26,
-     "averageSessionDuration": 75.51715397222223,
-     "keyEvents": 2,
-     "sessionKeyEventRate": 0.05555555555555555
     },
     {
      "landingPage": "/cooper-flagg-rookie-cards",
@@ -700,25 +1093,17 @@
     },
     {
      "landingPage": "/indices",
-     "sessions": 24,
-     "activeUsers": 16,
-     "averageSessionDuration": 319.69861683333335,
+     "sessions": 25,
+     "activeUsers": 17,
+     "averageSessionDuration": 307.06161887999997,
      "keyEvents": 7,
-     "sessionKeyEventRate": 0.125
-    },
-    {
-     "landingPage": "/bowman-chrome-2026-index",
-     "sessions": 22,
-     "activeUsers": 18,
-     "averageSessionDuration": 2.9824162272727275,
-     "keyEvents": 1,
-     "sessionKeyEventRate": 0.045454545454545456
+     "sessionKeyEventRate": 0.12
     },
     {
      "landingPage": "/topps-chrome-updates-basketball",
      "sessions": 22,
      "activeUsers": 22,
-     "averageSessionDuration": 4.401881136363636,
+     "averageSessionDuration": 4.347732318181818,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     },
@@ -729,14 +1114,6 @@
      "averageSessionDuration": 17.94551823809524,
      "keyEvents": 2,
      "sessionKeyEventRate": 0.047619047619047616
-    },
-    {
-     "landingPage": "/mlb-cards",
-     "sessions": 20,
-     "activeUsers": 17,
-     "averageSessionDuration": 11.637088,
-     "keyEvents": 2,
-     "sessionKeyEventRate": 0.05
     },
     {
      "landingPage": "/pokemon-black-friday-2026",
@@ -755,6 +1132,14 @@
      "sessionKeyEventRate": 0
     },
     {
+     "landingPage": "/bowman-chrome-2026-index",
+     "sessions": 19,
+     "activeUsers": 16,
+     "averageSessionDuration": 2.8895824210526313,
+     "keyEvents": 1,
+     "sessionKeyEventRate": 0.05263157894736842
+    },
+    {
      "landingPage": "/pokemon-booster-box-prices",
      "sessions": 19,
      "activeUsers": 19,
@@ -763,12 +1148,12 @@
      "sessionKeyEventRate": 0.21052631578947367
     },
     {
-     "landingPage": "/topps-chrome-basketball-2026",
-     "sessions": 19,
-     "activeUsers": 19,
-     "averageSessionDuration": 4.660098894736842,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
+     "landingPage": "/cristiano-ronaldo-cards",
+     "sessions": 18,
+     "activeUsers": 18,
+     "averageSessionDuration": 4.798245111111111,
+     "keyEvents": 2,
+     "sessionKeyEventRate": 0.05555555555555555
     },
     {
      "landingPage": "/lamine-yamal-rookie-cards",
@@ -779,12 +1164,12 @@
      "sessionKeyEventRate": 0
     },
     {
-     "landingPage": "/cristiano-ronaldo-cards",
-     "sessions": 16,
-     "activeUsers": 16,
-     "averageSessionDuration": 5.3841788125,
-     "keyEvents": 2,
-     "sessionKeyEventRate": 0.0625
+     "landingPage": "/topps-chrome-basketball-2026",
+     "sessions": 17,
+     "activeUsers": 17,
+     "averageSessionDuration": 5.153296764705882,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
     },
     {
      "landingPage": "/kylian-mbappe-rookie-cards",
@@ -795,18 +1180,10 @@
      "sessionKeyEventRate": 0.0625
     },
     {
-     "landingPage": "/panini-donruss-football-2026",
+     "landingPage": "/mlb-cards",
      "sessions": 16,
-     "activeUsers": 16,
-     "averageSessionDuration": 101.651495625,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/pitch-black-vs-chaos-rising",
-     "sessions": 16,
-     "activeUsers": 14,
-     "averageSessionDuration": 7.846507687500001,
+     "activeUsers": 13,
+     "averageSessionDuration": 5.6471979999999995,
      "keyEvents": 2,
      "sessionKeyEventRate": 0.0625
     },
@@ -843,18 +1220,34 @@
      "sessionKeyEventRate": 0
     },
     {
-     "landingPage": "/lionel-messi-cards",
-     "sessions": 13,
-     "activeUsers": 12,
-     "averageSessionDuration": 5.554397692307693,
+     "landingPage": "/panini-donruss-football-2026",
+     "sessions": 15,
+     "activeUsers": 15,
+     "averageSessionDuration": 79.90745826666667,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
+     "landingPage": "/pitch-black-vs-chaos-rising",
+     "sessions": 15,
+     "activeUsers": 13,
+     "averageSessionDuration": 8.144157133333334,
      "keyEvents": 2,
-     "sessionKeyEventRate": 0.15384615384615385
+     "sessionKeyEventRate": 0.06666666666666667
+    },
+    {
+     "landingPage": "/lionel-messi-cards",
+     "sessions": 14,
+     "activeUsers": 13,
+     "averageSessionDuration": 5.198221642857143,
+     "keyEvents": 2,
+     "sessionKeyEventRate": 0.14285714285714285
     },
     {
      "landingPage": "/pokemon-30th-anniversary-2026",
      "sessions": 13,
      "activeUsers": 13,
-     "averageSessionDuration": 273.7549399230769,
+     "averageSessionDuration": 273.75493992307696,
      "keyEvents": 9,
      "sessionKeyEventRate": 0.3076923076923077
     },
@@ -867,26 +1260,18 @@
      "sessionKeyEventRate": 0
     },
     {
+     "landingPage": "/erling-haaland-rookie-cards",
+     "sessions": 12,
+     "activeUsers": 12,
+     "averageSessionDuration": 9.854096,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
      "landingPage": "/pokemon-grading-premiums",
      "sessions": 12,
      "activeUsers": 12,
      "averageSessionDuration": 162.51818608333335,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/psa-grading-guide",
-     "sessions": 12,
-     "activeUsers": 12,
-     "averageSessionDuration": 0,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/topps-chrome-formula-1-2026",
-     "sessions": 12,
-     "activeUsers": 12,
-     "averageSessionDuration": 0.6327124166666667,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     },
@@ -907,14 +1292,6 @@
      "sessionKeyEventRate": 0.09090909090909091
     },
     {
-     "landingPage": "/erling-haaland-rookie-cards",
-     "sessions": 11,
-     "activeUsers": 11,
-     "averageSessionDuration": 10.74992290909091,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
      "landingPage": "/moonbreon-worth",
      "sessions": 11,
      "activeUsers": 11,
@@ -926,9 +1303,33 @@
      "landingPage": "/nfl-rookie-cards-2026",
      "sessions": 11,
      "activeUsers": 11,
-     "averageSessionDuration": 113.68257736363638,
+     "averageSessionDuration": 113.68257736363636,
      "keyEvents": 1,
      "sessionKeyEventRate": 0.09090909090909091
+    },
+    {
+     "landingPage": "/pokemon-card-gift-guide-2026",
+     "sessions": 11,
+     "activeUsers": 11,
+     "averageSessionDuration": 0.20101927272727274,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
+     "landingPage": "/psa-grading-guide",
+     "sessions": 11,
+     "activeUsers": 11,
+     "averageSessionDuration": 0,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
+     "landingPage": "/topps-chrome-formula-1-2026",
+     "sessions": 11,
+     "activeUsers": 11,
+     "averageSessionDuration": 0.6295601818181819,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
     },
     {
      "landingPage": "/topps-series-1-2026",
@@ -945,58 +1346,38 @@
      "averageSessionDuration": 0.2972806363636364,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/best-football-cards-under-50",
-     "sessions": 10,
-     "activeUsers": 9,
-     "averageSessionDuration": 60.108335999999994,
-     "keyEvents": 3,
-     "sessionKeyEventRate": 0.1
     }
    ],
-   "rowCount": 570
+   "rowCount": 561
   },
   "landing7": {
    "rows": [
     {
      "landingPage": "/mcdonalds-pokemon-cards-2026",
-     "sessions": 37,
-     "keyEvents": 19,
-     "sessionKeyEventRate": 0.24324324324324326
+     "sessions": 38,
+     "keyEvents": 16,
+     "sessionKeyEventRate": 0.18421052631578946
     },
     {
      "landingPage": "/best-hobby-boxes-2026",
-     "sessions": 17,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/topps-flagship-basketball-2026-27",
-     "sessions": 11,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
+     "sessions": 20,
+     "keyEvents": 2,
+     "sessionKeyEventRate": 0.05
     },
     {
      "landingPage": "/",
-     "sessions": 10,
+     "sessions": 12,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     },
     {
      "landingPage": "/card",
-     "sessions": 10,
+     "sessions": 11,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     },
     {
-     "landingPage": "/panini-donruss-football-2026",
-     "sessions": 8,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/pokemon-black-friday-2026",
+     "landingPage": "/topps-flagship-basketball-2026-27",
      "sessions": 8,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
@@ -1008,25 +1389,19 @@
      "sessionKeyEventRate": 0
     },
     {
-     "landingPage": "/topps-cosmic-chrome-baseball-2026",
+     "landingPage": "/panini-donruss-football-2026",
+     "sessions": 6,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
+     "landingPage": "/pokemon-black-friday-2026",
      "sessions": 6,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     },
     {
      "landingPage": "/bowman-chrome-2026-index",
-     "sessions": 5,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/indices",
-     "sessions": 5,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/pokemon-stocking-stuffers-under-25",
      "sessions": 5,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
@@ -1044,19 +1419,13 @@
      "sessionKeyEventRate": 0
     },
     {
-     "landingPage": "/van-gogh-pikachu-worth",
-     "sessions": 5,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/lamine-yamal-rookie-cards",
+     "landingPage": "/indices",
      "sessions": 4,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     },
     {
-     "landingPage": "/pokemon-base-set-index",
+     "landingPage": "/lamine-yamal-rookie-cards",
      "sessions": 4,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
@@ -1068,13 +1437,43 @@
      "sessionKeyEventRate": 0
     },
     {
-     "landingPage": "/topps-update-series-2026",
+     "landingPage": "/pokemon-stocking-stuffers-under-25",
+     "sessions": 4,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
+     "landingPage": "/topps-cosmic-chrome-baseball-2026",
+     "sessions": 4,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
+     "landingPage": "/topps-pristine-basketball",
+     "sessions": 4,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
+     "landingPage": "/van-gogh-pikachu-worth",
      "sessions": 4,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     },
     {
      "landingPage": "(not set)",
+     "sessions": 3,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
+     "landingPage": "/cristiano-ronaldo-cards",
+     "sessions": 3,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
+     "landingPage": "/erling-haaland-rookie-cards",
      "sessions": 3,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
@@ -1090,6 +1489,12 @@
      "sessions": 3,
      "keyEvents": 2,
      "sessionKeyEventRate": 0.6666666666666666
+    },
+    {
+     "landingPage": "/pokemon-base-set-index",
+     "sessions": 3,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
     },
     {
      "landingPage": "/pokemon-booster-box-prices",
@@ -1116,7 +1521,13 @@
      "sessionKeyEventRate": 0
     },
     {
-     "landingPage": "/topps-pristine-basketball",
+     "landingPage": "/topps-holiday-baseball-2026",
+     "sessions": 3,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
+     "landingPage": "/topps-update-series-2026",
      "sessions": 3,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
@@ -1128,31 +1539,19 @@
      "sessionKeyEventRate": 0
     },
     {
-     "landingPage": "",
-     "sessions": 2,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
      "landingPage": "/card-ethan-holliday",
      "sessions": 2,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     },
     {
-     "landingPage": "/cristiano-ronaldo-cards",
+     "landingPage": "/charizard-ex-worth",
      "sessions": 2,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
     },
     {
      "landingPage": "/delta-reign-index",
-     "sessions": 2,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/erling-haaland-rookie-cards",
      "sessions": 2,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
@@ -1170,6 +1569,18 @@
      "sessionKeyEventRate": 0
     },
     {
+     "landingPage": "/lionel-messi-cards",
+     "sessions": 2,
+     "keyEvents": 1,
+     "sessionKeyEventRate": 0.5
+    },
+    {
+     "landingPage": "/pokemon-30th-celebration-binder-collection",
+     "sessions": 2,
+     "keyEvents": 0,
+     "sessionKeyEventRate": 0
+    },
+    {
      "landingPage": "/pokemon-grading-premiums",
      "sessions": 2,
      "keyEvents": 0,
@@ -1180,74 +1591,56 @@
      "sessions": 2,
      "keyEvents": 0,
      "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/skyridge-index",
-     "sessions": 2,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/tag-grading-guide",
-     "sessions": 2,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
-    },
-    {
-     "landingPage": "/topps-chrome-cactus-jack-basketball",
-     "sessions": 2,
-     "keyEvents": 0,
-     "sessionKeyEventRate": 0
     }
    ],
-   "rowCount": 94
+   "rowCount": 101
   },
   "events7": {
    "rows": [
     {
      "eventName": "page_view",
-     "eventCount": 420,
-     "totalUsers": 262
+     "eventCount": 431,
+     "totalUsers": 269
     },
     {
      "eventName": "session_start",
-     "eventCount": 269,
-     "totalUsers": 263
+     "eventCount": 274,
+     "totalUsers": 269
     },
     {
      "eventName": "first_visit",
-     "eventCount": 259,
-     "totalUsers": 259
-    },
-    {
-     "eventName": "user_engagement",
-     "eventCount": 114,
-     "totalUsers": 91
+     "eventCount": 266,
+     "totalUsers": 266
     },
     {
      "eventName": "signup_view",
-     "eventCount": 103,
-     "totalUsers": 98
+     "eventCount": 110,
+     "totalUsers": 102
+    },
+    {
+     "eventName": "user_engagement",
+     "eventCount": 104,
+     "totalUsers": 78
     },
     {
      "eventName": "click",
-     "eventCount": 25,
-     "totalUsers": 15
+     "eventCount": 24,
+     "totalUsers": 14
     },
     {
      "eventName": "scroll",
      "eventCount": 18,
-     "totalUsers": 17
+     "totalUsers": 16
     },
     {
      "eventName": "card_page_view",
-     "eventCount": 10,
-     "totalUsers": 9
+     "eventCount": 15,
+     "totalUsers": 14
     },
     {
      "eventName": "box_filter",
-     "eventCount": 5,
-     "totalUsers": 2
+     "eventCount": 8,
+     "totalUsers": 4
     },
     {
      "eventName": "home2_index_pick",
@@ -1256,11 +1649,36 @@
     },
     {
      "eventName": "buystrip_click",
-     "eventCount": 1,
+     "eventCount": 2,
+     "totalUsers": 2
+    },
+    {
+     "eventName": "vault_deeplink",
+     "eventCount": 2,
+     "totalUsers": 2
+    },
+    {
+     "eventName": "vault_open_card",
+     "eventCount": 2,
+     "totalUsers": 1
+    },
+    {
+     "eventName": "vault_tab",
+     "eventCount": 2,
      "totalUsers": 1
     },
     {
      "eventName": "chase_click",
+     "eventCount": 1,
+     "totalUsers": 1
+    },
+    {
+     "eventName": "dest_strip",
+     "eventCount": 1,
+     "totalUsers": 1
+    },
+    {
+     "eventName": "fanatics_click",
      "eventCount": 1,
      "totalUsers": 1
     },
@@ -1280,72 +1698,111 @@
      "totalUsers": 1
     },
     {
+     "eventName": "vault_feed_autolink",
+     "eventCount": 1,
+     "totalUsers": 1
+    }
+   ],
+   "rowCount": 21
+  },
+  "events1": {
+   "rows": [
+    {
+     "eventName": "page_view",
+     "eventCount": 51,
+     "totalUsers": 43
+    },
+    {
+     "eventName": "first_visit",
+     "eventCount": 43,
+     "totalUsers": 43
+    },
+    {
+     "eventName": "session_start",
+     "eventCount": 43,
+     "totalUsers": 43
+    },
+    {
+     "eventName": "signup_view",
+     "eventCount": 16,
+     "totalUsers": 12
+    },
+    {
+     "eventName": "user_engagement",
+     "eventCount": 15,
+     "totalUsers": 10
+    },
+    {
+     "eventName": "card_page_view",
+     "eventCount": 8,
+     "totalUsers": 7
+    },
+    {
+     "eventName": "click",
+     "eventCount": 4,
+     "totalUsers": 2
+    },
+    {
+     "eventName": "box_filter",
+     "eventCount": 3,
+     "totalUsers": 2
+    },
+    {
+     "eventName": "scroll",
+     "eventCount": 3,
+     "totalUsers": 1
+    },
+    {
+     "eventName": "vault_open_card",
+     "eventCount": 2,
+     "totalUsers": 1
+    },
+    {
+     "eventName": "vault_tab",
+     "eventCount": 2,
+     "totalUsers": 1
+    },
+    {
+     "eventName": "buystrip_click",
+     "eventCount": 1,
+     "totalUsers": 1
+    },
+    {
+     "eventName": "dest_strip",
+     "eventCount": 1,
+     "totalUsers": 1
+    },
+    {
+     "eventName": "fanatics_click",
+     "eventCount": 1,
+     "totalUsers": 1
+    },
+    {
      "eventName": "vault_deeplink",
+     "eventCount": 1,
+     "totalUsers": 1
+    },
+    {
+     "eventName": "vault_feed_autolink",
      "eventCount": 1,
      "totalUsers": 1
     }
    ],
    "rowCount": 16
   },
-  "events1": {
-   "rows": [
-    {
-     "eventName": "page_view",
-     "eventCount": 115,
-     "totalUsers": 52
-    },
-    {
-     "eventName": "session_start",
-     "eventCount": 53,
-     "totalUsers": 52
-    },
-    {
-     "eventName": "first_visit",
-     "eventCount": 52,
-     "totalUsers": 52
-    },
-    {
-     "eventName": "signup_view",
-     "eventCount": 19,
-     "totalUsers": 19
-    },
-    {
-     "eventName": "user_engagement",
-     "eventCount": 11,
-     "totalUsers": 10
-    },
-    {
-     "eventName": "card_page_view",
-     "eventCount": 3,
-     "totalUsers": 3
-    },
-    {
-     "eventName": "scroll",
-     "eventCount": 2,
-     "totalUsers": 2
-    }
-   ],
-   "rowCount": 7
-  },
   "returning28": {
    "rows": [
     {
      "newVsReturning": "new",
-     "activeUsers": 2018,
-     "sessions": 2024,
-     "keyEvents": 118
+     "activeUsers": 1998,
+     "sessions": 2002,
+     "keyEvents": 122
     },
     {
      "newVsReturning": "returning",
      "activeUsers": 24,
-     "sessions": 52,
+     "sessions": 48,
      "keyEvents": 24
-    },
-    {
-     "newVsReturning": "",
-     "activeUsers": 0,
-     "sessions": 1,
-     "keyEvents": 0
     },
     {
      "newVsReturning": "(not set)",
@@ -1354,73 +1811,67 @@
      "keyEvents": 0
     }
    ],
-   "rowCount": 4
+   "rowCount": 3
   },
   "returning7": {
    "rows": [
     {
      "newVsReturning": "new",
-     "activeUsers": 259,
-     "sessions": 259,
-     "keyEvents": 25
+     "activeUsers": 266,
+     "sessions": 266,
+     "keyEvents": 24
     },
     {
      "newVsReturning": "returning",
-     "activeUsers": 5,
+     "activeUsers": 6,
      "sessions": 6,
-     "keyEvents": 0
-    },
-    {
-     "newVsReturning": "",
-     "activeUsers": 0,
-     "sessions": 1,
      "keyEvents": 0
     },
     {
      "newVsReturning": "(not set)",
      "activeUsers": 0,
-     "sessions": 3,
+     "sessions": 2,
      "keyEvents": 0
     }
    ],
-   "rowCount": 4
+   "rowCount": 3
   },
   "countries7": {
    "rows": [
     {
      "country": "United States",
-     "activeUsers": 120,
-     "sessions": 127,
-     "keyEvents": 18,
-     "averageSessionDuration": 76.52137425196851
+     "activeUsers": 115,
+     "sessions": 120,
+     "keyEvents": 21,
+     "averageSessionDuration": 73.0289308
     },
     {
      "country": "Singapore",
-     "activeUsers": 103,
-     "sessions": 103,
+     "activeUsers": 113,
+     "sessions": 113,
      "keyEvents": 0,
-     "averageSessionDuration": 0.5492382621359223
+     "averageSessionDuration": 0.5040624867256637
     },
     {
      "country": "China",
-     "activeUsers": 12,
-     "sessions": 12,
+     "activeUsers": 14,
+     "sessions": 14,
      "keyEvents": 0,
-     "averageSessionDuration": 14.890915083333335
+     "averageSessionDuration": 12.885717357142855
     },
     {
      "country": "Brazil",
-     "activeUsers": 4,
-     "sessions": 5,
+     "activeUsers": 6,
+     "sessions": 7,
      "keyEvents": 0,
-     "averageSessionDuration": 6.0721283999999995
+     "averageSessionDuration": 4.997374571428572
     },
     {
      "country": "Canada",
-     "activeUsers": 4,
-     "sessions": 4,
+     "activeUsers": 6,
+     "sessions": 6,
      "keyEvents": 2,
-     "averageSessionDuration": 106.76565075
+     "averageSessionDuration": 199.61834116666668
     },
     {
      "country": "Germany",
@@ -1444,11 +1895,11 @@
      "averageSessionDuration": 3.3691505
     },
     {
-     "country": "Mexico",
+     "country": "United Kingdom",
      "activeUsers": 2,
      "sessions": 2,
-     "keyEvents": 4,
-     "averageSessionDuration": 48.536493
+     "keyEvents": 0,
+     "averageSessionDuration": 0.2867375
     },
     {
      "country": "Albania",
@@ -1463,13 +1914,6 @@
      "sessions": 1,
      "keyEvents": 0,
      "averageSessionDuration": 7.989034
-    },
-    {
-     "country": "Bangladesh",
-     "activeUsers": 1,
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0
     },
     {
      "country": "Cambodia",
@@ -1500,25 +1944,18 @@
      "averageSessionDuration": 1.082536
     },
     {
-     "country": "Japan",
-     "activeUsers": 1,
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 3.534962
-    },
-    {
-     "country": "Netherlands",
-     "activeUsers": 1,
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0
-    },
-    {
      "country": "New Zealand",
      "activeUsers": 1,
      "sessions": 1,
      "keyEvents": 0,
      "averageSessionDuration": 0
+    },
+    {
+     "country": "Pakistan",
+     "activeUsers": 1,
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 5.605307
     },
     {
      "country": "Paraguay",
@@ -1535,32 +1972,11 @@
      "averageSessionDuration": 2.807551
     },
     {
-     "country": "Switzerland",
-     "activeUsers": 1,
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 34.076104
-    },
-    {
      "country": "Tunisia",
      "activeUsers": 1,
      "sessions": 1,
      "keyEvents": 0,
      "averageSessionDuration": 0
-    },
-    {
-     "country": "United Kingdom",
-     "activeUsers": 1,
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0
-    },
-    {
-     "country": "Venezuela",
-     "activeUsers": 1,
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0.726086
     },
     {
      "country": "Vietnam",
@@ -1570,66 +1986,10 @@
      "averageSessionDuration": 0
     }
    ],
-   "rowCount": 26
+   "rowCount": 21
   },
   "countriesDaily7": {
    "rows": [
-    {
-     "country": "United States",
-     "date": "20261117",
-     "sessions": 25,
-     "keyEvents": 1,
-     "averageSessionDuration": 55.96793764
-    },
-    {
-     "country": "Singapore",
-     "date": "20261117",
-     "sessions": 8,
-     "keyEvents": 0,
-     "averageSessionDuration": 0.329495125
-    },
-    {
-     "country": "Mexico",
-     "date": "20261117",
-     "sessions": 2,
-     "keyEvents": 4,
-     "averageSessionDuration": 48.536493
-    },
-    {
-     "country": "Bangladesh",
-     "date": "20261117",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0
-    },
-    {
-     "country": "Japan",
-     "date": "20261117",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 3.534962
-    },
-    {
-     "country": "Netherlands",
-     "date": "20261117",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0
-    },
-    {
-     "country": "Switzerland",
-     "date": "20261117",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 34.076104
-    },
-    {
-     "country": "Venezuela",
-     "date": "20261117",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0.726086
-    },
     {
      "country": "United States",
      "date": "20261118",
@@ -1894,7 +2254,7 @@
      "date": "20261123",
      "sessions": 1,
      "keyEvents": 0,
-     "averageSessionDuration": 0
+     "averageSessionDuration": 723.713698
     },
     {
      "country": "India",
@@ -1909,23 +2269,72 @@
      "sessions": 1,
      "keyEvents": 0,
      "averageSessionDuration": 2.310089
+    },
+    {
+     "country": "Singapore",
+     "date": "20261124",
+     "sessions": 18,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.16797116666666667
+    },
+    {
+     "country": "United States",
+     "date": "20261124",
+     "sessions": 18,
+     "keyEvents": 4,
+     "averageSessionDuration": 24.691978166666665
+    },
+    {
+     "country": "Brazil",
+     "date": "20261124",
+     "sessions": 2,
+     "keyEvents": 0,
+     "averageSessionDuration": 2.31049
+    },
+    {
+     "country": "Canada",
+     "date": "20261124",
+     "sessions": 2,
+     "keyEvents": 0,
+     "averageSessionDuration": 23.466873
+    },
+    {
+     "country": "China",
+     "date": "20261124",
+     "sessions": 2,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.854531
+    },
+    {
+     "country": "Pakistan",
+     "date": "20261124",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 5.605307
+    },
+    {
+     "country": "United Kingdom",
+     "date": "20261124",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.573475
     }
    ],
-   "rowCount": 48
+   "rowCount": 47
   },
   "devices28": {
    "rows": [
     {
      "deviceCategory": "desktop",
-     "sessions": 1544,
-     "keyEvents": 50,
-     "sessionKeyEventRate": 0.017487046632124352
+     "sessions": 1536,
+     "keyEvents": 52,
+     "sessionKeyEventRate": 0.018229166666666668
     },
     {
      "deviceCategory": "mobile",
-     "sessions": 545,
-     "keyEvents": 92,
-     "sessionKeyEventRate": 0.08990825688073395
+     "sessions": 527,
+     "keyEvents": 94,
+     "sessionKeyEventRate": 0.09487666034155598
     },
     {
      "deviceCategory": "tablet",
@@ -1944,24 +2353,6 @@
   },
   "landingOrganicDaily28": {
    "rows": [
-    {
-     "landingPage": "/best-hobby-boxes-2026",
-     "date": "20261027",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/panini-donruss-football-2026",
-     "date": "20261027",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/victor-wembanyama-rookie-cards",
-     "date": "20261027",
-     "sessions": 1,
-     "keyEvents": 0
-    },
     {
      "landingPage": "/prismatic-evolutions-index",
      "date": "20261028",
@@ -2519,16 +2910,28 @@
      "date": "20261123",
      "sessions": 1,
      "keyEvents": 0
+    },
+    {
+     "landingPage": "/best-hobby-boxes-2026",
+     "date": "20261124",
+     "sessions": 2,
+     "keyEvents": 2
+    },
+    {
+     "landingPage": "/mcdonalds-pokemon-cards-2026",
+     "date": "20261124",
+     "sessions": 1,
+     "keyEvents": 0
     }
    ],
-   "rowCount": 96
+   "rowCount": 95
   },
   "pageClicks28": {
    "rows": [
     {
      "pagePath": "/mcdonalds-pokemon-cards-2026",
      "eventName": "click",
-     "eventCount": 73
+     "eventCount": 75
     },
     {
      "pagePath": "/best-hobby-boxes-2026",
@@ -2538,17 +2941,7 @@
     {
      "pagePath": "/watchlist",
      "eventName": "signup_view",
-     "eventCount": 32
-    },
-    {
-     "pagePath": "/mlb-cards",
-     "eventName": "signup_view",
-     "eventCount": 18
-    },
-    {
-     "pagePath": "/topps-chrome-basketball-2026",
-     "eventName": "signup_view",
-     "eventCount": 18
+     "eventCount": 34
     },
     {
      "pagePath": "/pokemon-30th-anniversary-2026",
@@ -2561,7 +2954,17 @@
      "eventCount": 16
     },
     {
+     "pagePath": "/topps-chrome-basketball-2026",
+     "eventName": "signup_view",
+     "eventCount": 16
+    },
+    {
      "pagePath": "/harry-kane-cards",
+     "eventName": "signup_view",
+     "eventCount": 15
+    },
+    {
+     "pagePath": "/mlb-cards",
      "eventName": "signup_view",
      "eventCount": 15
     },
@@ -2576,7 +2979,7 @@
      "eventCount": 14
     },
     {
-     "pagePath": "/topps-chrome-updates-basketball",
+     "pagePath": "/lionel-messi-cards",
      "eventName": "signup_view",
      "eventCount": 14
     },
@@ -2586,12 +2989,7 @@
      "eventCount": 13
     },
     {
-     "pagePath": "/lionel-messi-cards",
-     "eventName": "signup_view",
-     "eventCount": 13
-    },
-    {
-     "pagePath": "/pitch-black-vs-chaos-rising",
+     "pagePath": "/topps-chrome-updates-basketball",
      "eventName": "signup_view",
      "eventCount": 13
     },
@@ -2599,6 +2997,11 @@
      "pagePath": "/topps-update-series-2026",
      "eventName": "signup_view",
      "eventCount": 13
+    },
+    {
+     "pagePath": "/pitch-black-vs-chaos-rising",
+     "eventName": "signup_view",
+     "eventCount": 12
     },
     {
      "pagePath": "/topps-flagship-basketball-2026-27",
@@ -2616,6 +3019,16 @@
      "eventCount": 11
     },
     {
+     "pagePath": "/best-hobby-boxes-2026",
+     "eventName": "box_filter",
+     "eventCount": 10
+    },
+    {
+     "pagePath": "/cristiano-ronaldo-cards",
+     "eventName": "signup_view",
+     "eventCount": 10
+    },
+    {
      "pagePath": "/moonbreon-worth",
      "eventName": "signup_view",
      "eventCount": 10
@@ -2626,29 +3039,9 @@
      "eventCount": 10
     },
     {
-     "pagePath": "/topps-chrome-formula-1-2026",
-     "eventName": "signup_view",
-     "eventCount": 10
-    },
-    {
      "pagePath": "/topps-flagship-football",
      "eventName": "signup_view",
      "eventCount": 10
-    },
-    {
-     "pagePath": "/victor-wembanyama-rookie-cards",
-     "eventName": "signup_view",
-     "eventCount": 10
-    },
-    {
-     "pagePath": "/bowman-chrome-2026-index",
-     "eventName": "signup_view",
-     "eventCount": 9
-    },
-    {
-     "pagePath": "/cristiano-ronaldo-cards",
-     "eventName": "signup_view",
-     "eventCount": 9
     },
     {
      "pagePath": "/delta-reign-index",
@@ -2661,9 +3054,14 @@
      "eventCount": 9
     },
     {
-     "pagePath": "/best-charizard-cards",
+     "pagePath": "/topps-chrome-formula-1-2026",
      "eventName": "signup_view",
-     "eventCount": 8
+     "eventCount": 9
+    },
+    {
+     "pagePath": "/victor-wembanyama-rookie-cards",
+     "eventName": "signup_view",
+     "eventCount": 9
     },
     {
      "pagePath": "/best-football-cards-under-50",
@@ -2672,6 +3070,11 @@
     },
     {
      "pagePath": "/best-gengar-cards",
+     "eventName": "signup_view",
+     "eventCount": 8
+    },
+    {
+     "pagePath": "/bowman-1st-chrome-index",
      "eventName": "signup_view",
      "eventCount": 8
     },
@@ -2701,21 +3104,6 @@
      "eventCount": 8
     },
     {
-     "pagePath": "/best-hobby-boxes-2026",
-     "eventName": "box_filter",
-     "eventCount": 7
-    },
-    {
-     "pagePath": "/bowman-1st-chrome-index",
-     "eventName": "signup_view",
-     "eventCount": 7
-    },
-    {
-     "pagePath": "/bowman-2026-index",
-     "eventName": "signup_view",
-     "eventCount": 7
-    },
-    {
      "pagePath": "/indices",
      "eventName": "signup_view",
      "eventCount": 7
@@ -2726,22 +3114,37 @@
      "eventCount": 7
     },
     {
-     "pagePath": "/topps-inception-basketball",
-     "eventName": "signup_view",
-     "eventCount": 7
-    },
-    {
      "pagePath": "/what-is-a-1st-bowman-card",
      "eventName": "signup_view",
      "eventCount": 7
     },
     {
-     "pagePath": "/panini-donruss-football-2026",
+     "pagePath": "/best-charizard-cards",
+     "eventName": "signup_view",
+     "eventCount": 6
+    },
+    {
+     "pagePath": "/bowman-2026-index",
+     "eventName": "signup_view",
+     "eventCount": 6
+    },
+    {
+     "pagePath": "/bowman-chrome-2026-index",
+     "eventName": "signup_view",
+     "eventCount": 6
+    },
+    {
+     "pagePath": "/mcdonalds-pokemon-cards-2026",
      "eventName": "signup_view",
      "eventCount": 6
     },
     {
      "pagePath": "/topps-definitive-basketball",
+     "eventName": "signup_view",
+     "eventCount": 6
+    },
+    {
+     "pagePath": "/topps-inception-basketball",
      "eventName": "signup_view",
      "eventCount": 6
     },
@@ -2766,17 +3169,17 @@
      "eventCount": 5
     },
     {
+     "pagePath": "/panini-donruss-football-2026",
+     "eventName": "signup_view",
+     "eventCount": 5
+    },
+    {
      "pagePath": "/pokemon-base-set-index",
      "eventName": "click",
      "eventCount": 5
     },
     {
      "pagePath": "/pokemon-tcg-2026",
-     "eventName": "signup_view",
-     "eventCount": 5
-    },
-    {
-     "pagePath": "/topps-allen-ginter-2026",
      "eventName": "signup_view",
      "eventCount": 5
     },
@@ -2792,6 +3195,11 @@
     },
     {
      "pagePath": "/best-umbreon-cards",
+     "eventName": "signup_view",
+     "eventCount": 4
+    },
+    {
+     "pagePath": "/bowman-chrome-baseball-2026",
      "eventName": "signup_view",
      "eventCount": 4
     },
@@ -2846,6 +3254,11 @@
      "eventCount": 4
     },
     {
+     "pagePath": "/topps-allen-ginter-2026",
+     "eventName": "signup_view",
+     "eventCount": 4
+    },
+    {
      "pagePath": "/topps-chrome-cactus-jack-basketball",
      "eventName": "signup_view",
      "eventCount": 4
@@ -2881,12 +3294,12 @@
      "eventCount": 3
     },
     {
-     "pagePath": "/bowman-chrome-baseball-2026",
+     "pagePath": "/bowman-chrome-sapphire-2026-index",
      "eventName": "signup_view",
      "eventCount": 3
     },
     {
-     "pagePath": "/bowman-chrome-sapphire-2026-index",
+     "pagePath": "/bowman-football",
      "eventName": "signup_view",
      "eventCount": 3
     },
@@ -2941,11 +3354,6 @@
      "eventCount": 2
     },
     {
-     "pagePath": "/bowman-football",
-     "eventName": "signup_view",
-     "eventCount": 2
-    },
-    {
      "pagePath": "/cristiano-ronaldo-cards",
      "eventName": "click",
      "eventCount": 2
@@ -2976,11 +3384,6 @@
      "eventCount": 2
     },
     {
-     "pagePath": "/mcdonalds-pokemon-cards-2026",
-     "eventName": "signup_view",
-     "eventCount": 2
-    },
-    {
      "pagePath": "/mlb-cards",
      "eventName": "click",
      "eventCount": 2
@@ -3008,6 +3411,11 @@
     {
      "pagePath": "/pokemon-30th-anniversary-2026",
      "eventName": "grade_click",
+     "eventCount": 2
+    },
+    {
+     "pagePath": "/pokemon-30th-celebration-binder-collection",
+     "eventName": "signup_view",
      "eventCount": 2
     },
     {
@@ -3111,6 +3519,11 @@
      "eventCount": 1
     },
     {
+     "pagePath": "/bowman-football",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
      "pagePath": "/bowman-sapphire-2026",
      "eventName": "signup_view",
      "eventCount": 1
@@ -3168,6 +3581,16 @@
     {
      "pagePath": "/fernando-mendoza-rookie-cards",
      "eventName": "signup_view",
+     "eventCount": 1
+    },
+    {
+     "pagePath": "/indices",
+     "eventName": "buystrip_click",
+     "eventCount": 1
+    },
+    {
+     "pagePath": "/indices",
+     "eventName": "click",
      "eventCount": 1
     },
     {
@@ -3233,11 +3656,6 @@
     {
      "pagePath": "/pitch-black-set-guide",
      "eventName": "click",
-     "eventCount": 1
-    },
-    {
-     "pagePath": "/pokemon-30th-celebration-binder-collection",
-     "eventName": "signup_view",
      "eventCount": 1
     },
     {
@@ -3311,14 +3729,24 @@
      "eventCount": 1
     }
    ],
-   "rowCount": 157
+   "rowCount": 160
   },
   "pageClicks7": {
    "rows": [
     {
      "pagePath": "/mcdonalds-pokemon-cards-2026",
      "eventName": "click",
-     "eventCount": 19
+     "eventCount": 16
+    },
+    {
+     "pagePath": "/best-hobby-boxes-2026",
+     "eventName": "box_filter",
+     "eventCount": 8
+    },
+    {
+     "pagePath": "/best-hobby-boxes-2026",
+     "eventName": "signup_view",
+     "eventCount": 7
     },
     {
      "pagePath": "/pokemon-30th-anniversary-2026",
@@ -3326,27 +3754,17 @@
      "eventCount": 7
     },
     {
-     "pagePath": "/best-hobby-boxes-2026",
+     "pagePath": "/mcdonalds-pokemon-cards-2026",
      "eventName": "signup_view",
      "eventCount": 6
     },
     {
-     "pagePath": "/best-hobby-boxes-2026",
-     "eventName": "box_filter",
+     "pagePath": "/card",
+     "eventName": "card_page_view",
      "eventCount": 5
     },
     {
      "pagePath": "/topps-chrome-basketball-2026",
-     "eventName": "signup_view",
-     "eventCount": 5
-    },
-    {
-     "pagePath": "/topps-flagship-basketball-2026-27",
-     "eventName": "signup_view",
-     "eventCount": 5
-    },
-    {
-     "pagePath": "/van-gogh-pikachu-worth",
      "eventName": "signup_view",
      "eventCount": 5
     },
@@ -3361,9 +3779,14 @@
      "eventCount": 4
     },
     {
-     "pagePath": "/card",
-     "eventName": "card_page_view",
-     "eventCount": 3
+     "pagePath": "/topps-flagship-basketball-2026-27",
+     "eventName": "signup_view",
+     "eventCount": 4
+    },
+    {
+     "pagePath": "/van-gogh-pikachu-worth",
+     "eventName": "signup_view",
+     "eventCount": 4
     },
     {
      "pagePath": "/nfl-rookie-cards-2026",
@@ -3386,17 +3809,27 @@
      "eventCount": 3
     },
     {
-     "pagePath": "/topps-update-series-2026",
-     "eventName": "signup_view",
-     "eventCount": 3
-    },
-    {
      "pagePath": "/victor-wembanyama-rookie-cards",
      "eventName": "signup_view",
      "eventCount": 3
     },
     {
+     "pagePath": "/watchlist",
+     "eventName": "signup_view",
+     "eventCount": 3
+    },
+    {
      "pagePath": "/bowman-chrome-2026-index",
+     "eventName": "signup_view",
+     "eventCount": 2
+    },
+    {
+     "pagePath": "/bowman-chrome-baseball-2026",
+     "eventName": "signup_view",
+     "eventCount": 2
+    },
+    {
+     "pagePath": "/bowman-football",
      "eventName": "signup_view",
      "eventCount": 2
     },
@@ -3416,17 +3849,17 @@
      "eventCount": 2
     },
     {
-     "pagePath": "/mcdonalds-pokemon-cards-2026",
+     "pagePath": "/lionel-messi-cards",
+     "eventName": "signup_view",
+     "eventCount": 2
+    },
+    {
+     "pagePath": "/pokemon-30th-celebration-binder-collection",
      "eventName": "signup_view",
      "eventCount": 2
     },
     {
      "pagePath": "/pokemon-booster-box-prices",
-     "eventName": "signup_view",
-     "eventCount": 2
-    },
-    {
-     "pagePath": "/tag-grading-guide",
      "eventName": "signup_view",
      "eventCount": 2
     },
@@ -3446,7 +3879,12 @@
      "eventCount": 2
     },
     {
-     "pagePath": "/topps-definitive-basketball",
+     "pagePath": "/topps-pristine-basketball",
+     "eventName": "signup_view",
+     "eventCount": 2
+    },
+    {
+     "pagePath": "/topps-update-series-2026",
      "eventName": "signup_view",
      "eventCount": 2
     },
@@ -3476,6 +3914,11 @@
      "eventCount": 1
     },
     {
+     "pagePath": "/bowman-1st-chrome-index",
+     "eventName": "signup_view",
+     "eventCount": 1
+    },
+    {
      "pagePath": "/bowman-2026-index",
      "eventName": "click",
      "eventCount": 1
@@ -3486,17 +3929,22 @@
      "eventCount": 1
     },
     {
-     "pagePath": "/bowman-chrome-baseball-2026",
-     "eventName": "signup_view",
+     "pagePath": "/bowman-football",
+     "eventName": "click",
      "eventCount": 1
     },
     {
      "pagePath": "/bowman-football",
-     "eventName": "signup_view",
+     "eventName": "fanatics_click",
      "eventCount": 1
     },
     {
-     "pagePath": "/card-bellossom-3-neo-genesis",
+     "pagePath": "/card-chansey-shadowless-3-base-set",
+     "eventName": "card_page_view",
+     "eventCount": 1
+    },
+    {
+     "pagePath": "/card-charizard-gx-sv49-hidden-fates",
      "eventName": "card_page_view",
      "eventCount": 1
     },
@@ -3516,7 +3964,17 @@
      "eventCount": 1
     },
     {
-     "pagePath": "/card-meganium-11-neo-genesis",
+     "pagePath": "/card-houndour-5-neo-discovery",
+     "eventName": "card_page_view",
+     "eventCount": 1
+    },
+    {
+     "pagePath": "/card-mega-charizard-x-ex-125-phantasmal-flames",
+     "eventName": "card_page_view",
+     "eventCount": 1
+    },
+    {
+     "pagePath": "/card-pikachu-1st-edition-70-neo-genesis",
      "eventName": "card_page_view",
      "eventCount": 1
     },
@@ -3526,12 +3984,22 @@
      "eventCount": 1
     },
     {
-     "pagePath": "/card-umbreon-ex-161-prismatic-evolutions",
+     "pagePath": "/card-umbreon-13-neo-discovery",
      "eventName": "card_page_view",
      "eventCount": 1
     },
     {
+     "pagePath": "/charizard-ex-worth",
+     "eventName": "signup_view",
+     "eventCount": 1
+    },
+    {
      "pagePath": "/cooper-flagg-rookie-cards",
+     "eventName": "signup_view",
+     "eventCount": 1
+    },
+    {
+     "pagePath": "/cristiano-ronaldo-cards",
      "eventName": "signup_view",
      "eventCount": 1
     },
@@ -3546,13 +4014,18 @@
      "eventCount": 1
     },
     {
-     "pagePath": "/lionel-messi-cards",
+     "pagePath": "/indices",
+     "eventName": "buystrip_click",
+     "eventCount": 1
+    },
+    {
+     "pagePath": "/indices",
      "eventName": "click",
      "eventCount": 1
     },
     {
      "pagePath": "/lionel-messi-cards",
-     "eventName": "signup_view",
+     "eventName": "click",
      "eventCount": 1
     },
     {
@@ -3573,11 +4046,6 @@
     {
      "pagePath": "/neo-genesis-1st-edition-index",
      "eventName": "click",
-     "eventCount": 1
-    },
-    {
-     "pagePath": "/neo-genesis-index",
-     "eventName": "signup_view",
      "eventCount": 1
     },
     {
@@ -3606,11 +4074,6 @@
      "eventCount": 1
     },
     {
-     "pagePath": "/pokemon-30th-celebration-binder-collection",
-     "eventName": "signup_view",
-     "eventCount": 1
-    },
-    {
      "pagePath": "/pokemon-card-gift-guide-2026",
      "eventName": "signup_view",
      "eventCount": 1
@@ -3631,6 +4094,11 @@
      "eventCount": 1
     },
     {
+     "pagePath": "/topps-definitive-basketball",
+     "eventName": "signup_view",
+     "eventCount": 1
+    },
+    {
      "pagePath": "/topps-inception-baseball",
      "eventName": "signup_view",
      "eventCount": 1
@@ -3641,32 +4109,22 @@
      "eventCount": 1
     },
     {
-     "pagePath": "/topps-pristine-basketball",
-     "eventName": "signup_view",
-     "eventCount": 1
-    },
-    {
-     "pagePath": "/topps-series-1-2026",
-     "eventName": "signup_view",
-     "eventCount": 1
-    },
-    {
      "pagePath": "/topps-tier-one-baseball",
-     "eventName": "signup_view",
-     "eventCount": 1
-    },
-    {
-     "pagePath": "/watchlist",
      "eventName": "signup_view",
      "eventCount": 1
     }
    ],
-   "rowCount": 69
+   "rowCount": 76
   },
   "cardClicks7": {
    "rows": [
     {
-     "pagePathPlusQueryString": "/card-bellossom-3-neo-genesis",
+     "pagePathPlusQueryString": "/card-chansey-shadowless-3-base-set",
+     "eventName": "card_page_view",
+     "eventCount": 1
+    },
+    {
+     "pagePathPlusQueryString": "/card-charizard-gx-sv49-hidden-fates",
      "eventName": "card_page_view",
      "eventCount": 1
     },
@@ -3686,7 +4144,17 @@
      "eventCount": 1
     },
     {
-     "pagePathPlusQueryString": "/card-meganium-11-neo-genesis",
+     "pagePathPlusQueryString": "/card-houndour-5-neo-discovery",
+     "eventName": "card_page_view",
+     "eventCount": 1
+    },
+    {
+     "pagePathPlusQueryString": "/card-mega-charizard-x-ex-125-phantasmal-flames",
+     "eventName": "card_page_view",
+     "eventCount": 1
+    },
+    {
+     "pagePathPlusQueryString": "/card-pikachu-1st-edition-70-neo-genesis",
      "eventName": "card_page_view",
      "eventCount": 1
     },
@@ -3696,12 +4164,22 @@
      "eventCount": 1
     },
     {
-     "pagePathPlusQueryString": "/card-umbreon-ex-161-prismatic-evolutions",
+     "pagePathPlusQueryString": "/card-umbreon-13-neo-discovery",
      "eventName": "card_page_view",
      "eventCount": 1
     },
     {
      "pagePathPlusQueryString": "/card?id=bs99-96",
+     "eventName": "card_page_view",
+     "eventCount": 1
+    },
+    {
+     "pagePathPlusQueryString": "/card?id=cel21-8-surfing-pikachu-v",
+     "eventName": "card_page_view",
+     "eventCount": 1
+    },
+    {
+     "pagePathPlusQueryString": "/card?id=hf19-sv49",
      "eventName": "card_page_view",
      "eventCount": 1
     },
@@ -3716,57 +4194,33 @@
      "eventCount": 1
     }
    ],
-   "rowCount": 10
+   "rowCount": 15
   },
   "pageCountry7": {
    "rows": [
     {
      "pagePath": "/mcdonalds-pokemon-cards-2026",
      "country": "United States",
-     "sessions": 31,
-     "keyEvents": 13,
-     "screenPageViews": 34,
-     "userEngagementDuration": 573
+     "sessions": 32,
+     "keyEvents": 14,
+     "screenPageViews": 36,
+     "userEngagementDuration": 623
     },
     {
      "pagePath": "/best-hobby-boxes-2026",
      "country": "United States",
-     "sessions": 17,
+     "sessions": 19,
      "keyEvents": 0,
-     "screenPageViews": 17,
-     "userEngagementDuration": 228
-    },
-    {
-     "pagePath": "/topps-flagship-basketball-2026-27",
-     "country": "United States",
-     "sessions": 9,
-     "keyEvents": 0,
-     "screenPageViews": 33,
-     "userEngagementDuration": 74
+     "screenPageViews": 19,
+     "userEngagementDuration": 242
     },
     {
      "pagePath": "/card",
      "country": "Singapore",
-     "sessions": 8,
+     "sessions": 9,
      "keyEvents": 0,
-     "screenPageViews": 8,
+     "screenPageViews": 9,
      "userEngagementDuration": 0
-    },
-    {
-     "pagePath": "/panini-donruss-football-2026",
-     "country": "United States",
-     "sessions": 8,
-     "keyEvents": 0,
-     "screenPageViews": 27,
-     "userEngagementDuration": 27
-    },
-    {
-     "pagePath": "/topps-cosmic-chrome-baseball-2026",
-     "country": "United States",
-     "sessions": 8,
-     "keyEvents": 0,
-     "screenPageViews": 16,
-     "userEngagementDuration": 27
     },
     {
      "pagePath": "/pokemon-tcg-2026",
@@ -3774,7 +4228,7 @@
      "sessions": 7,
      "keyEvents": 0,
      "screenPageViews": 10,
-     "userEngagementDuration": 32
+     "userEngagementDuration": 21
     },
     {
      "pagePath": "/topps-chrome-updates-basketball",
@@ -3782,15 +4236,23 @@
      "sessions": 7,
      "keyEvents": 0,
      "screenPageViews": 13,
-     "userEngagementDuration": 12
+     "userEngagementDuration": 7
     },
     {
-     "pagePath": "/",
+     "pagePath": "/topps-flagship-basketball-2026-27",
+     "country": "United States",
+     "sessions": 7,
+     "keyEvents": 0,
+     "screenPageViews": 31,
+     "userEngagementDuration": 54
+    },
+    {
+     "pagePath": "/panini-donruss-football-2026",
      "country": "United States",
      "sessions": 6,
-     "keyEvents": 1,
-     "screenPageViews": 13,
-     "userEngagementDuration": 105
+     "keyEvents": 0,
+     "screenPageViews": 25,
+     "userEngagementDuration": 7
     },
     {
      "pagePath": "/pokemon-30th-anniversary-2026",
@@ -3801,12 +4263,28 @@
      "userEngagementDuration": 740
     },
     {
-     "pagePath": "/pokemon-stocking-stuffers-under-25",
+     "pagePath": "/topps-cosmic-chrome-baseball-2026",
      "country": "United States",
      "sessions": 6,
      "keyEvents": 0,
-     "screenPageViews": 20,
-     "userEngagementDuration": 27
+     "screenPageViews": 14,
+     "userEngagementDuration": 7
+    },
+    {
+     "pagePath": "/",
+     "country": "United States",
+     "sessions": 5,
+     "keyEvents": 1,
+     "screenPageViews": 12,
+     "userEngagementDuration": 103
+    },
+    {
+     "pagePath": "/pokemon-stocking-stuffers-under-25",
+     "country": "United States",
+     "sessions": 5,
+     "keyEvents": 0,
+     "screenPageViews": 19,
+     "userEngagementDuration": 7
     },
     {
      "pagePath": "/topps-chrome-basketball-2026",
@@ -3817,20 +4295,20 @@
      "userEngagementDuration": 0
     },
     {
+     "pagePath": "/topps-holiday-baseball-2026",
+     "country": "United States",
+     "sessions": 5,
+     "keyEvents": 0,
+     "screenPageViews": 15,
+     "userEngagementDuration": 7
+    },
+    {
      "pagePath": "/indices",
      "country": "United States",
      "sessions": 4,
-     "keyEvents": 0,
+     "keyEvents": 1,
      "screenPageViews": 4,
-     "userEngagementDuration": 86
-    },
-    {
-     "pagePath": "/pokemon-black-friday-2026",
-     "country": "Singapore",
-     "sessions": 4,
-     "keyEvents": 0,
-     "screenPageViews": 4,
-     "userEngagementDuration": 0
+     "userEngagementDuration": 56
     },
     {
      "pagePath": "/pokemon-card-gift-guide-2026",
@@ -3838,50 +4316,50 @@
      "sessions": 4,
      "keyEvents": 0,
      "screenPageViews": 16,
-     "userEngagementDuration": 18
+     "userEngagementDuration": 7
     },
     {
-     "pagePath": "/topps-holiday-baseball-2026",
-     "country": "United States",
-     "sessions": 4,
+     "pagePath": "/",
+     "country": "Brazil",
+     "sessions": 3,
      "keyEvents": 0,
-     "screenPageViews": 14,
-     "userEngagementDuration": 18
+     "screenPageViews": 3,
+     "userEngagementDuration": 10
+    },
+    {
+     "pagePath": "/cristiano-ronaldo-cards",
+     "country": "Singapore",
+     "sessions": 3,
+     "keyEvents": 0,
+     "screenPageViews": 3,
+     "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/mcdonalds-pokemon-cards-2026",
+     "country": "Canada",
+     "sessions": 3,
+     "keyEvents": 2,
+     "screenPageViews": 3,
+     "userEngagementDuration": 59
+    },
+    {
+     "pagePath": "/pokemon-black-friday-2026",
+     "country": "Singapore",
+     "sessions": 3,
+     "keyEvents": 0,
+     "screenPageViews": 3,
+     "userEngagementDuration": 0
     },
     {
      "pagePath": "/topps-update-series-2026",
      "country": "United States",
-     "sessions": 4,
-     "keyEvents": 0,
-     "screenPageViews": 4,
-     "userEngagementDuration": 17
-    },
-    {
-     "pagePath": "/van-gogh-pikachu-worth",
-     "country": "Singapore",
-     "sessions": 4,
-     "keyEvents": 0,
-     "screenPageViews": 4,
-     "userEngagementDuration": 0
-    },
-    {
-     "pagePath": "/pokemon-base-set-index",
-     "country": "United States",
      "sessions": 3,
      "keyEvents": 0,
      "screenPageViews": 3,
-     "userEngagementDuration": 49
+     "userEngagementDuration": 13
     },
     {
-     "pagePath": "/skyridge-index",
-     "country": "United States",
-     "sessions": 3,
-     "keyEvents": 0,
-     "screenPageViews": 4,
-     "userEngagementDuration": 18
-    },
-    {
-     "pagePath": "/topps-flagship-basketball-2026-27",
+     "pagePath": "/van-gogh-pikachu-worth",
      "country": "Singapore",
      "sessions": 3,
      "keyEvents": 0,
@@ -3977,28 +4455,20 @@
      "userEngagementDuration": 42
     },
     {
-     "pagePath": "/mcdonalds-pokemon-cards-2026",
-     "country": "Canada",
-     "sessions": 2,
-     "keyEvents": 2,
-     "screenPageViews": 2,
-     "userEngagementDuration": 47
-    },
-    {
-     "pagePath": "/mcdonalds-pokemon-cards-2026",
-     "country": "Mexico",
-     "sessions": 2,
-     "keyEvents": 4,
-     "screenPageViews": 2,
-     "userEngagementDuration": 72
-    },
-    {
      "pagePath": "/nfl-rookie-cards-2026",
      "country": "Singapore",
      "sessions": 2,
      "keyEvents": 0,
      "screenPageViews": 2,
      "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/pokemon-base-set-index",
+     "country": "United States",
+     "sessions": 2,
+     "keyEvents": 0,
+     "screenPageViews": 2,
+     "userEngagementDuration": 38
     },
     {
      "pagePath": "/pokemon-black-friday-2026",
@@ -4049,6 +4519,14 @@
      "userEngagementDuration": 0
     },
     {
+     "pagePath": "/skyridge-index",
+     "country": "United States",
+     "sessions": 2,
+     "keyEvents": 0,
+     "screenPageViews": 3,
+     "userEngagementDuration": 7
+    },
+    {
      "pagePath": "/topps-chrome-baseball-2026",
      "country": "Singapore",
      "sessions": 2,
@@ -4081,7 +4559,7 @@
      "userEngagementDuration": 0
     },
     {
-     "pagePath": "/topps-definitive-basketball",
+     "pagePath": "/topps-flagship-basketball-2026-27",
      "country": "Singapore",
      "sessions": 2,
      "keyEvents": 0,
@@ -4095,6 +4573,22 @@
      "keyEvents": 0,
      "screenPageViews": 2,
      "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/topps-pristine-basketball",
+     "country": "Singapore",
+     "sessions": 2,
+     "keyEvents": 0,
+     "screenPageViews": 2,
+     "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/watchlist",
+     "country": "United States",
+     "sessions": 2,
+     "keyEvents": 0,
+     "screenPageViews": 2,
+     "userEngagementDuration": 150
     },
     {
      "pagePath": "/what-is-a-1st-bowman-card",
@@ -4114,11 +4608,11 @@
     },
     {
      "pagePath": "/",
-     "country": "Brazil",
+     "country": "Pakistan",
      "sessions": 1,
      "keyEvents": 0,
      "screenPageViews": 1,
-     "userEngagementDuration": 3
+     "userEngagementDuration": 14
     },
     {
      "pagePath": "/",
@@ -4178,6 +4672,14 @@
     },
     {
      "pagePath": "/best-hobby-boxes-2026",
+     "country": "Canada",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 32
+    },
+    {
+     "pagePath": "/best-hobby-boxes-2026",
      "country": "China",
      "sessions": 1,
      "keyEvents": 0,
@@ -4201,6 +4703,14 @@
      "userEngagementDuration": 0
     },
     {
+     "pagePath": "/bowman-1st-chrome-index",
+     "country": "United States",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 31
+    },
+    {
      "pagePath": "/bowman-chrome-2026-index",
      "country": "United Kingdom",
      "sessions": 1,
@@ -4217,6 +4727,14 @@
      "userEngagementDuration": 0
     },
     {
+     "pagePath": "/bowman-chrome-baseball-2026",
+     "country": "United States",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 16
+    },
+    {
      "pagePath": "/bowman-football",
      "country": "Singapore",
      "sessions": 1,
@@ -4225,7 +4743,23 @@
      "userEngagementDuration": 0
     },
     {
-     "pagePath": "/card-azumarill-2-neo-genesis",
+     "pagePath": "/bowman-football",
+     "country": "United States",
+     "sessions": 1,
+     "keyEvents": 1,
+     "screenPageViews": 1,
+     "userEngagementDuration": 12
+    },
+    {
+     "pagePath": "/card",
+     "country": "United States",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/card-aerodactyl-1-fossil",
      "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
@@ -4233,8 +4767,32 @@
      "userEngagementDuration": 0
     },
     {
-     "pagePath": "/card-bellossom-3-neo-genesis",
+     "pagePath": "/card-aerodactyl-1st-edition-1-fossil",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/card-chansey-shadowless-3-base-set",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/card-charizard-gx-sv49-hidden-fates",
      "country": "United States",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 34
+    },
+    {
+     "pagePath": "/card-charizard-shadowless-4-base-set",
+     "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
      "screenPageViews": 1,
@@ -4289,6 +4847,22 @@
      "userEngagementDuration": 0
     },
     {
+     "pagePath": "/card-haunter-1st-edition-6-fossil",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/card-hisuian-zoroark-vstar-gg56-crown-zenith",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
      "pagePath": "/card-ho-oh-7-neo-revelation",
      "country": "Singapore",
      "sessions": 1,
@@ -4303,6 +4877,14 @@
      "keyEvents": 0,
      "screenPageViews": 1,
      "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/card-houndour-5-neo-discovery",
+     "country": "China",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 1
     },
     {
      "pagePath": "/card-hypno-1st-edition-8-fossil",
@@ -4329,7 +4911,7 @@
      "userEngagementDuration": 0
     },
     {
-     "pagePath": "/card-meganium-10-neo-genesis",
+     "pagePath": "/card-marek-houston",
      "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
@@ -4337,8 +4919,24 @@
      "userEngagementDuration": 0
     },
     {
-     "pagePath": "/card-meganium-11-neo-genesis",
-     "country": "United States",
+     "pagePath": "/card-mega-charizard-x-ex-125-phantasmal-flames",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/card-mega-latias-ex-181-mega-evolution",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/card-meganium-10-neo-genesis",
+     "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
      "screenPageViews": 1,
@@ -4361,7 +4959,7 @@
      "userEngagementDuration": 0
     },
     {
-     "pagePath": "/card-pikachu-84-skyridge",
+     "pagePath": "/card-pikachu-1st-edition-70-neo-genesis",
      "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
@@ -4385,6 +4983,14 @@
      "userEngagementDuration": 0
     },
     {
+     "pagePath": "/card-raikou-v-gg41-crown-zenith",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
      "pagePath": "/card-shining-charizard-107-neo-destiny",
      "country": "Indonesia",
      "sessions": 1,
@@ -4393,15 +4999,23 @@
      "userEngagementDuration": 0
     },
     {
-     "pagePath": "/card-umbreon-ex-161-prismatic-evolutions",
-     "country": "United States",
+     "pagePath": "/card-umbreon-13-neo-discovery",
+     "country": "China",
      "sessions": 1,
      "keyEvents": 0,
      "screenPageViews": 1,
-     "userEngagementDuration": 11
+     "userEngagementDuration": 0
     },
     {
      "pagePath": "/card-zapdos-1st-edition-15-fossil",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/charizard-ex-worth",
      "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
@@ -4425,20 +5039,12 @@
      "userEngagementDuration": 0
     },
     {
-     "pagePath": "/cristiano-ronaldo-cards",
-     "country": "Singapore",
+     "pagePath": "/deals",
+     "country": "United States",
      "sessions": 1,
      "keyEvents": 0,
      "screenPageViews": 1,
-     "userEngagementDuration": 0
-    },
-    {
-     "pagePath": "/cristiano-ronaldo-cards",
-     "country": "Switzerland",
-     "sessions": 1,
-     "keyEvents": 0,
-     "screenPageViews": 1,
-     "userEngagementDuration": 34
+     "userEngagementDuration": 14
     },
     {
      "pagePath": "/delta-reign-vs-pitch-black",
@@ -4451,6 +5057,14 @@
     {
      "pagePath": "/erling-haaland-rookie-cards",
      "country": "China",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/erling-haaland-rookie-cards",
+     "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
      "screenPageViews": 1,
@@ -4529,6 +5143,14 @@
      "userEngagementDuration": 13
     },
     {
+     "pagePath": "/lionel-messi-cards",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
      "pagePath": "/mcdonalds-pokemon-cards-2026",
      "country": "Australia",
      "sessions": 1,
@@ -4601,14 +5223,6 @@
      "userEngagementDuration": 22
     },
     {
-     "pagePath": "/neo-genesis-index",
-     "country": "United States",
-     "sessions": 1,
-     "keyEvents": 0,
-     "screenPageViews": 1,
-     "userEngagementDuration": 30
-    },
-    {
      "pagePath": "/nfl-rookie-cards-2026",
      "country": "United States",
      "sessions": 1,
@@ -4649,6 +5263,14 @@
      "userEngagementDuration": 0
     },
     {
+     "pagePath": "/pokemon-30th-celebration-binder-collection",
+     "country": "United States",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
      "pagePath": "/pokemon-base-set-1st-edition-index",
      "country": "United States",
      "sessions": 1,
@@ -4667,14 +5289,6 @@
     {
      "pagePath": "/pokemon-black-friday-2026",
      "country": "Cambodia",
-     "sessions": 1,
-     "keyEvents": 0,
-     "screenPageViews": 1,
-     "userEngagementDuration": 0
-    },
-    {
-     "pagePath": "/pokemon-black-friday-2026",
-     "country": "Netherlands",
      "sessions": 1,
      "keyEvents": 0,
      "screenPageViews": 1,
@@ -4753,38 +5367,6 @@
      "userEngagementDuration": 9
     },
     {
-     "pagePath": "/tag-grading-guide",
-     "country": "Bangladesh",
-     "sessions": 1,
-     "keyEvents": 0,
-     "screenPageViews": 1,
-     "userEngagementDuration": 0
-    },
-    {
-     "pagePath": "/tag-grading-guide",
-     "country": "Japan",
-     "sessions": 1,
-     "keyEvents": 0,
-     "screenPageViews": 0,
-     "userEngagementDuration": 0
-    },
-    {
-     "pagePath": "/tag-grading-guide",
-     "country": "Singapore",
-     "sessions": 1,
-     "keyEvents": 0,
-     "screenPageViews": 1,
-     "userEngagementDuration": 0
-    },
-    {
-     "pagePath": "/tag-grading-guide",
-     "country": "Venezuela",
-     "sessions": 1,
-     "keyEvents": 0,
-     "screenPageViews": 0,
-     "userEngagementDuration": 0
-    },
-    {
      "pagePath": "/team-up-index",
      "country": "United States",
      "sessions": 1,
@@ -4810,6 +5392,14 @@
     },
     {
      "pagePath": "/topps-chrome-update-2026-rookies",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 1,
+     "userEngagementDuration": 0
+    },
+    {
+     "pagePath": "/topps-definitive-basketball",
      "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
@@ -4858,23 +5448,7 @@
     },
     {
      "pagePath": "/topps-pristine-basketball",
-     "country": "Singapore",
-     "sessions": 1,
-     "keyEvents": 0,
-     "screenPageViews": 1,
-     "userEngagementDuration": 0
-    },
-    {
-     "pagePath": "/topps-pristine-basketball",
      "country": "United States",
-     "sessions": 1,
-     "keyEvents": 0,
-     "screenPageViews": 1,
-     "userEngagementDuration": 0
-    },
-    {
-     "pagePath": "/topps-series-1-2026",
-     "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
      "screenPageViews": 1,
@@ -4913,6 +5487,14 @@
      "userEngagementDuration": 0
     },
     {
+     "pagePath": "/watchlist",
+     "country": "United Kingdom",
+     "sessions": 1,
+     "keyEvents": 0,
+     "screenPageViews": 0,
+     "userEngagementDuration": 0
+    },
+    {
      "pagePath": "/world-cup-2026-soccer-cards",
      "country": "Brazil",
      "sessions": 1,
@@ -4921,58 +5503,44 @@
      "userEngagementDuration": 17
     }
    ],
-   "rowCount": 150
+   "rowCount": 163
   },
   "landingCountry7": {
    "rows": [
     {
      "landingPage": "/mcdonalds-pokemon-cards-2026",
      "country": "United States",
-     "sessions": 30,
-     "keyEvents": 13,
-     "averageSessionDuration": 60.17739053333334
+     "sessions": 32,
+     "keyEvents": 14,
+     "averageSessionDuration": 58.3585495625
     },
     {
      "landingPage": "/best-hobby-boxes-2026",
      "country": "United States",
-     "sessions": 15,
-     "keyEvents": 0,
-     "averageSessionDuration": 20.28902586666667
+     "sessions": 17,
+     "keyEvents": 2,
+     "averageSessionDuration": 34.60391052941176
     },
     {
      "landingPage": "/card",
      "country": "Singapore",
-     "sessions": 8,
+     "sessions": 9,
      "keyEvents": 0,
-     "averageSessionDuration": 0.134854875
+     "averageSessionDuration": 0.14424811111111113
     },
     {
      "landingPage": "/panini-donruss-football-2026",
      "country": "United States",
-     "sessions": 8,
-     "keyEvents": 0,
-     "averageSessionDuration": 137.99744875
-    },
-    {
-     "landingPage": "/topps-flagship-basketball-2026-27",
-     "country": "United States",
-     "sessions": 7,
-     "keyEvents": 0,
-     "averageSessionDuration": 14.531067857142856
-    },
-    {
-     "landingPage": "/topps-cosmic-chrome-baseball-2026",
-     "country": "United States",
      "sessions": 6,
      "keyEvents": 0,
-     "averageSessionDuration": 0.07826016666666667
+     "averageSessionDuration": 183.93373999999997
     },
     {
      "landingPage": "/pokemon-tcg-2026",
      "country": "United States",
      "sessions": 5,
      "keyEvents": 0,
-     "averageSessionDuration": 0.1391278
+     "averageSessionDuration": 0.11783980000000001
     },
     {
      "landingPage": "/topps-chrome-basketball-2026",
@@ -4986,70 +5554,91 @@
      "country": "United States",
      "sessions": 5,
      "keyEvents": 0,
-     "averageSessionDuration": 0.07415079999999999
+     "averageSessionDuration": 0.0155928
+    },
+    {
+     "landingPage": "/topps-flagship-basketball-2026-27",
+     "country": "United States",
+     "sessions": 5,
+     "keyEvents": 0,
+     "averageSessionDuration": 20.2525092
+    },
+    {
+     "landingPage": "/topps-cosmic-chrome-baseball-2026",
+     "country": "United States",
+     "sessions": 4,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.02388075
+    },
+    {
+     "landingPage": "/",
+     "country": "Brazil",
+     "sessions": 3,
+     "keyEvents": 0,
+     "averageSessionDuration": 1.742687
     },
     {
      "landingPage": "/",
      "country": "United States",
-     "sessions": 4,
+     "sessions": 3,
      "keyEvents": 0,
-     "averageSessionDuration": 27.33904275
+     "averageSessionDuration": 35.75440366666667
+    },
+    {
+     "landingPage": "/cristiano-ronaldo-cards",
+     "country": "Singapore",
+     "sessions": 3,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.07385033333333334
     },
     {
      "landingPage": "/indices",
      "country": "United States",
-     "sessions": 4,
+     "sessions": 3,
      "keyEvents": 0,
-     "averageSessionDuration": 716.66973175
+     "averageSessionDuration": 523.5440066666666
+    },
+    {
+     "landingPage": "/mcdonalds-pokemon-cards-2026",
+     "country": "Canada",
+     "sessions": 3,
+     "keyEvents": 2,
+     "averageSessionDuration": 310.279284
     },
     {
      "landingPage": "/pokemon-black-friday-2026",
      "country": "Singapore",
-     "sessions": 4,
+     "sessions": 3,
      "keyEvents": 0,
-     "averageSessionDuration": 0.14630925
+     "averageSessionDuration": 0.195079
     },
     {
      "landingPage": "/pokemon-stocking-stuffers-under-25",
      "country": "United States",
-     "sessions": 4,
+     "sessions": 3,
      "keyEvents": 0,
-     "averageSessionDuration": 0.102898
+     "averageSessionDuration": 0.020993666666666664
+    },
+    {
+     "landingPage": "/topps-holiday-baseball-2026",
+     "country": "United States",
+     "sessions": 3,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.027947
     },
     {
      "landingPage": "/topps-update-series-2026",
      "country": "United States",
-     "sessions": 4,
+     "sessions": 3,
      "keyEvents": 0,
-     "averageSessionDuration": 4.76007325
+     "averageSessionDuration": 4.797829
     },
     {
      "landingPage": "/van-gogh-pikachu-worth",
      "country": "Singapore",
-     "sessions": 4,
-     "keyEvents": 0,
-     "averageSessionDuration": 0.53634025
-    },
-    {
-     "landingPage": "(not set)",
-     "country": "United States",
      "sessions": 3,
      "keyEvents": 0,
-     "averageSessionDuration": 0
-    },
-    {
-     "landingPage": "/pokemon-base-set-index",
-     "country": "United States",
-     "sessions": 3,
-     "keyEvents": 0,
-     "averageSessionDuration": 10.714672
-    },
-    {
-     "landingPage": "/topps-flagship-basketball-2026-27",
-     "country": "Singapore",
-     "sessions": 3,
-     "keyEvents": 0,
-     "averageSessionDuration": 0.42596133333333325
+     "averageSessionDuration": 0.49666566666666667
     },
     {
      "landingPage": "/victor-wembanyama-rookie-cards",
@@ -5057,6 +5646,13 @@
      "sessions": 3,
      "keyEvents": 0,
      "averageSessionDuration": 0.40535133333333334
+    },
+    {
+     "landingPage": "(not set)",
+     "country": "United States",
+     "sessions": 2,
+     "keyEvents": 0,
+     "averageSessionDuration": 0
     },
     {
      "landingPage": "/",
@@ -5122,20 +5718,6 @@
      "averageSessionDuration": 32.566444
     },
     {
-     "landingPage": "/mcdonalds-pokemon-cards-2026",
-     "country": "Canada",
-     "sessions": 2,
-     "keyEvents": 2,
-     "averageSessionDuration": 97.279824
-    },
-    {
-     "landingPage": "/mcdonalds-pokemon-cards-2026",
-     "country": "Mexico",
-     "sessions": 2,
-     "keyEvents": 4,
-     "averageSessionDuration": 48.536493
-    },
-    {
      "landingPage": "/nfl-rookie-cards-2026",
      "country": "Singapore",
      "sessions": 2,
@@ -5150,11 +5732,18 @@
      "averageSessionDuration": 1219.2801235
     },
     {
+     "landingPage": "/pokemon-base-set-index",
+     "country": "United States",
+     "sessions": 2,
+     "keyEvents": 0,
+     "averageSessionDuration": 16.024231
+    },
+    {
      "landingPage": "/pokemon-black-friday-2026",
      "country": "China",
      "sessions": 2,
      "keyEvents": 0,
-     "averageSessionDuration": 81.90110449999999
+     "averageSessionDuration": 81.9011045
     },
     {
      "landingPage": "/pokemon-booster-box-prices",
@@ -5168,7 +5757,7 @@
      "country": "United States",
      "sessions": 2,
      "keyEvents": 0,
-     "averageSessionDuration": 0.1664465
+     "averageSessionDuration": 0.0961125
     },
     {
      "landingPage": "/pokemon-delta-reign-2026",
@@ -5192,13 +5781,6 @@
      "averageSessionDuration": 0
     },
     {
-     "landingPage": "/skyridge-index",
-     "country": "United States",
-     "sessions": 2,
-     "keyEvents": 0,
-     "averageSessionDuration": 0.1194935
-    },
-    {
      "landingPage": "/topps-chrome-baseball-2026",
      "country": "Singapore",
      "sessions": 2,
@@ -5217,7 +5799,7 @@
      "country": "Singapore",
      "sessions": 2,
      "keyEvents": 0,
-     "averageSessionDuration": 0.33262650000000005
+     "averageSessionDuration": 0.3326265
     },
     {
      "landingPage": "/topps-chrome-updates-basketball",
@@ -5227,11 +5809,11 @@
      "averageSessionDuration": 0.589002
     },
     {
-     "landingPage": "/topps-definitive-basketball",
+     "landingPage": "/topps-flagship-basketball-2026-27",
      "country": "Singapore",
      "sessions": 2,
      "keyEvents": 0,
-     "averageSessionDuration": 0.3057845
+     "averageSessionDuration": 0.412745
     },
     {
      "landingPage": "/topps-flagship-football",
@@ -5241,11 +5823,11 @@
      "averageSessionDuration": 2.6458875
     },
     {
-     "landingPage": "/topps-holiday-baseball-2026",
-     "country": "United States",
+     "landingPage": "/topps-pristine-basketball",
+     "country": "Singapore",
      "sessions": 2,
      "keyEvents": 0,
-     "averageSessionDuration": 0.089358
+     "averageSessionDuration": 0.4351675
     },
     {
      "landingPage": "/what-is-a-1st-bowman-card",
@@ -5255,15 +5837,8 @@
      "averageSessionDuration": 0.561857
     },
     {
-     "landingPage": "",
+     "landingPage": "(not set)",
      "country": "Brazil",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0
-    },
-    {
-     "landingPage": "",
-     "country": "Canada",
      "sessions": 1,
      "keyEvents": 0,
      "averageSessionDuration": 0
@@ -5277,10 +5852,10 @@
     },
     {
      "landingPage": "/",
-     "country": "Brazil",
+     "country": "Pakistan",
      "sessions": 1,
      "keyEvents": 0,
-     "averageSessionDuration": 0.607081
+     "averageSessionDuration": 5.605307
     },
     {
      "landingPage": "/",
@@ -5333,6 +5908,13 @@
     },
     {
      "landingPage": "/best-hobby-boxes-2026",
+     "country": "Canada",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 34.36924
+    },
+    {
+     "landingPage": "/best-hobby-boxes-2026",
      "country": "China",
      "sessions": 1,
      "keyEvents": 0,
@@ -5381,7 +5963,28 @@
      "averageSessionDuration": 0.508192
     },
     {
-     "landingPage": "/card-azumarill-2-neo-genesis",
+     "landingPage": "/card-aerodactyl-1-fossil",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0
+    },
+    {
+     "landingPage": "/card-aerodactyl-1st-edition-1-fossil",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0
+    },
+    {
+     "landingPage": "/card-chansey-shadowless-3-base-set",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.556958
+    },
+    {
+     "landingPage": "/card-charizard-shadowless-4-base-set",
      "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
@@ -5430,6 +6033,20 @@
      "averageSessionDuration": 0
     },
     {
+     "landingPage": "/card-haunter-1st-edition-6-fossil",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0
+    },
+    {
+     "landingPage": "/card-hisuian-zoroark-vstar-gg56-crown-zenith",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0
+    },
+    {
      "landingPage": "/card-ho-oh-7-neo-revelation",
      "country": "Singapore",
      "sessions": 1,
@@ -5442,6 +6059,13 @@
      "sessions": 1,
      "keyEvents": 0,
      "averageSessionDuration": 0.127339
+    },
+    {
+     "landingPage": "/card-houndour-5-neo-discovery",
+     "country": "China",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 1.708053
     },
     {
      "landingPage": "/card-hypno-1st-edition-8-fossil",
@@ -5465,6 +6089,27 @@
      "averageSessionDuration": 0
     },
     {
+     "landingPage": "/card-marek-houston",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0
+    },
+    {
+     "landingPage": "/card-mega-charizard-x-ex-125-phantasmal-flames",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.483819
+    },
+    {
+     "landingPage": "/card-mega-latias-ex-181-mega-evolution",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0
+    },
+    {
      "landingPage": "/card-meganium-10-neo-genesis",
      "country": "Singapore",
      "sessions": 1,
@@ -5479,11 +6124,11 @@
      "averageSessionDuration": 0
     },
     {
-     "landingPage": "/card-pikachu-84-skyridge",
+     "landingPage": "/card-pikachu-1st-edition-70-neo-genesis",
      "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
-     "averageSessionDuration": 0.422009
+     "averageSessionDuration": 0.377974
     },
     {
      "landingPage": "/card-pikachu-ex-179-prismatic-evolutions",
@@ -5500,6 +6145,13 @@
      "averageSessionDuration": 0
     },
     {
+     "landingPage": "/card-raikou-v-gg41-crown-zenith",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0
+    },
+    {
      "landingPage": "/card-shining-charizard-107-neo-destiny",
      "country": "Indonesia",
      "sessions": 1,
@@ -5507,11 +6159,11 @@
      "averageSessionDuration": 1.082536
     },
     {
-     "landingPage": "/card-umbreon-ex-161-prismatic-evolutions",
-     "country": "United States",
+     "landingPage": "/card-umbreon-13-neo-discovery",
+     "country": "China",
      "sessions": 1,
      "keyEvents": 0,
-     "averageSessionDuration": 0.289088
+     "averageSessionDuration": 0.001009
     },
     {
      "landingPage": "/card-zapdos-1st-edition-15-fossil",
@@ -5519,6 +6171,13 @@
      "sessions": 1,
      "keyEvents": 0,
      "averageSessionDuration": 0
+    },
+    {
+     "landingPage": "/charizard-ex-worth",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.266877
     },
     {
      "landingPage": "/charizard-ex-worth",
@@ -5535,20 +6194,6 @@
      "averageSessionDuration": 0.280341
     },
     {
-     "landingPage": "/cristiano-ronaldo-cards",
-     "country": "Singapore",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0
-    },
-    {
-     "landingPage": "/cristiano-ronaldo-cards",
-     "country": "Switzerland",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 34.076104
-    },
-    {
      "landingPage": "/delta-reign-vs-pitch-black",
      "country": "Singapore",
      "sessions": 1,
@@ -5558,6 +6203,13 @@
     {
      "landingPage": "/erling-haaland-rookie-cards",
      "country": "China",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0
+    },
+    {
+     "landingPage": "/erling-haaland-rookie-cards",
+     "country": "Singapore",
      "sessions": 1,
      "keyEvents": 0,
      "averageSessionDuration": 0
@@ -5624,6 +6276,13 @@
      "sessions": 1,
      "keyEvents": 1,
      "averageSessionDuration": 26.946658
+    },
+    {
+     "landingPage": "/lionel-messi-cards",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.567933
     },
     {
      "landingPage": "/mcdonalds-pokemon-cards-2026",
@@ -5710,6 +6369,13 @@
      "averageSessionDuration": 0.352053
     },
     {
+     "landingPage": "/pokemon-30th-celebration-binder-collection",
+     "country": "United States",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 4.644378
+    },
+    {
      "landingPage": "/pokemon-base-set-1st-edition-index",
      "country": "United States",
      "sessions": 1,
@@ -5726,13 +6392,6 @@
     {
      "landingPage": "/pokemon-black-friday-2026",
      "country": "Cambodia",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0
-    },
-    {
-     "landingPage": "/pokemon-black-friday-2026",
-     "country": "Netherlands",
      "sessions": 1,
      "keyEvents": 0,
      "averageSessionDuration": 0
@@ -5787,32 +6446,11 @@
      "averageSessionDuration": 0.505981
     },
     {
-     "landingPage": "/tag-grading-guide",
-     "country": "Bangladesh",
+     "landingPage": "/skyridge-index",
+     "country": "United States",
      "sessions": 1,
      "keyEvents": 0,
-     "averageSessionDuration": 0
-    },
-    {
-     "landingPage": "/tag-grading-guide",
-     "country": "Japan",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 3.534962
-    },
-    {
-     "landingPage": "/tag-grading-guide",
-     "country": "Singapore",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0.298903
-    },
-    {
-     "landingPage": "/tag-grading-guide",
-     "country": "Venezuela",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0.726086
+     "averageSessionDuration": 0.12963
     },
     {
      "landingPage": "/topps-allen-ginter-2026",
@@ -5834,6 +6472,13 @@
      "sessions": 1,
      "keyEvents": 0,
      "averageSessionDuration": 0
+    },
+    {
+     "landingPage": "/topps-definitive-basketball",
+     "country": "Singapore",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.44016
     },
     {
      "landingPage": "/topps-flagship-basketball-2026-27",
@@ -5872,24 +6517,10 @@
     },
     {
      "landingPage": "/topps-pristine-basketball",
-     "country": "Singapore",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0.54136
-    },
-    {
-     "landingPage": "/topps-pristine-basketball",
      "country": "United States",
      "sessions": 1,
      "keyEvents": 0,
      "averageSessionDuration": 0
-    },
-    {
-     "landingPage": "/topps-series-1-2026",
-     "country": "Singapore",
-     "sessions": 1,
-     "keyEvents": 0,
-     "averageSessionDuration": 0.635882
     },
     {
      "landingPage": "/topps-tier-one-baseball",
@@ -5920,6 +6551,20 @@
      "averageSessionDuration": 0.536389
     },
     {
+     "landingPage": "/watchlist",
+     "country": "United Kingdom",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0.573475
+    },
+    {
+     "landingPage": "/watchlist",
+     "country": "United States",
+     "sessions": 1,
+     "keyEvents": 0,
+     "averageSessionDuration": 0
+    },
+    {
      "landingPage": "/world-cup-2026-soccer-cards",
      "country": "Brazil",
      "sessions": 1,
@@ -5927,7 +6572,7 @@
      "averageSessionDuration": 24.534243
     }
    ],
-   "rowCount": 143
+   "rowCount": 152
   },
   "leagueCampaignDaily28": {
    "rows": [],
@@ -6020,72 +6665,72 @@
    "rows": [
     {
      "pagePath": "/mcdonalds-pokemon-cards-2026",
-     "screenPageViews": 41,
-     "activeUsers": 37,
-     "userEngagementDuration": 701,
-     "keyEvents": 19
+     "screenPageViews": 42,
+     "activeUsers": 38,
+     "userEngagementDuration": 691,
+     "keyEvents": 16
     },
     {
      "pagePath": "/topps-flagship-basketball-2026-27",
-     "screenPageViews": 37,
-     "activeUsers": 13,
-     "userEngagementDuration": 83,
+     "screenPageViews": 34,
+     "activeUsers": 10,
+     "userEngagementDuration": 63,
      "keyEvents": 0
     },
     {
      "pagePath": "/panini-donruss-football-2026",
-     "screenPageViews": 27,
-     "activeUsers": 8,
-     "userEngagementDuration": 27,
+     "screenPageViews": 25,
+     "activeUsers": 6,
+     "userEngagementDuration": 7,
      "keyEvents": 0
     },
     {
-     "pagePath": "/pokemon-stocking-stuffers-under-25",
-     "screenPageViews": 21,
-     "activeUsers": 7,
-     "userEngagementDuration": 27,
+     "pagePath": "/best-hobby-boxes-2026",
+     "screenPageViews": 22,
+     "activeUsers": 21,
+     "userEngagementDuration": 274,
      "keyEvents": 0
     },
     {
      "pagePath": "/",
-     "screenPageViews": 19,
-     "activeUsers": 11,
-     "userEngagementDuration": 129,
+     "screenPageViews": 21,
+     "activeUsers": 13,
+     "userEngagementDuration": 148,
      "keyEvents": 1
     },
     {
-     "pagePath": "/best-hobby-boxes-2026",
-     "screenPageViews": 19,
-     "activeUsers": 18,
-     "userEngagementDuration": 228,
+     "pagePath": "/pokemon-stocking-stuffers-under-25",
+     "screenPageViews": 20,
+     "activeUsers": 6,
+     "userEngagementDuration": 7,
      "keyEvents": 0
     },
     {
      "pagePath": "/pokemon-card-gift-guide-2026",
      "screenPageViews": 17,
      "activeUsers": 5,
-     "userEngagementDuration": 18,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/topps-cosmic-chrome-baseball-2026",
-     "screenPageViews": 16,
-     "activeUsers": 8,
-     "userEngagementDuration": 27,
+     "userEngagementDuration": 7,
      "keyEvents": 0
     },
     {
      "pagePath": "/topps-chrome-updates-basketball",
      "screenPageViews": 15,
      "activeUsers": 9,
-     "userEngagementDuration": 12,
+     "userEngagementDuration": 7,
      "keyEvents": 0
     },
     {
      "pagePath": "/topps-holiday-baseball-2026",
+     "screenPageViews": 15,
+     "activeUsers": 5,
+     "userEngagementDuration": 7,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/topps-cosmic-chrome-baseball-2026",
      "screenPageViews": 14,
-     "activeUsers": 4,
-     "userEngagementDuration": 18,
+     "activeUsers": 6,
+     "userEngagementDuration": 7,
      "keyEvents": 0
     },
     {
@@ -6097,8 +6742,8 @@
     },
     {
      "pagePath": "/card",
-     "screenPageViews": 10,
-     "activeUsers": 10,
+     "screenPageViews": 12,
+     "activeUsers": 12,
      "userEngagementDuration": 0,
      "keyEvents": 0
     },
@@ -6106,13 +6751,13 @@
      "pagePath": "/pokemon-tcg-2026",
      "screenPageViews": 10,
      "activeUsers": 7,
-     "userEngagementDuration": 32,
+     "userEngagementDuration": 21,
      "keyEvents": 0
     },
     {
      "pagePath": "/pokemon-black-friday-2026",
-     "screenPageViews": 9,
-     "activeUsers": 8,
+     "screenPageViews": 7,
+     "activeUsers": 6,
      "userEngagementDuration": 25,
      "keyEvents": 0
     },
@@ -6126,9 +6771,9 @@
     {
      "pagePath": "/indices",
      "screenPageViews": 5,
-     "activeUsers": 4,
-     "userEngagementDuration": 86,
-     "keyEvents": 0
+     "activeUsers": 5,
+     "userEngagementDuration": 56,
+     "keyEvents": 1
     },
     {
      "pagePath": "/lamine-yamal-rookie-cards",
@@ -6142,20 +6787,6 @@
      "screenPageViews": 5,
      "activeUsers": 5,
      "userEngagementDuration": 0,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/van-gogh-pikachu-worth",
-     "screenPageViews": 5,
-     "activeUsers": 5,
-     "userEngagementDuration": 0,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/pokemon-base-set-index",
-     "screenPageViews": 4,
-     "activeUsers": 4,
-     "userEngagementDuration": 49,
      "keyEvents": 0
     },
     {
@@ -6173,17 +6804,38 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/skyridge-index",
+     "pagePath": "/topps-pristine-basketball",
      "screenPageViews": 4,
-     "activeUsers": 3,
-     "userEngagementDuration": 18,
+     "activeUsers": 4,
+     "userEngagementDuration": 0,
      "keyEvents": 0
     },
     {
-     "pagePath": "/topps-update-series-2026",
+     "pagePath": "/van-gogh-pikachu-worth",
      "screenPageViews": 4,
      "activeUsers": 4,
-     "userEngagementDuration": 17,
+     "userEngagementDuration": 0,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/charizard-ex-worth",
+     "screenPageViews": 3,
+     "activeUsers": 2,
+     "userEngagementDuration": 2,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/cristiano-ronaldo-cards",
+     "screenPageViews": 3,
+     "activeUsers": 3,
+     "userEngagementDuration": 0,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/erling-haaland-rookie-cards",
+     "screenPageViews": 3,
+     "activeUsers": 3,
+     "userEngagementDuration": 111,
      "keyEvents": 0
     },
     {
@@ -6201,6 +6853,20 @@
      "keyEvents": 1
     },
     {
+     "pagePath": "/pokemon-base-set-index",
+     "screenPageViews": 3,
+     "activeUsers": 3,
+     "userEngagementDuration": 38,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/skyridge-index",
+     "screenPageViews": 3,
+     "activeUsers": 2,
+     "userEngagementDuration": 7,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/topps-chrome-baseball-2026",
      "screenPageViews": 3,
      "activeUsers": 3,
@@ -6215,10 +6881,10 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/topps-pristine-basketball",
+     "pagePath": "/topps-update-series-2026",
      "screenPageViews": 3,
      "activeUsers": 3,
-     "userEngagementDuration": 0,
+     "userEngagementDuration": 13,
      "keyEvents": 0
     },
     {
@@ -6229,6 +6895,27 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/watchlist",
+     "screenPageViews": 3,
+     "activeUsers": 3,
+     "userEngagementDuration": 150,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/bowman-chrome-baseball-2026",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "userEngagementDuration": 16,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/bowman-football",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "userEngagementDuration": 12,
+     "keyEvents": 1
+    },
+    {
      "pagePath": "/card-ethan-holliday",
      "screenPageViews": 2,
      "activeUsers": 2,
@@ -6236,31 +6923,10 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/charizard-ex-worth",
-     "screenPageViews": 2,
-     "activeUsers": 1,
-     "userEngagementDuration": 2,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/cristiano-ronaldo-cards",
-     "screenPageViews": 2,
-     "activeUsers": 2,
-     "userEngagementDuration": 34,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/delta-reign-index",
      "screenPageViews": 2,
      "activeUsers": 2,
      "userEngagementDuration": 0,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/erling-haaland-rookie-cards",
-     "screenPageViews": 2,
-     "activeUsers": 2,
-     "userEngagementDuration": 111,
      "keyEvents": 0
     },
     {
@@ -6279,6 +6945,20 @@
     },
     {
      "pagePath": "/hobby-box-roi-calculator",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "userEngagementDuration": 0,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/lionel-messi-cards",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "userEngagementDuration": 13,
+     "keyEvents": 1
+    },
+    {
+     "pagePath": "/pokemon-30th-celebration-binder-collection",
      "screenPageViews": 2,
      "activeUsers": 2,
      "userEngagementDuration": 0,
@@ -6313,13 +6993,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/tag-grading-guide",
-     "screenPageViews": 2,
-     "activeUsers": 2,
-     "userEngagementDuration": 0,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/topps-chrome-cactus-jack-basketball",
      "screenPageViews": 2,
      "activeUsers": 2,
@@ -6328,13 +7001,6 @@
     },
     {
      "pagePath": "/topps-chrome-formula-1-2026",
-     "screenPageViews": 2,
-     "activeUsers": 2,
-     "userEngagementDuration": 0,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/topps-definitive-basketball",
      "screenPageViews": 2,
      "activeUsers": 2,
      "userEngagementDuration": 0,
@@ -6390,6 +7056,13 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/bowman-1st-chrome-index",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "userEngagementDuration": 31,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/bowman-2026-index",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -6397,28 +7070,35 @@
      "keyEvents": 1
     },
     {
-     "pagePath": "/bowman-chrome-baseball-2026",
+     "pagePath": "/card-aerodactyl-1-fossil",
      "screenPageViews": 1,
      "activeUsers": 1,
      "userEngagementDuration": 0,
      "keyEvents": 0
     },
     {
-     "pagePath": "/bowman-football",
+     "pagePath": "/card-aerodactyl-1st-edition-1-fossil",
      "screenPageViews": 1,
      "activeUsers": 1,
      "userEngagementDuration": 0,
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-azumarill-2-neo-genesis",
+     "pagePath": "/card-chansey-shadowless-3-base-set",
      "screenPageViews": 1,
      "activeUsers": 1,
      "userEngagementDuration": 0,
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-bellossom-3-neo-genesis",
+     "pagePath": "/card-charizard-gx-sv49-hidden-fates",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "userEngagementDuration": 34,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-charizard-shadowless-4-base-set",
      "screenPageViews": 1,
      "activeUsers": 1,
      "userEngagementDuration": 0,
@@ -6467,6 +7147,20 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/card-haunter-1st-edition-6-fossil",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "userEngagementDuration": 0,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-hisuian-zoroark-vstar-gg56-crown-zenith",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "userEngagementDuration": 0,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/card-ho-oh-7-neo-revelation",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -6478,6 +7172,13 @@
      "screenPageViews": 1,
      "activeUsers": 1,
      "userEngagementDuration": 0,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-houndour-5-neo-discovery",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "userEngagementDuration": 1,
      "keyEvents": 0
     },
     {
@@ -6502,14 +7203,28 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-meganium-10-neo-genesis",
+     "pagePath": "/card-marek-houston",
      "screenPageViews": 1,
      "activeUsers": 1,
      "userEngagementDuration": 0,
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-meganium-11-neo-genesis",
+     "pagePath": "/card-mega-charizard-x-ex-125-phantasmal-flames",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "userEngagementDuration": 0,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-mega-latias-ex-181-mega-evolution",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "userEngagementDuration": 0,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-meganium-10-neo-genesis",
      "screenPageViews": 1,
      "activeUsers": 1,
      "userEngagementDuration": 0,
@@ -6530,7 +7245,7 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-pikachu-84-skyridge",
+     "pagePath": "/card-pikachu-1st-edition-70-neo-genesis",
      "screenPageViews": 1,
      "activeUsers": 1,
      "userEngagementDuration": 0,
@@ -6551,6 +7266,13 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/card-raikou-v-gg41-crown-zenith",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "userEngagementDuration": 0,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/card-shining-charizard-107-neo-destiny",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -6558,10 +7280,10 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-umbreon-ex-161-prismatic-evolutions",
+     "pagePath": "/card-umbreon-13-neo-discovery",
      "screenPageViews": 1,
      "activeUsers": 1,
-     "userEngagementDuration": 11,
+     "userEngagementDuration": 0,
      "keyEvents": 0
     },
     {
@@ -6579,18 +7301,18 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/deals",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "userEngagementDuration": 14,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/delta-reign-vs-pitch-black",
      "screenPageViews": 1,
      "activeUsers": 1,
      "userEngagementDuration": 0,
      "keyEvents": 0
-    },
-    {
-     "pagePath": "/lionel-messi-cards",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "userEngagementDuration": 13,
-     "keyEvents": 1
     },
     {
      "pagePath": "/mega-evolution-index",
@@ -6628,13 +7350,6 @@
      "keyEvents": 1
     },
     {
-     "pagePath": "/neo-genesis-index",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "userEngagementDuration": 30,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/pitch-black-index",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -6646,13 +7361,6 @@
      "screenPageViews": 1,
      "activeUsers": 1,
      "userEngagementDuration": 6,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/pokemon-30th-celebration-binder-collection",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "userEngagementDuration": 0,
      "keyEvents": 0
     },
     {
@@ -6691,6 +7399,13 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/topps-definitive-basketball",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "userEngagementDuration": 0,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/topps-inception-baseball",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -6705,20 +7420,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/topps-series-1-2026",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "userEngagementDuration": 0,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/watchlist",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "userEngagementDuration": 0,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/world-cup-2026-soccer-cards",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -6726,36 +7427,36 @@
      "keyEvents": 0
     }
    ],
-   "rowCount": 101
+   "rowCount": 109
   },
   "pagesReturning28": {
    "rows": [
     {
      "pagePath": "/card",
      "newVsReturning": "new",
-     "screenPageViews": 293,
-     "activeUsers": 293,
+     "screenPageViews": 292,
+     "activeUsers": 292,
      "keyEvents": 0
     },
     {
      "pagePath": "/mcdonalds-pokemon-cards-2026",
      "newVsReturning": "new",
-     "screenPageViews": 137,
-     "activeUsers": 128,
-     "keyEvents": 63
+     "screenPageViews": 143,
+     "activeUsers": 134,
+     "keyEvents": 65
     },
     {
      "pagePath": "/destined-rivals-index",
      "newVsReturning": "new",
-     "screenPageViews": 127,
-     "activeUsers": 125,
+     "screenPageViews": 100,
+     "activeUsers": 98,
      "keyEvents": 3
     },
     {
      "pagePath": "/best-hobby-boxes-2026",
      "newVsReturning": "new",
-     "screenPageViews": 70,
-     "activeUsers": 68,
+     "screenPageViews": 72,
+     "activeUsers": 70,
      "keyEvents": 2
     },
     {
@@ -6768,22 +7469,22 @@
     {
      "pagePath": "/watchlist",
      "newVsReturning": "new",
-     "screenPageViews": 41,
-     "activeUsers": 41,
+     "screenPageViews": 43,
+     "activeUsers": 43,
      "keyEvents": 0
     },
     {
      "pagePath": "/",
      "newVsReturning": "new",
-     "screenPageViews": 38,
-     "activeUsers": 31,
+     "screenPageViews": 40,
+     "activeUsers": 33,
      "keyEvents": 3
     },
     {
      "pagePath": "/panini-donruss-football-2026",
      "newVsReturning": "new",
-     "screenPageViews": 36,
-     "activeUsers": 16,
+     "screenPageViews": 35,
+     "activeUsers": 15,
      "keyEvents": 0
     },
     {
@@ -6801,10 +7502,17 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/pokemon-card-gift-guide-2026",
+     "newVsReturning": "new",
+     "screenPageViews": 25,
+     "activeUsers": 13,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/",
      "newVsReturning": "returning",
-     "screenPageViews": 25,
-     "activeUsers": 5,
+     "screenPageViews": 24,
+     "activeUsers": 4,
      "keyEvents": 0
     },
     {
@@ -6815,10 +7523,10 @@
      "keyEvents": 1
     },
     {
-     "pagePath": "/pokemon-card-gift-guide-2026",
+     "pagePath": "/pokemon-stocking-stuffers-under-25",
      "newVsReturning": "new",
      "screenPageViews": 24,
-     "activeUsers": 12,
+     "activeUsers": 10,
      "keyEvents": 0
     },
     {
@@ -6827,13 +7535,6 @@
      "screenPageViews": 23,
      "activeUsers": 23,
      "keyEvents": 3
-    },
-    {
-     "pagePath": "/pokemon-stocking-stuffers-under-25",
-     "newVsReturning": "new",
-     "screenPageViews": 23,
-     "activeUsers": 9,
-     "keyEvents": 0
     },
     {
      "pagePath": "/pokemon-30th-anniversary-2026",
@@ -6857,6 +7558,20 @@
      "keyEvents": 8
     },
     {
+     "pagePath": "/cristiano-ronaldo-cards",
+     "newVsReturning": "new",
+     "screenPageViews": 19,
+     "activeUsers": 18,
+     "keyEvents": 2
+    },
+    {
+     "pagePath": "/indices",
+     "newVsReturning": "new",
+     "screenPageViews": 19,
+     "activeUsers": 18,
+     "keyEvents": 1
+    },
+    {
      "pagePath": "/lamine-yamal-rookie-cards",
      "newVsReturning": "new",
      "screenPageViews": 19,
@@ -6864,38 +7579,24 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/topps-chrome-basketball-2026",
+     "pagePath": "/topps-holiday-baseball-2026",
      "newVsReturning": "new",
-     "screenPageViews": 19,
-     "activeUsers": 19,
+     "screenPageViews": 18,
+     "activeUsers": 8,
      "keyEvents": 0
     },
     {
-     "pagePath": "/mlb-cards",
+     "pagePath": "/pokemon-tcg-2026",
      "newVsReturning": "new",
-     "screenPageViews": 18,
-     "activeUsers": 17,
-     "keyEvents": 2
+     "screenPageViews": 17,
+     "activeUsers": 14,
+     "keyEvents": 0
     },
     {
-     "pagePath": "/bowman-chrome-2026-index",
+     "pagePath": "/topps-chrome-basketball-2026",
      "newVsReturning": "new",
      "screenPageViews": 17,
      "activeUsers": 17,
-     "keyEvents": 1
-    },
-    {
-     "pagePath": "/cristiano-ronaldo-cards",
-     "newVsReturning": "new",
-     "screenPageViews": 17,
-     "activeUsers": 16,
-     "keyEvents": 2
-    },
-    {
-     "pagePath": "/indices",
-     "newVsReturning": "new",
-     "screenPageViews": 17,
-     "activeUsers": 16,
      "keyEvents": 0
     },
     {
@@ -6906,18 +7607,11 @@
      "keyEvents": 2
     },
     {
-     "pagePath": "/pokemon-tcg-2026",
+     "pagePath": "/bowman-chrome-2026-index",
      "newVsReturning": "new",
-     "screenPageViews": 16,
-     "activeUsers": 13,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/topps-holiday-baseball-2026",
-     "newVsReturning": "new",
-     "screenPageViews": 16,
-     "activeUsers": 6,
-     "keyEvents": 0
+     "screenPageViews": 15,
+     "activeUsers": 15,
+     "keyEvents": 1
     },
     {
      "pagePath": "/harry-kane-cards",
@@ -6941,18 +7635,32 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/pitch-black-vs-chaos-rising",
+     "pagePath": "/erling-haaland-rookie-cards",
      "newVsReturning": "new",
      "screenPageViews": 14,
      "activeUsers": 14,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/mlb-cards",
+     "newVsReturning": "new",
+     "screenPageViews": 14,
+     "activeUsers": 13,
      "keyEvents": 2
     },
     {
-     "pagePath": "/erling-haaland-rookie-cards",
+     "pagePath": "/lionel-messi-cards",
      "newVsReturning": "new",
      "screenPageViews": 13,
      "activeUsers": 13,
-     "keyEvents": 0
+     "keyEvents": 2
+    },
+    {
+     "pagePath": "/pitch-black-vs-chaos-rising",
+     "newVsReturning": "new",
+     "screenPageViews": 13,
+     "activeUsers": 13,
+     "keyEvents": 2
     },
     {
      "pagePath": "/van-gogh-pikachu-worth",
@@ -6969,28 +7677,7 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/lionel-messi-cards",
-     "newVsReturning": "new",
-     "screenPageViews": 12,
-     "activeUsers": 12,
-     "keyEvents": 2
-    },
-    {
      "pagePath": "/pokemon-grading-premiums",
-     "newVsReturning": "new",
-     "screenPageViews": 12,
-     "activeUsers": 12,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/psa-grading-guide",
-     "newVsReturning": "new",
-     "screenPageViews": 12,
-     "activeUsers": 12,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/topps-chrome-formula-1-2026",
      "newVsReturning": "new",
      "screenPageViews": 12,
      "activeUsers": 12,
@@ -7023,6 +7710,20 @@
      "screenPageViews": 11,
      "activeUsers": 11,
      "keyEvents": 3
+    },
+    {
+     "pagePath": "/psa-grading-guide",
+     "newVsReturning": "new",
+     "screenPageViews": 11,
+     "activeUsers": 11,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/topps-chrome-formula-1-2026",
+     "newVsReturning": "new",
+     "screenPageViews": 11,
+     "activeUsers": 11,
+     "keyEvents": 0
     },
     {
      "pagePath": "/topps-series-1-2026",
@@ -7081,13 +7782,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/victor-wembanyama-rookie-cards",
-     "newVsReturning": "new",
-     "screenPageViews": 10,
-     "activeUsers": 10,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/best-football-cards-under-50",
      "newVsReturning": "new",
      "screenPageViews": 9,
@@ -7102,6 +7796,13 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/victor-wembanyama-rookie-cards",
+     "newVsReturning": "new",
+     "screenPageViews": 9,
+     "activeUsers": 9,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/best-gengar-cards",
      "newVsReturning": "new",
      "screenPageViews": 8,
@@ -7109,10 +7810,10 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/best-hobby-boxes-2026",
-     "newVsReturning": "returning",
+     "pagePath": "/bowman-chrome-baseball-2026",
+     "newVsReturning": "new",
      "screenPageViews": 8,
-     "activeUsers": 6,
+     "activeUsers": 8,
      "keyEvents": 0
     },
     {
@@ -7120,13 +7821,6 @@
      "newVsReturning": "new",
      "screenPageViews": 8,
      "activeUsers": 7,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/deals",
-     "newVsReturning": "returning",
-     "screenPageViews": 8,
-     "activeUsers": 1,
      "keyEvents": 0
     },
     {
@@ -7144,14 +7838,14 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/bowman-chrome-baseball-2026",
+     "pagePath": "/bowman-sapphire-2026",
      "newVsReturning": "new",
      "screenPageViews": 7,
      "activeUsers": 7,
      "keyEvents": 0
     },
     {
-     "pagePath": "/bowman-sapphire-2026",
+     "pagePath": "/deals",
      "newVsReturning": "new",
      "screenPageViews": 7,
      "activeUsers": 7,
@@ -7179,10 +7873,10 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/topps-inception-basketball",
+     "pagePath": "/bowman-1st-chrome-index",
      "newVsReturning": "new",
-     "screenPageViews": 7,
-     "activeUsers": 7,
+     "screenPageViews": 6,
+     "activeUsers": 6,
      "keyEvents": 0
     },
     {
@@ -7207,13 +7901,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/deals",
-     "newVsReturning": "new",
-     "screenPageViews": 6,
-     "activeUsers": 6,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/mlb-rookie-of-the-year-2026-cards",
      "newVsReturning": "new",
      "screenPageViews": 6,
@@ -7235,13 +7922,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/prismatic-evolutions-index",
-     "newVsReturning": "returning",
-     "screenPageViews": 6,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/surging-sparks-index",
      "newVsReturning": "returning",
      "screenPageViews": 6,
@@ -7249,7 +7929,7 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/topps-allen-ginter-2026",
+     "pagePath": "/topps-inception-basketball",
      "newVsReturning": "new",
      "screenPageViews": 6,
      "activeUsers": 6,
@@ -7268,20 +7948,6 @@
      "screenPageViews": 5,
      "activeUsers": 5,
      "keyEvents": 0
-    },
-    {
-     "pagePath": "/bowman-1st-chrome-index",
-     "newVsReturning": "new",
-     "screenPageViews": 5,
-     "activeUsers": 5,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/bowman-2026-index",
-     "newVsReturning": "new",
-     "screenPageViews": 5,
-     "activeUsers": 5,
-     "keyEvents": 1
     },
     {
      "pagePath": "/gengar-ex-worth",
@@ -7312,6 +7978,13 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/topps-allen-ginter-2026",
+     "newVsReturning": "new",
+     "screenPageViews": 5,
+     "activeUsers": 5,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/topps-museum-collection-baseball",
      "newVsReturning": "new",
      "screenPageViews": 5,
@@ -7326,6 +7999,13 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/best-hobby-boxes-2026",
+     "newVsReturning": "returning",
+     "screenPageViews": 4,
+     "activeUsers": 6,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/best-umbreon-cards",
      "newVsReturning": "new",
      "screenPageViews": 4,
@@ -7333,11 +8013,11 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/bowman-chrome-2026-index",
-     "newVsReturning": "returning",
+     "pagePath": "/bowman-2026-index",
+     "newVsReturning": "new",
      "screenPageViews": 4,
-     "activeUsers": 1,
-     "keyEvents": 0
+     "activeUsers": 4,
+     "keyEvents": 1
     },
     {
      "pagePath": "/card-pikachu-84-skyridge",
@@ -7459,13 +8139,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/best-charizard-cards",
-     "newVsReturning": "returning",
-     "screenPageViews": 3,
-     "activeUsers": 2,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/best-lugia-cards",
      "newVsReturning": "new",
      "screenPageViews": 3,
@@ -7480,11 +8153,25 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/bowman-chrome-2026-index",
+     "newVsReturning": "returning",
+     "screenPageViews": 3,
+     "activeUsers": 1,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/bowman-chrome-sapphire-2026-index",
      "newVsReturning": "returning",
      "screenPageViews": 3,
      "activeUsers": 1,
      "keyEvents": 0
+    },
+    {
+     "pagePath": "/bowman-football",
+     "newVsReturning": "new",
+     "screenPageViews": 3,
+     "activeUsers": 3,
+     "keyEvents": 1
     },
     {
      "pagePath": "/bowman-football-2026-index",
@@ -7499,6 +8186,20 @@
      "screenPageViews": 3,
      "activeUsers": 2,
      "keyEvents": 1
+    },
+    {
+     "pagePath": "/card-charizard-gx-sv49-hidden-fates",
+     "newVsReturning": "new",
+     "screenPageViews": 3,
+     "activeUsers": 3,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-charizard-shadowless-4-base-set",
+     "newVsReturning": "new",
+     "screenPageViews": 3,
+     "activeUsers": 3,
+     "keyEvents": 0
     },
     {
      "pagePath": "/card-dark-dragonite-5-team-rocket",
@@ -7585,6 +8286,13 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/deals",
+     "newVsReturning": "returning",
+     "screenPageViews": 3,
+     "activeUsers": 1,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/hidden-fates-index",
      "newVsReturning": "new",
      "screenPageViews": 3,
@@ -7611,6 +8319,13 @@
      "screenPageViews": 3,
      "activeUsers": 2,
      "keyEvents": 2
+    },
+    {
+     "pagePath": "/prismatic-evolutions-index",
+     "newVsReturning": "returning",
+     "screenPageViews": 3,
+     "activeUsers": 1,
+     "keyEvents": 0
     },
     {
      "pagePath": "/topps-cosmic-chrome-football",
@@ -7662,7 +8377,14 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/bowman-football",
+     "pagePath": "/card-aerodactyl-1-fossil",
+     "newVsReturning": "new",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-aerodactyl-1st-edition-1-fossil",
      "newVsReturning": "new",
      "screenPageViews": 2,
      "activeUsers": 2,
@@ -7690,14 +8412,7 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-charizard-gx-sv49-hidden-fates",
-     "newVsReturning": "new",
-     "screenPageViews": 2,
-     "activeUsers": 2,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-charizard-shadowless-4-base-set",
+     "pagePath": "/card-chansey-shadowless-3-base-set",
      "newVsReturning": "new",
      "screenPageViews": 2,
      "activeUsers": 2,
@@ -7719,13 +8434,6 @@
     },
     {
      "pagePath": "/card-dark-charizard-4-team-rocket",
-     "newVsReturning": "new",
-     "screenPageViews": 2,
-     "activeUsers": 2,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-darkrai-vstar-gg50-crown-zenith",
      "newVsReturning": "new",
      "screenPageViews": 2,
      "activeUsers": 2,
@@ -7774,6 +8482,20 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/card-haunter-1st-edition-6-fossil",
+     "newVsReturning": "new",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-hisuian-zoroark-vstar-gg56-crown-zenith",
+     "newVsReturning": "new",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/card-ho-oh-7-neo-revelation",
      "newVsReturning": "new",
      "screenPageViews": 2,
@@ -7782,6 +8504,13 @@
     },
     {
      "pagePath": "/card-houndoom-1st-edition-8-neo-revelation",
+     "newVsReturning": "new",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-houndour-5-neo-discovery",
      "newVsReturning": "new",
      "screenPageViews": 2,
      "activeUsers": 2,
@@ -7810,6 +8539,13 @@
     },
     {
      "pagePath": "/card-mega-chandelure-ex-115-pitch-black",
+     "newVsReturning": "new",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-mega-charizard-x-ex-125-phantasmal-flames",
      "newVsReturning": "new",
      "screenPageViews": 2,
      "activeUsers": 2,
@@ -7845,6 +8581,13 @@
     },
     {
      "pagePath": "/card-mega-greninja-ex-116-chaos-rising",
+     "newVsReturning": "new",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-mega-latias-ex-181-mega-evolution",
      "newVsReturning": "new",
      "screenPageViews": 2,
      "activeUsers": 2,
@@ -7921,6 +8664,13 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/card-pikachu-1st-edition-70-neo-genesis",
+     "newVsReturning": "new",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/card-pikachu-birthday-24-celebrations",
      "newVsReturning": "new",
      "screenPageViews": 2,
@@ -7984,6 +8734,13 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/card-raikou-v-gg41-crown-zenith",
+     "newVsReturning": "new",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/card-rayquaza-vmax-217-evolving-skies",
      "newVsReturning": "new",
      "screenPageViews": 2,
@@ -8013,6 +8770,13 @@
     },
     {
      "pagePath": "/card-team-rockets-mewtwo-ex-281-ascended-heroes",
+     "newVsReturning": "new",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-umbreon-13-neo-discovery",
      "newVsReturning": "new",
      "screenPageViews": 2,
      "activeUsers": 2,
@@ -8138,6 +8902,13 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/pokemon-30th-celebration-binder-collection",
+     "newVsReturning": "new",
+     "screenPageViews": 2,
+     "activeUsers": 2,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/pokemon-base-set-1st-edition-index",
      "newVsReturning": "returning",
      "screenPageViews": 2,
@@ -8208,6 +8979,13 @@
      "keyEvents": 0
     },
     {
+     "pagePath": "/best-charizard-cards",
+     "newVsReturning": "returning",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "keyEvents": 0
+    },
+    {
      "pagePath": "/best-football-cards-under-50",
      "newVsReturning": "(not set)",
      "screenPageViews": 1,
@@ -8243,13 +9021,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/bowman-bangers",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/bowman-football-2026-index",
      "newVsReturning": "new",
      "screenPageViews": 1,
@@ -8258,20 +9029,6 @@
     },
     {
      "pagePath": "/card-abra-1st-edition-43-base-set",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-aerodactyl-1-fossil",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-aerodactyl-1st-edition-1-fossil",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -8363,13 +9120,6 @@
     },
     {
      "pagePath": "/card-arcanine-3-skyridge",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-arceus-vstar-gg70-crown-zenith",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -8517,13 +9267,6 @@
     },
     {
      "pagePath": "/card-celebi-venusaur-gx-1-team-up",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-chansey-shadowless-3-base-set",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -8713,6 +9456,13 @@
     },
     {
      "pagePath": "/card-dark-vileplume-13-team-rocket",
+     "newVsReturning": "new",
+     "screenPageViews": 1,
+     "activeUsers": 1,
+     "keyEvents": 0
+    },
+    {
+     "pagePath": "/card-darkrai-vstar-gg50-crown-zenith",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -9118,20 +9868,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-giratina-vstar-gg69-crown-zenith",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-glaceon-vstar-gg40-crown-zenith",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/card-gloom-49-aquapolis",
      "newVsReturning": "new",
      "screenPageViews": 1,
@@ -9195,13 +9931,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-haunter-1st-edition-6-fossil",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/card-haunter-63-skyridge",
      "newVsReturning": "new",
      "screenPageViews": 1,
@@ -9217,13 +9946,6 @@
     },
     {
      "pagePath": "/card-heracross-6-neo-genesis",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-hisuian-zoroark-vstar-gg56-crown-zenith",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -9280,13 +10002,6 @@
     },
     {
      "pagePath": "/card-houndoom-h11-aquapolis",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-houndour-5-neo-discovery",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -9517,13 +10232,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-leafeon-vstar-gg35-crown-zenith",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/card-lickitung-90-aquapolis",
      "newVsReturning": "new",
      "screenPageViews": 1,
@@ -9664,14 +10372,14 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-mega-absol-ex-180-mega-evolution",
+     "pagePath": "/card-marek-houston",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-mega-charizard-x-ex-125-phantasmal-flames",
+     "pagePath": "/card-mega-absol-ex-180-mega-evolution",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -9735,13 +10443,6 @@
     },
     {
      "pagePath": "/card-mega-kangaskhan-ex-182-mega-evolution",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-mega-latias-ex-181-mega-evolution",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -9818,13 +10519,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-mew-gg10-crown-zenith",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/card-mew-grgb-30th-celebration",
      "newVsReturning": "new",
      "screenPageViews": 1,
@@ -9854,13 +10548,6 @@
     },
     {
      "pagePath": "/card-mewtwo-shadowless-10-base-set",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-mewtwo-vstar-gg44-crown-zenith",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -10014,20 +10701,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-origin-forme-dialga-vstar-gg68-crown-zenith",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-origin-forme-palkia-vstar-gg67-crown-zenith",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/card-pidgeot-1st-edition-8-jungle",
      "newVsReturning": "new",
      "screenPageViews": 1,
@@ -10043,13 +10716,6 @@
     },
     {
      "pagePath": "/card-pikachu-1st-edition-58-base-set",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-pikachu-1st-edition-70-neo-genesis",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -10260,13 +10926,6 @@
     },
     {
      "pagePath": "/card-raikou-28-skyridge",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
-     "pagePath": "/card-raikou-v-gg41-crown-zenith",
      "newVsReturning": "new",
      "screenPageViews": 1,
      "activeUsers": 1,
@@ -10728,13 +11387,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/card-umbreon-13-neo-discovery",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/card-umbreon-17-celebrations",
      "newVsReturning": "new",
      "screenPageViews": 1,
@@ -11050,13 +11702,6 @@
      "keyEvents": 0
     },
     {
-     "pagePath": "/pokemon-30th-celebration-binder-collection",
-     "newVsReturning": "new",
-     "screenPageViews": 1,
-     "activeUsers": 1,
-     "keyEvents": 0
-    },
-    {
      "pagePath": "/pokemon-base-set-index",
      "newVsReturning": "returning",
      "screenPageViews": 1,
@@ -11181,40 +11826,47 @@
      "screenPageViews": 0,
      "activeUsers": 1,
      "keyEvents": 0
+    },
+    {
+     "pagePath": "/pokemon-delta-reign-2026",
+     "newVsReturning": "returning",
+     "screenPageViews": 0,
+     "activeUsers": 1,
+     "keyEvents": 0
     }
    ],
-   "rowCount": 636
+   "rowCount": 629
   },
   "landingReturning28": {
    "rows": [
     {
      "landingPage": "/card",
      "newVsReturning": "new",
-     "sessions": 292,
+     "sessions": 290,
      "keyEvents": 0
     },
     {
      "landingPage": "/mcdonalds-pokemon-cards-2026",
      "newVsReturning": "new",
-     "sessions": 128,
-     "keyEvents": 63
+     "sessions": 134,
+     "keyEvents": 65
     },
     {
      "landingPage": "/destined-rivals-index",
      "newVsReturning": "new",
-     "sessions": 125,
+     "sessions": 98,
      "keyEvents": 3
     },
     {
      "landingPage": "/best-hobby-boxes-2026",
      "newVsReturning": "new",
-     "sessions": 66,
-     "keyEvents": 3
+     "sessions": 68,
+     "keyEvents": 5
     },
     {
      "landingPage": "/watchlist",
      "newVsReturning": "new",
-     "sessions": 40,
+     "sessions": 41,
      "keyEvents": 0
     },
     {
@@ -11226,7 +11878,7 @@
     {
      "landingPage": "/",
      "newVsReturning": "new",
-     "sessions": 25,
+     "sessions": 27,
      "keyEvents": 1
     },
     {
@@ -11266,10 +11918,10 @@
      "keyEvents": 8
     },
     {
-     "landingPage": "/topps-chrome-basketball-2026",
+     "landingPage": "/cristiano-ronaldo-cards",
      "newVsReturning": "new",
-     "sessions": 19,
-     "keyEvents": 0
+     "sessions": 18,
+     "keyEvents": 2
     },
     {
      "landingPage": "/lamine-yamal-rookie-cards",
@@ -11278,22 +11930,16 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/bowman-chrome-2026-index",
+     "landingPage": "/topps-chrome-basketball-2026",
      "newVsReturning": "new",
      "sessions": 17,
-     "keyEvents": 1
+     "keyEvents": 0
     },
     {
-     "landingPage": "/mlb-cards",
-     "newVsReturning": "new",
-     "sessions": 17,
-     "keyEvents": 2
-    },
-    {
-     "landingPage": "/cristiano-ronaldo-cards",
+     "landingPage": "/indices",
      "newVsReturning": "new",
      "sessions": 16,
-     "keyEvents": 2
+     "keyEvents": 0
     },
     {
      "landingPage": "/kylian-mbappe-rookie-cards",
@@ -11302,10 +11948,10 @@
      "keyEvents": 2
     },
     {
-     "landingPage": "/panini-donruss-football-2026",
+     "landingPage": "/bowman-chrome-2026-index",
      "newVsReturning": "new",
-     "sessions": 16,
-     "keyEvents": 0
+     "sessions": 15,
+     "keyEvents": 1
     },
     {
      "landingPage": "/harry-kane-cards",
@@ -11314,7 +11960,7 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/indices",
+     "landingPage": "/panini-donruss-football-2026",
      "newVsReturning": "new",
      "sessions": 15,
      "keyEvents": 0
@@ -11332,9 +11978,21 @@
      "keyEvents": 0
     },
     {
+     "landingPage": "/lionel-messi-cards",
+     "newVsReturning": "new",
+     "sessions": 13,
+     "keyEvents": 2
+    },
+    {
+     "landingPage": "/mlb-cards",
+     "newVsReturning": "new",
+     "sessions": 13,
+     "keyEvents": 2
+    },
+    {
      "landingPage": "/pitch-black-vs-chaos-rising",
      "newVsReturning": "new",
-     "sessions": 14,
+     "sessions": 13,
      "keyEvents": 2
     },
     {
@@ -11350,25 +12008,13 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/lionel-messi-cards",
+     "landingPage": "/erling-haaland-rookie-cards",
      "newVsReturning": "new",
      "sessions": 12,
-     "keyEvents": 2
+     "keyEvents": 0
     },
     {
      "landingPage": "/pokemon-grading-premiums",
-     "newVsReturning": "new",
-     "sessions": 12,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/psa-grading-guide",
-     "newVsReturning": "new",
-     "sessions": 12,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/topps-chrome-formula-1-2026",
      "newVsReturning": "new",
      "sessions": 12,
      "keyEvents": 0
@@ -11386,12 +12032,6 @@
      "keyEvents": 1
     },
     {
-     "landingPage": "/erling-haaland-rookie-cards",
-     "newVsReturning": "new",
-     "sessions": 11,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/moonbreon-worth",
      "newVsReturning": "new",
      "sessions": 11,
@@ -11402,6 +12042,24 @@
      "newVsReturning": "new",
      "sessions": 11,
      "keyEvents": 1
+    },
+    {
+     "landingPage": "/pokemon-card-gift-guide-2026",
+     "newVsReturning": "new",
+     "sessions": 11,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/psa-grading-guide",
+     "newVsReturning": "new",
+     "sessions": 11,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/topps-chrome-formula-1-2026",
+     "newVsReturning": "new",
+     "sessions": 11,
+     "keyEvents": 0
     },
     {
      "landingPage": "/topps-series-1-2026",
@@ -11434,7 +12092,7 @@
      "keyEvents": 1
     },
     {
-     "landingPage": "/pokemon-card-gift-guide-2026",
+     "landingPage": "/pokemon-tcg-2026",
      "newVsReturning": "new",
      "sessions": 10,
      "keyEvents": 0
@@ -11458,12 +12116,6 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/victor-wembanyama-rookie-cards",
-     "newVsReturning": "new",
-     "sessions": 10,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/best-football-cards-under-50",
      "newVsReturning": "new",
      "sessions": 9,
@@ -11482,16 +12134,16 @@
      "keyEvents": 7
     },
     {
-     "landingPage": "/pokemon-tcg-2026",
-     "newVsReturning": "new",
-     "sessions": 9,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/tag-grading-guide",
      "newVsReturning": "new",
      "sessions": 9,
      "keyEvents": 2
+    },
+    {
+     "landingPage": "/victor-wembanyama-rookie-cards",
+     "newVsReturning": "new",
+     "sessions": 9,
+     "keyEvents": 0
     },
     {
      "landingPage": "/",
@@ -11501,6 +12153,12 @@
     },
     {
      "landingPage": "/best-gengar-cards",
+     "newVsReturning": "new",
+     "sessions": 8,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/pokemon-stocking-stuffers-under-25",
      "newVsReturning": "new",
      "sessions": 8,
      "keyEvents": 0
@@ -11524,19 +12182,7 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/pokemon-stocking-stuffers-under-25",
-     "newVsReturning": "new",
-     "sessions": 7,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/topps-definitive-basketball",
-     "newVsReturning": "new",
-     "sessions": 7,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/topps-inception-basketball",
      "newVsReturning": "new",
      "sessions": 7,
      "keyEvents": 0
@@ -11566,7 +12212,13 @@
      "keyEvents": 1
     },
     {
-     "landingPage": "/topps-allen-ginter-2026",
+     "landingPage": "/topps-holiday-baseball-2026",
+     "newVsReturning": "new",
+     "sessions": 6,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/topps-inception-basketball",
      "newVsReturning": "new",
      "sessions": 6,
      "keyEvents": 0
@@ -11582,12 +12234,6 @@
      "newVsReturning": "new",
      "sessions": 5,
      "keyEvents": 0
-    },
-    {
-     "landingPage": "/bowman-2026-index",
-     "newVsReturning": "new",
-     "sessions": 5,
-     "keyEvents": 1
     },
     {
      "landingPage": "/deals",
@@ -11609,6 +12255,12 @@
     },
     {
      "landingPage": "/skyridge-index",
+     "newVsReturning": "new",
+     "sessions": 5,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/topps-allen-ginter-2026",
      "newVsReturning": "new",
      "sessions": 5,
      "keyEvents": 0
@@ -11642,6 +12294,12 @@
      "newVsReturning": "new",
      "sessions": 4,
      "keyEvents": 0
+    },
+    {
+     "landingPage": "/bowman-2026-index",
+     "newVsReturning": "new",
+     "sessions": 4,
+     "keyEvents": 1
     },
     {
      "landingPage": "/card-pikachu-84-skyridge",
@@ -11686,12 +12344,6 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/topps-holiday-baseball-2026",
-     "newVsReturning": "new",
-     "sessions": 4,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/topps-inception-baseball",
      "newVsReturning": "new",
      "sessions": 4,
@@ -11712,12 +12364,6 @@
     {
      "landingPage": "/best-lugia-cards",
      "newVsReturning": "new",
-     "sessions": 3,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/bowman-chrome-2026-index",
-     "newVsReturning": "returning",
      "sessions": 3,
      "keyEvents": 0
     },
@@ -11806,19 +12452,31 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/best-charizard-cards",
-     "newVsReturning": "returning",
-     "sessions": 2,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/bowman-chrome-2026-index",
      "newVsReturning": "(not set)",
      "sessions": 2,
      "keyEvents": 0
     },
     {
+     "landingPage": "/bowman-chrome-2026-index",
+     "newVsReturning": "returning",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
      "landingPage": "/bowman-football",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/card-aerodactyl-1-fossil",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/card-aerodactyl-1st-edition-1-fossil",
      "newVsReturning": "new",
      "sessions": 2,
      "keyEvents": 0
@@ -11842,7 +12500,19 @@
      "keyEvents": 0
     },
     {
+     "landingPage": "/card-chansey-shadowless-3-base-set",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
      "landingPage": "/card-charizard-gx-sv49-hidden-fates",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/card-charizard-shadowless-4-base-set",
      "newVsReturning": "new",
      "sessions": 2,
      "keyEvents": 0
@@ -11867,12 +12537,6 @@
     },
     {
      "landingPage": "/card-dark-hypno-9-team-rocket",
-     "newVsReturning": "new",
-     "sessions": 2,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-darkrai-vstar-gg50-crown-zenith",
      "newVsReturning": "new",
      "sessions": 2,
      "keyEvents": 0
@@ -11914,6 +12578,18 @@
      "keyEvents": 0
     },
     {
+     "landingPage": "/card-haunter-1st-edition-6-fossil",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/card-hisuian-zoroark-vstar-gg56-crown-zenith",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
      "landingPage": "/card-ho-oh-7-neo-revelation",
      "newVsReturning": "new",
      "sessions": 2,
@@ -11921,6 +12597,12 @@
     },
     {
      "landingPage": "/card-houndoom-1st-edition-8-neo-revelation",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/card-houndour-5-neo-discovery",
      "newVsReturning": "new",
      "sessions": 2,
      "keyEvents": 0
@@ -11950,6 +12632,12 @@
      "keyEvents": 0
     },
     {
+     "landingPage": "/card-mega-charizard-x-ex-125-phantasmal-flames",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
      "landingPage": "/card-mega-dragonite-ex-290-ascended-heroes",
      "newVsReturning": "new",
      "sessions": 2,
@@ -11969,6 +12657,12 @@
     },
     {
      "landingPage": "/card-mega-greninja-ex-116-chaos-rising",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/card-mega-latias-ex-181-mega-evolution",
      "newVsReturning": "new",
      "sessions": 2,
      "keyEvents": 0
@@ -12010,6 +12704,12 @@
      "keyEvents": 0
     },
     {
+     "landingPage": "/card-pikachu-1st-edition-70-neo-genesis",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
      "landingPage": "/card-pikachu-ex-150-30th-celebration",
      "newVsReturning": "new",
      "sessions": 2,
@@ -12023,6 +12723,12 @@
     },
     {
      "landingPage": "/card-pikachu-ex-247-surging-sparks",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/card-raikou-v-gg41-crown-zenith",
      "newVsReturning": "new",
      "sessions": 2,
      "keyEvents": 0
@@ -12047,6 +12753,12 @@
     },
     {
      "landingPage": "/card-suicune-v-gg38-crown-zenith",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/card-umbreon-13-neo-discovery",
      "newVsReturning": "new",
      "sessions": 2,
      "keyEvents": 0
@@ -12112,6 +12824,12 @@
      "keyEvents": 0
     },
     {
+     "landingPage": "/pokemon-30th-celebration-binder-collection",
+     "newVsReturning": "new",
+     "sessions": 2,
+     "keyEvents": 0
+    },
+    {
      "landingPage": "/pokemon-fossil-1st-edition-index",
      "newVsReturning": "new",
      "sessions": 2,
@@ -12121,18 +12839,6 @@
      "landingPage": "/topps-heritage-football-2026",
      "newVsReturning": "new",
      "sessions": 2,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "",
-     "newVsReturning": "",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "",
-     "newVsReturning": "new",
-     "sessions": 1,
      "keyEvents": 0
     },
     {
@@ -12184,12 +12890,6 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/bowman-bangers",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/bowman-football-2026-index",
      "newVsReturning": "new",
      "sessions": 1,
@@ -12197,18 +12897,6 @@
     },
     {
      "landingPage": "/card-abra-1st-edition-43-base-set",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-aerodactyl-1-fossil",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-aerodactyl-1st-edition-1-fossil",
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 0
@@ -12287,12 +12975,6 @@
     },
     {
      "landingPage": "/card-arcanine-3-skyridge",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-arceus-vstar-gg70-crown-zenith",
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 0
@@ -12412,12 +13094,6 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/card-chansey-shadowless-3-base-set",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/card-charizard-4-30th-celebration",
      "newVsReturning": "new",
      "sessions": 1,
@@ -12431,12 +13107,6 @@
     },
     {
      "landingPage": "/card-charizard-4-celebrations",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-charizard-shadowless-4-base-set",
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 0
@@ -12587,6 +13257,12 @@
     },
     {
      "landingPage": "/card-dark-vileplume-13-team-rocket",
+     "newVsReturning": "new",
+     "sessions": 1,
+     "keyEvents": 0
+    },
+    {
+     "landingPage": "/card-darkrai-vstar-gg50-crown-zenith",
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 0
@@ -12940,18 +13616,6 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/card-giratina-vstar-gg69-crown-zenith",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-glaceon-vstar-gg40-crown-zenith",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/card-gloom-49-aquapolis",
      "newVsReturning": "new",
      "sessions": 1,
@@ -13006,12 +13670,6 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/card-haunter-1st-edition-6-fossil",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/card-haunter-63-skyridge",
      "newVsReturning": "new",
      "sessions": 1,
@@ -13025,12 +13683,6 @@
     },
     {
      "landingPage": "/card-heracross-6-neo-genesis",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-hisuian-zoroark-vstar-gg56-crown-zenith",
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 0
@@ -13079,12 +13731,6 @@
     },
     {
      "landingPage": "/card-houndoom-h11-aquapolis",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-houndour-5-neo-discovery",
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 0
@@ -13282,12 +13928,6 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/card-leafeon-vstar-gg35-crown-zenith",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/card-lickitung-90-aquapolis",
      "newVsReturning": "new",
      "sessions": 1,
@@ -13402,6 +14042,12 @@
      "keyEvents": 0
     },
     {
+     "landingPage": "/card-marek-houston",
+     "newVsReturning": "new",
+     "sessions": 1,
+     "keyEvents": 0
+    },
+    {
      "landingPage": "/card-mega-absol-ex-180-mega-evolution",
      "newVsReturning": "new",
      "sessions": 1,
@@ -13409,12 +14055,6 @@
     },
     {
      "landingPage": "/card-mega-chandelure-ex-115-pitch-black",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-mega-charizard-x-ex-125-phantasmal-flames",
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 0
@@ -13475,12 +14115,6 @@
     },
     {
      "landingPage": "/card-mega-kangaskhan-ex-182-mega-evolution",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-mega-latias-ex-181-mega-evolution",
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 0
@@ -13552,12 +14186,6 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/card-mew-gg10-crown-zenith",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/card-mew-grgb-30th-celebration",
      "newVsReturning": "new",
      "sessions": 1,
@@ -13589,12 +14217,6 @@
     },
     {
      "landingPage": "/card-mewtwo-shadowless-10-base-set",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-mewtwo-vstar-gg44-crown-zenith",
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 0
@@ -13744,18 +14366,6 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/card-origin-forme-dialga-vstar-gg68-crown-zenith",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-origin-forme-palkia-vstar-gg67-crown-zenith",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/card-pidgeot-1st-edition-8-jungle",
      "newVsReturning": "new",
      "sessions": 1,
@@ -13769,12 +14379,6 @@
     },
     {
      "landingPage": "/card-pikachu-1st-edition-58-base-set",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-pikachu-1st-edition-70-neo-genesis",
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 0
@@ -13991,12 +14595,6 @@
     },
     {
      "landingPage": "/card-raikou-28-skyridge",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
-     "landingPage": "/card-raikou-v-gg41-crown-zenith",
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 0
@@ -14398,12 +14996,6 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/card-umbreon-13-neo-discovery",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/card-umbreon-17-celebrations",
      "newVsReturning": "new",
      "sessions": 1,
@@ -14602,12 +15194,6 @@
      "keyEvents": 0
     },
     {
-     "landingPage": "/deals",
-     "newVsReturning": "returning",
-     "sessions": 1,
-     "keyEvents": 0
-    },
-    {
      "landingPage": "/delta-reign-vs-pitch-black",
      "newVsReturning": "returning",
      "sessions": 1,
@@ -14666,12 +15252,6 @@
      "newVsReturning": "new",
      "sessions": 1,
      "keyEvents": 2
-    },
-    {
-     "landingPage": "/pokemon-30th-celebration-binder-collection",
-     "newVsReturning": "new",
-     "sessions": 1,
-     "keyEvents": 0
     },
     {
      "landingPage": "/pokemon-base-set-1st-edition-index",
@@ -14770,16 +15350,511 @@
      "keyEvents": 0
     }
    ],
-   "rowCount": 597
+   "rowCount": 585
+  },
+  "ebayClicksByLanding7": {
+   "rows": [
+    {
+     "landingPage": "/mcdonalds-pokemon-cards-2026",
+     "eventName": "click",
+     "eventCount": 16
+    },
+    {
+     "landingPage": "/best-hobby-boxes-2026",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/pokemon-30th-anniversary-2026",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/best-hobby-boxes-2026",
+     "eventName": "buystrip_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/best-hobby-boxes-2026",
+     "eventName": "fanatics_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/bowman-2026-index",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/lionel-messi-cards",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/neo-genesis-1st-edition-index",
+     "eventName": "chase_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/neo-genesis-1st-edition-index",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/nfl-rookie-cards-2026",
+     "eventName": "buystrip_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/nfl-rookie-cards-2026",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/pokemon-30th-anniversary-2026",
+     "eventName": "grade_click",
+     "eventCount": 1
+    }
+   ],
+   "rowCount": 12
+  },
+  "ebayClicksByLanding28": {
+   "rows": [
+    {
+     "landingPage": "/mcdonalds-pokemon-cards-2026",
+     "eventName": "click",
+     "eventCount": 75
+    },
+    {
+     "landingPage": "/pokemon-30th-anniversary-2026",
+     "eventName": "click",
+     "eventCount": 9
+    },
+    {
+     "landingPage": "/pokemon-booster-box-prices",
+     "eventName": "click",
+     "eventCount": 8
+    },
+    {
+     "landingPage": "/indices",
+     "eventName": "click",
+     "eventCount": 7
+    },
+    {
+     "landingPage": "/best-hobby-boxes-2026",
+     "eventName": "click",
+     "eventCount": 5
+    },
+    {
+     "landingPage": "/pokemon-base-set-1st-edition-index",
+     "eventName": "click",
+     "eventCount": 4
+    },
+    {
+     "landingPage": "/best-football-cards-under-50",
+     "eventName": "click",
+     "eventCount": 3
+    },
+    {
+     "landingPage": "/destined-rivals-index",
+     "eventName": "click",
+     "eventCount": 3
+    },
+    {
+     "landingPage": "/pokemon-30th-anniversary-2026",
+     "eventName": "grade_click",
+     "eventCount": 3
+    },
+    {
+     "landingPage": "/pokemon-base-set-1st-edition-index",
+     "eventName": "grade_click",
+     "eventCount": 3
+    },
+    {
+     "landingPage": "/",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/cristiano-ronaldo-cards",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/delta-reign-vs-pitch-black",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/indices",
+     "eventName": "chase_click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/kylian-mbappe-rookie-cards",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/lionel-messi-cards",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/mlb-cards",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/mlb-cards",
+     "eventName": "grade_click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/panini-obsidian-football-2026",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/pitch-black-vs-chaos-rising",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/pokemon-30th-anniversary-2026",
+     "eventName": "buystrip_click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/pokemon-base-set-1st-edition-index",
+     "eventName": "buystrip_click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/pokemon-base-set-shadowless-index",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/pokemon-base-set-shadowless-index",
+     "eventName": "grade_click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/pokemon-delta-reign-2026",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/pokemon-fossil-index",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/pokemon-fossil-index",
+     "eventName": "grade_click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "/tag-grading-guide",
+     "eventName": "click",
+     "eventCount": 2
+    },
+    {
+     "landingPage": "(not set)",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "(not set)",
+     "eventName": "shop_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/best-hobby-boxes-2026",
+     "eventName": "buystrip_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/best-hobby-boxes-2026",
+     "eventName": "fanatics_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/bowman-2026-index",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/bowman-chrome-2026-index",
+     "eventName": "buystrip_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/bowman-chrome-2026-index",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/celebrations-index",
+     "eventName": "chase_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/celebrations-index",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/destined-rivals-index",
+     "eventName": "chase_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/indices",
+     "eventName": "grade_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/lionel-messi-cards",
+     "eventName": "buystrip_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/neo-genesis-1st-edition-index",
+     "eventName": "chase_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/neo-genesis-1st-edition-index",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/nfl-rookie-cards-2026",
+     "eventName": "buystrip_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/nfl-rookie-cards-2026",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/pokemon-30th-anniversary-2026",
+     "eventName": "shop_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/pokemon-base-set-index",
+     "eventName": "chase_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/pokemon-base-set-index",
+     "eventName": "click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/pokemon-black-friday-2026",
+     "eventName": "buystrip_click",
+     "eventCount": 1
+    },
+    {
+     "landingPage": "/pokemon-black-friday-2026",
+     "eventName": "click",
+     "eventCount": 1
+    }
+   ],
+   "rowCount": 49
+  },
+  "aiLanding28": {
+   "rows": [
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/mcdonalds-pokemon-cards-2026",
+     "sessions": 50,
+     "engagedSessions": 30,
+     "keyEvents": 33
+    },
+    {
+     "sessionSource": "l.meta.ai",
+     "landingPage": "/indices",
+     "sessions": 9,
+     "engagedSessions": 7,
+     "keyEvents": 7
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/bowman-chrome-2026-index",
+     "sessions": 8,
+     "engagedSessions": 2,
+     "keyEvents": 1
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/pokemon-booster-box-prices",
+     "sessions": 7,
+     "engagedSessions": 6,
+     "keyEvents": 6
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/pokemon-delta-reign-2026",
+     "sessions": 5,
+     "engagedSessions": 2,
+     "keyEvents": 2
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/pokemon-base-set-index",
+     "sessions": 4,
+     "engagedSessions": 2,
+     "keyEvents": 1
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "(not set)",
+     "sessions": 3,
+     "engagedSessions": 1,
+     "keyEvents": 1
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/pokemon-base-set-1st-edition-index",
+     "sessions": 3,
+     "engagedSessions": 1,
+     "keyEvents": 0
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/topps-chrome-updates-basketball",
+     "sessions": 2,
+     "engagedSessions": 1,
+     "keyEvents": 0
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/best-umbreon-cards",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 0
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/bowman-1st-chrome-index",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 0
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/card-latios-203-surging-sparks",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 0
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/card-vulpix-1st-edition-68-base-set",
+     "sessions": 1,
+     "engagedSessions": 0,
+     "keyEvents": 0
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/celebrations-index",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 1
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/gengar-ex-worth",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 0
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/mlb-cards",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 2
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/neo-genesis-1st-edition-index",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 1
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/pokemon-base-set-shadowless-index",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 2
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/pokemon-black-friday-2026",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 1
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/pokemon-fossil-1st-edition-index",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 0
+    },
+    {
+     "sessionSource": "chatgpt.com",
+     "landingPage": "/pokemon-grading-premiums",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 0
+    },
+    {
+     "sessionSource": "l.meta.ai",
+     "landingPage": "(not set)",
+     "sessions": 1,
+     "engagedSessions": 0,
+     "keyEvents": 0
+    },
+    {
+     "sessionSource": "l.meta.ai",
+     "landingPage": "/pokemon-30th-anniversary-2026",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 6
+    },
+    {
+     "sessionSource": "l.meta.ai",
+     "landingPage": "/pokemon-fossil-index",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 2
+    },
+    {
+     "sessionSource": "perplexity.ai",
+     "landingPage": "/pokemon-30th-anniversary-2026",
+     "sessions": 1,
+     "engagedSessions": 1,
+     "keyEvents": 1
+    }
+   ],
+   "rowCount": 25
   },
   "totals28": {
    "rows": [
     {
-     "sessions": 2094,
-     "activeUsers": 2021,
-     "keyEvents": 142,
-     "sessionKeyEventRate": 0.03629417382999045,
-     "engagementRate": 0.12368672397325692
+     "sessions": 2067,
+     "activeUsers": 2000,
+     "keyEvents": 146,
+     "sessionKeyEventRate": 0.03773584905660377,
+     "engagementRate": 0.12481857764876633
     }
    ],
    "rowCount": 1
@@ -14787,11 +15862,11 @@
   "totals7": {
    "rows": [
     {
-     "sessions": 269,
-     "activeUsers": 261,
-     "keyEvents": 25,
-     "sessionKeyEventRate": 0.055762081784386616,
-     "engagementRate": 0.21933085501858737
+     "sessions": 274,
+     "activeUsers": 268,
+     "keyEvents": 24,
+     "sessionKeyEventRate": 0.051094890510948905,
+     "engagementRate": 0.2116788321167883
     }
    ],
    "rowCount": 1
