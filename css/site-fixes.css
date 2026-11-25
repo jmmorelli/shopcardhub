@@ -906,3 +906,10 @@ body .mobile-nav.open { visibility: visible; transition: opacity .2s ease, trans
 /* Site Sweep Nov 17 (U6, WCAG 2.2 target size): the Deal pages' set-index links. History: git log. */
 body a.sp-more, body a.gg-more { padding-block: 10px; margin-block: -10px; }
 body a.gg-more { margin-top: -6px; }
+
+/* ===== §CAPTURE-PAUSED — Mo, in chat, 2026-11-25: "hide the boxes until the tape is back or we come up with a better idea."
+   The Tuesday Tape is paused (Mo, Nov 17), so every email capture and every "Tuesday Tape" link is hidden site-wide.
+   To bring them back: delete this block, set PAUSED = false in js/signup.js, and restore data/newsletter.json pages. ===== */
+.sch-signup, #tapecap, .sig-alerts, [data-schsub], section.h2-tape,
+div:has(> #tr-signup), #tr-signup,
+a[href="/#newsletter"], a[href="/#tape"], a[href="#newsletter"], a[href="#tape"] { display: none !important; }

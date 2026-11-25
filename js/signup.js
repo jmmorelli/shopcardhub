@@ -13,6 +13,10 @@
  * Remembers a successful signup per browser (sch_subscribed) and shows a quiet "you're on it" line
  * instead of the form on later visits. Never writes anything else. */
 (function () {
+  // Mo, 2026-11-25: captures hidden until the Tuesday Tape is back (it is paused since Nov 17). Nothing renders and no
+  // signup_view fires while PAUSED. css/site-fixes.css §CAPTURE-PAUSED hides the static captures and Tape links.
+  var PAUSED = true;
+  if (PAUSED) return;
   var els = document.querySelectorAll('.sch-signup[data-signup]');
   if (!els.length) return;
   // Night Crew, Sep 30 2026: label and button 10-10.5px -> 11px (site text floor), input and button 40px tall
