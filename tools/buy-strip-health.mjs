@@ -50,7 +50,7 @@ const NBOX = /\b\d{1,2}\s?(box|boxes|etb|etbs|pack lot)\b/;
 // Football boxes priced $199.99-$205 against a Flagship low of $199.95. The page was one sold
 // listing away from printing a Heritage price under a Flagship label, and nothing would have
 // said so. Same gap #32's `must` closed for case links.
-const LINES = ["heritage", "chrome", "sapphire", "black", "cosmic", "inception", "finest", "bowman",
+const LINES = ["heritage", "chrome", "sapphire", "black", "cosmic", "inception", "finest", "pro debut", "bowman",
   "definitive", "museum", "pristine", "tribute", "tier one", "stadium club", "gallery", "allen",
   "update series", "series 1", "series 2", "cactus jack", "big league", "archives", "gypsy",
   "flagship"];
