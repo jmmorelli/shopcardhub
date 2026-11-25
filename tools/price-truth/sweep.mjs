@@ -264,7 +264,8 @@ for (const [tk, T] of Object.entries(TCG)) {
     const c = (BYID.get(cid) || {}).c; if (!c || c.raw == null || !(x.m > 0) || c.raw < 20) continue;
     // GREEN when TCGplayer's own cheapest listing backs its market (m <= 1.5x lo): the shop is dearer, not wrong (TU19 #170, Nov 11:
     // market $4,619.79, cheapest listing $3,799.99, eBay sold $2,254.59 — no chip prints at |d| > 60%)
-    const r = x.m / c.raw; if (r > 2 || r < 0.5) add(6, x.lo > 0 && x.m <= 1.5 * x.lo ? G : A, cid, `${tk.toUpperCase()} ${c.name} #${c.num}: raw $${c.raw} vs TCGplayer $${x.m} (${r.toFixed(2)}x${x.lo ? ", cheapest listing $" + x.lo : ""})`);
+    // ptHold (Nov 25 2026): a raw mark on a Price Truth hold prints no number anywhere; GREEN with its expiry, never hidden.
+    const r = x.m / c.raw; if (r > 2 || r < 0.5) add(6, c.ptHold || (x.lo > 0 && x.m <= 1.5 * x.lo) ? G : A, cid, `${tk.toUpperCase()} ${c.name} #${c.num}: raw $${c.raw} vs TCGplayer $${x.m} (${r.toFixed(2)}x${x.lo ? ", cheapest listing $" + x.lo : ""})${c.ptHold ? ` — raw held (ptHold) until ${c.ptHold.until}` : ""}`);
   }
 }
 for (const [tk, C] of Object.entries(CARDS)) {
@@ -274,7 +275,7 @@ for (const [tk, C] of Object.entries(CARDS)) {
     // PC6_SKIP (Price Truth Nov 14 2026): a row a verifier already rejected keeps printing GREEN until its expiry date, so it
     // stops re-logging as AMBER every day but can never hide for good. Add only with the verifier's evidence.
     const sk = PC6_SKIP[c.id], skip = sk && (IDX.updated || "") <= sk.until;
-    const r = c.raw / pc; if (r > 2 || r < 0.5) add(6, skip ? G : A, c.id, `${tk.toUpperCase()} ${c.name} #${c.num}: raw $${c.raw} vs PriceCharting monthly $${pc} (${r.toFixed(2)}x)${skip ? ` — verifier-rejected until ${sk.until}: ${sk.why}` : ""}`, { page: C.page });
+    const r = c.raw / pc; if (r > 2 || r < 0.5) add(6, skip || c.ptHold ? G : A, c.id, `${tk.toUpperCase()} ${c.name} #${c.num}: raw $${c.raw} vs PriceCharting monthly $${pc} (${r.toFixed(2)}x)${skip ? ` — verifier-rejected until ${sk.until}: ${sk.why}` : c.ptHold ? ` — raw held (ptHold) until ${c.ptHold.until}` : ""}`, { page: C.page });
   }
 }
 

@@ -240,16 +240,19 @@ for (const tk of STATIC_TICKERS) {
     if (slugsSeen.has(slug)) throw new Error(`slug collision: card-${slug} for ${slugsSeen.get(slug)} and ${c.id}`);
     slugsSeen.set(slug, c.id);
     // Same basis wording as js/card-page.js render() (chase: PriceCharting's ungraded value; sector: median of n raw sales).
-    const basis = c.raw == null ? (c.nv ? `No verified sale yet: ${c.wn || 0} clean raw sales in ${c.win || 90} days (3 needed)` : "Too few raw sales to mark.") : d.kind === "chase" ? `PriceCharting’s ungraded value, read ${md(c.rawAsOf)}` : `Median of ${c.wn != null ? c.wn : c.n30} raw sales${c.lo != null && c.hi != null ? ` (middle half ${money(c.lo)}–${money(c.hi)})` : ""}, ${c.win || d.window || 30} days · marked ${md(c.rawAsOf)}`;
+    // Price Truth hold (Nov 25 2026, tools/lib/pt-holds.mjs): a ptHold card bakes no raw number (stub, meta description),
+    // same wording as js/card-page.js. The gate above still reads c.raw, so robots never flip on a hold.
+    const rawShown = c.ptHold ? null : c.raw;
+    const basis = c.ptHold ? "mark being re-read: the latest raw sales on file may include a different printing or condition" : c.raw == null ? (c.nv ? `No verified sale yet: ${c.wn || 0} clean raw sales in ${c.win || 90} days (3 needed)` : "Too few raw sales to mark.") : d.kind === "chase" ? `PriceCharting’s ungraded value, read ${md(c.rawAsOf)}` : `Median of ${c.wn != null ? c.wn : c.n30} raw sales${c.lo != null && c.hi != null ? ` (middle half ${money(c.lo)}–${money(c.hi)})` : ""}, ${c.win || d.window || 30} days · marked ${md(c.rawAsOf)}`;
     const nm = `${c.name} #${c.num}`;
     // P4 (motion seat Nov 16): the stub's photo box, where the render's .cdp-photo lands, carries view-transition-name card-photo
     // (css/site-fixes.css §0e); js/card-page.js keeps this node through the render. Its own line BEFORE #cdp-load: stubRawLink()
     // reads #cdp-load up to its first </div>, so the eBay link and the local-nav pill copy are untouched.
     const load = `  ${cardCrumbHtml(d, esc(nm))}
   <div class="cdp-photo cdp-stub" aria-hidden="true"><span class="sch-cimg"></span></div>
-  <div class="cdp-miss" id="cdp-load"><h1>${esc(nm)}</h1><p class="cdp-set"><a href="${esc(d.page)}">${esc(setShort)}</a> · #${esc(c.num)}${c.rarity ? " · " + esc(c.rarity) : ""}</p><p>Raw ${c.raw != null ? `<b>${money(c.raw)}</b> · ` : ""}${esc(basis)}. Loading PSA 9, PSA 10 and TAG 10 sales…</p><p><a href="${esc(ebaySearchUrl({ q: `${c.q || nm} ${rawNot(d.ticker)}${edNot(d)}${RAW_EXTRA[d.ticker] || ""}`, customid: "card-" + c.id, sacat: SACAT_TCG, av: c.raw >= 200 }))}" target="_blank" rel="sponsored nofollow noopener">Raw copies on eBay →</a></p></div>
+  <div class="cdp-miss" id="cdp-load"><h1>${esc(nm)}</h1><p class="cdp-set"><a href="${esc(d.page)}">${esc(setShort)}</a> · #${esc(c.num)}${c.rarity ? " · " + esc(c.rarity) : ""}</p><p>Raw ${rawShown != null ? `<b>${money(rawShown)}</b> · ` : ""}${esc(basis)}. Loading PSA 9, PSA 10 and TAG 10 sales…</p><p><a href="${esc(ebaySearchUrl({ q: `${c.q || nm} ${rawNot(d.ticker)}${edNot(d)}${RAW_EXTRA[d.ticker] || ""}`, customid: "card-" + c.id, sacat: SACAT_TCG, av: c.raw >= 200 }))}" target="_blank" rel="sponsored nofollow noopener">Raw copies on eBay →</a></p></div>
 `;
-    const desc = `${nm} ${setShort} price${c.raw != null ? `: raw ${money(c.raw)} (${d.kind === "chase" ? "PriceCharting ungraded" : "median of raw sales"}, ${md(c.rawAsOf)})` : ""}, beside dated PSA 9, PSA 10 and TAG 10 sales and an eBay link for each grade.`;
+    const desc = `${nm} ${setShort} price${rawShown != null ? `: raw ${money(rawShown)} (${d.kind === "chase" ? "PriceCharting ungraded" : "median of raw sales"}, ${md(c.rawAsOf)})` : ""}, beside dated PSA 9, PSA 10 and TAG 10 sales and an eBay link for each grade.`;
     JOBS.push({ tk, d, c, slug, file, o: {
       title: `${esc(nm)} ${esc(setShort)} Price — Raw, PSA 9, PSA 10, TAG | ShopCardHub`, desc: esc(desc),
       robots: indexable ? "index,follow" : "noindex,follow", path: `/card-${slug}`, ogTitle: `${esc(nm)} ${esc(setShort)} — Raw vs PSA 9 vs PSA 10`,

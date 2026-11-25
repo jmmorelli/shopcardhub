@@ -444,7 +444,7 @@ const EX_AT = 0.25;   // a sector ticker whose top weighted card is at or above 
 // titles that are not one ungraded single of this card (read in memory only — never stored)
 // Price Truth Nov 24 2026: European-language copies excluded like Japanese/Korean (BS1E Mewtwo #10 Nov 23 median $400 carried a
 // German and a French copy; without them ~$750 vs PriceCharting ~$821).
-const TITLE_BAD = /\b(lot|lots|bundle|x\s?\d+|\d+\s*(cards?|pcs?|pack)|set of|complete set|master set|playset|proxy|custom|sealed|booster|etb|elite trainer|box|tin|japanese|japan|korean|chinese|jpn|kor|german|deutsch|french|fran[cç]ais|italian|italiano|spanish|espa[nñ]ol|portuguese|portugu[eê]s|dutch|nederlands|polish|polski|psa|cgc|bgs|sgc|tag\s*\d|graded|slab|reverse holo|rev holo|cosmos|stamp)\b/i;
+const TITLE_BAD = /\b(lot|lots|bundle|x\s?\d+|\d+\s*(cards?|pcs?|pack)|set of|complete set|master set|playset|proxy|custom|sealed|booster|etb|elite trainer|box|tin|japanese|japan|korean|chinese|jpn|kor|german|deutsch|french|fran[cç]ais|italian|italiano|spanish|espa[nñ]ol|portuguese|portugu[eê]s|dutch|nederlands|polish|polski|indonesian|indonesia|thai|psa|cgc|bgs|sgc|tag\s*\d|graded|slab|reverse holo|rev holo|cosmos|stamp)\b/i;
 
 function cfg() { const c = CONFIG[TICKER]; if (!c) { console.error(`no config for ticker ${TICKER}`); process.exit(2); } return c; }
 async function get(url) {
