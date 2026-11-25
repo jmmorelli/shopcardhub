@@ -6970,6 +6970,17 @@
           "gates": "audit-prices FAIL 0 / WARN 63 (base 66) · audit-site FAIL 0 / WARN 3 (831 pages) · audit-terminal FAIL 0 / WARN 1 (= base) · price-truth sweep RED 0 / AMBER 28 / GREEN 48",
           "liveVerified": "2026-11-25 curl after 90 s: /card-latias-latios-gx-170-team-up 'mark being re-read' = 1, '$1,498' = 0 · /team-up-index #170 'being re-read', '$1,498' = 0 · home tu19-170 = 0 · /data/price-truth/raw-holds.json carries tu19-170 · /data/card-search.json tu19-170 raw null",
           "note": "Hold tu19-170 until 2026-12-09 (level unchanged; verifier confirmed: PriceCharting ungraded $2,316.47, cheapest TCGplayer listing $2,399.99). Guard gap closed: ptHold cards bake no raw in static shells or nav search. Root cause (part): Indonesian/Thai titles out of TITLE_BAD from the Nov 26 mark. Rollback: git revert f1d21dc."
+        },
+        {
+          "date": "2026-11-25",
+          "commits": [
+            "38ad7ad",
+            "dfa135a"
+          ],
+          "by": "Ship Desk (scheduled, cloud, LANE-RULES R48) — mailbox pending-capture.patch.txt (CoS, Mo in chat; CoS cloud push had been refused)",
+          "gates": "audit-prices FAIL 0 / WARN 63 · audit-site FAIL 0 / WARN 3 (831 pages) · audit-terminal FAIL 0 / WARN 1 · price-truth sweep RED 0 (all = base). Tree after am = 3ac10011 (as stated).",
+          "liveVerified": "2026-11-25 curl after 90 s: site-fixes.css CAPTURE-PAUSED = 1, signup.js 'PAUSED = true' = 1 · Playwright --deep 390+1440 (GA + eBay aborted) on /, /track-record, /watchlist + 4 capture-bearing guides: 200, no overflow, 0 console errors, 0 visible captures / Tape links",
+          "note": "Every email capture, Signal Alerts box, home Tape tile, /track-record form and Tuesday Tape link hidden site-wide until the Tape is back (Mo). Patch read via project_read (inline; no /mnt/project) and verified byte-exact: 6,103 B, sha256 d638a299…edb3. Rollback: git revert 38ad7ad."
         }
       ]
     },
