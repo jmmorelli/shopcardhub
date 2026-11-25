@@ -17,6 +17,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { requireSealedTitleRule } from './lib/sealed-title-rule.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -24,6 +25,7 @@ const SLUG = args.includes('--page') ? args[args.indexOf('--page') + 1] : null;
 const DRY = args.includes('--dry');
 if (!SLUG || !/^[a-z0-9-]+$/.test(SLUG)) { console.error('usage: node tools/build-vs-sold.mjs --page <slug> [--dry]'); process.exit(2); }
 const cfg = JSON.parse(fs.readFileSync(path.join(REPO, 'data/vs', SLUG + '.json'), 'utf8'));
+requireSealedTitleRule(cfg, 'data/vs/' + SLUG + '.json', 'set'); // O-67
 const PAGE = path.join(REPO, SLUG + '.html');
 const EPN = 'LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001';
 

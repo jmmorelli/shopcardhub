@@ -54,6 +54,8 @@ const PAGE_EVENTS7 = ["click", "buystrip_click", "buybox_click", "newsletter_sig
 // Outbound-click events (affiliate or shop) — what cardPageClicks7 counts. Exposure/signup events are excluded.
 const OUTBOUND_EVENTS = new Set(["click", "buystrip_click", "buybox_click", "chase_click", "grade_click", "shop_click", "fanatics_click", "search_miss_click"]);
 const CARD_PATH = /^\/card(?:$|[?\/.-])/;
+// O-66: session sources that are AI assistants (ChatGPT, Perplexity, Claude, Gemini, Copilot, …). A source string, not a channel.
+const AI_SOURCE_RE = "chatgpt|openai|perplexity|claude|anthropic|gemini|bard|copilot|deepseek|grok|meta\\.ai|you\\.com|phind|mistral";
 
 // The reports. Names are the GA4 Data API's own (metrics/dimensions), not the UI labels.
 const REPORTS = {
@@ -112,6 +114,14 @@ const REPORTS = {
   pages7: { dateRanges: RANGES.d7, dimensions: d("pagePath"), metrics: m("screenPageViews", "activeUsers", "userEngagementDuration", "keyEvents"), orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }], limit: 150 },
   pagesReturning28: { dateRanges: RANGES.d28, dimensions: d("pagePath", "newVsReturning"), metrics: m("screenPageViews", "activeUsers", "keyEvents"), limit: 1000 },
   landingReturning28: { dateRanges: RANGES.d28, dimensions: d("landingPage", "newVsReturning"), metrics: m("sessions", "keyEvents"), limit: 1000 },
+  // O-66 (CoS, Nov 2026; Night Crew Nov 25) — three reads so Black Friday week can be graded per page. All optional.
+  // ebayClicksByLanding7/28: outbound-click events (OUTBOUND_EVENTS) by the page the SESSION started on, so a click two
+  // pages deep is credited to the landing page that brought the visitor. aiLanding28: sessions from AI assistants by
+  // landing page (source matched below; GA4 has no AI channel group of its own). buystrip_click by page needs no new
+  // report: pageClicks7/28 already carry pagePath × eventName; derive() lifts it into summary.o66.buystripByPage7/28.
+  ebayClicksByLanding7: { dateRanges: RANGES.d7, dimensions: d("landingPage", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: [...OUTBOUND_EVENTS] } } }, orderBys: [{ metric: { metricName: "eventCount" }, desc: true }], limit: 1000 },
+  ebayClicksByLanding28: { dateRanges: RANGES.d28, dimensions: d("landingPage", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: [...OUTBOUND_EVENTS] } } }, orderBys: [{ metric: { metricName: "eventCount" }, desc: true }], limit: 2000 },
+  aiLanding28: { dateRanges: RANGES.d28, dimensions: d("sessionSource", "landingPage"), metrics: m("sessions", "engagedSessions", "keyEvents"), dimensionFilter: { filter: { fieldName: "sessionSource", stringFilter: { matchType: "PARTIAL_REGEXP", value: AI_SOURCE_RE, caseSensitive: false } } }, orderBys: [{ metric: { metricName: "sessions" }, desc: true }], limit: 1000 },
   // No dimension → one totals row. sessionKeyEventRate here is GA4's own "sessions with a key event ÷ sessions",
   // which is what the UI's Traffic-acquisition total shows (5.59% on 2026-09-18), not key events ÷ sessions.
   totals28: { dateRanges: RANGES.d28, metrics: m("sessions", "activeUsers", "keyEvents", "sessionKeyEventRate", "engagementRate"), limit: 1 },
@@ -252,6 +262,35 @@ function derive(rep) {
     activeUsers7: (rep.totals7.rows[0] || {}).activeUsers ?? null, activeUsers28: (rep.totals28.rows[0] || {}).activeUsers ?? null,
     returningUsers7: rep.returning7.rows.length ? (ret7.activeUsers || 0) : null,
     ...cardRead(rep),
+    o66: o66Read(rep),
+  };
+}
+
+// O-66 (Night Crew Nov 25 2026): per-page reads for grading Black Friday week. Each part is null when its source report is
+// missing (optional reports), so a gap never reads as a zero. Lists are sorted high to low and cut at 40.
+function o66Read(rep) {
+  const top = (map) => [...map.entries()].sort((a, b) => b[1] - a[1]).slice(0, 40).map(([page, n]) => ({ page, n }));
+  const byPage = (rows, field, keep) => { if (!rows) return null; const mp = new Map(); for (const r of rows) { if (!keep(r)) continue; const k = String(r[field] || "(not set)"); mp.set(k, (mp.get(k) || 0) + (r.eventCount || 0)); } return top(mp); };
+  const isBs = (r) => r.eventName === "buystrip_click", isOut = (r) => OUTBOUND_EVENTS.has(r.eventName);
+  const ai = rep.aiLanding28 && rep.aiLanding28.rows;
+  let aiRead = null;
+  if (ai) {
+    const src = new Map(), land = new Map(); let sessions = 0, keyEvents = 0;
+    for (const r of ai) {
+      const s = r.sessions || 0; sessions += s; keyEvents += r.keyEvents || 0;
+      const k = String(r.sessionSource || "(not set)").toLowerCase(); src.set(k, (src.get(k) || 0) + s);
+      const l = land.get(r.landingPage) || { page: r.landingPage, sessions: 0, engagedSessions: 0, keyEvents: 0, sources: {} };
+      l.sessions += s; l.engagedSessions += r.engagedSessions || 0; l.keyEvents += r.keyEvents || 0; l.sources[k] = (l.sources[k] || 0) + s; land.set(r.landingPage, l);
+    }
+    aiRead = { sessions28: sessions, keyEvents28: keyEvents, bySource28: top(src).map((x) => ({ source: x.page, sessions: x.n })), byLanding28: [...land.values()].sort((a, b) => b.sessions - a.sessions).slice(0, 40) };
+  }
+  return {
+    buystripByPage7: byPage(rep.pageClicks7 && rep.pageClicks7.rows, "pagePath", isBs),
+    buystripByPage28: byPage(rep.pageClicks28 && rep.pageClicks28.rows, "pagePath", isBs),
+    ebayClicksByLanding7: byPage(rep.ebayClicksByLanding7 && rep.ebayClicksByLanding7.rows, "landingPage", isOut),
+    ebayClicksByLanding28: byPage(rep.ebayClicksByLanding28 && rep.ebayClicksByLanding28.rows, "landingPage", isOut),
+    aiByLanding: aiRead,
+    rule: "outbound = OUTBOUND_EVENTS; by landing = the page the session started on; AI = sessionSource matching AI_SOURCE_RE (28d); raw counts, no bot filter (apply summary.bots when reading)",
   };
 }
 
@@ -303,7 +342,7 @@ async function main() {
   const rep = {};
   // The two distribution reports (added 2026-09-29) are optional: if GA4 rejects one, the snapshot still ships.
   // The Oct 21 2026 instrument reports are optional too: a rejected new report must never cost the nightly file.
-  const OPTIONAL = new Set(["leagueCampaignDaily28", "referralDaily28", "pageClicks7", "cardClicks7", "pageCountry7", "landingCountry7", "instruments7"]);
+  const OPTIONAL = new Set(["leagueCampaignDaily28", "referralDaily28", "pageClicks7", "cardClicks7", "pageCountry7", "landingCountry7", "instruments7", "ebayClicksByLanding7", "ebayClicksByLanding28", "aiLanding28"]);
   for (const [name, body] of Object.entries(REPORTS)) {
     if (!OPTIONAL.has(name)) { rep[name] = await runReport(token, body); continue; }
     try { rep[name] = await runReport(token, body); } catch (e) { console.error(`optional report ${name} skipped: ${String(e.message || e).slice(0, 200)}`); }
@@ -342,7 +381,10 @@ async function main() {
   let hist = { _comment: "One row per day (the 'day' the windows end on): the summary block of that night's ga4-latest.json. Trailing-median material for the Integrity Watch.", rows: [] };
   if (fs.existsSync(histPath)) { try { hist = JSON.parse(fs.readFileSync(histPath, "utf8")); } catch { /* start over */ } }
   hist.rows = (hist.rows || []).filter((r) => r.day !== day);
-  hist.rows.push({ day, generatedAt, ...summary });
+  // O-66 lists are cut to the top 10 in history (the full top 40 lives in ga4-latest.json) so the 400-night file stays small.
+  const cut = (a) => (Array.isArray(a) ? a.slice(0, 10) : a);
+  const o66h = summary.o66 ? { ...summary.o66, buystripByPage7: cut(summary.o66.buystripByPage7), buystripByPage28: cut(summary.o66.buystripByPage28), ebayClicksByLanding7: cut(summary.o66.ebayClicksByLanding7), ebayClicksByLanding28: cut(summary.o66.ebayClicksByLanding28), aiByLanding: summary.o66.aiByLanding ? { ...summary.o66.aiByLanding, byLanding28: cut(summary.o66.aiByLanding.byLanding28) } : null } : null;
+  hist.rows.push({ day, generatedAt, ...summary, o66: o66h });
   hist.rows.sort((a, b) => a.day.localeCompare(b.day));
   hist.rows = hist.rows.slice(-400);
   fs.writeFileSync(histPath, JSON.stringify(hist, null, 1) + "\n");

@@ -15,10 +15,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { requireSealedTitleRule } from './lib/sealed-title-rule.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DRY = process.argv.includes('--dry');
 const cfg = JSON.parse(fs.readFileSync(path.join(REPO, 'data/stocking-stuffers.json'), 'utf8'));
+requireSealedTitleRule(cfg, 'data/stocking-stuffers.json', 'set'); // O-67
 const PAGE = path.join(REPO, cfg.slug + '.html');
 const EPN = 'LH_BIN=1&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339155990&toolid=10001';
 

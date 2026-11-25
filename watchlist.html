@@ -1759,12 +1759,13 @@ async function load() {
       if (mirror && !mirror.slim) { mergeMirror(state, mirror); }          // pre-IDB full copy lying around
       else if (mirror && mirror.slim) { if (mergeMirror(state, mirror)) toast('Added the cards you tracked from other pages'); }
       if (mirror && mirror.demo === false && state.demo) state.demo = false;
+      if (state.demo) { seedDemo(); return; }   // WL-155 (Night Crew Nov 25): a stored demo may carry engine prices from before the fix; demo is always re-seeded clean
       save();
       return;
     }
   } catch (e) { idbOK = false; }
   // first run on IndexedDB (or no IndexedDB): take whatever localStorage has
-  if (mirror && Array.isArray(mirror.cards)) {
+  if (mirror && Array.isArray(mirror.cards) && !mirror.demo) {
     state = mirror;
     if (mirror.slim) toast('Heads up: this vault was restored from a slim backup — older price history may be missing');
     save();
@@ -3536,7 +3537,7 @@ function linkSold(c, fe) {
   c.feedKey = fe.key; c.feedAuto = 1; c.feedSold = 1;
 }
 function linkSoldExact() {
-  if (!SOLD) return;
+  if (!SOLD || state.demo) return;   // WL-155: demo cards never take live prices (a real $155 appended to a made-up $788 read as -80% and a false buy zone)
   const linked = [];
   state.cards.forEach(c => {
     if (c.feedOptOut) return;
@@ -3552,6 +3553,7 @@ function linkSoldExact() {
   }
 }
 function autoLinkFeeds() {
+  if (state.demo) return;   // WL-155: demo cards stay demo
   const linked = [];
   state.cards.forEach(c => {
     if (c.feedKey || c.feedOptOut) return;
@@ -3569,6 +3571,7 @@ function autoLinkFeeds() {
   }
 }
 function feedSync() {
+  if (state.demo) return;   // WL-155
   let changed = false;
   state.cards.forEach(c => {
     const fe = c.feedKey && FEED ? FEED.byKey[c.feedKey] : null;
@@ -3993,7 +3996,7 @@ function warnsFor(m, hunting) {
     if (r.gated && (r.raw === 'BUY' || r.raw === 'SELL')) push('gate:' + r.c.id, 'gold', nm + ': raw signal ' + r.raw + ' but withheld — ' + esc(r.gate || 'thin sample') + '.', 'How gating works »', '/how-prices-work');
     if (r.kurt != null && r.kurt > 10 && r.nret >= 8) push('kurt:' + r.c.id, 'cyan', nm + ': 30D return kurtosis ' + fmt$(r.kurt, 1) + ', skew ' + fmt$(r.skew, 1) + ' — one jump day carries the whole move; σ otherwise ' + fmt$(r.sd, 1) + '%/day. Treat the ROC as one print, not a trend.', 'See distribution »', '#pfTape');
   });
-  else state.cards.filter(c => c.status === 'watch').forEach(c => { const lp = last(c); if (c.target != null && lp != null && lp <= c.target) push('zone:' + c.id, 'cyan', '<b>' + esc(c.name) + '</b> is in your buy zone — last $' + fmt$(lp, 0) + ' vs target $' + fmt$(c.target, 0) + '.', 'Live listings »', ebayUrl(c, false)); });
+  else if (!state.demo) state.cards.filter(c => c.status === 'watch').forEach(c => { const lp = last(c); if (c.target != null && lp != null && lp <= c.target) push('zone:' + c.id, 'cyan', '<b>' + esc(c.name) + '</b> is in your buy zone — last $' + fmt$(lp, 0) + ' vs target $' + fmt$(c.target, 0) + '.', 'Live listings »', ebayUrl(c, false)); });
   return w.slice(0, 4);
 }
 function pctN(v, dp) { return v == null || !isFinite(v) ? '—' : (v > 0 ? '+' : '') + Number(v).toFixed(dp == null ? 1 : dp) + '%'; }

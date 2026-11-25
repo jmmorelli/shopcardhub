@@ -17,6 +17,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { requireSealedTitleRule } from "./lib/sealed-title-rule.mjs";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DRY = process.argv.includes("--dry");
@@ -24,6 +25,7 @@ const PRINT = process.argv.includes("--print");
 const PAGE = "best-hobby-boxes-2026.html";
 const read = (f) => fs.readFileSync(path.join(REPO, f), "utf8");
 const boxes = JSON.parse(read("data/boxes.json"));
+requireSealedTitleRule(boxes, "data/boxes.json", "sport"); // O-67: sold reads must say the title named the product and the sport
 const indices = JSON.parse(read("data/indices.json"));
 const MIN_N = 20; // stats print only on 20+ priced cards (spec §3B)
 const PHONE_ROWS = 6;

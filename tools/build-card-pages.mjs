@@ -253,7 +253,10 @@ const CLIENT_JS = `
     var sig = $('cp-sig'); var s = String(c.signal||'HOLD').toUpperCase(); var gated = !!c.gated || (c.signalRaw && c.signalRaw !== c.signal);
     sig.className = 'cp-sig ' + s.toLowerCase();
     sig.innerHTML = '<span>engine \\u00b7 ' + esc(s) + '</span>' + (C.hold ? '<span style="opacity:.7">\\u00b7 mark held</span>' : gated ? '<span style="opacity:.7">\\u00b7 gated, thin sample</span>' : '');
-    var why = (c.reasons||[])[0]; if (why) $('cp-why').textContent = why + (c.confidence!=null ? ' \\u00b7 confidence ' + Math.round(c.confidence*100) + '%' : '');
+    var why = (c.reasons||[])[0];
+    /* HOLD-TXT (Night Crew Nov 25, O-88): the engine's hold reason names an internal desk and a re-mark date. Readers get plain words; display only. */
+    if (C.hold || /^held by /i.test(String(why||''))) $('cp-why').textContent = 'Price paused while we re-check the sales behind it. Some listings we counted were a different card.';
+    else if (why) $('cp-why').textContent = why + (c.confidence!=null ? ' \\u00b7 confidence ' + Math.round(c.confidence*100) + '%' : '');
     if (c.image && c.image.url) { var im = $('cp-img'); if (im && im.tagName==='IMG') im.src = c.image.url;
       var ph = $('cp-photo'); if (ph && c.image.item) ph.href = c.image.item.replace(/customid=[^&]*/, 'customid=card-' + C.id); }
   }).catch(function(){});
