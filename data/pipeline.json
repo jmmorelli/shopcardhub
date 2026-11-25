@@ -6960,6 +6960,16 @@
           "gates": "audit-prices FAIL 0 / WARN 63 (= pending base) · audit-site FAIL 0 / WARN 3 (831 pages) · audit-terminal --feed FAIL 0 / WARN 1 (= base) · price-truth sweep RED 0 / AMBER 30 / GREEN 46",
           "liveVerified": "2026-11-25 curl after 90 s: /watchlist photoKey + DEMO_PHOTO with ebay:umbreon-ex-sir-pe = 1; /topps-chrome-baseball-2026 bs-go href contains -debut; /pokemon-delta-reign-2026 'next read Nov 24' = 0; /delta-reign-index 'next read there' = 0. Deep sweep 390+1440 (GA + eBay + /api/comps aborted) on /watchlist, /topps-chrome-baseball-2026, /pokemon-delta-reign-2026: all 200, scrollWidth = viewport, 0 console errors, /watchlist photos 3/3 (before 1/3)",
           "note": "Patch sha256 f6af33a7 (178,454 B) matched; bytes lifted from this session's transcript of project_read, never re-typed; git am -3 clean on 72558053, tree bbf86fd6 = pending.md. Rollback: git revert e1b9b5c d17d2ff c542fc1 5dde476 (docs 55b3f32 can stay)."
+        },
+        {
+          "date": "2026-11-25",
+          "commits": [
+            "f1d21dc"
+          ],
+          "by": "Price Truth Desk (charter step 4) — scheduled, cloud, LANE-RULES R48",
+          "gates": "audit-prices FAIL 0 / WARN 63 (base 66) · audit-site FAIL 0 / WARN 3 (831 pages) · audit-terminal FAIL 0 / WARN 1 (= base) · price-truth sweep RED 0 / AMBER 28 / GREEN 48",
+          "liveVerified": "2026-11-25 curl after 90 s: /card-latias-latios-gx-170-team-up 'mark being re-read' = 1, '$1,498' = 0 · /team-up-index #170 'being re-read', '$1,498' = 0 · home tu19-170 = 0 · /data/price-truth/raw-holds.json carries tu19-170 · /data/card-search.json tu19-170 raw null",
+          "note": "Hold tu19-170 until 2026-12-09 (level unchanged; verifier confirmed: PriceCharting ungraded $2,316.47, cheapest TCGplayer listing $2,399.99). Guard gap closed: ptHold cards bake no raw in static shells or nav search. Root cause (part): Indonesian/Thai titles out of TITLE_BAD from the Nov 26 mark. Rollback: git revert f1d21dc."
         }
       ]
     },
