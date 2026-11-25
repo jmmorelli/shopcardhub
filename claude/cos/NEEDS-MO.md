@@ -11,6 +11,12 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-25 — Mo in chat, after the weekly. Answered; the list is updated
+
+- **Signup boxes: CLOSED. Mo picked (b), hide.** Every email capture, the Signal Alerts box, the home Tape tile, the /track-record form and every "Tuesday Tape" link are now hidden site-wide (commit "Hide every email capture…", in the Ship Desk mailbox). They come back when the Tape comes back or a better idea replaces it. The per-page price alert planned for Dec 1 does not go up without Mo's word.
+- **TAG: not Mo's, it's TAG's.** Gmail shows TAG Grading's affiliate program replied on **Sep 26: "your affiliate account is being reviewed"**. Nothing since, so there is no TAG dashboard to fill in yet. The "payment info" email was from **impact.com (Fanatics), Nov 6: "Issue Preventing Payment — please update your account information"**, account 7388044. That one is Mo's: payment details on impact.com, ~5 min. The CoS drafts a TAG follow-up email for Mo to send if he wants one; nothing is sent without his OK.
+- **GitHub push refusal:** explained to Mo in chat. The fix is Mo's (one new chat with the repo attached). See the weekly block below.
+
 ## 2026-11-25 — weekly (Wed 11:00 PT, unattended). One thing needs you, and three are still open
 
 - **The signup boxes still promise the Tuesday email you paused.** It now appears on 117 pages. Signups are 0 this week, and only 1 person outside has signed up. In your next CoS chat, pick **(a)** reword the box to a promise we keep, or **(b)** hide the boxes until the Tape is back. This has been open since Nov 18. The price alert planned for Dec 1 only replaces the box if one of those two happens.
