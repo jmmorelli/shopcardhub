@@ -1,8 +1,8 @@
 {
- "_comment": "Picks for /pokemon-card-gift-guide-2026 (BET-20261030-2, Deal Hunter, Goal League S1). Every price is our dated SOLD mark: completed eBay sales as listed by PriceCharting (sportscardspro.com for Bowman), read with tools/price-engine/sold-marks.mjs rules (30-day median of >= 3 sales). Nov 12 PT re-mark: sealed rows from the same read as data/sealed-prices.json (2026-11-13 UTC, eBay rows only, title rules there). Graded rows re-read 2026-11-13 UTC from the PSA 10 and TAG 10 sales tabs (eBay rows whose own title names the grade and the card number; PSA 10 30-day median; TAG 10 30-day median of >= 3, else 90-day median of >= 2, else null). Raw Bowman: data/feed/sold-marks.json day 2026-11-12. Pokémon Center ETB picks (11 packs) added to the $250 and $100 bands from data/sealed-prices.json. eBay is a search link only, never a mark. Edit here, then run: node tools/build-gift-guide.mjs. Never hand-edit the GIFT block.",
+ "_comment": "Picks for /pokemon-card-gift-guide-2026 (BET-20261030-2, Deal Hunter, Goal League S1). Every price is our dated SOLD mark: completed eBay sales as listed by PriceCharting (sportscardspro.com for Bowman), read with tools/price-engine/sold-marks.mjs rules (30-day median of >= 3 sales). Nov 12 PT re-mark: sealed rows from the same read as data/sealed-prices.json (2026-11-13 UTC, eBay rows only, title rules there). Graded rows re-read 2026-11-13 UTC from the PSA 10 and TAG 10 sales tabs (eBay rows whose own title names the grade and the card number; PSA 10 30-day median; TAG 10 30-day median of >= 3, else 90-day median of >= 2, else null). Raw Bowman: data/feed/sold-marks.json day 2026-11-12. Pokémon Center ETB picks (11 packs) added to the $250 and $100 bands from data/sealed-prices.json. eBay is a search link only, never a mark. Edit here, then run: node tools/build-gift-guide.mjs. Never hand-edit the GIFT block. Nov 24 PT (BET-20261124-1, CEO Desk): ranked = the 'best-selling' list at the top of the page. Rows are sealed products we already mark (data/black-friday.json + the stocking-stuffer blisters/sleeved packs), eBay sales read 2026-11-24 PT with the black-friday.json title rules, n >= 3. Inside each price band (under $25, $25 to $100, $100 and up, by sold median) rows rank by sales per day = n / (days from first to last counted sale, inclusive), because the source shows only the most recent 30 sales, so a plain count tops out near 30 for anything that sells fast. Counted, never judged. Re-ranked on every re-mark (next Thu Nov 26, Sun Nov 29). Sealed picks in the budget bands re-read the same night.",
  "slug": "pokemon-card-gift-guide-2026",
  "read": {
-  "sealed": "2026-11-13",
+  "sealed": "2026-11-24",
   "raw": "2026-11-12",
   "graded": "2026-11-13"
  },
@@ -17,34 +17,34 @@
      "kind": "sealed",
      "name": "Destined Rivals Booster Box",
      "what": "36 booster packs, sealed",
-     "price": 368.0,
-     "n": 25,
+     "price": 354.5,
+     "n": 28,
      "basis": "30d",
-     "asOf": "2026-11-12",
+     "asOf": "2026-11-24",
      "path": "pokemon-destined-rivals/booster-box",
      "q": "pokemon destined rivals booster box -etb -bundle -tin -case -japanese -korean -thai -lot -single -half -mystery -empty -opened",
      "cat": "183456",
      "set": "Destined Rivals",
      "href": "/destined-rivals-index",
      "hrefLabel": "Destined Rivals index",
-     "from": "2026-11-07"
+     "from": "2026-11-15"
     },
     {
      "id": "pe-pc-etb",
      "kind": "sealed",
      "name": "Prismatic Evolutions Pokémon Center Elite Trainer Box",
      "what": "11 booster packs, sold only at Pokémon Center",
-     "price": 350.0,
-     "n": 19,
+     "price": 348.98,
+     "n": 22,
      "basis": "30d",
-     "asOf": "2026-11-11",
+     "asOf": "2026-11-24",
      "path": "pokemon-prismatic-evolutions/elite-trainer-box-pokemon-center",
      "q": "pokemon prismatic evolutions pokemon center elite trainer box -bundle -tin -case -japanese -thai -korean -chinese -lot -half -mystery -empty -opened -booster -psa -cgc",
      "cat": "183456",
      "set": "Prismatic Evolutions",
      "href": "/prismatic-evolutions-index",
      "hrefLabel": "Prismatic Evolutions index",
-     "from": "2026-11-05"
+     "from": "2026-11-12"
     },
     {
      "id": "pikachu-179-psa10",
@@ -72,17 +72,17 @@
      "kind": "sealed",
      "name": "Surging Sparks Booster Box",
      "what": "36 booster packs, sealed",
-     "price": 293.02,
-     "n": 24,
+     "price": 285.0,
+     "n": 25,
      "basis": "30d",
-     "asOf": "2026-11-10",
+     "asOf": "2026-11-23",
      "path": "pokemon-surging-sparks/booster-box",
      "q": "pokemon surging sparks booster box -etb -bundle -tin -case -japanese -korean -thai -lot -single -half -mystery -empty -opened",
      "cat": "183456",
      "set": "Surging Sparks",
      "href": "/surging-sparks-index",
      "hrefLabel": "Surging Sparks index",
-     "from": "2026-11-04"
+     "from": "2026-11-11"
     }
    ]
   },
@@ -91,23 +91,6 @@
    "label": "$100 to $249",
    "h2": "Pokémon card gifts around $100",
    "picks": [
-    {
-     "id": "dlr-pc-etb",
-     "kind": "sealed",
-     "name": "Delta Reign Pokémon Center Elite Trainer Box",
-     "what": "11 booster packs, sold only at Pokémon Center",
-     "price": 156.97,
-     "n": 26,
-     "basis": "30d",
-     "asOf": "2026-11-12",
-     "path": "pokemon-delta-reign/elite-trainer-box-pokemon-center",
-     "q": "pokemon delta reign pokemon center elite trainer box -bundle -tin -case -japanese -thai -korean -chinese -lot -half -mystery -empty -opened -booster -psa -cgc",
-     "cat": "183456",
-     "set": "Delta Reign",
-     "href": "/delta-reign-index",
-     "hrefLabel": "Delta Reign index",
-     "from": "2026-11-12"
-    },
     {
      "id": "umbreon-214-psa10",
      "kind": "graded",
@@ -130,34 +113,51 @@
      "kind": "sealed",
      "name": "Phantasmal Flames Elite Trainer Box",
      "what": "9 booster packs, sleeves, dice, promo",
-     "price": 140.0,
-     "n": 25,
+     "price": 132.25,
+     "n": 26,
      "basis": "30d",
-     "asOf": "2026-11-12",
+     "asOf": "2026-11-23",
      "path": "pokemon-phantasmal-flames/elite-trainer-box",
      "q": "pokemon phantasmal flames elite trainer box -bundle -tin -case -japanese -thai -korean -lot -half -mystery -empty -opened -booster -center -pokecenter",
      "cat": "183456",
      "set": "Phantasmal Flames",
      "href": "/phantasmal-flames-index",
      "hrefLabel": "Phantasmal Flames index",
-     "from": "2026-11-07"
+     "from": "2026-11-15"
+    },
+    {
+     "id": "dlr-pc-etb",
+     "kind": "sealed",
+     "name": "Delta Reign Pokémon Center Elite Trainer Box",
+     "what": "11 booster packs, sold only at Pokémon Center",
+     "price": 131.91,
+     "n": 24,
+     "basis": "30d",
+     "asOf": "2026-11-24",
+     "path": "pokemon-delta-reign/elite-trainer-box-pokemon-center",
+     "q": "pokemon delta reign pokemon center elite trainer box -bundle -tin -case -japanese -thai -korean -chinese -lot -half -mystery -empty -opened -booster -psa -cgc",
+     "cat": "183456",
+     "set": "Delta Reign",
+     "href": "/delta-reign-index",
+     "hrefLabel": "Delta Reign index",
+     "from": "2026-11-17"
     },
     {
      "id": "pe-etb",
      "kind": "sealed",
      "name": "Prismatic Evolutions Elite Trainer Box",
      "what": "9 booster packs, sleeves, dice, promo",
-     "price": 115.5,
+     "price": 110.0,
      "n": 29,
      "basis": "30d",
-     "asOf": "2026-11-13",
+     "asOf": "2026-11-24",
      "path": "pokemon-prismatic-evolutions/elite-trainer-box",
      "q": "pokemon prismatic evolutions elite trainer box -bundle -tin -case -japanese -thai -korean -lot -half -mystery -empty -opened -booster -shining -center -pokecenter -kit -suprise",
      "cat": "183456",
      "set": "Prismatic Evolutions",
      "href": "/prismatic-evolutions-index",
      "hrefLabel": "Prismatic Evolutions index",
-     "from": "2026-11-09"
+     "from": "2026-11-20"
     }
    ]
   },
@@ -192,34 +192,34 @@
      "kind": "sealed",
      "name": "Ascended Heroes Booster Bundle",
      "what": "6 booster packs, sealed",
-     "price": 73.0,
-     "n": 29,
+     "price": 63.0,
+     "n": 16,
      "basis": "30d",
-     "asOf": "2026-11-12",
+     "asOf": "2026-11-24",
      "path": "pokemon-ascended-heroes/booster-bundle",
      "q": "pokemon ascended heroes booster bundle -etb -tin -case -japanese -thai -korean -lot -mystery -empty -opened -box",
      "cat": "183456",
      "set": "Ascended Heroes",
      "href": "/ascended-heroes-index",
      "hrefLabel": "Ascended Heroes index",
-     "from": "2026-11-08"
+     "from": "2026-11-20"
     },
     {
      "id": "pb-etb",
      "kind": "sealed",
      "name": "Pitch Black Elite Trainer Box",
      "what": "9 booster packs, sleeves, dice, promo",
-     "price": 66.0,
-     "n": 30,
+     "price": 59.61,
+     "n": 26,
      "basis": "30d",
-     "asOf": "2026-11-12",
+     "asOf": "2026-11-24",
      "path": "pokemon-pitch-black/elite-trainer-box",
      "q": "pokemon pitch black elite trainer box -bundle -tin -case -japanese -thai -korean -lot -half -mystery -empty -opened -booster -center -pokecenter",
      "cat": "183456",
      "set": "Pitch Black",
      "href": "/pitch-black-index",
      "hrefLabel": "Pitch Black index",
-     "from": "2026-11-08"
+     "from": "2026-11-20"
     }
    ]
   },
@@ -250,38 +250,38 @@
      "hrefLabel": "Phantasmal Flames index"
     },
     {
-     "id": "pb-bundle",
-     "kind": "sealed",
-     "name": "Pitch Black Booster Bundle",
-     "what": "6 booster packs, sealed",
-     "price": 34.5,
-     "n": 26,
-     "basis": "30d",
-     "asOf": "2026-11-12",
-     "path": "pokemon-pitch-black/booster-bundle",
-     "q": "pokemon pitch black booster bundle -etb -tin -case -japanese -thai -korean -lot -mystery -empty -opened -box",
-     "cat": "183456",
-     "set": "Pitch Black",
-     "href": "/pitch-black-index",
-     "hrefLabel": "Pitch Black index",
-     "from": "2026-11-08"
-    },
-    {
      "id": "cr-bundle",
      "kind": "sealed",
      "name": "Chaos Rising Booster Bundle",
      "what": "6 booster packs, sealed",
-     "price": 34.5,
-     "n": 26,
+     "price": 37.12,
+     "n": 23,
      "basis": "30d",
-     "asOf": "2026-11-11",
+     "asOf": "2026-11-24",
      "path": "pokemon-chaos-rising/booster-bundle",
      "q": "pokemon chaos rising booster bundle -etb -tin -case -japanese -thai -korean -lot -mystery -empty -opened -box",
      "cat": "183456",
      "set": "Chaos Rising",
      "href": "/chaos-rising-index",
      "hrefLabel": "Chaos Rising index",
-     "from": "2026-11-06"
+     "from": "2026-11-15"
+    },
+    {
+     "id": "pb-bundle",
+     "kind": "sealed",
+     "name": "Pitch Black Booster Bundle",
+     "what": "6 booster packs, sealed",
+     "price": 31.49,
+     "n": 22,
+     "basis": "30d",
+     "asOf": "2026-11-24",
+     "path": "pokemon-pitch-black/booster-bundle",
+     "q": "pokemon pitch black booster bundle -etb -tin -case -japanese -thai -korean -lot -mystery -empty -opened -box",
+     "cat": "183456",
+     "set": "Pitch Black",
+     "href": "/pitch-black-index",
+     "hrefLabel": "Pitch Black index",
+     "from": "2026-11-15"
     }
    ]
   },
@@ -341,5 +341,197 @@
     }
    ]
   }
- ]
+ ],
+ "ranked": {
+  "read": "2026-11-24",
+  "updated": "2026-11-24",
+  "published": "2026-11-01",
+  "bands": [
+   {
+    "id": "under-25",
+    "label": "Under $25",
+    "min": 0,
+    "max": 25,
+    "rows": [
+     {
+      "id": "dlr-blister",
+      "name": "Delta Reign 3-Pack Blister",
+      "what": "3 booster packs and a Seel promo card",
+      "path": "pokemon-delta-reign/3-pack-blister",
+      "q": "pokemon delta reign 3 pack blister seel -bundle -etb -box -japanese -korean -chinese -thai -lot -weighed -heavy -graded -psa -empty -opened -case",
+      "cat": "183456",
+      "href": "/delta-reign-vs-pitch-black",
+      "price": 23.88,
+      "n": 19,
+      "from": "2026-11-05",
+      "asOf": "2026-11-24",
+      "launch": null
+     },
+     {
+      "id": "cr-blister",
+      "name": "Chaos Rising 3-Pack Blister",
+      "what": "3 booster packs and a Charmeleon promo card",
+      "path": "pokemon-chaos-rising/3-pack-blister-charmeleon",
+      "q": "pokemon chaos rising 3 pack blister charmeleon -bundle -etb -box -japanese -korean -chinese -thai -lot -weighed -heavy -graded -psa -empty -opened -case",
+      "cat": "183456",
+      "href": "/chaos-rising-index",
+      "price": 17.77,
+      "n": 12,
+      "from": "2026-10-29",
+      "asOf": "2026-11-23",
+      "launch": null
+     },
+     {
+      "id": "pb-blister",
+      "name": "Pitch Black 3-Pack Blister",
+      "what": "3 booster packs and a promo card",
+      "path": "pokemon-pitch-black/3-pack-blister",
+      "q": "pokemon pitch black 3 pack blister -bundle -etb -box -japanese -korean -chinese -thai -lot -weighed -heavy -graded -psa -empty -opened -case",
+      "cat": "183456",
+      "href": "/pitch-black-index",
+      "price": 19.99,
+      "n": 10,
+      "from": "2026-10-26",
+      "asOf": "2026-11-16",
+      "launch": null
+     }
+    ]
+   },
+   {
+    "id": "25-100",
+    "label": "$25 to $100",
+    "min": 25,
+    "max": 100,
+    "rows": [
+     {
+      "id": "30th-celebration-bundle",
+      "name": "30th Celebration Booster Bundle",
+      "what": "6 booster packs, sealed",
+      "path": "pokemon-30th-celebration/booster-bundle",
+      "q": "pokemon 30th celebration booster bundle -etb -tin -case -japanese -thai -korean -chinese -lot -mystery -empty -opened -box -blister",
+      "cat": "183456",
+      "href": "/pokemon-30th-anniversary-2026",
+      "price": 57.0,
+      "n": 25,
+      "from": "2026-11-23",
+      "asOf": "2026-11-24",
+      "launch": {
+       "price": 26.94,
+       "label": "Booster bundle launch price"
+      }
+     },
+     {
+      "id": "pitch-black-etb",
+      "name": "Pitch Black Elite Trainer Box",
+      "what": "9 booster packs, sleeves, dice, promo (retail edition)",
+      "path": "pokemon-pitch-black/elite-trainer-box",
+      "q": "pokemon pitch black elite trainer box -bundle -tin -case -japanese -thai -korean -lot -half -mystery -empty -opened -booster -center -pokecenter",
+      "cat": "183456",
+      "href": "/pitch-black-index",
+      "price": 59.61,
+      "n": 26,
+      "from": "2026-11-20",
+      "asOf": "2026-11-24",
+      "launch": {
+       "price": 49.99,
+       "label": "Retail Elite Trainer Box launch price"
+      }
+     },
+     {
+      "id": "delta-reign-etb",
+      "name": "Delta Reign Elite Trainer Box",
+      "what": "9 booster packs, sleeves, dice, promo (retail edition)",
+      "path": "pokemon-delta-reign/elite-trainer-box",
+      "q": "pokemon delta reign elite trainer box -bundle -tin -case -japanese -thai -korean -chinese -lot -half -mystery -empty -opened -booster -center -pokecenter",
+      "cat": "183456",
+      "href": "/delta-reign-index",
+      "price": 78.11,
+      "n": 28,
+      "from": "2026-11-17",
+      "asOf": "2026-11-23",
+      "launch": {
+       "price": 49.99,
+       "label": "Retail Elite Trainer Box launch price"
+      }
+     },
+     {
+      "id": "destined-rivals-etb",
+      "name": "Destined Rivals Elite Trainer Box",
+      "what": "9 booster packs, sleeves, dice, promo (retail edition)",
+      "path": "pokemon-destined-rivals/elite-trainer-box",
+      "q": "pokemon destined rivals elite trainer box -bundle -tin -case -japanese -thai -korean -lot -half -mystery -empty -opened -booster -center -pokecenter",
+      "cat": "183456",
+      "href": "/destined-rivals-index",
+      "price": 97.0,
+      "n": 28,
+      "from": "2026-11-17",
+      "asOf": "2026-11-24",
+      "launch": {
+       "price": 49.99,
+       "label": "Retail Elite Trainer Box launch price"
+      }
+     }
+    ]
+   },
+   {
+    "id": "100-up",
+    "label": "$100 and up",
+    "min": 100,
+    "max": null,
+    "rows": [
+     {
+      "id": "30th-celebration-etb",
+      "name": "30th Celebration Elite Trainer Box",
+      "what": "9 booster packs, sleeves, dice, promo (retail edition)",
+      "path": "pokemon-30th-celebration/elite-trainer-box",
+      "q": "pokemon 30th celebration elite trainer box -bundle -tin -case -japanese -thai -korean -chinese -lot -half -mystery -empty -opened -booster -center -pokecenter",
+      "cat": "183456",
+      "href": "/pokemon-30th-anniversary-2026",
+      "price": 107.5,
+      "n": 25,
+      "from": "2026-11-23",
+      "asOf": "2026-11-24",
+      "launch": {
+       "price": 49.99,
+       "label": "Retail Elite Trainer Box launch price"
+      }
+     },
+     {
+      "id": "th26-upc-night",
+      "name": "30th Celebration Ultra-Premium Collection (Night)",
+      "what": "29 booster packs plus 1 Classic Collection pack",
+      "path": "pokemon-30th-celebration/ultra-premium-collection-night",
+      "q": "pokemon 30th celebration ultra premium collection night -day -japanese -lot -empty -opened",
+      "cat": "183456",
+      "href": "/pokemon-30th-anniversary-2026",
+      "price": 337.5,
+      "n": 28,
+      "from": "2026-11-21",
+      "asOf": "2026-11-24",
+      "launch": {
+       "price": 179.99,
+       "label": "Ultra-Premium Collection launch price"
+      }
+     },
+     {
+      "id": "th26-upc-day",
+      "name": "30th Celebration Ultra-Premium Collection (Day)",
+      "what": "29 booster packs plus 1 Classic Collection pack",
+      "path": "pokemon-30th-celebration/ultra-premium-collection-day",
+      "q": "pokemon 30th celebration ultra premium collection day -night -japanese -lot -empty -opened",
+      "cat": "183456",
+      "href": "/pokemon-30th-anniversary-2026",
+      "price": 325.0,
+      "n": 30,
+      "from": "2026-11-20",
+      "asOf": "2026-11-24",
+      "launch": {
+       "price": 179.99,
+       "label": "Ultra-Premium Collection launch price"
+      }
+     }
+    ]
+   }
+  ]
+ }
 }
