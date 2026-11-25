@@ -1787,6 +1787,11 @@ function save() {
 window.addEventListener('pagehide', () => { if (idbOK && saveTimer) { clearTimeout(saveTimer); idbSet('state', state).catch(() => {}); } });
 
 /* ---------- demo seed ---------- */
+/* UX weekly Nov 25: since WL-155 demo cards never take a feedKey, so two demo thumbs fell back to a live
+   /api/comps name search (an eBay Browse call per new visitor, and a placeholder when it misses). Point the
+   demo cards at the photo the map already holds for the same card. Photo only: no price, no link to the feed. */
+const DEMO_PHOTO = { 'Umbreon ex SIR #161': 'ebay:umbreon-ex-sir-pe', 'Ethan Holliday 1st Bowman Chrome Auto': 'ebay:ethan-holliday' };
+function photoKey(c) { return c.feedKey || (state && state.demo && DEMO_PHOTO[c.name]) || ('name:' + c.name); }
 function seedDemo() {
   const day = 86400000, now = Date.now();
   const hist = pts => pts.map((p, i) => ({ t: now - (pts.length - 1 - i) * 6 * day, p }));
@@ -2347,7 +2352,7 @@ function cardRow(c) {
   return '<div class="vcard' + (inZone ? ' in-zone' : '') + (isOpen ? ' open' : '') + '" id="vc-' + c.id + '">' +
     '<div class="vcard-main" onclick="toggleOpen(\'' + c.id + '\')">' +
       '<div class="vc-id">' +
-        '<span data-card-img="' + esc(c.feedKey || ('name:' + c.name)) + '" data-card-name="' + esc(c.name) + '" data-card-sub="' + esc(c.cat || '') + '" data-card-size="card" data-card-surface="vault-card"></span>' +
+        '<span data-card-img="' + esc(photoKey(c)) + '" data-card-name="' + esc(c.name) + '" data-card-sub="' + esc(c.cat || '') + '" data-card-size="card" data-card-surface="vault-card"></span>' +
         '<div class="vc-id-txt">' +
         '<div class="vc-chips">' + chips + '</div>' +
         '<div class="vc-name" title="' + esc(c.name) + '">' + esc(c.name) + '</div>' +
@@ -2622,7 +2627,7 @@ function rowModel(c, isOwn) {
 const COLS = [
   { key:'dot',   label:'', fixed:true, cls:'', cell:r => '<span class="dot"></span>' + (r.c.private ? '<span class="lock" title="Private — never in share images">🔒</span>' : '') },
   { key:'name',  label:'Card', left:true, fixed:true, sortv:r => r.c.name.toLowerCase(),
-    cell:r => '<div class="nm-wrap"><span data-card-img="' + esc(r.c.feedKey || ('name:' + r.c.name)) + '" data-card-name="' + esc(r.c.name) + '" data-card-sub="' + esc(r.c.cat || '') + '" data-card-size="row" data-card-surface="vault-row" data-card-link="off"></span><div><div class="nm" title="' + esc(r.c.name) + '">' + esc(r.c.name) + '</div><div class="st">' + esc(r.c.set || '') + '</div></div></div>' },
+    cell:r => '<div class="nm-wrap"><span data-card-img="' + esc(photoKey(r.c)) + '" data-card-name="' + esc(r.c.name) + '" data-card-sub="' + esc(r.c.cat || '') + '" data-card-size="row" data-card-surface="vault-row" data-card-link="off"></span><div><div class="nm" title="' + esc(r.c.name) + '">' + esc(r.c.name) + '</div><div class="st">' + esc(r.c.set || '') + '</div></div></div>' },
   { key:'grade', label:'Grade', left:true, cell:r => r.c.grade ? '<span class="gr">' + esc(r.c.grade) + '</span>' : '' },
   { key:'hub',   label:'Hub', sortv:r => { const h = hubOf(r.c); return h ? h.hub.score : null; }, cell:r => { const h = hubOf(r.c); return h ? '<a class="hubg hub-' + (h.hub.grade[0] === 'A' ? 'a' : h.hub.grade[0] === 'B' ? 'b' : h.hub.grade[0] === 'C' ? 'c' : 'd') + '" href="/bowman-bangers#grade-' + esc(h.slug) + '" onclick="event.stopPropagation()" title="Scouting Grade (Hub rating) for ' + esc(h.name) + ' — tap for the six factors">' + esc(h.hub.grade) + '</a>' : '<span class="dim">—</span>'; } },
   { key:'last',  label:'Last', sortv:r => r.lp, cls:r => r.lp != null ? 'last' : 'dim', cell:r => { if (r.lp == null) return '—'; const fe = r.c.feedSold && FEED ? FEED.byKey[r.c.feedKey] : null; return fe ? '<span title="Sold mark: ' + esc(fe.basis || '') + ' (SportsCardsPro/PriceCharting dated sales, re-read nightly)">$' + fmt$(r.lp) + '<sup style="color:var(--green);font-size:8px;margin-left:2px">S</sup></span>' : '$' + fmt$(r.lp); } },
