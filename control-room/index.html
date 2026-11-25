@@ -261,6 +261,28 @@ details.fold>summary h2::before{content:"+";display:inline-block;width:1em;color
 details.fold[open]>summary h2::before{content:"–"}
 details.fold[open]>summary{margin-bottom:10px}
 details.fold>summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+/* Closed drawers read at rest: each folded header carries a one-line peek of what is inside. */
+details.fold>summary h2{flex:none}
+details.fold>summary .meta{flex:none;font-family:var(--mono);font-size:12px}
+.peek{flex:1 1 180px;min-width:0;display:flex;align-items:center;gap:6px 10px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.peek:empty{display:none}
+details.fold[open]>summary .peek{display:none}
+.pk-bar{display:flex;gap:2px;height:8px;flex:1 1 120px;max-width:260px;min-width:80px;border-radius:4px;overflow:hidden;background:var(--line)}
+.pk-bar i{display:block;height:100%;transform-origin:left}
+.pk-bar i.g{background:var(--good)} .pk-bar i.a{background:var(--warn)} .pk-bar i.r{background:var(--bad)}
+.pk-key{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.pk-key::before{content:"";width:8px;height:8px;border-radius:2px;background:currentColor;flex:none}
+.pk-key.g{color:var(--good)} .pk-key.a{color:var(--warn)} .pk-key.r{color:var(--bad)}
+.pk-key b{color:var(--ink);font-weight:600;font-family:var(--mono)}
+.pk-dots{display:flex;flex-wrap:wrap;gap:3px;max-width:100%}
+.pk-dots i{width:8px;height:8px;border-radius:50%;background:var(--good);opacity:.85}
+.pk-dots i.a{background:var(--warn)} .pk-dots i.r{background:var(--bad)}
+.pk-line{min-width:0;flex:1 1 160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.pk-tag{font-family:var(--mono);font-size:11.5px;padding:1px 7px;border-radius:6px;background:var(--warn-soft);color:var(--warn);white-space:nowrap}
+.pk-tag.ok{background:var(--good-soft);color:var(--good)}
+details.fold>summary h2::before{transition:transform .2s ease-out}
+details.fold[open]>summary h2::before{transform:rotate(180deg)}
+@media (max-width:600px){.peek{order:3;flex-basis:100%}.pk-bar{max-width:none;flex-basis:100%}}
 .ticker{font-family:var(--mono);font-size:12.5px;color:var(--accent);margin:10px 6px 0;min-height:2.9em;overflow-wrap:anywhere}
 .floorcap{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin:6px 6px 0}
 #floor-info{margin:10px 6px 0;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;background:var(--bg2);padding:10px 12px;font-size:14px;display:flex;flex-direction:column;gap:5px}
@@ -454,6 +476,9 @@ a.readout.hot em.dl{border-color:#1a1304;color:#1a1304}
   @keyframes deal{from{transform:rotate(-8deg) translateX(-2px)}to{transform:none}}
   .health span{animation:fill .6s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
   @keyframes fill{from{transform:scaleX(.2)}to{transform:none}}
+  .pk-bar i{animation:fill .5s cubic-bezier(.2,.8,.2,1) both}
+  .pk-dots i{animation:pop .35s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes pop{from{transform:scale(.4)}to{transform:none}}
   .rung .bar i{animation:fill .9s cubic-bezier(.2,.8,.2,1) .2s both}
   .light.watch,.light.blocked{animation:blink 1.8s ease-in-out infinite}
   @keyframes blink{50%{box-shadow:0 0 0 6px transparent}}
@@ -686,7 +711,7 @@ details.fold>summary{min-height:44px}
   </section>
 
   <details class="panel fold rise" >
-    <summary><h2 id="h-orders">Open orders</h2><span class="meta" id="orders-count"></span></summary>
+    <summary><h2 id="h-orders">Open orders</h2><span class="peek" id="pk-orders"></span><span class="meta" id="orders-count"></span></summary>
     <div class="scroll">
       <table>
         <thead><tr><th>Age</th><th>Order</th><th>Owner</th><th>Due</th><th>From report</th></tr></thead>
@@ -696,7 +721,7 @@ details.fold>summary{min-height:44px}
   </details>
 
   <details class="panel fold rise" >
-    <summary><h2 id="h-inbox">Report inbox</h2><span class="meta"></span></summary>
+    <summary><h2 id="h-inbox">Report inbox</h2><span class="peek" id="pk-inbox"></span><span class="meta" id="inbox-count"></span></summary>
     <div class="head"><div class="chips" role="group" aria-label="Filter reports">
         <button class="chip" id="f-all" type="button" aria-pressed="true">All</button>
         <button class="chip" id="f-act" type="button" aria-pressed="false">Needed a decision</button>
@@ -712,13 +737,13 @@ details.fold>summary{min-height:44px}
   </details>
 
   <details class="panel fold rise" >
-    <summary><h2 id="h-agents">Agents</h2><span class="meta" id="agents-count"></span></summary>
+    <summary><h2 id="h-agents">Agents</h2><span class="peek" id="pk-agents"></span><span class="meta" id="agents-count"></span></summary>
     <div class="health" id="health" aria-hidden="true"></div>
     <div class="roster" id="agents"><div class="empty">Loading…</div></div>
   </details>
 
   <details class="panel fold rise" id="feed-sec" hidden>
-    <summary><h2 id="h-feed">Live feed</h2><span class="meta"></span></summary>
+    <summary><h2 id="h-feed">Live feed</h2><span class="peek" id="pk-feed"></span><span class="meta" id="feed-count"></span></summary>
     <div class="head"><span class="live">LIVE</span></div>
     <ol class="feed" id="feed"></ol>
     <div class="srcline" id="feed-src"></div>
@@ -726,7 +751,7 @@ details.fold>summary{min-height:44px}
 
   <footer>
     <span id="foot">The Chief of Staff updates this page each time it reads and rules on agent reports. The page refreshes itself while open.</span>
-    <span id="design">Design updated Nov 24, 2026: a Constellation view of the floor, every team as a star.</span>
+    <span id="design">Design updated Nov 25, 2026: folded sections show what is inside before you open them.</span>
     <span><button class="btn link" id="signout" type="button">Sign out</button></span>
   </footer>
 </div>
@@ -1763,6 +1788,42 @@ details.fold>summary{min-height:44px}
     });
   }
 
+  /* Peeks for the folded drawers: a one-line read of what is inside, from the same rows the drawer shows. */
+  function renderPeeks(s){
+    var po=$("pk-orders"),pi=$("pk-inbox"),pa=$("pk-agents"),pf=$("pk-feed");
+    [po,pi,pa,pf].forEach(function(n){if(n)clear(n)});
+    if(!state){["inbox-count","feed-count"].forEach(function(k){var m=$(k);if(m)m.textContent=""});return}
+    var open=arr(s.orders).filter(function(o){return o&&o.status!=="done"});
+    if(po&&open.length){
+      var g=0,a=0,r=0,old=null;
+      open.forEach(function(o){var d=days(o.since);if(d!=null&&(old==null||d>old))old=d;if(d==null||d<=3)g++;else if(d<=14)a++;else r++});
+      var bar=el("span","pk-bar");bar.setAttribute("aria-hidden","true");
+      [["g",g],["a",a],["r",r]].forEach(function(x){if(x[1]){var i=el("i",x[0]);i.style.flex=String(x[1]);bar.appendChild(i)}});
+      po.appendChild(bar);
+      [["g",g,"fresh"],["a",a,"aging"],["r",r,"over 14 days"]].forEach(function(x){if(!x[1])return;var k=el("span","pk-key "+x[0]);k.appendChild(el("b",null,x[1]));k.appendChild(document.createTextNode(" "+x[2]));po.appendChild(k)});
+      if(old!=null)$("orders-count").textContent=open.length+" open · oldest "+old+" d";
+    }
+    var rows=arr(s.rulings).filter(obj).slice().sort(function(x,y){return String(y.at||"").localeCompare(String(x.at||""))});
+    var ic=$("inbox-count");if(ic)ic.textContent=rows.length?rows.length+" ruled":"";
+    if(pi&&rows.length){
+      var op=rows.filter(function(x){return x.status==="open"}).length;
+      pi.appendChild(el("span","pk-tag"+(op?"":" ok"),op?op+" still open":"none open"));
+      var top=rows[0];if(top.at)pi.appendChild(el("span",null,"latest "+ago(top.at)));
+      var said=[top.agent,top.said].filter(Boolean).join(": ");if(said)pi.appendChild(el("span","pk-line",said));
+    }
+    var list=arr(s.agents).filter(obj);
+    if(pa&&list.length){
+      var dots=el("span","pk-dots");dots.setAttribute("aria-hidden","true");
+      var rank={down:0,blocked:1,late:1};
+      list.slice().sort(function(x,y){var u=x.state==="ok"?2:(rank[x.state]!=null?rank[x.state]:1),v=y.state==="ok"?2:(rank[y.state]!=null?rank[y.state]:1);return u-v}).slice(0,60).forEach(function(x,i){
+        var d=el("i",x.state==="ok"?null:x.state==="down"?"r":"a");d.style.animationDelay=Math.min(i*12,300)+"ms";dots.appendChild(d)});
+      pa.appendChild(dots);
+    }
+    var feed=arr(s.feed).filter(function(f){return obj(f)&&f.text}).sort(function(x,y){return String(y.at||"").localeCompare(String(x.at||""))});
+    var fc=$("feed-count");if(fc)fc.textContent=feed.length?(feed[0].at?"latest "+ago(feed[0].at):feed.length+" lines"):"";
+    if(pf&&feed.length)pf.appendChild(el("span","pk-line",feed[0].text));
+  }
+
   function render(){
     var s=state||{};
     $("asof").textContent=s.asOf?"":"No state written yet";tick();
@@ -1840,6 +1901,7 @@ details.fold>summary{min-height:44px}
 
     renderFeed(s.feed);
     renderWeek(s.week);
+    renderPeeks(s);
     if(window.Floor)window.Floor.update(state,decisions);
   }
   ["all","act","open"].forEach(function(k){
