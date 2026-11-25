@@ -11,6 +11,16 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-25 — weekly (Wed 11:00 PT, unattended). One thing needs you, and three are still open
+
+- **The signup boxes still promise the Tuesday email you paused.** It now appears on 117 pages. Signups are 0 this week, and only 1 person outside has signed up. In your next CoS chat, pick **(a)** reword the box to a promise we keep, or **(b)** hide the boxes until the Tape is back. This has been open since Nov 18. The price alert planned for Dec 1 only replaces the box if one of those two happens.
+- Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
+- Still open: **YouTube's "altered or synthetic content" question** (yes/no, A-04).
+- Still open: **four scheduled runs can't push to GitHub.** This weekly was refused again today. Fix: in a new claude.ai chat, ask Claude to add the shopcardhub repo to the desk, weekly, Monday price and Tuesday board tasks, then recreate them there. Meanwhile the 6:41 AM Ship Desk carries their work.
+- FYI, not a sign-in ask: **MailerLite asked Browser 1 for an emailed login code**, so the list count wasn't read this week. Bing Webmaster is signed out too; its API numbers still come in. No EPN export since Nov 17, so the money line is a week old.
+
+*Not yours:* the full site was checked on phones today, all 700 pages, and it came back clean. Four fixes are built and will go live tomorrow morning: the watchlist demo photos, 130 refreshed card photos, four pages that promised a "next read" on dates already past, and a Topps Pro Debut box that was showing on the Chrome Baseball box shelf.
+
 ## 2026-11-25 — desk (Tue Nov 24 evening slot, ran ~17:11 PT, verified live). Nothing new needs you
 
 - Still yours: **TAG affiliate payment info + link** (~10 min, TAG partner dashboard).
