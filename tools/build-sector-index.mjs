@@ -62,6 +62,26 @@ function staticPage(id) {
   if (STATIC_PAGES == null) { try { STATIC_PAGES = JSON.parse(fs.readFileSync(path.join(ROOT, "js/card-pages.json"), "utf8")).static || {}; } catch (e) { STATIC_PAGES = {}; } }
   return STATIC_PAGES[id] || null;
 }
+/* Q-021 (Build Loop, Nov 26 2026; CoS ruling on BET-20261119-1 / LEDGER O-64): on the Bowman set indices a holdings row with no
+   js/card-pages.json page links to the price engine's own card page (card-<watchlist id>.html) when that file exists — matched on
+   player name AND card number from data/watchlist.json, and kept to the right release (BB26 never takes a "-bcb26-" card, BCB26
+   only takes those; BOW26, all releases, takes either). Those pages stay noindex,follow; nothing here touches sitemap.xml. */
+let ENGINE_CARDS = null;
+const foldNm = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+function enginePage(ticker, b) {
+  if (!/^(BOW|BB|BCB)\d/.test(ticker) || !b || !b.num) return null;
+  if (ENGINE_CARDS == null) { try { const w = JSON.parse(fs.readFileSync(path.join(ROOT, "data/watchlist.json"), "utf8")); ENGINE_CARDS = (w.cards || []).filter((c) => c && c.id && fs.existsSync(path.join(ROOT, `card-${c.id}.html`))); } catch (e) { ENGINE_CARDS = []; } }
+  const num = String(b.num).toLowerCase(), nm = foldNm(b.name);
+  const hit = ENGINE_CARDS.find((c) => {
+    const bcb = /-bcb26-/.test(c.id);
+    if (/^BB\d/.test(ticker) && bcb) return false;
+    if (/^BCB\d/.test(ticker) && !bcb) return false;
+    if (/sapphire/.test(c.id)) return false;
+    const q = String(c.query || "").toLowerCase();
+    return new RegExp(`(^|\\s)${num.replace(/[^a-z0-9-]/g, "")}(\\s|$)`).test(q) && foldNm(String(c.label || "").split(" — ")[0]) === nm;
+  });
+  return hit ? `/card-${hit.id}` : null;
+}
 /* the checklist tile's link options: href/label/sub from CONFIG, plus the sheet's localStorage slug and row count (data/sets) so
    js/plain-read.js clTiles() can print the reader's own "You have N of M" — read on the device, never baked (P0-E v2.1). */
 function clLink(cl) {
@@ -746,11 +766,11 @@ function block(x, c, opt = {}) {
     if (GL) {
       const thumbG = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
       const dkG = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slotG = desk[dkG] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dkG])}"></span>` : '<span class="sidx-auc-slot"></span>';
-      return `<tr data-q="${esc(q0)}" data-cid="${cid}"${b.price >= 200 ? ' data-av="1"' : ""}><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumbG}<div><b><a class="cardlk" href="${staticPage(cid) || "/card?id=" + cid}" title="Raw vs PSA 9 vs PSA 10 vs TAG — the card's price ladder">${esc(b.name)}</a></b><small>#${esc(b.num)}${dupLbl(b)}${subLbl(b)}</small></div></div></td><td class="num">${b.ptHold ? '<span class="dim" title="raw mark under review (Price Truth); still counted in the level at its last mark">re-read</span>' : money(b.price)}</td><td class="num">${wCell(b, w)}</td><td class="num dim">${salesCell(b)}</td><td class="act g"><span class="act-w g"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><span class="glk"><a class="ebay g-raw" data-g="raw" href="${url}" target="_blank" rel="sponsored nofollow noopener" title="Raw (ungraded) copies on eBay${b.price >= 200 ? " — Authenticity Guarantee filter on" : ""}">Raw</a></span>${slotG}</span></td></tr>`;
+      return `<tr data-q="${esc(q0)}" data-cid="${cid}"${b.price >= 200 ? ' data-av="1"' : ""}><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumbG}<div><b><a class="cardlk" href="${staticPage(cid) || enginePage(x.ticker, b) || "/card?id=" + cid}" title="Raw vs PSA 9 vs PSA 10 vs TAG — the card's price ladder">${esc(b.name)}</a></b><small>#${esc(b.num)}${dupLbl(b)}${subLbl(b)}</small></div></div></td><td class="num">${b.ptHold ? '<span class="dim" title="raw mark under review (Price Truth); still counted in the level at its last mark">re-read</span>' : money(b.price)}</td><td class="num">${wCell(b, w)}</td><td class="num dim">${salesCell(b)}</td><td class="act g"><span class="act-w g"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><span class="glk"><a class="ebay g-raw" data-g="raw" href="${url}" target="_blank" rel="sponsored nofollow noopener" title="Raw (ungraded) copies on eBay${b.price >= 200 ? " — Authenticity Guarantee filter on" : ""}">Raw</a></span>${slotG}</span></td></tr>`;
     }
     const thumb = i < 10 ? `<span data-card-img="${esc(imgAttr(b, c))}" data-card-name="${esc(b.name)} #${esc(b.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="thumb" data-card-surface="${x.ticker.toLowerCase()}-list" data-card-link="off"></span>` : "";
     const dk = (String(b.name) + "#" + String(b.num)).toLowerCase(); const slot = desk[dk] ? `<span class="sidx-auc-slot" data-auc-card="${esc(desk[dk])}"></span>` : "";
-    return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${staticPage(cid) ? `<a class="cardlk" href="${staticPage(cid)}">${esc(b.name)}</a>` : esc(b.name)}</b><small>#${esc(b.num)}${dupLbl(b)}${subLbl(b)}</small></div></div></td><td class="num">${b.ptHold ? '<span class="dim" title="raw mark under review (Price Truth); still counted in the level at its last mark">re-read</span>' : money(b.price)}</td><td class="num">${wCell(b, w)}</td><td class="num dim">${salesCell(b)}</td><td class="act"><span class="act-w"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot || '<span class="sidx-auc-slot"></span>'}</span></td></tr>`;
+    return `<tr><td class="rk">${i + 1}</td><td class="nm"><div class="nm-cell">${thumb}<div><b>${(staticPage(cid) || enginePage(x.ticker, b)) ? `<a class="cardlk" href="${staticPage(cid) || enginePage(x.ticker, b)}">${esc(b.name)}</a>` : esc(b.name)}</b><small>#${esc(b.num)}${dupLbl(b)}${subLbl(b)}</small></div></div></td><td class="num">${b.ptHold ? '<span class="dim" title="raw mark under review (Price Truth); still counted in the level at its last mark">re-read</span>' : money(b.price)}</td><td class="num">${wCell(b, w)}</td><td class="num dim">${salesCell(b)}</td><td class="act"><span class="act-w"><button type="button" class="sch-track-card" data-name="${esc(b.name)} #${esc(b.num)} — ${esc(c.set)}" data-set="${esc(c.set)}" data-cat="${esc(c.cat || "pokemon")}" data-grade="Raw" data-price="${b.price}" title="Watch this card">★</button><a class="ebay" href="${url}" target="_blank" rel="sponsored nofollow noopener">${b.price >= 200 ? "Authenticated" : "Listings"} →</a>${slot || '<span class="sidx-auc-slot"></span>'}</span></td></tr>`;
   };
   const top10 = rows.slice(0, 10).map(row).join(""), rest = rows.slice(10).map((b, i) => row(b, i + 10)).join("");
   // CHASE strip (Sep 26 2026, Mo: high-ticket cards in the first buy position — eBay pays ~3% of the sale, so the
