@@ -1212,6 +1212,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           if(er) er.style.display='block';
           if(btn){ btn.disabled=false; btn.textContent='Send Me The Grades →'; }
         }
+        if(window.gtag) gtag('event','signup_submit',{location:'track-record'}); // Build Loop Q-041: the attempt, before the call (as js/signup.js)
         fetch('/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:email,source:'track-record'})})
           .then(function(r){
             if(r.ok) return done(false);

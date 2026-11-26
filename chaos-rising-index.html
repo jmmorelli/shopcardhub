@@ -878,6 +878,7 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
     var em=(f.querySelector('input[type=email]')||{}).value||'';
     var ok=document.getElementById('tapecap-ok'), er=document.getElementById('tapecap-err');
     if(er) er.style.display='none';
+    if(window.gtag) gtag('event','signup_submit',{location:'cr26-index'}); // Build Loop Q-041: the attempt, before the call (as js/signup.js)
     fetch('/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:em,source:'cr26-index'})})
       .then(function(r){
         if(r.ok){ f.style.display='none'; if(ok) ok.style.display='inline'; if(window.gtag) gtag('event','newsletter_signup',{method:'mailerlite',location:'cr26-index'}); }

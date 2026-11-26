@@ -494,6 +494,7 @@ ${footer}
             var email = form.querySelector('input[name="email_address"]').value.trim();
             if (!email) return;
             if (btn) btn.disabled = true;
+            if(window.gtag) gtag('event','signup_submit',{location:'signal-' + key}); // Build Loop Q-041: the attempt, before the call (as js/signup.js)
             fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: email, source: 'signal-' + key }) })
               .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
               .then(function () {

@@ -1378,6 +1378,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     var em=(f.querySelector('input[type=email]')||{}).value||'';
     var ok=document.getElementById('tapecap-ok'), er=document.getElementById('tapecap-err');
     if(er) er.style.display='none';
+    if(window.gtag) gtag('event','signup_submit',{location:'bowman-bangers-top'}); // Build Loop Q-041: the attempt, before the call (as js/signup.js)
     fetch('/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:em,source:'bowman-bangers-top'})})
       .then(function(r){
         if(r.ok){ f.style.display='none'; if(ok) ok.style.display='inline'; if(window.gtag) gtag('event','newsletter_signup',{method:'mailerlite',location:'bowman-bangers-top'}); }
@@ -2783,6 +2784,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
           if(er) er.style.display='block';
           if(btn){ btn.disabled=false; btn.textContent='Send Me The Tape →'; }
         }
+        if(window.gtag) gtag('event','signup_submit',{location:'bowman-bangers'}); // Build Loop Q-041: the attempt, before the call (as js/signup.js)
         fetch('/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:email,source:'bowman-bangers'})})
           .then(function(r){
             if(r.ok) return done(false);
@@ -2980,6 +2982,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
             var email = form.querySelector('input[name="email_address"]').value.trim();
             if (!email) return;
             if (btn) btn.disabled = true;
+            if(window.gtag) gtag('event','signup_submit',{location:'signal-' + key}); // Build Loop Q-041: the attempt, before the call (as js/signup.js)
             fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: email, source: 'signal-' + key }) })
               .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
               .then(function () {
