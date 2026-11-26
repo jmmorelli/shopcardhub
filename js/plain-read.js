@@ -155,9 +155,25 @@
       cost = { now: costSum, then: costSum / level * 100, n: basket.length, asOf: day(h[n - 1].date),
         basis: r.basis === 'ask' ? 'eBay asking prices' : 'recent sales' };
     }
-    var br = cost && prevRow && wk != null && !measureChanged ? breadth(basket, String(prevRow.date).slice(0, 10)) : null;
+    var rr = wk != null && !measureChanged ? heldShare(basket) : null;
+    var br = !rr && cost && prevRow && wk != null && !measureChanged ? breadth(basket, String(prevRow.date).slice(0, 10)) : null;
     return { n: n, level: level, wk: wk, since: since, basket: basket, name: name, started: started, baseTxt: baseTxt, sinceLbl: sinceLbl,
-      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: weekFirst(verdict(wk), wk, since, wkLbl), cost: cost, wkLbl: wkLbl, br: br };
+      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: rr ? { w: 'Being re-read', c: '' } : weekFirst(verdict(wk), wk, since, wkLbl), cost: cost, wkLbl: wkLbl, br: br, rr: rr };
+  }
+
+  /* Q-001 · Pokémon KB P69 (Build Loop, Nov 26 2026): when cards whose marks are being re-read (ptHold, reread, heldMove) carry
+   * more than half of the latest mark's dollar move, the week move is not narrated as a market move: the line, the sentence and
+   * the heat word say "re-read" instead. Label only: the level, the cost and every figure are unchanged. Mirrored in
+   * tools/lib/home-v2.mjs (heldShare) for the home rows. */
+  function isHeldRow(c) { return !!(c && (c.ptHold || c.reread || c.heldMove)); }
+  function heldShare(basket) {
+    var tot = 0, held = 0, n = 0;
+    (basket || []).forEach(function (c) {
+      if (isHeldRow(c)) n++;
+      if (typeof c.prevPrice !== 'number' || !(c.prevPrice > 0) || !(c.price > 0)) return;
+      var d = c.price - c.prevPrice; tot += d; if (isHeldRow(c)) held += d;
+    });
+    return n && held !== 0 && Math.abs(held) > 0.5 * Math.abs(tot) ? { n: n, held: held, tot: tot } : null;
   }
 
   /* BET-20261102-2 (R23, Night Crew Nov 6 2026): "whole set or one card?". Only on a dollar-basket index (f.cost: the level is the
@@ -198,7 +214,7 @@
 
   /* 1 · the one line under the big level */
   function line(f) {
-    var wk = f.wk == null ? 'first week of tracking' : '<b class="' + cls(f.wk) + '">' + (f.wk > 0.05 ? '▲ ' : f.wk < -0.05 ? '▼ ' : '') + (Math.abs(f.wk) < 0.05 ? 'flat' : Math.abs(f.wk).toFixed(1) + '%') + '</b> ' + f.wkLbl;
+    var wk = f.rr ? 'move ' + f.wkLbl + ': <b class="flat">re-read</b> (' + nCards(f.rr.n) + ' under review)' : f.wk == null ? 'first week of tracking' : '<b class="' + cls(f.wk) + '">' + (f.wk > 0.05 ? '▲ ' : f.wk < -0.05 ? '▼ ' : '') + (Math.abs(f.wk) < 0.05 ? 'flat' : Math.abs(f.wk).toFixed(1) + '%') + '</b> ' + f.wkLbl;
     if (f.cost && (f.n >= 2 || f.baseTxt)) {
       var thenLbl = f.sinceLbl === 'since release' ? 'at release' : f.sinceLbl.replace(/^since /, 'in ');
       return '<b class="flat">' + money(f.cost.now) + '</b> now · ' + money(f.cost.then) + ' ' + thenLbl + ' · ' + wk;
@@ -216,14 +232,16 @@
       var c = f.cost, when = f.baseTxt || 'when we started tracking on ' + f.started;
       var chg = Math.abs(f.since) < 0.5 ? 'about the same as now' : 'so they are about ' + Math.abs(f.since).toFixed(0) + '% ' + (f.since < 0 ? 'cheaper' : 'pricier') + ' now';
       s = '<b>' + money(c.now) + '</b> buys one raw copy of each of ' + (/^\d/.test(f.name) ? 'the ' + what + ' (' + c.n + ' cards)' : 'the ' + c.n + ' ' + what) + ' today (' + c.basis + ', ' + c.asOf + '). The same cards cost about <b>' + money(c.then) + '</b> ' + when + ', ' + chg;
-      if (f.wk != null) s += '; ' + (Math.abs(f.wk) < 0.05 ? 'flat' : (f.wk < 0 ? 'down ' : 'up ') + Math.abs(f.wk).toFixed(1) + '%') + ' ' + f.wkLbl + '.' + brTxt(f);
+      if (f.rr) s += '; the move ' + f.wkLbl + ' rests mostly on ' + nCards(f.rr.n) + ' whose prices are being re-read, so we do not call it yet.';
+      else if (f.wk != null) s += '; ' + (Math.abs(f.wk) < 0.05 ? 'flat' : (f.wk < 0 ? 'down ' : 'up ') + Math.abs(f.wk).toFixed(1) + '%') + ' ' + f.wkLbl + '.' + brTxt(f);
       else s += '.';
       s += '<span class="pr-sub">Singles only, not sealed boxes or packs.</span>';
     }
     else {
       var vs = f.baseTxt ? 'than ' + f.baseTxt : 'than when we started on ' + f.started;
       s = what + ' are worth <b>' + (Math.abs(f.since) < 0.5 ? 'about the same' : 'about ' + Math.abs(f.since).toFixed(0) + '% ' + (f.since < 0 ? 'less' : 'more')) + '</b> ' + vs;
-      if (f.wk != null) s += '; <b>' + (Math.abs(f.wk) < 0.05 ? 'flat' : (f.wk < 0 ? 'down ' : 'up ') + Math.abs(f.wk).toFixed(1) + '%') + ' ' + f.wkLbl + '</b>.';
+      if (f.rr) s += '; the move ' + f.wkLbl + ' rests mostly on ' + nCards(f.rr.n) + ' whose prices are being re-read, so we do not call it yet.';
+      else if (f.wk != null) s += '; <b>' + (Math.abs(f.wk) < 0.05 ? 'flat' : (f.wk < 0 ? 'down ' : 'up ') + Math.abs(f.wk).toFixed(1) + '%') + ' ' + f.wkLbl + '</b>.';
       else s += '.';
     }
     return '<p><span class="pr-v ' + f.v.c + '">' + f.v.w + '</span> ' + s + '</p>';
@@ -435,7 +453,7 @@
     if (!document.querySelector('.idx-chart[data-ticker]')) return;
     (window.schIdx = window.schIdx || function () { return window.__schIdxP || (window.__schIdxP = fetch('/data/indices.json?t=' + Math.floor(Date.now() / 300000), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { window.__schIdxP = null; throw e; })); })().then(mount).catch(function () {});
   }
-  if (typeof module !== 'undefined' && module.exports) module.exports = { facts: facts, marksOf: marksOf, stripChip: stripChip, bakeParts: bakeParts, howWrap: howWrap, finishCost: finishCost, PR_CSS: css };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { facts: facts, heldShare: heldShare, marksOf: marksOf, stripChip: stripChip, bakeParts: bakeParts, howWrap: howWrap, finishCost: finishCost, PR_CSS: css };
   if (!HAS_DOM) return;
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
 })();

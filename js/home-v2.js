@@ -83,7 +83,7 @@
     var v = T[cur];
     document.getElementById('h2-vnm').innerHTML = esc(v.n) + '<small>' + esc(cur) + ' \u00b7 as of ' + esc(mdy(v.d)) + '</small>';
     var lvEl = document.getElementById('h2-vlv'); if (animate) countUp(lvEl, v.l, 2); else { lvEl._cu = null; lvEl.textContent = v.l.toFixed(2); }
-    var wk = document.getElementById('h2-vwk'); wk.className = cls(v.w); wk.textContent = v.w == null ? 'first week' : (v.w > 0 ? '\u25b2 ' : v.w < 0 ? '\u25bc ' : '') + sgn(v.w, 1) + ' this week';
+    var wk = document.getElementById('h2-vwk'); wk.className = v.rr ? 'flat' : cls(v.w); wk.textContent = v.rr ? 'move being re-read' : v.w == null ? 'first week' : (v.w > 0 ? '\u25b2 ' : v.w < 0 ? '\u25bc ' : '') + sgn(v.w, 1) + ' this week';
     wk.title = v.wd ? 'vs the ' + mdy(v.wd) + ' mark' : '';
     document.getElementById('h2-vsn').textContent = (v.s > 0 ? '+' : '') + v.s.toFixed(0) + '% ' + v.sl;
     var u = document.getElementById('h2-vu'); if (u) u.textContent = v.sl === 'since release' ? '100 = release month' : '100 = ' + String(v.sl).replace(/^since /, '');   // the level's unit (Cupertino run 16; lib/home-v2.mjs unitOf says the same)

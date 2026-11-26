@@ -34,6 +34,8 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { createRequire as _cr } from "node:module";
+const { heldShare } = _cr(import.meta.url)("../../js/plain-read.js");   // Q-001 · P69: the plain read's held-move rule, one copy
 
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 export const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -138,7 +140,9 @@ export function buildV2(REPO, opts = {}) {
       h: h.map((r) => [r.date, +r.level.toFixed(2)]),
       r: rc.map((r) => [r.month, +Number(r.level).toFixed(2)]),
       buy: buyFor(tk, v),
-      u: Array.isArray(v.universe) && v.universe.length ? v.universe.length : null,   // the set's card count, for "See all <N> cards ›" (Cupertino run 5, Mo Nov 3)
+      u: Array.isArray(v.universe) && v.universe.length ? v.universe.length : null,
+      // Q-001 · Pokémon KB P69 (Build Loop, Nov 26 2026): held / re-read cards carry most of the move → the row says "re-read", not the %
+      rr: prev && heldShare((v.basket || []).filter((c) => typeof c.price === "number" && c.price > 0 && c.w !== 0)) ? 1 : undefined,   // the set's card count, for "See all <N> cards ›" (Cupertino run 5, Mo Nov 3)
     };
     tabRows[tabOf(tk, v)].push({ tk, rd });
   }
@@ -220,12 +224,12 @@ export function buildV2(REPO, opts = {}) {
   const setRows = Object.entries(T).filter(([tk, v]) => v.w != null && !HELD[tk]).map(([tk, v]) => {
     const pl = v.h.length >= 2 ? v.h.find((p) => p[0] === v.wd) : null;
     const r = Math.log(1 + v.w / 100);
-    return { tk, set: v.n, href: v.p, l: v.l, pl: pl ? pl[1] : +(v.l / (1 + v.w / 100)).toFixed(2), d: v.d, pd: v.wd, r, chg: +v.w.toFixed(1), rets: logRets(v.r.slice(-MV.HIST_MONTHS).map((p) => p[1])), sp: shape(v.r.map((p) => [p[0] + "-15", p[1]]).concat(v.h).sort((a, b) => a[0].localeCompare(b[0])).map((p) => p[1])) };   // shape = monthly recon + the live marks, last 12 points
+    return { tk, rr: !!v.rr, set: v.n, href: v.p, l: v.l, pl: pl ? pl[1] : +(v.l / (1 + v.w / 100)).toFixed(2), d: v.d, pd: v.wd, r, chg: +v.w.toFixed(1), rets: logRets(v.r.slice(-MV.HIST_MONTHS).map((p) => p[1])), sp: shape(v.r.map((p) => [p[0] + "-15", p[1]]).concat(v.h).sort((a, b) => a[0].localeCompare(b[0])).map((p) => p[1])) };   // shape = monthly recon + the live marks, last 12 points
   });
   const sR = setRows.map((s) => s.r), sM = sR.length ? mean(sR) : 0, sS = sdev(sR);
   for (const s of setRows) { const zs = zScores(s.r, s.rets, sM, sS); s.hist = s.rets.length; s.zo = zs.zo; s.zx = zs.zx; s.z = zs.z; s.own = zs.own; s.usual = Math.abs(s.z) < MV.Z_MIN; delete s.rets; }
   const setSide = (dir) => setRows.filter((s) => dir > 0 ? s.r > 0 : s.r < 0).sort((a, b) => dir * (b.z - a.z) || Math.abs(b.chg) - Math.abs(a.chg)).slice(0, MV.CAP);
-  const setMovers = { up: setSide(1), down: setSide(-1), n: setRows.filter((s) => !s.usual).length, total: setRows.length, xsSd: +sS.toFixed(4) };
+  const setMovers = { up: setSide(1), down: setSide(-1), n: setRows.filter((s) => !s.usual && !s.rr).length, total: setRows.length, xsSd: +sS.toFixed(4) };
 
   /* ---- Coming out: data/releases.json ---- */
   const releases = JSON.parse(read("data/releases.json"));
@@ -251,7 +255,7 @@ export function buildV2(REPO, opts = {}) {
     return `<tr role="option" data-tk="${tk}" data-tab="${t.id}" aria-selected="${tk === DEFAULT_TK}" tabindex="0"${ti ? " hidden" : ""}${v.buy ? ` data-buy="${esc(v.buy.h)}" data-buy-l="${esc(v.buy.l)}"` : ""} title="as of ${esc(mdy(v.d))}${v.wd ? " · this week vs " + esc(mdy(v.wd)) : ""}">` +
       `<td class="nm">${esc(v.n)}<small><b>${esc(tk)}</b></small></td>` +
       `<td class="num ib-lvl">${v.l.toFixed(2)}</td>` +
-      `<td class="wk ${cls(v.w)}">${v.w == null ? "—" : (v.w > 0 ? "▲ " : v.w < 0 ? "▼ " : "") + sgn(v.w, 1)}<small>${(v.s > 0 ? "+" : "") + v.s.toFixed(0)}% ${esc(v.sl)}</small></td>` +
+      `<td class="wk ${v.rr ? "flat" : cls(v.w)}">${v.rr ? "re-read" : v.w == null ? "—" : (v.w > 0 ? "▲ " : v.w < 0 ? "▼ " : "") + sgn(v.w, 1)}<small>${(v.s > 0 ? "+" : "") + v.s.toFixed(0)}% ${esc(v.sl)}</small></td>` +
       // Cupertino run 5 (Mo, Nov 3: "I didn't see I could click into each index"): the selected row carries a "›" that opens
       // the set's page; the row click still re-points the chart. Keyboard users open it with the "See all" button.
       `<td class="go"><a class="h2-rgo" href="${esc(v.p)}" tabindex="-1" aria-label="Every card in ${esc(v.n)}">›</a></td></tr>`; }).join("")).join("\n");
@@ -265,7 +269,7 @@ ${rowsHtml}
     <div class="h2-viz">
       <div class="h2-vh">
         <div class="nm" id="h2-vnm">${esc(d0.n)}<small id="h2-vtk">${esc(DEFAULT_TK)} · as of ${esc(mdy(d0.d))}</small></div>
-        <div class="lv"><b id="h2-vlv" data-v="${d0.l}">${d0.l.toFixed(2)}</b><small class="u" id="h2-vu">${esc(unitOf(d0))}</small><span id="h2-vwk" class="${cls(d0.w)}">${d0.w == null ? "first week" : (d0.w > 0 ? "▲ " : d0.w < 0 ? "▼ " : "") + sgn(d0.w, 1) + " this week"}</span><small id="h2-vsn">${(d0.s > 0 ? "+" : "") + d0.s.toFixed(0)}% ${esc(d0.sl)}</small></div>
+        <div class="lv"><b id="h2-vlv" data-v="${d0.l}">${d0.l.toFixed(2)}</b><small class="u" id="h2-vu">${esc(unitOf(d0))}</small><span id="h2-vwk" class="${d0.rr ? "flat" : cls(d0.w)}">${d0.rr ? "move being re-read" : d0.w == null ? "first week" : (d0.w > 0 ? "▲ " : d0.w < 0 ? "▼ " : "") + sgn(d0.w, 1) + " this week"}</span><small id="h2-vsn">${(d0.s > 0 ? "+" : "") + d0.s.toFixed(0)}% ${esc(d0.sl)}</small></div>
       </div>
       <div class="h2-rng" role="group" aria-label="Range" id="h2-rng"><button data-r="1M" aria-pressed="false">1M</button><button data-r="6M" aria-pressed="false">6M</button><button data-r="1Y" aria-pressed="false">1Y</button><button data-r="MAX" aria-pressed="true">Max</button></div>
       <div class="h2-chart" id="h2-chart" aria-live="polite"></div>
@@ -298,8 +302,8 @@ ${rowsHtml}
       (!thin && rows.length < 3 ? `\n<li class="empty">Nothing else moved ${dirWord(dir)} outside its usual range.</li>` : ""); };
   // set rows: set · ticker + the two levels · the two dates (+ "usual range" when |z| < Z_MIN) · 12-month shape · %
   const setLi = (s) => `<li${s.usual ? ' class="usual"' : ""} title="${esc(s.pl.toFixed(2) + " on " + mdy(s.pd) + " → " + s.l.toFixed(2) + " on " + mdy(s.d) + " · z " + z1(s.z) + (s.own ? " (own history " + z1(s.zo) + " · vs the other sets " + z1(s.zx) + ")" : " (vs the other sets only — no monthly history yet)") + " · line: last 12 months")}">` +
-    `<span class="nm"><a href="${esc(s.href)}">${esc(s.set)}</a><small>${esc(s.tk)} · ${s.pl.toFixed(2)} → ${s.l.toFixed(2)}</small><small class="mt">${esc(mdy(s.pd))} → ${esc(mdy(s.d))}${s.usual ? " · usual range" : " · unusual move"}</small></span>` +
-    `<span class="rt">${spark(s.sp)}<span class="ch ${cls(s.chg)}">${sgn(s.chg, 1)}</span></span></li>`;
+    `<span class="nm"><a href="${esc(s.href)}">${esc(s.set)}</a><small>${esc(s.tk)} · ${s.pl.toFixed(2)} → ${s.l.toFixed(2)}</small><small class="mt">${esc(mdy(s.pd))} → ${esc(mdy(s.d))}${s.rr ? " · re-read: most of the move is on cards under review" : s.usual ? " · usual range" : " · unusual move"}</small></span>` +
+    `<span class="rt">${spark(s.sp)}<span class="ch ${s.rr ? "flat" : cls(s.chg)}">${s.rr ? "re-read" : sgn(s.chg, 1)}</span></span></li>`;
   const setList = (dir) => { const rows = setMovers[dir]; return rows.length ? rows.map(setLi).join("\n") : `<li class="empty">No set index moved ${dirWord(dir)} this week.</li>`; };
   const how = `<details class="h2-how"><summary>Show the math ▸</summary><div>` +
     `<p><b>Cards.</b> Priced $${MV.MIN_PX} or more, with at least ${MV.MIN_N} sales behind the new price (the old price came through the same screen; we keep the count behind the newest one), and at least ${MV.MIN_HIST} months of price history. Each move is the change between two medians of the same kind of sale — raw sold prices, same window — never a sold price against an asking price or a graded one.</p>` +
