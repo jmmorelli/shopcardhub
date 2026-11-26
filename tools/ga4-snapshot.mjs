@@ -97,6 +97,10 @@ const REPORTS = {
   // no filter drops /card. GA4's pagePath strips the query string, so every /card?id=... reads as "/card"; cardClicks7
   // keeps the per-card split with pagePathPlusQueryString, restricted to /card paths.
   pageClicks7: { dateRanges: RANGES.d7, dimensions: d("pagePath", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: PAGE_EVENTS7 } } }, orderBys: [{ metric: { metricName: "eventCount" }, desc: true }], limit: 2000 },
+  // Q-011 (Build Loop, Nov 26 2026; BLOCKED "Measurement instrument queue", E24 per-page daily clicks): outbound clicks per
+  // page per data day on the 7-day window (pagePath × date × eventName, OUTBOUND_EVENTS only), so a bet that names one page
+  // can read its clicks day by day instead of only the 7-day sum.
+  pageClicksDaily7: { dateRanges: RANGES.d7, dimensions: d("pagePath", "date", "eventName"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: [...OUTBOUND_EVENTS] } } }, orderBys: [{ dimension: { dimensionName: "date" } }], limit: 5000 },
   cardClicks7: { dateRanges: RANGES.d7, dimensions: d("pagePathPlusQueryString", "eventName"), metrics: m("eventCount"), dimensionFilter: { andGroup: { expressions: [{ filter: { fieldName: "eventName", inListFilter: { values: PAGE_EVENTS7 } } }, { filter: { fieldName: "pagePath", stringFilter: { matchType: "BEGINS_WITH", value: "/card" } } }] } }, orderBys: [{ metric: { metricName: "eventCount" }, desc: true }], limit: 1000 },
   // Page x country (item 2), 7 days, top 500 by sessions. pageCountry7 = every page viewed (sessions here = sessions
   // that viewed the path); landingCountry7 = where the session started, with averageSessionDuration so the same
@@ -342,7 +346,7 @@ async function main() {
   const rep = {};
   // The two distribution reports (added 2026-09-29) are optional: if GA4 rejects one, the snapshot still ships.
   // The Oct 21 2026 instrument reports are optional too: a rejected new report must never cost the nightly file.
-  const OPTIONAL = new Set(["leagueCampaignDaily28", "referralDaily28", "pageClicks7", "cardClicks7", "pageCountry7", "landingCountry7", "instruments7", "ebayClicksByLanding7", "ebayClicksByLanding28", "aiLanding28"]);
+  const OPTIONAL = new Set(["leagueCampaignDaily28", "referralDaily28", "pageClicks7", "cardClicks7", "pageCountry7", "landingCountry7", "instruments7", "ebayClicksByLanding7", "ebayClicksByLanding28", "aiLanding28", "pageClicksDaily7"]);
   for (const [name, body] of Object.entries(REPORTS)) {
     if (!OPTIONAL.has(name)) { rep[name] = await runReport(token, body); continue; }
     try { rep[name] = await runReport(token, body); } catch (e) { console.error(`optional report ${name} skipped: ${String(e.message || e).slice(0, 200)}`); }
