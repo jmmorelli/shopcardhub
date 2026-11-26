@@ -239,6 +239,11 @@ function derive(rep) {
   const ret28 = rep.returning28.rows.find((r) => r.newVsReturning === "returning") || {};
   const ret7 = rep.returning7.rows.find((r) => r.newVsReturning === "returning") || {};
   const ev = (rows, name) => (rows.find((r) => r.eventName === name) || {}).eventCount || 0;
+  // Q-025 (Build Loop, Nov 26 2026, O-77 b): events7 is a top-60-by-count list, so a 1-count newsletter_signup can fall off it
+  // and read 0. The sign-up funnel now reads the filtered per-day instruments7 report (summed over the 7 days) and keeps the
+  // larger of the two, so a real sign-up is never lost to the cut. signup_submit / signup_view were not in the summary at all.
+  const ins = (name) => (rep.instruments7 && Array.isArray(rep.instruments7.rows)) ? rep.instruments7.rows.filter((r) => r.eventName === name).reduce((a, r) => a + (Number(r.eventCount) || 0), 0) : 0;
+  const funnel = (name) => Math.max(ev(rep.events7.rows, name), ins(name));
   return {
     // The two standing metric rulings (STATE.md, 2026-09-16): organic-channel KE rate beside the blended, never instead.
     sessions28: (rep.totals28.rows[0] || {}).sessions ?? tot(ch28, "sessions"), keyEvents28: (rep.totals28.rows[0] || {}).keyEvents ?? tot(ch28, "keyEvents"),
@@ -254,7 +259,7 @@ function derive(rep) {
     returningUsers28: ret28.activeUsers || 0, returningShare28: (() => { const all = tot(rep.returning28.rows, "activeUsers"); return all ? +((ret28.activeUsers || 0) / all * 100).toFixed(2) : null; })(),
     returningShare7: (() => { const all = tot(rep.returning7.rows, "activeUsers"); return all ? +((ret7.activeUsers || 0) / all * 100).toFixed(2) : null; })(),
     clicks7: ev(rep.events7.rows, "click"), buystripClicks7: ev(rep.events7.rows, "buystrip_click"), buyboxClicks7: ev(rep.events7.rows, "buybox_click"),
-    trackCardFromPage7: ev(rep.events7.rows, "track_card_from_page"), newsletterSignup7: ev(rep.events7.rows, "newsletter_signup"),
+    trackCardFromPage7: ev(rep.events7.rows, "track_card_from_page"), newsletterSignup7: funnel("newsletter_signup"), signupSubmit7: funnel("signup_submit"), signupView7: funnel("signup_view"),
     // box screener (Box Desk, Oct 20 2026; spec §7 kill read: ≥ 25% of BHB sessions interact by Nov 19, < 10% by Dec 17 strips it back)
     boxSort7: ev(rep.events7.rows, "box_sort"), boxFilter7: ev(rep.events7.rows, "box_filter"), boxProfile7: ev(rep.events7.rows, "box_profile"),
     keyEventsYesterday: (rep.daily28.rows.at(-1) || {}).keyEvents ?? null, sessionsYesterday: (rep.daily28.rows.at(-1) || {}).sessions ?? null,
