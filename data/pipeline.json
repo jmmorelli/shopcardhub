@@ -7001,6 +7001,19 @@
           "gates": "audit-prices FAIL 0 / WARN 60 · audit-site FAIL 0 / WARN 3 (831 pages) · audit-terminal FAIL 0 / WARN 1 · price-truth sweep RED 0 (base 0/63 · 0/3 · 0/1). Docs only, no regen.",
           "liveVerified": "2026-11-26 curl after 90 s: claude/cos/STATE.md on main starts RUN LOG with 'Nov 26 ~01:11–01:50 UTC', 20,748 B (< 21 KB, O-103)",
           "note": "CoS STATE run log + archive pass of 2026-11-26, NEEDS-MO Nov 26 block. Does not deploy (vercel ignore list). Patch bytes taken from the session transcript of project_read (no /mnt/project), sha256 5b5dd97f…80ae, 29,201 B, applied clean on 550b203 (main had moved from base b05d6323; no conflict). Rollback: git revert 50a65ff."
+        },
+        {
+          "date": "2026-11-26",
+          "commits": [
+            "b845fa33",
+            "88ae2019",
+            "63c6b8c4",
+            "edc93061"
+          ],
+          "by": "Ship Desk (scheduled, cloud, LANE-RULES R48) — mailbox: pending-control-room.patch.txt (Control Room Designer) + pending.patch.txt (Coverage Builder + Cupertino run 27)",
+          "gates": "audit-prices FAIL 0 / WARN 59 · audit-site FAIL 0 / WARN 3 (840 pages) · audit-terminal --feed FAIL 0 / WARN 1 · price-truth sweep RED 0 / AMBER 27 / GREEN 49 (base 0/59 · 0/3 · 0/1). Regen: build-coverage-cards --gstar, build-card-template --tickers=trk,gstar, build-nav (0 written).",
+          "liveVerified": "2026-11-26 ~14:50Z curl after 95 s: /control-room footer 'Design updated Nov 26, 2026: the Idea board…' (1) · card-search.json trk rows 47 (was 35) · /card-mew-1-southern-islands 200 · site-fixes.css '0f++. The guide body tiles (run 27)' (1). Playwright --deep 1440 + iPhone 13 (GA + eBay aborted) on /topps-chrome-updates-basketball, /pokemon-delta-reign-2026, /bowman-chrome-baseball-2026, /card-mew-1-southern-islands, /control-room: no sideways scroll, CLS 0 on all; only console error = signed-out 401 on /control-room.",
+          "note": "Control Room Idea board tally + ruling chips (b845fa33); 12 more TRK cards incl. 9 new static pages (88ae2019 data + edc93061 regen); guide-page tiles calm, CSS only (63c6b8c4). Patch bytes lifted from the session transcript of project_read (no /mnt/project): sha256 08b831b0… 8,696 B ✓ and d6cb79ff…cf87 247,144 B ✓; git am -3 clean on 38fd88d7. Rollback: git revert 63c6b8c4 (CSS) / git revert edc93061 88ae2019 + regen (TRK) / git revert b845fa33 (Control Room)."
         }
       ]
     },
