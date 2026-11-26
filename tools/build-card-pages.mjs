@@ -251,8 +251,9 @@ const CLIENT_JS = `
     $('cp-sup').textContent = c.supply != null ? String(c.supply) : '\\u2014';
     if (c.supplyChange30 != null) $('cp-sup-s').textContent = (c.supplyChange30>0?'+':'') + c.supplyChange30.toFixed(0) + '% vs 30d';
     var sig = $('cp-sig'); var s = String(c.signal||'HOLD').toUpperCase(); var gated = !!c.gated || (c.signalRaw && c.signalRaw !== c.signal);
-    sig.className = 'cp-sig ' + s.toLowerCase();
-    sig.innerHTML = '<span>engine \\u00b7 ' + esc(s) + '</span>' + (C.hold ? '<span style="opacity:.7">\\u00b7 mark held</span>' : gated ? '<span style="opacity:.7">\\u00b7 gated, thin sample</span>' : '');
+    /* O-90 a (CoS ruling Nov 25, Q-024): the badge is labelled "Engine (asks)" and never shows BUY/SELL/HOLD or its colour, so it cannot read as a buy call. Display only. */
+    sig.className = 'cp-sig';
+    sig.innerHTML = '<span>Engine (asks)</span>' + (C.hold ? '<span style="opacity:.7">\\u00b7 mark held</span>' : gated ? '<span style="opacity:.7">\\u00b7 gated, thin sample</span>' : '');
     var why = (c.reasons||[])[0];
     /* HOLD-TXT (Night Crew Nov 25, O-88): the engine's hold reason names an internal desk and a re-mark date. Readers get plain words; display only. */
     if (C.hold || /^held by /i.test(String(why||''))) $('cp-why').textContent = 'Price paused while we re-check the sales behind it. Some listings we counted were a different card.';
@@ -415,7 +416,7 @@ ${nav}
   </div>
   <div class="cp-actions">
     <button class="sch-track-card" data-name="${attr(c.label)}" data-set="${attr(f.set)}" data-cat="${attr(f.cat)}" data-grade="Raw" data-feed="ebay:${attr(c.id)}">&#9733; Track this card</button>
-    <span class="cp-sig hold" id="cp-sig"><span>engine · —</span></span>
+    <span class="cp-sig" id="cp-sig"><span>Engine (asks)</span></span>
     <a class="cp-jump" href="#live">Live listings &#8595;</a>
   </div>
   <div class="cp-note" id="cp-why" style="margin:-14px 0 22px;"></div>
