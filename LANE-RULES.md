@@ -1329,6 +1329,43 @@ files are read byte-exact from the Project's files on disk when the run has them
 the first run that sees it (the Ship Desk, Ops, the daily review, or the lane itself): what is stuck, since when, and the one thing
 that would free it. "Needs an attended session" is not a place to park a ship blocker.
 
+## R49 · One queue, one build loop; a fix is ranked, never slotted to a weekday (Mo, attended, 2026-11-25 — "figure out what you need to chief and do it!")
+
+**Incident.** On Nov 25 three wrong-number 🔴s (P69, G22 L10, the worth-page figures) were live and "slotted" to Night Crew Fri Nov 27
+and Mon Nov 30, because a build could only start when a lane's clock fired and Night Crew's cap of five was full. Work to build sat in
+five places (BLOCKED, the NC backlog, the weekly backlog, the bets, the ledger). The gates take 45 seconds and cloud pushes work (R48):
+nothing but the calendar was holding a ready fix. Mo, same day: the site should be worked continuously, like a repo where agents plan,
+build, test and merge on their own at all hours.
+
+**(a) One queue.** `claude/queue/QUEUE.md` (Project doc) is the only list of site changes waiting to be built. One row = one change:
+id, tier (R44 b), goal (G1/G2/G3/CHORE), what ships, where the detail is, the live check that proves it, status
+(`ready` · `building <UTC time>` · `shipped <sha>` · `blocked <why>` · `needs-mo` · `dropped <why>`). Order: P0, then P1, then P2; inside
+a tier, top row first. Only the CoS (attended, review, intake) re-ranks.
+
+**(b) The Build Loop** (cloud, every hour, push authority under R48 a; charter `claude/queue/CHARTER.md`) takes the top `ready` row,
+builds it on a fresh `origin/main`, runs `bash tools/gate.sh --base origin/main`, pushes, checks it live, marks the row, and takes the
+next one. It reverts its own commit on a live regression. It stops a row after two failed fix rounds (R44 c) and marks it `blocked`.
+
+**(c) One gate command.** `bash tools/gate.sh --base origin/main` is the three gates (R24) as one pass/fail: FAIL 0 and no gate's WARN
+count above the base. Every pushing lane may use it; its one summary line goes in the lane's log. R24's independent re-run is unchanged.
+
+**(d) Every other lane.** A finding that needs a build is filed where the lane files today; the Loop's intake and the CoS review turn
+it into a row the same day. **No review, ledger or lane assigns a build to a weekday or to "Night Crew Fri"; it sets the tier and the
+row's place.** Lanes that push their own lane's work (price lanes, Price Truth, Commissioner, Site Sweep, Cupertino via the mailbox,
+Coverage Builder) keep doing so. Before building anything that is also a QUEUE row, a lane reads the row: `building` or `shipped` means
+leave it; `ready` means write `building <UTC time>` first. Night Crew keeps its Bug Hunter and First-Time Visitor reads and builds only
+`ready` rows it has claimed; its findings become rows.
+
+**(e) Brakes — the Loop never:** types or edits a price, level, mark, verdict or `data/*.json` value by hand (figures come from the
+marks files through the generator, dated, with n); edits inside a generated marker block (change the generator, run the regen); touches
+`calls.json`, price-lane data paths or an index universe; makes visible an email capture, alert or new email type (Mo, Nov 25); adds a
+301, delete, noindex or sitemap removal while the no-cull rule stands; posts, emails, signs in, spends, or changes a scheduled task.
+A row that needs any of these is `needs-mo` or goes to the lane that owns it. At most 3 public commits per run (Vercel builds one at a
+time; Sep 21 cadence cut); docs ride with a public commit.
+
+**(f) The number.** Hours from `ready` to live, and rows shipped per week, in `claude/queue/LOG.md`. First read Wed Dec 9 by the CoS:
+median under 24 h and at least 10 rows a week, or the Loop is re-scoped. R48 (d)'s 24-hour rule now applies to every `ready` P0 row.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
