@@ -7,6 +7,7 @@
 // so the page paints from the map with zero API calls. Re-run whenever a list page changes.
 //
 // Usage: node tools/price-engine/resolve-page-images.mjs [page.html …]   (default: all *.html)
+//        node tools/price-engine/resolve-page-images.mjs --prune-missing=<page.html>   (drop a deleted page's entries; no fetch)
 // Env: SITE_URL (default https://www.shopcardhub.com) · FORCE=<regex> re-resolves matching keys inside the 14-day cache
 // Cloud runs: NODE_USE_ENV_PROXY=1 NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt
 // Oct 14 2026 (Photo Keeper): an entry carrying "official": true is a hand-set official scan (images.pokemontcg.io /
@@ -20,11 +21,28 @@ const OUT = "data/card-images.json";
 const TCG = "183454"; // eBay: Collectible Card Games > CCG Individual Cards
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const FORCE = process.env.FORCE ? new RegExp(process.env.FORCE, "i") : null;
-const files = process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync(".").filter((f) => f.endsWith(".html"));
+// Nov 26 2026 (Build Loop Q-015, weekly backlog Nov 25): `--prune-missing=<page.html>` drops the map entries of that page when
+// the file no longer exists AND no live page still carries the key (roy-watch-2026.html, 9 keys), writes, and exits without
+// fetching. One page per call, by name: a dry count on Nov 26 found 72 entries across several missing pages, and only the
+// roy-watch ones were ruled out (Photo Keeper, weekly Nov 25).
+const PRUNE = (process.argv.find((a) => a.startsWith("--prune-missing=")) || "").split("=")[1] || null;
+const files = process.argv.slice(2).filter((f) => !f.startsWith("--")).length ? process.argv.slice(2).filter((f) => !f.startsWith("--")) : fs.readdirSync(".").filter((f) => f.endsWith(".html"));
 
 const out = (() => { try { return JSON.parse(fs.readFileSync(OUT, "utf8")); } catch { return { cards: {} }; } })();
 out.cards = out.cards || {};
 const unesc = (s) => s.replace(/&#x27;/g, "'").replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+if (PRUNE) {
+  const live = fs.readdirSync(".").filter((f) => f.endsWith(".html")).map((f) => fs.readFileSync(f, "utf8")).join("\n");
+  const carried = new Set([...live.matchAll(/data-card-img="((?:ph|name):[^"]+)"/g)].map((m) => unesc(m[1])));
+  let dropped = 0;
+  for (const [k, v] of Object.entries(out.cards)) {
+    const pg = v && v.page;
+    if (pg === PRUNE && !fs.existsSync(pg) && !carried.has(k)) { delete out.cards[k]; dropped++; console.log("drop", pg, k.slice(0, 48)); }
+  }
+  fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
+  console.log(JSON.stringify({ dropped, total: Object.keys(out.cards).length }));
+  process.exit(0);
+}
 
 const RARITY = /\b(IR|SIR|UR|HR|AR|SAR|DR|ACE|RR|SR)\b/g; // rarity codes are ours, not sellers' — they break eBay's AND search
 const normNum = (s) => s.replace(/\b0*(\d+)\/0*(\d+)\b/g, "$1/$2"); // 090/084 and 90/84 are the same card
@@ -87,7 +105,18 @@ const asMarkers = (f) => {
   return (d.cards || []).filter((c) => c && typeof c.img === "string" && c.img.startsWith("name:"))
     .map((c) => '<span data-card-img="' + esc(c.img) + '" data-card-sub="pokemon">').join("\n");
 };
+const save = () => {
+  out.generated = new Date().toISOString();
+  // R17 (2026-09-23): no raw eBay listing title or listing price is ever written to this public file.
+  // R17 (CoS weekly 2026-11-18, ruling of Nov 4): no listing price as `px` either — the "vs sold mark" chip stays dark until it reads a labelled ask from our own feed.
+  for (const c of Object.values(out.cards || {})) { if (c) { delete c.title; delete c.price; delete c.px; } }
+  fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
+};
+// Nov 26 2026 (Q-015): a missing page file is skipped with a warning (it used to stop the run with ENOENT and write nothing),
+// and whatever resolved before an unexpected error is still saved.
+try {
 for (const f of files) {
+  if (!fs.existsSync(f)) { console.warn("skip", f, "(file not found)"); continue; }
   const html = f.endsWith(".json") ? asMarkers(f) : fs.readFileSync(f, "utf8");
   const re = /<span[^>]*data-card-img="((?:ph|name):[^"]+)"[^>]*>/g;
   let m;
@@ -122,9 +151,5 @@ for (const f of files) {
     await sleep(500);
   }
 }
-out.generated = new Date().toISOString();
-// R17 (2026-09-23): no raw eBay listing title or listing price is ever written to this public file.
-// R17 (CoS weekly 2026-11-18, ruling of Nov 4): no listing price as `px` either — the "vs sold mark" chip stays dark until it reads a labelled ask from our own feed.
-for (const c of Object.values(out.cards || {})) { if (c) { delete c.title; delete c.price; delete c.px; } }
-fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
+} finally { save(); }
 console.log(JSON.stringify({ ok, miss, cached, total: Object.keys(out.cards).length }));
