@@ -718,6 +718,27 @@ function weekBase(h) {
   for (let i = h.length - 2; i >= 0; i--) if ((new Date(last.date) - new Date(h[i].date)) / 86400000 >= 5 && h[i].level > 0) return h[i];
   return null;
 }
+/* Q-044 (Build Loop, Nov 26 2026; Growth Lab LAB-2, hypothesis H4, CoS-approved): a "Quote this" line under the plain read on four
+   index pages, so a writer can cite the set number in one copy. Every value is read from data/indices.json here: the latest market
+   mark's level and date, and the move against the newest market mark at least 7 days before it. No 7-day pair, or a latest mark that
+   holds or carries a card, → level and date only. Copy = the sentence + the page's plain URL (no tag, no eBay link) and GA4 quote_copy. */
+const QUOTE_TICKERS = new Set(["BB26", "BCB26", "BS99", "NG1E"]);
+const MON3 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function quoteLine(x, c, h) {
+  if (!QUOTE_TICKERS.has(x.ticker) || !x.page || !h.length) return "";
+  const last = h[h.length - 1];
+  if (!(last.level > 0)) return "";
+  let base = null;
+  for (let i = h.length - 2; i >= 0; i--) if ((new Date(last.date) - new Date(h[i].date)) / 86400000 >= 7 && h[i].level > 0) { base = h[i]; break; }
+  const held = /held|carried|re-read/i.test(String(last.note || ""));
+  const d = String(last.date).slice(0, 10).split("-"), when = `${MON3[+d[1] - 1]} ${+d[2]}, ${d[0]}`;
+  const setName = String(c.name || x.name || x.ticker).replace(/\s+Index$/i, "");
+  const mv = base && !held ? (last.level / base.level - 1) * 100 : null;
+  const sent = `${setName} index ${last.level.toFixed(2)}${mv == null ? "" : `, ${mv >= 0 ? "+" : "−"}${Math.abs(mv).toFixed(1)}% in 7 days`} (ShopCardHub, marks through ${when})`;
+  const url = "https://www.shopcardhub.com" + x.page;
+  const js = `var b=this,t=b.parentNode.getAttribute('data-quote')+' '+b.getAttribute('data-url');(navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='Copied'},function(){window.prompt('Copy this line',t)});if(typeof gtag==='function')gtag('event','quote_copy',{ticker:'${x.ticker}'})`;
+  return `<p class="sidx-quote" data-quote="${esc(sent)}" data-tk="${x.ticker}" style="min-height:2.6em;margin:10px 0 0;font-size:13px;line-height:1.4;display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span><b>Quote this:</b> ${esc(sent)}</span><button type="button" class="sidx-quote-btn" data-url="${url}" onclick="${js}" style="font:inherit;font-size:12px;padding:3px 10px;border:1px solid currentColor;border-radius:4px;background:transparent;color:inherit;cursor:pointer">Copy</button></p>`;
+}
 function block(x, c, opt = {}) {
   // B67 (Oct 9 2026): the index IS the page on a standalone index page, so its title is the page's one <h1>;
   // on a host page that already has an <h1> (the 30th guide) the block keeps an <h2>. bake() decides.
@@ -894,6 +915,7 @@ function block(x, c, opt = {}) {
   </div>
   <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>
   ${parts ? parts.read : ""}
+  ${quoteLine(x, c, h)}
   <!-- SIDX:BUY -->
   ${parts ? parts.tiles : ""}
   ${PRINTS[x.ticker] ? `<p class="sidx-sib">Same set, other prints — each its own index: ${PRINTS[x.ticker].filter((t) => t !== x.ticker && CONFIG[t]).map((t) => `<a href="${CONFIG[t].page}">${t} · ${esc(PRINT_LBL[t])}</a>`).join(" · ")}</p>` : ""}
