@@ -1127,8 +1127,12 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
         .map(function(c){ return { c:1, u:SPAGE[c.id] || '/card?id='+c.id, t:esc(c.t), s:esc(c.s), pr:c.p == null ? '' : money(c.p) }; }); }
     function find(q){ q = nk(q); if(!q) return []; return INDEX.filter(function(it){ return it.n.indexOf(q) > -1; }); }
     // B74: cards first (the baked card pages, then the card list, dearest first), pages after under one label
-    function all(q){ var hit = find(q), cp = hit.filter(function(it){ return it.c; }).sort(function(a,b){ return a.u.length - b.u.length; }).slice(0,3), pg = hit.filter(function(it){ return !it.c; }).slice(0,4), cd = findCards(q), cards = cp.concat(cd);
-      if (!cards.length) return pg; return pg.length ? cards.concat([{h:'Pages'}], pg) : cards; }
+    // Q-026/T2-SRCH (Build Loop, Nov 26 2026): a query whose first word names a set ("prismatic") answers "is this set up or down?"
+    // first: that set's index row leads, as on the home box and /search ("prismatic" had PRIS25 9th, under 8 card rows).
+    function lead(q, hit){ var k = nk(q).split(' ')[0]; if (!k) return null; for (var i = 0; i < hit.length; i++){ var it = hit[i]; if (!it.c && /-index$|^\/indices$/.test(it.u) && nk(it.t).split(' ').indexOf(k) > -1) return it; } return null; }
+    function all(q){ var hit = find(q), ld = lead(q, hit), cp = hit.filter(function(it){ return it.c; }).sort(function(a,b){ return a.u.length - b.u.length; }).slice(0,3), pg = hit.filter(function(it){ return !it.c && it !== ld; }).slice(0,4), cd = findCards(q), cards = cp.concat(cd);
+      var rest = !cards.length ? pg : pg.length ? cards.concat([{h:'Pages'}], pg) : cards;
+      return ld ? [{h:'Set index'}, ld].concat(rest.length && !rest[0].h ? [{h: cards.length ? 'Cards' : 'Pages'}] : [], rest) : rest; }
     input.addEventListener('focus', loadCards);
     input.addEventListener('input', function(){ var v = input.value; render(all(v)); if (!CARDS) loadCards().then(function(){ if (input.value === v) render(all(v)); }); });
     input.addEventListener('keydown', function(e){
