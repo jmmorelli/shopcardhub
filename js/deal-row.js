@@ -89,6 +89,17 @@
           '</div>';
         }).join('') + '</div>' +
         '<p class="dlr-fine">Screened ' + esc(screened) + '. The screen runs once a day, each morning. <a href="/deals">Every listing under our mark →</a> ShopCardHub earns a commission on eBay purchases made through these links.</p>';
+      // No layout shift (Q-018, Nov 26 2026): if the empty slot sits on the visitor's screen when the feed answers, the block
+      // moves down past the element that crosses the bottom of the screen, so nothing already on screen is pushed.
+      var vh = window.innerHeight || document.documentElement.clientHeight, nx = box.nextElementSibling;
+      while (nx && (nx.tagName === 'SCRIPT' || nx.tagName === 'STYLE')) nx = nx.nextElementSibling;
+      var slot = nx ? nx.getBoundingClientRect().top : NaN;
+      if (slot >= 0 && slot < vh) {
+        for (var el = nx; el; el = el.nextElementSibling) {
+          if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') continue;
+          if (el.getBoundingClientRect().bottom >= vh) { if (el.tagName !== 'FOOTER') el.parentNode.insertBefore(box, el.nextSibling); break; }
+        }
+      }
       box.hidden = false;
       Array.prototype.forEach.call(box.querySelectorAll('a.dl-buy'), function (a) {
         a.addEventListener('click', function () { if (window.gtag) gtag('event', 'click', { link_url: 'ebay', item: cid, card: a.getAttribute('data-card'), grade: a.getAttribute('data-grade'), kind: 'deal', page: location.pathname }); });
