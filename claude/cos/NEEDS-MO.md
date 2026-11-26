@@ -11,6 +11,15 @@ talk to each other so I don't have to be involved" and "I agree with all your ve
 
 ---
 
+## 2026-11-26 — desk (Wed Nov 25 evening slot, ran ~17:11 PT, verified live). Nothing new needs you
+
+- Still yours: **impact.com (Fanatics) payment details**, account 7388044, ~5 min. TAG is still reviewing us, so nothing of yours is waiting there.
+- Still open: **yes/no on the "Follow this set" Monday email** (control room A-08). It's built switched off until you say yes; no answer by Wed Dec 2 and the CEO Desk re-decides.
+- Still open: **YouTube's "altered or synthetic content" question** (yes/no, A-04).
+- Still open: **four scheduled runs can't push to GitHub** (this desk was refused again tonight). The fix is one new chat with the shopcardhub repo attached. The 6:41 AM Ship Desk carries their work meanwhile.
+
+*Not yours:* your signup-box hide is live on the site. Ivan found two small wording slips on box pages: a Holiday box page that shows two different mega box prices, and two pages whose card tables call six-week-old asks "live". Both go to their page owners for Thursday night's patches.
+
 ## 2026-11-25 — Mo in chat, after the weekly. Answered; the list is updated
 
 - **Signup boxes: CLOSED. Mo picked (b), hide.** Every email capture, the Signal Alerts box, the home Tape tile, the /track-record form and every "Tuesday Tape" link are now hidden site-wide (commit "Hide every email capture…", in the Ship Desk mailbox). They come back when the Tape comes back or a better idea replaces it. The per-page price alert planned for Dec 1 does not go up without Mo's word.
