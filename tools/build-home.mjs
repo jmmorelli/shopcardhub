@@ -120,7 +120,8 @@ if (INIT_V2 || !/<!-- HOME:idxbox:START -->/.test(html)) {
   // · css v=8 Nov 6 2026: Site Sweep, 44 px tap area on "All N sets →"
   // · css v=10 / js v=7 Nov 15 2026: Cupertino run 16, the home second pass (the level's unit, "›", the scroll flow on /)
   // · js v=8 Nov 20 2026: Night Crew INSTR-HOME2, home2_index_open sent as a beacon before a first-tap navigation
-  html = html.replace(/\/css\/home-v2\.css\?v=\d+/, "/css/home-v2.css?v=10");
+  // · css v=11 Nov 26 2026: Build Loop Q-014, mini-chart svg text 10 → 11 px
+  html = html.replace(/\/css\/home-v2\.css\?v=\d+/, "/css/home-v2.css?v=11");
   if (!/\/js\/scroll-flow\.js/.test(html)) html = html.replace(/(<script src="\/js\/home-v2\.js[^"]*" defer><\/script>)/, '$1\n<script src="/js/scroll-flow.js?v=3" defer></script>');
   html = html.replace(/\n\s*<!-- Night Crew Oct 8 \(NEW-1\)[\s\S]*?<\/script>(?=\n\s*<\/head>)/, "");
   html = html.replace(/<div class="term" data-prices-updated=/, '<div class="term h2-page" data-prices-updated=');

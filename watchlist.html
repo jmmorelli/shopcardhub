@@ -363,6 +363,8 @@
       .vc-price .vc-sub { flex-basis:100%; }
       .vc-id .sch-cimg-card { width:84px !important; height:118px !important; }
       .vc-spark { display:none; }
+      /* Nov 26 2026 (Build Loop Q-014, UX Auditor Nov 25): the open card's title wrapped to 3 lines at 390; 17 px, 2 lines at most (full name in its title attribute) */
+      .vcard.open .vc-name { font-size:17px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
     }
     @media (max-width:540px) {
       .kpi-strip { grid-template-columns:repeat(2,1fr); gap:8px; }
