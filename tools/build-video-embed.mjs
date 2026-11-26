@@ -44,7 +44,10 @@ const CSS = `<style id="sch-video-css">
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const fmtDate = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ""); return m ? `${MONTHS[+m[2] - 1]} ${+m[3]}, ${m[1]}` : esc(iso || ""); };
-const KIND = { breakdown: "Release breakdown" };
+const KIND = { breakdown: "Release breakdown", answer: "Video answer" };
+// Q-008 (Build Loop, Nov 26 2026; O-81): an answer video sits on a tool page, not an index, so its caption points at the tool.
+const CAPTION = { breakdown: "The numbers in the video are the marks of its recording date; the index above is the live read.",
+  answer: "The numbers in the video are from its recording date; the tool on this page is the live read." };
 
 function videoTile(v) {
   if (!/^[A-Za-z0-9_-]{6,20}$/.test(v.id || "")) throw new Error(`bad YouTube id: ${JSON.stringify(v.id)}`);
@@ -54,13 +57,13 @@ function videoTile(v) {
   <p class="sch-video-eyebrow">${esc(eyebrow)}</p>
   <h2 class="sch-video-h">${esc(v.title)}</h2>
   <div class="sch-video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${v.id}" title="${esc(v.title)}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
-  <p class="sch-video-cap">Published ${fmtDate(v.date)} on the ShopCardHub YouTube channel. The numbers in the video are the marks of its recording date; the index above is the live read.</p>
+  <p class="sch-video-cap">Published ${fmtDate(v.date)} on the ShopCardHub YouTube channel. ${CAPTION[v.kind] || CAPTION.breakdown}</p>
   <a class="ds-more sch-video-more" href="${CHANNEL}" target="_blank" rel="noopener">More breakdowns on the ShopCardHub YouTube channel</a>
 </div>`;
 }
 
 function block(videos) {
-  return `${START_FULL}\n${CSS}\n<section class="sch-video" id="video" aria-label="Release breakdown video">\n${videos.map(videoTile).join("\n")}\n</section>\n${END}`;
+  return `${START_FULL}\n${CSS}\n<section class="sch-video" id="video" aria-label="${videos.every((v) => v.kind === "answer") ? "Video answer" : "Release breakdown video"}">\n${videos.map(videoTile).join("\n")}\n</section>\n${END}`;
 }
 
 // Where a NEW block goes: directly under the index block — right after its <!-- TK:END --> marker (the last
@@ -72,9 +75,18 @@ function block(videos) {
 // no TK:END follows it. There the tile goes right after <!-- PLAIN-READ:HOW:END --> (chart → plain read → sealed → chase →
 // card table → "How this index works", then the tile), so no eBay link on the page moves; <!-- CHASE:END --> is the
 // fallback when a page has no method block.
+// Q-008 (Nov 26 2026): a page with no index chart (a tool page) gets the tile directly before the section headed
+// "How the Break-Even Works" — below the tool and its tables, never on the first screen. No such heading: skipped and named.
+const NO_CHART_BEFORE_H2 = "How the Break-Even Works";
 function insertionPoint(html) {
   const chart = html.indexOf('class="idx-chart"');
-  if (chart === -1) return -1;
+  if (chart === -1) {
+    const h = html.indexOf(`<h2>${NO_CHART_BEFORE_H2}</h2>`);
+    if (h === -1) return -1;
+    const sec = html.lastIndexOf("<section", h);
+    if (sec === -1) return -1;
+    return html.lastIndexOf("\n", sec) + 1;
+  }
   const starts = [...html.slice(0, chart).matchAll(/<!-- ([A-Z0-9]+):START -->/g)];
   if (!starts.length) return -1;
   const endTag = `<!-- ${starts[starts.length - 1][1]}:END -->`;
