@@ -1,6 +1,6 @@
 {
  "_comment": "UPCOMING RELEASES panel on / (homepage rework, Sep 19 2026). Rendered by tools/build-home.mjs (HOME:releases) and re-filtered client-side by js/home.js so a past date drops off between Monday re-bakes. Hand-curated: only dates read from the named source, never guessed. status = confirmed (a dated line on the maker's calendar) | expected (a window a calendar publishes without a day — shown with its window text, no fake day). href only to a page that exists (build-home refuses otherwise). Keep ~10 upcoming; keep past rows for 30 days (the /release-calendar page shows them under 'Just released' — the 'X release date' searches keep coming for weeks after the date), prune older. `q` = the eBay search for the sealed product (used by tools/build-release-calendar.mjs; falls back to the label); `cat` = eBay category id when not sports cards (183456 = CCG sealed).",
- "asOf": "2026-11-18",
+ "asOf": "2026-11-26",
  "sources": {
   "topps": "https://www.topps.com/release-calendar (read 2026-10-22)",
   "bowman-chrome-mega": "https://www.topps.com/pages/bowman-chrome-baseball (Mega boxes available September 23 at 12pm ET)",
@@ -279,15 +279,15 @@
    "source": "https://www.steelcitycollectibles.com/i/2026-27-topps-basketball-hobby-box (read 2026-10-11: 'Presale Releases: 11/5/26', 'RELEASES 11/5/26 SUBJECT TO CHANGE', 'Release Date: 11/5/26'; read 10/22/26 on 2026-10-04); https://www.checklistinsider.com/2026-27-topps-flagship-basketball (updated 2026-10-06, read 2026-10-11: 'Release Date: November 5, 2026', Hobby/Jumbo and Blaster Nov 5, Mega Nov 12); https://www.topps.com/release-calendar (read 2026-10-11: no Flagship Basketball date in the Oct 11–25 window or the spotlight). ONE row only, same label: replaces the Oct 22 row (integrate.mjs applies this Oct 4-published manifest after topps-update-series-2026's Sep 26 row with the same label).; https://www.topps.com/release-calendar (read 2026-10-22: 'Thursday, Nov 5 at 5:00 AM UTC 2026-27 Topps Flagship Basketball')"
   },
   {
-   "date": "2026-11-05",
+   "date": "2026-11-10",
    "family": "pokemon",
    "sport": "PKMN",
    "label": "McDonald's Pokémon TCG Happy Meal (30th, US)",
-   "note": "reported, not announced by McDonald's or Pokémon · 15 cards, 4-card packs with 1 holo · end date Dec 9 or Dec 19 (sources differ) · no checklist yet",
-   "status": "reported",
-   "href": null,
+   "note": "US start Nov 10 · 15-card set numbered 001/015–015/015, 7 foil",
+   "status": "confirmed",
+   "href": "/mcdonalds-pokemon-cards-2026",
    "q": "2026 McDonalds Pokemon cards happy meal",
-   "source": "https://www.soleretriever.com/news/articles/mcdonalds-pokemon-happy-meal-trading-card-collab-november-2026 (Sep 28 2026, read 2026-10-06: Nov 5–Dec 19, 15 cards, US; 'hasn't been formally announced by either party, but leaks report…'; its embedded @PokeTCGAlerts post says Dec 9); https://www.nintendolife.com/news/2026/09/pokemon-cards-are-seemingly-returning-to-mcdonalds-happy-meals-soon (Sep 28 2026, read 2026-10-06: 5th November – 9th December US, 15 cards, via PokéBeach; 'McDonald's itself hasn't officially revealed the promotion just yet'). Pokémon GO Hub (Oct 5, Nov 5–Dec 9) is cited in claude/cos/x-daily-2026-10-05.md; its URL was not re-located today. New row; no page until a checklist prints (BRIEF Oct 5 demand)."
+   "source": "https://essential-japan.com/news/pokemon-and-mcdonalds-officially-confirm-30th-anniversary-happy-meal-collab-as-toys-and-cards-revealed/ (Oct 29 2026, KB re-read Nov 2 2026: US from Nov 10, 15 cards, 7 foil); earlier reports: https://www.soleretriever.com/news/articles/mcdonalds-pokemon-happy-meal-trading-card-collab-november-2026 (Sep 28 2026, read 2026-10-06: Nov 5–Dec 19, 15 cards, US; 'hasn't been formally announced by either party, but leaks report…'; its embedded @PokeTCGAlerts post says Dec 9); https://www.nintendolife.com/news/2026/09/pokemon-cards-are-seemingly-returning-to-mcdonalds-happy-meals-soon (Sep 28 2026, read 2026-10-06: 5th November – 9th December US, 15 cards, via PokéBeach; 'McDonald's itself hasn't officially revealed the promotion just yet'). Pokémon GO Hub (Oct 5, Nov 5–Dec 9) is cited in claude/cos/x-daily-2026-10-05.md; its URL was not re-located today. New row; no page until a checklist prints (BRIEF Oct 5 demand)."
   },
   {
    "date": "2026-11-06",
@@ -431,7 +431,7 @@
    "family": "pokemon",
    "sport": "PKMN",
    "label": "30th Celebration — wave 5 (ex Tins)",
-   "note": "$21.99 tins; ICv2 also dates a $31.99 Binder Collection here, TCGplayer has a Binder Collection Oct 2",
+   "note": "$21.99 tins; Binder Collection $31.99 (pokemon.com dates it Dec 4; first listed Oct 2)",
    "status": "confirmed",
    "href": "/pokemon-30th-anniversary-2026",
    "q": "pokemon 30th celebration",
@@ -449,6 +449,18 @@
    "href": null,
    "q": "2026 Bowman Draft Baseball hobby box",
    "source": "https://www.midwestcards.com/release-calendar (read 2026-11-18)"
+  },
+  {
+   "date": "2027-02-06",
+   "family": "pokemon",
+   "sport": "PKMN",
+   "label": "Flowing Fists (Mega Evolution set 7)",
+   "note": "prereleases Jan 23–31 · per pokemon.com",
+   "status": "confirmed",
+   "href": "/pokemon-winter-releases",
+   "q": "pokemon flowing fists booster box",
+   "cat": "183456",
+   "source": "https://press.pokemon.com/en/MEDIA-ALERT-Z-Mega-Evolution-Pokemon-to-Debut-in-New-Pokemon-Trading-C (TPCi press page, Nov 19 2026; Pokémon KB ADDENDA-2026-11i §02)"
   }
  ]
 }
