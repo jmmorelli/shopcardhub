@@ -10,7 +10,7 @@
 (function () {
   'use strict';
   var SEEN = 'sch_home_seen', LS = 'sch_vault_v1';
-  var host = document.getElementById('set-indices'); if (!host) return;
+  var host = document.getElementById('h2-wl'); if (!host) return;   // Q-006 (Build Loop, Nov 26 2026): the v2 home's watchlist tile hosts the panel (was #set-indices, retired Oct 23)
   var store = null, seen = null;
   try { store = JSON.parse(localStorage.getItem(LS) || 'null'); } catch (e) { store = null; }
   try { seen = parseInt(localStorage.getItem(SEEN) || '', 10) || null; } catch (e) { seen = null; }
@@ -38,6 +38,18 @@
   });
   var moved = mine.filter(function (m) { return m.move != null; }).sort(function (a, b) { return Math.abs(b.move) - Math.abs(a.move); });
 
+  /* Q-001 / P69 (Build Loop, Nov 26 2026): when cards under review (ptHold, reread, heldMove) carry most of the latest mark's
+   * dollar move, the chip says "re-read" instead of a % (same rule as js/plain-read.js heldShare) */
+  function heldMost(basket) {
+    var tot = 0, held = 0, n = 0;
+    (basket || []).forEach(function (c) {
+      if (!c || !(c.price > 0) || c.w === 0) return;
+      var h = !!(c.ptHold || c.reread || c.heldMove); if (h) n++;
+      if (!(c.prevPrice > 0)) return;
+      var d = c.price - c.prevPrice; tot += d; if (h) held += d;
+    });
+    return !!(n && held !== 0 && Math.abs(held) > 0.5 * Math.abs(tot));
+  }
   function render(idx) {
     var chips = [];
     if (seenDay && idx) {
@@ -48,7 +60,7 @@
         var then = null, now = h[h.length - 1];
         for (var i = h.length - 1; i >= 0; i--) { if (h[i].date <= seenDay) { then = h[i]; break; } }
         if (!then || !now || then.date === now.date) continue;   // no mark since they were here → nothing to say
-        chips.push({ k: k, href: v.page || '/indices', move: (now.level / then.level - 1) * 100, level: now.level });
+        chips.push({ k: k, href: v.page || '/indices', move: (now.level / then.level - 1) * 100, level: now.level, rr: heldMost(v.basket) });
       }
       chips.sort(function (a, b) { return Math.abs(b.move) - Math.abs(a.move); });
     }
@@ -57,7 +69,7 @@
     var html = '<div class="panel-h"><h2>' + esc(head) + '</h2><span class="sub">' + (cards.length ? '<a href="/watchlist">' + cards.length + ' card' + (cards.length === 1 ? '' : 's') + '<span class="yh-long"> on your watchlist</span> »</a>' : '<span class="yh-plain">index moves since your last visit</span>') + '</span></div>';
     if (chips.length) {
       html += '<div class="yh-row"><span class="yh-k">Indices</span>' + chips.slice(0, 9).map(function (c) {
-        return '<a class="yh-c" href="' + esc(c.href) + '"><b>' + esc(c.k) + '</b><i class="' + cls(c.move) + '">' + esc(pct(c.move, 2)) + '</i><small>' + c.level.toFixed(2) + '</small></a>';
+        return '<a class="yh-c" href="' + esc(c.href) + '"><b>' + esc(c.k) + '</b>' + (c.rr ? '<i class="flat">re-read</i>' : '<i class="' + cls(c.move) + '">' + esc(pct(c.move, 2)) + '</i>') + '<small>' + c.level.toFixed(2) + '</small></a>';
       }).join('') + '</div>';
     } else if (seenDay) {
       html += '<div class="yh-row yh-note">No index has re-marked since then. Check back after the next mark.</div>';
@@ -79,6 +91,7 @@
       '.you-home .yh-row{display:flex;align-items:center;gap:8px 10px;flex-wrap:nowrap;height:58px;box-sizing:border-box;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;padding:9px 14px;border-top:1px solid var(--bd,rgba(255,255,255,.08));font-family:var(--fm,ui-monospace,monospace);font-size:11.5px}.you-home .yh-row.yh-note{white-space:normal;line-height:1.4}' +
       '.you-home .yh-k{flex:none;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim,#7a969e);min-width:72px}' +
       '.you-home .yh-c{flex:none;display:inline-flex;align-items:center;min-height:40px;box-sizing:border-box;gap:7px;background:var(--p2,#111820);border:1px solid var(--bd,rgba(255,255,255,.1));border-radius:2px;padding:4px 9px;text-decoration:none;color:var(--tx,#b8cdd4);white-space:nowrap}.you-home .yh-c:hover{border-color:var(--gd,#f5c800)}.you-home .yh-c b{color:var(--th,#e4f0f4);font-weight:600}.you-home .yh-c i{font-style:normal;font-weight:700}.you-home .yh-c i.up{color:var(--gn,#00e07a)}.you-home .yh-c i.dn{color:var(--rd,#ff2e55)}.you-home .yh-c i.flat{color:var(--dim,#7a969e)}.you-home .yh-c small{color:var(--dim,#7a969e);font-size:11px}' +
+      '.h2-tile .you-home{margin:0 0 10px}.h2-tile .you-home .panel-h h2{font-size:14px;letter-spacing:.5px;overflow:hidden;text-overflow:ellipsis}' +
       '.you-home .yh-more{flex:none;white-space:nowrap}.you-home .yh-more,.you-home .yh-note{color:var(--dim,#7a969e)}' +
       '@media(max-width:640px){.you-home .panel-h{padding:0 12px}.you-home .yh-plain,.you-home .yh-long{display:none}.you-home .panel-h h2{letter-spacing:1.2px}.you-home .yh-k{letter-spacing:.5px}.you-home .yh-row{padding:9px 10px;gap:6px 8px}.you-home .yh-k{min-width:0}.you-home.yh-one .yh-k{display:none}}';
     document.head.appendChild(css);

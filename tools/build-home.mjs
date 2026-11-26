@@ -120,13 +120,17 @@ if (INIT_V2 || !/<!-- HOME:idxbox:START -->/.test(html)) {
   // · css v=8 Nov 6 2026: Site Sweep, 44 px tap area on "All N sets →"
   // · css v=10 / js v=7 Nov 15 2026: Cupertino run 16, the home second pass (the level's unit, "›", the scroll flow on /)
   // · js v=8 Nov 20 2026: Night Crew INSTR-HOME2, home2_index_open sent as a beacon before a first-tap navigation
-  html = html.replace(/\/css\/home-v2\.css\?v=\d+/, "/css/home-v2.css?v=10").replace(/\/js\/home-v2\.js\?v=\d+/, "/js/home-v2.js?v=8");
+  html = html.replace(/\/css\/home-v2\.css\?v=\d+/, "/css/home-v2.css?v=10");
   if (!/\/js\/scroll-flow\.js/.test(html)) html = html.replace(/(<script src="\/js\/home-v2\.js[^"]*" defer><\/script>)/, '$1\n<script src="/js/scroll-flow.js?v=3" defer></script>');
-  html = html.replace(/\n\s*<script src="\/js\/home-you\.js[^"]*" defer><\/script>/, "");
   html = html.replace(/\n\s*<!-- Night Crew Oct 8 \(NEW-1\)[\s\S]*?<\/script>(?=\n\s*<\/head>)/, "");
   html = html.replace(/<div class="term" data-prices-updated=/, '<div class="term h2-page" data-prices-updated=');
   console.log("v2 skeleton installed in index.html (SIGNUP, HOME:regime, screens, where-to-start, tm-foot carried over)");
 }
+// every bake: script versions (js v=9 Nov 26 2026: Build Loop Q-001, "move being re-read" in the viz header) and Q-006 (weekly
+// backlog Nov 25 row 2): js/home-you.js returns, hosted by the watchlist tile (#h2-wl); a first-time visitor gets nothing from it.
+// Kill test Wed Dec 9: home_you under 3 fires and 0 key events from returning sessions → take the line below out.
+html = html.replace(/\/js\/home-v2\.js\?v=\d+/, "/js/home-v2.js?v=9");
+if (!/\/js\/home-you\.js/.test(html)) html = html.replace(/(<script src="\/js\/scroll-flow\.js[^"]*" defer><\/script>)/, '$1\n<script src="/js/home-you.js?v=2" defer></script>');
 // B75 (Night Crew Oct 16, phone teardown): the Chart/markets, Upcoming releases and tape panels were removed from /.
 // Those keys are optional now: a missing block is skipped (logged), every other block still fails the bake when missing.
 // Home v2 (Oct 23): the index board and the Bowman movers list left / too.
