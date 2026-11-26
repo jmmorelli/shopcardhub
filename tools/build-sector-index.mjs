@@ -917,6 +917,7 @@ function block(x, c, opt = {}) {
   ${parts ? parts.read : ""}
   ${quoteLine(x, c, h)}
   <!-- SIDX:BUY -->
+  <!-- SIDX:FOLLOW -->
   ${parts ? parts.tiles : ""}
   ${PRINTS[x.ticker] ? `<p class="sidx-sib">Same set, other prints — each its own index: ${PRINTS[x.ticker].filter((t) => t !== x.ticker && CONFIG[t]).map((t) => `<a href="${CONFIG[t].page}">${t} · ${esc(PRINT_LBL[t])}</a>`).join(" · ")}</p>` : ""}
   ${subs}
@@ -1043,6 +1044,9 @@ ${PR.PR_CSS}
 .sidx-more>summary:hover{background:var(--sidx);color:#000}
 .sidx-more .sm-close{display:none}.sidx-more[open] .sm-open{display:none}.sidx-more[open] .sm-close{display:inline}
 .sidx-sib{margin:10px 0 0;font-family:var(--fm,ui-monospace,monospace);font-size:11px;color:var(--sidx-dim)}.sidx-sib a{color:var(--sidx);font-weight:700;text-decoration:none;border-bottom:1px solid var(--sidx);margin:0 2px}
+/* Q-050: the follow box inside the block; doubled class + attrs outrank site-fixes.css :empty reservations sized for the old spot */
+.sidx .sch-signup{max-width:none;margin:14px 0 0;padding:0}
+.sidx .sch-signup.sch-signup[data-signup][data-follow]{display:block!important;min-height:62px}@media(max-width:999px){.sidx .sch-signup.sch-signup[data-signup][data-follow]{min-height:88px}}@media(max-width:899px){.sidx .sch-signup.sch-signup[data-signup][data-follow]{min-height:106px}}@media(max-width:599px){.sidx .sch-signup.sch-signup[data-signup][data-follow]{min-height:131px}}@media(max-width:428px){.sidx .sch-signup.sch-signup[data-signup][data-follow]{min-height:177px}}@media(max-width:413px){.sidx .sch-signup.sch-signup[data-signup][data-follow]{min-height:195px}}
 .sidx-cap{font-family:var(--fm,ui-monospace,monospace);font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--sidx-dim);margin:14px 0 6px}
 .sidx-more .sidx-tbl{margin-top:0}
 .sidx-note{font-size:11px;line-height:1.65;color:var(--sidx-dim);margin:14px 0 0}
@@ -1098,6 +1102,14 @@ function bake(x, c) {
   const BUY_RE = /<!-- BUY(?:BOX|STRIP):START[\s\S]*?<!-- BUY(?:BOX|STRIP):END -->/;
   const buyM = h1 ? html.match(BUY_RE) : null;
   body = body.replace("<!-- SIDX:BUY -->", buyM ? buyM[0] : "");
+  // Q-050 (Build Loop, Nov 26 2026; BET-20261125-1): the "Follow this set" capture (a SIGNUP block carrying data-follow,
+  // owned and rewritten in place by tools/build-signup.mjs) sat 3,650-4,100 px down at 390 px, four screens under the chart.
+  // Same move as the strip above: cut from wherever it sits and pasted at the SIDX:FOLLOW slot — under the plain read and the
+  // buy strip, above the card tiles, the chase cards and the holdings table. Pages without a follow block are untouched.
+  const FOL_RE = /<!-- SIGNUP:START[^>]*-->\s*<div class="sch-signup"[^>]*data-follow="[A-Z0-9]+"[\s\S]*?<!-- SIGNUP:END -->/;
+  const folM = h1 ? html.match(FOL_RE) : null;
+  body = body.replace("<!-- SIDX:FOLLOW -->", folM ? folM[0] : "");
+  if (folM) html = html.replace(FOL_RE, "");
   if (html.includes(S)) {
     if (buyM) html = html.replace(BUY_RE, "");
     html = html.replace(S_RE, () => body);

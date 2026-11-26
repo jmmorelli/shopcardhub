@@ -25,7 +25,9 @@
   // data-follow="ALL", stays hidden until an all-sets email exists). The follow block un-hides itself with an inline
   // display, which outranks the §CAPTURE-PAUSED rule in css/site-fixes.css; that rule is unchanged.
   var FOLLOW = true;
-  if (PAUSED && !FOLLOW) return;
+  // Q-050 (Nov 26 2026): an index page reserves the follow box's height in CSS (display:block, min-height) so nothing shifts when
+  // it renders. With FOLLOW off, hide those reserved boxes again (inline !important outranks the stylesheet) before bailing out.
+  if (PAUSED && !FOLLOW) { [].forEach.call(document.querySelectorAll('.sch-signup[data-follow]'), function (e) { e.style.setProperty('display', 'none', 'important'); }); return; }
   var els = document.querySelectorAll('.sch-signup[data-signup]');
   if (!els.length) return;
   // Night Crew, Sep 30 2026: label and button 10-10.5px -> 11px (site text floor), input and button 40px tall

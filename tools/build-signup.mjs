@@ -27,7 +27,10 @@ const END = "<!-- SIGNUP:END -->";
 // ranked list, not under the strip — the Retention Analyst's placement test; read Oct 21).
 const WHERE = { "best-hobby-boxes-2026": "below the ranked list (R11 / P38, Retention Analyst Oct 7 2026)",
   "cooper-flagg-rookie-cards": "below the ranked list (Conversion Hunter, Oct 30 2026)", "lamine-yamal-rookie-cards": "below the ranked list (Conversion Hunter, Oct 30 2026)",
-  "erling-haaland-rookie-cards": "below the ranked list (Conversion Hunter, Oct 30 2026)", "cristiano-ronaldo-cards": "below the ranked list (Conversion Hunter, Oct 30 2026)" };
+  "erling-haaland-rookie-cards": "below the ranked list (Conversion Hunter, Oct 30 2026)", "cristiano-ronaldo-cards": "below the ranked list (Conversion Hunter, Oct 30 2026)",
+  // Q-050 (Build Loop, Nov 26 2026): the four Follow-box index pages carry this block inside the index block, under the plain read and
+  // the buy strip, above the holdings table. tools/build-sector-index.mjs --bake moves it to its SIDX:FOLLOW slot; this tool still rewrites it in place.
+  ...Object.fromEntries(["bowman-2026-index", "bowman-chrome-2026-index", "pokemon-base-set-index", "neo-genesis-1st-edition-index"].map((s) => [s, "under the plain read and buy strip, above the holdings table (Q-050, BET-20261125-1)"])) };
 // signup_page (the MailerLite field fed by data-signup) per page where it is not the slug. E13 (Mo Oct 15, Night Crew
 // P57 Oct 16): the /indices capture sits under the Collectors wall and reports as "wall"; still one capture (R26).
 const SOURCE = { indices: "wall" };
