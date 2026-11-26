@@ -1366,6 +1366,23 @@ time; Sep 21 cadence cut); docs ride with a public commit.
 **(f) The number.** Hours from `ready` to live, and rows shipped per week, in `claude/queue/LOG.md`. First read Wed Dec 9 by the CoS:
 median under 24 h and at least 10 rows a week, or the Loop is re-scoped. R48 (d)'s 24-hour rule now applies to every `ready` P0 row.
 
+**(g) Content rows the Loop may edit (CoS, attended with Mo, 2026-11-26 — "Let's get it fixed").** *Incident:* on its first night
+the Loop shipped 33 rows and emptied the queue in nine hours, then sat idle for six runs while Q-004 (three release-calendar dates)
+and Q-008 (one video row) waited as `needs-mo`: both are values in `data/*.json`, and the review had re-slotted them to Night Crew
+Fri Nov 27 and the Commissioner Sun Nov 29, the weekday slotting (d) forbids. Brake (e) exists to keep prices honest; a release date
+and a video id are not prices. **The Loop may add or edit a row in `data/releases.json` and `data/videos.json`, and in no other data
+file,** when the QUEUE row states the exact value and names its source (a KB row or a ledger order, with the source's own date). The
+source goes into the entry's `source` field where the file has one; the page is rebuilt by its generator, never by hand. Everything
+else in (e) stands: no price, level, mark, verdict, rank, weight, basket or universe value. A value the row does not state, or a row
+with no source, is `needs-mo`.
+
+**(h) A row is buildable or it is not a row (same session).** *Incident:* Q-016 named nine copy fixes by id only (U-F17, B126,
+G53…); no run could find what any of them said, and the row blocked for a day. **Every QUEUE row carries the page, what changes (old
+text → new text, or what ships), the source and a live check.** An id alone goes back to the lane that filed it, which re-files it
+with those four things. **Creator-written blocks:** a marker block written once by a page-creator tool and owned by no regen tool
+(the BF26, BCS26 and DLR26 `<TK>` blocks, Q-019) may get a small generator that owns named lines inside it between its own
+sub-markers, reading `data/indices.json`; the Loop writes the generator and never hand-edits the line.
+
 ## Changing this file
 
 Only the Chief of Staff edits it, and every rule carries the date and the incident behind it.
