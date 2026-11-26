@@ -1367,7 +1367,7 @@ time; Sep 21 cadence cut); docs ride with a public commit.
 median under 24 h and at least 10 rows a week, or the Loop is re-scoped. R48 (d)'s 24-hour rule now applies to every `ready` P0 row.
 
 **(g) Content rows the Loop may edit (CoS, attended with Mo, 2026-11-26 — "Let's get it fixed").** *Incident:* on its first night
-the Loop shipped 33 rows and emptied the queue in nine hours, then sat idle for six runs while Q-004 (three release-calendar dates)
+the Loop shipped 34 rows and emptied the queue in nine hours, then sat idle for six runs while Q-004 (three release-calendar dates)
 and Q-008 (one video row) waited as `needs-mo`: both are values in `data/*.json`, and the review had re-slotted them to Night Crew
 Fri Nov 27 and the Commissioner Sun Nov 29, the weekday slotting (d) forbids. Brake (e) exists to keep prices honest; a release date
 and a video id are not prices. **The Loop may add or edit a row in `data/releases.json` and `data/videos.json`, and in no other data
