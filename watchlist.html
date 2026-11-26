@@ -520,7 +520,7 @@
     @keyframes cl-ring { 0% { transform:scale(1); opacity:.85; } 100% { transform:scale(4); opacity:0; } }
     .vc-chart .cl-lbl { animation:cl-fade .3s ease-out .5s backwards; }
     /* buy-zone browser alerts — opt-in control under the stat tiles */
-    .notify-row { display:flex; justify-content:flex-end; margin:-8px 0 12px; }
+    .notify-row { display:flex; justify-content:flex-end; margin:8px 0 12px; }
     .notify-row[hidden] { display:none; }
     .notify-btn { display:inline-flex; align-items:center; gap:7px; background:transparent; border:1px solid var(--border2); color:var(--text-dim); font-family:var(--fm); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:6px 12px; border-radius:2px; cursor:pointer; transition:all .15s; }
     .notify-btn:hover { color:var(--gold); border-color:rgba(245,200,0,0.5); }
@@ -528,7 +528,7 @@
     .notify-btn.on:hover { color:var(--green); }
     .notify-off { background:none; border:none; color:var(--text-dim); font-family:var(--fm); font-size:10px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; padding:6px 8px; }
     .notify-off:hover { color:var(--text-head); }
-    @media (max-width:640px) { .notify-row { margin:-4px 0 8px; } .notify-btn { font-size:9px; padding:6px 10px; letter-spacing:1px; } }
+    @media (max-width:640px) { .notify-row { margin:8px 0 8px; } .notify-btn { font-size:9px; padding:6px 10px; letter-spacing:1px; } }
     @media (prefers-reduced-motion: reduce) {
       .vgrid tbody tr.flash-up, .vgrid tbody tr.flash-down, .comps-skel i, .onboard.show, .sheet { animation:none; transition:none; }
       .vc-chart .cl-line, .vc-chart .cl-c, .vc-chart .cl-last, .vc-chart .cl-ring, .vc-chart .cl-lbl { animation:none; }
