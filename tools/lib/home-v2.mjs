@@ -245,7 +245,9 @@ export function buildV2(REPO, opts = {}) {
 
   const slim = Object.fromEntries(Object.entries(T).map(([k, v]) => { const { buy, ...rest } = v; return [k, rest]; }));   // the buy link rides on the row (data-buy)
   const payload = JSON.stringify({ today: TODAY, def: DEFAULT_TK, tabs, t: slim, sets }).replace(/</g, "\\u003c");
-  const stamp = idx.updated || TODAY;
+  // Q-009 · iw-2026-11-02-2 (Build Loop, Nov 26 2026): the foot says the date of the newest index mark on the board, not
+  // indices.json.updated (the class-ladder Action bumps that daily even when no index was re-marked).
+  const stamp = Object.values(T).map((v) => String(v.d || "").slice(0, 10)).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort().pop() || idx.updated || TODAY;
 
   const openLabel = (v) => v.u ? `See all ${v.u} cards ›` : "See every card ›";   // js/home-v2.js paintViz() says the same on a re-point
   /* ---- block: HOME:idxbox (the whole left section's inner: question row, tabs, every row of every tab, viz defaults, foot, payload) ---- */
@@ -277,7 +279,7 @@ ${rowsHtml}
       <div class="h2-act"><a class="h2-buy" id="h2-buy" href="${esc(d0.buy.h)}" target="_blank" rel="noopener sponsored">${esc(pillText(d0.buy.l))}</a><a class="h2-open" id="h2-open" href="${esc(d0.p)}" aria-label="Every card in ${esc(d0.n)}">${openLabel(d0)}</a></div>
     </div>
   </div>
-  <div class="h2-foot"><span>100 = the month the set came out. Above 100 = pricier since. <a href="/how-prices-work">How it works ›</a></span><span>Updated ${esc(mdy(stamp))} from sold prices</span></div>
+  <div class="h2-foot"><span>100 = the month the set came out. Above 100 = pricier since. <a href="/how-prices-work">How it works ›</a></span><span>Index marks through ${esc(mdy(stamp))}, from sold prices</span></div>
 </div>
 <script id="h2-data" type="application/json">${payload}</script>`;
 
