@@ -752,7 +752,7 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
 <!-- SIGNUP:END -->
 <div class="wrap">
 <div class="crumb" style="padding:14px 0 0;">RESEARCH / <a href="/indices" style="color:var(--dim);">SET INDICES</a> / <b>BCS26</b></div>
-<div class="strip" id="strip"><a class="chip on" href="/bowman-chrome-sapphire-2026-index"><b>BCS26</b> <span class="soon">pre · streets 10/07</span></a></div>
+<div class="strip" id="strip"><a class="chip on" href="/bowman-chrome-sapphire-2026-index"><b>BCS26</b> <span class="soon">out 10/07 · no level yet</span></a></div>
 </div>
 <!-- BCS26:START -->
 <style>
@@ -918,7 +918,7 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
       var on = (t === 'BCS26');
       var hist = x.history || [], last = hist.length ? hist[hist.length-1] : null, prev = hist.length > 1 ? hist[hist.length-2] : null;
       var pre = (x.status === 'pre' || x.status === 'pre-activation' || !last);
-      var body = pre ? '<span class="soon">' + (x.releaseDate ? 'pre · streets ' + x.releaseDate.slice(5).replace('-', '/') : 'pre') + '</span>'
+      var body = pre ? '<span class="soon">' + (x.releaseDate ? (x.releaseDate <= new Date().toISOString().slice(0, 10) ? 'out ' + x.releaseDate.slice(5).replace('-', '/') + ' · no level yet' : 'pre · streets ' + x.releaseDate.slice(5).replace('-', '/')) : 'pre') + '</span>'
         : '<span style="color:var(--tx)">' + last.level.toFixed(2) + '</span>' + (prev ? ' <span class="' + (last.level >= prev.level ? 'up' : 'dn') + '">' + (last.level >= prev.level ? '+' : '') + ((last.level / prev.level - 1) * 100).toFixed(1) + '%</span>' : '');
       html += '<a class="chip' + (on ? ' on' : '') + '" href="' + x.page + '"><b>' + t + '</b> ' + body + '</a>';
     });

@@ -961,7 +961,7 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
       var on = (t === 'NR1E');
       var hist = x.history || [], last = hist.length ? hist[hist.length-1] : null, prev = hist.length > 1 ? hist[hist.length-2] : null;
       var pre = (x.status === 'pre' || x.status === 'pre-activation' || !last);
-      var body = pre ? '<span class="soon">' + (x.releaseDate ? 'pre · streets ' + x.releaseDate.slice(5).replace('-', '/') : 'pre') + '</span>'
+      var body = pre ? '<span class="soon">' + (x.releaseDate ? (x.releaseDate <= new Date().toISOString().slice(0, 10) ? 'out ' + x.releaseDate.slice(5).replace('-', '/') + ' · no level yet' : 'pre · streets ' + x.releaseDate.slice(5).replace('-', '/')) : 'pre') + '</span>'
         : '<span style="color:var(--tx)">' + last.level.toFixed(2) + '</span>' + (prev ? ' <span class="' + (last.level >= prev.level ? 'up' : 'dn') + '">' + (last.level >= prev.level ? '+' : '') + ((last.level / prev.level - 1) * 100).toFixed(1) + '%</span>' : '');
       html += '<a class="chip' + (on ? ' on' : '') + '" href="' + x.page + '"><b>' + t + '</b> ' + body + '</a>';
     });
