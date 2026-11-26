@@ -4,7 +4,8 @@
  * Oct 14: "go on everything else".) Adapted from tools/build-mlb-cards.mjs.
  *
  * It writes ONLY the block between <!-- NFL-BOARD:START --> and <!-- NFL-BOARD:END --> in nfl-rookie-cards-2026.html.
- * No new URL, no title change (R25/R35). Inside the block: a dated "This week" strip (only when data.spike is
+ * No new URL, no title change (R25/R35). Inside the block: a dated "Week of <date>" strip (Build Loop Q-043, Nov 26:
+ * was "This week", which went stale once the weekly refresh lane stopped) (only when data.spike is
  * non-empty), then one row group per player — name, team, card, 30-day sold range + count + window, and Raw / PSA 9 /
  * PSA 10 / TAG eBay buttons. Same link rules as /mlb-cards: sports category 212, full EPN param set, customid
  * nfl-<player>-<n>[-psa9|-psa10|-tag], same ★ Track button. Graded price columns render only when some card carries a
@@ -70,7 +71,7 @@ ${graded ? cell(c.psa9, "PSA 9") + "\n" + cell(c.psa10, "PSA 10") : ""}
 
 const spike = (D.spike || []).filter((s) => s && s.player && s.line);
 const spikeHtml = spike.length
-  ? `<div class="nb-week"><span class="nb-wk">This week &middot; ${esc(fmtDate(spike[0].date || D.asof))}</span><ul>${spike.map((s) => {
+  ? `<div class="nb-week"><span class="nb-wk">Week of ${esc(fmtDate(spike[0].date || D.asof))}</span><ul>${spike.map((s) => {
       const p = D.players.find((x) => x.name === s.player);
       return `<li>Had a big Sunday: ${p ? `<a href="#${p.slug}">${esc(s.player)}</a>` : esc(s.player)}, ${esc(s.line)}</li>`;
     }).join("")}</ul></div>\n`
