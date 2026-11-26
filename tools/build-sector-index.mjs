@@ -149,7 +149,7 @@ const CONFIG = {
     releaseDate: "2023-09-22",
     imgSet: "Pokemon 151", denom: 165,
     skipTitle: /poster collection/i,
-    note: "151 is the original 151 Pokémon, #1–#151 in Pokédex order, plus trainers, energies and the illustration-rare and special-illustration-rare tier (#166–#207). A three-year-old set with deep, steady liquidity — most of the 207 slots trade as singles every week, so the basket is close to the whole set from day one. Sealed product (Booster Bundle, ETB, UPC, tins) is not a card and is not in the universe.",
+    note: "151 is the original 151 Pokémon, #1–#151 in Pokédex order, and the 42 secret rares (#166–#207: illustration rares, ultra rares, special illustration rares and gold hyper rares). A three-year-old set with deep, steady liquidity — most of the 207 slots trade as singles every week, so the basket is close to the whole set from day one. Sealed product (Booster Bundle, ETB, UPC, tins) is not a card and is not in the universe.",
   },
   // ---------------- MODERN WHOLE-SET ADDS (Oct 4 2026, Mo: "add Surging Sparks and the Mega Evolution base set as indices,
   // and Delta Reign is a go"). Same model and parameters as SV151; base = the release month via tools/build-recon.mjs.
