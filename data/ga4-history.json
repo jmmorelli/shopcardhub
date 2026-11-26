@@ -7175,6 +7175,344 @@
     },
     "rule": "outbound = OUTBOUND_EVENTS; by landing = the page the session started on; AI = sessionSource matching AI_SOURCE_RE (28d); raw counts, no bot filter (apply summary.bots when reading)"
    }
+  },
+  {
+   "day": "2026-11-25",
+   "generatedAt": "2026-11-26T18:42:16.937Z",
+   "sessions28": 2046,
+   "keyEvents28": 143,
+   "blendedKeyEventRate28": 3.86,
+   "blendedKeyEventRate7": 5.21,
+   "sessions7": 288,
+   "keyEvents7": 26,
+   "organicKeyEventRate28": 18.86,
+   "organicKeyEventRate7": 16.67,
+   "organicSessions28": 175,
+   "directSessions28": 1672,
+   "directAvgSessionDurationSec28": 6,
+   "returningUsers28": 24,
+   "returningShare28": 1.2,
+   "returningShare7": 1.39,
+   "clicks7": 26,
+   "buystripClicks7": 2,
+   "buyboxClicks7": 0,
+   "trackCardFromPage7": 0,
+   "newsletterSignup7": 0,
+   "signupSubmit7": 0,
+   "signupView7": 100,
+   "boxSort7": 0,
+   "boxFilter7": 8,
+   "boxProfile7": 0,
+   "keyEventsYesterday": 4,
+   "sessionsYesterday": 56,
+   "topCountry7": "Singapore",
+   "nonUSTopCountry7": {
+    "country": "Singapore",
+    "activeUsers": 145,
+    "sessions": 145,
+    "keyEvents": 0,
+    "averageSessionDuration": 0.5235079931034483
+   },
+   "bots": {
+    "rule": "avg session < 2s over >= 10 sessions, OR 0 key events + avg < 10s over >= 30 sessions; 7d, by country",
+    "suspects": [
+     {
+      "country": "Singapore",
+      "sessions": 145,
+      "keyEvents": 0,
+      "avgSessionSec": 0.524
+     }
+    ],
+    "botSessions7": 145,
+    "botShare7": 49.66,
+    "cleanSessions7": 147,
+    "cleanKeyEvents7": 26,
+    "cleanKeyEventsPerSession7": 17.69,
+    "rawKeyEventsPerSession7": 8.9
+   },
+   "retentionSplit28": {
+    "surfaces": {
+     "views": 408,
+     "returningViews": 121,
+     "keyEvents": 24,
+     "landings": 288,
+     "returningLandings": 22,
+     "views7": 51,
+     "engagementSec7": 557,
+     "returningViewShare": 29.66,
+     "returningLandingShare": 7.64,
+     "engagementSecPerView7": 10.9,
+     "keyEventsPer100Views": 5.88
+    },
+    "guides": {
+     "views": 1954,
+     "returningViews": 41,
+     "keyEvents": 119,
+     "landings": 1755,
+     "returningLandings": 26,
+     "views7": 385,
+     "engagementSec7": 1413,
+     "returningViewShare": 2.1,
+     "returningLandingShare": 1.48,
+     "engagementSecPerView7": 3.7,
+     "keyEventsPer100Views": 6.09
+    },
+    "rule": "surfaces = / · /indices · *-index · /watchlist · /bowman-bangers; guides = every other path; 28d unless noted"
+   },
+   "activeUsers7": 284,
+   "activeUsers28": 1981,
+   "returningUsers7": 4,
+   "cardPageClicks7": 0,
+   "cardPageViews7": 31,
+   "cardPageClicksByEvent7": {},
+   "cardLanding7": {
+    "sessions": 73,
+    "keyEvents": 0,
+    "botSessions": 66,
+    "cleanSessions": 7,
+    "cleanKeyEvents": 0,
+    "cleanCountries": [
+     {
+      "country": "China",
+      "sessions": 6,
+      "keyEvents": 0,
+      "avgSessionSec": 0.285
+     },
+     {
+      "country": "Indonesia",
+      "sessions": 1,
+      "keyEvents": 0,
+      "avgSessionSec": 1.083
+     }
+    ],
+    "rule": "landingPage matches /card* (7d, landingCountry7 top 500); bot = country flagged by summary.bots (countries7)"
+   },
+   "o66": {
+    "buystripByPage7": [
+     {
+      "page": "/indices",
+      "n": 1
+     },
+     {
+      "page": "/pokemon-jungle-1st-edition-index",
+      "n": 1
+     }
+    ],
+    "buystripByPage28": [
+     {
+      "page": "/pokemon-base-set-1st-edition-index",
+      "n": 2
+     },
+     {
+      "page": "/bowman-chrome-2026-index",
+      "n": 1
+     },
+     {
+      "page": "/indices",
+      "n": 1
+     },
+     {
+      "page": "/lionel-messi-cards",
+      "n": 1
+     },
+     {
+      "page": "/nfl-rookie-cards-2026",
+      "n": 1
+     },
+     {
+      "page": "/pokemon-delta-reign-2026",
+      "n": 1
+     },
+     {
+      "page": "/pokemon-jungle-1st-edition-index",
+      "n": 1
+     }
+    ],
+    "ebayClicksByLanding7": [
+     {
+      "page": "/mcdonalds-pokemon-cards-2026",
+      "n": 18
+     },
+     {
+      "page": "/best-hobby-boxes-2026",
+      "n": 5
+     },
+     {
+      "page": "/neo-genesis-1st-edition-index",
+      "n": 2
+     },
+     {
+      "page": "/pokemon-jungle-1st-edition-index",
+      "n": 2
+     },
+     {
+      "page": "/bowman-2026-index",
+      "n": 1
+     },
+     {
+      "page": "/lionel-messi-cards",
+      "n": 1
+     },
+     {
+      "page": "/pokemon-30th-anniversary-2026",
+      "n": 1
+     }
+    ],
+    "ebayClicksByLanding28": [
+     {
+      "page": "/mcdonalds-pokemon-cards-2026",
+      "n": 77
+     },
+     {
+      "page": "/indices",
+      "n": 10
+     },
+     {
+      "page": "/pokemon-base-set-1st-edition-index",
+      "n": 9
+     },
+     {
+      "page": "/pokemon-booster-box-prices",
+      "n": 8
+     },
+     {
+      "page": "/best-hobby-boxes-2026",
+      "n": 8
+     },
+     {
+      "page": "/pokemon-30th-anniversary-2026",
+      "n": 4
+     },
+     {
+      "page": "/mlb-cards",
+      "n": 4
+     },
+     {
+      "page": "/pokemon-base-set-shadowless-index",
+      "n": 4
+     },
+     {
+      "page": "/pokemon-fossil-index",
+      "n": 4
+     },
+     {
+      "page": "/best-football-cards-under-50",
+      "n": 3
+     }
+    ],
+    "aiByLanding": {
+     "sessions28": 108,
+     "keyEvents28": 64,
+     "bySource28": [
+      {
+       "source": "chatgpt.com",
+       "sessions": 96
+      },
+      {
+       "source": "l.meta.ai",
+       "sessions": 11
+      },
+      {
+       "source": "perplexity.ai",
+       "sessions": 1
+      }
+     ],
+     "byLanding28": [
+      {
+       "page": "/mcdonalds-pokemon-cards-2026",
+       "sessions": 51,
+       "engagedSessions": 31,
+       "keyEvents": 35,
+       "sources": {
+        "chatgpt.com": 51
+       }
+      },
+      {
+       "page": "/indices",
+       "sessions": 9,
+       "engagedSessions": 7,
+       "keyEvents": 7,
+       "sources": {
+        "l.meta.ai": 9
+       }
+      },
+      {
+       "page": "/bowman-chrome-2026-index",
+       "sessions": 8,
+       "engagedSessions": 2,
+       "keyEvents": 1,
+       "sources": {
+        "chatgpt.com": 8
+       }
+      },
+      {
+       "page": "/pokemon-booster-box-prices",
+       "sessions": 7,
+       "engagedSessions": 6,
+       "keyEvents": 6,
+       "sources": {
+        "chatgpt.com": 7
+       }
+      },
+      {
+       "page": "/pokemon-delta-reign-2026",
+       "sessions": 5,
+       "engagedSessions": 2,
+       "keyEvents": 2,
+       "sources": {
+        "chatgpt.com": 5
+       }
+      },
+      {
+       "page": "/pokemon-base-set-index",
+       "sessions": 4,
+       "engagedSessions": 2,
+       "keyEvents": 1,
+       "sources": {
+        "chatgpt.com": 4
+       }
+      },
+      {
+       "page": "(not set)",
+       "sessions": 4,
+       "engagedSessions": 1,
+       "keyEvents": 1,
+       "sources": {
+        "chatgpt.com": 3,
+        "l.meta.ai": 1
+       }
+      },
+      {
+       "page": "/pokemon-base-set-1st-edition-index",
+       "sessions": 3,
+       "engagedSessions": 1,
+       "keyEvents": 0,
+       "sources": {
+        "chatgpt.com": 3
+       }
+      },
+      {
+       "page": "/topps-chrome-updates-basketball",
+       "sessions": 2,
+       "engagedSessions": 1,
+       "keyEvents": 0,
+       "sources": {
+        "chatgpt.com": 2
+       }
+      },
+      {
+       "page": "/best-umbreon-cards",
+       "sessions": 1,
+       "engagedSessions": 1,
+       "keyEvents": 0,
+       "sources": {
+        "chatgpt.com": 1
+       }
+      }
+     ]
+    },
+    "rule": "outbound = OUTBOUND_EVENTS; by landing = the page the session started on; AI = sessionSource matching AI_SOURCE_RE (28d); raw counts, no bot filter (apply summary.bots when reading)"
+   }
   }
  ]
 }
