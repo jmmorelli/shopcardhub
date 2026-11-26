@@ -16,12 +16,16 @@
   // Mo, 2026-11-25: captures hidden until the Tuesday Tape is back (it is paused since Nov 17). Nothing renders and no
   // signup_view fires while PAUSED. css/site-fixes.css §CAPTURE-PAUSED hides the static captures and Tape links.
   var PAUSED = true;
-  if (PAUSED) return;
   // BET-20261125-1 "Follow this set" (Build Loop Q-007, Nov 26 2026): built DARK. While FOLLOW is false a block carrying
   // data-follow renders exactly as before (the tape variant). Flip only after Mo says yes to the Monday per-set email (a new
   // email type, Needs-Mo by the CoS charter), and bump ?v= in tools/build-signup.mjs with it. Same list, same /api/subscribe:
   // the set rides in signup_page as follow-<ticker>.
-  var FOLLOW = false;
+  // Mo, in chat, 2026-11-26: "yes" to the Monday per-set email. FOLLOW is on. PAUSED still hides the Tuesday Tape and
+  // watchlist captures: while PAUSED, only a block with a set ticker in data-follow renders (the /indices wall block,
+  // data-follow="ALL", stays hidden until an all-sets email exists). The follow block un-hides itself with an inline
+  // display, which outranks the §CAPTURE-PAUSED rule in css/site-fixes.css; that rule is unchanged.
+  var FOLLOW = true;
+  if (PAUSED && !FOLLOW) return;
   var els = document.querySelectorAll('.sch-signup[data-signup]');
   if (!els.length) return;
   // Night Crew, Sep 30 2026: label and button 10-10.5px -> 11px (site text floor), input and button 40px tall
@@ -68,6 +72,9 @@
   }
   Array.prototype.forEach.call(els, function (el) {
     var fol = FOLLOW ? String(el.getAttribute('data-follow') || '').replace(/[^a-z0-9]/gi, '').slice(0, 12) : '';
+    if (fol === 'ALL') fol = '';
+    if (PAUSED && !fol) return;
+    if (fol) el.style.setProperty('display', 'block', 'important');
     var v = fol ? 'follow' : el.getAttribute('data-variant') === 'watchlist' ? 'watchlist' : 'tape', c = COPY[v];
     var src = String(el.getAttribute('data-signup') || 'site').replace(/[^a-z0-9_-]/gi, '').slice(0, 40);   // B71 (Night Crew Oct 14): match api/subscribe.js (40) so long -index slugs reach MailerLite/GA4 whole
     if (v === 'watchlist') src = 'watchlist-' + vaultCount();
