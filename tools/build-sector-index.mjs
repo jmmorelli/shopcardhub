@@ -913,6 +913,7 @@ function block(x, c, opt = {}) {
     </div>
     <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div>${levelLine}</div>
   </div>
+  <!-- SIDX:AISTRIP -->
   <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>
   ${parts ? parts.read : ""}
   ${quoteLine(x, c, h)}
@@ -1110,6 +1111,13 @@ function bake(x, c) {
   const folM = h1 ? html.match(FOL_RE) : null;
   body = body.replace("<!-- SIDX:FOLLOW -->", folM ? folM[0] : "");
   if (folM) html = html.replace(FOL_RE, "");
+  // Q-051 (Build Loop, Nov 26 2026; BET-20261126-1): the AI-arrival strip (an AISTRIP block owned and rewritten in place by
+  // tools/build-ai-strip.mjs; empty for every visitor who is not an AI arrival) goes right under the title, at the SIDX:AISTRIP
+  // slot. Same move as the two above. Pages without the block are untouched.
+  const AIS_RE = /<!-- AISTRIP:START[\s\S]*?<!-- AISTRIP:END -->/;
+  const aisM = h1 ? html.match(AIS_RE) : null;
+  body = body.replace("<!-- SIDX:AISTRIP -->", () => (aisM ? aisM[0] : ""));   // function form: the block carries a literal "$" in its script
+  if (aisM) html = html.replace(AIS_RE, "");
   if (html.includes(S)) {
     if (buyM) html = html.replace(BUY_RE, "");
     html = html.replace(S_RE, () => body);
