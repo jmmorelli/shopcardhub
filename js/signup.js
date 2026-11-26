@@ -17,6 +17,11 @@
   // signup_view fires while PAUSED. css/site-fixes.css §CAPTURE-PAUSED hides the static captures and Tape links.
   var PAUSED = true;
   if (PAUSED) return;
+  // BET-20261125-1 "Follow this set" (Build Loop Q-007, Nov 26 2026): built DARK. While FOLLOW is false a block carrying
+  // data-follow renders exactly as before (the tape variant). Flip only after Mo says yes to the Monday per-set email (a new
+  // email type, Needs-Mo by the CoS charter), and bump ?v= in tools/build-signup.mjs with it. Same list, same /api/subscribe:
+  // the set rides in signup_page as follow-<ticker>.
+  var FOLLOW = false;
   var els = document.querySelectorAll('.sch-signup[data-signup]');
   if (!els.length) return;
   // Night Crew, Sep 30 2026: label and button 10-10.5px -> 11px (site text floor), input and button 40px tall
@@ -29,6 +34,12 @@
       p: 'The Monday close of every set index, the week’s movers, and what the chase cards are selling for. One email, Tuesdays. Free.',
       b: 'Get the Tuesday Tape',
       ok: '✓ You’re on it — the next close lands Tuesday.'
+    },
+    follow: {
+      k: 'Follow this set.',
+      p: 'One email each Monday: this index’s level, the week’s % move, and the top mover. Unsubscribe any time.',
+      b: 'Follow',
+      ok: '✓ Following — the first email lands Monday.'
     },
     watchlist: {
       k: 'Your cards, repriced',
@@ -56,9 +67,11 @@
     io.observe(el);
   }
   Array.prototype.forEach.call(els, function (el) {
-    var v = el.getAttribute('data-variant') === 'watchlist' ? 'watchlist' : 'tape', c = COPY[v];
+    var fol = FOLLOW ? String(el.getAttribute('data-follow') || '').replace(/[^a-z0-9]/gi, '').slice(0, 12) : '';
+    var v = fol ? 'follow' : el.getAttribute('data-variant') === 'watchlist' ? 'watchlist' : 'tape', c = COPY[v];
     var src = String(el.getAttribute('data-signup') || 'site').replace(/[^a-z0-9_-]/gi, '').slice(0, 40);   // B71 (Night Crew Oct 14): match api/subscribe.js (40) so long -index slugs reach MailerLite/GA4 whole
     if (v === 'watchlist') src = 'watchlist-' + vaultCount();
+    if (v === 'follow') src = 'follow-' + fol;
     watchView(el, src, v);
     if (done) { el.innerHTML = '<div class="ss-row"><span class="ss-k">' + c.k + '</span><span class="ss-ok">' + c.ok.replace(/ —.*$/, '') + '</span></div>'; return; }
     el.innerHTML = '<form class="ss-row" novalidate><span class="ss-k">✉ ' + c.k + '</span><span class="ss-p">' + c.p + '</span>' +
