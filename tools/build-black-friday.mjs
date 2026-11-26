@@ -92,7 +92,7 @@ const row = (p, g) => `      <li class="sp-row bf-row">
 
 const groupNote = (g) => {
   const what = { 'elite-trainer-box': '9 booster packs plus sleeves, dice, markers and a promo card. This is the retail edition. The Pokémon Center edition has its own table above', 'booster-bundle': '6 booster packs and nothing else', 'pokemon-center-etb': '11 booster packs plus a promo card with the Pokémon Center stamp, sleeves, dice and markers. Pokémon Center sells this edition itself', 'booster-box': '36 booster packs', upc: g.packNote || g.packs + ' packs' }[g.id] || g.packs + ' packs';
-  return `Each one holds ${what}. Per pack counts ${g.packs} packs. Highest sold price first.`;
+  return `Each one holds ${what}. The per-pack price divides by ${g.packs} packs. Highest sold price first.`;
 };
 
 const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
