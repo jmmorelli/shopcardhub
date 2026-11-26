@@ -141,6 +141,19 @@ h2{font-family:var(--display);font-weight:500;font-size:18px;margin:0;text-wrap:
 .ideain textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .ideain .row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
 .ideain .left{font-family:var(--mono);font-size:12px;color:var(--muted)}
+/* Idea board scoreboard: how the board has been ruled, and chips to look at one kind at a time */
+.ib-score{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.ib-score .pk-bar{flex:none;width:100%;max-width:none;min-width:0;height:10px}
+.ib-score .pk-bar i.n{background:var(--accent);opacity:.6}
+.ib-score .ib-sum{font-size:13px;color:var(--muted)}
+.ib-score .ib-sum b{color:var(--ink);font-family:var(--mono);font-weight:600}
+.ib-score .chip .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;vertical-align:0;background:var(--muted)}
+.ib-score .chip .dot.ok{background:var(--good)} .ib-score .chip .dot.warn{background:var(--warn)} .ib-score .chip .dot.bad{background:var(--bad)} .ib-score .chip .dot.open{background:var(--accent)}
+#board .item{border-left:3px solid var(--line)}
+#board .item.r-ok{border-left-color:var(--good)} #board .item.r-warn{border-left-color:var(--warn)} #board .item.r-bad{border-left-color:var(--bad)}
+#board .item.r-open{border-left-color:var(--accent);border-left-style:dashed}
+.ib-empty{font-size:14px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:12px 13px;margin-top:8px}
+@media (prefers-reduced-motion: no-preference){.ib-score .pk-bar i{animation:ibgrow .45s cubic-bezier(.2,.8,.2,1) both}@keyframes ibgrow{from{transform:scaleX(0)}to{transform:none}}}
 .item .who{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
 .sub2{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:8px 0 0}
 
@@ -642,9 +655,15 @@ details.fold>summary{min-height:44px}
     </div>
     <div id="board-sec" hidden>
       <div class="sub2" id="board-title">On the board</div>
+      <div class="ib-score" id="board-score" hidden>
+        <div class="pk-bar" id="board-bar" aria-hidden="true"></div>
+        <div class="ib-sum" id="board-sum"></div>
+        <div class="chips" id="board-chips" role="group" aria-label="Show ideas by ruling"></div>
+      </div>
       <div class="desk" id="board" style="margin-top:8px"></div>
       <button class="btn link" type="button" id="board-more" hidden></button>
     </div>
+    <div class="ib-empty" id="board-empty" hidden>Nothing on the board yet. An idea you send above lands here after the Chief's next pass, with its ruling.</div>
     <div class="srcline">An idea you send is saved at once. The Chief of Staff reads it on its next pass (four a day), puts it on the board and rules on it within 48 hours: adopt, decline or park. The agents' ideas land on the same board.</div>
   </section>
 
@@ -751,7 +770,7 @@ details.fold>summary{min-height:44px}
 
   <footer>
     <span id="foot">The Chief of Staff updates this page each time it reads and rules on agent reports. The page refreshes itself while open.</span>
-    <span id="design">Design updated Nov 25, 2026: folded sections show what is inside before you open them.</span>
+    <span id="design">Design updated Nov 26, 2026: the Idea board shows how ideas were ruled and lets you look at one kind at a time.</span>
     <span><button class="btn link" id="signout" type="button">Sign out</button></span>
   </footer>
 </div>
@@ -1520,7 +1539,7 @@ details.fold>summary{min-height:44px}
   }
 
   /* ── Idea board ── */
-  var boardAll=false,BOARD_LIMIT=6,ideaBusy=false;
+  var boardAll=false,BOARD_LIMIT=6,ideaBusy=false,boardFilter="all";
   var RULE={adopt:["ok","Adopted"],adopted:["ok","Adopted"],decline:["bad","Declined"],declined:["bad","Declined"],park:["warn","Parked"],parked:["warn","Parked"]};
   function ideaLeft(){var t=$("idea-text"),n=t.value.length;$("idea-left").textContent=n>800?(1000-n)+" characters left":""}
   function sendIdea(){
@@ -1553,10 +1572,29 @@ details.fold>summary{min-height:44px}
       it.appendChild(a);box.appendChild(it);
     });
     var list=arr(s.ideas).filter(obj).filter(function(i){return i.idea||i.text});
-    var bd=$("board");clear(bd);$("board-sec").hidden=!list.length;
-    var open=0;list.forEach(function(i){if(!RULE[String(i.ruling||"").toLowerCase()])open++});
-    (boardAll?list:list.slice(0,BOARD_LIMIT)).forEach(function(i){
-      var r=RULE[String(i.ruling||"").toLowerCase()],it=el("div","item");
+    var bd=$("board");clear(bd);$("board-sec").hidden=!list.length;$("board-empty").hidden=!!list.length||!!mine.length;
+    function kindOf(i){var r=RULE[String(i.ruling||"").toLowerCase()];return r?r[0]:"open"}
+    var tally={open:0,ok:0,warn:0,bad:0};list.forEach(function(i){tally[kindOf(i)]++});
+    var open=tally.open;
+    if(boardFilter!=="all"&&!tally[boardFilter])boardFilter="all";
+    var KINDS=[["open","n","Not ruled yet"],["ok","g","Adopted"],["warn","a","Parked"],["bad","r","Declined"]];
+    var bar=$("board-bar");clear(bar);
+    KINDS.forEach(function(k,ix){if(!tally[k[0]])return;var seg=el("i",k[1]);seg.style.flex=String(tally[k[0]]);seg.style.animationDelay=(ix*0.06)+"s";bar.appendChild(seg)});
+    var ruled=tally.ok+tally.warn+tally.bad,sum=$("board-sum");clear(sum);
+    if(ruled){sum.appendChild(el("b",null,String(tally.ok)));sum.appendChild(document.createTextNode(" adopted of "));sum.appendChild(el("b",null,String(ruled)));sum.appendChild(document.createTextNode(" ruled"+(open?" · ":"")))}
+    if(open){sum.appendChild(el("b",null,String(open)));sum.appendChild(document.createTextNode(" still waiting for a ruling"))}
+    var ch=$("board-chips");clear(ch);
+    [["all",null,"All"]].concat(KINDS).forEach(function(k){
+      var n=k[0]==="all"?list.length:tally[k[0]];if(!n)return;
+      var b=el("button","chip");b.type="button";b.setAttribute("aria-pressed",String(boardFilter===k[0]));
+      if(k[0]!=="all"){var dt=el("span","dot "+k[0]);dt.setAttribute("aria-hidden","true");b.appendChild(dt)}
+      b.appendChild(document.createTextNode(k[2]));b.appendChild(el("span","n",String(n)));
+      b.addEventListener("click",function(){boardFilter=k[0];boardAll=false;renderIdeas(state||{})});ch.appendChild(b);
+    });
+    $("board-score").hidden=list.length<2;
+    var shown=boardFilter==="all"?list:list.filter(function(i){return kindOf(i)===boardFilter});
+    (boardAll?shown:shown.slice(0,BOARD_LIMIT)).forEach(function(i){
+      var r=RULE[String(i.ruling||"").toLowerCase()],it=el("div","item r-"+(r?r[0]:"open"));
       var top=el("div","ans");
       top.appendChild(el("span","pill "+(r?r[0]:"plain"),r?r[1]:"Not ruled yet"));
       top.appendChild(el("span","who",[i.id,i.from?("from "+i.from):"",i.date?fday(i.date):""].filter(Boolean).join(" · ")));
@@ -1566,7 +1604,7 @@ details.fold>summary{min-height:44px}
       bd.appendChild(it);
     });
     $("board-title").textContent="On the board"+(list.length?" ("+list.length+")":"");
-    var more=$("board-more");more.hidden=list.length<=BOARD_LIMIT;more.textContent=boardAll?"Show fewer":"Show all "+list.length;
+    var more=$("board-more");more.hidden=shown.length<=BOARD_LIMIT;more.textContent=boardAll?"Show fewer":"Show all "+shown.length;
     var waiting=mine.filter(function(id){return !obj(decisions[id].acted)}).length;
     $("ideas-count").textContent=[waiting?waiting+" of yours waiting for the Chief":"",open?open+" not ruled yet":""].filter(Boolean).join(" · ");
   }
