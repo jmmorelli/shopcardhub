@@ -184,7 +184,6 @@ if (s.pre) {
     <div><b>Prereleases</b><span>${esc(CFG.prerelease)} · Build &amp; Battle at local stores</span></div>
     <div><b>Release</b><span>${esc(CFG.releaseLong)} · English</span></div>
   </div>
-  <p>Modern sets typically trade 10–25% below their release-week level after 1–3 months (ShopCardHub cohort, 32 sets since 2021, PriceCharting data). This index starts at release on purpose.</p>
   <p class="f">Dates as of Oct 4, 2026. The set guide: <a href="${CFG.guide}">${setE} — release date and what's in it</a> · <a href="/indices">every ticker</a> · <a href="/how-prices-work">how prices work</a>.</p>
 </section>
 `;
