@@ -21,6 +21,7 @@ on:
 
 permissions:
   contents: write
+  issues: write   # Q-010 (Build Loop, Nov 26 2026): the gate step below opens/updates the gate-watch issue
 
 # Oct 7 2026: run #72 lost the whole night's snapshot when ga4-snapshot pushed to price-data mid-run
 # (both schedules drift into the same 15:30 UTC window) and this job's push was rejected non-fast-forward.
@@ -174,6 +175,7 @@ jobs:
       # go private. Copy ONLY the three derived public files onto main under data/feed/ — the push
       # triggers one Vercel deploy a night. listings-history.json and ga4-*.json never leave price-data.
       - name: Publish the public feed to the site (data/feed on main)
+        id: publish
         run: |
           set -e
           git config user.name "price-engine[bot]"
@@ -245,7 +247,7 @@ jobs:
             # AI-Search patch 3 (Commissioner wired 2026-11-07): /index-feed.json first, so build-aisearch sees it for the llms pointer.
             if node tools/build-index-feed.mjs > /dev/null; then git add index-feed.json
             else echo "::warning::build-index-feed failed - index-feed.json keeps its previous bake"; git checkout -- index-feed.json 2>/dev/null || true; fi
-            if node tools/build-aisearch.mjs > /dev/null; then git add indices.html pokemon-base-set-index.html pokemon-base-set-1st-edition-index.html scarlet-violet-151-index.html bowman-1st-chrome-index.html bowman-chrome-2026-index.html evolving-skies-index.html prismatic-evolutions-index.html ascended-heroes-index.html pokemon-base-set-shadowless-index.html neo-genesis-1st-edition-index.html data/aisearch-llms.txt
+            if node tools/build-aisearch.mjs > /dev/null; then git add indices.html pokemon-base-set-index.html pokemon-base-set-1st-edition-index.html scarlet-violet-151-index.html bowman-1st-chrome-index.html bowman-chrome-2026-index.html evolving-skies-index.html prismatic-evolutions-index.html ascended-heroes-index.html pokemon-base-set-shadowless-index.html neo-genesis-1st-edition-index.html pokemon-30th-anniversary-2026.html data/aisearch-llms.txt
             else echo "::warning::build-aisearch failed - aisearch blocks keep their previous bake"; fi
             # AI-Search patch 4 (Commissioner wired 2026-11-09): /what-is-a-1st-bowman-card re-reads BOW26/BCB26 after the mark.
             if node tools/build-first-bowman-page.mjs > /dev/null; then git add what-is-a-1st-bowman-card.html
@@ -269,3 +271,24 @@ jobs:
             echo "push rejected (a lane pushed meanwhile) - retrying"; sleep 10
           done
           echo "could not publish the feed after 3 attempts"; exit 1
+      # Q-010 (Build Loop, Nov 26 2026; CoS order of Nov 19): this job pushes re-baked pages with the bot token, which does
+      # not trigger site-gates, so a bake that broke a gate was found only by the next lane to push. Run the one gate
+      # command on what was just published; a FAIL opens/updates the gate-watch issue. Warn-only: the feed is already live.
+      - name: Gates after the bake (tools/gate.sh)
+        id: gates
+        if: steps.publish.outcome == 'success'
+        run: |
+          bash tools/gate.sh > gates.txt 2>&1 && fail=0 || fail=1
+          tail -5 gates.txt
+          echo "fail=$fail" >> "$GITHUB_OUTPUT"
+          if [ "$fail" = 1 ]; then echo "::warning::gate.sh FAILed on the nightly feed bake - see the gate-watch issue"; fi
+      - name: Open/update gate-watch issue on a gate FAIL
+        if: steps.gates.outputs.fail == '1'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = `Nightly feed bake, run ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n` + '```\n' + fs.readFileSync('gates.txt','utf8').slice(-60000) + '\n```\nFor the CoS desk (R24). Mo: no action needed.';
+            const open = await github.rest.issues.listForRepo({ owner: context.repo.owner, repo: context.repo.repo, state: 'open', labels: 'gate-watch' });
+            if (open.data.length) await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: open.data[0].number, body });
+            else await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title: 'gate-watch: an independent check failed', body, labels: ['gate-watch'] });
