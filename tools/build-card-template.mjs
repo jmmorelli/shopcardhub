@@ -129,7 +129,8 @@ const page = (o) => `<!DOCTYPE html>
   <title>${o.title}</title>
   <meta name="description" content="${o.desc}">
   <meta name="robots" content="${o.robots}">
-  <link rel="canonical" href="https://www.shopcardhub.com${o.path}">
+  <link rel="canonical" href="https://www.shopcardhub.com${o.path}">${o.ld ? `
+  <script type="application/ld+json">${JSON.stringify(o.ld).replace(/</g, "\\u003c")}</script>` : ""}
   <meta property="og:type" content="website">
   <meta property="og:title" content="${o.ogTitle}">${o.path !== "/card" ? `
   <meta property="og:url" content="https://www.shopcardhub.com${o.path}">` : ""}
@@ -217,6 +218,20 @@ const n90Of = (c, d) => {
 const ours = (f) => { try { return /<main class="cdp" id="cdp" aria-live="polite" data-card-id=/.test(fs.readFileSync(f, "utf8")); } catch { return null; } };
 // run 9 (Cupertino): the card's local nav, its pill = the stub's raw eBay link byte for byte (tools/lib/local-nav.mjs)
 const lnavOf = (id, nameHtml, load) => { const l = stubRawLink(load); if (!l) throw new Error(`no raw eBay link in the stub for ${id}`); return cardLocalNav(id, nameHtml, l); };
+// Q-005 (Build Loop, Nov 26 2026; weekly backlog Nov 25 row 1, G3): every static card page carries one JSON-LD block — the
+// WebPage (its own description, which is dated) and the BreadcrumbList the visible crumb shows. Machine-facing, so no eBay URL,
+// no affiliate link and no offer (R45); the price stays in the dated description only.
+const SITE = "https://www.shopcardhub.com";
+function cardLd(d, c, nm, setShort, slug, desc) {
+  const url = `${SITE}/card-${slug}`, crumbs = [["Set indices", `${SITE}/indices`]];
+  if (d.kind !== "tracked" && d.page && d.page !== "/indices") crumbs.push([String(d.name || d.ticker || setShort), SITE + d.page]);
+  crumbs.push([nm, url]);
+  return { "@context": "https://schema.org", "@graph": [
+    { "@type": "WebPage", "@id": url + "#page", url, name: `${nm} ${setShort} price`, description: desc, inLanguage: "en", isPartOf: { "@type": "WebSite", name: "ShopCardHub", url: SITE },
+      about: { "@type": "Thing", name: `${nm} (${setShort})` } },
+    { "@type": "BreadcrumbList", itemListElement: crumbs.map(([name, item], i) => ({ "@type": "ListItem", position: i + 1, name, item })) },
+  ] };
+}
 const slugsSeen = new Map();
 const JOBS = [];   // BET-20261119-1: written after the loop, once every sibling page is known
 let nStatic = 0, nIndexed = 0;
@@ -257,6 +272,7 @@ for (const tk of STATIC_TICKERS) {
       title: `${esc(nm)} ${esc(setShort)} Price — Raw, PSA 9, PSA 10, TAG | ShopCardHub`, desc: esc(desc),
       robots: indexable ? "index,follow" : "noindex,follow", path: `/card-${slug}`, ogTitle: `${esc(nm)} ${esc(setShort)} — Raw vs PSA 9 vs PSA 10`,
       id: esc(c.id), load, lnav: lnavOf(esc(c.id), esc(nm), load),
+      ld: cardLd(d, c, nm, setShort, slug, desc),
     } });
     nStatic++; if (indexable) nIndexed++;
   }

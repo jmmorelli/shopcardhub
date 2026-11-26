@@ -252,6 +252,10 @@ const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta n
 <meta name="description" content="${esc(desc)}">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="${SITE}${CLASS_PAGE}">
+<script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": [
+  { "@type": "CollectionPage", "@id": `${SITE}${CLASS_PAGE}#page`, url: `${SITE}${CLASS_PAGE}`, name: TITLE, description: desc, inLanguage: "en", isPartOf: { "@type": "WebSite", name: "ShopCardHub", url: SITE } },
+  { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Set indices", item: `${SITE}/indices` }, { "@type": "ListItem", position: 2, name: TITLE, item: `${SITE}${CLASS_PAGE}` }] },
+] }).replace(/</g, "\\u003c")}</script>
 <meta property="og:title" content="${esc(TITLE)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${SITE}${CLASS_PAGE}">
