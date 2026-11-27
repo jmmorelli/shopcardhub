@@ -216,7 +216,11 @@
    * p* = (raw + all-in − V_miss) / (slab − V_miss); raw = TCGplayer market (R38 shop file), V_miss = PSA 9 median net of
    * eBay fees, slab = PSA 10 median. Renders only for SV/MEG-era cards with a shop price and ≥ 3 dated PSA 9 and PSA 10
    * sales in 30 days. Implied rate only: the Edge (actual − implied) stays held (Am. 3, GAPS P30). */
+  // GAPS P89 (KB run 44, Nov 27 2026): PSA stopped grading English Mega Hyper Rares on Nov 25 2026 (psacard.com article 15794).
+  // Explicit id list, not the rarity field (PF25 #130 is tagged HR, MEG25 rows carry none): no break-even math for these.
+  var MHR_NO_PSA = ['meg25-187','meg25-188','pf25-130','ah26-294','ah26-295','cr26-122','pb26-120','dlr26-141'];
   function grade62(d, c, G) {
+    if (MHR_NO_PSA.indexOf(c.id) >= 0) return { html: '<div class="cdp-p62"><p class="hl">PSA stopped grading English Mega Hyper Rares on Nov 25, 2026 (psacard.com), so there is no PSA break-even for this card. The PSA 10 and PSA 9 prices here are copies graded before then.</p></div>', short: 'PSA no longer grades this card' };
     if (!P62.sets[String(d.ticker).toLowerCase()]) return null;
     var sf = window.__schShopFile, v = sf && sf.marks && sf.marks[c.id];
     var g9 = G[1], g10 = G[2];

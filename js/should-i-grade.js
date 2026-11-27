@@ -164,7 +164,11 @@
 
     var head, rows = '', p = null;
     var missP = num(inp.miss, m9 ? m9.m : null);
-    if (R == null) head = 'We don’t have a dated raw sales median for this card. Open “Your costs” and type what your copy would sell for raw to run the numbers.';
+    // GAPS P89 (KB run 44, Nov 27 2026): PSA stopped grading English Mega Hyper Rares on Nov 25 2026
+    // (psacard.com article 15794). Explicit id list, not the rarity field (PF25 #130 is tagged HR, MEG25 rows carry none).
+    var MHR_NO_PSA = ['meg25-187','meg25-188','pf25-130','ah26-294','ah26-295','cr26-122','pb26-120','dlr26-141'];
+    if (MHR_NO_PSA.indexOf(c.id) >= 0) head = 'PSA stopped grading English Mega Hyper Rares on Nov 25, 2026 (psacard.com), so there is no PSA break-even for this card. The PSA 10 and PSA 9 prices above are copies graded before then.';
+    else if (R == null) head = 'We don’t have a dated raw sales median for this card. Open “Your costs” and type what your copy would sell for raw to run the numbers.';
     else if (!m10) head = 'Not enough PSA 10 sales in the last 90 days to work out a break-even for this card.';
     else if (missP == null) head = 'Not enough PSA 9 sales to price a miss. Type what a miss would sell for in the box below.';
     else {
