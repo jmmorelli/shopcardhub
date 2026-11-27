@@ -2658,7 +2658,7 @@ const COLS = [
   { key:'weight', label:'Weight', own:true, sortv:r => r.w, cls:r => r.w != null ? 'w' : 'dim', cell:r => r.w != null ? (r.w * 100).toFixed(1) + '%' : '—' },
   { key:'target',label:'Target', watch:true, sortv:r => r.c.target, cls:r => r.c.target != null ? '' : 'dim', cell:r => r.c.target != null ? '$' + fmt$(r.c.target, 0) : '—' },
   { key:'dist',  label:'To Zone', watch:true, sortv:r => r.dist == null ? null : -r.dist, cls:r => r.dist == null ? 'dim' : r.dist <= 0 ? 'pos' : '',
-    cell:r => r.dist == null ? '—' : (r.dist <= 0 ? 'GO · ' + pct(-r.dist, 0) + ' under' : '+$' + fmt$(r.lp - r.c.target, 0) + ' away') },
+    cell:r => r.dist == null ? '—' : (r.dist <= 0 ? 'GO · $' + fmt$(r.c.target - r.lp, 0) + ' under' : '+$' + fmt$(r.lp - r.c.target, 0) + ' away') },
   { key:'logs',  label:'Logs', watch:true, sortv:r => r.n, cell:r => String(r.n) },
   { key:'since', label:'Since', sortv:r => r.since, cls:'dim', cell:r => r.since ? (r.c.status === 'own' ? r.since.slice(2).replace(/-/g,'/') : r.since) : '—' },
   { key:'spark', label:'Trend', cls:'spk', cell:r => sparkOf(r.c) },
