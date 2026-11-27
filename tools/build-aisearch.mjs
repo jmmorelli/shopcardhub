@@ -16,6 +16,7 @@
 //      printing named in cfg.cards[id].prints (each a live basket mark, not carried), plus a FAQPage JSON-LD of the
 //      same answer. Internal links only (the other printings' index pages, and this page's own chase row).
 //      {card} in a description is the page's own printing as one sentence.
+//      With "cardEbay": true (P12 Nov 26) the block also carries one eBay link per printing (see cardEbayLinks).
 //   5. opt-in per page ("move": {...}, P10 Nov 22): the <!-- AISEARCH:MOVE:START --> … END block, placed just above
 //      move.anchor. A dated answer to "have this set's prices dropped?": the index level against its base month, its
 //      latest week and month (same horizons as /indices) and its run of falling or rising marks, then a short table of
@@ -215,12 +216,35 @@ function heldPrint(id, ticker) {
   const b = (r.x.basket || []).find(b => String(b.num) === String(c.num) && b.name === c.name);
   return !!(b && b.ptHold);
 }
-function cardBlock(id, ticker, slug) {
+// P12 (Nov 26), opt-in per page ("cardEbay": true): the answer itself carries one eBay link per printing, so the reader
+// who got the price can open live listings without scrolling. Each href is copied from that printing's own index page
+// (chase variant first, else the plain row), re-tagged customid=<this page slug> (P9 pattern), chase_click item
+// <slug>:answer-<ticker>. A link carries no price; a printing whose mark is held still gets its link. No href → no link.
+function cardEbayLinks(c, ticker, slug) {
+  const order = [...c.prints].sort((a, b) => (a.ticker === ticker ? -1 : b.ticker === ticker ? 1 : 0));
+  const links = order.map(p => {
+    const r = T[p.ticker]; if (!r || !r.page) return null;
+    const f = path.join(ROOT, r.page.replace(/^\//, '') + '.html'); if (!fs.existsSync(f)) return null;
+    const html = fs.readFileSync(f, 'utf8'), tk = p.ticker.toLowerCase(), nm = String(c.num).toLowerCase();
+    const m = html.match(new RegExp(`href="(https://www\\.ebay\\.com/sch/i\\.html\\?[^"]*customid=${tk}-${nm}-chase)"`))
+      || html.match(new RegExp(`href="(https://www\\.ebay\\.com/sch/i\\.html\\?[^"]*customid=${tk}-${nm})"`));
+    if (!m) return null;
+    const href = m[1].replace(/&amp;/g, '&').replace(/customid=[^&"]*/, 'customid=' + slug);
+    const label = c.prints.length > 1 ? p.label : `${c.name} #${c.num}`;
+    return `<a href="${esc(href)}" target="_blank" rel="noopener sponsored" title="${esc(`${label} ${c.title}`)}, live eBay listings" onclick="if(typeof gtag==='function')gtag('event','chase_click',{item:'${esc(slug)}:answer-${esc(tk)}',page:location.pathname})" style="display:inline-flex;align-items:center;min-height:32px;padding:4px 10px;margin:0 6px 6px 0;border:1px solid var(--bd,#23303d);border-radius:6px;font-size:13px;line-height:1.3;color:var(--ac);text-decoration:none;white-space:nowrap;">${esc(label)} on eBay&nbsp;&rsaquo;</a>`;
+  }).filter(Boolean);
+  if (!links.length) return '';
+  return `<p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:0 0 2px;">Live eBay listings for this card:</p>\n<p style="margin:0 0 4px;display:flex;flex-wrap:wrap;">${links.join('')}</p>`;
+}
+function cardBlock(id, ticker, slug, withEbay) {
   const a = cardAcross(id);
   if (!a) return null;
   const here = a.prints.find(p => p.ticker === ticker);
   const others = a.prints.filter(p => p.ticker !== ticker);
-  const hereTxt = here ? `${a.prints.length > 1 ? `This page is the ${esc(here.label)} print. ` : ''}<a href="#${esc(ticker.toLowerCase())}-chase">${esc(a.c.name)}'s row and its eBay links are just below</a>. ` : '';
+  const ebayLine = withEbay ? cardEbayLinks(a.c, ticker, slug) : '';
+  const hereTxt = withEbay && ebayLine
+    ? (here && a.prints.length > 1 ? `This page is the ${esc(here.label)} print. ` : '')
+    : here ? `${a.prints.length > 1 ? `This page is the ${esc(here.label)} print. ` : ''}<a href="#${esc(ticker.toLowerCase())}-chase">${esc(a.c.name)}'s row and its eBay links are just below</a>. ` : '';
   const otherTxt = others.length ? `Other prints: ${others.map(p => `<a href="${esc(p.r.page)}">${esc(p.label)} (${esc(p.ticker)})</a>`).join(' · ')}.` : '';
   const faq = { '@context': 'https://schema.org', '@type': 'FAQPage',
     mainEntity: [{ '@type': 'Question', name: a.c.question, acceptedAnswer: { '@type': 'Answer', text: `${a.text}${a.c.tell ? ' ' + a.c.tell : ''}` } }] };
@@ -228,7 +252,7 @@ function cardBlock(id, ticker, slug) {
 <div class="wrap"><section id="card-answer" aria-labelledby="aisc-q" style="margin:12px 0 0;padding:12px 14px;border:1px solid var(--bd,#23303d);border-radius:8px;scroll-margin-top:80px;">
 <h2 id="aisc-q" style="font-size:16px;line-height:1.3;margin:0 0 6px;color:var(--th);text-wrap:balance;">${esc(a.c.question)}</h2>
 <p style="font-size:15px;line-height:1.55;color:var(--th);max-width:72ch;margin:0 0 6px;text-wrap:pretty;">${a.html.replace(/'/g, '&#39;')}</p>${a.c.tell ? `\n<details style="margin:0 0 6px;"><summary style="cursor:pointer;font-size:13px;line-height:1.5;color:var(--ac);min-height:24px;">${esc(a.c.tellLabel || 'How to tell the prints apart')}</summary><p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:4px 0 0;">${esc(a.c.tell)}</p></details>` : ''}
-<p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:0;">${(hereTxt + otherTxt).trim()}</p>
+${[ebayLine, (hereTxt + otherTxt).trim() ? `<p style="font-size:13px;line-height:1.5;color:var(--tx);max-width:72ch;margin:0;">${(hereTxt + otherTxt).trim()}</p>` : ''].filter(Boolean).join('\n')}
 </section></div>
 <script type="application/ld+json">${JSON.stringify(faq).replace(/</g, '\\u003c')}</script>
 <!-- AISEARCH:CARD:END -->`;
@@ -533,7 +557,7 @@ for (const [slug, p] of Object.entries(cfg.pages)) {
   if (p.card || /<!-- AISEARCH:CARD:START/.test(html)) {
     const RE = /<!-- AISEARCH:CARD:START[\s\S]*?<!-- AISEARCH:CARD:END -->\n?/;
     html = html.replace(RE, '');
-    const blk = p.card && p.ticker ? cardBlock(p.card, p.ticker, slug) : null;
+    const blk = p.card && p.ticker ? cardBlock(p.card, p.ticker, slug, p.cardEbay === true) : null;
     if (blk) {
       const anchor = `<!-- ${p.ticker}:START -->`;
       if (html.split(anchor).length !== 2) throw new Error(slug + ': expected one ' + anchor + ' anchor for the card answer');
