@@ -13,6 +13,10 @@
 //   street date in the future                    → "pre-launch"
 //   street date passed, no level yet             → "released <Mon D> · no level yet"
 //   live (a level in history, status not pre)    → "" (no launch wording; the separator before it goes too)
+// Named lines (Q-066, Build Loop, Nov 27 2026; Bowman KB GAPS G42): the generator also owns a few named phrases inside the
+// BF26 block, between <!-- LINE:<TK>:<name> -->…<!-- /LINE:<TK>:<name> --> sub-markers (first run wraps the typed phrase):
+//   BF26:street → "Streets <Weekday>, <Mon D>." before the street date, "Released <Mon D>." after (from releaseDate)
+//   BF26:main   → "the college prospects' Bowman Chrome autographs" (G42: no "first Bowman" claim until the per-player prior check)
 // It never touches anything else on the page.
 //
 // Usage: node tools/build-prelaunch-eyebrow.mjs [--check]   (--check: exit 1 if any page would change; writes nothing)
@@ -29,6 +33,19 @@ const PAGES = [
   { tk: "BF26", file: "bowman-football-2026-index.html", lead: '<div class="eyebrow">Set index', typed: " · pre-launch", cap: false },
   { tk: "BCS26", file: "bowman-chrome-sapphire-2026-index.html", lead: '<div class="eyebrow">Set index', typed: " · pre-launch", cap: false },
   { tk: "DLR26", file: "delta-reign-index.html", lead: '<div class="eb">▮ Set Index · Sector Model', typed: " · Pre-launch", cap: true },
+];
+
+// named lines: tk · name · the phrase the creator tool typed (first run only) · fn(index entry) → text
+const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const LINES = [
+  { tk: "BF26", name: "street", typed: "Streets Wednesday, Sep 30.",
+    text: (x) => {
+      const rd = /^\d{4}-\d{2}-\d{2}$/.test(x.releaseDate || "") ? x.releaseDate : null;
+      if (!rd) return null;
+      return rd > TODAY ? `Streets ${DAYS[new Date(rd + "T12:00:00Z").getUTCDay()]}, ${monD(rd)}.` : `Released ${monD(rd)}.`;
+    } },
+  { tk: "BF26", name: "main", typed: "the college prospects' first Bowman autographs",
+    text: () => "the college prospects' Bowman Chrome autographs" },
 ];
 
 const MONS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -50,7 +67,18 @@ for (const p of PAGES) {
   if (!fs.existsSync(file)) { skipped.push(`${p.file}: no such page`); continue; }
   const x = IDX[p.tk];
   if (!x) { skipped.push(`${p.file}: ${p.tk} not in data/indices.json`); continue; }
-  const html = fs.readFileSync(file, "utf8");
+  const html0 = fs.readFileSync(file, "utf8");
+  let html = html0;
+  for (const L of LINES.filter((l) => l.tk === p.tk)) {
+    const t = L.text(x);
+    if (t == null) { skipped.push(`${p.file}: LINE:${L.tk}:${L.name} has no source value`); continue; }
+    const LS = `<!-- LINE:${L.tk}:${L.name} -->`, LE = `<!-- /LINE:${L.tk}:${L.name} -->`;
+    const ls = html.indexOf(LS), le = html.indexOf(LE);
+    if (ls !== -1 && le > ls) html = html.slice(0, ls) + LS + t + LE + html.slice(le + LE.length);
+    else if (ls !== -1 || le !== -1) skipped.push(`${p.file}: half a LINE:${L.tk}:${L.name} pair — fix the markers`);
+    else if (html.split(L.typed).length === 2) html = html.replace(L.typed, LS + t + LE);
+    else skipped.push(`${p.file}: LINE:${L.tk}:${L.name} phrase not found once — nothing to do`);
+  }
   const S = `<!-- EYEBROW:${p.tk} -->`, E = `<!-- /EYEBROW:${p.tk} -->`;
   const body = `${S}${words(x, p.cap)}${E}`;
   let out;
@@ -65,7 +93,7 @@ for (const p of PAGES) {
     const k = at + p.lead.length;
     out = html.slice(0, k) + body + html.slice(k + p.typed.length);
   }
-  if (out === html) { same.push(p.file); continue; }
+  if (out === html0) { same.push(p.file); continue; }
   changed.push(p.file);
   if (!CHECK) fs.writeFileSync(file, out);
 }
