@@ -30,6 +30,9 @@
   function md(d) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ''); return m ? MON[+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1] : ''; }
   function mdShort(d) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ''); return m ? MON[+m[2] - 1] + ' ' + (+m[3]) : ''; }
   function miss(msg) { var l = document.getElementById('cdp-load'); if (l) l.innerHTML = msg; main.classList.add('cdp-done'); }
+  // Q-070 (Build Loop, Nov 27 2026; CoS L-2): a card whose files never arrive no longer sits on "Loading card…": after 10 s the
+  // page says so and points at the set indices (render() replaces #cdp-load, so this fires only while the stub is still up).
+  setTimeout(function () { if (document.getElementById('cdp-load') && !main.classList.contains('cdp-done')) miss('This card didn’t load. <a href="/indices">Open the set indices</a> to find it in its set, or search another card in the bar at the top.'); }, 10000);
   if (!id || !tk) { miss('No card picked. Search a card name in the bar at the top, or <a href="/indices">open an index</a>.'); return; }
   function get(u) { return fetch(u, { cache: 'default' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
   // B76 re-land (Oct 19): the shop file is read here too, so the .cdp-shop block and the TCGplayer button get their space

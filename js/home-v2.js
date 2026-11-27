@@ -218,7 +218,8 @@
     function pages(q) { q = nk(q); if (q.length < 2) return []; var tk = q.split(' ');
       return PAGES.filter(function (c) { for (var i = 0; i < tk.length; i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; }).sort(function (a, b) { return a.u.length - b.u.length; }).slice(0, 3); }
     function cards(q) { q = nk(q); if (!CARDS || q.length < 2) return []; var tk = q.split(' ');
-      return CARDS.filter(function (c) { for (var i = 0; i < tk.length; i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
+      // Q-070 (CoS L-2): a card we cannot price is not listed ("Charizard 1st Edition" offered the held Base Set #4 with no price)
+      return CARDS.filter(function (c) { if (c.p == null) return false; for (var i = 0; i < tk.length; i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
         // Night Crew Oct 28 (BH/FTV): a card with its own static page (priced, dated, indexable) ranks above a /card?id= row;
         // "umbreon" put the static Umbreon ex #161 page 5th behind four query pages.
         // Q-069: a priced row ranks above an unpriced one ("Charizard 1st Edition" led with the unpriced Base Set #4)

@@ -728,7 +728,7 @@ td.lst{white-space:nowrap;text-align:right;}td.lst .act-w{display:inline-grid;gr
     function cardRow(c){ return { c:1, u:SPAGE[c.id] || '/card?id='+c.id, t:esc(c.t), s:esc(c.s), pr:c.p == null ? '' : money(c.p), id:c.id }; }
     function aliasCards(q){ var a = aliasOf(q); if (!a || !CARDS) return []; return (a.ids || []).map(function(id){ for (var i=0;i<CARDS.length;i++) if (CARDS[i].id === id) return CARDS[i]; return null; }).filter(function(c){ return c && c.p != null; }).map(cardRow); }
     function findCards(q){ q = nk(q); if (!CARDS || q.length < 2) return []; var tk = q.split(' ');
-      return CARDS.filter(function(c){ for (var i=0;i<tk.length;i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
+      return CARDS.filter(function(c){ if (c.p == null) return false; /* Q-070: an unpriced card is not listed */ for (var i=0;i<tk.length;i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
         .sort(function(a,b){ var na = a.p == null ? 1 : 0, nb = b.p == null ? 1 : 0, sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1; return na - nb || sa - sb || (b.p||0) - (a.p||0); }).slice(0,8)
         .map(cardRow); }
     function find(q){ q = nk(q); if(!q) return []; var al = aliasOf(q), want = (al && al.pages) || []; return INDEX.filter(function(it){ return want.indexOf(it.u) > -1; }).concat(INDEX.filter(function(it){ return want.indexOf(it.u) < 0 && it.n.indexOf(q) > -1; })); }
