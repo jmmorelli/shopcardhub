@@ -44,6 +44,7 @@ const normKey = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 // as cards, labelled from their own <title> ("Ethan Holliday — 1st Bowman Chrome Auto"), and they list ahead of pages.
 // A card page that vercel.json redirects away is left out; nav.json's "Card chart: …" rows for the same URL are skipped.
 const STATIC_PAGES = {};
+const PAGE_MARK = {};   // Q-063: hand-built card page URL → [raw engine mark, mark date] as the page prints it
 function cardPages() {
   let redirected = new Set();
   try { redirected = new Set((JSON.parse(readFileSync(join(ROOT, 'vercel.json'), 'utf8')).redirects || []).map((r) => r.source)); } catch (e) {}
@@ -62,6 +63,10 @@ function cardPages() {
     if (!m) continue;
     const parts = dec(m[1]).split(/\s+[—|]\s+/);
     if (!parts[0]) continue;
+    // Q-063 (Build Loop, Nov 27 2026; NC SRCH-PX): the raw engine mark and its date this page prints (#cp-mark, #cp-mark-d,
+    // baked by tools/build-card-pages.mjs) ride in js/card-pages.json pages rows, so search prints the same dated price.
+    const pm = html.match(/id="cp-mark">\$([0-9][0-9,]*(?:\.[0-9]+)?)</), pd = html.match(/id="cp-mark-d">engine mark · (\d{4}-\d\d-\d\d)</);
+    if (pm && pd) PAGE_MARK[href] = [Number(pm[1].replace(/,/g, '')), pd[1]];
     out.push({ t: parts[0], s: parts[1] || '', u: href, c: 1, n: normKey(parts[0] + ' ' + (parts[1] || '') + ' ' + href.replace(/[\/-]/g, ' ')) });
   }
   return out;
@@ -411,7 +416,7 @@ function buildScript(index) {
       sel = -1;
       if (!input.value.trim()){ results.classList.remove('show'); results.innerHTML=''; return; }
       if (!items.length){ var mq = input.value.trim().slice(0,80); results.innerHTML='<div class="ns-empty">Not in an index yet — <a href="'+missUrl(mq)+'" target="_blank" rel="sponsored nofollow noopener" data-miss="1">see it on eBay ›</a> · <a href="/indices">what we track</a></div>'; results.classList.add('show'); var ml = results.querySelector('a[data-miss]'); if (ml) ml.addEventListener('click', function(){ ga('search_miss_click', { query: mq }); }); if (CARDS) missEvent(mq); return; }
-      results.innerHTML = items.map(function(it){ if (it.h) return '<div class="ns-h">'+it.h+'</div>'; if (it.c) return '<a class="ns-c" href="'+it.u+'"><span class="ns-t">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</span>'+(it.pr ? '<b class="ns-p">'+it.pr+'<small>raw</small></b>' : '')+'</a>'; var lv = LV && LV[it.u]; if (lv && lv.level != null) return lvRow(it, lv); return '<a href="'+it.u+'">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</a>'; }).join('');
+      results.innerHTML = items.map(function(it){ if (it.h) return '<div class="ns-h">'+it.h+'</div>'; if (it.c) return '<a class="ns-c" href="'+it.u+'"><span class="ns-t">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</span>'+(it.pr ? '<b class="ns-p">'+it.pr+'<small>raw</small></b>' : PPX[it.u] ? '<b class="ns-p">'+ppx(it.u)+'</b>' : '')+'</a>'; var lv = LV && LV[it.u]; if (lv && lv.level != null) return lvRow(it, lv); return '<a href="'+it.u+'">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</a>'; }).join('');
       results.classList.add('show'); place();
     }
     // card search (Sep 30 2026, Mo: search a card, land on its page with raw / PSA 9 / PSA 10 / TAG): /data/card-search.json
@@ -431,13 +436,16 @@ function buildScript(index) {
     var missT = null, missSent = {};
     function missEvent(q){ clearTimeout(missT); missT = setTimeout(function(){ var k = nk(q); if (!k || missSent[k] || nk(input.value) !== k) return; missSent[k] = 1; ga('search_miss', { query: q }); }, 1200); }
     var SPAGE = {};   // card id → static /card-<slug> page (js/card-pages.json, Night Crew Oct 26)
+    // Q-063 (Build Loop, Nov 27 2026; NC SRCH-PX): hand-built card page → [raw engine mark, date] as that page prints it (js/card-pages.json)
+    var PPX = {};
+    function ppx(u){ var x = PPX[u], md = x && String(x[1]); return x ? money(x[0]) + '<small>raw · ' + MON[+md.slice(5,7)-1] + ' ' + (+md.slice(8,10)) + '</small>' : ''; }
     // Q-062 (Build Loop, Nov 27 2026; NC SRCH-LVL): a set index row prints its level and weekly move, as the home search box does,
     // from /index-feed.json (the same marks as the home box; rebuilt by the nightly feed). Loaded on first focus with the card list.
     var LV = null, lvP = null, MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     function loadLv(){ if (lvP) return; lvP = fetch('/index-feed.json').then(function(r){ return r.json(); }).then(function(d){ var m = {}; ((d && d.indices) || []).forEach(function(x){ if (x && x.page) m[String(x.page).replace(/^https?:\\/\\/[^\\/]+/, '')] = x; }); LV = m; if (input.value.trim()) render(all(input.value)); }).catch(function(){}); }
     function lvRow(it, lv){ var nm = String(it.t).split(' — '), tk = nm.length > 1 ? nm[0] : '', name = nm.length > 1 ? nm.slice(1).join(' — ') : it.t, w = lv.change1w && lv.change1w.pct, md = String(lv.markDate || ''), dt = /^\\d{4}-\\d\\d-\\d\\d$/.test(md) ? MON[+md.slice(5,7)-1] + ' ' + (+md.slice(8,10)) : '';
       return '<a class="ns-c" href="'+it.u+'"><span class="ns-t">'+name+' <small>'+(tk ? tk + ' · ' : '')+'set index</small></span><b class="ns-p">'+Number(lv.level).toFixed(2)+'<small>'+(w != null && isFinite(w) ? (w > 0 ? '▲' : w < 0 ? '▼' : '') + Math.abs(w).toFixed(1) + '% wk' : '')+(dt ? (w != null ? ' · ' : '') + dt : '')+'</small></b></a>'; }
-    function loadCards(){ loadLv(); if (cardsP) return cardsP; fetch('/js/card-pages.json').then(function(r){ return r.json(); }).then(function(m){ SPAGE = (m && m.static) || {}; if (input.value.trim()) render(all(input.value)); }).catch(function(){}); cardsP = fetch('/data/card-search.json').then(function(r){ return r.json(); }).then(function(d){ CARDS = (d.cards||[]).map(function(c){ return { id:c[0], t:c[1], s:c[2], p:c[3], n:nk(c[1]+' '+c[2]) }; }); }).catch(function(){ CARDS = []; }); return cardsP; }
+    function loadCards(){ loadLv(); if (cardsP) return cardsP; fetch('/js/card-pages.json').then(function(r){ return r.json(); }).then(function(m){ SPAGE = (m && m.static) || {}; ((m && m.pages) || []).forEach(function(r){ if (r[3] != null && r[4]) PPX[r[2]] = [r[3], r[4]]; }); if (input.value.trim()) render(all(input.value)); }).catch(function(){}); cardsP = fetch('/data/card-search.json').then(function(r){ return r.json(); }).then(function(d){ CARDS = (d.cards||[]).map(function(c){ return { id:c[0], t:c[1], s:c[2], p:c[3], n:nk(c[1]+' '+c[2]) }; }); }).catch(function(){ CARDS = []; }); return cardsP; }
     function money(n){ return n == null ? '' : '$'+Number(n).toLocaleString('en-US', n >= 100 ? {maximumFractionDigits:0} : {minimumFractionDigits:2, maximumFractionDigits:2}); }
     function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
     function findCards(q){ q = nk(q); if (!CARDS || q.length < 2) return []; var tk = q.split(' ');
@@ -524,7 +532,7 @@ const index = buildSearchIndex();
 // plus the hand-built card pages (Bowman engine pages: /card-ethan-holliday …) as search rows, so the home search box finds
 // the same cards the header search does. Rewritten on every build-nav run (after the page generators).
 {
-  const pagesOut = { _comment: 'Written by tools/build-nav.js — do not hand-edit. static: card id → URL; pages: [label, set line, URL] of the hand-built card pages.', static: STATIC_PAGES, pages: index.filter((it) => it.c).map((it) => [it.t, it.s || '', it.u]) };
+  const pagesOut = { _comment: 'Written by tools/build-nav.js — do not hand-edit. static: card id → URL; pages: [label, set line, URL, raw engine mark, mark date] of the hand-built card pages (mark and date only when the page prints one).', static: STATIC_PAGES, pages: index.filter((it) => it.c).map((it) => PAGE_MARK[it.u] ? [it.t, it.s || '', it.u, PAGE_MARK[it.u][0], PAGE_MARK[it.u][1]] : [it.t, it.s || '', it.u]) };
   // BET-20261117-1 (Night Crew Nov 18): /search (js/search-page.js) reads this same file. site: [label, URL] of every
   // non-card search row (set indices, guides, tools), so the page lists what the header search lists. asOf: card-file
   // ticker → the date of its last mark (data/cards/<tk>.json asOf, read only), printed beside each card's raw sold mark;

@@ -209,7 +209,7 @@
     var get = function (u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
     var load = function () { if (P) return P; P = Promise.all([get('/data/card-search.json').catch(function () { return {}; }), get('/js/card-pages.json').catch(function () { return {}; })]).then(function (res) {
       CARDS = (res[0].cards || []).map(function (c) { return { id: c[0], t: c[1], s: c[2], p: c[3], n: nk(c[1] + ' ' + c[2]) }; });
-      SPAGE = res[1].static || {}; PAGES = (res[1].pages || []).map(function (r) { return { t: r[0], s: r[1], u: r[2], n: nk(r[0] + ' ' + r[1] + ' ' + r[2].replace(/[\/-]/g, ' ')) }; }); }); return P; };
+      SPAGE = res[1].static || {}; PAGES = (res[1].pages || []).map(function (r) { return { t: r[0], s: r[1], u: r[2], p: r[3], d: r[4], n: nk(r[0] + ' ' + r[1] + ' ' + r[2].replace(/[\/-]/g, ' ')) }; }); }); return P; };
     function pages(q) { q = nk(q); if (q.length < 2) return []; var tk = q.split(' ');
       return PAGES.filter(function (c) { for (var i = 0; i < tk.length; i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; }).sort(function (a, b) { return a.u.length - b.u.length; }).slice(0, 3); }
     function cards(q) { q = nk(q); if (!CARDS || q.length < 2) return []; var tk = q.split(' ');
@@ -225,7 +225,7 @@
       // a set row answers "is this set up or down?" (T2): when the words name a set, the Sets group leads ("prismatic" had it 8th)
       if (s.length) sh = '<div class="hd">Sets</div>' + s.map(function (x) { var v = T[x.tk]; return '<a data-r href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.tk) + '</small></span>' + (v ? '<b>' + v.l.toFixed(2) + '<small>' + esc(sgn(v.w, 1)) + '</small></b>' : '') + '</a>'; }).join('');
       if (s.length && nk(s[0].t).indexOf(nk(q).split(' ')[0]) >= 0) { h = sh; sh = ''; }
-      if (pg.length || c.length) h += '<div class="hd">Cards</div>' + c.map(function (x) { return '<a data-r href="' + esc(SPAGE[x.id] || '/card?id=' + x.id) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span>' + (x.p == null ? '' : '<b>' + esc(money(x.p)) + '<small>raw</small></b>') + '</a>'; }).join('') + pg.map(function (x) { return '<a data-r href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span></a>'; }).join('');
+      if (pg.length || c.length) h += '<div class="hd">Cards</div>' + c.map(function (x) { return '<a data-r href="' + esc(SPAGE[x.id] || '/card?id=' + x.id) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span>' + (x.p == null ? '' : '<b>' + esc(money(x.p)) + '<small>raw</small></b>') + '</a>'; }).join('') + pg.map(function (x) { var dd = /^\d{4}-\d\d-\d\d$/.test(String(x.d || '')) ? ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+x.d.slice(5, 7) - 1] + ' ' + (+x.d.slice(8, 10)) : ''; return '<a data-r href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span>' + (x.p == null || !dd ? '' : '<b>' + esc(money(x.p)) + '<small>raw \u00b7 ' + dd + '</small></b>') + '</a>'; /* Q-063 (Build Loop, Nov 27): hand-built card pages print their dated raw engine mark */ }).join('');
       h += sh;
       if (!h) h = CARDS ? '<div class="none">Not in an index yet \u2014 <a href="' + miss(q) + '" target="_blank" rel="sponsored nofollow noopener">see it on eBay \u203a</a> \u00b7 <a href="/indices">what we track</a></div>' : '<div class="none">Looking\u2026</div>';
       res.innerHTML = h; res.classList.add('show');
