@@ -261,6 +261,17 @@ jobs:
             fi
             if node tools/bake-th26-marks.mjs; then git add pokemon-30th-anniversary-2026.html
             else echo "::warning::bake-th26-marks refused - the 30th page keeps its previous bake"; git checkout -- pokemon-30th-anniversary-2026.html 2>/dev/null || true; fi
+            # Q-054 (Build Loop, Nov 27 2026; CoS review Nov 26 "Loop leftovers" a): four generators the Loop wrote on Nov 26 had
+            # no Action after a mark, so their lines aged until a run re-ran them by hand. All read the repo's marks/data files
+            # (no network, no typed figure) and are warn-only: a failure keeps the page's previous bake. The gate step runs after.
+            if node tools/build-worth-now.mjs > /dev/null; then git add charizard-ex-worth.html gengar-ex-worth.html mega-darkrai-ex-worth.html moonbreon-worth.html van-gogh-pikachu-worth.html pitch-black-set-guide.html
+            else echo "::warning::build-worth-now failed - worth pages keep their previous bake"; git checkout -- charizard-ex-worth.html gengar-ex-worth.html mega-darkrai-ex-worth.html moonbreon-worth.html van-gogh-pikachu-worth.html pitch-black-set-guide.html 2>/dev/null || true; fi
+            if node tools/build-box-rule-line.mjs > /dev/null; then git add bowman-chrome-baseball-2026.html bowman-football.html
+            else echo "::warning::build-box-rule-line failed - the box-rule line keeps its previous bake"; git checkout -- bowman-chrome-baseball-2026.html bowman-football.html 2>/dev/null || true; fi
+            if node tools/build-prelaunch-eyebrow.mjs > /dev/null; then git add bowman-football-2026-index.html bowman-chrome-sapphire-2026-index.html delta-reign-index.html
+            else echo "::warning::build-prelaunch-eyebrow failed - eyebrows keep their previous bake"; git checkout -- bowman-football-2026-index.html bowman-chrome-sapphire-2026-index.html delta-reign-index.html 2>/dev/null || true; fi
+            if node tools/build-ai-strip.mjs > /dev/null; then git add mcdonalds-pokemon-cards-2026.html indices.html bowman-chrome-2026-index.html pokemon-booster-box-prices.html pokemon-delta-reign-2026.html
+            else echo "::warning::build-ai-strip failed - AI strips keep their previous bake"; git checkout -- mcdonalds-pokemon-cards-2026.html indices.html bowman-chrome-2026-index.html pokemon-booster-box-prices.html pokemon-delta-reign-2026.html 2>/dev/null || true; fi
             # sitemap <lastmod> = each page's last content commit (B63, Oct 9 2026). Pages baked above are "today".
             # Never blocks the feed: a failure leaves sitemap.xml as it was.
             if node tools/sitemap-lastmod.mjs | tail -2; then git add sitemap.xml
