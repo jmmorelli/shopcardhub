@@ -129,7 +129,7 @@
     // the compare row (run 7): one tile per grade, the same entry as its chip; words where there is no dated mark
     var cmp = G.map(function (e) {
       var x = e.k !== 'raw' && g ? g[e.k] : null, v, cap = e.basis;
-      if (e.m != null) { v = money(e.m); cap = e.k === 'raw' ? (chase ? 'PriceCharting’s ungraded value' : 'Median of ' + (c.wn != null ? c.wn : c.n30) + ' raw sales, ' + (c.win || d.window || 30) + ' days') : 'Median of ' + e.n + ' sales, ' + e.days + ' days'; }
+      if (e.m != null) { v = money(e.m); cap = e.k === 'raw' ? (chase ? 'PriceCharting’s ungraded value' + (c.rawAsOf ? ', read ' + mdShort(c.rawAsOf) : '') :'Median of ' + (c.wn != null ? c.wn : c.n30) + ' raw sales, ' + (c.win || d.window || 30) + ' days') : 'Median of ' + e.n + ' sales, ' + e.days + ' days'; }
       else if (e.one) { v = money(e.one.p); cap = '1 sale, ' + md(e.one.d); }
       else v = e.k === 'raw' ? (c.ptHold ? 'Being re-read' : scr ? 'Not priced' : c.nv ? 'No verified sale yet' : 'Too few sales') : e.reread || (x && x.held && /^(d-stale|v-)/.test(x.held.why)) ? 'Being re-read' : x && x.held ? 'No verified sale' : !g ? 'Not read yet' : 'No recent sale';
       if (cap === v || cap === 'Graded read pending') cap = ''; else if (cap.indexOf(v + ': ') === 0) cap = cap.slice(v.length + 2);
