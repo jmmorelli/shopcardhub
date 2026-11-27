@@ -7,9 +7,19 @@ reach. If something here no longer needs you, say so and it comes off.
 *(Housekeeping for the agents, not for Mo: this file lives in the repo beside `STATE.md`; that copy
 is canonical and the Project copy is a mirror written in the same run. Standing grants — Sep 4 "anything
 that needs Mo, I approve"; Sep 8 "I don't want to sign into anything"; Sep 16 "I'd prefer you guys just
-talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy. Oct 5 ~13:50: the Project copy was updated again from a CoS chat with no repo access; the Oct 5 desk mirrored it here, closed what §7 of `claude/cos/session-2026-10-05-predesk.md` settled, and wrote both copies. Oct 7 ~10:20: CoS chat with repo access wrote both copies in the same run. Oct 7 13:00: X Desk Watch added its block to the Project copy only; the Oct 7 desk mirrored it here and wrote both copies. Oct 15 13:00: X Desk Watch added its block to the Project copy only (built on the repo copy at `b7deac6`); the Oct 15 desk mirrored it here and wrote both copies. Oct 16 ~15:00: the desk ran cloud-only (Mac unreachable) and wrote its block to the Project copy only; the next Mac-linked desk mirrors it here. Oct 16 ~15:45: the Mac-linked desk fire (same afternoon) mirrored it here and wrote both copies.)*
+talk to each other so I don't have to be involved" and "I agree with all your vetos". Oct 4: the Project copy was updated from a CoS chat with no repo access; the Oct 4 desk mirrored it into this repo copy. Oct 5 ~13:50: the Project copy was updated again from a CoS chat with no repo access; the Oct 5 desk mirrored it here, closed what §7 of `claude/cos/session-2026-10-05-predesk.md` settled, and wrote both copies. Oct 7 ~10:20: CoS chat with repo access wrote both copies in the same run. Oct 7 13:00: X Desk Watch added its block to the Project copy only; the Oct 7 desk mirrored it here and wrote both copies. Oct 15 13:00: X Desk Watch added its block to the Project copy only (built on the repo copy at `b7deac6`); the Oct 15 desk mirrored it here and wrote both copies. Oct 16 ~15:00: the desk ran cloud-only (Mac unreachable) and wrote its block to the Project copy only; the next Mac-linked desk mirrors it here. Oct 16 ~15:45: the Mac-linked desk fire (same afternoon) mirrored it here and wrote both copies. Nov 27 ~01:50Z: the desk wrote both copies in the same run.)*
 
 ---
+
+## 2026-11-27 — desk (Thu Nov 26 evening slot, ran ~17:12 PT, verified live). One new thing needs you
+
+- **New: the site's host can pause the whole site around Dec 1–3.** Vercel emailed you Nov 26: the free plan has used 75% of its 1,000,000 monthly requests, and going over pauses shopcardhub.com automatically (the date is an estimate; the real reset date is on the Usage page). The free plan is also non-commercial and the site earns affiliate money. **Action:** Vercel → Settings → Billing → upgrade to **Pro ($20/month)**, ideally before Sat Nov 28, or answer **A-11** on the control room if you'd rather move hosts or cut traffic. The Chief recommends Pro.
+- Still yours: **impact.com (Fanatics) payment details**, account 7388044, ~5 min.
+- Still open: **YouTube's "altered or synthetic content" question** (yes/no, A-04).
+- Still open: **four scheduled runs can't push to GitHub** (this desk was refused again tonight). The fix is one new chat with the shopcardhub repo attached.
+- Closed: **"Follow this set"** — your yes went live Nov 26 on four set index pages.
+
+*Not yours:* Ivan found the hobby-box page, our top Black Friday page, still promising a Nov 26 price check, and three unpriced rows with a "Buy on eBay" button. Both go to its owner in tonight's patch, live Friday morning. Optional on the control room when you have a minute: three X posts (A-09) and an email from your account to a newsletter (A-10).
 
 ## 2026-11-26 — desk (Wed Nov 25 evening slot, ran ~17:11 PT, verified live). Nothing new needs you
 
