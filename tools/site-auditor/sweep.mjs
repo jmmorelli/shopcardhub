@@ -11,6 +11,8 @@
  *   node tools/site-auditor/sweep.mjs --deep p1,p2,…    full §4 metrics, 1440×900 + iPhone 13
  *   node tools/site-auditor/sweep.mjs --all             every repo page (minus card-dungeon), phone-only light metrics
  *   [--out report.json] [--base https://www.shopcardhub.com] [--wait 1200]
+ *   --base http://localhost:<port> sweeps a local clone (e.g. `npx serve .`): the request context bypasses the proxy for
+ *   localhost/127.0.0.1 and /feed/<file> is rewritten to /data/feed/<file> as vercel.json does (Build Loop Q-067, O-126).
  *
  * Per page (deep): height/screens + first data row Y (phone), scrollWidth vs viewport,
  * photo spans vs .is-photo, running infinite animations, reduced-motion rule, text<11px
@@ -30,6 +32,14 @@ catch { playwright = require(path.join(process.env.PLAYWRIGHT_ROOT || "/home/cla
 const argv = process.argv.slice(2);
 const argOf = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith("--") ? argv[i + 1] : d; };
 const BASE = argOf("--base", "https://www.shopcardhub.com");
+// A local clone has no Vercel rewrites and Playwright's request context ignores NO_PROXY (Night Crew Nov 27), so a
+// localhost base bypasses the proxy and maps /feed/<file> → /data/feed/<file> (vercel.json "/feed/:file" rewrite).
+const LOCAL = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/i.test(BASE);
+const localUrl = (u) => {
+  if (!LOCAL) return u;
+  try { const x = new URL(u); if (/^(localhost|127\.0\.0\.1)$/i.test(x.hostname) && x.pathname.startsWith("/feed/")) { x.pathname = "/data" + x.pathname; return x.toString(); } } catch {}
+  return u;
+};
 const WAIT = parseInt(argOf("--wait", "1200"), 10);
 const OUT = argOf("--out", "");
 const DEEP = argOf("--deep", "");
@@ -140,7 +150,7 @@ async function metrics(page, deep) {
   const pages = pageList();
   const deep = !!DEEP;
   const browser = await playwright.chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
-  const req = await playwright.request.newContext({ proxy: process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined, ignoreHTTPSErrors: true });
+  const req = await playwright.request.newContext({ proxy: process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY, bypass: "localhost,127.0.0.1" } : undefined, ignoreHTTPSErrors: true });
   const results = [];
   const viewports = deep
     ? [{ name: "desktop", viewport: { width: 1440, height: 900 }, ua: null }, { name: "phone", viewport: { width: 390, height: 844 }, ua: "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1", scale: 3, mobile: true }]
@@ -162,7 +172,7 @@ async function metrics(page, deep) {
                same-origin browser call, not a bare script — without them every /api/* call 403'd and
                read as a console error on ~70 pages (Night Crew, Sep 29 2026) */
             const fwd = { ...route.request().headers() }; delete fwd.host; delete fwd["content-length"];
-            const resp = await req.get(url, { timeout: 25000, failOnStatusCode: false, headers: fwd });
+            const resp = await req.get(localUrl(url), { timeout: 25000, failOnStatusCode: false, headers: fwd });
             const headers = { ...resp.headers() };
             delete headers["content-encoding"]; delete headers["content-length"];
             const body = await resp.body();
