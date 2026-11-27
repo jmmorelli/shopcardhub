@@ -7038,6 +7038,19 @@
           "by": "Ship Desk (scheduled, cloud, LANE-RULES R48) — mailbox: pending-desk.patch.txt (CoS desk Thu Nov 26 slot, 8ab304d9; docs only, does not deploy)",
           "gates": "audit-prices FAIL 0 / WARN 60 · audit-site FAIL 0 / WARN 3 (840 pages) · audit-terminal --feed FAIL 0 / WARN 1 · price-truth sweep RED 0 / AMBER 24 / GREEN 101 (base 60/3/1). No regen (docs only).",
           "liveVerified": "2026-11-27 ~06:50Z after 90 s: origin/main claude/cos/STATE.md has '## NOW — 2026-11-27' (1); blobs 563a571b / 258d2076 / d467a2ae = patch index lines. No UI → no Playwright sweep."
+        },
+        {
+          "date": "2026-11-27",
+          "commits": [
+            "5b4a197",
+            "5c68e3d",
+            "abd5d4d",
+            "c9b1ee4"
+          ],
+          "by": "Ship Desk (scheduled, cloud, LANE-RULES R48) — mailbox: pending.patch.txt (Night Crew O-68 2d849c9c + Cupertino run 28 74f7f366) + pending-control-room.patch.txt (Control Room Designer bbe0007)",
+          "gates": "audit-prices FAIL 0 / WARN 60 · audit-site FAIL 0 / WARN 3 (840 pages) · audit-terminal --feed FAIL 0 / WARN 1 · price-truth sweep RED 0 / AMBER 24 / GREEN 101 (base 60/3/1). Regen: build-nav (840 written + js/card-pages.json) → c9b1ee4.",
+          "liveVerified": "2026-11-27 after 90 s, curl: / and /indices href=\"/pokemon-booster-box-prices\" 2 each · /best-hobby-boxes-2026 'Cupertino run 28' (2) · site-fixes.css ':where(.product-grid)' (1) · /control-room 'Design updated Nov 27, 2026: the mission has a climb track' (1). Playwright --deep 1440 + iPhone 13 (GA + eBay aborted) on /, /pokemon-booster-box-prices, /best-hobby-boxes-2026: 0 console errors, no sideways scroll, CLS 0.",
+          "note": "Patch bytes written from project_read inline text (no /mnt/project), trailing spaces restored, then sha256 checked: 314eec35…c46c 19,522 B ✓ and 779af42e746982dd… 8,889 B ✓; git am -3 clean on ba3d3a2. Rollback: git revert 5b4a197 c9b1ee4 + build-nav (nav) / git revert 5c68e3d (BHB CSS) / git revert abd5d4d (Control Room)."
         }
       ]
     },
