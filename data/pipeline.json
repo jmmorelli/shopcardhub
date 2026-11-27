@@ -7061,6 +7061,16 @@
           "gates": "audit-prices FAIL 0 / WARN 60 · audit-site FAIL 0 / WARN 3 (840 pages) · audit-terminal --feed <price-data worktree>/data FAIL 0 / WARN 1 (base 60/3/1; tools/gate.sh --base origin/main PASS)",
           "liveVerified": "pending at commit time; see Project claude/cos/site-sweep-2026-11-27.md (curl /js/card-page.js for \"read ' + mdShort(c.rawAsOf)\")",
           "note": "js/card-page.js: the Raw tile in the card-page grade compare row on chase (PriceCharting-priced) cards now prints its read date (\"PriceCharting’s ungraded value, read Nov 23\"); 63 live card pages showed the figure with no date. Label only, no number changed. Rollback: git revert this commit."
+        },
+        {
+          "date": "2026-11-27",
+          "commits": [
+            "this commit (Task-key: price-truth-2026-11-27)"
+          ],
+          "by": "Price Truth Desk (charter step 4) — scheduled, cloud, LANE-RULES R48",
+          "gates": "audit-prices FAIL 0 / WARN 60 · audit-site FAIL 0 / WARN 3 · audit-terminal FAIL 0 / WARN 1 (tools/gate.sh --base origin/main PASS, base 60/3/1) · price-truth sweep RED 0 / AMBER 23 / GREEN 48",
+          "liveVerified": "pending at commit time; see Project claude/agents/price-truth/LATEST.md (curl /card-charizard-reverse-holo-3-legendary-collection for $2,709 Nov 26)",
+          "note": "Re-bake of 21 static card shells after the Nov 26 mark (node tools/build-card-template.mjs --keep-robots): 6 printed a raw figure one mark behind data/cards (worst LC Charizard rev holo $2,971 Nov 23 vs $2,709 Nov 26). Generated pages only; no guard, mark or level changed. Rollback: git revert this commit."
         }
       ]
     },
