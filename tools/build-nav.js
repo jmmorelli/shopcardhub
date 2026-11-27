@@ -406,6 +406,7 @@ function buildScript(index) {
     });
   }
   var INDEX = ${INDEX};
+  window.__schNav = INDEX; /* Q-069: the home search box (js/home-v2.js) matches guide pages from this list */
   function nk(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); }
   function setup(input, results){
     if (!input || !results) return;
@@ -445,19 +446,25 @@ function buildScript(index) {
     function loadLv(){ if (lvP) return; lvP = fetch('/index-feed.json').then(function(r){ return r.json(); }).then(function(d){ var m = {}; ((d && d.indices) || []).forEach(function(x){ if (x && x.page) m[String(x.page).replace(/^https?:\\/\\/[^\\/]+/, '')] = x; }); LV = m; if (input.value.trim()) render(all(input.value)); }).catch(function(){}); }
     function lvRow(it, lv){ var nm = String(it.t).split(' — '), tk = nm.length > 1 ? nm[0] : '', name = nm.length > 1 ? nm.slice(1).join(' — ') : it.t, w = lv.change1w && lv.change1w.pct, md = String(lv.markDate || ''), dt = /^\\d{4}-\\d\\d-\\d\\d$/.test(md) ? MON[+md.slice(5,7)-1] + ' ' + (+md.slice(8,10)) : '';
       return '<a class="ns-c" href="'+it.u+'"><span class="ns-t">'+name+' <small>'+(tk ? tk + ' · ' : '')+'set index</small></span><b class="ns-p">'+Number(lv.level).toFixed(2)+'<small>'+(w != null && isFinite(w) ? (w > 0 ? '▲' : w < 0 ? '▼' : '') + Math.abs(w).toFixed(1) + '% wk' : '')+(dt ? (w != null ? ' · ' : '') + dt : '')+'</small></b></a>'; }
-    function loadCards(){ loadLv(); if (cardsP) return cardsP; fetch('/js/card-pages.json').then(function(r){ return r.json(); }).then(function(m){ SPAGE = (m && m.static) || {}; ((m && m.pages) || []).forEach(function(r){ if (r[3] != null && r[4]) PPX[r[2]] = [r[3], r[4]]; }); if (input.value.trim()) render(all(input.value)); }).catch(function(){}); cardsP = fetch('/data/card-search.json').then(function(r){ return r.json(); }).then(function(d){ CARDS = (d.cards||[]).map(function(c){ return { id:c[0], t:c[1], s:c[2], p:c[3], n:nk(c[1]+' '+c[2]) }; }); }).catch(function(){ CARDS = []; }); return cardsP; }
+    function loadCards(){ loadLv(); if (cardsP) return cardsP; fetch('/js/card-pages.json').then(function(r){ return r.json(); }).then(function(m){ SPAGE = (m && m.static) || {}; ((m && m.pages) || []).forEach(function(r){ if (r[3] != null && r[4]) PPX[r[2]] = [r[3], r[4]]; }); if (input.value.trim()) render(all(input.value)); }).catch(function(){}); fetch('/data/search-aliases.json').then(function(r){ return r.json(); }).then(function(d){ ALIAS = (d && d.aliases) || {}; if (CARDS && input.value.trim()) render(all(input.value)); }).catch(function(){}); cardsP = fetch('/data/card-search.json').then(function(r){ return r.json(); }).then(function(d){ CARDS = (d.cards||[]).map(function(c){ return { id:c[0], t:c[1], s:c[2], p:c[3], n:nk(c[1]+' '+c[2]) }; }); }).catch(function(){ CARDS = []; }); return cardsP; }
     function money(n){ return n == null ? '' : '$'+Number(n).toLocaleString('en-US', n >= 100 ? {maximumFractionDigits:0} : {minimumFractionDigits:2, maximumFractionDigits:2}); }
     function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+    // Q-069 (Build Loop, Nov 27 2026; CoS L-1): collector nicknames (/data/search-aliases.json) lead with their priced card and guide
+    // page ("moonbreon" found the guide but not the card); a priced card row ranks above an unpriced one.
+    var ALIAS = {};
+    function aliasOf(q){ q = nk(q); if (q.length < 4) return null; var tk = q.split(' '); for (var k in ALIAS){ if (k === q || k.indexOf(q) === 0 || tk.indexOf(k) > -1) return ALIAS[k]; } return null; }
+    function cardRow(c){ return { c:1, u:SPAGE[c.id] || '/card?id='+c.id, t:esc(c.t), s:esc(c.s), pr:c.p == null ? '' : money(c.p), id:c.id }; }
+    function aliasCards(q){ var a = aliasOf(q); if (!a || !CARDS) return []; return (a.ids || []).map(function(id){ for (var i=0;i<CARDS.length;i++) if (CARDS[i].id === id) return CARDS[i]; return null; }).filter(function(c){ return c && c.p != null; }).map(cardRow); }
     function findCards(q){ q = nk(q); if (!CARDS || q.length < 2) return []; var tk = q.split(' ');
       return CARDS.filter(function(c){ for (var i=0;i<tk.length;i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
-        .sort(function(a,b){ var sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1; return sa - sb || (b.p||0) - (a.p||0); }).slice(0,8)
-        .map(function(c){ return { c:1, u:SPAGE[c.id] || '/card?id='+c.id, t:esc(c.t), s:esc(c.s), pr:c.p == null ? '' : money(c.p) }; }); }
-    function find(q){ q = nk(q); if(!q) return []; return INDEX.filter(function(it){ return it.n.indexOf(q) > -1; }); }
+        .sort(function(a,b){ var na = a.p == null ? 1 : 0, nb = b.p == null ? 1 : 0, sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1; return na - nb || sa - sb || (b.p||0) - (a.p||0); }).slice(0,8)
+        .map(cardRow); }
+    function find(q){ q = nk(q); if(!q) return []; var al = aliasOf(q), want = (al && al.pages) || []; return INDEX.filter(function(it){ return want.indexOf(it.u) > -1; }).concat(INDEX.filter(function(it){ return want.indexOf(it.u) < 0 && it.n.indexOf(q) > -1; })); }
     // B74: cards first (the baked card pages, then the card list, dearest first), pages after under one label
     // Q-026/T2-SRCH (Build Loop, Nov 26 2026): a query whose first word names a set ("prismatic") answers "is this set up or down?"
     // first: that set's index row leads, as on the home box and /search ("prismatic" had PRIS25 9th, under 8 card rows).
     function lead(q, hit){ var k = nk(q).split(' ')[0]; if (!k) return null; for (var i = 0; i < hit.length; i++){ var it = hit[i]; if (!it.c && /-index$|^\\/indices$/.test(it.u) && nk(it.t).split(' ').indexOf(k) > -1) return it; } return null; }
-    function all(q){ var hit = find(q), ld = lead(q, hit), cp = hit.filter(function(it){ return it.c; }).sort(function(a,b){ return a.u.length - b.u.length; }).slice(0,3), pg = hit.filter(function(it){ return !it.c && it !== ld; }).slice(0,4), cd = findCards(q), cards = cp.concat(cd);
+    function all(q){ var hit = find(q), ld = lead(q, hit), cp = hit.filter(function(it){ return it.c; }).sort(function(a,b){ return a.u.length - b.u.length; }).slice(0,3), pg = hit.filter(function(it){ return !it.c && it !== ld; }).slice(0,4), ac = aliasCards(q), cd = findCards(q).filter(function(x){ for (var i=0;i<ac.length;i++) if (ac[i].id === x.id) return false; return true; }), cards = ac.concat(cp, cd);
       var rest = !cards.length ? pg : pg.length ? cards.concat([{h:'Pages'}], pg) : cards;
       return ld ? [{h:'Set index'}, ld].concat(rest.length && !rest[0].h ? [{h: cards.length ? 'Cards' : 'Pages'}] : [], rest) : rest; }
     input.addEventListener('focus', loadCards);

@@ -207,7 +207,12 @@
     // them since B74, this box did not ("ethan holliday" → 0 on Oct 26).
     var SPAGE = {}, PAGES = [];
     var get = function (u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
-    var load = function () { if (P) return P; P = Promise.all([get('/data/card-search.json').catch(function () { return {}; }), get('/js/card-pages.json').catch(function () { return {}; })]).then(function (res) {
+    // Q-069 (Build Loop, Nov 27 2026; CoS L-1): collector nicknames (/data/search-aliases.json, tools/build-search-aliases.mjs) lead
+    // with their priced card and guide page ("Moonbreon", this box's own hint, found nothing); guide pages come from the header's
+    // nav index (window.__schNav, tools/build-nav.js).
+    var ALIAS = {};
+    var load = function () { if (P) return P; P = Promise.all([get('/data/card-search.json').catch(function () { return {}; }), get('/js/card-pages.json').catch(function () { return {}; }), get('/data/search-aliases.json').catch(function () { return {}; })]).then(function (res) {
+      ALIAS = (res[2] && res[2].aliases) || {};
       CARDS = (res[0].cards || []).map(function (c) { return { id: c[0], t: c[1], s: c[2], p: c[3], n: nk(c[1] + ' ' + c[2]) }; });
       SPAGE = res[1].static || {}; PAGES = (res[1].pages || []).map(function (r) { return { t: r[0], s: r[1], u: r[2], p: r[3], d: r[4], n: nk(r[0] + ' ' + r[1] + ' ' + r[2].replace(/[\/-]/g, ' ')) }; }); }); return P; };
     function pages(q) { q = nk(q); if (q.length < 2) return []; var tk = q.split(' ');
@@ -216,16 +221,25 @@
       return CARDS.filter(function (c) { for (var i = 0; i < tk.length; i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
         // Night Crew Oct 28 (BH/FTV): a card with its own static page (priced, dated, indexable) ranks above a /card?id= row;
         // "umbreon" put the static Umbreon ex #161 page 5th behind four query pages.
-        .sort(function (a, b) { var sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1, pa = SPAGE[a.id] ? 0 : 1, pb = SPAGE[b.id] ? 0 : 1; return sa - sb || pa - pb || (b.p || 0) - (a.p || 0); }).slice(0, 7); }
+        // Q-069: a priced row ranks above an unpriced one ("Charizard 1st Edition" led with the unpriced Base Set #4)
+        .sort(function (a, b) { var na = a.p == null ? 1 : 0, nb = b.p == null ? 1 : 0, sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1, pa = SPAGE[a.id] ? 0 : 1, pb = SPAGE[b.id] ? 0 : 1; return na - nb || sa - sb || pa - pb || (b.p || 0) - (a.p || 0); }).slice(0, 7); }
+    function aliasOf(q) { q = nk(q); if (q.length < 4) return null; var tk = q.split(' '); for (var k in ALIAS) { if (k === q || k.indexOf(q) === 0 || tk.indexOf(k) > -1) return ALIAS[k]; } return null; }
+    function aliasCards(q) { var a = aliasOf(q); if (!a || !CARDS) return []; return (a.ids || []).map(function (id) { for (var i = 0; i < CARDS.length; i++) if (CARDS[i].id === id) return CARDS[i]; return null; }).filter(function (c) { return c && c.p != null; }); }
+    function guides(q) { var nav = window.__schNav || [], al = aliasOf(q), want = (al && al.pages) || [], k = nk(q), out = [], seen = {};
+      SETS.forEach(function (s) { seen[s.u] = 1; });
+      want.forEach(function (u) { for (var i = 0; i < nav.length; i++) if (nav[i].u === u && !seen[u]) { out.push(nav[i]); seen[u] = 1; } });
+      if (k.length >= 3) nav.forEach(function (it) { if (out.length < 3 && !it.c && !seen[it.u] && !/-index$|^\/indices$/.test(it.u) && it.n.indexOf(k) > -1) { out.push(it); seen[it.u] = 1; } });
+      return out.slice(0, 3); }
     function sets(q) { q = nk(q); if (!q) return []; var tk = q.split(' '); return SETS.filter(function (s) { for (var i = 0; i < tk.length; i++) if (s.n.indexOf(tk[i]) < 0) return false; return true; }).slice(0, 4); }
     function render() {
       var q = input.value.trim(); sel = -1;
       if (!q) { res.classList.remove('show'); res.innerHTML = ''; return; }
-      var pg = pages(q), c = cards(q).slice(0, 7 - pg.length), s = sets(q), h = '', sh = '';
+      var ac = aliasCards(q), pg = pages(q), c = ac.concat(cards(q).filter(function (x) { return ac.indexOf(x) < 0; })).slice(0, 7 - pg.length), s = sets(q), gd = guides(q), h = '', sh = '';
       // a set row answers "is this set up or down?" (T2): when the words name a set, the Sets group leads ("prismatic" had it 8th)
       if (s.length) sh = '<div class="hd">Sets</div>' + s.map(function (x) { var v = T[x.tk]; return '<a data-r href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.tk) + '</small></span>' + (v ? '<b>' + v.l.toFixed(2) + '<small>' + esc(sgn(v.w, 1)) + '</small></b>' : '') + '</a>'; }).join('');
       if (s.length && nk(s[0].t).indexOf(nk(q).split(' ')[0]) >= 0) { h = sh; sh = ''; }
       if (pg.length || c.length) h += '<div class="hd">Cards</div>' + c.map(function (x) { return '<a data-r href="' + esc(SPAGE[x.id] || '/card?id=' + x.id) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span>' + (x.p == null ? '' : '<b>' + esc(money(x.p)) + '<small>raw</small></b>') + '</a>'; }).join('') + pg.map(function (x) { var dd = /^\d{4}-\d\d-\d\d$/.test(String(x.d || '')) ? ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+x.d.slice(5, 7) - 1] + ' ' + (+x.d.slice(8, 10)) : ''; return '<a data-r href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span>' + (x.p == null || !dd ? '' : '<b>' + esc(money(x.p)) + '<small>raw \u00b7 ' + dd + '</small></b>') + '</a>'; /* Q-063 (Build Loop, Nov 27): hand-built card pages print their dated raw engine mark */ }).join('');
+      if (gd.length) h += '<div class="hd">Guides</div>' + gd.map(function (x) { return '<a data-r href="' + esc(x.u) + '"><span>' + esc(x.t) + '</span></a>'; }).join('');
       h += sh;
       if (!h) h = CARDS ? '<div class="none">Not in an index yet \u2014 <a href="' + miss(q) + '" target="_blank" rel="sponsored nofollow noopener">see it on eBay \u203a</a> \u00b7 <a href="/indices">what we track</a></div>' : '<div class="none">Looking\u2026</div>';
       res.innerHTML = h; res.classList.add('show');

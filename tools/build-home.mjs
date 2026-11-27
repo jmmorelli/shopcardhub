@@ -130,7 +130,8 @@ if (INIT_V2 || !/<!-- HOME:idxbox:START -->/.test(html)) {
 // every bake: script versions (js v=9 Nov 26 2026: Build Loop Q-001, "move being re-read" in the viz header) and Q-006 (weekly
 // backlog Nov 25 row 2): js/home-you.js returns, hosted by the watchlist tile (#h2-wl); a first-time visitor gets nothing from it.
 // Kill test Wed Dec 9: home_you under 3 fires and 0 key events from returning sessions → take the line below out.
-html = html.replace(/\/js\/home-v2\.js\?v=\d+/, "/js/home-v2.js?v=9");
+// js v=10 Nov 27 2026: Build Loop Q-069, nicknames (data/search-aliases.json), guide pages and priced-first in the search box
+html = html.replace(/\/js\/home-v2\.js\?v=\d+/, "/js/home-v2.js?v=10");
 if (!/\/js\/home-you\.js/.test(html)) html = html.replace(/(<script src="\/js\/scroll-flow\.js[^"]*" defer><\/script>)/, '$1\n<script src="/js/home-you.js?v=2" defer></script>');
 // B75 (Night Crew Oct 16, phone teardown): the Chart/markets, Upcoming releases and tape panels were removed from /.
 // Those keys are optional now: a missing block is skipped (logged), every other block still fails the bake when missing.
