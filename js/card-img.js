@@ -68,7 +68,7 @@
   // (tools/price-engine/resolve-page-images.mjs) and never call eBay from a page view; an unresolved
   // marker keeps the placeholder tile. Before this, the top-10 rows of every Pokémon index table re-read
   // the cheapest listing live for the "vs sold mark" chip — ~10 Browse calls per new visitor per page.
-  var LS = 'sch_cimg_v3'; // v2 (Sep 28): cached hits carry fp/px for the vs-last-sold chip; v3 (Sep 30): accent-folded matching + skin/sticker filter re-resolves stale hits
+  var LS = 'sch_cimg_v4'; // v4 (Nov 27, Q-061): redemption / code card / PSA/DNA auto-grade, language and Bowman Chrome filters re-resolve cached hits; v2 (Sep 28): cached hits carry fp/px for the vs-last-sold chip; v3 (Sep 30): accent-folded matching + skin/sticker filter re-resolves stale hits
   function lsGet() { try { return JSON.parse(localStorage.getItem(LS) || '{}'); } catch (e) { return {}; } }
   function lsSet(m) { try { localStorage.setItem(LS, JSON.stringify(m)); } catch (e) {} }
   var inflight = {};
@@ -101,6 +101,13 @@
         var ok = toks.every(function (k) { return t.indexOf(k) > -1; });
         if (!ok) continue;
         if (nots.some(function (k) { return t.indexOf(k) > -1; })) continue;
+        // Nov 27 2026 (Build Loop Q-061, NC BYNAME): the build-time rules (resolve-page-images.mjs) apply here too.
+        // A redemption or code card is a voucher; a PSA/DNA "auto grade" slab is a signed base card, not the graded card asked for.
+        if (/redemption|\bredemp\b|code card|\+ code\b|psa\/dna|auto grade/.test(t)) continue;
+        // English prints only, unless the name asks for a language.
+        if (!/\b(japanese|japan|korean|chinese)\b/.test(fold(q).toLowerCase()) && /\b(japanese|japan|jpn|jp|korean|chinese|s-chinese|t-chinese|thai|indonesian)\b/.test(t)) continue;
+        // "Bowman Chrome" is a product, not two words.
+        if (/\bbowman chrome\b/.test(fold(q).toLowerCase()) && !/\bbowman(?:\u00ae|\u2122)? chrome\b/.test(t)) continue;
         // skin/sticker/decal: a "CREDIT CARD SKIN" printed with the card art was standing in for Umbreon ex 161/131 (Sep 30 audit).
         if (/(lot of|reprint|digital|custom|proxy|you pick|choose|\bcase\b|cases|frame|display|magnetic|toploader|top loader|sleeve|binder|stand|holder|acrylic|protector|playmat|deck box|storage|\bskins?\b|sticker|decal)/.test(t)) continue;
         best = { url: l.image.replace(/s-l\d+\./, 's-l500.'), item: l.url || null, title: l.title || null,

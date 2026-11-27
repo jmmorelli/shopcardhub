@@ -79,6 +79,9 @@ function pick(listings, q) {
     if (!/\b(japanese|japan|korean|chinese)\b/.test(q.toLowerCase().replace(/(^|\s)-\S+/g, " ")) && /\b(japanese|japan|jpn|jp|korean|chinese|s-chinese|t-chinese|thai|indonesian)\b/.test(t)) continue;
     // A redemption card is a voucher, not the card (the BCB26 hero resolved to a CPA-LH redemption on Oct 14).
     if (/redemption|\bredemp\b/.test(t)) continue;
+    // Nov 27 2026 (Build Loop Q-061, NC BYNAME): a PSA/DNA "auto grade" slab is a signed base card (it stood in for the
+    // Ethan Holliday 2026 Bowman Chrome Auto PSA 10 row on /research); never the graded card the key asks for.
+    if (/psa\/dna|auto grade/.test(t)) continue;
     // Sep 13 2026 (Mo: a DR25 hero was a card CASE, not the card): accessories and
     // display products never picture the card; graded slabs are allowed but a raw
     // listing wins when one exists (the loop keeps the first raw fixed-price hit).
