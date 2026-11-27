@@ -7014,6 +7014,15 @@
           "gates": "audit-prices FAIL 0 / WARN 59 · audit-site FAIL 0 / WARN 3 (840 pages) · audit-terminal --feed FAIL 0 / WARN 1 · price-truth sweep RED 0 / AMBER 27 / GREEN 49 (base 0/59 · 0/3 · 0/1). Regen: build-coverage-cards --gstar, build-card-template --tickers=trk,gstar, build-nav (0 written).",
           "liveVerified": "2026-11-26 ~14:50Z curl after 95 s: /control-room footer 'Design updated Nov 26, 2026: the Idea board…' (1) · card-search.json trk rows 47 (was 35) · /card-mew-1-southern-islands 200 · site-fixes.css '0f++. The guide body tiles (run 27)' (1). Playwright --deep 1440 + iPhone 13 (GA + eBay aborted) on /topps-chrome-updates-basketball, /pokemon-delta-reign-2026, /bowman-chrome-baseball-2026, /card-mew-1-southern-islands, /control-room: no sideways scroll, CLS 0 on all; only console error = signed-out 401 on /control-room.",
           "note": "Control Room Idea board tally + ruling chips (b845fa33); 12 more TRK cards incl. 9 new static pages (88ae2019 data + edc93061 regen); guide-page tiles calm, CSS only (63c6b8c4). Patch bytes lifted from the session transcript of project_read (no /mnt/project): sha256 08b831b0… 8,696 B ✓ and d6cb79ff…cf87 247,144 B ✓; git am -3 clean on 38fd88d7. Rollback: git revert 63c6b8c4 (CSS) / git revert edc93061 88ae2019 + regen (TRK) / git revert b845fa33 (Control Room)."
+        },
+        {
+          "date": "2026-11-27",
+          "commits": [
+            "a496ba9"
+          ],
+          "by": "Ship Desk (scheduled, cloud, LANE-RULES R48) — mailbox: pending-desk.patch.txt (CoS desk Thu Nov 26 slot, 8ab304d9; docs only, does not deploy)",
+          "gates": "audit-prices FAIL 0 / WARN 60 · audit-site FAIL 0 / WARN 3 (840 pages) · audit-terminal --feed FAIL 0 / WARN 1 · price-truth sweep RED 0 / AMBER 24 / GREEN 101 (base 60/3/1). No regen (docs only).",
+          "liveVerified": "2026-11-27 ~06:50Z after 90 s: origin/main claude/cos/STATE.md has '## NOW — 2026-11-27' (1); blobs 563a571b / 258d2076 / d467a2ae = patch index lines. No UI → no Playwright sweep."
         }
       ]
     },
