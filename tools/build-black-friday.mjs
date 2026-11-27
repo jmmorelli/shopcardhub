@@ -106,7 +106,7 @@ const calText = (c) => {
   if (c.kind === 'remark') {
     if (c.date === cfg.read) return 'Sold prices re-read. The prices on this page are from this read.';
     if (c.date < cfg.read) return 'Sold prices re-read.';
-    return 'Sold prices re-read, stores checked again.';
+    return 'New sold prices on this page, stores checked again.'; // future rows sit on the ship day, not the read night (O-122)
   }
   if (c.kind === 'event') return c.text + '.';
   return `${esc(c.text)}. <a href="${esc(c.href)}">Contents and prices ›</a>`;
@@ -139,7 +139,7 @@ if (drEtb && etbG) {
   faqQ.push([`How does the ${drEtb.name} sell compared with its launch price?`, `The retail ${drEtb.name} launched at ${money(lp)}. On eBay it sold for a median of ${money(drEtb.price)} across ${drEtb.n} sales from ${range(drEtb.from, drEtb.asOf)}, which is ${money(Math.abs(d))} (${Math.round(Math.abs(d) / lp * 100)}%) ${d >= 0 ? 'above' : 'below'} launch. The Pokémon Center edition is a different box, with its own launch price and sold median in its own table.`]);
 }
 if (rel) faqQ.push(['When do the 30th Celebration Binder Collection and ex Tins come out?', `${fullDay(rel.date)}. ${rel.text.replace(/ come out$/, '')} are due that day.`]);
-faqQ.push(['How often is this page updated?', `The sold prices were last re-read ${longDay(cfg.read)}.${remarks.length ? ' The next re-reads are ' + list(remarks) + '.' : ''} Each re-read moves the date at the top of the page.`]);
+faqQ.push(['How often is this page updated?', `The sold prices were last re-read ${longDay(cfg.read)}.${remarks.length ? ' The next updates are ' + list(remarks) + '.' : ''} Each re-read moves the date at the top of the page.`]);
 const faqBlock = `
   <div class="sp-group bf-faq" id="faq">
     <h2>Pokémon Black Friday 2026 questions</h2>

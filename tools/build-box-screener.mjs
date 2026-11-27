@@ -236,7 +236,7 @@ function cellHTML(c, x) {
     case "kAbove": return m.kAbove == null ? dim("No price") : idxCell(x, (s) => `${m.kAbove} of ${s.n}`);
     case "fit": return `<span class="fit-tag${x.fit.muted ? " fit-na" : ""}">${esc(x.fit.name)}</span>`;
     case "score": return `<span class="bx-score">${x.fit.score ?? "n/a"}</span>`;
-    case "buy": return `<a class="tbl-buy" href="${esc(buyHref(r))}" target="_blank" rel="noopener sponsored">Buy on eBay</a>`;
+    case "buy": return `<a class="tbl-buy" href="${esc(buyHref(r))}" target="_blank" rel="noopener sponsored">${m.price == null ? "Search eBay" : "Buy on eBay"}</a>`; // O-122: a row with no dated median never reads as a priced listing
   }
   throw new Error("col " + c.k);
 }
@@ -426,8 +426,8 @@ ${noteRows.map((x) => {
           ${fillNote(x)}
         </div>
         <div class="box-ctas">
-          <a href="${esc(buyHref(r))}" target="_blank" rel="noopener sponsored" class="btn-primary"${CTA_STYLE[r.category] || ""}>Buy on eBay →</a>${jumbo ? `
-          <a href="${esc(buyHref(jumbo.r))}" target="_blank" rel="noopener sponsored" class="btn-secondary">Buy the Jumbo on eBay</a>` : ""}
+          <a href="${esc(buyHref(r))}" target="_blank" rel="noopener sponsored" class="btn-primary"${CTA_STYLE[r.category] || ""}>${x.m.price == null ? "Search eBay" : "Buy on eBay"} →</a>${jumbo ? `
+          <a href="${esc(buyHref(jumbo.r))}" target="_blank" rel="noopener sponsored" class="btn-secondary">${jumbo.m.price == null ? "Search eBay for the Jumbo" : "Buy the Jumbo on eBay"}</a>` : ""}
         </div>
       </div>
     </details>`;
