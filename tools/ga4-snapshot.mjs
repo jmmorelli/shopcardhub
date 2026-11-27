@@ -337,6 +337,20 @@ function cardRead(rep) {
     o.rule = "landingPage matches /card* (7d, landingCountry7 top 500); bot = country flagged by summary.bots (countries7)";
     out.cardLanding7 = o;
   } else out.cardLanding7 = null;
+  // Q-052 (review Nov 26, CEO ask): /card* page views ex-bots. pageCountry7 (pagePath x country, top 500) minus the
+  // countries the countries7 bot test flags. Null when pageCountry7 is missing, so a gap never reads as a zero.
+  const pcc = rep.pageCountry7 && rep.pageCountry7.rows;
+  if (pcc) {
+    const botCountries = new Set(((rep.countries7 || {}).rows || []).filter(isBot).map((r) => r.country));
+    let views = 0, botViews = 0;
+    for (const r of pcc) {
+      if (!CARD_PATH.test(String(r.pagePath || ""))) continue;
+      const v = r.screenPageViews || 0;
+      if (botCountries.has(r.country)) botViews += v; else views += v;
+    }
+    out.cardViews7Clean = views; out.cardViews7Bot = botViews;
+    out.cardViews7Rule = "screenPageViews on pagePath matching /card* (7d, pageCountry7 top 500) minus countries flagged by summary.bots (countries7)";
+  } else { out.cardViews7Clean = null; out.cardViews7Bot = null; }
   return out;
 }
 
