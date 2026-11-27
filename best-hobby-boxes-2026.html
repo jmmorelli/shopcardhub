@@ -98,43 +98,11 @@
     h3 { font-family:var(--fd); font-size:22px; font-weight:800; text-transform:uppercase; color:var(--text-head); margin-bottom:10px; }
     .section-intro { font-size:16px; color:var(--text-dim); max-width:680px; margin-bottom:44px; line-height:1.75; }
 
-    /* VERDICT BANNER */
-    .verdict { background:linear-gradient(90deg,rgba(0,204,245,0.06),rgba(0,224,122,0.04)); border:1px solid rgba(0,204,245,0.2); border-left:3px solid var(--accent); padding:20px 24px; margin-bottom:48px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
-    .verdict-label { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); white-space:nowrap; }
-    .verdict-text { font-size:15px; color:var(--text); flex:1; line-height:1.6; }
-    .verdict-text strong { color:var(--text-head); }
-
-    /* BOX CARDS */
-    .box-card { background:var(--bg2); border:1px solid var(--border); border-top:3px solid var(--accent); padding:36px; margin-bottom:24px; position:relative; }
-    .box-card.basketball { border-top-color:var(--purple); }
-    .box-card.football { border-top-color:var(--orange); }
-    .box-card.avoid { border-top-color:var(--red); opacity:0.85; }
-    .box-rank { position:absolute; top:20px; right:24px; font-family:var(--fd); font-size:52px; font-weight:900; color:rgba(255,255,255,0.04); line-height:1; }
-    .box-header { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin-bottom:28px; flex-wrap:wrap; }
-    .box-sport-tag { font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
-    .box-sport-tag.baseball { color:var(--accent); }
-    .box-sport-tag.basketball { color:var(--purple); }
-    .box-sport-tag.football { color:var(--orange); }
-    .box-sport-tag.avoid { color:var(--red); }
-    .box-title { font-family:var(--fd); font-size:clamp(20px,3vw,30px); font-weight:900; text-transform:uppercase; color:var(--text-head); letter-spacing:0.5px; line-height:1.05; }
-    .box-price-block { text-align:right; }
-    .price-label { font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; }
-    .price-msrp { font-family:var(--fd); font-size:36px; font-weight:900; color:var(--green); line-height:1; }
-    .price-secondary { font-family:var(--fm); font-size:12px; color:var(--text-dim); margin-top:4px; }
-    .box-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-bottom:24px; }
-    .box-stat { background:var(--bg3); border:1px solid var(--border); padding:14px; }
-    .box-stat-label { font-family:var(--fm); font-size:10px; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
-    .box-stat-value { font-family:var(--fd); font-size:20px; font-weight:800; color:var(--text-head); }
-    .box-stat-value.green { color:var(--green); }
-    .box-stat-value.red { color:var(--red); }
-    .box-stat-value.yellow { color:var(--gold); }
-    .box-body { font-size:15px; color:var(--text); line-height:1.75; margin-bottom:24px; }
-    .box-body strong { color:var(--text-head); }
-    .box-verdict { background:var(--bg3); border-left:3px solid var(--green); padding:14px 18px; font-size:14px; color:var(--text); margin-bottom:24px; line-height:1.6; }
-    .box-verdict.neutral { border-left-color:var(--gold); }
-    .box-verdict.negative { border-left-color:var(--red); }
-    .box-verdict strong { color:var(--text-head); }
-    .box-ctas { display:flex; gap:12px; flex-wrap:wrap; }
+    /* BOX NOTES (Box by Box; Cupertino run 28 cut the dead verdict/box-stat/price rules, the look is below) */
+    .box-card { position:relative; }
+    .box-body { color:var(--text); }
+    .box-body strong { color:var(--text-head); font-weight:600; }
+    .box-ctas { display:flex; gap:12px 16px; flex-wrap:wrap; }
     .btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#000; font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:12px 24px; border-radius:2px; transition:all 0.15s; }
     .btn-primary:hover { background:#fff; text-decoration:none; transform:translateY(-2px); }
     .btn-secondary { display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-dim); font-family:var(--fm); font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:12px 24px; border:1px solid var(--border2); border-radius:2px; transition:all 0.15s; }
@@ -398,28 +366,70 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     .roi-cell { display:flex; align-items:flex-start; gap:12px; min-width:230px; }
     .roi-cell > div { min-width:0; }
     .roi-cell > .sch-cimg { margin-top:1px; }
-    @media(max-width:700px) { .box-header .entry-lead { flex:0 0 auto; } }  /* header stacks to a column here */
 
-    /* ===== FIT BADGES + BUY BUTTONS + BOX NOTES (Box Desk; the screener's own CSS lives in the BOXSCREENER block) ===== */
-    .fit-tag { display:inline-block; font-family:var(--fm); font-size:10px; font-weight:700; letter-spacing:1px; padding:4px 8px; border-radius:2px; text-transform:uppercase; white-space:nowrap; background:var(--accent-dim); color:var(--accent); border:1px solid rgba(0,204,245,0.3); }
-    .tbl-buy { display:inline-flex; align-items:center; min-height:34px; padding:8px 12px; font-family:var(--fm); font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; white-space:nowrap; background:var(--accent); color:#000 !important; border-radius:2px; }
-    .tbl-buy:hover { background:#fff; text-decoration:none; }
-    details.box-more { background:var(--bg2); border:1px solid var(--border); margin-bottom:10px; }
-    details.box-more > summary { cursor:pointer; list-style:none; display:flex; align-items:center; gap:12px; padding:14px 18px; min-height:48px; }
+    /* ===== The box screener + Box by Box, calm (Cupertino run 28; DESIGN-SYSTEM.md "The box screener"). `html body` beats the generated blocks' later <style>; words, links, customids untouched ===== */
+    html body .bx-ctl { font-family:inherit; font-size:14px; gap:12px 16px; }
+    html body .bx-chips { gap:8px; }
+    html body .bx-chip { font-family:inherit; font-size:14px; font-weight:400; letter-spacing:0; text-transform:none; padding:0 16px; min-height:40px; border:0; border-radius:980px; background:transparent; color:var(--text-dim); transition:background-color .2s, color .2s; }
+    html body .bx-chip:hover { background:var(--ds-surface-1); color:var(--text-head); }
+    html body .bx-chip[aria-pressed="true"] { background:var(--ds-surface-3); color:var(--text-head); font-weight:600; }
+    html body .bx-ctl label { letter-spacing:0; color:var(--text-dim); }
+    html body .bx-ctl select { font-family:inherit; font-size:14px; color:var(--text-head); background-color:rgba(255,255,255,.08); border:0; border-radius:8px; padding:0 10px; min-height:36px; }
+    html body :is(.bx-cols,.bx-filt) > summary { font-family:inherit; font-size:14px; font-weight:600; letter-spacing:0; text-transform:none; color:var(--text-head); background:var(--ds-surface-3); border:0; border-radius:980px; padding:0 16px; min-height:36px; }
+    html body :is(.bx-cols,.bx-filt)[open] > summary, html body :is(.bx-cols,.bx-filt) > summary:hover { background:#3a3a3c; }
+    html body .bx-colbox { background:var(--ds-surface-1); border:0; border-radius:12px; padding:16px; }
+    html body .bx-colbox label { font-size:14px; }
+    html body .bx-count { font-family:inherit; font-size:12px; letter-spacing:0; }
+    html body .bx-wrap { border:0; }
+    html body .bx-t thead tr { background:transparent; border-bottom:1px solid var(--border2); }
+    html body .bx-t thead .c-box { background:var(--bg); }
+    html body .bx-t .bx-name { font-family:inherit; font-size:17px; font-weight:600; text-transform:none; line-height:1.24; }
+    html body .bx-t .bx-score { font-family:inherit; font-weight:600; }
+    html body .bx-t .bx-na { font-family:inherit; opacity:1; }
+    .fit-tag { display:inline-block; }
+    html body .fit-tag { font-family:inherit; font-size:12px; font-weight:600; letter-spacing:0; text-transform:none; white-space:nowrap; padding:0; border:0; border-radius:0; background:none; color:var(--text-head); }
+    html body .fit-tag.fit-na { color:var(--text-dim); opacity:1; }
+    .tbl-buy { display:inline-flex; align-items:center; justify-content:center; min-height:36px; padding:0 12px; font-family:inherit; font-size:12px; font-weight:600; letter-spacing:0; text-transform:none; white-space:nowrap; background:var(--accent); color:#000 !important; border-radius:980px; transition:background-color .2s, transform .2s; }
+    .tbl-buy:hover { background:#5cdcf8; text-decoration:none; }
+    .tbl-buy:active { transform:scale(.98); }
+    html body .bx-more { font-family:inherit; font-size:17px; font-weight:600; letter-spacing:0; text-transform:none; color:var(--text-head); background:none; border:0; box-shadow:inset 0 0 0 1px rgba(255,255,255,.24); border-radius:980px; min-height:44px; margin-top:16px; }
+    html body .bx-legend { font-size:12px; line-height:1.5; max-width:75ch; }
+    html body details.bx-how { margin-top:24px; background:none; border:0; border-top:1px solid var(--border2); }
+    html body details.bx-how > summary { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 0; min-height:44px; font-family:inherit; font-size:17px; font-weight:600; letter-spacing:0; text-transform:none; color:var(--text-head); }
+    html body details.bx-how > summary::after, details.box-more > summary::after { content:''; flex:none; width:7px; height:7px; margin:0 4px 4px 0; border-right:1.5px solid var(--text-dim); border-bottom:1.5px solid var(--text-dim); transform:rotate(45deg); transition:transform .2s var(--ds-ease, ease); }
+    html body details.bx-how[open] > summary::after, details.box-more[open] > summary::after { content:''; transform:translateY(3px) rotate(-135deg); }
+    html body .bx-how-body { padding:0 0 16px; font-size:14px; line-height:1.5; max-width:75ch; }
+    html body .bx-wt td:first-child { font-family:inherit; font-weight:600; text-transform:none; }
+    html body .bx-wt code { color:var(--text); }
+    html body .bx-bfw { margin:32px 0 0; padding:24px; border:0; border-radius:18px; background:var(--ds-surface-1); max-width:860px; }
+    html body .bx-bfw p { font-size:17px; line-height:1.47; }
+    html body .bx-bfw p + p { font-size:14px; line-height:1.43; margin-top:12px; }
+    html body .bx-bfw b { font-weight:600; color:var(--text-head); }
+    details.box-more { background:none; border:0; border-bottom:1px solid var(--border2); margin:0; }
+    details.box-more:first-of-type { border-top:1px solid var(--border2); }
+    details.box-more > summary { cursor:pointer; list-style:none; display:flex; align-items:center; gap:16px; padding:20px 0; min-height:64px; }
     details.box-more > summary::-webkit-details-marker { display:none; }
-    details.box-more > summary::after { content:'+'; font-family:var(--fm); font-size:16px; color:var(--accent); }
-    details.box-more[open] > summary::after { content:'\2212'; }
-    .bm-name { font-family:var(--fd); font-size:17px; font-weight:800; text-transform:uppercase; color:var(--text-head); line-height:1.15; }
-    .bm-meta { margin-left:auto; font-family:var(--fm); font-size:11px; color:var(--text-dim); white-space:nowrap; }
-    details.box-more .box-card { margin:0; border:none; border-top:1px solid var(--border); padding:20px 18px; }
-    details.box-more .box-body { margin-bottom:18px; }
-    section.box-notes .section-intro { margin-bottom:20px; }
-    .box-aside { font-size:14px; color:var(--text-dim); margin-top:18px; }
+    .bm-name { font-size:var(--ds-fs-tile, 24px); font-weight:600; line-height:1.17; color:var(--text-head); min-width:0; text-wrap:balance; }
+    .bm-meta { margin-left:auto; font-size:14px; color:var(--text-dim); white-space:nowrap; }
+    details.box-more .box-card { margin:0 0 32px; padding:24px; border:0; border-radius:18px; background:var(--ds-surface-1); }
+    .box-sport-tag { font-size:12px; font-weight:600; color:var(--text-dim); margin-bottom:12px; }
+    details.box-more .box-body { font-size:17px; line-height:1.47; max-width:42em; margin-bottom:24px; }
+    section.box-notes .section-intro { margin-bottom:24px; }
+    .box-aside { font-size:14px; color:var(--text-dim); margin-top:24px; max-width:42em; }
     @media(max-width:600px) {
-      .bm-name { font-size:15px; }
-      .bm-meta { font-size:10px; }
-      details.box-more > summary { padding:12px 14px; }
+      html body .bx-ctl select { font-size:16px; }
+      html body .bx-chip { flex:1 1 auto; padding:0 12px; }
+      html body .bx-bfw { padding:20px; border-radius:12px; }
+      html body .bx-bfw p { font-size:14px; line-height:1.43; }
+      html body .bx-t .bx-name { font-size:15px; }
+      html body .bx-t .tbl-buy { white-space:normal; max-width:76px; min-height:44px; padding:4px 6px; font-size:12px; line-height:1.2; border-radius:14px; }
+      details.box-more > summary { flex-wrap:wrap; gap:4px 16px; padding:16px 24px 16px 0; position:relative; }
+      details.box-more > summary::after { position:absolute; right:4px; top:50%; margin-top:-6px; }
+      .bm-name { flex:1 1 100%; }
+      .bm-meta { margin-left:0; font-size:14px; }
+      details.box-more .box-card { padding:20px; border-radius:12px; }
     }
+    @media(prefers-reduced-motion:reduce) { html body details.bx-how > summary::after, details.box-more > summary::after, .tbl-buy, html body .bx-chip { transition:none; } .tbl-buy:active { transform:none; } }
 </style>
 <!-- Google tag (gtag.js) -->
 <!-- Google Analytics — gtag.js is deferred until first interaction or idle (tools/apply-site-fixes.mjs) -->

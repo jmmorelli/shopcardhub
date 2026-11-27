@@ -291,6 +291,7 @@ html body :is(.card-entry,.roi-table) .sch-track-card:is(.sch-tracked,.sch-owned
 /* 0f++. The guide body tiles (run 27): At a glance, rarity, product, related, X strip, notes. Spec: DESIGN-SYSTEM.md. */
 html body :is(.set-banner,.rarity-item,.product-item,.related-card,.social-strip,.mechanic-block):is(*,.ds){background:var(--ds-surface-1);border:0;border-radius:var(--ds-radius);box-shadow:none;transform:none;padding:24px}
 html body .related-card.related-card:hover{background:var(--ds-surface-2)}
+:where(.product-grid){display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px}
 html body :is(.set-banner,.mechanic-block,.social-strip):is(*,.ds){padding:40px}
 html body .set-banner h2{font:600 var(--ds-fs-tile)/1.17 var(--ds-font);letter-spacing:0}
 html body .set-banner>p{max-width:42em}
@@ -667,7 +668,7 @@ body .dest-strip:has(+ section > .section-eyebrow:first-child) { margin-bottom: 
   .mast.hero-grid .hero-card-photo > [data-card-size="hero"]:not(.sch-cimg) { width:90px; height:126px; }
 }
 
-/* 15. Set "at a glance" tiles two to a row on phones (Night Crew, Oct 2 — backlog P10, First-Time Visitor Oct 1/2). History: git log. */
+/* 15. At a glance two to a row on phones (NC Oct 2, P10). */
 @media (max-width:480px) {
   .set-banner-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
   .set-banner-grid .banner-stat { min-width:0; overflow-wrap:anywhere; }
@@ -809,7 +810,7 @@ body .strip > a.chip { display: inline-flex; align-items: center; gap: 4px; min-
   body .sidx-tbl td.act .act-w.g .glk { flex-wrap: nowrap; }
 }
 
-/* 26 — B77 (Night Crew Oct 16): the set-index ticker strip stays in the HTML (the re-mark needs it) but is not shown. History: git log. */
+/* 26. B77: the set-index ticker strip hidden (NC Oct 16). */
 body .strip { display: none !important; }
 
 /* 27 (site-gates, Oct 16 2026): desktop tables fit at 1280. History: git log. */
