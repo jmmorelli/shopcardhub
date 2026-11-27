@@ -39,6 +39,13 @@ const CONFIG = [
   { page: "charizard-ex-worth.html", tk: "SV151", num: "199", path: "pokemon-scarlet-&-violet-151/charizard-ex-199",
     intro: "A raw (ungraded) Charizard ex 199/165, the Special Illustration Rare from Pokémon 151,",
     drop: [/ These comps are from October and 199\/165 has moved since: today's mark is on (<a [^>]*>its card page<\/a>)\./],
+    table: { oct: "Oct 8, 2026", rows: {
+      "Charizard ex 199/165": ["SV151", "199", "pokemon-scarlet-&-violet-151/charizard-ex-199"],
+      "Charizard ex 183/165": ["SV151", "183", "pokemon-scarlet-&-violet-151/charizard-ex-183"],
+      "Charizard ex 006/165": ["SV151", "6", "pokemon-scarlet-&-violet-151/charizard-ex-6"],
+      "Mega Charizard X ex 125/094": ["PF25", "125", "pokemon-phantasmal-flames/mega-charizard-x-ex-125"],
+      "Mega Charizard X ex 130/094": ["PF25", "130", "pokemon-phantasmal-flames/mega-charizard-x-ex-130"],
+      "Mega Charizard Y ex 294/217": ["AH26", "294", "pokemon-ascended-heroes/mega-charizard-y-ex-294"] } },
     meta: (r) => `A raw Charizard ex 199/165 (Pokémon 151 SIR) sold for a ${m2(r.raw.m)} median across ${r.raw.n} sales in the 30 days to ${day(r.raw.d)}${r.p10 ? `; PSA 10 ${m2(r.p10.m)} (${r.p10.n} dated sales)` : ""}${r.p9 ? `, PSA 9 ${m2(r.p9.m)} (${r.p9.n})` : ""}. Eighteen Charizard ex cards priced from sold comps, plus the index each sits in.` },
   { page: "moonbreon-worth.html", tk: "EVS21", num: "215", path: "pokemon-evolving-skies/umbreon-vmax-215",
     intro: "Moonbreon &mdash; the Umbreon VMAX alternate art, 215/203, Evolving Skies &mdash;",
@@ -76,6 +83,57 @@ const E = "<!-- WORTH:NOW:END -->";
 const blockRe = /<!-- WORTH:NOW:START[\s\S]*?<!-- WORTH:NOW:END -->/;
 const attr = (s) => s.replace(/&(?!(?:[a-z]+|#\d+);)/g, "&amp;").replace(/"/g, "&quot;");
 
+// Q-055 / O-123 (CoS option 1): the dated table on /charizard-ex-worth. Rows whose card has a marks file get their cells baked
+// from the same sources as the lead (raw: feed or index mark; graded: g-<tk>.json), each inside <!-- WORTH:CELL --> sub-markers.
+// A cell with no clean mark keeps its dated Oct 8 read; a cell this tool baked before that loses its mark prints "Re-read".
+// The tool also owns the table stamp, the raw-method sentence, the disclaimer's source sentence and the two "highest" notes.
+const CS = "<!-- WORTH:CELL:START -->", CE = "<!-- WORTH:CELL:END -->";
+const md = (d) => day(d).replace(/, \d{4}$/, "");
+function bakeTable(html, t) {
+  let marked = 0, rawDays = [], gDays = [];
+  html = html.replace(/<tr>\s*<td><span class="roi-name">([^<]*)<\/span>[\s\S]*?<\/tr>/g, (tr, name) => {
+    const k = t.rows[name.trim()]; if (!k) return tr;
+    const [tk, num, p] = k; const raw = rawOf(tk, num, p); const g = gradedOf(tk, num);
+    const cells = [raw && { m: raw.m, sub: `median of ${raw.n} sales, 30 days to ${md(raw.d)}`, d: raw.d },
+      g.p10 && { m: g.p10.m, sub: `median of ${g.p10.n} dated sales, 30 days to ${md(g.p10.d)}`, d: g.p10.d },
+      g.p9 && { m: g.p9.m, sub: `median of ${g.p9.n} dated sales, 30 days to ${md(g.p9.d)}`, d: g.p9.d }];
+    let i = -1, any = false;
+    const out = tr.replace(/<td>((?:(?!<\/td>)[\s\S])*)<\/td>/g, (td, inner) => {
+      i++; if (i < 1 || i > 3) return td;
+      const c = cells[i - 1], was = inner.startsWith(CS);
+      if (c) { any = true; (i === 1 ? rawDays : gDays).push(String(c.d).slice(0, 10));
+        return `<td>${CS}<span class="roi-price">${m2(c.m)}</span><span class="roi-sub">${c.sub}</span>${CE}</td>`; }
+      return was ? `<td>${CS}<span class="roi-sub nosale">Re-read</span>${CE}</td>` : td;
+    });
+    if (any) marked++;
+    return out;
+  });
+  const total = (html.match(/<span class="roi-name">/g) || []).length;
+  const last = (a) => a.sort().slice(-1)[0];
+  const rd = last(rawDays), gd = last(gDays);
+  const tableStamp = marked ? `${marked} rows on sold marks to ${day(rd)}${total - marked ? `, ${total - marked} rows sold comps of ${t.oct}` : ""}` : `sold comps of ${t.oct}`;
+  html = html.replace(/(<span data-prices-updated="[^"]*">&#128337; Lead answer: sold marks to [^·]*· table: )[^<]*/, (x, a) => a + tableStamp);
+  html = html.replace(/(<p class="section-intro">)(?:<!-- WORTH:METHOD:START -->[\s\S]*?<!-- WORTH:METHOD:END -->|Raw is the median of sales in the last 30 days, taken from the most recent 30 that PriceCharting lists\.)/,
+    (x, a) => a + `<!-- WORTH:METHOD:START -->Raw is the median of sales in the last 30 days as PriceCharting lists them; the rows dated ${t.oct.replace(/, \d{4}$/, "")} used the most recent 30.<!-- WORTH:METHOD:END -->`);
+  const names = Object.keys(t.rows).map((n) => n.replace(/^.* /, "")).join(", ");
+  html = html.replace(/(<p class="disclaimer">)(?:<!-- WORTH:SRC:START -->[\s\S]*?<!-- WORTH:SRC:END -->|Every figure on this page is one of our sold comps &mdash; a completed eBay sale as listed by PriceCharting, read Oct 8, 2026 &mdash; shown with its count and its dates\.)/,
+    (x, a) => a + `<!-- WORTH:SRC:START -->Every figure on this page is a median of completed eBay sales as listed by PriceCharting, shown with its count and its dates.${marked ? ` The rows for ${names} come from our sold marks (raw to ${day(rd)}${gd ? `, graded to ${day(gd)}` : ""}); the other rows were read ${t.oct}.` : ` Read ${t.oct}.`}<!-- WORTH:SRC:END -->`);
+  // the two "highest on this page" notes follow the printed cells
+  const NOTES = [" &middot; the highest raw price on this page", " &middot; the highest PSA 10 price on this page"];
+  for (const n of NOTES) html = html.split(n).join("");
+  const rows = [...html.matchAll(/<tr>\s*<td><span class="roi-name">([^<]*)<\/span>[\s\S]*?<\/tr>/g)].map((m) => {
+    const tds = [...m[0].matchAll(/<td>((?:(?!<\/td>)[\s\S])*)<\/td>/g)].map((x) => x[1]);
+    const v = (s) => { const q = /<span class="roi-price">\$([\d,.]+)<\/span>/.exec(s || ""); return q ? +q[1].replace(/,/g, "") : -1; };
+    return { name: m[1], raw: v(tds[1]), p10: v(tds[2]) };
+  });
+  const top = (key) => rows.reduce((a, b) => (b[key] > a[key] ? b : a));
+  for (const [key, n] of [["raw", NOTES[0]], ["p10", NOTES[1]]]) {
+    const r = top(key); const re = new RegExp(`(<span class="roi-name">${r.name.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")}<\/span><span class="roi-sub">)((?:(?!<\\/span>)[^])*)`);
+    html = html.replace(re, (x, a, b) => a + b + n);
+  }
+  return html;
+}
+
 let changed = 0;
 for (const c of CONFIG) {
   const file = path.join(REPO, c.page); let html = fs.readFileSync(file, "utf8"); const before = html;
@@ -105,6 +163,7 @@ for (const c of CONFIG) {
     if (r.raw) html = html.replace(/<span data-prices-updated="[^"]*">(&#128337; )(?:Lead answer: sold marks to [^·]*· table: )?([^<]*)/, (x, ic, orig) =>
       `<span data-prices-updated="${String(r.raw.d).slice(0, 10)}">${ic}Lead answer: sold marks to ${day(r.raw.d)} · table: ${orig.charAt(0).toLowerCase() + orig.slice(1)}`);
   }
+  if (c.table) html = bakeTable(html, c.table);
   if (html !== before) { changed++; if (!CHECK) fs.writeFileSync(file, html); }
   console.log(`${c.page}: ${r.raw ? `raw ${m2(r.raw.m)} n${r.raw.n} ${r.raw.d}` : "no raw mark (fallback)"}${r.p10 ? ` · PSA 10 ${m2(r.p10.m)} n${r.p10.n}` : ""}${r.p9 ? ` · PSA 9 ${m2(r.p9.m)} n${r.p9.n}` : ""}${html !== before ? " · written" : " · unchanged"}`);
 }
