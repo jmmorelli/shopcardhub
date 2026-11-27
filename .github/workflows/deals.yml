@@ -11,9 +11,9 @@ name: deals
 # the public-feed path the nightly already uses, so it needs no secret; each publish is one small Vercel build.
 # Never blocks anything: a failed run leaves the previous feed in place and /api/deals drops ended rows itself.
 
+# E20 Deals KILLED (CoS review Nov 20; O-79; Build Loop Q-053, Nov 27 2026): the daily schedule is off and /deals
+# stays live and frozen on its last feed. Manual runs only (workflow_dispatch).
 on:
-  schedule:
-    - cron: "40 9 * * *"
   workflow_dispatch: {}
 
 permissions:
