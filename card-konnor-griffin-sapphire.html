@@ -1037,7 +1037,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
 </script>
 <!-- NAV:END -->
 
-<main class="cp-wrap" data-prices-updated="2026-11-25">
+<main class="cp-wrap" data-prices-updated="2026-11-26">
   <div class="cp-crumbs"><a href="/">Home</a> <span>/</span> <a href="/cards">Card Charts</a> <span>/</span> <span>Konnor Griffin</span></div>
 
   <div class="cp-head">
@@ -1161,7 +1161,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     /* HOLD-TXT (Night Crew Nov 25, O-88): the engine's hold reason names an internal desk and a re-mark date. Readers get plain words; display only. */
     if (C.hold || /^held by /i.test(String(why||''))) $('cp-why').textContent = 'Price paused while we re-check the sales behind it. Some listings we counted were a different card.';
     else if (why) $('cp-why').textContent = why + (c.confidence!=null ? ' \u00b7 confidence ' + Math.round(c.confidence*100) + '%' : '');
-    if (c.image && c.image.url) { var im = $('cp-img'); if (im && im.tagName==='IMG') im.src = c.image.url;
+    if (c.image && c.image.url && !["227411025998"].some(function(id){ return String(c.image.item||'').indexOf('/itm/' + id) !== -1; })) { var im = $('cp-img'); if (im && im.tagName==='IMG') im.src = c.image.url;
       var ph = $('cp-photo'); if (ph && c.image.item) ph.href = c.image.item.replace(/customid=[^&]*/, 'customid=card-' + C.id); }
   }).catch(function(){});
 

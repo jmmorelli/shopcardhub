@@ -98,6 +98,9 @@ const TCG_SETS = {
   "prismatic-evolutions-guide": ["Prismatic Evolutions", "prismatic-evolutions-index", "PRIS25"],
   "destined-rivals": ["Destined Rivals", "destined-rivals-index", "DR25"],
 };
+// Photo deny list (Q-060): eBay item ids whose listing photo is not the card (vouchers, wrong card). Build time and runtime.
+const IMG_DENY = ["227411025998"];
+const deniedImg = (im) => IMG_DENY.some((id) => String((im && (im.item || im.url)) || "").indexOf("/itm/" + id) !== -1);
 function facts(c) {
   // Positive query tokens only: "-sapphire" in a Chrome query must not read as Sapphire.
   const q = c.query.split(/\s+/).filter((t) => t && !t.startsWith("-")).join(" ").toLowerCase();
@@ -132,7 +135,9 @@ function facts(c) {
   const nkwQ = type === "sapphire-base" && code ? `${positive} ${code} -chrome` : positive;
   const ebaySearch = `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(nkwQ)}&LH_BIN=1&${EPN}&customid=card-${c.id}`;
   const l = latestBy.get("ebay:" + c.id) || null;
-  const img = l && l.image && l.image.url ? l.image : null;
+  // Nov 27 2026 (Build Loop Q-060, NC ARQ-VOUCHER): a feed photo whose eBay item is on the deny list is never baked
+  // (item 227411025998 is a "Topps online redemption card" voucher that stood in for the Aiva Arquette auto).
+  const img = l && l.image && l.image.url && !deniedImg(l.image) ? l.image : null;
   const imgHref = img && img.item ? img.item.replace(/customid=[^&]*/, "customid=card-" + c.id) : ebaySearch;
   return { year, type, isTcg, code, set, cat, setHref, indexHref, ticker, lane, guideHref, ebaySearch, latest: l, img, imgHref, positive };
 }
@@ -258,7 +263,7 @@ const CLIENT_JS = `
     /* HOLD-TXT (Night Crew Nov 25, O-88): the engine's hold reason names an internal desk and a re-mark date. Readers get plain words; display only. */
     if (C.hold || /^held by /i.test(String(why||''))) $('cp-why').textContent = 'Price paused while we re-check the sales behind it. Some listings we counted were a different card.';
     else if (why) $('cp-why').textContent = why + (c.confidence!=null ? ' \\u00b7 confidence ' + Math.round(c.confidence*100) + '%' : '');
-    if (c.image && c.image.url) { var im = $('cp-img'); if (im && im.tagName==='IMG') im.src = c.image.url;
+    if (c.image && c.image.url && !${JSON.stringify(IMG_DENY)}.some(function(id){ return String(c.image.item||'').indexOf('/itm/' + id) !== -1; })) { var im = $('cp-img'); if (im && im.tagName==='IMG') im.src = c.image.url;
       var ph = $('cp-photo'); if (ph && c.image.item) ph.href = c.image.item.replace(/customid=[^&]*/, 'customid=card-' + C.id); }
   }).catch(function(){});
 
@@ -618,7 +623,7 @@ ${footer}
       var c = by[row.getAttribute('data-key')]; if(!c) return;
       var l = row.querySelector('[data-last]'); if (l && c.last!=null) l.textContent = fmt(c.last);
       var r = row.querySelector('[data-roc]'); if (r && c.roc30!=null && isFinite(c.roc30)) { r.textContent = (c.roc30>0?'+':'') + c.roc30.toFixed(1) + '% · 30d'; r.className = c.roc30>0.5?'up':c.roc30<-0.5?'dn':''; }
-      var im = row.querySelector('.ph'); if (im && !im.querySelector('img') && c.image && c.image.url) im.innerHTML = '<img src="' + c.image.url + '" alt="" loading="lazy">';
+      var im = row.querySelector('.ph'); if (im && !im.querySelector('img') && c.image && c.image.url && !${JSON.stringify(IMG_DENY)}.some(function(id){ return String(c.image.item||'').indexOf('/itm/' + id) !== -1; })) im.innerHTML = '<img src="' + c.image.url + '" alt="" loading="lazy">';
     });
     var dd = document.querySelector('[data-day]'); if (dd && d.day) dd.textContent = d.day;
   }).catch(function(){});

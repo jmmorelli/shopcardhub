@@ -18,6 +18,8 @@ const args = {};
 for (let i = 2; i < process.argv.length; i += 2) args[process.argv[i].replace(/^--/, "")] = process.argv[i + 1];
 const WATCHLIST = args.watchlist || "data/watchlist.json";
 const OUT = args.out || "data/card-images.json";
+// Nov 27 2026 (Build Loop Q-060): eBay item ids whose photo is not the card (227411025998: a Topps redemption voucher).
+const IMG_DENY = ["227411025998"];
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const wl = JSON.parse(fs.readFileSync(WATCHLIST, "utf8"));
@@ -28,7 +30,8 @@ for (const card of (wl.cards || []).filter((c) => c && c.source === "ebay" && c.
   const key = card.source + ":" + card.id;
   try {
     const { image, comps } = await compsMark(card.query, card.label, card);
-    if (image) { out.cards[key] = { ...image, label: card.label, d: new Date().toISOString().slice(0, 10) }; ok++; console.log("ok  ", key, comps, "verified ->", image.url); }
+    if (image && IMG_DENY.some((id) => String(image.item || "").includes("/itm/" + id))) { miss++; console.log("deny", key, "photo item on the deny list (Q-060)"); }
+    else if (image) { out.cards[key] = { ...image, label: card.label, d: new Date().toISOString().slice(0, 10) }; ok++; console.log("ok  ", key, comps, "verified ->", image.url); }
     else { miss++; console.log("miss", key, comps, "verified, no photo" + (out.cards[key] ? " (kept previous)" : "")); }
   } catch (e) { miss++; console.log("err ", key, String(e.message || e)); }
   await sleep(900);
