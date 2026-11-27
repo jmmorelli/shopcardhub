@@ -17,6 +17,7 @@
 // BF26 block, between <!-- LINE:<TK>:<name> -->…<!-- /LINE:<TK>:<name> --> sub-markers (first run wraps the typed phrase):
 //   BF26:street → "Streets <Weekday>, <Mon D>." before the street date, "Released <Mon D>." after (from releaseDate)
 //   BF26:main   → "the college prospects' Bowman Chrome autographs" (G42: no "first Bowman" claim until the per-player prior check)
+//   BF26:levelnote, BCS26:levelnote → "First price: the Monday or Thursday after enough cards sell" while no level (Q-068)
 // It never touches anything else on the page.
 //
 // Usage: node tools/build-prelaunch-eyebrow.mjs [--check]   (--check: exit 1 if any page would change; writes nothing)
@@ -46,6 +47,11 @@ const LINES = [
     } },
   { tk: "BF26", name: "main", typed: "the college prospects' first Bowman autographs",
     text: () => "the college prospects' Bowman Chrome autographs" },
+  // Q-068 (Site Sweep U-F30, Nov 27 2026): the hero level note in plain words while the set has no level yet; source is each
+  // page's own subline ("the first level prints once enough cards have real, dated sales"). Once a level exists the line is
+  // left as last written (the Index Keeper replaces the level box).
+  ...["BF26", "BCS26"].map((tk) => ({ tk, name: "levelnote", typed: "first mark: the Monday or Thursday after the screen fills",
+    text: (x) => (Array.isArray(x.history) && x.history.length ? null : "First price: the Monday or Thursday after enough cards sell") })),
 ];
 
 const MONS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

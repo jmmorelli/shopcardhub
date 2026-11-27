@@ -66,7 +66,7 @@ ${crumbHtml([["Set indices", "/indices"], ["2026 Bowman Chrome Sapphire"]], "pad
 <div class="bf">
 <div class="mast"><div><div class="eyebrow">Set index · pre-launch</div><h1><span class="tick">BCS26</span> · 2026 Bowman Chrome Sapphire</h1>
 <div class="subline">Dropped on Topps.com (EQL) Wednesday, Oct 7 at 9 am PT, $599.99 a box; Topps has not published a ship date. This is the sapphire edition of September's 2026 Bowman Chrome, not June's 2026 Bowman Sapphire. Like every Bowman index it is based at its release month (100 = Oct 2026); the first level prints once enough cards have real, dated sales, and nothing is printed before then.</div></div>
-<div class="levelbox"><div class="level">PRE</div><div class="levelchg">first mark: the Monday or Thursday after the screen fills</div></div></div>
+<div class="levelbox"><div class="level">PRE</div><div class="levelchg">First price: the Monday or Thursday after enough cards sell</div></div></div>
 
 <h2>What it will track</h2>
 <div class="bf-grid">

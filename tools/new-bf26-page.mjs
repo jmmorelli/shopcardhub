@@ -65,7 +65,7 @@ ${crumbHtml([["Set indices", "/indices"], ["2026 Bowman Football"]], "padding:14
 <div class="bf">
 <div class="mast"><div><div class="eyebrow">Set index · pre-launch</div><h1><span class="tick">BF26</span> · 2026 Bowman Football</h1>
 <div class="subline">Streets Wednesday, Sep 30. Like every Bowman index it is based at its release month (100 = Sep 2026); the first level prints once enough cards have real, dated sales, and nothing is printed before then.</div></div>
-<div class="levelbox"><div class="level">PRE</div><div class="levelchg">first mark: the Monday or Thursday after the screen fills</div></div></div>
+<div class="levelbox"><div class="level">PRE</div><div class="levelchg">First price: the Monday or Thursday after enough cards sell</div></div></div>
 
 <h2>What it will track</h2>
 <div class="bf-grid">
