@@ -7513,6 +7513,357 @@
     },
     "rule": "outbound = OUTBOUND_EVENTS; by landing = the page the session started on; AI = sessionSource matching AI_SOURCE_RE (28d); raw counts, no bot filter (apply summary.bots when reading)"
    }
+  },
+  {
+   "day": "2026-11-26",
+   "generatedAt": "2026-11-27T18:32:29.423Z",
+   "sessions28": 1955,
+   "keyEvents28": 146,
+   "blendedKeyEventRate28": 4.09,
+   "blendedKeyEventRate7": 4.78,
+   "sessions7": 293,
+   "keyEvents7": 25,
+   "organicKeyEventRate28": 19.08,
+   "organicKeyEventRate7": 16.67,
+   "organicSessions28": 173,
+   "directSessions28": 1613,
+   "directAvgSessionDurationSec28": 6,
+   "returningUsers28": 25,
+   "returningShare28": 1.31,
+   "returningShare7": 1.37,
+   "clicks7": 25,
+   "buystripClicks7": 2,
+   "buyboxClicks7": 0,
+   "trackCardFromPage7": 0,
+   "newsletterSignup7": 0,
+   "signupSubmit7": 0,
+   "signupView7": 88,
+   "boxSort7": 0,
+   "boxFilter7": 8,
+   "boxProfile7": 0,
+   "keyEventsYesterday": 4,
+   "sessionsYesterday": 41,
+   "topCountry7": "Singapore",
+   "nonUSTopCountry7": {
+    "country": "Singapore",
+    "activeUsers": 148,
+    "sessions": 147,
+    "keyEvents": 0,
+    "averageSessionDuration": 0.5085565782312925
+   },
+   "bots": {
+    "rule": "avg session < 2s over >= 10 sessions, OR 0 key events + avg < 10s over >= 30 sessions; 7d, by country",
+    "suspects": [
+     {
+      "country": "Singapore",
+      "sessions": 147,
+      "keyEvents": 0,
+      "avgSessionSec": 0.509
+     }
+    ],
+    "botSessions7": 147,
+    "botShare7": 49.66,
+    "cleanSessions7": 149,
+    "cleanKeyEvents7": 25,
+    "cleanKeyEventsPerSession7": 16.78,
+    "rawKeyEventsPerSession7": 8.45
+   },
+   "retentionSplit28": {
+    "surfaces": {
+     "views": 375,
+     "returningViews": 122,
+     "keyEvents": 23,
+     "landings": 257,
+     "returningLandings": 23,
+     "views7": 52,
+     "engagementSec7": 412,
+     "returningViewShare": 32.53,
+     "returningLandingShare": 8.95,
+     "engagementSecPerView7": 7.9,
+     "keyEventsPer100Views": 6.13
+    },
+    "guides": {
+     "views": 1883,
+     "returningViews": 34,
+     "keyEvents": 123,
+     "landings": 1697,
+     "returningLandings": 25,
+     "views7": 335,
+     "engagementSec7": 1359,
+     "returningViewShare": 1.81,
+     "returningLandingShare": 1.47,
+     "engagementSecPerView7": 4.1,
+     "keyEventsPer100Views": 6.53
+    },
+    "rule": "surfaces = / · /indices · *-index · /watchlist · /bowman-bangers; guides = every other path; 28d unless noted"
+   },
+   "activeUsers7": 290,
+   "activeUsers28": 1892,
+   "returningUsers7": 4,
+   "cardPageClicks7": 0,
+   "cardPageViews7": 35,
+   "cardPageClicksByEvent7": {},
+   "cardLanding7": {
+    "sessions": 84,
+    "keyEvents": 0,
+    "botSessions": 71,
+    "cleanSessions": 13,
+    "cleanKeyEvents": 0,
+    "cleanCountries": [
+     {
+      "country": "China",
+      "sessions": 11,
+      "keyEvents": 0,
+      "avgSessionSec": 0.155
+     },
+     {
+      "country": "Japan",
+      "sessions": 1,
+      "keyEvents": 0,
+      "avgSessionSec": 0.405
+     },
+     {
+      "country": "Indonesia",
+      "sessions": 1,
+      "keyEvents": 0,
+      "avgSessionSec": 1.083
+     }
+    ],
+    "rule": "landingPage matches /card* (7d, landingCountry7 top 500); bot = country flagged by summary.bots (countries7)"
+   },
+   "cardViews7Clean": 14,
+   "cardViews7Bot": 73,
+   "cardViews7Rule": "screenPageViews on pagePath matching /card* (7d, pageCountry7 top 500) minus countries flagged by summary.bots (countries7)",
+   "o66": {
+    "buystripByPage7": [
+     {
+      "page": "/indices",
+      "n": 1
+     },
+     {
+      "page": "/pokemon-jungle-1st-edition-index",
+      "n": 1
+     }
+    ],
+    "buystripByPage28": [
+     {
+      "page": "/pokemon-base-set-1st-edition-index",
+      "n": 2
+     },
+     {
+      "page": "/bowman-chrome-2026-index",
+      "n": 1
+     },
+     {
+      "page": "/indices",
+      "n": 1
+     },
+     {
+      "page": "/lionel-messi-cards",
+      "n": 1
+     },
+     {
+      "page": "/nfl-rookie-cards-2026",
+      "n": 1
+     },
+     {
+      "page": "/pokemon-delta-reign-2026",
+      "n": 1
+     },
+     {
+      "page": "/pokemon-jungle-1st-edition-index",
+      "n": 1
+     }
+    ],
+    "ebayClicksByLanding7": [
+     {
+      "page": "/mcdonalds-pokemon-cards-2026",
+      "n": 14
+     },
+     {
+      "page": "/best-hobby-boxes-2026",
+      "n": 5
+     },
+     {
+      "page": "/pokemon-black-friday-2026",
+      "n": 2
+     },
+     {
+      "page": "/pokemon-booster-box-prices",
+      "n": 2
+     },
+     {
+      "page": "/neo-genesis-1st-edition-index",
+      "n": 2
+     },
+     {
+      "page": "/pokemon-jungle-1st-edition-index",
+      "n": 2
+     },
+     {
+      "page": "/bowman-2026-index",
+      "n": 1
+     },
+     {
+      "page": "/lionel-messi-cards",
+      "n": 1
+     }
+    ],
+    "ebayClicksByLanding28": [
+     {
+      "page": "/mcdonalds-pokemon-cards-2026",
+      "n": 77
+     },
+     {
+      "page": "/pokemon-booster-box-prices",
+      "n": 10
+     },
+     {
+      "page": "/indices",
+      "n": 10
+     },
+     {
+      "page": "/pokemon-base-set-1st-edition-index",
+      "n": 9
+     },
+     {
+      "page": "/best-hobby-boxes-2026",
+      "n": 8
+     },
+     {
+      "page": "/pokemon-30th-anniversary-2026",
+      "n": 4
+     },
+     {
+      "page": "/pokemon-black-friday-2026",
+      "n": 4
+     },
+     {
+      "page": "/mlb-cards",
+      "n": 4
+     },
+     {
+      "page": "/pokemon-base-set-shadowless-index",
+      "n": 4
+     },
+     {
+      "page": "/pokemon-fossil-index",
+      "n": 4
+     }
+    ],
+    "aiByLanding": {
+     "sessions28": 110,
+     "keyEvents28": 68,
+     "bySource28": [
+      {
+       "source": "chatgpt.com",
+       "sessions": 98
+      },
+      {
+       "source": "l.meta.ai",
+       "sessions": 11
+      },
+      {
+       "source": "perplexity.ai",
+       "sessions": 1
+      }
+     ],
+     "byLanding28": [
+      {
+       "page": "/mcdonalds-pokemon-cards-2026",
+       "sessions": 51,
+       "engagedSessions": 31,
+       "keyEvents": 35,
+       "sources": {
+        "chatgpt.com": 51
+       }
+      },
+      {
+       "page": "/indices",
+       "sessions": 9,
+       "engagedSessions": 7,
+       "keyEvents": 7,
+       "sources": {
+        "l.meta.ai": 9
+       }
+      },
+      {
+       "page": "/bowman-chrome-2026-index",
+       "sessions": 8,
+       "engagedSessions": 2,
+       "keyEvents": 1,
+       "sources": {
+        "chatgpt.com": 8
+       }
+      },
+      {
+       "page": "/pokemon-booster-box-prices",
+       "sessions": 8,
+       "engagedSessions": 7,
+       "keyEvents": 8,
+       "sources": {
+        "chatgpt.com": 8
+       }
+      },
+      {
+       "page": "/pokemon-delta-reign-2026",
+       "sessions": 5,
+       "engagedSessions": 2,
+       "keyEvents": 2,
+       "sources": {
+        "chatgpt.com": 5
+       }
+      },
+      {
+       "page": "/pokemon-base-set-index",
+       "sessions": 4,
+       "engagedSessions": 2,
+       "keyEvents": 1,
+       "sources": {
+        "chatgpt.com": 4
+       }
+      },
+      {
+       "page": "(not set)",
+       "sessions": 4,
+       "engagedSessions": 1,
+       "keyEvents": 1,
+       "sources": {
+        "chatgpt.com": 3,
+        "l.meta.ai": 1
+       }
+      },
+      {
+       "page": "/pokemon-black-friday-2026",
+       "sessions": 3,
+       "engagedSessions": 3,
+       "keyEvents": 3,
+       "sources": {
+        "chatgpt.com": 3
+       }
+      },
+      {
+       "page": "/pokemon-base-set-1st-edition-index",
+       "sessions": 2,
+       "engagedSessions": 1,
+       "keyEvents": 0,
+       "sources": {
+        "chatgpt.com": 2
+       }
+      },
+      {
+       "page": "/topps-chrome-updates-basketball",
+       "sessions": 2,
+       "engagedSessions": 1,
+       "keyEvents": 0,
+       "sources": {
+        "chatgpt.com": 2
+       }
+      }
+     ]
+    },
+    "rule": "outbound = OUTBOUND_EVENTS; by landing = the page the session started on; AI = sessionSource matching AI_SOURCE_RE (28d); raw counts, no bot filter (apply summary.bots when reading)"
+   }
   }
  ]
 }
