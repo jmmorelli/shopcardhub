@@ -927,3 +927,17 @@ a[href="/#newsletter"], a[href="/#tape"], a[href="#newsletter"], a[href="#tape"]
 /* Q-086 (Build Loop, Nov 28 2026; CoS N-4): the next price-check line under the raw price on card pages (js/card-page.js) */
 html body .cdp .cdp-next{font-family:var(--ds-font, inherit);font-size:12px;line-height:1.5;color:var(--text-head, inherit);margin:2px 0 4px;font-weight:600}
 html body .cdp .cdp-next[hidden]{display:none}
+
+/* Q-087 (Build Loop, Nov 28 2026; CoS N-5): the second lookup under the first eBay button on card pages (js/card-page.js) */
+html body .cdp .cdp-next2{margin:14px 0 2px;font-family:var(--ds-font, inherit)}
+html body .cdp .cdp-next2 label{display:block;font-size:14px;font-weight:600;color:var(--text-head, inherit);margin:0 0 6px}
+html body .cdp .cdp-next2 input{box-sizing:border-box;width:100%;min-height:44px;padding:10px 12px;font:16px/1.3 var(--ds-font, inherit);color:var(--text-head, inherit);background:transparent;border:1px solid var(--border2, rgba(127,127,127,.35));border-radius:10px}
+html body .cdp .cdp-n2r{margin-top:6px;border:1px solid var(--border, rgba(127,127,127,.2));border-radius:10px;overflow:hidden}
+html body .cdp .cdp-n2r[hidden]{display:none}
+html body .cdp .cdp-n2r a{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:44px;padding:8px 12px;text-decoration:none;color:var(--text-head, inherit);border-top:1px solid var(--border, rgba(127,127,127,.15));font-size:14px}
+html body .cdp .cdp-n2r a:first-child{border-top:0}
+html body .cdp .cdp-n2r small{display:block;font-size:12px;color:var(--text, inherit);opacity:.8;font-weight:400}
+html body .cdp .cdp-n2r b{white-space:nowrap;text-align:right;font-size:14px}
+html body .cdp .cdp-n2r .hd,html body .cdp .cdp-n2r .none{margin:0;padding:8px 12px;font-size:13px;color:var(--text, inherit)}
+html body .cdp .cdp-n2k{margin:10px 0 0;font-size:13px;line-height:1.45;color:var(--text, inherit)}
+html body .cdp .cdp-n2k button{min-height:44px;padding:8px 14px;border-radius:980px;border:1px solid var(--accent, currentColor);background:transparent;color:var(--accent, inherit);font:600 14px/1.2 var(--ds-font, inherit);cursor:pointer;margin-right:6px}

@@ -50,6 +50,76 @@
     render(d, c, gd && gd.cards ? (gd.cards[c.key || c.num] || null) : null, gd);
   }).catch(function () { miss('This card isn’t on file. Search a card name in the bar at the top, or <a href="/indices">open an index</a>.'); });
 
+  /* Q-087 (Build Loop, Nov 28 2026; CoS N-5, test read Fri Dec 11: search_hit with location "card" ≥ 5 in events7, or it comes off).
+   * For a visitor holding one card the second step is a second lookup, not the list: under the first eBay button, a search box
+   * "Got more? Look up the next one." with the home box's matcher (/data/card-search.json priced rows, /data/search-aliases.json
+   * nicknames lead, the Q-081 closest-card rule on a miss). Each card page this session is remembered in sessionStorage
+   * (try/catch; nothing leaves the browser); from the second card on, one line offers "Keep these two in a list", which tracks
+   * both through js/vault-track.js (SCHVault.track) with the page's dated raw mark and, where the nightly sold feed carries the
+   * card, its feed id (sold:<path>, /feed/sold-marks.json). No email, no pop-up. */
+  function nextLookup(d, c, raw) {
+    var SK = 'sch_lookups', me = { id: c.id, n: c.name + ' #' + c.num + ' — ' + d.set, s: d.set, p: raw == null ? null : raw, path: c.path || '' }, prev = null;
+    try { var L = JSON.parse(sessionStorage.getItem(SK) || '[]'); if (!Array.isArray(L)) L = [];
+      L = L.filter(function (x) { return x && x.id && x.id !== me.id; }); prev = L.length ? L[L.length - 1] : null;
+      L.push(me); sessionStorage.setItem(SK, JSON.stringify(L.slice(-6))); } catch (e) { prev = null; }
+    var two = prev && prev.p != null && me.p != null ? prev : null;
+    var html = '<div class="cdp-next2" id="cdp-next2"><label for="cdp-n2q">Got more? Look up the next one.</label>' +
+      '<div class="cdp-n2f"><input id="cdp-n2q" type="search" autocomplete="off" spellcheck="false" placeholder="Card name, e.g. Charizard ex" aria-controls="cdp-n2r"></div>' +
+      '<div class="cdp-n2r" id="cdp-n2r" role="listbox" hidden></div>' +
+      (two ? '<p class="cdp-n2k" id="cdp-n2k"><button type="button" id="cdp-n2b">Keep these two in a list</button> <span>' + esc(two.n.split(' — ')[0]) + ' and ' + esc(c.name) + ' #' + esc(c.num) + ', with their prices</span></p>' : '') +
+      '</div>';
+    function wire() {
+      var input = document.getElementById('cdp-n2q'), box = document.getElementById('cdp-n2r'); if (!input || !box) return;
+      var CARDS = null, ALIAS = {}, P = null, hitSent = {}, missSent = {}, T = null;
+      var nk = function (s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); };
+      function ga(n, p) { try { if (typeof gtag === 'function') gtag('event', n, p); } catch (e) {} }
+      function load() { if (P) return P; P = Promise.all([get('/data/card-search.json').catch(function () { return {}; }), get('/data/search-aliases.json').catch(function () { return {}; })]).then(function (r) {
+        ALIAS = (r[1] && r[1].aliases) || {};
+        CARDS = (r[0].cards || []).filter(function (x) { return x[3] != null; }).map(function (x) { return { id: x[0], t: x[1], s: x[2], p: x[3], n: nk(x[1] + ' ' + x[2]) }; }); }); return P; }
+      function aliasCards(q) { q = nk(q); if (q.length < 4) return []; var tk = q.split(' '), a = null; for (var k in ALIAS) if (k === q || k.indexOf(q) === 0 || tk.indexOf(k) > -1) { a = ALIAS[k]; break; }
+        return a ? (a.ids || []).map(function (id) { for (var i = 0; i < CARDS.length; i++) if (CARDS[i].id === id) return CARDS[i]; return null; }).filter(Boolean) : []; }
+      function cards(q) { q = nk(q); if (q.length < 2) return []; var tk = q.split(' ');
+        return CARDS.filter(function (x) { for (var i = 0; i < tk.length; i++) if (x.n.indexOf(tk[i]) < 0) return false; return true; })
+          .sort(function (a, b) { var sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1, pa = STATIC[a.id] ? 0 : 1, pb = STATIC[b.id] ? 0 : 1; return sa - sb || pa - pb || b.p - a.p; }).slice(0, 5); }
+      var GEN = { ex: 1, gx: 1, vmax: 1, vstar: 1, mega: 1, dark: 1, light: 1, shining: 1, radiant: 1, team: 1, rocket: 1, prime: 1, holo: 1, full: 1, art: 1, star: 1, delta: 1, 'break': 1, tag: 1, promo: 1, 'with': 1, the: 1, and: 1, edition: 1, '1st': 1, base: 1, set: 1, card: 1, cards: 1, pokemon: 1 };
+      function loose(q) { var tk = nk(q).split(' ').filter(function (t) { return t.length >= 3; }); if (!tk.length) return [];
+        return CARDS.map(function (x) { var tw = ' ' + nk(x.t) + ' ', aw = ' ' + x.n + ' ', sc = 0, nm = 0;
+          for (var i = 0; i < tk.length; i++) { if (aw.indexOf(' ' + tk[i] + ' ') > -1) sc++; if (!GEN[tk[i]] && tw.indexOf(' ' + tk[i] + ' ') > -1) nm = 1; } return { c: x, sc: sc, nm: nm }; })
+          .filter(function (x) { return x.nm || x.sc >= 2; }).sort(function (a, b) { return b.nm - a.nm || b.sc - a.sc || b.c.p - a.c.p; }).slice(0, 3).map(function (x) { return x.c; }); }
+      function row(x) { return '<a data-r role="option" href="' + esc(cardUrl(x)) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span><b>' + esc(money(x.p)) + '<small>raw</small></b></a>'; }
+      function render() {
+        var q = input.value.trim(); if (!q) { box.hidden = true; box.innerHTML = ''; return; }
+        if (!CARDS) { box.hidden = false; box.innerHTML = '<p class="none">Looking…</p>'; return; }
+        var ac = aliasCards(q), r = ac.concat(cards(q).filter(function (x) { return ac.indexOf(x) < 0; })).slice(0, 5), h;
+        if (r.length) h = r.map(row).join('');
+        else { var lc = loose(q); h = (lc.length ? '<p class="hd">Closest cards we track</p>' + lc.map(row).join('') : '') + '<p class="none">We don’t track that card yet. <a href="/search?q=' + encodeURIComponent(q) + '">Search everything</a> · <a href="/indices">What we track</a></p>'; }
+        box.innerHTML = h; box.hidden = false;
+        clearTimeout(T); var k = nk(q), n = r.length;
+        T = setTimeout(function () { if (nk(input.value) !== k) return;
+          if (n && !hitSent[k]) { hitSent[k] = 1; ga('search_hit', { location: 'card', results: n }); }
+          else if (!n && !missSent[k]) { missSent[k] = 1; ga('search_miss', { query: q.slice(0, 80), location: 'card' }); } }, 1200);
+      }
+      input.addEventListener('focus', load);
+      input.addEventListener('input', function () { var v = input.value; render(); if (!CARDS) load().then(function () { if (input.value === v) render(); }); });
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { var a = box.querySelector('a[data-r]'); if (a) location.href = a.getAttribute('href'); else if (input.value.trim()) location.href = '/search?q=' + encodeURIComponent(input.value.trim()); } else if (e.key === 'Escape') { input.value = ''; render(); } });
+      var kb = document.getElementById('cdp-n2b'); if (!kb || !two) return;
+      kb.addEventListener('click', function () {
+        kb.disabled = true;
+        var done = false, go = function (keys) { if (done) return; done = true;
+          var specs = [two, me].map(function (x) { var fk = x.path && keys && keys['sold:' + x.path] ? 'sold:' + x.path : ''; return { name: x.n, set: x.s, cat: 'pokemon', grade: 'Raw', price: x.p, feed: fk, page: location.pathname }; });
+          var out = specs.map(function (s) { return window.SCHVault && SCHVault.track ? SCHVault.track(s) : 'fallback'; });
+          ga('lookup_list_keep', { added: out.filter(function (o) { return o === 'added'; }).length });
+          var k = document.getElementById('cdp-n2k');
+          if (out.indexOf('fallback') > -1) { location.href = '/watchlist'; return; }
+          if (k) k.innerHTML = 'Both are on your list. <a href="/watchlist">Open your list ›</a>';
+          if (window.SCHVault && SCHVault.mark) SCHVault.mark(main); };
+        setTimeout(function () { go(null); }, 4000);
+        fetch('/feed/sold-marks.json').then(function (r) { return r.ok ? r.json() : {}; }).then(function (j) { var m = {}; (j.cards || []).forEach(function (e) { if (e && e.key && e.last > 0) m[e.key] = 1; }); go(m); }, function () { go(null); });
+      });
+    }
+    return { html: html, wire: wire };
+  }
+
   /* P62 grade-or-slab defaults — every figure from claude/kb/pokemon/GRADE-DEFAULTS.md (KB run 5, Oct 19 2026).
    * PSA Standard $59.99 → $62.75 a card in a 20-card batch (fee [HIGH] psacard.com, read Sep 25 2026; shipping/supplies [LOW]).
    * eBay selling friction on the miss = 13.25% final value fee + $0.40 per order (eBay Seller Center, Feb 14 2025 schedule [MED]).
@@ -154,6 +224,7 @@
         '<a class="ds-more" href="' + esc(ebUrl(e, 'bin')) + '" data-cid="' + cid + '" data-g="' + e.eb + '" data-mode="bin" target="_blank" rel="sponsored nofollow noopener" aria-label="Shop ' + e.lbl + ' copies on eBay">Shop on eBay</a></div>';
     }).join('');
     var setLink = '<a href="' + esc(d.page) + '">' + esc(setShort) + '</a>';
+    var nl = nextLookup(d, c, raw);
     var keep = main.querySelector('.cdp-photo.cdp-stub');   // P4: the stub's photo box carries the view-transition name; keep the node
     main.innerHTML =
       crumb(d, esc(c.name) + ' #' + esc(c.num)) +
@@ -164,7 +235,7 @@
       (spread != null ? '<div class="cdp-spread">Raw → PSA 10: <b>' + (spread >= 0 ? '+' : '−') + Math.abs(spread).toFixed(0) + '%</b>' + (p62 ? ' · <a href="#cdp-tab-grades" data-tab="grades">' + esc(p62.short) + '&nbsp;›</a>' : '') + '</div>' : '') +
       '<div class="cdp-cta"><a class="cdp-ebay" id="cdp-ebay" data-cid="' + cid + '" target="_blank" rel="sponsored nofollow noopener"></a>' +
       '<a class="cdp-auc" id="cdp-auc" data-cid="' + cid + '" data-mode="auc" target="_blank" rel="sponsored nofollow noopener">Auctions ending soon</a>' +
-      '<button type="button" class="sch-track-card" data-name="' + esc(c.name) + ' #' + esc(c.num) + ' — ' + esc(d.set) + '" data-set="' + esc(d.set) + '" data-cat="pokemon" data-grade="Raw" data-price="' + (raw == null ? '' : raw) + '">★ Watch</button></div></div></div>' +
+      '<button type="button" class="sch-track-card" data-name="' + esc(c.name) + ' #' + esc(c.num) + ' — ' + esc(d.set) + '" data-set="' + esc(d.set) + '" data-cat="pokemon" data-grade="Raw" data-price="' + (raw == null ? '' : raw) + '">★ Watch</button></div>' + nl.html + '</div></div>' +
       '<div class="cdp-tabs" role="tablist" aria-label="Card sections">' + [['chart', 'Chart'], ['sales', 'Sales'], ['grades', 'Grades'], ['index', 'Index']].map(function (t, i) {
         return '<button type="button" role="tab" id="cdp-tab-' + t[0] + '" data-tab="' + t[0] + '" aria-selected="' + (i === 0) + '" aria-controls="cdp-p-' + t[0] + '">' + t[1] + '</button>';
       }).join('') + '</div>' +
@@ -221,6 +292,7 @@
     // run 7: the scroll flow (blocks below the first screen step in once; off under reduced motion; nothing hidden without JS)
     if (!document.querySelector('script[src^="/js/scroll-flow.js"]')) { var sf = document.createElement('script'); sf.src = '/js/scroll-flow.js?v=2'; sf.defer = true; document.body.appendChild(sf); }
     if (window.SCHVault && SCHVault.mark) SCHVault.mark(main);
+    nl.wire();
     chartApi = chart(d, c, gOf);
     if (chartApi) chartApi.grade(pick);
     // shop-spread.js (Oct 15 2026) fills the TCGplayer shop price / spread block into .cdp-buy once the card is on the page
