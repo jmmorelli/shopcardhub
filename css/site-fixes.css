@@ -923,3 +923,7 @@ body a.gg-more { margin-top: -6px; }
 .sch-signup, #tapecap, .sig-alerts, [data-schsub], section.h2-tape,
 div:has(> #tr-signup), #tr-signup,
 a[href="/#newsletter"], a[href="/#tape"], a[href="#newsletter"], a[href="#tape"] { display: none !important; }
+
+/* Q-086 (Build Loop, Nov 28 2026; CoS N-4): the next price-check line under the raw price on card pages (js/card-page.js) */
+html body .cdp .cdp-next{font-family:var(--ds-font, inherit);font-size:12px;line-height:1.5;color:var(--text-head, inherit);margin:2px 0 4px;font-weight:600}
+html body .cdp .cdp-next[hidden]{display:none}

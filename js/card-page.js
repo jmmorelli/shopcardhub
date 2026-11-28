@@ -100,6 +100,18 @@
       else e.basis = !g ? 'Graded read pending' : p[0] === 'tag10' ? 'No TAG 10 sale in 12 months' : 'No dated sale in 12 months';
       G.push(e);
     });
+    // Q-086 (Build Loop, Nov 28 2026; CoS N-4, test read Fri Dec 11): the next price check, computed from the schedule the marks run
+    // on, never typed: set indices re-mark Monday and Thursday (UTC; build-sector-index --if-mark-day in price-snapshot.yml and
+    // classic-marks.yml), the six chase indices weekly on Monday (remark-indices.mjs). No date when the raw mark is held, screened
+    // or missing, for tracked cards and boards, or when the last mark is more than 7 days old (a check was missed: no promise).
+    var nextChk = (function () {
+      if (raw == null || scr || offIx || !c.rawAsOf) return '';
+      var days = chase ? [1] : [1, 4], today = new Date().toISOString().slice(0, 10), last = String(c.rawAsOf).slice(0, 10);
+      if ((Date.parse(today) - Date.parse(last)) / 864e5 > 7) return '';
+      for (var i = 0; i < 8; i++) { var t = new Date(Date.parse(today + 'T12:00:00Z') + i * 864e5), iso = t.toISOString().slice(0, 10);
+        if (iso > last && days.indexOf(t.getUTCDay()) > -1) return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][t.getUTCDay()] + ', ' + MON[t.getUTCMonth()] + ' ' + t.getUTCDate(); }
+      return '';
+    })();
     var psa10 = G[2].m, spread = raw && psa10 ? (psa10 / raw - 1) * 100 : null;
     var pick = 'raw';
     var cid = 'card-' + c.id;
@@ -148,7 +160,7 @@
       '<div class="cdp-top"><div class="cdp-photo"><span data-card-img="' + esc(c.img) + '" data-card-name="' + esc(c.name) + ' #' + esc(c.num) + ' ' + esc(d.set) + '" data-card-sub="pokemon" data-card-size="hero" data-card-surface="card-page" data-card-link="off"></span></div>' +
       '<div class="cdp-info"><h1>' + esc(c.name) + ' #' + esc(c.num) + '</h1><p class="cdp-set">' + setLink + ' · #' + esc(c.num) + (c.rarity ? ' · ' + esc(c.rarity) : '') + '</p></div>' +
       '<div class="cdp-q" id="cdp-q"><div class="cdp-gr" role="tablist" aria-label="Grade">' + chips + '</div>' +
-      '<div class="cdp-big" id="cdp-big"></div><div class="cdp-basis" id="cdp-basis"></div>' +
+      '<div class="cdp-big" id="cdp-big"></div><div class="cdp-basis" id="cdp-basis"></div>' + (nextChk ? '<div class="cdp-next" id="cdp-next">Next price check ' + esc(nextChk) + '</div>' : '') +
       (spread != null ? '<div class="cdp-spread">Raw → PSA 10: <b>' + (spread >= 0 ? '+' : '−') + Math.abs(spread).toFixed(0) + '%</b>' + (p62 ? ' · <a href="#cdp-tab-grades" data-tab="grades">' + esc(p62.short) + '&nbsp;›</a>' : '') + '</div>' : '') +
       '<div class="cdp-cta"><a class="cdp-ebay" id="cdp-ebay" data-cid="' + cid + '" target="_blank" rel="sponsored nofollow noopener"></a>' +
       '<a class="cdp-auc" id="cdp-auc" data-cid="' + cid + '" data-mode="auc" target="_blank" rel="sponsored nofollow noopener">Auctions ending soon</a>' +
@@ -181,6 +193,7 @@
       main.querySelectorAll('.cdp-gr button').forEach(function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-g') === k)); });
       big.textContent = bigOf(e); big.classList.toggle('na', e.m == null && !e.one);
       basis.textContent = e.basis;
+      var nx = document.getElementById('cdp-next'); if (nx) nx.hidden = k !== 'raw';   // Q-086: the schedule is the raw mark's
       eb.href = ebUrl(e, 'bin'); eb.setAttribute('data-g', e.eb); eb.setAttribute('data-mode', 'bin');
       eb.innerHTML = 'Buy ' + esc(e.k === 'tag10' ? 'TAG 10' : e.lbl) + ' on eBay';
       auc.href = ebUrl(e, 'auc'); auc.setAttribute('data-g', e.eb);
