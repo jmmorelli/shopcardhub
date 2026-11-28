@@ -907,11 +907,11 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     function missUrl(q){ var named = /pok[eé]mon/i.test(q), pk = named || PK_RE.test(q) || pkPage(), t = pk && !named ? 'pokemon ' + q : q; return 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(t.replace(/\s+/g,' ').trim()).replace(/%20/g,'+').replace(/'/g,'%27').replace(/[!()*]/g, function(c){ return '%' + c.charCodeAt(0).toString(16).toUpperCase(); }) + '&_sacat=' + (pk ? '183454' : '212') + '&LH_BIN=1&' + EPN + '&customid=search-miss'; }
     function ga(ev, p){ try { if (typeof gtag === 'function') gtag('event', ev, Object.assign({ page: location.pathname }, p)); } catch (e) {} }
     var missT = null, missSent = {};
-    function missEvent(q){ clearTimeout(missT); missT = setTimeout(function(){ var k = nk(q); if (!k || missSent[k] || nk(input.value) !== k) return; missSent[k] = 1; ga('search_miss', { query: q, location: 'header' }); }, 1200); }
+    function missEvent(q){ clearTimeout(missT); missT = setTimeout(function(){ var k = nk(q); if (!k || missSent[k] || nk(input.value) !== k) return; missSent[k] = 1; ga('search_miss', { query: q, search_term: q.slice(0, 80), location: 'header' }); }, 1200); }
     // Q-073 (Build Loop, Nov 28 2026; CoS L-6): search_hit once per settled query with at least one result, same 1.2 s debounce;
-    // no typed text is sent, only where (header) and how many rows.
+    // no typed text is sent, only where (header) and how many rows. Q-088 (CoS N-6): hit and miss also send search_term (80 chars max).
     var hitT = null, hitSent = {};
-    function hitEvent(q, n){ clearTimeout(hitT); if (!n) return; hitT = setTimeout(function(){ var k = nk(q); if (!k || hitSent[k] || nk(input.value) !== k) return; hitSent[k] = 1; ga('search_hit', { location: 'header', results: n }); }, 1200); }
+    function hitEvent(q, n){ clearTimeout(hitT); if (!n) return; hitT = setTimeout(function(){ var k = nk(q); if (!k || hitSent[k] || nk(input.value) !== k) return; hitSent[k] = 1; ga('search_hit', { location: 'header', results: n, search_term: q.slice(0, 80) }); }, 1200); }
     var SPAGE = {};   // card id → static /card-<slug> page (js/card-pages.json, Night Crew Oct 26)
     // Q-063 (Build Loop, Nov 27 2026; NC SRCH-PX): hand-built card page → [raw engine mark, date] as that page prints it (js/card-pages.json)
     var PPX = {};

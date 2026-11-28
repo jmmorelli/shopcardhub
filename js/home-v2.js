@@ -244,11 +244,11 @@
         .filter(function (x) { return x.nm || x.sc >= 2; }).sort(function (a, b) { return b.nm - a.nm || b.sc - a.sc || (SPAGE[a.c.id] ? 0 : 1) - (SPAGE[b.c.id] ? 0 : 1) || b.c.p - a.c.p; }).slice(0, 3).map(function (x) { return x.c; }); }
     function looseSet(q) { var tk = nk(q).split(' ').filter(function (t) { return t.length >= 3; }); for (var j = 0; j < SETS.length; j++) for (var i = 0; i < tk.length; i++) if (wordHit(SETS[j].n, tk[i])) return SETS[j]; return null; }
     var missT = null, missSent = {};
-    function missEvent(q) { clearTimeout(missT); missT = setTimeout(function () { var k = nk(q); if (!k || missSent[k] || nk(input.value) !== k) return; missSent[k] = 1; ga('search_miss', { query: q.slice(0, 80), location: 'home' }); }, 1200); }
+    function missEvent(q) { clearTimeout(missT); missT = setTimeout(function () { var k = nk(q); if (!k || missSent[k] || nk(input.value) !== k) return; missSent[k] = 1; ga('search_miss', { query: q.slice(0, 80), search_term: q.slice(0, 80), location: 'home' }); }, 1200); }
     // Q-073 (Build Loop, Nov 28 2026; CoS L-6): search_hit once per settled query with at least one result, same 1.2 s debounce;
-    // no typed text is sent, only where (home) and how many rows.
+    // no typed text is sent, only where (home) and how many rows. Q-088 (CoS N-6): hit and miss also send search_term (80 chars max).
     var hitT = null, hitSent = {};
-    function hitEvent(q, n) { clearTimeout(hitT); if (!n) return; hitT = setTimeout(function () { var k = nk(q); if (!k || hitSent[k] || nk(input.value) !== k) return; hitSent[k] = 1; ga('search_hit', { location: 'home', results: n }); }, 1200); }
+    function hitEvent(q, n) { clearTimeout(hitT); if (!n) return; hitT = setTimeout(function () { var k = nk(q); if (!k || hitSent[k] || nk(input.value) !== k) return; hitSent[k] = 1; ga('search_hit', { location: 'home', results: n, search_term: q.slice(0, 80) }); }, 1200); }
     res.addEventListener('click', function (e) { var a = e.target && e.target.closest ? e.target.closest('a[data-miss]') : null; if (a) ga('search_miss_click', { query: input.value.trim().slice(0, 80), location: 'home' }); });
     function render() {
       var q = input.value.trim(); sel = -1;

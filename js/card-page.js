@@ -96,8 +96,8 @@
         box.innerHTML = h; box.hidden = false;
         clearTimeout(T); var k = nk(q), n = r.length;
         T = setTimeout(function () { if (nk(input.value) !== k) return;
-          if (n && !hitSent[k]) { hitSent[k] = 1; ga('search_hit', { location: 'card', results: n }); }
-          else if (!n && !missSent[k]) { missSent[k] = 1; ga('search_miss', { query: q.slice(0, 80), location: 'card' }); } }, 1200);
+          if (n && !hitSent[k]) { hitSent[k] = 1; ga('search_hit', { location: 'card', results: n, search_term: q.slice(0, 80) }); }
+          else if (!n && !missSent[k]) { missSent[k] = 1; ga('search_miss', { query: q.slice(0, 80), search_term: q.slice(0, 80), location: 'card' }); } }, 1200);
       }
       input.addEventListener('focus', load);
       input.addEventListener('input', function () { var v = input.value; render(); if (!CARDS) load().then(function () { if (input.value === v) render(); }); });

@@ -94,14 +94,14 @@
       if (lc.length) mh += '<h2 class="sr-h">Closest cards we track</h2><div class="sr-list">' + lc.map(function (c) { var d = CASOF[c.id] || ASOF[c.id.split('-')[0]]; return row(SPAGE[c.id] || '/card?id=' + c.id, c.t, c.s, '<b class="sr-p">' + esc(money(c.p)) + '<small>raw' + (d ? ' · ' + esc(day(d)) : '') + '</small></b>'); }).join('') + '</div>';
       if (ls) mh += '<h2 class="sr-h">Nearest set</h2><div class="sr-list">' + row(ls.u, ls.t, '', '') + '</div>';
       out.innerHTML = mh;
-      ga('search_miss', { query: q, location: 'search', page: '/search' });
+      ga('search_miss', { query: q, search_term: String(q).slice(0, 80), location: 'search', page: '/search' });
       document.getElementById('sr-none-line').textContent = 'We don’t track that card yet.';
       document.getElementById('sr-miss').setAttribute('href', miss(q));
       none.hidden = false;
       var ml = document.getElementById('sr-miss');
       ml.addEventListener('click', function () { ga('search_miss_click', { query: q, search_term: q, page: '/search' }); });
     }
-    else ga('search_hit', { location: 'search', results: total, page: '/search' });
+    else ga('search_hit', { location: 'search', results: total, search_term: String(q).slice(0, 80), page: '/search' });
     ga('search_view', { search_term: q, results: total, page: '/search' });
   });
 })();
