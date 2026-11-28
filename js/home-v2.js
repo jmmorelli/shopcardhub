@@ -239,6 +239,10 @@
     function looseSet(q) { var tk = nk(q).split(' ').filter(function (t) { return t.length >= 3; }); for (var j = 0; j < SETS.length; j++) for (var i = 0; i < tk.length; i++) if (wordHit(SETS[j].n, tk[i])) return SETS[j]; return null; }
     var missT = null, missSent = {};
     function missEvent(q) { clearTimeout(missT); missT = setTimeout(function () { var k = nk(q); if (!k || missSent[k] || nk(input.value) !== k) return; missSent[k] = 1; ga('search_miss', { query: q.slice(0, 80), location: 'home' }); }, 1200); }
+    // Q-073 (Build Loop, Nov 28 2026; CoS L-6): search_hit once per settled query with at least one result, same 1.2 s debounce;
+    // no typed text is sent, only where (home) and how many rows.
+    var hitT = null, hitSent = {};
+    function hitEvent(q, n) { clearTimeout(hitT); if (!n) return; hitT = setTimeout(function () { var k = nk(q); if (!k || hitSent[k] || nk(input.value) !== k) return; hitSent[k] = 1; ga('search_hit', { location: 'home', results: n }); }, 1200); }
     res.addEventListener('click', function (e) { var a = e.target && e.target.closest ? e.target.closest('a[data-miss]') : null; if (a) ga('search_miss_click', { query: input.value.trim().slice(0, 80), location: 'home' }); });
     function render() {
       var q = input.value.trim(); sel = -1;
@@ -257,6 +261,7 @@
           + (ls ? '<div class="hd">Nearest set</div><a data-r href="' + esc(ls.u) + '"><span>' + esc(ls.t) + '<small>' + esc(ls.tk) + '</small></span>' + (T[ls.tk] ? '<b>' + T[ls.tk].l.toFixed(2) + '<small>' + esc(sgn(T[ls.tk].w, 1)) + '</small></b>' : '') + '</a>' : '')
           + '<div class="none">We don\u2019t track that card yet. <a href="/indices">What we track</a> \u00b7 <a data-miss href="' + miss(q) + '" target="_blank" rel="sponsored nofollow noopener">See it on eBay \u203a</a></div>';
         missEvent(q); } }
+      else if (CARDS) hitEvent(q, (h.match(/<a data-r/g) || []).length);
       res.innerHTML = h; res.classList.add('show');
     }
     input.addEventListener('focus', load);

@@ -62,7 +62,7 @@ const REPORTS = {
   daily28: { dateRanges: RANGES.d28, dimensions: d("date"), metrics: m("sessions", "activeUsers", "newUsers", "keyEvents", "engagementRate", "averageSessionDuration"), orderBys: [{ dimension: { dimensionName: "date" } }], keepEmptyRows: true, limit: 100 },
   // Instrument read (Nov 16 2026, BLOCKED row 2026-11-13): the events Measurement grades, per day, so "absent" is a dated zero
   // and never a row that fell off a top-N list. Optional.
-  instruments7: { dateRanges: RANGES.d7, dimensions: d("eventName", "date"), metrics: m("eventCount", "totalUsers"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["home2_index_pick", "home2_index_open", "signup_view", "signup_submit", "newsletter_signup", "track_card_from_page"] } } }, orderBys: [{ dimension: { dimensionName: "date" } }], limit: 500 },
+  instruments7: { dateRanges: RANGES.d7, dimensions: d("eventName", "date"), metrics: m("eventCount", "totalUsers"), dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["home2_index_pick", "home2_index_open", "signup_view", "signup_submit", "newsletter_signup", "track_card_from_page", "search_hit", "search_miss"] } } }, orderBys: [{ dimension: { dimensionName: "date" } }], limit: 500 },
   channels28: { dateRanges: RANGES.d28, dimensions: d("sessionDefaultChannelGroup"), metrics: m("sessions", "engagedSessions", "engagementRate", "averageSessionDuration", "keyEvents", "sessionKeyEventRate"), limit: 25 },
   channels7: { dateRanges: RANGES.d7, dimensions: d("sessionDefaultChannelGroup"), metrics: m("sessions", "engagedSessions", "keyEvents", "sessionKeyEventRate"), limit: 25 },
   sources7: { dateRanges: RANGES.d7, dimensions: d("sessionSourceMedium"), metrics: m("sessions", "keyEvents"), orderBys: [{ metric: { metricName: "sessions" }, desc: true }], limit: 25 },
@@ -260,6 +260,8 @@ function derive(rep) {
     returningShare7: (() => { const all = tot(rep.returning7.rows, "activeUsers"); return all ? +((ret7.activeUsers || 0) / all * 100).toFixed(2) : null; })(),
     clicks7: ev(rep.events7.rows, "click"), buystripClicks7: ev(rep.events7.rows, "buystrip_click"), buyboxClicks7: ev(rep.events7.rows, "buybox_click"),
     trackCardFromPage7: ev(rep.events7.rows, "track_card_from_page"), newsletterSignup7: funnel("newsletter_signup"), signupSubmit7: funnel("signup_submit"), signupView7: funnel("signup_view"),
+    // Q-073 (Build Loop, Nov 28 2026; CoS L-6): every settled search is counted, hit or miss (both boxes send location home | header).
+    searchHits7: funnel("search_hit"), searchMisses7: funnel("search_miss"),
     // box screener (Box Desk, Oct 20 2026; spec §7 kill read: ≥ 25% of BHB sessions interact by Nov 19, < 10% by Dec 17 strips it back)
     boxSort7: ev(rep.events7.rows, "box_sort"), boxFilter7: ev(rep.events7.rows, "box_filter"), boxProfile7: ev(rep.events7.rows, "box_profile"),
     keyEventsYesterday: (rep.daily28.rows.at(-1) || {}).keyEvents ?? null, sessionsYesterday: (rep.daily28.rows.at(-1) || {}).sessions ?? null,
@@ -355,7 +357,7 @@ function cardRead(rep) {
 }
 
 async function main() {
-  if (DRY) { console.log(JSON.stringify({ property: PROPERTY, reports: REPORTS }, null, 2)); return; }
+  if (DRY) { console.log(JSON.stringify({ property: PROPERTY, reports: REPORTS, searchFields: ["searchHits7", "searchMisses7"] }, null, 2)); return; }
   let token = process.env.GA4_ACCESS_TOKEN;
   if (!token) {
     const keyRaw = process.env.GA4_SA_KEY;
