@@ -232,6 +232,14 @@
       if (k.length >= 3) nav.forEach(function (it) { if (out.length < 3 && !it.c && !seen[it.u] && !/-index$|^\/indices$/.test(it.u) && it.n.indexOf(k) > -1) { out.push(it); seen[it.u] = 1; } });
       return out.slice(0, 3); }
     function sets(q) { q = nk(q); if (!q) return []; var tk = q.split(' '); return SETS.filter(function (s) { for (var i = 0; i < tk.length; i++) if (s.n.indexOf(tk[i]) < 0) return false; return true; }).slice(0, 4); }
+    function wordHit(n, t) { return (' ' + n).indexOf(' ' + t) > -1; }
+    function loose(q) { var tk = nk(q).split(' ').filter(function (t) { return t.length >= 3; }); if (!tk.length || !CARDS) return [];
+      return CARDS.filter(function (c) { return c.p != null; }).map(function (c) { var sc = 0; for (var i = 0; i < tk.length; i++) if (wordHit(c.n, tk[i])) sc++; return { c: c, sc: sc }; })
+        .filter(function (x) { return x.sc > 0; }).sort(function (a, b) { return b.sc - a.sc || (SPAGE[a.c.id] ? 0 : 1) - (SPAGE[b.c.id] ? 0 : 1) || b.c.p - a.c.p; }).slice(0, 3).map(function (x) { return x.c; }); }
+    function looseSet(q) { var tk = nk(q).split(' ').filter(function (t) { return t.length >= 3; }); for (var j = 0; j < SETS.length; j++) for (var i = 0; i < tk.length; i++) if (wordHit(SETS[j].n, tk[i])) return SETS[j]; return null; }
+    var missT = null, missSent = {};
+    function missEvent(q) { clearTimeout(missT); missT = setTimeout(function () { var k = nk(q); if (!k || missSent[k] || nk(input.value) !== k) return; missSent[k] = 1; ga('search_miss', { query: q.slice(0, 80), location: 'home' }); }, 1200); }
+    res.addEventListener('click', function (e) { var a = e.target && e.target.closest ? e.target.closest('a[data-miss]') : null; if (a) ga('search_miss_click', { query: input.value.trim().slice(0, 80), location: 'home' }); });
     function render() {
       var q = input.value.trim(); sel = -1;
       if (!q) { res.classList.remove('show'); res.innerHTML = ''; return; }
@@ -242,7 +250,13 @@
       if (pg.length || c.length) h += '<div class="hd">Cards</div>' + c.map(function (x) { return '<a data-r href="' + esc(SPAGE[x.id] || '/card?id=' + x.id) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span>' + (x.p == null ? '' : '<b>' + esc(money(x.p)) + '<small>raw</small></b>') + '</a>'; }).join('') + pg.map(function (x) { var dd = /^\d{4}-\d\d-\d\d$/.test(String(x.d || '')) ? ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+x.d.slice(5, 7) - 1] + ' ' + (+x.d.slice(8, 10)) : ''; return '<a data-r href="' + esc(x.u) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span>' + (x.p == null || !dd ? '' : '<b>' + esc(money(x.p)) + '<small>raw \u00b7 ' + dd + '</small></b>') + '</a>'; /* Q-063 (Build Loop, Nov 27): hand-built card pages print their dated raw engine mark */ }).join('');
       if (gd.length) h += '<div class="hd">Guides</div>' + gd.map(function (x) { return '<a data-r href="' + esc(x.u) + '"><span>' + esc(x.t) + '</span></a>'; }).join('');
       h += sh;
-      if (!h) h = CARDS ? '<div class="none">Not in an index yet \u2014 <a href="' + miss(q) + '" target="_blank" rel="sponsored nofollow noopener">see it on eBay \u203a</a> \u00b7 <a href="/indices">what we track</a></div>' : '<div class="none">Looking\u2026</div>';
+      // Q-071 (Build Loop, Nov 27 2026; CoS L-3): a miss ends on our own page first: up to three closest priced cards (any word of
+      // the query), the nearest set's index, one honest line; the eBay search stays, last. search_miss fires once per query.
+      if (!h) { if (!CARDS) h = '<div class="none">Looking\u2026</div>'; else { var lc = loose(q), ls = looseSet(q);
+        h = (lc.length ? '<div class="hd">Closest cards we track</div>' + lc.map(function (x) { return '<a data-r href="' + esc(SPAGE[x.id] || '/card?id=' + x.id) + '"><span>' + esc(x.t) + '<small>' + esc(x.s) + '</small></span><b>' + esc(money(x.p)) + '<small>raw</small></b></a>'; }).join('') : '')
+          + (ls ? '<div class="hd">Nearest set</div><a data-r href="' + esc(ls.u) + '"><span>' + esc(ls.t) + '<small>' + esc(ls.tk) + '</small></span>' + (T[ls.tk] ? '<b>' + T[ls.tk].l.toFixed(2) + '<small>' + esc(sgn(T[ls.tk].w, 1)) + '</small></b>' : '') + '</a>' : '')
+          + '<div class="none">We don\u2019t track that card yet. <a href="/indices">What we track</a> \u00b7 <a data-miss href="' + miss(q) + '" target="_blank" rel="sponsored nofollow noopener">See it on eBay \u203a</a></div>';
+        missEvent(q); } }
       res.innerHTML = h; res.classList.add('show');
     }
     input.addEventListener('focus', load);
