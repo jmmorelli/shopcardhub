@@ -148,6 +148,11 @@ jobs:
             fi
             if node tools/bake-th26-marks.mjs; then git add pokemon-30th-anniversary-2026.html
             else echo "::warning::bake-th26-marks refused - the 30th page keeps its previous bake"; git checkout -- pokemon-30th-anniversary-2026.html 2>/dev/null || true; fi
+            # Q-076 (Build Loop, Nov 28 2026; LEDGER O-132, CoS ruling on Price Truth run 25 item 3): re-bake the static card
+            # shells from the marks just published, so no /card-* page keeps the old raw price until a hand re-bake.
+            # --keep-robots: only pages already on disk, robots unchanged, no new URL. Tooling only, no figure. Warn-only.
+            if node tools/build-card-template.mjs --keep-robots > /dev/null; then git add -u -- card.html 'card-*.html'
+            else echo "::warning::build-card-template failed - card shells keep their previous bake"; git checkout -- card.html 'card-*.html' 2>/dev/null || true; fi
             # gate output is kept so a FAIL names itself in the log (Oct 29 run #6 sent it to /dev/null)
             if ! node tools/audit-prices.mjs > "$RUNNER_TEMP/gate-prices.txt" || ! node tools/site-auditor/audit-site.mjs > "$RUNNER_TEMP/gate-site.txt"; then
               grep -h "FAIL" "$RUNNER_TEMP"/gate-*.txt | head -20

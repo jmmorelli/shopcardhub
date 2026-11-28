@@ -272,6 +272,11 @@ jobs:
             else echo "::warning::build-prelaunch-eyebrow failed - eyebrows keep their previous bake"; git checkout -- bowman-football-2026-index.html bowman-chrome-sapphire-2026-index.html delta-reign-index.html 2>/dev/null || true; fi
             if node tools/build-ai-strip.mjs > /dev/null; then git add mcdonalds-pokemon-cards-2026.html indices.html bowman-chrome-2026-index.html pokemon-booster-box-prices.html pokemon-delta-reign-2026.html
             else echo "::warning::build-ai-strip failed - AI strips keep their previous bake"; git checkout -- mcdonalds-pokemon-cards-2026.html indices.html bowman-chrome-2026-index.html pokemon-booster-box-prices.html pokemon-delta-reign-2026.html 2>/dev/null || true; fi
+            # Q-076 (Build Loop, Nov 28 2026; LEDGER O-132, CoS ruling on Price Truth run 25 item 3): re-bake the static card
+            # shells from the marks just published, so no /card-* page keeps the old raw price until a hand re-bake.
+            # --keep-robots: only pages already on disk, robots unchanged, no new URL. Tooling only, no figure. Warn-only.
+            if node tools/build-card-template.mjs --keep-robots > /dev/null; then git add -u -- card.html 'card-*.html'
+            else echo "::warning::build-card-template failed - card shells keep their previous bake"; git checkout -- card.html 'card-*.html' 2>/dev/null || true; fi
             # sitemap <lastmod> = each page's last content commit (B63, Oct 9 2026). Pages baked above are "today".
             # Never blocks the feed: a failure leaves sitemap.xml as it was.
             if node tools/sitemap-lastmod.mjs | tail -2; then git add sitemap.xml
