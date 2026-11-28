@@ -344,20 +344,24 @@ function cardRead(rep) {
   const pcc = rep.pageCountry7 && rep.pageCountry7.rows;
   if (pcc) {
     const botCountries = new Set(((rep.countries7 || {}).rows || []).filter(isBot).map((r) => r.country));
-    let views = 0, botViews = 0;
+    let views = 0, botViews = 0, cnViews = 0;
     for (const r of pcc) {
       if (!CARD_PATH.test(String(r.pagePath || ""))) continue;
       const v = r.screenPageViews || 0;
-      if (botCountries.has(r.country)) botViews += v; else views += v;
+      if (botCountries.has(r.country)) botViews += v; else { views += v; if (r.country === "China") cnViews += v; }
     }
     out.cardViews7Clean = views; out.cardViews7Bot = botViews;
+    // Q-078 (Build Loop, Nov 28 2026; review Nov 27 Moved · Instrument: 11 of 14 clean card views were China at 0.2 s):
+    // the same clean count minus country "China". Beside cardViews7Clean, which is unchanged (no bot-rule change).
+    out.cardViews7CleanExCN = views - cnViews;
+    out.cardViews7CleanExCNRule = "cardViews7Clean minus pageCountry7 rows with country \"China\"";
     out.cardViews7Rule = "screenPageViews on pagePath matching /card* (7d, pageCountry7 top 500) minus countries flagged by summary.bots (countries7)";
-  } else { out.cardViews7Clean = null; out.cardViews7Bot = null; }
+  } else { out.cardViews7Clean = null; out.cardViews7Bot = null; out.cardViews7CleanExCN = null; }
   return out;
 }
 
 async function main() {
-  if (DRY) { console.log(JSON.stringify({ property: PROPERTY, reports: REPORTS, searchFields: ["searchHits7", "searchMisses7"] }, null, 2)); return; }
+  if (DRY) { console.log(JSON.stringify({ property: PROPERTY, reports: REPORTS, searchFields: ["searchHits7", "searchMisses7"], cardFields: ["cardViews7Clean", "cardViews7CleanExCN", "cardViews7Bot"] }, null, 2)); return; }
   let token = process.env.GA4_ACCESS_TOKEN;
   if (!token) {
     const keyRaw = process.env.GA4_SA_KEY;
