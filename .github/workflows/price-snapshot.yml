@@ -229,6 +229,9 @@ jobs:
             else echo "::warning::tcg-pull failed - shop prices keep yesterday's files"; git checkout -- data/tcg data/tcg-marks.json 2>/dev/null || true; fi
             if FEED_BASE=data/feed node tools/build-home.mjs; then git add index.html
             else echo "::warning::build-home failed - / keeps its previous bake; home-feed-day will FAIL"; git checkout -- index.html; fi
+            # Q-080 (Build Loop, Nov 28): the home search hint prints only examples whose first search row is the named, priced card.
+            if node tools/build-home-hint.mjs > /dev/null; then git add index.html home-v2.html
+            else echo "::warning::build-home-hint failed - hint keeps its previous text"; git checkout -- home-v2.html 2>/dev/null || true; fi
             # /release-calendar (Sep 26 2026): the "This week / Just released" buckets move with the date, so re-bake nightly.
             if node tools/build-release-calendar.mjs; then git add release-calendar.html
             else echo "::warning::build-release-calendar failed - page keeps its previous bake"; git checkout -- release-calendar.html; fi
