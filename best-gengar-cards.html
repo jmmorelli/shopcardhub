@@ -1006,11 +1006,16 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     function render(items){
       sel = -1;
       if (!input.value.trim()){ results.classList.remove('show'); results.innerHTML=''; return; }
-      if (!items.length){ var mq = input.value.trim().slice(0,80); results.innerHTML='<div class="ns-empty">Not in an index yet — <a href="'+missUrl(mq)+'" target="_blank" rel="sponsored nofollow noopener" data-miss="1">see it on eBay ›</a> · <a href="/indices">what we track</a></div>'; results.classList.add('show'); var ml = results.querySelector('a[data-miss]'); if (ml) ml.addEventListener('click', function(){ ga('search_miss_click', { query: mq }); }); if (CARDS) missEvent(mq); return; }
-      results.innerHTML = items.map(function(it){ if (it.h) return '<div class="ns-h">'+it.h+'</div>'; if (it.c) return '<a class="ns-c" href="'+it.u+'"><span class="ns-t">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</span>'+(it.pr ? '<b class="ns-p">'+it.pr+'<small>raw</small></b>' : PPX[it.u] ? '<b class="ns-p">'+ppx(it.u)+'</b>' : '')+'</a>'; var lv = LV && LV[it.u]; if (lv && lv.level != null) return lvRow(it, lv); return '<a href="'+it.u+'">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</a>'; }).join('');
+      // Q-082 (Build Loop, Nov 28 2026; CoS M-1): a miss ends on our own page first, as the home box does (Q-071, Q-081): up to three
+      // closest priced cards, the nearest set's index, one honest line; the eBay search stays, last.
+      if (!items.length){ var mq = input.value.trim().slice(0,80), lc = CARDS ? loose(mq) : [], ls = looseSet(mq), mi = [];
+        if (lc.length) mi = mi.concat([{h:'Closest cards we track'}], lc); if (ls) mi = mi.concat([{h:'Nearest set'}], [ls]);
+        results.innerHTML = (mi.length ? rows(mi) : '') + '<div class="ns-empty">We don’t track that card yet. <a href="/indices">What we track</a> · <a href="'+missUrl(mq)+'" target="_blank" rel="sponsored nofollow noopener" data-miss="1">See it on eBay ›</a></div>'; results.classList.add('show'); place(); var ml = results.querySelector('a[data-miss]'); if (ml) ml.addEventListener('click', function(){ ga('search_miss_click', { query: mq, location: 'header' }); }); if (CARDS) missEvent(mq); return; }
+      results.innerHTML = rows(items);
       results.classList.add('show'); place();
       if (CARDS) hitEvent(input.value.trim(), items.filter(function(it){ return !it.h; }).length);
     }
+    function rows(items){ return items.map(function(it){ if (it.h) return '<div class="ns-h">'+it.h+'</div>'; if (it.c) return '<a class="ns-c" href="'+it.u+'"><span class="ns-t">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</span>'+(it.pr ? '<b class="ns-p">'+it.pr+'<small>raw</small></b>' : PPX[it.u] ? '<b class="ns-p">'+ppx(it.u)+'</b>' : '')+'</a>'; var lv = LV && LV[it.u]; if (lv && lv.level != null) return lvRow(it, lv); return '<a href="'+it.u+'">'+it.t+(it.s ? ' <small>'+it.s+'</small>' : '')+'</a>'; }).join(''); }
     // card search (Sep 30 2026, Mo: search a card, land on its page with raw / PSA 9 / PSA 10 / TAG): /data/card-search.json
     // is loaded on first focus (~90 KB raw, ~20 KB gzip), never on page load. Every token must match; dearest card first.
     var CARDS = null, cardsP = null;
@@ -1054,6 +1059,14 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
       return CARDS.filter(function(c){ if (c.p == null) return false; /* Q-070: an unpriced card is not listed */ for (var i=0;i<tk.length;i++) if (c.n.indexOf(tk[i]) < 0) return false; return true; })
         .sort(function(a,b){ var na = a.p == null ? 1 : 0, nb = b.p == null ? 1 : 0, sa = nk(a.t).indexOf(tk[0]) === 0 ? 0 : 1, sb = nk(b.t).indexOf(tk[0]) === 0 ? 0 : 1; return na - nb || sa - sb || (b.p||0) - (a.p||0); }).slice(0,8)
         .map(cardRow); }
+    // Q-082: the miss helpers, same rule as the home box (Q-081): a closest card matches its Pokémon's name (a whole, non-generic
+    // title word) or at least two query words; the nearest set is the first set index whose name holds a query word.
+    var GEN = { ex:1, gx:1, vmax:1, vstar:1, mega:1, dark:1, light:1, shining:1, radiant:1, team:1, rocket:1, prime:1, holo:1, full:1, art:1, star:1, delta:1, 'break':1, tag:1, promo:1, 'with':1, the:1, and:1, edition:1, '1st':1, base:1, set:1, card:1, cards:1, pokemon:1 };
+    function loose(q){ var tk = nk(q).split(' ').filter(function(t){ return t.length >= 3; }); if (!tk.length || !CARDS) return [];
+      return CARDS.filter(function(c){ return c.p != null; }).map(function(c){ var tw = ' '+nk(c.t)+' ', aw = ' '+c.n+' ', sc = 0, nm = 0;
+          for (var i=0;i<tk.length;i++){ if (aw.indexOf(' '+tk[i]+' ') > -1) sc++; if (!GEN[tk[i]] && tw.indexOf(' '+tk[i]+' ') > -1) nm = 1; } return { c:c, sc:sc, nm:nm }; })
+        .filter(function(x){ return x.nm || x.sc >= 2; }).sort(function(a,b){ return b.nm - a.nm || b.sc - a.sc || (SPAGE[a.c.id] ? 0 : 1) - (SPAGE[b.c.id] ? 0 : 1) || b.c.p - a.c.p; }).slice(0,3).map(function(x){ return cardRow(x.c); }); }
+    function looseSet(q){ var tk = nk(q).split(' ').filter(function(t){ return t.length >= 3; }); for (var j=0;j<INDEX.length;j++){ var it = INDEX[j]; if (it.c || !/-index$/.test(it.u)) continue; for (var i=0;i<tk.length;i++) if ((' '+it.n).indexOf(' '+tk[i]) > -1) return it; } return null; }
     function find(q){ q = nk(q); if(!q) return []; var al = aliasOf(q), want = (al && al.pages) || []; return INDEX.filter(function(it){ return want.indexOf(it.u) > -1; }).concat(INDEX.filter(function(it){ return want.indexOf(it.u) < 0 && it.n.indexOf(q) > -1; })); }
     // B74: cards first (the baked card pages, then the card list, dearest first), pages after under one label
     // Q-026/T2-SRCH (Build Loop, Nov 26 2026): a query whose first word names a set ("prismatic") answers "is this set up or down?"
@@ -1065,7 +1078,7 @@ section{animation:wire-pulse 5s ease-in-out infinite;}
     input.addEventListener('focus', loadCards);
     input.addEventListener('input', function(){ var v = input.value; render(all(v)); if (!CARDS) loadCards().then(function(){ if (input.value === v) render(all(v)); }); });
     input.addEventListener('keydown', function(e){
-      var links = results.querySelectorAll('a');
+      var links = results.querySelectorAll('a:not([data-miss])'); /* Q-082: Enter never leaves the site on a miss (B106) */
       if (e.key === 'ArrowDown'){ e.preventDefault(); sel = Math.min(sel+1, links.length-1); }
       else if (e.key === 'ArrowUp'){ e.preventDefault(); sel = Math.max(sel-1, 0); }
       else if (e.key === 'Enter'){ var t = links[sel] || links[0]; if (t) location.href = t.getAttribute('href'); return; }
