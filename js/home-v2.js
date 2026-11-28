@@ -233,9 +233,15 @@
       return out.slice(0, 3); }
     function sets(q) { q = nk(q); if (!q) return []; var tk = q.split(' '); return SETS.filter(function (s) { for (var i = 0; i < tk.length; i++) if (s.n.indexOf(tk[i]) < 0) return false; return true; }).slice(0, 4); }
     function wordHit(n, t) { return (' ' + n).indexOf(' ' + t) > -1; }
+    // Q-081 (Build Loop, Nov 28 2026; CoS N-3): a closest card must match the Pokémon's name (a whole word of the card's title
+    // that is not a generic word like "ex" or "prime") or at least two query words; "Zorblax Prime 999" matched Gengar Prime and
+    // Primeape on one stray word. Nothing clears the bar → no card rows, only the line and the set link.
+    var GEN = { ex: 1, gx: 1, vmax: 1, vstar: 1, mega: 1, dark: 1, light: 1, shining: 1, radiant: 1, team: 1, rocket: 1, prime: 1, holo: 1, full: 1, art: 1, star: 1, delta: 1, break: 1, tag: 1, promo: 1, with: 1, the: 1, and: 1, edition: 1, '1st': 1, base: 1, set: 1, card: 1, cards: 1, pokemon: 1 };
+    function words(s) { return ' ' + nk(s) + ' '; }
     function loose(q) { var tk = nk(q).split(' ').filter(function (t) { return t.length >= 3; }); if (!tk.length || !CARDS) return [];
-      return CARDS.filter(function (c) { return c.p != null; }).map(function (c) { var sc = 0; for (var i = 0; i < tk.length; i++) if (wordHit(c.n, tk[i])) sc++; return { c: c, sc: sc }; })
-        .filter(function (x) { return x.sc > 0; }).sort(function (a, b) { return b.sc - a.sc || (SPAGE[a.c.id] ? 0 : 1) - (SPAGE[b.c.id] ? 0 : 1) || b.c.p - a.c.p; }).slice(0, 3).map(function (x) { return x.c; }); }
+      return CARDS.filter(function (c) { return c.p != null; }).map(function (c) { var tw = words(c.t), aw = words(c.n), sc = 0, nm = 0;
+          for (var i = 0; i < tk.length; i++) { if (aw.indexOf(' ' + tk[i] + ' ') > -1) sc++; if (!GEN[tk[i]] && tw.indexOf(' ' + tk[i] + ' ') > -1) nm = 1; } return { c: c, sc: sc, nm: nm }; })
+        .filter(function (x) { return x.nm || x.sc >= 2; }).sort(function (a, b) { return b.nm - a.nm || b.sc - a.sc || (SPAGE[a.c.id] ? 0 : 1) - (SPAGE[b.c.id] ? 0 : 1) || b.c.p - a.c.p; }).slice(0, 3).map(function (x) { return x.c; }); }
     function looseSet(q) { var tk = nk(q).split(' ').filter(function (t) { return t.length >= 3; }); for (var j = 0; j < SETS.length; j++) for (var i = 0; i < tk.length; i++) if (wordHit(SETS[j].n, tk[i])) return SETS[j]; return null; }
     var missT = null, missSent = {};
     function missEvent(q) { clearTimeout(missT); missT = setTimeout(function () { var k = nk(q); if (!k || missSent[k] || nk(input.value) !== k) return; missSent[k] = 1; ga('search_miss', { query: q.slice(0, 80), location: 'home' }); }, 1200); }
