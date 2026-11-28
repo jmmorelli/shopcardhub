@@ -885,7 +885,7 @@ function block(x, c, opt = {}) {
   const topImg = `<span data-card-img="${esc(imgAttr(hero, c))}" data-card-name="${esc(hero.name)} #${esc(hero.num)} ${esc(c.set)}" data-card-sub="${esc(c.imgSub || "pokemon")}" data-card-size="card" data-card-surface="${x.ticker.toLowerCase()}-hero"></span>`;
   // P0-C chart-first (Mo, Oct 23 2026 — DESIGN-DIRECTIVE-2026-10-23 §4): the plain read is four baked parts (line under the
   // level, one sentence under the chart, two tiles, the "how to read" text for the toggle); null for a pre-activation ticker.
-  const parts = PR.bakeParts(x.ticker, x, { accent: "var(--sidx)", topImg, link: c.checklist ? clLink(c.checklist) : null, mvUrl: (b) => (b && b.name ? rowUrl(b, "index-mover-" + String(x.page || c.page || "").replace(/^\//, "")) : null) });
+  const parts = PR.bakeParts(x.ticker, x, { accent: "var(--sidx)", topImg, link: c.checklist ? clLink(c.checklist) : null, mvUrl: (b) => (b && b.name ? rowUrl(b, "index-mover-" + String(x.page || c.page || "").replace(/^\//, "")) : null), slug: String(x.page || c.page || "").replace(/^\//, "") });
   const family = c.cat === "baseball" ? "Bowman Baseball" : c.cat === "football" ? "Bowman Football" : c.cat === "basketball" ? "Bowman Basketball" : "Pokémon";
   const levelLine = parts ? parts.line : `<div class="pr-line">${baseLine(x)}</div>`;
   // everything that used to sit in the hero — the set description, the base/stamp line, the quant strip and the method —
@@ -913,6 +913,7 @@ function block(x, c, opt = {}) {
     </div>
     <div class="sidx-level"><div class="lv">${lvl == null ? "—" : lvl.toFixed(2)}</div>${levelLine}</div>
   </div>
+  ${parts && parts.answer ? parts.answer : ""}
   <!-- SIDX:AISTRIP -->
   <div class="idx-chart" data-ticker="${x.ticker}" aria-live="polite"></div>
   ${parts ? parts.read : ""}

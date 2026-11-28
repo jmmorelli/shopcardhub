@@ -158,7 +158,7 @@
     var rr = wk != null && !measureChanged ? heldShare(basket) : null;
     var br = !rr && cost && prevRow && wk != null && !measureChanged ? breadth(basket, String(prevRow.date).slice(0, 10)) : null;
     return { n: n, level: level, wk: wk, since: since, basket: basket, name: name, started: started, baseTxt: baseTxt, sinceLbl: sinceLbl,
-      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: rr ? { w: 'Being re-read', c: '' } : weekFirst(verdict(wk), wk, since, wkLbl), cost: cost, wkLbl: wkLbl, br: br, rr: rr };
+      top: top, mover: movers.length && !measureChanged ? movers[0] : null, v: rr ? { w: 'Being re-read', c: '' } : weekFirst(verdict(wk), wk, since, wkLbl), cost: cost, wkLbl: wkLbl, br: br, rr: rr, asOf: day(h[n - 1].date) };
   }
 
   /* Q-001 · Pokémon KB P69 (Build Loop, Nov 26 2026): when cards whose marks are being re-read (ptHold, reread, heldMove) carry
@@ -379,6 +379,30 @@
     return { sum: sum, n: cards.length, asOf: asOf, html: html };
   }
 
+  /* BET-20261127-1 (CEO Desk, CoS-approved; Build Loop Q-074, Nov 28 2026): the set's answer in one dated sentence under the H1,
+   * built only from figures the page already prints (the week move of the line under the level, the basket count, the mark date,
+   * and the mover tile's card and move with the tile's own window), plus one eBay button to that card: the page's own row search
+   * (opts.mvUrl) with customid=index-answer-<page slug>. No mover = no button. Null before the first mark (pre-activation). */
+  function ansText(k, f) {
+    var wk = f.rr ? 'its week move is being re-read' : f.wk == null ? 'no week-on-week move yet' : (f.wk < 0 ? '\u25bc ' : f.wk > 0 ? '\u25b2 ' : '') + Math.abs(f.wk).toFixed(1) + '% ' + f.wkLbl;
+    var s = esc(k) + ' index: ' + wk + ', as of ' + esc(f.asOf) + ' (' + f.basket.length + ' cards).';
+    var m = mvOf(f), c = m && m.c;
+    if (c) {
+      var nm = esc(c.name) + (c.num ? ' #' + esc(c.num) : '');
+      var v = f.br ? (m.d < 0 ? '\u25bc ' : '\u25b2 ') + money(Math.abs(m.d)) + ' (' + (m.p < 0 ? '\u2212' : '+') + Math.abs(m.p).toFixed(0) + '% ' + f.wkLbl + ')' : (m.p < 0 ? '\u25bc ' : '\u25b2 ') + Math.abs(m.p).toFixed(0) + '%';
+      s += ' ' + tileMvK(f) + ': ' + nm + ' ' + v + '.';
+    }
+    return s;
+  }
+  function ansCard(f) { var m = mvOf(f); return m && m.c ? m.c : null; }
+  function answer(k, f, opts) {
+    var c = ansCard(f), u = c && opts && typeof opts.mvUrl === 'function' ? opts.mvUrl(c) : null;
+    if (u) u = /customid=/.test(u) ? u.replace(/customid=[^&"]+/, 'customid=index-answer-' + String(opts.slug || '').replace(/[^a-z0-9-]/gi, '')) : null;
+    if (u && !opts.slug) u = null;
+    var b = u ? ' <a class="pr-ansb" data-pr-t="ansb" data-card="' + esc(c.name) + '" href="' + esc(u) + '" target="_blank" rel="noopener sponsored" onclick="if(typeof gtag===\'function\')gtag(\'event\',\'click\',{item:\'index-answer-' + esc(String(opts.slug || '')) + '\',page:location.pathname})" style="display:inline-block;margin-top:6px;font-family:var(--fd,inherit);font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#000;background:var(--gd,#f5c518);padding:8px 12px;border-radius:2px;text-decoration:none;min-height:32px;box-sizing:border-box">See ' + esc(c.name) + ' sales on eBay</a>' : '';
+    return '<div class="pr-ans" data-plain="' + esc(k) + '" data-pr="answer" style="margin:10px 0 4px;min-height:44px;font-size:15px;line-height:1.45;color:var(--th,var(--text-head,inherit))"><span data-pr-t="ans">' + ansText(k, f) + '</span>' + b + '</div>';
+  }
+
   /* the baked form — one HTML string per part, all keyed by data-plain so mount() can refresh them.
    * opts: { accent, topImg } */
   function bakeParts(k, r, opts) {
@@ -390,6 +414,7 @@
       read: '<div class="pr" data-plain="' + K + '" data-pr="read"' + acc + '>' + read(f) + '</div>',
       tiles: '<div class="pr-tiles" data-plain="' + K + '" data-pr="tiles">' + tiles(f, opts) + '</div>',
       works: '<div class="pr-works" data-plain="' + K + '" data-pr="works">' + works(k, r, f) + '</div>',
+      answer: answer(k, f, opts),
       facts: f
     };
   }
@@ -440,6 +465,9 @@
       setHtml(q(' [data-pr-t="mv"]'), tileMv(f)); setHtml(q(' [data-pr-t="mvk"]'), tileMvK(f));
       var mvv = q(' [data-pr-t="mvv"]'); if (mvv) { setHtml(mvv, tileMvV(f)); mvv.className = 'pr-tv ' + (mvOf(f) ? cls(mvOf(f).p) : ''); }
       /* the baked mover button stays only while the live read names the same card in a concentrated week */
+      /* Q-074: the answer sentence follows the live read; its button stays only while the read names the same card */
+      setHtml(q(' [data-pr-t="ans"]'), ansText(k, f));
+      var ansb = q(' [data-pr-t="ansb"]'); if (ansb) { var ac = ansCard(f); ansb.hidden = !(ac && ac.name === ansb.getAttribute('data-card')); }
       var mvb = q(' [data-pr-t="mvb"]'); if (mvb) { var one = mvOne(f); mvb.hidden = !(one && one.name === mvb.getAttribute('data-card')); }
     });
   }
