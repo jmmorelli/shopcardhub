@@ -1,0 +1,42 @@
+{
+  "_comment": "Pokémon KB collector-nickname list (CoS order O-129 M-3, Nov 28 2026). One entry per nickname in common use for a card we price. nickname (lower case, as a visitor types it) -> card ids from data/card-search.json; first id = the default the search box returns. Names only, never a price. Every entry carries its sources (R40); a nickname without a source is not filed. Read by tools/build-search-aliases.mjs (Build Loop row M-3). Maintained by the Pokémon KB Agent; history in AUDIT-LOG-2026-11l.md + ADDENDA-2026-11l.md.",
+  "updated": "2026-11-28",
+  "aliases": {
+    "moonbreon": {
+      "ids": ["evs21-215"],
+      "pages": ["/moonbreon-worth"],
+      "tag": "HIGH",
+      "sources": ["kb/pokemon/05-set-reference.md EVS21 chase table: #215 Umbreon VMAX (alt art, \"Moonbreon\")", "data/search-aliases.json (Q-069, live since Nov 27 2026)"],
+      "filed": "2026-11-28 (carried from Q-069)"
+    },
+    "bubble mew": {
+      "ids": ["trk-paf232"],
+      "pages": [],
+      "tag": "HIGH",
+      "sources": ["https://rarecandy.com/blog/bubble-mew (\"Bubble Mew (Mew ex 232/091) – Paldean Fates\")", "https://www.si.com/collectibles/incredibly-rare-bubble-mew-record-shattering-pokemon-sale", "https://www.wargamer.com/pokemon-trading-card-game/bubble-mew-price-rise"],
+      "filed": "2026-11-28"
+    },
+    "van gogh pikachu": {
+      "ids": ["trk-svp85"],
+      "pages": ["/van-gogh-pikachu-worth"],
+      "tag": "HIGH",
+      "sources": ["https://www.ebay.com/shop/van-gogh-pikachu (eBay's own category page title \"Van Gogh Pikachu\")", "https://snkrdunk.com/en/magazine/2024/05/15/pokemon-tcg-pikachu-with-grey-felt-hat-is-a-homage-to-an-iconic-painting-svp-black-star-promos-085", "https://bulbapedia.bulbagarden.net/wiki/Pikachu_with_Grey_Felt_Hat_(SVP_Promo_85) (official name: Pikachu with Grey Felt Hat, SVP 085)"],
+      "filed": "2026-11-28"
+    },
+    "gold star umbreon": {
+      "ids": ["gstar-popseries5-17"],
+      "alsoMatches": ["cel21-17"],
+      "pages": [],
+      "tag": "HIGH",
+      "note": "Default = the 2007 POP Series 5 original, Umbreon ☆ 17/17. cel21-17 is the Celebrations Classic Collection reprint of the same card and number (README #19 reprint trap); sellers call it 'Umbreon Gold Star' too. The search box returns the original first; a query with 'celebrations' should reach cel21-17.",
+      "sources": ["https://www.pricecharting.com/de/game/pokemon-pop-series-5/umbreon-gold-star-17 (\"Umbreon [Gold Star] #17 Pokemon POP Series 5\")", "https://www.ebay.com/itm/117119081702 (PSA label wording: \"2007 POKEMON POP SERIES 5 #17 UMBREON-GOLD STAR PSA 7\")", "https://www.ebay.ca/itm/178459607306 (\"Umbreon Gold Star 17/17 … Pokemon Celebrations\": the reprint carries the nickname too)"],
+      "filed": "2026-11-28"
+    }
+  },
+  "held": {
+    "crystal charizard": {"would_map": "sk03-146", "why": "one search (Nov 28) found the card (Bulbapedia 'Charizard (Skyridge 146)', PriceCharting) but no page using the phrase 'Crystal Charizard' for it; file on one PSA/PriceCharting/article use of the phrase"},
+    "gold star <name> (other GSTAR cards)": {"would_map": "gstar-* ids whose Pokémon appears once among the 35 gstar rows (Rayquaza, Torchic, Mudkip, Treecko, Espeon, Latias, Latios …; NOT Pikachu, Charizard, Mewtwo, which appear twice)", "why": "PSA labels and PriceCharting use '<NAME>-GOLD STAR' / '[Gold Star]' as a convention, but only Umbreon was read card by card this run; one source line per card before filing"},
+    "rayquaza alt / umbreon alt / dragonite alt / lugia alt": {"would_map": "evs21-218 / evs21-215 or evs21-189 / evs21-192 / trk-sit186", "why": "'alt' nicknames are ambiguous between V and VMAX alt arts (Umbreon, Rayquaza both have two tracked); need a source that names the default before filing"}
+  },
+  "no_nickname_found": ["/charizard-ex-worth lead card", "/gengar-ex-worth lead card", "/mega-darkrai-ex-worth lead card (116/084)"]
+}
