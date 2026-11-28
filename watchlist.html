@@ -2932,7 +2932,10 @@ function setView(v) {
   document.getElementById('viewCards').classList.toggle('active', v === 'cards');
   track('vault_view', { view:v }); render();
 }
-function openCard(id) { popupId = id; openSet.add(id); document.getElementById('cardVeil').classList.add('show'); track('vault_open_card'); render(); }
+function openCard(id, from) { popupId = id; openSet.add(id); document.getElementById('cardVeil').classList.add('show'); track('vault_open_card', from ? { from: from } : {}); render(); }
+/* Q-090 (Build Loop, Nov 28 2026; CoS W-1): /watchlist#card=<id> (home watchlist rows and "Your cards" chips) opens that card
+   after the first render; an id that is not in the store is a no-op and the list shows as it does today. */
+function readCardHash() { const m = (location.hash || '').match(/#card=([^&]+)/); if (!m) return; const id = decodeURIComponent(m[1]); if (popupId !== id && state.cards.some(c => c && c.id === id)) openCard(id, 'home'); }
 function closeCard() { if (popupId) { openSet.delete(popupId); chartDrawn.delete(popupId); } popupId = null; document.getElementById('cardVeil').classList.remove('show'); if (view === 'cards') render(); }
 function toggleAnalytics() {
   const a = document.getElementById('analytics'); a.classList.toggle('collapsed');
@@ -4104,11 +4107,12 @@ load().then(() => {
   readPfHash();
   render();
   handleDeepLink();
+  readCardHash();
   // B9: reveal the vault once, after the feed's render and the web fonts (see .vault-pending)
   Promise.all([loadFeed(), document.fonts ? document.fonts.ready : null]).catch(() => {}).then(() => requestAnimationFrame(() => document.querySelector('.vault-pending')?.classList.remove('vault-pending')));
   loadGrades();
 });
-window.addEventListener('hashchange', () => { readPfHash(); render(); });
+window.addEventListener('hashchange', () => { readPfHash(); render(); readCardHash(); });
 document.addEventListener('click', e => { const m = document.getElementById('pfMenu'); if (m && m.classList.contains('open') && !e.target.closest('.pf-name-row')) m.classList.remove('open'); if (e.target.closest && e.target.closest('[data-pf-new]')) { e.preventDefault(); newPortfolio(); } });
 </script>
 <!-- VAULT SHARE CARDS (Aug 21, 2026) — renders a position or the whole vault to a 1200×675 PNG for X.

@@ -33,8 +33,8 @@
   cards.forEach(function (c) {
     if (!c || !c.name) return;
     var ps = (c.prices || []).filter(function (p) { return p && isFinite(p.p) && p.p > 0 && p.t; }).sort(function (a, b) { return a.t - b.t; });
-    if (ps.length < 2) { mine.push({ name: c.name, move: null, since: ps[0] ? ps[0].t : null }); return; }
-    mine.push({ name: c.name, move: (ps[ps.length - 1].p / ps[0].p - 1) * 100, since: ps[0].t, last: ps[ps.length - 1].p });
+    if (ps.length < 2) { mine.push({ id: c.id || '', name: c.name, move: null, since: ps[0] ? ps[0].t : null }); return; }
+    mine.push({ id: c.id || '', name: c.name, move: (ps[ps.length - 1].p / ps[0].p - 1) * 100, since: ps[0].t, last: ps[ps.length - 1].p });
   });
   var moved = mine.filter(function (m) { return m.move != null; }).sort(function (a, b) { return Math.abs(b.move) - Math.abs(a.move); });
 
@@ -77,7 +77,7 @@
     if (mine.length) {
       var items = moved.slice(0, 6).map(function (m) {
         var short = String(m.name).split(' — ')[0].replace(/\s+/g, ' ').trim();
-        return '<a class="yh-c" href="/watchlist"><b>' + esc(short) + '</b><i class="' + cls(m.move) + '">' + esc(pct(m.move)) + '</i>' + (m.since ? '<small>since ' + esc(dstr(iso(m.since))) + '</small>' : '') + '</a>';
+        return '<a class="yh-c" href="' + (m.id ? '/watchlist#card=' + encodeURIComponent(m.id) : '/watchlist') + '"><b>' + esc(short)  /* Q-090 (CoS W-1): the chip opens its card */ + '</b><i class="' + cls(m.move) + '">' + esc(pct(m.move)) + '</i>' + (m.since ? '<small>since ' + esc(dstr(iso(m.since))) + '</small>' : '') + '</a>';
       }).join('');
       var quiet = mine.length - moved.length;
       html += '<div class="yh-row"><span class="yh-k">Your cards</span>' + (items || '') +

@@ -188,9 +188,10 @@
     try { store = JSON.parse(localStorage.getItem('sch_vault_v1') || 'null'); } catch (e) {}
     var cards = ((store && store.cards) || []).filter(function (c) { return c && c.name; });
     if (!cards.length) { wl.innerHTML = '<li class="empty">Nothing watched yet. Tap \u2605 on any card and it shows up here with its latest price. No account \u2014 it stays in this browser.</li>'; return; }
-    var rows = cards.map(function (c) { var ps = (c.prices || []).filter(function (p) { return p && isFinite(p.p) && p.p > 0; }); return { name: c.name, set: c.set || '', last: ps.length ? ps[ps.length - 1].p : null, move: ps.length > 1 ? (ps[ps.length - 1].p / ps[0].p - 1) * 100 : null }; })
+    var rows = cards.map(function (c) { var ps = (c.prices || []).filter(function (p) { return p && isFinite(p.p) && p.p > 0; }); return { id: c.id || '', name: c.name, set: c.set || '', last: ps.length ? ps[ps.length - 1].p : null, move: ps.length > 1 ? (ps[ps.length - 1].p / ps[0].p - 1) * 100 : null }; })
       .sort(function (a, b) { return Math.abs(b.move || 0) - Math.abs(a.move || 0); }).slice(0, 5);
-    wl.innerHTML = rows.map(function (r) { return '<li><span class="nm"><b>' + esc(r.name) + '</b><small>' + esc(r.set || 'on your watchlist') + '</small></span><span class="rt"><span class="px">' + (r.last == null ? '' : esc(money(r.last))) + '</span><span class="ch ' + cls(r.move) + '">' + (r.move == null ? 'new' : sgn(r.move, 1)) + '</span></span></li>'; }).join('');
+    // Q-090 (Build Loop, Nov 28 2026; CoS W-1): each row opens its card in the Vault (/watchlist#card=<id>); same layout, no new copy
+    wl.innerHTML = rows.map(function (r) { return '<li>' + (r.id ? '<a class="wl-row" href="/watchlist#card=' + encodeURIComponent(r.id) + '">' : '') + '<span class="nm"><b>' + esc(r.name) + '</b><small>' + esc(r.set || 'on your watchlist') + '</small></span><span class="rt"><span class="px">' + (r.last == null ? '' : esc(money(r.last))) + '</span><span class="ch ' + cls(r.move) + '">' + (r.move == null ? 'new' : sgn(r.move, 1)) + '</span></span>' + (r.id ? '</a>' : '') + '</li>'; }).join('');
     if (cards.length > 5) wl.insertAdjacentHTML('beforeend', '<li class="empty"><a href="/watchlist">' + cards.length + ' cards on your watchlist\u00a0\u203a</a></li>');
   })();
 

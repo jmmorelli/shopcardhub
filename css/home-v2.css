@@ -120,6 +120,10 @@
 .h2-tile li .nm { min-width:0; }
 .h2-tile li .nm a, .h2-tile li .nm b { color:var(--text-head); font-weight:600; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .h2-tile li .nm a:hover { color:var(--accent); }
+/* Q-090 (Build Loop, Nov 28 2026; CoS W-1): a watchlist row is one link to its card; the link takes the row's grid, same height */
+#h2-wl li:has(> a.wl-row) { display:block; padding:0; }
+#h2-wl a.wl-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 12px; align-items:center; padding:8px 0; min-height:48px; color:inherit; text-decoration:none; }
+#h2-wl a.wl-row:hover b, #h2-wl a.wl-row:focus-visible b { color:var(--accent); }
 .h2-tile li .nm small { display:block; font:400 12px/1.33 var(--ds-font); color:var(--text-dim); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .h2-tile li .rt { display:flex; align-items:center; gap:12px; justify-content:flex-end; white-space:nowrap; }
 .h2-tile li .px { font:600 17px/1.2 var(--ds-font); color:var(--text-head); }
