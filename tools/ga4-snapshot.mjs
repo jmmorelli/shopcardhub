@@ -128,6 +128,10 @@ const REPORTS = {
   aiLanding28: { dateRanges: RANGES.d28, dimensions: d("sessionSource", "landingPage"), metrics: m("sessions", "engagedSessions", "keyEvents"), dimensionFilter: { filter: { fieldName: "sessionSource", stringFilter: { matchType: "PARTIAL_REGEXP", value: AI_SOURCE_RE, caseSensitive: false } } }, orderBys: [{ metric: { metricName: "sessions" }, desc: true }], limit: 1000 },
   // No dimension → one totals row. sessionKeyEventRate here is GA4's own "sessions with a key event ÷ sessions",
   // which is what the UI's Traffic-acquisition total shows (5.59% on 2026-09-18), not key events ÷ sessions.
+  // Q-085 (Build Loop, Nov 28 2026; CoS M-4): what a missed search typed. GA4's built-in searchTerm dimension is filled from an
+  // event's search_term parameter (sent on search_miss and search_hit since Q-088, 0c4485d); no custom dimension is registered.
+  // Optional: if GA4 rejects it, or every row is "(not set)", the field says so and the row goes needs-mo (a custom dimension).
+  searchMissTerms28: { dateRanges: RANGES.d28, dimensions: d("searchTerm"), metrics: m("eventCount"), dimensionFilter: { filter: { fieldName: "eventName", stringFilter: { value: "search_miss" } } }, orderBys: [{ metric: { metricName: "eventCount" }, desc: true }], limit: 51 },
   totals28: { dateRanges: RANGES.d28, metrics: m("sessions", "activeUsers", "keyEvents", "sessionKeyEventRate", "engagementRate"), limit: 1 },
   totals7: { dateRanges: RANGES.d7, metrics: m("sessions", "activeUsers", "keyEvents", "sessionKeyEventRate", "engagementRate"), limit: 1 },
 };
@@ -262,6 +266,8 @@ function derive(rep) {
     trackCardFromPage7: ev(rep.events7.rows, "track_card_from_page"), newsletterSignup7: funnel("newsletter_signup"), signupSubmit7: funnel("signup_submit"), signupView7: funnel("signup_view"),
     // Q-073 (Build Loop, Nov 28 2026; CoS L-6): every settled search is counted, hit or miss (both boxes send location home | header).
     searchHits7: funnel("search_hit"), searchMisses7: funnel("search_miss"),
+    // Q-085: top 50 missed-search terms, 28 days, with counts; null when the report was skipped; [] with a note when GA4 holds none.
+    ...searchMissTerms(rep),
     // box screener (Box Desk, Oct 20 2026; spec §7 kill read: ≥ 25% of BHB sessions interact by Nov 19, < 10% by Dec 17 strips it back)
     boxSort7: ev(rep.events7.rows, "box_sort"), boxFilter7: ev(rep.events7.rows, "box_filter"), boxProfile7: ev(rep.events7.rows, "box_profile"),
     keyEventsYesterday: (rep.daily28.rows.at(-1) || {}).keyEvents ?? null, sessionsYesterday: (rep.daily28.rows.at(-1) || {}).sessions ?? null,
@@ -360,8 +366,16 @@ function cardRead(rep) {
   return out;
 }
 
+function searchMissTerms(rep) {
+  const r = rep.searchMissTerms28;
+  if (!r || !Array.isArray(r.rows)) return { searchMissTerms28: null, searchMissTermsNote: "report skipped (GA4 rejected searchTerm or the call failed)" };
+  const rows = r.rows.filter((x) => x.searchTerm && x.searchTerm !== "(not set)").slice(0, 50).map((x) => ({ term: String(x.searchTerm).slice(0, 80), count: x.eventCount || 0 }));
+  const notSet = r.rows.filter((x) => x.searchTerm === "(not set)").reduce((n, x) => n + (x.eventCount || 0), 0);
+  return { searchMissTerms28: rows, searchMissTermsNote: rows.length ? null : notSet ? `all ${notSet} search_miss events are (not set): searchTerm is not filled from search_term; needs an event-scoped custom dimension` : "no search_miss event with a search_term yet (sent since Nov 28, Q-088)" };
+}
+
 async function main() {
-  if (DRY) { console.log(JSON.stringify({ property: PROPERTY, reports: REPORTS, searchFields: ["searchHits7", "searchMisses7"], cardFields: ["cardViews7Clean", "cardViews7CleanExCN", "cardViews7Bot"] }, null, 2)); return; }
+  if (DRY) { console.log(JSON.stringify({ property: PROPERTY, reports: REPORTS, searchFields: ["searchHits7", "searchMisses7", "searchMissTerms28"], cardFields: ["cardViews7Clean", "cardViews7CleanExCN", "cardViews7Bot"] }, null, 2)); return; }
   let token = process.env.GA4_ACCESS_TOKEN;
   if (!token) {
     const keyRaw = process.env.GA4_SA_KEY;
@@ -371,7 +385,7 @@ async function main() {
   const rep = {};
   // The two distribution reports (added 2026-09-29) are optional: if GA4 rejects one, the snapshot still ships.
   // The Oct 21 2026 instrument reports are optional too: a rejected new report must never cost the nightly file.
-  const OPTIONAL = new Set(["leagueCampaignDaily28", "referralDaily28", "pageClicks7", "cardClicks7", "pageCountry7", "landingCountry7", "instruments7", "ebayClicksByLanding7", "ebayClicksByLanding28", "aiLanding28", "pageClicksDaily7"]);
+  const OPTIONAL = new Set(["searchMissTerms28", "leagueCampaignDaily28", "referralDaily28", "pageClicks7", "cardClicks7", "pageCountry7", "landingCountry7", "instruments7", "ebayClicksByLanding7", "ebayClicksByLanding28", "aiLanding28", "pageClicksDaily7"]);
   for (const [name, body] of Object.entries(REPORTS)) {
     if (!OPTIONAL.has(name)) { rep[name] = await runReport(token, body); continue; }
     try { rep[name] = await runReport(token, body); } catch (e) { console.error(`optional report ${name} skipped: ${String(e.message || e).slice(0, 200)}`); }
